@@ -460,6 +460,34 @@ namespace Vanara.PInvoke
 		[PInvokeData("dbghelp.h", MSDNShortId = "NC:dbghelp.PTRANSLATE_ADDRESS_ROUTINE64")]
 		public delegate ulong PTRANSLATE_ADDRESS_ROUTINE64(HPROCESS hProcess, HTHREAD hThread, in ADDRESS64 lpaddr);
 
+		/// <summary>
+		/// <para>
+		/// An application-defined callback function used with the StackWalk64 function. It provides address translation for 16-bit addresses.
+		/// </para>
+		/// <para>
+		/// The <c>PTRANSLATE_ADDRESS_ROUTINE64</c> type defines a pointer to this callback function. <c>TranslateAddressProc64</c> is a
+		/// placeholder for the application-defined function name.
+		/// </para>
+		/// </summary>
+		/// <param name="hProcess">A handle to the process for which the stack trace is generated.</param>
+		/// <param name="hThread">A handle to the thread for which the stack trace is generated.</param>
+		/// <param name="lpaddr">An address to be translated.</param>
+		/// <returns>The function returns the translated address.</returns>
+		/// <remarks>
+		/// <para>
+		/// This callback function supersedes the PTRANSLATE_ADDRESS_ROUTINE callback function. PTRANSLATE_ADDRESS_ROUTINE is defined as
+		/// follows in Dbghelp.h.
+		/// </para>
+		/// <para>
+		/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define PTRANSLATE_ADDRESS_ROUTINE PTRANSLATE_ADDRESS_ROUTINE64 #else typedef DWORD (__stdcall *PTRANSLATE_ADDRESS_ROUTINE)( __in HANDLE hProcess, __in HANDLE hThread, __out LPADDRESS lpaddr ); #endif</code>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nc-dbghelp-ptranslate_address_routine
+		// PTRANSLATE_ADDRESS_ROUTINE PtranslateAddressRoutine; DWORD PtranslateAddressRoutine( HANDLE hProcess, HANDLE hThread, LPADDRESS lpaddr ) {...}
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[PInvokeData("dbghelp.h", MSDNShortId = "NC:dbghelp.PTRANSLATE_ADDRESS_ROUTINE")]
+		public delegate uint PTRANSLATE_ADDRESS_ROUTINE(HPROCESS hProcess, HTHREAD hThread, in ADDRESS lpaddr);
+
 		/// <summary>The addressing mode.</summary>
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._tagADDRESS64")]
 		public enum ADDRESS_MODE
@@ -2252,6 +2280,72 @@ namespace Vanara.PInvoke
 
 		/// <summary>Obtains a stack trace.</summary>
 		/// <param name="MachineType">
+		/// <para>The architecture type of the computer for which the stack trace is generated. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IMAGE_FILE_MACHINE_I386 0x014c</term>
+		/// <term>Intel x86</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_MACHINE_IA64 0x0200</term>
+		/// <term>Intel Itanium</term>
+		/// </item>
+		/// <item>
+		/// <term>IMAGE_FILE_MACHINE_AMD64 0x8664</term>
+		/// <term>x64 (AMD64 or EM64T)</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hProcess">A handle to the process for which the stack trace is generated. If the caller supplies a valid callback pointer for the ReadMemoryRoutine parameter, then this value does not have to be a valid process handle. It can be a token that is unique and consistently the same for all calls to the <c>StackWalk64</c> function. If the symbol handler is used with <c>StackWalk64</c>, use the same process handles for the calls to each function.</param>
+		/// <param name="hThread">A handle to the thread for which the stack trace is generated. If the caller supplies a valid callback pointer for the ReadMemoryRoutine parameter, then this value does not have to be a valid thread handle. It can be a token that is unique and consistently the same for all calls to the <c>StackWalk64</c> function.</param>
+		/// <param name="StackFrame">A pointer to a STACKFRAME64 structure. This structure receives information for the next frame, if the function call succeeds.</param>
+		/// <param name="ContextRecord">
+		/// <para>A pointer to a CONTEXT structure. This parameter is required only when the MachineType parameter is not <c>IMAGE_FILE_MACHINE_I386</c>. However, it is recommended that this parameter contain a valid context record. This allows <c>StackWalk64</c> to handle a greater variety of situations.</para>
+		/// <para>This context may be modified, so do not pass a context record that should not be modified.</para>
+		/// </param>
+		/// <param name="ReadMemoryRoutine">
+		/// <para>A callback routine that provides memory read services. When the <c>StackWalk64</c> function needs to read memory from the process's address space, the ReadProcessMemoryProc64 callback is used.</para>
+		/// <para>If this parameter is <c>NULL</c>, then the function uses a default routine. In this case, the hProcess parameter must be a valid process handle.</para>
+		/// <para>If this parameter is not <c>NULL</c>, the application should implement and register a symbol handler callback function that handles <c>CBA_READ_MEMORY</c>.</para>
+		/// </param>
+		/// <param name="FunctionTableAccessRoutine">
+		/// <para>A callback routine that provides access to the run-time function table for the process. This parameter is required because the <c>StackWalk64</c> function does not have access to the process's run-time function table. For more information, see FunctionTableAccessProc64.</para>
+		/// <para>The symbol handler provides functions that load and access the run-time table. If these functions are used, then SymFunctionTableAccess64 can be passed as a valid parameter.</para>
+		/// </param>
+		/// <param name="GetModuleBaseRoutine">
+		/// <para>A callback routine that provides a module base for any given virtual address. This parameter is required. For more information, see GetModuleBaseProc64.</para>
+		/// <para>The symbol handler provides functions that load and maintain module information. If these functions are used, then SymGetModuleBase64 can be passed as a valid parameter.</para>
+		/// </param>
+		/// <param name="TranslateAddress">
+		/// <para>A callback routine that provides address translation for 16-bit addresses. For more information, see TranslateAddressProc64.</para>
+		/// <para>Most callers of <c>StackWalk64</c> can safely pass <c>NULL</c> for this parameter.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>If the function fails, the return value is <c>FALSE</c>. Note that <c>StackWalk64</c> generally does not set the last error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>StackWalk64</c> function provides a portable method for obtaining a stack trace. Using the <c>StackWalk64</c> function is recommended over writing your own function because of all the complexities associated with stack walking on platforms. In addition, there are compiler options that cause the stack to appear differently, depending on how the module is compiled. By using this function, your application has a portable stack trace that continues to work as the compiler and operating system change.</para>
+		/// <para>The first call to this function will fail if the <c>AddrPC</c>, <c>AddrFrame</c>, and <c>AddrStack</c> members of the STACKFRAME64 structure passed in the StackFrame parameter are not initialized.</para>
+		/// <para>All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more than one thread to this function.</para>
+		/// <para>This function supersedes the <c>StackWalk</c> function. For more information, see Updated Platform Support. <c>StackWalk</c> is defined as follows in DbgHelp.h.</para>
+		/// <para><code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define StackWalk StackWalk64 #else BOOL IMAGEAPI StackWalk( DWORD MachineType, __in HANDLE hProcess, __in HANDLE hThread, __inout LPSTACKFRAME StackFrame, __inout PVOID ContextRecord, __in_opt PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine, __in_opt PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine, __in_opt PGET_MODULE_BASE_ROUTINE GetModuleBaseRoutine, __in_opt PTRANSLATE_ADDRESS_ROUTINE TranslateAddress ); #endif </code></para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-stackwalk
+		// BOOL IMAGEAPI StackWalk( DWORD MachineType, HANDLE hProcess, HANDLE hThread, LPSTACKFRAME StackFrame, PVOID ContextRecord, PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine, PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine, PGET_MODULE_BASE_ROUTINE GetModuleBaseRoutine, PTRANSLATE_ADDRESS_ROUTINE TranslateAddress );
+		[DllImport(Lib_DbgHelp, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.StackWalk")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool StackWalk(IMAGE_FILE_MACHINE MachineType, HPROCESS hProcess, HTHREAD hThread, ref STACKFRAME StackFrame, [In, Out] IntPtr ContextRecord,
+			[Optional] PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine, [Optional] PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine,
+			[Optional] PGET_MODULE_BASE_ROUTINE GetModuleBaseRoutine, [Optional] PTRANSLATE_ADDRESS_ROUTINE TranslateAddress);
+
+		/// <summary>Obtains a stack trace.</summary>
+		/// <param name="MachineType">
 		/// <para>
 		/// The architecture type of the computer for which the stack trace is generated. This parameter can be one of the following values.
 		/// </para>
@@ -2368,7 +2462,7 @@ namespace Vanara.PInvoke
 		// HANDLE hProcess, HANDLE hThread, LPSTACKFRAME64 StackFrame, PVOID ContextRecord, PREAD_PROCESS_MEMORY_ROUTINE64
 		// ReadMemoryRoutine, PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine, PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine,
 		// PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress );
-		[DllImport(Lib_DbgHelp, SetLastError = false, CharSet = CharSet.Auto)]
+		[DllImport(Lib_DbgHelp, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.StackWalk64")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool StackWalk64(IMAGE_FILE_MACHINE MachineType, HPROCESS hProcess, HTHREAD hThread, ref STACKFRAME64 StackFrame, [In, Out] IntPtr ContextRecord,

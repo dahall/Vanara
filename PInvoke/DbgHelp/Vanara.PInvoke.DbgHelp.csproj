@@ -1,21 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
-	<SupportedDlls>DbgHelp.dll;ImageHlp.dll</SupportedDlls>
+    <SupportedDlls>DbgHelp.dll;ImageHlp.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
-	<Description>PInvoke API (methods, structures and constants) imported from Windows DbgHelp.dll.</Description>
-	<AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-	<TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
-	<AssemblyName>Vanara.PInvoke.DbgHelp</AssemblyName>
-	<PackageId>$(AssemblyName)</PackageId>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<PackageTags>pinvoke;vanara;net-extensions;interop;DbgHelp</PackageTags>
-	<PackageReleaseNotes />
+    <Description>PInvoke API (methods, structures and constants) imported from Windows DbgHelp.dll.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.DbgHelp</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;DbgHelp</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+BindImageEx, CheckSumMappedFile, EnumDirTree, EnumDirTreeA, EnumerateLoadedModules, EnumerateLoadedModulesEx, EnumerateLoadedModulesW64, FindDebugInfoFile, FindDebugInfoFileEx, FindDebugInfoFileExA, FindExecutableImage, FindExecutableImageEx, FindExecutableImageExA, GetImageConfigInformation, GetImageUnusedHeaderBytes, GetSymLoadError, GetTimestampForLoadedLibrary, ImageAddCertificate, ImageDirectoryEntryToData, ImageDirectoryEntryToDataEx, ImageEnumerateCertificates, ImageGetCertificateData, ImageGetCertificateHeader, ImageGetDigestStream, ImagehlpApiVersion, ImagehlpApiVersionEx, ImageLoad, ImageNtHeader, ImageRemoveCertificate, ImageRvaToSection, ImageRvaToVa, ImageUnload, MakeSureDirectoryPathExists, MapAndLoad, MapDebugInformation, MapFileAndCheckSum, ReBaseImage, ReBaseImage64, SearchTreeForFile, SearchTreeForFileA, SetImageConfigInformation, SetSymLoadError, SplitSymbols, StackWalk, StackWalk64, StackWalkEx, SymAddrIncludeInlineTrace, SymAddSourceStream, SymAddSymbol, SymAddSymbolA, SymbolServerSetOptionsA, SymbolServerSetOptionsW, SymCleanup, SymCompareInlineTrace, SymDeleteSymbol, SymDeleteSymbolA, SymEnumerateModules, SymEnumerateModules64, SymEnumerateModulesW64, SymEnumLines, SymEnumLinesA, SymEnumProcesses, SymEnumSourceFiles, SymEnumSourceFilesA, SymEnumSourceFileTokens, SymEnumSourceLines, SymEnumSourceLinesA, SymEnumSymbols, SymEnumSymbolsA, SymEnumSymbolsEx, SymEnumSymbolsExA, SymEnumSymbolsForAddr, SymEnumSymbolsForAddrA, SymEnumTypes, SymEnumTypesA, SymEnumTypesByName, SymEnumTypesByNameA, SymFindDebugInfoFile, SymFindDebugInfoFileA, SymFindExecutableImage, SymFindExecutableImageA, SymFindFileInPath, SymFindFileInPathA, SymFromAddr, SymFromAddrA, SymFromIndex, SymFromIndexA, SymFromInlineContext, SymFromInlineContextA, SymFromName, SymFromNameA, SymFromToken, SymFromTokenA, SymFunctionTableAccess, SymFunctionTableAccess64, SymFunctionTableAccess64AccessRoutines, SymGetExtendedOption, SymGetFileLineOffsets64, SymGetHomeDirectory, SymGetHomeDirectoryA, SymGetLineFromAddr64, SymGetLineFromAddrA, SymGetLineFromAddrW, SymGetLineFromAddrW64, SymGetLineFromInlineContext, SymGetLineFromInlineContextA, SymGetLineFromName, SymGetLineFromName64, SymGetLineFromNameW64, SymGetLineNext64, SymGetLineNextA, SymGetLineNextW, SymGetLineNextW64, SymGetLinePrev64, SymGetLinePrevA, SymGetLinePrevW, SymGetLinePrevW64, SymGetModuleBase, SymGetModuleBase64, SymGetModuleInfo, SymGetModuleInfo64, SymGetModuleInfoA, SymGetModuleInfoW64, SymGetOmaps, SymGetOptions, SymGetScope, SymGetScopeA, SymGetSearchPath, SymGetSearchPathA, SymGetSourceFile, SymGetSourceFileA, SymGetSourceFileChecksum, SymGetSourceFileChecksumA, SymGetSourceFileFromToken, SymGetSourceFileFromTokenA, SymGetSourceFileToken, SymGetSourceFileTokenA, SymGetSourceVarFromToken, SymGetSourceVarFromTokenA, SymGetSymbolFile, SymGetSymbolFileA, SymGetSymFromAddr, SymGetSymFromAddr64, SymGetSymFromName, SymGetSymFromName64, SymGetSymNext64, SymGetSymNextA, SymGetSymNextW, SymGetSymNextW64, SymGetSymPrev64, SymGetSymPrevW, SymGetSymPrevW64, SymGetTypeFromName, SymGetTypeFromNameA, SymGetTypeInfo, SymGetTypeInfoEx, SymInitialize, SymInitializeA, SymLoadModule, SymLoadModule64, SymLoadModuleEx, SymLoadModuleExA, SymMatchFileName, SymMatchFileNameA, SymMatchString, SymNext, SymNextA, SymPrev, SymPrevA, SymQueryInlineTrace, SymRefreshModuleList, SymRegisterCallback64, SymRegisterCallbackA, SymRegisterCallbackW, SymRegisterCallbackW64, SymRegisterFunctionEntryCallback, SymRegisterFunctionEntryCallback64, SymSearch, SymSearchA, SymSetContext, SymSetExtendedOption, SymSetHomeDirectory, SymSetHomeDirectoryA, SymSetOptions, SymSetParentWindow, SymSetScopeFromAddr, SymSetScopeFromIndex, SymSetScopeFromInlineContext, SymSetSearchPath, SymSetSearchPathA, SymSrvDeltaName, SymSrvDeltaNameA, SymSrvGetFileIndexes, SymSrvGetFileIndexesA, SymSrvGetFileIndexInfo, SymSrvGetFileIndexInfoA, SymSrvGetFileIndexString, SymSrvGetFileIndexStringA, SymSrvGetSupplement, SymSrvGetSupplementA, SymSrvIsStore, SymSrvIsStoreA, SymSrvStoreFile, SymSrvStoreFileA, SymSrvStoreSupplement, SymSrvStoreSupplementA, SymUnDName, SymUnDName64, SymUnloadModule, SymUnloadModule64, TouchFileTimes, UnDecorateSymbolName, UnDecorateSymbolNameA, UnMapAndLoad, UnmapDebugInformation, UpdateDebugInfoFile, UpdateDebugInfoFileEx
+
+Structures
+ADDRESS, ADDRESS64, API_VERSION, IMAGE_DEBUG_INFORMATION, IMAGEHLP_CBA_EVENT, IMAGEHLP_CBA_READ_MEMORY, IMAGEHLP_DEFERRED_SYMBOL_LOAD, IMAGEHLP_DEFERRED_SYMBOL_LOAD64, IMAGEHLP_DEFERRED_SYMBOL_LOADW64, IMAGEHLP_DUPLICATE_SYMBOL64, IMAGEHLP_GET_TYPE_INFO_PARAMS, IMAGEHLP_LINE, IMAGEHLP_LINE64, IMAGEHLP_MODULE, IMAGEHLP_MODULE64, IMAGEHLP_STACK_FRAME, IMAGEHLP_SYMBOL, IMAGEHLP_SYMBOL64, IMAGEHLP_SYMBOLW, IMAGEHLP_SYMBOLW64, KDHELP, KDHELP64, LOADED_IMAGE, MODLOAD_CVMISC, MODLOAD_DATA, OMAP, SOURCEFILE, SRCCODEINFO, STACKFRAME, STACKFRAME_EX, STACKFRAME64, SYMBOL_INFO, SYMSRV_INDEX_INFO, TI_FINDCHILDREN_PARAMS, LIST_ENTRY, FPO_DATA, IMAGE_RUNTIME_FUNCTION_ENTRY, IMAGE_COFF_SYMBOLS_HEADER, IMAGE_DATA_DIRECTORY, IMAGE_DEBUG_DIRECTORY, IMAGE_EXPORT_DIRECTORY, IMAGE_FILE_HEADER, IMAGE_FUNCTION_ENTRY, IMAGE_LOAD_CONFIG_CODE_INTEGRITY, IMAGE_LOAD_CONFIG_DIRECTORY32, IMAGE_LOAD_CONFIG_DIRECTORY64, IMAGE_NT_HEADERS, IMAGE_OPTIONAL_HEADER, IMAGE_SECTION_HEADER, &lt;_DataDirectory&gt;e__FixedBuffer, MISC
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
-	  <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-	  <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
-	  <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

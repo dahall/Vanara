@@ -16,15 +16,23 @@ namespace Vanara.PInvoke.Tests
 	public class DbgHelpTests
 	{
 		const string imgName = "imagehlp.dll";
+		const string testAppName = "TestDbgApp";
+		const string testAppPath = TestCaseSources.TempDirWhack + testAppName + ".exe";
+		private Process testApp;
+		private ProcessSymbolHandler hProc;
 
 		[OneTimeSetUp]
 		public void _Setup()
 		{
+			testApp = Process.Start(new ProcessStartInfo(testAppPath) { WindowStyle = ProcessWindowStyle.Minimized });
+			hProc = new ProcessSymbolHandler(testApp.Handle);
 		}
 
 		[OneTimeTearDown]
 		public void _TearDown()
 		{
+			hProc.Dispose();
+			testApp.Kill();
 		}
 
 		[Test]
@@ -93,8 +101,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SymEnumerateModulesTest()
 		{
-			using var hProc = new ProcessSymbolHandler(Process.GetCurrentProcess().Handle, null, true);
-			var output = SymEnumerateModules(hProc);
+			var output = SymEnumerateModules(hProc, true);
 			TestContext.WriteLine($"Count: {output.Count}");
 			output.WriteValues();
 		}
@@ -102,8 +109,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SymEnumLinesTest()
 		{
-			using var hProc = new ProcessSymbolHandler(Process.GetCurrentProcess().Handle, null, true);
-			var (ModuleName, BaseOfDll) = SymEnumerateModules(hProc).Where(t => t.ModuleName == "KERNEL32").First();
+			var (_, BaseOfDll) = SymEnumerateModules(hProc, true).First();
 			var output = SymEnumLines(hProc, unchecked((ulong)BaseOfDll.ToInt64()));
 			TestContext.WriteLine($"Count: {output.Count}");
 			output.WriteValues();
@@ -112,8 +118,74 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SymEnumProcessesTest()
 		{
-			using var hProc = new ProcessSymbolHandler(Process.GetCurrentProcess().Handle);
 			Assert.That(SymEnumProcesses(), Is.Not.Empty);
+		}
+
+		[Test]
+		public unsafe void SymGetOmapsTest()
+		{
+			var (_, BaseOfDll) = SymEnumerateModules(hProc, true).First();
+			Assert.That(SymGetOmaps(hProc, unchecked((ulong)BaseOfDll.ToInt64()), out var to, out var cto, out var from, out var cfrom), ResultIs.Successful);
+		}
+
+		[Test]
+		public void SymGetSymFromNameTest()
+		{
+			using var sym = new SafeIMAGEHLP_SYMBOL();
+			Assert.That(SymGetSymFromName(hProc, "strcat", sym), ResultIs.Successful);
+			sym.Value.WriteValues();
+		}
+
+		[Test]
+		public void SymGetSymFromName64Test()
+		{
+			ulong addr = 0;
+			using (var sym = new SafeIMAGEHLP_SYMBOL64())
+			{
+				Assert.That(SymGetSymFromName64(hProc, "strcat", sym), ResultIs.Successful);
+				sym.Value.WriteValues();
+				Assert.That(sym.Value.Name, Is.EqualTo("strcat"));
+				addr = sym.Value.Address;
+			}
+
+			using (var sym = new SafeIMAGEHLP_SYMBOL64())
+			{
+				Assert.That(SymGetSymFromAddr64(hProc, addr, out var displ, sym), ResultIs.Successful);
+				sym.Value.WriteValues();
+				Assert.That(sym.Value.Name, Is.EqualTo("strcat"));
+			}
+		}
+
+		[Test]
+		public void MimicDllExp()
+		{
+			Assert.That(MapAndLoad(imgName, null, out var LoadedImage, true, true), ResultIs.Successful);
+			try
+			{
+				var data = ImageDirectoryEntryToData(LoadedImage.MappedAddress, false, IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_EXPORT, out var cDirSize); // (_IMAGE_EXPORT_DIRECTORY*)
+				Assert.That(data, ResultIs.ValidHandle);
+				var ImageExportDirectory = data.ToStructure<IMAGE_EXPORT_DIRECTORY>(cDirSize);
+				ImageExportDirectory.WriteValues();
+
+				var addr = ImageRvaToVa(LoadedImage.FileHeader, LoadedImage.MappedAddress, ImageExportDirectory.AddressOfNames, out _); // (uint*)
+				Assert.That(addr, ResultIs.ValidHandle);
+				var rnameaddrs = addr.ToArray<uint>((int)ImageExportDirectory.NumberOfNames);
+
+				addr = ImageRvaToVa(LoadedImage.FileHeader, LoadedImage.MappedAddress, ImageExportDirectory.AddressOfNameOrdinals, out _); // (uint*)
+				Assert.That(addr, ResultIs.ValidHandle);
+				var rordaddrs = addr.ToArray<uint>((int)ImageExportDirectory.NumberOfNames);
+
+				for (int i = 0; i < rnameaddrs.Length; i++)
+				{
+					var sName = Marshal.PtrToStringAnsi(ImageRvaToVa(LoadedImage.FileHeader, LoadedImage.MappedAddress, rnameaddrs[i], out _));
+					var ord = ImageRvaToVa(LoadedImage.FileHeader, LoadedImage.MappedAddress, rordaddrs[i], out _).ToNullableStructure<uint>();
+					TestContext.WriteLine($"{sName ?? (null)}\t0x{ord ?? 0}");
+				}
+			}
+			finally
+			{
+				UnMapAndLoad(ref LoadedImage);
+			}
 		}
 	}
 }

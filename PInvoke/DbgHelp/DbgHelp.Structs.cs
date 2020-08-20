@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -902,7 +903,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_line typedef struct _IMAGEHLP_LINE { DWORD
 		// SizeOfStruct; PVOID Key; DWORD LineNumber; PCHAR FileName; DWORD Address; } IMAGEHLP_LINE, *PIMAGEHLP_LINE;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_LINE")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct IMAGEHLP_LINE
 		{
 			/// <summary>
@@ -919,7 +920,7 @@ namespace Vanara.PInvoke
 			public uint LineNumber;
 
 			/// <summary>The name of the file, including the full path.</summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string FileName;
+			[MarshalAs(UnmanagedType.LPTStr)] public string FileName;
 
 			/// <summary>The address of the first instruction in the line.</summary>
 			public uint Address;
@@ -938,7 +939,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_line64 typedef struct _IMAGEHLP_LINE64 { DWORD
 		// SizeOfStruct; PVOID Key; DWORD LineNumber; PCHAR FileName; DWORD64 Address; } IMAGEHLP_LINE64, *PIMAGEHLP_LINE64;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_LINE64")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct IMAGEHLP_LINE64
 		{
 			/// <summary>
@@ -955,79 +956,7 @@ namespace Vanara.PInvoke
 			public uint LineNumber;
 
 			/// <summary>The name of the file, including the full path.</summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string FileName;
-
-			/// <summary>The address of the first instruction in the line.</summary>
-			public ulong Address;
-		}
-
-		/// <summary>Represents a source file line.</summary>
-		/// <remarks>
-		/// <para>
-		/// This structure supersedes the <c>IMAGEHLP_LINE</c> structure. For more information, see Updated Platform Support.
-		/// <c>IMAGEHLP_LINE</c> is defined as follows in DbgHelp.h.
-		/// </para>
-		/// <para>
-		/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define IMAGEHLP_LINE IMAGEHLP_LINE64 #define PIMAGEHLP_LINE PIMAGEHLP_LINE64 #else typedef struct _IMAGEHLP_LINE { DWORD SizeOfStruct; PVOID Key; DWORD LineNumber; PCHAR FileName; DWORD Address; } IMAGEHLP_LINE, *PIMAGEHLP_LINE; typedef struct _IMAGEHLP_LINEW { DWORD SizeOfStruct; PVOID Key; DWORD LineNumber; PCHAR FileName; DWORD64 Address; } IMAGEHLP_LINEW, *PIMAGEHLP_LINEW; #endif</code>
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_line typedef struct _IMAGEHLP_LINE { DWORD
-		// SizeOfStruct; PVOID Key; DWORD LineNumber; PCHAR FileName; DWORD Address; } IMAGEHLP_LINE, *PIMAGEHLP_LINE;
-		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_LINE")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-		public struct IMAGEHLP_LINEW
-		{
-			/// <summary>
-			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_LINE64)</code>
-			/// .
-			/// </summary>
-			public uint SizeOfStruct;
-
-			/// <summary>This member is reserved for use by the operating system.</summary>
-			public IntPtr Key;
-
-			/// <summary>The line number in the file.</summary>
-			public uint LineNumber;
-
-			/// <summary>The name of the file, including the full path.</summary>
-			[MarshalAs(UnmanagedType.LPStr)] public string FileName;
-
-			/// <summary>The address of the first instruction in the line.</summary>
-			public ulong Address;
-		}
-
-		/// <summary>Represents a source file line.</summary>
-		/// <remarks>
-		/// <para>
-		/// This structure supersedes the <c>IMAGEHLP_LINE</c> structure. For more information, see Updated Platform Support.
-		/// <c>IMAGEHLP_LINE</c> is defined as follows in DbgHelp.h.
-		/// </para>
-		/// <para>
-		/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define IMAGEHLP_LINE IMAGEHLP_LINE64 #define PIMAGEHLP_LINE PIMAGEHLP_LINE64 #else typedef struct _IMAGEHLP_LINE { DWORD SizeOfStruct; PVOID Key; DWORD LineNumber; PCHAR FileName; DWORD Address; } IMAGEHLP_LINE, *PIMAGEHLP_LINE; typedef struct _IMAGEHLP_LINEW { DWORD SizeOfStruct; PVOID Key; DWORD LineNumber; PCHAR FileName; DWORD64 Address; } IMAGEHLP_LINEW, *PIMAGEHLP_LINEW; #endif</code>
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_linew64 typedef struct _IMAGEHLP_LINEW64 { DWORD
-		// SizeOfStruct; PVOID Key; DWORD LineNumber; PWSTR FileName; DWORD64 Address; } IMAGEHLP_LINEW64, *PIMAGEHLP_LINEW64;
-		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_LINEW64")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct IMAGEHLP_LINEW64
-		{
-			/// <summary>
-			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_LINE64)</code>
-			/// .
-			/// </summary>
-			public uint SizeOfStruct;
-
-			/// <summary>This member is reserved for use by the operating system.</summary>
-			public IntPtr Key;
-
-			/// <summary>The line number in the file.</summary>
-			public uint LineNumber;
-
-			/// <summary>The name of the file, including the full path.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string FileName;
+			[MarshalAs(UnmanagedType.LPTStr)] public string FileName;
 
 			/// <summary>The address of the first instruction in the line.</summary>
 			public ulong Address;
@@ -1047,7 +976,7 @@ namespace Vanara.PInvoke
 		// SizeOfStruct; DWORD BaseOfImage; DWORD ImageSize; DWORD TimeDateStamp; DWORD CheckSum; DWORD NumSyms; SYM_TYPE SymType; CHAR
 		// ModuleName[32]; CHAR ImageName[256]; CHAR LoadedImageName[256]; } IMAGEHLP_MODULE, *PIMAGEHLP_MODULE;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_MODULE")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct IMAGEHLP_MODULE
 		{
 			/// <summary>
@@ -1155,275 +1084,8 @@ namespace Vanara.PInvoke
 		// DWORD PdbSig; GUID PdbSig70; DWORD PdbAge; BOOL PdbUnmatched; BOOL DbgUnmatched; BOOL LineNumbers; BOOL GlobalSymbols; BOOL
 		// TypeInfo; BOOL SourceIndexed; BOOL Publics; DWORD MachineType; DWORD Reserved; } IMAGEHLP_MODULE64, *PIMAGEHLP_MODULE64;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_MODULE64")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct IMAGEHLP_MODULE64
-		{
-			/// <summary>
-			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_MODULE64)</code>
-			/// .
-			/// </summary>
-			public uint SizeOfStruct;
-
-			/// <summary>The base virtual address where the image is loaded.</summary>
-			public ulong BaseOfImage;
-
-			/// <summary>The size of the image, in bytes.</summary>
-			public uint ImageSize;
-
-			/// <summary>
-			/// The date and timestamp value. The value is represented in the number of seconds elapsed since midnight (00:00:00), January
-			/// 1, 1970, Universal Coordinated Time, according to the system clock. The timestamp can be printed using the C run-time (CRT)
-			/// function <c>ctime</c>.
-			/// </summary>
-			public uint TimeDateStamp;
-
-			/// <summary>The checksum of the image. This value can be zero.</summary>
-			public uint CheckSum;
-
-			/// <summary>
-			/// The number of symbols in the symbol table. The value of this parameter is not meaningful when <c>SymPdb</c> is specified as
-			/// the value of the SymType parameter.
-			/// </summary>
-			public uint NumSyms;
-
-			/// <summary>
-			/// <para>The type of symbols that are loaded. This member can be one of the following values.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>SymCoff</term>
-			/// <term>COFF symbols.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymCv</term>
-			/// <term>CodeView symbols.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymDeferred</term>
-			/// <term>Symbol loading deferred.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymDia</term>
-			/// <term>DIA symbols.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymExport</term>
-			/// <term>Symbols generated from a DLL export table.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymNone</term>
-			/// <term>No symbols are loaded.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymPdb</term>
-			/// <term>PDB symbols.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymSym</term>
-			/// <term>.sym file.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymVirtual</term>
-			/// <term>The virtual module created by SymLoadModuleEx with SLMFLAG_VIRTUAL.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public SYM_TYPE SymType;
-
-			/// <summary>The module name.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-			public string ModuleName;
-
-			/// <summary>The image name. The name may or may not contain a full path.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-			public string ImageName;
-
-			/// <summary>The full path and file name of the file from which symbols were loaded.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-			public string LoadedImageName;
-
-			/// <summary>The full path and file name of the .pdb file.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-			public string LoadedPdbName;
-
-			/// <summary>The signature of the CV record in the debug directories.</summary>
-			public uint CVSig;
-
-			/// <summary>The contents of the CV record.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260 * 3)]
-			public string CVData;
-
-			/// <summary>The PDB signature.</summary>
-			public uint PdbSig;
-
-			/// <summary>The PDB signature (Visual C/C++ 7.0 and later)</summary>
-			public Guid PdbSig70;
-
-			/// <summary>The DBI age of PDB.</summary>
-			public uint PdbAge;
-
-			/// <summary>A value that indicates whether the loaded PDB is unmatched.</summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool PdbUnmatched;
-
-			/// <summary>A value that indicates whether the loaded DBG is unmatched.</summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool DbgUnmatched;
-
-			/// <summary>A value that indicates whether line number information is available.</summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool LineNumbers;
-
-			/// <summary>A value that indicates whether symbol information is available.</summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool GlobalSymbols;
-
-			/// <summary>A value that indicates whether type information is available.</summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool TypeInfo;
-
-			/// <summary>
-			/// <para>A value that indicates whether the .pdb supports the source server.</para>
-			/// <para><c>DbgHelp 6.1 and earlier:</c> This member is not supported.</para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool SourceIndexed;
-
-			/// <summary>
-			/// <para>A value that indicates whether the module contains public symbols.</para>
-			/// <para><c>DbgHelp 6.1 and earlier:</c> This member is not supported.</para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool Publics;
-
-			/// <summary/>
-			public uint MachineType;
-
-			/// <summary/>
-			public uint Reserved;
-		}
-
-		/// <summary>Contains module information.</summary>
-		/// <remarks>
-		/// <para>
-		/// This structure supersedes the <c>IMAGEHLP_MODULE</c> structure. For more information, see Updated Platform Support.
-		/// <c>IMAGEHLP_MODULE</c> is defined as follows in DbgHelp.h.
-		/// </para>
-		/// <para>
-		/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define IMAGEHLP_MODULE IMAGEHLP_MODULE64 #define PIMAGEHLP_MODULE PIMAGEHLP_MODULE64 #define IMAGEHLP_MODULEW IMAGEHLP_MODULEW64 #define PIMAGEHLP_MODULEW PIMAGEHLP_MODULEW64 #else typedef struct _IMAGEHLP_MODULE { DWORD SizeOfStruct; DWORD BaseOfImage; DWORD ImageSize; DWORD TimeDateStamp; DWORD CheckSum; DWORD NumSyms; SYM_TYPE SymType; CHAR ModuleName[32]; CHAR ImageName[256]; CHAR LoadedImageName[256]; } IMAGEHLP_MODULE, *PIMAGEHLP_MODULE; typedef struct _IMAGEHLP_MODULEW { DWORD SizeOfStruct; DWORD BaseOfImage; DWORD ImageSize; DWORD TimeDateStamp; DWORD CheckSum; DWORD NumSyms; SYM_TYPE SymType; WCHAR ModuleName[32]; WCHAR ImageName[256]; WCHAR LoadedImageName[256]; } IMAGEHLP_MODULEW, *PIMAGEHLP_MODULEW; #endif</code>
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_module typedef struct _IMAGEHLP_MODULE { DWORD
-		// SizeOfStruct; DWORD BaseOfImage; DWORD ImageSize; DWORD TimeDateStamp; DWORD CheckSum; DWORD NumSyms; SYM_TYPE SymType; CHAR
-		// ModuleName[32]; CHAR ImageName[256]; CHAR LoadedImageName[256]; } IMAGEHLP_MODULE, *PIMAGEHLP_MODULE;
-		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_MODULE")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct IMAGEHLP_MODULEW
-		{
-			/// <summary>
-			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_MODULE64)</code>
-			/// .
-			/// </summary>
-			public uint SizeOfStruct;
-
-			/// <summary>The base virtual address where the image is loaded.</summary>
-			public uint BaseOfImage;
-
-			/// <summary>The size of the image, in bytes.</summary>
-			public uint ImageSize;
-
-			/// <summary>
-			/// The date and timestamp value. The value is represented in the number of seconds elapsed since midnight (00:00:00), January
-			/// 1, 1970, Universal Coordinated Time, according to the system clock. The timestamp can be printed using the C run-time (CRT)
-			/// function <c>ctime</c>.
-			/// </summary>
-			public uint TimeDateStamp;
-
-			/// <summary>The checksum of the image. This value can be zero.</summary>
-			public uint CheckSum;
-
-			/// <summary>
-			/// The number of symbols in the symbol table. The value of this parameter is not meaningful when <c>SymPdb</c> is specified as
-			/// the value of the SymType parameter.
-			/// </summary>
-			public uint NumSyms;
-
-			/// <summary>
-			/// <para>The type of symbols that are loaded. This member can be one of the following values.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>SymCoff</term>
-			/// <term>COFF symbols.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymCv</term>
-			/// <term>CodeView symbols.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymDeferred</term>
-			/// <term>Symbol loading deferred.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymDia</term>
-			/// <term>DIA symbols.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymExport</term>
-			/// <term>Symbols generated from a DLL export table.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymNone</term>
-			/// <term>No symbols are loaded.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymPdb</term>
-			/// <term>PDB symbols.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymSym</term>
-			/// <term>.sym file.</term>
-			/// </item>
-			/// <item>
-			/// <term>SymVirtual</term>
-			/// <term>The virtual module created by SymLoadModuleEx with SLMFLAG_VIRTUAL.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public SYM_TYPE SymType;
-
-			/// <summary>The module name.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-			public string ModuleName;
-
-			/// <summary>The image name. The name may or may not contain a full path.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-			public string ImageName;
-
-			/// <summary>The full path and file name of the file from which symbols were loaded.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-			public string LoadedImageName;
-		}
-
-		/// <summary>Contains module information.</summary>
-		/// <remarks>
-		/// <para>
-		/// This structure supersedes the <c>IMAGEHLP_MODULE</c> structure. For more information, see Updated Platform Support.
-		/// <c>IMAGEHLP_MODULE</c> is defined as follows in DbgHelp.h.
-		/// </para>
-		/// <para>
-		/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define IMAGEHLP_MODULE IMAGEHLP_MODULE64 #define PIMAGEHLP_MODULE PIMAGEHLP_MODULE64 #define IMAGEHLP_MODULEW IMAGEHLP_MODULEW64 #define PIMAGEHLP_MODULEW PIMAGEHLP_MODULEW64 #else typedef struct _IMAGEHLP_MODULE { DWORD SizeOfStruct; DWORD BaseOfImage; DWORD ImageSize; DWORD TimeDateStamp; DWORD CheckSum; DWORD NumSyms; SYM_TYPE SymType; CHAR ModuleName[32]; CHAR ImageName[256]; CHAR LoadedImageName[256]; } IMAGEHLP_MODULE, *PIMAGEHLP_MODULE; typedef struct _IMAGEHLP_MODULEW { DWORD SizeOfStruct; DWORD BaseOfImage; DWORD ImageSize; DWORD TimeDateStamp; DWORD CheckSum; DWORD NumSyms; SYM_TYPE SymType; WCHAR ModuleName[32]; WCHAR ImageName[256]; WCHAR LoadedImageName[256]; } IMAGEHLP_MODULEW, *PIMAGEHLP_MODULEW; #endif</code>
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_modulew64 typedef struct _IMAGEHLP_MODULEW64 {
-		// DWORD SizeOfStruct; DWORD64 BaseOfImage; DWORD ImageSize; DWORD TimeDateStamp; DWORD CheckSum; DWORD NumSyms; SYM_TYPE SymType;
-		// WCHAR ModuleName[32]; WCHAR ImageName[256]; WCHAR LoadedImageName[256]; WCHAR LoadedPdbName[256]; DWORD CVSig; WCHAR
-		// *CVData[MAX_PATH 3]; DWORD PdbSig; GUID PdbSig70; DWORD PdbAge; BOOL PdbUnmatched; BOOL DbgUnmatched; BOOL LineNumbers; BOOL
-		// GlobalSymbols; BOOL TypeInfo; BOOL SourceIndexed; BOOL Publics; DWORD MachineType; DWORD Reserved; } IMAGEHLP_MODULEW64, *PIMAGEHLP_MODULEW64;
-		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_MODULEW64")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct IMAGEHLP_MODULEW64
 		{
 			/// <summary>
 			/// The size of the structure, in bytes. The caller must set this member to
@@ -1639,14 +1301,11 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_symbol typedef struct _IMAGEHLP_SYMBOL { DWORD
 		// SizeOfStruct; DWORD Address; DWORD Size; DWORD Flags; DWORD MaxNameLength; CHAR Name[1]; } IMAGEHLP_SYMBOL, *PIMAGEHLP_SYMBOL;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_SYMBOL")]
+		[VanaraMarshaler(typeof(SafeAnysizeStringMarshaler<IMAGEHLP_SYMBOL>), "Ansi")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct IMAGEHLP_SYMBOL
 		{
-			/// <summary>
-			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_SYMBOL64)</code>
-			/// .
-			/// </summary>
+			/// <summary>The size of the structure, in bytes. The caller must set this member to <c>sizeof(IMAGEHLP_SYMBOL)</c>.</summary>
 			public uint SizeOfStruct;
 
 			/// <summary>The virtual address for the symbol.</summary>
@@ -1673,6 +1332,78 @@ namespace Vanara.PInvoke
 			public string Name;
 		}
 
+		/// <summary>
+		/// A marshaler implementation of <see cref="IVanaraMarshaler"/> that pulls a full string from a structure with a last field having
+		/// one character.
+		/// </summary>
+		/// <typeparam name="T">The structure type to be marshaled.</typeparam>
+		/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
+		public class SafeAnysizeStringMarshaler<T> : IVanaraMarshaler
+		{
+			private static readonly Type structType;
+			private static readonly System.Reflection.FieldInfo fiStr;
+			private CharSet charSet;
+
+			static SafeAnysizeStringMarshaler()
+			{
+				structType = typeof(T);
+				if (!structType.IsLayoutSequential)
+					throw new InvalidOperationException("This class can only manange sequential layout structures.");
+				fiStr = structType.GetOrderedFields().Last();
+				if (fiStr.FieldType != typeof(string))
+					throw new ArgumentException("The last field must be a string.");
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStringMarshaler{T}"/> class.</summary>
+			/// <param name="cookie">
+			/// The name of the field in <typeparamref name="T"/> that specifies the string length of the last field of <typeparamref name="T"/>.
+			/// </param>
+			public SafeAnysizeStringMarshaler(string cookie)
+			{
+				charSet = (CharSet)Enum.Parse(typeof(CharSet), cookie);
+			}
+
+			/// <summary>Gets the size of the native data.</summary>
+			/// <returns>
+			/// The size, in bytes, of the base object in memory. This should return the equivalent of the sizeof(X) function in C/C++.
+			/// </returns>
+			public SizeT GetNativeSize() => Marshal.SizeOf(structType);
+
+			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject)
+			{
+				// Get structure information
+				if (managedObject is null) return SafeHGlobalHandle.Null;
+				if (!(managedObject is T value))
+					throw new ArgumentException($"{nameof(managedObject)} must be an instance of {structType.Name}.");
+
+				// Get the current value for the last field (or create one if needed)
+				var strVal = fiStr.GetValue(value) as string ?? string.Empty;
+				// Determine mem required for current struct and last field value
+				var chSz = StringHelper.GetCharSize(charSet);
+				var memSz = GetNativeSize() + chSz * strVal.Length;
+				// Set structure into allocated mem
+				var ret = new SafeHGlobalHandle(memSz);
+				ret.Write(value);
+				// Set string into mem
+				StringHelper.Write(strVal, ret, out _, true, charSet, chSz * (strVal.Length + 1));
+
+				return ret;
+			}
+
+			object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+			{
+				if (pNativeData == IntPtr.Zero) return null;
+
+				// Move structure and assign string
+				var value = (T)Marshal.PtrToStructure(pNativeData, typeof(T));
+				var strVal = StringHelper.GetString(pNativeData.Offset(Marshal.OffsetOf(typeof(T), fiStr.Name).ToInt32()), charSet);
+				fiStr.SetValueDirect(__makeref(value), strVal);
+
+				return value;
+			}
+		}
+
+
 		/// <summary>Contains symbol information.</summary>
 		/// <remarks>
 		/// <para>
@@ -1686,14 +1417,11 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_symbol64 typedef struct _IMAGEHLP_SYMBOL64 { DWORD
 		// SizeOfStruct; DWORD64 Address; DWORD Size; DWORD Flags; DWORD MaxNameLength; CHAR Name[1]; } IMAGEHLP_SYMBOL64, *PIMAGEHLP_SYMBOL64;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_SYMBOL64")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		[VanaraMarshaler(typeof(SafeAnysizeStringMarshaler<IMAGEHLP_SYMBOL64>), "Ansi")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct IMAGEHLP_SYMBOL64
 		{
-			/// <summary>
-			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_SYMBOL64)</code>
-			/// .
-			/// </summary>
+			/// <summary>The size of the structure, in bytes. The caller must set this member to <c>sizeof(IMAGEHLP_SYMBOL64)</c>.</summary>
 			public uint SizeOfStruct;
 
 			/// <summary>The virtual address for the symbol.</summary>
@@ -1733,14 +1461,11 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_symbol typedef struct _IMAGEHLP_SYMBOL { DWORD
 		// SizeOfStruct; DWORD Address; DWORD Size; DWORD Flags; DWORD MaxNameLength; CHAR Name[1]; } IMAGEHLP_SYMBOL, *PIMAGEHLP_SYMBOL;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_SYMBOL")]
+		[VanaraMarshaler(typeof(SafeAnysizeStringMarshaler<IMAGEHLP_SYMBOLW>), "Unicode")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct IMAGEHLP_SYMBOLW
 		{
-			/// <summary>
-			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_SYMBOL64)</code>
-			/// .
-			/// </summary>
+			/// <summary>The size of the structure, in bytes. The caller must set this member to <c>sizeof(IMAGEHLP_SYMBOLW)</c>.</summary>
 			public uint SizeOfStruct;
 
 			/// <summary>The virtual address for the symbol.</summary>
@@ -1780,14 +1505,11 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-imagehlp_symbolw64 typedef struct _IMAGEHLP_SYMBOLW64 {
 		// DWORD SizeOfStruct; DWORD64 Address; DWORD Size; DWORD Flags; DWORD MaxNameLength; WCHAR Name[1]; } IMAGEHLP_SYMBOLW64, *PIMAGEHLP_SYMBOLW64;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_SYMBOLW64")]
+		[VanaraMarshaler(typeof(SafeAnysizeStringMarshaler<IMAGEHLP_SYMBOLW64>), "Unicode")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct IMAGEHLP_SYMBOLW64
 		{
-			/// <summary>
-			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_SYMBOL64)</code>
-			/// .
-			/// </summary>
+			/// <summary>The size of the structure, in bytes. The caller must set this member to <c>sizeof(IMAGEHLP_SYMBOLW64)</c>.</summary>
 			public uint SizeOfStruct;
 
 			/// <summary>The virtual address for the symbol.</summary>
@@ -2688,6 +2410,33 @@ namespace Vanara.PInvoke
 			/// <summary>An array of type indexes. There is one index per child.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public uint[] ChildId;
+		}
+
+		/// <summary>Contains symbol information.</summary>
+		/// <seealso cref="Vanara.InteropServices.SafeHGlobalStruct{T}"/>
+		public class SafeIMAGEHLP_SYMBOL : SafeHGlobalStruct<IMAGEHLP_SYMBOL>
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeIMAGEHLP_SYMBOL"/> class.</summary>
+			/// <param name="charSet">The character set.</param>
+			/// <param name="maxNameLen">Maximum length of the name.</param>
+			public SafeIMAGEHLP_SYMBOL(int maxNameLen = 261) : base(BaseStructSize + (maxNameLen - 1))
+			{
+				handle.Write((uint)BaseStructSize, 0, Size);
+				handle.Write((uint)maxNameLen, (int)FieldOffset(nameof(IMAGEHLP_SYMBOL.MaxNameLength)), Size);
+			}
+		}
+
+		/// <summary>Contains symbol information.</summary>
+		/// <seealso cref="Vanara.InteropServices.SafeHGlobalStruct{T}"/>
+		public class SafeIMAGEHLP_SYMBOL64 : SafeHGlobalStruct<IMAGEHLP_SYMBOL64>
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeIMAGEHLP_SYMBOL64"/> class.</summary>
+			/// <param name="maxNameLen">Maximum length of the name.</param>
+			public SafeIMAGEHLP_SYMBOL64(int maxNameLen = 261) : base(BaseStructSize + (maxNameLen - 1))
+			{
+				handle.Write((uint)BaseStructSize, 0, Size);
+				handle.Write((uint)maxNameLen, (int)FieldOffset(nameof(IMAGEHLP_SYMBOL64.MaxNameLength)), Size);
+			}
 		}
 
 		/// <summary>Pointer to a LOADED_IMAGE structure.</summary>
