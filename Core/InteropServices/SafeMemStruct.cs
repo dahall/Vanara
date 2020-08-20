@@ -17,14 +17,17 @@ namespace Vanara.InteropServices
 	/// <seealso cref="Vanara.InteropServices.SafeMemoryHandle{TMem}"/>
 	public abstract class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<TStruct> where TMem : IMemoryMethods, new() where TStruct : struct
 	{
+		/// <summary>The structure size, in bytes, of TStruct.</summary>
+		protected static readonly SizeT BaseStructSize = InteropExtensions.SizeOf<TStruct>();
+
 		/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
 		/// <param name="s">The TStruct value.</param>
 		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
-		protected SafeMemStruct(in TStruct s, SizeT capacity = default) : base(Math.Max((ulong)SizeOf<TStruct>(), (ulong)capacity)) => handle.Write(s);
+		protected SafeMemStruct(in TStruct s, SizeT capacity = default) : base(Math.Max(BaseStructSize, (ulong)capacity)) => handle.Write(s);
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
 		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
-		protected SafeMemStruct(SizeT capacity = default) : base(Math.Max((ulong)SizeOf<TStruct>(), (ulong)capacity)) { }
+		protected SafeMemStruct(SizeT capacity = default) : base(Math.Max(BaseStructSize, (ulong)capacity)) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
 		/// <param name="ptr">The PTR.</param>
@@ -116,7 +119,10 @@ namespace Vanara.InteropServices
 		/// <returns>A <see cref="System.String"/> value held by this instance or <c>null</c> if the handle is invalid.</returns>
 		public override string ToString() => ((TStruct?)this).ToString();
 
-		private static SizeT SizeOf<T>() => InteropExtensions.SizeOf<T>();
+		/// <summary>Returns the field offset of the named field.</summary>
+		/// <param name="name">The field name.</param>
+		/// <returns>The offset, in bytes, of the field within the structure.</returns>
+		protected static long FieldOffset(string name) => Marshal.OffsetOf(typeof(TStruct), name).ToInt64();
 
 #if ALLOWSPAN
 		/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
