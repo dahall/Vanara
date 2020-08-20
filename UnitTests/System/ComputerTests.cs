@@ -13,7 +13,7 @@ namespace Vanara.Diagnostics.Tests
 		public void EnumSharesTest()
 		{
 			TestContext.WriteLine(string.Join(", ", Computer.Local.SharedDevices.Values.Select(d => d.Name)));
-			//var remote = new Computer(@"\\HALLAN-SVR", "dahall@byu.net", "msitsdav1d");
+			//var remote = new Computer(@"\\COMPUTER", "user@domain.net", "pwd");
 			//TestContext.WriteLine(string.Join(", ", remote.SharedDevices.Values.Select(d => d.Name)));
 		}
 	}
