@@ -1,5 +1,8 @@
 using System;
+using System.ComponentModel;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Text;
 using Vanara.InteropServices;
 
@@ -614,7 +617,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetAddConnection( _In_ LPCTSTR lpRemoteName, _In_ LPCTSTR lpPassword, _In_ LPCTSTR lpLocalName); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385410(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385410")]
-		public static extern Win32Error WNetAddConnection(string lpRemoteName, string lpPassword, string lpLocalName);
+		public static extern Win32Error WNetAddConnection(string lpRemoteName, [Optional] string lpPassword, [Optional] string lpLocalName);
 
 		/// <summary>
 		/// <para>
@@ -918,7 +921,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetAddConnection2( _In_ LPNETRESOURCE lpNetResource, _In_ LPCTSTR lpPassword, _In_ LPCTSTR lpUsername, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385413(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385413")]
-		public static extern Win32Error WNetAddConnection2(NETRESOURCE lpNetResource, string lpPassword, string lpUsername, CONNECT dwFlags);
+		public static extern Win32Error WNetAddConnection2(NETRESOURCE lpNetResource, [Optional] string lpPassword, [Optional] string lpUsername, [Optional] CONNECT dwFlags);
 
 		/// <summary>
 		/// <para>
@@ -1161,7 +1164,7 @@ namespace Vanara.PInvoke
 		// _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385418(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385418")]
-		public static extern Win32Error WNetAddConnection3(HWND hwndOwner, NETRESOURCE lpNetResource, string lpPassword, string lpUserName, CONNECT dwFlags);
+		public static extern Win32Error WNetAddConnection3([Optional] HWND hwndOwner, NETRESOURCE lpNetResource, [Optional] string lpPassword, [Optional] string lpUserName, [Optional] CONNECT dwFlags);
 
 		/// <summary>
 		/// <para>
@@ -2102,7 +2105,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetGetUser( _In_ LPCTSTR lpName, _Out_ LPTSTR lpUserName, _Inout_ LPDWORD lpnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385476(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385476")]
-		public static extern Win32Error WNetGetUser(string lpName, StringBuilder lpUserName, ref uint lpnLength);
+		public static extern Win32Error WNetGetUser([Optional] string lpName, StringBuilder lpUserName, ref uint lpnLength);
 
 		/// <summary>
 		/// The <c>WNetOpenEnum</c> function starts an enumeration of network resources or existing connections. You can continue the
@@ -2303,6 +2306,21 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("npapi.h", MSDNShortId = "ee472f01-de44-4c47-9ae5-8bbac74de78b")]
 		public static extern void WNetSetLastError(uint err, string lpError, string lpProviders);
+
+		/// <summary>Extension method for WNet function results that handles provider errors (ERROR_EXTENDED_ERROR).</summary>
+		/// <param name="err">The error produced by a WNet function.</param>
+		/// <param name="message">The message.</param>
+		public static void WNetThrowIfFailed(this Win32Error err, string message = null)
+		{
+			if (err == Win32Error.ERROR_EXTENDED_ERROR)
+			{
+				var sbErr = new StringBuilder(1024);
+				var sbName = new StringBuilder(1024);
+				if (WNetGetLastError(out var provErr, sbErr, (uint)sbErr.Capacity, sbName, (uint)sbName.Capacity).Succeeded)
+					throw new NetworkProviderException(provErr, message, sbErr.ToString(), sbName.ToString());
+			}
+			err.ThrowIfFailed(message);
+		}
 
 		/// <summary>
 		/// <para>
@@ -2576,7 +2594,7 @@ namespace Vanara.PInvoke
 		// _In_ DWORD dwFlags, _Out_ LPTSTR lpAccessName, _Inout_ LPDWORD lpBufferSize, _Out_ LPDWORD lpResult); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385482(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385482")]
-		public static extern Win32Error WNetUseConnection(HWND hwndOwner, NETRESOURCE lpNetResource, string lpPassword, string lpUserID, CONNECT dwFlags, StringBuilder lpAccessName, ref uint lpBufferSize, out CONNECT lpResult);
+		public static extern Win32Error WNetUseConnection([Optional] HWND hwndOwner, NETRESOURCE lpNetResource, [Optional] string lpPassword, [Optional] string lpUserID, [Optional] CONNECT dwFlags, [Optional] StringBuilder lpAccessName, ref uint lpBufferSize, out CONNECT lpResult);
 
 		/// <summary>
 		/// The <c>CONNECTDLGSTRUCT</c> structure is used by the <c>WNetConnectionDialog1</c> function to establish browsing dialog box parameters.
@@ -3117,6 +3135,68 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => WNetCloseEnum(handle).Succeeded;
+		}
+
+		/// <summary>A provider exception for WNet functions.</summary>
+		/// <seealso cref="System.Exception"/>
+		[Serializable]
+		public class NetworkProviderException : Exception
+		{
+			private NetworkProviderException() { }
+
+			/// <summary>Initializes a new instance of the <see cref="NetworkProviderException"/> class.</summary>
+			/// <param name="info">
+			/// The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception
+			/// being thrown.
+			/// </param>
+			/// <param name="context">
+			/// The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.
+			/// </param>
+			protected NetworkProviderException(SerializationInfo info, StreamingContext context) : base(info, context)
+			{
+				Description = info.GetString("Description");
+				Provider = info.GetString("Provider");
+				ProviderErrorCode = info.GetUInt32("ProviderErrorCode");
+			}
+
+			internal NetworkProviderException(uint provErr, string message, string description, string provider) :
+				base(message, new Win32Exception(unchecked((int)Win32Error.ERROR_EXTENDED_ERROR)))
+			{
+				ProviderErrorCode = provErr;
+				Description = description;
+				Provider = provider;
+			}
+
+			/// <summary>Gets the provider's description of the error.</summary>
+			/// <value>The description.</value>
+			public string Description { get; }
+
+			/// <summary>Gets the network provider's name.</summary>
+			/// <value>The provider.</value>
+			public string Provider { get; }
+
+			/// <summary>Gets the error code reported by the provider.</summary>
+			/// <value>The provider error code.</value>
+			public uint ProviderErrorCode { get; }
+
+			/// <summary>
+			/// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with information about the exception.
+			/// </summary>
+			/// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
+			/// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination.</param>
+			/// <exception cref="ArgumentNullException">info</exception>
+			/// <PermissionSet>
+			///   <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*" />
+			///   <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter" />
+			/// </PermissionSet>
+			public override void GetObjectData(SerializationInfo info, StreamingContext context)
+			{
+				if (info is null) throw new ArgumentNullException(nameof(info));
+				info.AddValue("Description", Description);
+				info.AddValue("Provider", Provider);
+				info.AddValue("ProviderErrorCode", ProviderErrorCode);
+				base.GetObjectData(info, context);
+			}
 		}
 	}
 }
