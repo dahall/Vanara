@@ -72,6 +72,10 @@
       <Project>{e91c263f-82d9-40a9-99a1-f879cb076bce}</Project>
       <Name>Vanara.PInvoke.Mpr</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\PInvoke\NetApi32\Vanara.PInvoke.NetApi32.csproj">
+      <Project>{48ed1b1b-1450-43d2-917e-b5ace357fd82}</Project>
+      <Name>Vanara.PInvoke.NetApi32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj">
       <Project>{d7575cdb-0aa6-4029-a8fa-64b49dc178ce}</Project>
       <Name>Vanara.PInvoke.NetListMgr</Name>

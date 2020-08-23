@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Principal;
 using Vanara.Security;
 using static Vanara.PInvoke.NetApi32;
 
 namespace Vanara
 {
 	/// <summary>Represents a single connected (authenticated) computer.</summary>
-	/// <seealso cref="System.ComponentModel.Component"/>
-	/// <seealso cref="System.ComponentModel.ISupportInitialize"/>
-	/// <seealso cref="System.Runtime.Serialization.ISerializable"/>
+	/// <seealso cref="Component"/>
+	/// <seealso cref="ISupportInitialize"/>
+	/// <seealso cref="ISerializable"/>
 	[Serializable, DefaultProperty(nameof(Target))]
 	public class Computer : Component, ISupportInitialize, ISerializable
 	{
@@ -20,6 +21,7 @@ namespace Vanara
 
 		private SharedDevices devices;
 		private bool initializing;
+		private NetworkDeviceConnectionCollection networkConnections;
 		private string targetServer;
 		private bool targetServerSet;
 		private string userName;
@@ -27,7 +29,7 @@ namespace Vanara
 		private string userPassword;
 		private bool userPasswordSet;
 
-		/// <summary>Creates a new instance of a TaskService connecting to the local machine as the current user.</summary>
+		/// <summary>Initializes a new instance of the <see cref="Computer"/> class connecting to the local machine as the current user.</summary>
 		public Computer() => Connect();
 
 		/// <summary>Initializes a new instance of the <see cref="Computer"/> class.</summary>
@@ -63,14 +65,21 @@ namespace Vanara
 
 		//public IEnumerable<LocalGroup> LocalGroups => LocalGroup.GetEnum(Target, UserName, UserPassword);
 
+		/// <summary>Gets the remote resource collection for this computer.</summary>
+		/// <value>The remote resources.</value>
+		[Browsable(false)]
+		public NetworkDeviceConnectionCollection NetworkDeviceConnections => targetServer is null ? networkConnections ??= new NetworkDeviceConnectionCollection(Identity, null) :
+			throw new InvalidOperationException("Network connection information is only available for the local computer.");
+
 		/// <summary>Gets the open files associated with this device.</summary>
 		/// <value>Returns a <see cref="IEnumerable{OpenFile}"/> value.</value>
+		[Browsable(false)]
 		public IEnumerable<OpenFile> OpenFiles => Identity.Run(() => NetFileEnum<FILE_INFO_3>(Target).Select(i => new OpenFile(i)));
 
 		/// <summary>Gets the shared devices defined for this computer.</summary>
 		/// <value>Returns a <see cref="SharedDevices"/> value.</value>
 		[Browsable(false)]
-		public SharedDevices SharedDevices => devices ?? (devices = new SharedDevices(this));
+		public SharedDevices SharedDevices => devices ??= new SharedDevices(this);
 
 		/// <summary>Gets or sets the name of the computer that the user is connected to.</summary>
 		[Category("Data"), DefaultValue(null), Description("The name of the computer to connect to.")]
@@ -125,7 +134,7 @@ namespace Vanara
 			}
 		}
 
-		internal System.Security.Principal.WindowsIdentity Identity
+		internal WindowsIdentity Identity
 		{
 			get
 			{
@@ -140,7 +149,7 @@ namespace Vanara
 					dn = UserName.Substring(0, nonUpnIdx);
 					un = UserName.Substring(nonUpnIdx + 1);
 				}
-				return new Vanara.Security.Principal.WindowsLoggedInIdentity(un, dn, UserPassword).AuthenticatedIdentity;
+				return new Security.Principal.WindowsLoggedInIdentity(un, dn, UserPassword).AuthenticatedIdentity;
 			}
 		}
 

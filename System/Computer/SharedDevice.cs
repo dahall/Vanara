@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using Vanara.Extensions;
@@ -229,13 +230,15 @@ namespace Vanara
 		/// <param name="name">The share name of a resource.</param>
 		/// <param name="comment">An optional comment about the shared resource.</param>
 		/// <param name="path">
-		/// The local path for the shared resource. For disks, this is the path being shared. For print queues, this is the name of the print
-		/// queue being shared.
+		/// The local path for the shared resource. For disks, this is the path being shared. For print queues, this is the name of the
+		/// print queue being shared.
 		/// </param>
-		/// <param name="type">A combination of values that specify the type of the shared resource.</param>
-		/// <param name="identity">The identity.</param>
+		/// <param name="type">A combination of values that specify the type of the shared resource. The default is for disk drives.</param>
+		/// <param name="identity">
+		/// The identity of the user used to create the device. If this value is <see langword="null"/>, the current user's credentials are used.
+		/// </param>
 		/// <returns>On success, a new instance of <see cref="SharedDevice"/> represented a newly created shared resource.</returns>
-		internal static SharedDevice Create(string target, string name, string comment, string path, STYPE type, WindowsIdentity identity)
+		internal static SharedDevice Create([Optional] string target, string name, [Optional] string comment, string path, STYPE type = STYPE.STYPE_DISKTREE, WindowsIdentity identity = null)
 		{
 			identity.Run(() => NetShareAdd(target, new SHARE_INFO_2 { shi2_netname = name, shi2_remark = comment, shi2_path = path, shi2_max_uses = unchecked((uint)-1), shi2_type = type }));
 			return new SharedDevice(target, name, identity);
@@ -268,7 +271,7 @@ namespace Vanara
 		public SharedDevices(string serverName = null, WindowsIdentity accessIdentity = null) : base(false)
 		{
 			target = serverName;
-			identity = accessIdentity;
+			identity = accessIdentity ?? WindowsIdentity.GetCurrent();
 		}
 
 		internal SharedDevices(Computer computer) : this(computer.Target, computer.Identity)
