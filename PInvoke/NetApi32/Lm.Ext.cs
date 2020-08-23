@@ -1086,7 +1086,7 @@ namespace Vanara.PInvoke
 		{
 			var mem = SafeHGlobalHandle.CreateFromStructure(Buffer);
 			if (Level == uint.MaxValue) Level = (uint)GetLevelFromStructure<T>();
-			NetDfsSetClientInfo(ServerName, ServerName, ShareName, Level, (IntPtr)mem).ThrowIfFailed();
+			NetDfsSetClientInfo(DfsEntryPath, ServerName, ShareName, Level, mem).ThrowIfFailed();
 		}
 
 		/// <summary>Sets or modifies information about a specific Distributed File System (DFS) root, root target, link, or link target.</summary>
@@ -1198,7 +1198,7 @@ namespace Vanara.PInvoke
 		{
 			var mem = SafeHGlobalHandle.CreateFromStructure(Buffer);
 			if (Level == uint.MaxValue) Level = (uint)GetLevelFromStructure<T>();
-			NetDfsSetInfo(ServerName, ServerName, ShareName, Level, (IntPtr)mem).ThrowIfFailed();
+			NetDfsSetInfo(DfsEntryPath, ServerName, ShareName, Level, mem).ThrowIfFailed();
 		}
 
 		/// <summary>The <c>NetEnumerateComputerNames</c> function enumerates names for the specified computer.</summary>
@@ -1475,7 +1475,7 @@ namespace Vanara.PInvoke
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetGroupAdd(servername, level, (IntPtr)mem, out var perr);
+			var err = NetGroupAdd(servername, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -1818,7 +1818,7 @@ namespace Vanara.PInvoke
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetGroupSetInfo(servername, groupname, level, (IntPtr)mem, out var perr);
+			var err = NetGroupSetInfo(servername, groupname, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -1900,8 +1900,8 @@ namespace Vanara.PInvoke
 		public static void NetGroupSetUsers<T>([Optional] string servername, string groupname, T[] buf, uint level = uint.MaxValue) where T : struct
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
-			using (var mem = SafeHGlobalHandle.CreateFromList(buf))
-				NetGroupSetUsers(servername, groupname, level, (IntPtr)mem, (uint)buf.Length).ThrowIfFailed();
+			using var mem = SafeHGlobalHandle.CreateFromList(buf);
+			NetGroupSetUsers(servername, groupname, level, mem, (uint)buf.Length).ThrowIfFailed();
 		}
 
 		/// <summary>
@@ -1985,7 +1985,7 @@ namespace Vanara.PInvoke
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetLocalGroupAdd(servername, level, (IntPtr)mem, out var perr);
+			var err = NetLocalGroupAdd(servername, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -2054,8 +2054,8 @@ namespace Vanara.PInvoke
 		public static void NetLocalGroupAddMembers<T>([Optional] string servername, string groupname, T[] buf, uint level = uint.MaxValue) where T : struct
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
-			using (var mem = SafeHGlobalHandle.CreateFromList(buf))
-				NetLocalGroupAddMembers(servername, groupname, level, (IntPtr)mem, (uint)buf.Length).ThrowIfFailed();
+			using var mem = SafeHGlobalHandle.CreateFromList(buf);
+			NetLocalGroupAddMembers(servername, groupname, level, mem, (uint)buf.Length).ThrowIfFailed();
 		}
 
 		/// <summary>
@@ -2121,8 +2121,8 @@ namespace Vanara.PInvoke
 		public static void NetLocalGroupDelMembers<T>([Optional] string servername, string groupname, T[] buf, uint level = uint.MaxValue) where T : struct
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
-			using (var mem = SafeHGlobalHandle.CreateFromList(buf))
-				NetLocalGroupDelMembers(servername, groupname, level, (IntPtr)mem, (uint)buf.Length).ThrowIfFailed();
+			using var mem = SafeHGlobalHandle.CreateFromList(buf);
+			NetLocalGroupDelMembers(servername, groupname, level, mem, (uint)buf.Length).ThrowIfFailed();
 		}
 
 		/// <summary>The <c>NetLocalGroupEnum</c> function returns information about each local group account on the specified server.</summary>
@@ -2423,7 +2423,7 @@ namespace Vanara.PInvoke
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetLocalGroupSetInfo(servername, groupname, level, (IntPtr)mem, out var perr);
+			var err = NetLocalGroupSetInfo(servername, groupname, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -2513,8 +2513,8 @@ namespace Vanara.PInvoke
 		public static void NetLocalGroupSetMembers<T>([Optional] string servername, string groupname, T[] buf, uint level = uint.MaxValue) where T : struct
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
-			using (var mem = SafeHGlobalHandle.CreateFromList(buf))
-				NetLocalGroupSetMembers(servername, groupname, level, (IntPtr)mem, (uint)buf.Length).ThrowIfFailed();
+			using var mem = SafeHGlobalHandle.CreateFromList(buf);
+			NetLocalGroupSetMembers(servername, groupname, level, mem, (uint)buf.Length).ThrowIfFailed();
 		}
 
 		/// <summary>
@@ -2640,7 +2640,7 @@ namespace Vanara.PInvoke
 			if (level != 100 && level != 101)
 				throw new ArgumentOutOfRangeException(nameof(level), @"Only SERVER_INFO_100 or SERVER_INFO_101 are supported as valid structures.");
 			var resumeHandle = IntPtr.Zero;
-			NetServerEnum(null, (uint)level, out var bufptr, MAX_PREFERRED_LENGTH, out var entriesRead, out var totalEntries, netServerEnumFilter, domain, resumeHandle).ThrowIfFailed();
+			NetServerEnum(null, (uint)level, out var bufptr, MAX_PREFERRED_LENGTH, out var entriesRead, out _, netServerEnumFilter, domain, resumeHandle).ThrowIfFailed();
 			return bufptr.ToIEnum<T>((int)entriesRead);
 		}
 
@@ -2944,7 +2944,7 @@ namespace Vanara.PInvoke
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetShareAdd(servername, level, (IntPtr)mem, out var perr);
+			var err = NetShareAdd(servername, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -3275,7 +3275,7 @@ namespace Vanara.PInvoke
 		{
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
-			var err = NetShareSetInfo(servername, netname, level, (IntPtr)mem, out var perr);
+			var err = NetShareSetInfo(servername, netname, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -3380,7 +3380,7 @@ namespace Vanara.PInvoke
 		{
 			if (LevelFlags == uint.MaxValue) LevelFlags = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetUseAdd(servername, LevelFlags, (IntPtr)mem, out var perr);
+			var err = NetUseAdd(servername, LevelFlags, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -3664,7 +3664,7 @@ namespace Vanara.PInvoke
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetUserAdd(servername, level, (IntPtr)mem, out var perr);
+			var err = NetUserAdd(servername, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -4322,7 +4322,7 @@ namespace Vanara.PInvoke
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetUserModalsSet(servername, level, (IntPtr)mem, out var perr);
+			var err = NetUserModalsSet(servername, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -4387,8 +4387,8 @@ namespace Vanara.PInvoke
 		public static void NetUserSetGroups<T>([Optional] string servername, string username, T[] buf, uint level = uint.MaxValue) where T : struct
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
-			using (var mem = SafeHGlobalHandle.CreateFromList(buf))
-				NetUserSetGroups(servername, username, level, (IntPtr)mem, (uint)buf.Length).ThrowIfFailed();
+			using var mem = SafeHGlobalHandle.CreateFromList(buf);
+			NetUserSetGroups(servername, username, level, mem, (uint)buf.Length).ThrowIfFailed();
 		}
 
 		/// <summary>The <c>NetUserSetInfo</c> function sets the parameters of a user account.</summary>
@@ -4741,7 +4741,7 @@ namespace Vanara.PInvoke
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetUserSetInfo(servername, username, level, (IntPtr)mem, out var perr);
+			var err = NetUserSetInfo(servername, username, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -5030,7 +5030,7 @@ namespace Vanara.PInvoke
 		{
 			var mem = SafeHGlobalHandle.CreateFromStructure(buffer);
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
-			var err = NetWkstaSetInfo(servername, level, (IntPtr)mem, out var perr);
+			var err = NetWkstaSetInfo(servername, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
@@ -5239,7 +5239,7 @@ namespace Vanara.PInvoke
 		{
 			if (level == uint.MaxValue) level = (uint)GetLevelFromStructure<T>();
 			var mem = SafeHGlobalHandle.CreateFromStructure(buf);
-			var err = NetWkstaSetInfo(null, level, (IntPtr)mem, out var perr);
+			var err = NetWkstaSetInfo(null, level, mem, out var perr);
 			if (err.Succeeded) return;
 			if (err != Win32Error.ERROR_INVALID_PARAMETER) err.ThrowIfFailed();
 			throw err.GetException($"Invalid parameter. Index: {perr}");
