@@ -34,13 +34,17 @@ namespace Vanara.Security
 		/// <param name="func">The System.Func to run.</param>
 		public static void Run(this WindowsIdentity identity, Action func)
 		{
-			if (identity is null) func();
-#if NETFRAMEWORK
-			using (new Principal.WindowsImpersonatedIdentity(identity))
+			if (identity is null)
 				func();
+			else
+			{
+#if NETFRAMEWORK
+				using (new Principal.WindowsImpersonatedIdentity(identity))
+					func();
 #else
-			WindowsIdentity.RunImpersonated(identity.AccessToken, func);
+				WindowsIdentity.RunImpersonated(identity.AccessToken, func);
 #endif
+			}
 		}
 		/// <summary>Runs the specified function as the impersonated Windows identity.</summary>
 		/// <typeparam name="T">The type of object used by and returned by the function.</typeparam>
