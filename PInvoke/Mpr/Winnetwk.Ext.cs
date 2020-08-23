@@ -133,34 +133,33 @@ namespace Vanara.PInvoke
 			var err = WNetOpenEnum(dwScope, dwType, dwUsage, root, out var h);
 			if (err == Win32Error.ERROR_NOT_CONTAINER || err == Win32Error.ERROR_NO_NETWORK)
 				yield break;
-			else if (err.Failed)
-				throw err.GetException();
+			else
+				err.WNetThrowIfFailed();
 
 			using (h)
 			{
 				var count = -1;
-				var sz = 16 * 1024U;
-				using (var mem = new SafeHGlobalHandle((int)sz))
+				var sz = 4096U;
+				using var mem = new SafeHGlobalHandle((int)sz);
+				do
 				{
-					do
+					mem.Zero();
+					sz = mem.Size;
+					err = WNetEnumResource(h, ref count, mem, ref sz);
+					if (err.Succeeded)
 					{
-						mem.Zero();
-						err = WNetEnumResource(h, ref count, (IntPtr)mem, ref sz);
-						if (err.Succeeded)
+						foreach (var e in mem.ToEnumerable<NETRESOURCE>(count))
 						{
-							foreach (var e in mem.ToEnumerable<NETRESOURCE>(count))
-							{
-								yield return e;
-								if (recurseContainers && e.dwUsage.IsFlagSet(NETRESOURCEUsage.RESOURCEUSAGE_CONTAINER))
-									foreach (var ce in WNetEnumResources(e, dwScope, dwType, dwUsage, recurseContainers))
-										yield return ce;
-							}
+							yield return e;
+							if (recurseContainers && e.dwUsage.IsFlagSet(NETRESOURCEUsage.RESOURCEUSAGE_CONTAINER))
+								foreach (var ce in WNetEnumResources(e, dwScope, dwType, dwUsage, recurseContainers))
+									yield return ce;
 						}
-						else if (err != Win32Error.ERROR_NO_MORE_ITEMS)
-							throw err.GetException("Last resource = " + (root is null ? "" : $"Type:{root.dwDisplayType}=Prov:{root.lpProvider}; Rem:{root.lpRemoteName}"));
 					}
-					while (err != Win32Error.ERROR_NO_MORE_ITEMS);
+					else if (err != Win32Error.ERROR_NO_MORE_ITEMS)
+						err.WNetThrowIfFailed("Last resource = " + (root is null ? "" : $"Type:{root.dwDisplayType}=Prov:{root.lpProvider}; Rem:{root.lpRemoteName}"));
 				}
+				while (err != Win32Error.ERROR_NO_MORE_ITEMS);
 			}
 		}
 	}
