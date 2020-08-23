@@ -9,47 +9,37 @@ namespace Vanara.PInvoke.Tests
 {
 	public static class TestCaseSources
 	{
-		public const string BmpFile = @"C:\Temp\Vanara.bmp";
-
-		public const string DummyFile = @"C:\Temp\test.dmy";
-
-		public const string EventFile = @"C:\Temp\TestLogFile.etl";
-
-		public const string IcoFile = @"C:\Temp\Vanara.ico";
-
-		public const string ImageFile = @"C:\Temp\Vanara.png";
-
-		public const string Image2File = @"C:\Temp\X.png";
-
-		public const string LargeFile = @"C:\Temp\Holes.mp4";
-
-		public const string LogFile = @"C:\Temp\Test.log";
-
-		public const string ResourceFile = @"C:\Temp\DummyResourceExe.exe";
-
-		public const string SmallFile = Image2File;
-
-		public const string TempChildDir = @"C:\Temp\Temp";
-
-		public const string TempChildDirWhack = TempChildDir + "\\";
-
-		public const string TempDir = @"C:\Temp";
-
-		public const string TempDirWhack = TempDir + "\\";
-
-		public const string VirtualDisk = @"D:\VirtualBox VMs\Windows Client\Windows XP Pro\Windows XP Pro.vhd";
-
-		public const string WordDoc = @"C:\Temp\Test.docx";
-
-		public const string WordDocLink = @"C:\Temp\Test.lnk";
-
 		// Header: ValidUser ValidCred URN DN DC Domain Username Password Notes
 		private const string authfn = @"C:\Temp\AuthTestCases.txt";
-
+		private const string sourceFile = @"C:\Temp\TestCaseSources.txt";
 		private const string svrfn = @"C:\Temp\ServerConnectionTestCases.txt";
 
 		// Header: Server IP User Domain Pwd ValidSvr ValidCred UserIsAdmin Local Internet Name
 		private static readonly string[] svrhdr = { "Server", "IP", "User", "Domain", "Pwd", "ValidSvr", "ValidCred", "UserIsAdmin", "Local", "Internet", "Name" };
+		private static Dictionary<string, string> lookup;
+
+		static TestCaseSources()
+		{
+			// Read in test case sources from file
+			lookup = new Dictionary<string, string>();
+			if (File.Exists(sourceFile))
+			{
+				var lines = File.ReadAllLines(sourceFile);
+				lookup = new Dictionary<string, string>(lines.Length);
+				foreach (var line in lines)
+				{
+					if (line.Trim().Length == 0 || line[0] == '\'')
+						continue;
+					var i = line.IndexOf('=');
+					if (i == -1)
+						lookup.Add(line, null);
+					else
+						lookup.Add(line.Substring(0, i), line.Length > i + 1 ? line.Substring(i + 1) : string.Empty);
+				}
+			}
+			else
+				lookup = new Dictionary<string, string>(0);
+		}
 
 		public static object[] AuthCasesFromFile
 		{
@@ -70,6 +60,26 @@ namespace Vanara.PInvoke.Tests
 				return ret;
 			}
 		}
+
+		public static string BmpFile => lookup.TryGetValue(nameof(BmpFile), out var value) ? value : @"C:\Temp\Vanara.bmp";
+		public static string DummyFile => lookup.TryGetValue(nameof(DummyFile), out var value) ? value : @"C:\Temp\test.dmy";
+		public static string EventFile => lookup.TryGetValue(nameof(EventFile), out var value) ? value : @"C:\Temp\TestLogFile.etl";
+		public static string IcoFile => lookup.TryGetValue(nameof(IcoFile), out var value) ? value : @"C:\Temp\Vanara.ico";
+		public static string Image2File => lookup.TryGetValue(nameof(Image2File), out var value) ? value : @"C:\Temp\X.png";
+		public static string ImageFile => lookup.TryGetValue(nameof(ImageFile), out var value) ? value : @"C:\Temp\Vanara.png";
+		public static string LargeFile => lookup.TryGetValue(nameof(LargeFile), out var value) ? value : @"C:\Temp\Holes.mp4";
+		public static string LogFile => lookup.TryGetValue(nameof(LogFile), out var value) ? value : @"C:\Temp\Test.log";
+		public static IDictionary<string, string> Lookup => lookup;
+		public static string ResourceFile => lookup.TryGetValue(nameof(ResourceFile), out var value) ? value : @"C:\Temp\DummyResourceExe.exe";
+		public static string SmallFile => lookup.TryGetValue(nameof(SmallFile), out var value) ? value : Image2File;
+		public static string TempChildDir => lookup.TryGetValue(nameof(TempChildDir), out var value) ? value : @"C:\Temp\Temp";
+		public static string TempChildDirWhack => lookup.TryGetValue(nameof(TempChildDirWhack), out var value) ? value : TempChildDir + "\\";
+		public static string TempDir => lookup.TryGetValue(nameof(TempDir), out var value) ? value : @"C:\Temp";
+		public static string TempDirWhack => lookup.TryGetValue(nameof(TempDirWhack), out var value) ? value : TempDir + "\\";
+		public static string VirtualDisk => lookup.TryGetValue(nameof(VirtualDisk), out var value) ? value : @"D:\VirtualBox VMs\Windows Client\Windows XP Pro\Windows XP Pro.vhd";
+		public static string WordDoc => lookup.TryGetValue(nameof(WordDoc), out var value) ? value : @"C:\Temp\Test.docx";
+		public static string WordDocLink => lookup.TryGetValue(nameof(WordDocLink), out var value) ? value : @"C:\Temp\Test.lnk";
+
 		public static object[] GetAuthCasesFromFile(bool validUser, bool validCred) => AuthCasesFromFile.Where(objs => ((object[])objs)[0].Equals(validUser) && ((object[])objs)[1].Equals(validCred)).ToArray();
 
 		public static IEnumerable<TestCaseData> RemoteConnections(bool? named, int flags = 0)
@@ -87,7 +97,7 @@ namespace Vanara.PInvoke.Tests
 			bool filter(IReadOnlyDictionary<string, string> d)
 			{
 				var svr = d["Server"];
-				var bSvr = named.HasValue ? string.IsNullOrEmpty(svr) != named.Value : true;
+				var bSvr = !named.HasValue || string.IsNullOrEmpty(svr) != named.Value;
 				//var real = bool.Parse(d["ValidSvr"]?.ToLower());
 				//var bReal = valid.HasValue ? real == valid.Value : true;
 				//var vCred = bool.Parse(d["ValidCred"]?.ToLower());
