@@ -1,4 +1,4 @@
-#if NET20 || NET35 || NET40 || NET45
+#if NETFRAMEWORK
 using System.Security.Principal;
 using static Vanara.PInvoke.AdvApi32;
 
@@ -45,14 +45,14 @@ namespace Vanara.Security.Principal
 		/// dwLogonProvider parameter of the Windows LogonUser function.
 		/// </param>
 		public WindowsImpersonatedIdentity(string userName, string domainName, string password, LogonUserType logonType = LogonUserType.LOGON32_LOGON_INTERACTIVE,
-			LogonUserProvider provider = LogonUserProvider.LOGON32_PROVIDER_DEFAULT) : base(userName, domainName, password, logonType, provider) => impersonationContext = AuthenticatedIdentity.Impersonate();
+			LogonUserProvider provider = LogonUserProvider.LOGON32_PROVIDER_DEFAULT) : base(userName, domainName, password, logonType, provider) => impersonationContext = AuthenticatedIdentity?.Impersonate();
 
 		/// <summary>
 		/// Starts the impersonation with the given <see cref="WindowsIdentity"/>. Please note that the account that instantiates this class
 		/// needs to have the 'Act as part of operating system' privilege set.
 		/// </summary>
 		/// <param name="identityToImpersonate">The identity to impersonate.</param>
-		public WindowsImpersonatedIdentity(WindowsIdentity identityToImpersonate) : base(identityToImpersonate) => impersonationContext = AuthenticatedIdentity.Impersonate();
+		public WindowsImpersonatedIdentity(WindowsIdentity identityToImpersonate) : base(identityToImpersonate) => impersonationContext = AuthenticatedIdentity?.Impersonate();
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public override void Dispose()
