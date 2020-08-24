@@ -25,8 +25,6 @@ namespace Vanara.Diagnostics.Tests
 			{
 				Computer.Local.SharedDevices.Remove(shareName);
 			}
-			//var remote = new Computer(@"\\COMPUTER", "user@domain.net", "pwd");
-			//TestContext.WriteLine(string.Join(", ", remote.SharedDevices.Values.Select(d => d.Name)));
 		}
 
 		[Test]
@@ -45,6 +43,26 @@ namespace Vanara.Diagnostics.Tests
 			{
 				if (local != null)
 					Computer.Local.NetworkDeviceConnections.Remove(local, true);
+			}
+		}
+
+		[Test]
+		public void AuthMapUnmapDriveTest()
+		{
+			var remoteShare = TestCaseSources.Lookup["RemoteShare"];
+			string local = null;
+			using var authLocal = new Computer(null, Environment.MachineName + "\\" + TestCaseSources.Lookup["LocalUser"], TestCaseSources.Lookup["LocalUserPassword"]);
+			try
+			{
+				local = authLocal.NetworkDeviceConnections.Add(remoteShare, "*", TestCaseSources.Lookup["LocalAdmin"], TestCaseSources.Lookup["LocalAdminPassword"]);
+				var conns = authLocal.NetworkDeviceConnections.SelectMany(r => r.Children).Concat(Computer.Local.NetworkDeviceConnections).ToList();
+				Assert.That(conns.Select(r => r.LocalName), Has.One.EqualTo(local));
+				conns.WriteValues();
+			}
+			finally
+			{
+				if (local != null)
+					authLocal.NetworkDeviceConnections.Remove(local, true);
 			}
 		}
 
