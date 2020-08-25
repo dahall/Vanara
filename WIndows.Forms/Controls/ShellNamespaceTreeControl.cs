@@ -902,12 +902,16 @@ namespace Vanara.Windows.Forms
 				SetFocus(hWndTreeView);
 		}
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			System.Diagnostics.Debug.WriteLine($"Base KeyDown: {e.KeyCode}");
 			base.OnKeyDown(e);
 		}
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
 		protected override void OnKeyUp(KeyEventArgs e)
 		{
 			System.Diagnostics.Debug.WriteLine($"Base KeyUp: {e.KeyCode}");

@@ -1391,7 +1391,9 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>This provides a connection point container compatible dispatch interface for hooking into the ExplorerBrowser view.</summary>
 		[ComVisible(true)]
+#pragma warning disable CS0618 // Type or member is obsolete
 		[ClassInterface(ClassInterfaceType.AutoDual)]
+#pragma warning restore CS0618 // Type or member is obsolete
 		public class ViewEvents : IDisposable
 		{
 			private static readonly Guid IID_DShellFolderViewEvents = new Guid("62112AA2-EBE4-11cf-A5FB-0020AFE7292D");

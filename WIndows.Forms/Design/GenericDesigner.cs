@@ -237,6 +237,7 @@ namespace Vanara.Windows.Forms.Design
 		/// <summary>Initializes a new instance of the <see cref="AttributedControlDesigner{TControl}"/> class.</summary>
 		public AttributedControlDesigner()
 		{
+			redirectedEvents = this.GetRedirectedEvents();
 			redirectedProps = this.GetRedirectedProperties();
 			verbs = this.GetAttributedVerbs();
 		}
