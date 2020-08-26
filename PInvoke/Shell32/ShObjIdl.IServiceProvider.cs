@@ -56,7 +56,7 @@ namespace Vanara.PInvoke
 			/// <param name="ppvObject">The interface specified by the <paramref name="riid"/> parameter.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT QueryService(in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppvObject);
+			HRESULT QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject); //[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppvObject);
 		}
 	}
 }

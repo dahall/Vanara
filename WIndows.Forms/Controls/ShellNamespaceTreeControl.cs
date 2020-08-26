@@ -838,11 +838,16 @@ namespace Vanara.Windows.Forms
 			return HRESULT.S_OK;
 		}
 
-		HRESULT Shell32.IServiceProvider.QueryService(in Guid guidService, in Guid riid, out object ppvObject)
+		HRESULT Shell32.IServiceProvider.QueryService(in Guid guidService, in Guid riid, out IntPtr ppvObject)
 		{
-			if (riid == typeof(INameSpaceTreeControlDropHandler).GUID || riid == typeof(INameSpaceTreeControlEvents).GUID)
+			if (riid == typeof(INameSpaceTreeControlDropHandler).GUID)
 			{
-				ppvObject = this;
+				ppvObject = Marshal.GetComInterfaceForObject(this, typeof(INameSpaceTreeControlDropHandler)); ;
+				return HRESULT.S_OK;
+			}
+			else if (riid == typeof(INameSpaceTreeControlEvents).GUID)
+			{
+				ppvObject = Marshal.GetComInterfaceForObject(this, typeof(INameSpaceTreeControlEvents)); ;
 				return HRESULT.S_OK;
 			}
 			ppvObject = default;
