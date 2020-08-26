@@ -20,22 +20,7 @@
 			base.Dispose(disposing);
 		}
 
-		#region Windows Form Designer generated code
-
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
-			this.shellNamespaceTreeControl1 = new Vanara.Windows.Forms.ShellNamespaceTreeControl();
-			this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-			this.splitter1 = new System.Windows.Forms.Splitter();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.splitter2 = new System.Windows.Forms.Splitter();
-			this.log = new System.Windows.Forms.TextBox();
-			this.panel1.SuspendLayout();
-			this.SuspendLayout();
+		/*
 			// 
 			// shellNamespaceTreeControl1
 			// 
@@ -53,6 +38,22 @@
 			this.shellNamespaceTreeControl1.ItemMouseClick += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlItemMouseClickEventArgs>(this.shellNamespaceTreeControl1_ItemMouseClick);
 			this.shellNamespaceTreeControl1.ItemMouseDoubleClick += new System.EventHandler<Vanara.Windows.Forms.ShellNamespaceTreeControlItemMouseClickEventArgs>(this.shellNamespaceTreeControl1_ItemMouseDoubleClick);
 			this.shellNamespaceTreeControl1.AfterSelect += new System.EventHandler(this.shellNamespaceTreeControl1_SelectionChanged);
+		*/
+		#region Windows Form Designer generated code
+
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
+			this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+			this.splitter1 = new System.Windows.Forms.Splitter();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.splitter2 = new System.Windows.Forms.Splitter();
+			this.log = new System.Windows.Forms.TextBox();
+			this.panel1.SuspendLayout();
+			this.SuspendLayout();
 			// 
 			// propertyGrid1
 			// 
@@ -105,7 +106,6 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(729, 450);
-			this.Controls.Add(this.shellNamespaceTreeControl1);
 			this.Controls.Add(this.splitter1);
 			this.Controls.Add(this.panel1);
 			this.Name = "ShellNamespaceTreeControlTestForm";
@@ -119,7 +119,6 @@
 
 		#endregion
 
-		private Vanara.Windows.Forms.ShellNamespaceTreeControl shellNamespaceTreeControl1;
 		private System.Windows.Forms.PropertyGrid propertyGrid1;
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.Panel panel1;

@@ -12,9 +12,9 @@ namespace Vanara.IO.Tests
 	[TestFixture()]
 	public class VirtualDiskTests
 	{
-		const string tmpfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD.vhd";
-		const string tmpcfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD - Diff.vhd";
-		const string fn = Vanara.PInvoke.Tests.TestCaseSources.VirtualDisk;
+		static readonly string tmpfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD.vhd";
+		static readonly string tmpcfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD - Diff.vhd";
+		static readonly string fn = Vanara.PInvoke.Tests.TestCaseSources.VirtualDisk;
 
 		[Test()]
 		public void CreateDynPropTest()

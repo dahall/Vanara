@@ -13,8 +13,8 @@ namespace Vanara.Windows.Shell.Tests
 	public class ShellItemTests
 	{
 		internal const string badTestDoc = @"C:\Temp\BadTest.doc";
-		internal const string testDoc = PInvoke.Tests.TestCaseSources.WordDoc;
-		internal const string testLinkDoc = PInvoke.Tests.TestCaseSources.WordDocLink;
+		internal static readonly string testDoc = PInvoke.Tests.TestCaseSources.WordDoc;
+		internal static readonly string testLinkDoc = PInvoke.Tests.TestCaseSources.WordDocLink;
 
 		[Test]
 		public void EqualityTest()

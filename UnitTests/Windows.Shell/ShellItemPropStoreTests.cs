@@ -12,7 +12,7 @@ namespace Vanara.Windows.Shell.Tests
 	[TestFixture]
 	public class ShellItemPropStoreTests
 	{
-		private const string testDoc = ShellItemTests.testDoc;
+		private static readonly string testDoc = ShellItemTests.testDoc;
 
 		[Test]
 		public void DescriptionTest()

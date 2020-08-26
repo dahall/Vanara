@@ -11,7 +11,7 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture()]
 	public class WinBase_EventLogTests
 	{
-		private const string eventLogName = TestCaseSources.LogFile;
+		private static readonly string eventLogName = TestCaseSources.LogFile;
 
 		[Test]
 		public void OpenBackupClearCloseEventLogTest()

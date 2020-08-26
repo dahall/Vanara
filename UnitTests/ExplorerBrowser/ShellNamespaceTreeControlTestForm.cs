@@ -22,14 +22,14 @@ namespace ExplorerBrowser
 		private void ShellNamespaceTreeControlTestForm_Load(object sender, EventArgs e)
 		{
 			using var qaPidl = new PIDL("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
-			shellNamespaceTreeControl1.RootItems.Add(new ShellFolder(qaPidl), false, true);
-			shellNamespaceTreeControl1.RootItems.Add(ShellFolder.Desktop, true, true);
-			propertyGrid1.SelectedObject = shellNamespaceTreeControl1;
+			//shellNamespaceTreeControl1.RootItems.Add(new ShellFolder(qaPidl), false, true);
+			//shellNamespaceTreeControl1.RootItems.Add(ShellFolder.Desktop, true, true);
+			//propertyGrid1.SelectedObject = shellNamespaceTreeControl1;
 		}
 
 		private void shellNamespaceTreeControl1_SelectionChanged(object sender, EventArgs e)
 		{
-			log.AppendText("Selected item: " + shellNamespaceTreeControl1.SelectedItem?.Name ?? "[null]" + Environment.NewLine);
+			//log.AppendText("Selected item: " + shellNamespaceTreeControl1.SelectedItem?.Name ?? "[null]" + Environment.NewLine);
 		}
 
 		private void shellNamespaceTreeControl1_AfterExpand(object sender, Vanara.Windows.Forms.ShellNamespaceTreeControlEventArgs e)

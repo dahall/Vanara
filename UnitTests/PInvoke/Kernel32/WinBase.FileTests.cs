@@ -16,8 +16,8 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public partial class WinBaseTests_File
 	{
-		private const string bigfn = TestCaseSources.LargeFile;
-		private const string fn = TestCaseSources.SmallFile;
+		private static readonly string bigfn = TestCaseSources.LargeFile;
+		private static readonly string fn = TestCaseSources.SmallFile;
 		private const string newfn = @"C:\Temp\help2.ico";
 
 		[Test]
@@ -105,7 +105,7 @@ namespace Vanara.PInvoke.Tests
 		public void EnumVolumeMountPointsTest()
 		{
 			// Setup a new mount on C:
-			const string mntDir = TestCaseSources.TempDirWhack + @"Mounted\";
+			string mntDir = TestCaseSources.TempDirWhack + @"Mounted\";
 			var sb = new StringBuilder(100);
 			Assert.That(GetVolumeNameForVolumeMountPoint(@"C:\", sb, (uint)sb.Capacity), ResultIs.Successful);
 			var cvol = sb.ToString();
@@ -167,7 +167,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void MoveFileExTest()
 		{
-			const string newFld = TestCaseSources.TempChildDir;
+			string newFld = TestCaseSources.TempChildDir;
 			Assert.That(MoveFileEx(fn, Path.Combine(newFld, Path.GetFileName(fn)), MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);
 			Assert.That(MoveFileEx(Path.Combine(newFld, Path.GetFileName(fn)), fn, MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);
 		}
@@ -175,7 +175,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void MoveFileTest()
 		{
-			const string newFld = TestCaseSources.TempChildDir;
+			string newFld = TestCaseSources.TempChildDir;
 			Assert.That(MoveFile(fn, Path.Combine(newFld, Path.GetFileName(fn))), ResultIs.Successful);
 			Assert.That(MoveFile(Path.Combine(newFld, Path.GetFileName(fn)), fn), ResultIs.Successful);
 		}
@@ -183,7 +183,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void MoveFileWithProgressTest()
 		{
-			const string newFld = TestCaseSources.TempChildDir;
+			string newFld = TestCaseSources.TempChildDir;
 			var qtr = 0;
 			Assert.That(MoveFileWithProgress(bigfn, Path.Combine(newFld, Path.GetFileName(bigfn)), fProgress, default, MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);
 			Assert.That(MoveFileWithProgress(Path.Combine(newFld, Path.GetFileName(bigfn)), bigfn, fProgress, default, MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);

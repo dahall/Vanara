@@ -19,7 +19,7 @@ namespace Vanara.PInvoke.Tests
 	public class AdvApi32Tests
 	{
 		internal const SECURITY_INFORMATION AllSI = SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION | SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION;
-		internal const string fn = TestCaseSources.SmallFile;
+		internal static readonly string fn = TestCaseSources.SmallFile;
 
 		[Test()]
 		public void ConvertSecurityDescriptorToStringSecurityDescriptorTest()

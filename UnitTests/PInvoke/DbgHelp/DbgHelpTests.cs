@@ -17,7 +17,7 @@ namespace Vanara.PInvoke.Tests
 	{
 		const string imgName = "imagehlp.dll";
 		const string testAppName = "TestDbgApp";
-		const string testAppPath = TestCaseSources.TempDirWhack + testAppName + ".exe";
+		static readonly string testAppPath = TestCaseSources.TempDirWhack + testAppName + ".exe";
 		private Process testApp;
 		private ProcessSymbolHandler hProc;
 

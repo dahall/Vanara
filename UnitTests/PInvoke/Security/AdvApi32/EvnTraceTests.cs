@@ -15,7 +15,7 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture()]
 	public partial class EvnTraceTests
 	{
-		private const string logfilePath = TestCaseSources.EventFile;
+		private static readonly string logfilePath = TestCaseSources.EventFile;
 
 		[Test]
 		public void EnumerateTraceGuidsTest()

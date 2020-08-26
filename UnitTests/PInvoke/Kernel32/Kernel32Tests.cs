@@ -11,7 +11,7 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public class Kernel32Tests
 	{
-		internal const string fn = TestCaseSources.SmallFile;
+		internal static readonly string fn = TestCaseSources.SmallFile;
 		internal const string tmpstr = @"Temporary";
 
 		public static string CreateTempFile(bool markAsTemp = true)

@@ -9,7 +9,7 @@ namespace Vanara.Windows.Shell.Tests
 	[TestFixture, SingleThreaded]
 	public class ShellFolderTests
 	{
-		private const string testFile = ShellItemTests.testDoc;
+		private static readonly string testFile = ShellItemTests.testDoc;
 		private static readonly string testFld = Path.GetDirectoryName(testFile);
 
 		[Test]
