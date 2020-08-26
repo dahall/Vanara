@@ -751,6 +751,13 @@ namespace Vanara.Windows.Forms
 		/// <summary>Removes all items from the results folder.</summary>
 		public void ClearCustomItems() => explorerBrowserControl?.RemoveAll();
 
+		/// <summary>
+		/// Exposes the underlying interfaces for the control. Using this interface directly to call methods will result in unexpected
+		/// results with the control and can cause instability.
+		/// </summary>
+		/// <returns>The <see cref="IExplorerBrowser"/> instance used by this control.</returns>
+		public IExplorerBrowser DangerousGetInterface() => explorerBrowserControl;
+
 		/// <summary>Creates a custom folder and fills it with items.</summary>
 		/// <param name="obj">
 		/// An interface pointer on the source object that will fill the control. This can be an <see cref="IDataObject"/> or any object
