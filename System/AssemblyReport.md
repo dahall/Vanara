@@ -1,5 +1,5 @@
 ## Assembly report for Vanara.SystemServices.dll
-Classes for system related items derived from the Vanara PInvoke libraries. Includes extensions for Process (privileges and elavation), FileInfo (compression info), and ServiceController (SetStartType) that pull extended information through native API calls.
+Classes for system related items derived from the Vanara PInvoke libraries. Includes extensions for Process (privileges and elavation), FileInfo (compression info), Shared Network Drives and Devices, and ServiceController (SetStartType) that pull extended information through native API calls.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----
@@ -39,6 +39,8 @@ Class | Description
 [Vanara.Diagnostics.JobSettings](https://github.com/dahall/Vanara/search?l=C%23&q=JobSettings) | Settings related to job objects.
 [Vanara.Diagnostics.JobStatistics](https://github.com/dahall/Vanara/search?l=C%23&q=JobStatistics) | Gets statistics for a job object.
 [Vanara.Network.NetworkConnection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkConnection) | Represents a single network connection. Wraps `Vanara.PInvoke.NetListMgr.INetworkConnection`.
+[Vanara.NetworkDeviceConnection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnection) | 
+[Vanara.NetworkDeviceConnectionCollection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnectionCollection) | 
 [Vanara.Extensions.NetworkInterfaceExt](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkInterfaceExt) | Extension methods for various network related interfaces methods.
 [Vanara.Network.NetworkListManager](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkListManager) | Provides a set of methods to perform network list management functions.
 [Vanara.Network.NetworkProfile](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkProfile) | Represents a wireless network profile
