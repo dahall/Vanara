@@ -23,6 +23,55 @@ namespace Vanara.InteropServices.Tests
 			h = new GenericSafeHandle(IntPtr.Zero, p => true);
 			Assert.That(h.IsInvalid);
 		}
+		
+		[Test]
+		public void GenericSafeHandleCloseMethodNull()
+		{
+			Assert.Throws<ArgumentNullException>(() => new GenericSafeHandle((IntPtr)1, null));
+		}
+
+		[Test]
+		public void GenericSafeHandleCloseMethodTest()
+		{
+			var i = 0;
+			using (var h = new GenericSafeHandleWithSetHandle(ptr =>
+			{
+				i = 1;
+				return true;
+			}))
+			{
+				h.SetHandle((IntPtr)1);	
+			}
+
+			Assert.AreEqual(1, i);
+		}
+		
+		
+		private class GenericSafeHandleWithSetHandle : GenericSafeHandle
+		{
+			public GenericSafeHandleWithSetHandle(Func<IntPtr, bool> closeMethod) : base(closeMethod)
+			{}
+
+			public new void SetHandle(IntPtr handle)
+			{
+				base.SetHandle(handle);
+			}
+		}
+
+		[Test]
+		public void GenericSafeHandleCloseMethodWithHandleTest()
+		{
+			var i = 0;
+			using (new GenericSafeHandle((IntPtr)1, ptr =>
+			{
+				i = 1;
+				return true;
+			}))
+			{
+			}
+
+			Assert.AreEqual(1, i);
+		}
 
 		[Test]
 		public void GenericSafeHandleTest1()
