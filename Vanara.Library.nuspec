@@ -42,6 +42,7 @@
       <dependency id="Vanara.PInvoke.NTDSApi" version="3.2.15" />
       <dependency id="Vanara.PInvoke.Ole" version="3.2.15" />
       <dependency id="Vanara.PInvoke.Opc" version="3.2.15" />
+      <dependency id="Vanara.PInvoke.P2P" version="3.2.15" />
       <dependency id="Vanara.PInvoke.Pdh" version="3.2.15" />
       <dependency id="Vanara.PInvoke.PowrProf" version="3.2.15" />
       <dependency id="Vanara.PInvoke.Printing" version="3.2.15" />

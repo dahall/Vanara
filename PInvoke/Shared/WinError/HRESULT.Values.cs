@@ -9004,6 +9004,257 @@ namespace Vanara.PInvoke
 		/// <summary>The directory being processed is not empty</summary>
 		public const int COPYENGINE_E_DIR_NOT_EMPTY = unchecked((int)0x8027003D);
 
+		/// <summary>The IPv6 protocol is not installed.</summary>
+		public const int PEER_E_IPV6_NOT_INSTALLED = unchecked((int)0x80630001);
+
+		/// <summary>The component has not been initialized.</summary>
+		public const int PEER_E_NOT_INITIALIZED = unchecked((int)0x80630002);
+
+		/// <summary>The required service cannot be started.</summary>
+		public const int PEER_E_CANNOT_START_SERVICE = unchecked((int)0x80630003);
+
+		/// <summary>The P2P protocol is not licensed to run on this OS.</summary>
+		public const int PEER_E_NOT_LICENSED = unchecked((int)0x80630004);
+
+		/// <summary>The graph handle is invalid.</summary>
+		public const int PEER_E_INVALID_GRAPH = unchecked((int)0x80630010);
+
+		/// <summary>The graph database name has changed.</summary>
+		public const int PEER_E_DBNAME_CHANGED = unchecked((int)0x80630011);
+
+		/// <summary>A graph with the same ID already exists.</summary>
+		public const int PEER_E_DUPLICATE_GRAPH = unchecked((int)0x80630012);
+
+		/// <summary>The graph is not ready.</summary>
+		public const int PEER_E_GRAPH_NOT_READY = unchecked((int)0x80630013);
+
+		/// <summary>The graph is shutting down.</summary>
+		public const int PEER_E_GRAPH_SHUTTING_DOWN = unchecked((int)0x80630014);
+
+		/// <summary>The graph is still in use.</summary>
+		public const int PEER_E_GRAPH_IN_USE = unchecked((int)0x80630015);
+
+		/// <summary>The graph database is corrupt.</summary>
+		public const int PEER_E_INVALID_DATABASE = unchecked((int)0x80630016);
+
+		/// <summary>Too many attributes have been used.</summary>
+		public const int PEER_E_TOO_MANY_ATTRIBUTES = unchecked((int)0x80630017);
+
+		/// <summary>The connection can not be found.</summary>
+		public const int PEER_E_CONNECTION_NOT_FOUND = unchecked((int)0x80630103);
+
+		/// <summary>The peer attempted to connect to itself.</summary>
+		public const int PEER_E_CONNECT_SELF = unchecked((int)0x80630106);
+
+		/// <summary>The peer is already listening for connections.</summary>
+		public const int PEER_E_ALREADY_LISTENING = unchecked((int)0x80630107);
+
+		/// <summary>The node was not found.</summary>
+		public const int PEER_E_NODE_NOT_FOUND = unchecked((int)0x80630108);
+
+		/// <summary>The Connection attempt failed.</summary>
+		public const int PEER_E_CONNECTION_FAILED = unchecked((int)0x80630109);
+
+		/// <summary>The peer connection could not be authenticated.</summary>
+		public const int PEER_E_CONNECTION_NOT_AUTHENTICATED = unchecked((int)0x8063010A);
+
+		/// <summary>The connection was refused.</summary>
+		public const int PEER_E_CONNECTION_REFUSED = unchecked((int)0x8063010B);
+
+		/// <summary>The peer name classifier is too long.</summary>
+		public const int PEER_E_CLASSIFIER_TOO_LONG = unchecked((int)0x80630201);
+
+		/// <summary>The maximum number of identities have been created.</summary>
+		public const int PEER_E_TOO_MANY_IDENTITIES = unchecked((int)0x80630202);
+
+		/// <summary>Unable to access a key.</summary>
+		public const int PEER_E_NO_KEY_ACCESS = unchecked((int)0x80630203);
+
+		/// <summary>The group already exists.</summary>
+		public const int PEER_E_GROUPS_EXIST = unchecked((int)0x80630204);
+
+		/// <summary>The requested record could not be found.</summary>
+		public const int PEER_E_RECORD_NOT_FOUND = unchecked((int)0x80630301);
+
+		/// <summary>Access to the database was denied.</summary>
+		public const int PEER_E_DATABASE_ACCESSDENIED = unchecked((int)0x80630302);
+
+		/// <summary>The Database could not be initialized.</summary>
+		public const int PEER_E_DBINITIALIZATION_FAILED = unchecked((int)0x80630303);
+
+		/// <summary>The record is too big.</summary>
+		public const int PEER_E_MAX_RECORD_SIZE_EXCEEDED = unchecked((int)0x80630304);
+
+		/// <summary>The database already exists.</summary>
+		public const int PEER_E_DATABASE_ALREADY_PRESENT = unchecked((int)0x80630305);
+
+		/// <summary>The database could not be found.</summary>
+		public const int PEER_E_DATABASE_NOT_PRESENT = unchecked((int)0x80630306);
+
+		/// <summary>The identity could not be found.</summary>
+		public const int PEER_E_IDENTITY_NOT_FOUND = unchecked((int)0x80630401);
+
+		/// <summary>The event handle could not be found.</summary>
+		public const int PEER_E_EVENT_HANDLE_NOT_FOUND = unchecked((int)0x80630501);
+
+		/// <summary>Invalid search.</summary>
+		public const int PEER_E_INVALID_SEARCH = unchecked((int)0x80630601);
+
+		/// <summary>The search attributes are invalid.</summary>
+		public const int PEER_E_INVALID_ATTRIBUTES = unchecked((int)0x80630602);
+
+		/// <summary>The invitation is not trusted.</summary>
+		public const int PEER_E_INVITATION_NOT_TRUSTED = unchecked((int)0x80630701);
+
+		/// <summary>The certchain is too long.</summary>
+		public const int PEER_E_CHAIN_TOO_LONG = unchecked((int)0x80630703);
+
+		/// <summary>The time period is invalid.</summary>
+		public const int PEER_E_INVALID_TIME_PERIOD = unchecked((int)0x80630705);
+
+		/// <summary>A circular cert chain was detected.</summary>
+		public const int PEER_E_CIRCULAR_CHAIN_DETECTED = unchecked((int)0x80630706);
+
+		/// <summary>The certstore is corrupted.</summary>
+		public const int PEER_E_CERT_STORE_CORRUPTED = unchecked((int)0x80630801);
+
+		/// <summary>The specified PNRP cloud does not exist.</summary>
+		public const int PEER_E_NO_CLOUD = unchecked((int)0x80631001);
+
+		/// <summary>The cloud name is ambiguous.</summary>
+		public const int PEER_E_CLOUD_NAME_AMBIGUOUS = unchecked((int)0x80631005);
+
+		/// <summary>The record is invalid.</summary>
+		public const int PEER_E_INVALID_RECORD = unchecked((int)0x80632010);
+
+		/// <summary>Not authorized.</summary>
+		public const int PEER_E_NOT_AUTHORIZED = unchecked((int)0x80632020);
+
+		/// <summary>The password does not meet policy requirements.</summary>
+		public const int PEER_E_PASSWORD_DOES_NOT_MEET_POLICY = unchecked((int)0x80632021);
+
+		/// <summary>The record validation has been deferred.</summary>
+		public const int PEER_E_DEFERRED_VALIDATION = unchecked((int)0x80632030);
+
+		/// <summary>The group properties are invalid.</summary>
+		public const int PEER_E_INVALID_GROUP_PROPERTIES = unchecked((int)0x80632040);
+
+		/// <summary>The peername is invalid.</summary>
+		public const int PEER_E_INVALID_PEER_NAME = unchecked((int)0x80632050);
+
+		/// <summary>The classifier is invalid.</summary>
+		public const int PEER_E_INVALID_CLASSIFIER = unchecked((int)0x80632060);
+
+		/// <summary>The friendly name is invalid.</summary>
+		public const int PEER_E_INVALID_FRIENDLY_NAME = unchecked((int)0x80632070);
+
+		/// <summary>Invalid role property.</summary>
+		public const int PEER_E_INVALID_ROLE_PROPERTY = unchecked((int)0x80632071);
+
+		/// <summary>Invalid classifier property.</summary>
+		public const int PEER_E_INVALID_CLASSIFIER_PROPERTY = unchecked((int)0x80632072);
+
+		/// <summary>Invalid record expiration.</summary>
+		public const int PEER_E_INVALID_RECORD_EXPIRATION = unchecked((int)0x80632080);
+
+		/// <summary>Invalid credential info.</summary>
+		public const int PEER_E_INVALID_CREDENTIAL_INFO = unchecked((int)0x80632081);
+
+		/// <summary>Invalid credential.</summary>
+		public const int PEER_E_INVALID_CREDENTIAL = unchecked((int)0x80632082);
+
+		/// <summary>Invalid record size.</summary>
+		public const int PEER_E_INVALID_RECORD_SIZE = unchecked((int)0x80632083);
+
+		/// <summary>Unsupported version.</summary>
+		public const int PEER_E_UNSUPPORTED_VERSION = unchecked((int)0x80632090);
+
+		/// <summary>The group is not ready.</summary>
+		public const int PEER_E_GROUP_NOT_READY = unchecked((int)0x80632091);
+
+		/// <summary>The group is still in use.</summary>
+		public const int PEER_E_GROUP_IN_USE = unchecked((int)0x80632092);
+
+		/// <summary>The group is invalid.</summary>
+		public const int PEER_E_INVALID_GROUP = unchecked((int)0x80632093);
+
+		/// <summary>No members were found.</summary>
+		public const int PEER_E_NO_MEMBERS_FOUND = unchecked((int)0x80632094);
+
+		/// <summary>There are no member connections.</summary>
+		public const int PEER_E_NO_MEMBER_CONNECTIONS = unchecked((int)0x80632095);
+
+		/// <summary>Unable to listen.</summary>
+		public const int PEER_E_UNABLE_TO_LISTEN = unchecked((int)0x80632096);
+
+		/// <summary>The identity does not exist.</summary>
+		public const int PEER_E_IDENTITY_DELETED = unchecked((int)0x806320A0);
+
+		/// <summary>The service is not available.</summary>
+		public const int PEER_E_SERVICE_NOT_AVAILABLE = unchecked((int)0x806320A1);
+
+		/// <summary>THe contact could not be found.</summary>
+		public const int PEER_E_CONTACT_NOT_FOUND = unchecked((int)0x80636001);
+
+		/// <summary>The graph data was created.</summary>
+		public const int PEER_S_GRAPH_DATA_CREATED = unchecked((int)0x00630001);
+
+		/// <summary>There is not more event data.</summary>
+		public const int PEER_S_NO_EVENT_DATA = unchecked((int)0x00630002);
+
+		/// <summary>The graph is already connect.</summary>
+		public const int PEER_S_ALREADY_CONNECTED = unchecked((int)0x00632000);
+
+		/// <summary>The subscription already exists.</summary>
+		public const int PEER_S_SUBSCRIPTION_EXISTS = unchecked((int)0x00636000);
+
+		/// <summary>No connectivity.</summary>
+		public const int PEER_S_NO_CONNECTIVITY = unchecked((int)0x00630005);
+
+		/// <summary>Already a member.</summary>
+		public const int PEER_S_ALREADY_A_MEMBER = unchecked((int)0x00630006);
+
+		/// <summary>The peername could not be converted to a DNS pnrp name.</summary>
+		public const int PEER_E_CANNOT_CONVERT_PEER_NAME = unchecked((int)0x80634001);
+
+		/// <summary>Invalid peer host name.</summary>
+		public const int PEER_E_INVALID_PEER_HOST_NAME = unchecked((int)0x80634002);
+
+		/// <summary>No more data could be found.</summary>
+		public const int PEER_E_NO_MORE = unchecked((int)0x80634003);
+
+		/// <summary>The existing peer name is already registered.</summary>
+		public const int PEER_E_PNRP_DUPLICATE_PEER_NAME = unchecked((int)0x80634005);
+
+		/// <summary>The app invite request was cancelled by the user.</summary>
+		public const int PEER_E_INVITE_CANCELLED = unchecked((int)0x80637000);
+
+		/// <summary>No response of the invite was received.</summary>
+		public const int PEER_E_INVITE_RESPONSE_NOT_AVAILABLE = unchecked((int)0x80637001);
+
+		/// <summary>User is not signed into serverless presence.</summary>
+		public const int PEER_E_NOT_SIGNED_IN = unchecked((int)0x80637003);
+
+		/// <summary>The user declined the privacy policy prompt.</summary>
+		public const int PEER_E_PRIVACY_DECLINED = unchecked((int)0x80637004);
+
+		/// <summary>A timeout occurred.</summary>
+		public const int PEER_E_TIMEOUT = unchecked((int)0x80637005);
+
+		/// <summary>The address is invalid.</summary>
+		public const int PEER_E_INVALID_ADDRESS = unchecked((int)0x80637007);
+
+		/// <summary>A required firewall exception is disabled.</summary>
+		public const int PEER_E_FW_EXCEPTION_DISABLED = unchecked((int)0x80637008);
+
+		/// <summary>The service is blocked by a firewall policy.</summary>
+		public const int PEER_E_FW_BLOCKED_BY_POLICY = unchecked((int)0x80637009);
+
+		/// <summary>Firewall exceptions are disabled.</summary>
+		public const int PEER_E_FW_BLOCKED_BY_SHIELDS_UP = unchecked((int)0x8063700A);
+
+		/// <summary>The user declined to enable the firewall exceptions.</summary>
+		public const int PEER_E_FW_DECLINED = unchecked((int)0x8063700B);
 
 		/// <summary>The IAudioClient object is already initialized.</summary>
 		public static readonly HRESULT AUDCLNT_E_ALREADY_INITIALIZED = AUDCLNT_ERR(0x002);
