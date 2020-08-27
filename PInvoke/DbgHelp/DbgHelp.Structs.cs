@@ -2417,7 +2417,6 @@ namespace Vanara.PInvoke
 		public class SafeIMAGEHLP_SYMBOL : SafeHGlobalStruct<IMAGEHLP_SYMBOL>
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeIMAGEHLP_SYMBOL"/> class.</summary>
-			/// <param name="charSet">The character set.</param>
 			/// <param name="maxNameLen">Maximum length of the name.</param>
 			public SafeIMAGEHLP_SYMBOL(int maxNameLen = 261) : base(BaseStructSize + (maxNameLen - 1))
 			{
