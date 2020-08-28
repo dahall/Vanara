@@ -1797,7 +1797,7 @@ namespace Vanara.PInvoke
 		// *phPeerEvent );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabRegisterEvent")]
-		public static extern HRESULT PeerCollabRegisterEvent(HANDLE hEvent, uint cEventRegistration, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PEER_COLLAB_EVENT_REGISTRATION[] pEventRegistrations, out SafeHPEEREVENT phPeerEvent);
+		public static extern HRESULT PeerCollabRegisterEvent(HANDLE hEvent, uint cEventRegistration, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PEER_COLLAB_EVENT_REGISTRATION[] pEventRegistrations, out SafeCollabHPEEREVENT phPeerEvent);
 
 		/// <summary>The <c>PeerCollabSetEndpointName</c> function sets the name of the current endpoint used by the peer application.</summary>
 		/// <param name="pwzEndpointName">
@@ -2374,22 +2374,22 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPEEREVENT"/> that is disposed using <see cref="PeerCollabUnregisterEvent"/>.</summary>
-		public class SafeHPEEREVENT : SafeHANDLE
+		public class SafeCollabHPEEREVENT : SafeHANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHPEEREVENT"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeCollabHPEEREVENT"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
-			public SafeHPEEREVENT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+			public SafeCollabHPEEREVENT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeHPEEREVENT"/> class.</summary>
-			private SafeHPEEREVENT() : base() { }
+			/// <summary>Initializes a new instance of the <see cref="SafeCollabHPEEREVENT"/> class.</summary>
+			private SafeCollabHPEEREVENT() : base() { }
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeHPEEREVENT"/> to <see cref="HPEEREVENT"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="SafeCollabHPEEREVENT"/> to <see cref="HPEEREVENT"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HPEEREVENT(SafeHPEEREVENT h) => h.handle;
+			public static implicit operator HPEEREVENT(SafeCollabHPEEREVENT h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => PeerCollabUnregisterEvent(handle).Succeeded;

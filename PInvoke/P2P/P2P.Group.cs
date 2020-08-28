@@ -2017,7 +2017,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupRegisterEvent")]
 		public static extern HRESULT PeerGroupRegisterEvent(HGROUP hGroup, HANDLE hEvent, uint cEventRegistration,
-			[In, MarshalAs(UnmanagedType.LPArray)] PEER_GROUP_EVENT_REGISTRATION[] pEventRegistrations, out SafeHPEEREVENT phPeerEvent);
+			[In, MarshalAs(UnmanagedType.LPArray)] PEER_GROUP_EVENT_REGISTRATION[] pEventRegistrations, out SafeGroupHPEEREVENT phPeerEvent);
 
 		/// <summary>
 		/// The <c>PeerGroupSearchRecords</c> function searches the local peer group database for records that match the supplied criteria.
@@ -2509,6 +2509,28 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPEEREVENT"/> that is disposed using <see cref="PeerGroupUnregisterEvent"/>.</summary>
+		public class SafeGroupHPEEREVENT : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeGroupHPEEREVENT"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeGroupHPEEREVENT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeGroupHPEEREVENT"/> class.</summary>
+			private SafeGroupHPEEREVENT() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeGroupHPEEREVENT"/> to <see cref="HPEEREVENT"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPEEREVENT(SafeGroupHPEEREVENT h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => PeerGroupUnregisterEvent(handle).Succeeded;
 		}
 	}
 }

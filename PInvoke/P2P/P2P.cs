@@ -12,6 +12,16 @@ namespace Vanara.PInvoke
 		private const string Lib_P2P = "P2P.dll";
 		private const string Lib_P2PGraph = "p2pgraph.dll";
 
+		/// <summary/>
+		public static readonly Guid PEER_GROUP_ROLE_ADMIN = new Guid(0x04387127, 0xaa56, 0x450a, 0x8c, 0xe5, 0x4f, 0x56, 0x5c, 0x67, 0x90, 0xf4);
+		/// <summary/>
+		public static readonly Guid PEER_GROUP_ROLE_MEMBER = new Guid(0xf12dc4c7, 0x0857, 0x4ca0, 0x93, 0xfc, 0xb1, 0xbb, 0x19, 0xa3, 0xd8, 0xc2);
+		/// <summary/>
+		public static readonly Guid PEER_GROUP_ROLE_INVITING_MEMBER = new Guid(0x4370fd89, 0xdc18, 0x4cfb, 0x8d, 0xbf, 0x98, 0x53, 0xa8, 0xa9, 0xf9, 0x05);
+		/// <summary/>
+		public static readonly Guid PEER_COLLAB_OBJECTID_USER_PICTURE = new Guid(0xdd15f41f, 0xfc4e, 0x4922, 0xb0, 0x35, 0x4c, 0x06, 0xa7, 0x54, 0xd0, 0x1d);
+
+
 		/// <summary>The <c>PEER_APPLICATION_REGISTRATION_TYPE</c> enumeration defines the set of peer application registration flags.</summary>
 		/// <remarks>
 		/// <para>
