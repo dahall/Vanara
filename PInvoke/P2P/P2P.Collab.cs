@@ -562,29 +562,7 @@ namespace Vanara.PInvoke
 		// registrationType, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumApplicationRegistrationInfo")]
-		public static extern HRESULT PeerCollabEnumApplicationRegistrationInfo(PEER_APPLICATION_REGISTRATION_TYPE registrationType, out SafeHPEERENUM phPeerEnum);
-
-		/// <summary>The <c>PeerCollabEnumApplicationRegistrationInfo</c> function enumerates peer application information.</summary>
-		/// <param name="registrationType">
-		/// A PEER_APPLICATION_REGISTRATION_TYPE value that specifies whether the peer's application is registered to the <c>current
-		/// user</c> or <c>all users</c> of the peer's machine.
-		/// </param>
-		/// <returns>A list of <see cref="PEER_APPLICATION_REGISTRATION_INFO"/> structures.</returns>
-		/// <remarks>
-		/// <para>
-		/// An application is a set of software or software features available on the peer's endpoint. Commonly, this refers to software
-		/// packages that support peer networking activities, like games or other collaborative applications.
-		/// </para>
-		/// <para>
-		/// A peer's application has a GUID representing a single specific application. When an application is registered for a peer, this
-		/// GUID and the corresponding application can be made available to all trusted contacts of the peer, indicating the activities the
-		/// peer can participate in. To unregister a peer's application, call PeerCollabUnregisterApplication with this GUID.
-		/// </para>
-		/// <para>Peer application registration information items are returned as individual PEER_APPLICATION_REGISTRATION_INFO structures.</para>
-		/// </remarks>
-		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumApplicationRegistrationInfo")]
-		public static IEnumerable<PEER_APPLICATION_REGISTRATION_INFO> PeerCollabEnumApplicationRegistrationInfo(PEER_APPLICATION_REGISTRATION_TYPE registrationType) =>
-			PeerEnum<PEER_APPLICATION_REGISTRATION_INFO>(() => { PeerCollabEnumApplicationRegistrationInfo(registrationType, out var h).ThrowIfFailed(); return h; });
+		public static extern HRESULT PeerCollabEnumApplicationRegistrationInfo(PEER_APPLICATION_REGISTRATION_TYPE registrationType, out SafeHPEERENUM<PEER_APPLICATION_REGISTRATION_INFO> phPeerEnum);
 
 		/// <summary>
 		/// The <c>PeerCollabEnumApplications</c> function returns the handle to an enumeration that contains the applications registered to
@@ -653,7 +631,7 @@ namespace Vanara.PInvoke
 		// PeerCollabEnumApplications( PCPEER_ENDPOINT pcEndpoint, const GUID *pApplicationId, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumApplications")]
-		public static extern HRESULT PeerCollabEnumApplications(in PEER_ENDPOINT pcEndpoint, in Guid pApplicationId, out SafeHPEERENUM phPeerEnum);
+		public static extern HRESULT PeerCollabEnumApplications(in PEER_ENDPOINT pcEndpoint, in Guid pApplicationId, out SafeHPEERENUM<PEER_APPLICATION> phPeerEnum);
 
 		/// <summary>
 		/// The <c>PeerCollabEnumApplications</c> function returns the handle to an enumeration that contains the applications registered to
@@ -722,60 +700,7 @@ namespace Vanara.PInvoke
 		// PeerCollabEnumApplications( PCPEER_ENDPOINT pcEndpoint, const GUID *pApplicationId, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumApplications")]
-		public static extern HRESULT PeerCollabEnumApplications([In, Optional] IntPtr pcEndpoint, [In, Optional] IntPtr pApplicationId, out SafeHPEERENUM phPeerEnum);
-
-		/// <summary>
-		/// The <c>PeerCollabEnumApplications</c> function returns the handle to an enumeration that contains the applications registered to
-		/// a specific peer's endpoint(s).
-		/// </summary>
-		/// <param name="pcEndpoint">
-		/// <para>A PEER_ENDPOINT structure that contains the endpoint information for a peer whose applications will be enumerated.</para>
-		/// <para>If this parameter is set to <c>NULL</c>, the published application information for the local peer's endpoint is enumerated.</para>
-		/// </param>
-		/// <param name="pApplicationId">
-		/// A GUID value that uniquely identifies a particular application of the supplied peer. If this parameter is supplied, the only
-		/// peer application returned is the one that matches this GUID.
-		/// </param>
-		/// <returns>
-		/// A list of <see cref="PEER_APPLICATION"/> structures that contains the applications registered to a specific peer's endpoint(s).
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// In order to enumerate the applications for the specified endpoint successfully, application data must be available on the
-		/// endpoint. For application data to be available, one of the following must occur:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>The endpoint must have been previously obtained by calling PeerCollabEnumEndpoints.</term>
-		/// </item>
-		/// <item>
-		/// <term>The local peer must have subscribed to the endpoint by calling PeerCollabSubscribeEndpointData.</term>
-		/// </item>
-		/// <item>
-		/// <term>The endpoint data must be refreshed by calling PeerCollabRefreshEndpointData successfully.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// The <c>PeerCollabEnumApplications</c> function returns an empty array for endpoints on the subnet that are not trusted contacts.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabenumapplications NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-		// PeerCollabEnumApplications( PCPEER_ENDPOINT pcEndpoint, const GUID *pApplicationId, HPEERENUM *phPeerEnum );
-		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumApplications")]
-		public static IEnumerable<PEER_APPLICATION> PeerCollabEnumApplications([In, Optional] PEER_ENDPOINT? pcEndpoint, [In, Optional] Guid? pApplicationId) =>
-			PeerEnum<PEER_APPLICATION>(() =>
-			{
-				SafeHPEERENUM h;
-				if (pcEndpoint.HasValue && pApplicationId.HasValue)
-					PeerCollabEnumApplications(pcEndpoint.Value, pApplicationId.Value, out h).ThrowIfFailed();
-				else
-				{
-					using var e = (SafeHGlobalStruct<PEER_ENDPOINT>)pcEndpoint;
-					using var a = (SafeHGlobalStruct<Guid>)pApplicationId;
-					PeerCollabEnumApplications(e, a, out h).ThrowIfFailed();
-				}
-				return h;
-			});
+		public static extern HRESULT PeerCollabEnumApplications([In, Optional] IntPtr pcEndpoint, [In, Optional] IntPtr pApplicationId, out SafeHPEERENUM<PEER_APPLICATION> phPeerEnum);
 
 		/// <summary>
 		/// The <c>PeerCollabEnumContacts</c> function returns a handle to an enumerated set that contains all of the peer collaboration
@@ -815,17 +740,7 @@ namespace Vanara.PInvoke
 		// PeerCollabEnumContacts( HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumContacts")]
-		public static extern HRESULT PeerCollabEnumContacts(out SafeHPEERENUM phPeerEnum);
-
-		/// <summary>
-		/// The <c>PeerCollabEnumContacts</c> function returns an enumerated set that contains all of the peer collaboration network
-		/// contacts currently available on the calling peer.
-		/// </summary>
-		/// <returns>A list of <see cref="PEER_CONTACT"/> of all currently available contacts.</returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabenumcontacts NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-		// PeerCollabEnumContacts( HPEERENUM *phPeerEnum );
-		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumContacts")]
-		public static IEnumerable<PEER_CONTACT> PeerCollabEnumContacts() => PeerEnum<PEER_CONTACT>(() => { PeerCollabEnumContacts(out var h).ThrowIfFailed(); return h; });
+		public static extern HRESULT PeerCollabEnumContacts(out SafeHPEERENUM<PEER_CONTACT> phPeerEnum);
 
 		/// <summary>
 		/// The <c>PeerCollabEnumEndpoints</c> function returns the handle to an enumeration that contains the endpoints associated with a
@@ -885,32 +800,7 @@ namespace Vanara.PInvoke
 		// PeerCollabEnumEndpoints( PCPEER_CONTACT pcContact, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumEndpoints")]
-		public static extern HRESULT PeerCollabEnumEndpoints(in PEER_CONTACT pcContact, out SafeHPEERENUM phPeerEnum);
-
-		/// <summary>
-		/// The <c>PeerCollabEnumEndpoints</c> function returns an enumeration that contains the endpoints associated with a specific peer contact.
-		/// </summary>
-		/// <param name="pcContact">Pointer to a PEER_CONTACT structure that contains the contact information for a specific peer.</param>
-		/// <returns>
-		/// An enumeration of <see cref="PEER_ENDPOINT"/> structures that contain the endpoints associated with a specific peer contact.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// It is recommended that a contact record is updated using PeerCollabUpdateContact prior to calling
-		/// <c>PeerCollabEnumEndpoints</c>. Failure to do so can result in a return of E_INVALIDARG.
-		/// </para>
-		/// <para>
-		/// Endpoints will be available only for contacts with fWatch set to <c>true</c>. Only endpoints that have the "Me" contact of the
-		/// calling peer saved as a trusted contact and have WatcherPermissions set to <c>allow</c> will be available. A contact must also
-		/// be signed-in to the internet. In the event the contact is not signed-in, the error <c>E_INVALIDARG</c> will be returned.
-		/// </para>
-		/// <para>The limit for connections to a single contact is 50.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabenumendpoints NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-		// PeerCollabEnumEndpoints( PCPEER_CONTACT pcContact, HPEERENUM *phPeerEnum );
-		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumEndpoints")]
-		public static IEnumerable<PEER_ENDPOINT> PeerCollabEnumEndpoints(in PEER_CONTACT pcContact) =>
-			PeerEnum<PEER_ENDPOINT, PEER_CONTACT>(pcContact, i => { PeerCollabEnumEndpoints(i, out var h).ThrowIfFailed(); return h; });
+		public static extern HRESULT PeerCollabEnumEndpoints(in PEER_CONTACT pcContact, out SafeHPEERENUM<PEER_ENDPOINT> phPeerEnum);
 
 		/// <summary>
 		/// The <c>PeerCollabEnumObjects</c> function returns the handle to an enumeration that contains the peer objects associated with a
@@ -989,7 +879,7 @@ namespace Vanara.PInvoke
 		// PeerCollabEnumObjects( PCPEER_ENDPOINT pcEndpoint, const GUID *pObjectId, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumObjects")]
-		public static extern HRESULT PeerCollabEnumObjects(in PEER_ENDPOINT pcEndpoint, in Guid pObjectId, out SafeHPEERENUM phPeerEnum);
+		public static extern HRESULT PeerCollabEnumObjects(in PEER_ENDPOINT pcEndpoint, in Guid pObjectId, out SafeHPEERENUM<PEER_OBJECT> phPeerEnum);
 
 		/// <summary>
 		/// The <c>PeerCollabEnumObjects</c> function returns the handle to an enumeration that contains the peer objects associated with a
@@ -1068,63 +958,7 @@ namespace Vanara.PInvoke
 		// PeerCollabEnumObjects( PCPEER_ENDPOINT pcEndpoint, const GUID *pObjectId, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumObjects")]
-		public static extern HRESULT PeerCollabEnumObjects([In, Optional] IntPtr pcEndpoint, [In, Optional] IntPtr pObjectId, out SafeHPEERENUM phPeerEnum);
-
-		/// <summary>
-		/// The <c>PeerCollabEnumObjects</c> function returns an enumeration that contains the peer objects associated with a specific
-		/// peer's endpoint.
-		/// </summary>
-		/// <param name="pcEndpoint">
-		/// <para>A PEER_ENDPOINT structure that contains the endpoint information for a peer whose objects will be enumerated.</para>
-		/// <para>If this parameter is <see langword="null"/> the published objects of the local peer's contacts are returned.</para>
-		/// </param>
-		/// <param name="pObjectId">
-		/// A GUID value that uniquely identifies a peer object with the supplied peer. If this parameter is supplied, the only peer object
-		/// returned is the one that matches this GUID.
-		/// </param>
-		/// <returns>The enumerated set of peer objects that correspond to the GUID returned in pObjectId.</returns>
-		/// <remarks>
-		/// <para>
-		/// Peer objects are run-time data items associated with a particular application, such as a picture, an avatar, a certificate, or a
-		/// specific description. Each peer object must be smaller than 16K in size.
-		/// </para>
-		/// <para>
-		/// <c>PeerCollabEnumObjects</c> will return all of the objects published for the local peer. The objects can be published by more
-		/// than one application.
-		/// </para>
-		/// <para>To obtain a peer object successfully:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>The endpoint must have been previously obtained by calling PeerCollabEnumEndpoints.</term>
-		/// </item>
-		/// <item>
-		/// <term>The local peer must have subscribed to the endpoint by calling PeerCollabSubscribeEndpointData.</term>
-		/// </item>
-		/// <item>
-		/// <term>The endpoint data must be refreshed by calling PeerCollabRefreshEndpointData successfully.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// If the user is publishing a picture, the picture can be obtained by retrieving the corresponding object. The GUID for the
-		/// picture object is PEER_COLLAB_OBJECTID_USER_PICTURE.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabenumobjects NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-		// PeerCollabEnumObjects( PCPEER_ENDPOINT pcEndpoint, const GUID *pObjectId, HPEERENUM *phPeerEnum );
-		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumObjects")]
-		public static IEnumerable<PEER_OBJECT> PeerCollabEnumObjects([In, Optional] PEER_ENDPOINT? pcEndpoint, [In, Optional] Guid? pObjectId) => PeerEnum<PEER_OBJECT>(() =>
-		{
-			SafeHPEERENUM h;
-			if (pcEndpoint.HasValue && pObjectId.HasValue)
-				PeerCollabEnumObjects(pcEndpoint.Value, pObjectId.Value, out h).ThrowIfFailed();
-			else
-			{
-				using var e = (SafeHGlobalStruct<PEER_ENDPOINT>)pcEndpoint;
-				using var a = (SafeHGlobalStruct<Guid>)pObjectId;
-				PeerCollabEnumObjects(e, a, out h).ThrowIfFailed();
-			}
-			return h;
-		});
+		public static extern HRESULT PeerCollabEnumObjects([In, Optional] IntPtr pcEndpoint, [In, Optional] IntPtr pObjectId, out SafeHPEERENUM<PEER_OBJECT> phPeerEnum);
 
 		/// <summary>
 		/// The <c>PeerCollabEnumPeopleNearMe</c> function returns a handle to an enumerated set that contains all of the peer collaboration
@@ -1168,20 +1002,7 @@ namespace Vanara.PInvoke
 		// PeerCollabEnumPeopleNearMe( HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumPeopleNearMe")]
-		public static extern HRESULT PeerCollabEnumPeopleNearMe(out SafeHPEERENUM phPeerEnum);
-
-		/// <summary>
-		/// The <c>PeerCollabEnumPeopleNearMe</c> function returns an enumerated set that contains all of the peer collaboration network
-		/// "people near me" endpoints currently available on the subnet of the calling peer.
-		/// </summary>
-		/// <returns>
-		/// An enumerated set that contains all of the peer collaboration network "people near me" endpoints currently available on the
-		/// subnet of the calling peer.
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabenumpeoplenearme NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-		// PeerCollabEnumPeopleNearMe( HPEERENUM *phPeerEnum );
-		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabEnumPeopleNearMe")]
-		public static IEnumerable<PEER_PEOPLE_NEAR_ME> PeerCollabEnumPeopleNearMe() => PeerEnum<PEER_PEOPLE_NEAR_ME>(() => { PeerCollabEnumPeopleNearMe(out var h).ThrowIfFailed(); return h; });
+		public static extern HRESULT PeerCollabEnumPeopleNearMe(out SafeHPEERENUM<PEER_PEOPLE_NEAR_ME> phPeerEnum);
 
 		/// <summary>
 		/// <para>
