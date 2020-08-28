@@ -25,7 +25,13 @@ namespace Vanara.InteropServices
 		/// <param name="closeMethod">The delegate method for closing the handle.</param>
 		/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; <see langword="false"/> to prevent reliable release (not recommended).</param>
 		/// <exception cref="System.ArgumentNullException">closeMethod</exception>
-		public GenericSafeHandle(IntPtr ptr, Func<IntPtr, bool> closeMethod, bool ownsHandle = true) : base(ownsHandle) => SetHandle(ptr);
+		public GenericSafeHandle(IntPtr ptr, Func<IntPtr, bool> closeMethod, bool ownsHandle = true) : base(ownsHandle)
+		{
+			if (closeMethod == null) throw new ArgumentNullException(nameof(closeMethod));
+
+			SetHandle(ptr);
+			CloseMethod = closeMethod;
+		}
 
 		/// <summary>Gets or sets the close method.</summary>
 		/// <value>The close method.</value>
