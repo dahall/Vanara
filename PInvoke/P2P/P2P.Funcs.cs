@@ -861,6 +861,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerPnrpUpdateRegistration")]
 		public static extern HRESULT PeerPnrpUpdateRegistration(HREGISTRATION hRegistration, in PEER_PNRP_REGISTRATION_INFO pRegistrationInfo);
 
+		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
+		internal static extern HRESULT PeerGetNextItem([In] HPEERENUM hPeerEnum, ref uint pCount, out IntPtr pppvItems);
+
+		private static SafePeerList<T> PeerEnum<T, TIn>(TIn p1, Func<TIn, SafeHPEERENUM> setup) where T : struct where TIn : struct =>
+			PeerEnum<T>(() => setup(p1));
+
+		private static SafePeerList<T> PeerEnum<T>(Func<SafeHPEERENUM> setup) where T : struct
+		{
+			using var hEnum = setup();
+			return hEnum.GetItems<T>();
+		}
+
 		/// <summary>Provides a handle to a peer enumeration.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HPEERENUM : IHandle
@@ -1006,53 +1018,43 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPEERENUM"/> that is disposed using <see cref="PeerEndEnumeration"/>.</summary>
-		/// <typeparam name="T">The type of the structure that can be enumerated.</typeparam>
 		/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
-		/// <seealso cref="System.Collections.Generic.IEnumerable{T}"/>
-		public class SafeHPEERENUM<T> : SafeHANDLE, IEnumerable<T> where T : struct
+		public class SafeHPEERENUM : SafeHANDLE
 		{
-			private uint count;
-			private SafePeerData data;
-
-			/// <summary>Initializes a new instance of the <see cref="SafeHPEERENUM{T}"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeHPEERENUM"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
 			public SafeHPEERENUM(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeHPEERENUM{T}"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeHPEERENUM"/> class.</summary>
 			private SafeHPEERENUM() : base() { }
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeHPEERENUM{T}"/> to <see cref="HPEERENUM"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPEERENUM"/> to <see cref="HPEERENUM"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HPEERENUM(SafeHPEERENUM<T> h) => h.handle;
+			public static implicit operator HPEERENUM(SafeHPEERENUM h) => h.handle;
 
-			IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<T>)this).GetEnumerator();
-
-			IEnumerator<T> IEnumerable<T>.GetEnumerator() => ((IEnumerable<T>)GetData().DangerousGetHandle().ToArray<T>((int)count)).GetEnumerator();
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle()
-			{
-				data?.Dispose();
-				return PeerEndEnumeration(handle).Succeeded;
-			}
-
-			private SafePeerData GetData()
+			/// <summary>Gets the enumerated items.</summary>
+			/// <typeparam name="T">The type of the structure that can be enumerated.</typeparam>
+			/// <returns>A <see cref="SafePeerList{T}"/> that exposes the enumeration.</returns>
+			/// <exception cref="InvalidOperationException">The enumeration has ended.</exception>
+			public SafePeerList<T> GetItems<T>() where T : struct
 			{
 				if (IsInvalid) throw new InvalidOperationException("The enumeration has ended.");
-				if (data is null)
+				PeerGetItemCount(handle, out var count).ThrowIfFailed();
+				if (count > 0)
 				{
-					PeerGetItemCount(handle, out count).ThrowIfFailed();
-					if (count > 0)
-						PeerGetNextItem(handle, ref count, out data).ThrowIfFailed();
-					else
-						data = new SafePeerData();
+					PeerGetNextItem(handle, ref count, out IntPtr data).ThrowIfFailed();
+					return new SafePeerList<T>(data, count);
 				}
-				return data;
+				else
+					return new SafePeerList<T>();
 			}
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => PeerEndEnumeration(handle).Succeeded;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for data that is disposed using <see cref="PeerFreeData"/>.</summary>
@@ -1061,8 +1063,40 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafePeerData"/> class.</summary>
 			protected internal SafePeerData() : base() { }
 
+			/// <summary>Initializes a new instance of the <see cref="SafePeerData"/> class.</summary>
+			/// <param name="preexistingHandle">An <see cref="T:System.IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			protected SafePeerData(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { PeerFreeData(handle); return true; }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for an array that is disposed using <see cref="PeerFreeData"/>.</summary>
+		/// <typeparam name="T">The type of the structure that can be enumerated.</typeparam>
+		/// <seealso cref="System.Collections.Generic.IEnumerable{T}"/>
+		public class SafePeerList<T> : SafePeerData, IEnumerable<T> where T : struct
+		{
+			private uint count = 0;
+
+			internal SafePeerList() : base()
+			{
+			}
+
+			internal SafePeerList(IntPtr preexistingHandle, uint cnt) : base(preexistingHandle, true) => count = cnt;
+
+			/// <summary>Gets the items exposed by this list.</summary>
+			/// <value>The items.</value>
+			/// <exception cref="InvalidOperationException">Object has been disposed</exception>
+			public IList<T> Items => IsInvalid ? (new T[0]) : DangerousGetHandle().ToArray<T>((int)count);
+
+			/// <summary>Returns an enumerator that iterates through the collection.</summary>
+			/// <returns>A <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
+			public IEnumerator<T> GetEnumerator() => Items.GetEnumerator();
+
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 
 		internal class PeerStringMarshaler : ICustomMarshaler

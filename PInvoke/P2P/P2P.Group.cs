@@ -840,7 +840,25 @@ namespace Vanara.PInvoke
 		// PeerGroupEnumConnections( HGROUP hGroup, DWORD dwFlags, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupEnumConnections")]
-		public static extern HRESULT PeerGroupEnumConnections(HGROUP hGroup, PEER_CONNECTION_FLAGS dwFlags, out SafeHPEERENUM<PEER_CONNECTION_INFO> phPeerEnum);
+		public static extern HRESULT PeerGroupEnumConnections(HGROUP hGroup, PEER_CONNECTION_FLAGS dwFlags, out SafeHPEERENUM phPeerEnum);
+
+		/// <summary>The <c>PeerGroupEnumConnections</c> function creates an enumeration of connections currently active on the peer.</summary>
+		/// <param name="hGroup">
+		/// Handle to the group that contains the connections to be enumerated. This handle is returned by the PeerGroupCreate,
+		/// PeerGroupOpen, or PeerGroupJoin function. This parameter is required.
+		/// </param>
+		/// <param name="dwFlags">
+		/// Specifies the flags that indicate the type of connection to enumerate. Valid values are specified by PEER_CONNECTION_FLAGS.
+		/// </param>
+		/// <returns>
+		/// The enumeration that contains the returned list of active connections, with each item represented as a pointer to a
+		/// PEER_CONNECTION_INFO structure.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupenumconnections NOT_BUILD_WINDOWS_DEPRECATE HRESULT
+		// PeerGroupEnumConnections( HGROUP hGroup, DWORD dwFlags, HPEERENUM *phPeerEnum );
+		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupEnumConnections")]
+		public static SafePeerList<PEER_CONNECTION_INFO> PeerGroupEnumConnections(HGROUP hGroup, PEER_CONNECTION_FLAGS dwFlags) =>
+			PeerEnum<PEER_CONNECTION_INFO>(() => { PeerGroupEnumConnections(hGroup, dwFlags, out var h).ThrowIfFailed(); return h; });
 
 		/// <summary>
 		/// The <c>PeerGroupEnumMembers</c> function creates an enumeration of available peer group members and the associated membership information.
@@ -914,7 +932,54 @@ namespace Vanara.PInvoke
 		// PeerGroupEnumMembers( HGROUP hGroup, DWORD dwFlags, PCWSTR pwzIdentity, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupEnumMembers")]
-		public static extern HRESULT PeerGroupEnumMembers(HGROUP hGroup, PEER_MEMBER_FLAGS dwFlags, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity, out SafeHPEERENUM<PEER_MEMBER> phPeerEnum);
+		public static extern HRESULT PeerGroupEnumMembers(HGROUP hGroup, PEER_MEMBER_FLAGS dwFlags, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity, out SafeHPEERENUM phPeerEnum);
+
+		/// <summary>
+		/// The <c>PeerGroupEnumMembers</c> function creates an enumeration of available peer group members and the associated membership information.
+		/// </summary>
+		/// <param name="hGroup">
+		/// Handle to the peer group whose members are enumerated. This handle is returned by the PeerGroupCreate, PeerGroupOpen, or
+		/// PeerGroupJoin function. This parameter is required.
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Specifies the PEER_MEMBER_FLAGS flags that indicate which types of members to include in the enumeration. If this value is set
+		/// to zero, all members of the peer group are included.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PEER_MEMBER_PRESENT</term>
+		/// <term>Enumerate all members of the current peer group that are online.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pwzIdentity">
+		/// String that contains the identity of a specific peer whose information is retrieved and returned in a one-item enumeration. If
+		/// this parameter is <see langword="null"/>, all members of the current peer group are retrieved.
+		/// </param>
+		/// <returns>
+		/// The enumeration that contains the returned list of peer group members, with each item represented as a pointer to a PEER_MEMBER structure.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The local node is always the very first item in the enumeration if pwzIdentity is <see langword="null"/>, and dwFlags is set to
+		/// indicate that the local node is a member of the explicit subset.
+		/// </para>
+		/// <para>
+		/// By default, every member publishes membership information to the peer group. If PEER_MEMBER_DATA_OPTIONAL is set on the
+		/// PEER_MEMBER data for that peer, this information is only available when a peer performs an action within the group, for example,
+		/// publishing a record, updating presence, or issuing a GMC.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupenummembers NOT_BUILD_WINDOWS_DEPRECATE HRESULT
+		// PeerGroupEnumMembers( HGROUP hGroup, DWORD dwFlags, PCWSTR pwzIdentity, HPEERENUM *phPeerEnum );
+		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupEnumMembers")]
+		public static SafePeerList<PEER_MEMBER> PeerGroupEnumMembers(HGROUP hGroup, PEER_MEMBER_FLAGS dwFlags, [Optional] string pwzIdentity) =>
+			PeerEnum<PEER_MEMBER>(() => { PeerGroupEnumMembers(hGroup, dwFlags, pwzIdentity, out var h).ThrowIfFailed(); return h; });
 
 		/// <summary>The <c>PeerGroupEnumRecords</c> function creates an enumeration of peer group records.</summary>
 		/// <param name="hGroup">
@@ -959,7 +1024,25 @@ namespace Vanara.PInvoke
 		// PeerGroupEnumRecords( HGROUP hGroup, const GUID *pRecordType, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupEnumRecords")]
-		public static extern HRESULT PeerGroupEnumRecords(HGROUP hGroup, in Guid pRecordType, out SafeHPEERENUM<PEER_RECORD> phPeerEnum);
+		public static extern HRESULT PeerGroupEnumRecords(HGROUP hGroup, in Guid pRecordType, out SafeHPEERENUM phPeerEnum);
+
+		/// <summary>The <c>PeerGroupEnumRecords</c> function creates an enumeration of peer group records.</summary>
+		/// <param name="hGroup">
+		/// Handle to the peer group whose records are enumerated. This handle is returned by the PeerGroupCreate, PeerGroupOpen, or
+		/// PeerGroupJoin function. This parameter is required.
+		/// </param>
+		/// <param name="pRecordType">
+		/// Pointer to a <c>GUID</c> value that uniquely identifies a specific record type. If this parameter is <c>NULL</c>, all records
+		/// are returned.
+		/// </param>
+		/// <returns>
+		/// The enumeration that contains the returned list of records, with each item represented as a pointer to a PEER_RECORD structure.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupenumrecords NOT_BUILD_WINDOWS_DEPRECATE HRESULT
+		// PeerGroupEnumRecords( HGROUP hGroup, const GUID *pRecordType, HPEERENUM *phPeerEnum );
+		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupEnumRecords")]
+		public static SafePeerList<PEER_RECORD> PeerGroupEnumRecords(HGROUP hGroup, in Guid pRecordType) =>
+			PeerEnum<PEER_RECORD, Guid>(pRecordType, g => { PeerGroupEnumRecords(hGroup, g, out var h).ThrowIfFailed(); return h; });
 
 		/// <summary>
 		/// The <c>PeerGroupExportConfig</c> function exports the group configuration for a peer as an XML string that contains the
@@ -2064,7 +2147,27 @@ namespace Vanara.PInvoke
 		// PeerGroupSearchRecords( HGROUP hGroup, PCWSTR pwzCriteria, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupSearchRecords")]
-		public static extern HRESULT PeerGroupSearchRecords(HGROUP hGroup, [MarshalAs(UnmanagedType.LPWStr)] string pwzCriteria, out SafeHPEERENUM<PEER_RECORD> phPeerEnum);
+		public static extern HRESULT PeerGroupSearchRecords(HGROUP hGroup, [MarshalAs(UnmanagedType.LPWStr)] string pwzCriteria, out SafeHPEERENUM phPeerEnum);
+
+		/// <summary>
+		/// The <c>PeerGroupSearchRecords</c> function searches the local peer group database for records that match the supplied criteria.
+		/// </summary>
+		/// <param name="hGroup">
+		/// Handle to the peer group whose local database is searched. This handle is returned by the PeerGroupCreate, PeerGroupOpen, or
+		/// PeerGroupJoin function. This parameter is required.
+		/// </param>
+		/// <param name="pwzCriteria">
+		/// Pointer to an XML string that contains the record search query. For information about formulating an XML query string to search
+		/// the peer group records database, see the Record Search Query Format documentation. This parameter is required.
+		/// </param>
+		/// <returns>
+		/// The enumeration that contains the returned list of records, with each item represented as a pointer to a PEER_RECORD structure.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupsearchrecords NOT_BUILD_WINDOWS_DEPRECATE HRESULT
+		// PeerGroupSearchRecords( HGROUP hGroup, PCWSTR pwzCriteria, HPEERENUM *phPeerEnum );
+		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupSearchRecords")]
+		public static SafePeerList<PEER_RECORD> PeerGroupSearchRecords(HGROUP hGroup, string pwzCriteria) =>
+			PeerEnum<PEER_RECORD>(() => { PeerGroupSearchRecords(hGroup, pwzCriteria, out var h).ThrowIfFailed(); return h; });
 
 		/// <summary>The <c>PeerGroupSendData</c> function sends data to a member over a neighbor or direct connection.</summary>
 		/// <param name="hGroup">

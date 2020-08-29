@@ -830,7 +830,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>When <c></c> this member is set, notification will be sent only for the specific application or object.</para>
 			/// </summary>
-			public IntPtr pInstance;
+			public GuidPtr pInstance;
 		}
 
 		/// <summary>

@@ -101,7 +101,19 @@ namespace Vanara.PInvoke
 		// PCWSTR pwzIdentity, HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerEnumGroups")]
-		public static extern HRESULT PeerEnumGroups([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity, out SafeHPEERENUM<PEER_NAME_PAIR> phPeerEnum);
+		public static extern HRESULT PeerEnumGroups([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity, out SafeHPEERENUM phPeerEnum);
+
+		/// <summary>The <c>PeerEnumGroups</c> function enumerates all the peer groups associated with a specific peer identity.</summary>
+		/// <param name="pwzIdentity">Specifies the peer identity to enumerate groups for.</param>
+		/// <returns>
+		/// The peer enumeration that contains the list of peer groups that the specified identity is a member of, with each item
+		/// represented as a pointer to a PEER_NAME_PAIR structure.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peerenumgroups NOT_BUILD_WINDOWS_DEPRECATE HRESULT PeerEnumGroups(
+		// PCWSTR pwzIdentity, HPEERENUM *phPeerEnum );
+		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerEnumGroups")]
+		public static SafePeerList<PEER_NAME_PAIR> PeerEnumGroups([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity) =>
+			PeerEnum<PEER_NAME_PAIR>(() => { PeerEnumGroups(pwzIdentity, out var h).ThrowIfFailed(); return h; });
 
 		/// <summary>
 		/// The <c>PeerEnumIdentities</c> function creates and returns a peer enumeration handle used to enumerate all the peer identities
@@ -140,7 +152,18 @@ namespace Vanara.PInvoke
 		// PeerEnumIdentities( HPEERENUM *phPeerEnum );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerEnumIdentities")]
-		public static extern HRESULT PeerEnumIdentities(out SafeHPEERENUM<PEER_NAME_PAIR> phPeerEnum);
+		public static extern HRESULT PeerEnumIdentities(out SafeHPEERENUM phPeerEnum);
+
+		/// <summary>The <c>PeerEnumIdentities</c> function enumerates all the peer identities that belong to a specific user.</summary>
+		/// <returns>
+		/// The peer enumeration that contains the list of peer identities, with each item represented as a pointer to a PEER_NAME_PAIR
+		/// structure. ///
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peerenumidentities NOT_BUILD_WINDOWS_DEPRECATE HRESULT
+		// PeerEnumIdentities( HPEERENUM *phPeerEnum );
+		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerEnumIdentities")]
+		public static SafePeerList<PEER_NAME_PAIR> PeerEnumIdentities() =>
+			PeerEnum<PEER_NAME_PAIR>(() => { PeerEnumIdentities(out var h).ThrowIfFailed(); return h; });
 
 		/// <summary>
 		/// The <c>PeerIdentityCreate</c> function creates a new peer identity and returns its name. The name of the peer identity must be
