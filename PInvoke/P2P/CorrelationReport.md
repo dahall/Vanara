@@ -1,7 +1,7 @@
 ## Correlation report for p2p.dll  
 PInvoke API (methods, structures and constants) imported from Windows P2P.dll.
 
-### Methods (87% complete, 101 of 115 functions)  
+### Methods (94% complete, 109 of 115 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DllMain](https://www.google.com/search?num=5&q=DllMain+site%3Adocs.microsoft.com) |  |   
@@ -53,7 +53,7 @@ Native Method | Header | Managed Method
 [PeerEnumIdentities](https://www.google.com/search?num=5&q=PeerEnumIdentities+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerEnumIdentities](https://github.com/dahall/Vanara/search?l=C%23&q=PeerEnumIdentities)  
 [PeerFreeData](https://www.google.com/search?num=5&q=PeerFreeData+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerFreeData](https://github.com/dahall/Vanara/search?l=C%23&q=PeerFreeData)  
 [PeerGetItemCount](https://www.google.com/search?num=5&q=PeerGetItemCount+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGetItemCount](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGetItemCount)  
-[PeerGetNextItem](https://www.google.com/search?num=5&q=PeerGetNextItem+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGetNextItem](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGetNextItem)  
+[PeerGetNextItem](https://www.google.com/search?num=5&q=PeerGetNextItem+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.PeerGetNextItem](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGetNextItem)  
 [PeerGraphShutdown](https://www.google.com/search?num=5&q=PeerGraphShutdown+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGraphShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGraphShutdown)  
 [PeerGraphStartup](https://www.google.com/search?num=5&q=PeerGraphStartup+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGraphStartup](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGraphStartup)  
 [PeerGroupAddRecord](https://www.google.com/search?num=5&q=PeerGroupAddRecord+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupAddRecord](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupAddRecord)  
@@ -107,16 +107,16 @@ Native Method | Header | Managed Method
 [PeerIdentityImport](https://www.google.com/search?num=5&q=PeerIdentityImport+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerIdentityImport](https://github.com/dahall/Vanara/search?l=C%23&q=PeerIdentityImport)  
 [PeerIdentitySetFriendlyName](https://www.google.com/search?num=5&q=PeerIdentitySetFriendlyName+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerIdentitySetFriendlyName](https://github.com/dahall/Vanara/search?l=C%23&q=PeerIdentitySetFriendlyName)  
 [PeerNameToPeerHostName](https://www.google.com/search?num=5&q=PeerNameToPeerHostName+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerNameToPeerHostName](https://github.com/dahall/Vanara/search?l=C%23&q=PeerNameToPeerHostName)  
-[PeerPnrpEndResolve](https://www.google.com/search?num=5&q=PeerPnrpEndResolve+site%3Adocs.microsoft.com) |  |   
-[PeerPnrpGetCloudInfo](https://www.google.com/search?num=5&q=PeerPnrpGetCloudInfo+site%3Adocs.microsoft.com) |  |   
-[PeerPnrpGetEndpoint](https://www.google.com/search?num=5&q=PeerPnrpGetEndpoint+site%3Adocs.microsoft.com) |  |   
-[PeerPnrpRegister](https://www.google.com/search?num=5&q=PeerPnrpRegister+site%3Adocs.microsoft.com) |  |   
-[PeerPnrpResolve](https://www.google.com/search?num=5&q=PeerPnrpResolve+site%3Adocs.microsoft.com) |  |   
+[PeerPnrpEndResolve](https://www.google.com/search?num=5&q=PeerPnrpEndResolve+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpEndResolve](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpEndResolve)  
+[PeerPnrpGetCloudInfo](https://www.google.com/search?num=5&q=PeerPnrpGetCloudInfo+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpGetCloudInfo](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpGetCloudInfo)  
+[PeerPnrpGetEndpoint](https://www.google.com/search?num=5&q=PeerPnrpGetEndpoint+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpGetEndpoint](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpGetEndpoint)  
+[PeerPnrpRegister](https://www.google.com/search?num=5&q=PeerPnrpRegister+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpRegister](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpRegister)  
+[PeerPnrpResolve](https://www.google.com/search?num=5&q=PeerPnrpResolve+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpResolve](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpResolve)  
 [PeerPnrpShutdown](https://www.google.com/search?num=5&q=PeerPnrpShutdown+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpShutdown)  
-[PeerPnrpStartResolve](https://www.google.com/search?num=5&q=PeerPnrpStartResolve+site%3Adocs.microsoft.com) |  |   
+[PeerPnrpStartResolve](https://www.google.com/search?num=5&q=PeerPnrpStartResolve+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpStartResolve](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpStartResolve)  
 [PeerPnrpStartup](https://www.google.com/search?num=5&q=PeerPnrpStartup+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpStartup](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpStartup)  
-[PeerPnrpUnregister](https://www.google.com/search?num=5&q=PeerPnrpUnregister+site%3Adocs.microsoft.com) |  |   
-[PeerPnrpUpdateRegistration](https://www.google.com/search?num=5&q=PeerPnrpUpdateRegistration+site%3Adocs.microsoft.com) |  |   
+[PeerPnrpUnregister](https://www.google.com/search?num=5&q=PeerPnrpUnregister+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpUnregister](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpUnregister)  
+[PeerPnrpUpdateRegistration](https://www.google.com/search?num=5&q=PeerPnrpUpdateRegistration+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpUpdateRegistration](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpUpdateRegistration)  
 [PeerSSPAddCredentials](https://www.google.com/search?num=5&q=PeerSSPAddCredentials+site%3Adocs.microsoft.com) |  |   
 [PeerSSPRemoveCredentials](https://www.google.com/search?num=5&q=PeerSSPRemoveCredentials+site%3Adocs.microsoft.com) |  |   
 ### Structures  
@@ -126,6 +126,8 @@ Native Structure | Header | Managed Structure
 [HGROUP](https://www.google.com/search?num=5&q=HGROUP+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.HGROUP](https://github.com/dahall/Vanara/search?l=C%23&q=HGROUP)  
 [HPEERENUM](https://www.google.com/search?num=5&q=HPEERENUM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.HPEERENUM](https://github.com/dahall/Vanara/search?l=C%23&q=HPEERENUM)  
 [HPEEREVENT](https://www.google.com/search?num=5&q=HPEEREVENT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.HPEEREVENT](https://github.com/dahall/Vanara/search?l=C%23&q=HPEEREVENT)  
+[HREGISTRATION](https://www.google.com/search?num=5&q=HREGISTRATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.HREGISTRATION](https://github.com/dahall/Vanara/search?l=C%23&q=HREGISTRATION)  
+[HRESOLUTION](https://www.google.com/search?num=5&q=HRESOLUTION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.HRESOLUTION](https://github.com/dahall/Vanara/search?l=C%23&q=HRESOLUTION)  
 [PEER_ADDRESS](https://www.google.com/search?num=5&q=PEER_ADDRESS+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PEER_ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=PEER_ADDRESS)  
 [PEER_APP_LAUNCH_INFO](https://www.google.com/search?num=5&q=PEER_APP_LAUNCH_INFO+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PEER_APP_LAUNCH_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PEER_APP_LAUNCH_INFO)  
 [PEER_APPLICATION](https://www.google.com/search?num=5&q=PEER_APPLICATION+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PEER_APPLICATION](https://github.com/dahall/Vanara/search?l=C%23&q=PEER_APPLICATION)  
@@ -171,3 +173,7 @@ Native Structure | Header | Managed Structure
 [PEER_RECORD](https://www.google.com/search?num=5&q=PEER_RECORD+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PEER_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=PEER_RECORD)  
 [PEER_SECURITY_INTERFACE](https://www.google.com/search?num=5&q=PEER_SECURITY_INTERFACE+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PEER_SECURITY_INTERFACE](https://github.com/dahall/Vanara/search?l=C%23&q=PEER_SECURITY_INTERFACE)  
 [PEER_VERSION_DATA](https://www.google.com/search?num=5&q=PEER_VERSION_DATA+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PEER_VERSION_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=PEER_VERSION_DATA)  
+[PNRP_CLOUD_ID](https://www.google.com/search?num=5&q=PNRP_CLOUD_ID+site%3Adocs.microsoft.com) | pnrpdef.h | [Vanara.PInvoke.P2P.PNRP_CLOUD_ID](https://github.com/dahall/Vanara/search?l=C%23&q=PNRP_CLOUD_ID)  
+[PNRPCLOUDINFO](https://www.google.com/search?num=5&q=PNRPCLOUDINFO+site%3Adocs.microsoft.com) | pnrpns.h | [Vanara.PInvoke.P2P.PNRPCLOUDINFO](https://github.com/dahall/Vanara/search?l=C%23&q=PNRPCLOUDINFO)  
+[PNRPINFO_V1](https://www.google.com/search?num=5&q=PNRPINFO_V1+site%3Adocs.microsoft.com) | pnrpns.h | [Vanara.PInvoke.P2P.PNRPINFO_V1](https://github.com/dahall/Vanara/search?l=C%23&q=PNRPINFO_V1)  
+[PNRPINFO_V2](https://www.google.com/search?num=5&q=PNRPINFO_V2+site%3Adocs.microsoft.com) | pnrpns.h | [Vanara.PInvoke.P2P.PNRPINFO_V2](https://github.com/dahall/Vanara/search?l=C%23&q=PNRPINFO_V2)  
