@@ -456,7 +456,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerPnrpGetCloudInfo")]
 		public static extern HRESULT PeerPnrpGetCloudInfo(out uint pcNumClouds,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_PNRP_CLOUD_INFO>))] out PEER_PNRP_CLOUD_INFO ppCloudInfo);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_PNRP_CLOUD_INFO>))] out PEER_PNRP_CLOUD_INFO ppCloudInfo);
+			out SafePeerData ppCloudInfo);
 
 		/// <summary>
 		/// The <c>PeerPnrpGetEndpoint</c> function retrieves a peer endpoint address resolved during an asynchronous peer name resolution operation.
@@ -506,7 +507,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerPnrpGetEndpoint")]
 		public static extern HRESULT PeerPnrpGetEndpoint(HRESOLUTION hResolve,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_PNRP_ENDPOINT_INFO>))] out PEER_PNRP_ENDPOINT_INFO ppEndpoint);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_PNRP_ENDPOINT_INFO>))] out PEER_PNRP_ENDPOINT_INFO ppEndpoint);
+			out SafePeerData ppEndpoint);
 
 		/// <summary>
 		/// <para>
@@ -1070,6 +1072,12 @@ namespace Vanara.PInvoke
 			/// </param>
 			protected SafePeerData(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
+			/// <summary>
+			/// Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by a generic type parameter.
+			/// </summary>
+			/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+			public T ToStructure<T>() where T : struct => handle.ToStructure<T>();
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { PeerFreeData(handle); return true; }
 		}
@@ -1077,33 +1085,32 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> for an array that is disposed using <see cref="PeerFreeData"/>.</summary>
 		/// <typeparam name="T">The type of the structure that can be enumerated.</typeparam>
 		/// <seealso cref="System.Collections.Generic.IEnumerable{T}"/>
-		public class SafePeerList<T> : SafePeerData, IEnumerable<T> where T : struct
+		public class SafePeerList<T> : SafeHANDLE, IEnumerable<T> where T : struct
 		{
 			private uint count = 0;
 
-			internal SafePeerList() : base()
-			{
-			}
+			internal SafePeerList() : base() { }
 
 			internal SafePeerList(IntPtr preexistingHandle, uint cnt) : base(preexistingHandle, true) => count = cnt;
 
 			/// <summary>Gets the items exposed by this list.</summary>
 			/// <value>The items.</value>
 			/// <exception cref="InvalidOperationException">Object has been disposed</exception>
-			public IList<T> Items => IsInvalid ? (new T[0]) : DangerousGetHandle().ToArray<T>((int)count);
+			public IList<T> Items => IsInvalid ? (new T[0]) : Array.ConvertAll(DangerousGetHandle().ToArray<IntPtr>((int)count), p => p.ToStructure<T>());
 
 			/// <summary>Returns an enumerator that iterates through the collection.</summary>
 			/// <returns>A <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
 			public IEnumerator<T> GetEnumerator() => Items.GetEnumerator();
 
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { PeerFreeData(handle); return true; }
 		}
 
 		internal class PeerStringMarshaler : ICustomMarshaler
 		{
-			internal PeerStringMarshaler()
-			{
-			}
+			internal PeerStringMarshaler() { }
 
 			public static ICustomMarshaler GetInstance(string _) => new PeerStringMarshaler();
 
@@ -1130,7 +1137,7 @@ namespace Vanara.PInvoke
 			public object MarshalNativeToManaged(IntPtr pNativeData) => Marshal.PtrToStringUni(pNativeData);
 		}
 
-		internal class PeerStructMarshaler<T> : ICustomMarshaler where T : struct
+		/*internal class PeerStructMarshaler<T> : ICustomMarshaler where T : struct
 		{
 			internal PeerStructMarshaler()
 			{
@@ -1159,7 +1166,7 @@ namespace Vanara.PInvoke
 			/// <param name="pNativeData">A pointer to the unmanaged data to be wrapped.</param>
 			/// <returns>Returns the managed view of the COM data.</returns>
 			public object MarshalNativeToManaged(IntPtr pNativeData) => Marshal.PtrToStructure(pNativeData, typeof(T));
-		}
+		}*/
 
 		/*
 PeerGraphAddRecord

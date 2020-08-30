@@ -239,7 +239,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.DbgHelp", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbgHelp", "UnitTests\PInvoke\DbgHelp\DbgHelp.csproj", "{F2C94926-224F-43AB-B351-C20C9B2D8656}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.P2P", "PInvoke\P2P\Vanara.PInvoke.P2P.csproj", "{200D7E57-452A-4A43-A96D-386F7C49E7BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.P2P", "PInvoke\P2P\Vanara.PInvoke.P2P.csproj", "{200D7E57-452A-4A43-A96D-386F7C49E7BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2P", "UnitTests\PInvoke\P2P\P2P.csproj", "{BBA10B94-658F-4BD7-A3DD-AA39CDF9A68D}"
 EndProject

@@ -112,7 +112,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peerenumgroups NOT_BUILD_WINDOWS_DEPRECATE HRESULT PeerEnumGroups(
 		// PCWSTR pwzIdentity, HPEERENUM *phPeerEnum );
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerEnumGroups")]
-		public static SafePeerList<PEER_NAME_PAIR> PeerEnumGroups([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity) =>
+		public static SafePeerList<PEER_NAME_PAIR> PeerEnumGroups(string pwzIdentity) =>
 			PeerEnum<PEER_NAME_PAIR>(() => { PeerEnumGroups(pwzIdentity, out var h).ThrowIfFailed(); return h; });
 
 		/// <summary>

@@ -289,16 +289,16 @@ namespace Vanara.PInvoke
 			PEER_GROUP_EVENT_INCOMING_DATA,
 
 			/// <summary>The status of a member has changed. Information on this change is provided in the PEER_GROUP_EVENT_DATA.</summary>
-			PEER_GROUP_EVENT_MEMBER_CHANGED,
+			PEER_GROUP_EVENT_MEMBER_CHANGED = 8,
 
 			/// <summary>
 			/// The connection to the peer group has failed. No data is provided when this peer event is raised. This event is also raised
 			/// if no members are online in a group you are attempting to connect to for the first time.
 			/// </summary>
-			PEER_GROUP_EVENT_CONNECTION_FAILED,
+			PEER_GROUP_EVENT_CONNECTION_FAILED = 10,
 
 			/// <summary/>
-			PEER_GROUP_EVENT_AUTHENTICATION_FAILED,
+			PEER_GROUP_EVENT_AUTHENTICATION_FAILED = 11,
 		}
 
 		/// <summary>The <c>PEER_GROUP_ISSUE_CREDENTIAL_FLAGS</c> are used to specify if user credentials are stored within a group.</summary>
@@ -762,47 +762,47 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// A PEER_EVENT_WATCHLIST_CHANGED_DATA structure. This data structure is present when <c>eventType</c> is set to PEER_EVENT_WATCHLIST_CHANGED.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_WATCHLIST_CHANGED_DATA watchListChangedData;
 
 			/// <summary>
 			/// A PEER_EVENT_PRESENCE_CHANGED_DATA structure. This data structure is present when <c>eventType</c> is set to
 			/// PEER_EVENT_ENDPOINT_PRESENCE_CHANGED or PEER_EVENT_MY_PRESENCE_CHANGED.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_PRESENCE_CHANGED_DATA presenceChangedData;
 
 			/// <summary>
 			/// A PEER_EVENT_APPLICATION_CHANGED_DATA structure. This data structure is present when <c>eventType</c> is set to
 			/// PEER_EVENT_ENDPOINT_APPLICATION_CHANGED or PEER_EVENT_MY_APPLICATION_CHANGED.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_APPLICATION_CHANGED_DATA applicationChangedData;
 
 			/// <summary>
 			/// A PEER_EVENT_OBJECT_CHANGED_DATA structure. This data structure is present when <c>eventType</c> is set to
 			/// PEER_EVENT_ENDPOINT_OBJECT_CHANGED or PEER_EVENT_MY_OBJECT_CHANGED.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_OBJECT_CHANGED_DATA objectChangedData;
 
 			/// <summary>
 			/// A PEER_EVENT_ENDPOINT_CHANGED_DATA structure. This data structure is present when <c>eventType</c> is set to
 			/// PEER_EVENT_ENDPOINT_CHANGED or PEER_EVENT_MY_ENDPOINT_CHANGED.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_ENDPOINT_CHANGED_DATA endpointChangedData;
 
 			/// <summary>
 			/// A PEER_EVENT_PEOPLE_NEAR_ME_CHANGED_DATA structure. This data structure is present when <c>eventType</c> is set to PEER_EVENT_PEOPLE_NEAR_ME_CHANGED.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_PEOPLE_NEAR_ME_CHANGED_DATA peopleNearMeChangedData;
 
 			/// <summary>
 			/// A PEER_EVENT_REQUEST_STATUS_CHANGED_DATA structure. This data structure is present when <c>eventType</c> is set to PEER_EVENT_REQUEST_STATUS_CHANGED.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_REQUEST_STATUS_CHANGED_DATA requestStatusChangedData;
 		}
 
@@ -1556,40 +1556,40 @@ namespace Vanara.PInvoke
 			/// This member is given a value if the PEER_GRAPH_EVENT_STATUS_CHANGE peer event is triggered. A change has been made in
 			/// relation to a node's connection to the graph.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_GRAPH_STATUS_FLAGS dwStatus;
 
 			/// <summary>
 			/// This member is given a value if the PEER_GRAPH_INCOMING_DATA peer event is triggered. A node has received data from a
 			/// neighbor or a direct connection.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_INCOMING_DATA incomingData;
 
 			/// <summary>
 			/// This member given a value if the PEER_GRAPH_EVENT_RECORD_CHANGE peer event is triggered. A record type the application asked
 			/// for notifications of has changed.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_RECORD_CHANGE_DATA recordChangeData;
 
 			/// <summary>
 			/// This member is given a value if the PEER_GRAPH_EVENT_NEIGHBOR_CONNECTION or <c>PEER_GRAPH_EVENT_DIRECT_CONNECTION</c> peer
 			/// event is triggered. An aspect of a neighbor or direct connection state has changed.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_CONNECTION_CHANGE_DATA connectionChangeData;
 
 			/// <summary>
 			/// This member is given a value if the PEER_GRAPH_EVENT_NODE_CHANGED peer event is triggered. A node's presence state has changed.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_NODE_CHANGE_DATA nodeChangeData;
 
 			/// <summary>
 			/// This member is given a value if the PEER_GRAPH_EVENT_SYNCHRONIZED peer event is triggered. A record type has completed its synchronization.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_SYNCHRONIZED_DATA synchronizedData;
 		}
 
@@ -1795,35 +1795,35 @@ namespace Vanara.PInvoke
 			/// Specifies the PEER_GROUP_STATUS flag values that indicate the new status of the peer group. This field is populated if a
 			/// PEER_GROUP_EVENT_STATUS_CHANGED event is raised.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_GROUP_STATUS dwStatus;
 
 			/// <summary>
 			/// Specifies the PEER_EVENT_INCOMING_DATA structure that contains information on incoming data from a peer. This structure is
 			/// populated if a PEER_GROUP_EVENT_INCOMING_DATA event is raised.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_INCOMING_DATA incomingData;
 
 			/// <summary>
 			/// Specifies the PEER_EVENT_RECORD_CHANGE_DATA structure that contains data that describes a record change. This structure is
 			/// populated if a PEER_GROUP_EVENT_RECORD_CHANGED event is raised.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_RECORD_CHANGE_DATA recordChangeData;
 
 			/// <summary>
 			/// PEER_EVENT_CONNECTION_CHANGE_DATA structure that contains information when a direct or neighbor connection has changed. This
 			/// structure is populated if a PEER_GROUP_EVENT_DIRECT_CONNECTION or PEER_GROUP_EVENT_NEIGHBOR_CONNECTION event is raised.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_CONNECTION_CHANGE_DATA connectionChangeData;
 
 			/// <summary>
 			/// PEER_EVENT_MEMBER_CHANGE_DATA structure that contains data when the status of a peer group member changes. This structure is
 			/// populated if a PEER_GROUP_EVENT_MEMBER_CHANGED event is raised.
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public PEER_EVENT_MEMBER_CHANGE_DATA memberChangeData;
 
 			/// <summary>
@@ -1856,7 +1856,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(4)]
+			[FieldOffset(8)]
 			public HRESULT hrConnectionFailedReason;
 		}
 
@@ -2253,6 +2253,10 @@ namespace Vanara.PInvoke
 			/// <summary>Specifies the friendly name of the peer identity or peer group.</summary>
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pwzFriendlyName;
+
+			/// <summary>Converts to string.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
+			public override string ToString() => pwzFriendlyName;
 		}
 
 		/// <summary>The <c>PEER_NODE_INFO</c> structure contains information that is specific to a particular node in a peer graph.</summary>

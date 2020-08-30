@@ -1194,7 +1194,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupGetEventData")]
 		public static extern HRESULT PeerGroupGetEventData(HPEEREVENT hPeerEvent,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_GROUP_EVENT_DATA>))] out PEER_GROUP_EVENT_DATA ppEventData);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_GROUP_EVENT_DATA>))] out PEER_GROUP_EVENT_DATA ppEventData);
+			out SafePeerData ppEventData);
 
 		/// <summary>The <c>PeerGroupGetProperties</c> function retrieves information on the properties of a specified group.</summary>
 		/// <param name="hGroup">
@@ -1246,7 +1247,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupGetProperties")]
 		public static extern HRESULT PeerGroupGetProperties(HGROUP hGroup,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_GROUP_PROPERTIES>))] out PEER_GROUP_PROPERTIES ppProperties);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_GROUP_PROPERTIES>))] out PEER_GROUP_PROPERTIES ppProperties);
+			out SafePeerData ppProperties);
 
 		/// <summary>The <c>PeerGroupGetRecord</c> function retrieves a specific group record.</summary>
 		/// <param name="hGroup">
@@ -1301,7 +1303,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupGetRecord")]
 		public static extern HRESULT PeerGroupGetRecord(HGROUP hGroup, in Guid pRecordId,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_RECORD>))] out PEER_RECORD ppRecord);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_RECORD>))] out PEER_RECORD ppRecord);
+			out SafePeerData ppRecord);
 
 		/// <summary>The <c>PeerGroupGetStatus</c> function retrieves the current status of a group.</summary>
 		/// <param name="hGroup">
@@ -1898,7 +1901,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupParseInvitation")]
 		public static extern HRESULT PeerGroupParseInvitation([MarshalAs(UnmanagedType.LPWStr)] string pwzInvitation,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_INVITATION_INFO>))] out PEER_INVITATION_INFO ppInvitationInfo);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_INVITATION_INFO>))] out PEER_INVITATION_INFO ppInvitationInfo);
+			out SafePeerData ppInvitationInfo);
 
 		/// <summary>
 		/// The <c>PeerGroupPasswordJoin</c> function prepares a peer with an invitation and the correct password to join a

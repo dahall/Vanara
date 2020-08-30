@@ -47,7 +47,9 @@ namespace Vanara.PInvoke
 		// PeerCollabAddContact( PCWSTR pwzContactData, PPEER_CONTACT *ppContact );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabAddContact")]
-		public static extern HRESULT PeerCollabAddContact([MarshalAs(UnmanagedType.LPWStr)] string pwzContactData, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_CONTACT>))] out PEER_CONTACT ppContact);
+		public static extern HRESULT PeerCollabAddContact([MarshalAs(UnmanagedType.LPWStr)] string pwzContactData,
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_CONTACT>))] out PEER_CONTACT ppContact);
+			out SafePeerData ppContact);
 
 		/// <summary>
 		/// The <c>PeerCollabAsyncInviteContact</c> function sends an invitation to a trusted peer contact to join the sender's peer
@@ -1263,7 +1265,8 @@ namespace Vanara.PInvoke
 		// PeerCollabGetAppLaunchInfo( PPEER_APP_LAUNCH_INFO *ppLaunchInfo );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabGetAppLaunchInfo")]
-		public static extern HRESULT PeerCollabGetAppLaunchInfo([Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_APP_LAUNCH_INFO>))] out PEER_APP_LAUNCH_INFO ppLaunchInfo);
+		public static extern HRESULT PeerCollabGetAppLaunchInfo(out SafePeerData ppLaunchInfo);
+		//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_APP_LAUNCH_INFO>))] out PEER_APP_LAUNCH_INFO ppLaunchInfo);
 
 		/// <summary>The <c>PeerCollabGetApplicationRegistrationInfo</c> function obtains application-specific registration information.</summary>
 		/// <param name="pApplicationId">Pointer to the GUID value that represents a particular peer's application registration flags.</param>
@@ -1313,7 +1316,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabGetApplicationRegistrationInfo")]
 		public static extern HRESULT PeerCollabGetApplicationRegistrationInfo(in Guid pApplicationId, PEER_APPLICATION_REGISTRATION_TYPE registrationType,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_APPLICATION_REGISTRATION_INFO>))] out PEER_APPLICATION_REGISTRATION_INFO ppApplication);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_APPLICATION_REGISTRATION_INFO>))] out PEER_APPLICATION_REGISTRATION_INFO ppApplication);
+			out SafePeerData ppApplication);
 
 		/// <summary>The <c>PeerCollabGetContact</c> function obtains the information for a peer contact given the peer name of the contact.</summary>
 		/// <param name="pwzPeerName">
@@ -1353,7 +1357,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabGetContact")]
 		public static extern HRESULT PeerCollabGetContact([MarshalAs(UnmanagedType.LPWStr)] string pwzPeerName,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_CONTACT>))] out PEER_CONTACT ppContact);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_CONTACT>))] out PEER_CONTACT ppContact);
+			out SafePeerData ppContact);
 
 		/// <summary>
 		/// The <c>PeerCollabGetEndpointName</c> function retrieves the name of the current endpoint of the calling peer, as previously set
@@ -1428,7 +1433,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabGetEventData")]
 		public static extern HRESULT PeerCollabGetEventData(HPEEREVENT hPeerEvent,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_COLLAB_EVENT_DATA>))] out PEER_COLLAB_EVENT_DATA ppEventData);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_COLLAB_EVENT_DATA>))] out PEER_COLLAB_EVENT_DATA ppEventData);
+			out SafePeerData ppEventData);
 
 		/// <summary>
 		/// The <c>PeerCollabGetInvitationResponse</c> function obtains the response from a peer previously invited to join a peer
@@ -1484,7 +1490,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabGetInvitationResponse")]
 		public static extern HRESULT PeerCollabGetInvitationResponse(HANDLE hInvitation,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_INVITATION_RESPONSE>))] out PEER_INVITATION_RESPONSE ppInvitationResponse);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_INVITATION_RESPONSE>))] out PEER_INVITATION_RESPONSE ppInvitationResponse);
+			out SafePeerData ppInvitationResponse);
 
 		/// <summary>
 		/// The <c>PeerCollabGetPresenceInfo</c> function retrieves the presence information for the endpoint associated with a specific contact.
@@ -1540,7 +1547,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabGetPresenceInfo")]
 		public static extern HRESULT PeerCollabGetPresenceInfo(in PEER_ENDPOINT pcEndpoint,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_PRESENCE_INFO>))] out PEER_PRESENCE_INFO ppPresenceInfo);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_PRESENCE_INFO>))] out PEER_PRESENCE_INFO ppPresenceInfo);
+			out SafePeerData ppPresenceInfo);
 
 		/// <summary>
 		/// The <c>PeerCollabGetSigninOptions</c> function obtains the peer's current signed-in peer collaboration network presence options.
@@ -1645,7 +1653,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabInviteContact")]
 		public static extern HRESULT PeerCollabInviteContact(in PEER_CONTACT pcContact, in PEER_ENDPOINT pcEndpoint, in PEER_INVITATION pcInvitation,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_INVITATION_RESPONSE>))] out PEER_INVITATION_RESPONSE ppResponse);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_INVITATION_RESPONSE>))] out PEER_INVITATION_RESPONSE ppResponse);
+			out SafePeerData ppResponse);
 
 		/// <summary>
 		/// The <c>PeerCollabInviteEndpoint</c> function sends an invitation to a specified peer endpoint to join the sender's peer
@@ -1711,7 +1720,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabInviteEndpoint")]
 		public static extern HRESULT PeerCollabInviteEndpoint(in PEER_ENDPOINT pcEndpoint, in PEER_INVITATION pcInvitation,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_INVITATION_RESPONSE>))] out PEER_INVITATION_RESPONSE ppResponse);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_INVITATION_RESPONSE>))] out PEER_INVITATION_RESPONSE ppResponse);
+			out SafePeerData ppResponse);
 
 		/// <summary>
 		/// The <c>PeerCollabParseContact</c> function parses a Unicode string buffer containing contact XML data into a PEER_CONTACT data structure.
@@ -1750,7 +1760,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabParseContact")]
 		public static extern HRESULT PeerCollabParseContact([MarshalAs(UnmanagedType.LPWStr)] string pwzContactData,
-			[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_CONTACT>))] out PEER_CONTACT ppContact);
+			//[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStructMarshaler<PEER_CONTACT>))] out PEER_CONTACT ppContact);
+			out SafePeerData ppContact);
 
 		/// <summary>The <c>PeerCollabQueryContactData</c> function retrieves the contact information for the supplied peer endpoint.</summary>
 		/// <param name="pcEndpoint">
@@ -1800,7 +1811,8 @@ namespace Vanara.PInvoke
 		// PeerCollabQueryContactData( PCPEER_ENDPOINT pcEndpoint, PWSTR *ppwzContactData );
 		[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabQueryContactData")]
-		public static extern HRESULT PeerCollabQueryContactData(in PEER_ENDPOINT pcEndpoint, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzContactData);
+		public static extern HRESULT PeerCollabQueryContactData(in PEER_ENDPOINT pcEndpoint,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzContactData);
 
 		/// <summary>The <c>PeerCollabRefreshEndpointData</c> function updates the calling peer node with new endpoint data.</summary>
 		/// <param name="pcEndpoint">
