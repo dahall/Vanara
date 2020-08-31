@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>Drt.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Drt.dll for the Distributed Routing Table (DRT) API.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.Drt</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;Drt;Distributed Routing Table</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+DrtClose, DrtContinueSearch, DrtCreateDerivedKey, DrtCreateDerivedKeySecurityProvider, DrtCreateDnsBootstrapResolver, DrtCreateIpv6UdpTransport, DrtCreateNullSecurityProvider, DrtCreatePnrpBootstrapResolver, DrtDeleteDerivedKeySecurityProvider, DrtDeleteDnsBootstrapResolver, DrtDeleteIpv6UdpTransport, DrtDeleteNullSecurityProvider, DrtDeletePnrpBootstrapResolver, DrtEndSearch, DrtGetEventData, DrtGetEventDataSize, DrtGetInstanceName, DrtGetInstanceNameSize, DrtGetSearchPath, DrtGetSearchPathSize, DrtGetSearchResult, DrtGetSearchResultSize, DrtOpen, DrtRegisterKey, DrtStartSearch, DrtUnregisterKey, DrtUpdateKey
+
+Structures
+DRT_ADDRESS, DRT_ADDRESS_LIST, DRT_BOOTSTRAP_PROVIDER, DRT_BOOTSTRAP_RESOLVE_CONTEXT, DRT_DATA, DRT_EVENT_DATA, DRT_REGISTRATION, DRT_SEARCH_INFO, DRT_SEARCH_RESULT, DRT_SECURITY_PROVIDER, DRT_SETTINGS, HDRT, HDRT_REGISTRATION_CONTEXT, HDRT_SEARCH_CONTEXT, HDRT_TRANSPORT, UNION, LEAFSETKEYCHANGE, REGISTRATIONSTATECHANGE, STATUSCHANGE, BOOTSTRAPADDRESSES
+
+</PackageReleaseNotes>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Cryptography\Vanara.PInvoke.Cryptography.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
+  </ItemGroup>
+</Project>

@@ -9417,5 +9417,90 @@ namespace Vanara.PInvoke
 		private static HRESULT AUDCLNT_ERR(uint n) => Make(false, FacilityCode.FACILITY_AUDCLNT, n);
 
 		private static HRESULT AUDCLNT_SUCCESS(uint n) => Make(true, FacilityCode.FACILITY_AUDCLNT, n);
+
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TIMEOUT = Make(true, 98U, 0x1001);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_KEY_SIZE = Make(true, 98U, 0x1002);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_CERT_CHAIN = Make(true, 98U, 0x1004);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_MESSAGE = Make(true, 98U, 0x1005);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_NO_MORE = Make(true, 98U, 0x1006);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_MAX_ADDRESSES = Make(true, 98U, 0x1007);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_SEARCH_IN_PROGRESS = Make(true, 98U, 0x1008);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_KEY = Make(true, 98U, 0x1009);
+		/// <summary/>
+		public static readonly HRESULT DRT_S_RETRY = Make(false, 98U, 0x1010);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_MAX_ENDPOINTS = Make(true, 98U, 0x1011);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_SEARCH_RANGE = Make(true, 98U, 0x1012);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_PORT = Make(true, 98U, 0x2000);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_TRANSPORT_PROVIDER = Make(true, 98U, 0x2001);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_SECURITY_PROVIDER = Make(true, 98U, 0x2002);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_STILL_IN_USE = Make(true, 98U, 0x2003);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_BOOTSTRAP_PROVIDER = Make(true, 98U, 0x2004);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_ADDRESS = Make(true, 98U, 0x2005);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_SCOPE = Make(true, 98U, 0x2006);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORT_SHUTTING_DOWN = Make(true, 98U, 0x2007);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_NO_ADDRESSES_AVAILABLE = Make(true, 98U, 0x2008);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_DUPLICATE_KEY = Make(true, 98U, 0x2009);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORTPROVIDER_IN_USE = Make(true, 98U, 0x200a);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORTPROVIDER_NOT_ATTACHED = Make(true, 98U, 0x200b);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_SECURITYPROVIDER_IN_USE = Make(true, 98U, 0x200c);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_SECURITYPROVIDER_NOT_ATTACHED = Make(true, 98U, 0x200d);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_BOOTSTRAPPROVIDER_IN_USE = Make(true, 98U, 0x200e);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_BOOTSTRAPPROVIDER_NOT_ATTACHED = Make(true, 98U, 0x200f);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORT_ALREADY_BOUND = Make(true, 98U, 0x2101);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORT_NOT_BOUND = Make(true, 98U, 0x2102);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORT_UNEXPECTED = Make(true, 98U, 0x2103);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORT_INVALID_ARGUMENT = Make(true, 98U, 0x2104);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORT_NO_DEST_ADDRESSES = Make(true, 98U, 0x2105);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORT_EXECUTING_CALLBACK = Make(true, 98U, 0x2106);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORT_ALREADY_EXISTS_FOR_SCOPE = Make(true, 98U, 0x2107);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_SETTINGS = Make(true, 98U, 0x2108);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_SEARCH_INFO = Make(true, 98U, 0x2109);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_FAULTED = Make(true, 98U, 0x210a);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_TRANSPORT_STILL_BOUND = Make(true, 98U, 0x210b);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INSUFFICIENT_BUFFER = Make(true, 98U, 0x210c);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_INSTANCE_PREFIX = Make(true, 98U, 0x210d);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_INVALID_SECURITY_MODE = Make(true, 98U, 0x210e);
+		/// <summary/>
+		public static readonly HRESULT DRT_E_CAPABILITY_MISMATCH = Make(true, 98U, 0x210f);
 	}
 }
