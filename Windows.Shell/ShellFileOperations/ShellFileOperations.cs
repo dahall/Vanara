@@ -448,7 +448,7 @@ namespace Vanara.Windows.Shell
 		public void QueueApplyPropertiesOperation(IEnumerable<ShellItem> items, ShellItemPropertyUpdates props)
 		{
 			op.SetProperties(props.IPropertyChangeArray);
-			op.ApplyPropertiesToItems(GetSHArray(items));
+			op.ApplyPropertiesToItems(GetSHArray(items).IShellItemArray);
 			QueuedOperations++;
 		}
 
@@ -472,7 +472,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the copy of the items.</param>
 		public void QueueCopyOperation(IEnumerable<ShellItem> sourceItems, ShellFolder dest)
 		{
-			op.CopyItems(GetSHArray(sourceItems), dest.IShellItem);
+			op.CopyItems(GetSHArray(sourceItems).IShellItemArray, dest.IShellItem);
 			QueuedOperations++;
 		}
 
@@ -490,7 +490,7 @@ namespace Vanara.Windows.Shell
 		/// </param>
 		public void QueueDeleteOperation(IEnumerable<ShellItem> items)
 		{
-			op.DeleteItems(GetSHArray(items));
+			op.DeleteItems(GetSHArray(items).IShellItemArray);
 			QueuedOperations++;
 		}
 
@@ -514,7 +514,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the moved items.</param>
 		public void QueueMoveOperation(IEnumerable<ShellItem> sourceItems, ShellFolder dest)
 		{
-			op.MoveItems(GetSHArray(sourceItems), dest.IShellItem);
+			op.MoveItems(GetSHArray(sourceItems).IShellItemArray, dest.IShellItem);
 			QueuedOperations++;
 		}
 
@@ -563,7 +563,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="newName">The new display name of the items.</param>
 		public void QueueRenameOperation(IEnumerable<ShellItem> sourceItems, string newName)
 		{
-			op.RenameItems(GetSHArray(sourceItems), newName);
+			op.RenameItems(GetSHArray(sourceItems).IShellItemArray, newName);
 			QueuedOperations++;
 		}
 
@@ -590,7 +590,7 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		private IShellItemArray GetSHArray(IEnumerable<ShellItem> items) => items is ShellItemArray a ? a.IShellItemArray : GetSHArray(items);
+		private ShellItemArray GetSHArray(IEnumerable<ShellItem> items) => items is ShellItemArray a ? a : new ShellItemArray(items);
 
 		private class OpSink : IFileOperationProgressSink
 		{
