@@ -185,17 +185,7 @@ namespace Vanara.Windows.Shell
 		/// When this method returns, the value associated with the specified key, if the key is found; otherwise, <c>default(T)</c>.
 		/// </param>
 		/// <returns><see langword="true"/> if the property store contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
-		protected static bool TryGetValue<T>(IPropertyStore ps, PROPERTYKEY key, out T value)
-		{
-			try
-			{
-				value = (T)ps.GetValue(key);
-				return true;
-			}
-			catch { }
-			value = default;
-			return false;
-		}
+		protected static bool TryGetValue<T>(IPropertyStore ps, PROPERTYKEY key, out T value) => (value = (T)ps.GetValue(key)) != null;
 
 		/// <summary>The IPropertyStore instance. This can be null.</summary>
 		protected virtual IPropertyStore GetIPropertyStore() => iPropertyStore;
