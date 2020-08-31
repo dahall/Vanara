@@ -4,66 +4,21 @@
     <SupportedDlls>PeerDist.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
-    <Description>PInvoke API (methods, structures and constants) imported from Windows PeerDist.dll.</Description>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows PeerDist.dll for the Peer Distribution API, which supports the Branch Cache feature in Windows 7.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.PeerDist</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <PackageTags>pinvoke;vanara;net-extensions;interop;PeerDist</PackageTags>
-    <PackageReleaseNotes />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net20|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.0|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net40|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.0|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net20|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net35|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.0|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net35|AnyCPU'">
+    <PackageTags>pinvoke;vanara;net-extensions;interop;PeerDist;Peer Distribution;Branch Cache</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+PeerDistClientAddContentInformation, PeerDistClientAddData, PeerDistClientBlockRead, PeerDistClientCancelAsyncOperation, PeerDistClientCloseContent, PeerDistClientCompleteContentInformation, PeerDistClientFlushContent, PeerDistClientGetInformationByHandle, PeerDistClientOpenContent, PeerDistClientStreamRead, PeerDistGetOverlappedResult, PeerDistGetStatus, PeerDistGetStatusEx, PeerDistRegisterForStatusChangeNotification, PeerDistRegisterForStatusChangeNotificationEx, PeerDistServerCancelAsyncOperation, PeerDistServerCloseContentInformation, PeerDistServerCloseStreamHandle, PeerDistServerOpenContentInformation, PeerDistServerOpenContentInformationEx, PeerDistServerPublishAddToStream, PeerDistServerPublishCompleteStream, PeerDistServerPublishStream, PeerDistServerRetrieveContentInformation, PeerDistServerUnpublish, PeerDistShutdown, PeerDistStartup, PeerDistUnregisterForStatusChangeNotification
+
+Structures
+PEERDIST_CLIENT_BASIC_INFO, PEERDIST_CONTENT_HANDLE, PEERDIST_CONTENT_TAG, PEERDIST_CONTENTINFO_HANDLE, PEERDIST_INSTANCE_HANDLE, PEERDIST_PUBLICATION_OPTIONS, PEERDIST_RETRIEVAL_OPTIONS, PEERDIST_STATUS_INFO, PEERDIST_STREAM_HANDLE
+
+</PackageReleaseNotes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>

@@ -28,6 +28,7 @@
       <dependency id="Vanara.PInvoke.Cryptography" version="3.2.16" />
       <dependency id="Vanara.PInvoke.DbgHelp" version="3.2.16" />
       <dependency id="Vanara.PInvoke.DnsApi" version="3.2.16" />
+      <dependency id="Vanara.PInvoke.Drt" version="3.2.16" />
       <dependency id="Vanara.PInvoke.DwmApi" version="3.2.16" />
       <dependency id="Vanara.PInvoke.Gdi32" version="3.2.16" />
       <dependency id="Vanara.PInvoke.Graphics" version="3.2.16" />
@@ -44,6 +45,7 @@
       <dependency id="Vanara.PInvoke.Opc" version="3.2.16" />
       <dependency id="Vanara.PInvoke.P2P" version="3.2.16" />
       <dependency id="Vanara.PInvoke.Pdh" version="3.2.16" />
+      <dependency id="Vanara.PInvoke.PeerDist" version="3.2.16" />
       <dependency id="Vanara.PInvoke.PowrProf" version="3.2.16" />
       <dependency id="Vanara.PInvoke.Printing" version="3.2.16" />
       <dependency id="Vanara.PInvoke.ProjectedFSLib" version="3.2.16" />

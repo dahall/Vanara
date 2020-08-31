@@ -245,6 +245,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2P", "UnitTests\PInvoke\P2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.PeerDist", "PInvoke\PeerDist\Vanara.PInvoke.PeerDist.csproj", "{3108565B-2F79-447B-9386-42203CD949A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Drt", "PInvoke\Drt\Vanara.PInvoke.Drt.csproj", "{1AB1FB9D-CE35-4A2D-9132-FFA681654031}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -787,6 +789,12 @@ Global
 		{3108565B-2F79-447B-9386-42203CD949A5}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{3108565B-2F79-447B-9386-42203CD949A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3108565B-2F79-447B-9386-42203CD949A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AB1FB9D-CE35-4A2D-9132-FFA681654031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AB1FB9D-CE35-4A2D-9132-FFA681654031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AB1FB9D-CE35-4A2D-9132-FFA681654031}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AB1FB9D-CE35-4A2D-9132-FFA681654031}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{1AB1FB9D-CE35-4A2D-9132-FFA681654031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AB1FB9D-CE35-4A2D-9132-FFA681654031}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -892,6 +900,7 @@ Global
 		{200D7E57-452A-4A43-A96D-386F7C49E7BA} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{BBA10B94-658F-4BD7-A3DD-AA39CDF9A68D} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{3108565B-2F79-447B-9386-42203CD949A5} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{1AB1FB9D-CE35-4A2D-9132-FFA681654031} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

@@ -1,10 +1,9 @@
 ## Correlation report for p2p.dll  
-PInvoke API (methods, structures and constants) imported from Windows P2P.dll.
+PInvoke API (methods, structures and constants) imported from Windows P2P.dll for Peer-to-Peer API.
 
-### Methods (94% complete, 109 of 115 functions)  
+### Methods (100% complete, 109 of 109 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[DllMain](https://www.google.com/search?num=5&q=DllMain+site%3Adocs.microsoft.com) |  |   
 [PeerCollabAddContact](https://www.google.com/search?num=5&q=PeerCollabAddContact+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerCollabAddContact](https://github.com/dahall/Vanara/search?l=C%23&q=PeerCollabAddContact)  
 [PeerCollabAsyncInviteContact](https://www.google.com/search?num=5&q=PeerCollabAsyncInviteContact+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerCollabAsyncInviteContact](https://github.com/dahall/Vanara/search?l=C%23&q=PeerCollabAsyncInviteContact)  
 [PeerCollabAsyncInviteEndpoint](https://www.google.com/search?num=5&q=PeerCollabAsyncInviteEndpoint+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerCollabAsyncInviteEndpoint](https://github.com/dahall/Vanara/search?l=C%23&q=PeerCollabAsyncInviteEndpoint)  
@@ -75,7 +74,6 @@ Native Method | Header | Managed Method
 [PeerGroupGetProperties](https://www.google.com/search?num=5&q=PeerGroupGetProperties+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupGetProperties](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupGetProperties)  
 [PeerGroupGetRecord](https://www.google.com/search?num=5&q=PeerGroupGetRecord+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupGetRecord](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupGetRecord)  
 [PeerGroupGetStatus](https://www.google.com/search?num=5&q=PeerGroupGetStatus+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupGetStatus](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupGetStatus)  
-[PeerGroupHandlePowerEvent](https://www.google.com/search?num=5&q=PeerGroupHandlePowerEvent+site%3Adocs.microsoft.com) |  |   
 [PeerGroupImportConfig](https://www.google.com/search?num=5&q=PeerGroupImportConfig+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupImportConfig](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupImportConfig)  
 [PeerGroupImportDatabase](https://www.google.com/search?num=5&q=PeerGroupImportDatabase+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupImportDatabase](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupImportDatabase)  
 [PeerGroupIssueCredentials](https://www.google.com/search?num=5&q=PeerGroupIssueCredentials+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupIssueCredentials](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupIssueCredentials)  
@@ -86,7 +84,6 @@ Native Method | Header | Managed Method
 [PeerGroupPasswordJoin](https://www.google.com/search?num=5&q=PeerGroupPasswordJoin+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupPasswordJoin](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupPasswordJoin)  
 [PeerGroupPeerTimeToUniversalTime](https://www.google.com/search?num=5&q=PeerGroupPeerTimeToUniversalTime+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupPeerTimeToUniversalTime](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupPeerTimeToUniversalTime)  
 [PeerGroupRegisterEvent](https://www.google.com/search?num=5&q=PeerGroupRegisterEvent+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupRegisterEvent](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupRegisterEvent)  
-[PeerGroupResumePasswordAuthentication](https://www.google.com/search?num=5&q=PeerGroupResumePasswordAuthentication+site%3Adocs.microsoft.com) |  |   
 [PeerGroupSearchRecords](https://www.google.com/search?num=5&q=PeerGroupSearchRecords+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupSearchRecords](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupSearchRecords)  
 [PeerGroupSendData](https://www.google.com/search?num=5&q=PeerGroupSendData+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupSendData](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupSendData)  
 [PeerGroupSetProperties](https://www.google.com/search?num=5&q=PeerGroupSetProperties+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupSetProperties](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupSetProperties)  
@@ -99,7 +96,6 @@ Native Method | Header | Managed Method
 [PeerIdentityCreate](https://www.google.com/search?num=5&q=PeerIdentityCreate+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerIdentityCreate](https://github.com/dahall/Vanara/search?l=C%23&q=PeerIdentityCreate)  
 [PeerIdentityDelete](https://www.google.com/search?num=5&q=PeerIdentityDelete+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerIdentityDelete](https://github.com/dahall/Vanara/search?l=C%23&q=PeerIdentityDelete)  
 [PeerIdentityExport](https://www.google.com/search?num=5&q=PeerIdentityExport+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerIdentityExport](https://github.com/dahall/Vanara/search?l=C%23&q=PeerIdentityExport)  
-[PeerIdentityGetCert](https://www.google.com/search?num=5&q=PeerIdentityGetCert+site%3Adocs.microsoft.com) |  |   
 [PeerIdentityGetCryptKey](https://www.google.com/search?num=5&q=PeerIdentityGetCryptKey+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerIdentityGetCryptKey](https://github.com/dahall/Vanara/search?l=C%23&q=PeerIdentityGetCryptKey)  
 [PeerIdentityGetDefault](https://www.google.com/search?num=5&q=PeerIdentityGetDefault+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerIdentityGetDefault](https://github.com/dahall/Vanara/search?l=C%23&q=PeerIdentityGetDefault)  
 [PeerIdentityGetFriendlyName](https://www.google.com/search?num=5&q=PeerIdentityGetFriendlyName+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerIdentityGetFriendlyName](https://github.com/dahall/Vanara/search?l=C%23&q=PeerIdentityGetFriendlyName)  
@@ -117,8 +113,6 @@ Native Method | Header | Managed Method
 [PeerPnrpStartup](https://www.google.com/search?num=5&q=PeerPnrpStartup+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpStartup](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpStartup)  
 [PeerPnrpUnregister](https://www.google.com/search?num=5&q=PeerPnrpUnregister+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpUnregister](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpUnregister)  
 [PeerPnrpUpdateRegistration](https://www.google.com/search?num=5&q=PeerPnrpUpdateRegistration+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerPnrpUpdateRegistration](https://github.com/dahall/Vanara/search?l=C%23&q=PeerPnrpUpdateRegistration)  
-[PeerSSPAddCredentials](https://www.google.com/search?num=5&q=PeerSSPAddCredentials+site%3Adocs.microsoft.com) |  |   
-[PeerSSPRemoveCredentials](https://www.google.com/search?num=5&q=PeerSSPRemoveCredentials+site%3Adocs.microsoft.com) |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
