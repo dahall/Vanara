@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
@@ -32,13 +33,15 @@ namespace Vanara.Windows.Shell.Tests
 
 			try
 			{
+				var startCount = RecycleBin.Count;
 				// Delete files to bin
 				RecycleBin.DeleteToRecycleBin(paths, true);
 				// Get details
 				TestContext.WriteLine($"cnt={RecycleBin.Count}; sz={RecycleBin.Size}");
+				Assert.That(RecycleBin.Count, Is.EqualTo(startCount + paths.Count));
 				// Restore files
 				RecycleBin.Restore(paths.Select(p => RecycleBin.GetItemFromOriginalPath(p)));
-				Assert.That(RecycleBin.Count, Is.EqualTo(0L));
+				Assert.That(RecycleBin.Count, Is.EqualTo(startCount));
 			}
 			finally
 			{

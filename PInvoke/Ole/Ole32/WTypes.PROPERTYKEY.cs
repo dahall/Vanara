@@ -6300,6 +6300,28 @@ namespace Vanara.PInvoke
 						=> new PROPERTYKEY(new Guid("{1B5439E7-EBA1-4AF8-BDD7-7AF1D4549493}"), 100);
 				}
 
+				/// <summary>Recycle Bin Properties</summary>
+				public static class Recycle
+				{
+					/// <summary>
+					/// <para>Name:     System.Recycle.DeletedFrom</para>
+					/// <para>Description: Location (path) the file in the Recycle Bin was deleted from.</para>
+					/// <para>Type:     String -- VT_LPWSTR (For variants: VT_BSTR)</para>
+					/// <para>FormatID: {9b174b33-40ff-11d2-a27e-00c04fc30871}, 2</para>
+					/// </summary>
+					public static PROPERTYKEY DeletedFrom
+						=> new PROPERTYKEY(new Guid("{9b174b33-40ff-11d2-a27e-00c04fc30871}"), 2);
+
+					/// <summary>
+					/// <para>Name:     System.Recycle.DateDeleted</para>
+					/// <para>Description: Location (path) the file in the Recycle Bin was deleted from.</para>
+					/// <para>Type:     DateTime -- VT_FILETIME (For variants: VT_DATE)</para>
+					/// <para>FormatID: {9b174b33-40ff-11d2-a27e-00c04fc30871}, 3</para>
+					/// </summary>
+					public static PROPERTYKEY DateDeleted
+						=> new PROPERTYKEY(new Guid("{9b174b33-40ff-11d2-a27e-00c04fc30871}"), 3);
+				}
+
 				/// <summary>Search Properties</summary>
 				public static class Search
 				{
