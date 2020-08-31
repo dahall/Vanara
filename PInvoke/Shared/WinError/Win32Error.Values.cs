@@ -9350,54 +9350,6 @@ namespace Vanara.PInvoke
 		/// <summary>A device which does not exist was specified.</summary>
 		public const uint ERROR_NO_SUCH_DEVICE = 433;
 
-		/// <summary>The version of the supplied content information is not supported.</summary>
-		public const uint PEERDIST_ERROR_CONTENTINFO_VERSION_UNSUPPORTED = 4050;
-
-		/// <summary>The supplied content information is malformed.</summary>
-		public const uint PEERDIST_ERROR_CANNOT_PARSE_CONTENTINFO = 4051;
-
-		/// <summary>The requested data cannot be found in local or peer caches.</summary>
-		public const uint PEERDIST_ERROR_MISSING_DATA = 4052;
-
-		/// <summary>No more data is available or required.</summary>
-		public const uint PEERDIST_ERROR_NO_MORE = 4053;
-
-		/// <summary>The supplied object has not been initialized.</summary>
-		public const uint PEERDIST_ERROR_NOT_INITIALIZED = 4054;
-
-		/// <summary>The supplied object has already been initialized.</summary>
-		public const uint PEERDIST_ERROR_ALREADY_INITIALIZED = 4055;
-
-		/// <summary>A shutdown operation is already in progress.</summary>
-		public const uint PEERDIST_ERROR_SHUTDOWN_IN_PROGRESS = 4056;
-
-		/// <summary>The supplied object has already been invalidated.</summary>
-		public const uint PEERDIST_ERROR_INVALIDATED = 4057;
-
-		/// <summary>An element already exists and was not replaced.</summary>
-		public const uint PEERDIST_ERROR_ALREADY_EXISTS = 4058;
-
-		/// <summary>Can not cancel the requested operation as it has already been completed.</summary>
-		public const uint PEERDIST_ERROR_OPERATION_NOTFOUND = 4059;
-
-		/// <summary>Can not perform the requested operation because it has already been carried out.</summary>
-		public const uint PEERDIST_ERROR_ALREADY_COMPLETED = 4060;
-
-		/// <summary>An operation accessed data beyond the bounds of valid data.</summary>
-		public const uint PEERDIST_ERROR_OUT_OF_BOUNDS = 4061;
-
-		/// <summary>The requested version is not supported.</summary>
-		public const uint PEERDIST_ERROR_VERSION_UNSUPPORTED = 4062;
-
-		/// <summary>A configuration value is invalid.</summary>
-		public const uint PEERDIST_ERROR_INVALID_CONFIGURATION = 4063;
-
-		/// <summary>The SKU is not licensed.</summary>
-		public const uint PEERDIST_ERROR_NOT_LICENSED = 4064;
-
-		/// <summary>PeerDist Service is still initializing and will be available shortly.</summary>
-		public const uint PEERDIST_ERROR_SERVICE_UNAVAILABLE = 4065;
-
 		/// <summary>Communication with one or more computers will be temporarily blocked due to recent errors.</summary>
 		public const uint PEERDIST_ERROR_TRUST_FAILURE = 4066;
 	}
