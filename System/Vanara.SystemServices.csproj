@@ -23,16 +23,6 @@ BatteryStatus, EnergySaverStatus, JobLimit, NetworkInterfaceAccessType, NetworkI
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Computer\LocalGroup.cs" />
-    <Compile Remove="Computer\LocalUser.cs" />
-    <Compile Remove="Computer\~LocalGroup.cs" />
-    <Compile Remove="Computer\~LocalUser.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Computer\~LocalGroup.cs" />
-    <None Include="Computer\~LocalUser.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="4.6.0" Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) " />
     <PackageReference Include="Theraot.Core" Version="3.1.4" Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or '$(TargetFramework)' == 'net40' " />
   </ItemGroup>
