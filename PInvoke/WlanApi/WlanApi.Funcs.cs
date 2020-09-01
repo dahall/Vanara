@@ -5751,7 +5751,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HWFDSERVICE h1, HWFDSERVICE h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HWFDSERVICE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HWFDSERVICE h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -5799,7 +5799,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HWFDSESSION h1, HWFDSESSION h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HWFDSESSION h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HWFDSESSION h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -5847,7 +5847,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HWLANSESSION h1, HWLANSESSION h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HWLANSESSION h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HWLANSESSION h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
