@@ -430,6 +430,10 @@ namespace Vanara.PInvoke
 			[KnownFolderDetail("{D20BEEC4-5CA8-4905-AE3B-BF251EA09B53}")]
 			FOLDERID_NetworkFolder,
 
+			/// <summary>3D Objects</summary>
+			[KnownFolderDetail("{31C0DD25-9439-4F12-BF41-7FF4EDA38722}")]
+			FOLDERID_Objects3D,
+
 			/// <summary>Original Images</summary>
 			[KnownFolderDetail("{2C36C0AA-5812-4b87-BFD0-4CD0DFB19B39}")]
 			FOLDERID_OriginalImages,
