@@ -3498,9 +3498,7 @@ namespace Vanara.PInvoke
 		public static extern bool SHIsLowMemoryMachine(uint dwType = 0);
 
 		/// <summary>
-		/// <para>
 		/// Extracts a specified text resource when given that resource in the form of an indirect string (a string that begins with the '@' symbol).
-		/// </para>
 		/// </summary>
 		/// <param name="pszSource">
 		/// <para>Type: <c>PCWSTR</c></para>
@@ -3513,8 +3511,8 @@ namespace Vanara.PInvoke
 		/// <param name="pszOutBuf">
 		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>
-		/// A pointer to a buffer that, when this function returns successfully, receives the text resource. Both pszOutBuf and pszSource can
-		/// point to the same buffer, in which case the original string will be overwritten.
+		/// A pointer to a buffer that, when this function returns successfully, receives the text resource. Both pszOutBuf and pszSource
+		/// can point to the same buffer, in which case the original string will be overwritten.
 		/// </para>
 		/// </param>
 		/// <param name="cchOutBuf">
@@ -3541,10 +3539,10 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// <c>File name and resource ID with a version modifier</c> This form can be used when a resource is changed but still uses the same
-		/// index or ID as the old resource. Without a version modifier, the Multilingual User Interface (MUI) cache will not recognize that
-		/// the resource has changed and will not refresh. By appending the version modifier, the value is seen as a new resource and is
-		/// added to the cache. Note that it is recommended that you use a new ID or index for a new resource, and use a version modifier
+		/// <c>File name and resource ID with a version modifier</c> This form can be used when a resource is changed but still uses the
+		/// same index or ID as the old resource. Without a version modifier, the Multilingual User Interface (MUI) cache will not recognize
+		/// that the resource has changed and will not refresh. By appending the version modifier, the value is seen as a new resource and
+		/// is added to the cache. Note that it is recommended that you use a new ID or index for a new resource, and use a version modifier
 		/// only when that is not possible.
 		/// </term>
 		/// </item>
@@ -3557,10 +3555,11 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// <c>Package name and resource ID</c> The string is extracted from the Resources.pri file stored in the app's root directory of the
-		/// package identified by PackageFullName, using the resource as a locator. The retrieved string is copied to the output buffer and
-		/// the function returns S_OK. The string is extracted based on the app's environment or ResourceContext. An example of this type of
-		/// indirect string is shown here:
+		/// <c>Package name and resource ID</c> The string is extracted from the Resources.pri file stored in the app's root directory of
+		/// the package identified by PackageFullName, using the resource as a locator. The retrieved string is copied to the output buffer
+		/// and the function returns S_OK. The string is extracted based on the app's environment or ResourceContext. An example of this
+		/// type of indirect string is shown here. In this example, the reference name is fully-qualified, but it contains no namespace (for
+		/// example, "resources"). The deployment stack expands the name to look for it in all namespaces.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -3570,9 +3569,85 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shloadindirectstring LWSTDAPI SHLoadIndirectString( PCWSTR
 		// pszSource, PWSTR pszOutBuf, UINT cchOutBuf, void **ppvReserved );
-		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "f0265cd8-deb8-4bca-b379-39aff49c7df1")]
-		public static extern HRESULT SHLoadIndirectString(string pszSource, StringBuilder pszOutBuf, uint cchOutBuf, IntPtr ppvReserved = default);
+		public static extern HRESULT SHLoadIndirectString([MarshalAs(UnmanagedType.LPWStr)] string pszSource, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszOutBuf, uint cchOutBuf, IntPtr ppvReserved = default);
+
+		/// <summary>
+		/// Extracts a specified text resource when given that resource in the form of an indirect string (a string that begins with the '@' symbol).
+		/// </summary>
+		/// <param name="pszSource">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A pointer to a buffer that contains the indirect string from which the resource will be retrieved. This string should begin with
+		/// the '@' symbol and use one of the forms discussed in the Remarks section. This function will successfully accept a string that
+		/// does not begin with an '@' symbol, but the string will be simply passed unchanged to pszOutBuf.
+		/// </para>
+		/// </param>
+		/// <param name="pszOutBuf">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// A pointer to a buffer that, when this function returns successfully, receives the text resource. Both pszOutBuf and pszSource
+		/// can point to the same buffer, in which case the original string will be overwritten.
+		/// </para>
+		/// </param>
+		/// <param name="cchOutBuf">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The size of the buffer pointed to by pszOutBuf, in characters.</para>
+		/// </param>
+		/// <param name="ppvReserved">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>Not used; set to <c>NULL</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>An indirect string can be provided in several forms, each of which has its own interpretation:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// <c>File name and resource ID</c> The string is extracted from the file named, using the resource value as a locator. If the
+		/// resource value is zero or greater, the number becomes the index of the string in the binary file. If the number is negative, it
+		/// becomes a resource ID. The retrieved string is copied to the output buffer and the function returns S_OK.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// <c>File name and resource ID with a version modifier</c> This form can be used when a resource is changed but still uses the
+		/// same index or ID as the old resource. Without a version modifier, the Multilingual User Interface (MUI) cache will not recognize
+		/// that the resource has changed and will not refresh. By appending the version modifier, the value is seen as a new resource and
+		/// is added to the cache. Note that it is recommended that you use a new ID or index for a new resource, and use a version modifier
+		/// only when that is not possible.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// <c>PRI file path and resource ID</c> The Package Resource Index (PRI) is a binary format introduced in Windows 8 that contains
+		/// indexed resources or references to resources. The .pri file is bundled as part of an app's package. For more information on .pri
+		/// files, see Creating and retrieving resources in Windows Store apps.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// <c>Package name and resource ID</c> The string is extracted from the Resources.pri file stored in the app's root directory of
+		/// the package identified by PackageFullName, using the resource as a locator. The retrieved string is copied to the output buffer
+		/// and the function returns S_OK. The string is extracted based on the app's environment or ResourceContext. An example of this
+		/// type of indirect string is shown here. In this example, the reference name is fully-qualified, but it contains no namespace (for
+		/// example, "resources"). The deployment stack expands the name to look for it in all namespaces.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the string is not an indirect string, then the string is directly copied without change to pszOutBuf and the function returns S_OK.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-shloadindirectstring LWSTDAPI SHLoadIndirectString( PCWSTR
+		// pszSource, PWSTR pszOutBuf, UINT cchOutBuf, void **ppvReserved );
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "NF:shlwapi.SHLoadIndirectString")]
+		public static extern HRESULT SHLoadIndirectString([MarshalAs(UnmanagedType.LPWStr)] string pszSource, IntPtr pszOutBuf, uint cchOutBuf, IntPtr ppvReserved = default);
 
 		/// <summary>
 		/// <para>
