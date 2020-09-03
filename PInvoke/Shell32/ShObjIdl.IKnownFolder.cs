@@ -65,10 +65,11 @@ namespace Vanara.PInvoke
 			KFDF_ROAMABLE = 0x00000004,
 
 			/// <summary>
-			/// Create the folder when the user first logs on. Normally a known folder is not created until it is first called. At that time,
-			/// an API such as SHCreateItemInKnownFolder or IKnownFolder::GetShellItem is called with the KF_FLAG_CREATE flag. However, some
-			/// known folders need to exist immediately. An example is those known folders under %USERPROFILE%, which must exist to provide a
-			/// proper view. In those cases, KFDF_PRECREATE is set and Windows Explorer calls the creation API during its user initialization.
+			/// Create the folder when the user first logs on. Normally a known folder is not created until it is first called. At that
+			/// time, an API such as SHCreateItemInKnownFolder or IKnownFolder::GetShellItem is called with the KF_FLAG_CREATE flag.
+			/// However, some known folders need to exist immediately. An example is those known folders under %USERPROFILE%, which must
+			/// exist to provide a proper view. In those cases, KFDF_PRECREATE is set and Windows Explorer calls the creation API during its
+			/// user initialization.
 			/// </summary>
 			KFDF_PRECREATE = 0x00000008,
 
@@ -197,8 +198,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Initializes the folder using its Desktop.ini settings. If the folder cannot be initialized, the function returns a failure
-			/// code and no path is returned. This flag should always be combined with KF_FLAG_CREATE. If the folder is located on a network,
-			/// the function might take a longer time to execute.
+			/// code and no path is returned. This flag should always be combined with KF_FLAG_CREATE. If the folder is located on a
+			/// network, the function might take a longer time to execute.
 			/// </summary>
 			KF_FLAG_INIT = 0x00000800,
 
@@ -216,8 +217,8 @@ namespace Vanara.PInvoke
 			KF_FLAG_DONT_UNEXPAND = 0x00002000,
 
 			/// <summary>
-			/// Do not verify the folder's existence before attempting to retrieve the path or IDList. If this flag is not set, an attempt is
-			/// made to verify that the folder is truly present at the path. If that verification fails due to the folder being absent or
+			/// Do not verify the folder's existence before attempting to retrieve the path or IDList. If this flag is not set, an attempt
+			/// is made to verify that the folder is truly present at the path. If that verification fails due to the folder being absent or
 			/// inaccessible, the function returns a failure code and no path is returned. If the folder is located on a network, the
 			/// function might take a longer time to execute. Setting this flag can reduce that lag time.
 			/// </summary>
@@ -250,392 +251,877 @@ namespace Vanara.PInvoke
 		[PInvokeData("Knownfolders.h", MSDNShortId = "dd378457")]
 		public enum KNOWNFOLDERID
 		{
-			/// <summary>Account Pictures</summary>
-			[KnownFolderDetail("{008ca0b1-55b4-4c56-b8a8-4de4b299d3be}")]
+			/// <summary>Account Pictures
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\AccountPictures</para>
+			/// <para>Localized Name: Account Pictures</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("008ca0b1-55b4-4c56-b8a8-4de4b299d3be")]
 			FOLDERID_AccountPictures,
 
-			/// <summary>Get Programs</summary>
-			[KnownFolderDetail("{de61d971-5ebc-4f02-a3a9-6c82895e5c04}")]
+			/// <summary>AddNewProgramsFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   shell:::{26EE0668-A00A-44D7-9371-BEB064C98683}\0\::{15eae92e-f17a-4431-9f28-805e482dafd4}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("de61d971-5ebc-4f02-a3a9-6c82895e5c04")]
 			FOLDERID_AddNewPrograms,
 
-			/// <summary>Admin tools</summary>
-			[KnownFolderDetail("{724EF170-A42D-4FEF-9F26-B60E846FBA4F}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_ADMINTOOLS)]
+			/// <summary>Windows Administrative Tools
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Start Menu\Programs\Administrative Tools</para>
+			/// <para>Localized Name: Windows Administrative Tools</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("724ef170-a42d-4fef-9f26-b60e846fba4f", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_ADMINTOOLS)]
 			FOLDERID_AdminTools,
 
-			/// <summary>Application shortcuts</summary>
-			[KnownFolderDetail("{A3918781-E5F2-4890-B3D9-A7E54332328C}")]
+			/// <summary>Application Shortcuts
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\Application Shortcuts</para>
+			/// <para>Localized Name: Application Shortcuts</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("a3918781-e5f2-4890-b3d9-a7e54332328c")]
 			FOLDERID_ApplicationShortcuts,
 
-			/// <summary>Applications</summary>
-			[KnownFolderDetail("{1e87508d-89c2-42f0-8a7e-645a0f50ca58}")]
+			/// <summary>AppsFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   shell:::{4234d49b-0245-4df3-b780-3893943456e1}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("1e87508d-89c2-42f0-8a7e-645a0f50ca58")]
 			FOLDERID_AppsFolder,
 
-			/// <summary>Installed Updates</summary>
-			[KnownFolderDetail("{a305ce99-f527-492b-8b1a-7e76fa98d6e4}")]
+			/// <summary>AppUpdatesFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{26EE0668-A00A-44D7-9371-BEB064C98683}\0\::{7b81be6a-ce2b-4676-a29e-eb907a5126c5}\::{d450a8a1-9568-45c7-9c0e-b4f9fb4537bd}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("a305ce99-f527-492b-8b1a-7e76fa98d6e4")]
 			FOLDERID_AppUpdates,
 
-			/// <summary>Camera Roll</summary>
-			[KnownFolderDetail("{AB5FB87B-7CE2-4F83-915D-550846C9537B}")]
+			/// <summary>Camera Roll
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Pictures\Camera Roll</para>
+			/// <para>Localized Name: Camera Roll</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("ab5fb87b-7ce2-4f83-915d-550846c9537b")]
 			FOLDERID_CameraRoll,
 
-			/// <summary>Temporary Burn Folder</summary>
-			[KnownFolderDetail("{9E52AB10-F80D-49DF-ACB8-4330F5687855}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_CDBURN_AREA)]
+			/// <summary>Temporary Burn Folder
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\Burn\Burn</para>
+			/// <para>Localized Name: Temporary Burn Folder</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_LOCAL_REDIRECT_ONLY</para>
+			/// </summary>
+			[KnownFolderDetail("9e52ab10-f80d-49df-acb8-4330f5687855", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_CDBURN_AREA)]
 			FOLDERID_CDBurning,
 
-			/// <summary>Programs and Features</summary>
-			[KnownFolderDetail("{df7266ac-9274-4867-8d55-3bd661de872d}")]
+			/// <summary>ChangeRemoveProgramsFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{26EE0668-A00A-44D7-9371-BEB064C98683}\0\::{7b81be6a-ce2b-4676-a29e-eb907a5126c5}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("df7266ac-9274-4867-8d55-3bd661de872d")]
 			FOLDERID_ChangeRemovePrograms,
 
-			/// <summary>Administrative Tools</summary>
-			[KnownFolderDetail("{D0384E7D-BAC3-4797-8F14-CBA229B392B5}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_ADMINTOOLS)]
+			/// <summary>Windows Administrative Tools
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\Administrative Tools</para>
+			/// <para>Localized Name: Windows Administrative Tools</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("d0384e7d-bac3-4797-8f14-cba229b392b5", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_ADMINTOOLS)]
 			FOLDERID_CommonAdminTools,
 
-			/// <summary>OEM Links</summary>
-			[KnownFolderDetail("{C1BAE2D0-10DF-4334-BEDD-7AA20B227A9D}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_OEM_LINKS)]
+			/// <summary>OEM Links
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\OEM Links</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("c1bae2d0-10df-4334-bedd-7aa20b227a9d", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_OEM_LINKS)]
 			FOLDERID_CommonOEMLinks,
 
-			/// <summary>Programs</summary>
-			[KnownFolderDetail("{0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_PROGRAMS)]
+			/// <summary>Programs
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs</para>
+			/// <para>Localized Name: Programs</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("0139d44e-6afe-49f2-8690-3dafcae6ffb8", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_PROGRAMS)]
 			FOLDERID_CommonPrograms,
 
-			/// <summary>Start Menu</summary>
-			[KnownFolderDetail("{A4115719-D62E-491D-AA7C-E74B8BE3B067}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_STARTMENU)]
+			/// <summary>Start Menu
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\Microsoft\Windows\Start Menu</para>
+			/// <para>Localized Name: Start Menu</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("a4115719-d62e-491d-aa7c-e74b8be3b067", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_STARTMENU)]
 			FOLDERID_CommonStartMenu,
 
-			/// <summary>Startup</summary>
-			[KnownFolderDetail("{82A5EA35-D9CD-47C5-9629-E15D2F714E6E}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_STARTUP)]
+			/// <summary>Startup
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\Startup</para>
+			/// <para>Localized Name: Startup</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("82a5ea35-d9cd-47c5-9629-e15d2f714e6e", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_STARTUP)]
 			FOLDERID_CommonStartup,
 
-			/// <summary>Templates</summary>
-			[KnownFolderDetail("{B94237E7-57AC-4347-9151-B08C6C32D1F7}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_TEMPLATES)]
+			/// <summary>Common Templates
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\Microsoft\Windows\Templates</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("b94237e7-57ac-4347-9151-b08c6c32d1f7", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_TEMPLATES)]
 			FOLDERID_CommonTemplates,
 
-			/// <summary>Computer</summary>
-			[KnownFolderDetail("{0AC0837C-BBF8-452A-850D-79D08E667CA7}", Equivalent = Environment.SpecialFolder.MyComputer)]
+			/// <summary>MyComputerFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{20D04FE0-3AEA-1069-A2D8-08002B30309D}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("0ac0837c-bbf8-452a-850d-79d08e667ca7", Equivalent = Environment.SpecialFolder.MyComputer /* CSIDL.CSIDL_DRIVES */)]
 			FOLDERID_ComputerFolder,
 
-			/// <summary>Conflicts</summary>
-			[KnownFolderDetail("{4bfefb45-347d-4006-a5be-ac0cb0567192}")]
+			/// <summary>ConflictFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{26EE0668-A00A-44D7-9371-BEB064C98683}\0\::{9C73F5E5-7AE7-4E32-A8E8-8D23B85255BF}\::{E413D040-6788-4C22-957E-175D1C513A34},</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("4bfefb45-347d-4006-a5be-ac0cb0567192")]
 			FOLDERID_ConflictFolder,
 
-			/// <summary>Network Connections</summary>
-			[KnownFolderDetail("{6F0CD92B-2E97-45D1-88FF-B0D186B8DEDD}")]
+			/// <summary>ConnectionsFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{26EE0668-A00A-44D7-9371-BEB064C98683}\0\::{7007ACC7-3202-11D1-AAD2-00805FC1270E}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("6f0cd92b-2e97-45d1-88ff-b0d186b8dedd", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_CONNECTIONS)]
 			FOLDERID_ConnectionsFolder,
 
-			/// <summary>Contacts</summary>
-			[KnownFolderDetail("{56784854-C6CB-462b-8169-88E350ACB882}")]
+			/// <summary>Contacts
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Contacts</para>
+			/// <para>Parsing Name:   ::{59031a47-3f72-44a7-89c5-5595fe6b30ee}\{56784854-C6CB-462B-8169-88E350ACB882}</para>
+			/// <para>Tooltip:        Contains Contact files.</para>
+			/// <para>Localized Name: Contacts</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("56784854-c6cb-462b-8169-88e350acb882")]
 			FOLDERID_Contacts,
 
-			/// <summary>Control Panel</summary>
-			[KnownFolderDetail("{82A74AEB-AEB4-465C-A014-D097EE346D63}")]
+			/// <summary>ControlPanelFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{26EE0668-A00A-44D7-9371-BEB064C98683}\0</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("82a74aeb-aeb4-465c-a014-d097ee346d63", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_CONTROLS)]
 			FOLDERID_ControlPanelFolder,
 
-			/// <summary>Cookies</summary>
-			[KnownFolderDetail("{2B0F765D-C0E9-4171-908E-08A611B84FF6}", Equivalent = Environment.SpecialFolder.Cookies)]
+			/// <summary>Cookies
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\INetCookies</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("2b0f765d-c0e9-4171-908e-08a611b84ff6", Equivalent = Environment.SpecialFolder.Cookies /* CSIDL.CSIDL_COOKIES */)]
 			FOLDERID_Cookies,
 
-			/// <summary>Desktop</summary>
-			[KnownFolderDetail("{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}", Equivalent = Environment.SpecialFolder.Desktop)]
+			/// <summary>Desktop
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Desktop</para>
+			/// <para>Localized Name: Desktop</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("b4bfcc3a-db2c-424c-b029-7fe99a87c641", Equivalent = Environment.SpecialFolder.Desktop /* CSIDL.CSIDL_DESKTOP */)]
 			FOLDERID_Desktop,
 
-			/// <summary>DeviceMetadataStore</summary>
-			[KnownFolderDetail("{5CE4A5E9-E4EB-479D-B89F-130C02886155}")]
+			/// <summary>Device Metadata Store
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\Microsoft\Windows\DeviceMetadataStore</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("5ce4a5e9-e4eb-479d-b89f-130c02886155")]
 			FOLDERID_DeviceMetadataStore,
 
-			/// <summary>Documents</summary>
-			[KnownFolderDetail("{FDD39AD0-238F-46AF-ADB4-6C85480369C7}", Equivalent = Environment.SpecialFolder.MyDocuments)]
+			/// <summary>Documents
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Documents</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{A8CDFF1C-4878-43be-B5FD-F8091C1C60D0}</para>
+			/// <para>Localized Name: Documents</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("fdd39ad0-238f-46af-adb4-6c85480369c7", Equivalent = Environment.SpecialFolder.MyDocuments /* CSIDL.CSIDL_MYDOCUMENTS */)]
 			FOLDERID_Documents,
 
-			/// <summary>Documents</summary>
-			[KnownFolderDetail("{7B0DB17D-9CD2-4A93-9733-46CC89022E7C}")]
+			/// <summary>Documents
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Libraries\Documents.library-ms</para>
+			/// <para>Parsing Name:   ::{031E4825-7B94-4dc3-B131-E946B44C8DD5}\{7b0db17d-9cd2-4a93-9733-46cc89022e7c}</para>
+			/// <para>Localized Name: Documents</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE, KFDF_STREAM</para>
+			/// </summary>
+			[KnownFolderDetail("7b0db17d-9cd2-4a93-9733-46cc89022e7c")]
 			FOLDERID_DocumentsLibrary,
 
-			/// <summary>Downloads</summary>
-			[KnownFolderDetail("{374DE290-123F-4565-9164-39C4925E467B}")]
+			/// <summary>Downloads
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Downloads</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{374DE290-123F-4565-9164-39C4925E467B}</para>
+			/// <para>Localized Name: Downloads</para>
+			/// <para>SDDL:           S:AI(RA;IOOICI;;;;WD;("IMAGELOAD",TU,0x0,0x01))</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("374de290-123f-4565-9164-39c4925e467b")]
 			FOLDERID_Downloads,
 
-			/// <summary>Favorites</summary>
-			[KnownFolderDetail("{1777F761-68AD-4D8A-87BD-30B759FA33DD}", Equivalent = Environment.SpecialFolder.Favorites)]
+			/// <summary>Favorites
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Favorites</para>
+			/// <para>Localized Name: Favorites</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("1777f761-68ad-4d8a-87bd-30b759fa33dd", Equivalent = Environment.SpecialFolder.Favorites /* CSIDL.CSIDL_FAVORITES */)]
 			FOLDERID_Favorites,
 
-			/// <summary>Fonts</summary>
-			[KnownFolderDetail("{FD228CB7-AE11-4AE3-864C-16F3910AB8FE}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_FONTS)]
+			/// <summary>Fonts
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %SystemRoot%\Fonts</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("fd228cb7-ae11-4ae3-864c-16f3910ab8fe", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_FONTS)]
 			FOLDERID_Fonts,
 
 			/// <summary>Games</summary>
 			[KnownFolderDetail("{CAC52C1A-B53D-4edc-92D7-6B2E8AC19434}")]
 			FOLDERID_Games,
 
-			/// <summary>GameExplorer</summary>
-			[KnownFolderDetail("{054FAE61-4DD8-4787-80B6-090220C4B700}")]
+			/// <summary>GameTasks
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\GameExplorer</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_LOCAL_REDIRECT_ONLY</para>
+			/// </summary>
+			[KnownFolderDetail("054fae61-4dd8-4787-80b6-090220c4b700")]
 			FOLDERID_GameTasks,
 
-			/// <summary>History</summary>
-			[KnownFolderDetail("{D9DC8A3B-B784-432E-A781-5A1130A75963}", Equivalent = Environment.SpecialFolder.History)]
+			/// <summary>History
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\History</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_LOCAL_REDIRECT_ONLY</para>
+			/// </summary>
+			[KnownFolderDetail("d9dc8a3b-b784-432e-a781-5a1130a75963", Equivalent = Environment.SpecialFolder.History /* CSIDL.CSIDL_HISTORY */)]
 			FOLDERID_History,
 
-			/// <summary>HomeGroup</summary>
-			[KnownFolderDetail("{52528A6B-B9E3-4ADD-B60D-588C2DBA842D}")]
+			/// <summary>HomeGroupFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{B4FB3F98-C1EA-428d-A78A-D1F5659CBA93}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("52528a6b-b9e3-4add-b60d-588c2dba842d")]
 			FOLDERID_HomeGroup,
 
-			/// <summary>The user's username (%USERNAME%)</summary>
-			[KnownFolderDetail("{9B74B6A3-0DFD-4f11-9E78-5F7800F2E772}")]
+			/// <summary>HomeGroupCurrentUserFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{B4FB3F98-C1EA-428d-A78A-D1F5659CBA93}\$CurrentUser$</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("9b74b6a3-0dfd-4f11-9e78-5f7800f2e772")]
 			FOLDERID_HomeGroupCurrentUser,
 
-			/// <summary>ImplicitAppShortcuts</summary>
-			[KnownFolderDetail("{BCB5256F-79F6-4CEE-B725-DC34E402FD46}")]
+			/// <summary>ImplicitAppShortcuts
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\ImplicitAppShortcuts</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("bcb5256f-79f6-4cee-b725-dc34e402fd46")]
 			FOLDERID_ImplicitAppShortcuts,
 
-			/// <summary>Temporary Internet Files</summary>
-			[KnownFolderDetail("{352481E8-33BE-4251-BA85-6007CAEDCF9D}", Equivalent = Environment.SpecialFolder.InternetCache)]
+			/// <summary>Cache
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\INetCache</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_LOCAL_REDIRECT_ONLY</para>
+			/// </summary>
+			[KnownFolderDetail("352481e8-33be-4251-ba85-6007caedcf9d", Equivalent = Environment.SpecialFolder.InternetCache /* CSIDL.CSIDL_INTERNET_CACHE */)]
 			FOLDERID_InternetCache,
 
-			/// <summary>The Internet</summary>
-			[KnownFolderDetail("{4D9F7874-4E0C-4904-967B-40B0D20C3E4B}")]
+			/// <summary>InternetFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{871C5380-42A0-1069-A2EA-08002B30309D}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("4d9f7874-4e0c-4904-967b-40b0d20c3e4b", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_INTERNET)]
 			FOLDERID_InternetFolder,
 
-			/// <summary>Libraries</summary>
-			[KnownFolderDetail("{1B3EA5DC-B587-4786-B4EF-BD1DC332AEAE}")]
+			/// <summary>Libraries
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Libraries</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("1b3ea5dc-b587-4786-b4ef-bd1dc332aeae")]
 			FOLDERID_Libraries,
 
-			/// <summary>Links</summary>
-			[KnownFolderDetail("{bfb9d5e0-c6a9-404c-b2b2-ae6db6af4968}")]
+			/// <summary>Links
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Links</para>
+			/// <para>Parsing Name:   ::{59031a47-3f72-44a7-89c5-5595fe6b30ee}\{bfb9d5e0-c6a9-404c-b2b2-ae6db6af4968}</para>
+			/// <para>Localized Name: Links</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("bfb9d5e0-c6a9-404c-b2b2-ae6db6af4968")]
 			FOLDERID_Links,
 
-			/// <summary>Local</summary>
-			[KnownFolderDetail("{F1B32785-6FBA-4FCF-9D55-7B8E7F157091}", Equivalent = Environment.SpecialFolder.LocalApplicationData)]
+			/// <summary>Local AppData
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_LOCAL_REDIRECT_ONLY, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("f1b32785-6fba-4fcf-9d55-7b8e7f157091", Equivalent = Environment.SpecialFolder.LocalApplicationData /* CSIDL.CSIDL_LOCAL_APPDATA */)]
 			FOLDERID_LocalAppData,
 
-			/// <summary>LocalLow</summary>
-			[KnownFolderDetail("{A520A1A4-1780-4FF6-BD18-167343C5AF16}")]
+			/// <summary>LocalAppDataLow
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%Low</para>
+			/// <para>SDDL:           S:(ML;OICI;NW;;;LW)</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</para>
+			/// <para>Flags:          KFDF_LOCAL_REDIRECT_ONLY, KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("a520a1a4-1780-4ff6-bd18-167343c5af16")]
 			FOLDERID_LocalAppDataLow,
 
-			/// <summary>None</summary>
-			[KnownFolderDetail("{2A00375E-224C-49DE-B8D1-440DF7EF3DDC}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_RESOURCES_LOCALIZED)]
+			/// <summary>LocalizedResourcesDir
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %SystemRoot%\resources\0409</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("2a00375e-224c-49de-b8d1-440df7ef3ddc", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_RESOURCES_LOCALIZED)]
 			FOLDERID_LocalizedResourcesDir,
 
-			/// <summary>Music</summary>
-			[KnownFolderDetail("{4BD8D571-6D19-48D3-BE97-422220080E43}", Equivalent = Environment.SpecialFolder.MyMusic)]
+			/// <summary>Music
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Music</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{1CF1260C-4DD0-4EBB-811F-33C572699FDE}</para>
+			/// <para>Tooltip:        Contains music and other audio files.</para>
+			/// <para>Localized Name: Music</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("4bd8d571-6d19-48d3-be97-422220080e43", Equivalent = Environment.SpecialFolder.MyMusic /* CSIDL.CSIDL_MYMUSIC */)]
 			FOLDERID_Music,
 
-			/// <summary>Music</summary>
-			[KnownFolderDetail("{2112AB0A-C86A-4FFE-A368-0DE96E47012E}")]
+			/// <summary>Music
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Libraries\Music.library-ms</para>
+			/// <para>Parsing Name:   ::{031E4825-7B94-4dc3-B131-E946B44C8DD5}\{2112AB0A-C86A-4ffe-A368-0DE96E47012E}</para>
+			/// <para>Tooltip:        Contains music and other audio files.</para>
+			/// <para>Localized Name: Music</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE, KFDF_STREAM</para>
+			/// </summary>
+			[KnownFolderDetail("2112ab0a-c86a-4ffe-a368-0de96e47012e")]
 			FOLDERID_MusicLibrary,
 
-			/// <summary>Network Shortcuts</summary>
-			[KnownFolderDetail("{C5ABBF53-E17F-4121-8900-86626FC2C973}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_NETHOOD)]
+			/// <summary>NetHood
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Network Shortcuts</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("c5abbf53-e17f-4121-8900-86626fc2c973", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_NETHOOD)]
 			FOLDERID_NetHood,
 
-			/// <summary>Network</summary>
-			[KnownFolderDetail("{D20BEEC4-5CA8-4905-AE3B-BF251EA09B53}")]
+			/// <summary>NetworkPlacesFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("d20beec4-5ca8-4905-ae3b-bf251ea09b53", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_NETWORK)]
 			FOLDERID_NetworkFolder,
 
-			/// <summary>3D Objects</summary>
-			[KnownFolderDetail("{31C0DD25-9439-4F12-BF41-7FF4EDA38722}")]
+			/// <summary>3D Objects
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\3D Objects</para>
+			/// <para>Localized Name: 3D Objects</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("31c0dd25-9439-4f12-bf41-7ff4eda38722")]
 			FOLDERID_Objects3D,
 
-			/// <summary>Original Images</summary>
-			[KnownFolderDetail("{2C36C0AA-5812-4b87-BFD0-4CD0DFB19B39}")]
+			/// <summary>Original Images
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows Photo Gallery\Original Images</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("2c36c0aa-5812-4b87-bfd0-4cd0dfb19b39")]
 			FOLDERID_OriginalImages,
 
-			/// <summary>Slide Shows</summary>
-			[KnownFolderDetail("{69D2CF90-FC33-4FB7-9A0C-EBB0F0FCB43C}")]
+			/// <summary>Slide Shows
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Pictures\Slide Shows</para>
+			/// <para>Localized Name: Slide Shows</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// </summary>
+			[KnownFolderDetail("69d2cf90-fc33-4fb7-9a0c-ebb0f0fcb43c")]
 			FOLDERID_PhotoAlbums,
 
-			/// <summary>Pictures</summary>
-			[KnownFolderDetail("{A990AE9F-A03B-4E80-94BC-9912D7504104}")]
+			/// <summary>Pictures
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Libraries\Pictures.library-ms</para>
+			/// <para>Parsing Name:   ::{031E4825-7B94-4dc3-B131-E946B44C8DD5}\{A990AE9F-A03B-4e80-94BC-9912D7504104}</para>
+			/// <para>Tooltip:        Contains digital photos, images, and graphic files.</para>
+			/// <para>Localized Name: Pictures</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE, KFDF_STREAM</para>
+			/// </summary>
+			[KnownFolderDetail("a990ae9f-a03b-4e80-94bc-9912d7504104")]
 			FOLDERID_PicturesLibrary,
 
-			/// <summary>Pictures</summary>
-			[KnownFolderDetail("{33E28130-4E1E-4676-835A-98395C3BC3BB}", Equivalent = Environment.SpecialFolder.MyPictures)]
+			/// <summary>Pictures
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Pictures</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{3ADD1653-EB32-4CB0-BBD7-DFA0ABB5ACCA}</para>
+			/// <para>Tooltip:        Contains digital photos, images, and graphic files.</para>
+			/// <para>Localized Name: Pictures</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("33e28130-4e1e-4676-835a-98395c3bc3bb", Equivalent = Environment.SpecialFolder.MyPictures /* CSIDL.CSIDL_MYPICTURES */)]
 			FOLDERID_Pictures,
 
-			/// <summary>Playlists</summary>
-			[KnownFolderDetail("{DE92C1C7-837F-4F69-A3BB-86E631204A23}")]
+			/// <summary>Playlists
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Music\Playlists</para>
+			/// <para>Localized Name: Playlists</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// </summary>
+			[KnownFolderDetail("de92c1c7-837f-4f69-a3bb-86e631204a23")]
 			FOLDERID_Playlists,
 
-			/// <summary>Printers</summary>
-			[KnownFolderDetail("{76FC4E2D-D6AD-4519-A663-37BD56068185}")]
+			/// <summary>PrintersFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{21EC2020-3AEA-1069-A2DD-08002B30309D}\::{2227A280-3AEA-1069-A2DE-08002B30309D}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("76fc4e2d-d6ad-4519-a663-37bd56068185", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_PRINTERS)]
 			FOLDERID_PrintersFolder,
 
-			/// <summary>Printer Shortcuts</summary>
-			[KnownFolderDetail("{9274BD8D-CFD1-41C3-B35E-B13F55A758F4}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_PRINTHOOD)]
+			/// <summary>PrintHood
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Printer Shortcuts</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("9274bd8d-cfd1-41c3-b35e-b13f55a758f4", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_PRINTHOOD)]
 			FOLDERID_PrintHood,
 
-			/// <summary>The user's username (%USERNAME%)</summary>
-			[KnownFolderDetail("{5E6C858F-0E22-4760-9AFE-EA3317B67173}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_PROFILE)]
+			/// <summary>Profile
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %USERPROFILE%</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("5e6c858f-0e22-4760-9afe-ea3317b67173", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_PROFILE)]
 			FOLDERID_Profile,
 
-			/// <summary>ProgramData</summary>
-			[KnownFolderDetail("{62AB5D82-FDC1-4DC3-A9DD-070D1D495D97}", Equivalent = Environment.SpecialFolder.CommonApplicationData)]
+			/// <summary>Common AppData
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %ALLUSERSPROFILE%</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("62ab5d82-fdc1-4dc3-a9dd-070d1d495d97", Equivalent = Environment.SpecialFolder.CommonApplicationData /* CSIDL.CSIDL_COMMON_APPDATA */)]
 			FOLDERID_ProgramData,
 
-			/// <summary>Program Files</summary>
-			[KnownFolderDetail("{905e63b6-c1bf-494e-b29c-65b732d3d21a}", Equivalent = Environment.SpecialFolder.ProgramFiles)]
+			/// <summary>Program Files
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %ProgramFiles% (x86)</para>
+			/// <para>Localized Name: Program Files</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("905e63b6-c1bf-494e-b29c-65b732d3d21a", Equivalent = Environment.SpecialFolder.ProgramFiles /* CSIDL.CSIDL_PROGRAM_FILES */)]
 			FOLDERID_ProgramFiles,
 
 			/// <summary>Program Files</summary>
 			[KnownFolderDetail("{6D809377-6AF0-444b-8957-A3773F02200E}")]
 			FOLDERID_ProgramFilesX64,
 
-			/// <summary>Program Files</summary>
-			[KnownFolderDetail("{7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_PROGRAM_FILESX86)]
+			/// <summary>Program Files (x86)
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %ProgramFiles% (x86)</para>
+			/// <para>Localized Name: Program Files (x86)</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("7c5a40ef-a0fb-4bfc-874a-c0f2e0b9fa8e", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_PROGRAM_FILESX86)]
 			FOLDERID_ProgramFilesX86,
 
-			/// <summary>Common Files</summary>
-			[KnownFolderDetail("{F7F1ED05-9F6D-47A2-AAAE-29D317C6F066}", Equivalent = Environment.SpecialFolder.CommonProgramFiles)]
+			/// <summary>ProgramFilesCommon
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %ProgramFiles% (x86)\Common Files</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("f7f1ed05-9f6d-47a2-aaae-29d317c6f066", Equivalent = Environment.SpecialFolder.CommonProgramFiles /* CSIDL.CSIDL_PROGRAM_FILES_COMMON */)]
 			FOLDERID_ProgramFilesCommon,
 
 			/// <summary>Common Files</summary>
 			[KnownFolderDetail("{6365D5A7-0F0D-45E5-87F6-0DA56B6A4F7D}")]
 			FOLDERID_ProgramFilesCommonX64,
 
-			/// <summary>Common Files</summary>
-			[KnownFolderDetail("{DE974D24-D9C6-4D3E-BF91-F4455120B917}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_PROGRAM_FILES_COMMONX86)]
+			/// <summary>ProgramFilesCommonX86
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %ProgramFiles% (x86)\Common Files</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("de974d24-d9c6-4d3e-bf91-f4455120b917", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_PROGRAM_FILES_COMMONX86)]
 			FOLDERID_ProgramFilesCommonX86,
 
-			/// <summary>Programs</summary>
-			[KnownFolderDetail("{A77F5D77-2E2B-44C3-A6A2-ABA601054A51}", Equivalent = Environment.SpecialFolder.Programs)]
+			/// <summary>Programs
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Start Menu\Programs</para>
+			/// <para>Localized Name: Programs</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("a77f5d77-2e2b-44c3-a6a2-aba601054a51", Equivalent = Environment.SpecialFolder.Programs /* CSIDL.CSIDL_PROGRAMS */)]
 			FOLDERID_Programs,
 
-			/// <summary>Public</summary>
-			[KnownFolderDetail("{DFDF76A2-C82A-4D63-906A-5644AC457385}")]
+			/// <summary>Public
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %PUBLIC%</para>
+			/// <para>Localized Name: Public</para>
+			/// <para>SDDL:           D:PAI(A;OICI;FA;;;BA)(A;OICIIO;FA;;;CO)(A;OICI;FA;;;SY)(A;OICIIO;0x1301ff;;;IU)(A;;0x1200af;;;IU)(A;OICIIO;0x1301ff;;;SU)(A;;0x1200af;;;SU)(A;OICIIO;0x1301ff;;;S-1-5-3)(A;;0x1200af;;;S-1-5-3)</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("dfdf76a2-c82a-4d63-906a-5644ac457385")]
 			FOLDERID_Public,
 
-			/// <summary>Public Desktop</summary>
-			[KnownFolderDetail("{C4AA340D-F20F-4863-AFEF-F87EF2E6BA25}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_DESKTOPDIRECTORY)]
+			/// <summary>Public Desktop
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Desktop</para>
+			/// <para>Localized Name: Public Desktop</para>
+			/// <para>SDDL:           D:P(A;OICI;FA;;;BA)(A;OICI;0x1200a9;;;IU)(A;OICI;FA;;;SY)</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY, FILE_ATTRIBUTE_HIDDEN</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("c4aa340d-f20f-4863-afef-f87ef2e6ba25", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_DESKTOPDIRECTORY)]
 			FOLDERID_PublicDesktop,
 
-			/// <summary>Public Documents</summary>
-			[KnownFolderDetail("{ED4824AF-DCE4-45A8-81E2-FC7965083634}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_DOCUMENTS)]
+			/// <summary>Public Documents
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Documents</para>
+			/// <para>Localized Name: Public Documents</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("ed4824af-dce4-45a8-81e2-fc7965083634", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_DOCUMENTS)]
 			FOLDERID_PublicDocuments,
 
-			/// <summary>Public Downloads</summary>
-			[KnownFolderDetail("{3D644C9B-1FB8-4f30-9B45-F670235F79C0}")]
+			/// <summary>Public Downloads
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Downloads</para>
+			/// <para>Localized Name: Public Downloads</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("3d644c9b-1fb8-4f30-9b45-f670235f79c0")]
 			FOLDERID_PublicDownloads,
 
-			/// <summary>GameExplorer</summary>
-			[KnownFolderDetail("{DEBF2536-E1A8-4c59-B6A2-414586476AEA}")]
+			/// <summary>PublicGameTasks
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\Microsoft\Windows\GameExplorer</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_LOCAL_REDIRECT_ONLY</para>
+			/// </summary>
+			[KnownFolderDetail("debf2536-e1a8-4c59-b6a2-414586476aea")]
 			FOLDERID_PublicGameTasks,
 
-			/// <summary>Libraries</summary>
-			[KnownFolderDetail("{48DAF80B-E6CF-4F4E-B800-0E69D84EE384}")]
+			/// <summary>PublicLibraries
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Libraries</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY, FILE_ATTRIBUTE_HIDDEN</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("48daf80b-e6cf-4f4e-b800-0e69d84ee384")]
 			FOLDERID_PublicLibraries,
 
-			/// <summary>Public Music</summary>
-			[KnownFolderDetail("{3214FAB5-9757-4298-BB61-92A9DEAA44FF}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_MUSIC)]
+			/// <summary>Public Music
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Music</para>
+			/// <para>Tooltip:        Contains music and other audio files.</para>
+			/// <para>Localized Name: Public Music</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("3214fab5-9757-4298-bb61-92a9deaa44ff", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_MUSIC)]
 			FOLDERID_PublicMusic,
 
-			/// <summary>Public Pictures</summary>
-			[KnownFolderDetail("{B6EBFB86-6907-413C-9AF7-4FC2ABF07CC5}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_PICTURES)]
+			/// <summary>Public Pictures
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Pictures</para>
+			/// <para>Tooltip:        Contains digital photos, images, and graphic files.</para>
+			/// <para>Localized Name: Public Pictures</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("b6ebfb86-6907-413c-9af7-4fc2abf07cc5", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_PICTURES)]
 			FOLDERID_PublicPictures,
 
-			/// <summary>Ringtones</summary>
-			[KnownFolderDetail("{E555AB60-153B-4D17-9F04-A5FE99FC15EC}")]
+			/// <summary>CommonRingtones
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\Microsoft\Windows\Ringtones</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("e555ab60-153b-4d17-9f04-a5fe99fc15ec")]
 			FOLDERID_PublicRingtones,
 
-			/// <summary>Public Account Pictures</summary>
-			[KnownFolderDetail("{0482af6c-08f1-4c34-8c90-e17ec98b1e17}")]
+			/// <summary>Public Account Pictures
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %PUBLIC%\AccountPictures</para>
+			/// <para>Localized Name: Public Account Pictures</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY, FILE_ATTRIBUTE_HIDDEN</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("0482af6c-08f1-4c34-8c90-e17ec98b1e17")]
 			FOLDERID_PublicUserTiles,
 
-			/// <summary>Public Videos</summary>
-			[KnownFolderDetail("{2400183A-6185-49FB-A2D8-4A392A602BA3}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_VIDEO)]
+			/// <summary>Public Videos
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Videos</para>
+			/// <para>Tooltip:        Contains movies and other video files.</para>
+			/// <para>Localized Name: Public Videos</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("2400183a-6185-49fb-a2d8-4a392a602ba3", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_COMMON_VIDEO)]
 			FOLDERID_PublicVideos,
 
-			/// <summary>Quick Launch</summary>
-			[KnownFolderDetail("{52a4f021-7b75-48a9-9f6b-4b87a210bc8f}")]
+			/// <summary>Quick Launch
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Internet Explorer\Quick Launch</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("52a4f021-7b75-48a9-9f6b-4b87a210bc8f")]
 			FOLDERID_QuickLaunch,
 
-			/// <summary>Recent Items</summary>
-			[KnownFolderDetail("{AE50C081-EBD2-438A-8655-8A092E34987A}", Equivalent = Environment.SpecialFolder.Recent)]
+			/// <summary>Recent Items
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Recent</para>
+			/// <para>Localized Name: Recent Items</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("ae50c081-ebd2-438a-8655-8a092e34987a", Equivalent = Environment.SpecialFolder.Recent /* CSIDL.CSIDL_RECENT */)]
 			FOLDERID_Recent,
 
-			/// <summary>Recorded TV</summary>
-			[KnownFolderDetail("{1A6FDBA2-F42D-4358-A798-B74D745926C5}")]
+			/// <summary>Recorded TV
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Libraries\RecordedTV.library-ms</para>
+			/// <para>Localized Name: Recorded TV</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE, KFDF_STREAM</para>
+			/// </summary>
+			[KnownFolderDetail("1a6fdba2-f42d-4358-a798-b74d745926c5")]
 			FOLDERID_RecordedTVLibrary,
 
-			/// <summary>Recycle Bin</summary>
-			[KnownFolderDetail("{B7534046-3ECB-4C18-BE4E-64CD4CB7D6AC}")]
+			/// <summary>RecycleBinFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{645FF040-5081-101B-9F08-00AA002F954E}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("b7534046-3ecb-4c18-be4e-64cd4cb7d6ac", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_BITBUCKET)]
 			FOLDERID_RecycleBinFolder,
 
-			/// <summary>Resources</summary>
-			[KnownFolderDetail("{8AD10C31-2ADB-4296-A8F7-E4701232C972}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_RESOURCES)]
+			/// <summary>ResourceDir
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %SystemRoot%\resources</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("8ad10c31-2adb-4296-a8f7-e4701232c972", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_RESOURCES)]
 			FOLDERID_ResourceDir,
 
-			/// <summary>Ringtones</summary>
-			[KnownFolderDetail("{C870044B-F49E-4126-A9C3-B52A1FF411E8}")]
+			/// <summary>Ringtones
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\Ringtones</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("c870044b-f49e-4126-a9c3-b52a1ff411e8")]
 			FOLDERID_Ringtones,
 
-			/// <summary>Roaming</summary>
-			[KnownFolderDetail("{3EB685DB-65F9-4CF6-A03A-E3EF65729F3D}", Equivalent = Environment.SpecialFolder.ApplicationData)]
+			/// <summary>AppData
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("3eb685db-65f9-4cf6-a03a-e3ef65729f3d", Equivalent = Environment.SpecialFolder.ApplicationData /* CSIDL.CSIDL_APPDATA */)]
 			FOLDERID_RoamingAppData,
 
-			/// <summary>RoamedTileImages</summary>
-			[KnownFolderDetail("{AAA8D5A5-F1D6-4259-BAA8-78E7EF60835E}")]
+			/// <summary>Roamed Tile Images
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\RoamedTileImages</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("aaa8d5a5-f1d6-4259-baa8-78e7ef60835e")]
 			FOLDERID_RoamedTileImages,
 
-			/// <summary>RoamingTiles</summary>
-			[KnownFolderDetail("{00BCFC5A-ED94-4e48-96A1-3F6217F21990}")]
+			/// <summary>Roaming Tiles
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\RoamingTiles</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("00bcfc5a-ed94-4e48-96a1-3f6217f21990")]
 			FOLDERID_RoamingTiles,
 
-			/// <summary>Sample Music</summary>
-			[KnownFolderDetail("{B250C668-F57D-4EE1-A63C-290EE7D1AA1F}")]
+			/// <summary>SampleMusic
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Music\Sample Music</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("b250c668-f57d-4ee1-a63c-290ee7d1aa1f")]
 			FOLDERID_SampleMusic,
 
-			/// <summary>Sample Pictures</summary>
-			[KnownFolderDetail("{C4900540-2379-4C75-844B-64E6FAF8716B}")]
+			/// <summary>SamplePictures
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Pictures\Sample Pictures</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("c4900540-2379-4c75-844b-64e6faf8716b")]
 			FOLDERID_SamplePictures,
 
 			/// <summary>Sample Playlists</summary>
 			[KnownFolderDetail("{15CA69B3-30EE-49C1-ACE1-6B5EC372AFB5}")]
 			FOLDERID_SamplePlaylists,
 
-			/// <summary>Sample Videos</summary>
-			[KnownFolderDetail("{859EAD94-2E85-48AD-A71A-0969CB56A6CD}")]
+			/// <summary>SampleVideos
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %PUBLIC%\Videos\Sample Videos</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("859ead94-2e85-48ad-a71a-0969cb56a6cd")]
 			FOLDERID_SampleVideos,
 
-			/// <summary>Saved Games</summary>
-			[KnownFolderDetail("{4C5C32FF-BB9D-43b0-B5B4-2D72E54EAAA4}")]
+			/// <summary>Saved Games
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Saved Games</para>
+			/// <para>Parsing Name:   ::{59031a47-3f72-44a7-89c5-5595fe6b30ee}\{4C5C32FF-BB9D-43b0-B5B4-2D72E54EAAA4}</para>
+			/// <para>Localized Name: Saved Games</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("4c5c32ff-bb9d-43b0-b5b4-2d72e54eaaa4")]
 			FOLDERID_SavedGames,
 
-			/// <summary>Saved Pictures</summary>
-			[KnownFolderDetail("{3B193882-D3AD-4eab-965A-69829D1FB59F}")]
+			/// <summary>Saved Pictures
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Pictures\Saved Pictures</para>
+			/// <para>Localized Name: Saved Pictures</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("3b193882-d3ad-4eab-965a-69829d1fb59f")]
 			FOLDERID_SavedPictures,
 
-			/// <summary>Saved Pictures Library</summary>
-			[KnownFolderDetail("{E25B5812-BE88-4bd9-94B0-29233477B6C3}")]
+			/// <summary>Saved Pictures
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Libraries\SavedPictures.library-ms</para>
+			/// <para>Parsing Name:   ::{031E4825-7B94-4dc3-B131-E946B44C8DD5}\{E25B5812-BE88-4bd9-94B0-29233477B6C3}</para>
+			/// <para>Localized Name: Saved Pictures</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_STREAM</para>
+			/// </summary>
+			[KnownFolderDetail("e25b5812-be88-4bd9-94b0-29233477b6c3")]
 			FOLDERID_SavedPicturesLibrary,
 
-			/// <summary>Searches</summary>
-			[KnownFolderDetail("{7D1D3A04-DEBB-4115-95CF-2F29DA2920DA}")]
+			/// <summary>Searches
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Searches</para>
+			/// <para>Parsing Name:   ::{59031a47-3f72-44a7-89c5-5595fe6b30ee}\{7d1d3a04-debb-4115-95cf-2f29da2920da}</para>
+			/// <para>Localized Name: Searches</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE, KFDF_PUBLISHEXPANDEDPATH</para>
+			/// </summary>
+			[KnownFolderDetail("7d1d3a04-debb-4115-95cf-2f29da2920da")]
 			FOLDERID_SavedSearches,
 
-			/// <summary>Screenshots</summary>
-			[KnownFolderDetail("{b7bede81-df94-4682-a7d8-57a52620b86f}")]
+			/// <summary>Screenshots
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Pictures\Screenshots</para>
+			/// <para>Localized Name: Screenshots</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("b7bede81-df94-4682-a7d8-57a52620b86f")]
 			FOLDERID_Screenshots,
 
-			/// <summary>Offline Files</summary>
-			[KnownFolderDetail("{ee32e446-31ca-4aba-814f-a5ebd2fd6d5e}")]
+			/// <summary>CSCFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   shell:::{BD7A2E7B-21CB-41b2-A086-B309680C6B7E}\*</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("ee32e446-31ca-4aba-814f-a5ebd2fd6d5e")]
 			FOLDERID_SEARCH_CSC,
 
-			/// <summary>History</summary>
-			[KnownFolderDetail("{0D4C3DB6-03A3-462F-A0E6-08924C41B5D4}")]
+			/// <summary>SearchHistoryFolder
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\ConnectedSearch\History</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("0d4c3db6-03a3-462f-a0e6-08924c41b5d4")]
 			FOLDERID_SearchHistory,
 
-			/// <summary>Search Results</summary>
-			[KnownFolderDetail("{190337d1-b8ca-4121-a639-6d472d16972a}")]
+			/// <summary>SearchHomeFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{9343812e-1c37-4a49-a12e-4b2d810d956b}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("190337d1-b8ca-4121-a639-6d472d16972a")]
 			FOLDERID_SearchHome,
 
-			/// <summary>Microsoft Office Outlook</summary>
-			[KnownFolderDetail("{98ec0e18-2098-4d44-8644-66979315a281}")]
+			/// <summary>MAPIFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   shell:::{89D83576-6BD1-4C86-9454-BEB04E94C819}\*</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("98ec0e18-2098-4d44-8644-66979315a281")]
 			FOLDERID_SEARCH_MAPI,
 
-			/// <summary>Templates</summary>
-			[KnownFolderDetail("{7E636BFE-DFA9-4D5E-B456-D7B39851D8A9}")]
+			/// <summary>SearchTemplatesFolder
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Microsoft\Windows\ConnectedSearch\Templates</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("7e636bfe-dfa9-4d5e-b456-d7b39851d8a9")]
 			FOLDERID_SearchTemplates,
 
-			/// <summary>SendTo</summary>
-			[KnownFolderDetail("{8983036C-27C0-404B-8F08-102D10DCFD74}", Equivalent = Environment.SpecialFolder.SendTo)]
+			/// <summary>SendTo
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\SendTo</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("8983036c-27c0-404b-8f08-102d10dcfd74", Equivalent = Environment.SpecialFolder.SendTo /* CSIDL.CSIDL_SENDTO */)]
 			FOLDERID_SendTo,
 
 			/// <summary>Gadgets</summary>
@@ -646,111 +1132,422 @@ namespace Vanara.PInvoke
 			[KnownFolderDetail("{A75D362E-50FC-4fb7-AC2C-A8BEAA314493}")]
 			FOLDERID_SidebarParts,
 
-			/// <summary>OneDrive</summary>
-			[KnownFolderDetail("{A52BBA46-E9E1-435f-B3D9-28DAA648C0F6}")]
+			/// <summary>OneDrive
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\OneDrive</para>
+			/// <para>Parsing Name:   shell:::{018D5C66-4533-4307-9B53-224DE2ED1FE6}</para>
+			/// <para>Localized Name: OneDrive</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_LOCAL_REDIRECT_ONLY, KFDF_NO_REDIRECT_UI</para>
+			/// </summary>
+			[KnownFolderDetail("a52bba46-e9e1-435f-b3d9-28daa648c0f6")]
 			FOLDERID_SkyDrive,
 
-			/// <summary>Camera Roll</summary>
-			[KnownFolderDetail("{767E6811-49CB-4273-87C2-20F355E1085B}")]
+			/// <summary>OneDriveCameraRoll
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\OneDrive\Pictures\Camera Roll</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_NO_REDIRECT_UI</para>
+			/// </summary>
+			[KnownFolderDetail("767e6811-49cb-4273-87c2-20f355e1085b")]
 			FOLDERID_SkyDriveCameraRoll,
 
-			/// <summary>Documents</summary>
-			[KnownFolderDetail("{24D89E24-2F19-4534-9DDE-6A6671FBB8FE}")]
+			/// <summary>OneDriveDocuments
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\OneDrive\Documents</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_NO_REDIRECT_UI</para>
+			/// </summary>
+			[KnownFolderDetail("24d89e24-2f19-4534-9dde-6a6671fbb8fe")]
 			FOLDERID_SkyDriveDocuments,
 
-			/// <summary>Pictures</summary>
-			[KnownFolderDetail("{339719B5-8C47-4894-94C2-D8F77ADD44A6}")]
+			/// <summary>OneDrivePictures
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\OneDrive\Pictures</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_NO_REDIRECT_UI</para>
+			/// </summary>
+			[KnownFolderDetail("339719b5-8c47-4894-94c2-d8f77add44a6")]
 			FOLDERID_SkyDrivePictures,
 
-			/// <summary>Start Menu</summary>
-			[KnownFolderDetail("{625B53C3-AB48-4EC1-BA1F-A1EF4146FC19}", Equivalent = Environment.SpecialFolder.StartMenu)]
+			/// <summary>Start Menu
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Start Menu</para>
+			/// <para>Localized Name: Start Menu</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("625b53c3-ab48-4ec1-ba1f-a1ef4146fc19", Equivalent = Environment.SpecialFolder.StartMenu /* CSIDL.CSIDL_STARTMENU */)]
 			FOLDERID_StartMenu,
 
-			/// <summary>Startup</summary>
-			[KnownFolderDetail("{B97D20BB-F46A-4C97-BA10-5E3608430854}", Equivalent = Environment.SpecialFolder.Startup)]
+			/// <summary>Startup
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup</para>
+			/// <para>Localized Name: Startup</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("b97d20bb-f46a-4c97-ba10-5e3608430854", Equivalent = Environment.SpecialFolder.Startup /* CSIDL.CSIDL_STARTUP */)]
 			FOLDERID_Startup,
 
-			/// <summary>Sync Center</summary>
-			[KnownFolderDetail("{43668BF8-C14E-49B2-97C9-747784D784B7}")]
+			/// <summary>SyncCenterFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{26EE0668-A00A-44D7-9371-BEB064C98683}\0\::{9C73F5E5-7AE7-4E32-A8E8-8D23B85255BF}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("43668bf8-c14e-49b2-97c9-747784d784b7")]
 			FOLDERID_SyncManagerFolder,
 
-			/// <summary>Sync Results</summary>
-			[KnownFolderDetail("{289a9a43-be44-4057-a41b-587a76d7e7f9}")]
+			/// <summary>SyncResultsFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{26EE0668-A00A-44D7-9371-BEB064C98683}\0\::{9C73F5E5-7AE7-4E32-A8E8-8D23B85255BF}\::{BC48B32F-5910-47F5-8570-5074A8A5636A},</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("289a9a43-be44-4057-a41b-587a76d7e7f9")]
 			FOLDERID_SyncResultsFolder,
 
-			/// <summary>Sync Setup</summary>
-			[KnownFolderDetail("{0F214138-B1D3-4a90-BBA9-27CBC0C5389A}")]
+			/// <summary>SyncSetupFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{26EE0668-A00A-44D7-9371-BEB064C98683}\0\::{9C73F5E5-7AE7-4E32-A8E8-8D23B85255BF}\::{F1390A9A-A3F4-4E5D-9C5F-98F3BD8D935C},</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("0f214138-b1d3-4a90-bba9-27cbc0c5389a")]
 			FOLDERID_SyncSetupFolder,
 
-			/// <summary>System32</summary>
-			[KnownFolderDetail("{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}", Equivalent = Environment.SpecialFolder.System)]
+			/// <summary>System
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %SystemRoot%\system32</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("1ac14e77-02e7-4e5d-b744-2eb1ae5198b7", Equivalent = Environment.SpecialFolder.System /* CSIDL.CSIDL_SYSTEM */)]
 			FOLDERID_System,
 
-			/// <summary>System32</summary>
-			[KnownFolderDetail("{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_SYSTEMX86)]
+			/// <summary>SystemX86
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %SystemRoot%\SysWOW64</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("d65231b0-b2f1-4857-a4ce-a8e7c6ea7d27", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_SYSTEMX86)]
 			FOLDERID_SystemX86,
 
-			/// <summary>Templates</summary>
-			[KnownFolderDetail("{A63293E8-664E-48DB-A079-DF759E0509F7}", Equivalent = Environment.SpecialFolder.Templates)]
+			/// <summary>Templates
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Templates</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("a63293e8-664e-48db-a079-df759e0509f7", Equivalent = Environment.SpecialFolder.Templates /* CSIDL.CSIDL_TEMPLATES */)]
 			FOLDERID_Templates,
 
-			/// <summary>User Pinned</summary>
-			[KnownFolderDetail("{9E3995AB-1F9C-4F13-B827-48B24B6C7174}")]
+			/// <summary>User Pinned
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_HIDDEN</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("9e3995ab-1f9c-4f13-b827-48b24b6c7174")]
 			FOLDERID_UserPinned,
 
-			/// <summary>Users</summary>
-			[KnownFolderDetail("{0762D272-C50A-4BB0-A382-697DCD729B80}")]
+			/// <summary>Users
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %HOMEDRIVE%\Users</para>
+			/// <para>Localized Name: Users</para>
+			/// <para>SDDL:           D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)(A;OICI;GXGR;;;BU)(A;OICI;GXGR;;;WD)</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("0762d272-c50a-4bb0-a382-697dcd729b80")]
 			FOLDERID_UserProfiles,
 
-			/// <summary>Programs</summary>
-			[KnownFolderDetail("{5CD7AEE2-2219-4A67-B85D-6C9CE15660CB}")]
+			/// <summary>UserProgramFiles
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Programs</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("5cd7aee2-2219-4a67-b85d-6c9ce15660cb")]
 			FOLDERID_UserProgramFiles,
 
-			/// <summary>Programs</summary>
-			[KnownFolderDetail("{BCBD3057-CA5C-4622-B42D-BC56DB0AE516}")]
+			/// <summary>UserProgramFilesCommon
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Programs\Common</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("bcbd3057-ca5c-4622-b42d-bc56db0ae516")]
 			FOLDERID_UserProgramFilesCommon,
 
-			/// <summary>The user's full name (for instance, Jean Philippe Bagel) entered when the user account was created.</summary>
-			[KnownFolderDetail("{f3ce0f7c-4901-4acc-8648-d5d44b04ef8f}")]
+			/// <summary>UsersFilesFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{59031a47-3f72-44a7-89c5-5595fe6b30ee}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("f3ce0f7c-4901-4acc-8648-d5d44b04ef8f")]
 			FOLDERID_UsersFiles,
 
-			/// <summary>Libraries</summary>
-			[KnownFolderDetail("{A302545D-DEFF-464b-ABE8-61C8648D939B}")]
+			/// <summary>UsersLibrariesFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{031E4825-7B94-4dc3-B131-E946B44C8DD5}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("a302545d-deff-464b-abe8-61c8648d939b")]
 			FOLDERID_UsersLibraries,
 
-			/// <summary>Videos</summary>
-			[KnownFolderDetail("{18989B1D-99B5-455B-841C-AB7C74E4DDFC}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_MYVIDEO)]
+			/// <summary>Videos
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Videos</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{A0953C92-50DC-43BF-BE83-3742FED03C9C}</para>
+			/// <para>Tooltip:        Contains movies and other video files.</para>
+			/// <para>Localized Name: Videos</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE, KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("18989b1d-99b5-455b-841c-ab7c74e4ddfc", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_MYVIDEO)]
 			FOLDERID_Videos,
 
-			/// <summary>Videos</summary>
-			[KnownFolderDetail("{491E922F-5643-4AF4-A7EB-4E7A138D8174}")]
+			/// <summary>Videos
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Libraries\Videos.library-ms</para>
+			/// <para>Parsing Name:   ::{031E4825-7B94-4dc3-B131-E946B44C8DD5}\{491E922F-5643-4af4-A7EB-4E7A138D8174}</para>
+			/// <para>Tooltip:        Contains movies and other video files.</para>
+			/// <para>Localized Name: Videos</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_PRECREATE, KFDF_STREAM</para>
+			/// </summary>
+			[KnownFolderDetail("491e922f-5643-4af4-a7eb-4e7a138d8174")]
 			FOLDERID_VideosLibrary,
 
-			/// <summary>Windows</summary>
-			[KnownFolderDetail("{F38BF404-1D43-42F2-9305-67DE0B28FC23}", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_WINDOWS)]
+			/// <summary>Windows
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %SystemRoot%</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("f38bf404-1d43-42f2-9305-67de0b28fc23", Equivalent = (Environment.SpecialFolder)CSIDL.CSIDL_WINDOWS)]
 			FOLDERID_Windows,
-		}
 
-		/// <summary>Frees the allocated fields in the result from IKnownFolder::GetFolderDefinition.</summary>
-		/// <param name="pKFD">
-		/// <para>Type: <c>KNOWNFOLDER_DEFINITION*</c></para>
-		/// <para>A pointer to a KNOWNFOLDER_DEFINITION structure that contains information about the given known folder.</para>
-		/// </param>
-		/// <returns>This function does not return a value.</returns>
-		/// <remarks>This is an inline helper function that calls CoTaskMemFree on the fields in the structure that need to be freed. Its implementation can be seen in the header file.</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-freeknownfolderdefinitionfields
-		// void FreeKnownFolderDefinitionFields( KNOWNFOLDER_DEFINITION *pKFD );
-		[PInvokeData("shobjidl_core.h", MSDNShortId = "0ad17dd3-e612-403a-b8c3-e93d5f259c1f")]
-		public static void FreeKnownFolderDefinitionFields(in KNOWNFOLDER_DEFINITION pKFD)
-		{
-			foreach (var fi in pKFD.GetType().GetFields().Where(f => f.FieldType == typeof(StrPtrUni)))
-				Marshal.FreeCoTaskMem((IntPtr)(StrPtrUni)fi.GetValue(pKFD));
+			/// <summary>Application Mods
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\AppMods</para>
+			/// <para>Localized Name: Application Mods</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("7ad67899-66af-43ba-9156-6aad42e6c596")]
+			FOLDERID_AllAppMods,
+
+			/// <summary>Captures
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Videos\Captures</para>
+			/// <para>Localized Name: Captures</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("edc0fe71-98d8-4f4a-b920-c8dc133cb165")]
+			FOLDERID_AppCaptures,
+
+			/// <summary>AppDataDesktop
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Desktop</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("b2c5e279-7add-439f-b28c-c41fe1bbf672")]
+			FOLDERID_AppDataDesktop,
+
+			/// <summary>AppDataDocuments
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Documents</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("7be16610-1f7f-44ac-bff0-83e15f2ffca1")]
+			FOLDERID_AppDataDocuments,
+
+			/// <summary>AppDataFavorites
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\Favorites</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("7cfbefbc-de1f-45aa-b843-a542ac536cc9")]
+			FOLDERID_AppDataFavorites,
+
+			/// <summary>AppDataProgramData
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\ProgramData</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("559d40a3-a036-40fa-af61-84cb430a4d34")]
+			FOLDERID_AppDataProgramData,
+
+			/// <summary>Camera Roll
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Windows\Libraries\CameraRoll.library-ms</para>
+			/// <para>Parsing Name:   ::{031E4825-7B94-4dc3-B131-E946B44C8DD5}\{2B20DF75-1EDA-4039-8097-38798227D5B7}</para>
+			/// <para>Localized Name: Camera Roll</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// <para>Flags:          KFDF_STREAM</para>
+			/// </summary>
+			[KnownFolderDetail("2b20df75-1eda-4039-8097-38798227d5b7")]
+			FOLDERID_CameraRollLibrary,
+
+			/// <summary>Start Menu
+			/// <para>Category:       KF_CATEGORY_COMMON</para>
+			/// <para>Path:           %ALLUSERSPROFILE%\Microsoft\Windows\Start Menu Places</para>
+			/// <para>Localized Name: Start Menu</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("a440879f-87a0-4f7d-b700-0207b966194a")]
+			FOLDERID_CommonStartMenuPlaces,
+
+			/// <summary>CredentialManager
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Credentials</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("915221fb-9efe-4bda-8fd7-f78dca774f87")]
+			FOLDERID_CredentialManager,
+
+			/// <summary/>
+			[KnownFolderDetail("3db40b20-2a30-4dbe-917e-771dd21dd099")]
+			FOLDERID_CurrentAppMods,
+
+			/// <summary>CryptoKeys
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Crypto</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("b88f4daa-e7bd-49a9-b74d-02885a5dc765")]
+			FOLDERID_CryptoKeys,
+
+			/// <summary>Development Files
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %LOCALAPPDATA%\DevelopmentFiles</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("dbe8e08e-3053-4bbc-b183-2a7b2b191e59")]
+			FOLDERID_DevelopmentFiles,
+
+			/// <summary>ThisDeviceFolder
+			/// <para>Category:       KF_CATEGORY_VIRTUAL</para>
+			/// <para>Parsing Name:   ::{f8278c54-a712-415b-b593-b77a2be0dda9}</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("1c2ac1dc-4358-4b6c-9733-af21156576f0")]
+			FOLDERID_Device,
+
+			/// <summary>DpapiKeys
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %APPDATA%\Microsoft\Protect</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("10c07cd0-ef91-4567-b850-448b77cb37f9")]
+			FOLDERID_DpapiKeys,
+
+			/// <summary>Documents
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Documents</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{d3162b92-9365-467a-956b-92703aca08af}</para>
+			/// <para>Localized Name: Documents</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("f42ee2d3-909f-4907-8871-4c22fc0bf756")]
+			FOLDERID_LocalDocuments,
+
+			/// <summary>Downloads
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Downloads</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{088e3905-0323-4b02-9826-5d99428e115f}</para>
+			/// <para>Localized Name: Downloads</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("7d83ee9b-2244-4e70-b1f5-5393042af1e4")]
+			FOLDERID_LocalDownloads,
+
+			/// <summary>Music
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Music</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}</para>
+			/// <para>Tooltip:        Contains music and other audio files.</para>
+			/// <para>Localized Name: Music</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("a0c69a99-21c8-4671-8703-7934162fcf1d")]
+			FOLDERID_LocalMusic,
+
+			/// <summary>Pictures
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Pictures</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{24ad3ad4-a569-4530-98e1-ab02f9417aa8}</para>
+			/// <para>Tooltip:        Contains digital photos, images, and graphic files.</para>
+			/// <para>Localized Name: Pictures</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("0ddd015d-b06c-45d5-8c4c-f59713854639")]
+			FOLDERID_LocalPictures,
+
+			/// <summary>Videos
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Videos</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{f86fa3ab-70d2-4fc7-9c99-fcbf05467f3a}</para>
+			/// <para>Tooltip:        Contains movies and other video files.</para>
+			/// <para>Localized Name: Videos</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_PRECREATE</para>
+			/// </summary>
+			[KnownFolderDetail("35286a68-3c57-41a1-bbb1-0eae73d76c95")]
+			FOLDERID_LocalVideos,
+
+			/// <summary>OneDrive root</summary>
+			FOLDERID_OneDrive = FOLDERID_SkyDrive,
+
+			/// <summary>Recorded Calls
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Recorded Calls</para>
+			/// <para>Localized Name: Recorded Calls</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("2f8b40c2-83ed-48ee-b383-a1f157ec6f9a")]
+			FOLDERID_RecordedCalls,
+
+			/// <summary/>
+			[KnownFolderDetail("12D4C69E-24AD-4923-BE19-31321C43A767")]
+			FOLDERID_RetailDemo,
+
+			/// <summary>OneDriveMusic
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\OneDrive\Music</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_NO_REDIRECT_UI</para>
+			/// </summary>
+			[KnownFolderDetail("c3f2459e-80d6-45dc-bfef-1f769f2be730")]
+			FOLDERID_SkyDriveMusic,
+
+			/// <summary>Common Start menu item.</summary>
+			[KnownFolderDetail("F26305EF-6948-40B9-B255-81453D09C785")]
+			FOLDERID_StartMenuAllPrograms,
+
+			/// <summary>SystemCertificates
+			/// <para>Category:       KF_CATEGORY_FIXED</para>
+			/// <para>Path:           %APPDATA%\Microsoft\SystemCertificates</para>
+			/// <para>Attributes:     SECURITY_ANONYMOUS</para>
+			/// </summary>
+			[KnownFolderDetail("54eed2e0-e7ca-4fdb-9148-0f4247291cfa")]
+			FOLDERID_SystemCertificates,
+
+			/// <summary>Desktop
+			/// <para>Category:       KF_CATEGORY_PERUSER</para>
+			/// <para>Path:           %USERPROFILE%\Desktop</para>
+			/// <para>Parsing Name:   shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}</para>
+			/// <para>Localized Name: Desktop</para>
+			/// <para>Attributes:     FILE_ATTRIBUTE_READONLY</para>
+			/// <para>Flags:          KFDF_ROAMABLE</para>
+			/// </summary>
+			[KnownFolderDetail("754ac886-df64-4cba-86b5-f7fbf4fbcef5")]
+			FOLDERID_ThisPCDesktop,
 		}
 
 		/// <summary>
-		/// Exposes methods that allow an application to retrieve information about a known folder's category, type, GUID, pointer to an item
-		/// identifier list (PIDL) value, redirection capabilities, and definition. It provides a method for the retrieval of a known folder's
-		/// IShellItem object. It also provides methods to get or set the path of the known folder.
+		/// Exposes methods that allow an application to retrieve information about a known folder's category, type, GUID, pointer to an
+		/// item identifier list (PIDL) value, redirection capabilities, and definition. It provides a method for the retrieval of a known
+		/// folder's IShellItem object. It also provides methods to get or set the path of the known folder.
 		/// </summary>
 		[ComImport, Guid("3AA7AF7E-9B36-420c-A8E3-F77D4674A488"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762502")]
@@ -774,7 +1571,8 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="riid">A reference to the IID of the requested interface.</param>
 			/// <returns>
-			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellItem or IShellItem2.
+			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellItem
+			/// or IShellItem2.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			object GetShellItem([In] KNOWN_FOLDER_FLAG dwFlags, in Guid riid);
@@ -873,7 +1671,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Gets an object that represents a known folder identified by its KNOWNFOLDERID. The object allows you to query certain folder
-			/// properties, get the current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
+			/// properties, get the current path of the folder, redirect the folder to another location, and get the path of the folder as
+			/// an ITEMIDLIST.
 			/// </summary>
 			/// <param name="rfid">Reference to the KNOWNFOLDERID.</param>
 			/// <returns>When this method returns, contains an interface pointer to the IKnownFolder object that represents the folder.</returns>
@@ -881,8 +1680,9 @@ namespace Vanara.PInvoke
 			IKnownFolder GetFolder(in Guid rfid);
 
 			/// <summary>
-			/// Gets an object that represents a known folder identified by its canonical name. The object allows you to query certain folder
-			/// properties, get the current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
+			/// Gets an object that represents a known folder identified by its canonical name. The object allows you to query certain
+			/// folder properties, get the current path of the folder, redirect the folder to another location, and get the path of the
+			/// folder as an ITEMIDLIST.
 			/// </summary>
 			/// <param name="pszCanonicalName">
 			/// A pointer to the non-localized, canonical name for the known folder, stored as a null-terminated Unicode string. If this
@@ -912,13 +1712,14 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Gets an object that represents a known folder based on a file system path. The object allows you to query certain folder
-			/// properties, get the current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
+			/// properties, get the current path of the folder, redirect the folder to another location, and get the path of the folder as
+			/// an ITEMIDLIST.
 			/// </summary>
 			/// <param name="pszPath">Pointer to a null-terminated Unicode string of length MAX_PATH that contains a path to a known folder.</param>
 			/// <param name="mode">
-			/// One of the following values that specify the precision of the match of path and known folder: FFFP_EXACTMATCH = Retrieve only
-			/// the specific known folder for the given file path; FFFP_NEARESTPARENTMATCH = If an exact match is not found for the given
-			/// file path, retrieve the first known folder that matches one of its parent folders walking up the parent tree.
+			/// One of the following values that specify the precision of the match of path and known folder: FFFP_EXACTMATCH = Retrieve
+			/// only the specific known folder for the given file path; FFFP_NEARESTPARENTMATCH = If an exact match is not found for the
+			/// given file path, retrieve the first known folder that matches one of its parent folders walking up the parent tree.
 			/// </param>
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to the IKnownFolder object that represents the known folder.
@@ -958,6 +1759,25 @@ namespace Vanara.PInvoke
 			/// </returns>
 			SafeCoTaskMemString Redirect(in Guid rfid, [In, Optional] HWND hwnd, [In] KF_REDIRECT_FLAGS flags,
 				[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, [In] Guid[] pExclusion);
+		}
+
+		/// <summary>Frees the allocated fields in the result from IKnownFolder::GetFolderDefinition.</summary>
+		/// <param name="pKFD">
+		/// <para>Type: <c>KNOWNFOLDER_DEFINITION*</c></para>
+		/// <para>A pointer to a KNOWNFOLDER_DEFINITION structure that contains information about the given known folder.</para>
+		/// </param>
+		/// <returns>This function does not return a value.</returns>
+		/// <remarks>
+		/// This is an inline helper function that calls CoTaskMemFree on the fields in the structure that need to be freed. Its
+		/// implementation can be seen in the header file.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-freeknownfolderdefinitionfields void
+		// FreeKnownFolderDefinitionFields( KNOWNFOLDER_DEFINITION *pKFD );
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "0ad17dd3-e612-403a-b8c3-e93d5f259c1f")]
+		public static void FreeKnownFolderDefinitionFields(in KNOWNFOLDER_DEFINITION pKFD)
+		{
+			foreach (var fi in pKFD.GetType().GetFields().Where(f => f.FieldType == typeof(StrPtrUni)))
+				Marshal.FreeCoTaskMem((IntPtr)(StrPtrUni)fi.GetValue(pKFD));
 		}
 
 		/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>
@@ -1023,9 +1843,9 @@ namespace Vanara.PInvoke
 			public Guid fidParent;
 
 			/// <summary>
-			/// Optional. A pointer to a path relative to the parent folder specified in fidParent. This is a null-terminated Unicode string,
-			/// refers to the physical file system path, and is not localized. Applies to common and per-user folders only. See Remarks for
-			/// more details.
+			/// Optional. A pointer to a path relative to the parent folder specified in fidParent. This is a null-terminated Unicode
+			/// string, refers to the physical file system path, and is not localized. Applies to common and per-user folders only. See
+			/// Remarks for more details.
 			/// </summary>
 			public StrPtrUni pszRelativePath;
 
@@ -1048,8 +1868,8 @@ namespace Vanara.PInvoke
 			public StrPtrUni pszTooltip;
 
 			/// <summary>
-			/// Optional. A pointer to the default localized name resource used when the folder is created. This is a null-terminated Unicode
-			/// string in this form:
+			/// Optional. A pointer to the default localized name resource used when the folder is created. This is a null-terminated
+			/// Unicode string in this form:
 			/// <para><c>Module name, Resource ID</c></para>
 			/// <para>
 			/// When the folder is created, this string is stored in that folder's copy of Desktop.ini. It can be changed later by other
@@ -1060,8 +1880,8 @@ namespace Vanara.PInvoke
 			public StrPtrUni pszLocalizedName;
 
 			/// <summary>
-			/// Optional. A pointer to the default icon resource used when the folder is created. This is a null-terminated Unicode string in
-			/// this form:
+			/// Optional. A pointer to the default icon resource used when the folder is created. This is a null-terminated Unicode string
+			/// in this form:
 			/// <para><c>Module name, Resource ID</c></para>
 			/// <para>
 			/// When the folder is created, this string is stored in that folder's copy of Desktop.ini. It can be changed later by other
@@ -1072,10 +1892,10 @@ namespace Vanara.PInvoke
 			public StrPtrUni pszIcon;
 
 			/// <summary>
-			/// Optional. A pointer to a Security Descriptor Definition Language format string. This is a null-terminated Unicode string that
-			/// describes the default security descriptor that the folder receives when it is created. If this parameter is NULL, the new
-			/// folder inherits the security descriptor of its parent. This is particularly useful for common folders that are accessed by
-			/// all users.
+			/// Optional. A pointer to a Security Descriptor Definition Language format string. This is a null-terminated Unicode string
+			/// that describes the default security descriptor that the folder receives when it is created. If this parameter is NULL, the
+			/// new folder inherits the security descriptor of its parent. This is particularly useful for common folders that are accessed
+			/// by all users.
 			/// </summary>
 			public StrPtrUni pszSecurity;
 
@@ -1099,9 +1919,12 @@ namespace Vanara.PInvoke
 			public Guid ftidType;
 
 			/// <summary>Frees the allocated fields in the result from IKnownFolder::GetFolderDefinition.</summary>
-			/// <remarks>This is an inline helper function that calls CoTaskMemFree on the fields in the structure that need to be freed. Its implementation can be seen in the header file.</remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-freeknownfolderdefinitionfields
-			// void FreeKnownFolderDefinitionFields( KNOWNFOLDER_DEFINITION *pKFD );
+			/// <remarks>
+			/// This is an inline helper function that calls CoTaskMemFree on the fields in the structure that need to be freed. Its
+			/// implementation can be seen in the header file.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-freeknownfolderdefinitionfields void
+			// FreeKnownFolderDefinitionFields( KNOWNFOLDER_DEFINITION *pKFD );
 			[PInvokeData("shobjidl_core.h", MSDNShortId = "NF:shobjidl_core.FreeKnownFolderDefinitionFields")]
 			public void FreeKnownFolderDefinitionFields()
 			{
