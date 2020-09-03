@@ -28,8 +28,8 @@ namespace Vanara.Windows.Shell
 			get
 			{
 				if (!IsValid) return null;
-				using (var lib = LoadLibraryEx(ModuleFileName, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
-					return new SafeHICON(LoadImage(lib, ResourceId, LoadImageType.IMAGE_ICON, 0, 0, 0)).ToIcon();
+				using var lib = LoadLibraryEx(ModuleFileName, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
+				return new SafeHICON(LoadImage(lib, ResourceId, LoadImageType.IMAGE_ICON, 0, 0, 0)).ToIcon();
 				//var hIconEx = new[] { IntPtr.Zero };
 				//if (large)
 				//	ExtractIconEx(loc.ModuleFileName, loc.ResourceId, hIconEx, null, 1);
@@ -56,7 +56,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-		public override string ToString() => IsValid ? $"{ModuleFileName},{ResourceId.id}" : string.Empty;
+		public override string ToString() => IsValid ? $"{ModuleFileName},{ResourceId}" : string.Empty;
 	}
 
 	internal class IconLocationTypeConverter : ExpandableObjectConverter

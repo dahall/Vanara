@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
+using System.Text;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
@@ -26,11 +27,6 @@ namespace Vanara.Windows.Shell
 		/// </param>
 		public IndirectString(string module, int resourceIdOrIndex) : base(module, resourceIdOrIndex) { }
 
-		/// <summary>Gets the raw value of the string.</summary>
-		/// <value>Returns a <see cref="string"/> value.</value>
-		[Browsable(false)]
-		public string RawValue => IsValid ? $"@{ModuleFileName},{ResourceId}" : PackageName;
-
 		/// <summary>Gets the localized string referred to by this instance.</summary>
 		/// <value>The referenced localized string.</value>
 		[Browsable(false)]
@@ -38,12 +34,9 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (ResourceId is null) return ModuleFileName;
-				using var lib = LoadLibraryEx(ModuleFileName, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
-				if (ResourceId >= 0) throw new NotSupportedException();
-				const int sz = 2048;
-				var sb = new System.Text.StringBuilder(sz, sz);
-				LoadString(lib, -ResourceId, sb, sz);
+				if (!IsValid) return RawValue;
+				var sb = new StringBuilder(4096);
+				ShlwApi.SHLoadIndirectString(RawValue, sb, (uint)sb.Capacity).ThrowIfFailed();
 				return sb.ToString();
 			}
 		}
@@ -56,7 +49,11 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="IndirectString"/>.</summary>
 		/// <param name="s">The s.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator IndirectString(string s) => TryParse(s, out var loc) ? loc : null;
+		public static implicit operator IndirectString(string s) => new IndirectString(s);
+
+		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+		/// <returns>A <see cref="string"/> that represents this instance.</returns>
+		public override string ToString() => RawValue ?? "";
 
 		/// <summary>Tries to parse the specified string to create a <see cref="IndirectString"/> instance.</summary>
 		/// <param name="value">The string representation in the format of either "ModuleFileName,ResourceIndex" or "ModuleFileName,-ResourceID".</param>
@@ -64,19 +61,9 @@ namespace Vanara.Windows.Shell
 		/// <returns><c>true</c> if successfully parsed.</returns>
 		public static bool TryParse(string value, out IndirectString loc)
 		{
-			var parts = value?.Split(',');
-			if (parts != null && parts.Length == 2 && int.TryParse(parts[1], out var i) && parts[0].StartsWith("@"))
-			{
-				loc = new IndirectString(parts[0].TrimStart('@'), i);
-				return true;
-			}
 			loc = new IndirectString(value);
-			return !string.IsNullOrEmpty(value);
+			return loc.IsValid || value != null;
 		}
-
-		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
-		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => RawValue ?? "";
 	}
 
 	internal class IndirectStringTypeConverter : ExpandableObjectConverter

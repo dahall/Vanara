@@ -20,9 +20,6 @@ ChangeFilters, DialogStatus, ExecutableType, FileUsageType, FolderItemFilter, Li
     <RootNamespace>Vanara.Windows.Shell</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="_InProgress_\**\*" />
-  </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
