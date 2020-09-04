@@ -34,6 +34,9 @@ namespace Vanara.PInvoke
 		/// <summary/>
 		public const int INTERNET_RFC1123_BUFSIZE = 30;
 
+		/// <summary>Represents a failure occurred when calling <see cref="InternetSetStatusCallback"/>.</summary>
+		public static readonly IntPtr INTERNET_INVALID_STATUS_CALLBACK = (IntPtr)(-1);
+
 		private const uint GOPHER_ATTRIBUTE_ID_BASE = 0xabcccc00;
 
 		private const int INTERNET_MAX_HOST_NAME_LENGTH = 256;
@@ -51,9 +54,6 @@ namespace Vanara.PInvoke
 		private const int INTERNET_MAX_URL_LENGTH = INTERNET_MAX_SCHEME_LENGTH + 3 /* sizeof("://") */ + INTERNET_MAX_PATH_LENGTH;
 
 		private const int INTERNET_MAX_USER_NAME_LENGTH = 128;
-
-		/// <summary>Represents a failure occurred when calling <see cref="InternetSetStatusCallback"/>.</summary>
-		public static readonly IntPtr INTERNET_INVALID_STATUS_CALLBACK = (IntPtr)(-1);
 
 		/// <summary>
 		/// <para>[The GopherAttributeEnumerator function is available for use in the operating systems specified in the Requirements section.]</para>
@@ -194,8 +194,8 @@ namespace Vanara.PInvoke
 			NORMAL_CACHE_ENTRY = 0x00000001,
 
 			/// <summary>
-			/// Sticky cache entry that is exempt from scavenging for the amount of time specified by dwExemptDelta. The default value set by
-			/// CommitUrlCacheEntryA and CommitUrlCacheEntryW is one day.
+			/// Sticky cache entry that is exempt from scavenging for the amount of time specified by dwExemptDelta. The default value set
+			/// by CommitUrlCacheEntryA and CommitUrlCacheEntryW is one day.
 			/// </summary>
 			STICKY_CACHE_ENTRY = 0x00000004,
 
@@ -277,7 +277,8 @@ namespace Vanara.PInvoke
 			FLAGS_ERROR_UI_FLAGS_GENERATE_DATA = 0x04,
 
 			/// <summary>
-			/// Allows the caller to pass NULL to the hWnd parameter without error. To be used in circumstances in which no user interface is required.
+			/// Allows the caller to pass NULL to the hWnd parameter without error. To be used in circumstances in which no user interface
+			/// is required.
 			/// </summary>
 			FLAGS_ERROR_UI_FLAGS_NO_UI = 0x08,
 
@@ -294,8 +295,8 @@ namespace Vanara.PInvoke
 		public enum FTP_TRANSER_TYPE : uint
 		{
 			/// <summary>
-			/// Transfers the file using the FTP Image (Type I) transfer method. The file is transferred exactly with no changes. This is the
-			/// default transfer method.
+			/// Transfers the file using the FTP Image (Type I) transfer method. The file is transferred exactly with no changes. This is
+			/// the default transfer method.
 			/// </summary>
 			FTP_TRANSER_TYPE_BINARY = INTERNET_FLAG.INTERNET_FLAG_TRANSFER_BINARY,
 
@@ -477,9 +478,9 @@ namespace Vanara.PInvoke
 			HTTP_ADDREQ_FLAG_ADD = 0x20000000,
 
 			/// <summary>
-			/// Coalesces headers of the same name. For example, adding "Accept: text/*" followed by "Accept: audio/*" with this flag results
-			/// in the formation of the single header "Accept: text/*, audio/*". This causes the first header found to be coalesced. It is up
-			/// to the calling application to ensure a cohesive scheme with respect to coalesced/separate headers.
+			/// Coalesces headers of the same name. For example, adding "Accept: text/*" followed by "Accept: audio/*" with this flag
+			/// results in the formation of the single header "Accept: text/*, audio/*". This causes the first header found to be coalesced.
+			/// It is up to the calling application to ensure a cohesive scheme with respect to coalesced/separate headers.
 			/// </summary>
 			HTTP_ADDREQ_FLAG_COALESCE_WITH_COMMA = 0x40000000,
 
@@ -696,7 +697,8 @@ namespace Vanara.PInvoke
 			HTTP_QUERY_RANGE = 62,
 
 			/// <summary>
-			/// Receives all the headers returned by the server. Each header is terminated by "\0". An additional "\0" terminates the list of headers.
+			/// Receives all the headers returned by the server. Each header is terminated by "\0". An additional "\0" terminates the list
+			/// of headers.
 			/// </summary>
 			HTTP_QUERY_RAW_HEADERS = 21,
 
@@ -762,8 +764,8 @@ namespace Vanara.PInvoke
 			HTTP_QUERY_VERSION = 18,
 
 			/// <summary>
-			/// Retrieves the intermediate protocols and recipients between the user agent and the server on requests, and between the origin
-			/// server and the client on responses.
+			/// Retrieves the intermediate protocols and recipients between the user agent and the server on requests, and between the
+			/// origin server and the client on responses.
 			/// </summary>
 			HTTP_QUERY_VIA = 66,
 
@@ -815,8 +817,8 @@ namespace Vanara.PInvoke
 			HTTP_QUERY_FLAG_REQUEST_HEADERS = 0x80000000,
 
 			/// <summary>
-			/// Returns the header value as a SYSTEMTIME structure, which does not require the application to parse the data. Use for headers
-			/// whose value is a date/time string, such as "Last-Modified-Time".
+			/// Returns the header value as a SYSTEMTIME structure, which does not require the application to parse the data. Use for
+			/// headers whose value is a date/time string, such as "Last-Modified-Time".
 			/// </summary>
 			HTTP_QUERY_FLAG_SYSTEMTIME = 0x40000000,
 		}
@@ -1007,9 +1009,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Enables the retrieval of cookies that are marked as "HTTPOnly". Do not use this flag if you expose a scriptable interface,
-			/// because this has security implications. It is imperative that you use this flag only if you can guarantee that you will never
-			/// expose the cookie to third-party code by way of an extensibility mechanism you provide. Version: Requires Internet Explorer
-			/// 8.0 or later.
+			/// because this has security implications. It is imperative that you use this flag only if you can guarantee that you will
+			/// never expose the cookie to third-party code by way of an extensibility mechanism you provide. Version: Requires Internet
+			/// Explorer 8.0 or later.
 			/// </summary>
 			INTERNET_COOKIE_HTTPONLY = 0x00002000,
 
@@ -1050,8 +1052,8 @@ namespace Vanara.PInvoke
 			INTERNET_DIAL_SHOW_OFFLINE = 0x4000,
 
 			/// <summary>
-			/// Connects to the Internet through a modem, without displaying a user interface, if possible. Otherwise, the function will wait
-			/// for user input.
+			/// Connects to the Internet through a modem, without displaying a user interface, if possible. Otherwise, the function will
+			/// wait for user input.
 			/// </summary>
 			INTERNET_DIAL_UNATTENDED = 0x8000,
 		}
@@ -1346,9 +1348,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Indicates that the function should use the copy of the resource that is currently in the Internet cache. The expiration date
-			/// and other information about the resource is not checked. If the requested item is not found in the Internet cache, the system
-			/// attempts to locate the resource on the network. This value was introduced in Microsoft Internet Explorer 5 and is associated
-			/// with the Forward and Back button operations of Internet Explorer.
+			/// and other information about the resource is not checked. If the requested item is not found in the Internet cache, the
+			/// system attempts to locate the resource on the network. This value was introduced in Microsoft Internet Explorer 5 and is
+			/// associated with the Forward and Back button operations of Internet Explorer.
 			/// </summary>
 			INTERNET_FLAG_FWD_BACK = 0x00000020,
 
@@ -1361,9 +1363,9 @@ namespace Vanara.PInvoke
 			INTERNET_FLAG_HYPERLINK = 0x00000400,
 
 			/// <summary>
-			/// Disables checking of SSL/PCT-based certificates that are returned from the server against the host name given in the request.
-			/// WinINet uses a simple check against certificates by comparing for matching host names and simple wildcarding rules. This flag
-			/// can be used by HttpOpenRequest and InternetOpenUrl (for HTTP requests).
+			/// Disables checking of SSL/PCT-based certificates that are returned from the server against the host name given in the
+			/// request. WinINet uses a simple check against certificates by comparing for matching host names and simple wildcarding rules.
+			/// This flag can be used by HttpOpenRequest and InternetOpenUrl (for HTTP requests).
 			/// </summary>
 			INTERNET_FLAG_IGNORE_CERT_CN_INVALID = 0x00001000,
 
@@ -1456,10 +1458,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Returns the data as a WIN32_FIND_DATA structure when retrieving FTP directory information. If this flag is not specified or
-			/// if the call is made through a CERN proxy, InternetOpenUrl returns the HTML version of the directory. Only the InternetOpenUrl
-			/// function uses this flag.
+			/// if the call is made through a CERN proxy, InternetOpenUrl returns the HTML version of the directory. Only the
+			/// InternetOpenUrl function uses this flag.
 			/// <para>
-			/// Windows XP and Windows Server 2003 R2 and earlier: Also returns a GOPHER_FIND_DATA structure when retrieving Gopher directory information.
+			/// Windows XP and Windows Server 2003 R2 and earlier: Also returns a GOPHER_FIND_DATA structure when retrieving Gopher
+			/// directory information.
 			/// </para>
 			/// </summary>
 			INTERNET_FLAG_RAW_DATA = 0x40000000,
@@ -1490,8 +1493,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Uses secure transaction semantics. This translates to using Secure Sockets Layer/Private Communications Technology (SSL/PCT)
 			/// and is only meaningful in HTTP requests. This flag is used by HttpOpenRequest and InternetOpenUrl, but this is redundant if
-			/// https:// appears in the URL.The InternetConnect function uses this flag for HTTP connections; all the request handles created
-			/// under this connection will inherit this flag.
+			/// https:// appears in the URL.The InternetConnect function uses this flag for HTTP connections; all the request handles
+			/// created under this connection will inherit this flag.
 			/// </summary>
 			INTERNET_FLAG_SECURE = 0x00800000,
 
@@ -1502,23 +1505,23 @@ namespace Vanara.PInvoke
 			INTERNET_FLAG_TRANSFER_BINARY = 0x00000002,
 
 			/// <summary>
-			/// Indicates that no callbacks should be made for that API. This is used for the dxContext parameter of the functions that allow
-			/// asynchronous operations.
+			/// Indicates that no callbacks should be made for that API. This is used for the dxContext parameter of the functions that
+			/// allow asynchronous operations.
 			/// </summary>
 			INTERNET_NO_CALLBACK = 0x00000000,
 
 			/// <summary>
 			/// Sets an HTTP request object such that it will not logon to origin servers, but will perform automatic logon to HTTP proxy
-			/// servers. This option differs from the Request flag INTERNET_FLAG_NO_AUTH, which prevents authentication to both proxy servers
-			/// and origin servers. Setting this mode will suppress the use of any credential material (either previously provided
+			/// servers. This option differs from the Request flag INTERNET_FLAG_NO_AUTH, which prevents authentication to both proxy
+			/// servers and origin servers. Setting this mode will suppress the use of any credential material (either previously provided
 			/// username/password or client SSL certificate) when communicating with an origin server. However, if the request must transit
 			/// via an authenticating proxy, WinINet will still perform automatic authentication to the HTTP proxy per the Intranet Zone
 			/// settings for the user. The default Intranet Zone setting is to permit automatic logon using the user’s default credentials.
-			/// To ensure suppression of all identifying information, the caller should combine INTERNET_OPTION_SUPPRESS_SERVER_AUTH with the
-			/// INTERNET_FLAG_NO_COOKIES request flag. This option may only be set on request objects before they have been sent. Attempts to
-			/// set this option after the request has been sent will return ERROR_INTERNET_INCORRECT_HANDLE_STATE. No buffer is required for
-			/// this option. This is used by InternetSetOption on handles returned by HttpOpenRequest only. Version: Requires Internet
-			/// Explorer 8.0 or later.
+			/// To ensure suppression of all identifying information, the caller should combine INTERNET_OPTION_SUPPRESS_SERVER_AUTH with
+			/// the INTERNET_FLAG_NO_COOKIES request flag. This option may only be set on request objects before they have been sent.
+			/// Attempts to set this option after the request has been sent will return ERROR_INTERNET_INCORRECT_HANDLE_STATE. No buffer is
+			/// required for this option. This is used by InternetSetOption on handles returned by HttpOpenRequest only. Version: Requires
+			/// Internet Explorer 8.0 or later.
 			/// </summary>
 			INTERNET_OPTION_SUPPRESS_SERVER_AUTH = 104,
 
@@ -1595,8 +1598,8 @@ namespace Vanara.PInvoke
 			INTERNET_OPEN_TYPE_PRECONFIG = 0,
 
 			/// <summary>
-			/// Retrieves the proxy or direct configuration from the registry and prevents the use of a startup Microsoft JScript or Internet
-			/// Setup (INS) file.
+			/// Retrieves the proxy or direct configuration from the registry and prevents the use of a startup Microsoft JScript or
+			/// Internet Setup (INS) file.
 			/// </summary>
 			INTERNET_OPEN_TYPE_PRECONFIG_WITH_NO_AUTOPROXY = 4,
 
@@ -1695,8 +1698,8 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_CLIENT_CERT_CONTEXT = 84,
 
 			/// <summary>
-			/// For a request where WinInet decompressed the server’s supplied Content-Encoding, retrieves the server-reported Content-Length
-			/// of the response body as a ULONGLONG. Supported in Windows 10, version 1507 and later.
+			/// For a request where WinInet decompressed the server’s supplied Content-Encoding, retrieves the server-reported
+			/// Content-Length of the response body as a ULONGLONG. Supported in Windows 10, version 1507 and later.
 			/// </summary>
 			[CorrespondingType(typeof(ulong), CorrespondingAction.Get)]
 			INTERNET_OPTION_COMPRESSED_CONTENT_LENGTH = 147,
@@ -1706,14 +1709,14 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_CONNECT_BACKOFF = 4,
 
 			/// <summary>
-			/// Sets or retrieves an unsigned long integer value that contains the number of times WinINet attempts to resolve and connect to
-			/// a host. It only attempts once per IP address. For example, if you attempt to connect to a multihome host that has ten IP
+			/// Sets or retrieves an unsigned long integer value that contains the number of times WinINet attempts to resolve and connect
+			/// to a host. It only attempts once per IP address. For example, if you attempt to connect to a multihome host that has ten IP
 			/// addresses and INTERNET_OPTION_CONNECT_RETRIES is set to seven, WinINet only attempts to resolve and connect to the first
 			/// seven IP addresses. Conversely, given the same set of ten IP addresses, if INTERNET_OPTION_CONNECT_RETRIES is set to 20,
 			/// WinINet attempts each of the ten only once. If a host has only one IP address and the first connection attempt fails, there
-			/// are no further attempts. If a connection attempt still fails after the specified number of attempts, the request is canceled.
-			/// The default value for INTERNET_OPTION_CONNECT_RETRIES is five attempts. This option can be used on any HINTERNET handle,
-			/// including a NULL handle. It is used by InternetQueryOption and InternetSetOption.
+			/// are no further attempts. If a connection attempt still fails after the specified number of attempts, the request is
+			/// canceled. The default value for INTERNET_OPTION_CONNECT_RETRIES is five attempts. This option can be used on any HINTERNET
+			/// handle, including a NULL handle. It is used by InternetQueryOption and InternetSetOption.
 			/// </summary>
 			[CorrespondingType(typeof(uint))]
 			INTERNET_OPTION_CONNECT_RETRIES = 3,
@@ -1783,8 +1786,8 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_ENABLE_REDIRECT_CACHE_READ = 122,
 
 			/// <summary>
-			/// Gets/sets a BOOL indicating whether non-ASCII characters in the query string should be percent-encoded. The default is FALSE.
-			/// Supported in Windows 8.1 and later.
+			/// Gets/sets a BOOL indicating whether non-ASCII characters in the query string should be percent-encoded. The default is
+			/// FALSE. Supported in Windows 8.1 and later.
 			/// </summary>
 			[CorrespondingType(typeof(bool))]
 			INTERNET_OPTION_ENCODE_EXTRA = 155,
@@ -1809,15 +1812,15 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_ENTERPRISE_CONTEXT = 159,
 
 			/// <summary>
-			/// Retrieves an unsigned long integer value that contains a Winsock error code mapped to the ERROR_INTERNET_ error messages last
-			/// returned in this thread context. This option is used on a NULLHINTERNET handle by InternetQueryOption.
+			/// Retrieves an unsigned long integer value that contains a Winsock error code mapped to the ERROR_INTERNET_ error messages
+			/// last returned in this thread context. This option is used on a NULLHINTERNET handle by InternetQueryOption.
 			/// </summary>
 			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			INTERNET_OPTION_EXTENDED_ERROR = 24,
 
 			/// <summary>
-			/// Sets or retrieves a1n unsigned long integer value that contains the amount of time the system should wait for a response to a
-			/// network request before checking the cache for a copy of the resource. If a network request takes longer than the time
+			/// Sets or retrieves a1n unsigned long integer value that contains the amount of time the system should wait for a response to
+			/// a network request before checking the cache for a copy of the resource. If a network request takes longer than the time
 			/// specified and the requested resource is available in the cache, the resource is retrieved from the cache. This is used by
 			/// InternetQueryOption and InternetSetOption.
 			/// </summary>
@@ -1870,8 +1873,8 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_LISTEN_TIMEOUT = 11,
 
 			/// <summary>
-			/// Sets or retrieves an unsigned long integer value that contains the maximum number of connections allowed per HTTP/1.0 server.
-			/// This is used by InternetQueryOption and InternetSetOption. This option is only valid in Internet Explorer 5 and later.
+			/// Sets or retrieves an unsigned long integer value that contains the maximum number of connections allowed per HTTP/1.0
+			/// server. This is used by InternetQueryOption and InternetSetOption. This option is only valid in Internet Explorer 5 and later.
 			/// </summary>
 			[CorrespondingType(typeof(uint))]
 			INTERNET_OPTION_MAX_CONNS_PER_1_0_SERVER = 74,
@@ -1892,8 +1895,8 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_OFFLINE_SEMANTICS = 52,
 
 			/// <summary>
-			/// Opt-in for weak signatures (e.g. SHA-1) to be treated as insecure. This will instruct WinInet to call CertGetCertificateChain
-			/// using the CERT_CHAIN_OPT_IN_WEAK_SIGNATURE parameter.
+			/// Opt-in for weak signatures (e.g. SHA-1) to be treated as insecure. This will instruct WinInet to call
+			/// CertGetCertificateChain using the CERT_CHAIN_OPT_IN_WEAK_SIGNATURE parameter.
 			/// </summary>
 			[CorrespondingType(typeof(bool))]
 			INTERNET_OPTION_OPT_IN_WEAK_SIGNATURE = 176,
@@ -1914,8 +1917,8 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_POLICY = 48,
 
 			/// <summary>
-			/// Sets or retrieves a string value that contains the password used to access the proxy. This is used by InternetQueryOption and
-			/// InternetSetOption. This option can be set on the handle returned by InternetConnect or HttpOpenRequest.
+			/// Sets or retrieves a string value that contains the password used to access the proxy. This is used by InternetQueryOption
+			/// and InternetSetOption. This option can be set on the handle returned by InternetConnect or HttpOpenRequest.
 			/// </summary>
 			[CorrespondingType(typeof(string))]
 			INTERNET_OPTION_PROXY_PASSWORD = 44,
@@ -1973,8 +1976,8 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_REQUEST_PRIORITY = 58,
 
 			/// <summary>
-			/// Starts a new cache session for the process. No buffer is required. This is used by InternetSetOption. This option is reserved
-			/// for internal use only.
+			/// Starts a new cache session for the process. No buffer is required. This is used by InternetSetOption. This option is
+			/// reserved for internal use only.
 			/// </summary>
 			[CorrespondingType(null, CorrespondingAction.Set)]
 			INTERNET_OPTION_RESET_URLCACHE_SESSION = 60,
@@ -2007,9 +2010,9 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_SECURITY_FLAGS = 31,
 
 			/// <summary>
-			/// Retrieves an unsigned long integer value that contains the bit size of the encryption key. The larger the number, the greater
-			/// the encryption strength used. This is used by InternetQueryOption. Be aware that the data retrieved this way relates to a
-			/// transaction that has already occurred, whose security level can no longer be changed.
+			/// Retrieves an unsigned long integer value that contains the bit size of the encryption key. The larger the number, the
+			/// greater the encryption strength used. This is used by InternetQueryOption. Be aware that the data retrieved this way relates
+			/// to a transaction that has already occurred, whose security level can no longer be changed.
 			/// </summary>
 			[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			INTERNET_OPTION_SECURITY_KEY_BITNESS = 36,
@@ -2042,8 +2045,8 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_URL = 34,
 
 			/// <summary>
-			/// Sets or retrieves the user agent string on handles supplied by InternetOpen and used in subsequent HttpSendRequest functions,
-			/// as long as it is not overridden by a header added by HttpAddRequestHeaders or HttpSendRequest. This is used by
+			/// Sets or retrieves the user agent string on handles supplied by InternetOpen and used in subsequent HttpSendRequest
+			/// functions, as long as it is not overridden by a header added by HttpAddRequestHeaders or HttpSendRequest. This is used by
 			/// InternetQueryOption and InternetSetOption.
 			/// </summary>
 			[CorrespondingType(typeof(string))]
@@ -2073,10 +2076,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// By default, the host or authority portion of the Unicode URL is encoded according to the IDN specification. Setting this
-			/// option on the request, or connection handle, when IDN is disabled, specifies a code page encoding scheme for the host portion
-			/// of the URL. The lpBuffer parameter in the call to InternetSetOption contains the desired DBCS code page. If no code page is
-			/// specified in lpBuffer, WinINet uses the default system code page (CP_ACP). Note: This option is ignored if IDN is not
-			/// disabled. For more information about how to disable IDN, see the INTERNET_OPTION_IDN option.
+			/// option on the request, or connection handle, when IDN is disabled, specifies a code page encoding scheme for the host
+			/// portion of the URL. The lpBuffer parameter in the call to InternetSetOption contains the desired DBCS code page. If no code
+			/// page is specified in lpBuffer, WinINet uses the default system code page (CP_ACP). Note: This option is ignored if IDN is
+			/// not disabled. For more information about how to disable IDN, see the INTERNET_OPTION_IDN option.
 			/// <para><c>Windows XP with SP2 and Windows Server 2003 with SP1:</c> This flag is not supported.</para>
 			/// <para><c>Version:</c> Requires Internet Explorer 7.0.</para>
 			/// </summary>
@@ -2085,9 +2088,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// By default, the path portion of the URL is UTF8 encoded. The WinINet API performs escape character (%) encoding on the
-			/// high-bit characters. Setting this option on the request, or connection handle, disables the UTF8 encoding and sets a specific
-			/// code page. The lpBuffer parameter in the call to InternetSetOption contains the desired DBCS codepage for the path. If no
-			/// code page is specified in lpBuffer, WinINet uses the default CP_UTF8.
+			/// high-bit characters. Setting this option on the request, or connection handle, disables the UTF8 encoding and sets a
+			/// specific code page. The lpBuffer parameter in the call to InternetSetOption contains the desired DBCS codepage for the path.
+			/// If no code page is specified in lpBuffer, WinINet uses the default CP_UTF8.
 			/// <para><c>Windows XP with SP2 and Windows Server 2003 with SP1:</c> This flag is not supported.</para>
 			/// <para><c>Version:</c> Requires Internet Explorer 7.0.</para>
 			/// </summary>
@@ -2125,10 +2128,10 @@ namespace Vanara.PInvoke
 			INTERNET_OPTION_DATA_RECEIVE_TIMEOUT = 8,
 
 			/// <summary>
-			/// Sets or retrieves an unsigned long integer value, in milliseconds, that contains the time-out value to send a request for the
-			/// data channel of an FTP transaction. If the send takes longer than this time-out value, the send is canceled. This option can
-			/// be used on any HINTERNET handle, including a NULL handle. It is used by InternetQueryOption and InternetSetOption. This flag
-			/// has no impact on HTTP functionality.
+			/// Sets or retrieves an unsigned long integer value, in milliseconds, that contains the time-out value to send a request for
+			/// the data channel of an FTP transaction. If the send takes longer than this time-out value, the send is canceled. This option
+			/// can be used on any HINTERNET handle, including a NULL handle. It is used by InternetQueryOption and InternetSetOption. This
+			/// flag has no impact on HTTP functionality.
 			/// </summary>
 			[CorrespondingType(typeof(uint))]
 			INTERNET_OPTION_DATA_SEND_TIMEOUT = 7,
@@ -2159,11 +2162,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Sets or retrieves an HTTP_VERSION_INFO structure that contains the supported HTTP version. This must be used on a NULL
-			/// handle. This is used by InternetQueryOption and InternetSetOption. On Windows 7, Windows Server 2008 R2, and later, the value
-			/// of the dwMinorVersion member in the HTTP_VERSION_INFO structure is overridden by Internet Explorer settings. EnableHttp1_1 is
-			/// a registry value under HKLM\Software\Microsoft\InternetExplorer\AdvacnedOptions\HTTP\GENABLE controlled by Internet Options
-			/// set in Internet Explorer for the system. The EnableHttp1_1 value defaults to 1. The HTTP_VERSION_INFO structure is ignored
-			/// for any HTTP version less than 1.1 if EnableHttp1_1 is set to 1.
+			/// handle. This is used by InternetQueryOption and InternetSetOption. On Windows 7, Windows Server 2008 R2, and later, the
+			/// value of the dwMinorVersion member in the HTTP_VERSION_INFO structure is overridden by Internet Explorer settings.
+			/// EnableHttp1_1 is a registry value under HKLM\Software\Microsoft\InternetExplorer\AdvacnedOptions\HTTP\GENABLE controlled by
+			/// Internet Options set in Internet Explorer for the system. The EnableHttp1_1 value defaults to 1. The HTTP_VERSION_INFO
+			/// structure is ignored for any HTTP version less than 1.1 if EnableHttp1_1 is set to 1.
 			/// </summary>
 			[CorrespondingType(typeof(INTERNET_VERSION_INFO))]
 			INTERNET_OPTION_HTTP_VERSION = 59,
@@ -2174,19 +2177,19 @@ namespace Vanara.PInvoke
 			/// WinINet uses the system codepage to encode the host or authority portion of the URL. To disable IDN host conversion, set the
 			/// lpBuffer parameter in the call to InternetSetOption to zero. To enable IDN conversion on only the direct connection, specify
 			/// INTERNET_FLAG_IDN_DIRECT in the lpBuffer parameter in the call to InternetSetOption. To enable IDN conversion on only the
-			/// proxy connection, specify INTERNET_FLAG_IDN_PROXY in the lpBuffer parameter in the call to InternetSetOption. Windows XP with
-			/// SP2 and Windows Server 2003 with SP1: This flag is not supported.
+			/// proxy connection, specify INTERNET_FLAG_IDN_PROXY in the lpBuffer parameter in the call to InternetSetOption. Windows XP
+			/// with SP2 and Windows Server 2003 with SP1: This flag is not supported.
 			/// Version:  Requires Internet Explorer 7.0.
 			/// </summary>
 			[CorrespondingType(typeof(InternetOptionIDNFlags), CorrespondingAction.Set)]
 			INTERNET_OPTION_IDN = 102,
 
 			/// <summary>
-			/// Sets or retrieves an unsigned long integer value that contains the maximum number of connections allowed per CERN proxy. When
-			/// this option is set or retrieved, the hInternet parameter must set to a null handle value. A null handle value indicates that
-			/// the option should be set or queried for the current process. When calling InternetSetOption with this option, all existing
-			/// proxy objects will receive the new value. This value is limited to a range of 2 to 128, inclusive. <c>Version:</c> Requires
-			/// Internet Explorer 8.0.
+			/// Sets or retrieves an unsigned long integer value that contains the maximum number of connections allowed per CERN proxy.
+			/// When this option is set or retrieved, the hInternet parameter must set to a null handle value. A null handle value indicates
+			/// that the option should be set or queried for the current process. When calling InternetSetOption with this option, all
+			/// existing proxy objects will receive the new value. This value is limited to a range of 2 to 128, inclusive. <c>Version:</c>
+			/// Requires Internet Explorer 8.0.
 			/// </summary>
 			[CorrespondingType(typeof(uint))]
 			INTERNET_OPTION_MAX_CONNS_PER_PROXY = 103,
@@ -2208,8 +2211,8 @@ namespace Vanara.PInvoke
 			/// Sets or retrieves an INTERNET_PROXY_INFO structure that contains the proxy data for an existing InternetOpen handle when the
 			/// HINTERNET handle is not NULL. If the HINTERNET handle is NULL, the function sets or queries the global proxy data. This
 			/// option can be used on the handle returned by InternetOpen. It is used by InternetQueryOption and InternetSetOption. Note It
-			/// is recommended that INTERNET_OPTION_PER_CONNECTION_OPTION be used instead of INTERNET_OPTION_PROXY. For more information, see
-			/// KB article 226473.
+			/// is recommended that INTERNET_OPTION_PER_CONNECTION_OPTION be used instead of INTERNET_OPTION_PROXY. For more information,
+			/// see KB article 226473.
 			/// </summary>
 			[CorrespondingType(typeof(INTERNET_PROXY_INFO))]
 			INTERNET_OPTION_PROXY = 38,
@@ -2232,10 +2235,10 @@ namespace Vanara.PInvoke
 			SECURITY_FLAG_UNKNOWNBIT = 0x80000000,
 
 			/// <summary>
-			/// Sets or retrieves an unsigned long integer value, in milliseconds, that contains the time-out value to send a request. If the
-			/// send takes longer than this time-out value, the send is canceled. This option can be used on any HINTERNET handle, including
-			/// a NULL handle. It is used by InternetQueryOption and InternetSetOption. When used in reference to an FTP transaction, this
-			/// option refers to the control channel.
+			/// Sets or retrieves an unsigned long integer value, in milliseconds, that contains the time-out value to send a request. If
+			/// the send takes longer than this time-out value, the send is canceled. This option can be used on any HINTERNET handle,
+			/// including a NULL handle. It is used by InternetQueryOption and InternetSetOption. When used in reference to an FTP
+			/// transaction, this option refers to the control channel.
 			/// </summary>
 			[CorrespondingType(typeof(uint))]
 			INTERNET_OPTION_SEND_TIMEOUT = 5,
@@ -2250,15 +2253,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Sets an HTTP request object such that it will not logon to origin servers, but will perform automatic logon to HTTP proxy
-			/// servers. This option differs from the Request flag INTERNET_FLAG_NO_AUTH, which prevents authentication to both proxy servers
-			/// and origin servers. Setting this mode will suppress the use of any credential material (either previously provided
+			/// servers. This option differs from the Request flag INTERNET_FLAG_NO_AUTH, which prevents authentication to both proxy
+			/// servers and origin servers. Setting this mode will suppress the use of any credential material (either previously provided
 			/// username/password or client SSL certificate) when communicating with an origin server. However, if the request must transit
 			/// via an authenticating proxy, WinINet will still perform automatic authentication to the HTTP proxy per the Intranet Zone
 			/// settings for the user. The default Intranet Zone setting is to permit automatic logon using the user’s default credentials.
-			/// To ensure suppression of all identifying information, the caller should combine INTERNET_OPTION_SUPPRESS_SERVER_AUTH with the
-			/// INTERNET_FLAG_NO_COOKIES request flag. This option may only be set on request objects before they have been sent. Attempts to
-			/// set this option after the request has been sent will return ERROR_INTERNET_INCORRECT_HANDLE_STATE. No buffer is required for
-			/// this option. This is used by InternetSetOption on handles returned by HttpOpenRequest only.
+			/// To ensure suppression of all identifying information, the caller should combine INTERNET_OPTION_SUPPRESS_SERVER_AUTH with
+			/// the INTERNET_FLAG_NO_COOKIES request flag. This option may only be set on request objects before they have been sent.
+			/// Attempts to set this option after the request has been sent will return ERROR_INTERNET_INCORRECT_HANDLE_STATE. No buffer is
+			/// required for this option. This is used by InternetSetOption on handles returned by HttpOpenRequest only.
 			/// Version:  Requires Internet Explorer 8.0 or later.
 			/// </summary>
 			[CorrespondingType(null, CorrespondingAction.Set)]
@@ -2488,8 +2491,8 @@ namespace Vanara.PInvoke
 			INTERNET_SUPPRESS_COOKIE_POLICY_RESET = 2,
 
 			/// <summary>
-			/// Suppresses the persistence of cookies, even if the server has specified them as persistent. <c>Version:</c> Requires Internet
-			/// Explorer 8.0 or later.
+			/// Suppresses the persistence of cookies, even if the server has specified them as persistent. <c>Version:</c> Requires
+			/// Internet Explorer 8.0 or later.
 			/// </summary>
 			INTERNET_SUPPRESS_COOKIE_PERSIST = 3,
 
@@ -2592,8 +2595,8 @@ namespace Vanara.PInvoke
 			INTERNET_STATUS_INTERMEDIATE_RESPONSE = 120,
 
 			/// <summary>
-			/// Successfully found the IP address of the name contained in lpvStatusInformation. The lpvStatusInformation parameter points to
-			/// a PCTSTR containing the host name.
+			/// Successfully found the IP address of the name contained in lpvStatusInformation. The lpvStatusInformation parameter points
+			/// to a PCTSTR containing the host name.
 			/// </summary>
 			INTERNET_STATUS_NAME_RESOLVED = 11,
 
@@ -2674,6 +2677,56 @@ namespace Vanara.PInvoke
 			IRF_NO_WAIT = 0x08,
 		}
 
+		/// <summary>Values for INTERNET_PER_CONN_AUTODISCOVERY_FLAGS.</summary>
+		[PInvokeData("wininet.h", MSDNShortId = "NS:wininet.__unnamed_struct_3")]
+		[Flags]
+		public enum PER_CONN_AUTODISCOVERY_FLAGS : uint
+		{
+			/// <summary>The user has explicitly set the automatic detection.</summary>
+			AUTO_PROXY_FLAG_USER_SET = 0x00000001,
+
+			/// <summary>Always automatically detect settings.</summary>
+			AUTO_PROXY_FLAG_ALWAYS_DETECT = 0x00000002,
+
+			/// <summary>Automatic detection has been run at least once on this connection.</summary>
+			AUTO_PROXY_FLAG_DETECTION_RUN = 0x00000004,
+
+			/// <summary>
+			/// The setting was migrated from a Microsoft Internet Explorer 4.0 installation, and automatic detection should be attempted once.
+			/// </summary>
+			AUTO_PROXY_FLAG_MIGRATED = 0x00000008,
+
+			/// <summary>Do not allow the caching of the result of the automatic proxy configuration script.</summary>
+			AUTO_PROXY_FLAG_DONT_CACHE_PROXY_RESULT = 0x00000010,
+
+			/// <summary>
+			/// Indicates that the cached results of the automatic proxy configuration script should be used, instead of actually running
+			/// the script, unless the cached file has expired.
+			/// </summary>
+			AUTO_PROXY_FLAG_CACHE_INIT_RUN = 0x00000020,
+
+			/// <summary>Not currently supported.</summary>
+			AUTO_PROXY_FLAG_DETECTION_SUSPECT = 0x00000040,
+		}
+
+		/// <summary>Values for INTERNET_PER_CONN_FLAGS.</summary>
+		[PInvokeData("wininet.h", MSDNShortId = "NS:wininet.__unnamed_struct_3")]
+		[Flags]
+		public enum PER_CONN_FLAGS : uint
+		{
+			/// <summary>The connection does not use a proxy server.</summary>
+			PROXY_TYPE_DIRECT = 0x00000001,
+
+			/// <summary>The connection uses an explicitly set proxy server.</summary>
+			PROXY_TYPE_PROXY = 0x00000002,
+
+			/// <summary>The connection downloads and processes an automatic configuration script at a specified URL.</summary>
+			PROXY_TYPE_AUTO_PROXY_URL = 0x00000004,
+
+			/// <summary>The connection automatically detects settings.</summary>
+			PROXY_TYPE_AUTO_DETECT = 0x00000008,
+		}
+
 		/// <summary>Privacy template for a URLL zone and type.</summary>
 		[PInvokeData("wininet.h")]
 		public enum PrivacyTemplate
@@ -2745,8 +2798,8 @@ namespace Vanara.PInvoke
 		/// expire date and time is unknown, set this parameter to zero.
 		/// </param>
 		/// <param name="LastModifiedTime">
-		/// FILETIME structure that contains the last modified date and time (in Greenwich mean time) of the URL that is being cached. If the
-		/// last modified date and time is unknown, set this parameter to zero.
+		/// FILETIME structure that contains the last modified date and time (in Greenwich mean time) of the URL that is being cached. If
+		/// the last modified date and time is unknown, set this parameter to zero.
 		/// </param>
 		/// <param name="CacheEntryType">
 		/// <para>
@@ -2806,8 +2859,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpszOriginalUrl">Pointer to a string that contains the original URL, if redirection has occurred.</param>
 		/// <returns>
 		/// <para>
-		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError. The following
-		/// are possible error values.
+		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError. The
+		/// following are possible error values.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -2836,8 +2889,8 @@ namespace Vanara.PInvoke
 		/// either RetrieveUrlCacheEntryStream or RetrieveUrlCacheEntryFile.
 		/// </para>
 		/// <para>
-		/// Clients that add entries to the cache should set the headers to at least "HTTP/1.0 200 OK\r\n\r\n"; otherwise, Microsoft Internet
-		/// Explorer and other client applications should disregard the entry.
+		/// Clients that add entries to the cache should set the headers to at least "HTTP/1.0 200 OK\r\n\r\n"; otherwise, Microsoft
+		/// Internet Explorer and other client applications should disregard the entry.
 		/// </para>
 		/// <para>See Caching for example code calling <c>CreateUrlCacheEntryA</c>.</para>
 		/// <para>
@@ -2858,8 +2911,8 @@ namespace Vanara.PInvoke
 		public static extern bool CommitUrlCacheEntry(string lpszUrlName, string lpszLocalFileName, [Optional] FILETIME ExpireTime, [Optional] FILETIME LastModifiedTime, [Optional] CACHE_ENTRY_TYPE CacheEntryType, [Optional] string lpHeaderInfo, [Optional] uint cchHeaderInfo, [Optional] string lpszFileExtension, [Optional] string lpszOriginalUrl);
 
 		/// <summary>
-		/// The <c>CreateMD5SSOHash</c> function obtains the default Microsoft Passport password for a specified account or realm, creates an
-		/// MD5 hash from it using a specified wide-character challenge string, and returns the result as a string of hexadecimal digit bytes.
+		/// The <c>CreateMD5SSOHash</c> function obtains the default Microsoft Passport password for a specified account or realm, creates
+		/// an MD5 hash from it using a specified wide-character challenge string, and returns the result as a string of hexadecimal digit bytes.
 		/// </summary>
 		/// <param name="pszChallengeInfo">Pointer to the wide-character challenge string to use for the MD5 hash.</param>
 		/// <param name="pwszRealm">
@@ -2883,8 +2936,8 @@ namespace Vanara.PInvoke
 		/// the pbHexHash parameter.
 		/// </para>
 		/// <para>
-		/// The output buffer pointed to by pbHexHash must therefore be long enough to accept two bytes for each of the 16 bytes of the hash,
-		/// plus a terminating <c>null</c> character, for a total of 33 bytes.
+		/// The output buffer pointed to by pbHexHash must therefore be long enough to accept two bytes for each of the 16 bytes of the
+		/// hash, plus a terminating <c>null</c> character, for a total of 33 bytes.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -2918,9 +2971,9 @@ namespace Vanara.PInvoke
 		/// <param name="pvBuffer">This parameter is reserved and must be <c>NULL</c>.</param>
 		/// <param name="cbBuffer">This parameter is reserved and must be <c>NULL</c>.</param>
 		/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError.</returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winineti/nf-winineti-createurlcachecontainera BOOLAPI CreateUrlCacheContainerA(
-		// LPCSTR Name, LPCSTR lpCachePrefix, LPCSTR lpszCachePath, DWORD KBCacheLimit, DWORD dwContainerType, DWORD dwOptions, LPVOID
-		// pvBuffer, LPDWORD cbBuffer );
+		// https://docs.microsoft.com/en-us/windows/win32/api/winineti/nf-winineti-createurlcachecontainera BOOLAPI
+		// CreateUrlCacheContainerA( LPCSTR Name, LPCSTR lpCachePrefix, LPCSTR lpszCachePath, DWORD KBCacheLimit, DWORD dwContainerType,
+		// DWORD dwOptions, LPVOID pvBuffer, LPDWORD cbBuffer );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winineti.h", MSDNShortId = "19b518cc-2f02-49c3-bedc-f5d633cc635d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -2957,9 +3010,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the Unicode parameter is not properly encoded to the system code page, WinINet attempts UTF8 decoding.</para>
 		/// <para>
-		/// When items are retrieved from the cache, the system code page that was used to place the item in the cache must match the current
-		/// system code page for the user. For applications running under IE6 and earlier, if decoding for the system code page fails,
-		/// WinINet attempts UTF8 decoding.
+		/// When items are retrieved from the cache, the system code page that was used to place the item in the cache must match the
+		/// current system code page for the user. For applications running under IE6 and earlier, if decoding for the system code page
+		/// fails, WinINet attempts UTF8 decoding.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -2990,8 +3043,8 @@ namespace Vanara.PInvoke
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-createurlcachegroup void CreateUrlCacheGroup( DWORD dwFlags,
-		// LPVOID lpReserved );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-createurlcachegroup void CreateUrlCacheGroup( DWORD
+		// dwFlags, LPVOID lpReserved );
 		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wininet.h", MSDNShortId = "bea0bc3b-75fb-4147-a4bd-f4290dfbf290")]
 		public static extern long CreateUrlCacheGroup([Optional] CACHEGROUP_FLAG dwFlags, IntPtr lpReserved = default);
@@ -3010,8 +3063,8 @@ namespace Vanara.PInvoke
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service nor when
 		/// impersonating a security context. For server implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winineti/nf-winineti-deleteurlcachecontainera BOOLAPI DeleteUrlCacheContainerA(
-		// LPCSTR Name, DWORD dwOptions );
+		// https://docs.microsoft.com/en-us/windows/win32/api/winineti/nf-winineti-deleteurlcachecontainera BOOLAPI
+		// DeleteUrlCacheContainerA( LPCSTR Name, DWORD dwOptions );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winineti.h", MSDNShortId = "97F46974-9B20-46C6-B742-4BA5C60491DA")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -3157,8 +3210,8 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-findfirsturlcacheentrya void FindFirstUrlCacheEntryA( LPCSTR
-		// lpszUrlSearchPattern, LPINTERNET_CACHE_ENTRY_INFOA lpFirstCacheEntryInfo, LPDWORD lpcbCacheEntryInfo );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-findfirsturlcacheentrya void FindFirstUrlCacheEntryA(
+		// LPCSTR lpszUrlSearchPattern, LPINTERNET_CACHE_ENTRY_INFOA lpFirstCacheEntryInfo, LPDWORD lpcbCacheEntryInfo );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "e8407284-846b-4080-b75b-4805330e0f95")]
 		public static extern HFINDCACHE FindFirstUrlCacheEntry(string lpszUrlSearchPattern, IntPtr lpFirstCacheEntryInfo, ref uint lpcbCacheEntryInfo);
@@ -3290,8 +3343,8 @@ namespace Vanara.PInvoke
 		/// entries in the cache. If this parameter is <c>NULL</c>, <c>FindFirstUrlCacheEntry</c> returns all content entries in the cache.
 		/// </param>
 		/// <returns>
-		/// An enumeration of <see cref="INTERNET_CACHE_ENTRY_INFO_MGD"/> structures which parallel the values in the native
-		/// <see cref="INTERNET_CACHE_ENTRY_INFO"/> structure.
+		/// An enumeration of <see cref="INTERNET_CACHE_ENTRY_INFO_MGD"/> structures which parallel the values in the native <see
+		/// cref="INTERNET_CACHE_ENTRY_INFO"/> structure.
 		/// </returns>
 		public static IEnumerable<INTERNET_CACHE_ENTRY_INFO_MGD> FindUrlCacheEntries(string lpszUrlSearchPattern = null)
 		{
@@ -3486,8 +3539,8 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// Returns a valid handle for the request if the directory enumeration was started successfully, or returns <c>NULL</c> otherwise.
 		/// To get a specific error message, call GetLastError. If <c>GetLastError</c> returns ERROR_INTERNET_EXTENDED_ERROR, as in the case
-		/// where the function finds no matching files, call the InternetGetLastResponseInfo function to retrieve the extended error text, as
-		/// documented in Handling Errors.
+		/// where the function finds no matching files, call the InternetGetLastResponseInfo function to retrieve the extended error text,
+		/// as documented in Handling Errors.
 		/// </returns>
 		/// <remarks>
 		/// <para>
@@ -3512,8 +3565,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Because the FTP protocol provides no standard means of enumerating, some of the common information about files, such as file
 		/// creation date and time, is not always available or correct. When this happens, <c>FtpFindFirstFile</c> and InternetFindNextFile
-		/// fill in unavailable information with a best guess based on available information. For example, creation and last access dates are
-		/// often the same as the file's modification date.
+		/// fill in unavailable information with a best guess based on available information. For example, creation and last access dates
+		/// are often the same as the file's modification date.
 		/// </para>
 		/// <para>The application cannot call <c>FtpFindFirstFile</c> between calls to FtpOpenFile and InternetCloseHandle.</para>
 		/// <para>
@@ -3596,8 +3649,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>FTP_TRANSFER_TYPE_BINARY</term>
 		/// <term>
-		/// Transfers the file using FTP's Image (Type I) transfer method. The file is transferred exactly as it exists with no changes. This
-		/// is the default transfer method.
+		/// Transfers the file using FTP's Image (Type I) transfer method. The file is transferred exactly as it exists with no changes.
+		/// This is the default transfer method.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -3625,8 +3678,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_FLAG_HYPERLINK</term>
 		/// <term>
-		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to reload
-		/// the item from the network.
+		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to
+		/// reload the item from the network.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -3688,8 +3741,8 @@ namespace Vanara.PInvoke
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-ftpgetfilesize void FtpGetFileSize( HINTERNET hFile, LPDWORD
-		// lpdwFileSizeHigh );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-ftpgetfilesize void FtpGetFileSize( HINTERNET hFile,
+		// LPDWORD lpdwFileSizeHigh );
 		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wininet.h", MSDNShortId = "f6cc696b-55b6-4d21-9401-fbb15062d0b4")]
 		public static extern uint FtpGetFileSize(HINTERNET hFile, out uint lpdwFileSizeHigh);
@@ -3718,8 +3771,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>FTP_TRANSFER_TYPE_BINARY</term>
 		/// <term>
-		/// Transfers the file using FTP's Image (Type I) transfer method. The file is transferred exactly as it exists with no changes. This
-		/// is the default transfer method.
+		/// Transfers the file using FTP's Image (Type I) transfer method. The file is transferred exactly as it exists with no changes.
+		/// This is the default transfer method.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -3744,8 +3797,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_FLAG_HYPERLINK</term>
 		/// <term>
-		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to reload
-		/// the item from the network.
+		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to
+		/// reload the item from the network.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -3806,8 +3859,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwFlags">
 		/// <para>
-		/// Conditions under which the transfers occur. The application should select one transfer type and any of the flags that control how
-		/// the caching of the file will be controlled.
+		/// Conditions under which the transfers occur. The application should select one transfer type and any of the flags that control
+		/// how the caching of the file will be controlled.
 		/// </para>
 		/// <para>The transfer type can be any one of the following values.</para>
 		/// <list type="table">
@@ -3824,8 +3877,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>FTP_TRANSFER_TYPE_BINARY</term>
 		/// <term>
-		/// Transfers the file using FTP's Image (Type I) transfer method. The file is transferred exactly as it exists with no changes. This
-		/// is the default transfer method.
+		/// Transfers the file using FTP's Image (Type I) transfer method. The file is transferred exactly as it exists with no changes.
+		/// This is the default transfer method.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -3852,8 +3905,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_FLAG_HYPERLINK</term>
 		/// <term>
-		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to reload
-		/// the item from the network.
+		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to
+		/// reload the item from the network.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -4088,18 +4141,18 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="lpCacheEntryInfo">
 		/// <para>
-		/// A pointer to an INTERNET_CACHE_ENTRY_INFO structure that receives information about the cache entry. A buffer should be allocated
-		/// for this parameter.
+		/// A pointer to an INTERNET_CACHE_ENTRY_INFO structure that receives information about the cache entry. A buffer should be
+		/// allocated for this parameter.
 		/// </para>
 		/// <para>
 		/// Since the required size of the buffer is not known in advance, it is best to allocate a buffer adequate to handle the size of
-		/// most INTERNET_CACHE_ENTRY_INFO entries. There is no cache entry size limit, so applications that need to enumerate the cache must
-		/// be prepared to allocate variable-sized buffers.
+		/// most INTERNET_CACHE_ENTRY_INFO entries. There is no cache entry size limit, so applications that need to enumerate the cache
+		/// must be prepared to allocate variable-sized buffers.
 		/// </para>
 		/// </param>
 		/// <param name="lpcbCacheEntryInfo">
-		/// A pointer to a variable that specifies the size of the lpCacheEntryInfo buffer, in bytes. When the function returns, the variable
-		/// contains the number of bytes copied to the buffer, or the required size of the buffer, in bytes.
+		/// A pointer to a variable that specifies the size of the lpCacheEntryInfo buffer, in bytes. When the function returns, the
+		/// variable contains the number of bytes copied to the buffer, or the required size of the buffer, in bytes.
 		/// </param>
 		/// <returns>
 		/// <para>
@@ -4147,8 +4200,8 @@ namespace Vanara.PInvoke
 		public static extern bool GetUrlCacheEntryInfo(string lpszUrlName, IntPtr lpCacheEntryInfo, ref uint lpcbCacheEntryInfo);
 
 		/// <summary>
-		/// Retrieves information on the cache entry associated with the specified URL, taking into account any redirections that are applied
-		/// in offline mode by the HttpSendRequest function.
+		/// Retrieves information on the cache entry associated with the specified URL, taking into account any redirections that are
+		/// applied in offline mode by the HttpSendRequest function.
 		/// </summary>
 		/// <param name="lpszUrl">
 		/// A pointer to a <c>null</c>-terminated string that contains the name of the cache entry. The name string should not contain any
@@ -4156,13 +4209,13 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="lpCacheEntryInfo">
 		/// <para>
-		/// A pointer to an INTERNET_CACHE_ENTRY_INFO structure that receives information about the cache entry. A buffer should be allocated
-		/// for this parameter.
+		/// A pointer to an INTERNET_CACHE_ENTRY_INFO structure that receives information about the cache entry. A buffer should be
+		/// allocated for this parameter.
 		/// </para>
 		/// <para>
 		/// Since the required size of the buffer is not known in advance, it is best to allocate a buffer adequate to handle the size of
-		/// most INTERNET_CACHE_ENTRY_INFO entries. There is no cache entry size limit, so applications that need to enumerate the cache must
-		/// be prepared to allocate variable-sized buffers.
+		/// most INTERNET_CACHE_ENTRY_INFO entries. There is no cache entry size limit, so applications that need to enumerate the cache
+		/// must be prepared to allocate variable-sized buffers.
 		/// </para>
 		/// </param>
 		/// <param name="lpcbCacheEntryInfo">
@@ -4175,8 +4228,8 @@ namespace Vanara.PInvoke
 		/// <param name="dwFlags">This parameter is reserved and must be 0.</param>
 		/// <returns>
 		/// <para>
-		/// Returns <c>TRUE</c> if the URL was located, or <c>FALSE</c> otherwise. Call GetLastError for specific error information. Possible
-		/// errors include the following.
+		/// Returns <c>TRUE</c> if the URL was located, or <c>FALSE</c> otherwise. Call GetLastError for specific error information.
+		/// Possible errors include the following.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -4198,8 +4251,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// <c>GetUrlCacheEntryInfoEx</c> does not do any URL parsing, so a URL containing an anchor (#) will not be found in the cache, even
-		/// if the resource is cached. For example, if the URL http://example.com/example.htm#sample is passed, the function returns
+		/// <c>GetUrlCacheEntryInfoEx</c> does not do any URL parsing, so a URL containing an anchor (#) will not be found in the cache,
+		/// even if the resource is cached. For example, if the URL http://example.com/example.htm#sample is passed, the function returns
 		/// ERROR_FILE_NOT_FOUND even if http://example.com/example.htm is in the cache.
 		/// </para>
 		/// <para>
@@ -4247,8 +4300,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="lpdwBufferLength">
 		/// Pointer to a variable that contains the length of the lpszLocator buffer, in characters. When the function returns, this
-		/// parameter receives the number of characters written to the buffer. If GetLastError returns <c>ERROR_INSUFFICIENT_BUFFER</c>, this
-		/// parameter receives the number of characters required.
+		/// parameter receives the number of characters written to the buffer. If GetLastError returns <c>ERROR_INSUFFICIENT_BUFFER</c>,
+		/// this parameter receives the number of characters required.
 		/// </param>
 		/// <returns>
 		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError or InternetGetLastResponseInfo.
@@ -4314,8 +4367,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_FLAG_HYPERLINK</term>
 		/// <term>
-		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to reload
-		/// the item from the network.
+		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to
+		/// reload the item from the network.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -4465,8 +4518,8 @@ namespace Vanara.PInvoke
 		/// <param name="hConnect">Handle to a Gopher session returned by InternetConnect.</param>
 		/// <param name="lpszLocator">
 		/// Pointer to a <c>null</c>-terminated string that specifies the file to be opened. Generally, this locator is returned from a call
-		/// to GopherFindFirstFile or InternetFindNextFile. Because the Gopher protocol has no concept of a current directory, the locator is
-		/// always fully qualified.
+		/// to GopherFindFirstFile or InternetFindNextFile. Because the Gopher protocol has no concept of a current directory, the locator
+		/// is always fully qualified.
 		/// </param>
 		/// <param name="lpszView">
 		/// Pointer to a <c>null</c>-terminated string that describes the view to open if several views of the file exist on the server. If
@@ -4482,8 +4535,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_FLAG_HYPERLINK</term>
 		/// <term>
-		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to reload
-		/// the item from the network.
+		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to
+		/// reload the item from the network.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -4571,8 +4624,8 @@ namespace Vanara.PInvoke
 		/// <term>HTTP_ADDREQ_FLAG_COALESCE_WITH_COMMA</term>
 		/// <term>
 		/// Coalesces headers of the same name. For example, adding "Accept: text/*" followed by "Accept: audio/*" with this flag results in
-		/// the formation of the single header "Accept: text/*, audio/*". This causes the first header found to be coalesced. It is up to the
-		/// calling application to ensure a cohesive scheme with respect to coalesced/separate headers.
+		/// the formation of the single header "Accept: text/*, audio/*". This causes the first header found to be coalesced. It is up to
+		/// the calling application to ensure a cohesive scheme with respect to coalesced/separate headers.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -4582,8 +4635,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>HTTP_ADDREQ_FLAG_REPLACE</term>
 		/// <term>
-		/// Replaces or removes a header. If the header value is empty and the header is found, it is removed. If not empty, the header value
-		/// is replaced.
+		/// Replaces or removes a header. If the header value is empty and the header is found, it is removed. If not empty, the header
+		/// value is replaced.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -4600,10 +4653,10 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// <c>Note</c> The <c>HttpAddRequestHeadersA</c> function represents headers as ISO-8859-1 characters not ANSI characters. The
-		/// <c>HttpAddRequestHeadersW</c> function represents headers as ISO-8859-1 characters converted to UTF-16LE characters. As a result,
-		/// it is never safe to use the <c>HttpAddRequestHeadersW</c> function when the headers to be added can contain non-ASCII characters.
-		/// Instead, an application can use the MultiByteToWideChar and WideCharToMultiByte functions with a Codepage parameter set to 28591
-		/// to map between ANSI characters and UTF-16LE characters.
+		/// <c>HttpAddRequestHeadersW</c> function represents headers as ISO-8859-1 characters converted to UTF-16LE characters. As a
+		/// result, it is never safe to use the <c>HttpAddRequestHeadersW</c> function when the headers to be added can contain non-ASCII
+		/// characters. Instead, an application can use the MultiByteToWideChar and WideCharToMultiByte functions with a Codepage parameter
+		/// set to 28591 to map between ANSI characters and UTF-16LE characters.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -4641,8 +4694,8 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-httpendrequesta BOOLAPI HttpEndRequestA( HINTERNET hRequest,
-		// LPINTERNET_BUFFERSA lpBuffersOut, DWORD dwFlags, DWORD_PTR dwContext );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-httpendrequesta BOOLAPI HttpEndRequestA( HINTERNET
+		// hRequest, LPINTERNET_BUFFERSA lpBuffersOut, DWORD dwFlags, DWORD_PTR dwContext );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "6ea91da6-0bc2-49b6-a56b-c4224ad73b81")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -4651,8 +4704,8 @@ namespace Vanara.PInvoke
 		/// <summary>Creates an HTTP request handle.</summary>
 		/// <param name="hConnect">A handle to an HTTP session returned by InternetConnect.</param>
 		/// <param name="lpszVerb">
-		/// A pointer to a <c>null</c>-terminated string that contains the HTTP verb to use in the request. If this parameter is <c>NULL</c>,
-		/// the function uses GET as the HTTP verb.
+		/// A pointer to a <c>null</c>-terminated string that contains the HTTP verb to use in the request. If this parameter is
+		/// <c>NULL</c>, the function uses GET as the HTTP verb.
 		/// </param>
 		/// <param name="lpszObjectName">
 		/// A pointer to a <c>null</c>-terminated string that contains the name of the target object of the specified HTTP verb. This is
@@ -4711,8 +4764,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <description>INTERNET_FLAG_HYPERLINK</description>
 		/// <description>
-		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to reload
-		/// the item from the network.
+		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to
+		/// reload the item from the network.
 		/// </description>
 		/// </item>
 		/// <item>
@@ -4729,15 +4782,15 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <description>INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTP</description>
 		/// <description>
-		/// Disables detection of this special type of redirect. When this flag is used, WinINet functions transparently allow redirects from
-		/// HTTPS to HTTP URLs.
+		/// Disables detection of this special type of redirect. When this flag is used, WinINet functions transparently allow redirects
+		/// from HTTPS to HTTP URLs.
 		/// </description>
 		/// </item>
 		/// <item>
 		/// <description>INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTPS</description>
 		/// <description>
-		/// Disables detection of this special type of redirect. When this flag is used, WinINet functions transparently allow redirects from
-		/// HTTP to HTTPS URLs.
+		/// Disables detection of this special type of redirect. When this flag is used, WinINet functions transparently allow redirects
+		/// from HTTP to HTTPS URLs.
 		/// </description>
 		/// </item>
 		/// <item>
@@ -4807,8 +4860,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// The <c>HttpOpenRequest</c> function creates a new HTTP request handle and stores the specified parameters in that handle. An HTTP
-		/// request handle holds a request to be sent to an HTTP server and contains all RFC822/MIME/HTTP headers to be sent as part of the request.
+		/// The <c>HttpOpenRequest</c> function creates a new HTTP request handle and stores the specified parameters in that handle. An
+		/// HTTP request handle holds a request to be sent to an HTTP server and contains all RFC822/MIME/HTTP headers to be sent as part of
+		/// the request.
 		/// </para>
 		/// <para>
 		/// If a verb other than "GET" or "POST" is specified, <c>HttpOpenRequest</c> automatically sets INTERNET_FLAG_NO_CACHE_WRITE and
@@ -4825,8 +4879,8 @@ namespace Vanara.PInvoke
 		/// <c>HttpOpenRequest</c> function upgrades any HTTP version less than 1.1 to HTTP version 1.1 if <c>EnableHttp1_1</c> is set to 1.
 		/// </para>
 		/// <para>
-		/// After the calling application has finished using the HINTERNET handle returned by <c>HttpOpenRequest</c>, it must be closed using
-		/// the InternetCloseHandle function.
+		/// After the calling application has finished using the HINTERNET handle returned by <c>HttpOpenRequest</c>, it must be closed
+		/// using the InternetCloseHandle function.
 		/// </para>
 		/// <para>
 		/// <c>Note</c> When a request is sent in asynchronous mode (the dwFlags parameter of InternetOpen specifies
@@ -4894,8 +4948,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// The <c>HttpQueryInfo</c> function is available in Microsoft Internet Explorer 3.0 for ISO-8859-1 characters (
-		/// <c>HttpQueryInfoA</c> function) and in Internet Explorer 4.0 or later for ISO-8859-1 characters ( <c>HttpQueryInfoA</c> function)
-		/// and for ISO-8859-1 characters converted to UTF-16LE characters.(the <c>HttpQueryInfoW</c> function).
+		/// <c>HttpQueryInfoA</c> function) and in Internet Explorer 4.0 or later for ISO-8859-1 characters ( <c>HttpQueryInfoA</c>
+		/// function) and for ISO-8859-1 characters converted to UTF-16LE characters.(the <c>HttpQueryInfoW</c> function).
 		/// </para>
 		/// <para>
 		/// <c>Note</c> The <c>HttpQueryInfoA</c> function represents headers as ISO-8859-1 characters not ANSI characters. The
@@ -4949,7 +5003,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves header information associated with an HTTP request.</summary>
 		/// <typeparam name="T">
-		/// Return type. This should be, by default, a <see cref="string"/> unless one of the return type modification flags is passed into <paramref name="dwInfoLevel"/>.
+		/// Return type. This should be, by default, a <see cref="string"/> unless one of the return type modification flags is passed into
+		/// <paramref name="dwInfoLevel"/>.
 		/// </typeparam>
 		/// <param name="hRequest">A handle returned by a call to the HttpOpenRequest or InternetOpenUrl function.</param>
 		/// <param name="dwInfoLevel">
@@ -4982,8 +5037,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="lpOptional">
 		/// A pointer to a buffer containing any optional data to be sent immediately after the request headers. This parameter is generally
-		/// used for POST and PUT operations. The optional data can be the resource or information being posted to the server. This parameter
-		/// can be <c>NULL</c> if there is no optional data to send.
+		/// used for POST and PUT operations. The optional data can be the resource or information being posted to the server. This
+		/// parameter can be <c>NULL</c> if there is no optional data to send.
 		/// </param>
 		/// <param name="dwOptionalLength">
 		/// The size of the optional data, in bytes. This parameter can be zero if there is no optional data to send.
@@ -4991,8 +5046,8 @@ namespace Vanara.PInvoke
 		/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError.</returns>
 		/// <remarks>
 		/// <para>
-		/// <c>HttpSendRequest</c> sends the specified request to the HTTP server and allows the client to specify additional headers to send
-		/// along with the request.
+		/// <c>HttpSendRequest</c> sends the specified request to the HTTP server and allows the client to specify additional headers to
+		/// send along with the request.
 		/// </para>
 		/// <para>
 		/// The function also lets the client specify optional data to send to the HTTP server immediately following the request headers.
@@ -5017,10 +5072,10 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// <c>Note</c> The <c>HttpSendRequestA</c> function represents headers as ISO-8859-1 characters not ANSI characters. The
-		/// <c>HttpSendRequestW</c> function represents headers as ISO-8859-1 characters converted to UTF-16LE characters. As a result, it is
-		/// never safe to use the <c>HttpSendRequestW</c> function when the headers to be added can contain non-ASCII characters. Instead, an
-		/// application can use the MultiByteToWideChar and WideCharToMultiByte functions with a Codepage parameter set to 28591 to map
-		/// between ANSI characters and UTF-16LE characters.
+		/// <c>HttpSendRequestW</c> function represents headers as ISO-8859-1 characters converted to UTF-16LE characters. As a result, it
+		/// is never safe to use the <c>HttpSendRequestW</c> function when the headers to be added can contain non-ASCII characters.
+		/// Instead, an application can use the MultiByteToWideChar and WideCharToMultiByte functions with a Codepage parameter set to 28591
+		/// to map between ANSI characters and UTF-16LE characters.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -5054,9 +5109,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// <c>HttpSendRequestEx</c> performs both the send and the receive for the response. This does not allow the application to send any
-		/// extra data beyond the single buffer that was passed to <c>HttpSendRequestEx</c>. Callers that need to send extra data beyond what
-		/// is normally passed to <c>HttpSendRequestEx</c> can do so by calling HttpSendRequest instead. After the call to
+		/// <c>HttpSendRequestEx</c> performs both the send and the receive for the response. This does not allow the application to send
+		/// any extra data beyond the single buffer that was passed to <c>HttpSendRequestEx</c>. Callers that need to send extra data beyond
+		/// what is normally passed to <c>HttpSendRequestEx</c> can do so by calling HttpSendRequest instead. After the call to
 		/// <c>HttpSendRequestEx</c>, send the remaining data by calling InternetWriteFile. Finally, follow up with a call to HttpEndRequest.
 		/// </para>
 		/// <note type="note">The <c>HttpSendRequestExA</c> function represents data to send as ISO-8859-1 characters not ANSI characters.
@@ -5090,9 +5145,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// <c>HttpSendRequestEx</c> performs both the send and the receive for the response. This does not allow the application to send any
-		/// extra data beyond the single buffer that was passed to <c>HttpSendRequestEx</c>. Callers that need to send extra data beyond what
-		/// is normally passed to <c>HttpSendRequestEx</c> can do so by calling HttpSendRequest instead. After the call to
+		/// <c>HttpSendRequestEx</c> performs both the send and the receive for the response. This does not allow the application to send
+		/// any extra data beyond the single buffer that was passed to <c>HttpSendRequestEx</c>. Callers that need to send extra data beyond
+		/// what is normally passed to <c>HttpSendRequestEx</c> can do so by calling HttpSendRequest instead. After the call to
 		/// <c>HttpSendRequestEx</c>, send the remaining data by calling InternetWriteFile. Finally, follow up with a call to HttpEndRequest.
 		/// </para>
 		/// <note type="note">The <c>HttpSendRequestExA</c> function represents data to send as ISO-8859-1 characters not ANSI characters.
@@ -5173,8 +5228,8 @@ namespace Vanara.PInvoke
 		/// registry-based certification.
 		/// </para>
 		/// <para>
-		/// <c>Note</c> Starting on Windows Vista and Windows Server 2008, the WinINet dial-up functions use the RAS functions to establish a
-		/// dial-up connection. WinINet supports the functionality documented in the RasDialDlg function.
+		/// <c>Note</c> Starting on Windows Vista and Windows Server 2008, the WinINet dial-up functions use the RAS functions to establish
+		/// a dial-up connection. WinINet supports the functionality documented in the RasDialDlg function.
 		/// </para>
 		/// <para>
 		/// <c>InternetAutodial</c> does not attempt to dial if there is an existing dial-up connection on the system. Also, if there is an
@@ -5218,8 +5273,8 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetautodialhangup BOOLAPI InternetAutodialHangup( DWORD
-		// dwReserved );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetautodialhangup BOOLAPI InternetAutodialHangup(
+		// DWORD dwReserved );
 		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wininet.h", MSDNShortId = "8aa8ecb8-cacd-4cd9-a00b-5293b28dd6bf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -5229,15 +5284,15 @@ namespace Vanara.PInvoke
 		/// <param name="lpszUrl">A pointer to the string that contains the URL to canonicalize.</param>
 		/// <param name="lpszBuffer">A pointer to the buffer that receives the resulting canonicalized URL.</param>
 		/// <param name="lpdwBufferLength">
-		/// A pointer to a variable that contains the size, in characters, of the lpszBuffer buffer. If the function succeeds, this parameter
-		/// receives the number of characters actually copied to the lpszBuffer buffer, which does not include the terminating null
-		/// character. If the function fails, this parameter receives the required size of the buffer, in characters, which includes the
-		/// terminating null character.
+		/// A pointer to a variable that contains the size, in characters, of the lpszBuffer buffer. If the function succeeds, this
+		/// parameter receives the number of characters actually copied to the lpszBuffer buffer, which does not include the terminating
+		/// null character. If the function fails, this parameter receives the required size of the buffer, in characters, which includes
+		/// the terminating null character.
 		/// </param>
 		/// <param name="dwFlags">
 		/// <para>
-		/// Controls canonicalization. If no flags are specified, the function converts all unsafe characters and meta sequences (such as .,\
-		/// .., and ...) to escape sequences. This parameter can be one of the following values.
+		/// Controls canonicalization. If no flags are specified, the function converts all unsafe characters and meta sequences (such as
+		/// .,\ .., and ...) to escape sequences. This parameter can be one of the following values.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -5293,8 +5348,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
 		/// <term>
-		/// The canonicalized URL is too large to fit in the buffer provided. The lpdwBufferLength parameter is set to the size, in bytes, of
-		/// the buffer required to hold the canonicalized URL.
+		/// The canonicalized URL is too large to fit in the buffer provided. The lpdwBufferLength parameter is set to the size, in bytes,
+		/// of the buffer required to hold the canonicalized URL.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -5321,12 +5376,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// Applications that call <c>InternetCanonicalizeUrl</c> when using Internet Explorer 3.0 (or when setting the
-		/// <c>ICU_ENCODE_PERCENT</c> flag for Internet Explorer 5 and later) should track the usage of this function on a particular URL. If
-		/// unsafe characters in a URL have been converted to escape sequences, using <c>InternetCanonicalizeUrl</c> again on the URL (with
-		/// no flags) causes the escape sequences to be converted to another escape sequence. For example, a blank space in a URL would be
-		/// converted to the escape sequence %20. Calling <c>InternetCanonicalizeUrl</c> again on the URL would cause the escape sequence %20
-		/// to be converted to the escape sequence %2520, because the % sign is an unsafe character that is reserved for escape sequences and
-		/// is replaced by the function with the escape sequence %25.
+		/// <c>ICU_ENCODE_PERCENT</c> flag for Internet Explorer 5 and later) should track the usage of this function on a particular URL.
+		/// If unsafe characters in a URL have been converted to escape sequences, using <c>InternetCanonicalizeUrl</c> again on the URL
+		/// (with no flags) causes the escape sequences to be converted to another escape sequence. For example, a blank space in a URL
+		/// would be converted to the escape sequence %20. Calling <c>InternetCanonicalizeUrl</c> again on the URL would cause the escape
+		/// sequence %20 to be converted to the escape sequence %2520, because the % sign is an unsafe character that is reserved for escape
+		/// sequences and is replaced by the function with the escape sequence %25.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -5374,8 +5429,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwReserved">This parameter is reserved and must be 0.</param>
 		/// <returns>
-		/// Returns <c>TRUE</c> if a connection is made successfully, or <c>FALSE</c> otherwise. Use GetLastError to retrieve the error code.
-		/// ERROR_NOT_CONNECTED is returned by <c>GetLastError</c> if a connection cannot be made or if the sockets database is
+		/// Returns <c>TRUE</c> if a connection is made successfully, or <c>FALSE</c> otherwise. Use GetLastError to retrieve the error
+		/// code. ERROR_NOT_CONNECTED is returned by <c>GetLastError</c> if a connection cannot be made or if the sockets database is
 		/// unconditionally offline.
 		/// </returns>
 		/// <remarks>
@@ -5422,9 +5477,10 @@ namespace Vanara.PInvoke
 		/// subsequent API calls will be issued with the handle.
 		/// </para>
 		/// <para>
-		/// It is safe to call <c>InternetCloseHandle</c> in a callback for the handle being closed. If there is a status callback registered
-		/// for the handle being closed, and the handle was created with a non-NULL context value, an <c>INTERNET_STATUS_HANDLE_CLOSING</c>
-		/// callback will be made. This indication will be the last callback made from a handle and indicates that the handle is being destroyed.
+		/// It is safe to call <c>InternetCloseHandle</c> in a callback for the handle being closed. If there is a status callback
+		/// registered for the handle being closed, and the handle was created with a non-NULL context value, an
+		/// <c>INTERNET_STATUS_HANDLE_CLOSING</c> callback will be made. This indication will be the last callback made from a handle and
+		/// indicates that the handle is being destroyed.
 		/// </para>
 		/// <para>
 		/// If asynchronous requests are pending for the handle or any of its child handles, the handle cannot be closed immediately, but it
@@ -5550,9 +5606,9 @@ namespace Vanara.PInvoke
 		/// function uses an appropriate default. For the FTP protocol, the default is "anonymous".
 		/// </param>
 		/// <param name="lpszPassword">
-		/// Pointer to a <c>null</c>-terminated string that contains the password to use to log on. If both lpszPassword and lpszUsername are
-		/// <c>NULL</c>, the function uses the default "anonymous" password. In the case of FTP, the default password is the user's email
-		/// name. If lpszPassword is <c>NULL</c>, but lpszUsername is not <c>NULL</c>, the function uses a blank password.
+		/// Pointer to a <c>null</c>-terminated string that contains the password to use to log on. If both lpszPassword and lpszUsername
+		/// are <c>NULL</c>, the function uses the default "anonymous" password. In the case of FTP, the default password is the user's
+		/// email name. If lpszPassword is <c>NULL</c>, but lpszUsername is not <c>NULL</c>, the function uses a blank password.
 		/// </param>
 		/// <param name="dwService">
 		/// <para>Type of service to access. This parameter can be one of the following values.</para>
@@ -5623,17 +5679,18 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>
-		/// For FTP sites, <c>InternetConnect</c> actually establishes a connection with the server; for others, the actual connection is not
-		/// established until the application requests a specific transaction.
+		/// For FTP sites, <c>InternetConnect</c> actually establishes a connection with the server; for others, the actual connection is
+		/// not established until the application requests a specific transaction.
 		/// </para>
 		/// <para>
 		/// For maximum efficiency, applications using the HTTP protocols should try to minimize calls to <c>InternetConnect</c> and avoid
-		/// calling this function for every transaction requested by the user. One way to accomplish this is to keep a small cache of handles
-		/// returned from <c>InternetConnect</c>; when the user makes a request to a previously accessed server, that session handle is still available.
+		/// calling this function for every transaction requested by the user. One way to accomplish this is to keep a small cache of
+		/// handles returned from <c>InternetConnect</c>; when the user makes a request to a previously accessed server, that session handle
+		/// is still available.
 		/// </para>
 		/// <para>
-		/// After the calling application has finished using the HINTERNET handle returned by <c>InternetConnect</c>, it must be closed using
-		/// the InternetCloseHandle function.
+		/// After the calling application has finished using the HINTERNET handle returned by <c>InternetConnect</c>, it must be closed
+		/// using the InternetCloseHandle function.
 		/// </para>
 		/// <para>
 		/// <c>Note</c> When a request is sent asynchronous mode (the dwFlags parameter of InternetOpen specifies
@@ -5658,9 +5715,9 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetconnecta void InternetConnectA( HINTERNET hInternet,
-		// LPCSTR lpszServerName, INTERNET_PORT nServerPort, LPCSTR lpszUserName, LPCSTR lpszPassword, DWORD dwService, DWORD dwFlags,
-		// DWORD_PTR dwContext );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetconnecta void InternetConnectA( HINTERNET
+		// hInternet, LPCSTR lpszServerName, INTERNET_PORT nServerPort, LPCSTR lpszUserName, LPCSTR lpszPassword, DWORD dwService, DWORD
+		// dwFlags, DWORD_PTR dwContext );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "42b5d733-dccd-4c9d-8820-e358e033077c")]
 		public static extern SafeHINTERNET InternetConnect(HINTERNET hInternet, string lpszServerName, [Optional] INTERNET_PORT nServerPort, [Optional] string lpszUserName, [Optional] string lpszPassword, InternetService dwService, [Optional] InternetApiFlags dwFlags, [Optional] IntPtr dwContext);
@@ -5698,15 +5755,15 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// The required components are indicated by members of the URL_COMPONENTS structure. Each component has a pointer to the value and
-		/// has a member that stores the length of the stored value. If both the value and the length for a component are equal to zero, that
-		/// component is not returned. <c>Windows Vista and later.:</c> If the pointer to the value of the component is <c>NULL</c> and the
-		/// value of its corresponding length member is nonzero, the address of the first character of the corresponding component in the
-		/// lpszUrl string is stored in the pointer, and the length of the component is stored in the length member.
+		/// has a member that stores the length of the stored value. If both the value and the length for a component are equal to zero,
+		/// that component is not returned. <c>Windows Vista and later.:</c> If the pointer to the value of the component is <c>NULL</c> and
+		/// the value of its corresponding length member is nonzero, the address of the first character of the corresponding component in
+		/// the lpszUrl string is stored in the pointer, and the length of the component is stored in the length member.
 		/// </para>
 		/// <para>
 		/// If the pointer contains the address of the user-supplied buffer, the length member must contain the size of the buffer.
-		/// <c>InternetCrackUrl</c> copies the component into the buffer, and the length member is set to the length of the copied component,
-		/// minus 1 for the trailing string terminator.
+		/// <c>InternetCrackUrl</c> copies the component into the buffer, and the length member is set to the length of the copied
+		/// component, minus 1 for the trailing string terminator.
 		/// </para>
 		/// <para>
 		/// For <c>InternetCrackUrl</c> to work properly, the size of the URL_COMPONENTS structure, in bytes, must be stored in the
@@ -5726,8 +5783,8 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetcrackurla BOOLAPI InternetCrackUrlA( LPCSTR lpszUrl,
-		// DWORD dwUrlLength, DWORD dwFlags, LPURL_COMPONENTSA lpUrlComponents );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetcrackurla BOOLAPI InternetCrackUrlA( LPCSTR
+		// lpszUrl, DWORD dwUrlLength, DWORD dwFlags, LPURL_COMPONENTSA lpUrlComponents );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "30677071-3eb2-4d9c-a0a3-ff11a077f98a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -5747,8 +5804,8 @@ namespace Vanara.PInvoke
 		/// <term>
 		/// Converts all unsafe characters to their corresponding escape sequences in the path string pointed to by the lpszUrlPath member
 		/// and in lpszExtraInfo the extra-information string pointed to by the member of the URL_COMPONENTS structure pointed to by the
-		/// lpUrlComponents parameter. The Unicode version of InternetCreateUrl will first try to convert using the system code page. If that
-		/// fails it falls back to UTF-8.
+		/// lpUrlComponents parameter. The Unicode version of InternetCreateUrl will first try to convert using the system code page. If
+		/// that fails it falls back to UTF-8.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -5769,8 +5826,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// When specifying scheme in the URL_COMPONENTS structure passed to lpUrlComponents, if lpszScheme is not NULL it will be used for
-		/// the scheme. If lpszScheme is NULL, the scheme can be specified using the INTERNET_SCHEME enumeration by setting <c>nScheme</c> to
-		/// the required <c>INTERNET_SCHEME</c> or <c>INTERNET_SCHEME_DEFAULT</c>.
+		/// the scheme. If lpszScheme is NULL, the scheme can be specified using the INTERNET_SCHEME enumeration by setting <c>nScheme</c>
+		/// to the required <c>INTERNET_SCHEME</c> or <c>INTERNET_SCHEME_DEFAULT</c>.
 		/// </para>
 		/// <para>
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
@@ -5798,8 +5855,8 @@ namespace Vanara.PInvoke
 		/// <term>
 		/// Converts all unsafe characters to their corresponding escape sequences in the path string pointed to by the lpszUrlPath member
 		/// and in lpszExtraInfo the extra-information string pointed to by the member of the URL_COMPONENTS structure pointed to by the
-		/// lpUrlComponents parameter. The Unicode version of InternetCreateUrl will first try to convert using the system code page. If that
-		/// fails it falls back to UTF-8.
+		/// lpUrlComponents parameter. The Unicode version of InternetCreateUrl will first try to convert using the system code page. If
+		/// that fails it falls back to UTF-8.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -5820,8 +5877,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// When specifying scheme in the URL_COMPONENTS structure passed to lpUrlComponents, if lpszScheme is not NULL it will be used for
-		/// the scheme. If lpszScheme is NULL, the scheme can be specified using the INTERNET_SCHEME enumeration by setting <c>nScheme</c> to
-		/// the required <c>INTERNET_SCHEME</c> or <c>INTERNET_SCHEME_DEFAULT</c>.
+		/// the scheme. If lpszScheme is NULL, the scheme can be specified using the INTERNET_SCHEME enumeration by setting <c>nScheme</c>
+		/// to the required <c>INTERNET_SCHEME</c> or <c>INTERNET_SCHEME_DEFAULT</c>.
 		/// </para>
 		/// <para>
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
@@ -5864,8 +5921,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_DIAL_UNATTENDED</term>
 		/// <term>
-		/// Connects to the Internet through a modem, without displaying a user interface, if possible. Otherwise, the function will wait for
-		/// user input.
+		/// Connects to the Internet through a modem, without displaying a user interface, if possible. Otherwise, the function will wait
+		/// for user input.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -5906,8 +5963,8 @@ namespace Vanara.PInvoke
 		/// registry-based certification.
 		/// </para>
 		/// <para>
-		/// <c>Note</c> Starting on Windows Vista and Windows Server 2008, the WinINet dial-up functions use the RAS functions to establish a
-		/// dial-up connection. WinINet supports the functionality documented in the RasDialDlg function.
+		/// <c>Note</c> Starting on Windows Vista and Windows Server 2008, the WinINet dial-up functions use the RAS functions to establish
+		/// a dial-up connection. WinINet supports the functionality documented in the RasDialDlg function.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -5965,8 +6022,8 @@ namespace Vanara.PInvoke
 		/// dialog box if needed.
 		/// </summary>
 		/// <param name="hWnd">
-		/// Handle to the parent window for any needed dialog box. If no dialog box is needed and <c>FLAGS_ERROR_UI_FLAGS_NO_UI</c> is passed
-		/// to dwFlags, then this parameter can be <c>NULL</c>.
+		/// Handle to the parent window for any needed dialog box. If no dialog box is needed and <c>FLAGS_ERROR_UI_FLAGS_NO_UI</c> is
+		/// passed to dwFlags, then this parameter can be <c>NULL</c>.
 		/// </param>
 		/// <param name="hRequest">Handle to the Internet connection used in the call to HttpSendRequest.</param>
 		/// <param name="dwError">
@@ -6015,8 +6072,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ERROR_INTERNET_INVALID_CA</term>
 		/// <term>
-		/// Indicates that the SSL certificate Common Name (host name field) is incorrect. Displays an Invalid SSL Common Name dialog box and
-		/// lets the user view the incorrect certificate.
+		/// Indicates that the SSL certificate Common Name (host name field) is incorrect. Displays an Invalid SSL Common Name dialog box
+		/// and lets the user view the incorrect certificate.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -6030,8 +6087,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ERROR_INTERNET_SEC_CERT_CN_INVALID</term>
 		/// <term>
-		/// Indicates that the SSL certificate Common Name (host name field) is incorrect. Displays an Invalid SSL Common Name dialog box and
-		/// lets the user view the incorrect certificate. Also allows the user to select a certificate in response to a server request.
+		/// Indicates that the SSL certificate Common Name (host name field) is incorrect. Displays an Invalid SSL Common Name dialog box
+		/// and lets the user view the incorrect certificate. Also allows the user to select a certificate in response to a server request.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -6161,8 +6218,8 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-interneterrordlg void InternetErrorDlg( HWND hWnd, HINTERNET
-		// hRequest, DWORD dwError, DWORD dwFlags, LPVOID *lppvData );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-interneterrordlg void InternetErrorDlg( HWND hWnd,
+		// HINTERNET hRequest, DWORD dwError, DWORD dwFlags, LPVOID *lppvData );
 		[DllImport(Lib.WinInet, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wininet.h", MSDNShortId = "09384ba9-e5cc-48fd-a52c-15df223f87dc")]
 		public static extern Win32Error InternetErrorDlg(HWND hWnd, HINTERNET hRequest, Win32Error dwError, FLAGS_ERROR_UI dwFlags, in IntPtr lppvData);
@@ -6185,8 +6242,8 @@ namespace Vanara.PInvoke
 		/// <para><c>Windows XP and Windows Server 2003 R2 and earlier:</c> The Gopher protocol returns a GOPHER_FIND_DATA structure.</para>
 		/// </param>
 		/// <returns>
-		/// Returns <c>TRUE</c> if the function succeeds, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError. If
-		/// the function finds no matching files, <c>GetLastError</c> returns <c>ERROR_NO_MORE_FILES</c>.
+		/// Returns <c>TRUE</c> if the function succeeds, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError.
+		/// If the function finds no matching files, <c>GetLastError</c> returns <c>ERROR_NO_MORE_FILES</c>.
 		/// </returns>
 		/// <remarks>
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
@@ -6217,8 +6274,8 @@ namespace Vanara.PInvoke
 		/// <para><c>Windows XP and Windows Server 2003 R2 and earlier:</c> The Gopher protocol returns a GOPHER_FIND_DATA structure.</para>
 		/// </param>
 		/// <returns>
-		/// Returns <c>TRUE</c> if the function succeeds, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError. If
-		/// the function finds no matching files, <c>GetLastError</c> returns <c>ERROR_NO_MORE_FILES</c>.
+		/// Returns <c>TRUE</c> if the function succeeds, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError.
+		/// If the function finds no matching files, <c>GetLastError</c> returns <c>ERROR_NO_MORE_FILES</c>.
 		/// </returns>
 		/// <remarks>
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
@@ -6278,8 +6335,8 @@ namespace Vanara.PInvoke
 		/// <param name="dwReserved">This parameter is reserved and must be 0.</param>
 		/// <returns>
 		/// <para>
-		/// Returns <c>TRUE</c> if there is an active modem or a LAN Internet connection, or <c>FALSE</c> if there is no Internet connection,
-		/// or if all possible Internet connections are not currently active. For more information, see the Remarks section.
+		/// Returns <c>TRUE</c> if there is an active modem or a LAN Internet connection, or <c>FALSE</c> if there is no Internet
+		/// connection, or if all possible Internet connections are not currently active. For more information, see the Remarks section.
 		/// </para>
 		/// <para>
 		/// When <c>InternetGetConnectedState</c> returns <c>FALSE</c>, the application can call GetLastError to retrieve the error code.
@@ -6307,15 +6364,16 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetconnectedstate BOOLAPI InternetGetConnectedState(
-		// LPDWORD lpdwFlags, DWORD dwReserved );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetconnectedstate BOOLAPI
+		// InternetGetConnectedState( LPDWORD lpdwFlags, DWORD dwReserved );
 		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wininet.h", MSDNShortId = "500765b8-fbe4-4bba-894e-cc7f114d9eaa")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool InternetGetConnectedState(out INTERNET_CONNECTION lpdwFlags, uint dwReserved = 0);
 
 		/// <summary>
-		/// <summary><note>Using this API is not recommended, use the INetworkListManager::GetConnectivity method instead.</note>
+		/// <summary>
+		/// <note>Using this API is not recommended, use the INetworkListManager::GetConnectivity method instead.</note>
 		/// <para>Retrieves the connected state of the specified Internet connection.</para>
 		/// </summary>
 		/// </summary>
@@ -6367,9 +6425,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// A return value of <c>TRUE</c> from InternetGetConnectedState indicates that at least one connection to the Internet is available.
-		/// It does not guarantee that a connection to a specific host can be established. Applications should always check for errors
-		/// returned from API calls that connect to a server. InternetCheckConnection can be called to determine if a connection to a
+		/// A return value of <c>TRUE</c> from InternetGetConnectedState indicates that at least one connection to the Internet is
+		/// available. It does not guarantee that a connection to a specific host can be established. Applications should always check for
+		/// errors returned from API calls that connect to a server. InternetCheckConnection can be called to determine if a connection to a
 		/// specific destination can be established.
 		/// </para>
 		/// <para>
@@ -6400,8 +6458,8 @@ namespace Vanara.PInvoke
 		/// <param name="lpszCookieData">A pointer to a buffer that receives the cookie data. This parameter can be <c>NULL</c>.</param>
 		/// <param name="lpdwSize">
 		/// A pointer to a variable that specifies the size of the lpszCookieData parameter buffer, in TCHARs. If the function succeeds, the
-		/// buffer receives the amount of data copied to the lpszCookieData buffer. If lpszCookieData is <c>NULL</c>, this parameter receives
-		/// a value that specifies the size of the buffer necessary to copy all the cookie data, expressed as a byte count.
+		/// buffer receives the amount of data copied to the lpszCookieData buffer. If lpszCookieData is <c>NULL</c>, this parameter
+		/// receives a value that specifies the size of the buffer necessary to copy all the cookie data, expressed as a byte count.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
@@ -6434,8 +6492,8 @@ namespace Vanara.PInvoke
 		/// <c>InternetGetCookie</c> does not require a call to InternetOpen. <c>InternetGetCookie</c> checks in the windows\cookies
 		/// directory for persistent cookies that have an expiration date set sometime in the future. <c>InternetGetCookie</c> also searches
 		/// memory for any session cookies, that is, cookies that do not have an expiration date that were created in the same process by
-		/// InternetSetCookie, because these cookies are not written to any files. Rules for creating cookie files are internal to the system
-		/// and can change in the future.
+		/// InternetSetCookie, because these cookies are not written to any files. Rules for creating cookie files are internal to the
+		/// system and can change in the future.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -6561,9 +6619,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// The FTP protocols can return additional text information along with most errors. This extended error information can be retrieved
-		/// by using the <c>InternetGetLastResponseInfo</c> function whenever GetLastError returns ERROR_INTERNET_EXTENDED_ERROR (occurring
-		/// after an unsuccessful function call).
+		/// The FTP protocols can return additional text information along with most errors. This extended error information can be
+		/// retrieved by using the <c>InternetGetLastResponseInfo</c> function whenever GetLastError returns ERROR_INTERNET_EXTENDED_ERROR
+		/// (occurring after an unsuccessful function call).
 		/// </para>
 		/// <para>
 		/// The buffer pointed to by lpszBuffer must be large enough to hold both the error string and a zero terminator at the end of the
@@ -6608,8 +6666,8 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetpersitecookiedecisiona
-		// BOOLAPI InternetGetPerSiteCookieDecisionA( LPCSTR pchHostName, unsigned long *pResult );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetpersitecookiedecisiona BOOLAPI
+		// InternetGetPerSiteCookieDecisionA( LPCSTR pchHostName, unsigned long *pResult );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "04fa4c33-077c-4b16-8170-c3770783c98a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -6673,8 +6731,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// There are two WinINet functions named <c>InternetInitializeAutoProxyDll</c>. The first, which merely refreshes the internal state
-		/// of proxy configuration information from the registry, has a single parameter as documented directly below.
+		/// There are two WinINet functions named <c>InternetInitializeAutoProxyDll</c>. The first, which merely refreshes the internal
+		/// state of proxy configuration information from the registry, has a single parameter as documented directly below.
 		/// </para>
 		/// <para>
 		/// The second function, prototyped as <c>pfnInternetInitializeAutoProxyDll</c>, is part of WinINet's limited autoproxy support, and
@@ -6762,8 +6820,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_OPEN_TYPE_PROXY</term>
 		/// <term>
-		/// Passes requests to the proxy unless a proxy bypass list is supplied and the name to be resolved bypasses the proxy. In this case,
-		/// the function uses INTERNET_OPEN_TYPE_DIRECT.
+		/// Passes requests to the proxy unless a proxy bypass list is supplied and the name to be resolved bypasses the proxy. In this
+		/// case, the function uses INTERNET_OPEN_TYPE_DIRECT.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -6812,8 +6870,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_FLAG_OFFLINE</term>
 		/// <term>
-		/// Identical to INTERNET_FLAG_FROM_CACHE. Does not make network requests. All entities are returned from the cache. If the requested
-		/// item is not in the cache, a suitable error, such as ERROR_FILE_NOT_FOUND, is returned.
+		/// Identical to INTERNET_FLAG_FROM_CACHE. Does not make network requests. All entities are returned from the cache. If the
+		/// requested item is not in the cache, a suitable error, such as ERROR_FILE_NOT_FOUND, is returned.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -6824,13 +6882,14 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// <c>InternetOpen</c> is the first WinINet function called by an application. It tells the Internet DLL to initialize internal data
-		/// structures and prepare for future calls from the application. When the application finishes using the Internet functions, it
-		/// should call InternetCloseHandle to free the handle and any associated resources.
+		/// <c>InternetOpen</c> is the first WinINet function called by an application. It tells the Internet DLL to initialize internal
+		/// data structures and prepare for future calls from the application. When the application finishes using the Internet functions,
+		/// it should call InternetCloseHandle to free the handle and any associated resources.
 		/// </para>
 		/// <para>
-		/// The application can make any number of calls to <c>InternetOpen</c>, though a single call is normally sufficient. The application
-		/// might need to define separate behaviors for each <c>InternetOpen</c> instance, such as different proxy servers configured for each.
+		/// The application can make any number of calls to <c>InternetOpen</c>, though a single call is normally sufficient. The
+		/// application might need to define separate behaviors for each <c>InternetOpen</c> instance, such as different proxy servers
+		/// configured for each.
 		/// </para>
 		/// <para>
 		/// After the calling application has finished using the HINTERNET handle returned by <c>InternetOpen</c>, it must be closed using
@@ -6864,8 +6923,8 @@ namespace Vanara.PInvoke
 		/// the description of the lpszHeaders parameter in the HttpSendRequest function.
 		/// </param>
 		/// <param name="dwHeadersLength">
-		/// The size of the additional headers, in <c>TCHARs</c>. If this parameter is -1L and lpszHeaders is not <c>NULL</c>, lpszHeaders is
-		/// assumed to be zero-terminated (ASCIIZ) and the length is calculated.
+		/// The size of the additional headers, in <c>TCHARs</c>. If this parameter is -1L and lpszHeaders is not <c>NULL</c>, lpszHeaders
+		/// is assumed to be zero-terminated (ASCIIZ) and the length is calculated.
 		/// </param>
 		/// <param name="dwFlags">
 		/// <para>This parameter can be one of the following values.</para>
@@ -6886,8 +6945,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_FLAG_HYPERLINK</term>
 		/// <term>
-		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to reload
-		/// the item from the network.
+		/// Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to
+		/// reload the item from the network.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -6904,15 +6963,15 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTP</term>
 		/// <term>
-		/// Disables detection of this special type of redirect. When this flag is used, WinINet transparently allows redirects from HTTPS to
-		/// HTTP URLs.
+		/// Disables detection of this special type of redirect. When this flag is used, WinINet transparently allows redirects from HTTPS
+		/// to HTTP URLs.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTPS</term>
 		/// <term>
-		/// Disables the detection of this special type of redirect. When this flag is used, WinINet transparently allows redirects from HTTP
-		/// to HTTPS URLs.
+		/// Disables the detection of this special type of redirect. When this flag is used, WinINet transparently allows redirects from
+		/// HTTP to HTTPS URLs.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -7004,8 +7063,8 @@ namespace Vanara.PInvoke
 		/// for port 70—the standard Gopher port—and port 105—typically used for Central Services Organization (CSO) name searches.
 		/// </para>
 		/// <para>
-		/// After the calling application has finished using the HINTERNET handle returned by <c>InternetOpenUrl</c>, it must be closed using
-		/// the InternetCloseHandle function.
+		/// After the calling application has finished using the HINTERNET handle returned by <c>InternetOpenUrl</c>, it must be closed
+		/// using the InternetCloseHandle function.
 		/// </para>
 		/// <para>
 		/// <c>Note</c> When working in asynchronous mode (the dwFlags parameter of InternetOpen specifies <c>INTERNET_FLAG_ASYNC</c>), and
@@ -7021,8 +7080,8 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetopenurla void InternetOpenUrlA( HINTERNET hInternet,
-		// LPCSTR lpszUrl, LPCSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetopenurla void InternetOpenUrlA( HINTERNET
+		// hInternet, LPCSTR lpszUrl, LPCSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "73f969c3-3fa7-43f5-88c5-ba78e59a8d1c")]
 		public static extern SafeHINTERNET InternetOpenUrl(HINTERNET hInternet, string lpszUrl, string lpszHeaders, uint dwHeadersLength, INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
@@ -7033,8 +7092,8 @@ namespace Vanara.PInvoke
 		/// <param name="dwFlags">This parameter is reserved and must be 0.</param>
 		/// <param name="dwContext">This parameter is reserved and must be 0.</param>
 		/// <returns>
-		/// Returns <c>TRUE</c> if the function succeeds, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError. If
-		/// the function finds no matching files, <c>GetLastError</c> returns ERROR_NO_MORE_FILES.
+		/// Returns <c>TRUE</c> if the function succeeds, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError.
+		/// If the function finds no matching files, <c>GetLastError</c> returns ERROR_NO_MORE_FILES.
 		/// </returns>
 		/// <remarks>
 		/// <para>
@@ -7091,8 +7150,8 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetqueryoptiona BOOLAPI InternetQueryOptionA( HINTERNET
-		// hInternet, DWORD dwOption, LPVOID lpBuffer, LPDWORD lpdwBufferLength );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetqueryoptiona BOOLAPI InternetQueryOptionA(
+		// HINTERNET hInternet, DWORD dwOption, LPVOID lpBuffer, LPDWORD lpdwBufferLength );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "b0bafd3d-8f54-429e-b423-dae3d61b0030")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -7144,9 +7203,9 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// <c>InternetReadFile</c> operates much like the base ReadFile function, with a few exceptions. Typically, <c>InternetReadFile</c>
 		/// retrieves data from an HINTERNET handle as a sequential stream of bytes. The amount of data to be read for each call to
-		/// <c>InternetReadFile</c> is specified by the dwNumberOfBytesToRead parameter and the data is returned in the lpBuffer parameter. A
-		/// normal read retrieves the specified dwNumberOfBytesToRead for each call to <c>InternetReadFile</c> until the end of the file is
-		/// reached. To ensure all data is retrieved, an application must continue to call the <c>InternetReadFile</c> function until the
+		/// <c>InternetReadFile</c> is specified by the dwNumberOfBytesToRead parameter and the data is returned in the lpBuffer parameter.
+		/// A normal read retrieves the specified dwNumberOfBytesToRead for each call to <c>InternetReadFile</c> until the end of the file
+		/// is reached. To ensure all data is retrieved, an application must continue to call the <c>InternetReadFile</c> function until the
 		/// function returns <c>TRUE</c> and the lpdwNumberOfBytesRead parameter equals zero. This is especially important if the requested
 		/// data is written to the cache, because otherwise the cache will not be properly updated and the file downloaded will not be
 		/// committed to the cache. Note that caching happens automatically unless the original request to open the data stream set the
@@ -7155,15 +7214,15 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// When an application retrieves a handle using InternetOpenUrl, WinINet attempts to make all data look like a file download, in an
 		/// effort to make reading from the Internet easier for the application. For some types of information, such as FTP file directory
-		/// listings, it converts the data to be returned by <c>InternetReadFile</c> to an HTML stream. It does this on a line-by-line basis.
-		/// For example, it can convert an FTP directory listing to a line of HTML and return this HTML to the application.
+		/// listings, it converts the data to be returned by <c>InternetReadFile</c> to an HTML stream. It does this on a line-by-line
+		/// basis. For example, it can convert an FTP directory listing to a line of HTML and return this HTML to the application.
 		/// </para>
 		/// <para>
 		/// WinINet attempts to write the HTML to the lpBuffer buffer a line at a time. If the application's buffer is too small to fit at
-		/// least one line of generated HTML, the error code <c>ERROR_INSUFFICIENT_BUFFER</c> is returned as an indication to the application
-		/// that it needs a larger buffer. Also, converted lines might not completely fill the buffer, so <c>InternetReadFile</c> can return
-		/// with less data in lpBuffer than requested. Subsequent reads will retrieve all the converted HTML. The application must again
-		/// check that all data is retrieved as described previously.
+		/// least one line of generated HTML, the error code <c>ERROR_INSUFFICIENT_BUFFER</c> is returned as an indication to the
+		/// application that it needs a larger buffer. Also, converted lines might not completely fill the buffer, so
+		/// <c>InternetReadFile</c> can return with less data in lpBuffer than requested. Subsequent reads will retrieve all the converted
+		/// HTML. The application must again check that all data is retrieved as described previously.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -7421,8 +7480,8 @@ namespace Vanara.PInvoke
 		/// If the function succeeds and lpDistanceToMoveHigh is <c>NULL</c>, the return value is the low-order <c>DWORD</c> of the new file pointer.
 		/// </para>
 		/// <para>
-		/// If the function succeeds and lpDistanceToMoveHigh is not <c>NULL</c>, the return value is the lower-order <c>DWORD</c> of the new
-		/// file pointer and lpDistanceToMoveHigh contains the high order <c>DWORD</c> of the new file pointer.
+		/// If the function succeeds and lpDistanceToMoveHigh is not <c>NULL</c>, the return value is the lower-order <c>DWORD</c> of the
+		/// new file pointer and lpDistanceToMoveHigh contains the high order <c>DWORD</c> of the new file pointer.
 		/// </para>
 		/// <para>
 		/// If a new file pointer is a negative value, the function fails, the file pointer is not moved, and the code returned by
@@ -7516,8 +7575,8 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// <para>Not supported.</para>
 		/// <para>
-		/// Implemented only as a stub that calls the InternetSetOption function; <c>InternetSetOptionEx</c> has no functionality of its own.
-		/// Do not use this function at this time.
+		/// Implemented only as a stub that calls the InternetSetOption function; <c>InternetSetOptionEx</c> has no functionality of its
+		/// own. Do not use this function at this time.
 		/// </para>
 		/// </summary>
 		/// <param name="hInternet">TBD</param>
@@ -7530,8 +7589,8 @@ namespace Vanara.PInvoke
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetsetoptionexa BOOLAPI InternetSetOptionExA( HINTERNET
-		// hInternet, DWORD dwOption, LPVOID lpBuffer, DWORD dwBufferLength, DWORD dwFlags );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetsetoptionexa BOOLAPI InternetSetOptionExA(
+		// HINTERNET hInternet, DWORD dwOption, LPVOID lpBuffer, DWORD dwBufferLength, DWORD dwFlags );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "535e4f38-d941-4b69-8c48-ea47f3fbd5e7")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -7555,8 +7614,8 @@ namespace Vanara.PInvoke
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetsetpersitecookiedecisiona
-		// BOOLAPI InternetSetPerSiteCookieDecisionA( LPCSTR pchHostName, DWORD dwDecision );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetsetpersitecookiedecisiona BOOLAPI
+		// InternetSetPerSiteCookieDecisionA( LPCSTR pchHostName, DWORD dwDecision );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "c25699b9-f79a-443b-b9a4-461c379fa8e4")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -7591,7 +7650,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// It is sometimes desirable to display status information during a long-term operation. You can display status information by
-		/// setting up an Internet status callback function that cannot be removed as long as any callbacks or any asynchronous functions are pending.
+		/// setting up an Internet status callback function that cannot be removed as long as any callbacks or any asynchronous functions
+		/// are pending.
 		/// </para>
 		/// <para>
 		/// After initiating <c>InternetSetStatusCallback</c>, the callback function can be accessed from within any WinINet function for
@@ -7659,8 +7719,8 @@ namespace Vanara.PInvoke
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetunlockrequestfile BOOLAPI InternetUnlockRequestFile(
-		// HANDLE hLockRequestInfo );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetunlockrequestfile BOOLAPI
+		// InternetUnlockRequestFile( HANDLE hLockRequestInfo );
 		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wininet.h", MSDNShortId = "356f7277-66ef-450f-ab5a-0303d0b1d807")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -7730,12 +7790,13 @@ namespace Vanara.PInvoke
 		/// <param name="dwZone">A value of type DWORD that specifies the URLZONE for which privacy settings are being retrieved.</param>
 		/// <param name="dwType">A value of type DWORD that specifies the PrivacyType for which privacy settings are being retrieved.</param>
 		/// <param name="pdwTemplate">
-		/// An <c>LPDWORD</c> that returns a pointer to a <c>DWORD</c> containing which of the PrivacyTemplates is in use for this dwZone and dwType.
+		/// An <c>LPDWORD</c> that returns a pointer to a <c>DWORD</c> containing which of the PrivacyTemplates is in use for this dwZone
+		/// and dwType.
 		/// </param>
 		/// <param name="pszBuffer">
 		/// An <c>LPWSTR</c> that points to a buffer containing a <c>LPCWSTR</c> representing a string version of the pdwTemplate or a
-		/// customized string if the pdwTemplate is set to <c>PRIVACY_TEMPLATE_CUSTOM</c>. See PrivacySetZonePreferenceW for a description of
-		/// a customized privacy preferences string.
+		/// customized string if the pdwTemplate is set to <c>PRIVACY_TEMPLATE_CUSTOM</c>. See PrivacySetZonePreferenceW for a description
+		/// of a customized privacy preferences string.
 		/// </param>
 		/// <param name="pdwBufferLength">
 		/// An <c>LPDWORD</c> that contains the buffer length in characters. If the buffer length is not sufficient,
@@ -7780,8 +7841,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// Custom privacy preferences for a given URLZONE and PrivacyType can be set through the pszPreference parameter. The pszPreference
-		/// parameter can contain a series of rules separated by white space describing the privacy preferences. It is important to note that
-		/// the rules themselves cannot contain white space. The pszPreference has the following structure where there can be multiple
+		/// parameter can contain a series of rules separated by white space describing the privacy preferences. It is important to note
+		/// that the rules themselves cannot contain white space. The pszPreference has the following structure where there can be multiple
 		/// logical rules: &lt;signature&gt; &lt;logical-rule&gt; &lt;special-rule&gt;.
 		/// </para>
 		/// <para>Currently, the signature must be set to IE6-P3PSettings/V1:.</para>
@@ -7789,8 +7850,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// An expression is a Boolean statement composed of compact policy tokens using the operators &amp; (logical AND) and ! (logical
 		/// NOT). The compact policy token is case-sensitive. (For more information on Platform for Privacy Preferences (P3P) privacy
-		/// policies and compact policy tokens, see the W3C: Platform for Privacy Preferences (P3P) Project specification.) The decision is a
-		/// single lowercase character that defines the action to take on the cookie whose compact policy contains the specified token(s).
+		/// policies and compact policy tokens, see the W3C: Platform for Privacy Preferences (P3P) Project specification.) The decision is
+		/// a single lowercase character that defines the action to take on the cookie whose compact policy contains the specified token(s).
 		/// The following table lists valid decision characters.
 		/// </para>
 		/// <list type="table">
@@ -7828,8 +7889,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>The following examples show valid logical rules.</para>
 		/// <para>
-		/// Special rules are specified using the nopolicy, session, and always symbols. The nopolicy symbol is used to specify the action to
-		/// taken when there is no compact policy. For example nopolicy=d specifies to downgrade all cookies without a compact policy to
+		/// Special rules are specified using the nopolicy, session, and always symbols. The nopolicy symbol is used to specify the action
+		/// to taken when there is no compact policy. For example nopolicy=d specifies to downgrade all cookies without a compact policy to
 		/// session cookies. The session symbol is used to specify the action to take on session cookies and can only be set to a. When
 		/// session=a is specified, all session cookies are accepted regardless of the content of the compact policy. If this rule is not
 		/// specified, session cookies are subject to the same rules as persistent cookies. Finally, the always symbol is used to specify to
@@ -7837,9 +7898,9 @@ namespace Vanara.PInvoke
 		/// compact policy. Note that always=d is equivalent to /=d/.
 		/// </para>
 		/// <para>
-		/// The following example shows a privacy preferences string that specifies to accept cookies for which the compact policy contains a
-		/// FIN/CONi token pair, reject cookies with compact policies containing FIN/CON, FIN/CONo, FIN/CONa and GOV/PUB token pairs or a TEL
-		/// token, and to prompt the user when a cookie's compact policy contains the UNR token. It also specifies to downgrade cookies
+		/// The following example shows a privacy preferences string that specifies to accept cookies for which the compact policy contains
+		/// a FIN/CONi token pair, reject cookies with compact policies containing FIN/CON, FIN/CONo, FIN/CONa and GOV/PUB token pairs or a
+		/// TEL token, and to prompt the user when a cookie's compact policy contains the UNR token. It also specifies to downgrade cookies
 		/// without a compact policy to session cookies and to accept all cookies that do not match one of the given rules. Note that the
 		/// first rule that evaluates to true determines the cookie action.
 		/// </para>
@@ -7900,8 +7961,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// For example, call <c>ResumeSuspendedDownload</c> after a call to InternetErrorDlg, or in an InternetStatusCallback function when
-		/// the lpvStatusInformation parameter equals <c>INTERNET_STATUS_USER_INPUT_REQUIRED</c>. The following code example shows you how to
-		/// use the <c>ResumeSuspendedDownload</c> function in a callback.
+		/// the lpvStatusInformation parameter equals <c>INTERNET_STATUS_USER_INPUT_REQUIRED</c>. The following code example shows you how
+		/// to use the <c>ResumeSuspendedDownload</c> function in a callback.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -7926,8 +7987,8 @@ namespace Vanara.PInvoke
 		/// string should not contain any escape characters.
 		/// </param>
 		/// <param name="lpCacheEntryInfo">
-		/// Pointer to a cache entry information buffer. If the buffer is not sufficient, this function returns ERROR_INSUFFICIENT_BUFFER and
-		/// sets lpdwCacheEntryInfoBufferSize to the number of bytes required.
+		/// Pointer to a cache entry information buffer. If the buffer is not sufficient, this function returns ERROR_INSUFFICIENT_BUFFER
+		/// and sets lpdwCacheEntryInfoBufferSize to the number of bytes required.
 		/// </param>
 		/// <param name="lpcbCacheEntryInfo">
 		/// Pointer to an unsigned long integer variable that specifies the size of the lpCacheEntryInfo buffer, in bytes. When the function
@@ -7968,11 +8029,11 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// The file is locked for the caller when it is retrieved; the caller should unlock the file after the caller is finished with the
 		/// file. The cache manager automatically unlocks the files after a certain interval. While the file is locked, the cache manager
-		/// will not remove the file from the cache. It is important to note that this function may or may not perform efficiently, depending
-		/// on the internal implementation of the cache. For instance, if the URL data is stored in a packed file that contains data for
-		/// other URLs, the cache will make a copy of the data to a file in a temporary directory maintained by the cache. The cache will
-		/// eventually delete the copy. It is recommended that this function be used only in situations where a file name is needed to launch
-		/// an application. RetrieveUrlCacheEntryStream and associated stream functions should be used in most cases.
+		/// will not remove the file from the cache. It is important to note that this function may or may not perform efficiently,
+		/// depending on the internal implementation of the cache. For instance, if the URL data is stored in a packed file that contains
+		/// data for other URLs, the cache will make a copy of the data to a file in a temporary directory maintained by the cache. The
+		/// cache will eventually delete the copy. It is recommended that this function be used only in situations where a file name is
+		/// needed to launch an application. RetrieveUrlCacheEntryStream and associated stream functions should be used in most cases.
 		/// </para>
 		/// <para>
 		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
@@ -7993,20 +8054,25 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides the most efficient and implementation-independent way to access the cache data.</summary>
 		/// <param name="lpszUrlName">
-		/// Pointer to a null-terminated string that contains the source name of the cache entry. This must be a unique name. The name string should
-		/// not contain any escape characters.
+		/// Pointer to a null-terminated string that contains the source name of the cache entry. This must be a unique name. The name
+		/// string should not contain any escape characters.
 		/// </param>
-		/// <param name="lpCacheEntryInfo">Pointer to an INTERNET_CACHE_ENTRY_INFO structure that receives information about the cache entry.</param>
+		/// <param name="lpCacheEntryInfo">
+		/// Pointer to an INTERNET_CACHE_ENTRY_INFO structure that receives information about the cache entry.
+		/// </param>
 		/// <param name="lpcbCacheEntryInfo">
-		/// Pointer to a variable that specifies the size, in bytes, of the lpCacheEntryInfo buffer. When the function returns, the variable receives
-		/// the number of bytes copied to the buffer or the required size, in bytes, of the buffer. Note that this buffer size must accommodate both
-		/// the INTERNET_CACHE_ENTRY_INFO structure and the associated strings that are stored immediately following it.
+		/// Pointer to a variable that specifies the size, in bytes, of the lpCacheEntryInfo buffer. When the function returns, the variable
+		/// receives the number of bytes copied to the buffer or the required size, in bytes, of the buffer. Note that this buffer size must
+		/// accommodate both the INTERNET_CACHE_ENTRY_INFO structure and the associated strings that are stored immediately following it.
 		/// </param>
-		/// <param name="fRandomRead">Whether the stream is open for random access. Set the flag to <c>TRUE</c> to open the stream for random access.</param>
+		/// <param name="fRandomRead">
+		/// Whether the stream is open for random access. Set the flag to <c>TRUE</c> to open the stream for random access.
+		/// </param>
 		/// <param name="dwReserved">This parameter is reserved and must be 0.</param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the function returns a valid handle for use in the ReadUrlCacheEntryStream and UnlockUrlCacheEntryStream functions.
+		/// If the function succeeds, the function returns a valid handle for use in the ReadUrlCacheEntryStream and
+		/// UnlockUrlCacheEntryStream functions.
 		/// </para>
 		/// <para>If the function fails, it returns <c>NULL</c>. To get extended error information, call GetLastError.</para>
 		/// <para>Possible error values include the following.</para>
@@ -8022,30 +8088,33 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
 		/// <term>
-		/// The size of lpCacheEntryInfo as specified by lpdwCacheEntryInfoBufferSize is not sufficient to contain all the information. The value
-		/// returned in lpdwCacheEntryInfoBufferSize indicates the buffer size necessary to contain all the information.
+		/// The size of lpCacheEntryInfo as specified by lpdwCacheEntryInfoBufferSize is not sufficient to contain all the information. The
+		/// value returned in lpdwCacheEntryInfoBufferSize indicates the buffer size necessary to contain all the information.
 		/// </term>
 		/// </item>
 		/// </list>
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// <c>RetrieveUrlCacheEntryStream</c> does not do any URL parsing, so a URL containing an anchor (#) will not be found in the cache, even if
-		/// the resource is cached. For example, if the URL http://adatum.com/example.htm#sample is passed, the function returns ERROR_FILE_NOT_FOUND
-		/// even if http://adatum.com/example.htm is in the cache.
+		/// <c>RetrieveUrlCacheEntryStream</c> does not do any URL parsing, so a URL containing an anchor (#) will not be found in the
+		/// cache, even if the resource is cached. For example, if the URL http://adatum.com/example.htm#sample is passed, the function
+		/// returns ERROR_FILE_NOT_FOUND even if http://adatum.com/example.htm is in the cache.
 		/// </para>
-		/// <para>Cache clients that do not need URL data in the form of a file should use this function to access the data for a particular URL.</para>
 		/// <para>
-		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and destructors
-		/// of global objects.
+		/// Cache clients that do not need URL data in the form of a file should use this function to access the data for a particular URL.
+		/// </para>
+		/// <para>
+		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
+		/// destructors of global objects.
 		/// </para>
 		/// <para>
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-retrieveurlcacheentrystreama
-		// void RetrieveUrlCacheEntryStreamA( LPCSTR lpszUrlName, LPINTERNET_CACHE_ENTRY_INFOA lpCacheEntryInfo, LPDWORD lpcbCacheEntryInfo, BOOL fRandomRead, DWORD dwReserved );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-retrieveurlcacheentrystreama void
+		// RetrieveUrlCacheEntryStreamA( LPCSTR lpszUrlName, LPINTERNET_CACHE_ENTRY_INFOA lpCacheEntryInfo, LPDWORD lpcbCacheEntryInfo, BOOL
+		// fRandomRead, DWORD dwReserved );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "0414efb0-d91b-46f0-9fee-0b69ef823029")]
 		public static extern SafeHCACHEENTRYSTREAM RetrieveUrlCacheEntryStream(string lpszUrlName, IntPtr lpCacheEntryInfo, ref uint lpcbCacheEntryInfo, [MarshalAs(UnmanagedType.Bool)] bool fRandomRead, uint dwReserved = 0);
@@ -8164,8 +8233,8 @@ namespace Vanara.PInvoke
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-seturlcacheentryinfow BOOLAPI SetUrlCacheEntryInfoW( LPCWSTR
-		// lpszUrlName, LPINTERNET_CACHE_ENTRY_INFOW lpCacheEntryInfo, DWORD dwFieldControl );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-seturlcacheentryinfow BOOLAPI SetUrlCacheEntryInfoW(
+		// LPCWSTR lpszUrlName, LPINTERNET_CACHE_ENTRY_INFOW lpCacheEntryInfo, DWORD dwFieldControl );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "71f6e1a3-09ce-4576-9480-1270f343db39")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -8208,8 +8277,8 @@ namespace Vanara.PInvoke
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
 		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-unlockurlcacheentrystream BOOLAPI UnlockUrlCacheEntryStream(
-		// HANDLE hUrlCacheStream, DWORD Reserved );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-unlockurlcacheentrystream BOOLAPI
+		// UnlockUrlCacheEntryStream( HANDLE hUrlCacheStream, DWORD Reserved );
 		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wininet.h", MSDNShortId = "9fcc257e-732c-4545-a81b-7db20a98e497")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -8274,14 +8343,14 @@ namespace Vanara.PInvoke
 			public GOPHER_ATTRIBUTE_ID AttributeId;
 
 			/// <summary>
-			/// Data for the Gopher attribute. The specific structure depends on the <c>AttributeId</c> member. The definitions of these data
-			/// structures are available in WinInet.h.
+			/// Data for the Gopher attribute. The specific structure depends on the <c>AttributeId</c> member. The definitions of these
+			/// data structures are available in WinInet.h.
 			/// </summary>
 			public ATTRIBUTETYPE AttributeType;
 
 			/// <summary>
-			/// Data for the Gopher attribute. The specific structure depends on the <c>AttributeId</c> member. The definitions of these data
-			/// structures are available in WinInet.h.
+			/// Data for the Gopher attribute. The specific structure depends on the <c>AttributeId</c> member. The definitions of these
+			/// data structures are available in WinInet.h.
 			/// </summary>
 			[StructLayout(LayoutKind.Explicit)]
 			public struct ATTRIBUTETYPE
@@ -8668,54 +8737,6 @@ namespace Vanara.PInvoke
 			public string Locator;
 		}
 
-		/// <summary>Provides a handle to a url cache enumeration.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		public struct HFINDCACHE : IHandle
-		{
-			private readonly IntPtr handle;
-
-			/// <summary>Initializes a new instance of the <see cref="HFINDCACHE"/> struct.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			public HFINDCACHE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HFINDCACHE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HFINDCACHE NULL => new HFINDCACHE(IntPtr.Zero);
-
-			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-			public bool IsNull => handle == IntPtr.Zero;
-
-			/// <summary>Performs an explicit conversion from <see cref="HFINDCACHE"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="h">The handle.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static explicit operator IntPtr(HFINDCACHE h) => h.handle;
-
-			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFINDCACHE"/>.</summary>
-			/// <param name="h">The pointer to a handle.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HFINDCACHE(IntPtr h) => new HFINDCACHE(h);
-
-			/// <summary>Implements the operator !=.</summary>
-			/// <param name="h1">The first handle.</param>
-			/// <param name="h2">The second handle.</param>
-			/// <returns>The result of the operator.</returns>
-			public static bool operator !=(HFINDCACHE h1, HFINDCACHE h2) => !(h1 == h2);
-
-			/// <summary>Implements the operator ==.</summary>
-			/// <param name="h1">The first handle.</param>
-			/// <param name="h2">The second handle.</param>
-			/// <returns>The result of the operator.</returns>
-			public static bool operator ==(HFINDCACHE h1, HFINDCACHE h2) => h1.Equals(h2);
-
-			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HFINDCACHE h ? handle == h.handle : false;
-
-			/// <inheritdoc/>
-			public override int GetHashCode() => handle.GetHashCode();
-
-			/// <inheritdoc/>
-			public IntPtr DangerousGetHandle() => handle;
-		}
-
 		/// <summary>Provides a handle to a cache entry sream.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HCACHEENTRYSTREAM : IHandle
@@ -8756,6 +8777,54 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public override bool Equals(object obj) => obj is HCACHEENTRYSTREAM h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a url cache enumeration.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HFINDCACHE : IHandle
+		{
+			private readonly IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HFINDCACHE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HFINDCACHE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HFINDCACHE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HFINDCACHE NULL => new HFINDCACHE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HFINDCACHE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HFINDCACHE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFINDCACHE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HFINDCACHE(IntPtr h) => new HFINDCACHE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HFINDCACHE h1, HFINDCACHE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HFINDCACHE h1, HFINDCACHE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HFINDCACHE h ? handle == h.handle : false;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -8979,7 +9048,8 @@ namespace Vanara.PInvoke
 			public StrPtrAuto lpszSourceUrlName;
 
 			/// <summary>
-			/// Pointer to a null-terminated string that contains the local file name. The string occupies the memory area at the end of this structure.
+			/// Pointer to a null-terminated string that contains the local file name. The string occupies the memory area at the end of
+			/// this structure.
 			/// </summary>
 			public StrPtrAuto lpszLocalFileName;
 
@@ -9005,8 +9075,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>STICKY_CACHE_ENTRY</term>
 			/// <term>
-			/// Sticky cache entry that is exempt from scavenging for the amount of time specified by dwExemptDelta. The default value set by
-			/// CommitUrlCacheEntryA and CommitUrlCacheEntryW is one day.
+			/// Sticky cache entry that is exempt from scavenging for the amount of time specified by dwExemptDelta. The default value set
+			/// by CommitUrlCacheEntryA and CommitUrlCacheEntryW is one day.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -9073,8 +9143,8 @@ namespace Vanara.PInvoke
 			public uint dwHeaderInfoSize;
 
 			/// <summary>
-			/// Pointer to a string that contains the file name extension used to retrieve the data as a file. The string occupies the memory
-			/// area at the end of this structure.
+			/// Pointer to a string that contains the file name extension used to retrieve the data as a file. The string occupies the
+			/// memory area at the end of this structure.
 			/// </summary>
 			public StrPtrAuto lpszFileExtension;
 
@@ -9140,13 +9210,14 @@ namespace Vanara.PInvoke
 			public string lpHeaderInfo;
 
 			/// <summary>
-			/// Pointer to a string that contains the file name extension used to retrieve the data as a file. The string occupies the memory
-			/// area at the end of this structure.
+			/// Pointer to a string that contains the file name extension used to retrieve the data as a file. The string occupies the
+			/// memory area at the end of this structure.
 			/// </summary>
 			public string lpszFileExtension;
 
 			/// <summary>
-			/// Pointer to a null-terminated string that contains the local file name. The string occupies the memory area at the end of this structure.
+			/// Pointer to a null-terminated string that contains the local file name. The string occupies the memory area at the end of
+			/// this structure.
 			/// </summary>
 			public string lpszLocalFileName;
 
@@ -9210,8 +9281,8 @@ namespace Vanara.PInvoke
 			public StrPtrAnsi lpszSubjectInfo;
 
 			/// <summary>
-			/// Pointer to a buffer that contains the name of the organization, site, and server that issued the certificate. The application
-			/// must call LocalFree to release the resources allocated for this parameter.
+			/// Pointer to a buffer that contains the name of the organization, site, and server that issued the certificate. The
+			/// application must call LocalFree to release the resources allocated for this parameter.
 			/// </summary>
 			public StrPtrAnsi lpszIssuerInfo;
 
@@ -9260,15 +9331,122 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the value of an option.</summary>
-		[PInvokeData("WinInet.h")]
-		[StructLayout(LayoutKind.Sequential)]
+		/// <remarks>
+		/// <para>
+		/// In Internet Explorer 5, only the ANSI versions of InternetQueryOption and InternetSetOption will work with the
+		/// <c>INTERNET_PER_CONN_OPTION</c> structure. The Unicode versions will support the <c>INTERNET_PER_CONN_OPTION</c> structure in
+		/// later versions of Internet Explorer.
+		/// </para>
+		/// <para>
+		/// For queries that return strings, InternetQueryOption allocates the memory for the <c>pszValue</c> member of the structure. The
+		/// calling application must free this memory using the GlobalFree function when it has finished using the string.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
+		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-internet_per_conn_optiona typedef struct { DWORD dwOption;
+		// union { DWORD dwValue; LPSTR pszValue; FILETIME ftValue; } Value; } INTERNET_PER_CONN_OPTIONA, *LPINTERNET_PER_CONN_OPTIONA;
+		[PInvokeData("wininet.h", MSDNShortId = "NS:wininet.__unnamed_struct_3")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct INTERNET_PER_CONN_OPTION
 		{
-			/// <summary>Option to be queried or set.</summary>
+			/// <summary>
+			/// <para>Option to be queried or set. This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_AUTOCONFIG_URL</term>
+			/// <term>Sets or retrieves a string containing the URL to the automatic configuration script.</term>
+			/// </item>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_AUTODISCOVERY_FLAGS</term>
+			/// <term>
+			/// Sets or retrieves the automatic discovery settings. The Value member will contain one or more of the following values:
+			/// AUTO_PROXY_FLAG_ALWAYS_DETECT Always automatically detect settings. AUTO_PROXY_FLAG_CACHE_INIT_RUN Indicates that the cached
+			/// results of the automatic proxy configuration script should be used, instead of actually running the script, unless the
+			/// cached file has expired. AUTO_PROXY_FLAG_DETECTION_RUN Automatic detection has been run at least once on this connection.
+			/// AUTO_PROXY_FLAG_DETECTION_SUSPECT Not currently supported. AUTO_PROXY_FLAG_DONT_CACHE_PROXY_RESULT Do not allow the caching
+			/// of the result of the automatic proxy configuration script. AUTO_PROXY_FLAG_MIGRATED The setting was migrated from a
+			/// Microsoft Internet Explorer 4.0 installation, and automatic detection should be attempted once. AUTO_PROXY_FLAG_USER_SET The
+			/// user has explicitly set the automatic detection.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_FLAGS</term>
+			/// <term>
+			/// Sets or retrieves the connection type. The Value member will contain one or more of the following values: PROXY_TYPE_DIRECT
+			/// The connection does not use a proxy server. PROXY_TYPE_PROXY The connection uses an explicitly set proxy server.
+			/// PROXY_TYPE_AUTO_PROXY_URL The connection downloads and processes an automatic configuration script at a specified URL.
+			/// PROXY_TYPE_AUTO_DETECT The connection automatically detects settings.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_PROXY_BYPASS</term>
+			/// <term>Sets or retrieves a string containing the URLs that do not use the proxy server.</term>
+			/// </item>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_PROXY_SERVER</term>
+			/// <term>Sets or retrieves a string containing the proxy servers.</term>
+			/// </item>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_AUTOCONFIG_SECONDARY_URL</term>
+			/// <term>
+			/// Chained autoconfig URL. Used when the primary autoconfig URL points to an INS file that sets a second autoconfig URL for
+			/// proxy information.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_AUTOCONFIG_RELOAD_DELAY_MINS</term>
+			/// <term>of minutes until automatic refresh of autoconfig URL by autodiscovery.</term>
+			/// </item>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_AUTOCONFIG_LAST_DETECT_TIME</term>
+			/// <term>Read only option. Returns the time the last known good autoconfig URL was found using autodiscovery.</term>
+			/// </item>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_AUTOCONFIG_LAST_DETECT_URL</term>
+			/// <term>Read only option. Returns the last known good URL found using autodiscovery.</term>
+			/// </item>
+			/// </list>
+			/// <para>Windows 7 and later:</para>
+			/// <para>
+			/// Clients that support Internet Explorer 8 should query the connection type using <c>INTERNET_PER_CONN_FLAGS_UI</c>. If this
+			/// query fails, then the system is running a previous version of Internet Explorer and the client should query again with <c>INTERNET_PER_CONN_FLAGS</c>.
+			/// </para>
+			/// <para>Restore the connection type using</para>
+			/// <para>INTERNET_PER_CONN_FLAGS</para>
+			/// <para>regardless of the version of Internet Explorer.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>INTERNET_PER_CONN_FLAGS_UI</term>
+			/// <term>
+			/// Sets or retrieves the connection type. The Value member will contain one or more of the following values: PROXY_TYPE_DIRECT
+			/// The connection does not use a proxy server. PROXY_TYPE_PROXY The connection uses an explicitly set proxy server.
+			/// PROXY_TYPE_AUTO_PROXY_URL The connection downloads and processes an automatic configuration script at a specified URL.
+			/// PROXY_TYPE_AUTO_DETECT The connection automatically detects settings.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
 			public INTERNET_PER_CONN_OPTION_ID dwOption;
 
 			/// <summary>
-			/// Union that contains the value for the option. It can be any one of the following types depending on the value of dwOption.
+			/// <para>Union that contains the value for the option. It can be any one of the following types depending on the value of <c>dwOption</c>:</para>
+			/// <para>dwValue</para>
+			/// <para>Unsigned long integer value.</para>
+			/// <para>pszValue</para>
+			/// <para>Pointer to a string value.</para>
+			/// <para>ftValue</para>
+			/// <para>A FILETIME structure.</para>
 			/// </summary>
 			public INTERNET_PER_CONN_OPTION_Value Value;
 
@@ -9364,8 +9542,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// For InternetCreateUrl, the pointer members should be <c>NULL</c> if the component is not required. If the corresponding length
-		/// member is zero, the pointer member is the address of a zero-terminated string. If the length member is not zero, it is the string
-		/// length of the corresponding pointer member.
+		/// member is zero, the pointer member is the address of a zero-terminated string. If the length member is not zero, it is the
+		/// string length of the corresponding pointer member.
 		/// </para>
 		/// <para>
 		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
@@ -9434,7 +9612,9 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHCACHEENTRYSTREAM"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHCACHEENTRYSTREAM(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeHCACHEENTRYSTREAM"/> class.</summary>
