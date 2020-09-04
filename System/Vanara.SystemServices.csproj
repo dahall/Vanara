@@ -35,6 +35,7 @@ BatteryStatus, EnergySaverStatus, JobLimit, NetworkInterfaceAccessType, NetworkI
     <ProjectReference Include="..\PInvoke\PowrProf\Vanara.PInvoke.PowrProf.csproj" />
     <ProjectReference Include="..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
+    <ProjectReference Include="..\PInvoke\WinInet\Vanara.PInvoke.WinINet.csproj" />
     <ProjectReference Include="..\PInvoke\WlanApi\Vanara.PInvoke.WlanApi.csproj" />
     <ProjectReference Include="..\Security\Vanara.Security.csproj" />
   </ItemGroup>
