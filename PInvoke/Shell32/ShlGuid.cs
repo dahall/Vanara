@@ -330,7 +330,7 @@ namespace Vanara.PInvoke
 			FOLDERTYPEID_Contacts,
 
 			/// <summary>The Control Panel in category view. This is a virtual folder.</summary>
-			[Associate("A folder that contains email contact information.")]
+			[Associate("{de4f0660-fa10-4b8f-a494-068b20b22307}")]
 			FOLDERTYPEID_ControlPanelCategory,
 
 			/// <summary>The Control Panel in classic view. This is a virtual folder.</summary>
