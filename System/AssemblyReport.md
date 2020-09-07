@@ -28,6 +28,7 @@ Class | Description
 ---- | ----
 [Vanara.Computer](https://github.com/dahall/Vanara/search?l=C%23&q=Computer) | Represents a single connected (authenticated) computer.
 [Vanara.Extensions.FileInfoExtension](https://github.com/dahall/Vanara/search?l=C%23&q=FileInfoExtension) | Extension methods for `System.IO.FileSystemInfo` and derived classes to facilitate retrieval of extended properties.
+[Vanara.Network.InternetProxyOptions](https://github.com/dahall/Vanara/search?l=C%23&q=InternetProxyOptions) | 
 [Vanara.Diagnostics.IoCompletionPort](https://github.com/dahall/Vanara/search?l=C%23&q=IoCompletionPort) | Represents a system I/O completion port.
 [Vanara.Diagnostics.Job](https://github.com/dahall/Vanara/search?l=C%23&q=Job) | Represents a system Job Object that allows groups of processes to be managed as a unit. Job objects are nameable, securable, sharable objects that control attributes of the processes associated with them. Operations performed on a job object affect all processes associated with the job object. Examples include enforcing limits such as working set size and process priority or terminating all processes associated with a job. For more information see <a href="https://docs.microsoft.com/en-us/windows/win32/procthread/job-objects">Job Objects</a>.
 [Vanara.Diagnostics.JobEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=JobEventArgs) | Contains information about a job object message.
@@ -39,8 +40,8 @@ Class | Description
 [Vanara.Diagnostics.JobSettings](https://github.com/dahall/Vanara/search?l=C%23&q=JobSettings) | Settings related to job objects.
 [Vanara.Diagnostics.JobStatistics](https://github.com/dahall/Vanara/search?l=C%23&q=JobStatistics) | Gets statistics for a job object.
 [Vanara.Network.NetworkConnection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkConnection) | Represents a single network connection. Wraps `Vanara.PInvoke.NetListMgr.INetworkConnection`.
-[Vanara.NetworkDeviceConnection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnection) | 
-[Vanara.NetworkDeviceConnectionCollection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnectionCollection) | 
+[Vanara.NetworkDeviceConnection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnection) | Information about a remote resource, usually in reference to a connection to that resource.
+[Vanara.NetworkDeviceConnectionCollection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnectionCollection) | Provides access to the local machine's remote connections.
 [Vanara.Extensions.NetworkInterfaceExt](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkInterfaceExt) | Extension methods for various network related interfaces methods.
 [Vanara.Network.NetworkListManager](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkListManager) | Provides a set of methods to perform network list management functions.
 [Vanara.Network.NetworkProfile](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkProfile) | Represents a wireless network profile
