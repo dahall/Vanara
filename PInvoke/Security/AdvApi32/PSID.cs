@@ -121,6 +121,16 @@ namespace Vanara.PInvoke
 				return newSid;
 			}
 
+			/// <summary>Extracts the user account SID associated with a security token.</summary>
+			/// <param name="hToken">The security token handle.</param>
+			/// <returns>A <see cref="SafePSID"/> instance of the user account SID associated with a security token.</returns>
+			public static SafePSID FromToken(HTOKEN hToken)
+			{
+				var hTok = new SafeHTOKEN((IntPtr)hToken, false);
+				using var pUserToken = hTok.GetInfo(TOKEN_INFORMATION_CLASS.TokenUser);
+				return new SafePSID(pUserToken.ToStructure<TOKEN_USER>().User.Sid);
+			}
+
 			/// <summary>Performs an explicit conversion from <see cref="SafePSID"/> to <see cref="IntPtr"/>.</summary>
 			/// <param name="psid">The SafePSID instance.</param>
 			/// <returns>The result of the conversion.</returns>
@@ -378,6 +388,17 @@ namespace Vanara.PInvoke
 		/// <param name="pSid">The SID structure pointer.</param>
 		/// <returns>The binary form (byte array) of the SID structure.</returns>
 		public static byte[] GetBinaryForm(this PSID pSid) => pSid.IsValidSid() ? ((IntPtr)pSid).ToArray<byte>(pSid.Length()) : (new byte[0]);
+
+		/// <summary>
+		/// The <c>GetDomainSid</c> function receives a security identifier (SID) and returns a SID representing the domain of that SID.
+		/// </summary>
+		/// <param name="pSid">A pointer to the SID to examine.</param>
+		/// <returns>An allocated safe pointer to a SID representing the domain.</returns>
+		public static AdvApi32.SafePSID GetDomainSid(this PSID pSid)
+		{
+			Win32Error.ThrowLastErrorIfFalse(AdvApi32.GetWindowsAccountDomainSid(pSid, out var pDomSid));
+			return pDomSid;
+		}
 
 		/// <summary>
 		/// Validates a security identifier (SID) by verifying that the revision number is within a known range, and that the number of
