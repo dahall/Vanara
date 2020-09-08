@@ -23,6 +23,28 @@ namespace Vanara.PInvoke
 		/// <summary/>
 		public const uint SID_REVISION = 1; // Current revision level
 
+		private const int sizeofSID = 12;
+
+		/// <summary>The maximum size of a SID.</summary>
+		public static readonly int SECURITY_MAX_SID_SIZE = SECURITY_SID_SIZE(SID_MAX_SUB_AUTHORITIES);
+
+		/// <summary>Returns the number of bytes required for SID given the number of sub-authorities.</summary>
+		/// <param name="SubAuthorityCount">The sub authority count.</param>
+		/// <returns>The number of bytes required for ths SID.</returns>
+		public static int SECURITY_SID_SIZE(int SubAuthorityCount) => sizeofSID + ((SubAuthorityCount - 1) * sizeof(uint));
+
+		// 2 (S-)
+		// 4 (Rev(max: 255)-)
+		// 15 (
+		//      If (Auth < 2^32): Auth(max:4294967295)-
+		//      Else:             0xAuth(max:FFFFFFFFFFFF)-
+		//    )
+		// (11 * SID_MAX_SUB_AUTHORITIES) (SubN(max:4294967295)-)
+		// 1 (NULL character)
+		// = 187 (assuming SID_MAX_SUB_AUTHORITIES = 15)
+		/// <summary>The maximum characters in a string representation of a SID.</summary>
+		public const int SECURITY_MAX_SID_STRING_CHARACTERS = (2 + 4 + 15 + (11 * SID_MAX_SUB_AUTHORITIES) + 1);
+
 		/// <summary>Indicates whether the ObjectTypeName and InheritedObjectTypeName members contain strings.</summary>
 		[PInvokeData("winnt.h")]
 		[Flags]
