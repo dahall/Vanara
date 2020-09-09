@@ -3619,6 +3619,9 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PCCERT_CONTEXT"/> that is disposed using <see cref="CertFreeCertificateContext"/>.</summary>
 		public class SafePCCERT_CONTEXT : SafeHANDLE
 		{
+			/// <summary>Represents a NULL handle for <see cref="SafePCCERT_CONTEXT"/>. This must be used instead of <see langword="null"/>.</summary>
+			public static readonly SafePCCERT_CONTEXT Null = new SafePCCERT_CONTEXT(IntPtr.Zero, false);
+
 			/// <summary>Initializes a new instance of the <see cref="SafePCCERT_CONTEXT"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
