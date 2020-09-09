@@ -6962,6 +6962,9 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCRYPTHASH"/> that is disposed using <see cref="CryptDestroyHash"/>.</summary>
 		public class SafeHCRYPTHASH : SafeHANDLE
 		{
+			/// <summary>Represents a NULL handle for <see cref="SafeHCRYPTHASH"/>. This must be used instead of <see langword="null"/>.</summary>
+			public static readonly SafeHCRYPTHASH Null = new SafeHCRYPTHASH(IntPtr.Zero, false);
+
 			/// <summary>Initializes a new instance of the <see cref="SafeHCRYPTHASH"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
@@ -6984,6 +6987,9 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCRYPTPROV"/> that is disposed using <see cref="CryptReleaseContext"/>.</summary>
 		public class SafeHCRYPTPROV : SafeHANDLE
 		{
+			/// <summary>Represents a NULL handle for <see cref="SafeHCRYPTPROV"/>. This must be used instead of <see langword="null"/>.</summary>
+			public static readonly SafeHCRYPTPROV Null = new SafeHCRYPTPROV(IntPtr.Zero, false);
+
 			/// <summary>Initializes a new instance of the <see cref="SafeHCRYPTPROV"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
