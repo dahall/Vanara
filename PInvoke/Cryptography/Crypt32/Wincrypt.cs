@@ -11,6 +11,12 @@ namespace Vanara.PInvoke
 	public static partial class Crypt32
 	{
 		private const int CERT_COMPARE_SHIFT = 16;
+		/// <summary/>
+		public const uint CERT_V1 = 0;
+		/// <summary/>
+		public const uint CERT_V2 = 1;
+		/// <summary/>
+		public const uint CERT_V3 = 2;
 
 		/// <summary>The class of an ALG_ID.</summary>
 		[PInvokeData("wincrypt.h")]
@@ -1634,10 +1640,10 @@ namespace Vanara.PInvoke
 			public CERT_PUBLIC_KEY_INFO SubjectPublicKeyInfo;
 
 			/// <summary>A BLOB that contains a unique identifier of the issuer.</summary>
-			public CRYPTOAPI_BLOB IssuerUniqueId;
+			public CRYPT_BIT_BLOB IssuerUniqueId;
 
 			/// <summary>A BLOB that contains a unique identifier of the subject.</summary>
-			public CRYPTOAPI_BLOB SubjectUniqueId;
+			public CRYPT_BIT_BLOB SubjectUniqueId;
 
 			/// <summary>The number of elements in the rgExtension array.</summary>
 			public uint cExtension;
@@ -1700,7 +1706,7 @@ namespace Vanara.PInvoke
 			public CRYPT_ALGORITHM_IDENTIFIER Algorithm;
 
 			/// <summary>BLOB containing an encoded public key.</summary>
-			public CRYPTOAPI_BLOB PublicKey;
+			public CRYPT_BIT_BLOB PublicKey;
 		}
 
 		/// <summary>
@@ -1717,6 +1723,358 @@ namespace Vanara.PInvoke
 
 			/// <summary>Array of CERT_RDN_ATTR structures.</summary>
 			public IntPtr rgRDNAttr;
+		}
+
+		/// <summary>
+		/// The <c>CERT_RDN_ATTR</c> structure contains a single attribute of a relative distinguished name (RDN). A whole RDN is expressed
+		/// in a CERT_RDN structure that contains an array of <c>CERT_RDN_ATTR</c> structures.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_rdn_attr
+		// typedef struct _CERT_RDN_ATTR { LPSTR pszObjId; DWORD dwValueType; CERT_RDN_VALUE_BLOB Value; } CERT_RDN_ATTR, *PCERT_RDN_ATTR;
+		[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CERT_RDN_ATTR")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CERT_RDN_ATTR
+		{
+			/// <summary>
+			/// <para>
+			/// Object identifier (OID) for the type of the attribute defined in this structure. This member can be one of the <see cref="AttrOID"/> values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>szOID_AUTHORITY_REVOCATION_LIST</term>
+			/// <term>Security attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_BUSINESS_CATEGORY</term>
+			/// <term>Case-insensitive string. Explanatory attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_CA_CERTIFICATE</term>
+			/// <term>Security attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_CERTIFICATE_REVOCATION_LIST</term>
+			/// <term>Security attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_COMMON_NAME</term>
+			/// <term>Case-insensitive string. Labeling attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_COUNTRY_NAME</term>
+			/// <term>Two-character printable string. Geographic attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_CROSS_CERTIFICATE_PAIR</term>
+			/// <term>Security attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_DESCRIPTION</term>
+			/// <term>Case-insensitive string. Explanatory attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_DESTINATION_INDICATOR</term>
+			/// <term>Printable string. Telecommunications addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_DEVICE_SERIAL_NUMBER</term>
+			/// <term>Printable string. Labeling attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_DOMAIN_COMPONENT</term>
+			/// <term>IA5 string. DNS name component such as "com."</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_FACSIMILE_TELEPHONE_NUMBER</term>
+			/// <term>Telecommunications addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_GIVEN_NAME</term>
+			/// <term>Case-insensitive string. Name attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_INITIALS</term>
+			/// <term>Case-insensitive string. Name attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_INTERNATIONAL_ISDN_NUMBER</term>
+			/// <term>Numeric string. Telecommunications addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_LOCALITY_NAME</term>
+			/// <term>Case-insensitive string. Geographic attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_MEMBER</term>
+			/// <term>Relational application attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_ORGANIZATION_NAME</term>
+			/// <term>Case-insensitive string. Organizational attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_ORGANIZATIONAL_UNIT_NAME</term>
+			/// <term>Case-insensitive string. Organizational attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_OWNER</term>
+			/// <term>Relational application attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_PHYSICAL_DELIVERY_OFFICE_NAME</term>
+			/// <term>Case-insensitive string. Postal addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_PKCS_12_FRIENDLY_NAME_ATTR</term>
+			/// <term>PKCS #12 attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_PKCS_12_LOCAL_KEY_ID</term>
+			/// <term>PKCS #12 attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_POST_OFFICE_BOX</term>
+			/// <term>Case-insensitive string. Postal addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_POSTAL_ADDRESS</term>
+			/// <term>Printable string. Postal addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_POSTAL_CODE</term>
+			/// <term>Case-insensitive string. Postal addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_PREFERRED_DELIVERY_METHOD</term>
+			/// <term>Preference attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_PRESENTATION_ADDRESS</term>
+			/// <term>OSI application attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_REGISTERED_ADDRESS</term>
+			/// <term>Telecommunications addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_ROLE_OCCUPANT</term>
+			/// <term>Relational application attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_RSA_emailAddr</term>
+			/// <term>IA5 string. Email attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_SEARCH_GUIDE</term>
+			/// <term>Explanatory attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_SEE_ALSO</term>
+			/// <term>Relational application attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_STATE_OR_PROVINCE_NAME</term>
+			/// <term>Case-insensitive string. Geographic attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_STREET_ADDRESS</term>
+			/// <term>Case-insensitive string. Geographic attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_SUPPORTED_APPLICATION_CONTEXT</term>
+			/// <term>OSI application attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_SUR_NAME</term>
+			/// <term>Case-insensitive string. Labeling attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_TELEPHONE_NUMBER</term>
+			/// <term>Telecommunications addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_TELETEXT_TERMINAL_IDENTIFIER</term>
+			/// <term>Telecommunications addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_TELEX_NUMBER</term>
+			/// <term>Telecommunications addressing attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_TITLE</term>
+			/// <term>Case-insensitive string. Organizational attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_USER_CERTIFICATE</term>
+			/// <term>Security attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_USER_PASSWORD</term>
+			/// <term>Security attribute.</term>
+			/// </item>
+			/// <item>
+			/// <term>szOID_X21_ADDRESS</term>
+			/// <term>Numeric string. Telecommunications addressing attribute.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPStr)]
+			public string pszObjId;
+
+			/// <summary>
+			/// <para>Indicates the interpretation of the <c>Value</c> member.</para>
+			/// <para>This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CERT_RDN_ANY_TYPE</term>
+			/// <term>The pszObjId member determines the assumed type and length.</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_BMP_STRING</term>
+			/// <term>An array of Unicode characters (16-bit).</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_ENCODED_BLOB</term>
+			/// <term>An encoded data BLOB.</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_GENERAL_STRING</term>
+			/// <term>Currently not used.</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_GRAPHIC_STRING</term>
+			/// <term>Currently not used.</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_IA5_STRING</term>
+			/// <term>An arbitrary string of IA5 (ASCII) characters.</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_INT4_STRING</term>
+			/// <term>An array of INT4 elements (32-bit).</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_ISO646_STRING</term>
+			/// <term>A 128-character set (8-bit).</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_NUMERIC_STRING</term>
+			/// <term>Only the characters 0 through 9 and the space character (8-bit).</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_OCTET_STRING</term>
+			/// <term>An arbitrary string of octets (8-bit).</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_PRINTABLE_STRING</term>
+			/// <term>An arbitrary string of printable characters (8-bit).</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_T61_STRING</term>
+			/// <term>An arbitrary string of T.61 characters (8-bit).</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_TELETEX_STRING</term>
+			/// <term>An arbitrary string of T.61 characters (8-bit)</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_UNICODE_STRING</term>
+			/// <term>An array of Unicode characters (16-bit).</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_UNIVERSAL_STRING</term>
+			/// <term>An array of INT4 elements (32-bit).</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_UTF8_STRING</term>
+			/// <term>An array of 16 bit Unicode characters UTF8 encoded on the wire as a sequence of one, two, or three, eight-bit characters.</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_VIDEOTEX_STRING</term>
+			/// <term>An arbitrary string of videotext characters.</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_VISIBLE_STRING</term>
+			/// <term>A 95-character set (8-bit).</term>
+			/// </item>
+			/// </list>
+			/// <para>The following flags can be combined by using a bitwise- <c>OR</c> operation into the <c>dwValueType</c> member.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CERT_RDN_DISABLE_CHECK_TYPE_FLAG</term>
+			/// <term>For encoding. When set, the characters are not checked to determine whether they are valid for the value type.</term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_DISABLE_IE4_UTF8_FLAG</term>
+			/// <term>
+			/// For decoding. By default, CERT_RDN_T61_STRING encoded values are initially decoded as UTF8. If the UTF8 decoding fails, the
+			/// value is decoded as 8-bit characters. If this flag is set, it skips the initial attempt to decode as UTF8 and decodes the
+			/// value as 8-bit characters.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_ENABLE_T61_UNICODE_FLAG</term>
+			/// <term>
+			/// For encoding. When set, if all the Unicode characters are &lt;= 0xFF, the CERT_RDN_T61_STRING value is selected instead of
+			/// the CERT_RDN_UNICODE_STRING value.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_ENABLE_UTF8_UNICODE_FLAG</term>
+			/// <term>
+			/// For encoding. When set, strings are encoded with the CERT_RDN_UTF8_STRING value instead of the CERT_RDN_UNICODE_STRING value.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_FORCE_UTF8_UNICODE_FLAG</term>
+			/// <term>
+			/// For encoding. When set, strings are encoded with the CERT_RDN_UTF8_STRING value instead of CERT_RDN_PRINTABLE_STRING value
+			/// for DirectoryString types. In addition, CERT_RDN_ENABLE_UTF8_UNICODE_FLAG is enabled. Windows Vista, Windows Server 2003 and
+			/// Windows XP: This flag is not supported.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>CERT_RDN_ENABLE_PUNYCODE_FLAG</term>
+			/// <term>
+			/// For encoding. If the string contains an email RDN, and the email address is Punycode encoded, then the resultant email
+			/// address is encoded as an IA5String. The Punycode encoding of the host name is performed on a label-by-label basis. For
+			/// decoding. If the name contains an email RDN, and the local part or host name portion of the email address contains a
+			/// Punycode encoded IA5String, the RDN string value is converted to its Unicode equivalent. Windows Server 2008, Windows Vista,
+			/// Windows Server 2003 and Windows XP: This flag is not supported.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public CertRDNType dwValueType;
+
+			/// <summary>
+			/// <para>
+			/// A CERT_RDN_VALUE_BLOB that contains the attribute value. The <c>cbData</c> member of <c>Value</c> is the length, in bytes,
+			/// of the <c>pbData</c> member. It is not the number of elements in the <c>pbData</c> string.
+			/// </para>
+			/// <para>
+			/// For example, a <c>DWORD</c> is 32 bits or 4 bytes long. If <c>pbData</c> is a <c>DWORD</c> array, <c>cbData</c> would be
+			/// four times the number of <c>DWORD</c> elements in the array. A <c>SHORT</c> is 16 bits or 2 bytes long. If <c>pbData</c> is
+			/// an array of <c>SHORT</c> elements, <c>cbData</c> must be two times the length of the array.
+			/// </para>
+			/// <para>
+			/// The <c>pbData</c> member of <c>Value</c> can be a null-terminated array of 8-bit or 16-bit characters or a fixed-length
+			/// array of elements. If <c>dwValueType</c> is set to CERT_RDN_ENCODED_BLOB, <c>pbData</c> is encoded.
+			/// </para>
+			/// </summary>
+			public CRYPTOAPI_BLOB Value;
 		}
 
 		/// <summary>
@@ -2283,6 +2641,34 @@ namespace Vanara.PInvoke
 			public CRYPTOAPI_BLOB Value;
 		}
 
+		/// <summary>The <c>CRYPT_BIT_BLOB</c> structure contains a set of bits represented by an array of bytes.</summary>
+		/// <remarks>
+		/// Because the smallest chunk of memory that can normally be allocated is a byte, the <c>CRYPT_BIT_BLOB</c> structure allows the
+		/// last byte in the array to contain zero to seven unused bits. The number of unused bits in the array is contained in the
+		/// <c>cUnusedBits</c> member of this structure. The number of meaningful bits in the <c>pbData</c> member is calculated with the
+		/// formula (( <c>cbData</c> × 8) – <c>cUnusedBits</c>). For example, if you need to represent 10 bits, you would allocate an array
+		/// of 2 bytes and set <c>cUnusedBits</c> to 6. If you view the array as contiguous bits from left to right, the left 10 bits would
+		/// be meaningful, and the right 6 bits would be unused.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_bit_blob typedef struct _CRYPT_BIT_BLOB { DWORD
+		// cbData; BYTE *pbData; DWORD cUnusedBits; } CRYPT_BIT_BLOB, *PCRYPT_BIT_BLOB;
+		[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPT_BIT_BLOB")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CRYPT_BIT_BLOB
+		{
+			/// <summary>The number of bytes in the <c>pbData</c> array.</summary>
+			public uint cbData;
+
+			/// <summary>A pointer to an array of bytes that represents the bits.</summary>
+			public IntPtr pbData;
+
+			/// <summary>
+			/// The number of unused bits in the last byte of the array. The unused bits are always the least significant bits in the last
+			/// byte of the array.
+			/// </summary>
+			public uint cUnusedBits;
+		}
+
 		/// <summary>
 		/// The <c>CRYPT_KEY_PROV_INFO</c> structure contains information about a key container within a cryptographic service provider (CSP).
 		/// </summary>
@@ -2565,6 +2951,17 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CRYPTOAPI_BLOB
 		{
+			/// <summary>Initializes a new instance of the <see cref="CRYPTOAPI_BLOB"/> struct with default values.</summary>
+			/// <param name="data">A pointer to the data buffer.</param>
+			/// <param name="size">The count, in bytes, of <paramref name="data"/>.</param>
+			public CRYPTOAPI_BLOB(IntPtr data, SizeT size) { pbData = data; cbData = size; }
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="CRYPTOAPI_BLOB"/> struct from a <see cref="SafeAllocatedMemoryHandle"/> instance.
+			/// </summary>
+			/// <param name="mem">The allocated memory instance.</param>
+			public CRYPTOAPI_BLOB(SafeAllocatedMemoryHandle mem) { pbData = mem?.DangerousGetHandle() ?? default; cbData = mem?.Size ?? 0; }
+
 			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
 			public uint cbData;
 
@@ -3257,6 +3654,300 @@ namespace Vanara.PInvoke
 				handle = IntPtr.Zero;
 				return true;
 			}
+
+			/// <summary/>
+			public static readonly SafeOID CRYPT_ENCODE_DECODE_NONE = new SafeOID(0);
+
+			//+-------------------------------------------------------------------------
+			//  Predefined X509 certificate data structures that can be encoded / decoded.
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_CERT = new SafeOID(1);
+			/// <summary/>
+			public static readonly SafeOID X509_CERT_TO_BE_SIGNED = new SafeOID(2);
+			/// <summary/>
+			public static readonly SafeOID X509_CERT_CRL_TO_BE_SIGNED = new SafeOID(3);
+			/// <summary/>
+			public static readonly SafeOID X509_CERT_REQUEST_TO_BE_SIGNED = new SafeOID(4);
+			/// <summary/>
+			public static readonly SafeOID X509_EXTENSIONS = new SafeOID(5);
+			/// <summary/>
+			public static readonly SafeOID X509_NAME_VALUE = new SafeOID(6);
+			/// <summary/>
+			public static readonly SafeOID X509_NAME = new SafeOID(7);
+			/// <summary/>
+			public static readonly SafeOID X509_PUBLIC_KEY_INFO = new SafeOID(8);
+
+			//+-------------------------------------------------------------------------
+			//  Predefined X509 certificate extension data structures that can be
+			//  encoded / decoded.
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_AUTHORITY_KEY_ID = new SafeOID(9);
+			/// <summary/>
+			public static readonly SafeOID X509_KEY_ATTRIBUTES = new SafeOID(10);
+			/// <summary/>
+			public static readonly SafeOID X509_KEY_USAGE_RESTRICTION = new SafeOID(11);
+			/// <summary/>
+			public static readonly SafeOID X509_ALTERNATE_NAME = new SafeOID(12);
+			/// <summary/>
+			public static readonly SafeOID X509_BASIC_CONSTRAINTS = new SafeOID(13);
+			/// <summary/>
+			public static readonly SafeOID X509_KEY_USAGE = new SafeOID(14);
+			/// <summary/>
+			public static readonly SafeOID X509_BASIC_CONSTRAINTS2 = new SafeOID(15);
+			/// <summary/>
+			public static readonly SafeOID X509_CERT_POLICIES = new SafeOID(16);
+
+			//+-------------------------------------------------------------------------
+			//  Additional predefined data structures that can be encoded / decoded.
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID PKCS_UTC_TIME = new SafeOID(17);
+			/// <summary/>
+			public static readonly SafeOID PKCS_TIME_REQUEST = new SafeOID(18);
+			/// <summary/>
+			public static readonly SafeOID RSA_CSP_PUBLICKEYBLOB = new SafeOID(19);
+			/// <summary/>
+			public static readonly SafeOID X509_UNICODE_NAME = new SafeOID(20);
+			/// <summary/>
+			public static readonly SafeOID X509_KEYGEN_REQUEST_TO_BE_SIGNED = new SafeOID(21);
+			/// <summary/>
+			public static readonly SafeOID PKCS_ATTRIBUTE = new SafeOID(22);
+			/// <summary/>
+			public static readonly SafeOID PKCS_CONTENT_INFO_SEQUENCE_OF_ANY = new SafeOID(23);
+
+			//+-------------------------------------------------------------------------
+			//  Predefined primitive data structures that can be encoded / decoded.
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_UNICODE_NAME_VALUE = new SafeOID(24);
+			/// <summary/>
+			public static readonly SafeOID X509_ANY_STRING = X509_NAME_VALUE;
+			/// <summary/>
+			public static readonly SafeOID X509_UNICODE_ANY_STRING = X509_UNICODE_NAME_VALUE;
+			/// <summary/>
+			public static readonly SafeOID X509_OCTET_STRING = new SafeOID(25);
+			/// <summary/>
+			public static readonly SafeOID X509_BITS = new SafeOID(26);
+			/// <summary/>
+			public static readonly SafeOID X509_INTEGER = new SafeOID(27);
+			/// <summary/>
+			public static readonly SafeOID X509_MULTI_BYTE_INTEGER = new SafeOID(28);
+			/// <summary/>
+			public static readonly SafeOID X509_ENUMERATED = new SafeOID(29);
+			/// <summary/>
+			public static readonly SafeOID X509_CHOICE_OF_TIME = new SafeOID(30);
+
+			//+-------------------------------------------------------------------------
+			//  More predefined X509 certificate extension data structures that can be
+			//  encoded / decoded.
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_AUTHORITY_KEY_ID2 = new SafeOID(31);
+			/// <summary/>
+			public static readonly SafeOID X509_AUTHORITY_INFO_ACCESS = new SafeOID(32);
+			/// <summary/>
+			public static readonly SafeOID PKCS_CONTENT_INFO = new SafeOID(33);
+			/// <summary/>
+			public static readonly SafeOID X509_SEQUENCE_OF_ANY = new SafeOID(34);
+			/// <summary/>
+			public static readonly SafeOID X509_CRL_DIST_POINTS = new SafeOID(35);
+			/// <summary/>
+			public static readonly SafeOID X509_ENHANCED_KEY_USAGE = new SafeOID(36);
+			/// <summary/>
+			public static readonly SafeOID PKCS_CTL = new SafeOID(37);
+			/// <summary/>
+			public static readonly SafeOID X509_MULTI_BYTE_UINT = new SafeOID(38);
+			/// <summary/>
+			public static readonly SafeOID X509_DSS_PARAMETERS = new SafeOID(39);
+			/// <summary/>
+			public static readonly SafeOID X509_DSS_SIGNATURE = new SafeOID(40);
+			/// <summary/>
+			public static readonly SafeOID PKCS_RC2_CBC_PARAMETERS = new SafeOID(41);
+			/// <summary/>
+			public static readonly SafeOID PKCS_SMIME_CAPABILITIES = new SafeOID(42);
+			/// <summary/>
+			public static readonly SafeOID X509_SUBJECT_INFO_ACCESS = X509_AUTHORITY_INFO_ACCESS;
+			/// <summary/>
+			public static readonly SafeOID X509_CRL_REASON_CODE = X509_ENUMERATED;
+			/// <summary/>
+			public static readonly SafeOID X509_DSS_PUBLICKEY = X509_MULTI_BYTE_UINT;
+
+			// Qualified Certificate Statements Extension uses the same encode/decode
+			// function as PKCS_SMIME_CAPABILITIES. Its data structures are identical
+			// except for the names of the fields.
+			/// <summary/>
+			public static readonly SafeOID X509_QC_STATEMENTS_EXT = new SafeOID(42);
+
+			//+-------------------------------------------------------------------------
+			//  data structures for private keys
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID PKCS_RSA_PRIVATE_KEY = new SafeOID(43);
+			/// <summary/>
+			public static readonly SafeOID PKCS_PRIVATE_KEY_INFO = new SafeOID(44);
+			/// <summary/>
+			public static readonly SafeOID PKCS_ENCRYPTED_PRIVATE_KEY_INFO = new SafeOID(45);
+
+			//+-------------------------------------------------------------------------
+			//  certificate policy qualifier
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_PKIX_POLICY_QUALIFIER_USERNOTICE = new SafeOID(46);
+
+			//+-------------------------------------------------------------------------
+			//  Diffie-Hellman Key Exchange
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_DH_PUBLICKEY = X509_MULTI_BYTE_UINT;
+			/// <summary/>
+			public static readonly SafeOID X509_DH_PARAMETERS = new SafeOID(47);
+			/// <summary/>
+			public static readonly SafeOID PKCS_ATTRIBUTES = new SafeOID(48);
+			/// <summary/>
+			public static readonly SafeOID PKCS_SORTED_CTL = new SafeOID(49);
+
+			//+-------------------------------------------------------------------------
+			//  ECC Signature
+			//--------------------------------------------------------------------------
+			// Uses the same encode/decode function as X509_DH_PARAMETERS. Its data
+			// structure is identical except for the names of the fields.
+			/// <summary/>
+			public static readonly SafeOID X509_ECC_SIGNATURE = new SafeOID(47);
+
+			//+-------------------------------------------------------------------------
+			//  X942 Diffie-Hellman
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X942_DH_PARAMETERS = new SafeOID(50);
+
+			//+-------------------------------------------------------------------------
+			//  The following is the same as X509_BITS, except before encoding,
+			//  the bit length is decremented to exclude trailing zero bits.
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_BITS_WITHOUT_TRAILING_ZEROES = new SafeOID(51);
+
+			//+-------------------------------------------------------------------------
+			//  X942 Diffie-Hellman Other Info
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X942_OTHER_INFO = new SafeOID(52);
+			/// <summary/>
+			public static readonly SafeOID X509_CERT_PAIR = new SafeOID(53);
+			/// <summary/>
+			public static readonly SafeOID X509_ISSUING_DIST_POINT = new SafeOID(54);
+			/// <summary/>
+			public static readonly SafeOID X509_NAME_CONSTRAINTS = new SafeOID(55);
+			/// <summary/>
+			public static readonly SafeOID X509_POLICY_MAPPINGS = new SafeOID(56);
+			/// <summary/>
+			public static readonly SafeOID X509_POLICY_CONSTRAINTS = new SafeOID(57);
+			/// <summary/>
+			public static readonly SafeOID X509_CROSS_CERT_DIST_POINTS = new SafeOID(58);
+
+			//+-------------------------------------------------------------------------
+			//  Certificate Management Messages over CMS (CMC) Data Structures
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID CMC_DATA = new SafeOID(59);
+			/// <summary/>
+			public static readonly SafeOID CMC_RESPONSE = new SafeOID(60);
+			/// <summary/>
+			public static readonly SafeOID CMC_STATUS = new SafeOID(61);
+			/// <summary/>
+			public static readonly SafeOID CMC_ADD_EXTENSIONS = new SafeOID(62);
+			/// <summary/>
+			public static readonly SafeOID CMC_ADD_ATTRIBUTES = new SafeOID(63);
+
+			//+-------------------------------------------------------------------------
+			//  Certificate Template
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_CERTIFICATE_TEMPLATE = new SafeOID(64);
+
+			//+-------------------------------------------------------------------------
+			//  Online Certificate Status Protocol (OCSP) Data Structures
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID OCSP_SIGNED_REQUEST = new SafeOID(65);
+			/// <summary/>
+			public static readonly SafeOID OCSP_REQUEST = new SafeOID(66);
+			/// <summary/>
+			public static readonly SafeOID OCSP_RESPONSE = new SafeOID(67);
+			/// <summary/>
+			public static readonly SafeOID OCSP_BASIC_SIGNED_RESPONSE = new SafeOID(68);
+			/// <summary/>
+			public static readonly SafeOID OCSP_BASIC_RESPONSE = new SafeOID(69);
+
+			//+-------------------------------------------------------------------------
+			//  Logotype and Biometric Extensions
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_LOGOTYPE_EXT = new SafeOID(70);
+			/// <summary/>
+			public static readonly SafeOID X509_BIOMETRIC_EXT = new SafeOID(71);
+			/// <summary/>
+			public static readonly SafeOID CNG_RSA_PUBLIC_KEY_BLOB = new SafeOID(72);
+			/// <summary/>
+			public static readonly SafeOID X509_OBJECT_IDENTIFIER = new SafeOID(73);
+			/// <summary/>
+			public static readonly SafeOID X509_ALGORITHM_IDENTIFIER = new SafeOID(74);
+			/// <summary/>
+			public static readonly SafeOID PKCS_RSA_SSA_PSS_PARAMETERS = new SafeOID(75);
+			/// <summary/>
+			public static readonly SafeOID PKCS_RSAES_OAEP_PARAMETERS = new SafeOID(76);
+			/// <summary/>
+			public static readonly SafeOID ECC_CMS_SHARED_INFO = new SafeOID(77);
+
+			//+-------------------------------------------------------------------------
+			//  TIMESTAMP
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID TIMESTAMP_REQUEST = new SafeOID(78);
+			/// <summary/>
+			public static readonly SafeOID TIMESTAMP_RESPONSE = new SafeOID(79);
+			/// <summary/>
+			public static readonly SafeOID TIMESTAMP_INFO = new SafeOID(80);
+
+			//+-------------------------------------------------------------------------
+			//  CertificateBundle
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_CERT_BUNDLE = new SafeOID(81);
+
+			//+-------------------------------------------------------------------------
+			//  ECC Keys
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_ECC_PRIVATE_KEY = new SafeOID(82);   // CRYPT_ECC_PRIVATE_KEY_INFO
+			/// <summary/>
+			public static readonly SafeOID CNG_RSA_PRIVATE_KEY_BLOB = new SafeOID(83);   // BCRYPT_RSAKEY_BLOB
+
+			//+-------------------------------------------------------------------------
+			//  Subject Directory Attributes extension
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_SUBJECT_DIR_ATTRS = new SafeOID(84);
+
+			//+-------------------------------------------------------------------------
+			//  Generic ECC Parameters
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID X509_ECC_PARAMETERS = new SafeOID(85);
+
+			//+-------------------------------------------------------------------------
+			//  Predefined PKCS #7 data structures that can be encoded / decoded.
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID PKCS7_SIGNER_INFO = new SafeOID(500);
+
+			//+-------------------------------------------------------------------------
+			//  Predefined PKCS #7 data structures that can be encoded / decoded.
+			//--------------------------------------------------------------------------
+			/// <summary/>
+			public static readonly SafeOID CMS_SIGNER_INFO = new SafeOID(501);
 		}
 	}
 }
