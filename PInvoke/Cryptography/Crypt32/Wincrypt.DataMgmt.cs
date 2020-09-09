@@ -5080,7 +5080,192 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "ee138918-ed7c-4980-8b18-64004a0dd7df")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptSignAndEncodeCertificate(BCrypt.BCRYPT_KEY_HANDLE hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
+		public static extern bool CryptSignAndEncodeCertificate(NCrypt.NCRYPT_KEY_HANDLE hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
+			[In] SafeOID lpszStructType, [In] IntPtr pvStructInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
+			[In, Optional] IntPtr pvHashAuxInfo, [Out] IntPtr pbEncoded, ref uint pcbEncoded);
+
+		/// <summary>
+		/// <para>
+		/// The <c>CryptSignAndEncodeCertificate</c> function encodes and signs a certificate, certificate revocation list (CRL),
+		/// certificate trust list (CTL), or certificate request.
+		/// </para>
+		/// <para>This function performs the following operations:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Calls CryptEncodeObject using lpszStructType to encode the "to be signed" information.</term>
+		/// </item>
+		/// <item>
+		/// <term>Calls CryptSignCertificate to sign this encoded information.</term>
+		/// </item>
+		/// <item>
+		/// <term>Calls CryptEncodeObject again, with lpszStructType set to X509_CERT, to further encode the resulting signed, encoded information.</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		/// <param name="hBCryptKey">
+		/// A handle of the cryptographic service provider (CSP) to do the signature. This handle is an HCRYPTPROV handle that has been
+		/// created by using the CryptAcquireContext function or an <c>NCRYPT_KEY_HANDLE</c> handle that has been created by using the
+		/// NCryptOpenKey function. New applications should always pass in a <c>NCRYPT_KEY_HANDLE</c> handle of a CNG CSP.
+		/// </param>
+		/// <param name="dwKeySpec">
+		/// <para>
+		/// Identifies the private key to use from the provider's container. This must be one of the following values. This parameter is
+		/// ignored if a CNG key is passed in the hCryptProvOrNCryptKey parameter.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AT_KEYEXCHANGE</term>
+		/// <term>Use the key exchange key.</term>
+		/// </item>
+		/// <item>
+		/// <term>AT_SIGNATURE</term>
+		/// <term>Use the digital signature key.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwCertEncodingType">
+		/// <para>Specifies the encoding type used. This can be the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>X509_ASN_ENCODING</term>
+		/// <term>Specifies X.509 certificate encoding.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpszStructType">
+		/// <para>
+		/// A pointer to a null-terminated ANSI string that contains the type of data to be encoded and signed. The following predefined
+		/// lpszStructType constants are used with encode operations.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>X509_CERT_CRL_TO_BE_SIGNED</term>
+		/// <term>pvStructInfo is the address of a CRL_INFO structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>X509_CERT_REQUEST_TO_BE_SIGNED</term>
+		/// <term>pvStructInfo is the address of a CERT_REQUEST_INFO structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>X509_CERT_TO_BE_SIGNED</term>
+		/// <term>pvStructInfo is the address of a CERT_INFO structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>X509_KEYGEN_REQUEST_TO_BE_SIGNED</term>
+		/// <term>pvStructInfo is the address of a CERT_KEYGEN_REQUEST_INFO structure.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pvStructInfo">
+		/// The address of a structure that contains the data to be signed and encoded. The format of this structure is determined by the
+		/// lpszStructType parameter.
+		/// </param>
+		/// <param name="pSignatureAlgorithm">
+		/// <para>
+		/// A pointer to a CRYPT_ALGORITHM_IDENTIFIER structure that contains the object identifier (OID) of the signature algorithm and any
+		/// additional parameters needed. This function uses the following algorithm OIDs:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>szOID_RSA_MD5RSA</term>
+		/// </item>
+		/// <item>
+		/// <term>szOID_RSA_SHA1RSA</term>
+		/// </item>
+		/// <item>
+		/// <term>szOID_X957_SHA1DSA</term>
+		/// </item>
+		/// </list>
+		/// <para>If the signature algorithm is a</para>
+		/// <para>hash</para>
+		/// <para>algorithm, the signature contains only the unencrypted hash octets. A private key is not used to encrypt the hash.</para>
+		/// <para>dwKeySpec</para>
+		/// <para>is not used and</para>
+		/// <para>hCryptProvOrNCryptKey</para>
+		/// <para>can be</para>
+		/// <para>NULL</para>
+		/// <para>if an appropriate default CSP can be used for hashing.</para>
+		/// </param>
+		/// <param name="pvHashAuxInfo">Reserved. Must be <c>NULL</c>.</param>
+		/// <param name="pbEncoded">
+		/// <para>A pointer to a buffer to receive the signed and encoded output.</para>
+		/// <para>
+		/// This parameter can be <c>NULL</c> to set the size of this information for memory allocation purposes. For more information, see
+		/// Retrieving Data of Unknown Length.
+		/// </para>
+		/// </param>
+		/// <param name="pcbEncoded">
+		/// <para>
+		/// A pointer to a <c>DWORD</c> that contains the size, in bytes, of the buffer pointed to by the pbEncoded parameter. When the
+		/// function returns, the <c>DWORD</c> contains the number of bytes stored or to be stored in the buffer.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When processing the data returned in the buffer, applications need to use the actual size of the data returned. The
+		/// actual size can be slightly smaller than the size of the buffer specified on input. (On input, buffer sizes are usually
+		/// specified large enough to ensure that the largest possible output data will fit in the buffer.) On output, the variable pointed
+		/// to by this parameter is updated to reflect the actual size of the data copied to the buffer.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero ( <c>TRUE</c>).</para>
+		/// <para>If the function fails, the return value is zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
+		/// <para>
+		/// <c>Note</c> Errors from the called functions CryptCreateHash, CryptSignHash and CryptHashData might be propagated to this function.
+		/// </para>
+		/// <para>Possible error codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>
+		/// If the buffer specified by the pbEncoded parameter is not large enough to hold the returned data, the function sets the
+		/// ERROR_MORE_DATA code and stores the required buffer size, in bytes, into the variable pointed to by pcbEncoded.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_FILE_NOT_FOUND</term>
+		/// <term>Invalid certificate encoding type. Currently only X509_ASN_ENCODING is supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_BAD_ALGID</term>
+		/// <term>The signature algorithm's OID does not map to a known or supported hash algorithm.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_E_BAD_ENCODE</term>
+		/// <term>
+		/// An error was encountered while encoding or decoding. The most likely cause of this error is the improper initialization of the
+		/// fields in the structure pointed to by pvStructInfo.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the function fails, GetLastError may return an Abstract Syntax Notation One (ASN.1) encoding/decoding error. For information
+		/// about these errors, see ASN.1 Encoding/Decoding Return Values.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptsignandencodecertificate BOOL
+		// CryptSignAndEncodeCertificate( BCRYPT_KEY_HANDLE hBCryptKey, DWORD dwKeySpec, DWORD dwCertEncodingType, LPCSTR lpszStructType,
+		// const void *pvStructInfo, PCRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, const void *pvHashAuxInfo, BYTE *pbEncoded, DWORD
+		// *pcbEncoded );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "ee138918-ed7c-4980-8b18-64004a0dd7df")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptSignAndEncodeCertificate(HCRYPTPROV hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
 			[In] SafeOID lpszStructType, [In] IntPtr pvStructInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
 			[In, Optional] IntPtr pvHashAuxInfo, [Out] IntPtr pbEncoded, ref uint pcbEncoded);
 
@@ -5194,7 +5379,121 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "27578149-e5c0-47e5-8309-0d0ed7075d13")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptSignCertificate(BCrypt.BCRYPT_KEY_HANDLE hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
+		public static extern bool CryptSignCertificate(NCrypt.NCRYPT_KEY_HANDLE hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
+			[In] IntPtr pbEncodedToBeSigned, uint cbEncodedToBeSigned, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, [In, Optional] IntPtr pvHashAuxInfo,
+			[Out] IntPtr pbSignature, ref uint pcbSignature);
+
+		/// <summary>The <c>CryptSignCertificate</c> function signs the "to be signed" information in the encoded signed content.</summary>
+		/// <param name="hBCryptKey">
+		/// Handle of the CSP that does the signature. This handle must be an HCRYPTPROV handle that has been created by using the
+		/// CryptAcquireContext function or an <c>NCRYPT_KEY_HANDLE</c> handle that has been created by using the NCryptOpenKey function.
+		/// New applications should always pass in the <c>NCRYPT_KEY_HANDLE</c> handle of a CNG CSP.
+		/// </param>
+		/// <param name="dwKeySpec">
+		/// Identifies the private key to use from the provider's container. It can be AT_KEYEXCHANGE or AT_SIGNATURE. This parameter is
+		/// ignored if an <c>NCRYPT_KEY_HANDLE</c> is used in the hCryptProvOrNCryptKey parameter.
+		/// </param>
+		/// <param name="dwCertEncodingType">
+		/// <para>
+		/// Specifies the encoding type used. It is always acceptable to specify both the certificate and message encoding types by
+		/// combining them with a bitwise- <c>OR</c> operation as shown in the following example:
+		/// </para>
+		/// <para>X509_ASN_ENCODING | PKCS_7_ASN_ENCODING</para>
+		/// <para>Currently defined encoding types are:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>X509_ASN_ENCODING</term>
+		/// </item>
+		/// <item>
+		/// <term>PKCS_7_ASN_ENCODING</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbEncodedToBeSigned">A pointer to the encoded content to be signed.</param>
+		/// <param name="cbEncodedToBeSigned">The size, in bytes, of the encoded content, pbEncodedToBeSigned.</param>
+		/// <param name="pSignatureAlgorithm">
+		/// <para>A pointer to a CRYPT_ALGORITHM_IDENTIFIER structure with a <c>pszObjId</c> member set to one of the following:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>szOID_RSA_MD5RSA</term>
+		/// </item>
+		/// <item>
+		/// <term>szOID_RSA_SHA1RSA</term>
+		/// </item>
+		/// <item>
+		/// <term>szOID_X957_SHA1DSA</term>
+		/// </item>
+		/// <item>
+		/// <term>szOID_RSA_SSA_PSS</term>
+		/// </item>
+		/// <item>
+		/// <term>szOID_ECDSA_SPECIFIED</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the signature algorithm is a hash algorithm, the signature contains only the un-encrypted hash octets. A private key is not
+		/// used to encrypt the hash.
+		/// </para>
+		/// <para>dwKeySpec</para>
+		/// <para>is not used and</para>
+		/// <para>hCryptProvOrNCryptKey</para>
+		/// <para>can be</para>
+		/// <para>NULL</para>
+		/// <para>if an appropriate default CSP can be used for hashing.</para>
+		/// </param>
+		/// <param name="pvHashAuxInfo">Not currently used. Must be <c>NULL</c>.</param>
+		/// <param name="pbSignature">
+		/// <para>A pointer to a buffer to receive the signed hash of the content.</para>
+		/// <para>
+		/// This parameter can be <c>NULL</c> to set the size of this information for memory allocation purposes. For more information, see
+		/// Retrieving Data of Unknown Length.
+		/// </para>
+		/// </param>
+		/// <param name="pcbSignature">
+		/// <para>
+		/// A pointer to a <c>DWORD</c> that contains the size, in bytes, of the buffer pointed to by the pbSignature parameter. When the
+		/// function returns, the <c>DWORD</c> contains the number of bytes stored or to be stored in the buffer.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When processing the data returned in the buffer, applications must use the actual size of the data returned. The
+		/// actual size can be slightly smaller than the size of the buffer specified on input. (On input, buffer sizes are usually
+		/// specified large enough to ensure that the largest possible output data will fit in the buffer.) On output, the variable pointed
+		/// to by this parameter is updated to reflect the actual size of the data copied to the buffer.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero ( <c>TRUE</c>).</para>
+		/// <para>If the function fails, the return value is zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
+		/// <para>
+		/// <c>Note</c> Errors from the called functions CryptCreateHash, CryptSignHash and CryptHashData might be propagated to this function.
+		/// </para>
+		/// <para>This function has the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>
+		/// If the buffer specified by the pbSignature parameter is not large enough to hold the returned data, the function sets the
+		/// ERROR_MORE_DATA code, and stores the required buffer size, in bytes, into the variable pointed to by pcbSignature.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_BAD_ALGID</term>
+		/// <term>The signature algorithm's object identifier (OID) does not map to a known or supported hash algorithm.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptsigncertificate BOOL CryptSignCertificate(
+		// BCRYPT_KEY_HANDLE hBCryptKey, DWORD dwKeySpec, DWORD dwCertEncodingType, const BYTE *pbEncodedToBeSigned, DWORD
+		// cbEncodedToBeSigned, PCRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, const void *pvHashAuxInfo, BYTE *pbSignature, DWORD
+		// *pcbSignature );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "27578149-e5c0-47e5-8309-0d0ed7075d13")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptSignCertificate(HCRYPTPROV hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
 			[In] IntPtr pbEncodedToBeSigned, uint cbEncodedToBeSigned, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, [In, Optional] IntPtr pvHashAuxInfo,
 			[Out] IntPtr pbSignature, ref uint pcbSignature);
 
@@ -5901,6 +6200,9 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCRYPTKEY"/> that is disposed using <see cref="CryptDestroyKey"/>.</summary>
 		public class SafeHCRYPTKEY : SafeHANDLE
 		{
+			/// <summary>Represents a NULL handle for <see cref="SafeHCRYPTKEY"/>. This must be used instead of <see langword="null"/>.</summary>
+			public static readonly SafeHCRYPTKEY Null = new SafeHCRYPTKEY(IntPtr.Zero, false);
+
 			/// <summary>Initializes a new instance of the <see cref="SafeHCRYPTKEY"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
