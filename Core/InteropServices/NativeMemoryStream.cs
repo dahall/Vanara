@@ -279,6 +279,24 @@ namespace Vanara.InteropServices
 			return p != IntPtr.Zero ? (T?)(T)p.Convert((uint)Capacity - (uint)Position, typeof(T), CharSet.Auto) : null;
 		}
 
+		/// <summary>Copies a specified number of bytes from the stream to a memory location.</summary>
+		/// <param name="ptr">
+		/// The pointer to the memory location that will recieve the bytes. The caller must ensure that sufficient memory has been allocated
+		/// to this pointer.
+		/// </param>
+		/// <param name="bytesToRead">The number of bytes to read.</param>
+		public void ReadToPtr(IntPtr ptr, long bytesToRead)
+		{
+			if (ptr == IntPtr.Zero) throw new ArgumentNullException(nameof(ptr));
+			if (bytesToRead < 0) throw new ArgumentOutOfRangeException(nameof(bytesToRead));
+			ThrowIfDisposed();
+			if (!CanRead) throw new NotSupportedException();
+			if (bytesToRead == 0) return;
+			if (Position + bytesToRead > Capacity) throw new ArgumentOutOfRangeException(nameof(bytesToRead));
+			PositionPtr.CopyTo(ptr, bytesToRead);
+			Position = position + bytesToRead;
+		}
+
 		/// <summary>Sets the position within the current stream.</summary>
 		/// <param name="offset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
 		/// <param name="origin">
@@ -388,6 +406,24 @@ namespace Vanara.InteropServices
 				foreach (var s in items)
 					WriteReference(s);
 			}
+		}
+
+		/// <summary>Writes bytes from a memory location into the stream.</summary>
+		/// <param name="ptr">
+		/// The pointer to the memory location from which to retrieve the bytes to write. The caller must ensure that this memory location
+		/// has at least <paramref name="bytesToWrite"/> of allocated memory.
+		/// </param>
+		/// <param name="bytesToWrite">The number of bytes to write from <paramref name="ptr"/>.</param>
+		public void WriteFromPtr(IntPtr ptr, long bytesToWrite)
+		{
+			if (ptr == IntPtr.Zero) throw new ArgumentNullException(nameof(ptr));
+			if (bytesToWrite < 0) throw new ArgumentOutOfRangeException(nameof(bytesToWrite));
+			ThrowIfDisposed();
+			if (access == FileAccess.Read) throw new NotSupportedException();
+			EnsureCapacity(Position + bytesToWrite);
+			ptr.CopyTo(PositionPtr, bytesToWrite);
+			position += bytesToWrite;
+			length += bytesToWrite;
 		}
 
 		/// <summary>Writes the specified value into the stream. This function should fail if the object cannot be blitted.</summary>
