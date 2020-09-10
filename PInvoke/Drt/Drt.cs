@@ -2345,10 +2345,10 @@ namespace Vanara.PInvoke
 		public class SafeDRT_DATA : IDisposable
 		{
 			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
-			private uint cb;
+			public readonly uint cb;
 
 			/// <summary>A pointer to the data buffer.</summary>
-			private IntPtr pb;
+			public readonly IntPtr pb;
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class.</summary>
 			/// <param name="size">The size, in bytes, to allocate.</param>
@@ -2386,6 +2386,11 @@ namespace Vanara.PInvoke
 				pb = IntPtr.Zero;
 				cb = 0;
 			}
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeDRT_DATA"/> to <see cref="DRT_DATA"/>.</summary>
+			/// <param name="safeData">The safe data.</param>
+			/// <returns>The resulting <see cref="DRT_DATA"/> instance from the conversion.</returns>
+			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) => new DRT_DATA { cb = safeData.cb, pb = safeData.pb };
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 			/// <typeparam name="T">Native type</typeparam>
