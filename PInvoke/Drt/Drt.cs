@@ -2345,23 +2345,23 @@ namespace Vanara.PInvoke
 		public class SafeDRT_DATA : IDisposable
 		{
 			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
-			public readonly uint cb;
+			private uint _cb;
 
 			/// <summary>A pointer to the data buffer.</summary>
-			public readonly IntPtr pb;
+			private IntPtr _pb;
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class.</summary>
 			/// <param name="size">The size, in bytes, to allocate.</param>
 			public SafeDRT_DATA(int size)
 			{
-				cb = (uint)size;
+				_cb = (uint)size;
 				if (size > 0)
-					pb = MemMethods.AllocMem(size);
+					_pb = MemMethods.AllocMem(size);
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class.</summary>
 			/// <param name="bytes">The bytes to copy into the blob.</param>
-			public SafeDRT_DATA(byte[] bytes) : this(bytes?.Length ?? 0) => Marshal.Copy(bytes, 0, pb, bytes.Length);
+			public SafeDRT_DATA(byte[] bytes) : this(bytes?.Length ?? 0) => Marshal.Copy(bytes, 0, _pb, bytes.Length);
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class with a string.</summary>
 			/// <param name="value">The string value.</param>
@@ -2372,9 +2372,15 @@ namespace Vanara.PInvoke
 
 			private SafeDRT_DATA(IntPtr handle, int size)
 			{
-				pb = handle;
-				cb = (uint)size;
+				_pb = handle;
+				_cb = (uint)size;
 			}
+
+			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
+			public uint cb => _cb;
+
+			/// <summary>A pointer to the data buffer.</summary>
+			public IntPtr pb => _pb;
 
 			/// <summary>Represents an empty instance of a blob.</summary>
 			public static readonly SafeDRT_DATA Empty = new SafeDRT_DATA(IntPtr.Zero, 0);
@@ -2382,15 +2388,15 @@ namespace Vanara.PInvoke
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			public void Dispose()
 			{
-				MemMethods.FreeMem(pb);
-				pb = IntPtr.Zero;
-				cb = 0;
+				MemMethods.FreeMem(_pb);
+				_pb = IntPtr.Zero;
+				_cb = 0;
 			}
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeDRT_DATA"/> to <see cref="DRT_DATA"/>.</summary>
 			/// <param name="safeData">The safe data.</param>
 			/// <returns>The resulting <see cref="DRT_DATA"/> instance from the conversion.</returns>
-			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) => new DRT_DATA { cb = safeData.cb, pb = safeData.pb };
+			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) => new DRT_DATA { cb = safeData._cb, pb = safeData._pb };
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 			/// <typeparam name="T">Native type</typeparam>
