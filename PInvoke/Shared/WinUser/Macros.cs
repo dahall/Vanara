@@ -5,6 +5,21 @@ namespace Vanara.PInvoke
 	/// <summary>Platform invokable enumerated types, constants and functions from windows.h</summary>
 	public static partial class Macros
 	{
+		/// <summary>Aligns a number to the neighboring multiple.</summary>
+		/// <param name="value">The value to align.</param>
+		/// <param name="pow2">A number that is a power of 2 (e.g. 2, 4, 8, 16, ...).</param>
+		/// <returns>
+		/// A value that is aligned to the next multiple of <paramref name="pow2"/>. This value may be the same as <paramref name="value"/>.
+		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException">pow2 - Parameter must be a power of 2.</exception>
+		public static long ALIGN_TO_MULTIPLE(long value, int pow2)
+		{
+			// Ensure pow2 is a power of 2
+			if (pow2 == 0 || (pow2 & (pow2 - 1)) != 0)
+				throw new ArgumentOutOfRangeException(nameof(pow2), "Parameter must be a power of 2.");
+			return (value + pow2 - 1) & (~((long)pow2 - 1));
+		}
+
 		/// <summary>Retrieves the signed x-coordinate from the specified <c>LPARAM</c> value.</summary>
 		/// <param name="lp">The value to be converted.</param>
 		/// <returns>The signed x-coordinate.</returns>

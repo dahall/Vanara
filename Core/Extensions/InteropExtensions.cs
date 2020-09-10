@@ -16,6 +16,13 @@ namespace Vanara.Extensions
 	/// <summary>Extension methods for System.Runtime.InteropServices.</summary>
 	public static partial class InteropExtensions
 	{
+		/// <summary>
+		/// Aligns the specified pointer to an adjacent memory location that can be accessed by a adding a constant and its multiples.
+		/// </summary>
+		/// <param name="ptr">The pointer to align.</param>
+		/// <returns>The aligned pointer. This value may be the same as <paramref name="ptr"/>.</returns>
+		public static IntPtr Align(this IntPtr ptr) => new IntPtr((ptr.ToInt64() + IntPtr.Size - 1) & (~(((long)IntPtr.Size) - 1)));
+
 #if ALLOWSPAN
 		/// <summary>Returns the pointer as a <see cref="ReadOnlySpan{T}"/>.</summary>
 		/// <typeparam name="T">The type of items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
