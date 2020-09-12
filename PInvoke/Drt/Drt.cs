@@ -93,11 +93,11 @@ namespace Vanara.PInvoke
 		/// bootstrap resolver.
 		/// </summary>
 		/// <param name="pvContext">Contains the <c>pvContext</c> value from <c>DRT_BOOTSTRAP_PROVIDER</c>.</param>
-		/// <param name="pAddressList">Pointer to the list of addresses to register with the bootstrapping mechanism.</param>
+		/// <param name="pAddressList">Pointer to <see cref="SOCKET_ADDRESS_LIST"/> containing the list of addresses to register with the bootstrapping mechanism.</param>
 		/// <returns></returns>
 		[PInvokeData("drt.h", MSDNShortId = "NS:drt.drt_bootstrap_provider_tag")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate HRESULT DRT_BOOTSTRAP_PROVIDER_Register([In] IntPtr pvContext, [In, MarshalAs(UnmanagedType.LPArray)] SOCKET_ADDRESS_LIST[] pAddressList);
+		public delegate HRESULT DRT_BOOTSTRAP_PROVIDER_Register([In] IntPtr pvContext, [In] IntPtr pAddressList);
 
 		/// <summary>
 		/// This function deregisters an endpoint with the bootstrapping mechanism. As a result, other nodes will be unable to find the
@@ -111,7 +111,7 @@ namespace Vanara.PInvoke
 		/// <summary>Callback for some DRT functions.</summary>
 		/// <param name="hr">The error.</param>
 		/// <param name="pvContext">Contains the <c>pvContext</c> value from <c>DRT_BOOTSTRAP_PROVIDER</c>.</param>
-		/// <param name="pAddresses">Pointer to the list of addresses to register with the bootstrapping mechanism.</param>
+		/// <param name="pAddresses">Pointer to <see cref="SOCKET_ADDRESS_LIST"/> containing the list of addresses to register with the bootstrapping mechanism.</param>
 		/// <param name="fFatalError">
 		/// If the bootstrap provider encounters an irrecoverable error, this parameter must be set to <c>TRUE</c> when the function
 		/// complete in order for the DRT to transition to the faulted state. The <c>HRESULT</c> that is made available to the higher layer
@@ -121,7 +121,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[PInvokeData("drt.h", MSDNShortId = "NS:drt.drt_bootstrap_provider_tag")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void DRT_BOOTSTRAP_RESOLVE_CALLBACK(HRESULT hr, IntPtr pvContext, [In, MarshalAs(UnmanagedType.LPArray)] SOCKET_ADDRESS_LIST[] pAddresses, [MarshalAs(UnmanagedType.Bool)] BOOL fFatalError);
+		public delegate void DRT_BOOTSTRAP_RESOLVE_CALLBACK(HRESULT hr, IntPtr pvContext, [In] IntPtr pAddresses, [MarshalAs(UnmanagedType.Bool)] BOOL fFatalError);
 
 		/// <summary>Increments the count of references for the Security Provider with a set of DRTs.</summary>
 		/// <param name="pvContext">Pointer to the value held by the <c>pvContext</c> member of <c>DRT_SECURITY_PROVIDER</c>.</param>
@@ -296,7 +296,7 @@ namespace Vanara.PInvoke
 		public unsafe delegate HRESULT DRT_SECURITY_PROVIDER_ValidateAndUnpackPayload([In] IntPtr pvContext, in DRT_DATA pSecuredAddressPayload, [In, Optional] DRT_DATA* pCertChain,
 			[In, Optional] DRT_DATA* pClassifier, [In, Optional] DRT_DATA* pNonce, [In, Optional] DRT_DATA* pSecuredPayload,
 			[Out] byte* pbProtocolMajor, [Out] byte* pbProtocolMinor, out DRT_DATA pKey, [Out, Optional] DRT_DATA* pPayload,
-			[Out] CERT_PUBLIC_KEY_INFO** ppPublicKey, [Out, Optional] IntPtr ppAddressList, out uint pdwFlags);
+			[Out] CERT_PUBLIC_KEY_INFO** ppPublicKey, [Out, Optional] void** ppAddressList, out uint pdwFlags);
 
 		/// <summary>Called when the DRT must validate a credential provided by a peer node.</summary>
 		/// <param name="pvContext">Pointer to the value held by the <c>pvContext</c> member of <c>DRT_SECURITY_PROVIDER</c>.</param>
