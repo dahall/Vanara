@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
@@ -154,6 +155,12 @@ namespace Vanara.PInvoke
 			/// <summary>The scope level count.</summary>
 			ScopeLevelCount = 16
 		}
+
+		/// <summary>Gets the size, in bytes, of a <see cref="SOCKET_ADDRESS_LIST"/> given a number of address.</summary>
+		/// <param name="AddressCount">The address count.</param>
+		/// <returns>The size, in bytes, required to hold the structure. This does not include allocation for the addresses pointed to by each <see cref="SOCKET_ADDRESS"/>.</returns>
+		[PInvokeData("ws2def.h")]
+		public static SizeT SIZEOF_SOCKET_ADDRESS_LIST(SizeT AddressCount) => Marshal.OffsetOf(typeof(SOCKET_ADDRESS_LIST), "Address").ToInt32() + Marshal.SizeOf(typeof(SOCKET_ADDRESS)) * AddressCount;
 
 		/// <summary>
 		/// The addrinfoex2 structure is used by the GetAddrInfoEx function to hold host address information when both a canonical name and
@@ -1328,6 +1335,11 @@ namespace Vanara.PInvoke
 			/// <returns>The resulting <see cref="SOCKADDR_IN"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR_IN(IN_ADDR addr) => new SOCKADDR_IN(addr);
 
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR_IN6"/>.</summary>
+			/// <param name="ipv4">The ipv4 address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_IN6(SOCKADDR_IN ipv4) => new SOCKADDR_IN6(ipv4);
+
 			/// <summary>Converts to string.</summary>
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString() => $"{sin_addr}:{sin_port}";
@@ -1469,6 +1481,31 @@ namespace Vanara.PInvoke
 			/// <summary>A variable-sized array of SOCKET_ADDRESS structures. The SOCKET_ADDRESS structure is defined as follows:</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public SOCKET_ADDRESS[] Address;
+
+			/// <summary>Packs this instance into a single memory block so that it can be passed as a pointer to other API methods.</summary>
+			/// <returns>
+			/// A <see cref="SafeCoTaskMemStruct{T}"/> instance that contains this structure and all memeroy assigned to its <see
+			/// cref="Address"/> elements.
+			/// </returns>
+			public SafeCoTaskMemStruct<SOCKET_ADDRESS_LIST> Pack()
+			{
+				var addrOffset = Marshal.OffsetOf(typeof(SOCKET_ADDRESS_LIST), "Address").ToInt32();
+				var eosOffset = addrOffset + iAddressCount * Marshal.SizeOf(typeof(SOCKET_ADDRESS));
+				var cbAddressList = eosOffset + Address.Sum(a => a.iSockaddrLength);
+
+				var addressList = new SafeCoTaskMemStruct<SOCKET_ADDRESS_LIST>(cbAddressList);
+				((IntPtr)addressList).Write(iAddressCount);
+				var newAddr = new SOCKET_ADDRESS[iAddressCount];
+				var ptr = ((IntPtr)addressList).Offset(eosOffset);
+				for (int i = 0; i < iAddressCount; i++)
+				{
+					newAddr[i] = new SOCKET_ADDRESS { iSockaddrLength = Address[i].iSockaddrLength, lpSockaddr = ptr };
+					Address[i].lpSockaddr.CopyTo(ptr, Address[i].iSockaddrLength);
+					ptr = ptr.Offset(Address[i].iSockaddrLength);
+				}
+				((IntPtr)addressList).Write(newAddr, addrOffset);
+				return addressList;
+			}
 		}
 
 		/// <summary>

@@ -4463,7 +4463,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(WSAEVENT h1, WSAEVENT h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is WSAEVENT h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is WSAEVENT h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();

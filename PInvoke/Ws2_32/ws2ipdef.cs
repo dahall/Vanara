@@ -343,6 +343,10 @@ namespace Vanara.PInvoke
 				sin6_scope_id = scope_id;
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="SOCKADDR_IN6"/> struct from a <see cref="SOCKADDR_IN"/>.</summary>
+			/// <param name="v4">The IPv4 socket address.</param>
+			public SOCKADDR_IN6(SOCKADDR_IN v4) : this(new IN6_ADDR(v4.sin_addr), 0, v4.sin_port) { }
+
 			/// <summary>Performs an implicit conversion from <see cref="IN6_ADDR"/> to <see cref="SOCKADDR_IN6"/>.</summary>
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
