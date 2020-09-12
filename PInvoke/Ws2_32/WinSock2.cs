@@ -1067,6 +1067,11 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator IN_ADDR(long a) => new IN_ADDR((uint)a);
 
+			/// <summary>Performs an explicit conversion from <see cref="IN_ADDR"/> to <see cref="IN6_ADDR"/>.</summary>
+			/// <param name="ipv4">The ipv4.</param>
+			/// <returns>The resulting <see cref="IN6_ADDR"/> instance from the conversion.</returns>
+			public static explicit operator IN6_ADDR(IN_ADDR ipv4) => new IN6_ADDR(ipv4);
+
 			/// <summary>Determines equality between this instance and <paramref name="other"/>.</summary>
 			/// <param name="other">The other value to compare.</param>
 			/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
@@ -1112,6 +1117,14 @@ namespace Vanara.PInvoke
 			{
 				lower = upper = 0;
 				bytes = v6addr;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="IN6_ADDR"/> struct from an <see cref="IN_ADDR"/>.</summary>
+			/// <param name="ipv4">The ipv4 address.</param>
+			public IN6_ADDR(IN_ADDR ipv4)
+			{
+				lower = 0;
+				upper = Macros.MAKELONG64(0xffff0000, ipv4.S_addr);
 			}
 
 			/// <summary>Gets or sets the byte array representing the IPv6 address.</summary>
@@ -1407,7 +1420,7 @@ namespace Vanara.PInvoke
 			/// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <see langword="false"/>.
 			/// </returns>
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is SOCKET h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is SOCKET h && handle == h.handle;
 
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
