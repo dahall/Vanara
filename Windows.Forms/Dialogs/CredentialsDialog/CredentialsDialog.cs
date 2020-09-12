@@ -59,10 +59,7 @@ namespace Vanara.Windows.Forms
 		/// </summary>
 		/// <value>The authentication package.</value>
 		[Browsable(false), DefaultValue(0u)]
-		public uint AuthenticationPackage
-		{
-			get => authPackage; set => authPackage = value;
-		}
+		public uint AuthenticationPackage { get => authPackage; set => authPackage = value; }
 
 		/// <summary><c>Windows XP and earlier:</c> Gets or sets the image to display as the banner for the dialog.</summary>
 		[DefaultValue(null), Category("Appearance"), Description("Image to display in dialog banner")]
@@ -94,14 +91,14 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Gets or sets a boolean indicating if the save check box was checked</summary>
 		[DefaultValue(false), Category("Behavior"), Description("Indicates if the save check box is checked.")]
-		public bool SaveChecked
-		{
-			get => saveChecked; set => saveChecked = value;
-		}
+		public bool SaveChecked { get => saveChecked; set => saveChecked = value; }
 
 		/// <summary>Gets the password entered by the user using an encrypted string</summary>
 		[DefaultValue(null), Browsable(false)]
 		public SecureString SecurePassword { get; private set; }
+
+		/// <summary>Gets or sets a value that determines if the combo box is populated with local administrators only.</summary>
+		public bool ShowAdminsOnly { get; set; }
 
 		/// <summary>Gets or sets a boolean indicating if the save check box should be shown.</summary>
 		[DefaultValue(false), Category("Behavior"), Description("Indicates if the save check box is shown.")]
@@ -175,6 +172,24 @@ namespace Vanara.Windows.Forms
 			EncryptPassword = ForcePreVistaUI = SaveChecked = ShowSaveCheckBox = false;
 		}
 
+		/// <summary>Gets the flags to use in <see cref="CredUIPromptForWindowsCredentials"/>.</summary>
+		/// <returns>The flags based on current properties.</returns>
+		protected virtual WindowsCredentialsDialogOptions GetDialogFlags()
+		{
+			return WindowsCredentialsDialogOptions.CREDUIWIN_GENERIC |
+				(ShowAdminsOnly ? WindowsCredentialsDialogOptions.CREDUIWIN_ENUMERATE_ADMINS : 0) |
+				(ShowSaveCheckBox ? WindowsCredentialsDialogOptions.CREDUIWIN_CHECKBOX : 0);
+		}
+
+		/// <summary>Gets the flags to use in <see cref="CredUIPromptForCredentials"/>.</summary>
+		/// <returns>The flags based on current properties.</returns>
+		protected virtual CredentialsDialogOptions GetPreVistaDialogFlags()
+		{
+			return CredentialsDialogOptions.CREDUI_FLAGS_DEFAULT |
+				(ShowAdminsOnly ? CredentialsDialogOptions.CREDUI_FLAGS_REQUEST_ADMINISTRATOR : 0) |
+				(ShowSaveCheckBox ? CredentialsDialogOptions.CREDUI_FLAGS_SHOW_SAVE_CHECK_BOX : 0);
+		}
+
 		/// <summary>When overridden in a derived class, specifies a common dialog box.</summary>
 		/// <param name="parentWindowHandle">A value that represents the window handle of the owner window for the common dialog box.</param>
 		/// <returns>true if the dialog box was successfully run; otherwise, false.</returns>
@@ -189,9 +204,8 @@ namespace Vanara.Windows.Forms
 					var password = new StringBuilder(CREDUI_MAX_PASSWORD_LENGTH);
 
 					if (string.IsNullOrEmpty(Target)) Target = DefaultTarget;
-					var ret = CredUIPromptForCredentials(info, Target, IntPtr.Zero,
-						unchecked((uint)AuthenticationError), userName, CREDUI_MAX_USERNAME_LENGTH, password, CREDUI_MAX_PASSWORD_LENGTH, ref saveChecked,
-						CredentialsDialogOptions.CREDUI_FLAGS_DEFAULT | (ShowSaveCheckBox ? CredentialsDialogOptions.CREDUI_FLAGS_SHOW_SAVE_CHECK_BOX : 0));
+					var ret = CredUIPromptForCredentials(info, Target, IntPtr.Zero, unchecked((uint)AuthenticationError), userName, CREDUI_MAX_USERNAME_LENGTH,
+						password, CREDUI_MAX_PASSWORD_LENGTH, ref saveChecked, GetPreVistaDialogFlags());
 					if (ret == Win32Error.ERROR_CANCELLED)
 						return false;
 					if (ret != Win32Error.ERROR_SUCCESS)
@@ -234,34 +248,28 @@ namespace Vanara.Windows.Forms
 				}
 				else
 				{
-					var flag = WindowsCredentialsDialogOptions.CREDUIWIN_GENERIC;
-					if (ShowSaveCheckBox)
-						flag |= WindowsCredentialsDialogOptions.CREDUIWIN_CHECKBOX;
-
 					using (var buf = EncryptPassword && SecurePassword != null ? new AuthenticationBuffer(UserName.ToSecureString(), SecurePassword)
 						: new AuthenticationBuffer(UserName, Password))
 					{
-						var retVal = CredUIPromptForWindowsCredentials(info, 0, ref authPackage, buf, (uint)buf.Size, out var outAuthBuffer, out var outAuthBufferSize, ref saveChecked, flag);
+						var retVal = CredUIPromptForWindowsCredentials(info, 0, ref authPackage, buf, (uint)buf.Size, out var outAuthBuffer, out var outAuthBufferSize, ref saveChecked, GetDialogFlags());
 						if (retVal == Win32Error.ERROR_CANCELLED)
 							return false;
 						retVal.ThrowIfFailed();
 
-						using (var outAuth = new AuthenticationBuffer(outAuthBuffer, (int)outAuthBufferSize))
+						using var outAuth = new AuthenticationBuffer(outAuthBuffer, (int)outAuthBufferSize);
+						if (EncryptPassword)
 						{
-							if (EncryptPassword)
-							{
-								outAuth.UnPack(true, out SecureString u, out var d, out var p);
-								Password = null;
-								SecurePassword = p;
-								UserName = d?.Length > 0 ? $"{d.ToInsecureString()}\\{u.ToInsecureString()}" : u.ToInsecureString();
-							}
-							else
-							{
-								outAuth.UnPack(true, out string u, out var d, out var p);
-								Password = p;
-								SecurePassword = null;
-								UserName = string.IsNullOrEmpty(d) ? u : $"{d}\\{u}";
-							}
+							outAuth.UnPack(true, out SecureString u, out var d, out var p);
+							Password = null;
+							SecurePassword = p;
+							UserName = d?.Length > 0 ? $"{d.ToInsecureString()}\\{u.ToInsecureString()}" : u.ToInsecureString();
+						}
+						else
+						{
+							outAuth.UnPack(true, out string u, out var d, out var p);
+							Password = p;
+							SecurePassword = null;
+							UserName = string.IsNullOrEmpty(d) ? u : $"{d}\\{u}";
 						}
 					}
 					if (ValidatePassword != null)
