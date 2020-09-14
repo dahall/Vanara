@@ -785,11 +785,11 @@ namespace Vanara.PInvoke
 				if (0 != FormatMessage(flags, default, id, 0, buf, (uint)buf.Capacity, default))
 					return buf.ToString();
 				var lastError = Win32Error.GetLastError();
-				if (lastError == Win32Error.ERROR_MR_MID_NOT_FOUND)
+				if (lastError == Win32Error.ERROR_MR_MID_NOT_FOUND || lastError == Win32Error.ERROR_MUI_FILE_NOT_FOUND)
 					break;
 				if (lastError != Win32Error.ERROR_INSUFFICIENT_BUFFER)
 					lastError.ThrowIfFailed();
-				buf.Capacity = buf.Capacity * 2;
+				buf.Capacity *= 2;
 			} while (true && buf.Capacity < 1024 * 16); // Don't go crazy
 			return string.Empty;
 		}
