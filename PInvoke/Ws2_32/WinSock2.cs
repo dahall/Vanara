@@ -2292,7 +2292,7 @@ namespace Vanara.PInvoke
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
 			/// <exception cref="InvalidCastException"></exception>
-			public static explicit operator SOCKADDR_IN6(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET6 ? addr.handle.ToStructure<SOCKADDR_IN6>() : throw new InvalidCastException();
+			public static explicit operator SOCKADDR_IN6(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET6 ? addr.handle.ToStructure<SOCKADDR_IN6>() : (SOCKADDR_IN6)(SOCKADDR_IN)addr;
 
 			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR"/>.</summary>
 			/// <param name="addr">The address.</param>
