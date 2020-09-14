@@ -3288,18 +3288,14 @@ namespace Vanara.PInvoke
 			internal static IntPtr MarshalValue(string value)
 			{
 				if (value is null) return IntPtr.Zero;
-				var length = (short)StringHelper.GetByteCount(value, false, CharSet.Unicode);
+				var lus = new LSA_UNICODE_STRING { length = (ushort)StringHelper.GetByteCount(value, false, CharSet.Unicode) };
 				var chSz = StringHelper.GetCharSize(CharSet.Unicode);
-				var maxLength = (short)(length + chSz);
-				var sz = 4 + IntPtr.Size + length + chSz;
-				var mem = Marshal.AllocCoTaskMem(sz);
-				using (var s = new NativeMemoryStream(mem, sz, System.IO.FileAccess.Write) { CharSet = CharSet.Unicode })
-				{
-					s.Write(length);
-					s.Write(maxLength);
-					s.WriteReference(value);
-					s.Flush();
-				}
+				lus.MaximumLength = (ushort)(lus.length + chSz);
+				var ssz = Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
+				var mem = Marshal.AllocCoTaskMem(ssz + lus.MaximumLength);
+				lus.Buffer = mem.Offset(ssz);
+				mem.Write(lus);
+				StringHelper.Write(value, mem.Offset(ssz), out _, true, CharSet.Unicode, lus.MaximumLength);
 				return mem;
 			}
 		}
