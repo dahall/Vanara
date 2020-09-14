@@ -159,6 +159,14 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void LsaOpenPolicyRemoteTest()
+		{
+			var stat = LsaOpenPolicy(TestCaseSources.GetValueOrDefault("RemoteComputer"), LSA_OBJECT_ATTRIBUTES.Empty, LsaPolicyRights.POLICY_ALL_ACCESS, out var h);
+			Assert.That(stat, ResultIs.Successful);
+			h.Dispose();
+		}
+
+		[Test]
 		public void LsaOpenTrustedDomainByNameTest()
 		{
 			Assert.That(LsaOpenTrustedDomainByName(hPol, Environment.UserDomainName, ACCESS_MASK.GENERIC_READ, out var hTD), ResultIs.FailureCode((NTStatus)NTStatus.STATUS_OBJECT_NAME_NOT_FOUND));
