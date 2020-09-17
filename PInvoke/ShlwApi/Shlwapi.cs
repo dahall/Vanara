@@ -1071,7 +1071,62 @@ namespace Vanara.PInvoke
 		// IConnectionPoint **ppcpOut );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "f0c6051e-cced-4f38-a35d-d4c184d39084")]
-		public static extern HRESULT ConnectToConnectionPoint([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riidEvent, [MarshalAs(UnmanagedType.Bool)] bool fConnect, [MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie, out IConnectionPoint ppcpOut);
+		public static extern HRESULT ConnectToConnectionPoint([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riidEvent,
+			[MarshalAs(UnmanagedType.Bool)] bool fConnect, [In, MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie, out IConnectionPoint ppcpOut);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP and Windows Server 2003. It might be altered or unavailable in subsequent versions
+		/// of Windows.]
+		/// </para>
+		/// <para>Establishes or terminates a connection between a client's sink and a connection point container.</para>
+		/// </summary>
+		/// <param name="punk">
+		/// <para>Type: <c>IUnknown*</c></para>
+		/// <para>
+		/// A pointer to the IUnknown interface of the object to be connected to the connection point container. If you set fConnect to
+		/// <c>FALSE</c> to indicate that you are disconnecting the object, this parameter is ignored and can be set to <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="riidEvent">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>The IID of the interface on the connection point container whose connection point object is being requested.</para>
+		/// </param>
+		/// <param name="fConnect">
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> if a connection is being established; <c>FALSE</c> if a connection is being broken.</para>
+		/// </param>
+		/// <param name="punkTarget">
+		/// <para>Type: <c>IUnknown*</c></para>
+		/// <para>A pointer to the connection point container's IUnknown interface.</para>
+		/// </param>
+		/// <param name="pdwCookie">
+		/// <para>Type: <c>DWORD*</c></para>
+		/// <para>
+		/// A connection token. If you set fConnect to <c>TRUE</c> to make a new connection, this parameter receives a token that uniquely
+		/// identifies the connection. If you set fConnect to <c>FALSE</c> to break a connection, this parameter must point to the token that
+		/// you received when you called <c>ConnectToConnectionPoint</c> to establish the connection.
+		/// </para>
+		/// </param>
+		/// <param name="ppcpOut">
+		/// <para>Type: <c>IConnectionPoint**</c></para>
+		/// <para>
+		/// A pointer to the connection point container's IConnectionPoint interface, if the operation was successful. The calling
+		/// application must release this pointer when it is no longer needed. If the request is unsuccessful, the pointer receives
+		/// <c>NULL</c>. This parameter is optional and can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-connecttoconnectionpoint LWSTDAPI
+		// ConnectToConnectionPoint( IUnknown *punk, REFIID riidEvent, BOOL fConnect, IUnknown *punkTarget, DWORD *pdwCookie,
+		// IConnectionPoint **ppcpOut );
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "f0c6051e-cced-4f38-a35d-d4c184d39084")]
+		public static extern HRESULT ConnectToConnectionPoint([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riidEvent,
+			[MarshalAs(UnmanagedType.Bool)] bool fConnect, [In, MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie, IntPtr ppcpOut = default);
 
 		/// <summary>
 		/// <para>Retrieves a string used with websites when specifying language preferences.</para>
@@ -1977,7 +2032,7 @@ namespace Vanara.PInvoke
 		// *punk, IUnknown *punkSite );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "66175435-f85b-4e26-b148-f4edb74cb41d")]
-		public static extern HRESULT IUnknown_SetSite([MarshalAs(UnmanagedType.IUnknown)] object punk, [MarshalAs(UnmanagedType.IUnknown)] object punkSite);
+		public static extern HRESULT IUnknown_SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object punk, [In, MarshalAs(UnmanagedType.IUnknown)] object punkSite);
 
 		/// <summary>
 		/// <para>[This function is not available for use as of Windows 7.]</para>
