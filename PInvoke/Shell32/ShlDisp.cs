@@ -11,6 +11,7 @@ namespace Vanara.PInvoke
 	public static partial class Shell32
 	{
 		/// <summary>Specifies values used by IAutoComplete2::GetOptions and IAutoComplete2::SetOptions for options surrounding autocomplete.</summary>
+		[PInvokeData("shldisp.h")]
 		[Flags]
 		public enum AUTOCOMPLETEOPTIONS
 		{
@@ -314,41 +315,44 @@ namespace Vanara.PInvoke
 			ssfPROGRAMFILESx86 = 48,
 		}
 
-		/// <summary>Undocumented.</summary>
+		/// <summary>Constraint used in search command.</summary>
 		[ComImport, Guid("4A3DF050-23BD-11D2-939F-00A0C91EEDBA")]
 		public interface DFConstraint
 		{
-			/// <summary>Undocumented.</summary>
+			/// <summary>Get the constraint name.</summary>
 			[DispId(0x60020000)]
 			string Name { [return: MarshalAs(UnmanagedType.BStr)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020000)] get; }
 
-			/// <summary>Undocumented.</summary>
+			/// <summary>Get the constraint value.</summary>
 			[DispId(0x60020001)]
 			object Value { [return: MarshalAs(UnmanagedType.Struct)] [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)] get; }
 		}
 
-		/// <summary>Undocumented.</summary>
+		/// <summary>Event interface for ShellFolderView.</summary>
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIDispatch), Guid("62112AA2-EBE4-11CF-A5FB-0020AFE7292D"), CoClass(typeof(ShellFolderView))]
 		public interface DShellFolderViewEvents
 		{
-			/// <summary>Undocumented.</summary>
-			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(200)]
+			/// <summary>The Selection in the view changed.</summary>
+			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(DISPID.DISPID_SELECTIONCHANGED)]
 			void SelectionChanged();
 
-			/// <summary>Undocumented.</summary>
-			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0xc9)]
+			/// <summary>The folder has finished enumerating (flashlight is gone).</summary>
+			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(DISPID.DISPID_FILELISTENUMDONE)]
 			void EnumDone();
 
-			/// <summary>Undocumented.</summary>
-			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0xca)]
+			/// <summary>A verb was invoked on an items in the view (return false to cancel).</summary>
+			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(DISPID.DISPID_VERBINVOKED)]
+			[return: MarshalAs(UnmanagedType.VariantBool)]
 			bool VerbInvoked();
 
-			/// <summary>Undocumented.</summary>
-			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0xcb)]
+			/// <summary>the default verb (double click) was invoked on an items in the view (return false to cancel).</summary>
+			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(DISPID.DISPID_DEFAULTVERBINVOKED)]
+			[return: MarshalAs(UnmanagedType.VariantBool)]
 			bool DefaultVerbInvoked();
 
-			/// <summary>Undocumented.</summary>
-			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0xcc)]
+			/// <summary>user started to drag an item (return false to cancel).</summary>
+			[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(DISPID.DISPID_BEGINDRAG)]
+			[return: MarshalAs(UnmanagedType.VariantBool)]
 			bool BeginDrag();
 		}
 
@@ -6754,6 +6758,90 @@ namespace Vanara.PInvoke
 		/// <summary>An autocomplete object (CLSID_AutoComplete).</summary>
 		[ComImport, SuppressUnmanagedCodeSecurity, Guid("00BB2763-6A77-11D0-A535-00C04FD7D062"), ClassInterface(ClassInterfaceType.None)]
 		public class CAutoComplete { }
+
+		/// <summary>Define the events for shell IDispatch interfaces.</summary>
+		[PInvokeData("shldisp.h")]
+		public static class DISPID
+		{
+			/// <summary>The Selected Items Changed</summary>
+			public const int DISPID_SELECTIONCHANGED = 200;
+			/// <summary>Done enumerating the shell folder</summary>
+			public const int DISPID_FILELISTENUMDONE = 201;
+			/// <summary>A verb (either from the main or context menu) was invoked in the folder view</summary>
+			public const int DISPID_VERBINVOKED = 202;
+			/// <summary>default verb (either from the main or context menu) was invoked in the folder view</summary>
+			public const int DISPID_DEFAULTVERBINVOKED = 203;
+			/// <summary>user clicked on an item</summary>
+			public const int DISPID_BEGINDRAG = 204;
+			/// <summary>The ListViewMode Changed</summary>
+			public const int DISPID_VIEWMODECHANGED = 205;
+			/// <summary>We went from 0->some or some->0 items in the view</summary>
+			public const int DISPID_NOITEMSTATE_CHANGED = 206;
+			/// <summary>contents of the view have changed somehow</summary>
+			public const int DISPID_CONTENTSCHANGED = 207;
+			/// <summary>The Focused Item Changed</summary>
+			public const int DISPID_FOCUSCHANGED = 208;
+			/// <summary>Checkbox state changed.</summary>
+			public const int DISPID_CHECKSTATECHANGED = 209;
+			/// <summary>The order of items changed</summary>
+			public const int DISPID_ORDERCHANGED = 210;
+			/// <summary>The enumerated items have been inserted into the view and painted</summary>
+			public const int DISPID_VIEWPAINTDONE = 211;
+			/// <summary>The set of visible details columns changed</summary>
+			public const int DISPID_COLUMNSCHANGED = 212;
+			/// <summary>The mousewheel has been moved while the CTRL key was down</summary>
+			public const int DISPID_CTRLMOUSEWHEEL = 213;
+			/// <summary>Done sorting the shell folder</summary>
+			public const int DISPID_SORTDONE = 214;
+			/// <summary>The icon size changed in the view</summary>
+			public const int DISPID_ICONSIZECHANGED = 215;
+			/// <summary>The state of the folder has changed</summary>
+			public const int DISPID_FOLDERCHANGED = 217;
+			/// <summary>Some filter changed</summary>
+			public const int DISPID_FILTERINVOKED = 218;
+			/// <summary>Text in WordWheel changed</summary>
+			public const int DISPID_WORDWHEELEDITED = 219;
+			/// <summary>One of the selected items has changed (not the same as a selection change)</summary>
+			public const int DISPID_SELECTEDITEMCHANGED = 220;
+			/// <summary>Explorer window is open, been painted and is ready</summary>
+			public const int DISPID_EXPLORERWINDOWREADY = 221;
+			/// <summary>A SHCNE_UPDATEIMAGE notification was received</summary>
+			public const int DISPID_UPDATEIMAGE = 222;
+			/// <summary>Used internally by specialized views like the start menu. Not fired when the data source finishes enumeration. To detect when the data source is done enumerating, use DISPID_FILELISTENUMDONE.</summary>
+			public const int DISPID_INITIALENUMERATIONDONE = 223;
+			/// <summary>Fired when enterprise id is changed in Common File Dialog during save as</summary>
+			public const int DISPID_ENTERPRISEIDCHANGED = 224;
+			/// <summary>The user hit Enter or Return</summary>
+			public const int DISPID_ENTERPRESSED = 200;
+			/// <summary/>
+			public const int DISPID_SEARCHCOMMAND_START = 1;
+			/// <summary/>
+			public const int DISPID_SEARCHCOMMAND_COMPLETE = 2;
+			/// <summary/>
+			public const int DISPID_SEARCHCOMMAND_ABORT = 3;
+			/// <summary/>
+			public const int DISPID_SEARCHCOMMAND_UPDATE = 4;
+			/// <summary/>
+			public const int DISPID_SEARCHCOMMAND_PROGRESSTEXT = 5;
+			/// <summary/>
+			public const int DISPID_SEARCHCOMMAND_ERROR = 6;
+			/// <summary/>
+			public const int DISPID_SEARCHCOMMAND_RESTORE = 7;
+			/// <summary/>
+			public const int DISPID_IADCCTL_DIRTY = 0x100;
+			/// <summary/>
+			public const int DISPID_IADCCTL_PUBCAT = 0x101;
+			/// <summary/>
+			public const int DISPID_IADCCTL_SORT = 0x102;
+			/// <summary/>
+			public const int DISPID_IADCCTL_FORCEX86 = 0x103;
+			/// <summary/>
+			public const int DISPID_IADCCTL_SHOWPOSTSETUP = 0x104;
+			/// <summary/>
+			public const int DISPID_IADCCTL_ONDOMAIN = 0x105;
+			/// <summary/>
+			public const int DISPID_IADCCTL_DEFAULTCAT = 0x106;
+		}
 
 		/// <summary>Undocumented.</summary>
 		[ComImport, Guid("C4EE31F3-4768-11D2-BE5C-00A0C9A83DA1"), ClassInterface(ClassInterfaceType.None)]
