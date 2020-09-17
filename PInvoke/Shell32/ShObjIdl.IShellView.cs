@@ -968,7 +968,7 @@ namespace Vanara.PInvoke
 			/// <param name="uItem">The constants that refer to an aspect of the view.</param>
 			/// <param name="riid">The identifier of the COM interface being requested.</param>
 			/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
-			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)]
+			[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)]
 			object GetItemObject([In] SVGIO uItem, in Guid riid);
 		}
 
@@ -1060,7 +1060,7 @@ namespace Vanara.PInvoke
 			/// <param name="uItem">The constants that refer to an aspect of the view.</param>
 			/// <param name="riid">The identifier of the COM interface being requested.</param>
 			/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
+			[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)]
 			new object GetItemObject(SVGIO uItem, in Guid riid);
 
 			/// <summary>
@@ -1172,7 +1172,7 @@ namespace Vanara.PInvoke
 			/// <param name="uItem">The constants that refer to an aspect of the view.</param>
 			/// <param name="riid">The identifier of the COM interface being requested.</param>
 			/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
+			[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)]
 			new object GetItemObject(SVGIO uItem, in Guid riid);
 
 			/// <summary>
