@@ -4,12 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7D799541-C923-4593-A8C0-ABFA4F44AD3F}</ProjectGuid>
+    <ProjectGuid>{95E98514-A4D0-4ACD-8BE0-35D7BD185C71}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>UnitTest.PInvoke.BITS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -19,6 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -27,9 +30,29 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Vanara.Core.csproj">
+      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
+      <Name>Vanara.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj">
+      <Project>{ef53ed51-c141-4525-a6b7-41109ee5f416}</Project>
+      <Name>Vanara.PInvoke.BITS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
+      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
+      <Name>Vanara.PInvoke.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CSharpRunner\Shared.csproj">
+      <Project>{a96cff10-0967-429a-8700-4a86c97c5603}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnit">
