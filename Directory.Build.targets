@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
-	<DocumentationFile>$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	<DocumentationFile>\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	<!--<DocumentationFile>$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>-->
 	<!--<DefaultItemExcludes>$(DefaultItemExcludes);**\~*.cs</DefaultItemExcludes>-->
   </PropertyGroup>
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or '$(TargetFramework)' == 'net45' ">
