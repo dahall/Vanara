@@ -116,20 +116,20 @@ namespace Vanara.IO.Tests
             var randomFileName = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetRandomFileName());
             return randomFileName;
 
-            switch (new Random(DateTime.UtcNow.Millisecond).Next(1, 3))
-            {
-               case 1:
-                  return randomFileName.Replace("a", "ä").Replace("e", "ë").Replace("i", "ï").Replace("o", "ö").Replace("u", "ü");
+            //switch (new Random(DateTime.UtcNow.Millisecond).Next(1, 3))
+            //{
+            //   case 1:
+            //      return randomFileName.Replace("a", "ä").Replace("e", "ë").Replace("i", "ï").Replace("o", "ö").Replace("u", "ü");
 
-               case 2:
-                  return randomFileName.Replace("a", "á").Replace("e", "é").Replace("i", "í").Replace("o", "ó").Replace("u", "ú");
+            //   case 2:
+            //      return randomFileName.Replace("a", "á").Replace("e", "é").Replace("i", "í").Replace("o", "ó").Replace("u", "ú");
 
-               case 3:
-                  return randomFileName.Replace("a", "â").Replace("e", "ê").Replace("i", "î").Replace("o", "ô").Replace("u", "û");
+            //   case 3:
+            //      return randomFileName.Replace("a", "â").Replace("e", "ê").Replace("i", "î").Replace("o", "ô").Replace("u", "û");
 
-               default:
-                  return randomFileName;
-            }
+            //   default:
+            //      return randomFileName;
+            //}
          }
       }
 

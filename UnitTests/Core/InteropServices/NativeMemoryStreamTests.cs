@@ -512,6 +512,7 @@ namespace Vanara.InteropServices.Tests
 			}
 		}
 
+#pragma warning disable CS0649
 		private struct Unblittable
 		{
 			public DateTime dt;
@@ -520,5 +521,6 @@ namespace Vanara.InteropServices.Tests
 			[MarshalAs(UnmanagedType.LPStruct)]
 			public Guid s;
 		}
+#pragma warning restore CS0649
 	}
 }

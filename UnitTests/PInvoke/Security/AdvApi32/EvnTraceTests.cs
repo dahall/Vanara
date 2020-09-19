@@ -55,24 +55,22 @@ namespace Vanara.PInvoke.Tests
 			foreach (var guid in EnumerateTraceGuidsEx<Guid>(TRACE_QUERY_INFO_CLASS.TraceGuidQueryList))
 			{
 				TestContext.WriteLine($"{guid} =============================");
-				using (var infoBlocks = EnumerateTraceGuidsEx<Guid>(TRACE_QUERY_INFO_CLASS.TraceGuidQueryInfo, guid))
+				using var infoBlocks = EnumerateTraceGuidsEx<Guid>(TRACE_QUERY_INFO_CLASS.TraceGuidQueryInfo, guid);
+				var info = infoBlocks.ToStructure<TRACE_GUID_INFO>();
+				var providerPtr = infoBlocks.DangerousGetHandle().Offset(Marshal.SizeOf(typeof(TRACE_GUID_INFO)));
+				for (var i = 0; i < info.InstanceCount; i++)
 				{
-					var info = infoBlocks.ToStructure<TRACE_GUID_INFO>();
-					var providerPtr = infoBlocks.DangerousGetHandle().Offset(Marshal.SizeOf(typeof(TRACE_GUID_INFO)));
-					for (var i = 0; i < info.InstanceCount; i++)
+					var provInfo = providerPtr.ToStructure<TRACE_PROVIDER_INSTANCE_INFO>();
+					TestContext.WriteLine($"  ProcId: {provInfo.Pid}; Flags: {provInfo.Flags}");
+					var enablePtr = providerPtr.Offset(Marshal.SizeOf(typeof(TRACE_PROVIDER_INSTANCE_INFO)));
+					var enableSz = Marshal.SizeOf(typeof(TRACE_ENABLE_INFO));
+					for (var j = 0; j < provInfo.EnableCount; j++)
 					{
-						var provInfo = providerPtr.ToStructure<TRACE_PROVIDER_INSTANCE_INFO>();
-						TestContext.WriteLine($"  ProcId: {provInfo.Pid}; Flags: {provInfo.Flags}");
-						var enablePtr = providerPtr.Offset(Marshal.SizeOf(typeof(TRACE_PROVIDER_INSTANCE_INFO)));
-						var enableSz = Marshal.SizeOf(typeof(TRACE_ENABLE_INFO));
-						for (var j = 0; j < provInfo.EnableCount; j++)
-						{
-							var enable = enablePtr.ToStructure<TRACE_ENABLE_INFO>();
-							TestContext.WriteLine($"    Enabled: {enable.IsEnabled}; Lvl: {enable.Level}; Prop: {enable.EnableProperty}");
-							enablePtr = enablePtr.Offset(enableSz);
-						}
-						providerPtr = providerPtr.Offset(provInfo.NextOffset);
+						var enable = enablePtr.ToStructure<TRACE_ENABLE_INFO>();
+						TestContext.WriteLine($"    Enabled: {enable.IsEnabled}; Lvl: {enable.Level}; Prop: {enable.EnableProperty}");
+						enablePtr = enablePtr.Offset(enableSz);
 					}
+					providerPtr = providerPtr.Offset(provInfo.NextOffset);
 				}
 			}
 		}
@@ -88,12 +86,10 @@ namespace Vanara.PInvoke.Tests
 			var sess = new EventTraceSession(etp);
 
 			var sz = 1024U;
-			using (var sd = new SafePSECURITY_DESCRIPTOR((int)sz))
-			{
-				Assert.That(EventAccessQuery(sess.ProviderGuid, sd, ref sz), ResultIs.Successful);
-				Assert.That(EventAccessControl(sess.ProviderGuid, EVENTSECURITYOPERATION.EventSecurityAddDACL, SafePSID.Current, TRACELOG_RIGHTS.WMIGUID_QUERY, true), ResultIs.Successful);
-				Assert.That(EventAccessRemove(sess.ProviderGuid), ResultIs.Successful);
-			}
+			using var sd = new SafePSECURITY_DESCRIPTOR((int)sz);
+			Assert.That(EventAccessQuery(sess.ProviderGuid, sd, ref sz), ResultIs.Successful);
+			Assert.That(EventAccessControl(sess.ProviderGuid, EVENTSECURITYOPERATION.EventSecurityAddDACL, SafePSID.Current, TRACELOG_RIGHTS.WMIGUID_QUERY, true), ResultIs.Successful);
+			Assert.That(EventAccessRemove(sess.ProviderGuid), ResultIs.Successful);
 		}
 
 		[Test]
@@ -122,17 +118,14 @@ namespace Vanara.PInvoke.Tests
 			var callbackCount = 0;
 			Assert.That(() =>
 			{
-				var logFile = new EventLogFile(logfilePath);
-				logFile.EventCallback = EvtCallback;
-				using (var log = new EventTraceSingleLog(logFile))
+				var logFile = new EventLogFile(logfilePath) { EventCallback = EvtCallback };
+				using var log = new EventTraceSingleLog(logFile);
+				using (var mem = SafeHGlobalHandle.CreateFromStructure<ETW_TRACE_PARTITION_INFORMATION>())
 				{
-					using (var mem = SafeHGlobalHandle.CreateFromStructure<ETW_TRACE_PARTITION_INFORMATION>())
-					{
-						Assert.That(QueryTraceProcessingHandle(log.Handle, ETW_PROCESS_HANDLE_INFO_TYPE.EtwQueryPartitionInformation, default, 0, mem, mem.Size, out var retLen), ResultIs.Successful);
-						mem.ToStructure<ETW_TRACE_PARTITION_INFORMATION>().WriteValues();
-					}
-					log.ProcessTrace();
+					Assert.That(QueryTraceProcessingHandle(log.Handle, ETW_PROCESS_HANDLE_INFO_TYPE.EtwQueryPartitionInformation, default, 0, mem, mem.Size, out var retLen), ResultIs.Successful);
+					mem.ToStructure<ETW_TRACE_PARTITION_INFORMATION>().WriteValues();
 				}
+				log.ProcessTrace();
 			}, Throws.Nothing);
 
 			void EvtCallback(in EVENT_TRACE pEvent)
@@ -280,13 +273,13 @@ namespace Vanara.PInvoke.Tests
 				//}
 			}
 
-			Win32Error ProvideInstanceEvents(in TRACE_GUID_REGISTRATION TraceGuidReg)
-			{
-				// The event instance info for the whole LiftUp group of events
-				EVENT_INSTANCE_INFO evtInst = default;
-				CreateTraceInstanceId(TraceGuidReg.RegHandle, ref evtInst);
-				return TraceEventInstance(g_SessionHandle, new MyEventInst(5), evtInst);
-			}
+			//Win32Error ProvideInstanceEvents(in TRACE_GUID_REGISTRATION TraceGuidReg)
+			//{
+			//	// The event instance info for the whole LiftUp group of events
+			//	EVENT_INSTANCE_INFO evtInst = default;
+			//	CreateTraceInstanceId(TraceGuidReg.RegHandle, ref evtInst);
+			//	return TraceEventInstance(g_SessionHandle, new MyEventInst(5), evtInst);
+			//}
 		}
 	}
 
