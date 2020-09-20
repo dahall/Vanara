@@ -16,7 +16,7 @@ namespace Microsoft.WindowsAPICodePack.Samples
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ShellNamespaceTreeControlTestForm()); //ExplorerBrowserTestForm());
+            Application.Run(new SimpleForm()); // new ExplorerBrowserTestForm()); // ShellNamespaceTreeControlTestForm());
         }
     }
 }

@@ -103,12 +103,21 @@
     <Compile Include="ShellNamespaceTreeControlTestForm.Designer.cs">
       <DependentUpon>ShellNamespaceTreeControlTestForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SimpleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimpleForm.Designer.cs">
+      <DependentUpon>SimpleForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ExplorerBrowserTestForm.resx">
       <DependentUpon>ExplorerBrowserTestForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ShellNamespaceTreeControlTestForm.resx">
       <DependentUpon>ShellNamespaceTreeControlTestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleForm.resx">
+      <DependentUpon>SimpleForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿//Copyright (c) Microsoft Corporation.  All rights reserved.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -48,6 +49,8 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			uiDecoupleTimer.Start();
 		}
 
+		private void DebugEnterFunc([System.Runtime.CompilerServices.CallerMemberName] string func = "") => System.Diagnostics.Debug.WriteLine($"Entering {func}...");
+
 		private void backButton_Click(object sender, EventArgs e) =>
 			// Move backwards through navigation log
 			explorerBrowser.NavigateFromHistory(NavigationLogDirection.Backward);
@@ -56,10 +59,15 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			// clear navigation log
 			explorerBrowser.History.Clear();
 
-		private void explorerBrowser_ItemsChanged(object sender, EventArgs e) => itemsChanged.Set();
+		private void explorerBrowser_ItemsChanged(object sender, EventArgs e)
+		{
+			DebugEnterFunc();
+			itemsChanged.Set();
+		}
 
 		private void explorerBrowser_ItemsEnumerated(object sender, EventArgs e)
 		{
+			DebugEnterFunc();
 			// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
 			BeginInvoke(new MethodInvoker(delegate ()
 			{
@@ -72,7 +80,9 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			itemsChanged.Set();
 		}
 
-		private void explorerBrowser_Navigated(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigatedEventArgs args) =>
+		private void explorerBrowser_Navigated(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigatedEventArgs args)
+		{
+			DebugEnterFunc();
 			// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
 			BeginInvoke(new MethodInvoker(delegate ()
 			{
@@ -82,9 +92,11 @@ namespace Microsoft.WindowsAPICodePack.Samples
 					eventHistoryTextBox.Text +
 					"Navigation completed. New Location = " + location + "\n";
 			}));
+		}
 
 		private void explorerBrowser_Navigating(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigatingEventArgs args)
 		{
+			DebugEnterFunc();
 			// fail navigation if check selected (this must be synchronous)
 			args.Cancel = failNavigationCheckBox.Checked;
 
@@ -107,7 +119,9 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			}));
 		}
 
-		private void explorerBrowser_NavigationFailed(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationFailedEventArgs args) =>
+		private void explorerBrowser_NavigationFailed(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationFailedEventArgs args)
+		{
+			DebugEnterFunc();
 			// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
 			BeginInvoke(new MethodInvoker(delegate ()
 			{
@@ -122,13 +136,19 @@ namespace Microsoft.WindowsAPICodePack.Samples
 				else
 					navigationHistoryCombo.SelectedIndex = explorerBrowser.History.CurrentLocationIndex;
 			}));
+		}
 
-		private void explorerBrowser_SelectionChanged(object sender, EventArgs e) => selectionChanged.Set();
+		private void explorerBrowser_SelectionChanged(object sender, EventArgs e)
+		{
+			DebugEnterFunc();
+			selectionChanged.Set();
+		}
 
 		private void filePathEdit_TextChanged(object sender, EventArgs e) => filePathNavigate.Enabled = (filePathEdit.Text.Length > 0);
 
 		private void filePathNavigate_Click(object sender, EventArgs e)
 		{
+			DebugEnterFunc();
 			try
 			{
 				// Navigates to a specified file (must be a container file to work, i.e., ZIP, CAB)
@@ -140,9 +160,11 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			}
 		}
 
-		private void forwardButton_Click(object sender, EventArgs e) =>
-			// Move forwards through navigation log
+		private void forwardButton_Click(object sender, EventArgs e)
+		{
+			DebugEnterFunc();
 			explorerBrowser.NavigateFromHistory(NavigationLogDirection.Forward);
+		}
 
 		private void knownFolderCombo_SelectedIndexChanged(object sender, EventArgs e) => knownFolderNavigate.Enabled = (knownFolderCombo.Text.Length > 0);
 
@@ -161,6 +183,7 @@ namespace Microsoft.WindowsAPICodePack.Samples
 
 		private void navigateButton_Click(object sender, EventArgs e)
 		{
+			DebugEnterFunc();
 			try
 			{
 				// navigate to specific folder
@@ -176,7 +199,9 @@ namespace Microsoft.WindowsAPICodePack.Samples
 			// navigating to specific index in navigation log
 			explorerBrowser.NavigateToHistoryIndex(navigationHistoryCombo.SelectedIndex);
 
-		private void NavigationLog_NavigationLogChanged(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationLogEventArgs args) =>
+		private void NavigationLog_NavigationLogChanged(object sender, Vanara.Windows.Forms.ExplorerBrowser.NavigationLogEventArgs args)
+		{
+			DebugEnterFunc();
 			// This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
 			BeginInvoke(new MethodInvoker(delegate ()
 			{
@@ -204,38 +229,47 @@ namespace Microsoft.WindowsAPICodePack.Samples
 				else
 					navigationHistoryCombo.SelectedIndex = explorerBrowser.History.CurrentLocationIndex;
 			}));
+		}
 
 		private void pathEdit_TextChanged(object sender, EventArgs e) => navigateButton.Enabled = (pathEdit.Text.Length > 0);
 
 		private void uiDecoupleTimer_Tick(object sender, EventArgs e)
 		{
-			if (selectionChanged.WaitOne(1))
+			DebugEnterFunc();
+			try
 			{
-				var itemsText = new StringBuilder();
-
-				foreach (var item in explorerBrowser.SelectedItems)
+				if (selectionChanged.WaitOne(1))
 				{
-					if (item != null)
-						itemsText.AppendLine("\tItem = " + item.Name);
+					var itemsText = new StringBuilder();
+
+					foreach (var item in explorerBrowser.SelectedItems)
+					{
+						if (item != null)
+							itemsText.AppendLine("\tItem = " + item.Name);
+					}
+
+					selectedItemsTextBox.Text = itemsText.ToString();
+					itemsTabControl.TabPages[1].Text = "Selected Items (Count=" + explorerBrowser.SelectedItems.Count.ToString() + ")";
 				}
 
-				selectedItemsTextBox.Text = itemsText.ToString();
-				itemsTabControl.TabPages[1].Text = "Selected Items (Count=" + explorerBrowser.SelectedItems.Count.ToString() + ")";
+				if (itemsChanged.WaitOne(1))
+				{
+					// update items text box
+					var itemsText = new StringBuilder();
+
+					foreach (var item in explorerBrowser.Items)
+					{
+						if (item != null)
+							itemsText.AppendLine("\tItem = " + item.Name);
+					}
+
+					itemsTextBox.Text = itemsText.ToString();
+					itemsTabControl.TabPages[0].Text = "Items (Count=" + explorerBrowser.Items.Count.ToString() + ")";
+				}
 			}
-
-			if (itemsChanged.WaitOne(1))
+			catch (Exception ex)
 			{
-				// update items text box
-				var itemsText = new StringBuilder();
-
-				foreach (var item in explorerBrowser.Items)
-				{
-					if (item != null)
-						itemsText.AppendLine("\tItem = " + item.Name);
-				}
-
-				itemsTextBox.Text = itemsText.ToString();
-				itemsTabControl.TabPages[0].Text = "Items (Count=" + explorerBrowser.Items.Count.ToString() + ")";
+				Debug.WriteLine(ex.Message);
 			}
 		}
 
