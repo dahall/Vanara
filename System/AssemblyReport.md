@@ -28,7 +28,7 @@ Class | Description
 ---- | ----
 [Vanara.Computer](https://github.com/dahall/Vanara/search?l=C%23&q=Computer) | Represents a single connected (authenticated) computer.
 [Vanara.Extensions.FileInfoExtension](https://github.com/dahall/Vanara/search?l=C%23&q=FileInfoExtension) | Extension methods for `System.IO.FileSystemInfo` and derived classes to facilitate retrieval of extended properties.
-[Vanara.Network.InternetProxyOptions](https://github.com/dahall/Vanara/search?l=C%23&q=InternetProxyOptions) | 
+[Vanara.Network.InternetProxyOptions](https://github.com/dahall/Vanara/search?l=C%23&q=InternetProxyOptions) | Provides access to proxy settings for an internet connection.
 [Vanara.Diagnostics.IoCompletionPort](https://github.com/dahall/Vanara/search?l=C%23&q=IoCompletionPort) | Represents a system I/O completion port.
 [Vanara.Diagnostics.Job](https://github.com/dahall/Vanara/search?l=C%23&q=Job) | Represents a system Job Object that allows groups of processes to be managed as a unit. Job objects are nameable, securable, sharable objects that control attributes of the processes associated with them. Operations performed on a job object affect all processes associated with the job object. Examples include enforcing limits such as working set size and process priority or terminating all processes associated with a job. For more information see <a href="https://docs.microsoft.com/en-us/windows/win32/procthread/job-objects">Job Objects</a>.
 [Vanara.Diagnostics.JobEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=JobEventArgs) | Contains information about a job object message.

@@ -52,5 +52,6 @@ Native Structure | Header | Managed Structure
 [HDRT_TRANSPORT](https://www.google.com/search?num=5&q=HDRT_TRANSPORT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Drt.HDRT_TRANSPORT](https://github.com/dahall/Vanara/search?l=C%23&q=HDRT_TRANSPORT)  
 [LEAFSETKEYCHANGE](https://www.google.com/search?num=5&q=LEAFSETKEYCHANGE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Drt.DRT_EVENT_DATA.UNION.LEAFSETKEYCHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=LEAFSETKEYCHANGE)  
 [REGISTRATIONSTATECHANGE](https://www.google.com/search?num=5&q=REGISTRATIONSTATECHANGE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Drt.DRT_EVENT_DATA.UNION.REGISTRATIONSTATECHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=REGISTRATIONSTATECHANGE)  
+[SafeDRT_DATA](https://www.google.com/search?num=5&q=SafeDRT_DATA+site%3Adocs.microsoft.com) | wincrypt.h | [Vanara.PInvoke.Drt.SafeDRT_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDRT_DATA)  
 [STATUSCHANGE](https://www.google.com/search?num=5&q=STATUSCHANGE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Drt.DRT_EVENT_DATA.UNION.STATUSCHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=STATUSCHANGE)  
 [UNION](https://www.google.com/search?num=5&q=UNION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Drt.DRT_EVENT_DATA.UNION](https://github.com/dahall/Vanara/search?l=C%23&q=UNION)  

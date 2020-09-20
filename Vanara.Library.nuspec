@@ -30,6 +30,7 @@
       <dependency id="Vanara.PInvoke.DnsApi" version="3.2.17" />
       <dependency id="Vanara.PInvoke.Drt" version="3.2.17" />
       <dependency id="Vanara.PInvoke.DwmApi" version="3.2.17" />
+      <dependency id="Vanara.PInvoke.FirewallApi" version="3.2.17" />
       <dependency id="Vanara.PInvoke.Gdi32" version="3.2.17" />
       <dependency id="Vanara.PInvoke.Graphics" version="3.2.17" />
       <dependency id="Vanara.PInvoke.IpHlpApi" version="3.2.17" />

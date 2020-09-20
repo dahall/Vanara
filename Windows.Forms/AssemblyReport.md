@@ -173,7 +173,6 @@ Class | Description
 [Vanara.Windows.Forms.Design.TypedDesignerActionList<T>](https://github.com/dahall/Vanara/search?l=C%23&q=TypedDesignerActionList<T>) | An action list for a generic designer.
 [Vanara.Windows.Forms.Design.TypedGlyph<T>](https://github.com/dahall/Vanara/search?l=C%23&q=TypedGlyph<T>) | A glyph associated with a designer.
 [Vanara.Windows.Forms.TaskDialog.VerificationClickedEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=VerificationClickedEventArgs) | Provides data for the `Vanara.Windows.Forms.TaskDialog.VerificationClicked` event.
-[Vanara.Windows.Forms.ExplorerBrowser.ViewEvents](https://github.com/dahall/Vanara/search?l=C%23&q=ViewEvents) | This provides a connection point container compatible dispatch interface for hooking into the ExplorerBrowser view.
 [Vanara.Windows.Forms.VistaButtonBase](https://github.com/dahall/Vanara/search?l=C%23&q=VistaButtonBase) | Implements a CommandLink button that can be used in WinForms user interfaces.
 [Vanara.Windows.Forms.VistaControlExtender](https://github.com/dahall/Vanara/search?l=C%23&q=VistaControlExtender) | Extends standard WinForms controls with post-Vista capabilities.
 [Vanara.Extensions.VisualStylesRendererExtension](https://github.com/dahall/Vanara/search?l=C%23&q=VisualStylesRendererExtension) | Extension methods for `System.Windows.Forms.VisualStyles.VisualStyleRenderer` for glass effects and extended method functionality. Also provides GetFont2 and GetMargins2 methods that corrects base library's non-functioning methods.

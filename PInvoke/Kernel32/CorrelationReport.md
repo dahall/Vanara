@@ -1,7 +1,7 @@
 ## Correlation report for kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
 PInvoke API (methods, structures and constants) imported from Windows Kernel32.dll.
 
-### Methods (100% complete, 1110 of 1110 functions)  
+### Methods (99% complete, 1110 of 1112 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -649,6 +649,7 @@ Native Method | Native DLL | Header | Managed Method
 [IsSystemResumeAutomatic](https://www.google.com/search?num=5&q=IsSystemResumeAutomatic+site%3Adocs.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.IsSystemResumeAutomatic](https://github.com/dahall/Vanara/search?l=C%23&q=IsSystemResumeAutomatic)  
 [IsThreadAFiber](https://www.google.com/search?num=5&q=IsThreadAFiber+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsThreadAFiber](https://github.com/dahall/Vanara/search?l=C%23&q=IsThreadAFiber)  
 [IsThreadpoolTimerSet](https://www.google.com/search?num=5&q=IsThreadpoolTimerSet+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsThreadpoolTimerSet](https://github.com/dahall/Vanara/search?l=C%23&q=IsThreadpoolTimerSet)  
+[IsUserCetAvailableInEnvironment](https://www.google.com/search?num=5&q=IsUserCetAvailableInEnvironment+site%3Adocs.microsoft.com) | kernel32.dll |  |   
 [IsValidCodePage](https://www.google.com/search?num=5&q=IsValidCodePage+site%3Adocs.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidCodePage](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidCodePage)  
 [IsValidLanguageGroup](https://www.google.com/search?num=5&q=IsValidLanguageGroup+site%3Adocs.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidLanguageGroup](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidLanguageGroup)  
 [IsValidLocale](https://www.google.com/search?num=5&q=IsValidLocale+site%3Adocs.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidLocale](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidLocale)  
@@ -933,6 +934,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetProcessAffinityUpdateMode](https://www.google.com/search?num=5&q=SetProcessAffinityUpdateMode+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessAffinityUpdateMode](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessAffinityUpdateMode)  
 [SetProcessDefaultCpuSets](https://www.google.com/search?num=5&q=SetProcessDefaultCpuSets+site%3Adocs.microsoft.com) | kernel32.dll | Processthreadapi.h | [Vanara.PInvoke.Kernel32.SetProcessDefaultCpuSets](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessDefaultCpuSets)  
 [SetProcessDEPPolicy](https://www.google.com/search?num=5&q=SetProcessDEPPolicy+site%3Adocs.microsoft.com) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetProcessDEPPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessDEPPolicy)  
+[SetProcessDynamicEHContinuationTargets](https://www.google.com/search?num=5&q=SetProcessDynamicEHContinuationTargets+site%3Adocs.microsoft.com) | kernel32.dll |  |   
 [SetProcessInformation](https://www.google.com/search?num=5&q=SetProcessInformation+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessInformation)  
 [SetProcessMitigationPolicy](https://www.google.com/search?num=5&q=SetProcessMitigationPolicy+site%3Adocs.microsoft.com) | kernel32.dll | Processthreadsapi.h | [Vanara.PInvoke.Kernel32.SetProcessMitigationPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessMitigationPolicy)  
 [SetProcessPreferredUILanguages](https://www.google.com/search?num=5&q=SetProcessPreferredUILanguages+site%3Adocs.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.SetProcessPreferredUILanguages](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessPreferredUILanguages)  

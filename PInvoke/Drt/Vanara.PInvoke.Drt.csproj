@@ -16,7 +16,7 @@ Functions
 DrtClose, DrtContinueSearch, DrtCreateDerivedKey, DrtCreateDerivedKeySecurityProvider, DrtCreateDnsBootstrapResolver, DrtCreateIpv6UdpTransport, DrtCreateNullSecurityProvider, DrtCreatePnrpBootstrapResolver, DrtDeleteDerivedKeySecurityProvider, DrtDeleteDnsBootstrapResolver, DrtDeleteIpv6UdpTransport, DrtDeleteNullSecurityProvider, DrtDeletePnrpBootstrapResolver, DrtEndSearch, DrtGetEventData, DrtGetEventDataSize, DrtGetInstanceName, DrtGetInstanceNameSize, DrtGetSearchPath, DrtGetSearchPathSize, DrtGetSearchResult, DrtGetSearchResultSize, DrtOpen, DrtRegisterKey, DrtStartSearch, DrtUnregisterKey, DrtUpdateKey
 
 Structures
-DRT_ADDRESS, DRT_ADDRESS_LIST, DRT_BOOTSTRAP_PROVIDER, DRT_BOOTSTRAP_RESOLVE_CONTEXT, DRT_DATA, DRT_EVENT_DATA, DRT_REGISTRATION, DRT_SEARCH_INFO, DRT_SEARCH_RESULT, DRT_SECURITY_PROVIDER, DRT_SETTINGS, HDRT, HDRT_REGISTRATION_CONTEXT, HDRT_SEARCH_CONTEXT, HDRT_TRANSPORT, UNION, LEAFSETKEYCHANGE, REGISTRATIONSTATECHANGE, STATUSCHANGE, BOOTSTRAPADDRESSES
+DRT_ADDRESS, DRT_ADDRESS_LIST, DRT_BOOTSTRAP_PROVIDER, DRT_BOOTSTRAP_RESOLVE_CONTEXT, DRT_DATA, DRT_EVENT_DATA, DRT_REGISTRATION, DRT_SEARCH_INFO, DRT_SEARCH_RESULT, DRT_SECURITY_PROVIDER, DRT_SETTINGS, HDRT, HDRT_REGISTRATION_CONTEXT, HDRT_SEARCH_CONTEXT, HDRT_TRANSPORT, SafeDRT_DATA, UNION, LEAFSETKEYCHANGE, REGISTRATIONSTATECHANGE, STATUSCHANGE, BOOTSTRAPADDRESSES
 
 </PackageReleaseNotes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
