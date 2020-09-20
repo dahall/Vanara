@@ -1,4 +1,4 @@
-﻿#if NETCOREAPP
+﻿#if NETCOREAPP || NETSTANDARD2_0
 using System.Collections;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
@@ -103,19 +103,22 @@ namespace System.Runtime.InteropServices.CustomMarshalers
     {
         public static TView GetOrCreateManagedViewFromComData<T, TView>(object comObject, Func<T, TView> createCallback)
         {
+#if NETSTANDARD2_0
+            return createCallback((T)comObject);
+#else
             object key = typeof(TView);
 
             if (Marshal.GetComObjectData(comObject, key) is TView managedView)
             {
                 return managedView;
             }
-
             managedView = createCallback((T)comObject);
             if (!Marshal.SetComObjectData(comObject, key, managedView))
             {
                 managedView = (TView)Marshal.GetComObjectData(comObject, key)!;
             }
             return managedView;
+#endif
         }
     }
 
