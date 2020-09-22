@@ -43,6 +43,7 @@
     </Compile>
     <Compile Include="Collections\EventedListTests.cs" />
     <Compile Include="Collections\HashSet2.0Tests.cs" />
+    <Compile Include="Collections\HistoryTests.cs" />
     <Compile Include="Collections\HierarchyTests.cs" />
     <Compile Include="Collections\SparseArrayTests.cs" />
     <Compile Include="Extensions\EnumExtensionsTests.cs" />
