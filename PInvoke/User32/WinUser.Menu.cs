@@ -3293,8 +3293,7 @@ namespace Vanara.PInvoke
 		// uFlags, int x, int y, HWND hwnd, LPTPMPARAMS lptpm );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "trackpopupmenuex.htm")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool TrackPopupMenuEx(HMENU hMenu, TrackPopupMenuFlags uFlags, int x, int y, HWND hwnd, [In, Optional] TPMPARAMS lptpm);
+		public static extern uint TrackPopupMenuEx(HMENU hMenu, TrackPopupMenuFlags uFlags, int x, int y, HWND hwnd, [In, Optional] TPMPARAMS lptpm);
 
 		/// <summary>
 		/// <para>Contains information about the menu to be activated.</para>
