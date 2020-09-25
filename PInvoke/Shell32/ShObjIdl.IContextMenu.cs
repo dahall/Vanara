@@ -404,7 +404,7 @@ namespace Vanara.PInvoke
 			/// <param name="result">
 			/// The address of an LRESULT value that the owner of the menu will return from the message. This parameter can be NULL.
 			/// </param>
-			void HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr result);
+			void HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr result);
 		}
 
 		/// <summary>
@@ -750,6 +750,17 @@ namespace Vanara.PInvoke
 			/// member is not valid prior to Internet Explorer 4.0.
 			/// </summary>
 			public System.Drawing.Point ptInvoke;
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="CMINVOKECOMMANDINFOEX"/> struct with a menu-identifier offset of the command to
+			/// carry out.
+			/// </summary>
+			/// <param name="commandId">The menu-identifier offset of the command to carry out.</param>
+			public CMINVOKECOMMANDINFOEX(int commandId) : this()
+			{
+				cbSize = (uint)Marshal.SizeOf(this);
+				lpVerb = commandId;
+			}
 		}
 	}
 }
