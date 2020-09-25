@@ -29,7 +29,8 @@ namespace Vanara.Collections
 
 		/// <summary>Adds the specified item as the last history entry and sets the <see cref="Current"/> property to it's value.</summary>
 		/// <param name="item">The item to add to the history.</param>
-		void Add(T item);
+		/// <param name="removeForwardItems"><see langword="true" /> indicates to remove all items forward of the current pointer; <see langword="false"/> leaves the history intact.</param>
+		void Add(T item, bool removeForwardItems);
 
 		/// <summary>Clears the history of all items.</summary>
 		void Clear();
@@ -100,15 +101,15 @@ namespace Vanara.Collections
 
 		/// <summary>Indicates the presence of items in the history that can be reached by calling <see cref="SeekBackward"/>.</summary>
 		/// <value><see langword="true"/> if this instance can seek backward; otherwise, <see langword="false"/>.</value>
-		public bool CanSeekBackward => GetCurrent()?.Previous != null;
+		public virtual bool CanSeekBackward => GetCurrent()?.Previous != null;
 
 		/// <summary>Indicates the presence of items in the history that can be reached by calling <see cref="SeekForward"/>.</summary>
 		/// <value><see langword="true"/> if this instance can seek forward; otherwise, <see langword="false"/>.</value>
-		public bool CanSeekForward => GetCurrent()?.Next != null;
+		public virtual bool CanSeekForward => GetCurrent()?.Next != null;
 
 		/// <summary>Gets or sets the capacity of the history, or the maximum number of items that it will hold.</summary>
 		/// <value>The history's capacity.</value>
-		public int Capacity
+		public virtual int Capacity
 		{
 			get => capacity;
 			set
@@ -132,16 +133,31 @@ namespace Vanara.Collections
 		/// <summary>Gets the value at a pointer within the history that represents the current item.</summary>
 		/// <value>The current item.</value>
 		/// <exception cref="System.InvalidOperationException">There are no items in the history.</exception>
-		public T Current => !(GetCurrent() is null) ? current.Value : throw new InvalidOperationException("There are no items in the history.");
+		public virtual T Current => !(GetCurrent() is null) ? current.Value : throw new InvalidOperationException("There are no items in the history.");
 
 		/// <summary>Gets the items in the history.</summary>
 		/// <value>The number of items.</value>
-		public int Count => activeHistory.Count;
+		public virtual int Count => activeHistory.Count;
 
-		/// <summary>Adds the specified item as the last history entry and sets the <see cref="Current"/> property to it's value.</summary>
+		/// <summary>
+		/// Adds the specified item as the last history entry and sets the <see cref="Current" /> property to it's value.
+		/// </summary>
 		/// <param name="item">The item to add to the history.</param>
-		public void Add(T item)
+		/// <param name="removeForwardItems"><see langword="true" /> indicates to remove all items forward of the current pointer; <see langword="false"/> leaves the history intact.</param>
+		public virtual void Add(T item, bool removeForwardItems = false)
 		{
+			if (removeForwardItems && CanSeekForward)
+			{
+				var ptr = activeHistory.Last;
+				var items = new List<T>();
+				while (ptr != current)
+				{
+					items.Add(ptr.Value);
+					activeHistory.RemoveLast();
+					ptr = activeHistory.Last;
+				}
+				OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items));
+			}
 			var added = activeHistory.AddLast(item);
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
 			if (activeHistory.Count > Capacity)
@@ -156,7 +172,7 @@ namespace Vanara.Collections
 		}
 
 		/// <summary>Clears the history of all items.</summary>
-		public void Clear()
+		public virtual void Clear()
 		{
 			if (Count == 0) return;
 			activeHistory.Clear();
@@ -168,13 +184,13 @@ namespace Vanara.Collections
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
-		public IEnumerator<T> GetEnumerator() => activeHistory.GetEnumerator();
+		public virtual IEnumerator<T> GetEnumerator() => activeHistory.GetEnumerator();
 
 		/// <summary>Gets a specified number of items starting at a location within the history.</summary>
 		/// <param name="count">The maximum number of items to retrieve. The actual number of items returned may be less if not avaialable.</param>
 		/// <param name="origin">The reference point within the history at which to start fetching items.</param>
 		/// <returns>A read-only list of items.</returns>
-		public IReadOnlyList<T> GetItems(int count, SeekOrigin origin)
+		public virtual IReadOnlyList<T> GetItems(int count, SeekOrigin origin)
 		{
 			if (count == 0 || Count == 0) return (IReadOnlyList<T>)new List<T>(0);
 			var ptr = origin switch
@@ -204,7 +220,7 @@ namespace Vanara.Collections
 		/// <exception cref="System.ArgumentOutOfRangeException">
 		/// The number of items to move cannot be accomplished given the number of items in the history and the seek origin.
 		/// </exception>
-		public T Seek(int count, SeekOrigin origin)
+		public virtual T Seek(int count, SeekOrigin origin)
 		{
 			if (activeHistory.Count == 0) throw new InvalidOperationException("Cannot seek on an empty history.");
 			var ptr = origin switch
@@ -226,11 +242,11 @@ namespace Vanara.Collections
 
 		/// <summary>Seeks one position backwards.</summary>
 		/// <returns>The value at the new current pointer position.</returns>
-		public T SeekBackward() => CanSeekBackward ? Seek(-1, SeekOrigin.Current) : default;
+		public virtual T SeekBackward() => CanSeekBackward ? Seek(-1, SeekOrigin.Current) : default;
 
 		/// <summary>Seeks one position forwards.</summary>
 		/// <returns>The value at the new current pointer position.</returns>
-		public T SeekForward() => CanSeekForward ? Seek(1, SeekOrigin.Current) : default;
+		public virtual T SeekForward() => CanSeekForward ? Seek(1, SeekOrigin.Current) : default;
 
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
