@@ -1821,6 +1821,40 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ReadConsole(HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, in CONSOLE_READCONSOLE_CONTROL pInputControl);
 
+		/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
+		/// <param name="hConsoleInput">
+		/// A handle to the console input buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see
+		/// Console Buffer Security and Access Rights.
+		/// </param>
+		/// <param name="lpBuffer">
+		/// <para>A pointer to a buffer that receives the data read from the console input buffer.</para>
+		/// <para>
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
+		/// </para>
+		/// </param>
+		/// <param name="nNumberOfCharsToRead">
+		/// The number of characters to be read. The size of the buffer pointed to by the lpBuffer parameter should be at least bytes.
+		/// </param>
+		/// <param name="lpNumberOfCharsRead">A pointer to a variable that receives the number of characters actually read.</param>
+		/// <param name="pInputControl">
+		/// <para>
+		/// A pointer to a <c>CONSOLE_READCONSOLE_CONTROL</c> structure that specifies a control character to signal the end of the read
+		/// operation. This parameter can be <c>NULL</c>.
+		/// </para>
+		/// <para>This parameter requires Unicode input by default. For ANSI mode, set this parameter to <c>NULL</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI ReadConsole( _In_ HANDLE hConsoleInput, _Out_ LPVOID lpBuffer, _In_ DWORD nNumberOfCharsToRead, _Out_ LPDWORD
+		// lpNumberOfCharsRead, _In_opt_ LPVOID pInputControl );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReadConsoleA(HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, IntPtr pInputControl = default);
+
 		/// <summary>Reads data from a console input buffer and removes it from the buffer.</summary>
 		/// <param name="hConsoleInput">
 		/// A handle to the console input buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see
@@ -2759,6 +2793,35 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WriteConsole(HFILE hConsoleOutput, string lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
+
+		/// <summary>Writes a character string to a console screen buffer beginning at the current cursor location.</summary>
+		/// <param name="hConsoleOutput">
+		/// A handle to the console screen buffer. The handle must have the <c>GENERIC_WRITE</c> access right. For more information, see
+		/// Console Buffer Security and Access Rights.
+		/// </param>
+		/// <param name="lpBuffer">
+		/// <para>A pointer to a buffer that contains characters to be written to the console screen buffer.</para>
+		/// <para>
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the
+		/// buffer will depend on heap usage.
+		/// </para>
+		/// </param>
+		/// <param name="nNumberOfCharsToWrite">
+		/// The number of characters to be written. If the total size of the specified number of characters exceeds the available heap, the
+		/// function fails with <c>ERROR_NOT_ENOUGH_MEMORY</c>.
+		/// </param>
+		/// <param name="lpNumberOfCharsWritten">A pointer to a variable that receives the number of characters actually written.</param>
+		/// <param name="lpReserved">Reserved; must be <c>NULL</c>.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI WriteConsole( _In_ HANDLE hConsoleOutput, _In_ const VOID *lpBuffer, _In_ DWORD nNumberOfCharsToWrite, _Out_ LPDWORD
+		// lpNumberOfCharsWritten, _Reserved_ LPVOID lpReserved );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool WriteConsoleA(HFILE hConsoleOutput, string lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
 
 		/// <summary>Writes data directly to the console input buffer.</summary>
 		/// <param name="hConsoleInput">
