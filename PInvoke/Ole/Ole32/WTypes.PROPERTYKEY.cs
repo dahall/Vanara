@@ -9,6 +9,39 @@ namespace Vanara.PInvoke
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public static partial class Ole32
 	{
+		/// <summary></summary>
+		public const uint PID_DICTIONARY = 0;
+
+		/// <summary></summary>
+		public const uint PID_CODEPAGE = 0x1;
+
+		/// <summary></summary>
+		public const uint PID_FIRST_USABLE = 0x2;
+
+		/// <summary></summary>
+		public const uint PID_FIRST_NAME_DEFAULT = 0xfff;
+
+		/// <summary></summary>
+		public const uint PID_LOCALE = 0x80000000;
+
+		/// <summary></summary>
+		public const uint PID_MODIFY_TIME = 0x80000001;
+
+		/// <summary></summary>
+		public const uint PID_SECURITY = 0x80000002;
+
+		/// <summary></summary>
+		public const uint PID_BEHAVIOR = 0x80000003;
+
+		/// <summary></summary>
+		public const uint PID_ILLEGAL = 0xffffffff;
+
+		/// <summary>Range which is read-only to downlevel implementations</summary>
+		public const uint PID_MIN_READONLY = 0x80000000;
+
+		/// <summary>Range which is read-only to downlevel implementations</summary>
+		public const uint PID_MAX_READONLY = 0xbfffffff;
+
 		/// <summary>Specifies the FMTID/PID identifier that programmatically identifies a property. Replaces SHCOLUMNID.</summary>
 		/// <remarks>
 		/// <para>As of Windows Vista, the SHCOLUMNID structure is simply an alias for PROPERTYKEY, as shown in this declaration from Shobjidl.h.</para>
