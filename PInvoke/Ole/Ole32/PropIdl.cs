@@ -586,7 +586,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-readmultiple
 			[PreserveSig]
-			HRESULT ReadMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgpropvar);
+			HRESULT ReadMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_IMMUTABLE[] rgpropvar);
 
 			/// <summary>
 			/// <para>
@@ -675,7 +675,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-writemultiple
 			[PreserveSig]
-			HRESULT WriteMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgpropvar, uint propidNameFirst);
+			HRESULT WriteMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_IMMUTABLE[] rgpropvar, uint propidNameFirst);
 
 			/// <summary>
 			/// <para>The <c>DeleteMultiple</c> method deletes as many of the indicated properties as exist in this property set.</para>
@@ -890,7 +890,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-commit
 			[PreserveSig]
-			HRESULT Commit(uint grfCommitFlags);
+			HRESULT Commit(STGC grfCommitFlags);
 
 			/// <summary>
 			/// <para>
@@ -1080,6 +1080,115 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true)]
 		[PInvokeData("Propidl.h", MSDNShortId = "aa380192")]
 		public static extern HRESULT PropVariantCopy([In, Out] PROPVARIANT pDst, [In] PROPVARIANT pSrc);
+
+		/// <summary>
+		/// The <c>ReadMultiple</c> method reads specified properties from the current property set.
+		/// </summary>
+		/// <param name="ipst">The <see cref="IPropertyStorage"/> reference.</param>
+		/// <param name="rgpspec">An array of PROPSPEC structures specifies which properties are read. Properties can be specified either by a property ID or
+		/// by an optional string name. It is not necessary to specify properties in any particular order in the array. The array can
+		/// contain duplicate properties, resulting in duplicate property values on return for simple properties. Nonsimple properties
+		/// should return access denied on an attempt to open them a second time. The array can contain a mixture of property IDs and
+		/// string IDs.</param>
+		/// <param name="rgpropvar">Caller-allocated array of a PROPVARIANT structure that, on return, contains the values of the properties specified by the
+		/// corresponding elements in the array. The array must be at least large enough to hold values of the parameter of the
+		/// <c>PROPVARIANT</c> structure. The parameter specifies the number of properties set in the array. The caller is not required
+		/// to initialize these <c>PROPVARIANT</c> structure values in any specific order. However, the implementation must fill all
+		/// members correctly on return. If there is no other appropriate value, the implementation must set the <c>vt</c> member of each
+		/// <c>PROPVARIANT</c> structure to <c>VT_EMPTY</c>.</param>
+		/// <returns>
+		/// <para>This method supports the standard return value <c>E_UNEXPECTED</c>, as well as the following:</para>
+		/// <para>
+		/// This function can also return any file system errors or Win32 errors wrapped in an <c>HRESULT</c> data type. For more
+		/// information, see Error Handling Strategies.
+		/// </para>
+		/// <para>For more information, see Property Storage Considerations.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-readmultiple
+		public static HRESULT ReadMultiple(this IPropertyStorage ipst, PROPSPEC[] rgpspec, out PROPVARIANT[] rgpropvar)
+		{
+			if (ipst is null) throw new ArgumentNullException(nameof(ipst));
+			if (rgpspec is null) throw new ArgumentNullException(nameof(rgpspec));
+			var outVals = new PROPVARIANT_IMMUTABLE[rgpspec.Length];
+			var hr = ipst.ReadMultiple((uint)rgpspec.Length, rgpspec, outVals);
+			rgpropvar = hr.Succeeded ? Array.ConvertAll(outVals, p => (PROPVARIANT)p) : null;
+			return hr;
+		}
+
+		/// <summary>
+		/// The <c>WriteMultiple</c> method writes a specified group of properties to the current property set. If a property with a
+		/// specified name or property identifier already exists, it is replaced, even when the old and new types for the property value
+		/// are different. If a property of a given name or property ID does not exist, it is created.
+		/// </summary>
+		/// <param name="ipst">The <see cref="IPropertyStorage" /> reference.</param>
+		/// <param name="rgpspec">An array of the property IDs (PROPSPEC) to which properties are set. These need not be in any particular order, and may
+		/// contain duplicates, however the last specified property ID is the one that takes effect. A mixture of property IDs and string
+		/// names is permitted.</param>
+		/// <param name="rgpropvar">An array (of size ) of PROPVARIANT structures that contain the property values to be written. The array must be the size
+		/// specified by .</param>
+		/// <param name="propidNameFirst">The minimum value for the property IDs that the method must assign if the parameter specifies string-named properties for
+		/// which no property IDs currently exist. If all string-named properties specified already exist in this set, and thus already
+		/// have property IDs, this value is ignored. When not ignored, this value must be greater than, or equal to, two and less than
+		/// 0x80000000. Property IDs 0 and 1 and greater than 0x80000000 are reserved for special use.</param>
+		/// <returns>
+		/// <para>This method supports the standard return value E_UNEXPECTED, in addition to the following:</para>
+		/// <para>
+		/// This function can also return any file system errors or Win32 errors wrapped in an <c>HRESULT</c> data type. For more
+		/// information, see Error Handling Strategies.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If a specified property already exists, its value is replaced with the one specified in , even when the old and new types for
+		/// the property value are different. If the specified property does not already exist, that property is created. The changes are
+		/// not persisted to the underlying storage until IPropertyStorage::Commit has been called.
+		/// </para>
+		/// <para>
+		/// Property names are stored in a special dictionary section of the property set, which maps such names to property IDs. All
+		/// properties have an ID, but names are optional. A string name is supplied by specifying PRSPEC_LPWSTR in the <c>ulKind</c>
+		/// member of the PROPSPEC structure. If a string name is supplied for a property, and the name does not already exist in the
+		/// dictionary, the method will allocate a property ID, and add the property ID and the name to the dictionary. The property ID
+		/// is allocated in such a way that it does not conflict with other IDs in the property set. The value of the property ID also is
+		/// no less than the value specified by the parameter. If the parameter specifies string-named properties for which no property
+		/// IDs currently exist, the parameter specifies the minimum value for the property IDs that the <c>WriteMultiple</c> method must assign.
+		/// </para>
+		/// <para>
+		/// When a new property set is created, the special <c>codepage (</c> Property ID 1 <c>)</c> and <c>Locale ID (</c> Property ID
+		/// 0x80000000 <c>)</c> properties are written to the property set automatically. These properties can subsequently be read,
+		/// using the IPropertyStorage::ReadMultiple method, by specifying property IDs with the header-defined PID_CODEPAGE and
+		/// PID_LOCALE values, respectively. If a property set is non-empty — has one or more properties in addition to the
+		/// <c>codepage</c> and <c>Locale ID</c> properties or has one or more names in its dictionary — the special <c>codepage</c> and
+		/// <c>Locale ID</c> properties cannot be modified by calling <c>IPropertyStorage::WriteMultiple</c>. However, if the property
+		/// set is empty, one or both of these special properties can be modified.
+		/// </para>
+		/// <para>
+		/// If an element in the array is set with a PRSPEC_PROPID value of 0xffffffff (PID_ILLEGAL), the corresponding value in the
+		/// array is ignored by <c>IPropertyStorage::WriteMultiple</c>. For example, if this method is called with the parameter set to
+		/// 3, but is set to PRSPEC_PROPID and is set to PID_ILLEGAL, only two properties will be written. The element is silently ignored.
+		/// </para>
+		/// <para>Use the PropVariantInit macro to initialize PROPVARIANT structures.</para>
+		/// <para>
+		/// Property sets, not including the data for nonsimple properties, are limited to 256 KB in size for Windows NT 4.0 and earlier.
+		/// For Windows 2000, Windows XP and Windows Server 2003, OLE property sets are limited to 1 MB. If these limits are exceeded,
+		/// the operation fails and the caller receives an error message. There is no possibility of a memory leak or overrun. For more
+		/// information, see Managing Property Sets.
+		/// </para>
+		/// <para>
+		/// Unless PROPSETFLAG_CASE_SENSITIVE is passed to IPropertySetStorage::Create, property set names are case insensitive.
+		/// Specifying a property by its name in <c>IPropertyStorage::WriteMultiple</c> will result in a case-insensitive search of the
+		/// names in the property set. To compare case-insensitive strings, the locale of the strings must be known. For more
+		/// information, see IPropertyStorage::WritePropertyNames.
+		/// </para>
+		/// <para>For more information, see Property Storage Considerations.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-writemultiple
+		public static HRESULT WriteMultiple(this IPropertyStorage ipst, PROPSPEC[] rgpspec, PROPVARIANT[] rgpropvar, uint propidNameFirst = PID_FIRST_USABLE)
+		{
+			if (ipst is null) throw new ArgumentNullException(nameof(ipst));
+			if (rgpspec is null) throw new ArgumentNullException(nameof(rgpspec));
+			if (rgpropvar is null) throw new ArgumentNullException(nameof(rgpropvar));
+			return ipst.WriteMultiple((uint)rgpspec.Length, rgpspec, Array.ConvertAll(rgpropvar, p => (PROPVARIANT_IMMUTABLE)p), propidNameFirst);
+		}
 
 		/// <summary>
 		/// The <c>PROPSPEC</c> structure is used by many of the methods of IPropertyStorage to specify a property either by its property
