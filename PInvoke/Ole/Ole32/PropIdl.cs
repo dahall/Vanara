@@ -376,7 +376,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertysetstorage-create
 			[PreserveSig]
-			HRESULT Create(in Guid rfmtid, [In] IntPtr pclsid, [In] STGM grfFlags, [In] STGM grfMode, out IPropertyStorage ppprstg);
+			HRESULT Create(in Guid rfmtid, [In] IntPtr pclsid, [In] PROPSETFLAG grfFlags, [In] STGM grfMode, out IPropertyStorage ppprstg);
 
 			/// <summary>
 			/// <para>The <c>Open</c> method opens a property set contained in the property set storage object.</para>
@@ -1082,21 +1082,17 @@ namespace Vanara.PInvoke
 		public static extern HRESULT PropVariantCopy([In, Out] PROPVARIANT pDst, [In] PROPVARIANT pSrc);
 
 		/// <summary>
-		/// <para>
 		/// The <c>PROPSPEC</c> structure is used by many of the methods of IPropertyStorage to specify a property either by its property
 		/// identifier (ID) or the associated string name.
-		/// </para>
 		/// </summary>
 		/// <remarks>
-		/// <para>
 		/// String names are optional and can be assigned to a set of properties when the property is created with a call to
 		/// IPropertyStorage::WriteMultiple or later with a call to IPropertyStorage::WritePropertyNames.
-		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/ns-propidl-tagpropspec typedef struct tagPROPSPEC { ULONG ulKind;
 		// union { PROPID propid; LPOLESTR lpwstr; } DUMMYUNIONNAME; } PROPSPEC;
 		[PInvokeData("propidl.h", MSDNShortId = "5bb3b9c6-ab82-498c-94f9-13a9ffa7452b")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct PROPSPEC
 		{
 			/// <summary>
@@ -1118,24 +1114,33 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public PRSPEC ulKind;
 
-			/// <summary>PROPSPECunion</summary>
-			public PROPSPECunion union;
+			/// <summary>Specifies the value of the property ID or the string name of the property as a null-terminated Unicode string.</summary>
+			public IntPtr union;
 
-			/// <summary>PROPSPECunion</summary>
-			[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
-			public struct PROPSPECunion
+			/// <summary>Initializes a new instance of the <see cref="PROPSPEC"/> struct.</summary>
+			/// <param name="propid">Specifies the value of the property ID.</param>
+			public PROPSPEC(uint propid)
 			{
-				/// <summary>
-				/// <para>Specifies the value of the property ID. Use either this value or the following <c>lpwstr</c>, not both.</para>
-				/// </summary>
-				[FieldOffset(0)]
-				public uint propid;
+				ulKind = PRSPEC.PRSPEC_PROPID;
+				union = new IntPtr(unchecked((int)propid));
+			}
 
-				/// <summary>
-				/// <para>Specifies the string name of the property as a null-terminated Unicode string.</para>
-				/// </summary>
-				[FieldOffset(0)]
-				public StrPtrUni lpwstr;
+			/// <summary>Initializes a new instance of the <see cref="PROPSPEC"/> struct.</summary>
+			/// <param name="propName">Specifies the string name of the property.</param>
+			/// <param name="strMem">Returns the allocated memory holding the string.</param>
+			public PROPSPEC(string propName, out SafeCoTaskMemString strMem)
+			{
+				ulKind = PRSPEC.PRSPEC_LPWSTR;
+				strMem = new SafeCoTaskMemString(propName);
+				union = strMem;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="PROPSPEC"/> struct.</summary>
+			/// <param name="propName">Specifies a pointer to the string name of the property.</param>
+			public PROPSPEC(StrPtrUni propName)
+			{
+				ulKind = PRSPEC.PRSPEC_LPWSTR;
+				union = (IntPtr)propName;
 			}
 		}
 
