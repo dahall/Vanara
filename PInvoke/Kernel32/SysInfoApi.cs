@@ -529,6 +529,24 @@ namespace Vanara.PInvoke
 			VER_SUITE_WH_SERVER = 0x00008000,
 		}
 
+		/// <summary>The environment to query.</summary>
+		[PInvokeData("sysinfoapi.h", MSDNShortId = "NF:sysinfoapi.IsUserCetAvailableInEnvironment")]
+		[Flags]
+		public enum USER_CET_ENVIRONMENT
+		{
+			/// <summary>The Win32 environment.</summary>
+			USER_CET_ENVIRONMENT_WIN32_PROCESS = 0x00000000,
+
+			/// <summary>The Intel Software Guard Extensions 2 (SGX2) enclave environment.</summary>
+			USER_CET_ENVIRONMENT_SGX2_ENCLAVE = 0x00000002,
+
+			/// <summary>The virtualization-based security (VBS) enclave environment.</summary>
+			USER_CET_ENVIRONMENT_VBS_ENCLAVE = 0x00000010,
+
+			/// <summary>The virtualization-based security (VBS) basic enclave environment.</summary>
+			USER_CET_ENVIRONMENT_VBS_BASIC_ENCLAVE = 0x00000011,
+		}
+
 		/// <summary>Converts a DNS-style host name to a NetBIOS-style computer name.</summary>
 		/// <param name="Hostname">
 		/// The DNS name. If the DNS name is not a valid, translatable name, the function fails. For more information, see Computer Names.
@@ -2193,6 +2211,40 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366589")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GlobalMemoryStatusEx(ref MEMORYSTATUSEX lpBuffer);
+
+		/// <summary>Queries whether user-mode Hardware-enforced Stack Protection is available for the specified environment.</summary>
+		/// <param name="UserCetEnvironment">
+		/// <para>The environment to query. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>USER_CET_ENVIRONMENT_WIN32_PROCESS 0x00000000UL</term>
+		/// <term>The Win32 environment.</term>
+		/// </item>
+		/// <item>
+		/// <term>USER_CET_ENVIRONMENT_SGX2_ENCLAVE 0x00000002UL</term>
+		/// <term>The Intel Software Guard Extensions 2 (SGX2) enclave environment.</term>
+		/// </item>
+		/// <item>
+		/// <term>USER_CET_ENVIRONMENT_VBS_ENCLAVE 0x00000010UL</term>
+		/// <term>The virtualization-based security (VBS) enclave environment.</term>
+		/// </item>
+		/// <item>
+		/// <term>USER_CET_ENVIRONMENT_VBS_BASIC_ENCLAVE 0x00000011UL</term>
+		/// <term>The virtualization-based security (VBS) basic enclave environment.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>TRUE if user-mode Hardware-enforced Stack Protection is available for the specified environment, FALSE otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-isusercetavailableinenvironment
+		// BOOL IsUserCetAvailableInEnvironment( DWORD UserCetEnvironment );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("sysinfoapi.h", MSDNShortId = "NF:sysinfoapi.IsUserCetAvailableInEnvironment")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsUserCetAvailableInEnvironment(USER_CET_ENVIRONMENT UserCetEnvironment);
 
 		/// <summary>
 		/// Installs the certificate information specified in the resource file, which is linked into the ELAM driver at build time. This API
