@@ -51,6 +51,30 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724348")]
 		public static extern uint GetPrivateProfileSection(string lpAppName, StringBuilder lpReturnedString, uint nSize, string lpFileName);
 
+		/// <summary>Retrieves all the keys and values for the specified section of an initialization file.</summary>
+		/// <param name="lpAppName">The name of the section in the initialization file.</param>
+		/// <param name="lpReturnedString">
+		/// A pointer to a buffer that receives the key name and value pairs associated with the named section. The buffer is filled with one
+		/// or more null-terminated strings; the last string is followed by a second null character.
+		/// </param>
+		/// <param name="nSize">
+		/// The size of the buffer pointed to by the lpReturnedString parameter, in characters. The maximum profile section size is 32,767 characters.
+		/// </param>
+		/// <param name="lpFileName">
+		/// The name of the initialization file. If this parameter does not contain a full path to the file, the system searches for the file
+		/// in the Windows directory.
+		/// </param>
+		/// <returns>
+		/// The return value specifies the number of characters copied to the buffer, not including the terminating null character. If the
+		/// buffer is not large enough to contain all the key name and value pairs associated with the named section, the return value is
+		/// equal to nSize minus two.
+		/// </returns>
+		// DWORD WINAPI GetPrivateProfileSection( _In_ LPCTSTR lpAppName, _Out_ LPTSTR lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR
+		// lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724348(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Winbase.h", MSDNShortId = "ms724348")]
+		public static extern uint GetPrivateProfileSection(string lpAppName, IntPtr lpReturnedString, uint nSize, string lpFileName);
+
 		/// <summary>Retrieves the names of all sections in an initialization file.</summary>
 		/// <param name="lpszReturnBuffer">
 		/// A pointer to a buffer that receives the section names associated with the named file. The buffer is filled with one or more
@@ -70,6 +94,26 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724352")]
 		public static extern uint GetPrivateProfileSectionNames(StringBuilder lpszReturnBuffer, uint nSize, string lpFileName);
+
+		/// <summary>Retrieves the names of all sections in an initialization file.</summary>
+		/// <param name="lpszReturnBuffer">
+		/// A pointer to a buffer that receives the section names associated with the named file. The buffer is filled with one or more
+		/// <c>null</c>-terminated strings; the last string is followed by a second <c>null</c> character.
+		/// </param>
+		/// <param name="nSize">The size of the buffer pointed to by the lpszReturnBuffer parameter, in characters.</param>
+		/// <param name="lpFileName">
+		/// The name of the initialization file. If this parameter is <c>NULL</c>, the function searches the Win.ini file. If this parameter
+		/// does not contain a full path to the file, the system searches for the file in the Windows directory.
+		/// </param>
+		/// <returns>
+		/// The return value specifies the number of characters copied to the specified buffer, not including the terminating <c>null</c>
+		/// character. If the buffer is not large enough to contain all the section names associated with the specified initialization file,
+		/// the return value is equal to the size specified by nSize minus two.
+		/// </returns>
+		// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ LPTSTR lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Winbase.h", MSDNShortId = "ms724352")]
+		public static extern uint GetPrivateProfileSectionNames(IntPtr lpszReturnBuffer, uint nSize, string lpFileName);
 
 		/// <summary>Retrieves a string from the specified section in an initialization file.</summary>
 		/// <param name="lpAppName">
@@ -202,6 +246,25 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724363")]
 		public static extern uint GetProfileSection(string lpAppName, StringBuilder lpReturnedString, uint nSize);
+
+		/// <summary>Retrieves all the keys and values for the specified section of the Win.ini file.</summary>
+		/// <param name="lpAppName">The name of the section in the Win.ini file.</param>
+		/// <param name="lpReturnedString">
+		/// A pointer to a buffer that receives the keys and values associated with the named section. The buffer is filled with one or more
+		/// null-terminated strings; the last string is followed by a second null character.
+		/// </param>
+		/// <param name="nSize">
+		/// The size of the buffer pointed to by the lpReturnedString parameter, in characters. The maximum profile section size is 32,767 characters.
+		/// </param>
+		/// <returns>
+		/// The return value specifies the number of characters copied to the specified buffer, not including the terminating null character.
+		/// If the buffer is not large enough to contain all the keys and values associated with the named section, the return value is equal
+		/// to the size specified by nSize minus two.
+		/// </returns>
+		// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ LPTSTR lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Winbase.h", MSDNShortId = "ms724363")]
+		public static extern uint GetProfileSection(string lpAppName, IntPtr lpReturnedString, uint nSize);
 
 		/// <summary>Retrieves the string associated with a key in the specified section of the Win.ini file.</summary>
 		/// <param name="lpAppName">
