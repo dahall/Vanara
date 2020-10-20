@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -332,6 +335,7 @@ namespace Vanara.Windows.Shell
 	/// <seealso cref="System.IDisposable"/>
 	/// <seealso cref="System.IEquatable{IShellItem}"/>
 	/// <seealso cref="System.IEquatable{ShellItem}"/>
+	[TypeConverter(typeof(ShellItemTypeConverter))]
 	public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellItem>, IEquatable<ShellItem>, INotifyPropertyChanged
 	{
 		internal static readonly bool IsMin7 = Environment.OSVersion.Version >= new Version(6, 1);
@@ -400,6 +404,9 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the attributes for the Shell item.</summary>
 		/// <value>The attributes of the Shell item.</value>
 		public ShellItemAttribute Attributes => (ShellItemAttribute)(iShellItem?.GetAttributes((SFGAO)0xFFFFFFFF) ?? 0);
+
+		/// <summary>Returns a <see cref="System.Windows.Forms.DataObject"/> representing the item. This object is used in drag and drop operations.</summary>
+		public System.Windows.Forms.DataObject DataObject => new System.Windows.Forms.DataObject(GetHandler<IDataObject>(BHID.BHID_SFUIObject));
 
 		/// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
 		public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : null;
@@ -481,6 +488,11 @@ namespace Vanara.Windows.Shell
 		/// <value>The bind context.</value>
 		protected static IBindCtx BindContext => ShellUtil.CreateBindCtx();
 
+		/// <summary>Creates the most specialized derivative of ShellItem from a path.</summary>
+		/// <param name="path">The file system path of the item.</param>
+		/// <returns>A ShellItem derivative for the supplied path.</returns>
+		public static ShellItem Open(string path) => Open(ShellUtil.GetShellItemForPath(path));
+
 		/// <summary>Creates the most specialized derivative of ShellItem from an IShellItem object.</summary>
 		/// <param name="iItem">The IShellItem object.</param>
 		/// <returns>A ShellItem derivative for the supplied IShellItem.</returns>
@@ -488,8 +500,6 @@ namespace Vanara.Windows.Shell
 		{
 			string itemType = null;
 			try { itemType = (iItem as IShellItem2)?.GetString(pkItemType)?.ToString().ToLowerInvariant(); } catch { }
-
-			var isFolder = iItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0;
 
 			// Try to get specialized folder type from property
 			try
@@ -505,7 +515,23 @@ namespace Vanara.Windows.Shell
 			{
 				// If there was an exception, just return the wrapper.
 			}
+			var isFolder = iItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0;
 			return isFolder ? new ShellFolder(iItem) : new ShellItem(iItem);
+		}
+
+		/// <summary>Creates the most specialized derivative of ShellItem from a parented PIDL.</summary>
+		/// <param name="iFolder">The IShellFolder for the parent.</param>
+		/// <param name="pidl">The relative ID List for a child item within <paramref name="iFolder"/>.</param>
+		/// <returns>A ShellItem derivative for the supplied parented PIDL.</returns>
+		public static ShellItem Open(IShellFolder iFolder, PIDL pidl) => Open(SHCreateItemWithParent<IShellItem>(iFolder, pidl));
+
+		/// <summary>Creates the most specialized derivative of ShellItem from a PIDL.</summary>
+		/// <param name="idList">The ID list.</param>
+		/// <returns>A ShellItem derivative for the supplied PIDL.</returns>
+		public static ShellItem Open(PIDL idList)
+		{
+			if (idList == null || idList.IsInvalid) throw new ArgumentNullException(nameof(idList));
+			return IsMinVista ? Open(SHCreateItemFromIDList<IShellItem>(idList)) : Open(new ShellItemImpl(idList, false));
 		}
 
 		/// <summary>Implements the operator !=.</summary>
@@ -686,6 +712,31 @@ namespace Vanara.Windows.Shell
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => Name;
+
+		/// <summary>Returns a URI representation of the <see cref="ShellItem"/>.</summary>
+		public Uri ToUri()
+		{
+			try
+			{
+				using var pkfmgr = ComReleaserFactory.Create(new IKnownFolderManager());
+				using var pkf = ComReleaserFactory.Create(IsFileSystem ? pkfmgr.Item.FindFolderFromPath(FileSystemPath, FFFP_MODE.FFFP_NEARESTPARENTMATCH) : pkfmgr.Item.FindFolderFromIDList(PIDL));
+
+				var path = new StringBuilder($"shell:::{pkf.Item.GetId():B}");
+
+				using var kfPidl = pkf.Item.GetIDList(0);
+				var dirs = new Stack<string>();
+				for (var item = this; item.PIDL != kfPidl; item = item.Parent)
+					dirs.Push(item.GetDisplayName(ShellItemDisplayString.ParentRelativeParsing));
+
+				while (dirs.Count > 0)
+					path.Append('/' + dirs.Pop());
+
+				return new Uri(path.ToString());
+			}
+			catch { }
+			
+			return IsFileSystem ? new Uri(FileSystemPath) : throw new InvalidOperationException("Unable to convert ShellItem to Uri.");
+		}
 
 		/// <summary>Ensures that all cached information for this item is updated.</summary>
 		public void Update()
@@ -993,6 +1044,35 @@ namespace Vanara.Windows.Shell
 				var pidlCopy = new PIDL(PIDL);
 				return pidlCopy.RemoveLastId() ? new ShellItemImpl(pidlCopy, true) : this;
 			}
+		}
+	}
+
+	internal class ShellItemTypeConverter : TypeConverter
+	{
+		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+			sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+
+		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
+			destinationType == typeof(InstanceDescriptor) || base.CanConvertTo(context, destinationType);
+
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
+			value is string s ? s.Length == 0 ? ShellFolder.Desktop : ShellItem.Open(s) : base.ConvertFrom(context, culture, value);
+
+		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+		{
+			if (value is ShellItem item)
+			{
+				var uri = item.ToUri();
+				if (destinationType == typeof(string))
+				{
+					return uri.Scheme == "file" ? uri.LocalPath : uri.ToString();
+				}
+				else if (destinationType == typeof(InstanceDescriptor))
+				{
+					return new InstanceDescriptor(typeof(ShellItem).GetMethod("Open", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null), new object[] { uri.ToString() });
+				}
+			}
+			return base.ConvertTo(context, culture, value, destinationType);
 		}
 	}
 }
