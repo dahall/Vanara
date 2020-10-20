@@ -51,6 +51,7 @@
     <Compile Include="BindContextTests.cs" />
     <Compile Include="ClipboardTests.cs" />
     <Compile Include="ResourceTests.cs" />
+    <Compile Include="ShellViewTests.cs" />
     <Compile Include="WallpaperTests.cs" />
     <Compile Include="ShellLinkTests.cs" />
     <Compile Include="ShellSearchTests.cs" />

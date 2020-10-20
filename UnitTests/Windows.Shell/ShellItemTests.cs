@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
+using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
@@ -219,6 +220,23 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(i.FileSystemPath, Is.EqualTo(KNOWNFOLDERID.FOLDERID_Documents.FullPath()));
 			}, Throws.Nothing);
 			Assert.That(() => new ShellItem(PIDL.Null), Throws.Exception);
+		}
+
+		[Test]
+		public void ToUriTest()
+		{
+			using var i = new ShellItem(testDoc);
+			var testDocUri = new Uri(testDoc);
+			Assert.That(testDocUri, Is.EqualTo(i.ToUri()));
+
+			using var f = new ShellFolder(KNOWNFOLDERID.FOLDERID_ControlPanelFolder);
+			Assert.That(f.ToUri().ToString(), Is.EqualTo("shell:::" + KNOWNFOLDERID.FOLDERID_ControlPanelFolder.Guid().ToString("B")));
+
+			using var d = new ShellItem(Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\Documents\debug.log"));
+			Assert.That(d.ToUri().ToString(), Is.EqualTo("shell:::{f42ee2d3-909f-4907-8871-4c22fc0bf756}/debug.log"));
+
+			using var td = new ShellItem(d.ToUri().ToString());
+			td.FileSystemPath.WriteValues();
 		}
 	}
 }
