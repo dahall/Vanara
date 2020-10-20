@@ -80,16 +80,25 @@ namespace Vanara.PInvoke
 				if (string.IsNullOrEmpty(path))
 					return null;
 
-				var hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out var unk);
-				if (hr == 0x80070002)
+				// Handle case of a 'shell' URI and convert GUID to known folder
+				if (path.StartsWith("shell:::", StringComparison.InvariantCultureIgnoreCase))
 				{
-					Ole32.CreateBindCtx(0, out var ibc).ThrowIfFailed();
-					using (var _ibc = InteropServices.ComReleaserFactory.Create(ibc))
-					{
-						var bd = new IntFileSysBindData();
-						ibc.RegisterObjectParam(STR_FILE_SYS_BIND_DATA, bd);
-						hr = SHCreateItemFromParsingName(path, ibc, typeof(IShellItem).GUID, out unk);
-					}
+					path = path.Substring(8);
+					var separatorIndex = path.IndexOf('/');
+					var kf = new Guid(separatorIndex == -1 ? path : path.Substring(0, separatorIndex));
+					var fullPath = GetPathForKnownFolder(kf);
+					if (separatorIndex != -1)
+						fullPath += path.Substring(separatorIndex).Replace('/', '\\');
+					path = fullPath;
+				}
+
+				var hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out var unk);
+				if (hr == (HRESULT)Win32Error.ERROR_FILE_NOT_FOUND)
+				{
+					using var ibc = InteropServices.ComReleaserFactory.Create(CreateBindCtx());
+					var bd = new IntFileSysBindData();
+					ibc.Item.RegisterObjectParam(STR_FILE_SYS_BIND_DATA, bd);
+					return SHCreateItemFromParsingName<IShellItem>(path, ibc.Item);
 				}
 				hr.ThrowIfFailed();
 				return (IShellItem)unk;
