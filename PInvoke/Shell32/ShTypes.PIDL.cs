@@ -80,11 +80,23 @@ namespace Vanara.PInvoke
 			/// <returns>A managed <see cref="PIDL"/> instance that contains both supplied lists in their respective order.</returns>
 			public static PIDL operator +(PIDL first, PIDL second) => Combine(first, second);
 
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="first">The first <see cref="PIDL"/>.</param>
+			/// <param name="second">The second <see cref="PIDL"/>.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PIDL first, PIDL second) => first?.Equals(second) ?? second is null;
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="first">The first <see cref="PIDL"/>.</param>
+			/// <param name="second">The second <see cref="PIDL"/>.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PIDL first, PIDL second) => !(first == second);
+
 			/// <summary>Appends the specified <see cref="PIDL"/> to the existing list.</summary>
 			/// <param name="appendPidl">The <see cref="PIDL"/> to append.</param>
 			public void Append(PIDL appendPidl)
 			{
-				var newPidl = IntILCombine(handle, appendPidl.DangerousGetHandle());
+				IntPtr newPidl = IntILCombine(handle, appendPidl.DangerousGetHandle());
 				Free(handle);
 				SetHandle(newPidl);
 			}
@@ -93,26 +105,16 @@ namespace Vanara.PInvoke
 			/// <returns>A binary string of the contents.</returns>
 			public string Dump() => string.Join(" ", handle.ToIEnum<byte>((int)Size).Select(b => $"{b:X2}").ToArray());
 
-			/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-			/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-			/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-			public override bool Equals(object obj)
+			/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+			/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+			/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+			public override bool Equals(object obj) => obj switch
 			{
-				switch (obj)
-				{
-					case null:
-						return IsEmpty;
-
-					case PIDL pidl:
-						return Equals(pidl);
-
-					case IntPtr ptr:
-						return Equals(ptr);
-
-					default:
-						return base.Equals(obj);
-				}
-			}
+				null => IsEmpty,
+				PIDL pidl => Equals(pidl),
+				IntPtr ptr => Equals(ptr),
+				_ => base.Equals(obj),
+			};
 
 			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 			/// <param name="other">An object to compare with this object.</param>
@@ -122,7 +124,7 @@ namespace Vanara.PInvoke
 			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 			/// <param name="other">An object to compare with this object.</param>
 			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-			public bool Equals(PIDL other) => Equals(other?.handle ?? IntPtr.Zero);
+			public bool Equals(PIDL other) => ReferenceEquals(this, other) || Equals(other?.handle ?? IntPtr.Zero);
 
 			/// <summary>Returns an enumerator that iterates through the collection.</summary>
 			/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator{PIDL}"/> that can be used to iterate through the collection.</returns>
@@ -136,7 +138,7 @@ namespace Vanara.PInvoke
 			/// <param name="insertPidl">The <see cref="PIDL"/> to insert.</param>
 			public void Insert(PIDL insertPidl)
 			{
-				var newPidl = IntILCombine(insertPidl.handle, handle);
+				IntPtr newPidl = IntILCombine(insertPidl.handle, handle);
 				Free(handle);
 				SetHandle(newPidl);
 			}
@@ -150,15 +152,15 @@ namespace Vanara.PInvoke
 			/// <summary>Removes the last identifier from the list.</summary>
 			public bool RemoveLastId() => ILRemoveLastID(handle);
 
-			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => ToString(SIGDN.SIGDN_NORMALDISPLAY);
 
 			/// <summary>
-			/// Returns a <see cref="System.String"/> that represents this instance base according to the format provided by <paramref name="displayNameFormat"/>.
+			/// Returns a <see cref="string"/> that represents this instance base according to the format provided by <paramref name="displayNameFormat"/>.
 			/// </summary>
 			/// <param name="displayNameFormat">The desired display name format.</param>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public string ToString(SIGDN displayNameFormat)
 			{
 				try
@@ -209,7 +211,7 @@ namespace Vanara.PInvoke
 						return true;
 					}
 
-					var newPidl = ILNext(currentPidl);
+					IntPtr newPidl = ILNext(currentPidl);
 					if (ILIsEmpty(newPidl)) return false;
 					currentPidl = newPidl;
 					return true;
