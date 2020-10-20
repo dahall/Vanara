@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing.Design;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -156,7 +154,7 @@ namespace Vanara.Windows.Shell
 	[DefaultProperty(nameof(Item)), DefaultEvent(nameof(Changed))]
 	public class ShellItemChangeWatcher : Component, ISupportInitialize
 	{
-		private const SHCNE NoParamEvent = SHCNE.SHCNE_ASSOCCHANGED |  SHCNE.SHCNE_DRIVEADDGUI | SHCNE.SHCNE_EXTENDED_EVENT | SHCNE.SHCNE_FREESPACE | SHCNE.SHCNE_UPDATEIMAGE;
+		private const SHCNE NoParamEvent = SHCNE.SHCNE_ASSOCCHANGED | SHCNE.SHCNE_DRIVEADDGUI | SHCNE.SHCNE_EXTENDED_EVENT | SHCNE.SHCNE_FREESPACE | SHCNE.SHCNE_UPDATEIMAGE;
 		private const SHCNE TwoParamEvent = SHCNE.SHCNE_RENAMEFOLDER | SHCNE.SHCNE_RENAMEITEM;
 		private readonly WatcherNativeWindow hPump;
 		private bool enabled;
@@ -322,7 +320,7 @@ namespace Vanara.Windows.Shell
 			enabled = true;
 			if (IsSuspended) return;
 
-			SHGetIDListFromObject(Item.IShellItem, out var pidlWatch).ThrowIfFailed();
+			SHGetIDListFromObject(Item.IShellItem, out PIDL pidlWatch).ThrowIfFailed();
 			SHChangeNotifyEntry[] entries = { new SHChangeNotifyEntry { pidl = pidlWatch.DangerousGetHandle(), fRecursive = IncludeChildren } };
 			ulRegister = SHChangeNotifyRegister(hPump.Handle, sources, (SHCNE)NotifyFilter, hPump.MessageId, entries.Length, entries);
 			if (ulRegister == 0) throw new InvalidOperationException("Unable to register shell notifications.");
@@ -359,7 +357,7 @@ namespace Vanara.Windows.Shell
 
 		private class WatcherNativeWindow : NativeWindow
 		{
-			private ShellItemChangeWatcher p;
+			private readonly ShellItemChangeWatcher p;
 
 			public WatcherNativeWindow(ShellItemChangeWatcher parent)
 			{
@@ -378,7 +376,7 @@ namespace Vanara.Windows.Shell
 					HLOCK hNotifyLock = default;
 					try
 					{
-						hNotifyLock = SHChangeNotification_Lock(m.WParam, (uint)m.LParam.ToInt32(), out var rgpidl, out var lEvent);
+						hNotifyLock = SHChangeNotification_Lock(m.WParam, (uint)m.LParam.ToInt32(), out IntPtr rgpidl, out SHCNE lEvent);
 						if (hNotifyLock != IntPtr.Zero && rgpidl != IntPtr.Zero && p.NotifyFilter.IsFlagSet((ChangeFilters)lEvent))
 						{
 							ShellItemChangeEventArgs args;
