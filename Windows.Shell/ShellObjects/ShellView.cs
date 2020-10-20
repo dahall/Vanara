@@ -11,6 +11,21 @@ using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell
 {
+	/// <summary>Event argument for FilterItem event</summary>
+	public class FilterShellItemEventArgs : EventArgs
+	{
+		/// <summary>Initializes a new instance of the <see cref="NavigatedEventArgs"/> class.</summary>
+		/// <param name="item">The shell item.</param>
+		public FilterShellItemEventArgs(ShellItem item) => Item = item;
+
+		/// <summary>Gets or sets a value indicating whether a <see cref="ShellItem"/> is included by the filter.</summary>
+		/// <value><see langword="true"/> if included; otherwise, <see langword="false"/>.</value>
+		public bool Include { get; set; } = true;
+
+		/// <summary>The new location of the explorer browser</summary>
+		public ShellItem Item { get; private set; }
+	}
+
 	/// <summary>Event argument for The Navigated event</summary>
 	public class NavigatedEventArgs : EventArgs
 	{
@@ -40,36 +55,35 @@ namespace Vanara.Windows.Shell
 		public ShellItem FailedLocation { get; set; }
 	}
 
-	/// <summary></summary>
-	/// <seealso cref="System.IComparable{T}"/>
-	/// <seealso cref="System.IDisposable"/>
-	/// <seealso cref="System.IEquatable{T}"/>
-	/// <seealso cref="System.IEquatable{T}"/>
-	/// <seealso cref="System.ComponentModel.INotifyPropertyChanged"/>
-	public class ShellView : Control, INotifyPropertyChanged
+	/// <summary>Encapsulates IShellView for display as a control.</summary>
+	/// <seealso cref="IComparable{T}"/>
+	/// <seealso cref="IDisposable"/>
+	/// <seealso cref="IEquatable{T}"/>
+	/// <seealso cref="IEquatable{T}"/>
+	/// <seealso cref="INotifyPropertyChanged"/>
+	// TODO: Fix problems with IShellView.CreateViewWindow returning E_FAIL
+	internal class ShellView : Control, INotifyPropertyChanged
 	{
-		internal IShellView iObj;
 		internal HWND shellViewWindow;
 		private ShellFolder currentFolder;
 		private IShellBrowser iBrowser;
+		private IShellView iShellView;
 
 		/// <summary>Creates a new <see cref="ShellView"/> from a shell folder and assigns it to a window.</summary>
 		/// <param name="folder">The shell folder.</param>
-		/// <param name="owner">The owner window.</param>
 		/// <returns>A new <see cref="ShellView"/> instance for the supplied shell folder.</returns>
-		public ShellView(ShellFolder folder, IWin32Window owner) : this(CreateViewObject(folder, owner?.Handle ?? IntPtr.Zero)) => Navigate(folder);
+		public ShellView(ShellFolder folder) : this() => currentFolder = folder;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellView"/> class.</summary>
-		public ShellView() : this(ShellFolder.Desktop, null) { }
+		public ShellView() => History = new ShellNavigationHistory();
 
 		/// <summary>Initializes a new instance of the <see cref="ShellView"/> class.</summary>
 		/// <param name="baseInterface">The base interface.</param>
-		internal ShellView(IShellView baseInterface)
-		{
-			iObj = baseInterface;
-			History = new ShellNavigationHistory();
-			Items = new ShellItemArray(GetItemArray(iObj, SVGIO.SVGIO_ALLVIEW));
-		}
+		internal ShellView(IShellView baseInterface) : this() => IShellView = baseInterface;
+
+		/// <summary>Fires when determining if an item should be shown in the view.</summary>
+		[Category("Action"), Description("Filter items in the view.")]
+		public event EventHandler<FilterShellItemEventArgs> FilterItem;
 
 		/// <summary>Fires when the Items collection changes.</summary>
 		[Category("Action"), Description("Items changed.")]
@@ -109,30 +123,48 @@ namespace Vanara.Windows.Shell
 		public event EventHandler SelectionChanged;
 
 		/// <summary>Gets or sets the <see cref="ShellFolder"/> currently being browsed by the <see cref="ShellView"/>.</summary>
-		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public ShellFolder CurrentFolder { get => currentFolder ??= new ShellFolder(GetFolderForView(iObj)); set => Navigate(value); }
+		[Category("Data"), DefaultValue(null), Description("The folder currently being browsed.")]
+		public ShellFolder CurrentFolder
+		{
+			get => currentFolder ??= IShellView is null ? ShellFolder.Desktop : new ShellFolder(GetFolderForView(IShellView));
+			set => Navigate(value);
+		}
 
 		/// <summary>A set of flags that indicate the options for the folder.</summary>
-		public FOLDERFLAGS Flags => iObj.GetCurrentInfo().fFlags;
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public FOLDERFLAGS Flags => IShellView.GetCurrentInfo().fFlags;
 
 		/// <summary>Contains the navigation history of the ExplorerBrowser</summary>
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ShellNavigationHistory History { get; private set; }
 
-		/// <summary>Gets all the items in the view.</summary>
-		/// <value>An array with all the items.</value>
-		public ShellItemArray Items { get; private set; }
+		/// <summary>Gets the underlying <see cref="IShellView"/> instance.</summary>
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public IShellView IShellView
+		{
+			get => iShellView;
+			private set
+			{
+				iShellView = value;
+				//Items = new ShellItemArray(GetItemArray(iShellView, SVGIO.SVGIO_ALLVIEW));
+			}
+		}
+
+		///// <summary>Gets all the items in the view.</summary>
+		///// <value>An array with all the items.</value>
+		//public ShellItemArray Items { get; private set; }
 
 		/// <summary>Gets or sets the currently selected items in the view.</summary>
 		/// <value>An array with the selected items.</value>
-		/// <exception cref="System.ArgumentException">All items must belong to the folder hosted by this view. - SelectedItems</exception>
+		/// <exception cref="ArgumentException">All items must belong to the folder hosted by this view. - SelectedItems</exception>
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ShellItem[] SelectedItems
 		{
-			get => Array.ConvertAll(GetItems(iObj, SVGIO.SVGIO_SELECTION), i => new ShellItem(i));
+			get => Array.ConvertAll(GetItems(IShellView, SVGIO.SVGIO_SELECTION), i => new ShellItem(i));
 			set
 			{
 				// Deselect all
-				iObj.SelectItem(default, SVSIF.SVSI_DESELECTOTHERS);
+				IShellView.SelectItem(default, SVSIF.SVSI_DESELECTOTHERS);
 				if (value is null || value.Length == 0) return;
 				// Get parent folder of view items
 				PIDL pidl = CurrentFolder.PIDL;
@@ -141,18 +173,20 @@ namespace Vanara.Windows.Shell
 					throw new ArgumentException("All items must belong to the folder hosted by this view.", nameof(SelectedItems));
 				// Select all provided
 				foreach (ShellItem item in value)
-					iObj.SelectItem((IntPtr)item.PIDL, SVSIF.SVSI_SELECT);
+					IShellView.SelectItem((IntPtr)item.PIDL, SVSIF.SVSI_SELECT);
 			}
 		}
+
+		/// <summary>Folder view mode.</summary>
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public FOLDERVIEWMODE ViewMode => IShellView.GetCurrentInfo().ViewMode;
 
 		/// <summary>
 		/// Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).
 		/// </summary>
 		/// <returns>The window handle.</returns>
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public HWND WindowHandle => shellViewWindow;
-
-		/// <summary>Folder view mode.</summary>
-		public FOLDERVIEWMODE ViewMode => iObj.GetCurrentInfo().ViewMode;
 
 		/// <summary>Gets the default size of the control.</summary>
 		protected override Size DefaultSize => new Size(250, 200);
@@ -179,24 +213,23 @@ namespace Vanara.Windows.Shell
 		{
 			HWND w1 = HWND.NULL, w2 = HWND.NULL;
 			other?.GetWindow(out w1);
-			iObj?.GetWindow(out w2);
+			IShellView?.GetWindow(out w2);
 			return w1 == w2;
 		}
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-		public override bool Equals(object obj) => ReferenceEquals(this, obj) || (obj is ShellView sv && Equals(sv.iObj)) || (obj is IShellView isv && Equals(isv));
+		public override bool Equals(object obj) => ReferenceEquals(this, obj) || (obj is ShellView sv && Equals(sv.IShellView)) || (obj is IShellView isv && Equals(isv));
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => (int)(IntPtr)WindowHandle;
 
 		/// <summary>
-		/// Clears the Explorer Browser of existing content, fills it with content from the specified container, and adds a new point to the
-		/// Travel Log.
+		/// Clears the view of existing content, fills it with content from the specified container, and adds a new item to the history.
 		/// </summary>
-		/// <param name="folder">The shell container to navigate to.</param>
+		/// <param name="folder">The shell folder to navigate to.</param>
 		public void Navigate(ShellFolder folder)
 		{
 			if (!OnNavigating(folder)) return;
@@ -234,10 +267,27 @@ namespace Vanara.Windows.Shell
 		public void NavigateParent() { if (CurrentFolder != ShellFolder.Desktop) Navigate(CurrentFolder.Parent); }
 
 		/// <summary>Refreshes the view's contents in response to user input.</summary>
-		public override void Refresh() => iObj.Refresh();
+		public override void Refresh() => IShellView.Refresh();
 
 		/// <summary>Saves the Shell's view settings so the current state can be restored during a subsequent browsing session.</summary>
-		public void SaveState() => iObj.SaveViewState();
+		public void SaveState() => IShellView.SaveViewState();
+
+		/// <summary>Called to determine if an item should be shown in the view. Calls the <see cref="FilterItem"/> event if defined.</summary>
+		/// <param name="pidl">The PIDL of the child item.</param>
+		/// <returns><see langword="true"/> if the item should be included (this is the default); otherwise <see langword="false"/>.</returns>
+		protected internal virtual bool IncludeItem(PIDL pidl)
+		{
+			if (FilterItem is null)
+				return true;
+
+			var e = new FilterShellItemEventArgs(ShellItem.Open(CurrentFolder.IShellFolder, pidl));
+			FilterItem?.Invoke(this, e);
+			return e.Include;
+		}
+
+		/// <summary>Raises the <see cref="Control.DoubleClick"/> event.</summary>
+		/// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
+		protected internal new virtual void OnDoubleClick(EventArgs e) => base.OnDoubleClick(e);
 
 		/// <summary>Raises the <see cref="ItemsChanged"/> event.</summary>
 		protected internal virtual void OnItemsChanged() => ItemsChanged?.Invoke(this, EventArgs.Empty);
@@ -287,22 +337,23 @@ namespace Vanara.Windows.Shell
 				}
 				if (iBrowser != null)
 				{
-					Marshal.ReleaseComObject(iBrowser);
+					if (iBrowser.GetType().IsCOMObject)
+						Marshal.ReleaseComObject(iBrowser);
 					iBrowser = null;
 				}
-				if (Items != null)
-				{
-					Items.Dispose();
-					Items = null;
-				}
+				//if (Items != null)
+				//{
+				//	Items.Dispose();
+				//	Items = null;
+				//}
 				if (History != null)
 				{
 					History = null;
 				}
-				if (iObj != null)
+				if (IShellView != null)
 				{
-					Marshal.ReleaseComObject(iObj);
-					iObj = null;
+					Marshal.ReleaseComObject(IShellView);
+					IShellView = null;
 				}
 			}
 			base.Dispose(disposing);
@@ -313,6 +364,7 @@ namespace Vanara.Windows.Shell
 		{
 			base.OnCreateControl();
 			CreateShellView();
+			History.Add(CurrentFolder.PIDL);
 			OnNavigated();
 		}
 
@@ -321,7 +373,8 @@ namespace Vanara.Windows.Shell
 		protected override void OnResize(EventArgs eventargs)
 		{
 			base.OnResize(eventargs);
-			User32.SetWindowPos(shellViewWindow, HWND.HWND_TOP, 0, 0, ClientRectangle.Width, ClientRectangle.Height, 0);
+			if (!shellViewWindow.IsNull)
+				User32.SetWindowPos(shellViewWindow, HWND.HWND_TOP, 0, 0, ClientRectangle.Width, ClientRectangle.Height, 0);
 		}
 
 		/// <summary>Processes Windows messages.</summary>
@@ -356,20 +409,19 @@ namespace Vanara.Windows.Shell
 
 		private static PIDL[] GetItems(IShellView iView, SVGIO uItem)
 		{
-			using ComReleaser<System.Windows.Forms.IDataObject> ido = ComReleaserFactory.Create(iView.GetItemObject<System.Windows.Forms.IDataObject>(uItem));
+			using ComReleaser<IDataObject> ido = ComReleaserFactory.Create(iView.GetItemObject<IDataObject>(uItem));
 			var shdo = new ShellDataObject(ido.Item);
 			return shdo.GetShellIdList();
 		}
 
 		private void CreateShellView()
 		{
-			IShellView prev = iObj;
-			iObj = CreateViewObject(CurrentFolder, Handle);
-			Items = new ShellItemArray(GetItemArray(iObj, SVGIO.SVGIO_ALLVIEW));
+			IShellView prev = IShellView;
+			IShellView = CreateViewObject(CurrentFolder, Handle);
 			try
 			{
-				var fsettings = new FOLDERSETTINGS(ViewMode, Flags);
-				shellViewWindow = iObj.CreateViewWindow(prev, fsettings, Browser, ClientRectangle);
+				var fsettings = prev?.GetCurrentInfo() ?? new FOLDERSETTINGS(ViewMode, Flags);
+				shellViewWindow = IShellView.CreateViewWindow(prev, fsettings, Browser, ClientRectangle);
 			}
 			catch (COMException ex)
 			{
@@ -381,18 +433,23 @@ namespace Vanara.Windows.Shell
 				}
 			}
 
-			iObj.UIActivate(SVUIA.SVUIA_ACTIVATE_NOFOCUS);
+			if (prev != null)
+			{
+				prev.UIActivate(SVUIA.SVUIA_DEACTIVATE);
+				prev.DestroyViewWindow();
+				Marshal.ReleaseComObject(prev);
+			}
+
+			IShellView.UIActivate(SVUIA.SVUIA_ACTIVATE_NOFOCUS);
 
 			if (DesignMode) User32.EnableWindow(shellViewWindow, false);
-
-			if (prev != null) prev.DestroyViewWindow();
 		}
 
 		private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
 		private void RecreateShellView()
 		{
-			if (iObj != null)
+			if (IShellView != null)
 			{
 				CreateShellView();
 				OnNavigated();
