@@ -1,95 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8EDF4429-251A-416D-BB68-93F227191BCF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>UnitTest.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <TargetFramework>net472</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\PInvoke\Shared\WinDef\RECT.cs">
-      <Link>RECT.cs</Link>
-    </Compile>
-    <Compile Include="Collections\EventedListTests.cs" />
-    <Compile Include="Collections\HashSet2.0Tests.cs" />
-    <Compile Include="Collections\HistoryTests.cs" />
-    <Compile Include="Collections\HierarchyTests.cs" />
-    <Compile Include="Collections\SparseArrayTests.cs" />
-    <Compile Include="Extensions\EnumExtensionsTests.cs" />
-    <Compile Include="Extensions\EnumFlagIndexerTests.cs" />
-    <Compile Include="Extensions\FileTimeExtensionsTests.cs" />
-    <Compile Include="Extensions\InteropExtensionsTests.cs" />
-    <Compile Include="Extensions\IOExtensionsTests.cs" />
-    <Compile Include="Extensions\ReflectionExtensionsTests.cs" />
-    <Compile Include="Extensions\StringHelperTests.cs" />
-    <Compile Include="InteropServices\GenericSafeHandleTests.cs" />
-    <Compile Include="InteropServices\MarshalingStreamTests.cs" />
-    <Compile Include="InteropServices\NativeMemoryStreamTests.cs" />
-    <Compile Include="InteropServices\PinnedObjectTests.cs" />
-    <Compile Include="InteropServices\SafeByteArrayTests.cs" />
-    <Compile Include="InteropServices\SafeCoTaskMemHandleTests.cs" />
-    <Compile Include="InteropServices\SafeCoTaskMemStringTests.cs" />
-    <Compile Include="InteropServices\SafeHGlobalHandleTests.cs" />
-    <Compile Include="InteropServices\SafeMemStructTests.cs" />
-    <Compile Include="InteropServices\StrPtrTests.cs" />
+    <Compile Include="..\..\PInvoke\Shared\WinDef\RECT.cs" Link="RECT.cs" />
     <None Include="InteropServices\StructMarshalerTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj">
-      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
-      <Name>Vanara.Core</Name>
-    </ProjectReference>
+    <Compile Remove="InteropServices\StructMarshalerTests.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NUnit">
-      <Version>3.12.0</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit3TestAdapter">
-      <Version>3.16.1</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -1,90 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CCEE0CAA-27BF-43B3-8609-2279BEDA3F61}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>UnitTest.PInvoke.CldApi</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <TargetFramework>net472</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Vanara.Core.csproj">
-      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
-      <Name>Vanara.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\CldApi\Vanara.PInvoke.CldApi.csproj">
-      <Project>{ddfcbc19-b6ce-4dd4-a1bb-96ee86c54d93}</Project>
-      <Name>Vanara.PInvoke.CldApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
-      <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
-      <Name>Vanara.PInvoke.Kernel32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\SearchApi\Vanara.PInvoke.SearchApi.csproj">
-      <Project>{07cd630d-a4bd-45cb-bf1b-90e981f4de81}</Project>
-      <Name>Vanara.PInvoke.SearchApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
-      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
-      <Name>Vanara.PInvoke.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CSharpRunner\Shared.csproj">
-      <Project>{a96cff10-0967-429a-8700-4a86c97c5603}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\CldApi\Vanara.PInvoke.CldApi.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\SearchApi\Vanara.PInvoke.SearchApi.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.19041.1</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit">
-      <Version>3.12.0</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit3TestAdapter">
-      <Version>3.16.1</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CldApiTests.cs" />
-    <Compile Include="CloudSyncProvider.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

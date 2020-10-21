@@ -1,7 +1,7 @@
 ## Correlation report for kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
 PInvoke API (methods, structures and constants) imported from Windows Kernel32.dll.
 
-### Methods (99% complete, 1110 of 1112 functions)  
+### Methods (99% complete, 1112 of 1113 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -49,6 +49,7 @@ Native Method | Native DLL | Header | Managed Method
 [CancelWaitableTimer](https://www.google.com/search?num=5&q=CancelWaitableTimer+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CancelWaitableTimer](https://github.com/dahall/Vanara/search?l=C%23&q=CancelWaitableTimer)  
 [CeipIsOptedIn](https://www.google.com/search?num=5&q=CeipIsOptedIn+site%3Adocs.microsoft.com) | kernel32.dll | windowsceip.h | [Vanara.PInvoke.Kernel32.CeipIsOptedIn](https://github.com/dahall/Vanara/search?l=C%23&q=CeipIsOptedIn)  
 [ChangeTimerQueueTimer](https://www.google.com/search?num=5&q=ChangeTimerQueueTimer+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ChangeTimerQueueTimer](https://github.com/dahall/Vanara/search?l=C%23&q=ChangeTimerQueueTimer)  
+[CheckIsMSIXPackage](https://www.google.com/search?num=5&q=CheckIsMSIXPackage+site%3Adocs.microsoft.com) | kernelbase.dll |  |   
 [CheckNameLegalDOS8Dot3](https://www.google.com/search?num=5&q=CheckNameLegalDOS8Dot3A+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CheckNameLegalDOS8Dot3](https://github.com/dahall/Vanara/search?l=C%23&q=CheckNameLegalDOS8Dot3)  
 [CheckRemoteDebuggerPresent](https://www.google.com/search?num=5&q=CheckRemoteDebuggerPresent+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CheckRemoteDebuggerPresent](https://github.com/dahall/Vanara/search?l=C%23&q=CheckRemoteDebuggerPresent)  
 [ClearCommBreak](https://www.google.com/search?num=5&q=ClearCommBreak+site%3Adocs.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ClearCommBreak](https://github.com/dahall/Vanara/search?l=C%23&q=ClearCommBreak)  
@@ -649,7 +650,7 @@ Native Method | Native DLL | Header | Managed Method
 [IsSystemResumeAutomatic](https://www.google.com/search?num=5&q=IsSystemResumeAutomatic+site%3Adocs.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.IsSystemResumeAutomatic](https://github.com/dahall/Vanara/search?l=C%23&q=IsSystemResumeAutomatic)  
 [IsThreadAFiber](https://www.google.com/search?num=5&q=IsThreadAFiber+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsThreadAFiber](https://github.com/dahall/Vanara/search?l=C%23&q=IsThreadAFiber)  
 [IsThreadpoolTimerSet](https://www.google.com/search?num=5&q=IsThreadpoolTimerSet+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsThreadpoolTimerSet](https://github.com/dahall/Vanara/search?l=C%23&q=IsThreadpoolTimerSet)  
-[IsUserCetAvailableInEnvironment](https://www.google.com/search?num=5&q=IsUserCetAvailableInEnvironment+site%3Adocs.microsoft.com) | kernel32.dll |  |   
+[IsUserCetAvailableInEnvironment](https://www.google.com/search?num=5&q=IsUserCetAvailableInEnvironment+site%3Adocs.microsoft.com) | kernel32.dll | sysinfoapi.h | [Vanara.PInvoke.Kernel32.IsUserCetAvailableInEnvironment](https://github.com/dahall/Vanara/search?l=C%23&q=IsUserCetAvailableInEnvironment)  
 [IsValidCodePage](https://www.google.com/search?num=5&q=IsValidCodePage+site%3Adocs.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidCodePage](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidCodePage)  
 [IsValidLanguageGroup](https://www.google.com/search?num=5&q=IsValidLanguageGroup+site%3Adocs.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidLanguageGroup](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidLanguageGroup)  
 [IsValidLocale](https://www.google.com/search?num=5&q=IsValidLocale+site%3Adocs.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsValidLocale](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidLocale)  
@@ -934,7 +935,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetProcessAffinityUpdateMode](https://www.google.com/search?num=5&q=SetProcessAffinityUpdateMode+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessAffinityUpdateMode](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessAffinityUpdateMode)  
 [SetProcessDefaultCpuSets](https://www.google.com/search?num=5&q=SetProcessDefaultCpuSets+site%3Adocs.microsoft.com) | kernel32.dll | Processthreadapi.h | [Vanara.PInvoke.Kernel32.SetProcessDefaultCpuSets](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessDefaultCpuSets)  
 [SetProcessDEPPolicy](https://www.google.com/search?num=5&q=SetProcessDEPPolicy+site%3Adocs.microsoft.com) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.SetProcessDEPPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessDEPPolicy)  
-[SetProcessDynamicEHContinuationTargets](https://www.google.com/search?num=5&q=SetProcessDynamicEHContinuationTargets+site%3Adocs.microsoft.com) | kernel32.dll |  |   
+[SetProcessDynamicEHContinuationTargets](https://www.google.com/search?num=5&q=SetProcessDynamicEHContinuationTargets+site%3Adocs.microsoft.com) | kernel32.dll | processthreadsapi.h | [Vanara.PInvoke.Kernel32.SetProcessDynamicEHContinuationTargets](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessDynamicEHContinuationTargets)  
 [SetProcessInformation](https://www.google.com/search?num=5&q=SetProcessInformation+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.SetProcessInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessInformation)  
 [SetProcessMitigationPolicy](https://www.google.com/search?num=5&q=SetProcessMitigationPolicy+site%3Adocs.microsoft.com) | kernel32.dll | Processthreadsapi.h | [Vanara.PInvoke.Kernel32.SetProcessMitigationPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessMitigationPolicy)  
 [SetProcessPreferredUILanguages](https://www.google.com/search?num=5&q=SetProcessPreferredUILanguages+site%3Adocs.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.SetProcessPreferredUILanguages](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessPreferredUILanguages)  
@@ -1346,6 +1347,7 @@ Native Structure | Header | Managed Structure
 [PollContinue](https://www.google.com/search?num=5&q=PollContinue+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.COPYFILE2_MESSAGE.PollContinue](https://github.com/dahall/Vanara/search?l=C%23&q=PollContinue)  
 [PROC_THREAD_ATTRIBUTE](https://www.google.com/search?num=5&q=PROC_THREAD_ATTRIBUTE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.PROC_THREAD_ATTRIBUTE](https://github.com/dahall/Vanara/search?l=C%23&q=PROC_THREAD_ATTRIBUTE)  
 [Process](https://www.google.com/search?num=5&q=Process+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Kernel32.PSS_HANDLE_ENTRY.Process](https://github.com/dahall/Vanara/search?l=C%23&q=Process)  
+[PROCESS_DYNAMIC_EH_CONTINUATION_TARGET](https://www.google.com/search?num=5&q=PROCESS_DYNAMIC_EH_CONTINUATION_TARGET+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.Kernel32.PROCESS_DYNAMIC_EH_CONTINUATION_TARGET](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_DYNAMIC_EH_CONTINUATION_TARGET)  
 [PROCESS_HEAP_ENTRY](https://www.google.com/search?num=5&q=PROCESS_HEAP_ENTRY+site%3Adocs.microsoft.com) | WinBase.h | [Vanara.PInvoke.Kernel32.PROCESS_HEAP_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_HEAP_ENTRY)  
 [PROCESS_INFORMATION](https://www.google.com/search?num=5&q=PROCESS_INFORMATION+site%3Adocs.microsoft.com) | WinBase.h | [Vanara.PInvoke.Kernel32.PROCESS_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_INFORMATION)  
 [PROCESS_MEMORY_COUNTERS](https://www.google.com/search?num=5&q=PROCESS_MEMORY_COUNTERS+site%3Adocs.microsoft.com) | psapi.h | [Vanara.PInvoke.Kernel32.PROCESS_MEMORY_COUNTERS](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_MEMORY_COUNTERS)  

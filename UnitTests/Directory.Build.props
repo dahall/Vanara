@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Product>Vanara</Product>
+  </PropertyGroup>
+</Project>

@@ -25,6 +25,7 @@ Struct | Description
 ### Interfaces
 Interface | Description
 ---- | ----
+[Vanara.Collections.IHistory<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IHistory<T>) | Provides an interface for a history of items.
 [Vanara.InteropServices.IMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=IMemoryMethods) | Interface to capture unmanaged memory methods.
 [Vanara.InteropServices.ISafeMemoryHandle](https://github.com/dahall/Vanara/search?l=C%23&q=ISafeMemoryHandle) | Interface for classes that support safe memory pointers.
 [Vanara.InteropServices.ISimpleMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=ISimpleMemoryMethods) | Interface to capture unmanaged simple (alloc/free) memory methods.
@@ -52,6 +53,7 @@ Class | Description
 [Vanara.Collections.GenericVirtualReadOnlyDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=GenericVirtualReadOnlyDictionary<T>) | A generic class that creates a read-only dictionary from a list and getter function.
 [Vanara.Extensions.HexDempHelpers](https://github.com/dahall/Vanara/search?l=C%23&q=HexDempHelpers) | Extension to dump a byte array.
 [Vanara.InteropServices.HGlobalMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=HGlobalMemoryMethods) | Unmanaged memory methods for HGlobal.
+[Vanara.Collections.History<T>](https://github.com/dahall/Vanara/search?l=C%23&q=History<T>) | Provides a history of items that lives efficiently in memory and whose size can change easily.
 [Vanara.Extensions.InteropExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=InteropExtensions) | Extension methods for System.Runtime.InteropServices.
 [Vanara.InteropServices.IntPtrConverter](https://github.com/dahall/Vanara/search?l=C%23&q=IntPtrConverter) | Functions to safely convert a memory pointer to a type.
 [Vanara.Extensions.IOExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=IOExtensions) | Extensions for classes in System.IO.

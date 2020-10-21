@@ -744,7 +744,6 @@ Native Structure | Header | Managed Structure
 [PROPBAG2](https://www.google.com/search?num=5&q=PROPBAG2+site%3Adocs.microsoft.com) | Ocidl.h | [Vanara.PInvoke.OleAut32.PROPBAG2](https://github.com/dahall/Vanara/search?l=C%23&q=PROPBAG2)  
 [PROPERTYKEY](https://www.google.com/search?num=5&q=PROPERTYKEY+site%3Adocs.microsoft.com) | wtypes.h | [Vanara.PInvoke.Ole32.PROPERTYKEY](https://github.com/dahall/Vanara/search?l=C%23&q=PROPERTYKEY)  
 [PROPSPEC](https://www.google.com/search?num=5&q=PROPSPEC+site%3Adocs.microsoft.com) | propidl.h | [Vanara.PInvoke.Ole32.PROPSPEC](https://github.com/dahall/Vanara/search?l=C%23&q=PROPSPEC)  
-[PROPSPECunion](https://www.google.com/search?num=5&q=PROPSPECunion+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPSPEC.PROPSPECunion](https://github.com/dahall/Vanara/search?l=C%23&q=PROPSPECunion)  
 [PROPVARIANT](https://www.google.com/search?num=5&q=PROPVARIANT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPVARIANT](https://github.com/dahall/Vanara/search?l=C%23&q=PROPVARIANT)  
 [PROPVARIANT_IMMUTABLE](https://www.google.com/search?num=5&q=PROPVARIANT_IMMUTABLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPVARIANT_IMMUTABLE](https://github.com/dahall/Vanara/search?l=C%23&q=PROPVARIANT_IMMUTABLE)  
 [QUERYCONTEXT](https://www.google.com/search?num=5&q=QUERYCONTEXT+site%3Adocs.microsoft.com) | wtypes.h | [Vanara.PInvoke.Ole32.QUERYCONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=QUERYCONTEXT)  

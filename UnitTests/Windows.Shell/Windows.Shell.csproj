@@ -1,115 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2616C074-DF6C-47D4-BE82-6768885ACAC9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>UnitTest.Windows.Shell</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NUnit">
-      <Version>3.12.0</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit3TestAdapter">
-      <Version>3.16.1</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <ProjectReference Include="..\..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
+    <ProjectReference Include="..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj" />
+    <ProjectReference Include="..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
+    <ProjectReference Include="..\..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
+    <ProjectReference Include="..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
+    <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="RecycleBinTests.cs" />
-    <Compile Include="BindContextTests.cs" />
-    <Compile Include="ClipboardTests.cs" />
-    <Compile Include="ResourceTests.cs" />
-    <Compile Include="ShellViewTests.cs" />
-    <Compile Include="WallpaperTests.cs" />
-    <Compile Include="ShellLinkTests.cs" />
-    <Compile Include="ShellSearchTests.cs" />
-    <Compile Include="ControlPanelTests.cs" />
-    <Compile Include="ShellAssocTests.cs" />
-    <Compile Include="ShellFileOperationsTests.cs" />
-    <Compile Include="ShellFolderTests.cs" />
-    <Compile Include="ShellItemPropStoreTests.cs" />
-    <Compile Include="ShellItemTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj">
-      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
-      <Name>Vanara.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj">
-      <Project>{291af9b0-51e8-4e4a-972b-77310a7a0c06}</Project>
-      <Name>Vanara.PInvoke.ComCtl32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
-      <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
-      <Name>Vanara.PInvoke.Kernel32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj">
-      <Project>{bbe4a7d6-0b24-4f58-9726-e05f358c1256}</Project>
-      <Name>Vanara.PInvoke.Ole</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
-      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
-      <Name>Vanara.PInvoke.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj">
-      <Project>{3226020f-4c9d-41b3-ac8a-2bc9fd064cd8}</Project>
-      <Name>Vanara.PInvoke.Shell32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj">
-      <Project>{30fd6779-6549-449e-880a-695815eb89b0}</Project>
-      <Name>Vanara.PInvoke.ShlwApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj">
-      <Project>{a6771907-addc-49fc-8444-a97aa65e77e2}</Project>
-      <Name>Vanara.PInvoke.User32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj">
-      <Project>{43685be2-a65e-4b01-be16-479526940f23}</Project>
-      <Name>Vanara.Windows.Shell</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CSharpRunner\Shared.csproj">
-      <Project>{a96cff10-0967-429a-8700-4a86c97c5603}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

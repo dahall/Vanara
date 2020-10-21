@@ -33,7 +33,7 @@
     <DeterministicSourcePaths>$(CIBUILD)</DeterministicSourcePaths>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Condition="!$(MSBuildProjectDirectory.Contains('UnitTests'))" Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
   </ItemGroup>
   <!-- END: Source Link configuration. -->

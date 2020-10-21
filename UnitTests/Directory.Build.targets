@@ -1,5 +1,16 @@
 <Project>
   <PropertyGroup>
     <DocumentationFile/>
+    <IsPackable>false</IsPackable>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Condition="!$(MSBuildProjectDirectory.EndsWith('CSharpRunner'))" Include="$(MSBuildThisFileDirectory)CSharpRunner\Shared.csproj" />
+  </ItemGroup>
 </Project>

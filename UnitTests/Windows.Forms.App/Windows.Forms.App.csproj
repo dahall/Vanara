@@ -1,105 +1,50 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AssemblyName>Windows.Forms.App</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net472</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <AssemblyTitle>Windows.Forms.App</AssemblyTitle>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Update="Form1.cs" />
+    <Compile Update="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Update="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Update="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj">
-      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
-      <Name>Vanara.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
-      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
-      <Name>Vanara.PInvoke.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj">
-      <Project>{3226020f-4c9d-41b3-ac8a-2bc9fd064cd8}</Project>
-      <Name>Vanara.PInvoke.Shell32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj">
-      <Project>{30FD6779-6549-449E-880A-695815EB89B0}</Project>
-      <Name>Vanara.PInvoke.ShlwApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Windows.Forms\Vanara.Windows.Forms.csproj">
-      <Project>{51986cd3-eeda-4369-93a4-255512548f68}</Project>
-      <Name>Vanara.Windows.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj">
-      <Project>{43685be2-a65e-4b01-be16-479526940f23}</Project>
-      <Name>Vanara.Windows.Shell</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
+    <ProjectReference Include="..\..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
+    <ProjectReference Include="..\..\Windows.Forms\Vanara.Windows.Forms.csproj" />
+    <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

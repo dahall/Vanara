@@ -1,125 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C580868E-D913-454C-BF9B-CAFE3BD28DF0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>UnitTest.PInvoke.Security</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <TargetFramework>net472</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Win32Resource>C:\Users\dahall\Documents\Visual Studio 2017\Projects\Windows-classic-samples\Win7Samples\winbase\PerfCounters\Basic\CPP\ucsCounters.res</Win32Resource>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdvApi32\EventRecordEventArgs.cs" />
-    <Compile Include="AdvApi32\EventTraceController.cs" />
-    <Compile Include="AdvApi32\EventTraceLogs.cs" />
-    <Compile Include="AdvApi32\WinSaferTests.cs" />
-    <Compile Include="AdvApi32\WinRegTests.cs" />
-    <Compile Include="AdvApi32\WinEfsTests.cs" />
-    <Compile Include="AdvApi32\WinCredTests.cs" />
-    <Compile Include="AdvApi32\WinBase_EventLogTests.cs" />
-    <Compile Include="AdvApi32\WinBaseTests.cs" />
-    <Compile Include="AdvApi32\wctTests.cs" />
-    <Compile Include="AdvApi32\EvnTraceTests.cs" />
-    <Compile Include="AdvApi32\EvntProvTests.cs" />
-    <Compile Include="AdvApi32\AdvApi32Tests.cs" />
-    <Compile Include="AdvApi32\AclApiTests.cs" />
-    <Compile Include="AdvApi32\AuditTests.cs" />
-    <Compile Include="AdvApi32\AppMgmtTests.cs" />
-    <Compile Include="AdvApi32\ProviderInfo.cs" />
-    <Compile Include="AdvApi32\LsaTests.cs" />
-    <Compile Include="AdvApi32\PerfLibTests.cs" />
-    <Compile Include="AdvApi32\ProcessThreadsApiTests.cs" />
-    <Compile Include="AdvApi32\SddlTests.cs" />
-    <Compile Include="AdvApi32\SecurityBaseApiTests.cs" />
-    <Compile Include="AdvApi32\WinSvcTests.cs" />
-    <Compile Include="AdvApi32\PSIDTests.cs" />
-    <Compile Include="AdvApi32\EventTraceSession.cs" />
-    <Compile Include="Authz\AuthzTests.cs" />
-    <Compile Include="Secur32\SaslTests.cs" />
-    <Compile Include="Secur32\SspiTests.cs" />
-    <Compile Include="Secur32\Secur32Tests.cs" />
-    <Compile Include="Schannel\SchannelTests.cs" />
-    <Compile Include="SecurityTests.cs" />
+    <ProjectReference Include="..\..\..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Vanara.Core.csproj">
-      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
-      <Name>Vanara.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj">
-      <Project>{1f0b972a-06da-4f6a-8b60-87d76fb1f2d9}</Project>
-      <Name>Vanara.PInvoke.CredUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj">
-      <Project>{b0df2976-be60-4856-a634-5487222360b2}</Project>
-      <Name>Vanara.PInvoke.Cryptography</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
-      <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
-      <Name>Vanara.PInvoke.Kernel32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj">
-      <Project>{392a14b0-1e10-4e88-9c13-0d965665ffb5}</Project>
-      <Name>Vanara.PInvoke.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
-      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
-      <Name>Vanara.PInvoke.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CSharpRunner\Shared.csproj">
-      <Project>{a96cff10-0967-429a-8700-4a86c97c5603}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <PackageReference Include="NUnit">
-      <Version>3.12.0</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit3TestAdapter">
-      <Version>3.16.1</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
