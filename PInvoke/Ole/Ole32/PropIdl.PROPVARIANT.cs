@@ -622,8 +622,8 @@ namespace Vanara.PInvoke
 						Marshal.FreeCoTaskMem(_blob.pBlobData);
 						break;
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR:
-						foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
-							Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(ptr));
+						//foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
+						//	Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(ptr));
 						Marshal.FreeCoTaskMem(_blob.pBlobData);
 						break;
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_I1:
@@ -748,7 +748,7 @@ namespace Vanara.PInvoke
 
 				if (array is IEnumerable<T> iet) return iet;
 
-				conv = conv ?? (o => (T)Convert.ChangeType(o, typeof(T)));
+				conv ??= (o => (T)Convert.ChangeType(o, typeof(T)));
 
 				try
 				{
@@ -826,13 +826,13 @@ namespace Vanara.PInvoke
 
 			private string GetString(VarEnum ve) => GetString(ve, _ptr);
 
-			private IEnumerable<string> GetStringVector()
+			private string[] GetStringVector()
 			{
 				var ve = (VarEnum)((int)vt & 0x0FFF);
 				if (ve == VarEnum.VT_LPSTR)
-					return _blob.pBlobData.ToStringEnum((int)_blob.cbSize, CharSet.Ansi);
-				PropVariantToStringVectorAlloc(this, out var mem, out var cnt).ThrowIfFailed();
-				return mem.ToStringEnum((int)cnt, CharSet.Unicode);
+					return _blob.pBlobData.ToStringEnum((int)_blob.cbSize, CharSet.Ansi).ToArray();
+				PropVariantToStringVector(this, out var vals).ThrowIfFailed();
+				return vals;
 			}
 
 			private object GetValue()
@@ -945,7 +945,7 @@ namespace Vanara.PInvoke
 				}
 			}
 
-			private IEnumerable<T> GetVector<T>() => vt.IsFlagSet(VARTYPE.VT_VECTOR) ? (_blob.cbSize <= 0 ? new T[0] : _blob.pBlobData.ToIEnum<T>((int)_blob.cbSize)) : throw new InvalidCastException();
+			private IEnumerable<T> GetVector<T>() => vt.IsFlagSet(VARTYPE.VT_VECTOR) ? (_blob.cbSize <= 0 ? new T[0] : _blob.pBlobData.ToArray<T>((int)_blob.cbSize)) : throw new InvalidCastException();
 
 			private void SetSafeArray(IList<object> array)
 			{
