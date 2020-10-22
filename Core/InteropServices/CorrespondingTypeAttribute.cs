@@ -183,7 +183,7 @@ namespace Vanara.InteropServices
 		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForEnum<TEnum>(TEnum value, CorrespondingAction action = (CorrespondingAction)0xf) where TEnum : System.Enum
 		{
 			var valueType = value.GetType();
-			var attr = valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>(false, a => a.Action.HasFlag(action));
+			var attr = valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>(false, a => (a.Action & action) > 0);
 			if (attr.Any(a => a.Action == CorrespondingAction.Exception)) throw new Exception();
 			//if (!attr.Any()) return new CorrespondingTypeAttribute[0];
 			return attr;
