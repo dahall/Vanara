@@ -149,11 +149,7 @@ namespace Vanara.Windows.Shell
 		/// in a return value of E_NOTIMPL.
 		/// </para>
 		/// </remarks>
-		public IEnumerable<string> EnumObjectParam()
-		{
-			((IBindCtxV)this).EnumObjectParam(out var ppenum).ThrowIfFailed();
-			return ppenum.Enum().ToArray();
-		}
+		public IEnumerable<string> EnumObjectParam() => ((IBindCtxV)this).EnumObjectParam(out var ppenum).Succeeded ? ppenum.Enum().ToArray() : new string[0];
 
 		/// <summary>
 		/// Retrieves an interface pointer to the object associated with the specified key in the bind context's string-keyed table of pointers.
