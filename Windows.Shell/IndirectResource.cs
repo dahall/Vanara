@@ -22,7 +22,7 @@ namespace Vanara.Windows.Shell
 		{
 			if (module is null) throw new ArgumentNullException(nameof(module));
 			if (resourceIdOrIndex == 0) throw new ArgumentOutOfRangeException(nameof(resourceIdOrIndex), "Value cannot be 0.");
-			RawValue = $"{module},{resourceIdOrIndex}" + (versionModifier is null ? "" : ';' + versionModifier);
+			RawValue = $"@{module},{resourceIdOrIndex}" + (versionModifier is null ? "" : ';' + versionModifier);
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="IndirectResource"/> class.</summary>
