@@ -935,6 +935,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the error text associated with the error. Call the CoTaskMemFree function to free
 			/// ppErrorDescription when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetErrorDescription([In] uint LanguageId);
 
 			/// <summary>Retrieves the description of the context in which the error occurred.</summary>
@@ -949,6 +950,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the description of the context in which the error occurred. Call the CoTaskMemFree
 			/// function to free ppContextDescription when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetErrorContextDescription([In] uint LanguageId);
 
 			/// <summary>
@@ -959,6 +961,7 @@ namespace Vanara.PInvoke
 			/// and "file" for the SMB protocol. The ppProtocol parameter is set to NULL if the error is not related to the transfer
 			/// protocol. Call the CoTaskMemFree function to free ppProtocol when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetProtocol();
 		}
 
@@ -979,6 +982,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
@@ -986,6 +990,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
@@ -1014,6 +1019,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
@@ -1021,6 +1027,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
@@ -1062,6 +1069,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
@@ -1069,6 +1077,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
@@ -1097,6 +1106,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path of the temporary file. Call the CoTaskMemFree function to free ppFileName
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetTemporaryName();
 
 			/// <summary>Sets the validation state of this file.</summary>
@@ -1130,6 +1140,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
@@ -1137,6 +1148,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
@@ -1165,6 +1177,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path of the temporary file. Call the CoTaskMemFree function to free ppFileName
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetTemporaryName();
 
 			/// <summary>Sets the validation state of this file.</summary>
@@ -1203,6 +1216,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
@@ -1210,6 +1224,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
@@ -1238,6 +1253,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path of the temporary file. Call the CoTaskMemFree function to free ppFileName
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetTemporaryName();
 
 			/// <summary>Sets the validation state of this file.</summary>
@@ -1285,6 +1301,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
@@ -1292,6 +1309,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
@@ -1320,6 +1338,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path of the temporary file. Call the CoTaskMemFree function to free ppFileName
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetTemporaryName();
 
 			/// <summary>Sets the validation state of this file.</summary>
@@ -1519,6 +1538,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
@@ -1533,6 +1553,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
@@ -1547,6 +1568,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetDescription();
 
 			/// <summary>
@@ -1786,6 +1808,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
@@ -1800,6 +1823,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
@@ -1814,6 +1838,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetDescription();
 
 			/// <summary>
@@ -2014,6 +2039,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path to the reply file. Call the CoTaskMemFree function to free pReplyFileName
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetReplyFileName();
 
 			/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
@@ -2142,6 +2168,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
@@ -2156,6 +2183,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
@@ -2170,6 +2198,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetDescription();
 
 			/// <summary>
@@ -2370,6 +2399,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path to the reply file. Call the CoTaskMemFree function to free pReplyFileName
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetReplyFileName();
 
 			/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
@@ -2530,6 +2560,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
@@ -2544,6 +2575,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
@@ -2558,6 +2590,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetDescription();
 
 			/// <summary>
@@ -2758,6 +2791,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path to the reply file. Call the CoTaskMemFree function to free pReplyFileName
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetReplyFileName();
 
 			/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
@@ -2961,6 +2995,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
@@ -2975,6 +3010,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
@@ -2989,6 +3025,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetDescription();
 
 			/// <summary>
@@ -3189,6 +3226,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path to the reply file. Call the CoTaskMemFree function to free pReplyFileName
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetReplyFileName();
 
 			/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
@@ -3437,6 +3475,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the custom headers. Each header is terminated by a carriage return and line feed (CR/LF)
 			/// character. To free the string when finished, call the CoTaskMemFree function.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetCustomHeaders();
 
 			/// <summary>
@@ -3521,6 +3560,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a description of the error. Call the CoTaskMemFree function to free ppErrorDescription
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetErrorDescription([In] HRESULT hResult, [In] uint LanguageId);
 		}
 
@@ -3538,6 +3578,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the server principal name of the peer. The principal name is of the form,
 			/// server$.domain.suffix. Call the CoTaskMemFree function to free pName when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetPeerName();
 
 			/// <summary>Determines whether the peer is authenticated.</summary>
@@ -3667,6 +3708,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the origin URL of the cached file. Call the CoTaskMemFree function to free ppOriginUrl
 			/// when done.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetOriginUrl();
 
 			/// <summary>Gets the size of the file.</summary>
@@ -3754,6 +3796,7 @@ namespace Vanara.PInvoke
 			/// Returns the SID that is retrieved from the TokenInformation parameter of the GetTokenInformation function. If no SID is
 			/// retrieved, this parameter is set to NULL.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetHelperTokenSid();
 		}
 

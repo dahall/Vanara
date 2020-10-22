@@ -655,7 +655,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getnamespaces HRESULT GetNamespaces(
 			// LPWSTR **prefixes, LPWSTR **namespaces, UINT32 *count );
-			void GetNamespaces(out string prefixes, out string namespaces, out uint count);
+			void GetNamespaces([MarshalAs(UnmanagedType.LPWStr)] out string prefixes, [MarshalAs(UnmanagedType.LPWStr)] out string namespaces, out uint count);
 
 			/// <summary>Gets the value of the <c>Id</c> attribute from the <c>Signature</c> element of the signature markup.</summary>
 			/// <returns>
@@ -672,6 +672,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getsignatureid HRESULT GetSignatureId(
 			// LPWSTR *signatureId );
+			[return: MarshalAs(UnmanagedType.LPWStr)] 
 			string GetSignatureId();
 
 			/// <summary>Gets the part name of the part that contains the signature markup.</summary>
@@ -722,6 +723,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getsignaturemethod HRESULT
 			// GetSignatureMethod( LPWSTR *signatureMethod );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetSignatureMethod();
 
 			/// <summary>Gets the canonicalization method that was applied to the <c>SignedInfo</c> element of the serialized signature.</summary>
@@ -815,6 +817,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getsigningtime HRESULT GetSigningTime(
 			// LPWSTR *signingTime );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetSigningTime();
 
 			/// <summary>Gets the format of the string returned by the GetSigningTime method.</summary>
@@ -2022,6 +2025,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcpart-getcontenttype HRESULT GetContentType( LPWSTR
 			// *contentType );
+			[return: MarshalAs(UnmanagedType.LPWStr)] 
 			string GetContentType();
 
 			/// <summary>Gets a value that describes the way part content is compressed.</summary>
@@ -3262,6 +3266,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationship-getid HRESULT GetId( LPWSTR
 			// *relationshipIdentifier );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetId();
 
 			/// <summary>Gets the relationship type.</summary>
@@ -3288,6 +3293,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationship-getrelationshiptype HRESULT
 			// GetRelationshipType( LPWSTR *relationshipType );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetRelationshipType();
 
 			/// <summary>Gets the URI of the relationship source.</summary>
@@ -3682,6 +3688,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationshipselector-getselectioncriterion HRESULT
 			// GetSelectionCriterion( LPWSTR *selectionCriterion );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetSelectionCriterion();
 		}
 
@@ -4614,6 +4621,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturepartreference-getcontenttype HRESULT
 			// GetContentType( LPWSTR *contentType );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetContentType();
 
 			/// <summary>Gets the digest method to use on part content of the referenced part when the part is signed.</summary>
@@ -4625,6 +4633,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturepartreference-getdigestmethod HRESULT
 			// GetDigestMethod( LPWSTR *digestMethod );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetDigestMethod();
 
 			/// <summary>Gets the digest value that is calculated for part content of the referenced part when the part is signed.</summary>
@@ -4962,6 +4971,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-getid HRESULT GetId( LPWSTR
 			// *referenceId );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetId();
 
 			/// <summary>Gets the URI of the referenced XML element.</summary>
@@ -5020,6 +5030,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-gettype HRESULT GetType( LPWSTR
 			// *type );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetType();
 
 			/// <summary>Gets the canonicalization method to use on the referenced XML element, when the element is signed.</summary>
@@ -5037,6 +5048,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-getdigestmethod HRESULT
 			// GetDigestMethod( LPWSTR *digestMethod );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetDigestMethod();
 
 			/// <summary>Gets the digest value that is calculated for the referenced XML element when the element is signed.</summary>
@@ -5392,6 +5404,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturerelationshipreference-getdigestmethod HRESULT
 			// GetDigestMethod( LPWSTR *digestMethod );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetDigestMethod();
 
 			/// <summary>Gets the digest value calculated for the selected relationships when they are signed.</summary>
@@ -5860,6 +5873,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getsignatureid HRESULT GetSignatureId(
 			// LPWSTR *signatureId );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetSignatureId();
 
 			/// <summary>Sets the value of the <c>Id</c> attribute of the <c>Signature</c> element.</summary>
@@ -5912,6 +5926,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getsignaturemethod HRESULT
 			// GetSignatureMethod( LPWSTR *signatureMethod );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetSignatureMethod();
 
 			/// <summary>
@@ -5961,6 +5976,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getdefaultdigestmethod HRESULT
 			// GetDefaultDigestMethod( LPWSTR *digestMethod );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetDefaultDigestMethod();
 
 			/// <summary>Sets the default digest method that will be used to compute digest values for objects to be signed.</summary>

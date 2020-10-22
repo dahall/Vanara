@@ -328,6 +328,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the text currently entered in the dialog's File name edit box.</summary>
 			/// <returns>The address of a pointer to a buffer that, when this method returns successfully, receives the text.</returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetFileName();
 
 			/// <summary>Sets the title of the dialog.</summary>
@@ -469,6 +470,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the text currently entered in the dialog's File name edit box.</summary>
 			/// <returns>The address of a pointer to a buffer that, when this method returns successfully, receives the text.</returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetFileName();
 
 			/// <summary>Sets the title of the dialog.</summary>
@@ -904,6 +906,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the text currently entered in the dialog's File name edit box.</summary>
 			/// <returns>The address of a pointer to a buffer that, when this method returns successfully, receives the text.</returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetFileName();
 
 			/// <summary>Sets the title of the dialog.</summary>
@@ -1277,6 +1280,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the text currently entered in the dialog's File name edit box.</summary>
 			/// <returns>The address of a pointer to a buffer that, when this method returns successfully, receives the text.</returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetFileName();
 
 			/// <summary>Sets the title of the dialog.</summary>

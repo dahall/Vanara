@@ -385,6 +385,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the retrieved trigger description. Note that this string must be release
 			/// by a call to CoTaskMemFree after the string is no longer needed.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetTriggerString([In] ushort iTrigger);
 
 			/// <summary>Retrieves the work item run times for a specified time period.</summary>
@@ -466,6 +467,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the comment for the work item.</summary>
 			/// <returns>A pointer to a null-terminated string that contains the retrieved comment for the current work item.</returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetComment();
 
 			/// <summary>Sets the name of the work item's creator.</summary>
@@ -477,6 +479,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the name of the creator of the current work item. The application that
 			/// invokes GetCreator is responsible for freeing this string using the CoTaskMemFree function.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetCreator();
 
 			/// <summary>This method stores application-defined data associated with the work item.</summary>
@@ -554,6 +557,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the account name for the current work item. The empty string, L"", is
 			/// returned for the local system account. After processing the account name, be sure to call CoTaskMemFree to free the string.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetAccountInformation();
 
 			/// <summary>This method assigns a specific application to the current task.</summary>
@@ -568,6 +572,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the name of the application the current task is associated with. After
 			/// processing this name, call CoTaskMemFree to free resources.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetApplicationName();
 
 			/// <summary>This method sets the command-line parameters for the task.</summary>
@@ -582,6 +587,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the command-line parameters for the task. The method that invokes
 			/// GetParameters is responsible for freeing this string using the CoTaskMemFree function.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetParameters();
 
 			/// <summary>This method sets the working directory for the task.</summary>
@@ -600,6 +606,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the task's working directory. The application that invokes
 			/// GetWorkingDirectory is responsible for freeing this string using the CoTaskMemFree function.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetWorkingDirectory();
 
 			/// <summary>This method sets the priority for the task.</summary>
@@ -694,6 +701,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the name of the target computer for the current task. This string is
 			/// allocated by the application that invokes GetTargetComputer, and must also be freed using CoTaskMemFree.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetTargetComputer();
 
 			/// <summary>
@@ -783,6 +791,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a pointer to a null-terminated string that describes the current task trigger. The method that invokes
 			/// GetTriggerString is responsible for freeing this string using the CoTaskMemFree function.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetTriggerString();
 
 			/// <summary>The SetTrigger method sets the trigger criteria for a task trigger.</summary>

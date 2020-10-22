@@ -352,6 +352,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransformlookup
 			// HRESULT GetTransformLookup( LPWSTR *key );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetTransformLookup();
 
 			/// <summary>
@@ -536,6 +537,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomnamecollection-getat HRESULT GetAt(
 			// UINT32 index, LPWSTR *name );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetAt([In] uint index);
 		}
 
@@ -703,6 +705,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransformlookup HRESULT
 			// GetTransformLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetTransformLookup();
 
 			/// <summary>Sets the lookup key name of a shared matrix transform in a resource dictionary.</summary>
@@ -892,6 +895,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometrylookup
 			// HRESULT GetClipGeometryLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetClipGeometryLookup();
 
 			/// <summary>Sets the lookup key name of a shared clip geometry in a resource dictionary.</summary>
@@ -1097,6 +1101,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrushlookup
 			// HRESULT GetOpacityMaskBrushLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetOpacityMaskBrushLookup();
 
 			/// <summary>Sets the lookup key name of a shared opacity mask brush in a resource dictionary.</summary>
@@ -1149,6 +1154,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getname HRESULT GetName(
 			// LPWSTR *name );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetName();
 
 			/// <summary>Sets the <c>Name</c> property of the visual.</summary>
@@ -1244,6 +1250,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getlanguage HRESULT
 			// GetLanguage( LPWSTR *language );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetLanguage();
 
 			/// <summary>Sets the <c>Language</c> property of the visual.</summary>
@@ -1397,6 +1404,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getgeometrylookup HRESULT
 			// GetGeometryLookup( LPWSTR *lookup );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetGeometryLookup();
 
 			/// <summary>
@@ -1457,6 +1465,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getaccessibilityshortdescription
 			// HRESULT GetAccessibilityShortDescription( LPWSTR *shortDescription );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetAccessibilityShortDescription();
 
 			/// <summary>
@@ -1487,6 +1496,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getaccessibilitylongdescription
 			// HRESULT GetAccessibilityLongDescription( LPWSTR *longDescription );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetAccessibilityLongDescription();
 
 			/// <summary>
@@ -1688,6 +1698,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getstrokebrushlookup HRESULT
 			// GetStrokeBrushLookup( LPWSTR *lookup );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetStrokeBrushLookup();
 
 			/// <summary>
@@ -2003,6 +2014,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getfillbrushlookup HRESULT
 			// GetFillBrushLookup( LPWSTR *lookup );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetFillBrushLookup();
 
 			/// <summary>Sets the lookup key name of a shared brush in a resource dictionary, to be used as the fill brush.</summary>
@@ -2354,6 +2366,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransformlookup
 			// HRESULT GetTransformLookup( LPWSTR *key );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetTransformLookup();
 
 			/// <summary>
@@ -3347,6 +3360,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransformlookup
 			// HRESULT GetTransformLookup( LPWSTR *key );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetTransformLookup();
 
 			/// <summary>
@@ -3658,6 +3672,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransformlookup HRESULT
 			// GetTransformLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetTransformLookup();
 
 			/// <summary>Sets the lookup key name of a shared matrix transform in a resource dictionary.</summary>
@@ -3847,6 +3862,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometrylookup
 			// HRESULT GetClipGeometryLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetClipGeometryLookup();
 
 			/// <summary>Sets the lookup key name of a shared clip geometry in a resource dictionary.</summary>
@@ -4052,6 +4068,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrushlookup
 			// HRESULT GetOpacityMaskBrushLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetOpacityMaskBrushLookup();
 
 			/// <summary>Sets the lookup key name of a shared opacity mask brush in a resource dictionary.</summary>
@@ -4104,6 +4121,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getname HRESULT GetName(
 			// LPWSTR *name );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetName();
 
 			/// <summary>Sets the <c>Name</c> property of the visual.</summary>
@@ -4199,6 +4217,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getlanguage HRESULT
 			// GetLanguage( LPWSTR *language );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetLanguage();
 
 			/// <summary>Sets the <c>Language</c> property of the visual.</summary>
@@ -4415,6 +4434,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransformlookup
 			// HRESULT GetTransformLookup( LPWSTR *key );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetTransformLookup();
 
 			/// <summary>
@@ -4705,6 +4725,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisualbrush-getvisuallookup HRESULT
 			// GetVisualLookup( LPWSTR *lookup );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetVisualLookup();
 
 			/// <summary>

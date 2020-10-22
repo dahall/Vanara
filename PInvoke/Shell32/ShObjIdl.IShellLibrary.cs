@@ -170,6 +170,7 @@ namespace Vanara.PInvoke
 			/// A null-terminated Unicode string that describes the location of the default icon. The string is returned as
 			/// ModuleFileName,ResourceIndex or ModuleFileName,-ResourceID.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetIcon();
 
 			/// <summary>Sets the default icon for the library.</summary>

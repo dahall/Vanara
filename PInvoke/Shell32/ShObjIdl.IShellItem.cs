@@ -465,6 +465,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetDisplayName(SIGDN sigdnName);
 
 			/// <summary>Gets a requested set of attributes of the IShellItem object.</summary>
@@ -521,6 +522,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetDisplayName(SIGDN sigdnName);
 
 			/// <summary>Gets a requested set of attributes of the IShellItem object.</summary>
@@ -624,6 +626,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the string value of a specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to a Unicode string value.</returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetString(in PROPERTYKEY key);
 
 			/// <summary>Gets the UInt32 value of specified property key.</summary>

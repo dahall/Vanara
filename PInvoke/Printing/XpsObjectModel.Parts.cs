@@ -64,6 +64,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcategory HRESULT
 			// GetCategory( LPWSTR *category );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetCategory();
 
 			/// <summary>Sets the <c>category</c> property.</summary>
@@ -85,6 +86,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcontentstatus
 			// HRESULT GetContentStatus( LPWSTR *contentStatus );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetContentStatus();
 
 			/// <summary>Sets the <c>contentStatus</c> property.</summary>
@@ -110,6 +112,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcontenttype
 			// HRESULT GetContentType( LPWSTR *contentType );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetContentType();
 
 			/// <summary>Sets the <c>contentType</c> property.</summary>
@@ -146,6 +149,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcreator HRESULT
 			// GetCreator( LPWSTR *creator );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetCreator();
 
 			/// <summary>Sets the <c>creator</c> property.</summary>
@@ -166,6 +170,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getdescription
 			// HRESULT GetDescription( LPWSTR *description );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetDescription();
 
 			/// <summary>Sets the <c>description</c> property.</summary>
@@ -186,6 +191,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getidentifier
 			// HRESULT GetIdentifier( LPWSTR *identifier );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetIdentifier();
 
 			/// <summary>Sets the <c>identifier</c> property.</summary>
@@ -209,6 +215,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getkeywords HRESULT
 			// GetKeywords( LPWSTR *keywords );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetKeywords();
 
 			/// <summary>Sets the <c>keywords</c> property.</summary>
@@ -232,6 +239,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getlanguage HRESULT
 			// GetLanguage( LPWSTR *language );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetLanguage();
 
 			/// <summary>Sets the <c>language</c> property.</summary>
@@ -254,6 +262,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getlastmodifiedby
 			// HRESULT GetLastModifiedBy( LPWSTR *lastModifiedBy );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetLastModifiedBy();
 
 			/// <summary>Sets the <c>lastModifiedBy</c> property.</summary>
@@ -305,6 +314,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getrevision HRESULT
 			// GetRevision( LPWSTR *revision );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetRevision();
 
 			/// <summary>Sets the <c>revision</c> property.</summary>
@@ -321,6 +331,7 @@ namespace Vanara.PInvoke
 			/// <remarks>The <c>subject</c> property contains the topic of the resource's content.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getsubject HRESULT
 			// GetSubject( LPWSTR *subject );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetSubject();
 
 			/// <summary>Sets the <c>subject</c> property.</summary>
@@ -337,6 +348,7 @@ namespace Vanara.PInvoke
 			/// <remarks>The <c>title</c> property contains the resource's name.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-gettitle HRESULT
 			// GetTitle( LPWSTR *title );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetTitle();
 
 			/// <summary>Sets the <c>title</c> property.</summary>
@@ -353,6 +365,7 @@ namespace Vanara.PInvoke
 			/// <remarks>The <c>version</c> property contains the resource's version number.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getversion HRESULT
 			// GetVersion( LPWSTR *version );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetVersion();
 
 			/// <summary>Sets the <c>version</c> property.</summary>
@@ -1286,6 +1299,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getlanguage HRESULT
 			// GetLanguage( LPWSTR *language );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetLanguage();
 
 			/// <summary>Sets the <c>Language</c> property of the page.</summary>
@@ -1308,6 +1322,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getname HRESULT GetName(
 			// LPWSTR *name );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetName();
 
 			/// <summary>Sets the <c>Name</c> property of this page.</summary>
@@ -1664,6 +1679,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-generateunusedlookupkey
 			// HRESULT GenerateUnusedLookupKey( XPS_OBJECT_TYPE type, LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GenerateUnusedLookupKey([In] XPS_OBJECT_TYPE type);
 
 			/// <summary>Makes a deep copy of the interface.</summary>

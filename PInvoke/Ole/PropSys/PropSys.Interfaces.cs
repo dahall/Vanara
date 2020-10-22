@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
@@ -796,6 +798,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to the property's canonical name as a null-terminated Unicode string.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetCanonicalName();
 
 			/// <summary>Gets the variant type of the property.</summary>
@@ -808,12 +811,13 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
 			/// <param name="pszName">Contains the address of a pointer to the property's name as a null-terminated Unicode string.</param>
 			[PreserveSig]
-			HRESULT GetDisplayName(out string pszName);
+			HRESULT GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string pszName);
 
 			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetEditInvitation();
 
 			/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
@@ -870,7 +874,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the address of a pointer to the description string that compares the second property with
 			/// the first property. The string is null-terminated.
 			/// </param>
-			void GetRelativeDescription([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc1, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc2);
+			void GetRelativeDescription([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc1, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc2);
 
 			/// <summary>Gets the current sort description flags for the property, which indicate the particular wordings of sort offerings.</summary>
 			/// <returns>
@@ -886,6 +890,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to the sort description as a null-terminated Unicode string.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
 
 			/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
@@ -924,6 +929,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must
 			/// allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			string FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
 
 			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
@@ -946,6 +952,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to the property's canonical name as a null-terminated Unicode string.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetCanonicalName();
 
 			/// <summary>Gets the variant type of the property.</summary>
@@ -958,12 +965,13 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
 			/// <param name="pszName">Contains the address of a pointer to the property's name as a null-terminated Unicode string.</param>
 			[PreserveSig]
-			new HRESULT GetDisplayName(out string pszName);
+			new HRESULT GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string pszName);
 
 			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetEditInvitation();
 
 			/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
@@ -1020,7 +1028,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the address of a pointer to the description string that compares the second property with
 			/// the first property. The string is null-terminated.
 			/// </param>
-			new void GetRelativeDescription([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc1, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc2);
+			new void GetRelativeDescription([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc1, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc2);
 
 			/// <summary>Gets the current sort description flags for the property, which indicate the particular wordings of sort offerings.</summary>
 			/// <returns>
@@ -1036,6 +1044,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to the sort description as a null-terminated Unicode string.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
 
 			/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
@@ -1074,6 +1083,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must
 			/// allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.
 			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
 			new string FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
 
 			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
@@ -1090,7 +1100,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT GetImageReferenceForValue([In] PROPVARIANT propvar, out string ppszImageRes);
+			HRESULT GetImageReferenceForValue([In] PROPVARIANT propvar, [MarshalAs(UnmanagedType.LPWStr)] out string ppszImageRes);
 		}
 
 		/// <summary>Exposes methods that enumerate and retrieve property description list details.</summary>
@@ -1909,7 +1919,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-formatfordisplay HRESULT
 			// FormatForDisplay( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, LPWSTR pszText, DWORD cchText );
-			void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, System.Text.StringBuilder pszText, uint cchText);
+			void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, [MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pszText, uint cchText);
 
 			/// <summary>Gets a string representation of a property value to an allocated memory buffer.</summary>
 			/// <param name="key">
@@ -2160,7 +2170,8 @@ namespace Vanara.PInvoke
 		{
 			using var pv = new PROPVARIANT();
 			ps.GetValue(pkey, pv);
-			return pv.Value;
+			var ret = pv.Value;
+			return ret is IEnumerable<PROPVARIANT> pve ? pve.Select(o => o.Value).ToArray() : ret;
 		}
 
 		/// <summary>Sets a new property value, or replaces or removes an existing value in a property store.</summary>

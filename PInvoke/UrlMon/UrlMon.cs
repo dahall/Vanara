@@ -2736,7 +2736,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Urlmon.h")]
 		public static extern HRESULT FindMimeFromData([In] IBindCtx pBC, [MarshalAs(UnmanagedType.LPWStr)] string pwzUrl, IntPtr pBuffer, uint cbSize,
-			[MarshalAs(UnmanagedType.LPWStr)] string pwzMimeProposed, FMFD dwMimeFlags, out string ppwzMimeOut, uint dwReserved = 0);
+			[MarshalAs(UnmanagedType.LPWStr)] string pwzMimeProposed, FMFD dwMimeFlags, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzMimeOut, uint dwReserved = 0);
 
 		/// <summary>Gets the <c>CLSID</c> of the object to instantiate for the specified file.</summary>
 		/// <param name="pBC">
