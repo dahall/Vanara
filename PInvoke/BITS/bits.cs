@@ -935,7 +935,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the error text associated with the error. Call the CoTaskMemFree function to free
 			/// ppErrorDescription when done.
 			/// </returns>
-			SafeCoTaskMemString GetErrorDescription([In] uint LanguageId);
+			string GetErrorDescription([In] uint LanguageId);
 
 			/// <summary>Retrieves the description of the context in which the error occurred.</summary>
 			/// <param name="LanguageId">
@@ -949,7 +949,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the description of the context in which the error occurred. Call the CoTaskMemFree
 			/// function to free ppContextDescription when done.
 			/// </returns>
-			SafeCoTaskMemString GetErrorContextDescription([In] uint LanguageId);
+			string GetErrorContextDescription([In] uint LanguageId);
 
 			/// <summary>
 			/// Retrieves the protocol used to transfer the file. The remote file name identifies the protocol to use to transfer the file.
@@ -959,7 +959,7 @@ namespace Vanara.PInvoke
 			/// and "file" for the SMB protocol. The ppProtocol parameter is set to NULL if the error is not related to the transfer
 			/// protocol. Call the CoTaskMemFree function to free ppProtocol when done.
 			/// </returns>
-			SafeCoTaskMemString GetProtocol();
+			string GetProtocol();
 		}
 
 		/// <summary>
@@ -979,14 +979,14 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
-			SafeCoTaskMemString GetRemoteName();
+			string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
 			/// <returns>
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
-			SafeCoTaskMemString GetLocalName();
+			string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
 			/// <returns>
@@ -1014,14 +1014,14 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetRemoteName();
+			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
 			/// <returns>
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetLocalName();
+			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
 			/// <returns>
@@ -1062,14 +1062,14 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetRemoteName();
+			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
 			/// <returns>
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetLocalName();
+			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
 			/// <returns>
@@ -1097,7 +1097,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path of the temporary file. Call the CoTaskMemFree function to free ppFileName
 			/// when done.
 			/// </returns>
-			SafeCoTaskMemString GetTemporaryName();
+			string GetTemporaryName();
 
 			/// <summary>Sets the validation state of this file.</summary>
 			/// <param name="state">Set to TRUE if the file content is valid, otherwise, FALSE.</param>
@@ -1130,14 +1130,14 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetRemoteName();
+			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
 			/// <returns>
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetLocalName();
+			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
 			/// <returns>
@@ -1165,7 +1165,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path of the temporary file. Call the CoTaskMemFree function to free ppFileName
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetTemporaryName();
+			new string GetTemporaryName();
 
 			/// <summary>Sets the validation state of this file.</summary>
 			/// <param name="state">Set to TRUE if the file content is valid, otherwise, FALSE.</param>
@@ -1203,14 +1203,14 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetRemoteName();
+			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
 			/// <returns>
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetLocalName();
+			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
 			/// <returns>
@@ -1238,7 +1238,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path of the temporary file. Call the CoTaskMemFree function to free ppFileName
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetTemporaryName();
+			new string GetTemporaryName();
 
 			/// <summary>Sets the validation state of this file.</summary>
 			/// <param name="state">Set to TRUE if the file content is valid, otherwise, FALSE.</param>
@@ -1285,14 +1285,14 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the remote name of the file to transfer. The name is fully qualified. Call the
 			/// CoTaskMemFree function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetRemoteName();
+			new string GetRemoteName();
 
 			/// <summary>Retrieves the local name of the file.</summary>
 			/// <returns>
 			/// Null-terminated string that contains the name of the file on the client. The name is fully qualified. Call the CoTaskMemFree
 			/// function to free ppName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetLocalName();
+			new string GetLocalName();
 
 			/// <summary>Retrieves information on the progress of the file transfer.</summary>
 			/// <returns>
@@ -1320,7 +1320,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path of the temporary file. Call the CoTaskMemFree function to free ppFileName
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetTemporaryName();
+			new string GetTemporaryName();
 
 			/// <summary>Sets the validation state of this file.</summary>
 			/// <param name="state">Set to TRUE if the file content is valid, otherwise, FALSE.</param>
@@ -1519,7 +1519,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
-			SafeCoTaskMemString GetOwner();
+			string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
 			/// <param name="pDisplayName">
@@ -1533,7 +1533,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
-			SafeCoTaskMemString GetDisplayName();
+			string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
 			/// <param name="pDescription">
@@ -1547,7 +1547,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
-			SafeCoTaskMemString GetDescription();
+			string GetDescription();
 
 			/// <summary>
 			/// Specifies the priority level of your job. The priority level determines when your job is processed relative to other jobs in
@@ -1786,7 +1786,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
-			new SafeCoTaskMemString GetOwner();
+			new string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
 			/// <param name="pDisplayName">
@@ -1800,7 +1800,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetDisplayName();
+			new string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
 			/// <param name="pDescription">
@@ -1814,7 +1814,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetDescription();
+			new string GetDescription();
 
 			/// <summary>
 			/// Specifies the priority level of your job. The priority level determines when your job is processed relative to other jobs in
@@ -2014,7 +2014,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path to the reply file. Call the CoTaskMemFree function to free pReplyFileName
 			/// when done.
 			/// </returns>
-			SafeCoTaskMemString GetReplyFileName();
+			string GetReplyFileName();
 
 			/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
 			/// <param name="Credentials">
@@ -2142,7 +2142,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
-			new SafeCoTaskMemString GetOwner();
+			new string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
 			/// <param name="pDisplayName">
@@ -2156,7 +2156,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetDisplayName();
+			new string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
 			/// <param name="pDescription">
@@ -2170,7 +2170,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetDescription();
+			new string GetDescription();
 
 			/// <summary>
 			/// Specifies the priority level of your job. The priority level determines when your job is processed relative to other jobs in
@@ -2370,7 +2370,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path to the reply file. Call the CoTaskMemFree function to free pReplyFileName
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetReplyFileName();
+			new string GetReplyFileName();
 
 			/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
 			/// <param name="Credentials">
@@ -2530,7 +2530,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
-			new SafeCoTaskMemString GetOwner();
+			new string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
 			/// <param name="pDisplayName">
@@ -2544,7 +2544,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetDisplayName();
+			new string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
 			/// <param name="pDescription">
@@ -2558,7 +2558,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetDescription();
+			new string GetDescription();
 
 			/// <summary>
 			/// Specifies the priority level of your job. The priority level determines when your job is processed relative to other jobs in
@@ -2758,7 +2758,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path to the reply file. Call the CoTaskMemFree function to free pReplyFileName
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetReplyFileName();
+			new string GetReplyFileName();
 
 			/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
 			/// <param name="Credentials">
@@ -2961,7 +2961,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
 			/// function to free ppOwner when done.
 			/// </returns>
-			new SafeCoTaskMemString GetOwner();
+			new string GetOwner();
 
 			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
 			/// <param name="pDisplayName">
@@ -2975,7 +2975,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
 			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
 			/// </returns>
-			new SafeCoTaskMemString GetDisplayName();
+			new string GetDisplayName();
 
 			/// <summary>Provides a description of the job.</summary>
 			/// <param name="pDescription">
@@ -2989,7 +2989,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetDescription();
+			new string GetDescription();
 
 			/// <summary>
 			/// Specifies the priority level of your job. The priority level determines when your job is processed relative to other jobs in
@@ -3189,7 +3189,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the full path to the reply file. Call the CoTaskMemFree function to free pReplyFileName
 			/// when done.
 			/// </returns>
-			new SafeCoTaskMemString GetReplyFileName();
+			new string GetReplyFileName();
 
 			/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
 			/// <param name="Credentials">
@@ -3437,7 +3437,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the custom headers. Each header is terminated by a carriage return and line feed (CR/LF)
 			/// character. To free the string when finished, call the CoTaskMemFree function.
 			/// </returns>
-			SafeCoTaskMemString GetCustomHeaders();
+			string GetCustomHeaders();
 
 			/// <summary>
 			/// Sets flags for HTTP that determine whether the certificate revocation list is checked and certain certificate errors are
@@ -3521,7 +3521,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains a description of the error. Call the CoTaskMemFree function to free ppErrorDescription
 			/// when done.
 			/// </returns>
-			SafeCoTaskMemString GetErrorDescription([In] HRESULT hResult, [In] uint LanguageId);
+			string GetErrorDescription([In] HRESULT hResult, [In] uint LanguageId);
 		}
 
 		/// <summary>
@@ -3538,7 +3538,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the server principal name of the peer. The principal name is of the form,
 			/// server$.domain.suffix. Call the CoTaskMemFree function to free pName when done.
 			/// </returns>
-			SafeCoTaskMemString GetPeerName();
+			string GetPeerName();
 
 			/// <summary>Determines whether the peer is authenticated.</summary>
 			/// <returns>TRUE if the peer is authenticated, otherwise, FALSE.</returns>
@@ -3667,7 +3667,7 @@ namespace Vanara.PInvoke
 			/// Null-terminated string that contains the origin URL of the cached file. Call the CoTaskMemFree function to free ppOriginUrl
 			/// when done.
 			/// </returns>
-			SafeCoTaskMemString GetOriginUrl();
+			string GetOriginUrl();
 
 			/// <summary>Gets the size of the file.</summary>
 			/// <returns>Size of the file, in bytes.</returns>
@@ -3754,7 +3754,7 @@ namespace Vanara.PInvoke
 			/// Returns the SID that is retrieved from the TokenInformation parameter of the GetTokenInformation function. If no SID is
 			/// retrieved, this parameter is set to NULL.
 			/// </returns>
-			SafeCoTaskMemString GetHelperTokenSid();
+			string GetHelperTokenSid();
 		}
 
 		/// <summary>

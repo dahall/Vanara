@@ -655,7 +655,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getnamespaces HRESULT GetNamespaces(
 			// LPWSTR **prefixes, LPWSTR **namespaces, UINT32 *count );
-			void GetNamespaces(out SafeCoTaskMemString prefixes, out SafeCoTaskMemString namespaces, out uint count);
+			void GetNamespaces(out string prefixes, out string namespaces, out uint count);
 
 			/// <summary>Gets the value of the <c>Id</c> attribute from the <c>Signature</c> element of the signature markup.</summary>
 			/// <returns>
@@ -672,7 +672,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getsignatureid HRESULT GetSignatureId(
 			// LPWSTR *signatureId );
-			SafeCoTaskMemString GetSignatureId();
+			string GetSignatureId();
 
 			/// <summary>Gets the part name of the part that contains the signature markup.</summary>
 			/// <returns>
@@ -722,7 +722,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getsignaturemethod HRESULT
 			// GetSignatureMethod( LPWSTR *signatureMethod );
-			SafeCoTaskMemString GetSignatureMethod();
+			string GetSignatureMethod();
 
 			/// <summary>Gets the canonicalization method that was applied to the <c>SignedInfo</c> element of the serialized signature.</summary>
 			/// <returns>
@@ -815,7 +815,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getsigningtime HRESULT GetSigningTime(
 			// LPWSTR *signingTime );
-			SafeCoTaskMemString GetSigningTime();
+			string GetSigningTime();
 
 			/// <summary>Gets the format of the string returned by the GetSigningTime method.</summary>
 			/// <returns>An OPC_SIGNATURE_TIME_FORMAT value that describes the format of the string returned by GetSigningTime.</returns>
@@ -2022,7 +2022,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcpart-getcontenttype HRESULT GetContentType( LPWSTR
 			// *contentType );
-			SafeCoTaskMemString GetContentType();
+			string GetContentType();
 
 			/// <summary>Gets a value that describes the way part content is compressed.</summary>
 			/// <returns>A value that describes the way part content is compressed.</returns>
@@ -3262,7 +3262,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationship-getid HRESULT GetId( LPWSTR
 			// *relationshipIdentifier );
-			SafeCoTaskMemString GetId();
+			string GetId();
 
 			/// <summary>Gets the relationship type.</summary>
 			/// <returns>
@@ -3288,7 +3288,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationship-getrelationshiptype HRESULT
 			// GetRelationshipType( LPWSTR *relationshipType );
-			SafeCoTaskMemString GetRelationshipType();
+			string GetRelationshipType();
 
 			/// <summary>Gets the URI of the relationship source.</summary>
 			/// <returns>A pointer to the IOpcUri interface of the OPC URI object that represents the URI of the relationship source.</returns>
@@ -3682,7 +3682,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationshipselector-getselectioncriterion HRESULT
 			// GetSelectionCriterion( LPWSTR *selectionCriterion );
-			SafeCoTaskMemString GetSelectionCriterion();
+			string GetSelectionCriterion();
 		}
 
 		/// <summary>A read-only enumerator of IOpcRelationshipSelector interface pointers.</summary>
@@ -4614,7 +4614,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturepartreference-getcontenttype HRESULT
 			// GetContentType( LPWSTR *contentType );
-			SafeCoTaskMemString GetContentType();
+			string GetContentType();
 
 			/// <summary>Gets the digest method to use on part content of the referenced part when the part is signed.</summary>
 			/// <returns>The digest method to use on part content of the referenced part when the part is signed.</returns>
@@ -4625,7 +4625,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturepartreference-getdigestmethod HRESULT
 			// GetDigestMethod( LPWSTR *digestMethod );
-			SafeCoTaskMemString GetDigestMethod();
+			string GetDigestMethod();
 
 			/// <summary>Gets the digest value that is calculated for part content of the referenced part when the part is signed.</summary>
 			/// <param name="digestValue">
@@ -4962,7 +4962,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-getid HRESULT GetId( LPWSTR
 			// *referenceId );
-			SafeCoTaskMemString GetId();
+			string GetId();
 
 			/// <summary>Gets the URI of the referenced XML element.</summary>
 			/// <returns>
@@ -5020,7 +5020,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-gettype HRESULT GetType( LPWSTR
 			// *type );
-			SafeCoTaskMemString GetType();
+			string GetType();
 
 			/// <summary>Gets the canonicalization method to use on the referenced XML element, when the element is signed.</summary>
 			/// <returns>The canonicalization method to use on the referenced XML element, when the element is signed.</returns>
@@ -5037,7 +5037,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-getdigestmethod HRESULT
 			// GetDigestMethod( LPWSTR *digestMethod );
-			SafeCoTaskMemString GetDigestMethod();
+			string GetDigestMethod();
 
 			/// <summary>Gets the digest value that is calculated for the referenced XML element when the element is signed.</summary>
 			/// <param name="digestValue">
@@ -5392,7 +5392,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturerelationshipreference-getdigestmethod HRESULT
 			// GetDigestMethod( LPWSTR *digestMethod );
-			SafeCoTaskMemString GetDigestMethod();
+			string GetDigestMethod();
 
 			/// <summary>Gets the digest value calculated for the selected relationships when they are signed.</summary>
 			/// <param name="digestValue">
@@ -5860,7 +5860,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getsignatureid HRESULT GetSignatureId(
 			// LPWSTR *signatureId );
-			SafeCoTaskMemString GetSignatureId();
+			string GetSignatureId();
 
 			/// <summary>Sets the value of the <c>Id</c> attribute of the <c>Signature</c> element.</summary>
 			/// <param name="signatureId">The value of the <c>Id</c> attribute.</param>
@@ -5912,7 +5912,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getsignaturemethod HRESULT
 			// GetSignatureMethod( LPWSTR *signatureMethod );
-			SafeCoTaskMemString GetSignatureMethod();
+			string GetSignatureMethod();
 
 			/// <summary>
 			/// Sets the signature method to use to calculate and encrypt the hash value of the <c>SignedInfo</c> element, which will be
@@ -5961,7 +5961,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getdefaultdigestmethod HRESULT
 			// GetDefaultDigestMethod( LPWSTR *digestMethod );
-			SafeCoTaskMemString GetDefaultDigestMethod();
+			string GetDefaultDigestMethod();
 
 			/// <summary>Sets the default digest method that will be used to compute digest values for objects to be signed.</summary>
 			/// <param name="digestMethod">The default digest method.</param>

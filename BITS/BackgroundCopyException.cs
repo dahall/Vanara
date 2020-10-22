@@ -11,8 +11,7 @@ namespace Vanara.IO
 	{
 		private HRESULT code;
 		private BG_ERROR_CONTEXT ctx;
-		private SafeCoTaskMemString ctxDesc, protocol;
-		private string errDesc;
+		private string ctxDesc, errDesc, protocol;
 		private IBackgroundCopyFile iVal;
 
 		internal BackgroundCopyException(IBackgroundCopyError err)

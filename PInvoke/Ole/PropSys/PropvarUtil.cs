@@ -4064,7 +4064,7 @@ namespace Vanara.PInvoke
 		// REFVARIANT varIn, PWSTR *ppszBuf );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propvarutil.h", MSDNShortId = "9cd4433c-d8ad-43ef-bdb9-9c1b8d8bea01")]
-		public static extern HRESULT VariantToStringAlloc(in VARIANT varIn, out SafeCoTaskMemString ppszBuf);
+		public static extern HRESULT VariantToStringAlloc(in VARIANT varIn, out string ppszBuf);
 
 		/// <summary>Extracts data from a vector structure into a String array.</summary>
 		/// <param name="var">

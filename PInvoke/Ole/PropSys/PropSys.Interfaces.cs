@@ -796,7 +796,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to the property's canonical name as a null-terminated Unicode string.
 			/// </returns>
-			SafeCoTaskMemString GetCanonicalName();
+			string GetCanonicalName();
 
 			/// <summary>Gets the variant type of the property.</summary>
 			/// <returns>
@@ -808,13 +808,13 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
 			/// <param name="pszName">Contains the address of a pointer to the property's name as a null-terminated Unicode string.</param>
 			[PreserveSig]
-			HRESULT GetDisplayName(out SafeCoTaskMemString pszName);
+			HRESULT GetDisplayName(out string pszName);
 
 			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.
 			/// </returns>
-			SafeCoTaskMemString GetEditInvitation();
+			string GetEditInvitation();
 
 			/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
 			/// <param name="mask">
@@ -886,7 +886,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to the sort description as a null-terminated Unicode string.
 			/// </returns>
-			SafeCoTaskMemString GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
+			string GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
 
 			/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
 			/// <returns>When this method returns, contains a pointer to a value that indicates the aggregation type.</returns>
@@ -924,7 +924,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must
 			/// allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.
 			/// </returns>
-			SafeCoTaskMemString FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
+			string FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
 
 			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
@@ -946,7 +946,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to the property's canonical name as a null-terminated Unicode string.
 			/// </returns>
-			new SafeCoTaskMemString GetCanonicalName();
+			new string GetCanonicalName();
 
 			/// <summary>Gets the variant type of the property.</summary>
 			/// <returns>
@@ -958,13 +958,13 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
 			/// <param name="pszName">Contains the address of a pointer to the property's name as a null-terminated Unicode string.</param>
 			[PreserveSig]
-			new HRESULT GetDisplayName(out SafeCoTaskMemString pszName);
+			new HRESULT GetDisplayName(out string pszName);
 
 			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.
 			/// </returns>
-			new SafeCoTaskMemString GetEditInvitation();
+			new string GetEditInvitation();
 
 			/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
 			/// <param name="mask">
@@ -1036,7 +1036,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to the sort description as a null-terminated Unicode string.
 			/// </returns>
-			new SafeCoTaskMemString GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
+			new string GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
 
 			/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
 			/// <returns>When this method returns, contains a pointer to a value that indicates the aggregation type.</returns>
@@ -1074,7 +1074,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must
 			/// allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.
 			/// </returns>
-			new SafeCoTaskMemString FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
+			new string FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
 
 			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
@@ -1090,7 +1090,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT GetImageReferenceForValue([In] PROPVARIANT propvar, out SafeCoTaskMemString ppszImageRes);
+			HRESULT GetImageReferenceForValue([In] PROPVARIANT propvar, out string ppszImageRes);
 		}
 
 		/// <summary>Exposes methods that enumerate and retrieve property description list details.</summary>
@@ -2056,7 +2056,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-formatfordisplayalloc HRESULT
 			// FormatForDisplayAlloc( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, LPWSTR *ppszDisplay );
-			SafeCoTaskMemString FormatForDisplayAlloc(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff);
+			string FormatForDisplayAlloc(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff);
 
 			/// <summary>Informs the schema subsystem of the addition of a property description schema file.</summary>
 			/// <param name="pszPath">

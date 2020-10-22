@@ -465,7 +465,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.
 			/// </returns>
-			SafeCoTaskMemString GetDisplayName(SIGDN sigdnName);
+			string GetDisplayName(SIGDN sigdnName);
 
 			/// <summary>Gets a requested set of attributes of the IShellItem object.</summary>
 			/// <param name="sfgaoMask">
@@ -521,7 +521,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.
 			/// </returns>
-			new SafeCoTaskMemString GetDisplayName(SIGDN sigdnName);
+			new string GetDisplayName(SIGDN sigdnName);
 
 			/// <summary>Gets a requested set of attributes of the IShellItem object.</summary>
 			/// <param name="sfgaoMask">
@@ -624,7 +624,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the string value of a specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to a Unicode string value.</returns>
-			SafeCoTaskMemString GetString(in PROPERTYKEY key);
+			string GetString(in PROPERTYKEY key);
 
 			/// <summary>Gets the UInt32 value of specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>

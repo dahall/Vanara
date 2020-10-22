@@ -328,7 +328,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the text currently entered in the dialog's File name edit box.</summary>
 			/// <returns>The address of a pointer to a buffer that, when this method returns successfully, receives the text.</returns>
-			SafeCoTaskMemString GetFileName();
+			string GetFileName();
 
 			/// <summary>Sets the title of the dialog.</summary>
 			/// <param name="pszTitle">A pointer to a buffer that contains the title text.</param>
@@ -469,7 +469,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the text currently entered in the dialog's File name edit box.</summary>
 			/// <returns>The address of a pointer to a buffer that, when this method returns successfully, receives the text.</returns>
-			new SafeCoTaskMemString GetFileName();
+			new string GetFileName();
 
 			/// <summary>Sets the title of the dialog.</summary>
 			/// <param name="pszTitle">A pointer to a buffer that contains the title text.</param>
@@ -904,7 +904,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the text currently entered in the dialog's File name edit box.</summary>
 			/// <returns>The address of a pointer to a buffer that, when this method returns successfully, receives the text.</returns>
-			new SafeCoTaskMemString GetFileName();
+			new string GetFileName();
 
 			/// <summary>Sets the title of the dialog.</summary>
 			/// <param name="pszTitle">A pointer to a buffer that contains the title text.</param>
@@ -1277,7 +1277,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the text currently entered in the dialog's File name edit box.</summary>
 			/// <returns>The address of a pointer to a buffer that, when this method returns successfully, receives the text.</returns>
-			new SafeCoTaskMemString GetFileName();
+			new string GetFileName();
 
 			/// <summary>Sets the title of the dialog.</summary>
 			/// <param name="pszTitle">A pointer to a buffer that contains the title text.</param>

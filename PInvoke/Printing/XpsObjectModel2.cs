@@ -352,7 +352,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransformlookup
 			// HRESULT GetTransformLookup( LPWSTR *key );
-			new SafeCoTaskMemString GetTransformLookup();
+			new string GetTransformLookup();
 
 			/// <summary>
 			/// <para>Sets the name of the lookup key of a shared matrix transform that is to be used for the brush.</para>
@@ -536,7 +536,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomnamecollection-getat HRESULT GetAt(
 			// UINT32 index, LPWSTR *name );
-			SafeCoTaskMemString GetAt([In] uint index);
+			string GetAt([In] uint index);
 		}
 
 		/// <summary>Describes a non-text visual item.</summary>
@@ -703,7 +703,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransformlookup HRESULT
 			// GetTransformLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			new SafeCoTaskMemString GetTransformLookup();
+			new string GetTransformLookup();
 
 			/// <summary>Sets the lookup key name of a shared matrix transform in a resource dictionary.</summary>
 			/// <param name="key">The lookup key name of the matrix transform in the dictionary.</param>
@@ -892,7 +892,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometrylookup
 			// HRESULT GetClipGeometryLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			new SafeCoTaskMemString GetClipGeometryLookup();
+			new string GetClipGeometryLookup();
 
 			/// <summary>Sets the lookup key name of a shared clip geometry in a resource dictionary.</summary>
 			/// <param name="key">
@@ -1097,7 +1097,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrushlookup
 			// HRESULT GetOpacityMaskBrushLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			new SafeCoTaskMemString GetOpacityMaskBrushLookup();
+			new string GetOpacityMaskBrushLookup();
 
 			/// <summary>Sets the lookup key name of a shared opacity mask brush in a resource dictionary.</summary>
 			/// <param name="key">
@@ -1149,7 +1149,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getname HRESULT GetName(
 			// LPWSTR *name );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			new SafeCoTaskMemString GetName();
+			new string GetName();
 
 			/// <summary>Sets the <c>Name</c> property of the visual.</summary>
 			/// <param name="name">The name of the visual. A <c>NULL</c> pointer clears the <c>Name</c> property.</param>
@@ -1244,7 +1244,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getlanguage HRESULT
 			// GetLanguage( LPWSTR *language );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			new SafeCoTaskMemString GetLanguage();
+			new string GetLanguage();
 
 			/// <summary>Sets the <c>Language</c> property of the visual.</summary>
 			/// <param name="language">
@@ -1397,7 +1397,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getgeometrylookup HRESULT
 			// GetGeometryLookup( LPWSTR *lookup );
-			SafeCoTaskMemString GetGeometryLookup();
+			string GetGeometryLookup();
 
 			/// <summary>
 			/// <para>Sets the lookup key name of a shared geometry in a resource dictionary.</para>
@@ -1457,7 +1457,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getaccessibilityshortdescription
 			// HRESULT GetAccessibilityShortDescription( LPWSTR *shortDescription );
-			SafeCoTaskMemString GetAccessibilityShortDescription();
+			string GetAccessibilityShortDescription();
 
 			/// <summary>
 			/// Sets the short textual description of the object's contents. This description is used by accessibility clients to describe
@@ -1487,7 +1487,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getaccessibilitylongdescription
 			// HRESULT GetAccessibilityLongDescription( LPWSTR *longDescription );
-			SafeCoTaskMemString GetAccessibilityLongDescription();
+			string GetAccessibilityLongDescription();
 
 			/// <summary>
 			/// Sets the long (detailed) textual description of the object's contents. This description is used by accessibility clients to
@@ -1688,7 +1688,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getstrokebrushlookup HRESULT
 			// GetStrokeBrushLookup( LPWSTR *lookup );
-			SafeCoTaskMemString GetStrokeBrushLookup();
+			string GetStrokeBrushLookup();
 
 			/// <summary>
 			/// Sets the lookup key name of a shared brush to be used as the stroke brush.The shared brush is stored in a resource dictionary.
@@ -2003,7 +2003,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompath-getfillbrushlookup HRESULT
 			// GetFillBrushLookup( LPWSTR *lookup );
-			SafeCoTaskMemString GetFillBrushLookup();
+			string GetFillBrushLookup();
 
 			/// <summary>Sets the lookup key name of a shared brush in a resource dictionary, to be used as the fill brush.</summary>
 			/// <param name="lookup">The key name of the brush in a resource dictionary, to be used as the fill brush.</param>
@@ -2354,7 +2354,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransformlookup
 			// HRESULT GetTransformLookup( LPWSTR *key );
-			new SafeCoTaskMemString GetTransformLookup();
+			new string GetTransformLookup();
 
 			/// <summary>
 			/// <para>Sets the name of the lookup key of a shared matrix transform that is to be used for the brush.</para>
@@ -3347,7 +3347,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransformlookup
 			// HRESULT GetTransformLookup( LPWSTR *key );
-			SafeCoTaskMemString GetTransformLookup();
+			string GetTransformLookup();
 
 			/// <summary>
 			/// Sets the lookup key name of a shared matrix transform that will be used as the transform for this brush.The shared matrix
@@ -3658,7 +3658,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransformlookup HRESULT
 			// GetTransformLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			SafeCoTaskMemString GetTransformLookup();
+			string GetTransformLookup();
 
 			/// <summary>Sets the lookup key name of a shared matrix transform in a resource dictionary.</summary>
 			/// <param name="key">The lookup key name of the matrix transform in the dictionary.</param>
@@ -3847,7 +3847,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometrylookup
 			// HRESULT GetClipGeometryLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			SafeCoTaskMemString GetClipGeometryLookup();
+			string GetClipGeometryLookup();
 
 			/// <summary>Sets the lookup key name of a shared clip geometry in a resource dictionary.</summary>
 			/// <param name="key">
@@ -4052,7 +4052,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrushlookup
 			// HRESULT GetOpacityMaskBrushLookup( LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			SafeCoTaskMemString GetOpacityMaskBrushLookup();
+			string GetOpacityMaskBrushLookup();
 
 			/// <summary>Sets the lookup key name of a shared opacity mask brush in a resource dictionary.</summary>
 			/// <param name="key">
@@ -4104,7 +4104,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getname HRESULT GetName(
 			// LPWSTR *name );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			SafeCoTaskMemString GetName();
+			string GetName();
 
 			/// <summary>Sets the <c>Name</c> property of the visual.</summary>
 			/// <param name="name">The name of the visual. A <c>NULL</c> pointer clears the <c>Name</c> property.</param>
@@ -4199,7 +4199,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getlanguage HRESULT
 			// GetLanguage( LPWSTR *language );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			SafeCoTaskMemString GetLanguage();
+			string GetLanguage();
 
 			/// <summary>Sets the <c>Language</c> property of the visual.</summary>
 			/// <param name="language">
@@ -4415,7 +4415,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransformlookup
 			// HRESULT GetTransformLookup( LPWSTR *key );
-			new SafeCoTaskMemString GetTransformLookup();
+			new string GetTransformLookup();
 
 			/// <summary>
 			/// Sets the lookup key name of a shared matrix transform that will be used as the transform for this brush.The shared matrix
@@ -4705,7 +4705,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisualbrush-getvisuallookup HRESULT
 			// GetVisualLookup( LPWSTR *lookup );
-			SafeCoTaskMemString GetVisualLookup();
+			string GetVisualLookup();
 
 			/// <summary>
 			/// Sets the lookup key name of the shared visual, which is stored in a resource dictionary, to be used as the source for the brush.

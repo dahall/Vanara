@@ -2648,7 +2648,7 @@ namespace Vanara.PInvoke
 		// DWORD *pCapabilities );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "58a2c121-c324-4c33-aaca-490b5a09738c")]
-		public static extern HRESULT CoQueryClientBlanket(out RPC_C_AUTHN pAuthnSvc, out RPC_C_AUTHZ pAuthzSvc, out SafeCoTaskMemString pServerPrincName,
+		public static extern HRESULT CoQueryClientBlanket(out RPC_C_AUTHN pAuthnSvc, out RPC_C_AUTHZ pAuthzSvc, out string pServerPrincName,
 			out RPC_C_AUTHN_LEVEL pAuthnLevel, out RPC_C_IMP_LEVEL pImpLevel, out RPC_AUTHZ_HANDLE pPrivs, ref EOLE_AUTHENTICATION_CAPABILITIES pCapabilities);
 
 		/// <summary>
@@ -3945,7 +3945,7 @@ namespace Vanara.PInvoke
 		// clsid, LPOLESTR *lplpszProgID );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "a863cbc2-f8ab-468a-8254-b273077a6a2b")]
-		public static extern HRESULT ProgIDFromCLSID(in Guid clsid, out SafeCoTaskMemString lplpszProgID);
+		public static extern HRESULT ProgIDFromCLSID(in Guid clsid, out string lplpszProgID);
 
 		/// <summary>Creates an agile reference for an object specified by the given interface.</summary>
 		/// <param name="options">The options.</param>

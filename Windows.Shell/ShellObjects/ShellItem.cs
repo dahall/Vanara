@@ -1005,20 +1005,20 @@ namespace Vanara.Windows.Shell
 			/// A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.
 			/// </returns>
 			/// <exception cref="ArgumentException"></exception>
-			public SafeCoTaskMemString GetDisplayName(SIGDN sigdnName)
+			public string GetDisplayName(SIGDN sigdnName)
 			{
 				if (sigdnName == SIGDN.SIGDN_FILESYSPATH)
 				{
 					var result = new StringBuilder(512);
 					if (!SHGetPathFromIDList(PIDL, result))
 						throw new ArgumentException();
-					return new SafeCoTaskMemString(result.ToString(), CharSet.Unicode);
+					return result.ToString();
 				}
 
 				var parentFolder = InternalGetParent().GetIShellFolder();
 				var child = PIDL.LastId;
 				parentFolder.GetDisplayNameOf(child, (SHGDNF)((int)sigdnName & 0xffff), out var name);
-				return new SafeCoTaskMemString(name, CharSet.Unicode);
+				return name;
 			}
 
 			/// <summary>Gets the parent of an IShellItem object.</summary>

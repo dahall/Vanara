@@ -575,7 +575,7 @@ namespace Vanara.PInvoke
 		// GetAppContainerFolderPath( PCWSTR pszAppContainerSid, PWSTR *ppszPath );
 		[DllImport(Lib.Userenv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("userenv.h", MSDNShortId = "7D3AB78D-C094-4F89-8032-13F3C137E910")]
-		public static extern HRESULT GetAppContainerFolderPath([MarshalAs(UnmanagedType.LPWStr)] string pszAppContainerSid, out SafeCoTaskMemString ppszPath);
+		public static extern HRESULT GetAppContainerFolderPath([MarshalAs(UnmanagedType.LPWStr)] string pszAppContainerSid, out string ppszPath);
 
 		/// <summary>Gets the location of the registry storage associated with an app container.</summary>
 		/// <param name="desiredAccess">

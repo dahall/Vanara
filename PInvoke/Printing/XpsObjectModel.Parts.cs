@@ -64,7 +64,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcategory HRESULT
 			// GetCategory( LPWSTR *category );
-			SafeCoTaskMemString GetCategory();
+			string GetCategory();
 
 			/// <summary>Sets the <c>category</c> property.</summary>
 			/// <param name="category">
@@ -85,7 +85,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcontentstatus
 			// HRESULT GetContentStatus( LPWSTR *contentStatus );
-			SafeCoTaskMemString GetContentStatus();
+			string GetContentStatus();
 
 			/// <summary>Sets the <c>contentStatus</c> property.</summary>
 			/// <param name="contentStatus">
@@ -110,7 +110,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcontenttype
 			// HRESULT GetContentType( LPWSTR *contentType );
-			SafeCoTaskMemString GetContentType();
+			string GetContentType();
 
 			/// <summary>Sets the <c>contentType</c> property.</summary>
 			/// <param name="contentType">
@@ -146,7 +146,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcreator HRESULT
 			// GetCreator( LPWSTR *creator );
-			SafeCoTaskMemString GetCreator();
+			string GetCreator();
 
 			/// <summary>Sets the <c>creator</c> property.</summary>
 			/// <param name="creator">
@@ -166,7 +166,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getdescription
 			// HRESULT GetDescription( LPWSTR *description );
-			SafeCoTaskMemString GetDescription();
+			string GetDescription();
 
 			/// <summary>Sets the <c>description</c> property.</summary>
 			/// <param name="description">
@@ -186,7 +186,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getidentifier
 			// HRESULT GetIdentifier( LPWSTR *identifier );
-			SafeCoTaskMemString GetIdentifier();
+			string GetIdentifier();
 
 			/// <summary>Sets the <c>identifier</c> property.</summary>
 			/// <param name="identifier">
@@ -209,7 +209,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getkeywords HRESULT
 			// GetKeywords( LPWSTR *keywords );
-			SafeCoTaskMemString GetKeywords();
+			string GetKeywords();
 
 			/// <summary>Sets the <c>keywords</c> property.</summary>
 			/// <param name="keywords">
@@ -232,7 +232,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getlanguage HRESULT
 			// GetLanguage( LPWSTR *language );
-			SafeCoTaskMemString GetLanguage();
+			string GetLanguage();
 
 			/// <summary>Sets the <c>language</c> property.</summary>
 			/// <param name="language">
@@ -254,7 +254,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getlastmodifiedby
 			// HRESULT GetLastModifiedBy( LPWSTR *lastModifiedBy );
-			SafeCoTaskMemString GetLastModifiedBy();
+			string GetLastModifiedBy();
 
 			/// <summary>Sets the <c>lastModifiedBy</c> property.</summary>
 			/// <param name="lastModifiedBy">
@@ -305,7 +305,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getrevision HRESULT
 			// GetRevision( LPWSTR *revision );
-			SafeCoTaskMemString GetRevision();
+			string GetRevision();
 
 			/// <summary>Sets the <c>revision</c> property.</summary>
 			/// <param name="revision">
@@ -321,7 +321,7 @@ namespace Vanara.PInvoke
 			/// <remarks>The <c>subject</c> property contains the topic of the resource's content.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getsubject HRESULT
 			// GetSubject( LPWSTR *subject );
-			SafeCoTaskMemString GetSubject();
+			string GetSubject();
 
 			/// <summary>Sets the <c>subject</c> property.</summary>
 			/// <param name="subject">
@@ -337,7 +337,7 @@ namespace Vanara.PInvoke
 			/// <remarks>The <c>title</c> property contains the resource's name.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-gettitle HRESULT
 			// GetTitle( LPWSTR *title );
-			SafeCoTaskMemString GetTitle();
+			string GetTitle();
 
 			/// <summary>Sets the <c>title</c> property.</summary>
 			/// <param name="title">
@@ -353,7 +353,7 @@ namespace Vanara.PInvoke
 			/// <remarks>The <c>version</c> property contains the resource's version number.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getversion HRESULT
 			// GetVersion( LPWSTR *version );
-			SafeCoTaskMemString GetVersion();
+			string GetVersion();
 
 			/// <summary>Sets the <c>version</c> property.</summary>
 			/// <param name="version">
@@ -1286,7 +1286,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getlanguage HRESULT
 			// GetLanguage( LPWSTR *language );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			SafeCoTaskMemString GetLanguage();
+			string GetLanguage();
 
 			/// <summary>Sets the <c>Language</c> property of the page.</summary>
 			/// <param name="language">
@@ -1308,7 +1308,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getname HRESULT GetName(
 			// LPWSTR *name );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			SafeCoTaskMemString GetName();
+			string GetName();
 
 			/// <summary>Sets the <c>Name</c> property of this page.</summary>
 			/// <param name="name">
@@ -1664,7 +1664,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-generateunusedlookupkey
 			// HRESULT GenerateUnusedLookupKey( XPS_OBJECT_TYPE type, LPWSTR *key );
 			[MethodImpl(MethodImplOptions.InternalCall)]
-			SafeCoTaskMemString GenerateUnusedLookupKey([In] XPS_OBJECT_TYPE type);
+			string GenerateUnusedLookupKey([In] XPS_OBJECT_TYPE type);
 
 			/// <summary>Makes a deep copy of the interface.</summary>
 			/// <returns>A pointer to the copy of the interface.</returns>

@@ -28,9 +28,8 @@ namespace Vanara.PInvoke.Tests
 				sid2.Dispose();
 
 				Assert.That(GetAppContainerFolderPath(ssid, out var path), ResultIs.Successful);
-				Assert.That(path.ToString().Length, Is.GreaterThan(0));
-				TestContext.WriteLine(path.ToString());
-				path.Dispose();
+				Assert.That(path.Length, Is.GreaterThan(0));
+				TestContext.WriteLine(path);
 
 			}
 			finally
