@@ -2350,10 +2350,6 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>REFPROPVARIANT</c></para>
 		/// <para>Reference to a source PROPVARIANT structure.</para>
 		/// </param>
-		/// <param name="crgsz">
-		/// <para>Type: <c>ULONG</c></para>
-		/// <para>The number of strings requested.</para>
-		/// </param>
 		/// <param name="prgsz">
 		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>When this function returns, the array of strings containing the data extracted from the source PROPVARIANT.</para>
@@ -2411,17 +2407,25 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>Examples</para>
 		/// </remarks>
-		public static HRESULT PropVariantToStringVector([In] PROPVARIANT propvar, uint crgsz, out string[] prgsz)
+		public static HRESULT PropVariantToStringVector([In] PROPVARIANT propvar, out string[] prgsz)
 		{
-			SafeCoTaskMemHandle ptr = new SafeCoTaskMemHandle(IntPtr.Size * (int)crgsz);
-			HRESULT hr = PropVariantToStringVector(propvar, (IntPtr)ptr, crgsz, out uint cnt);
-			prgsz = new string[0];
+			var ve = (VarEnum)((int)propvar.vt & 0x0FFF);
+			if ((!propvar.vt.HasFlag(VARTYPE.VT_VECTOR) || ve != VarEnum.VT_LPWSTR && ve != VarEnum.VT_BSTR) && (!propvar.vt.HasFlag(VARTYPE.VT_ARRAY) || ve != VarEnum.VT_BSTR))
+				throw new ArgumentException("Unsupported element type.", nameof(propvar));
+			HRESULT hr = PropVariantToStringVectorAlloc(propvar, out var ptr, out uint cnt);
 			if (hr.Failed)
 			{
+				prgsz = new string[0];
 				return hr;
 			}
-
-			prgsz = ptr.ToEnumerable<IntPtr>((int)cnt).Select(p => ((SafeCoTaskMemHandle)p).ToString(-1)).ToArray();
+			prgsz = new string[(int)cnt];
+			var sptrs = ptr.ToArray<IntPtr>((int)cnt);
+			for (int i = 0; i < cnt; i++)
+			{
+				prgsz[i] = ve == VarEnum.VT_LPWSTR ? Marshal.PtrToStringUni(sptrs[i]) : Marshal.PtrToStringBSTR(sptrs[i]);
+				Marshal.FreeCoTaskMem(sptrs[i]);
+			}
+			ptr.Dispose();
 			return hr;
 		}
 
@@ -4064,7 +4068,7 @@ namespace Vanara.PInvoke
 		// REFVARIANT varIn, PWSTR *ppszBuf );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propvarutil.h", MSDNShortId = "9cd4433c-d8ad-43ef-bdb9-9c1b8d8bea01")]
-		public static extern HRESULT VariantToStringAlloc(in VARIANT varIn, out string ppszBuf);
+		public static extern HRESULT VariantToStringAlloc(in VARIANT varIn, [MarshalAs(UnmanagedType.LPWStr)] out string ppszBuf);
 
 		/// <summary>Extracts data from a vector structure into a String array.</summary>
 		/// <param name="var">
