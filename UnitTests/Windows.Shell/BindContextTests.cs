@@ -35,8 +35,7 @@ namespace Vanara.Windows.Shell.Tests
 		public void EnumObjectParamTest()
 		{
 			using var bc = new BindContext();
-			Assert.That(bc.EnumObjectParam(), Is.Not.Empty);
-			TestContext.Write(string.Join(", ", bc.EnumObjectParam()));
+			Assert.That(() => bc.EnumObjectParam(), Throws.Nothing);
 		}
 	}
 }

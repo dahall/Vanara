@@ -17,7 +17,7 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void ReadProgIDTest()
 		{
-			using (var pi = ProgId.Open("Word.Document.12"))
+			using (var pi = ProgId.Open("Word.Document.12", systemWide: true))
 			{
 				Assert.That(pi.ReadOnly, Is.True);
 				Assert.That(pi.DefaultIcon.ToString(), Is.EqualTo(@"C:\Program Files (x86)\Microsoft Office\Root\VFS\Windows\Installer\{90160000-000F-0000-0000-0000000FF1CE}\wordicon.exe,13"));
@@ -28,13 +28,13 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(pi.Verbs["Close"], Is.Null);
 				//Assert.That(pi.Verbs["New"].DisplayName, Is.EqualTo("&New"));
 			}
-			using (var pi = ProgId.Open("Acrobat.Document.DC"))
-			{
-				Assert.That(pi.EditFlags, Is.EqualTo(PInvoke.ShlwApi.FILETYPEATTRIBUTEFLAGS.FTA_OpenIsSafe));
-				Assert.That(pi.CLSID, Is.EqualTo(new Guid("{B801CA65-A1FC-11D0-85AD-444553540000}")));
-				Assert.That(pi.Verbs["Print"].Command, Has.Length.GreaterThan(0));
-			}
-			using (var pi = ProgId.Open("CABFolder"))
+			//using (var pi = ProgId.Open("Acrobat.Document.DC", systemWide: true))
+			//{
+			//	Assert.That(pi.EditFlags, Is.EqualTo(PInvoke.ShlwApi.FILETYPEATTRIBUTEFLAGS.FTA_OpenIsSafe));
+			//	Assert.That(pi.CLSID, Is.EqualTo(new Guid("{B801CA65-A1FC-11D0-85AD-444553540000}")));
+			//	Assert.That(pi.Verbs["Print"].Command, Has.Length.GreaterThan(0));
+			//}
+			using (var pi = ProgId.Open("CABFolder", systemWide: true))
 			{
 				Assert.That(pi.EditFlags, Is.EqualTo(PInvoke.ShlwApi.FILETYPEATTRIBUTEFLAGS.FTA_SafeForElevation));
 				Assert.That(pi.FriendlyTypeName.ToString(), Is.EqualTo(@"@C:\WINDOWS\system32\cabview.dll,-20"));
@@ -42,9 +42,9 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(pi.InfoTip.ToString(), Is.EqualTo(@"@C:\WINDOWS\system32\cabview.dll,-21"));
 				Assert.That((pi.InfoTip as IndirectString)?.Value, Has.Length.GreaterThan(0));
 			}
-			using (var pi = ProgId.Open("cdafile"))
+			using (var pi = ProgId.Open("cdafile", systemWide: true))
 				Assert.That(pi.Verbs, Has.Count.EqualTo(0));
-			using (var pi = ProgId.Open("Msi.Package"))
+			using (var pi = ProgId.Open("Msi.Package", systemWide: true))
 			{
 				Assert.That(pi.Verbs, Has.Count.EqualTo(4));
 				Assert.That(pi.Verbs.Order, Has.Count.EqualTo(4));

@@ -43,7 +43,7 @@ namespace Vanara.Windows.Shell.Tests
 				}
 			}
 			TestContext.WriteLine("");
-			Assert.That(c, Is.EqualTo(i.Properties.Descriptions.Count));
+			Assert.That(c, Is.LessThanOrEqualTo(i.Properties.Descriptions.Count));
 		}
 
 		[Test]
@@ -91,7 +91,7 @@ namespace Vanara.Windows.Shell.Tests
 			// Try accessing a Word file's writable properties and assert successs.
 			using var w = new ShellItem(testDoc);
 			w.Properties.ReadOnly = false;
-			Assert.That(w.Properties.TryGetValue(PROPERTYKEY.System.Size, out _), Is.True);
+			Assert.That(w.Properties.TryGetValue(PROPERTYKEY.System.Author, out _), Is.True);
 		}
 
 		[Test]

@@ -17,6 +17,7 @@ namespace Vanara.Windows.Shell.Tests
 		public void UnsavedLinkTest()
 		{
 			using var lnk = new ShellLink(TestCaseSources.WordDoc, "/p", TestCaseSources.TempDir, "Test description");
+			lnk.Properties.ReadOnly = false;
 			lnk.Title = "Test title";
 			lnk.HotKey = Keys.Control | Keys.T;
 			lnk.RunAsAdministrator = false;

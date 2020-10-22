@@ -77,7 +77,9 @@ namespace Vanara.Windows.Shell.Tests
 			ps = i.GetHandler<PropSys.IPropertyStore>();
 			Assert.That(ps, Is.Not.Null.And.InstanceOf<PropSys.IPropertyStore>());
 			System.Runtime.InteropServices.Marshal.ReleaseComObject(ps);
-			Assert.That(() => i.GetHandler<IExtractIcon>(), Throws.TypeOf<ArgumentOutOfRangeException>());
+			var ei = i.GetHandler<IExtractIcon>();
+			Assert.That(ei, Is.Not.Null.And.InstanceOf<IExtractIcon>());
+			//Assert.That(() => i.GetHandler<IExtractIcon>(), Throws.TypeOf<ArgumentOutOfRangeException>());
 		}
 
 		[Test]
@@ -87,7 +89,7 @@ namespace Vanara.Windows.Shell.Tests
 			if (!shellItem.IsFolder)
 				TestContext.WriteLine(shellItem.Properties[PROPERTYKEY.System.MIMEType]);
 
-			using var stream = shellItem.GetStream();
+			using var stream = shellItem.GetStream(STGM.STGM_READ | STGM.STGM_SIMPLE);
 			TestContext.WriteLine(((FormattableString)$"{shellItem.FileSystemPath} ({stream.Length:B3})").ToString(ByteSizeFormatter.Instance));
 		}
 
@@ -146,13 +148,12 @@ namespace Vanara.Windows.Shell.Tests
 			Assert.That(() =>
 			  {
 				  using var i = new ShellItem(testDoc);
-				  Assert.That(() => i.GetPropertyDescriptionList(PROPERTYKEY.System.Category), Throws.Exception);
-				  using var pdl = i.GetPropertyDescriptionList(PROPERTYKEY.System.PropList.FullDetails);
+				  using var pdl = i.GetPropertyDescriptionList();
 				  Assert.That(pdl.Count, Is.GreaterThan(0));
 				  foreach (var d in pdl)
 				  {
 					  Assert.That(d.TypeFlags, Is.Not.Zero);
-					  Debug.WriteLine($"Property '{d.DisplayName}' is of type '{d.PropertyType}'");
+					  Debug.WriteLine($"Property '{d.DisplayName}' is of type '{d.PropertyType?.Name}'");
 				  }
 			  }, Throws.Nothing);
 		}
@@ -173,8 +174,8 @@ namespace Vanara.Windows.Shell.Tests
 			Assert.That(() => i.Properties[null], Throws.Exception);
 			Assert.That(() => i.Properties["Arthur"], Throws.Exception);
 
-			Assert.That(i.Properties.GetProperty<string>(PROPERTYKEY.System.Company), Is.InstanceOf<string>().And.StartWith("Microsoft"));
-			Assert.That(() => i.Properties.GetProperty<int>(PROPERTYKEY.System.Company), Throws.Exception);
+			Assert.That(i.Properties.GetProperty<string>(PROPERTYKEY.System.ApplicationName), Is.InstanceOf<string>().And.StartWith("Microsoft"));
+			Assert.That(() => i.Properties.GetProperty<int>(PROPERTYKEY.System.ApplicationName), Throws.Exception);
 		}
 
 		[Test]
@@ -207,8 +208,8 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(i.FileSystemPath, Is.EqualTo(testDoc));
 				i.Update();
 			}, Throws.Nothing);
-			Assert.That(() => new ShellItem((string)null), Throws.Exception);
-			Assert.That(() => new ShellItem(badTestDoc), Throws.Nothing);
+			Assert.That(() => new ShellItem((string)null), Throws.ArgumentNullException);
+			Assert.That(() => new ShellItem(badTestDoc), Throws.InstanceOf<System.IO.FileNotFoundException>());
 		}
 
 		[Test]
