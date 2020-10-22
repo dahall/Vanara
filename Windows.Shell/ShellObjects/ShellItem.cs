@@ -641,13 +641,14 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets a property description list object given a reference to a property key.</summary>
 		/// <param name="keyType">
 		/// A reference to a PROPERTYKEY structure. The values in <see cref="PROPERTYKEY.System.PropList"/> are all valid.
-		/// <see cref="PROPERTYKEY.System.PropList.FullDetails"/> will return all properties.
+		/// <see cref="PROPERTYKEY.System.PropList.FullDetails"/> will return all properties. This is the default.
 		/// </param>
 		/// <returns>A <see cref="PropertyDescriptionList"/> instance for the supplied key.</returns>
-		public PropertyDescriptionList GetPropertyDescriptionList(PROPERTYKEY keyType)
+		public PropertyDescriptionList GetPropertyDescriptionList(PROPERTYKEY keyType = default)
 		{
 			if (iShellItem2 != null)
 			{
+				if (keyType == default) keyType = PROPERTYKEY.System.PropList.FullDetails;
 				try { return new PropertyDescriptionList(iShellItem2.GetPropertyDescriptionList(keyType, typeof(IPropertyDescriptionList).GUID)); }
 				catch { }
 			}
