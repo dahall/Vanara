@@ -2024,7 +2024,7 @@ namespace Vanara.PInvoke
 		// reserved, IBindStatusCallback *pBSCb, IEnumFORMATETC *pEFetc, IBindCtx **ppBC );
 		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("urlmon.h", MSDNShortId = "0c79b61b-d3d6-48fd-aaee-21cddad09208")]
-		public static extern HRESULT CreateAsyncBindCtx([Optional] uint reserved, IBindStatusCallback pBSCb, IEnumFORMATETC pEFetc, out IBindCtx ppBC);
+		public static extern HRESULT CreateAsyncBindCtx([Optional] uint reserved, IBindStatusCallback pBSCb, [In, Optional] IEnumFORMATETC pEFetc, out IBindCtx ppBC);
 
 		/// <summary>Creates an asynchronous bind context for use with asynchronous monikers.</summary>
 		/// <param name="pbc">A pointer to the IBindCtx interface.</param>
@@ -2071,7 +2071,7 @@ namespace Vanara.PInvoke
 		// cfmtetc, FORMATETC *rgfmtetc, IEnumFORMATETC **ppenumfmtetc );
 		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("urlmon.h", MSDNShortId = "302418e5-48b6-46ee-bb96-2a8170c4af5e")]
-		public static extern HRESULT CreateFormatEnumerator(uint cfmtetc, [In] FORMATETC[] rgfmtetc, out IEnumFORMATETC ppenumfmtetc);
+		public static extern HRESULT CreateFormatEnumerator(uint cfmtetc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] FORMATETC[] rgfmtetc, out IEnumFORMATETC ppenumfmtetc);
 
 		/// <summary>Creates a new <c>IUriBuilder</c> instance, and initializes it from an optional <c>IUri</c>.</summary>
 		/// <param name="pIUri">
@@ -2482,7 +2482,7 @@ namespace Vanara.PInvoke
 		// CreateURLMoniker( _In_ IMoniker *pMkCtx, _In_ LPCWSTR szURL, _Out_ IMoniker **ppmk );
 		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Urlmon.h"), Obsolete("Use CreateURLMonikerEx.")]
-		public static extern HRESULT CreateURLMoniker([In] IMoniker pMkCtx, [MarshalAs(UnmanagedType.LPWStr)] string szURL, out IMoniker ppmk);
+		public static extern HRESULT CreateURLMoniker([In, Optional] IMoniker pMkCtx, [MarshalAs(UnmanagedType.LPWStr)] string szURL, out IMoniker ppmk);
 
 		/// <summary>Creates a URL moniker from a full URL, or from a base context URL moniker and a partial URL.</summary>
 		/// <param name="pMkCtx">
@@ -2514,7 +2514,7 @@ namespace Vanara.PInvoke
 		// CreateURLMonikerEx( IMoniker *pMkCtx, LPCWSTR szURL, IMoniker **ppmk, DWORD dwFlags );
 		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Urlmon.h")]
-		public static extern HRESULT CreateURLMonikerEx(IMoniker pMkCtx, [MarshalAs(UnmanagedType.LPWStr)] string szURL, out IMoniker ppmk, URL_MK dwFlags);
+		public static extern HRESULT CreateURLMonikerEx([In, Optional] IMoniker pMkCtx, [MarshalAs(UnmanagedType.LPWStr)] string szURL, out IMoniker ppmk, URL_MK dwFlags);
 
 		/// <summary>
 		/// Creates a new URL moniker from a full Uniform Resource Identifier (URI), or from a base context URL moniker and a relative URI.
@@ -2542,7 +2542,7 @@ namespace Vanara.PInvoke
 		// CreateURLMonikerEx2( IMoniker *pMkCtx, IUri *pUri, IMoniker **ppmk, DWORD dwFlags );
 		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Urlmon.h")]
-		public static extern HRESULT CreateURLMonikerEx2(IMoniker pMkCtx, IUri pUri, out IMoniker ppmk, URL_MK dwFlags);
+		public static extern HRESULT CreateURLMonikerEx2([In, Optional] IMoniker pMkCtx, IUri pUri, out IMoniker ppmk, URL_MK dwFlags);
 
 		/// <summary>
 		/// This synchronous function is invoked by the client of a Windows Internet Explorer feature before the client accesses the feature.
@@ -2735,7 +2735,7 @@ namespace Vanara.PInvoke
 		// *ppwzMimeOut, _Reserved_ DWORD dwReserved );
 		[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Urlmon.h")]
-		public static extern HRESULT FindMimeFromData([In] IBindCtx pBC, [MarshalAs(UnmanagedType.LPWStr)] string pwzUrl, IntPtr pBuffer, uint cbSize,
+		public static extern HRESULT FindMimeFromData([In, Optional] IBindCtx pBC, [MarshalAs(UnmanagedType.LPWStr)] string pwzUrl, IntPtr pBuffer, uint cbSize,
 			[MarshalAs(UnmanagedType.LPWStr)] string pwzMimeProposed, FMFD dwMimeFlags, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzMimeOut, uint dwReserved = 0);
 
 		/// <summary>Gets the <c>CLSID</c> of the object to instantiate for the specified file.</summary>

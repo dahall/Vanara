@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke
@@ -507,7 +508,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775026(v=vs.85)
 			// HRESULT GetPropertyBSTR( Uri_PROPERTY uriProp, [out] BSTR *pbstrProperty, DWORD dwFlags );
-			void GetPropertyBSTR([In] Uri_PROPERTY uriProp, [MarshalAs(UnmanagedType.BStr)] out string pbstrProperty, [In] Uri_DISPLAY dwFlags);
+			void GetPropertyBSTR([In] Uri_PROPERTY uriProp, [MarshalAs(UnmanagedType.BStr)] out string pbstrProperty, [In, Optional] Uri_DISPLAY dwFlags);
 
 			/// <summary>
 			/// Returns the string length of the specified Uniform Resource Identifier (URI) property. Call this function if you want the
@@ -548,7 +549,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775028(v=vs.85)
 			// HRESULT GetPropertyLength( Uri_PROPERTY uriProp, [out] DWORD *pcchProperty, DWORD dwFlags );
-			void GetPropertyLength([In] Uri_PROPERTY uriProp, out uint pcchProperty, [In] Uri_DISPLAY dwFlags);
+			void GetPropertyLength([In] Uri_PROPERTY uriProp, out uint pcchProperty, [In, Optional] Uri_DISPLAY dwFlags);
 
 			/// <summary>Returns the specified numeric Uniform Resource Identifier (URI) property value.</summary>
 			/// <param name="uriProp">
@@ -566,7 +567,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775027(v=vs.85)
 			// HRESULT GetPropertyDWORD( Uri_PROPERTY uriProp, [out] DWORD *pdwProperty, DWORD dwFlags );
-			void GetPropertyDWORD([In] Uri_PROPERTY uriProp, out uint pdwProperty, [In] uint dwFlags);
+			void GetPropertyDWORD([In] Uri_PROPERTY uriProp, out uint pdwProperty, [In] uint dwFlags = 0);
 
 			/// <summary>Determines if the specified property exists in the Uniform Resource Identifier (URI).</summary>
 			/// <returns>Address of a BOOL value. Set to TRUE if the specified property exists in the URI.</returns>
@@ -962,13 +963,13 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774988(v=vs.85)
 			// HRESULT CreateUriSimple( [in] DWORD dwAllowEncodingPropertyMask, [in] DWORD_PTR dwReserved, [out] IUri **ppIUri );
-			IUri CreateUriSimple(Uri_HAS dwAllowEncodingPropertyMask, IntPtr dwReserved = default);
+			IUri CreateUriSimple([Optional] Uri_HAS dwAllowEncodingPropertyMask, IntPtr dwReserved = default);
 
 			/// <summary>Returns a new <c>IUri</c> object based on modifications to the original <c>IUri</c>.</summary>
 			/// <param name="dwCreateFlags">
-			/// [in] <c>DWORD</c> that combines flags, which control the creation of the <c>IUri</c> object. Refer to the <c>CreateUri</c>
-			/// function for a description of these flags. Pass the value of to use the same flags as were specified when the original
-			/// <c>IUri</c> object was created.
+			/// [in] <c>DWORD</c> that combines <see cref="Uri_CREATE"/> flags, which control the creation of the <c>IUri</c> object. Refer
+			/// to the <c>CreateUri</c> function for a description of these flags. Pass the value of <c>-1</c> to use the same flags as were
+			/// specified when the original <c>IUri</c> object was created.
 			/// </param>
 			/// <param name="dwAllowEncodingPropertyMask">[in]Reserved. Must be set to 0.</param>
 			/// <param name="dwReserved">[in]Reserved. Must be set to 0.</param>
@@ -1069,7 +1070,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774990(v=vs.85)
 			// HRESULT GetFragment( [out] DWORD *pcchFragment, [out] LPCWSTR *ppwzFragment );
-			void GetFragment(out uint pcchFragment, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzFragment);
+			void GetFragment(out uint pcchFragment, out StrPtrUni ppwzFragment);
 
 			/// <summary>Retrieves the value of the host component.</summary>
 			/// <param name="pcchHost">
@@ -1082,7 +1083,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774991(v=vs.85)
 			// HRESULT GetHost( [out] DWORD *pcchHost, [out] LPCWSTR *ppwzHost );
-			void GetHost(out uint pcchHost, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzHost);
+			void GetHost(out uint pcchHost, out StrPtrUni ppwzHost);
 
 			/// <summary>Retrieves the value of the password component.</summary>
 			/// <param name="pcchPassword">
@@ -1095,7 +1096,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774993(v=vs.85)
 			// HRESULT GetPassword( [out] DWORD *pcchPassword, [out] LPCWSTR *ppwzPassword );
-			void GetPassword(out uint pcchPassword, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzPassword);
+			void GetPassword(out uint pcchPassword, out StrPtrUni ppwzPassword);
 
 			/// <summary>Retrieves the value of the path component.</summary>
 			/// <param name="pcchPath">
@@ -1108,7 +1109,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774994(v=vs.85)
 			// HRESULT GetPath( [out] DWORD *pcchPath, [out] LPCWSTR *ppwzPath );
-			void GetPath(out uint pcchPath, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzPath);
+			void GetPath(out uint pcchPath, out StrPtrUni ppwzPath);
 
 			/// <summary>Retrieves the value of the port component.</summary>
 			/// <param name="pfHasPort">
@@ -1131,7 +1132,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774996(v=vs.85)
 			// HRESULT GetQuery( [out] DWORD *pcchQuery, [out] LPCWSTR *ppwzQuery );
-			void GetQuery(out uint pcchQuery, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzQuery);
+			void GetQuery(out uint pcchQuery, out StrPtrUni ppwzQuery);
 
 			/// <summary>Retrieves the value of the protocol scheme name.</summary>
 			/// <param name="pcchSchemeName">
@@ -1144,7 +1145,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774997(v=vs.85)
 			// HRESULT GetSchemeName( [out] DWORD *pcchSchemeName, [out] LPCWSTR *ppwzSchemeName );
-			void GetSchemeName(out uint pcchSchemeName, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzSchemeName);
+			void GetSchemeName(out uint pcchSchemeName, out StrPtrUni ppwzSchemeName);
 
 			/// <summary>Retrieves the value of the username component.</summary>
 			/// <param name="pcchUserName">
@@ -1157,7 +1158,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774998(v=vs.85)
 			// HRESULT GetUserName( [out] DWORD *pcchUserName, [out] LPCWSTR *ppwzUserName );
-			void GetUserName(out uint pcchUserName, [MarshalAs(UnmanagedType.LPWStr)] out string ppwzUserName);
+			void GetUserName(out uint pcchUserName, out StrPtrUni ppwzUserName);
 
 			/// <summary>Sets the fragment component.</summary>
 			/// <param name="pwzNewValue">String variable that contains the new value, or NULL to remove the fragment component.</param>
@@ -1296,9 +1297,7 @@ namespace Vanara.PInvoke
 		IAuthenticate
 		IAuthenticateEx
 		IBindHost
-		IBinding
 		IBindProtocol
-		IBindStatusCallback
 		IBindStatusCallbackEx
 		ICatalogFileInfo
 		ICodeInstall
@@ -1309,7 +1308,6 @@ namespace Vanara.PInvoke
 		IMonikerProp
 		IPersistMoniker
 		ISoftDistExt
-		IUri
 		IUriBuilderFactory
 		IUriContainer
 		IWindowForBindingUI
