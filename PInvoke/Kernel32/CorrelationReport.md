@@ -1,7 +1,7 @@
 ## Correlation report for kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
 PInvoke API (methods, structures and constants) imported from Windows Kernel32.dll.
 
-### Methods (99% complete, 1112 of 1113 functions)  
+### Methods (100% complete, 1112 of 1112 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -49,7 +49,6 @@ Native Method | Native DLL | Header | Managed Method
 [CancelWaitableTimer](https://www.google.com/search?num=5&q=CancelWaitableTimer+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CancelWaitableTimer](https://github.com/dahall/Vanara/search?l=C%23&q=CancelWaitableTimer)  
 [CeipIsOptedIn](https://www.google.com/search?num=5&q=CeipIsOptedIn+site%3Adocs.microsoft.com) | kernel32.dll | windowsceip.h | [Vanara.PInvoke.Kernel32.CeipIsOptedIn](https://github.com/dahall/Vanara/search?l=C%23&q=CeipIsOptedIn)  
 [ChangeTimerQueueTimer](https://www.google.com/search?num=5&q=ChangeTimerQueueTimer+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ChangeTimerQueueTimer](https://github.com/dahall/Vanara/search?l=C%23&q=ChangeTimerQueueTimer)  
-[CheckIsMSIXPackage](https://www.google.com/search?num=5&q=CheckIsMSIXPackage+site%3Adocs.microsoft.com) | kernelbase.dll |  |   
 [CheckNameLegalDOS8Dot3](https://www.google.com/search?num=5&q=CheckNameLegalDOS8Dot3A+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CheckNameLegalDOS8Dot3](https://github.com/dahall/Vanara/search?l=C%23&q=CheckNameLegalDOS8Dot3)  
 [CheckRemoteDebuggerPresent](https://www.google.com/search?num=5&q=CheckRemoteDebuggerPresent+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CheckRemoteDebuggerPresent](https://github.com/dahall/Vanara/search?l=C%23&q=CheckRemoteDebuggerPresent)  
 [ClearCommBreak](https://www.google.com/search?num=5&q=ClearCommBreak+site%3Adocs.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.ClearCommBreak](https://github.com/dahall/Vanara/search?l=C%23&q=ClearCommBreak)  
