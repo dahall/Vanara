@@ -2422,7 +2422,7 @@ namespace Vanara.PInvoke
 			var sptrs = ptr.ToArray<IntPtr>((int)cnt);
 			for (int i = 0; i < cnt; i++)
 			{
-				prgsz[i] = ve == VarEnum.VT_LPWSTR ? Marshal.PtrToStringUni(sptrs[i]) : Marshal.PtrToStringBSTR(sptrs[i]);
+				prgsz[i] = Marshal.PtrToStringUni(sptrs[i]);
 				Marshal.FreeCoTaskMem(sptrs[i]);
 			}
 			ptr.Dispose();
