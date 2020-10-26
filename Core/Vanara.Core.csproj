@@ -8,7 +8,7 @@
 * Safe pinning of objects in memory
 * Memory stream based on marshaled memory</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net20;net35;net40;net45;net5.0-windows;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.Core</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>vanara;net-extensions;interop</PackageTags>

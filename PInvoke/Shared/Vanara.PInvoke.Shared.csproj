@@ -10,7 +10,7 @@
 * Resource ID holder
 * Shared structures and enums (see release notes)</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net20;net35;net40;net45;net5.0-windows;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Shared</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
@@ -36,7 +36,7 @@ CharacterSet, CM_RESOURCE, CM_SHARE_DISPOSITION, CmResourceType, DMCOLLATE, DMCO
       <Version>3.1.4</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5.0')) ">
     <PackageReference Include="Microsoft.Win32.Registry">
       <Version>4.6.0</Version>
     </PackageReference>
