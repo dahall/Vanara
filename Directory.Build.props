@@ -17,7 +17,7 @@
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <RootNamespace>Vanara.PInvoke</RootNamespace>
     <SignAssembly>true</SignAssembly>
-    <Version>3.2.19</Version>
+    <Version>3.2.20</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
