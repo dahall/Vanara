@@ -29,6 +29,10 @@ namespace Vanara.PInvoke
 			/// <param name="path">A string that contains the path.</param>
 			public PIDL(string path) : this(IntILCreateFromPath(path)) { }
 
+			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class from an array of bytes.</summary>
+			/// <param name="bytes">The bytes.</param>
+			public PIDL(byte[] bytes) : this() { using var p = new PinnedObject(bytes); SetHandle(IntILClone(p)); }
+
 			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class.</summary>
 			internal PIDL() : base(Free) { }
 
@@ -125,6 +129,10 @@ namespace Vanara.PInvoke
 			/// <param name="other">An object to compare with this object.</param>
 			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 			public bool Equals(PIDL other) => ReferenceEquals(this, other) || Equals(other?.handle ?? IntPtr.Zero);
+
+			/// <summary>Gets the ID list as an array of bytes.</summary>
+			/// <returns>An array of bytes representing the ID list.</returns>
+			public byte[] GetBytes() => handle.ToArray<byte>((int)Size);
 
 			/// <summary>Returns an enumerator that iterates through the collection.</summary>
 			/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator{PIDL}"/> that can be used to iterate through the collection.</returns>
