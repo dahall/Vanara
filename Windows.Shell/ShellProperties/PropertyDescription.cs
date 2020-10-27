@@ -25,19 +25,42 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="PropertyDescription"/> class.</summary>
 		/// <param name="propertyDescription">The property description.</param>
-		protected internal PropertyDescription(IPropertyDescription propertyDescription)
+		/// <param name="pkey">The associated property key.</param>
+		protected internal PropertyDescription(IPropertyDescription propertyDescription, PROPERTYKEY? pkey = null)
 		{
 			iDesc = propertyDescription;
-			key = iDesc.GetPropertyKey();
+			key = pkey ?? iDesc.GetPropertyKey();
 		}
 
 		/// <summary>Creates a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
 		/// <param name="propkey">The property key.</param>
 		/// <returns>An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the schema subsystem cache.</returns>
-		public static PropertyDescription Create(PROPERTYKEY propkey) => PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv) : null;
+		public static PropertyDescription Create(PROPERTYKEY propkey) => PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv, propkey) : null;
+
+		/// <summary>Tries to create a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
+		/// <param name="propkey">The property key.</param>
+		/// <param name="desc">
+		/// An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the
+		/// schema subsystem cache.
+		/// </param>
+		/// <returns><see langword="true"/> if the supplied property key exists; otherwise <see langword="false"/>.</returns>
+		public static bool TryCreate(PROPERTYKEY propkey, out PropertyDescription desc)
+		{
+			if (PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded)
+			{
+				desc = new PropertyDescription((IPropertyDescription)ppv, propkey);
+				return true;
+			}
+			desc = null;
+			return false;
+		}
 
 		/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
 		public PROPDESC_AGGREGATION_TYPE AggregationType => iDesc?.GetAggregationType() ?? 0;
+
+		/// <summary>Gets a value indicating whether the user can group by this property.</summary>
+		/// <value><see langword="true"/> if the user can group by this property; otherwise, <see langword="false"/>.</value>
+		public bool CanGroupBy => (iDesc?.GetTypeFlags(PROPDESC_TYPE_FLAGS.PDTF_CANGROUPBY) ?? 0) == PROPDESC_TYPE_FLAGS.PDTF_CANGROUPBY;
 
 		/// <summary>Gets the case-sensitive name by which a property is known to the system, regardless of its localized name.</summary>
 		public string CanonicalName => iDesc?.GetCanonicalName();
@@ -72,6 +95,13 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the grouping method to be used when a view is grouped by a property, and retrieves the grouping type.</summary>
 		public PROPDESC_GROUPING_RANGE GroupingRange => iDesc?.GetGroupingRange() ?? 0;
+
+		/// <summary>
+		/// Gets a value indicating whether this property is meant to be viewed by the user. This influences whether the property shows up
+		/// in the "Choose Columns" dialog box, for example.
+		/// </summary>
+		/// <value><see langword="true"/> if the user can view this property; otherwise, <see langword="false"/>.</value>
+		public bool IsViewable => (iDesc?.GetTypeFlags(PROPDESC_TYPE_FLAGS.PDTF_ISVIEWABLE) ?? 0) == PROPDESC_TYPE_FLAGS.PDTF_ISVIEWABLE;
 
 		/// <summary>Gets a structure that acts as a property's unique identifier.</summary>
 		public PROPERTYKEY PropertyKey => key;
