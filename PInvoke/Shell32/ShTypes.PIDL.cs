@@ -11,15 +11,14 @@ namespace Vanara.PInvoke
 	public static partial class Shell32
 	{
 		/// <summary>Represents a managed pointer to an ITEMIDLIST.</summary>
-		/// <seealso cref="System.Collections.Generic.IEnumerable{PIDL}"/>
 		[PInvokeData("Shtypes.h", MSDNShortId = "bb773321")]
-		public class PIDL : GenericSafeHandle, IEnumerable<PIDL>, IEquatable<PIDL>, IEquatable<IntPtr>
+		public class PIDL : SafeHANDLE, IEnumerable<PIDL>, IEquatable<PIDL>, IEquatable<IntPtr>
 		{
 			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class.</summary>
 			/// <param name="pidl">The raw pointer to a native ITEMIDLIST.</param>
 			/// <param name="clone">if set to <c>true</c> clone the list before storing it.</param>
 			/// <param name="own">if set to <c>true</c><see cref="PIDL"/> will release the memory associated with the ITEMIDLIST when done.</param>
-			public PIDL(IntPtr pidl, bool clone = false, bool own = true) : base(clone ? IntILClone(pidl) : pidl, Free, clone || own) { }
+			public PIDL(IntPtr pidl, bool clone = false, bool own = true) : base(clone ? IntILClone(pidl) : pidl, clone || own) { }
 
 			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class.</summary>
 			/// <param name="pidl">An existing <see cref="PIDL"/> that will be copied and managed.</param>
@@ -31,10 +30,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class from an array of bytes.</summary>
 			/// <param name="bytes">The bytes.</param>
-			public PIDL(byte[] bytes) : this() { using var p = new PinnedObject(bytes); SetHandle(IntILClone(p)); }
+			public PIDL(byte[] bytes) { using var p = new PinnedObject(bytes); SetHandle(IntILClone(p)); }
 
 			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class.</summary>
-			internal PIDL() : base(Free) { }
+			internal PIDL() { }
 
 			/// <summary>Gets a value representing a NULL PIDL.</summary>
 			/// <value>The null equivalent.</value>
@@ -98,12 +97,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Appends the specified <see cref="PIDL"/> to the existing list.</summary>
 			/// <param name="appendPidl">The <see cref="PIDL"/> to append.</param>
-			public void Append(PIDL appendPidl)
-			{
-				IntPtr newPidl = IntILCombine(handle, appendPidl.DangerousGetHandle());
-				Free(handle);
-				SetHandle(newPidl);
-			}
+			public void Append(PIDL appendPidl) => UpdateHandle(IntILCombine(handle, appendPidl.DangerousGetHandle()));
 
 			/// <summary>Dumps this instance to a string a list of binary values.</summary>
 			/// <returns>A binary string of the contents.</returns>
@@ -144,12 +138,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Inserts the specified <see cref="PIDL"/> before the existing list.</summary>
 			/// <param name="insertPidl">The <see cref="PIDL"/> to insert.</param>
-			public void Insert(PIDL insertPidl)
-			{
-				IntPtr newPidl = IntILCombine(insertPidl.handle, handle);
-				Free(handle);
-				SetHandle(newPidl);
-			}
+			public void Insert(PIDL insertPidl) => UpdateHandle(IntILCombine(insertPidl.handle, handle));
 
 			/// <summary>Determines if this instance is a parent or ancestor of a supplied PIDL.</summary>
 			/// <param name="childPidl">Child instance to test.</param>
@@ -184,9 +173,23 @@ namespace Vanara.PInvoke
 			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-			private static bool Free(IntPtr pidl)
+			/// <summary>
+			/// Internal method that actually releases the handle. This is called by <see cref="M:Vanara.PInvoke.SafeHANDLE.ReleaseHandle"/>
+			/// for valid handles and afterwards zeros the handle.
+			/// </summary>
+			/// <returns><c>true</c> to indicate successful release of the handle; <c>false</c> otherwise.</returns>
+			protected override bool InternalReleaseHandle()
 			{
-				ILFree(pidl); return true;
+				ILFree(handle);
+				return true;
+			}
+
+			/// <summary>Updates the handle after freeing the existing handle.</summary>
+			/// <param name="newHandle">The new handle.</param>
+			protected virtual void UpdateHandle(IntPtr newHandle)
+			{
+				ILFree(handle);
+				SetHandle(newHandle);
 			}
 
 			private class InternalEnumerator : IEnumerator<PIDL>
