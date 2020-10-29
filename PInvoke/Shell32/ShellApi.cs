@@ -1582,6 +1582,33 @@ namespace Vanara.PInvoke
 			return ret;
 		}
 
+		/// <summary>Initializes or reinitializes the system image list.</summary>
+		/// <param name="fRestoreCache">
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> to restore the system image cache from disk; <c>FALSE</c> otherwise.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> if the cache was successfully refreshed, <c>FALSE</c> if the initialization failed.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>If you are using system image lists in your own process, you must call <c>FileIconInit</c> at the following times:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>On launch.</term>
+		/// </item>
+		/// <item>
+		/// <term>In response to a <c>WM_SETTINGCHANGE</c> message when the <c>SPI_SETNONCLIENTMETRICS</c> flag is set.</term>
+		/// </item>
+		/// </list>
+		/// <para><c>FileIconInit</c> is not included in a header file. You must call it directly from Shell32.dll, using ordinal 660.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/shell/fileiconinit
+		// BOOL FileIconInit( _In_ BOOL fRestoreCache );
+		[DllImport(Lib.Shell32, SetLastError = false, EntryPoint = "#660")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool FileIconInit([MarshalAs(UnmanagedType.Bool)] bool fRestoreCache);
+
 		/// <summary>
 		/// <para>Retrieves the name of and handle to the executable (.exe) file associated with a specific document file.</para>
 		/// </summary>
@@ -4045,6 +4072,9 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
 			public string szPath;
+
+			/// <summary>The default empty instance of SHSTOCKICONINFO with cbSize set appropriately.</summary>
+			public static readonly SHSTOCKICONINFO Default = new SHSTOCKICONINFO { cbSize = (uint)Marshal.SizeOf(typeof(SHSTOCKICONINFO)) };
 		}
 	}
 }
