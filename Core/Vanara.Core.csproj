@@ -34,7 +34,7 @@ CorrespondingAction, StringListPackMethod
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or '$(TargetFramework)' == 'net40' ">
     <PackageReference Include="Theraot.Core">
-      <Version>3.1.4</Version>
+      <Version>3.2.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">

@@ -24,7 +24,7 @@ BatteryStatus, EnergySaverStatus, JobLimit, NetworkInterfaceAccessType, NetworkI
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="4.6.0" Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) " />
-    <PackageReference Include="Theraot.Core" Version="3.1.4" Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or '$(TargetFramework)' == 'net40' " />
+    <PackageReference Include="Theraot.Core" Version="3.2.0" Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or '$(TargetFramework)' == 'net40' " />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\IpHlpApi\Vanara.PInvoke.IpHlpApi.csproj" />
