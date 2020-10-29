@@ -29,6 +29,8 @@ namespace Vanara.Windows.Shell
 	/// <summary>Represents the System Image List holding images for all shell icons.</summary>
 	public static class ShellImageList
 	{
+		private static HIMAGELIST hSystemImageList;
+
 		/// <summary>Gets the system icon for the given file name or extension.</summary>
 		/// <param name="fileNameOrExtension">The file name or extension.</param>
 		/// <param name="iconSize">Size of the icon.</param>
@@ -36,12 +38,22 @@ namespace Vanara.Windows.Shell
 		public static Icon GetSystemIcon(string fileNameOrExtension, ShellImageSize iconSize = ShellImageSize.Large)
 		{
 			var shfi = new SHFILEINFO();
-			var hImageList = (HIMAGELIST)SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_SYSICONINDEX | (iconSize == ShellImageSize.Small ? SHGFI.SHGFI_SMALLICON : 0));
-			if (hImageList.IsNull) return null;
+			if (hSystemImageList.IsNull)
+				hSystemImageList = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_SYSICONINDEX | (iconSize == ShellImageSize.Small ? SHGFI.SHGFI_SMALLICON : 0));
+			if (hSystemImageList.IsNull) return null;
 			if (iconSize <= ShellImageSize.Small)
-				return ImageList_GetIcon(hImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
+				return ImageList_GetIcon(hSystemImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
+			return GetSystemIcon(shfi.iIcon, iconSize);
+		}
+
+		/// <summary>Gets the system icon for and index and size.</summary>
+		/// <param name="index">The index of the system icon to retrieve.</param>
+		/// <param name="iconSize">Size of the icon.</param>
+		/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
+		public static Icon GetSystemIcon(int index, ShellImageSize iconSize = ShellImageSize.Large)
+		{
 			SHGetImageList((SHIL)iconSize, typeof(IImageList).GUID, out var il).ThrowIfFailed();
-			return il.GetIcon(shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
+			return il.GetIcon(index, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT)?.ToIcon();
 		}
 
 		/// <summary>Gets the Shell icon for the given file name or extension.</summary>
