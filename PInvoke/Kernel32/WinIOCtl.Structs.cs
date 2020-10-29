@@ -2248,6 +2248,8 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct PARTITION_INFORMATION_GPT
 		{
+			private const int nameBytes = 36 * 2;
+
 			/// <summary>
 			/// <para>A <c>GUID</c> that identifies the partition type.</para>
 			/// <para>
@@ -2366,9 +2368,41 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public GPT_ATTRIBUTE Attributes;
 
+			// Little hack to get 72 blittable bytes for 'Name'.
+			private ulong ul1;
+			private ulong ul2;
+			private ulong ul3;
+			private ulong ul4;
+			private ulong ul5;
+			private ulong ul6;
+			private ulong ul7;
+			private ulong ul8;
+			private ulong ul9;
+
 			/// <summary>A wide-character string that describes the partition.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 36)]
-			public string Name;
+			public string Name
+			{
+				get
+				{
+					unsafe
+					{
+						fixed (ulong* p = &ul1)
+						{
+							return Vanara.Extensions.StringHelper.GetString((IntPtr)(void*)p, CharSet.Unicode, nameBytes);
+						}
+					}
+				}
+				set
+				{
+					unsafe
+					{
+						fixed (ulong* p = &ul1)
+						{
+							Vanara.Extensions.StringHelper.Write(value, (IntPtr)(void*)p, out _, true, CharSet.Unicode, nameBytes);
+						}
+					}
+				}
+			}
 		}
 
 		/// <summary>Contains partition information specific to master boot record (MBR) disks.</summary>
