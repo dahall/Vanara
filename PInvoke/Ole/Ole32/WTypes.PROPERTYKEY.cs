@@ -105,7 +105,7 @@ namespace Vanara.PInvoke
 			/// <returns>
 			/// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
 			/// </returns>
-			public bool Equals(PROPERTYKEY other) => Equals(Key, other.Key) && Id == other.Id;
+			public bool Equals(PROPERTYKEY other) => Id == other.Id && Equals(Key, other.Key);
 
 			/// <summary>Implements the equality operator.</summary>
 			/// <param name="pk1">The first key.</param>
@@ -143,14 +143,8 @@ namespace Vanara.PInvoke
 			/// <returns>The name returned from PSGetNameFromPropertyKey.</returns>
 			public string GetCanonicalName()
 			{
-				try
-				{
-					var pk = this;
-					PropSys.PSGetNameFromPropertyKey(pk, out var str);
-					return str;
-				}
-				catch { }
-				return null;
+				var pk = this;
+				return PropSys.PSGetNameFromPropertyKey(pk, out var str).Succeeded ? str : null;
 			}
 
 			/// <summary>Provided a key, use reflection to do a reverse lookup and find the string value.</summary>
