@@ -1204,7 +1204,8 @@ namespace Vanara.PInvoke
 			/// A pointer to a VARIANT with the requested information. The value is fully typed. The value returned for properties from the
 			/// property system must conform to the type specified in that property definition's typeInfo as the legacyType attribute.
 			/// </returns>
-			object GetDetailsEx(PIDL pidl, PROPERTYKEY pscid);
+			[return: MarshalAs(UnmanagedType.Struct)]
+			object GetDetailsEx(PIDL pidl, in PROPERTYKEY pscid);
 
 			/// <summary>Gets detailed information, identified by a column index, on an item in a Shell folder.</summary>
 			/// <param name="pidl">
