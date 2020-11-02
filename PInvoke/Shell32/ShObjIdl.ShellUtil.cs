@@ -81,16 +81,16 @@ namespace Vanara.PInvoke
 					return null;
 
 				// Handle case of a 'shell' URI and convert GUID to known folder
-				if (path.StartsWith("shell:::", StringComparison.InvariantCultureIgnoreCase))
-				{
-					path = path.Substring(8);
-					var separatorIndex = path.IndexOf('/');
-					var kf = new Guid(separatorIndex == -1 ? path : path.Substring(0, separatorIndex));
-					var fullPath = GetPathForKnownFolder(kf);
-					if (separatorIndex != -1)
-						fullPath += path.Substring(separatorIndex).Replace('/', '\\');
-					path = fullPath;
-				}
+				//if (path.StartsWith("shell:::", StringComparison.InvariantCultureIgnoreCase))
+				//{
+				//	path = path.Substring(8);
+				//	var separatorIndex = path.IndexOf('/');
+				//	var kf = new Guid(separatorIndex == -1 ? path : path.Substring(0, separatorIndex));
+				//	var fullPath = GetPathForKnownFolder(kf);
+				//	if (separatorIndex != -1)
+				//		fullPath += path.Substring(separatorIndex).Replace('/', '\\');
+				//	path = fullPath;
+				//}
 
 				var hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out var unk);
 				if (hr == (HRESULT)Win32Error.ERROR_FILE_NOT_FOUND)
