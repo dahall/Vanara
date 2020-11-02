@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
@@ -195,14 +196,18 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>UINT</c></para>
 			/// <para>The number of characters in the pszDesc buffer.</para>
 			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
 			/// <remarks>
 			/// In the case of the system folder view object, if the description at pszDesc matches one of the category names listed in the
 			/// folder's <c>Arrange Icons By</c> menu, a dot is placed by that name when the menu is displayed, either through the
 			/// <c>View</c> menu or through the context menu.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategorizer-getdescription HRESULT
-			// GetDescription( LPWSTR pszDesc, UINT cch );
-			void GetDescription([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDesc, uint cch);
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategorizer-getdescription
+			[PreserveSig]
+			HRESULT GetDescription([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDesc, uint cch);
 
 			/// <summary>Gets a list of categories associated with a list of identifiers.</summary>
 			/// <param name="cidl">
@@ -217,6 +222,10 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>DWORD*</c></para>
 			/// <para>When this method returns, contains a pointer to an array of cidl category identifiers.</para>
 			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
 			/// <remarks>
 			/// <para>
 			/// The <c>ICategorizer::GetCategory</c> method accepts an array of pointers to item identifier lists (PIDLs) and fills an array
@@ -224,22 +233,26 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><c>Important</c> The value -1 is an invalid category identifier.</para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategorizer-getcategory HRESULT
-			// GetCategory( UINT cidl, PCUITEMID_CHILD_ARRAY apidl, DWORD *rgCategoryIds );
-			void GetCategory(uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgCategoryIds);
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategorizer-getcategory
+			[PreserveSig]
+			HRESULT GetCategory(uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgCategoryIds);
 
 			/// <summary>Gets information about a category, such as the default display and the text to display in the UI.</summary>
 			/// <param name="dwCategoryId">
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>A <c>DWORD</c> that specifies a category identifier.</para>
 			/// </param>
-			/// <returns>
+			/// <param name="pci">
 			/// <para>Type: <c>CATEGORY_INFO*</c></para>
 			/// <para>When this method returns, contains a pointer to a CATEGORY_INFO structure that contains the category information.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategorizer-getcategoryinfo HRESULT
-			// GetCategoryInfo( DWORD dwCategoryId, CATEGORY_INFO *pci );
-			CATEGORY_INFO GetCategoryInfo(uint dwCategoryId);
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategorizer-getcategoryinfo
+			[PreserveSig]
+			HRESULT GetCategoryInfo(uint dwCategoryId, out CATEGORY_INFO pci );
 
 			/// <summary>Determines the relative order of two items in their item identifier lists, and hence in the UI.</summary>
 			/// <param name="csfFlags">
@@ -278,8 +291,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategorizer-comparecategory HRESULT
-			// CompareCategory( CATSORT_FLAGS csfFlags, DWORD dwCategoryId1, DWORD dwCategoryId2 );
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategorizer-comparecategory
 			[PreserveSig]
 			HRESULT CompareCategory(CATSORT_FLAGS csfFlags, uint dwCategoryId1, uint dwCategoryId2);
 		}
@@ -374,12 +386,16 @@ namespace Vanara.PInvoke
 			HRESULT GetCategoryForSCID(in PROPERTYKEY pscid, out Guid pguid);
 
 			/// <summary>Gets the enumerator for the list of GUIDs that represent categories.</summary>
-			/// <returns>
+			/// <param name="penum">
 			/// <para>Type: <c>IEnumGUID**</c></para>
 			/// <para>
 			/// When this method returns, contains the address of a pointer to an <c>IEnumGUID</c> interface that specifies a list of GUIDs
 			/// that represent categories.
 			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
 			/// <remarks>
 			/// In the case of the system folder view object, <c>ICategoryProvider::EnumCategories</c> is used to obtain additional
@@ -387,9 +403,9 @@ namespace Vanara.PInvoke
 			/// to retrieve the name of each category. That name is then displayed as a category choice. In the case of Windows XP, that
 			/// choice appears in the folder's <c>Arrange Icons By</c> menu.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategoryprovider-enumcategories HRESULT
-			// EnumCategories( IEnumGUID **penum );
-			IEnumGUID EnumCategories();
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategoryprovider-enumcategories
+			[PreserveSig]
+			HRESULT EnumCategories(out IEnumGUID penum);
 
 			/// <summary>Gets the name of the specified category.</summary>
 			/// <param name="pguid">
@@ -404,9 +420,14 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>UINT</c></para>
 			/// <para>An integer that receives the number of characters in the string.</para>
 			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategoryprovider-getcategoryname HRESULT
 			// GetCategoryName( const GUID *pguid, LPWSTR pszName, UINT cch );
-			void GetCategoryName(in Guid pguid, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName, uint cch);
+			[PreserveSig]
+			HRESULT GetCategoryName(in Guid pguid, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName, uint cch);
 
 			/// <summary>Creates a category object.</summary>
 			/// <param name="pguid">
@@ -421,9 +442,14 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>void**</c></para>
 			/// <para>When this method returns, contains the address of a pointer to the category object.</para>
 			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategoryprovider-createcategory HRESULT
 			// CreateCategory( const GUID *pguid, REFIID riid, void **ppv );
-			void CreateCategory(in Guid pguid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+			[PreserveSig]
+			HRESULT CreateCategory(in Guid pguid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
 		}
 
 		/// <summary>A standard OLE enumerator used by a client to determine the available search objects for a folder.</summary>
@@ -485,21 +511,26 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>FOLDER_ENUM_MODE</c></para>
 			/// <para>One of the FOLDER_ENUM_MODE values that specify the enumeration mode.</para>
 			/// </param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iobjectwithfolderenummode-setmode HRESULT
-			// SetMode( FOLDER_ENUM_MODE feMode );
-			void SetMode(FOLDER_ENUM_MODE feMode);
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iobjectwithfolderenummode-setmode
+			[PreserveSig]
+			HRESULT SetMode(FOLDER_ENUM_MODE feMode);
 
 			/// <summary>Retrieves the enumeration mode of the parsed item.</summary>
-			/// <returns>
+			/// <param name="pfeMode">
 			/// <para>Type: <c>FOLDER_ENUM_MODE*</c></para>
-			/// <para>
-			/// Pointer to a value that, when this method returns successfully, receives one of the FOLDER_ENUM_MODE values specifying the
-			/// enumeration mode.
-			/// </para>
+			/// <para>Pointer to a value that, when this method returns successfully, receives one of the FOLDER_ENUM_MODE values specifying the enumeration mode.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iobjectwithfolderenummode-getmode HRESULT
-			// GetMode( FOLDER_ENUM_MODE *pfeMode );
-			FOLDER_ENUM_MODE GetMode();
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iobjectwithfolderenummode-getmode
+			[PreserveSig]
+			HRESULT GetMode(out FOLDER_ENUM_MODE pfeMode);
 		}
 
 		/// <summary>Exposed by all Shell namespace folder objects, its methods are used to manage folders.</summary>
@@ -510,108 +541,262 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Translates the display name of a file object or a folder into an item identifier list.</summary>
 			/// <param name="hwnd">
-			/// A window handle. The client should provide a window handle if it displays a dialog or message box. Otherwise set hwnd to NULL
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>
+			/// A window handle. The client should provide a window handle if it displays a dialog or message box. Otherwise set hwnd to <c>NULL</c>.
+			/// </para>
 			/// </param>
 			/// <param name="pbc">
+			/// <para>Type: <c>IBindCtx*</c></para>
+			/// <para>
 			/// Optional. A pointer to a bind context used to pass parameters as inputs and outputs to the parsing function. These passed
 			/// parameters are often specific to the data source and are documented by the data source owners. For example, the file system
 			/// data source accepts the name being parsed (as a WIN32_FIND_DATA structure), using the STR_FILE_SYS_BIND_DATA bind context
 			/// parameter. STR_PARSE_PREFER_FOLDER_BROWSING can be passed to indicate that URLs are parsed using the file system data source
 			/// when possible. Construct a bind context object using CreateBindCtx and populate the values using
-			/// IBindCtx::RegisterObjectParam. See Bind Context String Keys for a complete list of these. If no data is being passed to or
-			/// received from the parsing function, this value can be NULL.
+			/// IBindCtx::RegisterObjectParam. See <c>Bind Context String Keys</c> for a complete list of these.
+			/// </para>
+			/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
 			/// </param>
 			/// <param name="pszDisplayName">
+			/// <para>Type: <c>LPWSTR</c></para>
+			/// <para>
 			/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form
 			/// this string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also
-			/// will accept references to items in the namespace that have a GUID associated with them using the "::{GUID}" syntax.
+			/// will accept references to items in the namespace that have a GUID associated with them using the "::{GUID}" syntax. For
+			/// example, to retrieve a fully qualified identifier list for the control panel from the desktop folder, you can use the following:
+			/// </para>
+			/// <para><c>::{CLSID for Control Panel}\::{CLSID for printers folder}</c></para>
 			/// </param>
 			/// <param name="pchEaten">
-			/// A pointer to a ULONG value that receives the number of characters of the display name that was parsed. If your application
-			/// does not need this information, set pchEaten to NULL, and no value will be returned.
+			/// <para>Type: <c>ULONG*</c></para>
+			/// <para>
+			/// A pointer to a <c>ULONG</c> value that receives the number of characters of the display name that was parsed. If your
+			/// application does not need this information, set pchEaten to <c>NULL</c>, and no value will be returned.
+			/// </para>
 			/// </param>
 			/// <param name="ppidl">
+			/// <para>Type: <c>PIDLIST_RELATIVE*</c></para>
+			/// <para>
 			/// When this method returns, contains a pointer to the PIDL for the object. The returned item identifier list specifies the
 			/// item relative to the parsing folder. If the object associated with pszDisplayName is within the parsing folder, the returned
 			/// item identifier list will contain only one SHITEMID structure. If the object is in a subfolder of the parsing folder, the
-			/// returned item identifier list will contain multiple SHITEMID structures. If an error occurs, NULL is returned in this address.
+			/// returned item identifier list will contain multiple <c>SHITEMID</c> structures. If an error occurs, <c>NULL</c> is returned
+			/// in this address.
+			/// </para>
 			/// <para>When it is no longer needed, it is the responsibility of the caller to free this resource by calling CoTaskMemFree.</para>
 			/// </param>
 			/// <param name="pdwAttributes">
-			/// The value used to query for file attributes. If not used, it should be set to NULL. To query for one or more attributes,
-			/// initialize this parameter with the SFGAO flags that represent the attributes of interest. On return, those attributes that
-			/// are true and were requested will be set.
+			/// <para>Type: <c>ULONG*</c></para>
+			/// <para>
+			/// The value used to query for file attributes. If not used, it should be set to <c>NULL</c>. To query for one or more
+			/// attributes, initialize this parameter with the SFGAO flags that represent the attributes of interest. On return, those
+			/// attributes that are true and were requested will be set.
+			/// </para>
 			/// </param>
-			void ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Some Shell folders may not implement <c>IShellFolder::ParseDisplayName</c>. Each folder that does will define its own
+			/// parsing syntax.
+			/// </para>
+			/// <para>
+			/// <c>ParseDisplayName</c> is not expected to handle the relative path or parent folder indicators ("." or ".."). It is up to
+			/// the caller to remove these appropriately.
+			/// </para>
+			/// <para>
+			/// Do not use the SFGAO_VALIDATE flag in pdwAttributes to verify the existence of the item whose name is being parsed.
+			/// <c>IShellFolder::ParseDisplayName</c> implicitly validates the existence of the item unless that behavior is overridden by a
+			/// special bind context parameter.
+			/// </para>
+			/// <para>
+			/// Querying for some attributes may be relatively slow and use significant amounts of memory. For example, to determine if a
+			/// file is shared, the Shell will load network components. This procedure may require the loading of several DLLs. The purpose
+			/// of pdwAttributes is to allow you to restrict the query to only that information that is needed. The following code fragment
+			/// illustrates how to find out if a file is compressed.
+			/// </para>
+			/// <para>
+			/// <code>LPITEMIDLIST pidl; ULONG cbEaten; DWORD dwAttribs = SFGAO_COMPRESSED; hres = psf-&gt;ParseDisplayName(NULL, NULL, lpwszDisplayName, &amp;cbEaten, // This can be NULL &amp;pidl, &amp;dwAttribs); if(dwAttribs &amp; SFGAO_COMPRESSED) { // Do something with the compressed file }</code>
+			/// </para>
+			/// <para>
+			/// Since pdwAttributes is an in/out parameter, it should always be initialized. If you pass in an uninitialized value, some of
+			/// the bits may be inadvertantly set. <c>IShellFolder::ParseDisplayName</c> will then query for the corresponding attributes,
+			/// which may lead to undesirable delays or memory demands. If you do not wish to query for attributes, set pdwAttributes to
+			/// <c>NULL</c> to avoid unpredictable behavior.
+			/// </para>
+			/// <para>This method is similar to the IParseDisplayName::ParseDisplayName method.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-parsedisplayname
+			[PreserveSig]
+			HRESULT ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
 
 			/// <summary>
 			/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its
 			/// IEnumIDList interface. The methods supported by that interface can then be used to enumerate the folder's contents.
 			/// </summary>
 			/// <param name="hwnd">
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>
 			/// If user input is required to perform the enumeration, this window handle should be used by the enumeration object as the
 			/// parent window to take user input. An example would be a dialog box to ask for a password or prompt the user to insert a CD
-			/// or floppy disk. If hwndOwner is set to NULL, the enumerator should not post any messages, and if user input is required, it
-			/// should silently fail.
+			/// or floppy disk. If hwndOwner is set to <c>NULL</c>, the enumerator should not post any messages, and if user input is
+			/// required, it should silently fail.
+			/// </para>
 			/// </param>
 			/// <param name="grfFlags">
+			/// <para>Type: <c>SHCONTF</c></para>
+			/// <para>
 			/// Flags indicating which items to include in the enumeration. For a list of possible values, see the SHCONTF enumerated type.
+			/// </para>
+			/// </param>
+			/// <param name="ppenumIDList">
+			/// <para>Type: <c>IEnumIDList**</c></para>
+			/// <para>
+			/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an
+			/// error occurs or no suitable subobjects are found, ppenumIDList is set to <c>NULL</c>.
+			/// </para>
 			/// </param>
 			/// <returns>
-			/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an
-			/// error occurs or no suitable subobjects are found, ppenumIDList is set to NULL.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns
+			/// <code>S_OK</code>
+			/// if successful, or an error value otherwise. Some implementations may also return
+			/// <code>S_FALSE</code>
+			/// , indicating that there are no children matching the grfFlags that were passed in. If
+			/// <code>S_FALSE</code>
+			/// is returned, ppenumIDList is set to
+			/// <code>NULL</code>
+			/// .
+			/// </para>
 			/// </returns>
-			IEnumIDList EnumObjects(HWND hwnd, SHCONTF grfFlags);
+			/// <remarks>
+			/// <para>
+			/// If the method returns S_OK, then ppenumIDList receives a pointer to an enumerator. In this case, the calling application
+			/// must free the returned IEnumIDList object by calling its <c>Release</c> method.
+			/// </para>
+			/// <para>
+			/// If the method returns S_FALSE, then the folder contains no suitable subobjects and the pointer specified in ppenumIDList is
+			/// set to <c>NULL</c>.
+			/// </para>
+			/// <para>If the method fails, an error value is returned and the pointer specified in ppenumIDList is set to <c>NULL</c>.</para>
+			/// <para>
+			/// If the folder contains no suitable subobjects, then the <c>IShellFolder::EnumObjects</c> method is permitted either to set
+			/// *ppenumIDList to <c>NULL</c> and return S_FALSE, or to set *ppenumIDList to an enumerator that produces no objects and
+			/// return S_OK. Calling applications must be prepared for both success cases.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-enumobjects
+			[PreserveSig]
+			HRESULT EnumObjects(HWND hwnd, SHCONTF grfFlags, out IEnumIDList ppenumIDList);
 
 			/// <summary>
 			/// Retrieves a handler, typically the Shell folder object that implements IShellFolder for a particular item. Optional
 			/// parameters that control the construction of the handler are passed in the bind context.
 			/// </summary>
 			/// <param name="pidl">
+			/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+			/// <para>
 			/// The address of an ITEMIDLIST structure (PIDL) that identifies the subfolder. This value can refer to an item at any level
 			/// below the parent folder in the namespace hierarchy. The structure contains one or more SHITEMID structures, followed by a
-			/// terminating NULL.
+			/// terminating <c>NULL</c>.
+			/// </para>
 			/// </param>
 			/// <param name="pbc">
-			/// A pointer to an IBindCtx interface on a bind context object that can be used to pass parameters to the construction of the
-			/// handler. If this parameter is not used, set it to NULL. Because support for this parameter is optional for folder object
-			/// implementations, some folders may not support the use of bind contexts.
+			/// <para>Type: <c>IBindCtx*</c></para>
 			/// <para>
-			/// Information that can be provided in the bind context includes a BIND_OPTS structure that includes a grfMode member that
-			/// indicates the access mode when binding to a stream handler. Other parameters can be set and discovered using
+			/// A pointer to an IBindCtx interface on a bind context object that can be used to pass parameters to the construction of the
+			/// handler. If this parameter is not used, set it to <c>NULL</c>. Because support for this parameter is optional for folder
+			/// object implementations, some folders may not support the use of bind contexts.
+			/// </para>
+			/// <para>
+			/// Information that can be provided in the bind context includes a BIND_OPTS structure that includes a <c>grfMode</c> member
+			/// that indicates the access mode when binding to a stream handler. Other parameters can be set and discovered using
 			/// IBindCtx::RegisterObjectParam and IBindCtx::GetObjectParam.
 			/// </para>
 			/// </param>
 			/// <param name="riid">
-			/// The identifier of the interface to return. This may be IID_IShellFolder, IID_IStream, or any other interface that identifies
-			/// a particular handler.
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>
+			/// The identifier of the interface to return. This may be <c>IID_IShellFolder</c>, <c>IID_IStream</c>, or any other interface
+			/// that identifies a particular handler.
+			/// </para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void**</c></para>
+			/// <para>
+			/// When this method returns, contains the address of a pointer to the requested interface. If an error occurs, a <c>NULL</c>
+			/// pointer is returned at this address.
+			/// </para>
 			/// </param>
 			/// <returns>
-			/// When this method returns, contains the address of a pointer to the requested interface. If an error occurs, a NULL pointer
-			/// is returned at this address.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			object BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid);
+			/// <remarks>
+			/// <para>
+			/// Applications use <c>IShellFolder::BindToObject</c><c>(..., IID_IShellFolder, ...)</c> to obtain the Shell folder object for
+			/// a subitem. Clients should pass the canonical interface IID that is used to identify a specific handler. For example,
+			/// <c>IID_IShellFolder</c> identifies the folder handler and <c>IID_IStream</c> identifies the stream handler. Implementations
+			/// can support binding to handlers using derived interfaces as well, such as <c>IID_IShellFolder2</c>. A Shell namespace
+			/// extension can implement this function by creating the Shell folder object for the specified subitem and then calling
+			/// QueryInterface to communicate with the object through its interface pointer.
+			/// </para>
+			/// <para>
+			/// Implementations of <c>BindToObject</c> can optimize any call to it by quickly failing for IID values that it does not
+			/// support. For example, if the Shell folder object of the subitem does not support IRemoteComputer, the implementation should
+			/// return <c>E_NOINTERFACE</c> immediately instead of needlessly creating the Shell folder object for the subitem and then
+			/// finding that <c>IRemoteComputer</c> was not supported after all.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtoobject
+			[PreserveSig]
+			HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
 
 			/// <summary>Requests a pointer to an object's storage interface.</summary>
 			/// <param name="pidl">
+			/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+			/// <para>
 			/// The address of an ITEMIDLIST structure that identifies the subfolder relative to its parent folder. The structure must
 			/// contain exactly one SHITEMID structure followed by a terminating zero.
+			/// </para>
 			/// </param>
 			/// <param name="pbc">
+			/// <para>Type: <c>IBindCtx*</c></para>
+			/// <para>
 			/// The optional address of an IBindCtx interface on a bind context object to be used during this operation. If this parameter
-			/// is not used, set it to NULL. Because support for pbc is optional for folder object implementations, some folders may not
-			/// support the use of bind contexts.
+			/// is not used, set it to <c>NULL</c>. Because support for pbc is optional for folder object implementations, some folders may
+			/// not support the use of bind contexts.
+			/// </para>
 			/// </param>
 			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>
 			/// The IID of the requested storage interface. To retrieve an IStream, IStorage, or IPropertySetStorage interface pointer, set
-			/// riid to IID_IStream, IID_IStorage, or IID_IPropertySetStorage, respectively.
+			/// riid to <c>IID_IStream</c>, <c>IID_IStorage</c>, or <c>IID_IPropertySetStorage</c>, respectively.
+			/// </para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void**</c></para>
+			/// <para>
+			/// The address that receives the interface pointer specified by riid. If an error occurs, a <c>NULL</c> pointer is returned in
+			/// this address.
+			/// </para>
 			/// </param>
 			/// <returns>
-			/// The address that receives the interface pointer specified by riid. If an error occurs, a NULL pointer is returned in this address.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			object BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid);
+			/// <remarks>
+			/// Namespace extensions have the option of allowing applications to bind to an object that represents an item's storage. If
+			/// this option is supported, <c>IShellFolder::BindToStorage</c> returns a specified interface pointer that can then be used to
+			/// access the contents of object. See the IMoniker::BindToStorage reference for further discussion.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtostorage
+			[PreserveSig]
+			HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
 
 			/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 			/// <param name="lParam">
@@ -679,12 +864,16 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>REFIID</c></para>
 			/// <para>A reference to the IID of the interface to retrieve through ppv, typically IID_IShellView.</para>
 			/// </param>
-			/// <returns>
+			/// <param name="ppv">
 			/// <para>Type: <c>void**</c></para>
 			/// <para>
 			/// When this method returns successfully, contains the interface pointer requested in riid. This is typically IShellView. See
 			/// the Remarks section for more details.
 			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
 			/// <remarks>
 			/// <para>
@@ -729,40 +918,148 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-createviewobject
-			// HRESULT CreateViewObject( HWND hwndOwner, REFIID riid, void **ppv );
-			[return: MarshalAs(UnmanagedType.Interface)]
-			object CreateViewObject(HWND hwndOwner, in Guid riid);
+			[PreserveSig]
+			HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppv);
 
 			/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
-			/// <param name="cidl">The number of items from which to retrieve attributes.</param>
+			/// <param name="cidl">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The number of items from which to retrieve attributes.</para>
+			/// </param>
 			/// <param name="apidl">
+			/// <para>Type: <c>PCUITEMID_CHILD_ARRAY*</c></para>
+			/// <para>
 			/// The address of an array of pointers to ITEMIDLIST structures, each of which uniquely identifies an item relative to the
-			/// parent folder. Each ITEMIDLIST structure must contain exactly one SHITEMID structure followed by a terminating zero.
+			/// parent folder. Each <c>ITEMIDLIST</c> structure must contain exactly one SHITEMID structure followed by a terminating zero.
+			/// </para>
 			/// </param>
 			/// <param name="rgfInOut">
-			/// Pointer to a single ULONG value that, on entry, contains the bitwise SFGAO attributes that the calling application is
+			/// <para>Type: <c>SFGAOF*</c></para>
+			/// <para>
+			/// Pointer to a single <c>ULONG</c> value that, on entry, contains the bitwise SFGAO attributes that the calling application is
 			/// requesting. On exit, this value contains the requested attributes that are common to all of the specified items.
+			/// </para>
 			/// </param>
-			void GetAttributesOf(uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, ref SFGAO rgfInOut);
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>To optimize this operation, do not return unspecified flags.</para>
+			/// <para>
+			/// For a folder object, the SFGAO_BROWSABLE attribute implies that the client can bind to this object as shown in a general
+			/// form here.
+			/// </para>
+			/// <para>
+			/// <code>IShellFolder::BindToObject(..., pidl, IID_IShellFolder, &amp;psfItem);</code>
+			/// </para>
+			/// <para>The client can then create an IShellView on that item through this statement.</para>
+			/// <para>
+			/// <code>psfItem-&gt;CreateViewObject(..., IID_IShellView,...);</code>
+			/// </para>
+			/// <para>
+			/// The SFGAO_DROPTARGET attribute implies that the client can bind to an instance of IDropTarget for this folder by calling
+			/// IShellFolder::GetUIObjectOf as shown here.
+			/// </para>
+			/// <para>
+			/// <code>IShellFolder::GetUIObjectOf(hwnd, 1, &amp;pidl, IID_IDropTarget, NULL, &amp;pv)</code>
+			/// </para>
+			/// <para>
+			/// The SFGAO_NONENUMERATED attribute indicates an item that is not returned by the enumerator created by the
+			/// IShellFolder::EnumObjects method.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-getattributesof HRESULT
+			// GetAttributesOf( UINT cidl, PCUITEMID_CHILD_ARRAY apidl, SFGAOF *rgfInOut );
+			[PreserveSig]
+			HRESULT GetAttributesOf(uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, ref SFGAO rgfInOut);
 
 			/// <summary>Gets an object that can be used to carry out actions on the specified file objects or folders.</summary>
 			/// <param name="hwndOwner">
-			/// A handle to the owner window that the client should specify if it displays a dialog box or message box.
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>A handle to the owner window that the client should specify if it displays a dialog box or message box.</para>
 			/// </param>
-			/// <param name="cidl">The number of file objects or subfolders specified in the apidl parameter.</param>
+			/// <param name="cidl">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The number of file objects or subfolders specified in the apidl parameter.</para>
+			/// </param>
 			/// <param name="apidl">
+			/// <para>Type: <c>PCUITEMID_CHILD_ARRAY</c></para>
+			/// <para>
 			/// The address of an array of pointers to ITEMIDLIST structures, each of which uniquely identifies a file object or subfolder
 			/// relative to the parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a
 			/// terminating zero.
+			/// </para>
 			/// </param>
 			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>
 			/// A reference to the IID of the interface to retrieve through ppv. This can be any valid interface identifier that can be
 			/// created for an item. The most common identifiers used by the Shell are listed in the comments at the end of this reference.
+			/// </para>
 			/// </param>
-			/// <param name="rgfReserved">Reserved.</param>
-			/// <returns>When this method returns successfully, contains the interface pointer requested in riid.</returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid, IntPtr rgfReserved = default);
+			/// <param name="rgfReserved">
+			/// <para>Type: <c>UINT*</c></para>
+			/// <para>Reserved.</para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void**</c></para>
+			/// <para>When this method returns successfully, contains the interface pointer requested in riid.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// If cidl is greater than one, the <c>IShellFolder::GetUIObjectOf</c> implementation should only succeed if it can create one
+			/// object for all items specified in apidl. If the implementation cannot create one object for all items, this method will fail.
+			/// </para>
+			/// <para>
+			/// The following are the most common interface identifiers the Shell uses when requesting an interface from this method. The
+			/// list also indicates if cidl can be greater than one for the requested interface.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Interface Identifier</term>
+			/// <term>Allowed cidl Value</term>
+			/// </listheader>
+			/// <item>
+			/// <term>IContextMenu</term>
+			/// <term>The cidl parameter can be greater than or equal to one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IContextMenu2</term>
+			/// <term>The cidl parameter can be greater than or equal to one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IDataObject</term>
+			/// <term>The cidl parameter can be greater than or equal to one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IDropTarget</term>
+			/// <term>The cidl parameter can only be one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IExtractIcon</term>
+			/// <term>The cidl parameter can only be one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IQueryInfo</term>
+			/// <term>The cidl parameter can only be one.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// We recommend that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the riid and ppv parameters. This
+			/// macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a
+			/// coding error in riid that could lead to unexpected results.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-getuiobjectof HRESULT
+			// GetUIObjectOf( HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv );
+			[PreserveSig]
+			HRESULT GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid,
+				[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
 
 			/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 			/// <param name="pidl">
@@ -776,9 +1073,10 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </param>
 			/// <param name="pName">
+			/// <para>Type: <c>STRRET*</c></para>
 			/// <para>
-			/// When this method returns, contains the display name. The type of name returned in this structure can be the requested type,
-			/// but the Shell folder might return a different type.
+			/// When this method returns, contains a pointer to a STRRET structure in which to return the display name. The type of name
+			/// returned in this structure can be the requested type, but the Shell folder might return a different type.
 			/// </para>
 			/// </param>
 			/// <returns>
@@ -786,6 +1084,7 @@ namespace Vanara.PInvoke
 			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
 			/// <remarks>
+			/// <para>It is the caller's responsibility to free resources allocated by this function.</para>
 			/// <para>
 			/// Normally, pidl can refer only to items contained by the parent folder. The PIDL must be single-level and contain exactly one
 			/// SHITEMID structure followed by a terminating zero. If you want to retrieve the display name of an item that is deeper than
@@ -797,6 +1096,11 @@ namespace Vanara.PInvoke
 			/// any level below the parent folder in the namespace hierarchy. At one time, pidl could be a multilevel PIDL, relative to the
 			/// parent folder, and could contain multiple SHITEMID structures. However, this is no longer supported and pidl should now
 			/// refer only to a single child item.
+			/// </para>
+			/// <para>
+			/// The simplest way to retrieve the display name from the structure pointed to by pName is to pass it to either StrRetToBuf or
+			/// StrRetToStr. These functions take a STRRET structure and return the name. You can also examine the structure's <c>uType</c>
+			/// member, and retrieve the name from the appropriate member.
 			/// </para>
 			/// <para>
 			/// The flags specified in uFlags are hints about the intended use of the name. They do not guarantee that IShellFolder will
@@ -815,25 +1119,65 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-getdisplaynameof HRESULT
 			// GetDisplayNameOf( PCUITEMID_CHILD pidl, SHGDNF uFlags, STRRET *pName );
-			void GetDisplayNameOf([In] PIDL pidl, SHGDNF uFlags, out STRRET pName); //[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(STRRETMarshaler))] out string pName);
+			[PreserveSig]
+			HRESULT GetDisplayNameOf([In] PIDL pidl, SHGDNF uFlags, out STRRET pName);
 
 			/// <summary>Sets the display name of a file object or subfolder, changing the item identifier in the process.</summary>
-			/// <param name="hwnd">A handle to the owner window of any dialog or message box that the client displays.</param>
+			/// <param name="hwnd">
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>A handle to the owner window of any dialog or message box that the client displays.</para>
+			/// </param>
 			/// <param name="pidl">
+			/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+			/// <para>
 			/// A pointer to an ITEMIDLIST structure that uniquely identifies the file object or subfolder relative to the parent folder.
 			/// The structure must contain exactly one SHITEMID structure followed by a terminating zero.
+			/// </para>
 			/// </param>
-			/// <param name="pszName">A pointer to a null-terminated string that specifies the new display name.</param>
+			/// <param name="pszName">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a null-terminated string that specifies the new display name.</para>
+			/// </param>
 			/// <param name="uFlags">
+			/// <para>Type: <c>SHGDNF</c></para>
+			/// <para>
 			/// Flags that indicate the type of name specified by the pszName parameter. For a list of possible values and combinations of
 			/// values, see SHGDNF.
+			/// </para>
 			/// </param>
 			/// <param name="ppidlOut">
-			/// Optional. If specified, the address of a pointer to an ITEMIDLIST structure that receives the ITEMIDLIST of the renamed
-			/// item. The caller requests this value by passing a non-null ppidlOut. Implementations of IShellFolder::SetNameOf must return
-			/// a pointer to the new ITEMIDLIST in the ppidlOut parameter.
+			/// <para>Type: <c>PITEMID_CHILD*</c></para>
+			/// <para>
+			/// Optional. If specified, the address of a pointer to an ITEMIDLIST structure that receives the <c>ITEMIDLIST</c> of the
+			/// renamed item. The caller requests this value by passing a non-null ppidlOut. Implementations of
+			/// <c>IShellFolder::SetNameOf</c> must return a pointer to the new <c>ITEMIDLIST</c> in the ppidlOut parameter.
+			/// </para>
 			/// </param>
-			void SetNameOf([Optional] HWND hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>Changing the display name of a file system object, or a folder within it, renames the file or directory.</para>
+			/// <para>
+			/// Before calling this method, applications should call IShellFolder::GetAttributesOf and check that the SFGAO_CANRENAME flag
+			/// is set. Note that this flag is essentially a hint to namespace clients. It does not necessarily imply that
+			/// <c>IShellFolder::SetNameOf</c> will succeed or fail.
+			/// </para>
+			/// <para>
+			/// Implementers of <c>IShellFolder::SetNameOf</c> must call SHChangeNotify with both the old and new absolute PIDLs once the
+			/// renaming of an object is complete. This following example shows the call to <c>SHChangeNotify</c> following the renaming of
+			/// a folder object.
+			/// </para>
+			/// <para>
+			/// <code>SHChangeNotify(SHCNE_RENAMEFOLDER, SHCNF_IDLIST, pidlFullOld, pidlFullNew);</code>
+			/// </para>
+			/// <para>This call prevents both the old and new names being displayed in the view.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-setnameof HRESULT SetNameOf(
+			// HWND hwnd, PCUITEMID_CHILD pidl, LPCWSTR pszName, SHGDNF uFlags, PITEMID_CHILD *ppidlOut );
+			[PreserveSig]
+			HRESULT SetNameOf([Optional] HWND hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
 		}
 
 		/// <summary>
@@ -847,108 +1191,262 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Translates the display name of a file object or a folder into an item identifier list.</summary>
 			/// <param name="hwnd">
-			/// A window handle. The client should provide a window handle if it displays a dialog or message box. Otherwise set hwnd to NULL
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>
+			/// A window handle. The client should provide a window handle if it displays a dialog or message box. Otherwise set hwnd to <c>NULL</c>.
+			/// </para>
 			/// </param>
 			/// <param name="pbc">
+			/// <para>Type: <c>IBindCtx*</c></para>
+			/// <para>
 			/// Optional. A pointer to a bind context used to pass parameters as inputs and outputs to the parsing function. These passed
 			/// parameters are often specific to the data source and are documented by the data source owners. For example, the file system
 			/// data source accepts the name being parsed (as a WIN32_FIND_DATA structure), using the STR_FILE_SYS_BIND_DATA bind context
 			/// parameter. STR_PARSE_PREFER_FOLDER_BROWSING can be passed to indicate that URLs are parsed using the file system data source
 			/// when possible. Construct a bind context object using CreateBindCtx and populate the values using
-			/// IBindCtx::RegisterObjectParam. See Bind Context String Keys for a complete list of these. If no data is being passed to or
-			/// received from the parsing function, this value can be NULL.
+			/// IBindCtx::RegisterObjectParam. See <c>Bind Context String Keys</c> for a complete list of these.
+			/// </para>
+			/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
 			/// </param>
 			/// <param name="pszDisplayName">
+			/// <para>Type: <c>LPWSTR</c></para>
+			/// <para>
 			/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form
 			/// this string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also
-			/// will accept references to items in the namespace that have a GUID associated with them using the "::{GUID}" syntax.
+			/// will accept references to items in the namespace that have a GUID associated with them using the "::{GUID}" syntax. For
+			/// example, to retrieve a fully qualified identifier list for the control panel from the desktop folder, you can use the following:
+			/// </para>
+			/// <para><c>::{CLSID for Control Panel}\::{CLSID for printers folder}</c></para>
 			/// </param>
 			/// <param name="pchEaten">
-			/// A pointer to a ULONG value that receives the number of characters of the display name that was parsed. If your application
-			/// does not need this information, set pchEaten to NULL, and no value will be returned.
+			/// <para>Type: <c>ULONG*</c></para>
+			/// <para>
+			/// A pointer to a <c>ULONG</c> value that receives the number of characters of the display name that was parsed. If your
+			/// application does not need this information, set pchEaten to <c>NULL</c>, and no value will be returned.
+			/// </para>
 			/// </param>
 			/// <param name="ppidl">
+			/// <para>Type: <c>PIDLIST_RELATIVE*</c></para>
+			/// <para>
 			/// When this method returns, contains a pointer to the PIDL for the object. The returned item identifier list specifies the
 			/// item relative to the parsing folder. If the object associated with pszDisplayName is within the parsing folder, the returned
 			/// item identifier list will contain only one SHITEMID structure. If the object is in a subfolder of the parsing folder, the
-			/// returned item identifier list will contain multiple SHITEMID structures. If an error occurs, NULL is returned in this address.
+			/// returned item identifier list will contain multiple <c>SHITEMID</c> structures. If an error occurs, <c>NULL</c> is returned
+			/// in this address.
+			/// </para>
 			/// <para>When it is no longer needed, it is the responsibility of the caller to free this resource by calling CoTaskMemFree.</para>
 			/// </param>
 			/// <param name="pdwAttributes">
-			/// The value used to query for file attributes. If not used, it should be set to NULL. To query for one or more attributes,
-			/// initialize this parameter with the SFGAO flags that represent the attributes of interest. On return, those attributes that
-			/// are true and were requested will be set.
+			/// <para>Type: <c>ULONG*</c></para>
+			/// <para>
+			/// The value used to query for file attributes. If not used, it should be set to <c>NULL</c>. To query for one or more
+			/// attributes, initialize this parameter with the SFGAO flags that represent the attributes of interest. On return, those
+			/// attributes that are true and were requested will be set.
+			/// </para>
 			/// </param>
-			new void ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Some Shell folders may not implement <c>IShellFolder::ParseDisplayName</c>. Each folder that does will define its own
+			/// parsing syntax.
+			/// </para>
+			/// <para>
+			/// <c>ParseDisplayName</c> is not expected to handle the relative path or parent folder indicators ("." or ".."). It is up to
+			/// the caller to remove these appropriately.
+			/// </para>
+			/// <para>
+			/// Do not use the SFGAO_VALIDATE flag in pdwAttributes to verify the existence of the item whose name is being parsed.
+			/// <c>IShellFolder::ParseDisplayName</c> implicitly validates the existence of the item unless that behavior is overridden by a
+			/// special bind context parameter.
+			/// </para>
+			/// <para>
+			/// Querying for some attributes may be relatively slow and use significant amounts of memory. For example, to determine if a
+			/// file is shared, the Shell will load network components. This procedure may require the loading of several DLLs. The purpose
+			/// of pdwAttributes is to allow you to restrict the query to only that information that is needed. The following code fragment
+			/// illustrates how to find out if a file is compressed.
+			/// </para>
+			/// <para>
+			/// <code>LPITEMIDLIST pidl; ULONG cbEaten; DWORD dwAttribs = SFGAO_COMPRESSED; hres = psf-&gt;ParseDisplayName(NULL, NULL, lpwszDisplayName, &amp;cbEaten, // This can be NULL &amp;pidl, &amp;dwAttribs); if(dwAttribs &amp; SFGAO_COMPRESSED) { // Do something with the compressed file }</code>
+			/// </para>
+			/// <para>
+			/// Since pdwAttributes is an in/out parameter, it should always be initialized. If you pass in an uninitialized value, some of
+			/// the bits may be inadvertantly set. <c>IShellFolder::ParseDisplayName</c> will then query for the corresponding attributes,
+			/// which may lead to undesirable delays or memory demands. If you do not wish to query for attributes, set pdwAttributes to
+			/// <c>NULL</c> to avoid unpredictable behavior.
+			/// </para>
+			/// <para>This method is similar to the IParseDisplayName::ParseDisplayName method.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-parsedisplayname
+			[PreserveSig]
+			new HRESULT ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
 
 			/// <summary>
 			/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its
 			/// IEnumIDList interface. The methods supported by that interface can then be used to enumerate the folder's contents.
 			/// </summary>
 			/// <param name="hwnd">
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>
 			/// If user input is required to perform the enumeration, this window handle should be used by the enumeration object as the
 			/// parent window to take user input. An example would be a dialog box to ask for a password or prompt the user to insert a CD
-			/// or floppy disk. If hwndOwner is set to NULL, the enumerator should not post any messages, and if user input is required, it
-			/// should silently fail.
+			/// or floppy disk. If hwndOwner is set to <c>NULL</c>, the enumerator should not post any messages, and if user input is
+			/// required, it should silently fail.
+			/// </para>
 			/// </param>
 			/// <param name="grfFlags">
+			/// <para>Type: <c>SHCONTF</c></para>
+			/// <para>
 			/// Flags indicating which items to include in the enumeration. For a list of possible values, see the SHCONTF enumerated type.
+			/// </para>
+			/// </param>
+			/// <param name="ppenumIDList">
+			/// <para>Type: <c>IEnumIDList**</c></para>
+			/// <para>
+			/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an
+			/// error occurs or no suitable subobjects are found, ppenumIDList is set to <c>NULL</c>.
+			/// </para>
 			/// </param>
 			/// <returns>
-			/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an
-			/// error occurs or no suitable subobjects are found, ppenumIDList is set to NULL.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns
+			/// <code>S_OK</code>
+			/// if successful, or an error value otherwise. Some implementations may also return
+			/// <code>S_FALSE</code>
+			/// , indicating that there are no children matching the grfFlags that were passed in. If
+			/// <code>S_FALSE</code>
+			/// is returned, ppenumIDList is set to
+			/// <code>NULL</code>
+			/// .
+			/// </para>
 			/// </returns>
-			new IEnumIDList EnumObjects(HWND hwnd, SHCONTF grfFlags);
+			/// <remarks>
+			/// <para>
+			/// If the method returns S_OK, then ppenumIDList receives a pointer to an enumerator. In this case, the calling application
+			/// must free the returned IEnumIDList object by calling its <c>Release</c> method.
+			/// </para>
+			/// <para>
+			/// If the method returns S_FALSE, then the folder contains no suitable subobjects and the pointer specified in ppenumIDList is
+			/// set to <c>NULL</c>.
+			/// </para>
+			/// <para>If the method fails, an error value is returned and the pointer specified in ppenumIDList is set to <c>NULL</c>.</para>
+			/// <para>
+			/// If the folder contains no suitable subobjects, then the <c>IShellFolder::EnumObjects</c> method is permitted either to set
+			/// *ppenumIDList to <c>NULL</c> and return S_FALSE, or to set *ppenumIDList to an enumerator that produces no objects and
+			/// return S_OK. Calling applications must be prepared for both success cases.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-enumobjects
+			[PreserveSig]
+			new HRESULT EnumObjects(HWND hwnd, SHCONTF grfFlags, out IEnumIDList ppenumIDList);
 
 			/// <summary>
 			/// Retrieves a handler, typically the Shell folder object that implements IShellFolder for a particular item. Optional
 			/// parameters that control the construction of the handler are passed in the bind context.
 			/// </summary>
 			/// <param name="pidl">
+			/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+			/// <para>
 			/// The address of an ITEMIDLIST structure (PIDL) that identifies the subfolder. This value can refer to an item at any level
 			/// below the parent folder in the namespace hierarchy. The structure contains one or more SHITEMID structures, followed by a
-			/// terminating NULL.
+			/// terminating <c>NULL</c>.
+			/// </para>
 			/// </param>
 			/// <param name="pbc">
-			/// A pointer to an IBindCtx interface on a bind context object that can be used to pass parameters to the construction of the
-			/// handler. If this parameter is not used, set it to NULL. Because support for this parameter is optional for folder object
-			/// implementations, some folders may not support the use of bind contexts.
+			/// <para>Type: <c>IBindCtx*</c></para>
 			/// <para>
-			/// Information that can be provided in the bind context includes a BIND_OPTS structure that includes a grfMode member that
-			/// indicates the access mode when binding to a stream handler. Other parameters can be set and discovered using
+			/// A pointer to an IBindCtx interface on a bind context object that can be used to pass parameters to the construction of the
+			/// handler. If this parameter is not used, set it to <c>NULL</c>. Because support for this parameter is optional for folder
+			/// object implementations, some folders may not support the use of bind contexts.
+			/// </para>
+			/// <para>
+			/// Information that can be provided in the bind context includes a BIND_OPTS structure that includes a <c>grfMode</c> member
+			/// that indicates the access mode when binding to a stream handler. Other parameters can be set and discovered using
 			/// IBindCtx::RegisterObjectParam and IBindCtx::GetObjectParam.
 			/// </para>
 			/// </param>
 			/// <param name="riid">
-			/// The identifier of the interface to return. This may be IID_IShellFolder, IID_IStream, or any other interface that identifies
-			/// a particular handler.
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>
+			/// The identifier of the interface to return. This may be <c>IID_IShellFolder</c>, <c>IID_IStream</c>, or any other interface
+			/// that identifies a particular handler.
+			/// </para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void**</c></para>
+			/// <para>
+			/// When this method returns, contains the address of a pointer to the requested interface. If an error occurs, a <c>NULL</c>
+			/// pointer is returned at this address.
+			/// </para>
 			/// </param>
 			/// <returns>
-			/// When this method returns, contains the address of a pointer to the requested interface. If an error occurs, a NULL pointer
-			/// is returned at this address.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			new object BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid);
+			/// <remarks>
+			/// <para>
+			/// Applications use <c>IShellFolder::BindToObject</c><c>(..., IID_IShellFolder, ...)</c> to obtain the Shell folder object for
+			/// a subitem. Clients should pass the canonical interface IID that is used to identify a specific handler. For example,
+			/// <c>IID_IShellFolder</c> identifies the folder handler and <c>IID_IStream</c> identifies the stream handler. Implementations
+			/// can support binding to handlers using derived interfaces as well, such as <c>IID_IShellFolder2</c>. A Shell namespace
+			/// extension can implement this function by creating the Shell folder object for the specified subitem and then calling
+			/// QueryInterface to communicate with the object through its interface pointer.
+			/// </para>
+			/// <para>
+			/// Implementations of <c>BindToObject</c> can optimize any call to it by quickly failing for IID values that it does not
+			/// support. For example, if the Shell folder object of the subitem does not support IRemoteComputer, the implementation should
+			/// return <c>E_NOINTERFACE</c> immediately instead of needlessly creating the Shell folder object for the subitem and then
+			/// finding that <c>IRemoteComputer</c> was not supported after all.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtoobject
+			[PreserveSig]
+			new HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
 
 			/// <summary>Requests a pointer to an object's storage interface.</summary>
 			/// <param name="pidl">
+			/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+			/// <para>
 			/// The address of an ITEMIDLIST structure that identifies the subfolder relative to its parent folder. The structure must
 			/// contain exactly one SHITEMID structure followed by a terminating zero.
+			/// </para>
 			/// </param>
 			/// <param name="pbc">
+			/// <para>Type: <c>IBindCtx*</c></para>
+			/// <para>
 			/// The optional address of an IBindCtx interface on a bind context object to be used during this operation. If this parameter
-			/// is not used, set it to NULL. Because support for pbc is optional for folder object implementations, some folders may not
-			/// support the use of bind contexts.
+			/// is not used, set it to <c>NULL</c>. Because support for pbc is optional for folder object implementations, some folders may
+			/// not support the use of bind contexts.
+			/// </para>
 			/// </param>
 			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>
 			/// The IID of the requested storage interface. To retrieve an IStream, IStorage, or IPropertySetStorage interface pointer, set
-			/// riid to IID_IStream, IID_IStorage, or IID_IPropertySetStorage, respectively.
+			/// riid to <c>IID_IStream</c>, <c>IID_IStorage</c>, or <c>IID_IPropertySetStorage</c>, respectively.
+			/// </para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void**</c></para>
+			/// <para>
+			/// The address that receives the interface pointer specified by riid. If an error occurs, a <c>NULL</c> pointer is returned in
+			/// this address.
+			/// </para>
 			/// </param>
 			/// <returns>
-			/// The address that receives the interface pointer specified by riid. If an error occurs, a NULL pointer is returned in this address.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			new object BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid);
+			/// <remarks>
+			/// Namespace extensions have the option of allowing applications to bind to an object that represents an item's storage. If
+			/// this option is supported, <c>IShellFolder::BindToStorage</c> returns a specified interface pointer that can then be used to
+			/// access the contents of object. See the IMoniker::BindToStorage reference for further discussion.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtostorage
+			[PreserveSig]
+			new HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
 
 			/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 			/// <param name="lParam">
@@ -1016,12 +1514,16 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>REFIID</c></para>
 			/// <para>A reference to the IID of the interface to retrieve through ppv, typically IID_IShellView.</para>
 			/// </param>
-			/// <returns>
+			/// <param name="ppv">
 			/// <para>Type: <c>void**</c></para>
 			/// <para>
 			/// When this method returns successfully, contains the interface pointer requested in riid. This is typically IShellView. See
 			/// the Remarks section for more details.
 			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
 			/// <remarks>
 			/// <para>
@@ -1065,39 +1567,149 @@ namespace Vanara.PInvoke
 			/// coding error in riid that could lead to unexpected results.
 			/// </para>
 			/// </remarks>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			new object CreateViewObject(HWND hwndOwner, in Guid riid);
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-createviewobject
+			[PreserveSig]
+			new HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppv);
 
 			/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
-			/// <param name="cidl">The number of items from which to retrieve attributes.</param>
+			/// <param name="cidl">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The number of items from which to retrieve attributes.</para>
+			/// </param>
 			/// <param name="apidl">
+			/// <para>Type: <c>PCUITEMID_CHILD_ARRAY*</c></para>
+			/// <para>
 			/// The address of an array of pointers to ITEMIDLIST structures, each of which uniquely identifies an item relative to the
-			/// parent folder. Each ITEMIDLIST structure must contain exactly one SHITEMID structure followed by a terminating zero.
+			/// parent folder. Each <c>ITEMIDLIST</c> structure must contain exactly one SHITEMID structure followed by a terminating zero.
+			/// </para>
 			/// </param>
 			/// <param name="rgfInOut">
-			/// Pointer to a single ULONG value that, on entry, contains the bitwise SFGAO attributes that the calling application is
+			/// <para>Type: <c>SFGAOF*</c></para>
+			/// <para>
+			/// Pointer to a single <c>ULONG</c> value that, on entry, contains the bitwise SFGAO attributes that the calling application is
 			/// requesting. On exit, this value contains the requested attributes that are common to all of the specified items.
+			/// </para>
 			/// </param>
-			new void GetAttributesOf(uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, ref SFGAO rgfInOut);
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>To optimize this operation, do not return unspecified flags.</para>
+			/// <para>
+			/// For a folder object, the SFGAO_BROWSABLE attribute implies that the client can bind to this object as shown in a general
+			/// form here.
+			/// </para>
+			/// <para>
+			/// <code>IShellFolder::BindToObject(..., pidl, IID_IShellFolder, &amp;psfItem);</code>
+			/// </para>
+			/// <para>The client can then create an IShellView on that item through this statement.</para>
+			/// <para>
+			/// <code>psfItem-&gt;CreateViewObject(..., IID_IShellView,...);</code>
+			/// </para>
+			/// <para>
+			/// The SFGAO_DROPTARGET attribute implies that the client can bind to an instance of IDropTarget for this folder by calling
+			/// IShellFolder::GetUIObjectOf as shown here.
+			/// </para>
+			/// <para>
+			/// <code>IShellFolder::GetUIObjectOf(hwnd, 1, &amp;pidl, IID_IDropTarget, NULL, &amp;pv)</code>
+			/// </para>
+			/// <para>
+			/// The SFGAO_NONENUMERATED attribute indicates an item that is not returned by the enumerator created by the
+			/// IShellFolder::EnumObjects method.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-getattributesof HRESULT
+			// GetAttributesOf( UINT cidl, PCUITEMID_CHILD_ARRAY apidl, SFGAOF *rgfInOut );
+			[PreserveSig]
+			new HRESULT GetAttributesOf(uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, ref SFGAO rgfInOut);
 
 			/// <summary>Gets an object that can be used to carry out actions on the specified file objects or folders.</summary>
 			/// <param name="hwndOwner">
-			/// A handle to the owner window that the client should specify if it displays a dialog box or message box.
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>A handle to the owner window that the client should specify if it displays a dialog box or message box.</para>
 			/// </param>
-			/// <param name="cidl">The number of file objects or subfolders specified in the apidl parameter.</param>
+			/// <param name="cidl">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The number of file objects or subfolders specified in the apidl parameter.</para>
+			/// </param>
 			/// <param name="apidl">
+			/// <para>Type: <c>PCUITEMID_CHILD_ARRAY</c></para>
+			/// <para>
 			/// The address of an array of pointers to ITEMIDLIST structures, each of which uniquely identifies a file object or subfolder
 			/// relative to the parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a
 			/// terminating zero.
+			/// </para>
 			/// </param>
 			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>
 			/// A reference to the IID of the interface to retrieve through ppv. This can be any valid interface identifier that can be
 			/// created for an item. The most common identifiers used by the Shell are listed in the comments at the end of this reference.
+			/// </para>
 			/// </param>
-			/// <param name="rgfReserved">Reserved.</param>
-			/// <returns>When this method returns successfully, contains the interface pointer requested in riid.</returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			new object GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid, IntPtr rgfReserved = default);
+			/// <param name="rgfReserved">
+			/// <para>Type: <c>UINT*</c></para>
+			/// <para>Reserved.</para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void**</c></para>
+			/// <para>When this method returns successfully, contains the interface pointer requested in riid.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// If cidl is greater than one, the <c>IShellFolder::GetUIObjectOf</c> implementation should only succeed if it can create one
+			/// object for all items specified in apidl. If the implementation cannot create one object for all items, this method will fail.
+			/// </para>
+			/// <para>
+			/// The following are the most common interface identifiers the Shell uses when requesting an interface from this method. The
+			/// list also indicates if cidl can be greater than one for the requested interface.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Interface Identifier</term>
+			/// <term>Allowed cidl Value</term>
+			/// </listheader>
+			/// <item>
+			/// <term>IContextMenu</term>
+			/// <term>The cidl parameter can be greater than or equal to one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IContextMenu2</term>
+			/// <term>The cidl parameter can be greater than or equal to one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IDataObject</term>
+			/// <term>The cidl parameter can be greater than or equal to one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IDropTarget</term>
+			/// <term>The cidl parameter can only be one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IExtractIcon</term>
+			/// <term>The cidl parameter can only be one.</term>
+			/// </item>
+			/// <item>
+			/// <term>IQueryInfo</term>
+			/// <term>The cidl parameter can only be one.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// We recommend that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the riid and ppv parameters. This
+			/// macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a
+			/// coding error in riid that could lead to unexpected results.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-getuiobjectof HRESULT
+			// GetUIObjectOf( HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv );
+			[PreserveSig]
+			new HRESULT GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid,
+				[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
 
 			/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 			/// <param name="pidl">
@@ -1111,9 +1723,10 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </param>
 			/// <param name="pName">
+			/// <para>Type: <c>STRRET*</c></para>
 			/// <para>
-			/// When this method returns, contains the display name. The type of name returned in this structure can be the requested type,
-			/// but the Shell folder might return a different type.
+			/// When this method returns, contains a pointer to a STRRET structure in which to return the display name. The type of name
+			/// returned in this structure can be the requested type, but the Shell folder might return a different type.
 			/// </para>
 			/// </param>
 			/// <returns>
@@ -1121,6 +1734,7 @@ namespace Vanara.PInvoke
 			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
 			/// <remarks>
+			/// <para>It is the caller's responsibility to free resources allocated by this function.</para>
 			/// <para>
 			/// Normally, pidl can refer only to items contained by the parent folder. The PIDL must be single-level and contain exactly one
 			/// SHITEMID structure followed by a terminating zero. If you want to retrieve the display name of an item that is deeper than
@@ -1132,6 +1746,11 @@ namespace Vanara.PInvoke
 			/// any level below the parent folder in the namespace hierarchy. At one time, pidl could be a multilevel PIDL, relative to the
 			/// parent folder, and could contain multiple SHITEMID structures. However, this is no longer supported and pidl should now
 			/// refer only to a single child item.
+			/// </para>
+			/// <para>
+			/// The simplest way to retrieve the display name from the structure pointed to by pName is to pass it to either StrRetToBuf or
+			/// StrRetToStr. These functions take a STRRET structure and return the name. You can also examine the structure's <c>uType</c>
+			/// member, and retrieve the name from the appropriate member.
 			/// </para>
 			/// <para>
 			/// The flags specified in uFlags are hints about the intended use of the name. They do not guarantee that IShellFolder will
@@ -1148,85 +1767,309 @@ namespace Vanara.PInvoke
 			/// close to the display names as possible, because the end user often needs to type or edit these names.
 			/// </para>
 			/// </remarks>
-			new void GetDisplayNameOf([In] PIDL pidl, SHGDNF uFlags, out STRRET pName);
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-getdisplaynameof HRESULT
+			// GetDisplayNameOf( PCUITEMID_CHILD pidl, SHGDNF uFlags, STRRET *pName );
+			[PreserveSig]
+			new HRESULT GetDisplayNameOf([In] PIDL pidl, SHGDNF uFlags, out STRRET pName);
 
 			/// <summary>Sets the display name of a file object or subfolder, changing the item identifier in the process.</summary>
-			/// <param name="hwnd">A handle to the owner window of any dialog or message box that the client displays.</param>
+			/// <param name="hwnd">
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>A handle to the owner window of any dialog or message box that the client displays.</para>
+			/// </param>
 			/// <param name="pidl">
+			/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+			/// <para>
 			/// A pointer to an ITEMIDLIST structure that uniquely identifies the file object or subfolder relative to the parent folder.
 			/// The structure must contain exactly one SHITEMID structure followed by a terminating zero.
+			/// </para>
 			/// </param>
-			/// <param name="pszName">A pointer to a null-terminated string that specifies the new display name.</param>
+			/// <param name="pszName">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a null-terminated string that specifies the new display name.</para>
+			/// </param>
 			/// <param name="uFlags">
+			/// <para>Type: <c>SHGDNF</c></para>
+			/// <para>
 			/// Flags that indicate the type of name specified by the pszName parameter. For a list of possible values and combinations of
 			/// values, see SHGDNF.
+			/// </para>
 			/// </param>
 			/// <param name="ppidlOut">
-			/// Optional. If specified, the address of a pointer to an ITEMIDLIST structure that receives the ITEMIDLIST of the renamed
-			/// item. The caller requests this value by passing a non-null ppidlOut. Implementations of IShellFolder::SetNameOf must return
-			/// a pointer to the new ITEMIDLIST in the ppidlOut parameter.
+			/// <para>Type: <c>PITEMID_CHILD*</c></para>
+			/// <para>
+			/// Optional. If specified, the address of a pointer to an ITEMIDLIST structure that receives the <c>ITEMIDLIST</c> of the
+			/// renamed item. The caller requests this value by passing a non-null ppidlOut. Implementations of
+			/// <c>IShellFolder::SetNameOf</c> must return a pointer to the new <c>ITEMIDLIST</c> in the ppidlOut parameter.
+			/// </para>
 			/// </param>
-			new void SetNameOf(HWND hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>Changing the display name of a file system object, or a folder within it, renames the file or directory.</para>
+			/// <para>
+			/// Before calling this method, applications should call IShellFolder::GetAttributesOf and check that the SFGAO_CANRENAME flag
+			/// is set. Note that this flag is essentially a hint to namespace clients. It does not necessarily imply that
+			/// <c>IShellFolder::SetNameOf</c> will succeed or fail.
+			/// </para>
+			/// <para>
+			/// Implementers of <c>IShellFolder::SetNameOf</c> must call SHChangeNotify with both the old and new absolute PIDLs once the
+			/// renaming of an object is complete. This following example shows the call to <c>SHChangeNotify</c> following the renaming of
+			/// a folder object.
+			/// </para>
+			/// <para>
+			/// <code>SHChangeNotify(SHCNE_RENAMEFOLDER, SHCNF_IDLIST, pidlFullOld, pidlFullNew);</code>
+			/// </para>
+			/// <para>This call prevents both the old and new names being displayed in the view.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-setnameof HRESULT SetNameOf(
+			// HWND hwnd, PCUITEMID_CHILD pidl, LPCWSTR pszName, SHGDNF uFlags, PITEMID_CHILD *ppidlOut );
+			[PreserveSig]
+			new HRESULT SetNameOf([Optional] HWND hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
 
 			/// <summary>Returns the globally unique identifier (GUID) of the default search object for the folder.</summary>
-			/// <returns>The GUID of the default search object.</returns>
-			Guid GetDefaultSearchGUID();
+			/// <param name="pguid">
+			/// <para>Type: <c>GUID*</c></para>
+			/// <para>The GUID of the default search object.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns S_OK if successful, or a COM error value otherwise.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder2-getdefaultsearchguid HRESULT
+			// GetDefaultSearchGUID( GUID *pguid );
+			[PreserveSig]
+			HRESULT GetDefaultSearchGUID(out Guid pguid);
 
 			/// <summary>Requests a pointer to an interface that allows a client to enumerate the available search objects.</summary>
-			/// <returns>The address of a pointer to an enumerator object's IEnumExtraSearch interface.</returns>
-			IEnumExtraSearch EnumSearches();
+			/// <param name="ppenum">
+			/// <para>Type: <c>IEnumExtraSearch**</c></para>
+			/// <para>The address of a pointer to an enumerator object's IEnumExtraSearch interface.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns S_OK if successful, or a COM error value otherwise.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder2-enumsearches
+			[PreserveSig]
+			HRESULT EnumSearches(out IEnumExtraSearch ppenum);
 
 			/// <summary>Gets the default sorting and display columns.</summary>
-			/// <param name="dwRes">Reserved. Set to zero.</param>
-			/// <param name="pSort">A pointer to a value that receives the index of the default sorted column.</param>
-			/// <param name="pDisplay">A pointer to a value that receives the index of the default display column.</param>
+			/// <param name="dwRes">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>Reserved. Set to zero.</para>
+			/// </param>
+			/// <param name="pSort">
+			/// <para>Type: <c>ULONG*</c></para>
+			/// <para>A pointer to a value that receives the index of the default sorted column.</para>
+			/// </param>
+			/// <param name="pDisplay">
+			/// <para>Type: <c>ULONG*</c></para>
+			/// <para>A pointer to a value that receives the index of the default display column.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns S_OK if successful, or a COM error value otherwise.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Users</para>
+			/// <para>
+			/// Both column indexes returned by this method are intended for use by an application that is presenting a folder view of this folder.
+			/// </para>
+			/// <para>
+			/// The column specified by pSort is the one that should be used for sorting the items in the folder. To determine the sorting
+			/// order of any pair of items, pass their PIDLs to CompareIDs. Specify the column by setting the lParam parameter of
+			/// <c>CompareIDs</c> to the value pointed to by pSort.
+			/// </para>
+			/// <para>
+			/// If a view will display only one string to represent an item, it should be taken from the column specified by pDisplay. Pass
+			/// the column index and the item's PIDL to IShellFolder2::GetDetailsOf to retrieve the string.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// This method is part of a namespace extension's folder object implementation. It is typically called by a folder view object
+			/// to ask the folder object which column in Microsoft Windows Explorer Details view should be used to sort the items in the
+			/// folder. For example, a folder object that represents a transaction log might set pSort to the column that displays the
+			/// transaction time. The items will then be sorted by the time the transaction took place, rather than by name.
+			/// </para>
+			/// <para>
+			/// Some clients might call this method to request the index of the column with the names that should be displayed in tree view.
+			/// Set pDisplay to the appropriate column index. The client will then obtain the display names by calling IShellFolder2::GetDetailsOf.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder2-getdefaultcolumn
 			[PreserveSig]
-			void GetDefaultColumn([Optional] uint dwRes, out uint pSort, out uint pDisplay);
+			HRESULT GetDefaultColumn([Optional] uint dwRes, out uint pSort, out uint pDisplay);
 
 			/// <summary>Gets the default state for a specified column.</summary>
-			/// <param name="iColumn">An integer that specifies the column number.</param>
-			/// <returns>
+			/// <param name="iColumn">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>An integer that specifies the column number.</para>
+			/// </param>
+			/// <param name="pcsFlags">
+			/// <para>Type: <c>SHCOLSTATEF*</c></para>
+			/// <para>
 			/// A pointer to a value that contains flags that indicate the default column state. This parameter can include a combination of
 			/// the following flags.
+			/// </para>
+			/// <para>SHCOLSTATE_TYPE_STR</para>
+			/// <para>A string.</para>
+			/// <para>SHCOLSTATE_TYPE_INT</para>
+			/// <para>An integer.</para>
+			/// <para>SHCOLSTATE_TYPE_DATE</para>
+			/// <para>A date.</para>
+			/// <para>SHCOLSTATE_ONBYDEFAULT</para>
+			/// <para>Should be shown by default in the Windows Explorer Details view.</para>
+			/// <para>SHCOLSTATE_SLOW</para>
+			/// <para>
+			/// Recommends that the folder view extract column information asynchronously, on a background thread, because extracting this
+			/// information can be time consuming.
+			/// </para>
+			/// <para>SHCOLSTATE_EXTENDED</para>
+			/// <para>Provided by a handler, not the folder object.</para>
+			/// <para>SHCOLSTATE_SECONDARYUI</para>
+			/// <para>Not displayed in the shortcut menu, but listed in the More dialog box.</para>
+			/// <para>SHCOLSTATE_HIDDEN</para>
+			/// <para>Not displayed in the user interface.</para>
+			/// <para>SHCOLSTATE_PREFER_VARCMP</para>
+			/// <para>Uses default sorting rather than CompareIDs to get the sort order.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			SHCOLSTATE GetDefaultColumnState(uint iColumn);
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder2-getdefaultcolumnstate
+			[PreserveSig]
+			HRESULT GetDefaultColumnState(uint iColumn, out SHCOLSTATE pcsFlags);
 
 			/// <summary>
 			/// Gets detailed information, identified by a property set identifier (FMTID) and a property identifier (PID), on an item in a
 			/// Shell folder.
 			/// </summary>
 			/// <param name="pidl">
+			/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+			/// <para>
 			/// A PIDL of the item, relative to the parent folder. This method accepts only single-level PIDLs. The structure must contain
-			/// exactly one SHITEMID structure followed by a terminating zero. This value cannot be NULL.
+			/// exactly one SHITEMID structure followed by a terminating zero. This value cannot be <c>NULL</c>.
+			/// </para>
 			/// </param>
-			/// <param name="pscid">A pointer to an SHCOLUMNID structure that identifies the column.</param>
+			/// <param name="pscid">
+			/// <para>Type: <c>const SHCOLUMNID*</c></para>
+			/// <para>A pointer to an SHCOLUMNID structure that identifies the column.</para>
+			/// </param>
+			/// <param name="pv">
+			/// <para>Type: <c>VARIANT*</c></para>
+			/// <para>
+			/// A pointer to a <c>VARIANT</c> with the requested information. The value is fully typed. The value returned for properties
+			/// from the property system must conform to the type specified in that property definition's typeInfo as the legacyType attribute.
+			/// </para>
+			/// </param>
 			/// <returns>
-			/// A pointer to a VARIANT with the requested information. The value is fully typed. The value returned for properties from the
-			/// property system must conform to the type specified in that property definition's typeInfo as the legacyType attribute.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.Struct)]
-			object GetDetailsEx(PIDL pidl, in PROPERTYKEY pscid);
+			/// <remarks>
+			/// This function is a more robust version of IShellFolder2::GetDetailsOf. It provides access to the information that is
+			/// displayed in the Windows Explorer Details view of a Shell folder. The primary difference is that <c>GetDetailsEx</c> allows
+			/// you to identify the column with an FMTID and PID structure instead of having to first determine the column index.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder2-getdetailsex
+			[PreserveSig]
+			HRESULT GetDetailsEx([In] PIDL pidl, in PROPERTYKEY pscid, [MarshalAs(UnmanagedType.Struct)] out object pv);
 
 			/// <summary>Gets detailed information, identified by a column index, on an item in a Shell folder.</summary>
 			/// <param name="pidl">
+			/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+			/// <para>
 			/// PIDL of the item for which you are requesting information. This method accepts only single-level PIDLs. The structure must
-			/// contain exactly one SHITEMID structure followed by a terminating zero. If this parameter is set to NULL, the title of the
-			/// information field specified by iColumn is returned.
+			/// contain exactly one SHITEMID structure followed by a terminating zero. If this parameter is set to <c>NULL</c>, the title of
+			/// the information field specified by iColumn is returned.
+			/// </para>
 			/// </param>
 			/// <param name="iColumn">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>
 			/// The zero-based index of the desired information field. It is identical to the column number of the information as it is
 			/// displayed in a Windows Explorer Details view.
+			/// </para>
+			/// </param>
+			/// <param name="psd">
+			/// <para>Type: <c>SHELLDETAILS*</c></para>
+			/// <para>A pointer to a SHELLDETAILS structure that contains the information.</para>
 			/// </param>
 			/// <returns>
-			/// The zero-based index of the desired information field. It is identical to the column number of the information as it is
-			/// displayed in a Windows Explorer Details view.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			SHELLDETAILS GetDetailsOf(PIDL pidl, uint iColumn);
+			/// <remarks>
+			/// <para>
+			/// The <c>IShellFolder2::GetDetailsOf</c> method is identical to GetDetailsOf. For a more robust way to retrieve item
+			/// information that does not require you to know the column index, use IShellFolder2::GetDetailsEx.
+			/// </para>
+			/// <para>
+			/// The <c>IShellFolder2::GetDetailsOf</c> method provides access to the information that is displayed in the Windows Explorer
+			/// Details view of a Shell folder. The column numbers, headings, and information that you see in the Details view are identical
+			/// to those of <c>IShellFolder2::GetDetailsOf</c>. Note that the available information fields and their column numbers vary
+			/// depending on the particular folder. You can enumerate the available fields by calling this method with pidl set to
+			/// <c>NULL</c>, and examining the title associated with each column index. Bear in mind that these titles can be localized and
+			/// might not be the same for all locales.
+			/// </para>
+			/// <para>
+			/// File system folders have a large, standard set of information fields. The first four fields are standard for all file system folders.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Column index</term>
+			/// <term>Column title</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Name</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Size</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Type</term>
+			/// </item>
+			/// <item>
+			/// <term>3</term>
+			/// <term>Date Modified</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// File system folders can support a number of additional fields. However, they are not required to do so, and the column
+			/// indexes assigned to these fields might vary.
+			/// </para>
+			/// <para>
+			/// Each virtual folder has its own unique set of information fields. Normally, the item's display name is in column zero, but
+			/// the order and content of the remaining fields depend on the implementation of the particular folder object.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder2-getdetailsof
+			[PreserveSig]
+			HRESULT GetDetailsOf([In] PIDL pidl, uint iColumn, out SHELLDETAILS psd);
 
 			/// <summary>Converts a column to the appropriate property set ID (FMTID) and property ID (PID).</summary>
-			/// <param name="iColumn">The column ID.</param>
-			/// <returns>A pointer to an SHCOLUMNID structure containing the FMTID and PID.</returns>
-			PROPERTYKEY MapColumnToSCID(uint iColumn);
+			/// <param name="iColumn">
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The column ID.</para>
+			/// </param>
+			/// <param name="pscid">
+			/// <para>Type: <c>SHCOLUMNID*</c></para>
+			/// <para>A pointer to an SHCOLUMNID structure containing the FMTID and PID.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder2-mapcolumntoscid
+			[PreserveSig]
+			HRESULT MapColumnToSCID(uint iColumn, out PROPERTYKEY pscid);
 		}
 
 		/// <summary>Exposes a method that obtains an icon index for an IShellFolder object.</summary>
@@ -1257,16 +2100,13 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="flags">
 			/// <para>Type: <c>UINT</c></para>
-			/// <para>Flags specifying how the icon is to display. This parameter can be zero or one of the following values from <see cref="IExtractIcon"/>.</para>
+			/// <para>Flags specifying how the icon is to display. This parameter can be zero or one of the following values.</para>
 			/// <para>GIL_FORSHELL</para>
 			/// <para>The icon is to be displayed in a Shell folder.</para>
 			/// <para>GIL_OPENICON</para>
-			/// <para>
-			/// The icon should be in the open state if both open-state and closed-state images are available. If this flag is not
-			/// specified, the icon should be in the closed state. This flag is typically used for folder objects.
-			/// </para>
+			/// <para>The icon should be in the open state if both open-state and closed-state images are available. If this flag is not specified, the icon should be in the closed state. This flag is typically used for folder objects.</para>
 			/// </param>
-			/// <returns>
+			/// <param name="pIconIndex">
 			/// <para>Type: <c>LPINT</c></para>
 			/// <para>The address of the index of the icon in the system image list. The following standard image list indexes can be returned.</para>
 			/// <para>0</para>
@@ -1279,25 +2119,22 @@ namespace Vanara.PInvoke
 			/// <para>Folder (plain)</para>
 			/// <para>4</para>
 			/// <para>Folder (open)</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns S_OK if lpIconIndex contains the correct system image list index, or S_FALSE if an icon can't be obtained for this object.</para>
 			/// </returns>
 			/// <remarks>
-			/// <para>
-			/// If you are unable to retrieve an icon for this object using <c>GetIconOf</c>, use the GetUIObjectOf method to retrieve an
-			/// object that supports the Extract method.
-			/// </para>
+			/// <para>If you are unable to retrieve an icon for this object using <c>GetIconOf</c>, use the GetUIObjectOf method to retrieve an object that supports the Extract method.</para>
 			/// <para><c>IShellIcon::GetIconOf</c> fails if CoInitialize is not called first.</para>
 			/// <para>Note to Calling Applications</para>
 			/// <para>The index returned is from the system image list.</para>
 			/// <para>Note to Implementers</para>
-			/// <para>
-			/// If the icon index used is not one of the standard images listed, it is the implementer's responsibility to add the image to
-			/// the system image list and then place the index into the lpIconIndex parameter. To prevent the system image list from growing
-			/// too large, each image should only be added once.
-			/// </para>
+			/// <para>If the icon index used is not one of the standard images listed, it is the implementer's responsibility to add the image to the system image list and then place the index into the lpIconIndex parameter. To prevent the system image list from growing too large, each image should only be added once.</para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellicon-geticonof HRESULT GetIconOf(
-			// PCUITEMID_CHILD pidl, UINT flags, int *pIconIndex );
-			int GetIconOf([In] PIDL pidl, GetIconLocationFlags flags);
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellicon-geticonof
+			[PreserveSig]
+			HRESULT GetIconOf([In] PIDL pidl, GetIconLocationFlags flags, out int pIconIndex);
 		}
 
 		/// <summary>Extension method to simplify using the <see cref="IShellFolder.BindToObject"/> method.</summary>
@@ -1318,7 +2155,11 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-		public static T BindToObject<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class => (T)sf.BindToObject(pidl, pbc, typeof(T).GUID);
+		public static T BindToObject<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class
+		{
+			sf.BindToObject(pidl, pbc, typeof(T).GUID, out var o).ThrowIfFailed();
+			return (T)o;
+		}
 
 		/// <summary>Extension method to simplify using the <see cref="IShellFolder.BindToStorage"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -1333,7 +2174,11 @@ namespace Vanara.PInvoke
 		/// the use of bind contexts.
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-		public static T BindToStorage<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class => (T)sf.BindToStorage(pidl, pbc, typeof(T).GUID);
+		public static T BindToStorage<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class
+		{
+			sf.BindToStorage(pidl, pbc, typeof(T).GUID, out var o).ThrowIfFailed();
+			return (T)o;
+		}
 
 		/// <summary>Extension method to simplify using the <see cref="IShellFolder.CreateViewObject"/> method.</summary>
 		/// <typeparam name="T">
@@ -1379,7 +2224,11 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static T CreateViewObject<T>(this IShellFolder sf, HWND hwndOwner) where T : class => (T)sf.CreateViewObject(hwndOwner, typeof(T).GUID);
+		public static T CreateViewObject<T>(this IShellFolder sf, HWND hwndOwner) where T : class
+		{
+			sf.CreateViewObject(hwndOwner, typeof(T).GUID, out var o).ThrowIfFailed();
+			return (T)o;
+		}
 
 		/// <summary>
 		/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its
@@ -1396,8 +2245,12 @@ namespace Vanara.PInvoke
 		/// silently fail.
 		/// </param>
 		/// <returns>An enumeration of the PIDL for the folder content items.</returns>
-		public static IEnumerable<PIDL> EnumObjects(this IShellFolder sf, SHCONTF grfFlags = SHCONTF.SHCONTF_FOLDERS | SHCONTF.SHCONTF_NONFOLDERS, HWND hwnd = default) =>
-			sf.EnumObjects(hwnd, grfFlags).Enumerate();
+		public static IEnumerable<PIDL> EnumObjects(this IShellFolder sf, SHCONTF grfFlags = SHCONTF.SHCONTF_FOLDERS | SHCONTF.SHCONTF_NONFOLDERS, HWND hwnd = default)
+		{
+			sf.EnumObjects(hwnd, grfFlags, out var eo).ThrowIfFailed();
+			using var peo = InteropServices.ComReleaserFactory.Create(eo);
+			return eo.Enumerate().ToArray();
+		}
 
 		/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
@@ -1455,7 +2308,7 @@ namespace Vanara.PInvoke
 		/// parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-		public static T GetUIObjectOf<T>(this IShellFolder sf, HWND hwndOwner, PIDL[] apidl) where T : class => GetUIObjectOf<T>(sf, hwndOwner, Array.ConvertAll(apidl, p => p.DangerousGetHandle()));
+		public static T GetUIObjectOf<T>(this IShellFolder sf, HWND hwndOwner, params PIDL[] apidl) where T : class => GetUIObjectOf<T>(sf, hwndOwner, Array.ConvertAll(apidl, p => p.DangerousGetHandle()));
 
 		/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -1468,7 +2321,11 @@ namespace Vanara.PInvoke
 		/// parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-		public static T GetUIObjectOf<T>(this IShellFolder sf, HWND hwndOwner, IntPtr[] apidl) where T : class => (T)sf.GetUIObjectOf(hwndOwner, (uint)apidl.Length, apidl, typeof(T).GUID);
+		public static T GetUIObjectOf<T>(this IShellFolder sf, HWND hwndOwner, params IntPtr[] apidl) where T : class
+		{
+			sf.GetUIObjectOf(hwndOwner, (uint)apidl.Length, apidl, typeof(T).GUID, default, out var o).ThrowIfFailed();
+			return (T)o;
+		}
 
 		/// <summary>Specifies methods for sorting category data.</summary>
 		/// <summary>
@@ -1517,10 +2374,35 @@ namespace Vanara.PInvoke
 			public string wszUrl;
 		}
 
+		/// <summary>CLSID_ControlPanel</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("21EC2020-3AEA-1069-A2DD-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
+		public class ControlPanel { }
+
+		/// <summary>CLSID_Internet</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("871C5380-42A0-1069-A2EA-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
+		public class Internet { }
+
+		/// <summary>CLSID_MyComputer</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("20D04FE0-3AEA-1069-A2D8-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
+		public class MyComputer { }
+
+		/// <summary>CLSID_MyDocuments</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("450D8FBA-AD25-11D0-98A8-0800361B1103"), ClassInterface(ClassInterfaceType.None)]
+		public class MyDocuments { }
+
 		/// <summary>CLSID_NetworkConnections</summary>
 		[PInvokeData("shobjidl_core.h")]
 		[ComImport, Guid("7007ACC7-3202-11D1-AAD2-00805FC1270E"), ClassInterface(ClassInterfaceType.None)]
 		public class NetworkConnections { }
+
+		/// <summary>CLSID_NetworkDomain</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("46e06680-4bf0-11d1-83ee-00a0c90dc849"), ClassInterface(ClassInterfaceType.None)]
+		public class NetworkDomain { }
 
 		/// <summary>CLSID_NetworkExplorerFolder</summary>
 		[PInvokeData("shobjidl_core.h")]
@@ -1531,6 +2413,26 @@ namespace Vanara.PInvoke
 		[PInvokeData("shobjidl_core.h")]
 		[ComImport, Guid("208D2C60-3AEA-1069-A2D7-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
 		public class NetworkPlaces { }
+
+		/// <summary>CLSID_NetworkServer</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("c0542a90-4bf0-11d1-83ee-00a0c90dc849"), ClassInterface(ClassInterfaceType.None)]
+		public class NetworkServer { }
+
+		/// <summary>CLSID_NetworkShare</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("54a754c0-4bf1-11d1-83ee-00a0c90dc849"), ClassInterface(ClassInterfaceType.None)]
+		public class NetworkShare { }
+
+		/// <summary>CLSID_Printers</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("2227A280-3AEA-1069-A2DE-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
+		public class Printers { }
+
+		/// <summary>CLSID_RecycleBin</summary>
+		[PInvokeData("shlguid.h")]
+		[ComImport, Guid("645FF040-5081-101B-9F08-00AA002F954E"), ClassInterface(ClassInterfaceType.None)]
+		public class RecycleBin { }
 
 		/// <summary>CLSID_ScheduledTasks</summary>
 		[PInvokeData("shobjidl_core.h")]
@@ -1546,50 +2448,5 @@ namespace Vanara.PInvoke
 		[PInvokeData("shobjidl_core.h")]
 		[ComImport, Guid("F3364BA0-65B9-11CE-A9BA-00AA004AE837"), ClassInterface(ClassInterfaceType.None)]
 		public class ShellFSFolder { }
-
-		/// <summary>CLSID_NetworkDomain</summary>
-		[PInvokeData("shlguid.h")]
-		[ComImport, Guid("46e06680-4bf0-11d1-83ee-00a0c90dc849"), ClassInterface(ClassInterfaceType.None)]
-		public class NetworkDomain { }
-
-		/// <summary>CLSID_NetworkServer</summary>
-		[PInvokeData("shlguid.h")]
-		[ComImport, Guid("c0542a90-4bf0-11d1-83ee-00a0c90dc849"), ClassInterface(ClassInterfaceType.None)]
-		public class NetworkServer { }
-
-		/// <summary>CLSID_NetworkShare</summary>
-		[PInvokeData("shlguid.h")]
-		[ComImport, Guid("54a754c0-4bf1-11d1-83ee-00a0c90dc849"), ClassInterface(ClassInterfaceType.None)]
-		public class NetworkShare { }
-
-		/// <summary>CLSID_MyComputer</summary>
-		[PInvokeData("shlguid.h")]
-		[ComImport, Guid("20D04FE0-3AEA-1069-A2D8-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
-		public class MyComputer { }
-
-		/// <summary>CLSID_Internet</summary>
-		[PInvokeData("shlguid.h")]
-		[ComImport, Guid("871C5380-42A0-1069-A2EA-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
-		public class Internet { }
-
-		/// <summary>CLSID_RecycleBin</summary>
-		[PInvokeData("shlguid.h")]
-		[ComImport, Guid("645FF040-5081-101B-9F08-00AA002F954E"), ClassInterface(ClassInterfaceType.None)]
-		public class RecycleBin { }
-
-		/// <summary>CLSID_ControlPanel</summary>
-		[PInvokeData("shlguid.h")]
-		[ComImport, Guid("21EC2020-3AEA-1069-A2DD-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
-		public class ControlPanel { }
-
-		/// <summary>CLSID_Printers</summary>
-		[PInvokeData("shlguid.h")]
-		[ComImport, Guid("2227A280-3AEA-1069-A2DE-08002B30309D"), ClassInterface(ClassInterfaceType.None)]
-		public class Printers { }
-
-		/// <summary>CLSID_MyDocuments</summary>
-		[PInvokeData("shlguid.h")]
-		[ComImport, Guid("450D8FBA-AD25-11D0-98A8-0800361B1103"), ClassInterface(ClassInterfaceType.None)]
-		public class MyDocuments { }
 	}
 }
