@@ -104,9 +104,9 @@ namespace Vanara.PInvoke.Tests
 		public void SHCreateFileExtractIconWTest()
 		{
 			const string icoFile = @"notepad.exe";
-			Assert.That(SHCreateFileExtractIconW(icoFile, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, typeof(IExtractIcon).GUID, out var ppv), Is.EqualTo((HRESULT)0));
+			Assert.That(SHCreateFileExtractIconW(icoFile, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, typeof(IExtractIconW).GUID, out var ppv), Is.EqualTo((HRESULT)0));
 			Assert.That(ppv, Is.Not.Null);
-			((IExtractIcon)ppv).Extract(icoFile, 0, out var lg, out var sm, Macros.MAKELONG(48, 16)).ThrowIfFailed();
+			((IExtractIconW)ppv).Extract(icoFile, 0, out var lg, out var sm, Macros.MAKELONG(48, 16)).ThrowIfFailed();
 			Assert.That(sm.IsInvalid, Is.False);
 			Assert.That(sm.ToIcon().Height, Is.EqualTo(16));
 			Marshal.FinalReleaseComObject(ppv);

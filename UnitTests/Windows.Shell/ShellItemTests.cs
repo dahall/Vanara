@@ -77,8 +77,8 @@ namespace Vanara.Windows.Shell.Tests
 			ps = i.GetHandler<PropSys.IPropertyStore>();
 			Assert.That(ps, Is.Not.Null.And.InstanceOf<PropSys.IPropertyStore>());
 			System.Runtime.InteropServices.Marshal.ReleaseComObject(ps);
-			var ei = i.GetHandler<IExtractIcon>();
-			Assert.That(ei, Is.Not.Null.And.InstanceOf<IExtractIcon>());
+			var ei = i.GetHandler<IExtractIconW>();
+			Assert.That(ei, Is.Not.Null.And.InstanceOf<IExtractIconW>());
 			//Assert.That(() => i.GetHandler<IExtractIcon>(), Throws.TypeOf<ArgumentOutOfRangeException>());
 		}
 

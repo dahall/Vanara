@@ -25,7 +25,7 @@ namespace Vanara.PInvoke.Tests
 			// List all property keys
 			for (uint i = 0; i < uint.MaxValue; i++)
 			{
-				try { TestContext.WriteLine($"{i}) Key={pFolder.Item.MapColumnToSCID(i)}; State={pFolder.Item.GetDefaultColumnState(i)}"); }
+				try { TestContext.WriteLine($"{i}) Key={(pFolder.Item.MapColumnToSCID(i, out var pk).Succeeded ? pk : default)}; State={(pFolder.Item.GetDefaultColumnState(i, out var st).Succeeded ? st : default)}"); }
 				catch { break; }
 			}
 		}
@@ -39,8 +39,8 @@ namespace Vanara.PInvoke.Tests
 				using var pFolder = ComReleaserFactory.Create(new Printers() as IShellFolder2);
 				try
 				{
-					var defGuid = pFolder.Item.GetDefaultSearchGUID();
-					var exSrc = pFolder.Item.EnumSearches();
+					pFolder.Item.GetDefaultSearchGUID(out var defGuid).ThrowIfFailed();
+					pFolder.Item.EnumSearches(out var exSrc).ThrowIfFailed();
 					using var pExSrc = ComReleaserFactory.Create(exSrc);
 					var cenum = new IEnumFromCom<EXTRASEARCH>(exSrc.Next, exSrc.Reset);
 					//TestContext.WriteLine(kf);
