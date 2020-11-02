@@ -124,7 +124,7 @@ namespace Vanara.Extensions
 		public static Icon GetSystemIcon(string fileNameOrExtension, IconSize iconSize = IconSize.Large)
 		{
 			var shfi = new SHFILEINFO();
-			if (hSystemImageList == null)
+			if (hSystemImageList.IsNull)
 				hSystemImageList = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_SYSICONINDEX | (iconSize == IconSize.Small ? SHGFI.SHGFI_SMALLICON : 0));
 			if (hSystemImageList.IsNull) return null;
 			if (iconSize <= IconSize.Small)
