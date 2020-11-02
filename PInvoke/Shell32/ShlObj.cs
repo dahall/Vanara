@@ -4674,8 +4674,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [Shell_GetCachedImageIndex is available for use in the operating systems specified in the Requirements section. It may be altered
-		/// or unavailable in subsequent versions. Instead, use
+		/// [Shell_GetCachedImageIndex is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions. Instead, use
 		/// </para>
 		/// <para>Shell_GetCachedImageIndexA</para>
 		/// <para>or</para>
@@ -4683,9 +4683,7 @@ namespace Vanara.PInvoke
 		/// <para>.]</para>
 		/// <para>Retrieves the cache index of a cached icon.</para>
 		/// </summary>
-		/// <param name="pszIconPath">
-		/// <para>TBD</para>
-		/// </param>
+		/// <param name="pszIconPath">A pointer to a buffer that contains the path to the image file.</param>
 		/// <param name="iIconIndex">
 		/// <para>Type: <c>int</c></para>
 		/// <para>The index of the image within the file named at .</para>
@@ -4713,7 +4711,7 @@ namespace Vanara.PInvoke
 		// Shell_GetCachedImageIndexA( LPCSTR pszIconPath, int iIconIndex, UINT uIconFlags );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "f0d4dd1f-a41c-4dd0-9713-e3aec48ff101")]
-		public static extern int Shell_GetCachedImageIndex(string pszIconPath, int iIconIndex, uint uIconFlags);
+		public static extern int Shell_GetCachedImageIndex(string pszIconPath, int iIconIndex, [Optional] uint uIconFlags);
 
 		/// <summary>
 		/// <para>
@@ -5845,6 +5843,39 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Shlobj_core.h", MSDNShortId = "bb762219")]
 		public static extern int SHMapPIDLToSystemImageListIndex(IShellFolder psf, PIDL pidl, out int piIndex);
+
+		/// <summary>
+		/// <para>
+		/// [ <c>SHMapPIDLToSystemImageListIndex</c> is available for use in the operating systems specified in the Requirements section. It
+		/// may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Retrieves the icon index from the system image list that is associated with a folder item.</para>
+		/// </summary>
+		/// <param name="psf">
+		/// <para>Type: <c><c>IShellFolder</c>*</c></para>
+		/// <para>An <c>IShellFolder</c> interface pointer for the folder that contains the item.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+		/// <para>A pointer to the item's <c>ITEMIDLIST</c> structure.</para>
+		/// </param>
+		/// <param name="piIndex">
+		/// <para>Type: <c>int*</c></para>
+		/// <para>
+		/// A pointer to an <c>int</c> that, when this function returns successfully, receives the index of the item's <c>open</c> icon in
+		/// the system image list. If the item does not have a special <c>open</c> icon then the index of its normal icon is returned. If the
+		/// <c>open</c> icon exists and cannot be obtained, then the value pointed to by piIndex is set to -1. This parameter can be
+		/// <c>NULL</c> if the calling application is not interested in the <c>open</c> icon.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns the index of the item's normal icon in the system image list if successful, or -1 otherwise.</para>
+		/// </returns>
+		// int SHMapPIDLToSystemImageListIndex( _In_ IShellFolder *psf, _In_ PCUITEMID_CHILD pidl, _Out_opt_ int *piIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/bb762219(v=vs.85).aspx
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Shlobj_core.h", MSDNShortId = "bb762219")]
+		public static extern int SHMapPIDLToSystemImageListIndex(IShellFolder psf, PIDL pidl, [Optional] IntPtr piIndex);
 
 		/// <summary>
 		/// <para>
