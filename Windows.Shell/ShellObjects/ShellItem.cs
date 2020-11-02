@@ -782,7 +782,8 @@ namespace Vanara.Windows.Shell
 					{ typeof(IContextMenu), BHID.BHID_SFUIObject },
 					{ typeof(IContextMenu2), BHID.BHID_SFUIObject },
 					{ typeof(IDropTarget), BHID.BHID_SFUIObject },
-					{ typeof(IExtractIcon), BHID.BHID_SFUIObject },
+					{ typeof(IExtractIconA), BHID.BHID_SFUIObject },
+					{ typeof(IExtractIconW), BHID.BHID_SFUIObject },
 					{ typeof(IQueryInfo), BHID.BHID_SFUIObject },
 
 					{ typeof(IShellItemResources), BHID.BHID_SFViewObject },
@@ -996,7 +997,7 @@ namespace Vanara.Windows.Shell
 			{
 				var parentFolder = InternalGetParent().GetIShellFolder();
 				var result = sfgaoMask;
-				parentFolder.GetAttributesOf(1, new[] { (IntPtr)PIDL.LastId }, ref result);
+				parentFolder.GetAttributesOf(1, new[] { (IntPtr)PIDL.LastId }, ref result).ThrowIfFailed();
 				return result & sfgaoMask;
 			}
 
@@ -1017,9 +1018,7 @@ namespace Vanara.Windows.Shell
 				}
 
 				var parentFolder = InternalGetParent().GetIShellFolder();
-				var child = PIDL.LastId;
-				parentFolder.GetDisplayNameOf(child, (SHGDNF)((int)sigdnName & 0xffff), out var name);
-				return name;
+				return parentFolder.GetDisplayNameOf((SHGDNF)((int)sigdnName & 0xffff), PIDL.LastId);
 			}
 
 			/// <summary>Gets the parent of an IShellItem object.</summary>
@@ -1037,7 +1036,7 @@ namespace Vanara.Windows.Shell
 				SHGetFolderLocation(IntPtr.Zero, 0, HTOKEN.NULL, 0, out var dtPidl);
 				if (ShellFolder.Desktop.PIDL.Equals(dtPidl))
 					return ShellFolder.Desktop.iShellFolder;
-				return (IShellFolder)ShellFolder.Desktop.iShellFolder.BindToObject(PIDL, null, typeof(IShellFolder).GUID);
+				return ShellFolder.Desktop.iShellFolder.BindToObject<IShellFolder>(PIDL);
 			}
 
 			private ShellItemImpl InternalGetParent()

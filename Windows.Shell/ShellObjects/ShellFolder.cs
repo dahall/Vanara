@@ -103,7 +103,7 @@ namespace Vanara.Windows.Shell
 				else
 				{
 					SFGAO attr = 0;
-					iShellFolder.ParseDisplayName(IntPtr.Zero, null, childName, out uint _, out var tempPidl, ref attr);
+					iShellFolder.ParseDisplayName(IntPtr.Zero, null, childName, out uint _, out var tempPidl, ref attr).ThrowIfFailed();
 					ppv = new ShellItemImpl(PIDL.Combine(PIDL, tempPidl), false);
 				}
 				return Open((IShellItem)ppv);
@@ -182,12 +182,8 @@ namespace Vanara.Windows.Shell
 		/// <returns>An enumerated list of children matching the filter.</returns>
 		public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter /*= FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden */, System.Windows.Forms.IWin32Window parentWindow = null)
 		{
-			IEnumIDList eo = null;
-			try
-			{
-				eo = iShellFolder.EnumObjects(IWin2Ptr(parentWindow, false), (SHCONTF)filter);
-			}
-			catch (Exception e) { Debug.WriteLine($"Unable to enum children in folder: {e.Message}"); }
+			if (iShellFolder.EnumObjects(IWin2Ptr(parentWindow, false), (SHCONTF)filter, out var eo).Failed)
+				Debug.WriteLine($"Unable to enum children in folder.");
 			foreach (var p in eo.Enumerate(20))
 			{
 				ShellItem i = null;
@@ -205,7 +201,7 @@ namespace Vanara.Windows.Shell
 		public TInterface GetChildrenUIObjects<TInterface>(System.Windows.Forms.IWin32Window parentWindow, params ShellItem[] children) where TInterface : class
 		{
 			if (children is null || children.Length == 0 || children.Any(i => i is null || !IsChild(i))) throw new ArgumentException("At least one child ShellItem instances is null or is not a child of this folder.");
-			return iShellFolder.GetUIObjectOf(IWin2Ptr(parentWindow), (uint)children.Length, Array.ConvertAll(children, i => (IntPtr)i.PIDL.LastId), typeof(TInterface).GUID) as TInterface;
+			return iShellFolder.GetUIObjectOf<TInterface>(IWin2Ptr(parentWindow), Array.ConvertAll(children, i => (IntPtr)i.PIDL.LastId));
 		}
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -216,17 +212,8 @@ namespace Vanara.Windows.Shell
 		/// <typeparam name="TInterface">The interface to retrieve, typically IShellView.</typeparam>
 		/// <param name="parentWindow">The owner window.</param>
 		/// <returns>The interface pointer requested.</returns>
-		public TInterface GetViewObject<TInterface>(System.Windows.Forms.IWin32Window parentWindow) where TInterface : class
-		{
-			try
-			{
-				return iShellFolder.CreateViewObject(IWin2Ptr(parentWindow), typeof(TInterface).GUID) as TInterface;
-			}
-			catch (InvalidCastException e)
-			{
-				throw new NotImplementedException(null, e);
-			}
-		}
+		public TInterface GetViewObject<TInterface>(System.Windows.Forms.IWin32Window parentWindow) where TInterface : class =>
+			iShellFolder.CreateViewObject<TInterface>(IWin2Ptr(parentWindow));
 
 		/// <summary>Determines if the supplied <see cref="ShellItem"/> is an immediate descendant of this folder.</summary>
 		/// <param name="item">The child item to test.</param>
