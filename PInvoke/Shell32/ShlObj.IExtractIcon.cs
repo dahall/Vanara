@@ -179,6 +179,29 @@ namespace Vanara.PInvoke
 		/// <param name="exIcon">The <see cref="IExtractIconA"/> instance.</param>
 		/// <param name="pszFile">A pointer to a null-terminated string that specifies the icon location.</param>
 		/// <param name="nIconIndex">The index of the icon in the file pointed to by pszFile.</param>
+		/// <param name="nIconSize">
+		/// The desired size of the icon, in pixels. The size specified can be the width or height. The width of an icon always equals
+		/// its height.
+		/// </param>
+		/// <param name="phicon">A pointer to an HICON value that receives the handle to the icon. This parameter may be NULL.</param>
+		/// <returns>Returns S_OK if the function extracted the icon, or S_FALSE if the calling application should extract the icon.</returns>
+		public static HRESULT Extract(this IExtractIconA exIcon, string pszFile, uint nIconIndex, ushort nIconSize, out SafeHICON phicon)
+		{
+			if (exIcon is null) throw new ArgumentNullException(nameof(exIcon));
+			var sz = nIconSize > 16 ? Macros.MAKELONG(nIconSize, 0) : Macros.MAKELONG(0, nIconSize);
+			unsafe
+			{
+				HICON h1 = default;
+				var hr = nIconSize > 16 ? exIcon.Extract(pszFile, nIconIndex, &h1, null, sz) : exIcon.Extract(pszFile, nIconIndex, null, &h1, sz);
+				phicon = h1 == default ? null : new SafeHICON((IntPtr)h1);
+				return hr;
+			}
+		}
+
+		/// <summary>Extracts an icon image from the specified location.</summary>
+		/// <param name="exIcon">The <see cref="IExtractIconA"/> instance.</param>
+		/// <param name="pszFile">A pointer to a null-terminated string that specifies the icon location.</param>
+		/// <param name="nIconIndex">The index of the icon in the file pointed to by pszFile.</param>
 		/// <param name="nIconSizeLarge">
 		/// The desired size of the large icon, in pixels. The size specified can be the width or height. The width of an icon always equals
 		/// its height.
@@ -200,6 +223,29 @@ namespace Vanara.PInvoke
 				var hr = exIcon.Extract(pszFile, nIconIndex, nIconSizeLarge == 0 ? null : &h1, nIconSizeSmall == 0 ? null : &h2, sz);
 				phiconLarge = h1 == default ? null : new SafeHICON((IntPtr)h1);
 				phiconSmall = h2 == default ? null : new SafeHICON((IntPtr)h2);
+				return hr;
+			}
+		}
+
+		/// <summary>Extracts an icon image from the specified location.</summary>
+		/// <param name="exIcon">The <see cref="IExtractIconW"/> instance.</param>
+		/// <param name="pszFile">A pointer to a null-terminated string that specifies the icon location.</param>
+		/// <param name="nIconIndex">The index of the icon in the file pointed to by pszFile.</param>
+		/// <param name="nIconSize">
+		/// The desired size of the icon, in pixels. The size specified can be the width or height. The width of an icon always equals
+		/// its height.
+		/// </param>
+		/// <param name="phicon">A pointer to an HICON value that receives the handle to the icon. This parameter may be NULL.</param>
+		/// <returns>Returns S_OK if the function extracted the icon, or S_FALSE if the calling application should extract the icon.</returns>
+		public static HRESULT Extract(this IExtractIconW exIcon, string pszFile, uint nIconIndex, ushort nIconSize, out SafeHICON phicon)
+		{
+			if (exIcon is null) throw new ArgumentNullException(nameof(exIcon));
+			var sz = nIconSize > 16 ? Macros.MAKELONG(nIconSize, 0) : Macros.MAKELONG(0, nIconSize);
+			unsafe
+			{
+				HICON h1 = default;
+				var hr = nIconSize > 16 ? exIcon.Extract(pszFile, nIconIndex, &h1, null, sz) : exIcon.Extract(pszFile, nIconIndex, null, &h1, sz);
+				phicon = h1 == default ? null : new SafeHICON((IntPtr)h1);
 				return hr;
 			}
 		}
