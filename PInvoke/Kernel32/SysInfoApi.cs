@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -1229,7 +1230,7 @@ namespace Vanara.PInvoke
 				(ref uint sz) => BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, IntPtr.Zero, ref sz) || sz > 0),
 				(IntPtr p, ref uint sz) => BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, p, ref sz)),
 				out info,
-				(p, sz) => p.ToArray<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>((int)sz / Marshal.SizeOf(typeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX))));
+				(p, sz) => p.LinkedListToIEnum<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>(i => i.Size, sz).ToArray());
 		}
 
 		/// <summary>
