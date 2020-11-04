@@ -214,6 +214,25 @@ namespace Vanara.Extensions
 			}
 		}
 
+		/// <summary>Marshals an unmanaged linked list of structures to an <see cref="IEnumerable{T}"/> of that structure.</summary>
+		/// <typeparam name="T">Type of native structure used by the unmanaged linked list.</typeparam>
+		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="nextOffset">The expression to be used to fetch the offset from the current pointer to the next item in the list.</param>
+		/// <param name="allocatedBytes">
+		/// The number of allocated bytes behind <paramref name="ptr"/>. This value is used to determine when to stop enumerating.
+		/// </param>
+		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the linked list.</returns>
+		public static IEnumerable<T> LinkedListToIEnum<T>(this IntPtr ptr, Func<T, long> nextOffset, SizeT allocatedBytes)
+		{
+			var pEnd = ptr.Offset(allocatedBytes);
+			for (var pCurrent = ptr; pCurrent.ToInt64() < pEnd.ToInt64();)
+			{
+				var ret = pCurrent.ToStructure<T>();
+				yield return ret;
+				pCurrent = pCurrent.Offset(nextOffset(ret));
+			}
+		}
+
 		/// <summary>
 		/// Marshals data from a managed list of objects to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
 		/// </summary>
