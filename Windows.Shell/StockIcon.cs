@@ -42,6 +42,10 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the icon image in <see cref="System.Drawing.Icon"/> format.</summary>
 		public Icon Icon { get { Refresh(); return hIcon.IsNull ? null : Icon.FromHandle((IntPtr)hIcon); } }
 
+		/// <summary>Gets the icon handle.</summary>
+		/// <value>The icon handle.</value>
+		public HICON IconHandle => hIcon;
+
 		/// <summary>Gets or sets the Stock Icon identifier associated with this icon.</summary>
 		public SHSTOCKICONID Identifier { get; set; }
 
