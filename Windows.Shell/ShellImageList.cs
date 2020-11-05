@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Shell32;
@@ -24,8 +26,13 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		ExtraLarge = SHIL.SHIL_EXTRALARGE,
 
+		/// <summary>
+		/// These images are the size specified by GetSystemMetrics called with SM_CXSMICON and GetSystemMetrics called with SM_CYSMICON.
+		/// </summary>
+		SystemSmall = SHIL.SHIL_SYSSMALL,
+
 		/// <summary>Windows Vista and later. The image is normally 256x256 pixels.</summary>
-		Jumbo = SHIL.SHIL_JUMBO
+		Jumbo = SHIL.SHIL_JUMBO,
 	}
 
 	/* *****************************
@@ -34,7 +41,22 @@ namespace Vanara.Windows.Shell
 	/// <summary>Represents the System Image List holding images for all shell icons.</summary>
 	public static class ShellImageList
 	{
+		private const string REGSTR_PATH_METRICS = "Control Panel\\Desktop\\WindowMetrics";
+		private static readonly Dictionary<ShellImageSize, ushort> g_rgshil;
+		private static readonly int SHIL_COUNT;
 		private static HIMAGELIST hSystemImageList;
+
+		static ShellImageList()
+		{
+			SHIL_COUNT = Enum.GetValues(typeof(ShellImageSize)).Length;
+			g_rgshil = new Dictionary<ShellImageSize, ushort>(SHIL_COUNT); // new ushort[SHIL_COUNT];
+			var sysCxIco = GetSystemMetrics(SystemMetric.SM_CXICON);
+			g_rgshil[ShellImageSize.Large] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Icon Size", sysCxIco);
+			g_rgshil[ShellImageSize.Small] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Small Icon Size", sysCxIco / 2);
+			g_rgshil[ShellImageSize.ExtraLarge] = (ushort)(3 * sysCxIco / 2);
+			g_rgshil[ShellImageSize.SystemSmall] = (ushort)GetSystemMetrics(SystemMetric.SM_CXSMICON);
+			g_rgshil[ShellImageSize.Jumbo] = 256;
+		}
 
 		/// <summary>Gets the Shell icon for the given file name or extension.</summary>
 		/// <param name="fileNameOrExtension">The file name or extension .</param>
@@ -71,10 +93,26 @@ namespace Vanara.Windows.Shell
 		/// <param name="index">The index of the system icon to retrieve.</param>
 		/// <param name="iconSize">Size of the icon.</param>
 		/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
-		public static Icon GetSystemIcon(int index, ShellImageSize iconSize = ShellImageSize.Large)
+		public static Icon GetSystemIcon(int index, ShellImageSize iconSize = ShellImageSize.Large) => GetSystemIconHandle(index, iconSize)?.ToIcon();
+
+		/// <summary>Gets the system icon for and index and size.</summary>
+		/// <param name="index">The index of the system icon to retrieve.</param>
+		/// <param name="iconSize">Size of the icon.</param>
+		/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
+		public static SafeHICON GetSystemIconHandle(int index, ShellImageSize iconSize = ShellImageSize.Large)
 		{
 			SHGetImageList((SHIL)iconSize, typeof(IImageList).GUID, out var il).ThrowIfFailed();
-			return il.GetIcon(index, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT)?.ToIcon();
+			return il.GetIcon(index, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
 		}
+
+		/// <summary>Given a pixel size, return the ShellImageSize value with the closest size.</summary>
+		/// <param name="pixels">Size, in pixels, of the image list size to search for.</param>
+		/// <returns>An image list size.</returns>
+		public static ShellImageSize PixelsToSHIL(int pixels) => g_rgshil.Aggregate((x, y) => Math.Abs(x.Value - pixels) < Math.Abs(y.Value - pixels) ? x : y).Key;
+
+		/// <summary>Given an image list size, return the related size, in pixels, of that size defined on the system.</summary>
+		/// <param name="imageListSize">Size of the image list.</param>
+		/// <returns>Pixel size of corresponding system value.</returns>
+		public static int SHILtoPixels(ShellImageSize imageListSize) => g_rgshil[imageListSize];
 	}
 }
