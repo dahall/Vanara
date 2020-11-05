@@ -8,17 +8,6 @@ namespace Vanara.Extensions
 	/// <summary>Extensions to <c>Graphics</c> related classes.</summary>
 	public static partial class GraphicsExtension
 	{
-		/// <summary>
-		/// Appends a rounded rectangle path to the current figure.
-		/// </summary>
-		/// <param name="gp">The <see cref="GraphicsPath"/> instance.</param>
-		/// <param name="rect">The bounding <see cref="Rectangle"/> for the rounded rectangle.</param>
-		/// <param name="arcSize">Size of the arc for each corner.</param>
-		/// <param name="corners">Specifies which corners to curve. The default is <c>All</c>.</param>
-		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
-		public static void AddRoundedRectangle(this GraphicsPath gp, RectangleF rect, SizeF arcSize, Corners corners = Corners.All) =>
-			GdiExtension.AddRoundedRectangle(gp, rect, arcSize, corners);
-
 		/// <summary>Builds a <see cref="TextFormatFlags"/> from a set of variables.</summary>
 		/// <param name="textAlign">The <see cref="ContentAlignment"/> of the text.</param>
 		/// <param name="singleLine">if set to <c>true</c> if text should be in a single line.</param>
@@ -200,28 +189,6 @@ namespace Vanara.Extensions
 			}
 		}
 
-		/// <summary>A method to darken a color by a percentage of the difference between the color and Black.</summary>
-		/// <param name="colorIn">The original color.</param>
-		/// <param name="percent">The percentage by which to darken the original color.</param>
-		/// <returns>
-		/// The return color's Alpha value will be unchanged, but the RGB content will have been increased by the
-		/// specified percentage. If percent is 100 then the returned Color will be Black with original Alpha.
-		/// </returns>
-		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
-		public static Color Darken(this Color colorIn, float percent) => GdiExtension.Darken(colorIn, percent);
-
-		/// <summary>Draws image with specified parameters.</summary>
-		/// <param name="graphics">Graphics on which to draw image</param>
-		/// <param name="image">Image to be drawn</param>
-		/// <param name="destination">Bounding rectangle for the image</param>
-		/// <param name="source">Source rectangle of the image</param>
-		/// <param name="alignment">Alignment specifying how image will be aligned against the bounding rectangle</param>
-		/// <param name="transparency">Transparency for the image</param>
-		/// <param name="grayscale">Value indicating if the image should be gray scaled</param>
-		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
-		public static void DrawImage(this Graphics graphics, Image image, Rectangle destination, Rectangle source, ContentAlignment alignment = ContentAlignment.TopLeft, float transparency = 1.0f, bool grayscale = false) =>
-			GdiExtension.DrawImage(graphics, image, destination, source, alignment, transparency, grayscale);
-
 		/// <summary>A method used to draw standard Image and Text content with standard layout options.</summary>
 		/// <param name="graphics">The Graphics object on which to draw.</param>
 		/// <param name="bounds">The bounding Rectangle within which to draw.</param>
@@ -255,45 +222,5 @@ namespace Vanara.Extensions
 			if (text?.Length > 0)
 				TextRenderer.DrawText(graphics, text, font, tRect, textColor, format);
 		}
-
-		/// <param name="alignment">The alignment of the new rectangle.</param>
-		/// <param name="bounds">The initial bounding rectangle.</param>
-		/// <param name="size">The size of the output rectangle.</param>
-		/// <returns>
-		/// A rectangle of <paramref name="size"/> fit into <paramref name="bounds"/> according to the alignment specified by <paramref name="alignment"/>.
-		/// </returns>
-		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
-		public static Rectangle GetRectangleFromAlignment(ContentAlignment alignment, Rectangle bounds, Size size) =>
-			GdiExtension.GetRectangleFromAlignment(alignment, bounds, size);
-
-		/// <summary>Gets a transparent bitmap given two non-transparent bitmaps drawn against a white and black background respectively.</summary>
-		/// <param name="whiteBmp">A non-transparent bitmap drawn against a white background.</param>
-		/// <param name="blackBmp">A non-transparent bitmap drawn against a black background.</param>
-		/// <returns>A 32-bit bitmap with an alpha channel values that are set based on white and black bitmap interpolation.</returns>
-		/// <exception cref="ArgumentException">Bitmaps must be of the same size and their pixel format must be Format32bppArgb.</exception>
-		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
-		public static Bitmap GetTransparentBitmap(Bitmap whiteBmp, Bitmap blackBmp) =>
-			GdiExtension.GetTransparentBitmap(whiteBmp, blackBmp);
-
-		/// <summary>A method to lighten a color by a percentage of the difference between the color and Black.</summary>
-		/// <param name="colorIn">The original color.</param>
-		/// <param name="percent">The percentage by which to lighten the original color.</param>
-		/// <returns>
-		/// The return color's Alpha value will be unchanged, but the RGB content will have been decreased by the specified percentage. If
-		/// percent is 100 then the returned Color will be White with original Alpha.
-		/// </returns>
-		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
-		public static Color Lighten(this Color colorIn, float percent) =>
-			GdiExtension.Lighten(colorIn, percent);
-
-		/// <summary>Resize the image to the specified width and height.</summary>
-		/// <param name="image">The image to resize.</param>
-		/// <param name="width">The width to resize to.</param>
-		/// <param name="height">The height to resize to.</param>
-		/// <param name="mode">The interpolation mode to use in the resampling.</param>
-		/// <returns>The resized image.</returns>
-		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
-		public static Bitmap Resize(this Image image, int width, int height, InterpolationMode mode = InterpolationMode.HighQualityBicubic) =>
-			GdiExtension.Resize(image, width, height, mode);
 	}
 }
