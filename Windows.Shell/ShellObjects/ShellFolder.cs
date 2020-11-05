@@ -18,37 +18,37 @@ namespace Vanara.Windows.Shell
 	public enum FolderItemFilter
 	{
 		/// <summary>Include items that are folders in the enumeration.</summary>
-		Folders = 0x00020,
+		Folders = SHCONTF.SHCONTF_FOLDERS,
 
 		/// <summary>Include items that are not folders in the enumeration.</summary>
-		NonFolders = 0x00040,
+		NonFolders = SHCONTF.SHCONTF_NONFOLDERS,
 
 		/// <summary>Include hidden items in the enumeration. This does not include hidden system items. (To include hidden system items, use IncludeSuperHidden.)</summary>
-		IncludeHidden = 0x00080,
+		IncludeHidden = SHCONTF.SHCONTF_INCLUDEHIDDEN,
 
 		/// <summary>The calling application is looking for printer objects.</summary>
-		Printers = 0x00200,
+		Printers = SHCONTF.SHCONTF_NETPRINTERSRCH,
 
 		/// <summary>The calling application is looking for resources that can be shared.</summary>
-		Shareable = 0x00400,
+		Shareable = SHCONTF.SHCONTF_SHAREABLE,
 
 		/// <summary>Include items with accessible storage and their ancestors, including hidden items.</summary>
-		Storage = 0x00800,
+		Storage = SHCONTF.SHCONTF_STORAGE,
 
 		// /// <summary>Windows 7 and later. Child folders should provide a navigation enumeration.</summary>
 		// NAVIGATION_ENUM = 0x01000,
 
 		/// <summary>Windows Vista and later. The calling application is looking for resources that can be enumerated quickly.</summary>
-		FastItems = 0x02000,
+		FastItems = SHCONTF.SHCONTF_FASTITEMS,
 
 		/// <summary>Windows Vista and later. Enumerate items as a simple list even if the folder itself is not structured in that way.</summary>
-		FlatList = 0x04000,
+		FlatList = SHCONTF.SHCONTF_FLATLIST,
 
 		/// <summary>
 		/// Windows 7 and later. Include hidden system items in the enumeration. This value does not include hidden non-system items. (To include hidden
 		/// non-system items, use IncludeHidden.)
 		/// </summary>
-		IncludeSuperHidden = 0x10000
+		IncludeSuperHidden = SHCONTF.SHCONTF_INCLUDESUPERHIDDEN
 	}
 
 	/// <summary>A folder or container of <see cref="T:Vanara.Windows.Shell.ShellItem" /> instances.</summary>
