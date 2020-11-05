@@ -222,5 +222,24 @@ namespace Vanara.Extensions
 			if (text?.Length > 0)
 				TextRenderer.DrawText(graphics, text, font, tRect, textColor, format);
 		}
+
+		/// <param name="alignment">The alignment of the new rectangle.</param>
+		/// <param name="bounds">The initial bounding rectangle.</param>
+		/// <param name="size">The size of the output rectangle.</param>
+		/// <returns>
+		/// A rectangle of <paramref name="size"/> fit into <paramref name="bounds"/> according to the alignment specified by <paramref name="alignment"/>.
+		/// </returns>
+		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
+		public static Rectangle GetRectangleFromAlignment(ContentAlignment alignment, Rectangle bounds, Size size) =>
+			GdiExtension.GetRectangleFromAlignment(alignment, bounds, size);
+
+		/// <summary>Gets a transparent bitmap given two non-transparent bitmaps drawn against a white and black background respectively.</summary>
+		/// <param name="whiteBmp">A non-transparent bitmap drawn against a white background.</param>
+		/// <param name="blackBmp">A non-transparent bitmap drawn against a black background.</param>
+		/// <returns>A 32-bit bitmap with an alpha channel values that are set based on white and black bitmap interpolation.</returns>
+		/// <exception cref="ArgumentException">Bitmaps must be of the same size and their pixel format must be Format32bppArgb.</exception>
+		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
+		public static Bitmap GetTransparentBitmap(Bitmap whiteBmp, Bitmap blackBmp) =>
+			GdiExtension.GetTransparentBitmap(whiteBmp, blackBmp);
 	}
 }
