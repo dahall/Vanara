@@ -2327,6 +2327,40 @@ namespace Vanara.PInvoke
 			return (T)o;
 		}
 
+		/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+		/// <param name="apidl">
+		/// An array of pointers to ITEMIDLIST structures, each of which uniquely identifies a file object or subfolder relative to the
+		/// parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
+		/// </param>
+		/// <param name="ppv">When this method returns successfully, contains the interface pointer requested in <typeparamref name="T"/>.</param>
+		/// <param name="hwndOwner">
+		/// A handle to the owner window that the client should specify if it displays a dialog box or message box.
+		/// </param>
+		/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		public static HRESULT GetUIObjectOf<T>(this IShellFolder sf, IntPtr[] apidl, out T ppv, HWND hwndOwner = default) where T : class
+		{
+			var hr = sf.GetUIObjectOf(hwndOwner, (uint)apidl.Length, apidl, typeof(T).GUID, default, out var o);
+			ppv = hr.Succeeded ? (T)o : default;
+			return hr;
+		}
+
+		/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+		/// <param name="apidl">
+		/// An array of pointers to ITEMIDLIST structures, each of which uniquely identifies a file object or subfolder relative to the
+		/// parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
+		/// </param>
+		/// <param name="ppv">When this method returns successfully, contains the interface pointer requested in <typeparamref name="T"/>.</param>
+		/// <param name="hwndOwner">
+		/// A handle to the owner window that the client should specify if it displays a dialog box or message box.
+		/// </param>
+		/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		public static HRESULT GetUIObjectOf<T>(this IShellFolder sf, IntPtr pidl, out T ppv, HWND hwndOwner = default) where T : class =>
+			GetUIObjectOf<T>(sf, new[] { pidl }, out ppv, hwndOwner);
+
 		/// <summary>Specifies methods for sorting category data.</summary>
 		/// <summary>
 		/// Contains category information. A component category is a group of logically-related Component Object Model (COM) classes that
