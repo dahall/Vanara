@@ -11,23 +11,6 @@ using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell
 {
-	/// <summary>Options used when requesting items from a shell folder.</summary>
-	[Flags]
-	public enum ShellItemQueryOptions
-	{
-		/// <summary>Include hidden items.</summary>
-		ShowHidden = 0x01,
-
-		/// <summary>Include empty drives.</summary>
-		ShowEmptyDrives = 0x02,
-
-		/// <summary>Hide the extension, if known.</summary>
-		HideExtIfKnown = 0x04,
-
-		/// <summary>Include system protected items.</summary>
-		ShowSystemProtected = 0x08,
-	}
-
 	/// <summary>Represents a <see cref="DataTable"/> that is populated asynchronously with information about shell items.</summary>
 	/// <seealso cref="System.Data.DataTable"/>
 	public class ShellDataTable : DataTable
@@ -37,7 +20,9 @@ namespace Vanara.Windows.Shell
 		private const string extPropKey = "PropertyKey";
 		private const string extSlow = "Slow";
 		private const string extState = "ColState";
+		private readonly FolderItemFilter itemFilter;
 		private readonly ShellFolder parent;
+		private DataColumn[] colsToGet;
 		private List<DataColumn> defCols;
 		private IEnumerable<PIDL> items;
 
@@ -51,8 +36,10 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="ShellDataTable"/> class with the items from a shell folder.</summary>
 		/// <param name="folder">The folder whose items are to be retrieved.</param>
-		public ShellDataTable(ShellFolder folder) : base(folder.ParsingName)
+		/// <param name="filter">The filter to determine which child items of the folder are enumerated.</param>
+		public ShellDataTable(ShellFolder folder, FolderItemFilter filter = FolderItemFilter.Folders | FolderItemFilter.NonFolders) : base(folder.ParsingName)
 		{
+			itemFilter = filter;
 			BuildColumns(parent = folder);
 		}
 
@@ -88,43 +75,40 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Populates the table with all the requested shell items.</summary>
 		/// <param name="columns">The names of the columns to populate.</param>
-		/// <param name="options">The options for the query.</param>
 		/// <param name="cancellationToken">The cancellation token.</param>
-		public async Task PopulateTableAsync(IEnumerable<string> columns, ShellItemQueryOptions options, CancellationToken cancellationToken)
+		public async Task PopulateTableAsync(IEnumerable<string> columns, CancellationToken cancellationToken)
 		{
 			var columnsToGet = columns.Where(n => n != colId).Select(n => Columns[n]).ToArray();
-			await PopulateTableAsync(columnsToGet, options, cancellationToken);
+			await PopulateTableAsync(columnsToGet, cancellationToken);
 		}
 
 		/// <summary>Populates the table with all the requested shell items.</summary>
 		/// <param name="columns">The PROPERTYKEY values of the columns to populate.</param>
-		/// <param name="options">The options for the query.</param>
 		/// <param name="cancellationToken">The cancellation token.</param>
-		public async Task PopulateTableAsync(IEnumerable<PROPERTYKEY> columns, ShellItemQueryOptions options, CancellationToken cancellationToken)
+		public async Task PopulateTableAsync(IEnumerable<PROPERTYKEY> columns, CancellationToken cancellationToken)
 		{
 			var columnsToGet = columns.Join(Columns.Cast<DataColumn>(), k => k, c => GetColumnPropertyKey(c), (k, c) => c).ToArray();
-			await PopulateTableAsync(columnsToGet, options, cancellationToken);
+			await PopulateTableAsync(columnsToGet, cancellationToken);
 		}
 
 		/// <summary>Populates the table with all the requested shell items.</summary>
 		/// <param name="columns">The columns to populate.</param>
-		/// <param name="options">The options for the query.</param>
 		/// <param name="cancellationToken">The cancellation token.</param>
-		public async Task PopulateTableAsync(IEnumerable<DataColumn> columns, ShellItemQueryOptions options, CancellationToken cancellationToken)
+		public async Task PopulateTableAsync(IEnumerable<DataColumn> columns, CancellationToken cancellationToken)
 		{
 			var columnsToGet = columns.ToArray();
 			if (columnsToGet.Except(Columns.Cast<DataColumn>()).Any())
 				throw new ArgumentException("Columns specified that are not in table.", nameof(columnsToGet));
+			colsToGet = columnsToGet;
+
+			if (!(parent is null))
+			{
+				items = parent.IShellFolder.EnumObjects((SHCONTF)itemFilter);
+			}
 
 			if (items is null && !(parent is null))
 			{
-				var qFlags = FolderItemFilter.NonFolders | FolderItemFilter.Folders;
-				if (options.IsFlagSet(ShellItemQueryOptions.ShowHidden))
-					qFlags |= FolderItemFilter.IncludeHidden;
-				if (options.IsFlagSet(ShellItemQueryOptions.ShowSystemProtected))
-					qFlags |= FolderItemFilter.IncludeSuperHidden;
-
-				items = parent.IShellFolder.EnumObjects((SHCONTF)qFlags);
+				items = parent.IShellFolder.EnumObjects((SHCONTF)itemFilter);
 			}
 
 			if (Rows.Count > 0)
@@ -174,7 +158,7 @@ namespace Vanara.Windows.Shell
 					}
 				}
 				catch { }
-				
+
 				return o switch
 				{
 					System.Runtime.InteropServices.ComTypes.FILETIME ft => ft.ToDateTime(),
@@ -196,6 +180,11 @@ namespace Vanara.Windows.Shell
 				}, cancellationToken);
 			}
 		}
+
+		/// <summary>Refreshes the data table. If columns have not been previously provided, the default columns are used.</summary>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		public async Task RefreshAsync(CancellationToken cancellationToken) =>
+			await PopulateTableAsync((IEnumerable<DataColumn>)colsToGet ?? DefaultColumns, cancellationToken);
 
 		private void BuildColumns(ShellFolder folder)
 		{

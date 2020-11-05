@@ -20,7 +20,7 @@ namespace Vanara.Windows.Shell.Tests
 		{
 			// Create empty table
 			var timer = Stopwatch.StartNew();
-			var shData = new ShellDataTable(new ShellFolder(KNOWNFOLDERID.FOLDERID_Documents));
+			var shData = new ShellDataTable(new ShellFolder(KNOWNFOLDERID.FOLDERID_Documents), FolderItemFilter.NonFolders | FolderItemFilter.Folders | FolderItemFilter.IncludeHidden);
 			TestContext.WriteLine($"{timer.ElapsedMilliseconds}\t** Init complete **");
 
 			// Get list of default and slow columns to fetch
@@ -34,7 +34,7 @@ namespace Vanara.Windows.Shell.Tests
 			shData.AllFastRowsAdded += (s, e) => TestContext.WriteLine($"{timer.ElapsedMilliseconds}\t** Fast items complete **");
 			shData.TableLoaded += (s, e) => TestContext.WriteLine($"{timer.ElapsedMilliseconds}\t** All done **");
 			var ct = new CancellationTokenSource();
-			shData.PopulateTableAsync(cols, ShellItemQueryOptions.ShowHidden, ct.Token).Wait(TimeSpan.FromSeconds(30));
+			shData.PopulateTableAsync(cols, ct.Token).Wait(TimeSpan.FromSeconds(30));
 
 			timer.Stop();
 
@@ -67,7 +67,7 @@ namespace Vanara.Windows.Shell.Tests
 			shData.AllFastRowsAdded += (s, e) => TestContext.WriteLine($"{timer.ElapsedMilliseconds}\t** Fast items complete **");
 			shData.TableLoaded += (s, e) => TestContext.WriteLine($"{timer.ElapsedMilliseconds}\t** All done **");
 			var ct = new CancellationTokenSource();
-			shData.PopulateTableAsync(cols, ShellItemQueryOptions.ShowHidden, ct.Token).Wait(TimeSpan.FromSeconds(30));
+			shData.PopulateTableAsync(cols, ct.Token).Wait(TimeSpan.FromSeconds(30));
 
 			timer.Stop();
 
