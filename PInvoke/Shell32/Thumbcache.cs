@@ -73,7 +73,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT GetThumbnail(uint cx, out HBITMAP phbmp, out WTS_ALPHATYPE pdwAlpha);
+			HRESULT GetThumbnail(uint cx, out Gdi32.SafeHBITMAP phbmp, out WTS_ALPHATYPE pdwAlpha);
 		}
 
 		/// <summary>An implementation of IThumbnailProvider for photo thumbnails is supplied in Microsoft Windows as CLSID_PhotoThumbnailProvider.</summary>
