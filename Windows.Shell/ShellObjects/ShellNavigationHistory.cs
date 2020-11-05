@@ -11,15 +11,17 @@ using static Vanara.PInvoke.Shell32;
 namespace Vanara.Windows.Shell
 {
 	/// <summary>The navigation log is a history of the locations visited by a shell view object.</summary>
-	public class ShellNavigationHistory : Vanara.Collections.IHistory<ShellItem>
+	public class ShellNavigationHistory : IHistory<ShellItem>
 	{
-		private readonly Vanara.Collections.History<PIDL> pidls = new Collections.History<PIDL>();
+		private readonly History<PIDL> pidls = new History<PIDL>();
 
 		internal ShellNavigationHistory()
 		{
+			pidls.CollectionChanged += (s, e) => CollectionChanged?.Invoke(this, e);
+			pidls.PropertyChanged += (s, e) => PropertyChanged?.Invoke(this, e);
 		}
 
-		/// <summary>Occurs when [collection changed].</summary>
+		/// <summary>Occurs when an item is added, removed, changed, moved, or the entire list is refreshed.</summary>
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
 		/// <summary>Occurs when a property value changes.</summary>
