@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using static Vanara.PInvoke.Gdi32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>Flags that specifiy how to handle the image.</summary>
 		[Flags]
 		public enum IEIFLAG
 		{
@@ -101,8 +103,18 @@ namespace Vanara.PInvoke
 			HRESULT GetLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPathBuffer, uint cchMax, [Optional] IntPtr pdwPriority, ref SIZE prgSize, uint dwRecClrDepth, ref IEIFLAG pdwFlags);
 
 			/// <summary>Requests an image from an object, such as an item in a Shell folder.</summary>
-			/// <returns>The HBITMAP of the image.</returns>
-			HBITMAP Extract();
+			/// <param name="phBmpThumbnail">
+			/// <para>Type: <c>HBITMAP*</c></para>
+			/// <para>The buffer to hold the bitmapped image.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns S_OK if successful, or a COM-defined error code otherwise.</para>
+			/// </returns>
+			/// <remarks>You must call IExtractImage::GetLocation prior to calling <c>Extract</c>.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iextractimage-extract
+			[PreserveSig]
+			HRESULT Extract(out SafeHBITMAP phBmpThumbnail);
 		}
 
 		/// <summary>Extends the capabilities of IExtractImage.</summary>
@@ -153,19 +165,31 @@ namespace Vanara.PInvoke
 			new HRESULT GetLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPathBuffer, uint cchMax, [Optional] IntPtr pdwPriority, ref SIZE prgSize, uint dwRecClrDepth, ref IEIFLAG pdwFlags);
 
 			/// <summary>Requests an image from an object, such as an item in a Shell folder.</summary>
-			/// <returns>The HBITMAP of the image.</returns>
-			new HBITMAP Extract();
-
-			/// <summary>
-			/// Requests the date the image was last modified. This method allows the Shell to determine whether cached images are out-of-date.
-			/// </summary>
+			/// <param name="phBmpThumbnail">
+			/// <para>Type: <c>HBITMAP*</c></para>
+			/// <para>The buffer to hold the bitmapped image.</para>
+			/// </param>
 			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns S_OK if successful, or a COM-defined error code otherwise.</para>
+			/// </returns>
+			/// <remarks>You must call IExtractImage::GetLocation prior to calling <c>Extract</c>.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iextractimage-extract
+			[PreserveSig]
+			new HRESULT Extract(out SafeHBITMAP phBmpThumbnail);
+
+			/// <summary>Requests the date the image was last modified. This method allows the Shell to determine whether cached images are out-of-date.</summary>
+			/// <param name="pDateStamp">
 			/// <para>Type: <c>FILETIME*</c></para>
 			/// <para>A pointer to a FILETIME structure used to return the last time the image was modified.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Return S_OK if successful, or a COM-defined error code otherwise.</para>
 			/// </returns>
-			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iextractimage2-getdatestamp HRESULT
-			// GetDateStamp( FILETIME *pDateStamp );
-			FILETIME GetDateStamp();
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iextractimage2-getdatestamp
+			[PreserveSig]
+			HRESULT GetDateStamp(out FILETIME pDateStamp);
 		}
 	}
 }
