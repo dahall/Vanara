@@ -2349,9 +2349,9 @@ namespace Vanara.PInvoke
 		/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
 		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
-		/// <param name="apidl">
-		/// An array of pointers to ITEMIDLIST structures, each of which uniquely identifies a file object or subfolder relative to the
-		/// parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
+		/// <param name="pidl">
+		/// A pointer to ITEMIDLIST structures, which uniquely identifies a file object or subfolder relative to the parent folder. Each
+		/// item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
 		/// </param>
 		/// <param name="ppv">When this method returns successfully, contains the interface pointer requested in <typeparamref name="T"/>.</param>
 		/// <param name="hwndOwner">
