@@ -1649,7 +1649,7 @@ namespace Vanara.PInvoke
 		// int cy, UINT flags );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
-		public static extern HANDLE CopyImage(HANDLE h, LoadImageType type, int cx, int cy, CopyImageOptions flags);
+		public static extern HANDLE CopyImage(HANDLE h, LoadImageType type, [Optional] int cx, [Optional] int cy, [Optional] CopyImageOptions flags);
 
 		/// <summary>
 		/// The DrawText function draws formatted text in the specified rectangle. It formats the text according to the specified method
