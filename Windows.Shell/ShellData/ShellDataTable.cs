@@ -68,6 +68,11 @@ namespace Vanara.Windows.Shell
 		/// <returns>A value describing how the column values should be treated.</returns>
 		public SHCOLSTATE GetColumnState(DataColumn column) => (SHCOLSTATE)column.ExtendedProperties[extState];
 
+		/// <summary>Gets the PIDL for the row.</summary>
+		/// <param name="row">The row to check.</param>
+		/// <returns>The PIDL from the row.</returns>
+		public PIDL GetPIDL(DataRow row) => row[colId] is null || row[colId] == DBNull.Value ? PIDL.Null : new PIDL((byte[])row[colId]);
+
 		/// <summary>Determines whether the specified column takes longer to retrieve.</summary>
 		/// <param name="column">The column to check.</param>
 		/// <returns><see langword="true"/> if the column takes longer to retrieve; otherwise, <see langword="false"/>.</returns>
