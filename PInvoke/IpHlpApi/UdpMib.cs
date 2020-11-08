@@ -149,7 +149,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
-			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this endpoint occurred.</para>
+			/// <para>A FILETIME structure that indicates when the context bind operation that created this endpoint occurred.</para>
+			/// <para>NOTE: The Microsoft documentation suggests this is a SYSTEMTIME structure. This is incorrect.</para>
 			/// </summary>
 			public FILETIME liCreateTimestamp;
 
@@ -365,7 +366,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
-			/// <para>A SYSTEMTIME structure that indicates when the call to the bind function for the UDP endpoint occurred.</para>
+			/// <para>A FILETIME structure that indicates when the call to the bind function for the UDP endpoint occurred.</para>
+			/// <para>NOTE: The Microsoft documentation suggests this is a SYSTEMTIME structure. This is incorrect.</para>
 			/// </summary>
 			public FILETIME liCreateTimestamp;
 

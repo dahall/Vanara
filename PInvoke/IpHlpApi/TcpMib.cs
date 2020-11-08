@@ -451,7 +451,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
-			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this TCP connection occurred.</para>
+			/// <para>A FILETIME structure that indicates when the context bind operation that created this TCP connection occurred.</para>
+			/// <para>NOTE: The Microsoft documentation suggests this is a SYSTEMTIME structure. This is incorrect.</para>
 			/// </summary>
 			public FILETIME liCreateTimestamp;
 
@@ -1140,7 +1141,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
-			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this TCP link occurred.</para>
+			/// <para>A FILETIME structure that indicates when the context bind operation that created this TCP link occurred.</para>
+			/// <para>NOTE: The Microsoft documentation suggests this is a SYSTEMTIME structure. This is incorrect.</para>
 			/// </summary>
 			public FILETIME liCreateTimestamp;
 
