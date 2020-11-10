@@ -2080,6 +2080,18 @@ namespace Vanara.PInvoke
 			public Ole32.VARTYPE vt;
 		}
 
+		/// <summary>Represents an unpacked date.</summary>
+		[PInvokeData("oleauto.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct UDATE
+		{
+			/// <summary/>
+			public SYSTEMTIME st;
+
+			/// <summary/>
+			public ushort wDayOfYear;
+		}
+
 		/// <summary>Provides a <see cref="SafeHandle"/> for a BSTR that is disposed using <see cref="SysFreeString"/>.</summary>
 		public class SafeBSTR : SafeHANDLE
 		{
