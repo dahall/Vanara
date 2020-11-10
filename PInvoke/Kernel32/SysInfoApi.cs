@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.FunctionHelper;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -89,9 +90,11 @@ namespace Vanara.PInvoke
 		public enum LOGICAL_PROCESSOR_RELATIONSHIP : uint
 		{
 			/// <summary>The specified logical processors share a single processor core.</summary>
+			[CorrespondingType(typeof(PROCESSOR_RELATIONSHIP))]
 			RelationProcessorCore,
 
 			/// <summary>The specified logical processors are part of the same NUMA node.</summary>
+			[CorrespondingType(typeof(NUMA_NODE_RELATIONSHIP))]
 			RelationNumaNode,
 
 			/// <summary>
@@ -100,6 +103,7 @@ namespace Vanara.PInvoke
 			/// <c>Windows Server 2003:</c> This value is not supported until Windows Server 2003 with SP1 and Windows XP Professional x64 Edition.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(CACHE_RELATIONSHIP))]
 			RelationCache,
 
 			/// <summary>
@@ -111,6 +115,7 @@ namespace Vanara.PInvoke
 			/// <c>Windows Server 2003:</c> This value is not supported until Windows Server 2003 with SP1 and Windows XP Professional x64 Edition.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(PROCESSOR_RELATIONSHIP))]
 			RelationProcessorPackage,
 
 			/// <summary>
@@ -120,6 +125,7 @@ namespace Vanara.PInvoke
 			/// supported until Windows Server 2008 R2.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(GROUP_RELATIONSHIP))]
 			RelationGroup,
 
 			/// <summary>
@@ -129,6 +135,10 @@ namespace Vanara.PInvoke
 			/// supported until Windows Server 2008 R2.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(PROCESSOR_RELATIONSHIP), CorrespondingAction.Set)]
+			[CorrespondingType(typeof(NUMA_NODE_RELATIONSHIP), CorrespondingAction.Set)]
+			[CorrespondingType(typeof(CACHE_RELATIONSHIP), CorrespondingAction.Set)]
+			[CorrespondingType(typeof(GROUP_RELATIONSHIP), CorrespondingAction.Set)]
 			RelationAll = 0xffff,
 		}
 
@@ -1224,13 +1234,14 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the function fails, the return value has error information.</para>
 		/// </returns>
-		public static Win32Error GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, out SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX[] info)
+		public static Win32Error GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, out SafeNativeLinkedList<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, CoTaskMemoryMethods> info)
 		{
-			return CallMethodWithTypedBuf(
-				(ref uint sz) => BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, IntPtr.Zero, ref sz) || sz > 0),
-				(IntPtr p, ref uint sz) => BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, p, ref sz)),
-				out info,
-				(p, sz) => p.LinkedListToIEnum<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>(i => i.Size, sz).ToArray());
+			info = default;
+			uint sz = 0;
+			var err = BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, IntPtr.Zero, ref sz) || sz > 0);
+			if (err.Failed && err != Win32Error.ERROR_INSUFFICIENT_BUFFER) return err;
+			info = new SafeNativeLinkedList<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, CoTaskMemoryMethods>(sz) { GetNextSizeMethod = i => (long)i.Size };
+			return BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, info, ref sz));
 		}
 
 		/// <summary>

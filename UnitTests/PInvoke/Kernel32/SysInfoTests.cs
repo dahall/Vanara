@@ -56,7 +56,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetLogicalProcessorInformationExTest()
 		{
 			Assert.That(GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP.RelationAll, out var info), ResultIs.Successful);
-			Assert.That(info.Length, Is.GreaterThan(0));
+			Assert.That(info.Count, Is.GreaterThan(0));
 			info.WriteValues();
 		}
 
