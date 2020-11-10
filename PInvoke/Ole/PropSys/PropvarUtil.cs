@@ -754,6 +754,45 @@ namespace Vanara.PInvoke
 		[PInvokeData("propvarutil.h", MSDNShortId = "f46cfc71-9e27-4ba1-8a32-5b279b628732")]
 		public static extern HRESULT InitVariantFromStringArray([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.LPWStr)] string[] prgsz, uint cElems, out VARIANT pvar);
 
+		/// <summary>Initializes a VARIANT structure with a string stored in a STRRET structure.</summary>
+		/// <param name="pstrret">
+		/// <para>Type: <c>STRRET*</c></para>
+		/// <para>Pointer to a STRRET structure.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+		/// <para>PIDL of the item whose details are being retrieved.</para>
+		/// </param>
+		/// <param name="pvar">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the initialized VARIANT structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Creates a VT_BSTR variant.</para>
+		/// <para><c>Note</c> This function frees the resources used for the STRRET contents.</para>
+		/// <para>Examples</para>
+		/// <para>The following example, to be included as part of a larger program, demonstrates how to use InitVariantFromStrRet.</para>
+		/// <code lang="c">// STRRET strret;
+		/// // PCUITEMID_CHILD pidl;
+		/// // Assume variables strret and pidl are initialized and valid.
+		/// VARIANT var;
+		/// HRESULT hr = InitVariantFromStrRet(strret, pidl, &amp;var);
+		/// if (SUCCEEDED(hr))
+		/// {
+		///    // var now is valid and has type VT_BSTR.
+		///    VariantClear(&amp;var);
+		/// }</code>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-initvariantfromstrret
+		// PSSTDAPI InitVariantFromStrRet( STRRET *pstrret, PCUITEMID_CHILD pidl, VARIANT *pvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "NF:propvarutil.InitVariantFromStrRet")]
+		public static extern HRESULT InitVariantFromStrRet([In] IntPtr pstrret, [In] IntPtr pidl, out VARIANT pvar);
+
 		/// <summary>Initializes a VARIANT structure with an array of unsigned 16-bit integer values.</summary>
 		/// <param name="prgn">
 		/// <para>Type: <c>const USHORT*</c></para>
