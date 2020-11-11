@@ -9,7 +9,7 @@ namespace Vanara.InteropServices
 	/// <summary>A safe unmanaged linked list of structures allocated on the global heap.</summary>
 	/// <typeparam name="TElem">The type of the list elements.</typeparam>
 	/// <typeparam name="TMem">The type of memory allocation to use.</typeparam>
-	public class SafeNativeLinkedList<TElem, TMem> : SafeNativeListBase<TElem, TMem> where TElem : struct where TMem : IMemoryMethods, new()
+	public class SafeNativeLinkedList<TElem, TMem> : SafeNativeListBase<TElem, TMem> where TElem : unmanaged where TMem : IMemoryMethods, new()
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeNativeLinkedList{TElem, TMem}"/> class.</summary>
 		/// <param name="ptr">The handle.</param>
@@ -44,5 +44,24 @@ namespace Vanara.InteropServices
 		/// <summary>Enumerates the elements.</summary>
 		/// <returns>An enumeration of values from the pointer.</returns>
 		protected override IEnumerable<TElem> Items => GetNextMethod != null ? handle.LinkedListToIEnum(GetNextMethod) : (GetNextSizeMethod != null ? handle.LinkedListToIEnum(GetNextSizeMethod, Size) : Enumerable.Empty<TElem>());
+
+		/// <summary>
+		/// Gets the pointers to the items in the linked list. This is useful when marshaling those values may invalidate internal pointers.
+		/// </summary>
+		/// <returns>An array of pointers to the items.</returns>
+		public unsafe TElem*[] GetUnsafeItems()
+		{
+			var ret = new List<IntPtr>();
+			for (byte* pCurrent = (byte*)handle, pEnd = pCurrent + Size; pCurrent < pEnd && pCurrent != null;)
+			{
+				ret.Add((IntPtr)pCurrent);
+				pCurrent = GetNextMethod != null ? (byte*)GetNextMethod(*(TElem*)pCurrent) : (GetNextSizeMethod != null ? pCurrent + GetNextSizeMethod(*(TElem*)pCurrent) : null);
+			}
+
+			var arr = new TElem*[ret.Count];
+			for (int i = 0; i < ret.Count; i++)
+				arr[i] = (TElem*)ret[i];
+			return arr;
+		}
 	}
 }
