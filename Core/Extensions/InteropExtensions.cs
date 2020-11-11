@@ -42,6 +42,15 @@ namespace Vanara.Extensions
 			return new ReadOnlySpan<T>((ptr + prefixBytes).ToPointer(), length);
 		}
 
+		/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
+		/// <typeparam name="T">The type of items in the <see cref="Span{T}"/>.</typeparam>
+		/// <param name="ptr">A pointer to the starting address of a specified number of <typeparamref name="T"/> elements in memory.</param>
+		/// <param name="prefixBytes">Bytes to skip before starting the span.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>A referenced structure.</returns>
+		public static ref T AsRef<T>(this IntPtr ptr, int prefixBytes = 0, SizeT allocatedBytes = default) =>
+			ref MemoryMarshal.GetReference(AsSpan<T>(ptr, 1, prefixBytes, allocatedBytes));
+
 		/// <summary>Returns the pointer as a <see cref="Span{T}"/>.</summary>
 		/// <typeparam name="T">The type of items in the <see cref="Span{T}"/>.</typeparam>
 		/// <param name="ptr">A pointer to the starting address of a specified number of <typeparamref name="T"/> elements in memory.</param>
