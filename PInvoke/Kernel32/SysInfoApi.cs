@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -1224,8 +1226,9 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </param>
+		/// <param name="mem">The memory allocated for the results in <paramref name="info"/>.</param>
 		/// <param name="info">
-		/// An array of <c>SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX</c> structures. If the function fails, the contents of this buffer are undefined.
+		/// An array of <c>SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX</c> pointers. If the function fails, the contents of this buffer are undefined.
 		/// </param>
 		/// <returns>
 		/// <para>
@@ -1234,14 +1237,27 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the function fails, the return value has error information.</para>
 		/// </returns>
-		public static Win32Error GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, out SafeNativeLinkedList<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, CoTaskMemoryMethods> info)
+		public static unsafe Win32Error GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, out SafeCoTaskMemHandle mem, out RefEnumerator<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX> info)
 		{
 			info = default;
+			mem = default;
 			uint sz = 0;
 			var err = BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, IntPtr.Zero, ref sz) || sz > 0);
 			if (err.Failed && err != Win32Error.ERROR_INSUFFICIENT_BUFFER) return err;
-			info = new SafeNativeLinkedList<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, CoTaskMemoryMethods>(sz) { GetNextSizeMethod = i => (long)i.Size };
-			return BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, info, ref sz));
+			mem = new SafeCoTaskMemHandle(sz);
+			err = BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, mem, ref sz));
+			if (err.Succeeded)
+			{
+				var ret = new List<IntPtr>();
+				for (IntPtr pCurrent = mem, pEnd = pCurrent.Offset(sz); pCurrent.ToInt64() < pEnd.ToInt64() && pCurrent != IntPtr.Zero;)
+				{
+					ret.Add(pCurrent);
+					pCurrent = pCurrent.Offset(pCurrent.ToStructure<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>().Size);
+				}
+				mem.Write(ret, true, (int)sz);
+				info = new RefEnumerator<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>((SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)mem.DangerousGetHandle().Offset(sz), ret.Count);
+			}
+			return err;
 		}
 
 		/// <summary>
@@ -3577,7 +3593,7 @@ namespace Vanara.PInvoke
 		// Processor; NUMA_NODE_RELATIONSHIP NumaNode; CACHE_RELATIONSHIP Cache; GROUP_RELATIONSHIP Group; } DUMMYUNIONNAME; }
 		// SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, *PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX;
 		[PInvokeData("winnt.h", MSDNShortId = "6ff16cda-c1dc-4d5c-ac60-756653cd6b07")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{DebugString}")]
 		public struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX
 		{
 			/// <summary>
@@ -3649,6 +3665,23 @@ namespace Vanara.PInvoke
 				/// only if the <c>Relationship</c> member is <c>RelationGroup</c>.
 				/// </summary>
 				[FieldOffset(0)] public GROUP_RELATIONSHIP Group;
+			}
+
+			internal string DebugString
+			{
+				get
+				{
+					uint c = Relationship switch
+					{
+						LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorCore => RelationUnion.Processor.GroupCount,
+						LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode => RelationUnion.NumaNode.NodeNumber,
+						LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache => RelationUnion.Cache.CacheSize,
+						LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorPackage => RelationUnion.Processor.GroupCount,
+						LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup => RelationUnion.Group.ActiveGroupCount,
+						_ => 0
+					};
+					return $"{Relationship}, Size={Size}, Count={c}";
+				}
 			}
 		}
 

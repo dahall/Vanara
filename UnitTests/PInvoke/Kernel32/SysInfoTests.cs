@@ -55,9 +55,35 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetLogicalProcessorInformationExTest()
 		{
-			Assert.That(GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP.RelationAll, out var info), ResultIs.Successful);
-			Assert.That(info.Count, Is.GreaterThan(0));
-			info.WriteValues();
+			unsafe
+			{
+				Assert.That(GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, out var mem, out var info), ResultIs.Successful);
+				using (mem)
+				{
+					Assert.That(info.Count, Is.GreaterThan(0));
+					for (int i = 0; i < info.Count; i++)
+					{
+						switch (info[i].Relationship)
+						{
+							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode:
+								info[i].RelationUnion.NumaNode.WriteValues();
+								break;
+							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache:
+								info[i].RelationUnion.Cache.WriteValues();
+								break;
+							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorCore:
+							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorPackage:
+								info[i].RelationUnion.Processor.WriteValues();
+								break;
+							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup:
+								info[i].RelationUnion.Group.WriteValues();
+								break;
+							default:
+								break;
+						}
+					}
+				}
+			}
 		}
 
 		[Test]
