@@ -57,26 +57,27 @@ namespace Vanara.PInvoke.Tests
 		{
 			unsafe
 			{
-				Assert.That(GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, out var mem, out var info), ResultIs.Successful);
-				using (mem)
+				Assert.That(GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, out var info), ResultIs.Successful);
+				using (info)
 				{
 					Assert.That(info.Count, Is.GreaterThan(0));
 					for (int i = 0; i < info.Count; i++)
 					{
-						switch (info[i].Relationship)
+						var pr = info[i];
+						switch (pr->Relationship)
 						{
 							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode:
-								info[i].RelationUnion.NumaNode.WriteValues();
+								pr->NumaNode.WriteValues();
 								break;
 							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache:
-								info[i].RelationUnion.Cache.WriteValues();
+								pr->Cache.WriteValues();
 								break;
 							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorCore:
 							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorPackage:
-								info[i].RelationUnion.Processor.WriteValues();
+								pr->Processor.WriteValues();
 								break;
 							case LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup:
-								info[i].RelationUnion.Group.WriteValues();
+								pr->Group.WriteValues();
 								break;
 							default:
 								break;

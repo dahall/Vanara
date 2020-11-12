@@ -1226,9 +1226,9 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </param>
-		/// <param name="mem">The memory allocated for the results in <paramref name="info"/>.</param>
 		/// <param name="info">
-		/// An array of <c>SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX</c> pointers. If the function fails, the contents of this buffer are undefined.
+		/// A safe handle that holds an array of <c>SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX</c> pointers. If the function fails, the
+		/// contents of this buffer are undefined.
 		/// </param>
 		/// <returns>
 		/// <para>
@@ -1237,26 +1237,17 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If the function fails, the return value has error information.</para>
 		/// </returns>
-		public static unsafe Win32Error GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, out SafeCoTaskMemHandle mem, out RefEnumerator<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX> info)
+		public static unsafe Win32Error GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, out SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List info)
 		{
 			info = default;
-			mem = default;
 			uint sz = 0;
 			var err = BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, IntPtr.Zero, ref sz) || sz > 0);
 			if (err.Failed && err != Win32Error.ERROR_INSUFFICIENT_BUFFER) return err;
-			mem = new SafeCoTaskMemHandle(sz);
-			err = BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, mem, ref sz));
-			if (err.Succeeded)
-			{
-				var ret = new List<IntPtr>();
-				for (IntPtr pCurrent = mem, pEnd = pCurrent.Offset(sz); pCurrent.ToInt64() < pEnd.ToInt64() && pCurrent != IntPtr.Zero;)
-				{
-					ret.Add(pCurrent);
-					pCurrent = pCurrent.Offset(pCurrent.ToStructure<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>().Size);
-				}
-				mem.Write(ret, true, (int)sz);
-				info = new RefEnumerator<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>((SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)mem.DangerousGetHandle().Offset(sz), ret.Count);
-			}
+			var iinfo = new SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List(sz);
+			if ((err = BoolToLastErr(GetLogicalProcessorInformationEx(RelationshipType, iinfo, ref sz))).Succeeded)
+				info = iinfo;
+			else
+				iinfo.Dispose();
 			return err;
 		}
 
@@ -2798,12 +2789,10 @@ namespace Vanara.PInvoke
 			public PROCESSOR_CACHE_TYPE Type;
 		}
 
-		/// <summary>
-		/// <para>Describes cache attributes. This structure is used with the GetLogicalProcessorInformationEx function.</para>
-		/// </summary>
+		/// <summary>Describes cache attributes. This structure is used with the GetLogicalProcessorInformationEx function.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_cache_relationship typedef struct _CACHE_RELATIONSHIP { BYTE
-		// Level; BYTE Associativity; WORD LineSize; DWORD CacheSize; PROCESSOR_CACHE_TYPE Type; BYTE Reserved[20]; GROUP_AFFINITY GroupMask;
-		// } CACHE_RELATIONSHIP, *PCACHE_RELATIONSHIP;
+		// Level; BYTE Associativity; WORD LineSize; DWORD CacheSize; PROCESSOR_CACHE_TYPE Type; BYTE Reserved[20]; GROUP_AFFINITY
+		// GroupMask; } CACHE_RELATIONSHIP, *PCACHE_RELATIONSHIP;
 		[PInvokeData("winnt.h", MSDNShortId = "f8fe521b-02d6-4c58-8ef8-653280add111")]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct CACHE_RELATIONSHIP
@@ -2831,85 +2820,61 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public byte Level;
 
-			/// <summary>
-			/// <para>The cache associativity. If this member is CACHE_FULLY_ASSOCIATIVE (0xFF), the cache is fully associative.</para>
-			/// </summary>
+			/// <summary>The cache associativity. If this member is CACHE_FULLY_ASSOCIATIVE (0xFF), the cache is fully associative.</summary>
 			public byte Associativity;
 
-			/// <summary>
-			/// <para>The cache line size, in bytes.</para>
-			/// </summary>
+			/// <summary>The cache line size, in bytes.</summary>
 			public ushort LineSize;
 
-			/// <summary>
-			/// <para>The cache size, in bytes.</para>
-			/// </summary>
+			/// <summary>The cache size, in bytes.</summary>
 			public uint CacheSize;
 
-			/// <summary>
-			/// <para>The cache type. This member is a PROCESSOR_CACHE_TYPE value.</para>
-			/// </summary>
+			/// <summary>The cache type. This member is a PROCESSOR_CACHE_TYPE value.</summary>
 			public PROCESSOR_CACHE_TYPE Type;
 
-			/// <summary>
-			/// <para>This member is reserved.</para>
-			/// </summary>
+			/// <summary>This member is reserved.</summary>
 			private readonly uint Reserved1;
-
 			private readonly uint Reserved2;
 			private readonly uint Reserved3;
 			private readonly uint Reserved4;
 			private readonly uint Reserved5;
 
-			/// <summary>
-			/// <para>A GROUP_AFFINITY structure that specifies a group number and processor affinity within the group.</para>
-			/// </summary>
+			/// <summary>A GROUP_AFFINITY structure that specifies a group number and processor affinity within the group.</summary>
 			public GROUP_AFFINITY GroupMask;
 		}
 
 		/// <summary>
-		/// <para>Represents information about processor groups. This structure is used with the GetLogicalProcessorInformationEx function.</para>
+		/// Represents information about processor groups. This structure is used with the GetLogicalProcessorInformationEx function.
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_group_relationship typedef struct _GROUP_RELATIONSHIP { WORD
 		// MaximumGroupCount; WORD ActiveGroupCount; BYTE Reserved[20]; PROCESSOR_GROUP_INFO GroupInfo[ANYSIZE_ARRAY]; } GROUP_RELATIONSHIP, *PGROUP_RELATIONSHIP;
 		[PInvokeData("winnt.h", MSDNShortId = "3529ddef-04c5-4573-877d-c225da684e38")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<GROUP_RELATIONSHIP>), nameof(ActiveGroupCount))]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct GROUP_RELATIONSHIP
 		{
-			/// <summary>
-			/// <para>The maximum number of processor groups on the system.</para>
-			/// </summary>
+			/// <summary>The maximum number of processor groups on the system.</summary>
 			public ushort MaximumGroupCount;
 
 			/// <summary>
-			/// <para>
 			/// The number of active groups on the system. This member indicates the number of PROCESSOR_GROUP_INFO structures in the
 			/// <c>GroupInfo</c> array.
-			/// </para>
 			/// </summary>
 			public ushort ActiveGroupCount;
 
-			/// <summary>
-			/// <para>This member is reserved.</para>
-			/// </summary>
+			/// <summary>This member is reserved.</summary>
 			private readonly uint Reserved1;
-
 			private readonly uint Reserved2;
 			private readonly uint Reserved3;
 			private readonly uint Reserved4;
 			private readonly uint Reserved5;
-			private PROCESSOR_GROUP_INFO _GroupInfo;
 
 			/// <summary>
-			/// <para>
 			/// An array of PROCESSOR_GROUP_INFO structures. Each structure represents the number and affinity of processors in an active
 			/// group on the system.
-			/// </para>
 			/// </summary>
-			public PROCESSOR_GROUP_INFO[] GroupInfo
-			{
-				get { unsafe { fixed (void* p = &_GroupInfo) { return ((IntPtr)p).ToArray<PROCESSOR_GROUP_INFO>(ActiveGroupCount); } } }
-			}
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public PROCESSOR_GROUP_INFO[] GroupInfo;
 		}
 
 		/// <summary>
@@ -3038,34 +3003,25 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>
 		/// Represents information about a NUMA node in a processor group. This structure is used with the GetLogicalProcessorInformationEx function.
-		/// </para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_numa_node_relationship typedef struct _NUMA_NODE_RELATIONSHIP
-		// { DWORD NodeNumber; BYTE Reserved[20]; GROUP_AFFINITY GroupMask; } NUMA_NODE_RELATIONSHIP, *PNUMA_NODE_RELATIONSHIP;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_numa_node_relationship typedef struct
+		// _NUMA_NODE_RELATIONSHIP { DWORD NodeNumber; BYTE Reserved[20]; GROUP_AFFINITY GroupMask; } NUMA_NODE_RELATIONSHIP, *PNUMA_NODE_RELATIONSHIP;
 		[PInvokeData("winnt.h", MSDNShortId = "a4e4c994-c4af-4b4f-8684-6037bcba35a9")]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct NUMA_NODE_RELATIONSHIP
 		{
-			/// <summary>
-			/// <para>The number of the NUMA node.</para>
-			/// </summary>
+			/// <summary>The number of the NUMA node.</summary>
 			public uint NodeNumber;
 
-			/// <summary>
-			/// <para>This member is reserved.</para>
-			/// </summary>
+			/// <summary>This member is reserved.</summary>
 			private readonly uint Reserved1;
-
 			private readonly uint Reserved2;
 			private readonly uint Reserved3;
 			private readonly uint Reserved4;
 			private readonly uint Reserved5;
 
-			/// <summary>
-			/// <para>A GROUP_AFFINITY structure that specifies a group number and processor affinity within the group.</para>
-			/// </summary>
+			/// <summary>A GROUP_AFFINITY structure that specifies a group number and processor affinity within the group.</summary>
 			public GROUP_AFFINITY GroupMask;
 		}
 
@@ -3243,30 +3199,21 @@ namespace Vanara.PInvoke
 			public static readonly OSVERSIONINFOEX Default = new OSVERSIONINFOEX { dwOSVersionInfoSize = (uint)Marshal.SizeOf(typeof(OSVERSIONINFOEX)) };
 		}
 
-		/// <summary>
-		/// <para>Represents the number and affinity of processors in a processor group.</para>
-		/// </summary>
+		/// <summary>Represents the number and affinity of processors in a processor group.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_processor_group_info typedef struct _PROCESSOR_GROUP_INFO {
 		// BYTE MaximumProcessorCount; BYTE ActiveProcessorCount; BYTE Reserved[38]; KAFFINITY ActiveProcessorMask; } PROCESSOR_GROUP_INFO, *PPROCESSOR_GROUP_INFO;
 		[PInvokeData("winnt.h", MSDNShortId = "6ff9cc3c-34e7-4dc4-94cd-6ed278dfaa03")]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct PROCESSOR_GROUP_INFO
 		{
-			/// <summary>
-			/// <para>The maximum number of processors in the group.</para>
-			/// </summary>
+			/// <summary>The maximum number of processors in the group.</summary>
 			public byte MaximumProcessorCount;
 
-			/// <summary>
-			/// <para>The number of active processors in the group.</para>
-			/// </summary>
+			/// <summary>The number of active processors in the group.</summary>
 			public byte ActiveProcessorCount;
 
-			/// <summary>
-			/// <para>This member is reserved.</para>
-			/// </summary>
+			/// <summary>This member is reserved.</summary>
 			private readonly ushort Reserved1;
-
 			private readonly uint Reserved2;
 			private readonly uint Reserved3;
 			private readonly uint Reserved4;
@@ -3277,9 +3224,7 @@ namespace Vanara.PInvoke
 			private readonly uint Reserved9;
 			private readonly uint Reserved10;
 
-			/// <summary>
-			/// <para>A bitmap that specifies the affinity for zero or more active processors within the group.</para>
-			/// </summary>
+			/// <summary>A bitmap that specifies the affinity for zero or more active processors within the group.</summary>
 			public UIntPtr ActiveProcessorMask;
 		}
 
@@ -3305,6 +3250,7 @@ namespace Vanara.PInvoke
 		// { BYTE Flags; BYTE EfficiencyClass; BYTE Reserved[20]; WORD GroupCount; GROUP_AFFINITY GroupMask[ANYSIZE_ARRAY]; }
 		// PROCESSOR_RELATIONSHIP, *PPROCESSOR_RELATIONSHIP;
 		[PInvokeData("winnt.h", MSDNShortId = "1efda80d-cf5b-4312-801a-ea3585b152ac")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<PROCESSOR_RELATIONSHIP>), nameof(GroupCount))]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct PROCESSOR_RELATIONSHIP
 		{
@@ -3335,32 +3281,23 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public byte EfficiencyClass;
 
-			/// <summary>
-			/// <para>This member is reserved.</para>
-			/// </summary>
+			/// <summary>This member is reserved.</summary>
 			private readonly ushort Reserved1;
-
 			private readonly uint Reserved2;
 			private readonly uint Reserved3;
 			private readonly uint Reserved4;
 			private readonly uint Reserved5;
 			private readonly ushort Reserved6;
 
-			/// <summary>
-			/// <para>This member specifies the number of entries in the <c>GroupMask</c> array. For more information, see Remarks.</para>
-			/// </summary>
+			/// <summary>This member specifies the number of entries in the <c>GroupMask</c> array. For more information, see Remarks.</summary>
 			public ushort GroupCount;
-
-			private GROUP_AFFINITY _GroupMask;
 
 			/// <summary>
 			/// An array of GROUP_AFFINITY structures. The <c>GroupCount</c> member specifies the number of structures in the array. Each
 			/// structure in the array specifies a group number and processor affinity within the group.
 			/// </summary>
-			public GROUP_AFFINITY[] GroupMask
-			{
-				get { unsafe { fixed (void* p = &_GroupMask) { return ((IntPtr)p).ToArray<GROUP_AFFINITY>(GroupCount); } } }
-			}
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public GROUP_AFFINITY[] GroupMask;
 		}
 
 		/// <summary>
@@ -3583,17 +3520,15 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>
 		/// Contains information about the relationships of logical processors and related hardware. The GetLogicalProcessorInformationEx
 		/// function uses this structure.
-		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_system_logical_processor_information_ex typedef struct
 		// _SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX { LOGICAL_PROCESSOR_RELATIONSHIP Relationship; DWORD Size; union { PROCESSOR_RELATIONSHIP
 		// Processor; NUMA_NODE_RELATIONSHIP NumaNode; CACHE_RELATIONSHIP Cache; GROUP_RELATIONSHIP Group; } DUMMYUNIONNAME; }
 		// SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, *PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX;
 		[PInvokeData("winnt.h", MSDNShortId = "6ff16cda-c1dc-4d5c-ac60-756653cd6b07")]
-		[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{DebugString}")]
+		[StructLayout(LayoutKind.Sequential, Size = 76)]
 		public struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX
 		{
 			/// <summary>
@@ -3630,57 +3565,44 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public LOGICAL_PROCESSOR_RELATIONSHIP Relationship;
 
-			/// <summary>
-			/// <para>The size of the structure.</para>
-			/// </summary>
+			/// <summary>The size of the structure.</summary>
 			public uint Size;
 
 			/// <summary>The relationship union.</summary>
-			public ProcessorRelationUnion RelationUnion;
+			private readonly ulong dummy;
 
-			/// <summary>Union tied to the relationship.</summary>
-			[StructLayout(LayoutKind.Explicit)]
-			public struct ProcessorRelationUnion
+			/// <summary>
+			/// A NUMA_NODE_RELATIONSHIP structure that describes a NUMA node. This structure contains valid data only if the
+			/// <c>Relationship</c> member is <c>RelationNumaNode</c>.
+			/// </summary>
+			public NUMA_NODE_RELATIONSHIP NumaNode => GetField<NUMA_NODE_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode);
+
+			/// <summary>
+			/// A CACHE_RELATIONSHIP structure that describes cache attributes. This structure contains valid data only if the
+			/// <c>Relationship</c> member is <c>RelationCache</c>.
+			/// </summary>
+			public CACHE_RELATIONSHIP Cache => GetField<CACHE_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache);
+
+			/// <summary>
+			/// A PROCESSOR_RELATIONSHIP structure that describes processor affinity. This structure contains valid data only if the
+			/// <c>Relationship</c> member is <c>RelationProcessorCore</c> or <c>RelationProcessorPackage</c>.
+			/// </summary>
+			public PROCESSOR_RELATIONSHIP Processor => GetField<PROCESSOR_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorCore, LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorPackage);
+
+			/// <summary>
+			/// A GROUP_RELATIONSHIP structure that contains information about the processor groups. This structure contains valid data
+			/// only if the <c>Relationship</c> member is <c>RelationGroup</c>.
+			/// </summary>
+			public GROUP_RELATIONSHIP Group => GetField<GROUP_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup);
+
+			private T GetField<T>(params LOGICAL_PROCESSOR_RELATIONSHIP[] r)
 			{
-				/// <summary>
-				/// A PROCESSOR_RELATIONSHIP structure that describes processor affinity. This structure contains valid data only if the
-				/// <c>Relationship</c> member is <c>RelationProcessorCore</c> or <c>RelationProcessorPackage</c>.
-				/// </summary>
-				[FieldOffset(0)] public PROCESSOR_RELATIONSHIP Processor;
-
-				/// <summary>
-				/// A NUMA_NODE_RELATIONSHIP structure that describes a NUMA node. This structure contains valid data only if the
-				/// <c>Relationship</c> member is <c>RelationNumaNode</c>.
-				/// </summary>
-				[FieldOffset(0)] public NUMA_NODE_RELATIONSHIP NumaNode;
-
-				/// <summary>
-				/// A CACHE_RELATIONSHIP structure that describes cache attributes. This structure contains valid data only if the
-				/// <c>Relationship</c> member is <c>RelationCache</c>.
-				/// </summary>
-				[FieldOffset(0)] public CACHE_RELATIONSHIP Cache;
-
-				/// <summary>
-				/// A GROUP_RELATIONSHIP structure that contains information about the processor groups. This structure contains valid data
-				/// only if the <c>Relationship</c> member is <c>RelationGroup</c>.
-				/// </summary>
-				[FieldOffset(0)] public GROUP_RELATIONSHIP Group;
-			}
-
-			internal string DebugString
-			{
-				get
+				if (!r.Contains(Relationship))
+					return default;
+				unsafe
 				{
-					uint c = Relationship switch
-					{
-						LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorCore => RelationUnion.Processor.GroupCount,
-						LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode => RelationUnion.NumaNode.NodeNumber,
-						LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache => RelationUnion.Cache.CacheSize,
-						LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorPackage => RelationUnion.Processor.GroupCount,
-						LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup => RelationUnion.Group.ActiveGroupCount,
-						_ => 0
-					};
-					return $"{Relationship}, Size={Size}, Count={c}";
+					fixed (void* p = &dummy)
+						return ((IntPtr)p).ToStructure<T>();
 				}
 			}
 		}
@@ -3692,6 +3614,40 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The cycle time for a processor.</summary>
 			public ulong CycleTime;
+		}
+
+		/// <summary>Holds a list of <see cref="SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX"/> structures retrived from <see cref="GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP, IntPtr, ref uint)"/>.</summary>
+		public class SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List : SafeMemoryHandle<CoTaskMemoryMethods>
+		{
+			internal SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List(SizeT size) : base(size)
+			{
+			}
+
+			/// <summary>Gets the number of elements available.</summary>
+			/// <value>The number of elements available.</value>
+			public int Count => Items.Count;
+
+			/// <summary>Gets a reference to a <see cref="SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX"/> at the specified index.</summary>
+			/// <param name="index">The index.</param>
+			/// <returns>A reference to <see cref="SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX"/>.</returns>
+			public unsafe SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX* this[int index] => (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)(void*)Items[index];
+
+			/// <summary>Move to next element.</summary>
+			private List<IntPtr> Items
+			{
+				get
+				{
+					var ret = new List<IntPtr>();
+					for (IntPtr pCurrent = handle, pEnd = pCurrent.Offset(sz); pCurrent != IntPtr.Zero && pCurrent.ToInt64() < pEnd.ToInt64();)
+					{
+						var cSz = pCurrent.ToStructure<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>().Size;
+						if (cSz == 0) break;
+						ret.Add(pCurrent);
+						pCurrent = pCurrent.Offset(cSz);
+					}
+					return ret;
+				}
+			}
 		}
 	}
 }
