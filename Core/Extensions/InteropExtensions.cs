@@ -776,6 +776,25 @@ namespace Vanara.Extensions
 			unsafe { return new UIntPtr(p.ToPointer()); }
 		}
 
+		/// <summary>Converts an unsafe structure pointer into a managed array.</summary>
+		/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
+		/// <param name="ptr">The pointer to the first structure in the native array.</param>
+		/// <param name="count">The number of items in the native array.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>An array of type <typeparamref name="T"/> containing the elements of the native array.</returns>
+		public static unsafe T[] UnsafePtrToArray<T>(T* ptr, int count, SizeT allocatedBytes = default) where T : unmanaged
+		{
+			var stSize = SizeOf<T>();
+			if (allocatedBytes > 0 && stSize * count > allocatedBytes)
+				throw new InsufficientMemoryException();
+			if (allocatedBytes == default) allocatedBytes = uint.MaxValue;
+
+			var ret = new T[count];
+			for (var i = 0; i < count; i++)
+				ret[i] = ptr[i];
+			return ret;
+		}
+
 		/// <summary>Marshals data from a managed list of specified type to a pre-allocated unmanaged block of memory.</summary>
 		/// <typeparam name="T">
 		/// A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a
