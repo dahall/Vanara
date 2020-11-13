@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.Shell32</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />

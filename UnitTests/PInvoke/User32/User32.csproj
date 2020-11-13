@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.User32</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />

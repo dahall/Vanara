@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.DwmApi</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />

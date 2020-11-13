@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Product>Vanara</Product>
   </PropertyGroup>

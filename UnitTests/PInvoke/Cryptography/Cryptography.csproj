@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.Cryptography</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj" />

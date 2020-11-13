@@ -3,7 +3,6 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <OutputType>WinExe</OutputType>
     <AssemblyName>ExplorerBrowser</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
     <MapFileExtensions>true</MapFileExtensions>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
