@@ -1,7 +1,7 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
 PInvoke API (methods, structures and constants) imported from Windows Ole32.dll, OleAut32 and PropSys.dll.
 
-### Methods (82% complete, 576 of 699 functions)  
+### Methods (100% complete, 834 of 834 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](https://www.google.com/search?num=5&q=BindMoniker+site%3Adocs.microsoft.com) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.BindMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=BindMoniker)  
@@ -183,7 +183,7 @@ Native Method | Native DLL | Header | Managed Method
 [InitVariantFromInt64Array](https://www.google.com/search?num=5&q=InitVariantFromInt64Array+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromInt64Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromInt64Array)  
 [InitVariantFromResource](https://www.google.com/search?num=5&q=InitVariantFromResource+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromResource](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromResource)  
 [InitVariantFromStringArray](https://www.google.com/search?num=5&q=InitVariantFromStringArray+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromStringArray](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromStringArray)  
-[InitVariantFromStrRet](https://www.google.com/search?num=5&q=InitVariantFromStrRet+site%3Adocs.microsoft.com) | propsys.dll |  |   
+[InitVariantFromStrRet](https://www.google.com/search?num=5&q=InitVariantFromStrRet+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromStrRet](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromStrRet)  
 [InitVariantFromUInt16Array](https://www.google.com/search?num=5&q=InitVariantFromUInt16Array+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromUInt16Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromUInt16Array)  
 [InitVariantFromUInt32Array](https://www.google.com/search?num=5&q=InitVariantFromUInt32Array+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromUInt32Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromUInt32Array)  
 [InitVariantFromUInt64Array](https://www.google.com/search?num=5&q=InitVariantFromUInt64Array+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.InitVariantFromUInt64Array](https://github.com/dahall/Vanara/search?l=C%23&q=InitVariantFromUInt64Array)  
@@ -485,98 +485,174 @@ Native Method | Native DLL | Header | Managed Method
 [VarBoolFromDate](https://www.google.com/search?num=5&q=VarBoolFromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromDate)  
 [VarBoolFromDec](https://www.google.com/search?num=5&q=VarBoolFromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromDec)  
 [VarBoolFromDisp](https://www.google.com/search?num=5&q=VarBoolFromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromDisp)  
-[VarBoolFromI2](https://www.google.com/search?num=5&q=VarBoolFromI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBoolFromI4](https://www.google.com/search?num=5&q=VarBoolFromI4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBoolFromUI1](https://www.google.com/search?num=5&q=VarBoolFromUI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrCat](https://www.google.com/search?num=5&q=VarBstrCat+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrCmp](https://www.google.com/search?num=5&q=VarBstrCmp+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromBool](https://www.google.com/search?num=5&q=VarBstrFromBool+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromDate](https://www.google.com/search?num=5&q=VarBstrFromDate+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromDec](https://www.google.com/search?num=5&q=VarBstrFromDec+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromDisp](https://www.google.com/search?num=5&q=VarBstrFromDisp+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromI1](https://www.google.com/search?num=5&q=VarBstrFromI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromI2](https://www.google.com/search?num=5&q=VarBstrFromI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromI4](https://www.google.com/search?num=5&q=VarBstrFromI4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromI8](https://www.google.com/search?num=5&q=VarBstrFromI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromUI2](https://www.google.com/search?num=5&q=VarBstrFromUI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarBstrFromUI8](https://www.google.com/search?num=5&q=VarBstrFromUI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
+[VarBoolFromI1](https://www.google.com/search?num=5&q=VarBoolFromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromI1)  
+[VarBoolFromI2](https://www.google.com/search?num=5&q=VarBoolFromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromI2)  
+[VarBoolFromI4](https://www.google.com/search?num=5&q=VarBoolFromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromI4)  
+[VarBoolFromI8](https://www.google.com/search?num=5&q=VarBoolFromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromI8)  
+[VarBoolFromR4](https://www.google.com/search?num=5&q=VarBoolFromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromR4)  
+[VarBoolFromR8](https://www.google.com/search?num=5&q=VarBoolFromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromR8)  
+[VarBoolFromStr](https://www.google.com/search?num=5&q=VarBoolFromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromStr)  
+[VarBoolFromUI1](https://www.google.com/search?num=5&q=VarBoolFromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromUI1)  
+[VarBoolFromUI2](https://www.google.com/search?num=5&q=VarBoolFromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromUI2)  
+[VarBoolFromUI4](https://www.google.com/search?num=5&q=VarBoolFromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromUI4)  
+[VarBoolFromUI8](https://www.google.com/search?num=5&q=VarBoolFromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBoolFromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarBoolFromUI8)  
+[VarBstrCat](https://www.google.com/search?num=5&q=VarBstrCat+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrCat](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrCat)  
+[VarBstrCmp](https://www.google.com/search?num=5&q=VarBstrCmp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrCmp](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrCmp)  
+[VarBstrFromBool](https://www.google.com/search?num=5&q=VarBstrFromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromBool)  
+[VarBstrFromCy](https://www.google.com/search?num=5&q=VarBstrFromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromCy)  
+[VarBstrFromDate](https://www.google.com/search?num=5&q=VarBstrFromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromDate)  
+[VarBstrFromDec](https://www.google.com/search?num=5&q=VarBstrFromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromDec)  
+[VarBstrFromDisp](https://www.google.com/search?num=5&q=VarBstrFromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromDisp)  
+[VarBstrFromI1](https://www.google.com/search?num=5&q=VarBstrFromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromI1)  
+[VarBstrFromI2](https://www.google.com/search?num=5&q=VarBstrFromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromI2)  
+[VarBstrFromI4](https://www.google.com/search?num=5&q=VarBstrFromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromI4)  
+[VarBstrFromI8](https://www.google.com/search?num=5&q=VarBstrFromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromI8)  
+[VarBstrFromR4](https://www.google.com/search?num=5&q=VarBstrFromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromR4)  
+[VarBstrFromR8](https://www.google.com/search?num=5&q=VarBstrFromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromR8)  
+[VarBstrFromUI1](https://www.google.com/search?num=5&q=VarBstrFromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromUI1)  
+[VarBstrFromUI2](https://www.google.com/search?num=5&q=VarBstrFromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromUI2)  
+[VarBstrFromUI4](https://www.google.com/search?num=5&q=VarBstrFromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromUI4)  
+[VarBstrFromUI8](https://www.google.com/search?num=5&q=VarBstrFromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarBstrFromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarBstrFromUI8)  
 [VarCat](https://www.google.com/search?num=5&q=VarCat+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCat](https://github.com/dahall/Vanara/search?l=C%23&q=VarCat)  
 [VarCmp](https://www.google.com/search?num=5&q=VarCmp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCmp](https://github.com/dahall/Vanara/search?l=C%23&q=VarCmp)  
-[VarCyAbs](https://www.google.com/search?num=5&q=VarCyAbs+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyAdd](https://www.google.com/search?num=5&q=VarCyAdd+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyCmp](https://www.google.com/search?num=5&q=VarCyCmp+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyCmpR8](https://www.google.com/search?num=5&q=VarCyCmpR8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFix](https://www.google.com/search?num=5&q=VarCyFix+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFromDisp](https://www.google.com/search?num=5&q=VarCyFromDisp+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFromI1](https://www.google.com/search?num=5&q=VarCyFromI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFromI2](https://www.google.com/search?num=5&q=VarCyFromI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFromI8](https://www.google.com/search?num=5&q=VarCyFromI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFromR8](https://www.google.com/search?num=5&q=VarCyFromR8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFromStr](https://www.google.com/search?num=5&q=VarCyFromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFromUI1](https://www.google.com/search?num=5&q=VarCyFromUI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFromUI4](https://www.google.com/search?num=5&q=VarCyFromUI4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyFromUI8](https://www.google.com/search?num=5&q=VarCyFromUI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyInt](https://www.google.com/search?num=5&q=VarCyInt+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyMul](https://www.google.com/search?num=5&q=VarCyMul+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyMulI4](https://www.google.com/search?num=5&q=VarCyMulI4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyMulI8](https://www.google.com/search?num=5&q=VarCyMulI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyNeg](https://www.google.com/search?num=5&q=VarCyNeg+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCyRound](https://www.google.com/search?num=5&q=VarCyRound+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarCySub](https://www.google.com/search?num=5&q=VarCySub+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDateFromDec](https://www.google.com/search?num=5&q=VarDateFromDec+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDateFromI1](https://www.google.com/search?num=5&q=VarDateFromI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDateFromI2](https://www.google.com/search?num=5&q=VarDateFromI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDateFromI8](https://www.google.com/search?num=5&q=VarDateFromI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDateFromR8](https://www.google.com/search?num=5&q=VarDateFromR8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDateFromStr](https://www.google.com/search?num=5&q=VarDateFromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDateFromUdate](https://www.google.com/search?num=5&q=VarDateFromUdate+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDateFromUdateEx](https://www.google.com/search?num=5&q=VarDateFromUdateEx+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDateFromUI8](https://www.google.com/search?num=5&q=VarDateFromUI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecAbs](https://www.google.com/search?num=5&q=VarDecAbs+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecAdd](https://www.google.com/search?num=5&q=VarDecAdd+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecCmp](https://www.google.com/search?num=5&q=VarDecCmp+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecCmpR8](https://www.google.com/search?num=5&q=VarDecCmpR8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecDiv](https://www.google.com/search?num=5&q=VarDecDiv+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecFix](https://www.google.com/search?num=5&q=VarDecFix+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecFromDate](https://www.google.com/search?num=5&q=VarDecFromDate+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecFromI1](https://www.google.com/search?num=5&q=VarDecFromI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecFromStr](https://www.google.com/search?num=5&q=VarDecFromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecFromUI2](https://www.google.com/search?num=5&q=VarDecFromUI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecFromUI4](https://www.google.com/search?num=5&q=VarDecFromUI4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecFromUI8](https://www.google.com/search?num=5&q=VarDecFromUI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecInt](https://www.google.com/search?num=5&q=VarDecInt+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecMul](https://www.google.com/search?num=5&q=VarDecMul+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecNeg](https://www.google.com/search?num=5&q=VarDecNeg+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecRound](https://www.google.com/search?num=5&q=VarDecRound+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarDecSub](https://www.google.com/search?num=5&q=VarDecSub+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
+[VarCyAbs](https://www.google.com/search?num=5&q=VarCyAbs+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyAbs](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyAbs)  
+[VarCyAdd](https://www.google.com/search?num=5&q=VarCyAdd+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyAdd](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyAdd)  
+[VarCyCmp](https://www.google.com/search?num=5&q=VarCyCmp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyCmp](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyCmp)  
+[VarCyCmpR8](https://www.google.com/search?num=5&q=VarCyCmpR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyCmpR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyCmpR8)  
+[VarCyFix](https://www.google.com/search?num=5&q=VarCyFix+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFix](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFix)  
+[VarCyFromBool](https://www.google.com/search?num=5&q=VarCyFromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromBool)  
+[VarCyFromDate](https://www.google.com/search?num=5&q=VarCyFromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromDate)  
+[VarCyFromDec](https://www.google.com/search?num=5&q=VarCyFromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromDec)  
+[VarCyFromDisp](https://www.google.com/search?num=5&q=VarCyFromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromDisp)  
+[VarCyFromI1](https://www.google.com/search?num=5&q=VarCyFromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromI1)  
+[VarCyFromI2](https://www.google.com/search?num=5&q=VarCyFromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromI2)  
+[VarCyFromI4](https://www.google.com/search?num=5&q=VarCyFromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromI4)  
+[VarCyFromI8](https://www.google.com/search?num=5&q=VarCyFromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromI8)  
+[VarCyFromR4](https://www.google.com/search?num=5&q=VarCyFromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromR4)  
+[VarCyFromR8](https://www.google.com/search?num=5&q=VarCyFromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromR8)  
+[VarCyFromStr](https://www.google.com/search?num=5&q=VarCyFromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromStr)  
+[VarCyFromUI1](https://www.google.com/search?num=5&q=VarCyFromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromUI1)  
+[VarCyFromUI2](https://www.google.com/search?num=5&q=VarCyFromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromUI2)  
+[VarCyFromUI4](https://www.google.com/search?num=5&q=VarCyFromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromUI4)  
+[VarCyFromUI8](https://www.google.com/search?num=5&q=VarCyFromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyFromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyFromUI8)  
+[VarCyInt](https://www.google.com/search?num=5&q=VarCyInt+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyInt](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyInt)  
+[VarCyMul](https://www.google.com/search?num=5&q=VarCyMul+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyMul](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyMul)  
+[VarCyMulI4](https://www.google.com/search?num=5&q=VarCyMulI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyMulI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyMulI4)  
+[VarCyMulI8](https://www.google.com/search?num=5&q=VarCyMulI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyMulI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyMulI8)  
+[VarCyNeg](https://www.google.com/search?num=5&q=VarCyNeg+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyNeg](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyNeg)  
+[VarCyRound](https://www.google.com/search?num=5&q=VarCyRound+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCyRound](https://github.com/dahall/Vanara/search?l=C%23&q=VarCyRound)  
+[VarCySub](https://www.google.com/search?num=5&q=VarCySub+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarCySub](https://github.com/dahall/Vanara/search?l=C%23&q=VarCySub)  
+[VarDateFromBool](https://www.google.com/search?num=5&q=VarDateFromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromBool)  
+[VarDateFromCy](https://www.google.com/search?num=5&q=VarDateFromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromCy)  
+[VarDateFromDec](https://www.google.com/search?num=5&q=VarDateFromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromDec)  
+[VarDateFromDisp](https://www.google.com/search?num=5&q=VarDateFromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromDisp)  
+[VarDateFromI1](https://www.google.com/search?num=5&q=VarDateFromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromI1)  
+[VarDateFromI2](https://www.google.com/search?num=5&q=VarDateFromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromI2)  
+[VarDateFromI4](https://www.google.com/search?num=5&q=VarDateFromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromI4)  
+[VarDateFromI8](https://www.google.com/search?num=5&q=VarDateFromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromI8)  
+[VarDateFromR4](https://www.google.com/search?num=5&q=VarDateFromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromR4)  
+[VarDateFromR8](https://www.google.com/search?num=5&q=VarDateFromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromR8)  
+[VarDateFromStr](https://www.google.com/search?num=5&q=VarDateFromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromStr)  
+[VarDateFromUdate](https://www.google.com/search?num=5&q=VarDateFromUdate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromUdate](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromUdate)  
+[VarDateFromUdateEx](https://www.google.com/search?num=5&q=VarDateFromUdateEx+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromUdateEx](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromUdateEx)  
+[VarDateFromUI1](https://www.google.com/search?num=5&q=VarDateFromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromUI1)  
+[VarDateFromUI2](https://www.google.com/search?num=5&q=VarDateFromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromUI2)  
+[VarDateFromUI4](https://www.google.com/search?num=5&q=VarDateFromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromUI4)  
+[VarDateFromUI8](https://www.google.com/search?num=5&q=VarDateFromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDateFromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarDateFromUI8)  
+[VarDecAbs](https://www.google.com/search?num=5&q=VarDecAbs+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecAbs](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecAbs)  
+[VarDecAdd](https://www.google.com/search?num=5&q=VarDecAdd+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecAdd](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecAdd)  
+[VarDecCmp](https://www.google.com/search?num=5&q=VarDecCmp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecCmp](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecCmp)  
+[VarDecCmpR8](https://www.google.com/search?num=5&q=VarDecCmpR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecCmpR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecCmpR8)  
+[VarDecDiv](https://www.google.com/search?num=5&q=VarDecDiv+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecDiv](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecDiv)  
+[VarDecFix](https://www.google.com/search?num=5&q=VarDecFix+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFix](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFix)  
+[VarDecFromBool](https://www.google.com/search?num=5&q=VarDecFromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromBool)  
+[VarDecFromCy](https://www.google.com/search?num=5&q=VarDecFromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromCy)  
+[VarDecFromDate](https://www.google.com/search?num=5&q=VarDecFromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromDate)  
+[VarDecFromDisp](https://www.google.com/search?num=5&q=VarDecFromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromDisp)  
+[VarDecFromI1](https://www.google.com/search?num=5&q=VarDecFromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromI1)  
+[VarDecFromI2](https://www.google.com/search?num=5&q=VarDecFromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromI2)  
+[VarDecFromI4](https://www.google.com/search?num=5&q=VarDecFromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromI4)  
+[VarDecFromI8](https://www.google.com/search?num=5&q=VarDecFromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromI8)  
+[VarDecFromR4](https://www.google.com/search?num=5&q=VarDecFromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromR4)  
+[VarDecFromR8](https://www.google.com/search?num=5&q=VarDecFromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromR8)  
+[VarDecFromStr](https://www.google.com/search?num=5&q=VarDecFromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromStr)  
+[VarDecFromUI1](https://www.google.com/search?num=5&q=VarDecFromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromUI1)  
+[VarDecFromUI2](https://www.google.com/search?num=5&q=VarDecFromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromUI2)  
+[VarDecFromUI4](https://www.google.com/search?num=5&q=VarDecFromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromUI4)  
+[VarDecFromUI8](https://www.google.com/search?num=5&q=VarDecFromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecFromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecFromUI8)  
+[VarDecInt](https://www.google.com/search?num=5&q=VarDecInt+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecInt](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecInt)  
+[VarDecMul](https://www.google.com/search?num=5&q=VarDecMul+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecMul](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecMul)  
+[VarDecNeg](https://www.google.com/search?num=5&q=VarDecNeg+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecNeg](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecNeg)  
+[VarDecRound](https://www.google.com/search?num=5&q=VarDecRound+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecRound](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecRound)  
+[VarDecSub](https://www.google.com/search?num=5&q=VarDecSub+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDecSub](https://github.com/dahall/Vanara/search?l=C%23&q=VarDecSub)  
 [VarDiv](https://www.google.com/search?num=5&q=VarDiv+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarDiv](https://github.com/dahall/Vanara/search?l=C%23&q=VarDiv)  
 [VarEqv](https://www.google.com/search?num=5&q=VarEqv+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarEqv](https://github.com/dahall/Vanara/search?l=C%23&q=VarEqv)  
 [VarFix](https://www.google.com/search?num=5&q=VarFix+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarFix](https://github.com/dahall/Vanara/search?l=C%23&q=VarFix)  
 [VarFormat](https://www.google.com/search?num=5&q=VarFormat+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarFormat](https://github.com/dahall/Vanara/search?l=C%23&q=VarFormat)  
-[VarFormatCurrency](https://www.google.com/search?num=5&q=VarFormatCurrency+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarFormatDateTime](https://www.google.com/search?num=5&q=VarFormatDateTime+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarFormatFromTokens](https://www.google.com/search?num=5&q=VarFormatFromTokens+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarFormatNumber](https://www.google.com/search?num=5&q=VarFormatNumber+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarFormatPercent](https://www.google.com/search?num=5&q=VarFormatPercent+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI1FromCy](https://www.google.com/search?num=5&q=VarI1FromCy+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI1FromDec](https://www.google.com/search?num=5&q=VarI1FromDec+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI1FromI8](https://www.google.com/search?num=5&q=VarI1FromI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI1FromUI1](https://www.google.com/search?num=5&q=VarI1FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI2FromDec](https://www.google.com/search?num=5&q=VarI2FromDec+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI2FromDisp](https://www.google.com/search?num=5&q=VarI2FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI2FromI1](https://www.google.com/search?num=5&q=VarI2FromI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI2FromI4](https://www.google.com/search?num=5&q=VarI2FromI4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI2FromR8](https://www.google.com/search?num=5&q=VarI2FromR8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI2FromStr](https://www.google.com/search?num=5&q=VarI2FromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI2FromUI8](https://www.google.com/search?num=5&q=VarI2FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI4FromCy](https://www.google.com/search?num=5&q=VarI4FromCy+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI4FromDate](https://www.google.com/search?num=5&q=VarI4FromDate+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI4FromI8](https://www.google.com/search?num=5&q=VarI4FromI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI4FromR8](https://www.google.com/search?num=5&q=VarI4FromR8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI4FromStr](https://www.google.com/search?num=5&q=VarI4FromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI4FromUI8](https://www.google.com/search?num=5&q=VarI4FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI8FromBool](https://www.google.com/search?num=5&q=VarI8FromBool+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarI8FromI1](https://www.google.com/search?num=5&q=VarI8FromI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
+[VarFormatCurrency](https://www.google.com/search?num=5&q=VarFormatCurrency+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarFormatCurrency](https://github.com/dahall/Vanara/search?l=C%23&q=VarFormatCurrency)  
+[VarFormatDateTime](https://www.google.com/search?num=5&q=VarFormatDateTime+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarFormatDateTime](https://github.com/dahall/Vanara/search?l=C%23&q=VarFormatDateTime)  
+[VarFormatFromTokens](https://www.google.com/search?num=5&q=VarFormatFromTokens+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarFormatFromTokens](https://github.com/dahall/Vanara/search?l=C%23&q=VarFormatFromTokens)  
+[VarFormatNumber](https://www.google.com/search?num=5&q=VarFormatNumber+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarFormatNumber](https://github.com/dahall/Vanara/search?l=C%23&q=VarFormatNumber)  
+[VarFormatPercent](https://www.google.com/search?num=5&q=VarFormatPercent+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarFormatPercent](https://github.com/dahall/Vanara/search?l=C%23&q=VarFormatPercent)  
+[VarI1FromBool](https://www.google.com/search?num=5&q=VarI1FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromBool)  
+[VarI1FromCy](https://www.google.com/search?num=5&q=VarI1FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromCy)  
+[VarI1FromDate](https://www.google.com/search?num=5&q=VarI1FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromDate)  
+[VarI1FromDec](https://www.google.com/search?num=5&q=VarI1FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromDec)  
+[VarI1FromDisp](https://www.google.com/search?num=5&q=VarI1FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromDisp)  
+[VarI1FromI2](https://www.google.com/search?num=5&q=VarI1FromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromI2)  
+[VarI1FromI4](https://www.google.com/search?num=5&q=VarI1FromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromI4)  
+[VarI1FromI8](https://www.google.com/search?num=5&q=VarI1FromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromI8)  
+[VarI1FromR4](https://www.google.com/search?num=5&q=VarI1FromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromR4)  
+[VarI1FromR8](https://www.google.com/search?num=5&q=VarI1FromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromR8)  
+[VarI1FromStr](https://www.google.com/search?num=5&q=VarI1FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromStr)  
+[VarI1FromUI1](https://www.google.com/search?num=5&q=VarI1FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromUI1)  
+[VarI1FromUI2](https://www.google.com/search?num=5&q=VarI1FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromUI2)  
+[VarI1FromUI4](https://www.google.com/search?num=5&q=VarI1FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromUI4)  
+[VarI1FromUI8](https://www.google.com/search?num=5&q=VarI1FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI1FromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI1FromUI8)  
+[VarI2FromBool](https://www.google.com/search?num=5&q=VarI2FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromBool)  
+[VarI2FromCy](https://www.google.com/search?num=5&q=VarI2FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromCy)  
+[VarI2FromDate](https://www.google.com/search?num=5&q=VarI2FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromDate)  
+[VarI2FromDec](https://www.google.com/search?num=5&q=VarI2FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromDec)  
+[VarI2FromDisp](https://www.google.com/search?num=5&q=VarI2FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromDisp)  
+[VarI2FromI1](https://www.google.com/search?num=5&q=VarI2FromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromI1)  
+[VarI2FromI4](https://www.google.com/search?num=5&q=VarI2FromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromI4)  
+[VarI2FromI8](https://www.google.com/search?num=5&q=VarI2FromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromI8)  
+[VarI2FromR4](https://www.google.com/search?num=5&q=VarI2FromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromR4)  
+[VarI2FromR8](https://www.google.com/search?num=5&q=VarI2FromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromR8)  
+[VarI2FromStr](https://www.google.com/search?num=5&q=VarI2FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromStr)  
+[VarI2FromUI1](https://www.google.com/search?num=5&q=VarI2FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromUI1)  
+[VarI2FromUI2](https://www.google.com/search?num=5&q=VarI2FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromUI2)  
+[VarI2FromUI4](https://www.google.com/search?num=5&q=VarI2FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromUI4)  
+[VarI2FromUI8](https://www.google.com/search?num=5&q=VarI2FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI2FromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI2FromUI8)  
+[VarI4FromBool](https://www.google.com/search?num=5&q=VarI4FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromBool)  
+[VarI4FromCy](https://www.google.com/search?num=5&q=VarI4FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromCy)  
+[VarI4FromDate](https://www.google.com/search?num=5&q=VarI4FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromDate)  
+[VarI4FromDec](https://www.google.com/search?num=5&q=VarI4FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromDec)  
+[VarI4FromDisp](https://www.google.com/search?num=5&q=VarI4FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromDisp)  
+[VarI4FromI1](https://www.google.com/search?num=5&q=VarI4FromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromI1)  
+[VarI4FromI2](https://www.google.com/search?num=5&q=VarI4FromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromI2)  
+[VarI4FromI8](https://www.google.com/search?num=5&q=VarI4FromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromI8)  
+[VarI4FromR4](https://www.google.com/search?num=5&q=VarI4FromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromR4)  
+[VarI4FromR8](https://www.google.com/search?num=5&q=VarI4FromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromR8)  
+[VarI4FromStr](https://www.google.com/search?num=5&q=VarI4FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromStr)  
+[VarI4FromUI1](https://www.google.com/search?num=5&q=VarI4FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromUI1)  
+[VarI4FromUI2](https://www.google.com/search?num=5&q=VarI4FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromUI2)  
+[VarI4FromUI4](https://www.google.com/search?num=5&q=VarI4FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromUI4)  
+[VarI4FromUI8](https://www.google.com/search?num=5&q=VarI4FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI4FromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI4FromUI8)  
+[VarI8FromBool](https://www.google.com/search?num=5&q=VarI8FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromBool)  
+[VarI8FromCy](https://www.google.com/search?num=5&q=VarI8FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromCy)  
+[VarI8FromDate](https://www.google.com/search?num=5&q=VarI8FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromDate)  
+[VarI8FromDec](https://www.google.com/search?num=5&q=VarI8FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromDec)  
+[VarI8FromDisp](https://www.google.com/search?num=5&q=VarI8FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromDisp)  
+[VarI8FromI1](https://www.google.com/search?num=5&q=VarI8FromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromI1)  
+[VarI8FromI2](https://www.google.com/search?num=5&q=VarI8FromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromI2)  
+[VarI8FromR4](https://www.google.com/search?num=5&q=VarI8FromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromR4)  
+[VarI8FromR8](https://www.google.com/search?num=5&q=VarI8FromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromR8)  
+[VarI8FromStr](https://www.google.com/search?num=5&q=VarI8FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromStr)  
+[VarI8FromUI1](https://www.google.com/search?num=5&q=VarI8FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromUI1)  
+[VarI8FromUI2](https://www.google.com/search?num=5&q=VarI8FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromUI2)  
+[VarI8FromUI4](https://www.google.com/search?num=5&q=VarI8FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromUI4)  
+[VarI8FromUI8](https://www.google.com/search?num=5&q=VarI8FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarI8FromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarI8FromUI8)  
 [VARIANT_UserFree](https://www.google.com/search?num=5&q=VARIANT_UserFree+site%3Adocs.microsoft.com) | oleaut32.dll | oaidl.h | [Vanara.PInvoke.OleAut32.VARIANT_UserFree](https://github.com/dahall/Vanara/search?l=C%23&q=VARIANT_UserFree)  
 [VARIANT_UserFree64](https://www.google.com/search?num=5&q=VARIANT_UserFree64+site%3Adocs.microsoft.com) | oleaut32.dll | oaidl.h | [Vanara.PInvoke.OleAut32.VARIANT_UserFree64](https://github.com/dahall/Vanara/search?l=C%23&q=VARIANT_UserFree64)  
 [VARIANT_UserMarshal](https://www.google.com/search?num=5&q=VARIANT_UserMarshal+site%3Adocs.microsoft.com) | oleaut32.dll | oaidl.h | [Vanara.PInvoke.OleAut32.VARIANT_UserMarshal](https://github.com/dahall/Vanara/search?l=C%23&q=VARIANT_UserMarshal)  
@@ -634,7 +710,7 @@ Native Method | Native DLL | Header | Managed Method
 [VariantToStringArray](https://www.google.com/search?num=5&q=VariantToStringArray+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToStringArray](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStringArray)  
 [VariantToStringArrayAlloc](https://www.google.com/search?num=5&q=VariantToStringArrayAlloc+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToStringArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStringArrayAlloc)  
 [VariantToStringWithDefault](https://www.google.com/search?num=5&q=VariantToStringWithDefault+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToStringWithDefault](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStringWithDefault)  
-[VariantToStrRet](https://www.google.com/search?num=5&q=VariantToStrRet+site%3Adocs.microsoft.com) | propsys.dll |  |   
+[VariantToStrRet](https://www.google.com/search?num=5&q=VariantToStrRet+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToStrRet](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToStrRet)  
 [VariantToUInt16](https://www.google.com/search?num=5&q=VariantToUInt16+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt16](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt16)  
 [VariantToUInt16Array](https://www.google.com/search?num=5&q=VariantToUInt16Array+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt16Array](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt16Array)  
 [VariantToUInt16ArrayAlloc](https://www.google.com/search?num=5&q=VariantToUInt16ArrayAlloc+site%3Adocs.microsoft.com) | propsys.dll | propvarutil.h | [Vanara.PInvoke.PropSys.VariantToUInt16ArrayAlloc](https://github.com/dahall/Vanara/search?l=C%23&q=VariantToUInt16ArrayAlloc)  
@@ -659,44 +735,103 @@ Native Method | Native DLL | Header | Managed Method
 [VarOr](https://www.google.com/search?num=5&q=VarOr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarOr](https://github.com/dahall/Vanara/search?l=C%23&q=VarOr)  
 [VarParseNumFromStr](https://www.google.com/search?num=5&q=VarParseNumFromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarParseNumFromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarParseNumFromStr)  
 [VarPow](https://www.google.com/search?num=5&q=VarPow+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarPow](https://github.com/dahall/Vanara/search?l=C%23&q=VarPow)  
-[VarR4CmpR8](https://www.google.com/search?num=5&q=VarR4CmpR8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR4FromStr](https://www.google.com/search?num=5&q=VarR4FromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR4FromUI4](https://www.google.com/search?num=5&q=VarR4FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR8FromBool](https://www.google.com/search?num=5&q=VarR8FromBool+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR8FromCy](https://www.google.com/search?num=5&q=VarR8FromCy+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR8FromI4](https://www.google.com/search?num=5&q=VarR8FromI4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR8FromI8](https://www.google.com/search?num=5&q=VarR8FromI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR8FromStr](https://www.google.com/search?num=5&q=VarR8FromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR8FromUI2](https://www.google.com/search?num=5&q=VarR8FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR8FromUI4](https://www.google.com/search?num=5&q=VarR8FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR8Pow](https://www.google.com/search?num=5&q=VarR8Pow+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarR8Round](https://www.google.com/search?num=5&q=VarR8Round+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
+[VarR4CmpR8](https://www.google.com/search?num=5&q=VarR4CmpR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4CmpR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4CmpR8)  
+[VarR4FromBool](https://www.google.com/search?num=5&q=VarR4FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromBool)  
+[VarR4FromCy](https://www.google.com/search?num=5&q=VarR4FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromCy)  
+[VarR4FromDate](https://www.google.com/search?num=5&q=VarR4FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromDate)  
+[VarR4FromDec](https://www.google.com/search?num=5&q=VarR4FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromDec)  
+[VarR4FromDisp](https://www.google.com/search?num=5&q=VarR4FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromDisp)  
+[VarR4FromI1](https://www.google.com/search?num=5&q=VarR4FromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromI1)  
+[VarR4FromI2](https://www.google.com/search?num=5&q=VarR4FromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromI2)  
+[VarR4FromI4](https://www.google.com/search?num=5&q=VarR4FromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromI4)  
+[VarR4FromI8](https://www.google.com/search?num=5&q=VarR4FromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromI8)  
+[VarR4FromR8](https://www.google.com/search?num=5&q=VarR4FromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromR8)  
+[VarR4FromStr](https://www.google.com/search?num=5&q=VarR4FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromStr)  
+[VarR4FromUI1](https://www.google.com/search?num=5&q=VarR4FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromUI1)  
+[VarR4FromUI2](https://www.google.com/search?num=5&q=VarR4FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromUI2)  
+[VarR4FromUI4](https://www.google.com/search?num=5&q=VarR4FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromUI4)  
+[VarR4FromUI8](https://www.google.com/search?num=5&q=VarR4FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR4FromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarR4FromUI8)  
+[VarR8FromBool](https://www.google.com/search?num=5&q=VarR8FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromBool)  
+[VarR8FromCy](https://www.google.com/search?num=5&q=VarR8FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromCy)  
+[VarR8FromDate](https://www.google.com/search?num=5&q=VarR8FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromDate)  
+[VarR8FromDec](https://www.google.com/search?num=5&q=VarR8FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromDec)  
+[VarR8FromDisp](https://www.google.com/search?num=5&q=VarR8FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromDisp)  
+[VarR8FromI1](https://www.google.com/search?num=5&q=VarR8FromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromI1)  
+[VarR8FromI2](https://www.google.com/search?num=5&q=VarR8FromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromI2)  
+[VarR8FromI4](https://www.google.com/search?num=5&q=VarR8FromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromI4)  
+[VarR8FromI8](https://www.google.com/search?num=5&q=VarR8FromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromI8)  
+[VarR8FromR4](https://www.google.com/search?num=5&q=VarR8FromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromR4)  
+[VarR8FromStr](https://www.google.com/search?num=5&q=VarR8FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromStr)  
+[VarR8FromUI1](https://www.google.com/search?num=5&q=VarR8FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromUI1)  
+[VarR8FromUI2](https://www.google.com/search?num=5&q=VarR8FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromUI2)  
+[VarR8FromUI4](https://www.google.com/search?num=5&q=VarR8FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromUI4)  
+[VarR8FromUI8](https://www.google.com/search?num=5&q=VarR8FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8FromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8FromUI8)  
+[VarR8Pow](https://www.google.com/search?num=5&q=VarR8Pow+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8Pow](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8Pow)  
+[VarR8Round](https://www.google.com/search?num=5&q=VarR8Round+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarR8Round](https://github.com/dahall/Vanara/search?l=C%23&q=VarR8Round)  
 [VarRound](https://www.google.com/search?num=5&q=VarRound+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarRound](https://github.com/dahall/Vanara/search?l=C%23&q=VarRound)  
 [VarSub](https://www.google.com/search?num=5&q=VarSub+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarSub](https://github.com/dahall/Vanara/search?l=C%23&q=VarSub)  
 [VarTokenizeFormatString](https://www.google.com/search?num=5&q=VarTokenizeFormatString+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarTokenizeFormatString](https://github.com/dahall/Vanara/search?l=C%23&q=VarTokenizeFormatString)  
-[VarUdateFromDate](https://www.google.com/search?num=5&q=VarUdateFromDate+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI1FromI1](https://www.google.com/search?num=5&q=VarUI1FromI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI1FromR4](https://www.google.com/search?num=5&q=VarUI1FromR4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI1FromR8](https://www.google.com/search?num=5&q=VarUI1FromR8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI1FromStr](https://www.google.com/search?num=5&q=VarUI1FromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI2FromDisp](https://www.google.com/search?num=5&q=VarUI2FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI2FromI2](https://www.google.com/search?num=5&q=VarUI2FromI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI2FromStr](https://www.google.com/search?num=5&q=VarUI2FromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI4FromCy](https://www.google.com/search?num=5&q=VarUI4FromCy+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI4FromI8](https://www.google.com/search?num=5&q=VarUI4FromI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI4FromR4](https://www.google.com/search?num=5&q=VarUI4FromR4+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI4FromR8](https://www.google.com/search?num=5&q=VarUI4FromR8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI4FromStr](https://www.google.com/search?num=5&q=VarUI4FromStr+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI4FromUI2](https://www.google.com/search?num=5&q=VarUI4FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI4FromUI8](https://www.google.com/search?num=5&q=VarUI4FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI8FromBool](https://www.google.com/search?num=5&q=VarUI8FromBool+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI8FromCy](https://www.google.com/search?num=5&q=VarUI8FromCy+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI8FromDate](https://www.google.com/search?num=5&q=VarUI8FromDate+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI8FromDec](https://www.google.com/search?num=5&q=VarUI8FromDec+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI8FromDisp](https://www.google.com/search?num=5&q=VarUI8FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI8FromI1](https://www.google.com/search?num=5&q=VarUI8FromI1+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarUI8FromI2](https://www.google.com/search?num=5&q=VarUI8FromI2+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
-[VarWeekdayName](https://www.google.com/search?num=5&q=VarWeekdayName+site%3Adocs.microsoft.com) | oleaut32.dll |  |   
+[VarUdateFromDate](https://www.google.com/search?num=5&q=VarUdateFromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUdateFromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarUdateFromDate)  
+[VarUI1FromBool](https://www.google.com/search?num=5&q=VarUI1FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromBool)  
+[VarUI1FromCy](https://www.google.com/search?num=5&q=VarUI1FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromCy)  
+[VarUI1FromDate](https://www.google.com/search?num=5&q=VarUI1FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromDate)  
+[VarUI1FromDec](https://www.google.com/search?num=5&q=VarUI1FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromDec)  
+[VarUI1FromDisp](https://www.google.com/search?num=5&q=VarUI1FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromDisp)  
+[VarUI1FromI1](https://www.google.com/search?num=5&q=VarUI1FromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromI1)  
+[VarUI1FromI2](https://www.google.com/search?num=5&q=VarUI1FromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromI2)  
+[VarUI1FromI4](https://www.google.com/search?num=5&q=VarUI1FromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromI4)  
+[VarUI1FromI8](https://www.google.com/search?num=5&q=VarUI1FromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromI8)  
+[VarUI1FromR4](https://www.google.com/search?num=5&q=VarUI1FromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromR4)  
+[VarUI1FromR8](https://www.google.com/search?num=5&q=VarUI1FromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromR8)  
+[VarUI1FromStr](https://www.google.com/search?num=5&q=VarUI1FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromStr)  
+[VarUI1FromUI2](https://www.google.com/search?num=5&q=VarUI1FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromUI2)  
+[VarUI1FromUI4](https://www.google.com/search?num=5&q=VarUI1FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromUI4)  
+[VarUI1FromUI8](https://www.google.com/search?num=5&q=VarUI1FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI1FromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI1FromUI8)  
+[VarUI2FromBool](https://www.google.com/search?num=5&q=VarUI2FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromBool)  
+[VarUI2FromCy](https://www.google.com/search?num=5&q=VarUI2FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromCy)  
+[VarUI2FromDate](https://www.google.com/search?num=5&q=VarUI2FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromDate)  
+[VarUI2FromDec](https://www.google.com/search?num=5&q=VarUI2FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromDec)  
+[VarUI2FromDisp](https://www.google.com/search?num=5&q=VarUI2FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromDisp)  
+[VarUI2FromI1](https://www.google.com/search?num=5&q=VarUI2FromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromI1)  
+[VarUI2FromI2](https://www.google.com/search?num=5&q=VarUI2FromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromI2)  
+[VarUI2FromI4](https://www.google.com/search?num=5&q=VarUI2FromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromI4)  
+[VarUI2FromI8](https://www.google.com/search?num=5&q=VarUI2FromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromI8)  
+[VarUI2FromR4](https://www.google.com/search?num=5&q=VarUI2FromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromR4)  
+[VarUI2FromR8](https://www.google.com/search?num=5&q=VarUI2FromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromR8)  
+[VarUI2FromStr](https://www.google.com/search?num=5&q=VarUI2FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromStr)  
+[VarUI2FromUI1](https://www.google.com/search?num=5&q=VarUI2FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromUI1)  
+[VarUI2FromUI4](https://www.google.com/search?num=5&q=VarUI2FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromUI4)  
+[VarUI2FromUI8](https://www.google.com/search?num=5&q=VarUI2FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI2FromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI2FromUI8)  
+[VarUI4FromBool](https://www.google.com/search?num=5&q=VarUI4FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromBool)  
+[VarUI4FromCy](https://www.google.com/search?num=5&q=VarUI4FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromCy)  
+[VarUI4FromDate](https://www.google.com/search?num=5&q=VarUI4FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromDate)  
+[VarUI4FromDec](https://www.google.com/search?num=5&q=VarUI4FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromDec)  
+[VarUI4FromDisp](https://www.google.com/search?num=5&q=VarUI4FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromDisp)  
+[VarUI4FromI1](https://www.google.com/search?num=5&q=VarUI4FromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromI1)  
+[VarUI4FromI2](https://www.google.com/search?num=5&q=VarUI4FromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromI2)  
+[VarUI4FromI4](https://www.google.com/search?num=5&q=VarUI4FromI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromI4)  
+[VarUI4FromI8](https://www.google.com/search?num=5&q=VarUI4FromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromI8)  
+[VarUI4FromR4](https://www.google.com/search?num=5&q=VarUI4FromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromR4)  
+[VarUI4FromR8](https://www.google.com/search?num=5&q=VarUI4FromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromR8)  
+[VarUI4FromStr](https://www.google.com/search?num=5&q=VarUI4FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromStr)  
+[VarUI4FromUI1](https://www.google.com/search?num=5&q=VarUI4FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromUI1)  
+[VarUI4FromUI2](https://www.google.com/search?num=5&q=VarUI4FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromUI2)  
+[VarUI4FromUI8](https://www.google.com/search?num=5&q=VarUI4FromUI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI4FromUI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI4FromUI8)  
+[VarUI8FromBool](https://www.google.com/search?num=5&q=VarUI8FromBool+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromBool](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromBool)  
+[VarUI8FromCy](https://www.google.com/search?num=5&q=VarUI8FromCy+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromCy](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromCy)  
+[VarUI8FromDate](https://www.google.com/search?num=5&q=VarUI8FromDate+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromDate](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromDate)  
+[VarUI8FromDec](https://www.google.com/search?num=5&q=VarUI8FromDec+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromDec](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromDec)  
+[VarUI8FromDisp](https://www.google.com/search?num=5&q=VarUI8FromDisp+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromDisp](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromDisp)  
+[VarUI8FromI1](https://www.google.com/search?num=5&q=VarUI8FromI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromI1)  
+[VarUI8FromI2](https://www.google.com/search?num=5&q=VarUI8FromI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromI2)  
+[VarUI8FromI8](https://www.google.com/search?num=5&q=VarUI8FromI8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromI8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromI8)  
+[VarUI8FromR4](https://www.google.com/search?num=5&q=VarUI8FromR4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromR4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromR4)  
+[VarUI8FromR8](https://www.google.com/search?num=5&q=VarUI8FromR8+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromR8](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromR8)  
+[VarUI8FromStr](https://www.google.com/search?num=5&q=VarUI8FromStr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromStr](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromStr)  
+[VarUI8FromUI1](https://www.google.com/search?num=5&q=VarUI8FromUI1+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromUI1](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromUI1)  
+[VarUI8FromUI2](https://www.google.com/search?num=5&q=VarUI8FromUI2+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromUI2](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromUI2)  
+[VarUI8FromUI4](https://www.google.com/search?num=5&q=VarUI8FromUI4+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarUI8FromUI4](https://github.com/dahall/Vanara/search?l=C%23&q=VarUI8FromUI4)  
+[VarWeekdayName](https://www.google.com/search?num=5&q=VarWeekdayName+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarWeekdayName](https://github.com/dahall/Vanara/search?l=C%23&q=VarWeekdayName)  
 [VarXor](https://www.google.com/search?num=5&q=VarXor+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VarXor](https://github.com/dahall/Vanara/search?l=C%23&q=VarXor)  
 [VectorFromBstr](https://www.google.com/search?num=5&q=VectorFromBstr+site%3Adocs.microsoft.com) | oleaut32.dll | oleauto.h | [Vanara.PInvoke.OleAut32.VectorFromBstr](https://github.com/dahall/Vanara/search?l=C%23&q=VectorFromBstr)  
 [WinRTPropertyValueToPropVariant](https://www.google.com/search?num=5&q=WinRTPropertyValueToPropVariant+site%3Adocs.microsoft.com) | propsys.dll | propsys.h | [Vanara.PInvoke.PropSys.WinRTPropertyValueToPropVariant](https://github.com/dahall/Vanara/search?l=C%23&q=WinRTPropertyValueToPropVariant)  
@@ -721,6 +856,9 @@ Native Structure | Header | Managed Structure
 [CSPLATFORM](https://www.google.com/search?num=5&q=CSPLATFORM+site%3Adocs.microsoft.com) | wtypes.h | [Vanara.PInvoke.Ole32.CSPLATFORM](https://github.com/dahall/Vanara/search?l=C%23&q=CSPLATFORM)  
 [CUSTDATA](https://www.google.com/search?num=5&q=CUSTDATA+site%3Adocs.microsoft.com) | oaidl.h | [Vanara.PInvoke.OleAut32.CUSTDATA](https://github.com/dahall/Vanara/search?l=C%23&q=CUSTDATA)  
 [CUSTDATAITEM](https://www.google.com/search?num=5&q=CUSTDATAITEM+site%3Adocs.microsoft.com) | oaidl.h | [Vanara.PInvoke.OleAut32.CUSTDATAITEM](https://github.com/dahall/Vanara/search?l=C%23&q=CUSTDATAITEM)  
+[CY](https://www.google.com/search?num=5&q=CY+site%3Adocs.microsoft.com) |  | [Vanara.CY](https://github.com/dahall/Vanara/search?l=C%23&q=CY)  
+[DATE](https://www.google.com/search?num=5&q=DATE+site%3Adocs.microsoft.com) |  | [Vanara.DATE](https://github.com/dahall/Vanara/search?l=C%23&q=DATE)  
+[DECIMAL](https://www.google.com/search?num=5&q=DECIMAL+site%3Adocs.microsoft.com) |  | [Vanara.DECIMAL](https://github.com/dahall/Vanara/search?l=C%23&q=DECIMAL)  
 [DVTARGETDEVICE](https://www.google.com/search?num=5&q=DVTARGETDEVICE+site%3Adocs.microsoft.com) | objidl.h | [Vanara.PInvoke.Ole32.DVTARGETDEVICE](https://github.com/dahall/Vanara/search?l=C%23&q=DVTARGETDEVICE)  
 [EMF](https://www.google.com/search?num=5&q=EMF+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.OleAut32.PICTDESC.PICTDEC_UNION.EMF](https://github.com/dahall/Vanara/search?l=C%23&q=EMF)  
 [FONTDESC](https://www.google.com/search?num=5&q=FONTDESC+site%3Adocs.microsoft.com) | olectl.h | [Vanara.PInvoke.OleAut32.FONTDESC](https://github.com/dahall/Vanara/search?l=C%23&q=FONTDESC)  
@@ -759,6 +897,7 @@ Native Structure | Header | Managed Structure
 [STATPROPSTG](https://www.google.com/search?num=5&q=STATPROPSTG+site%3Adocs.microsoft.com) | propidl.h | [Vanara.PInvoke.Ole32.STATPROPSTG](https://github.com/dahall/Vanara/search?l=C%23&q=STATPROPSTG)  
 [STGOPTIONS](https://www.google.com/search?num=5&q=STGOPTIONS+site%3Adocs.microsoft.com) | Objbase.h | [Vanara.PInvoke.Ole32.STGOPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=STGOPTIONS)  
 [StorageLayout](https://www.google.com/search?num=5&q=StorageLayout+site%3Adocs.microsoft.com) | objidl.h | [Vanara.PInvoke.Ole32.StorageLayout](https://github.com/dahall/Vanara/search?l=C%23&q=StorageLayout)  
+[UDATE](https://www.google.com/search?num=5&q=UDATE+site%3Adocs.microsoft.com) | oleauto.h | [Vanara.PInvoke.OleAut32.UDATE](https://github.com/dahall/Vanara/search?l=C%23&q=UDATE)  
 [VARIANT](https://www.google.com/search?num=5&q=VARIANT+site%3Adocs.microsoft.com) | oaidl.h | [Vanara.PInvoke.OleAut32.VARIANT](https://github.com/dahall/Vanara/search?l=C%23&q=VARIANT)  
 [WIA_DATA_CALLBACK_HEADER](https://www.google.com/search?num=5&q=WIA_DATA_CALLBACK_HEADER+site%3Adocs.microsoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_DATA_CALLBACK_HEADER](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_DATA_CALLBACK_HEADER)  
 [WIA_DATA_TRANSFER_INFO](https://www.google.com/search?num=5&q=WIA_DATA_TRANSFER_INFO+site%3Adocs.microsoft.com) | wia_xp.h | [Vanara.PInvoke.OleAut32.WIA_DATA_TRANSFER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WIA_DATA_TRANSFER_INFO)  
