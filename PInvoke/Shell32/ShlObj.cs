@@ -3853,7 +3853,37 @@ namespace Vanara.PInvoke
 		/// <param name="dwItem2">Optional. Second event-dependent value.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h")]
-		public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, [Optional] IntPtr dwItem1, [Optional] IntPtr dwItem2);
+		public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, [Optional] UIntPtr dwItem1, [Optional] UIntPtr dwItem2);
+
+		/// <summary>
+		/// Notifies the system of an event that an application has performed. An application should use this function if it performs an
+		/// action that may affect the Shell.
+		/// </summary>
+		/// <param name="wEventId">
+		/// Describes the event that has occurred. Typically, only one event is specified at a time. If more than one event is specified, the
+		/// values contained in the dwItem1 and dwItem2 parameters must be the same, respectively, for all specified events.
+		/// </param>
+		/// <param name="uFlags">Flags that, when combined bitwise with SHCNF_TYPE, indicate the meaning of the dwItem1 and dwItem2 parameters.</param>
+		/// <param name="dwItem1">Optional. First event-dependent value.</param>
+		/// <param name="dwItem2">Optional. Second event-dependent value.</param>
+		[DllImport(Lib.Shell32, ExactSpelling = true)]
+		[PInvokeData("Shlobj.h")]
+		public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, [MarshalAs(UnmanagedType.LPWStr)] string dwItem1, [Optional, MarshalAs(UnmanagedType.LPWStr)] string dwItem2);
+
+		/// <summary>
+		/// Notifies the system of an event that an application has performed. An application should use this function if it performs an
+		/// action that may affect the Shell.
+		/// </summary>
+		/// <param name="wEventId">
+		/// Describes the event that has occurred. Typically, only one event is specified at a time. If more than one event is specified, the
+		/// values contained in the dwItem1 and dwItem2 parameters must be the same, respectively, for all specified events.
+		/// </param>
+		/// <param name="uFlags">Flags that, when combined bitwise with SHCNF_TYPE, indicate the meaning of the dwItem1 and dwItem2 parameters.</param>
+		/// <param name="dwItem1">Optional. First event-dependent value.</param>
+		/// <param name="dwItem2">Optional. Second event-dependent value.</param>
+		[DllImport(Lib.Shell32, ExactSpelling = true)]
+		[PInvokeData("Shlobj.h")]
+		public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, PIDL dwItem1, [Optional] PIDL dwItem2);
 
 		/// <summary>
 		/// <para>Unregisters the client's window process from receiving SHChangeNotify messages.</para>
