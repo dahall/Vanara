@@ -27,7 +27,7 @@ namespace Vanara
 			Mid32 = unchecked((uint)bits[1]);
 			Hi32 = unchecked((uint)bits[2]);
 			sign = value < 0m ? (byte)0x80 : (byte)0;
-			scale = (byte)((unchecked((uint)bits[3]) | 0x00FF0000) >> 16);
+			scale = (byte)((unchecked((uint)bits[3]) & 0x00FF0000) >> 16);
 		}
 
 		/// <summary>Gets the value.</summary>

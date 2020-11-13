@@ -14,7 +14,7 @@ namespace Vanara
 
 		/// <summary>Initializes a new instance of the <see cref="CY"/> struct.</summary>
 		/// <param name="value">The value.</param>
-		public CY(decimal value) : this(decimal.ToOACurrency(value)) { }
+		public CY(decimal value) { int64 = decimal.ToOACurrency(value); }
 
 		/// <summary>Initializes a new instance of the <see cref="CY"/> struct.</summary>
 		/// <param name="value">The value.</param>
