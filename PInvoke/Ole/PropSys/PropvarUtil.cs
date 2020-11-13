@@ -4180,6 +4180,26 @@ namespace Vanara.PInvoke
 		[PInvokeData("propvarutil.h", MSDNShortId = "f8ca7844-057f-4e95-a4a9-f03f1d2ad492")]
 		public static extern string VariantToStringWithDefault(in VARIANT varIn, string pszDefault);
 
+		/// <summary>If the source variant is a VT_BSTR, extracts string and places it into a STRRET structure.</summary>
+		/// <param name="varIn">
+		/// <para>Type: <c>REFVARIANT</c></para>
+		/// <para>Reference to a source variant structure.</para>
+		/// </param>
+		/// <param name="pstrret">
+		/// <para>Type: <c>STRRET*</c></para>
+		/// <para>Pointer to the extracted string if one exists.</para>
+		/// <para>This is one of those cross-reference scenarios. STRRET is defined in the Shell32 assembly.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttostrret
+		// PSSTDAPI VariantToStrRet( REFVARIANT varIn, STRRET *pstrret );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propvarutil.h", MSDNShortId = "NF:propvarutil.VariantToStrRet")]
+		public static extern HRESULT VariantToStrRet(in VARIANT varIn, IntPtr pstrret);
+
 		/// <summary>
 		/// Extracts an unsigned <c>Int16</c> property value of a variant structure. If no value can be extracted, then a default value is
 		/// assigned by this function.
