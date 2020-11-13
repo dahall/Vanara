@@ -7,6 +7,7 @@ namespace Vanara.PInvoke
 	public static partial class OleAut32
 	{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 		/// <summary>Flags used by <see cref="VariantChangeType"/>.</summary>
 		[PInvokeData("oleauto.h", MSDNShortId = "48a51e32-95d7-4eeb-8106-f5043ffa2fd1")]
 		[Flags]
@@ -46,6 +47,7 @@ namespace Vanara.PInvoke
 			VAR_LOCALBOOL = 0x00000010,
 			VAR_FORMAT_NOSUBSTITUTE = 0x00000020,
 			VAR_FOURDIGITYEARS = 0x00000040,
+			LOCALE_NOUSEROVERRIDE = 0x80000000,
 		}
 
 		/// <summary>Bits for numeric VARTYPE values.</summary>
@@ -64,6 +66,7 @@ namespace Vanara.PInvoke
 			VTBIT_CY = 1 << VARTYPE.VT_CY,
 			VTBIT_DECIMAL = 1 << VARTYPE.VT_DECIMAL,
 		}
+
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>Returns the absolute value of a variant.</summary>
@@ -226,7 +229,7 @@ namespace Vanara.PInvoke
 		// *pboolOut );
 		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("oleauto.h", MSDNShortId = "4d13c480-26f6-49d3-aaaa-1804d56f8fe3")]
-		public static extern HRESULT VarBoolFromCy(long cyIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+		public static extern HRESULT VarBoolFromCy(CY cyIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
 
 		/// <summary>Converts a date value to a Boolean value.</summary>
 		/// <param name="dateIn">The value to convert.</param>
@@ -268,7 +271,7 @@ namespace Vanara.PInvoke
 		// VARIANT_BOOL *pboolOut );
 		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("oleauto.h", MSDNShortId = "3ba9e701-56c6-471c-9c82-a31c893a3a1c")]
-		public static extern HRESULT VarBoolFromDate(double dateIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+		public static extern HRESULT VarBoolFromDate(DATE dateIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
 
 		/// <summary>Converts a decimal value to a Boolean value.</summary>
 		/// <param name="pdecIn">The value to convert.</param>
@@ -310,7 +313,7 @@ namespace Vanara.PInvoke
 		// *pdecIn, VARIANT_BOOL *pboolOut );
 		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("oleauto.h", MSDNShortId = "f7397feb-8ef4-4734-875a-0ef2bb818caa")]
-		public static extern HRESULT VarBoolFromDec(in decimal pdecIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+		public static extern HRESULT VarBoolFromDec(in DECIMAL pdecIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
 
 		/// <summary>Converts the default property of an IDispatch instance to a Boolean value.</summary>
 		/// <param name="pdispIn">The value to convert.</param>
@@ -354,6 +357,1408 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("oleauto.h", MSDNShortId = "72a20066-26ce-4f20-97d6-315e1f183d4b")]
 		public static extern HRESULT VarBoolFromDisp(IDispatch pdispIn, LCID lcid, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts a char value to a Boolean value.</summary>
+		/// <param name="cIn">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromi1 HRESULT VarBoolFromI1( CHAR cIn, VARIANT_BOOL
+		// *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromI1")]
+		public static extern HRESULT VarBoolFromI1(sbyte cIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts a short value to a Boolean value.</summary>
+		/// <param name="sIn">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromi2 HRESULT VarBoolFromI2( SHORT sIn,
+		// VARIANT_BOOL *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromI2")]
+		public static extern HRESULT VarBoolFromI2(short sIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts a long value to a Boolean value.</summary>
+		/// <param name="lIn">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromi4 HRESULT VarBoolFromI4( LONG lIn, VARIANT_BOOL
+		// *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromI4")]
+		public static extern HRESULT VarBoolFromI4(int lIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts an 8-byte integer value to a Boolean value.</summary>
+		/// <param name="i64In">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromi8 HRESULT VarBoolFromI8( LONG64 i64In,
+		// VARIANT_BOOL *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromI8")]
+		public static extern HRESULT VarBoolFromI8(long i64In, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts a float value to a Boolean value.</summary>
+		/// <param name="fltIn">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromr4 HRESULT VarBoolFromR4( FLOAT fltIn,
+		// VARIANT_BOOL *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromR4")]
+		public static extern HRESULT VarBoolFromR4(float fltIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts a double value to a Boolean value.</summary>
+		/// <param name="dblIn">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromr8 HRESULT VarBoolFromR8( DOUBLE dblIn,
+		// VARIANT_BOOL *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromR8")]
+		public static extern HRESULT VarBoolFromR8(double dblIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts an OLECHAR string to a Boolean value.</summary>
+		/// <param name="strIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">
+		/// <para>One or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term><see cref="Kernel32.TIME_FORMAT.LOCALE_NOUSEROVERRIDE"/></term>
+		/// <term>Uses the system default locale settings, rather than custom locale settings.</term>
+		/// </item>
+		/// <item>
+		/// <term><see cref="VarFlags .VAR_LOCALBOOL"/></term>
+		/// <term>Uses localized Boolean names.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromstr HRESULT VarBoolFromStr( LPCOLESTR strIn,
+		// LCID lcid, ULONG dwFlags, VARIANT_BOOL *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromStr")]
+		public static extern HRESULT VarBoolFromStr([MarshalAs(UnmanagedType.LPWStr)] string strIn, LCID lcid, uint dwFlags, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts an unsigned char value to a Boolean value.</summary>
+		/// <param name="bIn">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromui1 HRESULT VarBoolFromUI1( BYTE bIn,
+		// VARIANT_BOOL *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromUI1")]
+		public static extern HRESULT VarBoolFromUI1(byte bIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts an unsigned short value to a Boolean value.</summary>
+		/// <param name="uiIn">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromui2 HRESULT VarBoolFromUI2( USHORT uiIn,
+		// VARIANT_BOOL *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromUI2")]
+		public static extern HRESULT VarBoolFromUI2(ushort uiIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts an unsigned long value to a Boolean value.</summary>
+		/// <param name="ulIn">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromui4 HRESULT VarBoolFromUI4( ULONG ulIn,
+		// VARIANT_BOOL *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromUI4")]
+		public static extern HRESULT VarBoolFromUI4(uint ulIn, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Converts an 8-byte unsigned integer value to a Boolean value.</summary>
+		/// <param name="i64In">The value to convert.</param>
+		/// <param name="pboolOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varboolfromui8 HRESULT VarBoolFromUI8( ULONG64 i64In,
+		// VARIANT_BOOL *pboolOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBoolFromUI8")]
+		public static extern HRESULT VarBoolFromUI8(ulong i64In, [MarshalAs(UnmanagedType.VariantBool)] out bool pboolOut);
+
+		/// <summary>Concatenates two variants of type BSTR and returns the resulting BSTR.</summary>
+		/// <param name="bstrLeft">The first variant.</param>
+		/// <param name="bstrRight">The second variant.</param>
+		/// <param name="pbstrResult">The result.</param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrcat HRESULT VarBstrCat( BSTR bstrLeft, BSTR
+		// bstrRight, LPBSTR pbstrResult );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrCat")]
+		public static extern HRESULT VarBstrCat([In, MarshalAs(UnmanagedType.BStr)] string bstrLeft, [In, MarshalAs(UnmanagedType.BStr)] string bstrRight, [Out, MarshalAs(UnmanagedType.BStr)] out string pbstrResult);
+
+		/// <summary>Compares two variants of type BSTR.</summary>
+		/// <param name="bstrLeft">The first variant.</param>
+		/// <param name="bstrRight">The second variant.</param>
+		/// <param name="lcid">The locale identifier of the program to determine whether UNICODE or ANSI strings are being used.</param>
+		/// <param name="dwFlags">
+		/// <para>The following are compare results flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NORM_IGNORECASE 0x00000001</term>
+		/// <term>Ignore case.</term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_IGNORENONSPACE 0x00000002</term>
+		/// <term>Ignore nonspace characters.</term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_IGNORESYMBOLS 0x00000004</term>
+		/// <term>Ignore symbols.</term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_IGNOREWIDTH 0x00000008</term>
+		/// <term>Ignore string width.</term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_IGNOREKANATYPE 0x00000040</term>
+		/// <term>Ignore Kana type.</term>
+		/// </item>
+		/// <item>
+		/// <term>NORM_IGNOREKASHIDA 0x00040000</term>
+		/// <term>Ignore Arabic kashida characters.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>VARCMP_LT 0</term>
+		/// <term>bstrLeft is less than bstrRight.</term>
+		/// </item>
+		/// <item>
+		/// <term>VARCMP_EQ 1</term>
+		/// <term>The parameters are equal.</term>
+		/// </item>
+		/// <item>
+		/// <term>VARCMP_GT 2</term>
+		/// <term>bstrLeft is greater than bstrRight.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>This function will not compare arrays or records.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrcmp HRESULT VarBstrCmp( BSTR bstrLeft, BSTR
+		// bstrRight, LCID lcid, ULONG dwFlags );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrCmp")]
+		public static extern HRESULT VarBstrCmp([In, MarshalAs(UnmanagedType.BStr)] string bstrLeft, [In, MarshalAs(UnmanagedType.BStr)] string bstrRight, LCID lcid, Kernel32.COMPARE_STRING dwFlags);
+
+		/// <summary>Converts a Boolean value to a BSTR value.</summary>
+		/// <param name="boolIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">
+		/// <para>One or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term><see cref="Kernel32.TIME_FORMAT.LOCALE_NOUSEROVERRIDE"/></term>
+		/// <term>Uses the system default locale settings, rather than custom locale settings.</term>
+		/// </item>
+		/// <item>
+		/// <term><see cref="VarFlags.VAR_LOCALBOOL"/></term>
+		/// <term>Uses localized Boolean names.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfrombool HRESULT VarBstrFromBool( VARIANT_BOOL
+		// boolIn, LCID lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromBool")]
+		public static extern HRESULT VarBstrFromBool([MarshalAs(UnmanagedType.VariantBool)] bool boolIn, LCID lcid, VarFlags dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts a currency value to a BSTR value.</summary>
+		/// <param name="cyIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">
+		/// <para>One or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LOCALE_NOUSEROVERRIDE</term>
+		/// <term>Uses the system default locale settings, rather than custom locale settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>LOCALE_USE_NLS</term>
+		/// <term>Uses NLS functions for currency conversions.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromcy HRESULT VarBstrFromCy( CY cyIn, LCID lcid,
+		// ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromCy")]
+		public static extern HRESULT VarBstrFromCy(CY cyIn, LCID lcid, Kernel32.TIME_FORMAT dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts a date value to a BSTR value.</summary>
+		/// <param name="dateIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">
+		/// <para>One or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LOCALE_NOUSEROVERRIDE</term>
+		/// <term>Uses the system default locale settings, rather than custom locale settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>VAR_CALENDAR_HIJRI</term>
+		/// <term>If set then the Hijri calendar is used. Otherwise the calendar set in the control panel is used.</term>
+		/// </item>
+		/// <item>
+		/// <term>VAR_CALENDAR_THAI</term>
+		/// <term>If set then the Buddhist year is used.</term>
+		/// </item>
+		/// <item>
+		/// <term>VAR_CALENDAR_GREGORIAN</term>
+		/// <term>If set the Gregorian year is used.</term>
+		/// </item>
+		/// <item>
+		/// <term>VAR_FOURDIGITYEARS</term>
+		/// <term>Use 4-digit years instead of 2-digit years.</term>
+		/// </item>
+		/// <item>
+		/// <term>VAR_TIMEVALUEONLY</term>
+		/// <term>Omits the date portion of a VT_DATE and returns only the time. Applies to conversions to or from dates.</term>
+		/// </item>
+		/// <item>
+		/// <term>VAR_DATEVALUEONLY</term>
+		/// <term>Omits the time portion of a VT_DATE and returns only the date. Applies to conversions to or from dates.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromdate HRESULT VarBstrFromDate( DATE dateIn, LCID
+		// lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromDate")]
+		public static extern HRESULT VarBstrFromDate(DATE dateIn, LCID lcid, VarFlags dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts a decimal value to a BSTR value.</summary>
+		/// <param name="pdecIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">
+		/// <para>One or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LOCALE_NOUSEROVERRIDE</term>
+		/// <term>Uses the system default locale settings, rather than custom locale settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>VAR_TIMEVALUEONLY</term>
+		/// <term>
+		/// Omits the date portion of a VT_DATE and returns only the time. Applies to conversions to or from dates. Not used for
+		/// VariantChangeType and VariantChangeTypeEx.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>VAR_DATEVALUEONLY</term>
+		/// <term>
+		/// Omits the time portion of a VT_DATE and returns only the date. Applies to conversions to or from dates. Not used for
+		/// VariantChangeType and VariantChangeTypeEx.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromdec HRESULT VarBstrFromDec( const DECIMAL
+		// *pdecIn, LCID lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromDec")]
+		public static extern HRESULT VarBstrFromDec(in DECIMAL pdecIn, LCID lcid, VarFlags dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts the default property of an IDispatch instance to a BSTR value.</summary>
+		/// <param name="pdispIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">Reserved. Set to zero.</param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromdisp HRESULT VarBstrFromDisp( IDispatch
+		// *pdispIn, LCID lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromDisp")]
+		public static extern HRESULT VarBstrFromDisp([In] IDispatch pdispIn, LCID lcid, [Optional] uint dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts the default property of an IDispatch instance to a BSTR value.</summary>
+		/// <param name="pdispIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">Reserved. Set to zero.</param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromdisp HRESULT VarBstrFromDisp( IDispatch
+		// *pdispIn, LCID lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromDisp")]
+		public static extern HRESULT VarBstrFromDisp([In, MarshalAs(UnmanagedType.IDispatch)] object pdispIn, LCID lcid, [Optional] uint dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts a char value to a BSTR value.</summary>
+		/// <param name="cIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">Reserved. Set to zero.</param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromi1 HRESULT VarBstrFromI1( CHAR cIn, LCID lcid,
+		// ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromI1")]
+		public static extern HRESULT VarBstrFromI1(sbyte cIn, LCID lcid, [Optional] uint dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts a short value to a BSTR value.</summary>
+		/// <param name="iVal">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">Reserved. Set to zero.</param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromi2 HRESULT VarBstrFromI2( SHORT iVal, LCID lcid,
+		// ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromI2")]
+		public static extern HRESULT VarBstrFromI2(short iVal, LCID lcid, [Optional] uint dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts a long value to a BSTR value.</summary>
+		/// <param name="lIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">Reserved. Set to zero.</param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromi4 HRESULT VarBstrFromI4( LONG lIn, LCID lcid,
+		// ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromI4")]
+		public static extern HRESULT VarBstrFromI4(int lIn, LCID lcid, [Optional] uint dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts an 8-byte unsigned integer value to a BSTR value.</summary>
+		/// <param name="i64In">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">Reserved. Set to zero.</param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromi8 HRESULT VarBstrFromI8( LONG64 i64In, LCID
+		// lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromI8")]
+		public static extern HRESULT VarBstrFromI8(long i64In, LCID lcid, [Optional] uint dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts a float value to a BSTR value.</summary>
+		/// <param name="fltIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">
+		/// <para>One or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LOCALE_NOUSEROVERRIDE</term>
+		/// <term>Uses the system default locale settings, rather than custom locale settings.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromr4 HRESULT VarBstrFromR4( FLOAT fltIn, LCID
+		// lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromR4")]
+		public static extern HRESULT VarBstrFromR4(float fltIn, LCID lcid, Kernel32.TIME_FORMAT dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts a double value to a BSTR value.</summary>
+		/// <param name="dblIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">
+		/// <para>One or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LOCALE_NOUSEROVERRIDE</term>
+		/// <term>Uses the system default locale settings, rather than custom locale settings.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromr8 HRESULT VarBstrFromR8( DOUBLE dblIn, LCID
+		// lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromR8")]
+		public static extern HRESULT VarBstrFromR8(double dblIn, LCID lcid, Kernel32.TIME_FORMAT dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts an unsigned char value to a BSTR value.</summary>
+		/// <param name="bVal">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">
+		/// <para>One or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LOCALE_NOUSEROVERRIDE</term>
+		/// <term>Uses the system default locale settings, rather than custom locale settings.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromui1 HRESULT VarBstrFromUI1( BYTE bVal, LCID
+		// lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromUI1")]
+		public static extern HRESULT VarBstrFromUI1(byte bVal, LCID lcid, Kernel32.TIME_FORMAT dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts an unsigned short value to a BSTR value.</summary>
+		/// <param name="uiIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">
+		/// <para>One or more of the following flags.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LOCALE_NOUSEROVERRIDE</term>
+		/// <term>Uses the system default locale settings, rather than custom locale settings.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromui2 HRESULT VarBstrFromUI2( USHORT uiIn, LCID
+		// lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromUI2")]
+		public static extern HRESULT VarBstrFromUI2(ushort uiIn, LCID lcid, Kernel32.TIME_FORMAT dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts an unsigned long value to a BSTR value.</summary>
+		/// <param name="ulIn">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">Reserved. Set to zero.</param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromui4 HRESULT VarBstrFromUI4( ULONG ulIn, LCID
+		// lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromUI4")]
+		public static extern HRESULT VarBstrFromUI4(uint ulIn, LCID lcid, [Optional] uint dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+
+		/// <summary>Converts an 8-byte unsigned integer value to a BSTR value.</summary>
+		/// <param name="ui64In">The value to convert.</param>
+		/// <param name="lcid">The locale identifier.</param>
+		/// <param name="dwFlags">Reserved. Set to zero.</param>
+		/// <param name="pbstrOut">The resulting value.</param>
+		/// <returns>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_BADVARTYPE</term>
+		/// <term>The input parameter is not a valid type of variant.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_OVERFLOW</term>
+		/// <term>The data pointed to by the output parameter does not fit in the destination type.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_E_TYPEMISMATCH</term>
+		/// <term>The argument could not be coerced to the specified type.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One of the arguments is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory to complete the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varbstrfromui8 HRESULT VarBstrFromUI8( ULONG64 ui64In, LCID
+		// lcid, ULONG dwFlags, BSTR *pbstrOut );
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarBstrFromUI8")]
+		public static extern HRESULT VarBstrFromUI8(ulong ui64In, LCID lcid, [Optional] uint dwFlags, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
 
 		/// <summary>Concatenates two variants and returns the result.</summary>
 		/// <param name="pvarLeft">The first variant.</param>
@@ -1662,265 +3067,5 @@ namespace Vanara.PInvoke
 				private readonly IntPtr _recordInfo;
 			}
 		}
-
-		/*
-		VarBoolFromI1
-		VarBoolFromI2
-		VarBoolFromI4
-		VarBoolFromI8
-		VarBoolFromR4
-		VarBoolFromR8
-		VarBoolFromStr
-		VarBoolFromUI1
-		VarBoolFromUI2
-		VarBoolFromUI4
-		VarBoolFromUI8
-		VarBstrCat
-		VarBstrCmp
-		VarBstrFromBool
-		VarBstrFromCy
-		VarBstrFromDate
-		VarBstrFromDec
-		VarBstrFromDisp
-		VarBstrFromI1
-		VarBstrFromI2
-		VarBstrFromI4
-		VarBstrFromI8
-		VarBstrFromR4
-		VarBstrFromR8
-		VarBstrFromUI1
-		VarBstrFromUI2
-		VarBstrFromUI4
-		VarBstrFromUI8
-		VarCyAbs
-		VarCyAdd
-		VarCyCmp
-		VarCyCmpR8
-		VarCyFix
-		VarCyFromBool
-		VarCyFromDate
-		VarCyFromDec
-		VarCyFromDisp
-		VarCyFromI1
-		VarCyFromI2
-		VarCyFromI4
-		VarCyFromI8
-		VarCyFromR4
-		VarCyFromR8
-		VarCyFromStr
-		VarCyFromUI1
-		VarCyFromUI2
-		VarCyFromUI4
-		VarCyFromUI8
-		VarCyInt
-		VarCyMul
-		VarCyMulI4
-		VarCyMulI8
-		VarCyNeg
-		VarCyRound
-		VarCySub
-		VarDateFromBool
-		VarDateFromCy
-		VarDateFromDec
-		VarDateFromDisp
-		VarDateFromI1
-		VarDateFromI2
-		VarDateFromI4
-		VarDateFromI8
-		VarDateFromR4
-		VarDateFromR8
-		VarDateFromStr
-		VarDateFromUdate
-		VarDateFromUdateEx
-		VarDateFromUI1
-		VarDateFromUI2
-		VarDateFromUI4
-		VarDateFromUI8
-		VarDecAbs
-		VarDecAdd
-		VarDecCmp
-		VarDecCmpR8
-		VarDecDiv
-		VarDecFix
-		VarDecFromBool
-		VarDecFromCy
-		VarDecFromDate
-		VarDecFromDisp
-		VarDecFromI1
-		VarDecFromI2
-		VarDecFromI4
-		VarDecFromI8
-		VarDecFromR4
-		VarDecFromR8
-		VarDecFromStr
-		VarDecFromUI1
-		VarDecFromUI2
-		VarDecFromUI4
-		VarDecFromUI8
-		VarDecInt
-		VarDecMul
-		VarDecNeg
-		VarDecRound
-		VarDecSub
-		VarFormatCurrency
-		VarFormatDateTime
-		VarFormatFromTokens
-		VarFormatNumber
-		VarFormatPercent
-		VarI1FromBool
-		VarI1FromCy
-		VarI1FromDate
-		VarI1FromDec
-		VarI1FromDisp
-		VarI1FromI2
-		VarI1FromI4
-		VarI1FromI8
-		VarI1FromR4
-		VarI1FromR8
-		VarI1FromStr
-		VarI1FromUI1
-		VarI1FromUI2
-		VarI1FromUI4
-		VarI1FromUI8
-		VarI2FromBool
-		VarI2FromCy
-		VarI2FromDate
-		VarI2FromDec
-		VarI2FromDisp
-		VarI2FromI1
-		VarI2FromI4
-		VarI2FromI8
-		VarI2FromR4
-		VarI2FromR8
-		VarI2FromStr
-		VarI2FromUI1
-		VarI2FromUI2
-		VarI2FromUI4
-		VarI2FromUI8
-		VarI4FromBool
-		VarI4FromCy
-		VarI4FromDate
-		VarI4FromDec
-		VarI4FromDisp
-		VarI4FromI1
-		VarI4FromI2
-		VarI4FromI4
-		VarI4FromI8
-		VarI4FromR4
-		VarI4FromR8
-		VarI4FromStr
-		VarI4FromUI1
-		VarI4FromUI2
-		VarI4FromUI4
-		VarI4FromUI8
-		VarI8FromBool
-		VarI8FromCy
-		VarI8FromDate
-		VarI8FromDec
-		VarI8FromDisp
-		VarI8FromI1
-		VarI8FromI2
-		VarI8FromR4
-		VarI8FromR8
-		VarI8FromStr
-		VarI8FromUI1
-		VarI8FromUI2
-		VarI8FromUI4
-		VarI8FromUI8
-		VarR4CmpR8
-		VarR4FromBool
-		VarR4FromCy
-		VarR4FromDate
-		VarR4FromDec
-		VarR4FromDisp
-		VarR4FromI1
-		VarR4FromI2
-		VarR4FromI4
-		VarR4FromI8
-		VarR4FromR8
-		VarR4FromStr
-		VarR4FromUI1
-		VarR4FromUI2
-		VarR4FromUI4
-		VarR4FromUI8
-		VarR8FromBool
-		VarR8FromCy
-		VarR8FromDate
-		VarR8FromDec
-		VarR8FromDisp
-		VarR8FromI1
-		VarR8FromI2
-		VarR8FromI4
-		VarR8FromI8
-		VarR8FromR4
-		VarR8FromStr
-		VarR8FromUI1
-		VarR8FromUI2
-		VarR8FromUI4
-		VarR8FromUI8
-		VarR8Pow
-		VarR8Round
-		VarUdateFromDate
-		VarUI1FromBool
-		VarUI1FromCy
-		VarUI1FromDate
-		VarUI1FromDec
-		VarUI1FromDisp
-		VarUI1FromI1
-		VarUI1FromI2
-		VarUI1FromI4
-		VarUI1FromI8
-		VarUI1FromR4
-		VarUI1FromR8
-		VarUI1FromStr
-		VarUI1FromUI2
-		VarUI1FromUI4
-		VarUI1FromUI8
-		VarUI2FromBool
-		VarUI2FromCy
-		VarUI2FromDate
-		VarUI2FromDec
-		VarUI2FromDisp
-		VarUI2FromI1
-		VarUI2FromI2
-		VarUI2FromI4
-		VarUI2FromI8
-		VarUI2FromR4
-		VarUI2FromR8
-		VarUI2FromStr
-		VarUI2FromUI1
-		VarUI2FromUI4
-		VarUI2FromUI8
-		VarUI4FromBool
-		VarUI4FromCy
-		VarUI4FromDate
-		VarUI4FromDec
-		VarUI4FromDisp
-		VarUI4FromI1
-		VarUI4FromI2
-		VarUI4FromI4
-		VarUI4FromI8
-		VarUI4FromR4
-		VarUI4FromR8
-		VarUI4FromStr
-		VarUI4FromUI1
-		VarUI4FromUI2
-		VarUI4FromUI8
-		VarUI8FromBool
-		VarUI8FromCy
-		VarUI8FromDate
-		VarUI8FromDec
-		VarUI8FromDisp
-		VarUI8FromI1
-		VarUI8FromI2
-		VarUI8FromI8
-		VarUI8FromR4
-		VarUI8FromR8
-		VarUI8FromStr
-		VarUI8FromUI1
-		VarUI8FromUI2
-		VarUI8FromUI4
-		VarWeekdayName
-		*/
 	}
 }
