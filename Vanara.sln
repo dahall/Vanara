@@ -93,7 +93,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System", "UnitTests\System\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows.Forms", "UnitTests\Windows.Forms\Windows.Forms.csproj", "{C1FFE607-1D85-49F8-9421-6B21AB778816}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows.Shell", "UnitTests\Windows.Shell\Windows.Shell.csproj", "{2616C074-DF6C-47D4-BE82-6768885ACAC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows.Shell", "UnitTests\Windows.Shell\Windows.Shell.csproj", "{2616C074-DF6C-47D4-BE82-6768885ACAC9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PInvoke", "PInvoke", "{385CAD2D-0A5E-4F80-927B-D5499D126B90}"
 EndProject
@@ -131,7 +131,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "UnitTests\PInvo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "UnitTests\PInvoke\Shared\Shared.csproj", "{6F668E05-8141-48B8-9031-326C79745AF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shell32", "UnitTests\PInvoke\Shell32\Shell32.csproj", "{40E5CA4E-527F-4F79-875D-2342D1136FDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell32", "UnitTests\PInvoke\Shell32\Shell32.csproj", "{40E5CA4E-527F-4F79-875D-2342D1136FDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskSchd", "UnitTests\PInvoke\TaskSchd\TaskSchd.csproj", "{85157400-A6FF-41E7-B650-4952ECBC28AD}"
 EndProject
@@ -151,7 +151,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.SearchApi", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WinTrust", "PInvoke\WinTrust\Vanara.PInvoke.WinTrust.csproj", "{3EDE955E-50DE-4E1D-97E8-31E4E6A83E7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "UnitTests\CSharpRunner\Shared.csproj", "{A96CFF10-0967-429A-8700-4A86C97C5603}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "UnitTests\CSharpRunner\Shared.csproj", "{A96CFF10-0967-429A-8700-4A86C97C5603}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Wer", "PInvoke\Wer\Vanara.PInvoke.Wer.csproj", "{FA58DCE9-60A6-4321-982C-37C0DACC371D}"
 EndProject
@@ -250,6 +250,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cabinet", "UnitTests\PInvoke\Cabinet\Cabinet.csproj", "{CD8A5176-6EEC-4739-9748-A45D3FDECFA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShlwApi", "UnitTests\PInvoke\ShlwApi\ShlwApi.csproj", "{80E10D65-5B7C-4BC8-8000-2B5BC9A21874}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Files", "Build Files", "{27FA62A4-C1EE-461D-9F5B-287C0A848B88}"
+	ProjectSection(SolutionItems) = preProject
+		UnitTests\Directory.Build.props = UnitTests\Directory.Build.props
+		UnitTests\Directory.Build.targets = UnitTests\Directory.Build.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -917,6 +923,7 @@ Global
 		{95E98514-A4D0-4ACD-8BE0-35D7BD185C71} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{CD8A5176-6EEC-4739-9748-A45D3FDECFA0} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{80E10D65-5B7C-4BC8-8000-2B5BC9A21874} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
+		{27FA62A4-C1EE-461D-9F5B-287C0A848B88} = {3EC6B40D-71D3-4E59-A0E0-544EC605FE11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

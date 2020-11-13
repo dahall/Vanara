@@ -4,7 +4,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\PInvoke\Shared\WinDef\RECT.cs" Link="RECT.cs" />
     <None Include="InteropServices\StructMarshalerTests.cs" />
   </ItemGroup>
   <ItemGroup>

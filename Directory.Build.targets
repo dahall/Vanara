@@ -11,6 +11,7 @@
   </ItemGroup>
   <ItemGroup>
 	<Compile Remove="**\~*.cs" />
-    <SupportedPlatform Include="windows" />
+	<None Include="**\~*.cs" />
+	<SupportedPlatform Include="windows" />
   </ItemGroup>
 </Project>
