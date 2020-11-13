@@ -303,8 +303,84 @@ namespace Vanara.PInvoke
 		[ComImport, Guid("DDEFE873-6997-4e68-BE26-39B633ADBE12"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface IQueryCancelAutoPlay
 		{
+			/// <summary>Determines whether to play media inserted by a user and if so using what restrictions.</summary>
+			/// <param name="pszPath">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>The drive letter in the form <c>D:\</c></para>
+			/// </param>
+			/// <param name="dwContentType">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The type of content as specified by the following flags.</para>
+			/// <para>ARCONTENT_AUTORUNINF (0x00000002)</para>
+			/// <para>Use the Autorun.inf file. This is the traditional AutoRun behavior.</para>
+			/// <para>ARCONTENT_AUDIOCD (0x00000004)</para>
+			/// <para>AutoRun audio CDs.</para>
+			/// <para>ARCONTENT_DVDMOVIE (0x00000008)</para>
+			/// <para>AutoRun DVDs.</para>
+			/// <para>ARCONTENT_BLANKCD (0x00000010)</para>
+			/// <para>AutoPlay blank CD-Rs and CD-RWs.</para>
+			/// <para>ARCONTENT_BLANKDVD (0x00000020)</para>
+			/// <para>AutoPlay blank DVD-Rs and DVD-RAMs.</para>
+			/// <para>ARCONTENT_UNKNOWNCONTENT (0x00000040)</para>
+			/// <para>AutoRun if the media is formatted and the content does not fall under a type covered by one of the other flags.</para>
+			/// <para>ARCONTENT_AUTOPLAYPIX (0x00000080)</para>
+			/// <para>AutoPlay if the content consists of file types defined as pictures, such as .bmp and .jpg files.</para>
+			/// <para>ARCONTENT_AUTOPLAYMUSIC (0x00000100)</para>
+			/// <para>AutoPlay if the content consists of file types defined as music, such as MP3 files.</para>
+			/// <para>ARCONTENT_AUTOPLAYVIDEO (0x00000200)</para>
+			/// <para>AutoPlay if the content consists of file types defined as video files.</para>
+			/// <para>ARCONTENT_VCD (0x00000400)</para>
+			/// <para><c>Introduced in Windows Vista</c>. AutoPlay video CDs (VCDs).</para>
+			/// <para>ARCONTENT_SVCD (0x00000800)</para>
+			/// <para><c>Introduced in Windows Vista</c>. AutoPlay Super Video CD (SVCD) media.</para>
+			/// <para>ARCONTENT_DVDAUDIO (0x00001000)</para>
+			/// <para><c>Introduced in Windows Vista</c>. AutoPlay DVD-Audio media.</para>
+			/// <para>ARCONTENT_BLANKBD (0x00002000)</para>
+			/// <para>AutoPlay blank recordable high definition DVD media in the Blu-ray Disc™ format (BD-R or BD-RW). Note: Prior to Windows 7, this value was defined to specify non-recordable media in the HD DVD format.</para>
+			/// <para>ARCONTENT_BLURAY (0x00004000)</para>
+			/// <para><c>Introduced in Windows Vista</c>. AutoPlay high definition DVD media in the Blu-ray Disc™ format.</para>
+			/// <para>ARCONTENT_CAMERASTORAGE (0x00008000)</para>
+			/// <para><c>Introduced in Windows 8</c>.</para>
+			/// <para>ARCONTENT_CUSTOMEVENT (0x00010000)</para>
+			/// <para><c>Introduced in Windows 8</c>.</para>
+			/// <para>ARCONTENT_NONE (0x00000000)</para>
+			/// <para><c>Introduced in Windows Vista</c>. AutoPlay empty but formatted media.</para>
+			/// <para>ARCONTENT_MASK (0x0001FFFE)</para>
+			/// <para><c>Introduced in Windows Vista</c>. A mask that denotes valid ARCONTENT flag values for media types. This mask does not include ARCONTENT_PHASE values.</para>
+			/// <para>ARCONTENT_PHASE_UNKNOWN (0x00000000)</para>
+			/// <para><c>Introduced in Windows Vista</c>. AutoPlay is searching the media. The phase of the search (presniff, sniffing, or final) is unknown.</para>
+			/// <para>ARCONTENT_PHASE_PRESNIFF (0x10000000)</para>
+			/// <para><c>Introduced in Windows Vista</c>. The contents of the media are known before the media is searched, due to the media type; for instance, audio CDs and DVD movies.</para>
+			/// <para>ARCONTENT_PHASE_SNIFFING (0x20000000)</para>
+			/// <para><c>Introduced in Windows Vista</c>. AutoPlay is currently searching the media. Any results reported during this phase should be considered a partial list as more content types might still be found.</para>
+			/// <para>ARCONTENT_PHASE_FINAL (0x40000000)</para>
+			/// <para><c>Introduced in Windows Vista</c>. AutoPlay has finished searching the media. Results reported are final.</para>
+			/// <para>ARCONTENT_PHASE_MASK (0x70000000)</para>
+			/// <para><c>Introduced in Windows Vista</c>. A mask that denotes valid ARCONTENT_PHASE values.</para>
+			/// </param>
+			/// <param name="pszLabel">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>The media label.</para>
+			/// </param>
+			/// <param name="dwSerialNumber">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The media serial number.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>Returns S_OK to allow AutoRun or S_FALSE to cancel AutoRun.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>Applications register an instance of the IQueryCancelAutoPlay interface in the running object table (ROT). Before the Shell starts AutoRun or AutoPlay, when the user inserts new media, it checks the ROT for a component implementing <c>IQueryCancelAutoPlay</c>. If it finds one, the Shell calls that implementation's <c>IQueryCancelAutoPlay::AllowAutoPlay</c> method to determine whether it should proceed, and using what restrictions.</para>
+			/// <para>Upon presentation of media, the Shell searches the ROT for a component implementing IQueryCancelAutoPlay. If one is found, the class identifier (CLSID) of that component's moniker is extracted. The presence of a ROT registration informs the Shell that the component might want to cancel AutoRun or AutoPlay. For confirmation, the Shell must also find a registry key for that same CLSID at the following location:</para>
+			/// <para><code> &lt;pre xml:space="preserve"&gt;&lt;b&gt;HKEY_LOCAL_MACHINE&lt;/b&gt; </code></para>
+			/// <para><c>SOFTWARE</c> <c>Microsoft</c> <c>Windows</c> <c>Current Version</c> <c>Explorer</c> <c>AutoplayHandlers</c> <c>CancelAutoplay</c> <c>CLSID</c> The component's CLSIDThis value is added by the application or hardware, usually at installation time. It isn't assigned a data value.</para>
+			/// <para><c>Note</c> The CLSID entered as a value under this key should not be encased in curly brackets.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-iquerycancelautoplay-allowautoplay
+			// HRESULT AllowAutoPlay( LPCWSTR pszPath, DWORD dwContentType, LPCWSTR pszLabel, DWORD dwSerialNumber );
 			[PreserveSig]
-			HRESULT AllowAutoPlay([MarshalAs(UnmanagedType.LPWStr)] string pszPath, uint dwContentType, [MarshalAs(UnmanagedType.LPWStr)] string pszLabel, uint dwSerialNumber);
+			HRESULT AllowAutoPlay([MarshalAs(UnmanagedType.LPWStr)] string pszPath, ARCONTENT dwContentType, [MarshalAs(UnmanagedType.LPWStr)] string pszLabel, uint dwSerialNumber);
 		}
 
 		/// <summary>

@@ -6,12 +6,19 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>Common Invoke command string for creating a new folder.</summary>
 		public const string CMDSTR_NEWFOLDER = "NewFolder";
+		/// <summary>Common Invoke command string for opening a file.</summary>
 		public const string CMDSTR_OPEN = "Open";
+		/// <summary>Common Invoke command string for previewing a file.</summary>
 		public const string CMDSTR_PREVIEW = "Preview";
+		/// <summary>Common Invoke command string for printing.</summary>
 		public const string CMDSTR_PRINT = "Print";
+		/// <summary>Common Invoke command string for running an elevated command.</summary>
 		public const string CMDSTR_RUNAS = "RunAs";
+		/// <summary>Common Invoke command string for viewing details.</summary>
 		public const string CMDSTR_VIEWDETAILS = "ViewDetails";
+		/// <summary>Common Invoke command string for viewing a list.</summary>
 		public const string CMDSTR_VIEWLIST = "ViewList";
 
 		/// <summary>Flag options for the IContextMenu interface.</summary>

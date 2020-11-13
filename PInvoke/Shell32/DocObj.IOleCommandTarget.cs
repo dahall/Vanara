@@ -50,91 +50,331 @@ namespace Vanara.PInvoke
 			OLECMDF_DEFHIDEONCTXTMENU = 0x00000020,
 		}
 
+		/// <summary>
+		/// Specifies which standard command is to be executed. A single value from this enumeration is passed in the nCmdID argument of IOleCommandTarget::Exec.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// In OLE Compound Documents technology, an object that is being edited in-place disables the <c>Zoom</c> control on its toolbar
+		/// and the <c>Zoom</c> command on its <c>View</c> menu, because, the <c>Zoom</c> command applies logically to the container
+		/// document, not to the object. The OLECMDID_ZOOM and OLECMDID_GETZOOMRANGE commands notify the container's frame object of the
+		/// zoom range it should use to display a document object in its user interface. The container frame is the client-side object that
+		/// implements IOleInPlaceFrame and, optionally, IOleCommandTarget.
+		/// </para>
+		/// <para>
+		/// The OLECMDID_ZOOM command takes one <c>LONG</c> argument as input and writes one <c>LONG</c> argument on output. This command is
+		/// used for three purposes:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// To query the current zoom value. The caller of IOleCommandTarget::Exec passes OLECMDEXECOPT_DONTPROMPTUSER as the execute option
+		/// in nCmdExecOpt and <c>NULL</c> for pvIn. The object returns the current zoom value in pvaOut. When the object goes UI active, it
+		/// retrieves the current zoom value from the container's frame object using this same mechanism and updates its zoom control with
+		/// the returned value.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// To display the <c>Zoom</c> dialog box. The caller of IOleCommandTarget::Exec passes OLECMDEXECOPT_PROMPTUSER in nCmdExecOpt. The
+		/// caller can optionally pass the initial value for the dialog box through pvaIn; otherwise pvaIn must be <c>NULL</c>. If the user
+		/// clicks <c>Cancel</c>, the object returns OLECMDERR_E_CANCELED. If the user clicks <c>OK</c>, the object passes the user-selected
+		/// value in pvaOut. When user chooses the <c>Zoom</c> command from the <c>View</c> menu, the object calls the container's frame
+		/// object in the same manner. The container then zooms the document to the user selected value, and the object updates its
+		/// <c>Zoom</c> control with that value.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// To set a <c>Zoom</c> value. The caller of IOleCommandTarget::Exec passes OLECMDEXECOPT_DONTPROMPTUSER in nCmdExecOpt and passes
+		/// the zoom value to apply through pvaIn. The object validates and normalizes the new value and returns the validated value in
+		/// pvaOut. When the user selects a new zoom value (using the <c>Zoom</c> control on the toolbar, for instance), the object calls
+		/// the container's frame object in this manner. The container zooms the document to 100 percent, and the object updates the
+		/// <c>Zoom</c> control with that value.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The OLECMDID_GETZOOMRANGE command is used to determine the range of valid zoom values from an object that implements
+		/// IOleCommandTarget. The caller passes MSOCMDEXECOPT_DONTPROMPTUSER in nCmdExecOpt and <c>NULL</c> for pvaIn. The object returns
+		/// its zoom range in pvaOut where the HIWORD contains the maximum zoom value and the LOWORD contains the minimum zoom value.
+		/// Typically this command is used when the user drops down the <c>Zoom</c> control on the toolbar of the UI-active object. The
+		/// applications and objects that support this command are required to support all the integral zoom values that are within the
+		/// (min,max) pair they return.
+		/// </para>
+		/// <para>
+		/// The OLECMDID_ACTIVEXINSTALLSCOPE command notifies Trident to use the indicated Install Scope to install the ActiveX Control
+		/// specified by the indicated class ID. The Install Scope is passed in a VT_ARRAY in pvaIn of the IOleCommandTarget::Exec method
+		/// whose elements are as follows.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Data</term>
+		/// <term>VARIANT Type</term>
+		/// <term>Index</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Class ID</term>
+		/// <term>VT_BSTR</term>
+		/// <term>0</term>
+		/// </item>
+		/// <item>
+		/// <term>Install Scope</term>
+		/// <term>VT_UI4</term>
+		/// <term>1</term>
+		/// </item>
+		/// </list>
+		/// <para>The Install Scope must be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>INSTALL_SCOPE_USERS</term>
+		/// <term>The ActiveX control should register to HKCU and for the instant user only.</term>
+		/// </item>
+		/// <item>
+		/// <term>INSTALL_SCOPE_MACHINE</term>
+		/// <term>The ActiveX control should register to HKLM and across the computer</term>
+		/// </item>
+		/// </list>
+		/// <para>The following is an example use of the OLECMDID_ACTIVEXINSTALLSCOPE command.</para>
+		/// <para>
+		/// <code>IOleCommandTarget::Exec( NULL, // Pointer to command group OLECMDARGINDEX_ACTIVEXINSTALL_INSTALLSCOPE, // ID of command to execute NULL, // Options &amp;varArgs, // pvain pointer to input arguments NULL) // pointer to command output</code>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/docobj/ne-docobj-olecmdid
+		[PInvokeData("docobj.h", MSDNShortId = "NE:docobj.OLECMDID")]
 		public enum OLECMDID
 		{
+			/// <summary>File menu, Open command</summary>
 			OLECMDID_OPEN = 1,
-			OLECMDID_NEW = 2,
-			OLECMDID_SAVE = 3,
-			OLECMDID_SAVEAS = 4,
-			OLECMDID_SAVECOPYAS = 5,
-			OLECMDID_PRINT = 6,
-			OLECMDID_PRINTPREVIEW = 7,
-			OLECMDID_PAGESETUP = 8,
-			OLECMDID_SPELL = 9,
-			OLECMDID_PROPERTIES = 10,
-			OLECMDID_CUT = 11,
-			OLECMDID_COPY = 12,
-			OLECMDID_PASTE = 13,
-			OLECMDID_PASTESPECIAL = 14,
-			OLECMDID_UNDO = 15,
-			OLECMDID_REDO = 16,
-			OLECMDID_SELECTALL = 17,
-			OLECMDID_CLEARSELECTION = 18,
-			OLECMDID_ZOOM = 19,
-			OLECMDID_GETZOOMRANGE = 20,
-			OLECMDID_UPDATECOMMANDS = 21,
-			OLECMDID_REFRESH = 22,
-			OLECMDID_STOP = 23,
-			OLECMDID_HIDETOOLBARS = 24,
-			OLECMDID_SETPROGRESSMAX = 25,
-			OLECMDID_SETPROGRESSPOS = 26,
-			OLECMDID_SETPROGRESSTEXT = 27,
-			OLECMDID_SETTITLE = 28,
-			OLECMDID_SETDOWNLOADSTATE = 29,
-			OLECMDID_STOPDOWNLOAD = 30,
-			OLECMDID_ONTOOLBARACTIVATED = 31,
-			OLECMDID_FIND = 32,
-			OLECMDID_DELETE = 33,
-			OLECMDID_HTTPEQUIV = 34,
-			OLECMDID_HTTPEQUIV_DONE = 35,
-			OLECMDID_ENABLE_INTERACTION = 36,
-			OLECMDID_ONUNLOAD = 37,
-			OLECMDID_PROPERTYBAG2 = 38,
-			OLECMDID_PREREFRESH = 39,
-			OLECMDID_SHOWSCRIPTERROR = 40,
-			OLECMDID_SHOWMESSAGE = 41,
-			OLECMDID_SHOWFIND = 42,
-			OLECMDID_SHOWPAGESETUP = 43,
-			OLECMDID_SHOWPRINT = 44,
-			OLECMDID_CLOSE = 45,
-			OLECMDID_ALLOWUILESSSAVEAS = 46,
-			OLECMDID_DONTDOWNLOADCSS = 47,
-			OLECMDID_UPDATEPAGESTATUS = 48,
-			OLECMDID_PRINT2 = 49,
-			OLECMDID_PRINTPREVIEW2 = 50,
-			OLECMDID_SETPRINTTEMPLATE = 51,
-			OLECMDID_GETPRINTTEMPLATE = 52,
+			/// <summary>File menu, New command</summary>
+			OLECMDID_NEW,
+			/// <summary>File menu, Save command</summary>
+			OLECMDID_SAVE,
+			/// <summary>File menu, Save As command</summary>
+			OLECMDID_SAVEAS,
+			/// <summary>File menu, Save Copy As command</summary>
+			OLECMDID_SAVECOPYAS,
+			/// <summary>File menu, Print command</summary>
+			OLECMDID_PRINT,
+			/// <summary>File menu, Print Preview command</summary>
+			OLECMDID_PRINTPREVIEW,
+			/// <summary>File menu, Page Setup command</summary>
+			OLECMDID_PAGESETUP,
+			/// <summary>Tools menu, Spelling command</summary>
+			OLECMDID_SPELL,
+			/// <summary>File menu, Properties command</summary>
+			OLECMDID_PROPERTIES,
+			/// <summary>Edit menu, Cut command</summary>
+			OLECMDID_CUT,
+			/// <summary>Edit menu, Copy command</summary>
+			OLECMDID_COPY,
+			/// <summary>Edit menu, Paste command</summary>
+			OLECMDID_PASTE,
+			/// <summary>Edit menu, Paste Special command</summary>
+			OLECMDID_PASTESPECIAL,
+			/// <summary>Edit menu, Undo command</summary>
+			OLECMDID_UNDO,
+			/// <summary>Edit menu, Redo command</summary>
+			OLECMDID_REDO,
+			/// <summary>Edit menu, Select All command</summary>
+			OLECMDID_SELECTALL,
+			/// <summary>Edit menu, Clear command</summary>
+			OLECMDID_CLEARSELECTION,
+			/// <summary>View menu, Zoom command (see below for details.)</summary>
+			OLECMDID_ZOOM,
+			/// <summary>Retrieves zoom range applicable to View Zoom (see below for details.)</summary>
+			OLECMDID_GETZOOMRANGE,
+			/// <summary>
+			/// Informs the receiver, usually a frame, of state changes. The receiver can then query the status of the commands whenever convenient.
+			/// </summary>
+			OLECMDID_UPDATECOMMANDS,
+			/// <summary>Asks the receiver to refresh its display. Implemented by the document/object.</summary>
+			OLECMDID_REFRESH,
+			/// <summary>Stops all current processing. Implemented by the document/object.</summary>
+			OLECMDID_STOP,
+			/// <summary>View menu, Toolbars command. Implemented by the document/object to hide its toolbars.</summary>
+			OLECMDID_HIDETOOLBARS,
+			/// <summary>
+			/// Sets the maximum value of a progress indicator if one is owned by the receiving object, usually a frame. The minimum value
+			/// is always zero.
+			/// </summary>
+			OLECMDID_SETPROGRESSMAX,
+			/// <summary>Sets the current value of a progress indicator if one is owned by the receiving object, usually a frame.</summary>
+			OLECMDID_SETPROGRESSPOS,
+			/// <summary>
+			/// Sets the text contained in a progress indicator if one is owned by the receiving object, usually a frame. If the receiver
+			/// currently has no progress indicator, this text should be displayed in the status bar (if one exists) as with IOleInPlaceFrame::SetStatusText.
+			/// </summary>
+			OLECMDID_SETPROGRESSTEXT,
+			/// <summary>Sets the title bar text of the receiving object, usually a frame.</summary>
+			OLECMDID_SETTITLE,
+			/// <summary>
+			/// Called by the object when downloading state changes. Takes a VT_BOOL parameter, which is TRUE if the object is downloading
+			/// data and FALSE if it not. Primarily implemented by the frame.
+			/// </summary>
+			OLECMDID_SETDOWNLOADSTATE,
+			/// <summary>
+			/// Stops the download when executed. Typically, this command is propagated to all contained objects. When queried, sets
+			/// MSOCMDF_ENABLED. Implemented by the document/object.
+			/// </summary>
+			OLECMDID_STOPDOWNLOAD,
+			/// <summary/>
+			OLECMDID_ONTOOLBARACTIVATED,
+			/// <summary>Edit menu, Find command</summary>
+			OLECMDID_FIND,
+			/// <summary>Edit menu, Delete command</summary>
+			OLECMDID_DELETE,
+			/// <summary>
+			/// Issued in response to HTTP-EQUIV metatag and results in a call to the deprecated OnHttpEquiv method with the fDone parameter
+			/// set to false. This command takes a VT_BSTR parameter which is passed to OnHttpEquiv.
+			/// </summary>
+			OLECMDID_HTTPEQUIV,
+			/// <summary>
+			/// Issued in response to HTTP-EQUIV metatag and results in a call to the deprecated OnHttpEquiv method with the fDone parameter
+			/// set to true. This command takes a VT_BSTR parameter which is passed to OnHttpEquiv.
+			/// </summary>
+			OLECMDID_HTTPEQUIV_DONE,
+			/// <summary>
+			/// Pauses or resumes receiver interaction. This command takes a VT_BOOL parameter that pauses interaction when set to FALSE and
+			/// resumes interaction when set to TRUE.
+			/// </summary>
+			OLECMDID_ENABLE_INTERACTION,
+			/// <summary>
+			/// Notifies the receiver of an intent to close the window imminently. This command takes a VT_BOOL output parameter that
+			/// returns TRUE if the receiver can close and FALSE if it can't.
+			/// </summary>
+			OLECMDID_ONUNLOAD,
+			/// <summary>This command has no effect.</summary>
+			OLECMDID_PROPERTYBAG2,
+			/// <summary>Notifies the receiver that a refresh is about to start.</summary>
+			OLECMDID_PREREFRESH,
+			/// <summary>Tells the receiver to display the script error message.</summary>
+			OLECMDID_SHOWSCRIPTERROR,
+			/// <summary>This command takes an IHTMLEventObj input parameter that contains a message that the receiver shows.</summary>
+			OLECMDID_SHOWMESSAGE,
+			/// <summary>Tells the receiver to show the Find dialog box. It takes a VT_DISPATCH input param.</summary>
+			OLECMDID_SHOWFIND,
+			/// <summary>Tells the receiver to show the Page Setup dialog box. It takes an IHTMLEventObj2 input parameter.</summary>
+			OLECMDID_SHOWPAGESETUP,
+			/// <summary>Tells the receiver to show the Print dialog box. It takes an IHTMLEventObj2 input parameter.</summary>
+			OLECMDID_SHOWPRINT,
+			/// <summary>The exit command for the File menu.</summary>
+			OLECMDID_CLOSE,
+			/// <summary>Supports the QueryStatus method.</summary>
+			OLECMDID_ALLOWUILESSSAVEAS,
+			/// <summary>Notifies the receiver that CSS files should not be downloaded when in DesignMode.</summary>
+			OLECMDID_DONTDOWNLOADCSS,
+			/// <summary>This command has no effect.</summary>
+			OLECMDID_UPDATEPAGESTATUS,
+			/// <summary>File menu, updated Print command</summary>
+			OLECMDID_PRINT2,
+			/// <summary>File menu, updated Print Preview command</summary>
+			OLECMDID_PRINTPREVIEW2,
+			/// <summary>Sets an explicit Print Template value of TRUE or FALSE, based on a VT_BOOL input parameter.</summary>
+			OLECMDID_SETPRINTTEMPLATE,
+			/// <summary>Gets a VT_BOOL output parameter indicating whether the Print Template value is TRUE or FALSE.</summary>
+			OLECMDID_GETPRINTTEMPLATE,
+			/// <summary>
+			/// Indicates that a page action has been blocked. PAGEACTIONBLOCKED is designed for use with applications that host the
+			/// Internet Explorer WebBrowser control to implement their own UI.
+			/// </summary>
 			OLECMDID_PAGEACTIONBLOCKED = 55,
-			OLECMDID_PAGEACTIONUIQUERY = 56,
-			OLECMDID_FOCUSVIEWCONTROLS = 57,
-			OLECMDID_FOCUSVIEWCONTROLSQUERY = 58,
-			OLECMDID_SHOWPAGEACTIONMENU = 59,
-			OLECMDID_ADDTRAVELENTRY = 60,
-			OLECMDID_UPDATETRAVELENTRY = 61,
-			OLECMDID_UPDATEBACKFORWARDSTATE = 62,
-			OLECMDID_OPTICAL_ZOOM = 63,
-			OLECMDID_OPTICAL_GETZOOMRANGE = 64,
-			OLECMDID_WINDOWSTATECHANGED = 65,
-			OLECMDID_ACTIVEXINSTALLSCOPE = 66,
-			OLECMDID_UPDATETRAVELENTRY_DATARECOVERY = 67,
-			OLECMDID_SHOWTASKDLG = 68,
-			OLECMDID_POPSTATEEVENT = 69,
-			OLECMDID_VIEWPORT_MODE = 70,
-			OLECMDID_LAYOUT_VIEWPORT_WIDTH = 71,
-			OLECMDID_VISUAL_VIEWPORT_EXCLUDE_BOTTOM = 72,
-			OLECMDID_USER_OPTICAL_ZOOM = 73,
-			OLECMDID_PAGEAVAILABLE = 74,
-			OLECMDID_GETUSERSCALABLE = 75,
-			OLECMDID_UPDATE_CARET = 76,
-			OLECMDID_ENABLE_VISIBILITY = 77,
-			OLECMDID_MEDIA_PLAYBACK = 78,
-			OLECMDID_SETFAVICON = 79,
-			OLECMDID_SET_HOST_FULLSCREENMODE = 80,
-			OLECMDID_EXITFULLSCREEN = 81,
-			OLECMDID_SCROLLCOMPLETE = 82,
-			OLECMDID_ONBEFOREUNLOAD = 83,
-			OLECMDID_SHOWMESSAGE_BLOCKABLE = 84,
-			OLECMDID_SHOWTASKDLG_BLOCKABLE = 85,
+			/// <summary>Specifies which actions are displayed in the Internet Explorer notification band.</summary>
+			OLECMDID_PAGEACTIONUIQUERY,
+			/// <summary>
+			/// Causes the Internet Explorer WebBrowser control to focus its default notification band. Hosts can send this command at any
+			/// time. The return value is S_OK if the band is present and is in focus, or S_FALSE otherwise.
+			/// </summary>
+			OLECMDID_FOCUSVIEWCONTROLS,
+			/// <summary>
+			/// This notification event is provided for applications that display Internet Explorers default notification band
+			/// implementation. By default, when the user presses the ALT-N key combination, Internet Explorer treats it as a request to
+			/// focus the notification band.
+			/// </summary>
+			OLECMDID_FOCUSVIEWCONTROLSQUERY,
+			/// <summary>Causes the Internet Explorer WebBrowser control to show the Information Bar menu.</summary>
+			OLECMDID_SHOWPAGEACTIONMENU,
+			/// <summary>
+			/// Causes the Internet Explorer WebBrowser control to create an entry at the current Travel Log offset. The Docobject should
+			/// implement ITravelLogClient and IPersist interfaces, which are used by the Travel Log as it processes this command with calls
+			/// to GetWindowData and GetPersistID, respectively.
+			/// </summary>
+			OLECMDID_ADDTRAVELENTRY,
+			/// <summary>
+			/// Called when LoadHistory is processed to update the previous Docobject state. For synchronous handling, this command can be
+			/// called before returning from the LoadHistory call. For asynchronous handling, it can be called later.
+			/// </summary>
+			OLECMDID_UPDATETRAVELENTRY,
+			/// <summary>Updates the state of the browser's Back and Forward buttons.</summary>
+			OLECMDID_UPDATEBACKFORWARDSTATE,
+			/// <summary>
+			/// Windows Internet Explorer 7 and later. Sets the zoom factor of the browser. Takes a VT_I4 parameter in the range of 10 to
+			/// 1000 (percent).
+			/// </summary>
+			OLECMDID_OPTICAL_ZOOM,
+			/// <summary>
+			/// Windows Internet Explorer 7 and later. Retrieves the minimum and maximum browser zoom factor limits. Returns a VT_I4
+			/// parameter; the LOWORD is the minimum zoom factor, the HIWORD is the maximum.
+			/// </summary>
+			OLECMDID_OPTICAL_GETZOOMRANGE,
+			/// <summary>
+			/// Windows Internet Explorer 7 and later. Notifies the Internet Explorer WebBrowser control of changes in window states, such
+			/// as losing focus, or becoming hidden or minimized. The host indicates what has changed by setting OLECMDID_WINDOWSTATE_FLAG
+			/// option flags in nCmdExecOpt.
+			/// </summary>
+			OLECMDID_WINDOWSTATECHANGED,
+			/// <summary>
+			/// Windows Internet Explorer 8 with Windows Vista. Has no effect with Windows Internet Explorer 8 with Windows XP. Notifies
+			/// Trident to use the indicated Install Scope to install the ActiveX Control specified by the indicated Class ID. For more
+			/// information, see the Remarks section.
+			/// </summary>
+			OLECMDID_ACTIVEXINSTALLSCOPE,
+			/// <summary>
+			/// Internet Explorer 8. Unlike OLECMDID_UPDATETRAVELENTRY, this updates a Travel Log entry that is not initialized from a
+			/// previous Docobject state. While this command is not called from IPersistHistory::LoadHistory, it can be called separately to
+			/// save browser state that can be used later to recover from a crash.
+			/// </summary>
+			OLECMDID_UPDATETRAVELENTRY_DATARECOVERY,
+			/// <summary/>
+			OLECMDID_SHOWTASKDLG,
+			/// <summary/>
+			OLECMDID_POPSTATEEVENT,
+			/// <summary/>
+			OLECMDID_VIEWPORT_MODE,
+			/// <summary/>
+			OLECMDID_LAYOUT_VIEWPORT_WIDTH,
+			/// <summary/>
+			OLECMDID_VISUAL_VIEWPORT_EXCLUDE_BOTTOM,
+			/// <summary/>
+			OLECMDID_USER_OPTICAL_ZOOM,
+			/// <summary/>
+			OLECMDID_PAGEAVAILABLE,
+			/// <summary/>
+			OLECMDID_GETUSERSCALABLE,
+			/// <summary/>
+			OLECMDID_UPDATE_CARET,
+			/// <summary/>
+			OLECMDID_ENABLE_VISIBILITY,
+			/// <summary/>
+			OLECMDID_MEDIA_PLAYBACK,
+			/// <summary/>
+			OLECMDID_SETFAVICON,
+			/// <summary/>
+			OLECMDID_SET_HOST_FULLSCREENMODE,
+			/// <summary/>
+			OLECMDID_EXITFULLSCREEN,
+			/// <summary/>
+			OLECMDID_SCROLLCOMPLETE,
+			/// <summary/>
+			OLECMDID_ONBEFOREUNLOAD,
+			/// <summary/>
+			OLECMDID_SHOWMESSAGE_BLOCKABLE,
+			/// <summary/>
+			OLECMDID_SHOWTASKDLG_BLOCKABLE,
 		}
 
 		/// <summary>Specifies the window state.</summary>

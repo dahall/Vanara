@@ -58,17 +58,47 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762598")]
 		public enum BrowseForFolderMessages : uint
 		{
+			/// <summary>This message indicates that the Browse For Folder dialog box finished initializing.</summary>
 			BFFM_INITIALIZED = 1,
+
+			/// <summary>This message indicates that the selection in the dialog box changed.</summary>
 			BFFM_SELCHANGED = 2,
+
+			/// <summary>
+			/// This message indicates that the user typed an invalid name into the edit box of the Browse For Folder dialog box.
+			/// </summary>
 			BFFM_VALIDATEFAILEDA = 3,
+
+			/// <summary>
+			/// This message indicates that the user typed an invalid name into the edit box of the Browse For Folder dialog box.
+			/// </summary>
 			BFFM_VALIDATEFAILEDW = 4,
+
+			/// <summary>An IUnknown interface is available to the dialog box.</summary>
 			BFFM_IUNKNOWN = 5,
+
+			/// <summary>This message sets the status text in the Browse For Folder dialog box.</summary>
 			BFFM_SETSTATUSTEXTA = WM_USER + 100,
+
+			/// <summary>This message enables or disables the OK button for the Browse For Folder dialog box.</summary>
 			BFFM_ENABLEOK = WM_USER + 101,
+
+			/// <summary>This message selects the specified folder in the Browse For Folder dialog box.</summary>
 			BFFM_SETSELECTIONA = WM_USER + 102,
+
+			/// <summary>This message selects the specified folder in the Browse For Folder dialog box.</summary>
 			BFFM_SETSELECTIONW = WM_USER + 103,
+
+			/// <summary>This message sets the status text in the Browse For Folder dialog box.</summary>
 			BFFM_SETSTATUSTEXTW = WM_USER + 104,
+
+			/// <summary>Version 6.0 or later. Sets the text that is displayed on the dialog box's OK button.</summary>
 			BFFM_SETOKTEXT = WM_USER + 105,
+
+			/// <summary>
+			/// Version 6.0 or later. Specifies the path of a folder to expand in the Browse dialog box. The path can be specified as a
+			/// Unicode string or a PIDL.
+			/// </summary>
 			BFFM_SETEXPANDED = WM_USER + 106
 		}
 
