@@ -25,9 +25,9 @@ GRADIENT_RECT, GRADIENT_TRIANGLE, HSECTION, TRIVERTEX, BITMAP, BITMAPINFO, BITMA
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) ">
     <PackageReference Include="System.Drawing.Common">
-      <Version>4.6.0</Version>
+      <Version>5.0.0</Version>
     </PackageReference>
   </ItemGroup>
 </Project>
