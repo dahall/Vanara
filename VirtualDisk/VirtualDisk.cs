@@ -672,7 +672,7 @@ namespace Vanara.IO
 			{
 				var perr = GetVirtualDiskOperationProgress(phVhd, ref reset, out var prog);
 				perr.ThrowIfFailed();
-				if (cancellationToken != null && cancellationToken.IsCancellationRequested) return false;
+				if (cancellationToken.IsCancellationRequested) return false;
 				switch (prog.OperationStatus)
 				{
 					case 0:
@@ -689,15 +689,9 @@ namespace Vanara.IO
 				}
 				if (prog.CurrentValue == prog.CompletionValue) return true;
 #if NET40
-				if (cancellationToken == null)
-					await TaskEx.Delay(250);
-				else
-					await TaskEx.Delay(250, cancellationToken);
+				await TaskEx.Delay(250, cancellationToken);
 #else
-				if (cancellationToken == null)
-					await Task.Delay(250);
-				else
-					await Task.Delay(250, cancellationToken);
+				await Task.Delay(250, cancellationToken);
 #endif
 			}
 		}

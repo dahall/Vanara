@@ -828,7 +828,7 @@ namespace Vanara.Windows.Shell
 			{
 				var ret = new StringBuilder(buffSize, buffSize);
 				try { method(ret, ret.Capacity); }
-				catch (COMException ex) { if (ex.ErrorCode == unchecked((int)0x8007007A) || ex.ErrorCode == unchecked((int)0x800700EA) || buffSize <= 8192) buffSize *= 2; else throw ex; }
+				catch (COMException ex) { if (ex.ErrorCode == unchecked((int)0x8007007A) || ex.ErrorCode == unchecked((int)0x800700EA) || buffSize <= 8192) buffSize *= 2; else throw; }
 				return ret.ToString();
 			}
 		}

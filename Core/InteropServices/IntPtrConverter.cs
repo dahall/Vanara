@@ -68,7 +68,7 @@ namespace Vanara.InteropServices
 							return new BinaryFormatter().Deserialize(mem);
 						}
 					}
-					catch (ArgumentOutOfRangeException e)
+					catch (ArgumentOutOfRangeException)
 					{
 						throw;
 					}
