@@ -38,11 +38,11 @@ namespace Vanara.Windows.Shell
 		/// <value>The progress bar.</value>
 		public ProgressBar ProgressBar { get; set; }
 
+#if NETFRAMEWORK || NETCOREAPP3_0
 		/// <summary>Gets or sets the status bar associated with the view.</summary>
 		/// <value>The status bar.</value>
 		public StatusBar StatusBar { get; set; }
 
-#if NETFRAMEWORK || NETCOREAPP3_0
 		/// <summary>Gets or sets the tool bar associated with the view.</summary>
 		/// <value>The tool bar.</value>
 		public ToolBar ToolBar { get; set; }
@@ -92,8 +92,8 @@ namespace Vanara.Windows.Shell
 			phwnd = id switch
 			{
 				FCW.FCW_PROGRESS => CheckAndLoad(ProgressBar),
-				FCW.FCW_STATUS => CheckAndLoad(StatusBar),
 #if NETFRAMEWORK || NETCOREAPP3_0
+				FCW.FCW_STATUS => CheckAndLoad(StatusBar),
 				FCW.FCW_TOOLBAR => CheckAndLoad(ToolBar),
 #endif
 				FCW.FCW_TREE => CheckAndLoad(TreeView),

@@ -178,6 +178,13 @@ namespace Vanara.Windows.Shell
 			ComInterface.InvokeCommand(invoke);
 		}
 
+		private void InvokeCommand(int index)
+		{
+			var invoke = new CMINVOKECOMMANDINFOEX(index) { nShow = ShowWindowCommand.SW_SHOWNORMAL };
+			m_ComInterface2.InvokeCommand(invoke);
+		}
+
+#if !NET5_0
 		/// <summary>Populates a <see cref="Menu"/> with the context menu items for a shell item.</summary>
 		/// <remarks>
 		/// If this method is being used to populate a Form's main menu then you need to call <see cref="HandleMenuMessage"/> in the Form's
@@ -202,12 +209,6 @@ namespace Vanara.Windows.Shell
 			{
 				InvokeCommand((int)command - m_CmdFirst);
 			}
-		}
-
-		private void InvokeCommand(int index)
-		{
-			var invoke = new CMINVOKECOMMANDINFOEX(index) { nShow = ShowWindowCommand.SW_SHOWNORMAL };
-			m_ComInterface2.InvokeCommand(invoke);
 		}
 
 		private void RemoveShellMenuItems(Menu menu)
@@ -263,6 +264,7 @@ namespace Vanara.Windows.Shell
 				SetMenuInfo(item.Handle, info);
 			}
 		}
+#endif
 
 		private class MessageWindow : Control
 		{
