@@ -165,11 +165,16 @@ namespace Vanara.Windows.Shell
 		public void InvokeRename() => InvokeVerb("rename");
 
 		/// <summary>Invokes the specified verb on the shell item(s).</summary>
-		public void InvokeVerb(string verb)
+		/// <param name="verb">The verb to invoke.</param>
+		/// <param name="show">Flags that specify how to display any opened window.</param>
+		public void InvokeVerb(string verb, ShowWindowCommand show = ShowWindowCommand.SW_NORMAL)
 		{
-			var invoke = new CMINVOKECOMMANDINFOEX();
-			invoke.cbSize = (uint)Marshal.SizeOf(invoke);
-			invoke.lpVerb = new SafeResourceId(verb);
+			var invoke = new CMINVOKECOMMANDINFOEX
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(CMINVOKECOMMANDINFOEX)),
+				lpVerb = new SafeResourceId(verb, CharSet.Ansi),
+				nShow = show
+			};
 			ComInterface.InvokeCommand(invoke);
 		}
 
