@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>Dhcpcsvc6.dll;Dhcpcsvc.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Dhcpcsvc.dll and Dhcpcsvc6.dll.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <TargetFrameworks>net20;net35;net40;net45;net5.0-windows;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.Dhcp</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;Dhcp</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+DhcpCApiCleanup, DhcpCApiInitialize, DhcpDeRegisterParamChange, DhcpGetOriginalSubnetMask, DhcpRegisterParamChange, DhcpRemoveDNSRegistrations, DhcpRequestParams, DhcpUndoRequestParams, Dhcpv6CApiCleanup, Dhcpv6CApiInitialize, Dhcpv6ReleasePrefix, Dhcpv6RenewPrefix, Dhcpv6RequestParams, Dhcpv6RequestPrefix, McastApiCleanup, McastApiStartup, McastEnumerateScopes, McastGenUID, McastReleaseAddress, McastRenewAddress, McastRequestAddress
+
+Structures
+DHCP_IP_ADDRESS, DHCPAPI_PARAMS, DHCPCAPI_CLASSID, DHCPCAPI_PARAMS_ARRAY, DHCPV6CAPI_CLASSID, DHCPV6CAPI_PARAMS, DHCPV6CAPI_PARAMS_ARRAY, DHCPV6Prefix, DHCPV6PrefixLeaseInformation
+
+</PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>
