@@ -2422,6 +2422,11 @@ namespace Vanara.PInvoke
 			public static implicit operator SafeEventHandle(EventWaitHandle h) => new SafeEventHandle(h.Handle, false);
 #pragma warning restore CS0618 // Type or member is obsolete
 
+			/// <summary>Performs an implicit conversion from <see cref="SafeEventHandle"/> to <see cref="HEVENT"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HEVENT(SafeEventHandle h) => h.handle;
+
 			/// <summary>Gets an invalid event handle.</summary>
 			public static SafeEventHandle InvalidHandle => new SafeEventHandle(new IntPtr(-1), false);
 

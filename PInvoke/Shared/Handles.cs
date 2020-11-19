@@ -36,7 +36,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HACCEL : IUserHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HACCEL"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -71,7 +71,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HACCEL h1, HACCEL h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HACCEL h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HACCEL h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -84,7 +84,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -124,7 +124,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HANDLE h1, HANDLE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HANDLE h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HANDLE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -137,7 +137,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HBITMAP : IGraphicsObjectHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HBITMAP"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -177,7 +177,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HBITMAP h1, HBITMAP h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HBITMAP h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HBITMAP h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -190,7 +190,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HBRUSH : IGraphicsObjectHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HBRUSH"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -230,7 +230,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HBRUSH h1, HBRUSH h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HBRUSH h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HBRUSH h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -243,7 +243,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HCOLORSPACE : IGraphicsObjectHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HCOLORSPACE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -278,7 +278,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HCOLORSPACE h1, HCOLORSPACE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCOLORSPACE h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HCOLORSPACE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -291,7 +291,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HCURSOR : IGraphicsObjectHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HCURSOR"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -326,7 +326,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HCURSOR h1, HCURSOR h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCURSOR h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HCURSOR h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -339,7 +339,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDC : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HDC"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -374,7 +374,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HDC h1, HDC h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDC h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HDC h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -387,7 +387,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDESK : IKernelHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HDESK"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -422,7 +422,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HDESK h1, HDESK h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDESK h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HDESK h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -435,7 +435,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDPA : IKernelHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HDPA"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -470,7 +470,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HDPA h1, HDPA h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDPA h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HDPA h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -483,7 +483,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDROP : IShellHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HDROP"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -518,7 +518,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HDROP h1, HDROP h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDROP h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HDROP h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -531,7 +531,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDSA : IKernelHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HDSA"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -568,7 +568,7 @@ namespace Vanara.PInvoke
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => obj is HDSA h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HDSA h && handle == h.handle;
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -582,7 +582,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HDWP : IUserHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HDWP"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -617,7 +617,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HDWP h1, HDWP h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HDWP h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HDWP h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -630,7 +630,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HENHMETAFILE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HENHMETAFILE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -665,7 +665,55 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HENHMETAFILE h1, HENHMETAFILE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HENHMETAFILE h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HENHMETAFILE h && handle == h.handle;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a handle to a synch event.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HEVENT : ISyncHandle
+	{
+		private readonly IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HEVENT"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HEVENT(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HEVENT"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HEVENT NULL => new HEVENT(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="HEVENT"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HEVENT h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HEVENT"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HEVENT(IntPtr h) => new HEVENT(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HEVENT h1, HEVENT h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HEVENT h1, HEVENT h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HEVENT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -681,7 +729,7 @@ namespace Vanara.PInvoke
 		/// <summary>Represents an invalid handle.</summary>
 		public static readonly HFILE INVALID_HANDLE_VALUE = new IntPtr(-1);
 
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HFILE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -724,7 +772,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HFILE h1, HFILE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFILE h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HFILE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -737,7 +785,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HFONT : IGraphicsObjectHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HFONT"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -777,7 +825,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HFONT h1, HFONT h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFONT h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HFONT h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -790,7 +838,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HGDIOBJ : IGraphicsObjectHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HGDIOBJ"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -875,7 +923,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HGDIOBJ h1, HGDIOBJ h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HGDIOBJ h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HGDIOBJ h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -888,7 +936,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HICON : IUserHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HICON"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -923,7 +971,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HICON h1, HICON h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HICON h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HICON h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -936,7 +984,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HIMAGELIST : IShellHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HIMAGELIST"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -971,7 +1019,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HIMAGELIST h1, HIMAGELIST h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HIMAGELIST h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HIMAGELIST h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -984,7 +1032,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HINSTANCE : IKernelHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HINSTANCE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1019,7 +1067,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HINSTANCE h1, HINSTANCE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HINSTANCE h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HINSTANCE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1032,7 +1080,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HKEY : IKernelHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HKEY"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1119,7 +1167,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HKEY h1, HKEY h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HKEY h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HKEY h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1132,7 +1180,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HMENU : IUserHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HMENU"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1167,7 +1215,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HMENU h1, HMENU h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMENU h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HMENU h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1180,7 +1228,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HMETAFILE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HMETAFILE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1215,7 +1263,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HMETAFILE h1, HMETAFILE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMETAFILE h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HMETAFILE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1228,7 +1276,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HMONITOR : IKernelHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HMONITOR"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1263,7 +1311,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HMONITOR h1, HMONITOR h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HMONITOR h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HMONITOR h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1276,7 +1324,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPALETTE : IGraphicsObjectHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HPALETTE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1316,7 +1364,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HPALETTE h1, HPALETTE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPALETTE h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HPALETTE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1329,7 +1377,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPEN : IGraphicsObjectHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HPEN"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1369,7 +1417,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HPEN h1, HPEN h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPEN h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HPEN h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1382,7 +1430,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPROCESS : ISyncHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HPROCESS"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1422,7 +1470,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HPROCESS h1, HPROCESS h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPROCESS h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HPROCESS h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1435,7 +1483,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPROPSHEET : IUserHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HPROPSHEET"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1470,7 +1518,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HPROPSHEET h1, HPROPSHEET h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPROPSHEET h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HPROPSHEET h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1483,7 +1531,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HPROPSHEETPAGE : IUserHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HPROPSHEETPAGE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1518,7 +1566,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HPROPSHEETPAGE h1, HPROPSHEETPAGE h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HPROPSHEETPAGE h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HPROPSHEETPAGE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1531,7 +1579,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HRGN : IGraphicsObjectHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HRGN"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1571,7 +1619,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HRGN h1, HRGN h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HRGN h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HRGN h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1584,7 +1632,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HSECTION : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HSECTION"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1619,7 +1667,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HSECTION h1, HSECTION h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HSECTION h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HSECTION h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1632,7 +1680,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HTASK : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HTASK"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1667,7 +1715,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HTASK h1, HTASK h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTASK h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HTASK h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1680,7 +1728,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HTHEME : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HTHEME"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1715,7 +1763,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HTHEME h1, HTHEME h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTHEME h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HTHEME h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1728,7 +1776,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HTHREAD : ISyncHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HTHREAD"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1763,7 +1811,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HTHREAD h1, HTHREAD h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTHREAD h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HTHREAD h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1776,7 +1824,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HTHUMBNAIL : IShellHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HTHUMBNAIL"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1811,7 +1859,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HTHUMBNAIL h1, HTHUMBNAIL h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTHUMBNAIL h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HTHUMBNAIL h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1824,7 +1872,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HTOKEN : IKernelHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HTOKEN"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1859,7 +1907,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HTOKEN h1, HTOKEN h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HTOKEN h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HTOKEN h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1872,7 +1920,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HWINSTA : IKernelHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HWINSTA"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1907,7 +1955,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HWINSTA h1, HWINSTA h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HWINSTA h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HWINSTA h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1920,7 +1968,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct HWND : IUserHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HWND"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1973,7 +2021,7 @@ namespace Vanara.PInvoke
 		public static bool operator ==(HWND h1, HWND h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HWND h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is HWND h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1986,7 +2034,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct PACE : ISecurityObject
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PACE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2009,7 +2057,7 @@ namespace Vanara.PInvoke
 		public static implicit operator PACE(IntPtr h) => new PACE(h);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PACE h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is PACE h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2022,7 +2070,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct PACL : ISecurityObject
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PACL"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2045,7 +2093,7 @@ namespace Vanara.PInvoke
 		public static implicit operator PACL(IntPtr h) => new PACL(h);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PACL h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is PACL h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2058,7 +2106,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct PSECURITY_DESCRIPTOR : ISecurityObject
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PSECURITY_DESCRIPTOR"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2081,7 +2129,7 @@ namespace Vanara.PInvoke
 		public static implicit operator PSECURITY_DESCRIPTOR(IntPtr h) => new PSECURITY_DESCRIPTOR(h);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PSECURITY_DESCRIPTOR h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is PSECURITY_DESCRIPTOR h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -2094,7 +2142,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
 	public struct PSID : ISecurityObject
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PSID"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2117,7 +2165,7 @@ namespace Vanara.PInvoke
 		public static implicit operator PSID(IntPtr h) => new PSID(h);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PSID h ? handle == h.handle : false;
+		public override bool Equals(object obj) => obj is PSID h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
