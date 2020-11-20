@@ -87,6 +87,7 @@ Struct | Description
 [Vanara.PInvoke.HDSA](https://github.com/dahall/Vanara/search?l=C%23&q=HDSA) | Provides a handle to a DSA.
 [Vanara.PInvoke.HDWP](https://github.com/dahall/Vanara/search?l=C%23&q=HDWP) | Provides a handle to a deferred windows position.
 [Vanara.PInvoke.HENHMETAFILE](https://github.com/dahall/Vanara/search?l=C%23&q=HENHMETAFILE) | Provides a handle to an enhanced metafile.
+[Vanara.PInvoke.HEVENT](https://github.com/dahall/Vanara/search?l=C%23&q=HEVENT) | 
 [Vanara.PInvoke.HFILE](https://github.com/dahall/Vanara/search?l=C%23&q=HFILE) | Provides a handle to a file.
 [Vanara.PInvoke.HFONT](https://github.com/dahall/Vanara/search?l=C%23&q=HFONT) | Provides a handle to a font.
 [Vanara.PInvoke.HGDIOBJ](https://github.com/dahall/Vanara/search?l=C%23&q=HGDIOBJ) | Provides a handle to a graphic device object.
@@ -181,7 +182,7 @@ Class | Description
 [Vanara.InteropServices.SafeNativeArray<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNativeArray<T>) | A safe unmanaged array of structures allocated on the global heap. Array size determined by allocated memory size divided by size of structure.
 [Vanara.InteropServices.SafeNativeArrayBase<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNativeArrayBase<T>) | A safe unmanaged array of structures. Array size determined by size of structure.
 [Vanara.InteropServices.SafeNativeLinkedList<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNativeLinkedList<T>) | A safe unmanaged linked list of structures allocated on the global heap.
-[Vanara.InteropServices.SafeNativeListBase<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNativeListBase<T>) | 
+[Vanara.InteropServices.SafeNativeListBase<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNativeListBase<T>) | An abstract base class for a safe, unmanaged list of structures allocated by a memory scheme.
 [Vanara.PInvoke.SafeResourceId](https://github.com/dahall/Vanara/search?l=C%23&q=SafeResourceId) | Represents a system resource name that can identify as a string, integer, or pointer.
 [Vanara.PInvoke.FunctionHelper.SBFunc<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SBFunc<T>) | Delegate that takes and StringBuilder and initial size and returns a result.
 [Vanara.PInvoke.SECURITY_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=SECURITY_ATTRIBUTES) | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
