@@ -1,7 +1,9 @@
-## Correlation report for uxtheme.dll  
+## Vanara.PInvoke.UxTheme  
 PInvoke API (methods, structures and constants) imported from Windows UxTheme.dll.
 
-### Methods (100% complete, 77 of 77 functions)  
+- Includes methods from uxtheme.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.UxTheme?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.UxTheme?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.UxTheme)  
+### Methods - 100% API coverage (77 of 77 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [BeginBufferedAnimation](https://www.google.com/search?num=5&q=BeginBufferedAnimation+site%3Adocs.microsoft.com) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BeginBufferedAnimation](https://github.com/dahall/Vanara/search?l=C%23&q=BeginBufferedAnimation)  

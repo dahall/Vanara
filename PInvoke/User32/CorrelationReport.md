@@ -1,7 +1,9 @@
-## Correlation report for user32.dll  
+## Vanara.PInvoke.User32  
 PInvoke API (methods, structures and constants) imported from Windows User32.dll.
 
-### Methods (100% complete, 559 of 559 functions)  
+- Includes methods from user32.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.User32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.User32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.User32)  
+### Methods - 100% API coverage (559 of 559 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  

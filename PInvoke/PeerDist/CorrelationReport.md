@@ -1,7 +1,9 @@
-## Correlation report for peerdist.dll  
+## Vanara.PInvoke.PeerDist  
 PInvoke API (methods, structures and constants) imported from Windows PeerDist.dll for the Peer Distribution API, which supports the Branch Cache feature in Windows 7.
 
-### Methods (100% complete, 28 of 28 functions)  
+- Includes methods from peerdist.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.PeerDist?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.PeerDist?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.PeerDist)  
+### Methods - 100% API coverage (28 of 28 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [PeerDistClientAddContentInformation](https://www.google.com/search?num=5&q=PeerDistClientAddContentInformation+site%3Adocs.microsoft.com) | peerdist.h | [Vanara.PInvoke.PeerDist.PeerDistClientAddContentInformation](https://github.com/dahall/Vanara/search?l=C%23&q=PeerDistClientAddContentInformation)  

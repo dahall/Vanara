@@ -1,7 +1,9 @@
-## Correlation report for userenv.dll  
+## Vanara.PInvoke.UserEnv  
 PInvoke API (methods, structures and constants) imported from UserEnv.dll.
 
-### Methods (100% complete, 29 of 29 functions)  
+- Includes methods from userenv.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.UserEnv?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.UserEnv?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.UserEnv)  
+### Methods - 100% API coverage (29 of 29 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CreateAppContainerProfile](https://www.google.com/search?num=5&q=CreateAppContainerProfile+site%3Adocs.microsoft.com) | userenv.h | [Vanara.PInvoke.UserEnv.CreateAppContainerProfile](https://github.com/dahall/Vanara/search?l=C%23&q=CreateAppContainerProfile)  

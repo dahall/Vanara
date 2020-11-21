@@ -1,7 +1,9 @@
-## Correlation report for kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
+## Vanara.PInvoke.Kernel32  
 PInvoke API (methods, structures and constants) imported from Windows Kernel32.dll.
 
-### Methods (100% complete, 1112 of 1112 functions)  
+- Includes methods from kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Kernel32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Kernel32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Kernel32)  
+### Methods - 100% API coverage (1112 of 1112 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Adocs.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  

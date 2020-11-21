@@ -1,7 +1,9 @@
-## Correlation report for drt.dll  
+## Vanara.PInvoke.Drt  
 PInvoke API (methods, structures and constants) imported from Windows Drt.dll for the Distributed Routing Table (DRT) API.
 
-### Methods (100% complete, 27 of 27 functions)  
+- Includes methods from drt.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Drt?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Drt?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Drt)  
+### Methods - 100% API coverage (27 of 27 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DrtClose](https://www.google.com/search?num=5&q=DrtClose+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtClose](https://github.com/dahall/Vanara/search?l=C%23&q=DrtClose)  

@@ -1,7 +1,9 @@
-## Correlation report for p2p.dll  
+## Vanara.PInvoke.P2P  
 PInvoke API (methods, structures and constants) imported from Windows P2P.dll for Peer-to-Peer API.
 
-### Methods (100% complete, 109 of 109 functions)  
+- Includes methods from p2p.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.P2P?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.P2P?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.P2P)  
+### Methods - 100% API coverage (109 of 109 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [PeerCollabAddContact](https://www.google.com/search?num=5&q=PeerCollabAddContact+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerCollabAddContact](https://github.com/dahall/Vanara/search?l=C%23&q=PeerCollabAddContact)  
@@ -52,7 +54,7 @@ Native Method | Header | Managed Method
 [PeerEnumIdentities](https://www.google.com/search?num=5&q=PeerEnumIdentities+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerEnumIdentities](https://github.com/dahall/Vanara/search?l=C%23&q=PeerEnumIdentities)  
 [PeerFreeData](https://www.google.com/search?num=5&q=PeerFreeData+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerFreeData](https://github.com/dahall/Vanara/search?l=C%23&q=PeerFreeData)  
 [PeerGetItemCount](https://www.google.com/search?num=5&q=PeerGetItemCount+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGetItemCount](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGetItemCount)  
-[PeerGetNextItem](https://www.google.com/search?num=5&q=PeerGetNextItem+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.PeerGetNextItem](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGetNextItem)  
+[PeerGetNextItem](https://www.google.com/search?num=5&q=PeerGetNextItem+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGetNextItem](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGetNextItem)  
 [PeerGraphShutdown](https://www.google.com/search?num=5&q=PeerGraphShutdown+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGraphShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGraphShutdown)  
 [PeerGraphStartup](https://www.google.com/search?num=5&q=PeerGraphStartup+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGraphStartup](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGraphStartup)  
 [PeerGroupAddRecord](https://www.google.com/search?num=5&q=PeerGroupAddRecord+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupAddRecord](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupAddRecord)  

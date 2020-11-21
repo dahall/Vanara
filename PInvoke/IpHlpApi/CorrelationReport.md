@@ -1,7 +1,9 @@
-## Correlation report for iphlpapi.dll  
+## Vanara.PInvoke.IpHlpApi  
 PInvoke API (methods, structures and constants) imported from Windows IpHlpApi.dll.
 
-### Methods (100% complete, 158 of 158 functions)  
+- Includes methods from iphlpapi.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.IpHlpApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.IpHlpApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.IpHlpApi)  
+### Methods - 100% API coverage (158 of 158 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddIPAddress](https://www.google.com/search?num=5&q=AddIPAddress+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.AddIPAddress](https://github.com/dahall/Vanara/search?l=C%23&q=AddIPAddress)  

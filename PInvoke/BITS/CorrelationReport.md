@@ -1,6 +1,8 @@
-## Correlation report for qmgr.dll  
+## Vanara.PInvoke.BITS  
 PInvoke API (interfaces, structures and constants) imported for Windows BITS (Background Intelligent Transfer Service).
 
+- Includes methods from qmgr.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.BITS?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.BITS?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.BITS)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

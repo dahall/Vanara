@@ -22,7 +22,7 @@ Struct | Description
 [Vanara.InteropServices.StrPtrAnsi](https://github.com/dahall/Vanara/search?l=C%23&q=StrPtrAnsi) | The StrPtr structure represents a LPWSTR.
 [Vanara.InteropServices.StrPtrAuto](https://github.com/dahall/Vanara/search?l=C%23&q=StrPtrAuto) | The StrPtr structure represents a LPTSTR.
 [Vanara.InteropServices.StrPtrUni](https://github.com/dahall/Vanara/search?l=C%23&q=StrPtrUni) | The StrPtr structure represents a LPWSTR.
-[Vanara.PInvoke.time_t](https://github.com/dahall/Vanara/search?l=C%23&q=time_t) | 
+[Vanara.PInvoke.time_t](https://github.com/dahall/Vanara/search?l=C%23&q=time_t) | Managed instance of the time_t type.
 ### Interfaces
 Interface | Description
 ---- | ----

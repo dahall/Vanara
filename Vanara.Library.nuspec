@@ -27,6 +27,7 @@
       <dependency id="Vanara.PInvoke.CredUI" version="3.3.0" />
       <dependency id="Vanara.PInvoke.Cryptography" version="3.3.0" />
       <dependency id="Vanara.PInvoke.DbgHelp" version="3.3.0" />
+      <dependency id="Vanara.PInvoke.Dhcp" version="3.3.0" />
       <dependency id="Vanara.PInvoke.DnsApi" version="3.3.0" />
       <dependency id="Vanara.PInvoke.Drt" version="3.3.0" />
       <dependency id="Vanara.PInvoke.DwmApi" version="3.3.0" />

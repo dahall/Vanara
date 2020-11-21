@@ -1,7 +1,9 @@
-## Correlation report for pdh.dll  
+## Vanara.PInvoke.Pdh  
 PInvoke API (methods, structures and constants imported from Windows Pdh.dll.
 
-### Methods (100% complete, 58 of 58 functions)  
+- Includes methods from pdh.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Pdh?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Pdh?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Pdh)  
+### Methods - 100% API coverage (58 of 58 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [PdhAddCounter](https://www.google.com/search?num=5&q=PdhAddCounterA+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PdhAddCounter](https://github.com/dahall/Vanara/search?l=C%23&q=PdhAddCounter)  

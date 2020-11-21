@@ -1,7 +1,9 @@
-## Correlation report for firewallapi.dll  
+## Vanara.PInvoke.FirewallApi  
 PInvoke API (methods, structures and constants) imported from FirewallApi.dll for Windows Firewall with Advanced Security.
 
-### Methods (100% complete, 11 of 11 functions)  
+- Includes methods from firewallapi.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.FirewallApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.FirewallApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.FirewallApi)  
+### Methods - 100% API coverage (11 of 11 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [NetworkIsolationDiagnoseConnectFailureAndGetInfo](https://www.google.com/search?num=5&q=NetworkIsolationDiagnoseConnectFailureAndGetInfo+site%3Adocs.microsoft.com) | networkisolation.h | [Vanara.PInvoke.FirewallApi.NetworkIsolationDiagnoseConnectFailureAndGetInfo](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkIsolationDiagnoseConnectFailureAndGetInfo)  

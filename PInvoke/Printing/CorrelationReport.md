@@ -1,7 +1,9 @@
-## Correlation report for winspool.drv, prntvpt.dll  
+## Vanara.PInvoke.Printing  
 PInvoke API (methods, structures and constants) imported from Windows winspool.drv and prntvpt.dll.
 
-### Methods (100% complete, 108 of 108 functions)  
+- Includes methods from winspool.drv, prntvpt.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Printing?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Printing?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Printing)  
+### Methods - 100% API coverage (108 of 108 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortPrinter](https://www.google.com/search?num=5&q=AbortPrinter+site%3Adocs.microsoft.com) | winspool.drv | winspool.h | [Vanara.PInvoke.WinSpool.AbortPrinter](https://github.com/dahall/Vanara/search?l=C%23&q=AbortPrinter)  

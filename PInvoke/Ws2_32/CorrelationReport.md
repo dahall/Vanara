@@ -1,7 +1,9 @@
-## Correlation report for ws2_32.dll  
+## Vanara.PInvoke.Ws2_32  
 PInvoke API (methods, structures and constants) imported from Windows Ws2_32.dll.
 
-### Methods (100% complete, 132 of 132 functions)  
+- Includes methods from ws2_32.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Ws2_32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Ws2_32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Ws2_32)  
+### Methods - 100% API coverage (132 of 132 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [__WSAFDIsSet](https://www.google.com/search?num=5&q=__WSAFDIsSet+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.__WSAFDIsSet](https://github.com/dahall/Vanara/search?l=C%23&q=__WSAFDIsSet)  

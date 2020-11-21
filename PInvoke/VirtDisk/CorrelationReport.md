@@ -1,7 +1,9 @@
-## Correlation report for virtdisk.dll  
+## Vanara.PInvoke.VirtDisk  
 PInvoke API (methods, structures and constants) imported from Windows VirtDisk.dll.
 
-### Methods (100% complete, 27 of 27 functions)  
+- Includes methods from virtdisk.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.VirtDisk?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.VirtDisk?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.VirtDisk)  
+### Methods - 100% API coverage (27 of 27 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddVirtualDiskParent](https://www.google.com/search?num=5&q=AddVirtualDiskParent+site%3Adocs.microsoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.AddVirtualDiskParent](https://github.com/dahall/Vanara/search?l=C%23&q=AddVirtualDiskParent)  

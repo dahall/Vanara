@@ -1,7 +1,9 @@
-## Correlation report for ktmw32.dll  
+## Vanara.PInvoke.KtmW32  
 PInvoke API (methods, structures and constants imported from Windows KtmW32.dll.
 
-### Methods (100% complete, 39 of 39 functions)  
+- Includes methods from ktmw32.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.KtmW32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.KtmW32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.KtmW32)  
+### Methods - 100% API coverage (39 of 39 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CommitComplete](https://www.google.com/search?num=5&q=CommitComplete+site%3Adocs.microsoft.com) | ktmw32.h | [Vanara.PInvoke.KtmW32.CommitComplete](https://github.com/dahall/Vanara/search?l=C%23&q=CommitComplete)  

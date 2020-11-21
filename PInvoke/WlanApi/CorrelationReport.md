@@ -1,7 +1,9 @@
-## Correlation report for wlanapi.dll, wlanui.dll  
+## Vanara.PInvoke.WlanApi  
 PInvoke API (methods, structures and constants imported from Windows WlanApi.dll.
 
-### Methods (100% complete, 58 of 58 functions)  
+- Includes methods from wlanapi.dll, wlanui.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WlanApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WlanApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WlanApi)  
+### Methods - 100% API coverage (58 of 58 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [WFDCancelOpenSession](https://www.google.com/search?num=5&q=WFDCancelOpenSession+site%3Adocs.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WFDCancelOpenSession](https://github.com/dahall/Vanara/search?l=C%23&q=WFDCancelOpenSession)  

@@ -1,7 +1,9 @@
-## Correlation report for magnification.dll  
+## Vanara.PInvoke.Magnification  
 PInvoke API (methods, structures and constants) imported from Windows Magnification.dll.
 
-### Methods (100% complete, 19 of 19 functions)  
+- Includes methods from magnification.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Magnification?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Magnification?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Magnification)  
+### Methods - 100% API coverage (19 of 19 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [MagGetColorEffect](https://www.google.com/search?num=5&q=MagGetColorEffect+site%3Adocs.microsoft.com) | magnification.h | [Vanara.PInvoke.Magnification.MagGetColorEffect](https://github.com/dahall/Vanara/search?l=C%23&q=MagGetColorEffect)  

@@ -1,7 +1,9 @@
-## Correlation report for aclui.dll  
+## Vanara.PInvoke.AclUI  
 PInvoke API (methods, structures and constants) imported from Windows AclUI.dll.
 
-### Methods (100% complete, 3 of 3 functions)  
+- Includes methods from aclui.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.AclUI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.AclUI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.AclUI)  
+### Methods - 100% API coverage (3 of 3 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CreateSecurityPage](https://www.google.com/search?num=5&q=CreateSecurityPage+site%3Adocs.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.CreateSecurityPage](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSecurityPage)  

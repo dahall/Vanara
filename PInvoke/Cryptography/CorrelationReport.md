@@ -1,7 +1,9 @@
-## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptui.dll, cryptnet.dll, cryptdlg.dll  
+## Vanara.PInvoke.Cryptography  
 PInvoke API (methods, structures and constants) imported from Windows crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptnet.dll, cryptdlg.dll and cryptui.dll.
 
-### Methods (100% complete, 369 of 369 functions)  
+- Includes methods from crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptui.dll, cryptnet.dll, cryptdlg.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Cryptography?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Cryptography?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Cryptography)  
+### Methods - 100% API coverage (369 of 369 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](https://www.google.com/search?num=5&q=BCryptAddContextFunction+site%3Adocs.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptAddContextFunction](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptAddContextFunction)  

@@ -1,7 +1,9 @@
-## Correlation report for gdi32.dll  
+## Vanara.PInvoke.Gdi32  
 PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll
 
-### Methods (100% complete, 306 of 306 functions)  
+- Includes methods from gdi32.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Gdi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Gdi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Gdi32)  
+### Methods - 100% API coverage (306 of 306 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  

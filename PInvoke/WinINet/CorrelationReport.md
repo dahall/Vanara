@@ -1,7 +1,9 @@
-## Correlation report for wininet.dll  
+## Vanara.PInvoke.WinINet  
 PInvoke API (methods, structures and constants) imported from Windows WinINet.dll.
 
-### Methods (100% complete, 108 of 108 functions)  
+- Includes methods from wininet.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WinINet?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WinINet?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinINet)  
+### Methods - 100% API coverage (108 of 108 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CommitUrlCacheEntryA](https://www.google.com/search?num=5&q=CommitUrlCacheEntryA+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.CommitUrlCacheEntry](https://github.com/dahall/Vanara/search?l=C%23&q=CommitUrlCacheEntry)  

@@ -1,7 +1,9 @@
-## Correlation report for comctl32.dll  
+## Vanara.PInvoke.ComCtl32  
 PInvoke API (methods, structures and constants) imported from Windows ComCtl32.dll.
 
-### Methods (100% complete, 69 of 69 functions)  
+- Includes methods from comctl32.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.ComCtl32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.ComCtl32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.ComCtl32)  
+### Methods - 100% API coverage (69 of 69 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_TrackMouseEvent](https://www.google.com/search?num=5&q=_TrackMouseEvent+site%3Adocs.microsoft.com) | CommCtrl.h | [Vanara.PInvoke.ComCtl32._TrackMouseEvent](https://github.com/dahall/Vanara/search?l=C%23&q=_TrackMouseEvent)  

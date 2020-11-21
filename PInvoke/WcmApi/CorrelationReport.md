@@ -1,7 +1,9 @@
-## Correlation report for wcmapi.dll  
+## Vanara.PInvoke.WcmApi  
 PInvoke API (methods, structures and constants imported from Windows WcmApi.dll.
 
-### Methods (100% complete, 5 of 5 functions)  
+- Includes methods from wcmapi.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WcmApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WcmApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WcmApi)  
+### Methods - 100% API coverage (5 of 5 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [WcmFreeMemory](https://www.google.com/search?num=5&q=WcmFreeMemory+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WcmFreeMemory](https://github.com/dahall/Vanara/search?l=C%23&q=WcmFreeMemory)  

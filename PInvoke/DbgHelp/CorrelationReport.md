@@ -1,7 +1,9 @@
-## Correlation report for dbghelp.dll, imagehlp.dll  
+## Vanara.PInvoke.DbgHelp  
 PInvoke API (methods, structures and constants) imported from Windows DbgHelp.dll.
 
-### Methods (100% complete, 217 of 217 functions)  
+- Includes methods from dbghelp.dll, imagehlp.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DbgHelp?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DbgHelp?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DbgHelp)  
+### Methods - 100% API coverage (217 of 217 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindImageEx](https://www.google.com/search?num=5&q=BindImageEx+site%3Adocs.microsoft.com) | imagehlp.dll | imagehlp.h | [Vanara.PInvoke.ImageHlp.BindImageEx](https://github.com/dahall/Vanara/search?l=C%23&q=BindImageEx)  

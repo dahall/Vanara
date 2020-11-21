@@ -1,7 +1,9 @@
-## Correlation report for shlwapi.dll  
+## Vanara.PInvoke.ShlwApi  
 PInvoke API (methods, structures and constants) imported from Windows ShlwApi.dll.
 
-### Methods (100% complete, 211 of 211 functions)  
+- Includes methods from shlwapi.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.ShlwApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.ShlwApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.ShlwApi)  
+### Methods - 100% API coverage (211 of 211 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AssocCreate](https://www.google.com/search?num=5&q=AssocCreate+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.AssocCreate](https://github.com/dahall/Vanara/search?l=C%23&q=AssocCreate)  

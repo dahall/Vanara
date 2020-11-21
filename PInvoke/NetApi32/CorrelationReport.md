@@ -1,7 +1,9 @@
-## Correlation report for netapi32.dll  
+## Vanara.PInvoke.NetApi32  
 PInvoke API (methods, structures and constants) imported from Windows NetApi32.dll.
 
-### Methods (100% complete, 156 of 156 functions)  
+- Includes methods from netapi32.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NetApi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NetApi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NetApi32)  
+### Methods - 100% API coverage (156 of 156 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DavAddConnection](https://www.google.com/search?num=5&q=DavAddConnection+site%3Adocs.microsoft.com) | davclnt.h | [Vanara.PInvoke.NetApi32.DavAddConnection](https://github.com/dahall/Vanara/search?l=C%23&q=DavAddConnection)  

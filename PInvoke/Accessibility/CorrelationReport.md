@@ -1,7 +1,9 @@
-## Correlation report for oleacc.dll  
+## Vanara.PInvoke.Accessibility  
 PInvoke API (methods, structures and constants) for Windows Accessibility Features.
 
-### Methods (100% complete, 15 of 15 functions)  
+- Includes methods from oleacc.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Accessibility?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Accessibility?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Accessibility)  
+### Methods - 100% API coverage (15 of 15 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AccessibleChildren](https://www.google.com/search?num=5&q=AccessibleChildren+site%3Adocs.microsoft.com) | oleacc.h | [Vanara.PInvoke.Oleacc.AccessibleChildren](https://github.com/dahall/Vanara/search?l=C%23&q=AccessibleChildren)  

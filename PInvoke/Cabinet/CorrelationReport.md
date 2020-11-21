@@ -1,7 +1,9 @@
-## Correlation report for cabinet.dll  
+## Vanara.PInvoke.Cabinet  
 PInvoke API (methods, structures and constants) imported from Windows Cabinet.dll.
 
-### Methods (100% complete, 22 of 22 functions)  
+- Includes methods from cabinet.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Cabinet?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Cabinet?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Cabinet)  
+### Methods - 100% API coverage (22 of 22 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CloseCompressor](https://www.google.com/search?num=5&q=CloseCompressor+site%3Adocs.microsoft.com) | compressapi.h | [Vanara.PInvoke.Cabinet.CloseCompressor](https://github.com/dahall/Vanara/search?l=C%23&q=CloseCompressor)  

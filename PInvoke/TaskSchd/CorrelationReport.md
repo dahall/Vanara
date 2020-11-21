@@ -1,7 +1,9 @@
-## Correlation report for taskschd.dll, mstask.dll  
+## Vanara.PInvoke.TaskSchd  
 PInvoke API (methods, structures and constants) imported for Windows Task Scheduler 1.0 and 2.0 COM objects.
 
-### Methods (100% complete, 2 of 2 functions)  
+- Includes methods from taskschd.dll, mstask.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.TaskSchd?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.TaskSchd?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.TaskSchd)  
+### Methods - 100% API coverage (2 of 2 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [GetNetScheduleAccountInformation](https://www.google.com/search?num=5&q=GetNetScheduleAccountInformation+site%3Adocs.microsoft.com) | mstask.dll | AtAcct.h | [Vanara.PInvoke.MSTask.GetNetScheduleAccountInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetNetScheduleAccountInformation)  

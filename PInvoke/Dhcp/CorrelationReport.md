@@ -1,7 +1,9 @@
-## Correlation report for dhcpcsvc6.dll, dhcpcsvc.dll  
+## Vanara.PInvoke.Dhcp  
 PInvoke API (methods, structures and constants) imported from Windows Dhcpcsvc.dll and Dhcpcsvc6.dll.
 
-### Methods (66% complete, 14 of 21 functions)  
+- Includes methods from dhcpcsvc6.dll, dhcpcsvc.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Dhcp?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Dhcp?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Dhcp)  
+### Methods - 66% API coverage (14 of 21 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DhcpCApiCleanup](https://www.google.com/search?num=5&q=DhcpCApiCleanup+site%3Adocs.microsoft.com) | dhcpcsvc.dll | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DhcpCApiCleanup](https://github.com/dahall/Vanara/search?l=C%23&q=DhcpCApiCleanup)  

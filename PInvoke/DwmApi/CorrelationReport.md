@@ -1,7 +1,9 @@
-## Correlation report for dwmapi.dll  
+## Vanara.PInvoke.DwmApi  
 PInvoke API (methods, structures and constants) imported from Windows DwmApi.dll.
 
-### Methods (100% complete, 26 of 26 functions)  
+- Includes methods from dwmapi.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DwmApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DwmApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DwmApi)  
+### Methods - 100% API coverage (26 of 26 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DwmDefWindowProc](https://www.google.com/search?num=5&q=DwmDefWindowProc+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmDefWindowProc](https://github.com/dahall/Vanara/search?l=C%23&q=DwmDefWindowProc)  

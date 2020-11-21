@@ -1,7 +1,9 @@
-## Correlation report for d2d1.dll, dxgi.dll, dwrite.dll, windowscodecs.dll  
+## Vanara.PInvoke.Graphics  
 PInvoke API (methods, interfaces, structures and constants) imported from Windows Graphics APIs. Currently supports Windows Imaging Component (WIC), DirectWrite (full), Direct2D (partial), and Direct3D (DXGI only).
 
-### Methods (100% complete, 25 of 25 functions)  
+- Includes methods from d2d1.dll, dxgi.dll, dwrite.dll, windowscodecs.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Graphics?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Graphics?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Graphics)  
+### Methods - 100% API coverage (25 of 25 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [CreateDXGIFactory](https://www.google.com/search?num=5&q=CreateDXGIFactory+site%3Adocs.microsoft.com) | dxgi.dll | dxgi.h | [Vanara.PInvoke.DXGI.CreateDXGIFactory](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDXGIFactory)  

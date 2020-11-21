@@ -1,7 +1,9 @@
-## Correlation report for wintrust.dll  
+## Vanara.PInvoke.WinTrust  
 PInvoke API (methods, structures and constants) imported from Windows WinTrust.dll.
 
-### Methods (100% complete, 59 of 59 functions)  
+- Includes methods from wintrust.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WinTrust?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WinTrust?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinTrust)  
+### Methods - 100% API coverage (59 of 59 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CryptCATAdminAcquireContext](https://www.google.com/search?num=5&q=CryptCATAdminAcquireContext+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CryptCATAdminAcquireContext](https://github.com/dahall/Vanara/search?l=C%23&q=CryptCATAdminAcquireContext)  

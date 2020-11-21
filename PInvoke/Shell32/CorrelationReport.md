@@ -1,7 +1,9 @@
-## Correlation report for shell32.dll, url.dll  
+## Vanara.PInvoke.Shell32  
 PInvoke API (methods, structures and constants) imported from Windows Shell32.dll.
 
-### Methods (100% complete, 195 of 195 functions)  
+- Includes methods from shell32.dll, url.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Shell32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Shell32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Shell32)  
+### Methods - 100% API coverage (195 of 195 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AssocCreateForClasses](https://www.google.com/search?num=5&q=AssocCreateForClasses+site%3Adocs.microsoft.com) | shell32.dll | shellapi.h | [Vanara.PInvoke.Shell32.AssocCreateForClasses](https://github.com/dahall/Vanara/search?l=C%23&q=AssocCreateForClasses)  

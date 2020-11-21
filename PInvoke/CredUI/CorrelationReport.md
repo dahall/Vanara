@@ -1,7 +1,9 @@
-## Correlation report for credui.dll  
+## Vanara.PInvoke.CredUI  
 PInvoke API (methods, structures and constants) imported from Windows CredUI.dll.
 
-### Methods (100% complete, 14 of 14 functions)  
+- Includes methods from credui.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.CredUI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.CredUI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.CredUI)  
+### Methods - 100% API coverage (14 of 14 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CredPackAuthenticationBuffer](https://www.google.com/search?num=5&q=CredPackAuthenticationBufferA+site%3Adocs.microsoft.com) | wincred.h | [Vanara.PInvoke.CredUI.CredPackAuthenticationBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=CredPackAuthenticationBuffer)  

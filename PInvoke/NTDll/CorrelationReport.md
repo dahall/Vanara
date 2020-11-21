@@ -1,7 +1,9 @@
-## Correlation report for ntdll.dll  
+## Vanara.PInvoke.NTDll  
 PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
-### Methods (4% complete, 24 of 566 functions)  
+- Includes methods from ntdll.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NTDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NTDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NTDll)  
+### Methods - 4% API coverage (24 of 566 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Adocs.microsoft.com) |  |   

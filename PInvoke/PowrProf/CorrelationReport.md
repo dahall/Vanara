@@ -1,7 +1,9 @@
-## Correlation report for powrprof.dll  
+## Vanara.PInvoke.PowrProf  
 PInvoke API (methods, structures and constants) imported from Windows PowrProf.dll.
 
-### Methods (100% complete, 80 of 80 functions)  
+- Includes methods from powrprof.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.PowrProf?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.PowrProf?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.PowrProf)  
+### Methods - 100% API coverage (80 of 80 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CallNtPowerInformation](https://www.google.com/search?num=5&q=CallNtPowerInformation+site%3Adocs.microsoft.com) | powerbase.h | [Vanara.PInvoke.PowrProf.CallNtPowerInformation](https://github.com/dahall/Vanara/search?l=C%23&q=CallNtPowerInformation)  

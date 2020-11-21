@@ -1,6 +1,8 @@
-## Correlation report for opcservices.dll  
+## Vanara.PInvoke.Opc  
 PInvoke API (methods, structures and constants) imported from opcservices.dll.
 
+- Includes methods from opcservices.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Opc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Opc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Opc)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

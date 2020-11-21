@@ -87,7 +87,7 @@ Struct | Description
 [Vanara.PInvoke.HDSA](https://github.com/dahall/Vanara/search?l=C%23&q=HDSA) | Provides a handle to a DSA.
 [Vanara.PInvoke.HDWP](https://github.com/dahall/Vanara/search?l=C%23&q=HDWP) | Provides a handle to a deferred windows position.
 [Vanara.PInvoke.HENHMETAFILE](https://github.com/dahall/Vanara/search?l=C%23&q=HENHMETAFILE) | Provides a handle to an enhanced metafile.
-[Vanara.PInvoke.HEVENT](https://github.com/dahall/Vanara/search?l=C%23&q=HEVENT) | 
+[Vanara.PInvoke.HEVENT](https://github.com/dahall/Vanara/search?l=C%23&q=HEVENT) | Provides a handle to a synch event.
 [Vanara.PInvoke.HFILE](https://github.com/dahall/Vanara/search?l=C%23&q=HFILE) | Provides a handle to a file.
 [Vanara.PInvoke.HFONT](https://github.com/dahall/Vanara/search?l=C%23&q=HFONT) | Provides a handle to a font.
 [Vanara.PInvoke.HGDIOBJ](https://github.com/dahall/Vanara/search?l=C%23&q=HGDIOBJ) | Provides a handle to a graphic device object.

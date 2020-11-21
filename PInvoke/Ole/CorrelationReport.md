@@ -1,7 +1,9 @@
-## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
+## Vanara.PInvoke.Ole  
 PInvoke API (methods, structures and constants) imported from Windows Ole32.dll, OleAut32 and PropSys.dll.
 
-### Methods (100% complete, 834 of 834 functions)  
+- Includes methods from ole32.dll, oleaut32.dll, propsys.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Ole?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Ole?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Ole)  
+### Methods - 100% API coverage (834 of 834 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](https://www.google.com/search?num=5&q=BindMoniker+site%3Adocs.microsoft.com) | ole32.dll | objbase.h | [Vanara.PInvoke.Ole32.BindMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=BindMoniker)  

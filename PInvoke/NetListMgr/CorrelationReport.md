@@ -1,6 +1,8 @@
-## Correlation report for netprofm.dll  
+## Vanara.PInvoke.NetListMgr  
 PInvoke API (interfaces, structures and constants) for Windows NetListMgr COM object.
 
+- Includes methods from netprofm.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NetListMgr?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NetListMgr?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NetListMgr)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

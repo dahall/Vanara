@@ -1,7 +1,9 @@
-## Correlation report for cldapi.dll  
+## Vanara.PInvoke.CldApi  
 PInvoke API (methods, structures and constants imported from Windows CldApi.dll.
 
-### Methods (100% complete, 34 of 34 functions)  
+- Includes methods from cldapi.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.CldApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.CldApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.CldApi)  
+### Methods - 100% API coverage (34 of 34 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CfCloseHandle](https://www.google.com/search?num=5&q=CfCloseHandle+site%3Adocs.microsoft.com) | cfapi.h | [Vanara.PInvoke.CldApi.CfCloseHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CfCloseHandle)  

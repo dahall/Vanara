@@ -1,7 +1,9 @@
-## Correlation report for advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll  
+## Vanara.PInvoke.Security  
 PInvoke API (methods, structures and constants) imported from Windows AdvApi32.dll, Authz.dll and Secur32.dll.
 
-### Methods (100% complete, 558 of 558 functions)  
+- Includes methods from advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Security?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Security?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Security)  
+### Methods - 100% API coverage (558 of 558 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](https://www.google.com/search?num=5&q=AbortSystemShutdownA+site%3Adocs.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.AbortSystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=AbortSystemShutdown)  

@@ -1,7 +1,9 @@
-## Correlation report for ntdsapi.dll  
+## Vanara.PInvoke.NTDSApi  
 PInvoke API (methods, structures and constants) imported from Windows NTDSApi.dll.
 
-### Methods (100% complete, 52 of 52 functions)  
+- Includes methods from ntdsapi.dll  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NTDSApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NTDSApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NTDSApi)  
+### Methods - 100% API coverage (52 of 52 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DsAddSidHistory](https://www.google.com/search?num=5&q=DsAddSidHistoryA+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsAddSidHistory](https://github.com/dahall/Vanara/search?l=C%23&q=DsAddSidHistory)  
