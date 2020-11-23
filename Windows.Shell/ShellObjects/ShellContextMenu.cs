@@ -1,10 +1,13 @@
 ﻿// Credit due to Gong-Shell from which this was largely taken.
 #if !NETCOREAPP3_1
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
@@ -33,20 +36,17 @@ namespace Vanara.Windows.Shell
 	/// <para>Where m_ContextMenu is the <see cref="ShellContextMenu"/> being shown.</para>
 	/// Standard menu commands can also be invoked from this class, for example <see cref="InvokeDelete"/> and <see cref="InvokeRename"/>.
 	/// </remarks>
-	public class ShellContextMenu
+	public class ShellContextMenu : IDisposable
 	{
 		private const int m_CmdFirst = 0x8000;
 		private readonly IContextMenu2 m_ComInterface2;
 		private readonly IContextMenu3 m_ComInterface3;
 		private readonly MessageWindow m_MessageWindow;
-
-		/// <summary>Initialises a new instance of the <see cref="ShellContextMenu"/> class.</summary>
-		/// <param name="item">The item to which the context menu should refer.</param>
-		public ShellContextMenu(ShellItem item) : this(new ShellItem[] { item }) { }
+		private bool disposedValue;
 
 		/// <summary>Initialises a new instance of the <see cref="ShellContextMenu"/> class.</summary>
 		/// <param name="items">The items to which the context menu should refer.</param>
-		public ShellContextMenu(ShellItem[] items)
+		public ShellContextMenu(params ShellItem[] items)
 		{
 			var pidls = new IntPtr[items.Length];
 			ShellFolder parent = null;
@@ -81,8 +81,23 @@ namespace Vanara.Windows.Shell
 			m_MessageWindow = new MessageWindow(this);
 		}
 
+		/// <summary>Finalizes an instance of the <see cref="ShellContextMenu"/> class.</summary>
+		~ShellContextMenu()
+		{
+			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+			Dispose(disposing: false);
+		}
+
 		/// <summary>Gets the underlying COM <see cref="IContextMenu"/> interface.</summary>
 		public IContextMenu ComInterface { get; set; }
+
+		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+		public void Dispose()
+		{
+			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+			Dispose(disposing: true);
+			System.GC.SuppressFinalize(this);
+		}
 
 		/// <summary>Handles context menu messages when the <see cref="ShellContextMenu"/> is displayed on a Form's main menu bar.</summary>
 		/// <remarks>
@@ -178,6 +193,25 @@ namespace Vanara.Windows.Shell
 			ComInterface.InvokeCommand(invoke);
 		}
 
+		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+		/// <param name="disposing">
+		/// <see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.
+		/// </param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
+			{
+				if (disposing)
+				{
+					// TODO: dispose managed state (managed objects)
+				}
+
+				Marshal.ReleaseComObject(ComInterface);
+				ComInterface = null;
+				disposedValue = true;
+			}
+		}
+
 		private void InvokeCommand(int index)
 		{
 			var invoke = new CMINVOKECOMMANDINFOEX(index) { nShow = ShowWindowCommand.SW_SHOWNORMAL };
@@ -186,21 +220,21 @@ namespace Vanara.Windows.Shell
 
 #if !NET5_0
 		/// <summary>Populates a <see cref="Menu"/> with the context menu items for a shell item.</summary>
+		/// <param name="menu">The menu to populate.</param>
+		/// <param name="menuFlags">The flags to pass to <see cref="IContextMenu.QueryContextMenu"/>.</param>
 		/// <remarks>
 		/// If this method is being used to populate a Form's main menu then you need to call <see cref="HandleMenuMessage"/> in the Form's
 		/// message handler.
 		/// </remarks>
-		/// <param name="menu">The menu to populate.</param>
-		public void Populate(Menu menu)
+		public void Populate(Menu menu, CMF menuFlags = CMF.CMF_NORMAL)
 		{
 			RemoveShellMenuItems(menu);
-			ComInterface.QueryContextMenu(menu.Handle, 0, m_CmdFirst, int.MaxValue, CMF.CMF_EXPLORE);
+			ComInterface.QueryContextMenu(menu.Handle, 0, m_CmdFirst, int.MaxValue, menuFlags);
 		}
 
 		/// <summary>Shows a context menu for a shell item.</summary>
-		/// <param name="control">The parent control.</param>
-		/// <param name="pos">The position on <paramref name="control"/> that the menu should be displayed at.</param>
-		public void ShowContextMenu(Control control, Point pos)
+		/// <param name="pos">The position on the screen that the menu should be displayed at.</param>
+		public void ShowContextMenu(Point pos)
 		{
 			using var menu = new ContextMenu();
 			Populate(menu);
@@ -282,4 +316,5 @@ namespace Vanara.Windows.Shell
 		}
 	}
 }
+
 #endif
