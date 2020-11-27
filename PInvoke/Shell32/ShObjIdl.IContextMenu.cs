@@ -249,7 +249,7 @@ namespace Vanara.PInvoke
 			/// <param name="pszName">The reference of the buffer to receive the null-terminated string being retrieved.</param>
 			/// <param name="cchMax">Size of the buffer, in characters, to receive the null-terminated string.</param>
 			/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-			void GetCommandString([In] IntPtr idCmd, GCS uType, [Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
+			void GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
 		}
 
 		/// <summary>
@@ -319,7 +319,7 @@ namespace Vanara.PInvoke
 			/// <param name="pszName">The reference of the buffer to receive the null-terminated string being retrieved.</param>
 			/// <param name="cchMax">Size of the buffer, in characters, to receive the null-terminated string.</param>
 			/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-			new void GetCommandString([In] IntPtr idCmd, GCS uType, [Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
+			new void GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
 
 			/// <summary>Enables client objects of the IContextMenu interface to handle messages associated with owner-drawn menu items.</summary>
 			/// <param name="uMsg">
@@ -390,7 +390,7 @@ namespace Vanara.PInvoke
 			/// <param name="pszName">The reference of the buffer to receive the null-terminated string being retrieved.</param>
 			/// <param name="cchMax">Size of the buffer, in characters, to receive the null-terminated string.</param>
 			/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-			new void GetCommandString(IntPtr idCmd, GCS uType, IntPtr pReserved, IntPtr pszName, uint cchMax);
+			new void GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
 
 			/// <summary>Enables client objects of the IContextMenu interface to handle messages associated with owner-drawn menu items.</summary>
 			/// <param name="uMsg">
