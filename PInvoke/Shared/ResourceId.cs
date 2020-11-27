@@ -98,6 +98,10 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary>Determines whether this value is an integer identifier for a resource.</summary>
+		/// <returns>If the value is a resource identifier, the return value is <see langword="true"/>. Otherwise, the return value is <see langword="false"/>.</returns>
+		public bool IsIntResource => IS_INTRESOURCE(ptr);
+
 		/// <summary>Represent a NULL value.</summary>
 		public static readonly ResourceId NULL = new ResourceId();
 
