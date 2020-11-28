@@ -153,6 +153,9 @@ namespace Vanara.PInvoke
 			/// <summary>Look under the ShellNew subkey.</summary>
 			ASSOCSTR_SHELLNEWVALUE,
 
+			/// <summary>A template for DDE commands.</summary>
+			ASSOCSTR_DDECOMMAND,
+
 			/// <summary>The DDE command to use to create a process.</summary>
 			ASSOCSTR_DDEIFEXEC,
 
