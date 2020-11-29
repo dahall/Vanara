@@ -38,7 +38,7 @@ namespace Vanara.Windows.Shell
 	/// </remarks>
 	public class ShellContextMenu : IDisposable
 	{
-		private const int m_CmdFirst = 0x8000;
+		internal const int m_CmdFirst = 0x8000;
 		private readonly IContextMenu2 m_ComInterface2;
 		private readonly IContextMenu3 m_ComInterface3;
 		private readonly MessageWindow m_MessageWindow;
@@ -107,7 +107,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the icon location for a specified command.</summary>
 		/// <param name="command">The menu command identifier offset.</param>
 		/// <returns>The icon location if available; otherwise <see langword="null"/>.</returns>
-		public IconLocation GetIconLocationForCommand(int command) => IconLocation.TryParse(GetCommandString(command, GCS.GCS_VERBICONW), out var l) ? l : null;
+		public string GetVerbIconLocationForCommand(int command) => GetCommandString(command, GCS.GCS_VERBICONW);
 
 		/// <summary>Gets the verb for a specified command.</summary>
 		/// <param name="command">The menu command identifier offset.</param>
@@ -322,10 +322,10 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		private string GetCommandString(ResourceId command, GCS stringType)
+		private string GetCommandString(int command, GCS stringType)
 		{
 			using var mStr = new SafeCoTaskMemString(4096);
-			try { ComInterface.GetCommandString(command, stringType, default, mStr, mStr.Size / 2U); }
+			try { ComInterface.GetCommandString((IntPtr)command, stringType, default, mStr, mStr.Size / 2U).ThrowIfFailed(); }
 			catch { return null; }
 			return mStr.ToString();
 		}
@@ -402,7 +402,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Provides information about a single menu entry discovered in a native menu.</summary>
 		public class MenuItemInfo
 		{
-			internal MenuItemInfo(HMENU hMenu, uint idx)
+			internal MenuItemInfo(HMENU hMenu, uint idx, ShellContextMenu scm)
 			{
 				using var strmem = new SafeHGlobalHandle(512);
 				var mii = new MENUITEMINFO
@@ -414,12 +414,12 @@ namespace Vanara.Windows.Shell
 					cch = strmem.Size / (uint)StringHelper.GetCharSize()
 				};
 				Win32Error.ThrowLastErrorIfFalse(GetMenuItemInfo(hMenu, idx, true, ref mii));
-				Id = unchecked((int)mii.wID);
+				Id = unchecked((int)(mii.wID - m_CmdFirst));
 				Text = mii.fType.IsFlagSet(MenuItemType.MFT_SEPARATOR) ? "-" : mii.fType.IsFlagSet(MenuItemType.MFT_STRING) ? strmem.ToString(-1, CharSet.Auto) : "";
 				Type = mii.fType;
 				State = mii.fState;
 				BitmapHandle = mii.hbmpItem;
-				SubMenus = GetMenuItems(mii.hSubMenu);
+				SubMenus = GetMenuItems(mii.hSubMenu, scm);
 			}
 
 			/// <summary>
@@ -482,9 +482,6 @@ namespace Vanara.Windows.Shell
 			/// <summary>Gets the help text (tool tip) associated with the menu.</summary>
 			public string HelpText { get; internal set; }
 
-			/// <summary>Gets the icon location associated with the menu's image.</summary>
-			public IconLocation IconLocation { get; internal set; }
-
 			/// <summary>An application-defined value that identifies the menu item.</summary>
 			public int Id { get; }
 
@@ -509,6 +506,9 @@ namespace Vanara.Windows.Shell
 			/// <summary>Gets the verb associated with the menu.</summary>
 			public string Verb { get; internal set; }
 
+			/// <summary>Gets the icon location associated with the menu's image.</summary>
+			public string VerbIconLocation { get; internal set; }
+
 			/// <summary>Recursively gets the information for all menu item entries supplied by the provided native menu.</summary>
 			/// <param name="hMenu">The handle to the created native menu.</param>
 			/// <returns>An array of <see cref="MenuItemInfo"/> instances with information about the entries in <paramref name="hMenu"/>.</returns>
@@ -522,12 +522,13 @@ namespace Vanara.Windows.Shell
 				var SubMenus = new MenuItemInfo[GetMenuItemCount(hMenu)];
 				for (uint i = 0; i < SubMenus.Length; i++)
 				{
-					SubMenus[i] = new MenuItemInfo(hMenu, i);
-					if (scm != null)
+					SubMenus[i] = new MenuItemInfo(hMenu, i, scm);
+					if (scm != null && SubMenus[i].Type.IsFlagSet(MenuItemType.MFT_STRING))
 					{
-						SubMenus[i].Verb = scm.GetVerbForCommand(SubMenus[i].Id);
-						SubMenus[i].HelpText = scm.GetHelpTextForCommand(SubMenus[i].Id);
-						SubMenus[i].IconLocation = scm.GetIconLocationForCommand(SubMenus[i].Id);
+						var id = SubMenus[i].Id;
+						SubMenus[i].Verb = scm.GetVerbForCommand(id);
+						SubMenus[i].HelpText = scm.GetHelpTextForCommand(id);
+						SubMenus[i].VerbIconLocation = scm.GetVerbIconLocationForCommand(id);
 					}
 				}
 				return SubMenus;
