@@ -235,7 +235,8 @@ namespace Vanara.PInvoke
 			/// <param name="pici">
 			/// A pointer to a CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.
 			/// </param>
-			void InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
+			[PreserveSig]
+			HRESULT InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
 
 			/// <summary>
 			/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name
@@ -249,7 +250,8 @@ namespace Vanara.PInvoke
 			/// <param name="pszName">The reference of the buffer to receive the null-terminated string being retrieved.</param>
 			/// <param name="cchMax">Size of the buffer, in characters, to receive the null-terminated string.</param>
 			/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-			void GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
+			[PreserveSig]
+			HRESULT GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
 		}
 
 		/// <summary>
@@ -305,7 +307,8 @@ namespace Vanara.PInvoke
 			/// <param name="pici">
 			/// A pointer to a CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.
 			/// </param>
-			new void InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
+			[PreserveSig]
+			new HRESULT InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
 
 			/// <summary>
 			/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name
@@ -319,7 +322,8 @@ namespace Vanara.PInvoke
 			/// <param name="pszName">The reference of the buffer to receive the null-terminated string being retrieved.</param>
 			/// <param name="cchMax">Size of the buffer, in characters, to receive the null-terminated string.</param>
 			/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-			new void GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
+			[PreserveSig]
+			new HRESULT GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
 
 			/// <summary>Enables client objects of the IContextMenu interface to handle messages associated with owner-drawn menu items.</summary>
 			/// <param name="uMsg">
@@ -328,7 +332,8 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="wParam">Additional message information. The value of this parameter depends on the value of the uMsg parameter.</param>
 			/// <param name="lParam">Additional message information. The value of this parameter depends on the value of the uMsg parameter.</param>
-			void HandleMenuMsg(uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
+			[PreserveSig]
+			HRESULT HandleMenuMsg(uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
 		}
 
 		/// <summary>
@@ -376,7 +381,8 @@ namespace Vanara.PInvoke
 			/// <param name="pici">
 			/// A pointer to a CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.
 			/// </param>
-			new void InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
+			[PreserveSig]
+			new HRESULT InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
 
 			/// <summary>
 			/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name
@@ -390,7 +396,8 @@ namespace Vanara.PInvoke
 			/// <param name="pszName">The reference of the buffer to receive the null-terminated string being retrieved.</param>
 			/// <param name="cchMax">Size of the buffer, in characters, to receive the null-terminated string.</param>
 			/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-			new void GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
+			[PreserveSig]
+			new HRESULT GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
 
 			/// <summary>Enables client objects of the IContextMenu interface to handle messages associated with owner-drawn menu items.</summary>
 			/// <param name="uMsg">
@@ -399,7 +406,8 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="wParam">Additional message information. The value of this parameter depends on the value of the uMsg parameter.</param>
 			/// <param name="lParam">Additional message information. The value of this parameter depends on the value of the uMsg parameter.</param>
-			new void HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam);
+			[PreserveSig]
+			new HRESULT HandleMenuMsg(uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
 
 			/// <summary>Allows client objects of the IContextMenu3 interface to handle messages associated with owner-drawn menu items.</summary>
 			/// <param name="uMsg">
@@ -411,7 +419,8 @@ namespace Vanara.PInvoke
 			/// <param name="result">
 			/// The address of an LRESULT value that the owner of the menu will return from the message. This parameter can be NULL.
 			/// </param>
-			void HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr result);
+			[PreserveSig]
+			HRESULT HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr result);
 		}
 
 		/// <summary>
