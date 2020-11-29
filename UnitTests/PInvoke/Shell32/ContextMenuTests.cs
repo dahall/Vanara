@@ -5,6 +5,7 @@ using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.Shell32;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using System.Linq;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -17,14 +18,22 @@ namespace Vanara.PInvoke.Tests
 			using var pshi = ComReleaserFactory.Create(SHCreateItemFromParsingName<IShellItem>(TestCaseSources.WordDoc));
 			using var pcm = ComReleaserFactory.Create(pshi.Item.BindToHandler<IContextMenu>(null, BHID.BHID_SFUIObject.Guid()));
 			using var hmenu = CreatePopupMenu();
-			Assert.That(pcm.Item.QueryContextMenu(hmenu, 0, 1, 0x7FFF, cmf), ResultIs.Successful);
+			Assert.That(pcm.Item.QueryContextMenu(hmenu, 0, 1, int.MaxValue, cmf), ResultIs.Successful);
 			var miis = MenuItemInfo.GetMenuItems(hmenu);
+			using var memstr = new SafeCoTaskMemString(1024, CharSet.Ansi);
 			for (int i = 0; i < miis.Length; i++)
 				ShowMII(miis[i], i);
-
-			static void ShowMII(MenuItemInfo mii, int c, int indent = 0)
+			if (cmf == CMF.CMF_NORMAL)
 			{
-				TestContext.WriteLine($"{new string(' ', indent * 3)}{c+1}) {mii.Text} (#{mii.Id}) - Type={mii.Type}; State={mii.State}");
+				var oid = miis.First(m => m.Verb == "properties").Id;
+				var cix = new CMINVOKECOMMANDINFOEX((int)oid - 1);
+				pcm.Item.InvokeCommand(cix);
+			}
+
+			void ShowMII(MenuItemInfo mii, int c, int indent = 0)
+			{
+				mii.Verb = mii.Type == MenuItemType.MFT_STRING && pcm.Item.GetCommandString((IntPtr)(int)(mii.Id - 1), GCS.GCS_VERBA, default, memstr, memstr.Size) == HRESULT.S_OK ? memstr.ToString() : "";
+				TestContext.WriteLine($"{new string(' ', indent * 3)}{c+1}) {mii.Text} (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}");
 				for (int j = 0; j < mii.SubMenus.Length; j++)
 					ShowMII(mii.SubMenus[j], j, indent + 1);
 			}
@@ -69,6 +78,7 @@ namespace Vanara.PInvoke.Tests
 			public MenuItemState State { get; }
 			public MenuItemInfo[] SubMenus { get; }
 			public HBITMAP BitmapHandle { get; }
+			public string Verb { get; internal set; }
 		}
 
 	}
