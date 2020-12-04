@@ -1122,6 +1122,38 @@ namespace Vanara.PInvoke
 		/// <returns>A managed bitmap instance.</returns>
 		public static Bitmap ToBitmap(this HICON hIcon) => hIcon.IsNull ? null : (Bitmap)Bitmap.FromHicon((IntPtr)hIcon).Clone();
 
+#if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
+		/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HICON"/>.</summary>
+		/// <param name="hIcon">The HICON value.</param>
+		/// <returns>The BitmapSource instance. If <paramref name="hIcon"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
+		public static System.Windows.Media.Imaging.BitmapSource ToBitmapSource(this in HICON hIcon)
+		{
+			// If hIcon is NULL handle, return null
+			if (hIcon.IsNull) return null;
+			try
+			{
+				return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon((IntPtr)hIcon, System.Windows.Int32Rect.Empty,
+					System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+			}
+			catch (System.ComponentModel.Win32Exception)
+			{
+				return null;
+			}
+		}
+#endif
+
+		/// <summary>Creates a <see cref="SafeHBITMAP"/> from this HICON instance.</summary>
+		/// <returns>A bitmap handle.</returns>
+		public static SafeHBITMAP ToHBITMAP(this HICON hIcon)
+		{
+			if (hIcon.IsNull) return null;
+			using var icoInfo = new ICONINFO();
+			Win32Error.ThrowLastErrorIfFalse(GetIconInfo(hIcon, icoInfo));
+			var ret = new SafeHBITMAP((IntPtr)CopyImage((IntPtr)icoInfo.hbmColor, LoadImageType.IMAGE_BITMAP, 0, 0, CopyImageOptions.LR_CREATEDIBSECTION), true);
+			icoInfo.hbmColor = default;
+			return ret;
+		}
+
 		/// <summary>Creates a managed <see cref="System.Drawing.Icon"/> from this HICON instance.</summary>
 		/// <returns>A managed icon instance.</returns>
 		public static Icon ToIcon(this HICON hIcon) => hIcon.IsNull ? null : (Icon)Icon.FromHandle((IntPtr)hIcon).Clone();
@@ -1230,6 +1262,16 @@ namespace Vanara.PInvoke
 			/// <summary>Creates a managed <see cref="System.Drawing.Bitmap"/>.</summary>
 			/// <returns>A managed bitmap instance.</returns>
 			public Bitmap ToBitmap() => ((HICON)this).ToBitmap();
+
+#if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
+			/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="SafeHICON"/>.</summary>
+			/// <returns>The BitmapSource instance. If this is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
+			public System.Windows.Media.Imaging.BitmapSource ToBitmapSource() => ((HICON)this).ToBitmapSource();
+#endif
+
+			/// <summary>Creates a <see cref="SafeHBITMAP"/> from this HICON instance.</summary>
+			/// <returns>A bitmap handle.</returns>
+			public SafeHBITMAP ToHBITMAP() => ((HICON)this).ToHBITMAP();
 
 			/// <summary>Creates a managed <see cref="System.Drawing.Icon"/>.</summary>
 			/// <returns>A managed icon instance.</returns>
