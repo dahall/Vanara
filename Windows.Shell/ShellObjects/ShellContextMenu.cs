@@ -1,6 +1,4 @@
 ﻿// Credit due to Gong-Shell from which this was largely taken.
-#if !NETCOREAPP3_1
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -43,6 +41,8 @@ namespace Vanara.Windows.Shell
 		private readonly IContextMenu3 m_ComInterface3;
 		private readonly MessageWindow m_MessageWindow;
 		private bool disposedValue;
+
+		static ShellContextMenu() => Ole32.OleInitialize(default); // Not sure why necessary, but it fails without
 
 		/// <summary>Initialises a new instance of the <see cref="ShellContextMenu"/> class.</summary>
 		/// <param name="items">The items to which the context menu should refer.</param>
@@ -218,9 +218,10 @@ namespace Vanara.Windows.Shell
 		/// <param name="noZoneChecks">
 		/// Do not perform a zone check. This flag allows ShellExecuteEx to bypass zone checking put into place by IAttachmentExecute.
 		/// </param>
+		/// <param name="parameters">Optional parameters.</param>
 		public void InvokeCommand(ResourceId verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default,
-			Point? location = default, bool allowAsync = false, bool shiftDown = false,
-			bool ctrlDown = false, uint hotkey = 0, bool logUsage = false, bool noZoneChecks = false)
+			Point? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
+			bool logUsage = false, bool noZoneChecks = false, string parameters = null)
 		{
 			var invoke = new CMINVOKECOMMANDINFOEX
 			{
@@ -244,6 +245,11 @@ namespace Vanara.Windows.Shell
 			if (!verb.IsIntResource)
 			{
 				invoke.lpVerbW = (string)verb;
+				invoke.fMask |= CMIC.CMIC_MASK_UNICODE;
+			}
+			if (parameters != null)
+			{
+				invoke.lpParameters = invoke.lpParametersW = parameters;
 				invoke.fMask |= CMIC.CMIC_MASK_UNICODE;
 			}
 			ComInterface.InvokeCommand(invoke);
@@ -330,7 +336,7 @@ namespace Vanara.Windows.Shell
 			return mStr.ToString();
 		}
 
-#if !NET5_0
+#if !NET5_0 && !NETCOREAPP3_1
 		/// <summary>Populates a <see cref="Menu"/> with the context menu items for a shell item.</summary>
 		/// <param name="menu">The menu to populate.</param>
 		/// <param name="menuOptions">The flags to pass to <see cref="IContextMenu.QueryContextMenu"/>.</param>
@@ -551,5 +557,3 @@ namespace Vanara.Windows.Shell
 		}
 	}
 }
-
-#endif
