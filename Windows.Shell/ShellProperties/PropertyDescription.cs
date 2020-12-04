@@ -243,6 +243,11 @@ namespace Vanara.Windows.Shell
 		/// <inheritdoc />
 		public IEnumerator<PropertyDescription> GetEnumerator() => Enum().GetEnumerator();
 
+		/// <summary>Gets the values for each property defined by this list for a specified shell item.</summary>
+		/// <param name="shellItem">The shell item used to retrieve property values.</param>
+		/// <returns>A list of property values.</returns>
+		public object[] GetValuesForShellItem(ShellItem shellItem) => Enum().Select(pd => shellItem.Properties[pd.PropertyKey]).ToArray();
+
 		/// <inheritdoc />
 		public override string ToString() => "prop:" + string.Join(";", this.Select(d => $"{GetPrefixForViewFlags(d.ViewFlags)}{d.CanonicalName}").ToArray());
 
