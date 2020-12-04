@@ -69,6 +69,11 @@ namespace Vanara.PInvoke
 				return GetKnownFolderFromGuid(ikfm.FindFolderFromPath(path, FFFP_MODE.FFFP_EXACTMATCH).GetId());
 			}
 
+			/// <summary>Gets the parent and item for the supplied IShellItem regardless of support by IShellItem.</summary>
+			/// <param name="psi">The IShellItem instance.</param>
+			/// <returns>An IParentAndItem reference for the shell item.</returns>
+			public static IParentAndItem GetParentAndItem(IShellItem psi) => psi is IParentAndItem pi ? pi : new ManualParentAndItem(psi);
+
 			/// <summary>Gets the path for a KNOWNFOLDERID Guid.</summary>
 			/// <param name="knownFolder">The KNOWNFOLDERID Guid.</param>
 			/// <returns>The file system path.</returns>
@@ -126,8 +131,8 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the icon for the item using the specified characteristics.</summary>
 			/// <param name="psf">The IShellFolder from which to request the IExtractIcon instance.</param>
 			/// <param name="pidl">The PIDL of the item within <paramref name="psf"/>.</param>
-			/// <param name="width">The width, in pixels, of the icon.</param>
-			/// <param name="hbmp">The resulting icon handle, on success, or <c>null</c> on failure.</param>
+			/// <param name="imgSz">The width, in pixels, of the icon.</param>
+			/// <param name="hico">The resulting icon handle, on success, or <c>null</c> on failure.</param>
 			/// <returns>The result of function.</returns>
 			public static HRESULT LoadIconFromExtractIcon(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHICON hico)
 			{
@@ -160,13 +165,13 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the icon for the item using the specified characteristics.</summary>
 			/// <param name="iei">The IExtractIconW from which to retrieve the icon.</param>
-			/// <param name="width">The width, in pixels, of the icon.</param>
-			/// <param name="hbmp">The resulting icon handle, on success, or <c>null</c> on failure.</param>
+			/// <param name="imgSz">The width, in pixels, of the icon.</param>
+			/// <param name="hico">The resulting icon handle, on success, or <c>null</c> on failure.</param>
 			/// <returns>The result of function.</returns>
 			public static HRESULT LoadIconFromExtractIcon(IExtractIconW iei, ref uint imgSz, out SafeHICON hico)
 			{
 				var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
-				var hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out var iIdx, out var flags);
+				var hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out var iIdx, out _);
 				if (hr.Succeeded)
 				{
 					if (szIconFile.ToString() != "*")
@@ -187,7 +192,7 @@ namespace Vanara.PInvoke
 			public static HRESULT LoadIconFromExtractIcon(IExtractIconA iei, ref uint imgSz, out SafeHICON hico)
 			{
 				var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
-				var hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out var iIdx, out var flags);
+				var hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out var iIdx, out _);
 				if (hr.Succeeded)
 				{
 					if (szIconFile.ToString() != "*")
@@ -217,7 +222,7 @@ namespace Vanara.PInvoke
 						if (GetIconInfo(hico, icoInfo))
 							imgSz = (uint)GetObject<BITMAP>(icoInfo.hbmColor).bmWidth;
 					}
-					catch (System.Runtime.InteropServices.COMException e)
+					catch (COMException e)
 					{
 						hico = null;
 						return (HRESULT)e.ErrorCode;
@@ -232,6 +237,35 @@ namespace Vanara.PInvoke
 				return hr;
 			}
 
+			/// <summary>Gets the image for the item using the specified characteristics.</summary>
+			/// <param name="psf">The IShellFolder from which to request the IExtractImage instance.</param>
+			/// <param name="pidl">The PIDL of the item within <paramref name="psf"/>.</param>
+			/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
+			/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
+			/// <returns>The result of function.</returns>
+			public static HRESULT LoadImageFromExtractImage(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHBITMAP hbmp)
+			{
+				HRESULT hr = psf.GetUIObjectOf<IExtractImage>((IntPtr)pidl, out var iei);
+				hbmp = default;
+				if (hr.Succeeded)
+				{
+					try
+					{
+						var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
+						var sz = new SIZE((int)imgSz, (int)imgSz);
+						IEIFLAG flags = 0;
+						if ((hr = iei.GetLocation(szIconFile, (uint)szIconFile.Capacity, default, ref sz, 0, ref flags)).Succeeded && (hr = iei.Extract(out hbmp)).Succeeded)
+							imgSz = (uint)sz.cx;
+						return hr;
+					}
+					finally
+					{
+						Marshal.ReleaseComObject(iei);
+					}
+				}
+				return hr;
+			}
+
 			/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
 			/// <param name="psi">The IShellItem from which to request the IThumbnailProvider instance.</param>
 			/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
@@ -241,13 +275,13 @@ namespace Vanara.PInvoke
 			{
 				try
 				{
-					var itp = psi.BindToHandler<IThumbnailProvider>(ShellUtil.CreateBindCtx(), BHID.BHID_ThumbnailHandler);
+					var itp = psi.BindToHandler<IThumbnailProvider>(null, BHID.BHID_ThumbnailHandler);
 					return LoadImageFromThumbnailProvider(itp, ref imgSz, out hbmp);
 				}
-				catch (System.Runtime.InteropServices.COMException e)
+				catch (COMException e)
 				{
 					hbmp = null;
-					return (HRESULT)e.ErrorCode;
+					return e.ErrorCode;
 				}
 			}
 
@@ -285,35 +319,6 @@ namespace Vanara.PInvoke
 				{
 					Marshal.ReleaseComObject(itp);
 				}
-			}
-
-			/// <summary>Gets the image for the item using the specified characteristics.</summary>
-			/// <param name="psf">The IShellFolder from which to request the IExtractImage instance.</param>
-			/// <param name="pidl">The PIDL of the item within <paramref name="psf"/>.</param>
-			/// <param name="width">The width, in pixels, of the Bitmap.</param>
-			/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
-			/// <returns>The result of function.</returns>
-			public static HRESULT LoadImageFromExtractImage(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHBITMAP hbmp)
-			{
-				HRESULT hr = psf.GetUIObjectOf<IExtractImage>((IntPtr)pidl, out var iei);
-				hbmp = default;
-				if (hr.Succeeded)
-				{
-					try
-					{
-						var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
-						var sz = new SIZE((int)imgSz, (int)imgSz);
-						IEIFLAG flags = 0;
-						if ((hr = iei.GetLocation(szIconFile, (uint)szIconFile.Capacity, default, ref sz, 0, ref flags)).Succeeded && (hr = iei.Extract(out hbmp)).Succeeded)
-							imgSz = (uint)sz.cx;
-						return hr;
-					}
-					finally
-					{
-						Marshal.ReleaseComObject(iei);
-					}
-				}
-				return hr;
 			}
 
 			/// <summary>Given a pixel size, return the ShellImageSize value with the closest size.</summary>
@@ -358,11 +363,19 @@ namespace Vanara.PInvoke
 				private WIN32_FIND_DATA fd;
 				private long fileId;
 
-				public IntFileSysBindData() { }
+				public IntFileSysBindData()
+				{
+				}
 
-				public HRESULT GetFileID(out long pliFileID) { pliFileID = fileId; return HRESULT.S_OK; }
+				public HRESULT GetFileID(out long pliFileID)
+				{
+					pliFileID = fileId; return HRESULT.S_OK;
+				}
 
-				public HRESULT GetFindData(out WIN32_FIND_DATA pfd) { pfd = fd; return HRESULT.S_OK; }
+				public HRESULT GetFindData(out WIN32_FIND_DATA pfd)
+				{
+					pfd = fd; return HRESULT.S_OK;
+				}
 
 				public HRESULT GetJunctionCLSID(out Guid pclsid)
 				{
@@ -375,11 +388,50 @@ namespace Vanara.PInvoke
 					return HRESULT.E_FAIL;
 				}
 
-				public HRESULT SetFileID(long liFileID) { fileId = liFileID; return HRESULT.S_OK; }
+				public HRESULT SetFileID(long liFileID)
+				{
+					fileId = liFileID; return HRESULT.S_OK;
+				}
 
-				public HRESULT SetFindData(in WIN32_FIND_DATA pfd) { fd = pfd; return HRESULT.S_OK; }
+				public HRESULT SetFindData(in WIN32_FIND_DATA pfd)
+				{
+					fd = pfd; return HRESULT.S_OK;
+				}
 
-				public HRESULT SetJunctionCLSID(in Guid clsid) { clsidJunction = clsid; return HRESULT.S_OK; }
+				public HRESULT SetJunctionCLSID(in Guid clsid)
+				{
+					clsidJunction = clsid; return HRESULT.S_OK;
+				}
+			}
+
+			private class ManualParentAndItem : IParentAndItem, IDisposable
+			{
+				private readonly PIDL pChild;
+				private readonly IShellFolder psf;
+
+				public ManualParentAndItem(IShellItem psi)
+				{
+					psf = psi.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject);
+					SHGetIDListFromObject(psi, out var pItem).ThrowIfFailed();
+					pChild = pItem.LastId;
+					pItem.Dispose();
+				}
+
+				void IDisposable.Dispose()
+				{
+					Marshal.ReleaseComObject(psf);
+					pChild.Dispose();
+				}
+
+				HRESULT IParentAndItem.GetParentAndItem(out PIDL ppidlParent, out IShellFolder ppsf, out PIDL ppidlChild)
+				{
+					SHGetIDListFromObject(psf, out ppidlParent).ThrowIfFailed();
+					ppsf = psf;
+					ppidlChild = new PIDL(pChild.GetBytes());
+					return HRESULT.S_OK;
+				}
+
+				HRESULT IParentAndItem.SetParentAndItem([In] PIDL pidlParent, [In] IShellFolder psf, [In] PIDL pidlChild) => HRESULT.E_NOTIMPL;
 			}
 		}
 	}
