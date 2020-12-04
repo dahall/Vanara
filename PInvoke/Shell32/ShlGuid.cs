@@ -1,4 +1,6 @@
 using System;
+using Vanara.InteropServices;
+using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.PInvoke
 {
@@ -242,14 +244,17 @@ namespace Vanara.PInvoke
 
 			/// <summary>Attempts to retrieve the storage RIID, but defaults to Shell implementation on failure.</summary>
 			[Associate("{3981e227-f559-11d3-8e3a-00c04f6837d5}")]
+			[CorrespondingType(typeof(Ole32.IStorage), CorrespondingAction.Get)]
 			BHID_Storage,
 
 			/// <summary>Restricts usage to IStream.</summary>
 			[Associate("{1CEBB3AB-7C10-499a-A417-92CA16C4CB83}")]
+			[CorrespondingType(typeof(System.Runtime.InteropServices.ComTypes.IStream), CorrespondingAction.Get)]
 			BHID_Stream,
 
 			/// <summary>Introduced in Windows 8: Gets an IRandomAccessStream object for the item.</summary>
 			[Associate("{f16fc93b-77ae-4cfe-bda7-a866eea6878d}")]
+			//[CorrespondingType(typeof(IRandomAccessStream), CorrespondingAction.Get)]
 			BHID_RandomAccessStream,
 
 			/// <summary>
@@ -257,22 +262,30 @@ namespace Vanara.PInvoke
 			/// of SFGAO_LINK.
 			/// </summary>
 			[Associate("{3981e228-f559-11d3-8e3a-00c04f6837d5}")]
+			[CorrespondingType(typeof(IShellItem), CorrespondingAction.Get)]
 			BHID_LinkTargetItem,
 
 			/// <summary>If the item is a folder, gets an IEnumShellItems object with which to enumerate the storage contents.</summary>
 			[Associate("{4621A4E3-F0D6-4773-8A9C-46E77B174840}")]
+			[CorrespondingType(typeof(IEnumShellItems), CorrespondingAction.Get)]
 			BHID_StorageEnum,
 
 			/// <summary>Introduced in Windows Vista: If the item is a folder, gets an ITransferSource or ITransferDestination object.</summary>
 			[Associate("{5D080304-FE2C-48fc-84CE-CF620B0F3C53}")]
+			[CorrespondingType(typeof(ITransferSource), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(ITransferDestination), CorrespondingAction.Get)]
 			BHID_Transfer,
 
 			/// <summary>Introduced in Windows Vista: Restricts usage to IPropertyStore or IPropertyStoreFactory.</summary>
 			[Associate("{0384e1a4-1523-439c-a4c8-ab911052f586}")]
+			[CorrespondingType(typeof(IPropertyStore), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(IPropertyStoreFactory), CorrespondingAction.Get)]
 			BHID_PropertyStore,
 
 			/// <summary>Introduced in Windows Vista: Restricts usage to IExtractImage or IThumbnailProvider.</summary>
 			[Associate("{7b2e650a-8e20-4f4a-b09e-6597afc72fb0}")]
+			[CorrespondingType(typeof(IExtractImage), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(IThumbnailProvider), CorrespondingAction.Get)]
 			BHID_ThumbnailHandler,
 
 			/// <summary>
@@ -280,18 +293,22 @@ namespace Vanara.PInvoke
 			/// folder. This includes folders, nonfolders, and hidden items.
 			/// </summary>
 			[Associate("{94f60519-2850-4924-aa5a-d15e84868039}")]
+			[CorrespondingType(typeof(IEnumShellItems), CorrespondingAction.Get)]
 			BHID_EnumItems,
 
 			/// <summary>Introduced in Windows Vista: Gets an IDataObject object for use with an item or an array of items.</summary>
 			[Associate("{B8C0BD9F-ED24-455c-83E6-D5390C4FE8C4}")]
+			[CorrespondingType(typeof(System.Runtime.InteropServices.ComTypes.IDataObject), CorrespondingAction.Get)]
 			BHID_DataObject,
 
 			/// <summary>Introduced in Windows Vista: Gets an IQueryAssociations object for use with an item or an array of items.</summary>
 			[Associate("{bea9ef17-82f1-4f60-9284-4f8db75c3be9}")]
+			[CorrespondingType(typeof(ShlwApi.IQueryAssociations), CorrespondingAction.Get)]
 			BHID_AssociationArray,
 
 			/// <summary>Introduced in Windows Vista: Restricts usage to IFilter.</summary>
 			[Associate("{38d08778-f557-4690-9ebf-ba54706ad8f7}")]
+			//[CorrespondingType(typeof(IFilter), CorrespondingAction.Get)]
 			BHID_Filter,
 
 			/// <summary>
@@ -299,6 +316,7 @@ namespace Vanara.PInvoke
 			/// given item.
 			/// </summary>
 			[Associate("{b8ab0b9c-c2ec-4f7a-918d-314900e6280a}")]
+			[CorrespondingType(typeof(IEnumAssocHandlers), CorrespondingAction.Get)]
 			BHID_EnumAssocHandlers,
 
 			/// <summary>Introduced in Windows 8.1: Gets an object used to provide placeholder file functionality.</summary>
