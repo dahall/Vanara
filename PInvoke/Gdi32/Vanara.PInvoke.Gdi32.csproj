@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <ProjectExtensions>
     <SupportedDlls>gdi32.dll</SupportedDlls>
   </ProjectExtensions>
@@ -7,6 +7,8 @@
     <Description>PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <TargetFrameworks>net20;net35;net40;net45;net5.0-windows;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
     <AssemblyName>Vanara.PInvoke.Gdi32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
@@ -24,6 +26,9 @@ GRADIENT_RECT, GRADIENT_TRIANGLE, HSECTION, TRIVERTEX, BITMAP, BITMAPINFO, BITMA
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+    <Reference Include="PresentationCore" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) ">
     <PackageReference Include="System.Drawing.Common">
