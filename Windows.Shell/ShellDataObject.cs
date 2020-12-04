@@ -42,6 +42,29 @@ namespace Vanara.Windows.Shell
 		{
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="ShellDataObject"/> class.</summary>
+		/// <param name="items">A list of ShellItem instances.</param>
+		public ShellDataObject(ShellItem[] items) : base(ShellClipboardFormat.CFSTR_SHELLIDLIST, GetPIDLArrayStream(items))
+		{
+		}
+
+		private static Stream GetPIDLArrayStream(ShellItem[] items)
+		{
+			var str = new MemoryStream();
+			var pidlBytes = Array.ConvertAll(items, i => i.PIDL.GetBytes());
+			int offset = 0;
+			str.Write(BitConverter.GetBytes((uint)pidlBytes.Length), offset, sizeof(uint));
+			offset += sizeof(uint);
+			for (var i = 0; i < pidlBytes.Length; i++, offset += sizeof(uint))
+				str.Write(BitConverter.GetBytes((uint)pidlBytes[i].Length), offset, sizeof(uint));
+			for (var i = 0; i < pidlBytes.Length; i++)
+			{
+				str.Write(pidlBytes[i], offset, pidlBytes[i].Length);
+				offset += pidlBytes[i].Length;
+			}
+			return str;
+		}
+
 		/// <summary>This format identifier is used by a data object to indicate whether it is in a drag-and-drop loop.</summary>
 		/// <remarks>
 		/// Some drop targets might call IDataObject::GetData and attempt to extract data while the object is still within the drag-and-drop
