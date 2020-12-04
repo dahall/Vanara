@@ -344,6 +344,8 @@ namespace Vanara.Windows.Shell
 		internal IShellItem iShellItem;
 		internal IShellItem2 iShellItem2;
 		private static Dictionary<Type, BHID> bhidLookup;
+		private ShellItemImages images;
+		private ShellContextMenu menu;
 		private PropertyDescriptionList propDescList;
 		private ShellItemPropertyStore props;
 		private IQueryInfo qi;
@@ -370,7 +372,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="si">An existing IShellItem instance.</param>
-		protected ShellItem(IShellItem si) => Init(si);
+		protected internal ShellItem(IShellItem si) => Init(si);
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="knownFolder">A known folder reference.</param>
@@ -405,6 +407,10 @@ namespace Vanara.Windows.Shell
 		/// <value>The attributes of the Shell item.</value>
 		public ShellItemAttribute Attributes => (ShellItemAttribute)(iShellItem?.GetAttributes((SFGAO)0xFFFFFFFF) ?? 0);
 
+		/// <summary>Gets the context menu detail for this shell item.</summary>
+		/// <value>The context menu.</value>
+		public ShellContextMenu ContextMenu => menu ??= new ShellContextMenu(this);
+
 		/// <summary>Returns a <see cref="System.Windows.Forms.DataObject"/> representing the item. This object is used in drag and drop operations.</summary>
 		public System.Windows.Forms.DataObject DataObject => new System.Windows.Forms.DataObject(GetHandler<IDataObject>(BHID.BHID_SFUIObject));
 
@@ -414,6 +420,9 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the file system path if this item is part of the file system.</summary>
 		/// <value>The file system path.</value>
 		public string FileSystemPath => GetDisplayName(SIGDN.SIGDN_FILESYSPATH);
+
+		/// <summary>Gets an object that provides access to all the images available for this shell item.</summary>
+		public ShellItemImages Images => images ??= new ShellItemImages(this);
 
 		/// <summary>Gets a value indicating whether this instance is part of the file system.</summary>
 		/// <value><c>true</c> if this instance is part of the file system; otherwise, <c>false</c>.</value>
@@ -603,10 +612,19 @@ namespace Vanara.Windows.Shell
 		public TInterface GetHandler<TInterface>(IBindCtx bindCtx, BHID handler = 0) where TInterface : class
 		{
 			if (handler == 0)
-				handler = GetBHIDForInterface<TInterface>();
-			if (handler == 0)
-				throw new ArgumentOutOfRangeException(nameof(handler));
-			return iShellItem.BindToHandler(bindCtx, handler.Guid(), typeof(TInterface).GUID) as TInterface;
+			{
+				if ((handler = GetBHIDForInterface<TInterface>()) == 0)
+					throw new ArgumentOutOfRangeException(nameof(handler));
+			}
+			else if (!ConfirmHandlerValid())
+				throw new InvalidOperationException("BHID value cannot retrieve requested type.");
+			return iShellItem.BindToHandler<TInterface>(bindCtx, handler.Guid());
+
+			bool ConfirmHandlerValid()
+			{
+				var types = CorrespondingTypeAttribute.GetCorrespondingTypes(handler, CorrespondingAction.Get).ToArray();
+				return types.Length == 0 || types.Contains(typeof(TInterface));
+			}
 		}
 
 		/// <summary>Returns a hash code for this instance.</summary>
@@ -621,22 +639,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="flags">One or more of the option flags.</param>
 		/// <returns>The resulting image.</returns>
 		/// <exception cref="PlatformNotSupportedException"></exception>
-		public Image GetImage(Size size, ShellItemGetImageOptions flags)
-		{
-			if (!IsMinVista) throw new PlatformNotSupportedException();
-			if (iShellItem is IShellItemImageFactory fctry)
-			{
-				var hres = fctry.GetImage(size, (SIIGBF)flags, out var hbitmap);
-				if (hres == 0x8004B200 && flags.IsFlagSet(ShellItemGetImageOptions.ThumbnailOnly))
-					throw new InvalidOperationException("Thumbnails are not supported by this item.");
-				hres.ThrowIfFailed();
-				//Marshal.ReleaseComObject(fctry);
-				return GetTransparentBitmap(hbitmap);
-			}
-			if (!flags.IsFlagSet(ShellItemGetImageOptions.IconOnly))
-				return GetThumbnail(size.Width);
-			throw new InvalidOperationException("Unable to retrieve an image for this item.");
-		}
+		public Image GetImage(Size size, ShellItemGetImageOptions flags) => Images.GetImageAsync(size, flags).Result.ToBitmap();
 
 		/// <summary>Gets a property description list object given a reference to a property key.</summary>
 		/// <param name="keyType">
@@ -670,13 +673,13 @@ namespace Vanara.Windows.Shell
 		/// <returns>The tool tip text formatted as per <paramref name="options"/>.</returns>
 		public string GetToolTip(ShellItemToolTipOptions options = ShellItemToolTipOptions.Default)
 		{
-			if (qi == null)
+			if (qi is null)
 				try
 				{
 					qi = (Parent ?? ShellFolder.Desktop).GetChildrenUIObjects<IQueryInfo>(null, this);
 				}
 				catch { }
-			if (qi == null) return "";
+			if (qi is null) return "";
 			qi.GetInfoTip((QITIP)options, out var ret);
 			return ret ?? "";
 		}
@@ -690,24 +693,8 @@ namespace Vanara.Windows.Shell
 		/// </param>
 		public void InvokeVerb(string verb, string args = null, bool hideUI = false)
 		{
-			OleInitialize(default); // Not sure why necessary, but it fails without
-
-			// Get parent and relative child PIDL
-			((IParentAndItem)iShellItem).GetParentAndItem(out _, out var iFolder, out var idChild).ThrowIfFailed();
-			using var pParent = new ComReleaser<IShellFolder>(iFolder);
-
-			// Get IContext menu for item and load via query
-			using var pMenu = ComReleaserFactory.Create(pParent.Item.GetUIObjectOf<IContextMenu>(default, new[] { idChild }));
-			using var hMenu = CreateMenu();
-			pMenu.Item.QueryContextMenu(hMenu, 0, 0, 0x7FF, CMF.CMF_EXPLORE).ThrowIfFailed();
-
-			// Setup structure and invoke command
-			using var pVerb = new SafeResourceId(verb, CharSet.Ansi);
-			var ici = new CMINVOKECOMMANDINFOEX { cbSize = (uint)Marshal.SizeOf(typeof(CMINVOKECOMMANDINFOEX)),
-				lpVerb = pVerb, nShow = ShowWindowCommand.SW_NORMAL, lpParameters = args };
-			if (hideUI)
-				ici.fMask |= CMIC.CMIC_MASK_FLAG_NO_UI;
-			pMenu.Item.InvokeCommand(ici);
+			using var pVerb = new SafeResourceId(verb);
+			ContextMenu.InvokeCommand(pVerb, parent: hideUI ? HWND.NULL : GetDesktopWindow(), parameters: args);
 		}
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
@@ -788,6 +775,8 @@ namespace Vanara.Windows.Shell
 
 					{ typeof(IShellItemResources), BHID.BHID_SFViewObject },
 					{ typeof(IShellFolder2), BHID.BHID_SFViewObject },
+					{ typeof(IShellView), BHID.BHID_SFViewObject },
+					{ typeof(IDropTarget), BHID.BHID_SFViewObject },
 
 					{ typeof(IStorage), BHID.BHID_Storage },
 
@@ -886,49 +875,6 @@ namespace Vanara.Windows.Shell
 			if (ReferenceEquals(left, right)) return true;
 			if (left is null || right is null) return false;
 			return left.Compare(right, SICHINTF.SICHINT_CANONICAL | SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL) == 0;
-		}
-
-		private static Bitmap GetTransparentBitmap(HBITMAP hbitmap)
-		{
-			try
-			{
-				var dibsection = GetObject<DIBSECTION>(hbitmap);
-				var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-				using var mstr = new NativeMemoryStream(dibsection.dsBm.bmBits, dibsection.dsBmih.biSizeImage);
-				for (var x = 0; x < dibsection.dsBmih.biWidth; x++)
-					for (var y = 0; y < dibsection.dsBmih.biHeight; y++)
-					{
-						var rgbquad = mstr.Read<RGBQUAD>();
-						if (rgbquad.rgbReserved != 0)
-							bitmap.SetPixel(x, y, rgbquad.Color);
-					}
-				return bitmap;
-			}
-			catch { }
-			return Image.FromHbitmap((IntPtr)hbitmap);
-		}
-
-		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
-		/// <param name="width">The width, in pixels, of the Bitmap.</param>
-		/// <returns>The resulting Bitmap, on success, or <c>null</c> on failure.</returns>
-		private Image GetThumbnail(int width = 32)
-		{
-			IThumbnailProvider provider = null;
-			try
-			{
-				provider = GetHandler<IThumbnailProvider>(BHID.BHID_ThumbnailHandler);
-				if (provider == null) return null;
-				provider.GetThumbnail((uint)width, out var hbmp, out var alpha);
-				return hbmp.ToBitmap();
-			}
-			catch
-			{
-				return null;
-			}
-			finally
-			{
-				if (provider != null) Marshal.ReleaseComObject(provider);
-			}
 		}
 
 		/// <summary>Local implementation of IShellItem.</summary>
