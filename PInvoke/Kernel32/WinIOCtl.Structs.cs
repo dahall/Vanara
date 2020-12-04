@@ -3270,7 +3270,7 @@ namespace Vanara.PInvoke
 		// TimeStamp; DWORD Reason; DWORD SourceInfo; DWORD SecurityId; DWORD FileAttributes; WORD FileNameLength; WORD FileNameOffset; WCHAR
 		// FileName[1]; } USN_RECORD_V2, *PUSN_RECORD_V2;
 		[PInvokeData("winioctl.h", MSDNShortId = "1747453d-fd18-4853-a953-47131f3067ae")]
-		[StructLayout(LayoutKind.Sequential, Size = 64)]
+		[StructLayout(LayoutKind.Sequential, Size = 64, CharSet = CharSet.Unicode)]
 		public struct USN_RECORD_V2
 		{
 			/// <summary>
@@ -3556,8 +3556,8 @@ namespace Vanara.PInvoke
 			/// using the value of the <c>FileNameOffset</c> member. Doing so helps make your code compatible with any future versions of <c>USN_RECORD_V2</c>.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public char FileName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+			public string FileName;
 		}
 
 		/// <summary>
@@ -3596,7 +3596,7 @@ namespace Vanara.PInvoke
 		// TimeStamp; DWORD Reason; DWORD SourceInfo; DWORD SecurityId; DWORD FileAttributes; WORD FileNameLength; WORD FileNameOffset; WCHAR
 		// FileName[1]; } USN_RECORD_V3, *PUSN_RECORD_V3;
 		[PInvokeData("winioctl.h", MSDNShortId = "6d95c5d1-6c6b-498f-a00d-eaa540e8b15b")]
-		[StructLayout(LayoutKind.Sequential, Size = 80)]
+		[StructLayout(LayoutKind.Sequential, Size = 80, CharSet = CharSet.Unicode)]
 		public struct USN_RECORD_V3
 		{
 			/// <summary>
@@ -3882,8 +3882,8 @@ namespace Vanara.PInvoke
 			/// using the value of the <c>FileNameOffset</c> member. Doing so helps make your code compatible with any future versions of <c>USN_RECORD_V3</c>.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public char FileName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+			public string FileName;
 		}
 
 		/// <summary>

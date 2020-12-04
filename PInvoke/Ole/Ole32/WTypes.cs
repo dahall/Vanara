@@ -474,16 +474,16 @@ namespace Vanara.PInvoke
 				[FieldOffset(0)] public Guid clsid;
 
 				/// <summary/>
-				[FieldOffset(0), MarshalAs(UnmanagedType.LPWStr)] public string pFileExt;
+				[FieldOffset(0)] public StrPtrUni pFileExt;
 
 				/// <summary/>
-				[FieldOffset(0), MarshalAs(UnmanagedType.LPWStr)] public string pMimeType;
+				[FieldOffset(0)] public StrPtrUni pMimeType;
 
 				/// <summary/>
-				[FieldOffset(0), MarshalAs(UnmanagedType.LPWStr)] public string pProgId;
+				[FieldOffset(0)] public StrPtrUni pProgId;
 
 				/// <summary/>
-				[FieldOffset(0), MarshalAs(UnmanagedType.LPWStr)] public string pFileName;
+				[FieldOffset(0)] public StrPtrUni pFileName;
 
 				/// <summary/>
 				[FieldOffset(0)] public BYNAME ByName;
@@ -495,7 +495,7 @@ namespace Vanara.PInvoke
 				public struct BYNAME
 				{
 					/// <summary/>
-					[MarshalAs(UnmanagedType.LPWStr)] public string pPackageName;
+					public StrPtrUni pPackageName;
 
 					/// <summary/>
 					public Guid PolicyId;

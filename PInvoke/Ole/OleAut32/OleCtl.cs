@@ -718,7 +718,7 @@ namespace Vanara.PInvoke
 			/// Array of IUnknown pointers on the objects for which this property sheet is being invoked. The number of elements in the
 			/// array is specified by <c>cObjects</c>. These pointers are passed to each property page through IPropertyPage::SetObjects.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown)] public object[] lplpUnk;
+			public IntPtr lplpUnk;
 
 			/// <summary>Number of property pages specified in <c>lpPages</c>.</summary>
 			public uint cPages;
@@ -726,7 +726,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Pointer to an array of size <c>cPages</c> containing the CLSIDs of each property page to display in the property sheet.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPArray)] public Guid[] lpPages;
+			public IntPtr lpPages;
 
 			/// <summary>Locale identifier for the property sheet. This value will be returned through IPropertyPageSite::GetLocaleID.</summary>
 			public LCID lcid;
