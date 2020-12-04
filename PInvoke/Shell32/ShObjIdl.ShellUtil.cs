@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Text;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.User32;
 using BIND_OPTS = System.Runtime.InteropServices.ComTypes.BIND_OPTS;
 
 namespace Vanara.PInvoke
@@ -14,7 +17,23 @@ namespace Vanara.PInvoke
 		/// <remarks>Methods in this class will only work on Vista and above.</remarks>
 		public static class ShellUtil
 		{
-			/// <summary></summary>
+			private const string REGSTR_PATH_METRICS = "Control Panel\\Desktop\\WindowMetrics";
+			private static readonly Dictionary<SHIL, ushort> g_rgshil;
+			private static readonly int SHIL_COUNT;
+
+			static ShellUtil()
+			{
+				SHIL_COUNT = Enum.GetValues(typeof(SHIL)).Length;
+				g_rgshil = new Dictionary<SHIL, ushort>(SHIL_COUNT); // new ushort[SHIL_COUNT];
+				var sysCxIco = GetSystemMetrics(SystemMetric.SM_CXICON);
+				g_rgshil[SHIL.SHIL_LARGE] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Icon Size", sysCxIco);
+				g_rgshil[SHIL.SHIL_SMALL] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Small Icon Size", sysCxIco / 2);
+				g_rgshil[SHIL.SHIL_EXTRALARGE] = (ushort)(3 * sysCxIco / 2);
+				g_rgshil[SHIL.SHIL_SYSSMALL] = (ushort)GetSystemMetrics(SystemMetric.SM_CXSMICON);
+				g_rgshil[SHIL.SHIL_JUMBO] = 256;
+			}
+
+			/// <summary>Wrapper for native <c>CreateBindCtx</c> and <c>SetBindOptions</c>.</summary>
 			/// <param name="openMode">
 			/// Represents flags that should be used when opening the file that contains the object identified by the moniker.
 			/// </param>
@@ -104,6 +123,204 @@ namespace Vanara.PInvoke
 				return (IShellItem)unk;
 			}
 
+			/// <summary>Gets the icon for the item using the specified characteristics.</summary>
+			/// <param name="psf">The IShellFolder from which to request the IExtractIcon instance.</param>
+			/// <param name="pidl">The PIDL of the item within <paramref name="psf"/>.</param>
+			/// <param name="width">The width, in pixels, of the icon.</param>
+			/// <param name="hbmp">The resulting icon handle, on success, or <c>null</c> on failure.</param>
+			/// <returns>The result of function.</returns>
+			public static HRESULT LoadIconFromExtractIcon(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHICON hico)
+			{
+				hico = default;
+				HRESULT hr = psf.GetUIObjectOf<IExtractIconW>((IntPtr)pidl, out var ieiw);
+				if (hr.Succeeded)
+				{
+					try
+					{
+						return LoadIconFromExtractIcon(ieiw, ref imgSz, out hico);
+					}
+					finally
+					{
+						Marshal.ReleaseComObject(ieiw);
+					}
+				}
+				else if ((hr = psf.GetUIObjectOf<IExtractIconA>((IntPtr)pidl, out var iei)).Succeeded)
+				{
+					try
+					{
+						return LoadIconFromExtractIcon(iei, ref imgSz, out hico);
+					}
+					finally
+					{
+						Marshal.ReleaseComObject(iei);
+					}
+				}
+				return hr;
+			}
+
+			/// <summary>Gets the icon for the item using the specified characteristics.</summary>
+			/// <param name="iei">The IExtractIconW from which to retrieve the icon.</param>
+			/// <param name="width">The width, in pixels, of the icon.</param>
+			/// <param name="hbmp">The resulting icon handle, on success, or <c>null</c> on failure.</param>
+			/// <returns>The result of function.</returns>
+			public static HRESULT LoadIconFromExtractIcon(IExtractIconW iei, ref uint imgSz, out SafeHICON hico)
+			{
+				var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
+				var hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out var iIdx, out var flags);
+				if (hr.Succeeded)
+				{
+					if (szIconFile.ToString() != "*")
+						hr = iei.Extract(szIconFile.ToString(), (uint)iIdx, (ushort)imgSz, out hico);
+					else
+						hr = LoadIconFromSystemImageList(iIdx, ref imgSz, out hico);
+				}
+				else
+					hico = null;
+				return hr;
+			}
+
+			/// <summary>Gets the icon for the item using the specified characteristics.</summary>
+			/// <param name="iei">The IExtractIconA from which to retrieve the icon.</param>
+			/// <param name="imgSz">The width, in pixels, of the icon.</param>
+			/// <param name="hico">The resulting icon handle, on success, or <c>null</c> on failure.</param>
+			/// <returns>The result of function.</returns>
+			public static HRESULT LoadIconFromExtractIcon(IExtractIconA iei, ref uint imgSz, out SafeHICON hico)
+			{
+				var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
+				var hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out var iIdx, out var flags);
+				if (hr.Succeeded)
+				{
+					if (szIconFile.ToString() != "*")
+						hr = iei.Extract(szIconFile.ToString(), (uint)iIdx, (ushort)imgSz, out hico);
+					else
+						hr = LoadIconFromSystemImageList(iIdx, ref imgSz, out hico);
+				}
+				else
+					hico = null;
+				return hr;
+			}
+
+			/// <summary>Loads an icon from the system image list.</summary>
+			/// <param name="iIdx">A value of type int that contains the index of the image.</param>
+			/// <param name="imgSz">The width, in pixels, of the icon.</param>
+			/// <param name="hico">The resulting icon handle, on success, or <c>null</c> on failure.</param>
+			/// <returns>The result of function.</returns>
+			public static HRESULT LoadIconFromSystemImageList(int iIdx, ref uint imgSz, out SafeHICON hico)
+			{
+				HRESULT hr;
+				if ((hr = SHGetImageList(PixelsToSHIL((int)imgSz), typeof(ComCtl32.IImageList).GUID, out var il)).Succeeded)
+				{
+					try
+					{
+						hico = il.GetIcon(iIdx, ComCtl32.IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
+						using var icoInfo = new ICONINFO();
+						if (GetIconInfo(hico, icoInfo))
+							imgSz = (uint)GetObject<BITMAP>(icoInfo.hbmColor).bmWidth;
+					}
+					catch (System.Runtime.InteropServices.COMException e)
+					{
+						hico = null;
+						return (HRESULT)e.ErrorCode;
+					}
+					finally
+					{
+						Marshal.ReleaseComObject(il);
+					}
+				}
+				else
+					hico = default;
+				return hr;
+			}
+
+			/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
+			/// <param name="psi">The IShellItem from which to request the IThumbnailProvider instance.</param>
+			/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
+			/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
+			/// <returns>The result of function.</returns>
+			public static HRESULT LoadImageFromThumbnailProvider(IShellItem psi, ref uint imgSz, out SafeHBITMAP hbmp)
+			{
+				try
+				{
+					var itp = psi.BindToHandler<IThumbnailProvider>(ShellUtil.CreateBindCtx(), BHID.BHID_ThumbnailHandler);
+					return LoadImageFromThumbnailProvider(itp, ref imgSz, out hbmp);
+				}
+				catch (System.Runtime.InteropServices.COMException e)
+				{
+					hbmp = null;
+					return (HRESULT)e.ErrorCode;
+				}
+			}
+
+			/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
+			/// <param name="psf">The IShellFolder from which to request the IThumbnailProvider instance.</param>
+			/// <param name="pidl">The PIDL of the item within <paramref name="psf"/>.</param>
+			/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
+			/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
+			/// <returns>The result of function.</returns>
+			public static HRESULT LoadImageFromThumbnailProvider(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHBITMAP hbmp)
+			{
+				HRESULT hr = psf.GetUIObjectOf<IThumbnailProvider>((IntPtr)pidl, out var itp);
+				if (hr.Succeeded)
+					hr = LoadImageFromThumbnailProvider(itp, ref imgSz, out hbmp);
+				else
+					hbmp = null;
+				return hr;
+			}
+
+			/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
+			/// <param name="itp">The itp.</param>
+			/// <param name="imgSz">The width, in pixels, of the Bitmap.</param>
+			/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
+			/// <returns>The result of function.</returns>
+			public static HRESULT LoadImageFromThumbnailProvider(IThumbnailProvider itp, ref uint imgSz, out SafeHBITMAP hbmp)
+			{
+				try
+				{
+					var hr = itp.GetThumbnail(imgSz, out hbmp, out _);
+					if (hr.Succeeded)
+						imgSz = (uint)GetObject<BITMAP>(hbmp).bmWidth;
+					return hr;
+				}
+				finally
+				{
+					Marshal.ReleaseComObject(itp);
+				}
+			}
+
+			/// <summary>Gets the image for the item using the specified characteristics.</summary>
+			/// <param name="psf">The IShellFolder from which to request the IExtractImage instance.</param>
+			/// <param name="pidl">The PIDL of the item within <paramref name="psf"/>.</param>
+			/// <param name="width">The width, in pixels, of the Bitmap.</param>
+			/// <param name="hbmp">The resulting Bitmap, on success, or <c>null</c> on failure.</param>
+			/// <returns>The result of function.</returns>
+			public static HRESULT LoadImageFromExtractImage(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHBITMAP hbmp)
+			{
+				HRESULT hr = psf.GetUIObjectOf<IExtractImage>((IntPtr)pidl, out var iei);
+				hbmp = default;
+				if (hr.Succeeded)
+				{
+					try
+					{
+						var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
+						var sz = new SIZE((int)imgSz, (int)imgSz);
+						IEIFLAG flags = 0;
+						if ((hr = iei.GetLocation(szIconFile, (uint)szIconFile.Capacity, default, ref sz, 0, ref flags)).Succeeded && (hr = iei.Extract(out hbmp)).Succeeded)
+							imgSz = (uint)sz.cx;
+						return hr;
+					}
+					finally
+					{
+						Marshal.ReleaseComObject(iei);
+					}
+				}
+				return hr;
+			}
+
+			/// <summary>Given a pixel size, return the ShellImageSize value with the closest size.</summary>
+			/// <param name="pixels">Size, in pixels, of the image list size to search for.</param>
+			/// <returns>An image list size.</returns>
+			public static SHIL PixelsToSHIL(int pixels) => g_rgshil.Aggregate((x, y) => Math.Abs(x.Value - pixels) < Math.Abs(y.Value - pixels) ? x : y).Key;
+
 			/// <summary>Requests a specified interface from a COM object.</summary>
 			/// <param name="iUnk">The interface to be queried.</param>
 			/// <param name="riid">The interface identifier (IID) of the requested interface.</param>
@@ -128,6 +345,11 @@ namespace Vanara.PInvoke
 				return hr;
 			}
 
+			/// <summary>Given an image list size, return the related size, in pixels, of that size defined on the system.</summary>
+			/// <param name="imageListSize">Size of the image list.</param>
+			/// <returns>Pixel size of corresponding system value.</returns>
+			public static int SHILToPixels(SHIL imageListSize) => g_rgshil[imageListSize];
+
 			[ComVisible(true)]
 			private class IntFileSysBindData : IFileSystemBindData2
 			{
@@ -136,9 +358,7 @@ namespace Vanara.PInvoke
 				private WIN32_FIND_DATA fd;
 				private long fileId;
 
-				public IntFileSysBindData()
-				{
-				}
+				public IntFileSysBindData() { }
 
 				public HRESULT GetFileID(out long pliFileID) { pliFileID = fileId; return HRESULT.S_OK; }
 
