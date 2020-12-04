@@ -41,22 +41,7 @@ namespace Vanara.Windows.Shell
 	/// <summary>Represents the System Image List holding images for all shell icons.</summary>
 	public static class ShellImageList
 	{
-		private const string REGSTR_PATH_METRICS = "Control Panel\\Desktop\\WindowMetrics";
-		private static readonly Dictionary<ShellImageSize, ushort> g_rgshil;
-		private static readonly int SHIL_COUNT;
 		private static HIMAGELIST hSystemImageList;
-
-		static ShellImageList()
-		{
-			SHIL_COUNT = Enum.GetValues(typeof(ShellImageSize)).Length;
-			g_rgshil = new Dictionary<ShellImageSize, ushort>(SHIL_COUNT); // new ushort[SHIL_COUNT];
-			var sysCxIco = GetSystemMetrics(SystemMetric.SM_CXICON);
-			g_rgshil[ShellImageSize.Large] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Icon Size", sysCxIco);
-			g_rgshil[ShellImageSize.Small] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Small Icon Size", sysCxIco / 2);
-			g_rgshil[ShellImageSize.ExtraLarge] = (ushort)(3 * sysCxIco / 2);
-			g_rgshil[ShellImageSize.SystemSmall] = (ushort)GetSystemMetrics(SystemMetric.SM_CXSMICON);
-			g_rgshil[ShellImageSize.Jumbo] = 256;
-		}
 
 		/// <summary>Gets the Shell icon for the given file name or extension.</summary>
 		/// <param name="fileNameOrExtension">The file name or extension .</param>
@@ -108,11 +93,11 @@ namespace Vanara.Windows.Shell
 		/// <summary>Given a pixel size, return the ShellImageSize value with the closest size.</summary>
 		/// <param name="pixels">Size, in pixels, of the image list size to search for.</param>
 		/// <returns>An image list size.</returns>
-		public static ShellImageSize PixelsToSHIL(int pixels) => g_rgshil.Aggregate((x, y) => Math.Abs(x.Value - pixels) < Math.Abs(y.Value - pixels) ? x : y).Key;
+		public static ShellImageSize PixelsToSHIL(int pixels) => (ShellImageSize)ShellUtil.PixelsToSHIL(pixels);
 
 		/// <summary>Given an image list size, return the related size, in pixels, of that size defined on the system.</summary>
 		/// <param name="imageListSize">Size of the image list.</param>
 		/// <returns>Pixel size of corresponding system value.</returns>
-		public static int SHILtoPixels(ShellImageSize imageListSize) => g_rgshil[imageListSize];
+		public static int SHILtoPixels(ShellImageSize imageListSize) => ShellUtil.SHILToPixels((SHIL)imageListSize);
 	}
 }
