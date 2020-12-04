@@ -21,7 +21,6 @@ namespace Vanara.Windows.Shell
 		public IndirectResource(string module, int resourceIdOrIndex, string versionModifier = null)
 		{
 			if (module is null) throw new ArgumentNullException(nameof(module));
-			if (resourceIdOrIndex == 0) throw new ArgumentOutOfRangeException(nameof(resourceIdOrIndex), "Value cannot be 0.");
 			RawValue = $"@{module},{resourceIdOrIndex}" + (versionModifier is null ? "" : ';' + versionModifier);
 		}
 
