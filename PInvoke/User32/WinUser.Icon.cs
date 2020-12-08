@@ -1149,9 +1149,7 @@ namespace Vanara.PInvoke
 			if (hIcon.IsNull) return null;
 			using var icoInfo = new ICONINFO();
 			Win32Error.ThrowLastErrorIfFalse(GetIconInfo(hIcon, icoInfo));
-			var ret = new SafeHBITMAP((IntPtr)CopyImage((IntPtr)icoInfo.hbmColor, LoadImageType.IMAGE_BITMAP, 0, 0, CopyImageOptions.LR_CREATEDIBSECTION), true);
-			icoInfo.hbmColor = default;
-			return ret;
+			return new SafeHBITMAP((IntPtr)CopyImage((IntPtr)icoInfo.hbmColor, LoadImageType.IMAGE_BITMAP, 0, 0, CopyImageOptions.LR_CREATEDIBSECTION), true);
 		}
 
 		/// <summary>Creates a managed <see cref="System.Drawing.Icon"/> from this HICON instance.</summary>
