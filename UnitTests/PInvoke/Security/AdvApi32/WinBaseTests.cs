@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -270,6 +272,11 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(name.ToString(), Is.EqualTo(username).IgnoreCase);
 			Assert.That(domN.ToString(), Is.EqualTo(domain).IgnoreCase);
 			Assert.That(snu, Is.EqualTo(SID_NAME_USE.SidTypeUser));
+
+			Assert.That(LookupAccountSid2(null, sid, out var name2, out var domN2, out var snu2), ResultIs.Successful);
+			Assert.AreEqual(name, name2);
+			Assert.AreEqual(domN, domN2);
+			Assert.AreEqual(snu, snu2);
 		}
 
 		[Test]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
@@ -2729,6 +2730,58 @@ namespace Vanara.PInvoke
 		public static bool LookupAccountSidLocal([In] PSID Sid, StringBuilder Name, ref int cchName,
 			StringBuilder ReferencedDomainName, ref int cchReferencedDomainName, out SID_NAME_USE peUse) =>
 			LookupAccountSid(null, Sid, Name, ref cchName, ReferencedDomainName, ref cchReferencedDomainName, out peUse);
+
+		/// <summary>
+		/// The LookupAccountSid2 function accepts a security identifier (SID) as input. It retrieves the name of the account for this SID
+		/// and the name of the first domain on which this SID is found. It provides error handling beyond <c>LookupAccountSid</c>.
+		/// </summary>
+		/// <param name="lpSystemName">
+		/// A pointer to a null-terminated character string that specifies the target computer. This string can be the name of a remote
+		/// computer. If this parameter is NULL, the account name translation begins on the local system. If the name cannot be resolved on
+		/// the local system, this function will try to resolve the name using domain controllers trusted by the local system. Generally,
+		/// specify a value for lpSystemName only when the account is in an untrusted domain and the name of a computer in that domain is known.
+		/// </param>
+		/// <param name="lpSid">A pointer to the SID to look up.</param>
+		/// <param name="lpName">Returns a string that contains the account name that corresponds to the lpSid parameter.</param>
+		/// <param name="lpReferencedDomainName">
+		/// Returns a string that contains the name of the domain where the account name was found.
+		/// <para>
+		/// On a server, the domain name returned for most accounts in the security database of the local computer is the name of the domain
+		/// for which the server is a domain controller.
+		/// </para>
+		/// <para>
+		/// On a workstation, the domain name returned for most accounts in the security database of the local computer is the name of the
+		/// computer as of the last start of the system (backslashes are excluded). If the name of the computer changes, the old name
+		/// continues to be returned as the domain name until the system is restarted.
+		/// </para>
+		/// <para>Some accounts are predefined by the system. The domain name returned for these accounts is BUILTIN.</para>
+		/// </param>
+		/// <param name="peUse">A pointer to a variable that receives a SID_NAME_USE value that indicates the type of the account.</param>
+		/// <returns>
+		/// If the function succeeds, the function returns STATUS_SUCCESS or STATUS_SOME_NOT_MAPPED. If the function fails, it returns an
+		/// NTSTATUS error. For more information see <see cref="LsaLookupSids2"/>.
+		/// </returns>
+		[PInvokeData("winbase.h", MSDNShortId = "aa379166")]
+		public static NTStatus LookupAccountSid2([Optional] string lpSystemName, PSID lpSid, out string lpName,
+			out string lpReferencedDomainName, out SID_NAME_USE peUse)
+		{
+			lpName = lpReferencedDomainName = null;
+			peUse = default;
+			using var pol = LsaOpenPolicy(LsaPolicyRights.POLICY_LOOKUP_NAMES, lpSystemName);
+			var ret = LsaLookupSids2(pol, LsaLookupSidsFlags.LSA_LOOKUP_RETURN_LOCAL_NAMES, 1, new[] { lpSid }, out var refDom, out var names);
+			using (refDom)
+			using (names)
+			{
+				if (ret == NTStatus.STATUS_SUCCESS || ret == NTStatus.STATUS_SOME_NOT_MAPPED)
+				{
+					lpReferencedDomainName = refDom.ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.FirstOrDefault().Name;
+					var name = names.ToArray<LSA_TRANSLATED_NAME>(1)[0];
+					lpReferencedDomainName = name.Name;
+					peUse = name.Use;
+				}
+			}
+			return ret;
+		}
 
 		/// <summary>
 		/// <para>The <c>LookupPrivilegeDisplayName</c> function retrieves the display name that represents a specified privilege.</para>
