@@ -80,29 +80,37 @@ namespace Vanara.PInvoke
 		/// <returns>The Bitmap instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
 		public static Bitmap ToBitmap(this in HBITMAP hbmp)
 		{
+			const System.Drawing.Imaging.PixelFormat fmt = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
+
 			// If hbmp is NULL handle, return null
 			if (hbmp.IsNull) return null;
-			try
+
+			// Get detail and bail if not 32bit, empty or an old style BMP
+			var (bpp, width, height, scanBytes, bits, isdib) = GetInfo(hbmp);
+			if (bpp != Image.GetPixelFormatSize(fmt) || height == 0 || !isdib)
+				return Image.FromHbitmap((IntPtr)hbmp);
+
+			// Create bitmap from detail and flip if upside-down
+			var bmp = new Bitmap(width, height, scanBytes, fmt, bits);
+			if (height < 0) bmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
+			return bmp;
+
+			static (ushort bpp, int width, int height, int scanBytes, IntPtr bits, bool isdib) GetInfo(in HBITMAP hbmp)
 			{
-				var dib = GetObject<DIBSECTION>(hbmp);
-				
-				// If hbmp doesn't have ARGB, then just use Gdi+
-				if (dib.dsBm.bmBitsPixel != 32) throw new Exception();
-
-				// Create resulting bitmap from DIB info
-				var bitmap = new Bitmap(dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes, System.Drawing.Imaging.PixelFormat.Format32bppArgb, dib.dsBm.bmBits);
-
-				// Hack to determine and fix if upside-down
-				//var lkBits = bitmap.LockBits(new System.Drawing.Rectangle(Point.Empty, bitmap.Size), System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
-				//var stride = lkBits.Stride;
-				//bitmap.UnlockBits(lkBits);
-				//if (stride > 0)
-				//	bitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
-
-				return bitmap;
+				var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
+				using var mem = GetObject(hbmp, dibSz);
+				if (mem.Size == dibSz)
+				{
+					var dib = mem.ToStructure<DIBSECTION>();
+					return (dib.dsBm.bmBitsPixel, dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes, dib.dsBm.bmBits, true);
+				}
+				else
+				{
+					var bmp = mem.ToStructure<BITMAP>();
+					return (bmp.bmBitsPixel, bmp.bmWidth, bmp.bmHeight, bmp.bmWidthBytes, bmp.bmBits, false);
+				}
 			}
-			catch { }
-			return Image.FromHbitmap((IntPtr)hbmp);
+
 		}
 
 #if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
