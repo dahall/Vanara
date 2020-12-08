@@ -285,6 +285,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumassochandlers-next HRESULT Next( ULONG
 			// celt, IAssocHandler **rgelt, ULONG *pceltFetched );
+			[PreserveSig]
 			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IAssocHandler[] rgelt, out uint pceltFetched);
 		}
 	}
