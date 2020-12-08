@@ -493,6 +493,10 @@ namespace Vanara.Windows.Shell
 		/// <value>The tool tip text.</value>
 		public string ToolTipText => GetToolTip();
 
+		/// <summary>Gets the of verbs defined for this item.</summary>
+		/// <value>The list of verbs.</value>
+		public IEnumerable<string> Verbs => ContextMenu.GetItems().Select(i => i.Verb).Where(v => !(v is null));
+
 		/// <summary>Gets the system bind context.</summary>
 		/// <value>The bind context.</value>
 		protected static IBindCtx BindContext => ShellUtil.CreateBindCtx();
