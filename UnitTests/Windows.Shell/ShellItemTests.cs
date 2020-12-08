@@ -1,12 +1,19 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
+using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.Windows.Shell.Tests
 {
@@ -193,10 +200,112 @@ namespace Vanara.Windows.Shell.Tests
 		}
 
 		[Test]
+		public void ImagesTest()
+		{
+			using var imageFile = new ShellItem(@"C:\Temp\icon2.ico");
+			var list = new List<(Size sz, ShellItemGetImageOptions opt)>();
+			for (int i = 16; i <= 256; i += 16)
+			{
+				var sz = new Size(i, i);
+				list.AddRange(Enum.GetValues(typeof(ShellItemGetImageOptions)).OfType<ShellItemGetImageOptions>().Where(o => o != ShellItemGetImageOptions.MemoryOnly).Select(o => (sz, o)));
+			}
+			var handles = new List<SafeHBITMAP>();
+			for (int i = 0; i < list.Count; i++)
+			{
+				Assert.That(() => handles.Add(imageFile.Images.GetImageAsync(list[i].sz, list[i].opt).Result), Throws.Nothing);
+				Assert.That(handles[i], ResultIs.ValidHandle);
+			}
+			//new ImageViewer(handles.Select(h => Image.FromHbitmap(h.DangerousGetHandle())).Prepend(Image.FromFile(TestCaseSources.ImageFile))).ShowDialog();
+			new ImageViewer(handles.Select((h, idx) => ((Image)HToBitmap(h), $"{list[idx].opt} {list[idx].sz}"))).ShowDialog();
+			foreach (var h in handles) h.Dispose();
+		}
+
+		private static Bitmap HToBitmap(in HBITMAP hbmp)
+		{
+			const System.Drawing.Imaging.PixelFormat fmt = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
+
+			// If hbmp is NULL handle, return null
+			if (hbmp.IsNull) return null;
+
+			// Create resulting bitmap from DIB info or bail if not 32bit
+			var (bpp, width, height, scanBytes, bits, isdib) = GetInfo(hbmp);
+			if (bpp != Image.GetPixelFormatSize(fmt) || height == 0 || !isdib)
+				return Image.FromHbitmap((IntPtr)hbmp);
+
+			//var bytes = dib.dsBm.bmBits.ToArray<byte>((int)dib.dsBmih.biSizeImage);
+
+			// Read first byte of first and last scan lines
+			//var byte0 = unchecked((uint)Marshal.ReadInt32(dib.dsBm.bmBits));
+			//var byten = unchecked((uint)Marshal.ReadInt32(dib.dsBm.bmBits, (int)dib.dsBmih.biSizeImage - dib.dsBm.bmWidthBytes));
+
+			//// Load bitmap into DC to look at pixels
+			//using (var dc = CreateCompatibleDC())
+			//using (dc.SelectObject(hbmp))
+			//{
+			//	uint pix0 = GetPixel(dc, 0, 0);
+			//	uint pixn = GetPixel(dc, 0, Math.Abs(dib.dsBmih.biHeight) - 1);
+			//	// If first byte and first pixel are the same,
+			//	if (pix0 == byte0)
+			//	{
+
+			//	}
+			//}
+
+			//var bounds = new Rectangle(0, 0, width, Math.Abs(height));
+			var bmp =  new Bitmap(width, height, scanBytes, fmt, bits);
+			if (height < 0) bmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
+			return bmp;
+			//using var bitmap = new Bitmap(bounds.Width, bounds.Height, dib.dsBm.bmWidthBytes, fmt, dib.dsBm.bmBits);
+
+			//// Create resulting 
+			//var alpha = new Bitmap(bounds.Width, bounds.Height, fmt);
+			//var bdata = bitmap.LockBits(bounds, System.Drawing.Imaging.ImageLockMode.ReadOnly, fmt);
+			//var adata = alpha.LockBits(bounds, System.Drawing.Imaging.ImageLockMode.WriteOnly, fmt);
+			//var bottomUp = dib.dsBmih.biHeight > 0;
+			//try
+			//{
+			//	using var bstr = new SafeNativeArray<RGBQUAD>(bdata.Scan0, (int)dib.dsBmih.biSizeImage, false);
+			//	using var astr = new SafeNativeArray<RGBQUAD>(adata.Scan0, (int)dib.dsBmih.biSizeImage, false);
+			//	// Copy all semi-transparent bits
+			//	for (int i = 0; i < bstr.Count; i++)
+			//	{
+			//		var rgbquad = bottomUp ? bstr[bstr.Count - 1 - i] : bstr[i];
+			//		// If pixel is fully transparent, skip pixel
+			//		if (!rgbquad.IsTransparent)
+			//			astr[i] = rgbquad;
+			//	}
+			//}
+			//finally
+			//{
+			//	alpha.UnlockBits(adata);
+			//	bitmap.UnlockBits(bdata);
+			//}
+			//return alpha;
+
+			static (ushort bpp, int width, int height, int scanBytes, IntPtr bits, bool isdib) GetInfo(in HBITMAP hbmp)
+			{
+				var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
+				using var mem = GetObject(hbmp, dibSz);
+				if (mem.Size == dibSz)
+				{
+					var dib = mem.ToStructure<DIBSECTION>();
+					return (dib.dsBm.bmBitsPixel, dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes, dib.dsBm.bmBits, true);
+				}
+				else
+				{
+					var bmp = mem.ToStructure<BITMAP>();
+					return (bmp.bmBitsPixel, bmp.bmWidth, bmp.bmHeight, bmp.bmWidthBytes, bmp.bmBits, false);
+				}
+			}
+		}
+
+		[Test]
 		public void InvokeVerbTest()
 		{
 			using var i = new ShellItem(testDoc);
-			Assert.That(() => i.InvokeVerb("ViewProtected"), Throws.Nothing);
+			var verb = i.Verbs.First();
+			TestContext.WriteLine(string.Join(", ", i.Verbs));
+			Assert.That(() => i.InvokeVerb(verb), Throws.Nothing);
 		}
 
 		[Test]

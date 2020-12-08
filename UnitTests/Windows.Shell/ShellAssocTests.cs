@@ -12,6 +12,8 @@ namespace Vanara.Windows.Shell.Tests
 		{
 			var sha = ShellAssociation.FileAssociations[".xlsx"];
 			Assert.That(sha.FriendlyAppName, Is.EqualTo(@"Excel"));
+			//Assert.That(sha.Verbs, Has.Member("Open"));
+			Assert.That(sha.Handlers, Has.One.Property("UIName").EqualTo("Excel"));
 		}
 
 		[Test]
