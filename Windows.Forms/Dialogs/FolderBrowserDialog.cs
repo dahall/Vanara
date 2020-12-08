@@ -398,7 +398,7 @@ namespace Vanara.Windows.Forms
 
 	/// <summary>Class to let the user browse for a folder.</summary>
 	[ToolboxBitmap(typeof(FolderBrowserDialog), "Dialog"), Description("Dialog that browses network computers.")]
-	public class FolderBrowserDialog : CommonDialog
+	public class FolderBrowserDialog : System.Windows.Forms.CommonDialog
 	{
 		private const KnownFolder defaultComputersFolder = KnownFolder.NetworkFolder;
 		private const KnownFolder defaultFolderFolder = KnownFolder.ComputerFolder;
