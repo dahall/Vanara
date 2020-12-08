@@ -1976,7 +1976,7 @@ namespace Vanara.PInvoke
 			if (!GetFileSecurity(lpFileName, RequestedInformation, SafePSECURITY_DESCRIPTOR.Null, 0, out var sz) && sz == 0)
 				Win32Error.ThrowLastError();
 			var sd = new SafePSECURITY_DESCRIPTOR((int)sz);
-			if (!GetFileSecurity(lpFileName, RequestedInformation, sd, (uint)sd.Size, out sz))
+			if (!GetFileSecurity(lpFileName, RequestedInformation, sd, sd.Size, out _))
 				Win32Error.ThrowLastError();
 			return sd;
 		}
@@ -2360,7 +2360,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error
 		/// information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa378184")]
 		public static extern bool LogonUser(string lpszUserName, [Optional] string lpszDomain, [Optional] string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
@@ -2414,7 +2414,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error
 		/// information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa378189")]
 		public static extern bool LogonUserEx(string lpszUserName, [Optional] string lpszDomain, [Optional] string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
@@ -2649,11 +2649,13 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error
 		/// information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa379166")]
-		public static extern bool LookupAccountSid([Optional] string lpSystemName, byte[] lpSid, StringBuilder lpName, ref int cchName,
-			StringBuilder lpReferencedDomainName, ref int cchReferencedDomainName, out SID_NAME_USE peUse);
+		public static extern bool LookupAccountSid([Optional] string lpSystemName, [In, MarshalAs(UnmanagedType.LPArray)] byte[] lpSid,
+			[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpName, ref int cchName,
+			[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpReferencedDomainName,
+			ref int cchReferencedDomainName, out SID_NAME_USE peUse);
 
 		/// <summary>
 		/// The LookupAccountSid function accepts a security identifier (SID) as input. It retrieves the name of the account for this SID and
@@ -2696,11 +2698,37 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error
 		/// information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa379166")]
-		public static extern bool LookupAccountSid([Optional] string lpSystemName, PSID lpSid, StringBuilder lpName, ref int cchName,
-			StringBuilder lpReferencedDomainName, ref int cchReferencedDomainName, out SID_NAME_USE peUse);
+		public static extern bool LookupAccountSid([Optional] string lpSystemName, [In] PSID lpSid,
+			[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpName, ref int cchName,
+			[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpReferencedDomainName,
+			ref int cchReferencedDomainName, out SID_NAME_USE peUse);
+
+		/// <summary>Retrieves the name of the account for the specified SID on the local machine.</summary>
+		/// <param name="Sid">A pointer to the SID to look up.</param>
+		/// <param name="Name">A pointer to a buffer that receives a <c>null</c>-terminated string that contains the account name that corresponds to the lpSid parameter.</param>
+		/// <param name="cchName">On input, specifies the size, in <c>TCHAR</c>s, of the lpName buffer. If the function fails because the buffer is too small or if cchName is zero, cchName receives the required buffer size, including the terminating <c>null</c> character.</param>
+		/// <param name="ReferencedDomainName">
+		/// <para>A pointer to a buffer that receives a <c>null</c>-terminated string that contains the name of the domain where the account name was found.</para>
+		/// <para>On a server, the domain name returned for most accounts in the security database of the local computer is the name of the domain for which the server is a domain controller.</para>
+		/// <para>On a workstation, the domain name returned for most accounts in the security database of the local computer is the name of the computer as of the last start of the system (backslashes are excluded). If the name of the computer changes, the old name continues to be returned as the domain name until the system is restarted.</para>
+		/// <para>Some accounts are predefined by the system. The domain name returned for these accounts is BUILTIN.</para>
+		/// </param>
+		/// <param name="cchReferencedDomainName">On input, specifies the size, in <c>TCHAR</c>s, of the lpReferencedDomainName buffer. If the function fails because the buffer is too small or if cchReferencedDomainName is zero, cchReferencedDomainName receives the required buffer size, including the terminating <c>null</c> character.</param>
+		/// <param name="peUse">A pointer to a variable that receives a SID_NAME_USE value that indicates the type of the account.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>This function is similar to LookupAccountSid, but restricts the search to the local machine.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-lookupaccountsidlocalw
+		// BOOL LookupAccountSidLocalW( PSID Sid, LPWSTR Name, LPDWORD cchName, LPWSTR ReferencedDomainName, LPDWORD cchReferencedDomainName, PSID_NAME_USE peUse );
+		[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.LookupAccountSidLocalW")]
+		public static bool LookupAccountSidLocal([In] PSID Sid, StringBuilder Name, ref int cchName,
+			StringBuilder ReferencedDomainName, ref int cchReferencedDomainName, out SID_NAME_USE peUse) =>
+			LookupAccountSid(null, Sid, Name, ref cchName, ReferencedDomainName, ref cchReferencedDomainName, out peUse);
 
 		/// <summary>
 		/// <para>The <c>LookupPrivilegeDisplayName</c> function retrieves the display name that represents a specified privilege.</para>
@@ -2791,7 +2819,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lookupprivilegenamea BOOL LookupPrivilegeNameA( LPCSTR
 		// lpSystemName, PLUID lpLuid, LPSTR lpName, LPDWORD cchName );
-		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "580fb58f-1470-4389-9f07-8f37403e2bdf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool LookupPrivilegeName([Optional] string lpSystemName, in LUID lpLuid, StringBuilder lpName, ref uint cchName);
@@ -2833,7 +2861,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lookupprivilegevaluea BOOL LookupPrivilegeValueA( LPCSTR
 		// lpSystemName, LPCSTR lpName, PLUID lpLuid );
-		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "334b8ba8-101d-43a1-a8bf-1c7e0448c272")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool LookupPrivilegeValue([Optional] string lpSystemName, string lpName, out LUID lpLuid);
