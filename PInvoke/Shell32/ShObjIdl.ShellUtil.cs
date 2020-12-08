@@ -254,7 +254,9 @@ namespace Vanara.PInvoke
 						var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
 						var sz = new SIZE((int)imgSz, (int)imgSz);
 						IEIFLAG flags = 0;
-						if ((hr = iei.GetLocation(szIconFile, (uint)szIconFile.Capacity, default, ref sz, 0, ref flags)).Succeeded && (hr = iei.Extract(out hbmp)).Succeeded)
+						if ((hr = iei.GetLocation(szIconFile, (uint)szIconFile.Capacity, default, ref sz, 0, ref flags)).Succeeded &&
+							szIconFile.Length > 0 &&
+							(hr = iei.Extract(out hbmp)).Succeeded)
 							imgSz = (uint)sz.cx;
 						return hr;
 					}
