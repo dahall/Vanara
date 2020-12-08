@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
@@ -54,6 +55,26 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary>Determines whether the bitmap is a bottom-up DIB.</summary>
+		/// <param name="hbmp">The handle of the bitmap to assess.</param>
+		/// <returns><see langword="true"/> if the specified bitmap is a bottom-up DIB; otherwise, <see langword="false"/>.</returns>
+		public static bool IsBottomUpDIB(this in HBITMAP hbmp)
+		{
+			var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
+			using var mem = GetObject(hbmp, dibSz);
+			return mem.Size == dibSz && mem.ToStructure<DIBSECTION>().dsBmih.biHeight > 0;
+		}
+
+		/// <summary>Determines whether the bitmap is a bottom-up DIB.</summary>
+		/// <param name="hbmp">The handle of the bitmap to assess.</param>
+		/// <returns><see langword="true"/> if the specified bitmap is a bottom-up DIB; otherwise, <see langword="false"/>.</returns>
+		public static bool IsDIB(this in HBITMAP hbmp)
+		{
+			var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
+			using var mem = GetObject(hbmp, dibSz);
+			return mem.Size == dibSz;
+		}
+
 		/// <summary>Creates a <see cref="Bitmap"/> from an <see cref="HBITMAP"/> preserving transparency, if possible.</summary>
 		/// <param name="hbmp">The HBITMAP value.</param>
 		/// <returns>The Bitmap instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
@@ -63,36 +84,26 @@ namespace Vanara.PInvoke
 			if (hbmp.IsNull) return null;
 			try
 			{
-				var dibsection = GetObject<DIBSECTION>(hbmp);
+				var dib = GetObject<DIBSECTION>(hbmp);
+				
 				// If hbmp doesn't have ARGB, then just use Gdi+
-				if (dibsection.dsBm.bmBitsPixel != 32) return Image.FromHbitmap((IntPtr)hbmp);
-				// Create resulting bitmap of same size with transparency and lock in memory
-				var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-				var bmpData = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-				// Grab arrays to both DIB and result
-				using var mstr = new SafeNativeArray<RGBQUAD>(dibsection.dsBm.bmBits, (int)dibsection.dsBmih.biSizeImage, false);
-				using var bstr = new SafeNativeArray<RGBQUAD>(bmpData.Scan0, (int)dibsection.dsBmih.biSizeImage, false);
-				// Copy all semi-transparent bits
-				for (int i = 0; i < mstr.Count; i++)
-				{
-					var rgbquad = mstr[i];
-					// If pixel is 100% transparent, skip pixel
-					if (rgbquad.rgbReserved != 0)
-						bstr[i] = rgbquad;
-				}
-				bitmap.UnlockBits(bmpData);
+				if (dib.dsBm.bmBitsPixel != 32) throw new Exception();
+
+				// Create resulting bitmap from DIB info
+				var bitmap = new Bitmap(dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes, System.Drawing.Imaging.PixelFormat.Format32bppArgb, dib.dsBm.bmBits);
+
+				// Hack to determine and fix if upside-down
+				//var lkBits = bitmap.LockBits(new System.Drawing.Rectangle(Point.Empty, bitmap.Size), System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
+				//var stride = lkBits.Stride;
+				//bitmap.UnlockBits(lkBits);
+				//if (stride > 0)
+				//	bitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
+
 				return bitmap;
 			}
-			catch
-			{
-				return Image.FromHbitmap((IntPtr)hbmp);
-			}
+			catch { }
+			return Image.FromHbitmap((IntPtr)hbmp);
 		}
-
-		/// <summary>Creates a <see cref="Bitmap"/> from an <see cref="SafeHBITMAP"/> preserving transparency, if possible.</summary>
-		/// <param name="hbmp">The SafeHBITMAP value.</param>
-		/// <returns>The Bitmap instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
-		public static Bitmap ToBitmap(this SafeHBITMAP hbmp) => ((HBITMAP)hbmp).ToBitmap();
 
 #if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
 		/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HBITMAP"/> preserving transparency, if possible.</summary>
