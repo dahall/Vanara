@@ -77,6 +77,10 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HGDIOBJ(SafeHBITMAP h) => h.handle;
 
+			/// <summary>Creates a <see cref="Bitmap"/> from an <see cref="SafeHBITMAP"/> preserving transparency, if possible.</summary>
+			/// <returns>The Bitmap instance. If this is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
+			public Bitmap ToBitmap() => ((HBITMAP)this).ToBitmap();
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => DeleteObject(this);
 		}
