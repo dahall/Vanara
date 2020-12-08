@@ -367,7 +367,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd183489")]
-		public static extern SafeHDC CreateCompatibleDC(HDC hDC);
+		public static extern SafeHDC CreateCompatibleDC([Optional] HDC hDC);
 
 		/// <summary>The <c>CreateDC</c> function creates a device context (DC) for a device using the specified name.</summary>
 		/// <param name="pwszDriver">
@@ -864,36 +864,34 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd144904")]
 		public static T GetObject<T>(IGraphicsObjectHandle hgdiobj) where T : struct
 		{
-			using (var ptr = GetObject(hgdiobj))
+			using var ptr = GetObject(hgdiobj, Marshal.SizeOf(typeof(T)));
+			var ot = GetObjectType(hgdiobj.DangerousGetHandle());
+			switch (ot)
 			{
-				var ot = GetObjectType(hgdiobj.DangerousGetHandle());
-				switch (ot)
-				{
-					case ObjType.OBJ_PEN:
-						if (typeof(T) == typeof(EXTLOGPEN) || typeof(T) == typeof(LOGPEN))
-							return ptr.ToStructure<T>();
-						break;
-					case ObjType.OBJ_BRUSH:
-						if (typeof(T) == typeof(LOGBRUSH))
-							return ptr.ToStructure<T>();
-						break;
-					case ObjType.OBJ_PAL:
-						if (typeof(T) == typeof(ushort))
-							return ptr.ToStructure<T>();
-						break;
-					case ObjType.OBJ_FONT:
-						if (typeof(T) == typeof(LOGFONT))
-							return ptr.ToStructure<T>();
-						break;
-					case ObjType.OBJ_BITMAP:
-						if (typeof(T) == typeof(BITMAP) && ptr.Size == Marshal.SizeOf(typeof(BITMAP)))
-							return ptr.ToStructure<T>();
-						if (typeof(T) == typeof(DIBSECTION) && ptr.Size == Marshal.SizeOf(typeof(DIBSECTION)))
-							return ptr.ToStructure<T>();
-						break;
-				}
-				throw new ArgumentException($"The specified type ({typeof(T).Name}) cannot be retrieved from an object of type {ot}.");
+				case ObjType.OBJ_PEN:
+					if (typeof(T) == typeof(EXTLOGPEN) || typeof(T) == typeof(LOGPEN))
+						return ptr.ToStructure<T>();
+					break;
+				case ObjType.OBJ_BRUSH:
+					if (typeof(T) == typeof(LOGBRUSH))
+						return ptr.ToStructure<T>();
+					break;
+				case ObjType.OBJ_PAL:
+					if (typeof(T) == typeof(ushort))
+						return ptr.ToStructure<T>();
+					break;
+				case ObjType.OBJ_FONT:
+					if (typeof(T) == typeof(LOGFONT))
+						return ptr.ToStructure<T>();
+					break;
+				case ObjType.OBJ_BITMAP:
+					if (typeof(T) == typeof(BITMAP) && ptr.Size >= Marshal.SizeOf(typeof(BITMAP)))
+						return ptr.ToStructure<T>();
+					if (typeof(T) == typeof(DIBSECTION) && ptr.Size == Marshal.SizeOf(typeof(DIBSECTION)))
+						return ptr.ToStructure<T>();
+					break;
 			}
+			throw new ArgumentException($"The specified type ({typeof(T).Name}) cannot be retrieved from an object of type {ot}.");
 		}
 
 		/// <summary>The GetObject function retrieves information for the specified graphics object.</summary>
@@ -901,14 +899,21 @@ namespace Vanara.PInvoke
 		/// A handle to the graphics object of interest. This can be a handle to one of the following: a logical bitmap, a brush, a font, a
 		/// palette, a pen, or a device independent bitmap created by calling the CreateDIBSection function.
 		/// </param>
+		/// <param name="bufferSize">Size of the buffer. If this value is 0, then the size is requested.</param>
 		/// <returns>Allocated memory holding the information for the graphics object.</returns>
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd144904")]
-		public static ISafeMemoryHandle GetObject(IGraphicsObjectHandle hgdiobj)
+		public static ISafeMemoryHandle GetObject(IGraphicsObjectHandle hgdiobj, int bufferSize = 0)
 		{
-			var sz = GetObject(hgdiobj.DangerousGetHandle(), 0, IntPtr.Zero);
+			if (bufferSize == 0)
+			{
+				bufferSize = GetObject(hgdiobj.DangerousGetHandle(), 0, IntPtr.Zero);
+				if (bufferSize == 0) Win32Error.ThrowLastError();
+			}
+			var ptr = new SafeHGlobalHandle(bufferSize);
+			var sz = GetObject(hgdiobj.DangerousGetHandle(), ptr.Size, ptr);
 			if (sz == 0) Win32Error.ThrowLastError();
-			var ptr = new SafeHGlobalHandle(sz);
-			return GetObject(hgdiobj.DangerousGetHandle(), ptr.Size, ptr) != 0 ? ptr : throw Win32Error.GetLastError().GetException();
+			ptr.Size = sz;
+			return ptr;
 		}
 
 		/// <summary>The <c>GetObjectType</c> retrieves the type of the specified object.</summary>
@@ -1210,7 +1215,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd162957")]
 		public static extern HGDIOBJ SelectObject(HDC hDC, HGDIOBJ hObject);
-
 
 		/// <summary>
 		/// <c>SetDCPenColor</c> function sets the current device context (DC) pen color to the specified color value. If the device cannot
