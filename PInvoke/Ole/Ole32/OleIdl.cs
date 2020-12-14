@@ -3,11 +3,25 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
 {
 	public static partial class Ole32
 	{
+		/// <summary>Specifies what to do with caches that are to be discarded from memory if their dirty bit has been set.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/ne-oleidl-discardcache typedef enum tagDISCARDCACHE {
+		// DISCARDCACHE_SAVEIFDIRTY, DISCARDCACHE_NOSAVE } DISCARDCACHE;
+		[PInvokeData("oleidl.h", MSDNShortId = "NE:oleidl.tagDISCARDCACHE")]
+		public enum DISCARDCACHE
+		{
+			/// <summary>The cache is to be saved to disk.</summary>
+			DISCARDCACHE_SAVEIFDIRTY,
+
+			/// <summary>The cache can be discarded without saving it.</summary>
+			DISCARDCACHE_NOSAVE,
+		}
+
 		/// <summary>
 		/// <para>
 		/// Represents information about the effects of a drag-and-drop operation. The <c>DoDragDrop</c> function and many of the methods in
@@ -18,8 +32,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Your application should always mask values from the <c>DROPEFFECT</c> enumeration to ensure compatibility with future
 		/// implementations. Presently, only some of the positions in a <c>DROPEFFECT</c> value have meaning. In the future, more
-		/// interpretations for the bits will be added. Drag sources and drop targets should carefully mask these values appropriately before
-		/// comparing. They should never compare a <c>DROPEFFECT</c> against, say, DROPEFFECT_COPY by doing the following:
+		/// interpretations for the bits will be added. Drag sources and drop targets should carefully mask these values appropriately
+		/// before comparing. They should never compare a <c>DROPEFFECT</c> against, say, DROPEFFECT_COPY by doing the following:
 		/// </para>
 		/// <para>Instead, the application should always mask for the value or values being sought as using one of the following techniques:</para>
 		/// <para>This allows for the definition of new drop effects, while preserving backward compatibility with existing code.</para>
@@ -303,7 +317,8 @@ namespace Vanara.PInvoke
 			/// The client will draw the content of the object on the screen (a NULL target device) using IViewObject::Draw. The object
 			/// itself determines the data formats that need to be cached. With this render option, only the ptd and dwAspect members of
 			/// pFormatEtc are significant, since the object may cache things differently depending on the parameter values. However,
-			/// pFormatEtc can legally be NULL here, in which case the object is to assume the display target device and the DVASPECT_CONTENT aspect.
+			/// pFormatEtc can legally be NULL here, in which case the object is to assume the display target device and the
+			/// DVASPECT_CONTENT aspect.
 			/// </summary>
 			OLERENDER_DRAW,
 
@@ -365,6 +380,40 @@ namespace Vanara.PInvoke
 			/// persistently stored inside the object, since the container can be renamed even while the object is not loaded.
 			/// </summary>
 			OLEWHICHMK_OBJFULL,
+		}
+
+		/// <summary>The type of cache to be updated.</summary>
+		public enum UPDFCACHE : uint
+		{
+			/// <summary>Updates caches created by using ADVF_NODATA in the call to IOleCache::Cache.</summary>
+			UPDFCACHE_NODATACACHE = 0x00000001,
+
+			/// <summary>Updates caches created by using ADVFCACHE_ONSAVE in the call to IOleCache::Cache.</summary>
+			UPDFCACHE_ONSAVECACHE = 0x00000002,
+
+			/// <summary>Updates caches created by using ADVFCACHE_ONSTOP in the call to IOleCache::Cache.</summary>
+			UPDFCACHE_ONSTOPCACHE = 0x00000004,
+
+			/// <summary>Dynamically updates the caches (as is normally done when the object sends out OnDataChange notices).</summary>
+			UPDFCACHE_NORMALCACHE = 0x00000008,
+
+			/// <summary>Updates the cache if blank, regardless of any other flag specified.</summary>
+			UPDFCACHE_IFBLANK = 0x00000010,
+
+			/// <summary>Updates only caches that are blank.</summary>
+			UPDFCACHE_ONLYIFBLANK = 0x80000000,
+
+			/// <summary>The equivalent of using an OR operation to combine UPDFCACHE_IFBLANK and UPDFCACHE_ONSAVECACHE.</summary>
+			UPDFCACHE_IFBLANKORONSAVECACHE = (UPDFCACHE_IFBLANK | UPDFCACHE_ONSAVECACHE),
+
+			/// <summary>Updates all caches.</summary>
+			UPDFCACHE_ALL = ((uint)(~(UPDFCACHE_ONLYIFBLANK))),
+
+			/// <summary>
+			/// Updates all caches except those created with ADVF_NODATA in the call to IOleCache::Cache. Thus, you can control updates to
+			/// the caches created with the ADVF_NODATA flag and only update these caches explicitly.
+			/// </summary>
+			UPDFCACHE_ALLBUTNODATACACHE = (UPDFCACHE_ALL & ((uint)(~UPDFCACHE_NODATACACHE)))
 		}
 
 		/// <summary>Indicates the different variants of the display name associated with a class of objects.</summary>
@@ -448,8 +497,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>S_OK</term>
 			/// <term>
-			/// The drag operation should continue. This result occurs if no errors are detected, the mouse button starting the drag-and-drop
-			/// operation has not been released, and the Esc key has not been detected.
+			/// The drag operation should continue. This result occurs if no errors are detected, the mouse button starting the
+			/// drag-and-drop operation has not been released, and the Esc key has not been detected.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -475,8 +524,8 @@ namespace Vanara.PInvoke
 			/// continued, canceled, or completed based on the contents of the parameters grfKeyState and fEscapePressed.
 			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idropsource-querycontinuedrag HRESULT QueryContinueDrag(
-			// BOOL fEscapePressed, DWORD grfKeyState );
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idropsource-querycontinuedrag HRESULT
+			// QueryContinueDrag( BOOL fEscapePressed, DWORD grfKeyState );
 			[PInvokeData("oleidl.h", MSDNShortId = "96ea44fc-5046-4e31-abfc-659d8ef3ca8f")]
 			[PreserveSig]
 			HRESULT QueryContinueDrag([MarshalAs(UnmanagedType.Bool)] bool fEscapePressed, uint grfKeyState);
@@ -509,8 +558,8 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// When your application detects that the user has started a drag-and-drop operation, it should call the DoDragDrop function.
 			/// <c>DoDragDrop</c> enters a loop, calling IDropTarget::DragEnter when the mouse first enters a drop target window,
-			/// IDropTarget::DragOver when the mouse changes its position within the target window, and IDropTarget::DragLeave when the mouse
-			/// leaves the target window.
+			/// IDropTarget::DragOver when the mouse changes its position within the target window, and IDropTarget::DragLeave when the
+			/// mouse leaves the target window.
 			/// </para>
 			/// <para>
 			/// For every call to either IDropTarget::DragEnter or IDropTarget::DragOver, DoDragDrop calls <c>IDropSource::GiveFeedback</c>,
@@ -530,8 +579,8 @@ namespace Vanara.PInvoke
 			/// implementation as much as possible.
 			/// </para>
 			/// <para>
-			/// <c>IDropSource::GiveFeedback</c> is responsible for changing the cursor shape or for changing the highlighted source based on
-			/// the value of the dwEffect parameter. If you are using default cursors, you can return DRAGDROP_S_USEDEFAULTCURSORS, which
+			/// <c>IDropSource::GiveFeedback</c> is responsible for changing the cursor shape or for changing the highlighted source based
+			/// on the value of the dwEffect parameter. If you are using default cursors, you can return DRAGDROP_S_USEDEFAULTCURSORS, which
 			/// causes OLE to update the cursor for you, using its defaults.
 			/// </para>
 			/// </remarks>
@@ -540,6 +589,28 @@ namespace Vanara.PInvoke
 			[PInvokeData("oleidl.h", MSDNShortId = "dde37299-ad7c-4f59-af99-e75b72ad9188")]
 			[PreserveSig]
 			HRESULT GiveFeedback(DROPEFFECT dwEffect);
+		}
+
+		/// <summary>
+		/// The <c>IDropSourceNotify</c> interface is implemented on an IDropSource object to receive notifications from OLE when a user
+		/// drags the mouse into or out of a potential drop target window.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-idropsourcenotify
+		[PInvokeData("oleidl.h", MSDNShortId = "NN:oleidl.IDropSourceNotify")]
+		[ComImport, Guid("0000012B-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IDropSourceNotify
+		{
+			/// <summary>OLE calls this method when the user drags the mouse cursor into a potential drop target window.</summary>
+			/// <param name="hwndTarget">The window handle of the potential drop target window.</param>
+			/// <returns>This method returns S_OK on success.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-idropsourcenotify-dragentertarget HRESULT
+			// DragEnterTarget( HWND hwndTarget );
+			HRESULT DragEnterTarget([In] HWND hwndTarget);
+
+			/// <summary>OLE calls this method when the user drags the mouse cursor out of a potential drop target window.</summary>
+			/// <returns>This method returns S_OK on success.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-idropsourcenotify-dragleavetarget HRESULT DragLeaveTarget();
+			HRESULT DragLeaveTarget();
 		}
 
 		/// <summary>
@@ -557,7 +628,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// Communicating target feedback to the source so the source application can provide appropriate visual feedback such as setting the cursor.
+		/// Communicating target feedback to the source so the source application can provide appropriate visual feedback such as setting
+		/// the cursor.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -635,8 +707,8 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// To check the format and medium, use the IDataObject pointer passed in the pDataObject parameter to call
 			/// IDataObject::EnumFormatEtc so you can enumerate the FORMATETC structures the source data object supports. Then call
-			/// IDataObject::QueryGetData to determine whether the data object can render the data on the target by examining the formats and
-			/// medium specified for the data object.
+			/// IDataObject::QueryGetData to determine whether the data object can render the data on the target by examining the formats
+			/// and medium specified for the data object.
 			/// </para>
 			/// <para>
 			/// On entry to <c>IDropTarget::DragEnter</c>, the pdwEffect parameter is set to the effects given to the pdwOkEffect parameter
@@ -668,8 +740,8 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// On return, the method must write the effect, one of the DROPEFFECT flags, to the pdwEffect parameter. DoDragDrop then takes
 			/// this parameter and writes it to its pdwEffect parameter. You communicate the effect of the drop back to the source through
-			/// <c>DoDragDrop</c> in the pdwEffect parameter. The <c>DoDragDrop</c> function then calls IDropSource::GiveFeedback so that the
-			/// source application can display the appropriate visual feedback to the user through the target window.
+			/// <c>DoDragDrop</c> in the pdwEffect parameter. The <c>DoDragDrop</c> function then calls IDropSource::GiveFeedback so that
+			/// the source application can display the appropriate visual feedback to the user through the target window.
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-dragenter HRESULT DragEnter( IDataObject
@@ -713,9 +785,9 @@ namespace Vanara.PInvoke
 			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// You do not call <c>DragOver</c> directly. The DoDragDrop function calls this method each time the user moves the mouse across
-			/// a given target window. <c>DoDragDrop</c> exits the loop if the drag-and-drop operation is canceled, if the user drags the
-			/// mouse out of the target window, or if the drop is completed.
+			/// You do not call <c>DragOver</c> directly. The DoDragDrop function calls this method each time the user moves the mouse
+			/// across a given target window. <c>DoDragDrop</c> exits the loop if the drag-and-drop operation is canceled, if the user drags
+			/// the mouse out of the target window, or if the drop is completed.
 			/// </para>
 			/// <para>
 			/// In implementing <c>IDropTarget::DragOver</c>, you must provide features similar to those in IDropTarget::DragEnter. You must
@@ -751,13 +823,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// On entry to <c>IDropTarget::DragOver</c>, the pdwEffect parameter must be set to the allowed effects passed to the
-			/// pdwOkEffect parameter of the DoDragDrop function. The <c>IDropTarget::DragOver</c> method must be able to choose one of these
-			/// effects or disable the drop.
+			/// pdwOkEffect parameter of the DoDragDrop function. The <c>IDropTarget::DragOver</c> method must be able to choose one of
+			/// these effects or disable the drop.
 			/// </para>
 			/// <para>
 			/// Upon return, pdwEffect is set to one of the DROPEFFECT flags. This value is then passed to the pdwEffect parameter of
-			/// DoDragDrop. Reasonable values are DROPEFFECT_COPY to copy the dragged data to the target, DROPEFFECT_LINK to create a link to
-			/// the source data, or DROPEFFECT_MOVE to allow the dragged data to be permanently moved from the source application to the target.
+			/// DoDragDrop. Reasonable values are DROPEFFECT_COPY to copy the dragged data to the target, DROPEFFECT_LINK to create a link
+			/// to the source data, or DROPEFFECT_MOVE to allow the dragged data to be permanently moved from the source application to the target.
 			/// </para>
 			/// <para>
 			/// You may also wish to provide appropriate visual feedback in the target window. There may be some target feedback already
@@ -769,8 +841,8 @@ namespace Vanara.PInvoke
 			/// recent call to IDropTarget::DragEnter is available and can be used.
 			/// </para>
 			/// <para>
-			/// When <c>IDropTarget::DragOver</c> has completed its operation, the DoDragDrop function calls IDropSource::GiveFeedback so the
-			/// source application can display the appropriate visual feedback to the user.
+			/// When <c>IDropTarget::DragOver</c> has completed its operation, the DoDragDrop function calls IDropSource::GiveFeedback so
+			/// the source application can display the appropriate visual feedback to the user.
 			/// </para>
 			/// <para>Notes to Implementers</para>
 			/// <para>
@@ -888,13 +960,40 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// When implemented by the drop target application, this interface gives the OLE drag and drop engine the ability to determine
+		/// whether the drop target application intends to evaluate enterprise protection policy and gives the OLE drag and drop engine a
+		/// way to provide the enterprise ID of the drop source application to the drop target application.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-ienterprisedroptarget
+		[PInvokeData("oleidl.h", MSDNShortId = "NN:oleidl.IEnterpriseDropTarget")]
+		[ComImport, Guid("390E3878-FD55-4E18-819D-4682081C0CFD"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IEnterpriseDropTarget
+		{
+			/// <summary>Provides the drop target with the enterprise ID of the drop source.</summary>
+			/// <param name="identity">The enterprise identity of the drop source.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ienterprisedroptarget-setdropsourceenterpriseid HRESULT
+			// SetDropSourceEnterpriseId( LPCWSTR identity );
+			HRESULT SetDropSourceEnterpriseId([MarshalAs(UnmanagedType.LPWStr)] string identity);
+
+			/// <summary>Indicates whether the drop target is intends to handle the evaluation of the enterprise protection policy.</summary>
+			/// <param name="value">
+			/// A boolean value that indicates whether the drop target intends to handle the evaluation of enterprise protection policy.
+			/// </param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ienterprisedroptarget-isevaluatingedppolicy HRESULT
+			// IsEvaluatingEdpPolicy( BOOL *value );
+			HRESULT IsEvaluatingEdpPolicy([MarshalAs(UnmanagedType.Bool)] out bool value);
+		}
+
+		/// <summary>
 		/// Enumerates the different verbs available for an object in order of ascending verb number. An enumerator that implements the
 		/// <c>IEnumOLEVERB</c> interface is returned by IOleObject::EnumVerbs.
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-ienumoleverb
 		[PInvokeData("oleidl.h", MSDNShortId = "fc9b3474-6f56-4274-af7d-72e0920c0457")]
 		[ComImport, Guid("00000104-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumOLEVERB
+		public interface IEnumOLEVERB : Vanara.Collections.ICOMEnum<OLEVERB>
 		{
 			/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">
@@ -904,8 +1003,8 @@ namespace Vanara.PInvoke
 			/// <param name="rgelt">
 			/// An array of enumerated items.
 			/// <para>
-			/// The enumerator is responsible for allocating any memory, and the caller is responsible for freeing it.If celt is greater than
-			/// 1, the caller must also pass a non-NULL pointer passed to pceltFetched to know how many pointers to release.
+			/// The enumerator is responsible for allocating any memory, and the caller is responsible for freeing it.If celt is greater
+			/// than 1, the caller must also pass a non-NULL pointer passed to pceltFetched to know how many pointers to release.
 			/// </para>
 			/// </param>
 			/// <param name="pceltFetched">
@@ -945,8 +1044,8 @@ namespace Vanara.PInvoke
 			/// <c>IEnumOLEVERB</c> interface is returned by IOleObject::EnumVerbs.
 			/// </summary>
 			/// <returns>
-			/// A pointer to an IEnumOLEVERB pointer variable that receives the interface pointer to the enumeration object. If the method is
-			/// unsuccessful, the value of this output variable is undefined.
+			/// A pointer to an IEnumOLEVERB pointer variable that receives the interface pointer to the enumeration object. If the method
+			/// is unsuccessful, the value of this output variable is undefined.
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-ienumoleverb
 			[PInvokeData("oleidl.h", MSDNShortId = "fc9b3474-6f56-4274-af7d-72e0920c0457")]
@@ -968,8 +1067,8 @@ namespace Vanara.PInvoke
 		public interface IOleAdviseHolder
 		{
 			/// <summary>
-			/// Establishes an advisory connection between an OLE object and the calling object's advise sink. Through that sink, the calling
-			/// object can receive notification when the OLE object is renamed, saved, or closed.
+			/// Establishes an advisory connection between an OLE object and the calling object's advise sink. Through that sink, the
+			/// calling object can receive notification when the OLE object is renamed, saved, or closed.
 			/// </summary>
 			/// <param name="pAdvise">A pointer to the IAdviseSink interface on the advisory sink that should be informed of changes.</param>
 			/// <param name="pdwConnection">
@@ -991,11 +1090,11 @@ namespace Vanara.PInvoke
 			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// Containers, object handlers, and link objects all create advise sinks to receive notification of changes in compound-document
-			/// objects of interest, such as embedded or linked objects. OLE objects of interest to these objects must implement the
-			/// IOleObject interface, which includes several advisory methods, including IOleObject::Advise. A call to this method must set
-			/// up an advisory connection with any advise sink that calls it, and maintain each connection until it is closed. It must be
-			/// able to handle more than one advisory connection at a time.
+			/// Containers, object handlers, and link objects all create advise sinks to receive notification of changes in
+			/// compound-document objects of interest, such as embedded or linked objects. OLE objects of interest to these objects must
+			/// implement the IOleObject interface, which includes several advisory methods, including IOleObject::Advise. A call to this
+			/// method must set up an advisory connection with any advise sink that calls it, and maintain each connection until it is
+			/// closed. It must be able to handle more than one advisory connection at a time.
 			/// </para>
 			/// <para>
 			/// <c>IOleAdviseHolder::Advise</c> is intended to be used to simplify the implementation of IOleObject::Advise. You can get a
@@ -1005,8 +1104,8 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// If the attempt to establish an advisory connection is successful, the object receiving the call returns a nonzero value
-			/// through pdwConnection. If the attempt fails, the object returns a zero. To delete an advisory connection, the object with the
-			/// advise sink passes this nonzero token back to the object by calling <c>IOleAdviseHolder::Advise</c>.
+			/// through pdwConnection. If the attempt fails, the object returns a zero. To delete an advisory connection, the object with
+			/// the advise sink passes this nonzero token back to the object by calling <c>IOleAdviseHolder::Advise</c>.
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleadviseholder-advise HRESULT Advise( IAdviseSink
@@ -1035,8 +1134,8 @@ namespace Vanara.PInvoke
 			/// In general, you would use the OLE advise holder having obtained a pointer through a call to CreateOleAdviseHolder.
 			/// </para>
 			/// <para>
-			/// Typically, containers call this method at shutdown or when an object is deleted. In certain cases, containers could call this
-			/// method on objects that are running but not currently visible, as a way of reducing the overhead of maintaining multiple
+			/// Typically, containers call this method at shutdown or when an object is deleted. In certain cases, containers could call
+			/// this method on objects that are running but not currently visible, as a way of reducing the overhead of maintaining multiple
 			/// advisory connections.
 			/// </para>
 			/// </remarks>
@@ -1056,8 +1155,8 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// <para>
 			/// <c>IOleAdviseHolder::EnumAdvise</c> creates an enumerator that can be used to enumerate an object's established advisory
-			/// connections. The method supplies a pointer to the IEnumSTATDATA interface on this enumerator. Advisory connection information
-			/// for each connection is stored in the STATDATA structure, and the enumerator must be able to enumerate these structures.
+			/// connections. The method supplies a pointer to the IEnumSTATDATA interface on this enumerator. Advisory connection
+			/// information for each connection is stored in the STATDATA structure, and the enumerator must be able to enumerate these structures.
 			/// </para>
 			/// <para>
 			/// For this method, the only relevant structure members are <c>pAdvise</c> and <c>dwConnection</c>. Other members contain data
@@ -1076,10 +1175,10 @@ namespace Vanara.PInvoke
 			/// <param name="pmk">A pointer to the new full moniker of the object.</param>
 			/// <returns>This method returns S_OK if advise sinks were sent IAdviseSink::OnRename notifications.</returns>
 			/// <remarks>
-			/// <c>SendOnRename</c> calls IAdviseSink::OnRename to advise the calling object, which must have already established an advisory
-			/// connection, that the object has a new moniker. If you are using the OLE advise holder (having obtained a pointer through a
-			/// call to CreateOleAdviseHolder), you can call <c>SendOnRename</c> in the implementation of IOleObject::SetMoniker, when you
-			/// have determined that the operation is successful.
+			/// <c>SendOnRename</c> calls IAdviseSink::OnRename to advise the calling object, which must have already established an
+			/// advisory connection, that the object has a new moniker. If you are using the OLE advise holder (having obtained a pointer
+			/// through a call to CreateOleAdviseHolder), you can call <c>SendOnRename</c> in the implementation of IOleObject::SetMoniker,
+			/// when you have determined that the operation is successful.
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleadviseholder-sendonrename HRESULT SendOnRename(
 			// IMoniker *pmk );
@@ -1147,9 +1246,9 @@ namespace Vanara.PInvoke
 			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// <c>IOleCache::Cache</c> can specify either data caching or view (presentation) caching. To specify data caching, a valid data
-			/// format must be passed in pformatetc. For view caching, the cache object itself decides on the format to cache, so a caller
-			/// would pass a zero data format in pformatetc as follows:
+			/// <c>IOleCache::Cache</c> can specify either data caching or view (presentation) caching. To specify data caching, a valid
+			/// data format must be passed in pformatetc. For view caching, the cache object itself decides on the format to cache, so a
+			/// caller would pass a zero data format in pformatetc as follows:
 			/// </para>
 			/// <para>
 			/// A custom object handler can choose not to store data in a given format. Instead, it can synthesize it on demand when requested.
@@ -1200,8 +1299,8 @@ namespace Vanara.PInvoke
 			/// <term>ADVFCACHE_ONSAVE</term>
 			/// <term>
 			/// Updates the cached representation only when the object containing the cache is saved. The cache is also updated when the OLE
-			/// object changes from the running state back to the loaded state (because a subsequent save operation would require running the
-			/// object again).
+			/// object changes from the running state back to the loaded state (because a subsequent save operation would require running
+			/// the object again).
 			/// </term>
 			/// </item>
 			/// </list>
@@ -1215,8 +1314,8 @@ namespace Vanara.PInvoke
 			/// The cache connection to be removed. This nonzero value was returned by IOleCache::Cache when the cache was originally established.
 			/// </param>
 			/// <remarks>
-			/// The <c>IOleCache::Uncache</c> method removes a cache connection that was created in a prior call to IOleCache::Cache. It uses
-			/// the dwConnection parameter that was returned by the prior call to <c>IOleCache::Cache</c>.
+			/// The <c>IOleCache::Uncache</c> method removes a cache connection that was created in a prior call to IOleCache::Cache. It
+			/// uses the dwConnection parameter that was returned by the prior call to <c>IOleCache::Cache</c>.
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache-uncache HRESULT Uncache( DWORD dwConnection );
 			void Uncache(uint dwConnection);
@@ -1276,10 +1375,376 @@ namespace Vanara.PInvoke
 			void SetData(in FORMATETC pformatetc, in STGMEDIUM pmedium, [MarshalAs(UnmanagedType.Bool)] bool fRelease);
 		}
 
+		/// <summary>Enables object clients to selectively update each cache that was created with IOleCache::Cache.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-iolecache2
+		[PInvokeData("oleidl.h", MSDNShortId = "NN:oleidl.IOleCache2")]
+		[ComImport, Guid("00000128-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IOleCache2 : IOleCache
+		{
+			/// <summary>Specifies the format and other data to be cached inside an embedded object.</summary>
+			/// <param name="pformatetc">
+			/// A pointer to a FORMATETC structure that specifies the format and other data to be cached. View caching is specified by
+			/// passing a zero clipboard format in pformatetc.
+			/// </param>
+			/// <param name="advf">
+			/// A group of flags that control the caching. Possible values come from the ADVF enumeration. When used in this context, for a
+			/// cache, these values have specific meanings, which are outlined in Remarks. Refer to the <c>ADVF</c> enumeration for a more
+			/// detailed description.
+			/// </param>
+			/// <returns>
+			/// A variable that receives the identifier of this connection, which can later be used to turn caching off (by passing it to
+			/// IOleCache::Uncache). If this value is 0, the connection was not established. The OLE-provided implementation uses nonzero
+			/// numbers for connection identifiers.
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// <c>IOleCache::Cache</c> can specify either data caching or view (presentation) caching. To specify data caching, a valid
+			/// data format must be passed in pformatetc. For view caching, the cache object itself decides on the format to cache, so a
+			/// caller would pass a zero data format in pformatetc as follows:
+			/// </para>
+			/// <para>
+			/// A custom object handler can choose not to store data in a given format. Instead, it can synthesize it on demand when requested.
+			/// </para>
+			/// <para>
+			/// The advf value specifies a member of the ADVF enumeration. When one of these values (or an OR'd combination of more than one
+			/// value) is used in this context, these values mean the following.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>ADVF Value</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADVF_NODATA</term>
+			/// <term>
+			/// The cache is not to be updated by changes made to the running object. Instead, the container will update the cache by
+			/// explicitly calling IOleCache::SetData, IDataObject::SetData, or IOleCache2::UpdateCache. This flag is usually used when the
+			/// iconic aspect of an object is being cached.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_ONLYONCE</term>
+			/// <term>
+			/// Update the cache one time only. After the update is complete, the advisory connection between the object and the cache is
+			/// disconnected. The source object for the advisory connection calls the Release method.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_PRIMEFIRST</term>
+			/// <term>
+			/// The object is not to wait for the data or view to change before updating the cache. OR'd with ADVF_ONLYONCE, this parameter
+			/// provides an asynchronous IDataObject::GetData call.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADVFCACHE_NOHANDLER</term>
+			/// <term>Synonym for ADVFCACHE_FORCEBUILTIN.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADVFCACHE_FORCEBUILTIN</term>
+			/// <term>
+			/// Used by DLL object applications and object handlers that draw their objects to cache presentation data to ensure that there
+			/// is a presentation in the cache. This ensures that the data can be retrieved even when the object or handler code is not available.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADVFCACHE_ONSAVE</term>
+			/// <term>
+			/// Updates the cached representation only when the object containing the cache is saved. The cache is also updated when the OLE
+			/// object changes from the running state back to the loaded state (because a subsequent save operation would require running
+			/// the object again).
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache-cache HRESULT Cache( FORMATETC *pformatetc,
+			// DWORD advf, DWORD *pdwConnection );
+			new uint Cache(in FORMATETC pformatetc, ADVF advf);
+
+			/// <summary>Removes a cache connection created previously using IOleCache::Cache.</summary>
+			/// <param name="dwConnection">
+			/// The cache connection to be removed. This nonzero value was returned by IOleCache::Cache when the cache was originally established.
+			/// </param>
+			/// <remarks>
+			/// The <c>IOleCache::Uncache</c> method removes a cache connection that was created in a prior call to IOleCache::Cache. It
+			/// uses the dwConnection parameter that was returned by the prior call to <c>IOleCache::Cache</c>.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache-uncache HRESULT Uncache( DWORD dwConnection );
+			new void Uncache(uint dwConnection);
+
+			/// <summary>Creates an enumerator that can be used to enumerate the current cache connections.</summary>
+			/// <returns>
+			/// A pointer to an IEnumSTATDATA pointer variable that receives the interface pointer to the new enumerator object. If this
+			/// parameter is NULL, there are no cache connections at this time.
+			/// </returns>
+			/// <remarks>
+			/// The enumerator object returned by this method implements the IEnumSTATDATA interface. <c>IEnumSTATDATA</c> enumerates the
+			/// data stored in an array of STATDATA structures containing information about current cache connections.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache-enumcache
+			new IEnumSTATDATA EnumCache();
+
+			/// <summary>Fills the cache as needed using the data provided by the specified data object.</summary>
+			/// <param name="pDataObject">A pointer to the IDataObject interface on the data object from which the cache is to be initialized.</param>
+			/// <remarks>
+			/// <c>InitCache</c> is usually used when creating an object from a drag-and-drop operation or from a clipboard paste operation.
+			/// It fills the cache as needed with presentation data from all the data formats provided by the data object provided on the
+			/// clipboard or in the drag-and-drop operation. Helper functions like OleCreateFromData or OleCreateLinkFromData call this
+			/// method when needed. If a container does not use these helper functions to create compound document objects, it can use
+			/// IOleCache::Cache to set up the cache entries which are then filled by <c>InitCache</c>.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache-initcache HRESULT InitCache( IDataObject
+			// *pDataObject );
+			new void InitCache(IDataObject pDataObject);
+
+			/// <summary>Initializes the cache with data in a specified format and on a specified medium.</summary>
+			/// <param name="pformatetc">
+			/// A pointer to a FORMATETC structure that specifies the format of the presentation data being placed in the cache.
+			/// </param>
+			/// <param name="pmedium">
+			/// A pointer to a STGMEDIUM structure that specifies the storage medium that contains the presentation data.
+			/// </param>
+			/// <param name="fRelease">
+			/// Indicates the ownership of the storage medium after completion of the method. If fRelease is <c>TRUE</c>, the cache takes
+			/// ownership, freeing the medium when it is finished using it. When fRelease is <c>FALSE</c>, the caller retains ownership and
+			/// is responsible for freeing the medium. The cache can only use the storage medium for the duration of the call.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// <c>IOleCache::SetData</c> is usually called when an object is created from the clipboard or through a drag-and-drop
+			/// operation, and Embed Source data is used to create the object.
+			/// </para>
+			/// <para>
+			/// <c>IOleCache::SetData</c> and IOleCache::InitCache are very similar. There are two main differences. The first difference is
+			/// that while <c>IOleCache::InitCache</c> initializes the cache with the presentation format provided by the data object,
+			/// <c>IOleCache::SetData</c> initializes it with a single format. Second, the <c>IOleCache::SetData</c> method ignores the
+			/// ADVF_NODATA flag while <c>IOleCache::InitCache</c> obeys this flag.
+			/// </para>
+			/// <para>A container can use this method to maintain a single aspect of an object, such as the icon aspect of the object.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache-setdata HRESULT SetData( FORMATETC *pformatetc,
+			// STGMEDIUM *pmedium, BOOL fRelease );
+			new void SetData(in FORMATETC pformatetc, in STGMEDIUM pmedium, [MarshalAs(UnmanagedType.Bool)] bool fRelease);
+
+			/// <summary>Updates the specified caches. This method is used when the application needs precise control over caching.</summary>
+			/// <param name="pDataObject">
+			/// A pointer to the IDataObject interface on the data object from which the cache is updated. Object handlers and in-process
+			/// servers typically pass a non- <c>NULL</c> value. A container application usually passes <c>NULL</c>, and the source is
+			/// obtained from the currently running object.
+			/// </param>
+			/// <param name="grfUpdf">
+			/// <para>The type of cache to be updated. This parameter can be one or more of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>UPDFCACHE_NODATACACHE</term>
+			/// <term>Updates caches created by using ADVF_NODATA in the call to IOleCache::Cache.</term>
+			/// </item>
+			/// <item>
+			/// <term>UPDFCACHE_ONSAVECACHE</term>
+			/// <term>Updates caches created by using ADVFCACHE_ONSAVE in the call to IOleCache::Cache.</term>
+			/// </item>
+			/// <item>
+			/// <term>UPDFCACHE_ONSTOPCACHE</term>
+			/// <term>Updates caches created by using ADVFCACHE_ONSTOP in the call to IOleCache::Cache.</term>
+			/// </item>
+			/// <item>
+			/// <term>UPDFCACHE_NORMALCACHE</term>
+			/// <term>Dynamically updates the caches (as is normally done when the object sends out OnDataChange notices).</term>
+			/// </item>
+			/// <item>
+			/// <term>UPDFCACHE_IFBLANK</term>
+			/// <term>Updates the cache if blank, regardless of any other flag specified.</term>
+			/// </item>
+			/// <item>
+			/// <term>UPDFCACHE_ONLYIFBLANK</term>
+			/// <term>Updates only caches that are blank.</term>
+			/// </item>
+			/// <item>
+			/// <term>UPDFCACHE_ IFBLANKORONSAVECACHE</term>
+			/// <term>The equivalent of using an OR operation to combine UPDFCACHE_IFBLANK and UPDFCACHE_ONSAVECACHE.</term>
+			/// </item>
+			/// <item>
+			/// <term>UPDFCACHE_ALL</term>
+			/// <term>Updates all caches.</term>
+			/// </item>
+			/// <item>
+			/// <term>UPDFCACHE_ ALLBUTNODATACACHE</term>
+			/// <term>
+			/// Updates all caches except those created with ADVF_NODATA in the call to IOleCache::Cache. Thus, you can control updates to
+			/// the caches created with the ADVF_NODATA flag and only update these caches explicitly.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="pReserved">This parameter is reserved and must be <c>NULL</c>.</param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One of the arguments is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory is available for this operation.</term>
+			/// </item>
+			/// <item>
+			/// <term>OLE_E_NOTRUNNING</term>
+			/// <term>The specified pDataObject is not running.</term>
+			/// </item>
+			/// <item>
+			/// <term>CACHE_E_NOCACHE_UPDATED</term>
+			/// <term>None of the caches were updated.</term>
+			/// </item>
+			/// <item>
+			/// <term>CACHE_S_SOMECACHES_NOTUPDATED</term>
+			/// <term>Some of the caches were updated.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache2-updatecache HRESULT UpdateCache( LPDATAOBJECT
+			// pDataObject, DWORD grfUpdf, LPVOID pReserved );
+			HRESULT UpdateCache(IDataObject pDataObject, UPDFCACHE grfUpdf, [In, Optional] IntPtr pReserved);
+
+			/// <summary>Discards the caches found in memory.</summary>
+			/// <param name="dwDiscardOptions">
+			/// <para>
+			/// A value from the DISCARDCACHE enumeration that indicates whether data is to be saved prior to being discarded. Containers
+			/// that have drawn a large object and need to free up memory can specify DISCARDCACHE_SAVEIFDIRTY so that the newest
+			/// presentation is saved for the next time the object must be drawn.
+			/// </para>
+			/// <para>
+			/// Containers that have activated an embedded object, made some changes, and then called IOleObject::Close with OLECLOSE_NOSAVE
+			/// to roll back the changes can specify DISCARDCACHE_NOSAVE to ensure that the native and presentation data are not out of synchronization.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OLE_E_NOSTORAGE</term>
+			/// <term>There is no storage available for saving the data in the cache.</term>
+			/// </item>
+			/// <item>
+			/// <term>STG_E_MEDIUMFULL</term>
+			/// <term>The storage medium is full.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>IOleCache2::DiscardCache</c> method is commonly used to handle low memory conditions by freeing memory currently
+			/// being used by presentation caches.
+			/// </para>
+			/// <para>After it is discarded, a cache will satisfy subsequent IDataObject::GetData calls by reverting to disk-based data.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecache2-discardcache HRESULT DiscardCache( DWORD
+			// dwDiscardOptions );
+			HRESULT DiscardCache(DISCARDCACHE dwDiscardOptions);
+		}
+
+		/// <summary>
+		/// Provides proper maintenance of caches. It maintains the caches by connecting the running object's IDataObject implementation to
+		/// the cache, allowing the cache to receive notifications from the running object.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-iolecachecontrol
+		[PInvokeData("oleidl.h", MSDNShortId = "NN:oleidl.IOleCacheControl")]
+		[ComImport, Guid("00000129-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IOleCacheControl
+		{
+			/// <summary>
+			/// Notifies the cache that the data source object has entered the running state so that the cache object can establish advise
+			/// sinks as needed.
+			/// </summary>
+			/// <param name="pDataObject">A pointer to the IDataObject interface on the object that is entering the running state.</param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One of the arguments is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory is available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// When <c>OnRun</c> is called, the cache sets up advisory connections as necessary with the source data object so it can
+			/// receive notifications. The advisory connection created between the running object and the cache is destroyed when
+			/// IOleCacheControl::OnStop is called.
+			/// </para>
+			/// <para>
+			/// Some object handlers or in-process servers might use the cache passively, and not call <c>OnRun</c>. These applications must
+			/// call IOleCache2::UpdateCache, IOleCache::InitCache, or IOleCache::SetData to fill the cache when necessary to ensure that
+			/// the cache gets updated.
+			/// </para>
+			/// <para>
+			/// <c>OnRun</c> does not add a reference count on the pointer to IDataObject passed in pDataObject. Because it is the
+			/// responsibility of the caller of OleRun to ensure that the lifetime of the pDataObject pointer lasts until OnStop is called,
+			/// the caller must be holding a pointer to <c>IDataObject</c> on the data object of interest.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecachecontrol-onrun HRESULT OnRun( LPDATAOBJECT
+			// pDataObject );
+			HRESULT OnRun(IDataObject pDataObject);
+
+			/// <summary>
+			/// Notifies the cache that it should terminate any existing advise sinks. No indication is given as to whether a connection
+			/// actually existed.
+			/// </summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory is available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>The data advisory connection between the running object and the cache is destroyed as part of calling <c>OnStop</c>.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolecachecontrol-onstop HRESULT OnStop();
+			HRESULT OnStop();
+		}
+
 		/// <summary>
 		/// <para>
-		/// Provides the primary means by which an embedded object obtains information about the location and extent of its display site, its
-		/// moniker, its user interface, and other resources provided by its container. An object server calls <c>IOleClientSite</c> to
+		/// Provides the primary means by which an embedded object obtains information about the location and extent of its display site,
+		/// its moniker, its user interface, and other resources provided by its container. An object server calls <c>IOleClientSite</c> to
 		/// request services from the container. A container must provide one instance of <c>IOleClientSite</c> for every compound-document
 		/// object it contains.
 		/// </para>
@@ -1309,8 +1774,8 @@ namespace Vanara.PInvoke
 			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// An embedded object calls <c>SaveObject</c> to ask its container to save it to persistent storage when an end user chooses the
-			/// File Update or Exit commands. The call is synchronous, meaning that by the time it returns, the save operation will be completed.
+			/// An embedded object calls <c>SaveObject</c> to ask its container to save it to persistent storage when an end user chooses
+			/// the File Update or Exit commands. The call is synchronous, meaning that by the time it returns, the save operation will be completed.
 			/// </para>
 			/// <para>
 			/// Calls to <c>SaveObject</c> occur in most implementations of IOleObject::Close. Normally, when a container tells an object to
@@ -1325,8 +1790,8 @@ namespace Vanara.PInvoke
 			HRESULT SaveObject();
 
 			/// <summary>
-			/// Retrieves a moniker for the object's client site. An object can force the assignment of its own or its container's moniker by
-			/// specifying a value for dwAssign.
+			/// Retrieves a moniker for the object's client site. An object can force the assignment of its own or its container's moniker
+			/// by specifying a value for dwAssign.
 			/// </summary>
 			/// <param name="dwAssign">
 			/// Specifies whether to get a moniker only if one already exists, force assignment of a moniker, create a temporary moniker, or
@@ -1338,8 +1803,8 @@ namespace Vanara.PInvoke
 			/// moniker. In practice, you will usually request the object's full moniker. Possible values are taken from the OLEWHICHMK enumeration.
 			/// </param>
 			/// <param name="ppmk">
-			/// A pointer to an IMoniker pointer variable that receives the interface pointer to the moniker for the object's client site. If
-			/// an error occurs, the implementation must set ppmk to <c>NULL</c>. Each time a container receives a call to
+			/// A pointer to an IMoniker pointer variable that receives the interface pointer to the moniker for the object's client site.
+			/// If an error occurs, the implementation must set ppmk to <c>NULL</c>. Each time a container receives a call to
 			/// <c>IOleClientSite::GetMoniker</c>, it must increase the reference count on the ppmk pointer it returns. It is the caller's
 			/// responsibility to call Release when it is finished with the pointer.
 			/// </param>
@@ -1411,8 +1876,8 @@ namespace Vanara.PInvoke
 			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// If a container supports links to its embedded objects, implementing <c>GetContainer</c> enables link clients to enumerate the
-			/// container's objects and recursively traverse a containment hierarchy. This method is optional but recommended for all
+			/// If a container supports links to its embedded objects, implementing <c>GetContainer</c> enables link clients to enumerate
+			/// the container's objects and recursively traverse a containment hierarchy. This method is optional but recommended for all
 			/// containers that expect to support links to their embedded objects.
 			/// </para>
 			/// <para>
@@ -1421,8 +1886,8 @@ namespace Vanara.PInvoke
 			/// and, finally, IOleObject::GetClientSite to get the container's client site in its container.
 			/// </para>
 			/// <para>
-			/// Simple containers that do not support links to their embedded objects probably do not need to implement this method. Instead,
-			/// they can return E_NOINTERFACE and set ppContainer to <c>NULL</c>.
+			/// Simple containers that do not support links to their embedded objects probably do not need to implement this method.
+			/// Instead, they can return E_NOINTERFACE and set ppContainer to <c>NULL</c>.
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleclientsite-getcontainer HRESULT GetContainer(
@@ -1451,8 +1916,8 @@ namespace Vanara.PInvoke
 			/// After a link client binds to a link source, it commonly calls IOleObject::DoVerb on the link source, usually requesting the
 			/// source to perform some action requiring that it display itself to the user. As part of its implementation of
 			/// <c>IOleObject::DoVerb</c>, the link source can call <c>ShowObject</c>, which forces the client to show the link source as
-			/// best it can. If the link source's container is itself an embedded object, it will recursively invoke <c>ShowObject</c> on its
-			/// own container.
+			/// best it can. If the link source's container is itself an embedded object, it will recursively invoke <c>ShowObject</c> on
+			/// its own container.
 			/// </para>
 			/// <para>
 			/// Having called the <c>ShowObject</c> method, a link source has no guarantee of being appropriately displayed because its
@@ -1558,28 +2023,28 @@ namespace Vanara.PInvoke
 			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// In general, the maximum prefix of pszDisplayName that is syntactically valid and that represents an object should be consumed
-			/// by this method and converted to a moniker.
+			/// In general, the maximum prefix of pszDisplayName that is syntactically valid and that represents an object should be
+			/// consumed by this method and converted to a moniker.
 			/// </para>
 			/// <para>
-			/// Typically, this method is called by MkParseDisplayName or MkParseDisplayNameEx. In the initial step of the parsing operation,
-			/// these functions can retrieve the IParseDisplayName interface directly from an instance of a class identified with either the
-			/// "@ProgID" or "ProgID" notation. Subsequent parsing steps can query for the interface on an intermediate object.
+			/// Typically, this method is called by MkParseDisplayName or MkParseDisplayNameEx. In the initial step of the parsing
+			/// operation, these functions can retrieve the IParseDisplayName interface directly from an instance of a class identified with
+			/// either the "@ProgID" or "ProgID" notation. Subsequent parsing steps can query for the interface on an intermediate object.
 			/// </para>
 			/// <para>
-			/// The main loops of MkParseDisplayName and MkParseDisplayNameEx find the next moniker piece by calling the equivalent method in
-			/// the IMoniker interface, that is, IMoniker::ParseDisplayName, on the moniker that it currently holds. In this call to
+			/// The main loops of MkParseDisplayName and MkParseDisplayNameEx find the next moniker piece by calling the equivalent method
+			/// in the IMoniker interface, that is, IMoniker::ParseDisplayName, on the moniker that it currently holds. In this call to
 			/// <c>IMoniker::ParseDisplayName</c>, the <c>MkParseDisplayName</c> or <c>MkParseDisplayNameEx</c> function passes <c>NULL</c>
 			/// in the pmkToLeft parameter. If the moniker currently held is a generic composite, the call to
 			/// <c>IMoniker::ParseDisplayName</c> is forwarded by that composite onto its last piece, passing the prefix of the composite to
 			/// the left of the piece in pmkToLeft.
 			/// </para>
 			/// <para>
-			/// Some moniker classes will be able to handle this parsing internally to themselves because they are designed to designate only
-			/// certain kinds of objects. Others will need to bind to the object that they designate to accomplish the parsing process. As is
-			/// usual, these objects should not be released by IMoniker::ParseDisplayName but instead should be transferred to the bind
-			/// context via IBindCtx::RegisterObjectBound or IBindCtx::GetRunningObjectTable followed by IRunningObjectTable::Register for
-			/// release at a later time.
+			/// Some moniker classes will be able to handle this parsing internally to themselves because they are designed to designate
+			/// only certain kinds of objects. Others will need to bind to the object that they designate to accomplish the parsing process.
+			/// As is usual, these objects should not be released by IMoniker::ParseDisplayName but instead should be transferred to the
+			/// bind context via IBindCtx::RegisterObjectBound or IBindCtx::GetRunningObjectTable followed by IRunningObjectTable::Register
+			/// for release at a later time.
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iparsedisplayname-parsedisplayname HRESULT
@@ -1785,7 +2250,10 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			new HRESULT ContextSensitiveHelp([MarshalAs(UnmanagedType.Bool)] bool fEnterMode);
 
-			/// <summary>Processes menu accelerator-key messages from the container's message queue. This method should only be used for objects created by a DLL object application.</summary>
+			/// <summary>
+			/// Processes menu accelerator-key messages from the container's message queue. This method should only be used for objects
+			/// created by a DLL object application.
+			/// </summary>
 			/// <param name="lpmsg">A pointer to an MSG structure for the message that might need to be translated.</param>
 			/// <returns>
 			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
@@ -1814,59 +2282,103 @@ namespace Vanara.PInvoke
 			/// </returns>
 			/// <remarks>
 			/// <para>Notes to Callers</para>
-			/// <para>Active in-place objects must always be given the first chance at translating accelerator keystrokes. You can provide this opportunity by calling <c>IOleInPlaceActiveObject::TranslateAccelerator</c> from your container's message loop before doing any other translation. You should apply your own translation only when this method returns S_FALSE.</para>
-			/// <para>If you call <c>IOleInPlaceActiveObject::TranslateAccelerator</c> for an object that is not created by a DLL object application, the default object handler returns S_FALSE.</para>
+			/// <para>
+			/// Active in-place objects must always be given the first chance at translating accelerator keystrokes. You can provide this
+			/// opportunity by calling <c>IOleInPlaceActiveObject::TranslateAccelerator</c> from your container's message loop before doing
+			/// any other translation. You should apply your own translation only when this method returns S_FALSE.
+			/// </para>
+			/// <para>
+			/// If you call <c>IOleInPlaceActiveObject::TranslateAccelerator</c> for an object that is not created by a DLL object
+			/// application, the default object handler returns S_FALSE.
+			/// </para>
 			/// <para>Notes to Implementers</para>
-			/// <para>An object created by an EXE object application gets keystrokes from its own message pump, so the container does not get those messages.</para>
+			/// <para>
+			/// An object created by an EXE object application gets keystrokes from its own message pump, so the container does not get
+			/// those messages.
+			/// </para>
 			/// <para>If you need to implement this method, you can do so by simply wrapping the call to the TranslateAccelerator function.</para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-translateaccelerator
-			// HRESULT TranslateAccelerator( LPMSG lpmsg );
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-translateaccelerator HRESULT
+			// TranslateAccelerator( LPMSG lpmsg );
 			[PreserveSig]
 			HRESULT TranslateAccelerator(in MSG lpmsg);
 
-			/// <summary>
-			/// Notifies the object when the container's top-level frame window is activated or deactivated.
-			/// </summary>
-			/// <param name="fActivate">The state of the container's top-level frame window. This parameter is <c>TRUE</c> if the window is activating and <c>FALSE</c> if it is deactivating.</param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-onframewindowactivate
-			// HRESULT OnFrameWindowActivate( BOOL fActivate );
+			/// <summary>Notifies the object when the container's top-level frame window is activated or deactivated.</summary>
+			/// <param name="fActivate">
+			/// The state of the container's top-level frame window. This parameter is <c>TRUE</c> if the window is activating and
+			/// <c>FALSE</c> if it is deactivating.
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-onframewindowactivate HRESULT
+			// OnFrameWindowActivate( BOOL fActivate );
 			void OnFrameWindowActivate([MarshalAs(UnmanagedType.Bool)] bool fActivate);
 
-			/// <summary>
-			/// Notifies the active in-place object when the container's document window is activated or deactivated.
-			/// </summary>
-			/// <param name="fActivate">The state of the MDI child document window. If this parameter is <c>TRUE</c>, the window is in the act of activating; if it is <c>FALSE</c>, it is in the act of deactivating.</param>
+			/// <summary>Notifies the active in-place object when the container's document window is activated or deactivated.</summary>
+			/// <param name="fActivate">
+			/// The state of the MDI child document window. If this parameter is <c>TRUE</c>, the window is in the act of activating; if it
+			/// is <c>FALSE</c>, it is in the act of deactivating.
+			/// </param>
 			/// <remarks>
 			/// <para>Notes to Callers</para>
-			/// <para>Call <c>IOleInPlaceActiveObject::OnDocWindowActivate</c> when the MDI child document window is activated or deactivated and the object is currently the active object for the document.</para>
+			/// <para>
+			/// Call <c>IOleInPlaceActiveObject::OnDocWindowActivate</c> when the MDI child document window is activated or deactivated and
+			/// the object is currently the active object for the document.
+			/// </para>
 			/// <para>Notes to Implementers</para>
-			/// <para>You should include code in this method that installs frame-level tools during object activation. These tools include the shared composite menu and/or optional toolbars and frame adornments. You should then take focus. When deactivating, the object should remove the frame-level tools. Note that if you do not call IOleInPlaceUIWindow::SetBorderSpace with pborderwidths set to <c>NULL</c>, you can avoid having to renegotiate border space.</para>
-			/// <para>While executing <c>IOleInPlaceActiveObject::OnDocWindowActivate</c>, do not make calls to the PeekMessage or GetMessage functions, or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which OLE interface methods and functions can be called from within <c>IOleInPlaceActiveObject::OnDocWindowActivate</c>.</para>
+			/// <para>
+			/// You should include code in this method that installs frame-level tools during object activation. These tools include the
+			/// shared composite menu and/or optional toolbars and frame adornments. You should then take focus. When deactivating, the
+			/// object should remove the frame-level tools. Note that if you do not call IOleInPlaceUIWindow::SetBorderSpace with
+			/// pborderwidths set to <c>NULL</c>, you can avoid having to renegotiate border space.
+			/// </para>
+			/// <para>
+			/// While executing <c>IOleInPlaceActiveObject::OnDocWindowActivate</c>, do not make calls to the PeekMessage or GetMessage
+			/// functions, or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which OLE interface
+			/// methods and functions can be called from within <c>IOleInPlaceActiveObject::OnDocWindowActivate</c>.
+			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-ondocwindowactivate
-			// HRESULT OnDocWindowActivate( BOOL fActivate );
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-ondocwindowactivate HRESULT
+			// OnDocWindowActivate( BOOL fActivate );
 			void OnDocWindowActivate([MarshalAs(UnmanagedType.Bool)] bool fActivate);
 
 			/// <summary>Alerts the object that it needs to resize its border space.</summary>
-			/// <param name="prcBorder">A pointer to a RECT structure containing the new outer rectangle within which the object can request border space for its tools.</param>
-			/// <param name="pUIWindow">A pointer to an IOleInPlaceUIWindow interface pointer for the frame or document window object whose border has changed.</param>
-			/// <param name="fFrameWindow">This parameter is <c>TRUE</c> if the frame window object is calling <c>IOleInPlaceActiveObject::ResizeBorder</c>; otherwise, it is <c>FALSE</c>.</param>
+			/// <param name="prcBorder">
+			/// A pointer to a RECT structure containing the new outer rectangle within which the object can request border space for its tools.
+			/// </param>
+			/// <param name="pUIWindow">
+			/// A pointer to an IOleInPlaceUIWindow interface pointer for the frame or document window object whose border has changed.
+			/// </param>
+			/// <param name="fFrameWindow">
+			/// This parameter is <c>TRUE</c> if the frame window object is calling <c>IOleInPlaceActiveObject::ResizeBorder</c>; otherwise,
+			/// it is <c>FALSE</c>.
+			/// </param>
 			/// <remarks>
 			/// <para>Notes to Callers</para>
-			/// <para><c>IOleInPlaceActiveObject::ResizeBorder</c> is called by the top-level container's document or frame window object when the border space allocated to the object should change. Because the active in-place object is not informed about which window has changed (the frame- or document-level window), <c>IOleInPlaceActiveObject::ResizeBorder</c> must be passed the pointer to the window's IOleInPlaceUIWindow interface.</para>
+			/// <para>
+			/// <c>IOleInPlaceActiveObject::ResizeBorder</c> is called by the top-level container's document or frame window object when the
+			/// border space allocated to the object should change. Because the active in-place object is not informed about which window
+			/// has changed (the frame- or document-level window), <c>IOleInPlaceActiveObject::ResizeBorder</c> must be passed the pointer
+			/// to the window's IOleInPlaceUIWindow interface.
+			/// </para>
 			/// <para>Notes to Implemeters</para>
-			/// <para>In most cases, resizing only requires that you grow, shrink, or scale your object's frame adornments. However, for more complicated adornments, you may be required to renegotiate for border space with calls to IOleInPlaceUIWindow::SetBorderSpace and <c>IOleInPlaceUIWindow::SetBorderSpace</c>.</para>
-			/// <para><c>Note</c> While executing <c>IOleInPlaceActiveObject::ResizeBorder</c>, do not make calls to the PeekMessage or GetMessage functions, or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which OLE interface methods and functions can be called from within <c>IOleInPlaceActiveObject::ResizeBorder</c>.</para>
+			/// <para>
+			/// In most cases, resizing only requires that you grow, shrink, or scale your object's frame adornments. However, for more
+			/// complicated adornments, you may be required to renegotiate for border space with calls to
+			/// IOleInPlaceUIWindow::SetBorderSpace and <c>IOleInPlaceUIWindow::SetBorderSpace</c>.
+			/// </para>
+			/// <para>
+			/// <c>Note</c> While executing <c>IOleInPlaceActiveObject::ResizeBorder</c>, do not make calls to the PeekMessage or GetMessage
+			/// functions, or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which OLE interface
+			/// methods and functions can be called from within <c>IOleInPlaceActiveObject::ResizeBorder</c>.
+			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-resizeborder
-			// HRESULT ResizeBorder( LPCRECT prcBorder, IOleInPlaceUIWindow *pUIWindow, BOOL fFrameWindow );
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-resizeborder HRESULT
+			// ResizeBorder( LPCRECT prcBorder, IOleInPlaceUIWindow *pUIWindow, BOOL fFrameWindow );
 			void ResizeBorder(in RECT prcBorder, [In] IOleInPlaceUIWindow pUIWindow, [MarshalAs(UnmanagedType.Bool)] bool fFrameWindow);
 
 			/// <summary>Enables or disables modeless dialog boxes when the container creates or destroys a modal dialog box.</summary>
-			/// <param name="fEnable">Indicates whether to enable modeless dialog box windows (<c>TRUE</c>) or disable them <c>FALSE</c>.</param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-enablemodeless
-			// HRESULT EnableModeless( BOOL fEnable );
+			/// <param name="fEnable">Indicates whether to enable modeless dialog box windows ( <c>TRUE</c>) or disable them <c>FALSE</c>.</param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceactiveobject-enablemodeless HRESULT
+			// EnableModeless( BOOL fEnable );
 			void EnableModeless([MarshalAs(UnmanagedType.Bool)] bool fEnable);
 		}
 
@@ -2020,7 +2532,6 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			new HRESULT ContextSensitiveHelp([MarshalAs(UnmanagedType.Bool)] bool fEnterMode);
 
-
 			/// <summary>Retrieves the outer rectange for toolbars and controls while the object is active in place.</summary>
 			/// <param name="lprectBorder">
 			/// A pointer to a RECT structure where the outer rectangle is to be returned. The structure's coordinates are relative to the
@@ -2066,19 +2577,19 @@ namespace Vanara.PInvoke
 			/// action is completed.
 			/// </para>
 			/// <para>
-			/// The object can install these tools by passing the width in pixels that is to be used on each side. For example, if the object
-			/// required 10 pixels on the top, 0 pixels on the bottom, and 5 pixels on the left and right sides, it would pass the following
-			/// BORDERWIDTHS structure to <c>IOleInPlaceUIWindow::RequestBorderSpace</c>:
+			/// The object can install these tools by passing the width in pixels that is to be used on each side. For example, if the
+			/// object required 10 pixels on the top, 0 pixels on the bottom, and 5 pixels on the left and right sides, it would pass the
+			/// following BORDERWIDTHS structure to <c>IOleInPlaceUIWindow::RequestBorderSpace</c>:
 			/// </para>
 			/// <para>
 			/// <c>Note</c> While executing <c>IOleInPlaceUIWindow::RequestBorderSpace</c>, do not make calls to the PeekMessage or
-			/// GetMessage functions, or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which OLE
-			/// interface methods and functions can be called from within <c>IOleInPlaceUIWindow::RequestBorderSpace</c>.
+			/// GetMessage functions, or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which
+			/// OLE interface methods and functions can be called from within <c>IOleInPlaceUIWindow::RequestBorderSpace</c>.
 			/// </para>
 			/// <para>Notes to Implementers</para>
 			/// <para>
-			/// If the amount of space an active object uses for its toolbars is irrelevant to the container, it can simply return NOERROR as
-			/// shown in the following <c>IOleInPlaceUIWindow::RequestBorderSpace</c> example. Containers should not unduly restrict the
+			/// If the amount of space an active object uses for its toolbars is irrelevant to the container, it can simply return NOERROR
+			/// as shown in the following <c>IOleInPlaceUIWindow::RequestBorderSpace</c> example. Containers should not unduly restrict the
 			/// display of tools by an active in-place object.
 			/// </para>
 			/// </remarks>
@@ -2088,8 +2599,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>Allocates space for the border requested in the call to IOleInPlaceUIWindow::RequestBorderSpace.</summary>
 			/// <param name="pborderwidths">
-			/// Pointer to a BORDERWIDTHS structure containing the requested width of the tools, in pixels. It can be <c>NULL</c>, indicating
-			/// the object does not need any space.
+			/// Pointer to a BORDERWIDTHS structure containing the requested width of the tools, in pixels. It can be <c>NULL</c>,
+			/// indicating the object does not need any space.
 			/// </param>
 			/// <remarks>
 			/// <para>The object must call <c>IOleInPlaceUIWindow::SetBorderSpace</c>. It can do any one of the following:</para>
@@ -2124,8 +2635,8 @@ namespace Vanara.PInvoke
 			/// methods and functions can be called from within <c>IOleInPlaceUIWindow::SetBorderSpace</c>.
 			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setborderspace HRESULT SetBorderSpace(
-			// LPCBORDERWIDTHS pborderwidths );
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setborderspace HRESULT
+			// SetBorderSpace( LPCBORDERWIDTHS pborderwidths );
 			new void SetBorderSpace(in RECT pborderwidths);
 
 			/// <summary>Provides a direct channel of communication between the object and each of the frame and document windows.</summary>
@@ -2158,8 +2669,8 @@ namespace Vanara.PInvoke
 			/// <para>Notes to Implementers</para>
 			/// <para>
 			/// The Microsoft Windows User Interface Design Guide recommends that an in-place container ignore the pszObjName parameter
-			/// passed in this method. The guide says "The title bar is not affected by in-place activation. It always displays the top-level
-			/// container's name."
+			/// passed in this method. The guide says "The title bar is not affected by in-place activation. It always displays the
+			/// top-level container's name."
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setactiveobject HRESULT
@@ -2169,14 +2680,14 @@ namespace Vanara.PInvoke
 			/// <summary>Enables the container to insert menu groups into the composite menu to be used during the in-place session.</summary>
 			/// <param name="hmenuShared">A handle to an empty menu.</param>
 			/// <param name="lpMenuWidths">
-			/// A pointer to an OLEMENUGROUPWIDTHS array with six elements. The container fills in elements 0, 2, and 4 to reflect the number
-			/// of menu elements it provided in the <c>File</c>, <c>View</c>, and <c>Window</c> menu groups.
+			/// A pointer to an OLEMENUGROUPWIDTHS array with six elements. The container fills in elements 0, 2, and 4 to reflect the
+			/// number of menu elements it provided in the <c>File</c>, <c>View</c>, and <c>Window</c> menu groups.
 			/// </param>
 			/// <remarks>
 			/// <para>Notes to Callers</para>
 			/// <para>
-			/// This method is called by object applications when they are first being activated. They call it to insert their menus into the
-			/// frame-level user interface.
+			/// This method is called by object applications when they are first being activated. They call it to insert their menus into
+			/// the frame-level user interface.
 			/// </para>
 			/// <para>
 			/// The object application asks the container to add its menus to the menu specified in hmenuShared and to set the group counts
@@ -2216,8 +2727,8 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// <c>Note</c> While executing <c>IOleInPlaceFrame::SetMenu</c>, do not make calls to the PeekMessage or GetMessage functions,
-			/// or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which OLE interface methods and
-			/// functions can be called from within <c>IOleInPlaceFrame::SetMenu</c>.
+			/// or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which OLE interface methods
+			/// and functions can be called from within <c>IOleInPlaceFrame::SetMenu</c>.
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceframe-setmenu HRESULT SetMenu( HMENU
@@ -2299,8 +2810,8 @@ namespace Vanara.PInvoke
 			/// <para>Notes to Implementers</para>
 			/// <para>
 			/// The container application should perform its usual accelerator processing, or use wID directly, and then return, indicating
-			/// whether the keystroke accelerator was processed. If the container is an MDI application and the TranslateAccelerator function
-			/// fails, the container can call the TranslateMDISysAccel function, just as it does for its usual message processing.
+			/// whether the keystroke accelerator was processed. If the container is an MDI application and the TranslateAccelerator
+			/// function fails, the container can call the TranslateMDISysAccel function, just as it does for its usual message processing.
 			/// </para>
 			/// <para>
 			/// In-place objects should be given first chance at translating accelerator messages. However, because objects implemented by
@@ -2322,6 +2833,849 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceframe-translateaccelerator HRESULT
 			// TranslateAccelerator( LPMSG lpmsg, WORD wID );
 			void TranslateAccelerator(in MSG lpmsg, in ushort wID);
+		}
+
+		/// <summary>
+		/// <para>
+		/// Manages the activation and deactivation of in-place objects, and determines how much of the in-place object should be visible.
+		/// </para>
+		/// <para>You can obtain a pointer to <c>IOleInPlaceObject</c> by calling IUnknown::QueryInterface on IOleObject.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-ioleinplaceobject
+		[PInvokeData("oleidl.h", MSDNShortId = "NN:oleidl.IOleInPlaceObject")]
+		[ComImport, Guid("00000113-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IOleInPlaceObject : IOleWindow
+		{
+			/// <summary>
+			/// Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).
+			/// </summary>
+			/// <param name="phwnd">A pointer to a variable that receives the window handle.</param>
+			/// <returns>
+			/// This method returns S_OK on success. Other possible return values include the following.
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <description>E_FAIL</description>
+			/// <description>The object is windowless.</description>
+			/// </item>
+			/// <item>
+			/// <description>E_OUTOFMEMORY</description>
+			/// <description>There is insufficient memory available for this operation.</description>
+			/// </item>
+			/// <item>
+			/// <description>E_UNEXPECTED</description>
+			/// <description>An unexpected error has occurred.</description>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Five types of windows comprise the windows hierarchy. When a object is active in place, it has access to some or all of
+			/// these windows.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Window</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <description>Frame</description>
+			/// <description>The outermost main window where the container application's main menu resides.</description>
+			/// </item>
+			/// <item>
+			/// <description>Document</description>
+			/// <description>The window that displays the compound document containing the embedded object to the user.</description>
+			/// </item>
+			/// <item>
+			/// <description>Pane</description>
+			/// <description>
+			/// The subwindow of the document window that contains the object's view. Applicable only for applications with split-pane windows.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <description>Parent</description>
+			/// <description>
+			/// The container window that contains that object's view. The object application installs its window as a child of this window.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <description>In-place</description>
+			/// <description>
+			/// The window containing the active in-place object. The object application creates this window and installs it as a child of
+			/// its hatch window, which is a child of the container's parent window.
+			/// </description>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// Each type of window has a different role in the in-place activation architecture. However, it is not necessary to employ a
+			/// separate physical window for each type. Many container applications use the same window for their frame, document, pane, and
+			/// parent windows.
+			/// </para>
+			/// </remarks>
+			[PreserveSig]
+			new HRESULT GetWindow(out HWND phwnd);
+
+			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
+			/// <param name="fEnterMode">
+			/// <see langword="true"/> if help mode should be entered; <see langword="false"/> if it should be exited.
+			/// </param>
+			/// <returns>
+			/// <para>
+			/// This method returns S_OK if the help mode was entered or exited successfully, depending on the value passed in <paramref
+			/// name="fEnterMode"/>. Other possible return values include the following. <br/>
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <description>E_INVALIDARG</description>
+			/// <description>The specified <paramref name="fEnterMode"/> value is not valid.</description>
+			/// </item>
+			/// <item>
+			/// <description>E_OUTOFMEMORY</description>
+			/// <description>There is insufficient memory available for this operation.</description>
+			/// </item>
+			/// <item>
+			/// <description>E_UNEXPECTED</description>
+			/// <description>An unexpected error has occurred.</description>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Applications can invoke context-sensitive help when the user:</para>
+			/// <list type="bullet">
+			/// <item>presses SHIFT+F1, then clicks a topic</item>
+			/// <item>presses F1 when a menu item is selected</item>
+			/// </list>
+			/// <para>
+			/// When SHIFT+F1 is pressed, either the frame or active object can receive the keystrokes. If the container's frame receives
+			/// the keystrokes, it calls its containing document's IOleWindow::ContextSensitiveHelp method with <paramref
+			/// name="fEnterMode"/> set to <see langword="true"/>. This propagates the help state to all of its in-place objects so they can
+			/// correctly handle the mouse click or WM_COMMAND.
+			/// </para>
+			/// <para>
+			/// If an active object receives the SHIFT+F1 keystrokes, it calls the container's IOleWindow::ContextSensitiveHelp method with
+			/// <paramref name="fEnterMode"/> set to <see langword="true"/>, which then recursively calls each of its in-place sites until
+			/// there are no more to be notified. The container then calls its document's or frame's IOleWindow::ContextSensitiveHelp method
+			/// with <paramref name="fEnterMode"/> set to <see langword="true"/>.
+			/// </para>
+			/// <para>When in context-sensitive help mode, an object that receives the mouse click can either:</para>
+			/// <list type="bullet">
+			/// <item>Ignore the click if it does not support context-sensitive help.</item>
+			/// <item>
+			/// Tell all the other objects to exit context-sensitive help mode with ContextSensitiveHelp set to FALSE and then provide help
+			/// for that context.
+			/// </item>
+			/// </list>
+			/// <para>
+			/// An object in context-sensitive help mode that receives a WM_COMMAND should tell all the other in-place objects to exit
+			/// context-sensitive help mode and then provide help for the command.
+			/// </para>
+			/// <para>
+			/// If a container application is to support context-sensitive help on menu items, it must either provide its own message filter
+			/// so that it can intercept the F1 key or ask the OLE library to add a message filter by calling OleSetMenuDescriptor, passing
+			/// valid, non-NULL values for the lpFrame and lpActiveObj parameters.
+			/// </para>
+			/// </remarks>
+			[PreserveSig]
+			new HRESULT ContextSensitiveHelp([MarshalAs(UnmanagedType.Bool)] bool fEnterMode);
+
+			/// <summary>Deactivates an active in-place object and discards the object's undo state.</summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// This method is called by an active object's immediate container to deactivate the active object and discard its undo state.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// On return from <c>IOleInPlaceObject::InPlaceDeactivate</c>, the object discards its undo state. The object application
+			/// should not shut down immediately after this call. Instead, it should wait for an explicit call to IOleObject::Close or for
+			/// the object's reference count to reach zero.
+			/// </para>
+			/// <para>
+			/// Before deactivating, the object application should give the container a chance to put its user interface back on the frame
+			/// window by calling IOleInPlaceSite::OnUIDeactivate.
+			/// </para>
+			/// <para>
+			/// If the in-place user interface is still visible during the call to <c>IOleInPlaceObject::InPlaceDeactivate</c>, the object
+			/// application should call its own <c>IOleInPlaceObject::InPlaceDeactivate</c> method to hide the user interface. The in-place
+			/// user interface can be optionally destroyed during calls to <c>IOleInPlaceObject::InPlaceDeactivate</c> and
+			/// <c>IOleInPlaceObject::InPlaceDeactivate</c>. But if the user interface has not already been destroyed when the container
+			/// calls IOleObject::Close, then it must be destroyed during the call to <c>IOleObject::Close</c>.
+			/// </para>
+			/// <para>
+			/// During the call to IOleObject::Close, the object should check to see whether it is still active in place. If so, it should
+			/// call <c>IOleInPlaceObject::InPlaceDeactivate</c>.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceobject-inplacedeactivate HRESULT InPlaceDeactivate();
+			[PreserveSig]
+			HRESULT InPlaceDeactivate();
+
+			/// <summary>Deactivates and removes the user interface of an active in-place object.</summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// This method is called by the object's immediate container when, for example, the user has clicked in the client area outside
+			/// the object.
+			/// </para>
+			/// <para>
+			/// If the container has called <c>IOleInPlaceObject::UIDeactivate</c>, it should later call
+			/// IOleInPlaceObject::InPlaceDeactivate to properly clean up resources. The container can assume that stopping or releasing the
+			/// object cleans up resources if necessary. The object must be prepared to do so if <c>IOleInPlaceObject::InPlaceDeactivate</c>
+			/// has not been called. but either <c>IOleInPlaceObject::UIDeactivate</c> or IOleObject::Close has been called.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Resources such as menus and windows can be either cleaned up or kept in a hidden state until your object is completely
+			/// deactivated by calls to either IOleInPlaceObject::InPlaceDeactivate or IOleObject::Close. The object application must call
+			/// IOleInPlaceSite::OnUIDeactivate before doing anything with the composite menus so that the container can first be detached
+			/// from the frame window. On deactivating the in-place object's user interface, the object is left in a ready state so it can
+			/// be quickly reactivated. The object stays in this state until the undo state of the document changes. The container should
+			/// then call <c>IOleInPlaceObject::InPlaceDeactivate</c> to tell the object to discard its undo state.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceobject-uideactivate HRESULT UIDeactivate();
+			[PreserveSig]
+			HRESULT UIDeactivate();
+
+			/// <summary>Specifies how much of the in-place object is to be visible.</summary>
+			/// <param name="lprcPosRect">
+			/// A pointer to the RECT structure containing the position of the in-place object using the client coordinates of its parent window.
+			/// </param>
+			/// <param name="lprcClipRect">
+			/// A pointer to the outer rectangle containing the in-place object's position rectangle (lprcPosRect). This rectangle is
+			/// relative to the client area of the object's parent window.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>The specified pointer is invalid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>There is insufficient memory available for the operation.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>It is possible for lprcClipRect to change without lprcPosRect changing.</para>
+			/// <para>
+			/// The size of an in-place object's rectangle is always calculated in pixels. This is different from other OLE object's
+			/// visualizations, which are in <c>HIMETRIC</c>.
+			/// </para>
+			/// <para>
+			/// <c>Note</c> While executing <c>IOleInPlaceObject::SetObjectRects</c>, do not make calls to the PeekMessage or GetMessage
+			/// functions, or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which OLE interface
+			/// methods and functions can be called from within <c>IOleInPlaceObject::SetObjectRects</c>.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// The container should call <c>IOleInPlaceObject::SetObjectRects</c> whenever the window position of the in-place object
+			/// and/or the visible part of the in-place object changes.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The object must size its in-place window to match the intersection of lprcPosRect and lprcClipRect. The object must also
+			/// draw its contents into the object's in-place window so that proper clipping takes place.
+			/// </para>
+			/// <para>
+			/// The object should compare its width and height with those provided by its container (conveyed through lprcPosRect). If the
+			/// comparison does not result in a match, the container is applying scaling to the object. The object must then decide whether
+			/// it should continue the in-place editing in the scale/zoom mode or deactivate.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceobject-setobjectrects HRESULT SetObjectRects(
+			// LPCRECT lprcPosRect, LPCRECT lprcClipRect );
+			[PreserveSig]
+			HRESULT SetObjectRects(in RECT lprcPosRect, in RECT lprcClipRect);
+
+			/// <summary>Reactivates a previously deactivated object, undoing the last state of the object.</summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_NOTUNDOABLE</term>
+			/// <term>The undo state is not available.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>There is insufficient memory available for the operation.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// If the user chooses the <c>Undo</c> command before the undo state of the object is lost, the object's immediate container
+			/// calls <c>IOleInPlaceObject::ReactivateAndUndo</c> to activate the user interface, carry out the undo operation, and return
+			/// the object to the active state.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceobject-reactivateandundo HRESULT ReactivateAndUndo();
+			[PreserveSig]
+			HRESULT ReactivateAndUndo();
+		}
+
+		/// <summary>
+		/// <para>
+		/// Manages the interaction between the container and the object's in-place client site. Recall that the client site is the display
+		/// site for embedded objects, and provides position and conceptual information about the object.
+		/// </para>
+		/// <para>
+		/// This interface provides methods that manage in-place objects. With <c>IOleInPlaceSite</c>, you can determine if an object can be
+		/// activated and manage its activation and deactivation. You can notify the container when one of its objects is being activated
+		/// and inform the container that a composite menu will replace the container's regular menu. It provides methods that make it
+		/// possible for the in-place object to retrieve the window object hierarchy, and the position in the parent window where the object
+		/// should place its in-place activation window. Finally, it determines how the container scrolls the object, manages the object
+		/// undo state, and notifies the object when its borders have changed.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-ioleinplacesite
+		[PInvokeData("oleidl.h", MSDNShortId = "NN:oleidl.IOleInPlaceSite")]
+		[ComImport, Guid("00000119-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IOleInPlaceSite : IOleWindow
+		{
+			/// <summary>
+			/// Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).
+			/// </summary>
+			/// <param name="phwnd">A pointer to a variable that receives the window handle.</param>
+			/// <returns>
+			/// This method returns S_OK on success. Other possible return values include the following.
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <description>E_FAIL</description>
+			/// <description>The object is windowless.</description>
+			/// </item>
+			/// <item>
+			/// <description>E_OUTOFMEMORY</description>
+			/// <description>There is insufficient memory available for this operation.</description>
+			/// </item>
+			/// <item>
+			/// <description>E_UNEXPECTED</description>
+			/// <description>An unexpected error has occurred.</description>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Five types of windows comprise the windows hierarchy. When a object is active in place, it has access to some or all of
+			/// these windows.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Window</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <description>Frame</description>
+			/// <description>The outermost main window where the container application's main menu resides.</description>
+			/// </item>
+			/// <item>
+			/// <description>Document</description>
+			/// <description>The window that displays the compound document containing the embedded object to the user.</description>
+			/// </item>
+			/// <item>
+			/// <description>Pane</description>
+			/// <description>
+			/// The subwindow of the document window that contains the object's view. Applicable only for applications with split-pane windows.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <description>Parent</description>
+			/// <description>
+			/// The container window that contains that object's view. The object application installs its window as a child of this window.
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <description>In-place</description>
+			/// <description>
+			/// The window containing the active in-place object. The object application creates this window and installs it as a child of
+			/// its hatch window, which is a child of the container's parent window.
+			/// </description>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// Each type of window has a different role in the in-place activation architecture. However, it is not necessary to employ a
+			/// separate physical window for each type. Many container applications use the same window for their frame, document, pane, and
+			/// parent windows.
+			/// </para>
+			/// </remarks>
+			[PreserveSig]
+			new HRESULT GetWindow(out HWND phwnd);
+
+			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
+			/// <param name="fEnterMode">
+			/// <see langword="true"/> if help mode should be entered; <see langword="false"/> if it should be exited.
+			/// </param>
+			/// <returns>
+			/// <para>
+			/// This method returns S_OK if the help mode was entered or exited successfully, depending on the value passed in <paramref
+			/// name="fEnterMode"/>. Other possible return values include the following. <br/>
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <description>E_INVALIDARG</description>
+			/// <description>The specified <paramref name="fEnterMode"/> value is not valid.</description>
+			/// </item>
+			/// <item>
+			/// <description>E_OUTOFMEMORY</description>
+			/// <description>There is insufficient memory available for this operation.</description>
+			/// </item>
+			/// <item>
+			/// <description>E_UNEXPECTED</description>
+			/// <description>An unexpected error has occurred.</description>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Applications can invoke context-sensitive help when the user:</para>
+			/// <list type="bullet">
+			/// <item>presses SHIFT+F1, then clicks a topic</item>
+			/// <item>presses F1 when a menu item is selected</item>
+			/// </list>
+			/// <para>
+			/// When SHIFT+F1 is pressed, either the frame or active object can receive the keystrokes. If the container's frame receives
+			/// the keystrokes, it calls its containing document's IOleWindow::ContextSensitiveHelp method with <paramref
+			/// name="fEnterMode"/> set to <see langword="true"/>. This propagates the help state to all of its in-place objects so they can
+			/// correctly handle the mouse click or WM_COMMAND.
+			/// </para>
+			/// <para>
+			/// If an active object receives the SHIFT+F1 keystrokes, it calls the container's IOleWindow::ContextSensitiveHelp method with
+			/// <paramref name="fEnterMode"/> set to <see langword="true"/>, which then recursively calls each of its in-place sites until
+			/// there are no more to be notified. The container then calls its document's or frame's IOleWindow::ContextSensitiveHelp method
+			/// with <paramref name="fEnterMode"/> set to <see langword="true"/>.
+			/// </para>
+			/// <para>When in context-sensitive help mode, an object that receives the mouse click can either:</para>
+			/// <list type="bullet">
+			/// <item>Ignore the click if it does not support context-sensitive help.</item>
+			/// <item>
+			/// Tell all the other objects to exit context-sensitive help mode with ContextSensitiveHelp set to FALSE and then provide help
+			/// for that context.
+			/// </item>
+			/// </list>
+			/// <para>
+			/// An object in context-sensitive help mode that receives a WM_COMMAND should tell all the other in-place objects to exit
+			/// context-sensitive help mode and then provide help for the command.
+			/// </para>
+			/// <para>
+			/// If a container application is to support context-sensitive help on menu items, it must either provide its own message filter
+			/// so that it can intercept the F1 key or ask the OLE library to add a message filter by calling OleSetMenuDescriptor, passing
+			/// valid, non-NULL values for the lpFrame and lpActiveObj parameters.
+			/// </para>
+			/// </remarks>
+			[PreserveSig]
+			new HRESULT ContextSensitiveHelp([MarshalAs(UnmanagedType.Bool)] bool fEnterMode);
+
+			/// <summary>Determines whether the container can activate the object in place.</summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_FALSE</term>
+			/// <term>The container does not allow in-place activation for this object.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Only objects being displayed as DVASPECT_CONTENT can be activated in place.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// <c>CanInPlaceActivate</c> is called by the client site's immediate child object when this object must activate in place.
+			/// This function allows the container application to accept or refuse the activation request.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-caninplaceactivate HRESULT CanInPlaceActivate();
+			[PreserveSig]
+			HRESULT CanInPlaceActivate();
+
+			/// <summary>Notifies the container that one of its objects is being activated in place.</summary>
+			/// <returns>
+			/// <para>
+			/// This method returns S_OK if the container allows the in-place activation. Other possible return values include the following.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// <c>OnInPlaceActivate</c> is called by the active embedded object when it is activated in-place for the first time. The
+			/// container should note that the object is becoming active.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// A container that supports linking to embedded objects must properly manage the running of its in-place objects when they are
+			/// UI-inactive and running in the hidden state. To reactivate the in-place object quickly, a container should not call
+			/// IOleObject::Close until the container's IOleInPlaceSite::DeactivateAndUndo method is called. To help protect against the
+			/// object being left in an unstable state if a linking client updates silently, the container should call OleLockRunning to
+			/// lock the object in the running state. This prevents the hidden in-place object from shutting down before it can be saved in
+			/// its container.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-oninplaceactivate HRESULT OnInPlaceActivate();
+			[PreserveSig]
+			HRESULT OnInPlaceActivate();
+
+			/// <summary>
+			/// Notifies the container that the object is about to be activated in place and that the object is going to replace the
+			/// container's main menu with an in-place composite menu.
+			/// </summary>
+			/// <returns>
+			/// <para>
+			/// This method returns S_OK if the container allows the in-place activation. Other possible return values include the following.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>The in-place object calls <c>IOleInPlaceSite::OnUIActivate</c> just before activating its user interface.</para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The container should remove any user interface associated with its own activation. If the container is itself an embedded
+			/// object, it should remove its document-level user interface.
+			/// </para>
+			/// <para>
+			/// If there is already an object active in place in the same document, the container should call
+			/// IOleInPlaceObject::UIDeactivate before calling OnUIDeactivate.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-onuiactivate HRESULT OnUIActivate();
+			[PreserveSig]
+			HRESULT OnUIActivate();
+
+			/// <summary>
+			/// Enables an in-place object to retrieve the window interfaces that form the window object hierarchy, and the position in the
+			/// parent window where the object's in-place activation window should be located.
+			/// </summary>
+			/// <param name="ppFrame">
+			/// A pointer to an IOleInPlaceFrame pointer variable that receives the interface pointer to the frame. If an error occurs, the
+			/// implementation must set ppFrame to <c>NULL</c>.
+			/// </param>
+			/// <param name="ppDoc">
+			/// A pointer to an IOleInPlaceUIWindow pointer variable that receives the interface pointer to the document window. If the
+			/// document window is the same as the frame window, ppDoc is set to <c>NULL</c>. In this case, the object can only use ppFrame
+			/// or border negotiation. If an error is returned, the implementation must set ppDoc to <c>NULL</c>.
+			/// </param>
+			/// <param name="lprcPosRect">
+			/// A pointer to a RECT structure for the rectangle containing the position of the in-place object in the client coordinates of
+			/// its parent window. If an error is returned, this parameter must be set to <c>NULL</c>.
+			/// </param>
+			/// <param name="lprcClipRect">
+			/// A pointer to a RECT structure for the outer rectangle containing the in-place object's position rectangle (lprcPosRect).
+			/// This rectangle is relative to the client area of the object's parent window. If an error is returned, this parameter must be
+			/// set to <c>NULL</c>.
+			/// </param>
+			/// <param name="lpFrameInfo">
+			/// A pointer to an OLEINPLACEFRAMEINFO structure the container is to fill in with appropriate data. If an error is returned,
+			/// this parameter must be set to <c>NULL</c>.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One or more of the supplied pointers is invalid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The OLEINPLACEFRAMEINFO structure provides data needed by OLE to dispatch keystroke accelerators to a container frame while
+			/// an object is active in place.
+			/// </para>
+			/// <para>
+			/// When an object is activated, it calls <c>GetWindowContext</c> from its container. The container returns the handle to its
+			/// in-place accelerator table through the OLEINPLACEFRAMEINFO structure. Before calling <c>GetWindowContext</c>, the object
+			/// must provide the size of the <c>OLEINPLACEFRAMEINFO</c> structure by filling in the cb member, pointed to by lpFrameInfo.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-getwindowcontext HRESULT
+			// GetWindowContext( IOleInPlaceFrame **ppFrame, IOleInPlaceUIWindow **ppDoc, LPRECT lprcPosRect, LPRECT lprcClipRect,
+			// LPOLEINPLACEFRAMEINFO lpFrameInfo );
+			[PreserveSig]
+			unsafe HRESULT GetWindowContext(out IOleInPlaceFrame ppFrame, out IOleInPlaceUIWindow ppDoc, [Out] RECT* lprcPosRect, [Out] RECT* lprcClipRect, [Out] OLEINPLACEFRAMEINFO* lpFrameInfo);
+
+			/// <summary>Instructs the container to scroll the view of the object by the specified number of pixels.</summary>
+			/// <param name="scrollExtant">The number of pixels by which to scroll in the X and Y directions.</param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>The specified pointer is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// As a result of scrolling, the object's visible rectangle can change. If that happens, the container should give the new
+			/// clipping rectangle to the object by calling IOleInPlaceObject::SetObjectRects. The intersection of the lprcClipRect and
+			/// lprcPosRect rectangles gives the new visible rectangle. See IOleInPlaceSite::GetWindowContext for more information.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>Called by an active, in-place object when it is asking the container to scroll.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-scroll HRESULT Scroll( SIZE scrollExtant );
+			[PreserveSig]
+			HRESULT Scroll(SIZE scrollExtant);
+
+			/// <summary>
+			/// Notifies the container that it should reinstall its user interface and take focus, and whether the object has an undoable state.
+			/// </summary>
+			/// <param name="fUndoable">Specifies whether the object can undo changes (TRUE) or not (FALSE).</param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The object indicates whether it can undo changes through the fUndoable flag. If the object can undo changes, the container
+			/// can (by the user invoking the <c>Edit Undo</c> command) call the IOleInPlaceObject::ReactivateAndUndo method to undo the changes.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// <c>IOleInPlaceSite::OnUIDeactivate</c> is called by the site's immediate child object when it is deactivating to notify the
+			/// container that it should reinstall its own user interface components and take focus. The container should wait for the call
+			/// to <c>IOleInPlaceSite::OnUIDeactivate</c> to complete before fully cleaning up and destroying any composite submenus.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-onuideactivate HRESULT OnUIDeactivate(
+			// BOOL fUndoable );
+			[PreserveSig]
+			HRESULT OnUIDeactivate([MarshalAs(UnmanagedType.Bool)] bool fUndoable);
+
+			/// <summary>Notifies the container that the object is no longer active in place.</summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// <c>OnInPlaceDeactivate</c> is called by an in-place object when it is fully deactivated. This function notifies the
+			/// container that the object has been deactivated, and it gives the container a chance to run code pertinent to the object's
+			/// deactivation. In particular, <c>OnInPlaceDeactivate</c> is called as a result of IOleInPlaceObject::InPlaceDeactivate being
+			/// called. Calling <c>OnInPlaceDeactivate</c> indicates that the object can no longer support Undo.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// If the container is holding pointers to the IOleInPlaceObject and IOleInPlaceActiveObject interface implementations, it
+			/// should release them after the <c>OnInPlaceDeactivate</c> call.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-oninplacedeactivate HRESULT OnInPlaceDeactivate();
+			[PreserveSig]
+			HRESULT OnInPlaceDeactivate();
+
+			/// <summary>Instructs the container to discard its undo state. The container should not call IOleInPlaceObject::ReActivateAndUndo.</summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// If an object is activated in place and the object's associated object application maintains only one level of undo, there is
+			/// no need to have more than one entry on the undo stack. That is, after a change has been made to the active object that
+			/// invalidates its undo state saved by the container, there is no need to maintain this undo state in the container.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// <c>DiscardUndoState</c> is called by the active object while performing some action that would discard the undo state of the
+			/// object. The in-place object calls this method to notify the container to discard the object's last saved undo state.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-discardundostate HRESULT DiscardUndoState();
+			[PreserveSig]
+			HRESULT DiscardUndoState();
+
+			/// <summary>Deactivates the object, ends the in-place session, and reverts to the container's saved undo state.</summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>Called by the active object when the user invokes undo just after activating the object.</para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Upon completion of this call, the container should call IOleInPlaceObject::UIDeactivate to remove the user interface for the
+			/// object, activate itself, and undo.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-deactivateandundo HRESULT DeactivateAndUndo();
+			[PreserveSig]
+			HRESULT DeactivateAndUndo();
+
+			/// <summary>Notifies the container that the object extents have changed.</summary>
+			/// <param name="lprcPosRect">
+			/// A pointer a RECT structure that contains the position of the in-place object in the client coordinates of its parent window.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>The supplied pointer is invalid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>The <c>OnPosRectChange</c> method is called by the in-place object.</para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// When the in-place object calls <c>OnPosRectChange</c>, the container must call IOleInPlaceObject::SetObjectRects to specify
+			/// the new position of the in-place window and the clipping rectangle. Only then does the object resize its window.
+			/// </para>
+			/// <para>
+			/// In most cases, the object grows to the right and/or down. There could be cases where the object grows to the left and/or up,
+			/// as conveyed through lprcPosRect. It is also possible to change the object's position without changing its size.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplacesite-onposrectchange HRESULT OnPosRectChange(
+			// LPCRECT lprcPosRect );
+			[PreserveSig]
+			HRESULT OnPosRectChange(in RECT lprcPosRect);
 		}
 
 		/// <summary>
@@ -2474,7 +3828,6 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			new HRESULT ContextSensitiveHelp([MarshalAs(UnmanagedType.Bool)] bool fEnterMode);
 
-
 			/// <summary>Retrieves the outer rectange for toolbars and controls while the object is active in place.</summary>
 			/// <param name="lprectBorder">
 			/// A pointer to a RECT structure where the outer rectangle is to be returned. The structure's coordinates are relative to the
@@ -2520,19 +3873,19 @@ namespace Vanara.PInvoke
 			/// action is completed.
 			/// </para>
 			/// <para>
-			/// The object can install these tools by passing the width in pixels that is to be used on each side. For example, if the object
-			/// required 10 pixels on the top, 0 pixels on the bottom, and 5 pixels on the left and right sides, it would pass the following
-			/// BORDERWIDTHS structure to <c>IOleInPlaceUIWindow::RequestBorderSpace</c>:
+			/// The object can install these tools by passing the width in pixels that is to be used on each side. For example, if the
+			/// object required 10 pixels on the top, 0 pixels on the bottom, and 5 pixels on the left and right sides, it would pass the
+			/// following BORDERWIDTHS structure to <c>IOleInPlaceUIWindow::RequestBorderSpace</c>:
 			/// </para>
 			/// <para>
 			/// <c>Note</c> While executing <c>IOleInPlaceUIWindow::RequestBorderSpace</c>, do not make calls to the PeekMessage or
-			/// GetMessage functions, or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which OLE
-			/// interface methods and functions can be called from within <c>IOleInPlaceUIWindow::RequestBorderSpace</c>.
+			/// GetMessage functions, or a dialog box. Doing so may cause the system to deadlock. There are further restrictions on which
+			/// OLE interface methods and functions can be called from within <c>IOleInPlaceUIWindow::RequestBorderSpace</c>.
 			/// </para>
 			/// <para>Notes to Implementers</para>
 			/// <para>
-			/// If the amount of space an active object uses for its toolbars is irrelevant to the container, it can simply return NOERROR as
-			/// shown in the following <c>IOleInPlaceUIWindow::RequestBorderSpace</c> example. Containers should not unduly restrict the
+			/// If the amount of space an active object uses for its toolbars is irrelevant to the container, it can simply return NOERROR
+			/// as shown in the following <c>IOleInPlaceUIWindow::RequestBorderSpace</c> example. Containers should not unduly restrict the
 			/// display of tools by an active in-place object.
 			/// </para>
 			/// </remarks>
@@ -2542,8 +3895,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>Allocates space for the border requested in the call to IOleInPlaceUIWindow::RequestBorderSpace.</summary>
 			/// <param name="pborderwidths">
-			/// Pointer to a BORDERWIDTHS structure containing the requested width of the tools, in pixels. It can be <c>NULL</c>, indicating
-			/// the object does not need any space.
+			/// Pointer to a BORDERWIDTHS structure containing the requested width of the tools, in pixels. It can be <c>NULL</c>,
+			/// indicating the object does not need any space.
 			/// </param>
 			/// <remarks>
 			/// <para>The object must call <c>IOleInPlaceUIWindow::SetBorderSpace</c>. It can do any one of the following:</para>
@@ -2578,8 +3931,8 @@ namespace Vanara.PInvoke
 			/// methods and functions can be called from within <c>IOleInPlaceUIWindow::SetBorderSpace</c>.
 			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setborderspace HRESULT SetBorderSpace(
-			// LPCBORDERWIDTHS pborderwidths );
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setborderspace HRESULT
+			// SetBorderSpace( LPCBORDERWIDTHS pborderwidths );
 			void SetBorderSpace(in RECT pborderwidths);
 
 			/// <summary>Provides a direct channel of communication between the object and each of the frame and document windows.</summary>
@@ -2612,8 +3965,8 @@ namespace Vanara.PInvoke
 			/// <para>Notes to Implementers</para>
 			/// <para>
 			/// The Microsoft Windows User Interface Design Guide recommends that an in-place container ignore the pszObjName parameter
-			/// passed in this method. The guide says "The title bar is not affected by in-place activation. It always displays the top-level
-			/// container's name."
+			/// passed in this method. The guide says "The title bar is not affected by in-place activation. It always displays the
+			/// top-level container's name."
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setactiveobject HRESULT
@@ -2647,8 +4000,8 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// <para>
 			/// Within a compound document, each embedded object has its own client site â€” the place where it is displayed and through
-			/// which it receives information about its storage, user interface, and other resources. <c>IOleObject::SetClientSite</c> is the
-			/// only method enabling an embedded object to obtain a pointer to its client site.
+			/// which it receives information about its storage, user interface, and other resources. <c>IOleObject::SetClientSite</c> is
+			/// the only method enabling an embedded object to obtain a pointer to its client site.
 			/// </para>
 			/// <para>Notes to Callers</para>
 			/// <para>
@@ -2657,9 +4010,9 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// When creating or loading an object, a container may pass a client-site pointer (along with other arguments) to one of the
-			/// following helper functions: OleCreate, OleCreateFromFile, OleCreateFromData or OleLoad. These helper functions load an object
-			/// handler for the new object and call <c>IOleObject::SetClientSite</c> on the container's behalf before returning a pointer to
-			/// the new object.
+			/// following helper functions: OleCreate, OleCreateFromFile, OleCreateFromData or OleLoad. These helper functions load an
+			/// object handler for the new object and call <c>IOleObject::SetClientSite</c> on the container's behalf before returning a
+			/// pointer to the new object.
 			/// </para>
 			/// <para>
 			/// Passing a client-site pointer informs the object handler that the client site is ready to process requests. If the client
@@ -2679,10 +4032,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves a pointer to an embedded object's client site.</summary>
 			/// <param name="ppClientSite">
-			/// Address of IOleClientSite pointer variable that receives the interface pointer to the object's client site. If an object does
-			/// not yet know its client site, or if an error has occurred, ppClientSite must be set to <c>NULL</c>. Each time an object
-			/// receives a call to <c>IOleObject::GetClientSite</c>, it must increase the reference count on ppClientSite. It is the caller's
-			/// responsibility to call Release when it is done with ppClientSite.
+			/// Address of IOleClientSite pointer variable that receives the interface pointer to the object's client site. If an object
+			/// does not yet know its client site, or if an error has occurred, ppClientSite must be set to <c>NULL</c>. Each time an object
+			/// receives a call to <c>IOleObject::GetClientSite</c>, it must increase the reference count on ppClientSite. It is the
+			/// caller's responsibility to call Release when it is done with ppClientSite.
 			/// </param>
 			/// <returns>This method returns S_OK on success.</returns>
 			/// <remarks>
@@ -2690,16 +4043,16 @@ namespace Vanara.PInvoke
 			/// Link clients most commonly call the <c>IOleObject::GetClientSite</c> method in conjunction with the
 			/// IOleClientSite::GetContainer method to traverse a hierarchy of nested objects. A link client calls
 			/// <c>IOleObject::GetClientSite</c> to get a pointer to the link source's client site. The client then calls
-			/// <c>IOleClientSite::GetContainer</c> to get a pointer to the link source's container. Finally, the client calls QueryInterface
-			/// to get IOleObject and <c>IOleObject::GetClientSite</c> to get the container's client site within its container. By repeating
-			/// this sequence of calls, the caller can eventually retrieve a pointer to the master container in which all the other objects
-			/// are nested.
+			/// <c>IOleClientSite::GetContainer</c> to get a pointer to the link source's container. Finally, the client calls
+			/// QueryInterface to get IOleObject and <c>IOleObject::GetClientSite</c> to get the container's client site within its
+			/// container. By repeating this sequence of calls, the caller can eventually retrieve a pointer to the master container in
+			/// which all the other objects are nested.
 			/// </para>
 			/// <para>Notes to Callers</para>
 			/// <para>
-			/// The returned client-site pointer will be <c>NULL</c> if an embedded object has not yet been informed of its client site. This
-			/// will be the case with a newly loaded or created object when a container has passed a <c>NULL</c> client-site pointer to one
-			/// of the object-creation helper functions but has not yet called IOleObject::SetClientSite as part of initializing the object.
+			/// The returned client-site pointer will be <c>NULL</c> if an embedded object has not yet been informed of its client site.
+			/// This will be the case with a newly loaded or created object when a container has passed a <c>NULL</c> client-site pointer to
+			/// one of the object-creation helper functions but has not yet called IOleObject::SetClientSite as part of initializing the object.
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-getclientsite HRESULT GetClientSite(
@@ -2710,8 +4063,8 @@ namespace Vanara.PInvoke
 			/// <summary>Provides an object with the names of its container application and the compound document in which it is embedded.</summary>
 			/// <param name="szContainerApp">Pointer to the name of the container application in which the object is running.</param>
 			/// <param name="szContainerObj">
-			/// Pointer to the name of the compound document that contains the object. If you do not wish to display the name of the compound
-			/// document, you can set this parameter to <c>NULL</c>.
+			/// Pointer to the name of the compound document that contains the object. If you do not wish to display the name of the
+			/// compound document, you can set this parameter to <c>NULL</c>.
 			/// </param>
 			/// <returns>This method returns S_OK on success.</returns>
 			/// <remarks>
@@ -2722,13 +4075,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>Notes to Implementers</para>
 			/// <para>
-			/// An object's application of <c>IOleObject::SetHostNames</c> should include whatever modifications to its user interface may be
-			/// appropriate to an object's embedded state. Such modifications typically will include adding and removing menu commands and
-			/// altering the text displayed in the title bar of the editing window.
+			/// An object's application of <c>IOleObject::SetHostNames</c> should include whatever modifications to its user interface may
+			/// be appropriate to an object's embedded state. Such modifications typically will include adding and removing menu commands
+			/// and altering the text displayed in the title bar of the editing window.
 			/// </para>
 			/// <para>
-			/// The complete window title for an embedded object in an SDI container application or an MDI application with a maximized child
-			/// window should appear as follows:
+			/// The complete window title for an embedded object in an SDI container application or an MDI application with a maximized
+			/// child window should appear as follows:
 			/// </para>
 			/// <para>Otherwise, the title should be:</para>
 			/// <para>
@@ -2848,9 +4201,9 @@ namespace Vanara.PInvoke
 			/// provides one way for a container to communicate this information.
 			/// </para>
 			/// <para>
-			/// The container can pass either its own moniker, an object's moniker relative to the container, or an object's full moniker. In
-			/// practice, if a container passes anything other than an object's full moniker, each object calls the container back to request
-			/// assignment of the full moniker, which the object requires to register itself in the running object table.
+			/// The container can pass either its own moniker, an object's moniker relative to the container, or an object's full moniker.
+			/// In practice, if a container passes anything other than an object's full moniker, each object calls the container back to
+			/// request assignment of the full moniker, which the object requires to register itself in the running object table.
 			/// </para>
 			/// <para>
 			/// The moniker of an object relative to its container is stored by the object handler as part of the object's persistent state.
@@ -2914,9 +4267,9 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// The <c>IOleObject::GetMoniker</c> method returns an object's moniker. Like IOleObject::SetMoniker, this method is important
 			/// only in the context of managing links to embedded objects and even in that case is optional. A potential link client that
-			/// requires an object's moniker to bind to the object can call this method to obtain that moniker. The default implementation of
-			/// <c>IOleObject::GetMoniker</c> calls the IOleClientSite::GetMoniker, returning E_UNEXPECTED if the object is not running or
-			/// does not have a valid pointer to a client site.
+			/// requires an object's moniker to bind to the object can call this method to obtain that moniker. The default implementation
+			/// of <c>IOleObject::GetMoniker</c> calls the IOleClientSite::GetMoniker, returning E_UNEXPECTED if the object is not running
+			/// or does not have a valid pointer to a client site.
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-getmoniker HRESULT GetMoniker( DWORD dwAssign,
 			// DWORD dwWhichMoniker, IMoniker **ppmk );
@@ -2935,8 +4288,8 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="fCreation">
 			/// <c>TRUE</c> indicates the container is inserting a new object inside itself and initializing that object with data from the
-			/// current selection; <c>FALSE</c> indicates a more general programmatic data transfer, most likely from a source other than the
-			/// current selection.
+			/// current selection; <c>FALSE</c> indicates a more general programmatic data transfer, most likely from a source other than
+			/// the current selection.
 			/// </param>
 			/// <param name="dwReserved">This parameter is reserved and must be zero.</param>
 			/// <returns>
@@ -2974,14 +4327,14 @@ namespace Vanara.PInvoke
 			/// selected range of cells.
 			/// </para>
 			/// <para>
-			/// Using this method, a container can also replace the contents of an embedded object with data transferred from another source.
-			/// This provides a convenient way of updating an embedded object.
+			/// Using this method, a container can also replace the contents of an embedded object with data transferred from another
+			/// source. This provides a convenient way of updating an embedded object.
 			/// </para>
 			/// <para>Notes to Callers</para>
 			/// <para>
 			/// Following initialization, the container should call IOleObject::GetMiscStatus to check the value of the
-			/// OLEMISC_INSERTNOTREPLACE bit. If the bit is on, the new object inserts itself following the selected data. If the bit is off,
-			/// the new object replaces the selected data.
+			/// OLEMISC_INSERTNOTREPLACE bit. If the bit is on, the new object inserts itself following the selected data. If the bit is
+			/// off, the new object replaces the selected data.
 			/// </para>
 			/// <para>Notes to Implementers</para>
 			/// <para>
@@ -3040,9 +4393,9 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>Notes to Callers</para>
 			/// <para>
-			/// If you want a stable snapshot of the current contents of an embedded object, call <c>IOleObject::GetClipboardData</c>. Should
-			/// the data change, you will need to call the function again for an updated snapshot. If you want the caller to be informed of
-			/// changes that occur to the data, call QueryInterface, then call IDataObject::DAdvise.
+			/// If you want a stable snapshot of the current contents of an embedded object, call <c>IOleObject::GetClipboardData</c>.
+			/// Should the data change, you will need to call the function again for an updated snapshot. If you want the caller to be
+			/// informed of changes that occur to the data, call QueryInterface, then call IDataObject::DAdvise.
 			/// </para>
 			/// <para>Notes to Implementers</para>
 			/// <para>If you implement this function, you must return an IDataObject pointer for an object whose data will not change.</para>
@@ -3068,8 +4421,8 @@ namespace Vanara.PInvoke
 			/// <param name="hwndParent">
 			/// Handle of the document window containing the object. This and lprcPosRect together make it possible to open a temporary
 			/// window for an object, where hwndParent is the parent window in which the object's window is to be displayed, and lprcPosRect
-			/// defines the area available for displaying the object window within that parent. A temporary window is useful, for example, to
-			/// a multimedia object that opens itself for playback but not for editing.
+			/// defines the area available for displaying the object window within that parent. A temporary window is useful, for example,
+			/// to a multimedia object that opens itself for playback but not for editing.
 			/// </param>
 			/// <param name="lprcPosRect">
 			/// Pointer to the RECT structure containing the coordinates, in pixels, that define an object's bounding rectangle in
@@ -3129,8 +4482,8 @@ namespace Vanara.PInvoke
 			/// A "verb" is an action that an OLE object takes in response to a message from its container. An object's container, or a
 			/// client linked to the object, normally calls <c>IOleObject::DoVerb</c> in response to some end-user action, such as
 			/// double-clicking on the object. The various actions that are available for a given object are enumerated in an OLEVERB
-			/// structure, which the container obtains by calling IOleObject::EnumVerbs. <c>IOleObject::DoVerb</c> matches the value of iVerb
-			/// against the iVerb member of the structure to determine which verb to invoke.
+			/// structure, which the container obtains by calling IOleObject::EnumVerbs. <c>IOleObject::DoVerb</c> matches the value of
+			/// iVerb against the iVerb member of the structure to determine which verb to invoke.
 			/// </para>
 			/// <para>
 			/// Through IOleObject::EnumVerbs, an object, rather than its container, determines which verbs (i.e., actions) it supports. OLE
@@ -3170,16 +4523,16 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>OLEIVERB_UIACTIVATE (-4)</term>
 			/// <term>
-			/// Activates an object in place, along with its full set of user-interface tools, including menus, toolbars, and its name in the
-			/// title bar of the container window. If the object does not support in-place activation, it should return E_NOTIMPL.
+			/// Activates an object in place, along with its full set of user-interface tools, including menus, toolbars, and its name in
+			/// the title bar of the container window. If the object does not support in-place activation, it should return E_NOTIMPL.
 			/// </term>
 			/// </item>
 			/// <item>
 			/// <term>OLEIVERB_INPLACEACTIVATE (-5)</term>
 			/// <term>
-			/// Activates an object in place without displaying tools, such as menus and toolbars, that end users need to change the behavior
-			/// or appearance of the object. Single-clicking such an object causes it to negotiate the display of its user-interface tools
-			/// with its container. If the container refuses, the object remains active but without its tools displayed.
+			/// Activates an object in place without displaying tools, such as menus and toolbars, that end users need to change the
+			/// behavior or appearance of the object. Single-clicking such an object causes it to negotiate the display of its
+			/// user-interface tools with its container. If the container refuses, the object remains active but without its tools displayed.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -3195,8 +4548,8 @@ namespace Vanara.PInvoke
 			/// application in preparation for opening an editing window.
 			/// </para>
 			/// <para>
-			/// <c>IOleObject::DoVerb</c> automatically runs the OLE server application. If an error occurs during verb execution, the object
-			/// application is shut down.
+			/// <c>IOleObject::DoVerb</c> automatically runs the OLE server application. If an error occurs during verb execution, the
+			/// object application is shut down.
 			/// </para>
 			/// <para>
 			/// If an end user invokes a verb by some means other than selecting a command from a menu (say, by double-clicking or, more
@@ -3220,8 +4573,8 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// Container applications that do not support general in-place activation can still use the hwndParent and lprcPosRect
-			/// parameters to support in-place playback of multimedia files. Containers must pass valid hwndParent and lprcPosRect parameters
-			/// to <c>IOleObject::DoVerb</c>.
+			/// parameters to support in-place playback of multimedia files. Containers must pass valid hwndParent and lprcPosRect
+			/// parameters to <c>IOleObject::DoVerb</c>.
 			/// </para>
 			/// <para>
 			/// Some code samples pass a lindex value of -1 instead of zero. The value -1 works but should be avoided in favor of zero. The
@@ -3231,17 +4584,17 @@ namespace Vanara.PInvoke
 			/// <para>Notes to Implementers</para>
 			/// <para>
 			/// In addition to the above verbs, an object can define in its OLEVERB structure additional verbs that are specific to itself.
-			/// Positive numbers designate these object-specific verbs. An object should treat any unknown positive verb number as if it were
-			/// the primary verb and return OLEOBJ_S_INVALIDVERB to the calling function. The object should ignore verbs with negative
+			/// Positive numbers designate these object-specific verbs. An object should treat any unknown positive verb number as if it
+			/// were the primary verb and return OLEOBJ_S_INVALIDVERB to the calling function. The object should ignore verbs with negative
 			/// numbers that it does not recognize and return E_NOTIMPL.
 			/// </para>
 			/// <para>
-			/// If the verb being executed places the object in the running state, you should register the object in the running object table
-			/// (ROT) even if its server application doesn't support linking. Registration is important because the object at some point may
-			/// serve as the source of a link in a container that supports links to embeddings. Registering the object with the ROT enables
-			/// the link client to get a pointer to the object directly, instead of having to go through the object's container. To perform
-			/// the registration, call IOleClientSite::GetMoniker to get the full moniker of the object, call the GetRunningObjectTable
-			/// function to get a pointer to the ROT, and then call IRunningObjectTable::Register.
+			/// If the verb being executed places the object in the running state, you should register the object in the running object
+			/// table (ROT) even if its server application doesn't support linking. Registration is important because the object at some
+			/// point may serve as the source of a link in a container that supports links to embeddings. Registering the object with the
+			/// ROT enables the link client to get a pointer to the object directly, instead of having to go through the object's container.
+			/// To perform the registration, call IOleClientSite::GetMoniker to get the full moniker of the object, call the
+			/// GetRunningObjectTable function to get a pointer to the ROT, and then call IRunningObjectTable::Register.
 			/// </para>
 			/// <para>
 			/// <c>Note</c> When the object leaves the running state, remember to revoke the object's registration with the ROT by calling
@@ -3255,8 +4608,8 @@ namespace Vanara.PInvoke
 			/// process originally obscured it. For more information see <c>SetForegroundWindow</c> and SetActiveWindow.
 			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-doverb HRESULT DoVerb( LONG iVerb, LPMSG lpmsg,
-			// IOleClientSite *pActiveSite, LONG lindex, HWND hwndParent, LPCRECT lprcPosRect );
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-doverb HRESULT DoVerb( LONG iVerb, LPMSG
+			// lpmsg, IOleClientSite *pActiveSite, LONG lindex, HWND hwndParent, LPCRECT lprcPosRect );
 			[PreserveSig]
 			HRESULT DoVerb(int iVerb, in MSG lpmsg, IOleClientSite pActiveSite, [Optional] int lindex, HWND hwndParent, in RECT lprcPosRect);
 
@@ -3264,7 +4617,8 @@ namespace Vanara.PInvoke
 			/// <param name="ppEnumOleVerb">
 			/// Address of IEnumOLEVERB pointer variable that receives the interface pointer to the new enumerator object. Each time an
 			/// object receives a call to IOleObject::EnumVerbs, it must increase the reference count on ppEnumOleVerb. It is the caller's
-			/// responsibility to call IUnknown::Release when it is done with ppEnumOleVerb. If an error occurs, ppEnumOleVerb must be set to NULL.
+			/// responsibility to call IUnknown::Release when it is done with ppEnumOleVerb. If an error occurs, ppEnumOleVerb must be set
+			/// to NULL.
 			/// </param>
 			/// <returns>
 			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
@@ -3318,13 +4672,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// The <c>Update</c> method provides a way for containers to keep data updated in their linked and embedded objects. A link
 			/// object can become out-of-date if the link source has been updated. An embedded object that contains links to other objects
-			/// can also become out of date. An embedded object that does not contain links cannot become out of date because its data is not
-			/// linked to another source.
+			/// can also become out of date. An embedded object that does not contain links cannot become out of date because its data is
+			/// not linked to another source.
 			/// </para>
 			/// <para>Notes to Implementers</para>
 			/// <para>
-			/// When a container calls a link object's <c>IOleObject::Update</c> method, the link object finds the link source and gets a new
-			/// presentation from it. This process may also involve running one or more object applications, which could be time-consuming.
+			/// When a container calls a link object's <c>IOleObject::Update</c> method, the link object finds the link source and gets a
+			/// new presentation from it. This process may also involve running one or more object applications, which could be time-consuming.
 			/// </para>
 			/// <para>
 			/// When a container calls an embedded object's <c>IOleObject::Update</c> method, it is requesting the object to update all link
@@ -3355,8 +4709,8 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// <para>
 			/// The <c>IOleObject::IsUpToDate</c> method provides a way for containers to check recursively whether all objects are up to
-			/// date. That is, when the container calls this method on the first object, the object in turn calls it for all its own objects,
-			/// and they in turn for all of theirs, until all objects have been checked.
+			/// date. That is, when the container calls this method on the first object, the object in turn calls it for all its own
+			/// objects, and they in turn for all of theirs, until all objects have been checked.
 			/// </para>
 			/// <para>Notes to Implementers</para>
 			/// <para>
@@ -3394,8 +4748,8 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// <c>IOleObject::GetUserClassID</c> returns the CLSID associated with the object in the registration database. Normally, this
 			/// value is identical to the CLSID stored with the object, which is returned by IPersist::GetClassID. For linked objects, this
-			/// is the CLSID of the last bound link source. If the object is running in an application different from the one in which it was
-			/// created and for the purpose of being edited is emulating a class that the container application recognizes, the CLSID
+			/// is the CLSID of the last bound link source. If the object is running in an application different from the one in which it
+			/// was created and for the purpose of being edited is emulating a class that the container application recognizes, the CLSID
 			/// returned will be that of the class being emulated rather than that of the object's own class.
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleobject-getuserclassid HRESULT GetUserClassID( CLSID
@@ -3448,8 +4802,8 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>Notes to Implementers</para>
 			/// <para>
-			/// You can use the implementation provided by the default handler by returning OLE_S_USEREG as your application's implementation
-			/// of this method. If the user type name is an empty string, the message "Unknown Object" is returned.
+			/// You can use the implementation provided by the default handler by returning OLE_S_USEREG as your application's
+			/// implementation of this method. If the user type name is an empty string, the message "Unknown Object" is returned.
 			/// </para>
 			/// <para>You can call the OLE helper function OleRegGetUserType to return the appropriate user type.</para>
 			/// </remarks>
@@ -3461,10 +4815,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Informs an object of how much display space its container has assigned it.</summary>
 			/// <param name="dwDrawAspect">
-			/// DWORD that describes which form, or "aspect," of an object is to be displayed. The object's container obtains this value from
-			/// the enumeration DVASPECT (refer to the FORMATETC enumeration). The most common aspect is DVASPECT_CONTENT, which specifies a
-			/// full rendering of the object within its container. An object can also be rendered as an icon, a thumbnail version for display
-			/// in a browsing tool, or a print version, which displays the object as it would be rendered using the <c>File Print</c> command.
+			/// DWORD that describes which form, or "aspect," of an object is to be displayed. The object's container obtains this value
+			/// from the enumeration DVASPECT (refer to the FORMATETC enumeration). The most common aspect is DVASPECT_CONTENT, which
+			/// specifies a full rendering of the object within its container. An object can also be rendered as an icon, a thumbnail
+			/// version for display in a browsing tool, or a print version, which displays the object as it would be rendered using the
+			/// <c>File Print</c> command.
 			/// </param>
 			/// <param name="psizel">Pointer to the size limit for the object.</param>
 			/// <returns>
@@ -3493,17 +4848,17 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// Whenever possible, a container seeks to display an object at its finest resolution, sometimes called the object's native
 			/// size. All objects, however, have a default display size specified by their applications, and in the absence of other
-			/// constraints, this is the size they will use to display themselves. Since an object knows its optimum display size better than
-			/// does its container, the latter normally requests that size from a running object by calling <c>IOleObject::SetExtent</c>.
-			/// Only in cases where the container cannot accommodate the value returned by the object does it override the object's
-			/// preference by calling <c>IOleObject::SetExtent</c>.
+			/// constraints, this is the size they will use to display themselves. Since an object knows its optimum display size better
+			/// than does its container, the latter normally requests that size from a running object by calling
+			/// <c>IOleObject::SetExtent</c>. Only in cases where the container cannot accommodate the value returned by the object does it
+			/// override the object's preference by calling <c>IOleObject::SetExtent</c>.
 			/// </para>
 			/// <para>Notes to Callers</para>
 			/// <para>
 			/// You can call <c>IOleObject::SetExtent</c> on an object only when the object is running. If a container resizes an object
 			/// while an object is not running, the container should keep track of the object's new size but defer calling
-			/// <c>IOleObject::SetExtent</c> until a user activates the object. If the OLEMISC_RECOMPOSEONRESIZE bit is set on an object, its
-			/// container should force the object to run before calling <c>IOleObject::SetExtent</c>.
+			/// <c>IOleObject::SetExtent</c> until a user activates the object. If the OLEMISC_RECOMPOSEONRESIZE bit is set on an object,
+			/// its container should force the object to run before calling <c>IOleObject::SetExtent</c>.
 			/// </para>
 			/// <para>
 			/// As noted above, a container may want to delegate responsibility for setting the size of an object's display site to the
@@ -3548,9 +4903,9 @@ namespace Vanara.PInvoke
 			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// A container calls <c>IOleObject::GetExtent</c> on a running object to retrieve its current display size. If the container can
-			/// accommodate that size, it will normally do so because the object, after all, knows what size it should be better than the
-			/// container does. A container normally makes this call as part of initializing an object.
+			/// A container calls <c>IOleObject::GetExtent</c> on a running object to retrieve its current display size. If the container
+			/// can accommodate that size, it will normally do so because the object, after all, knows what size it should be better than
+			/// the container does. A container normally makes this call as part of initializing an object.
 			/// </para>
 			/// <para>
 			/// The display size returned by <c>IOleObject::GetExtent</c> may differ from the size last set by IOleObject::SetExtent because
@@ -3579,8 +4934,8 @@ namespace Vanara.PInvoke
 			HRESULT GetExtent(DVASPECT dwDrawAspect, out SIZE psizel);
 
 			/// <summary>
-			/// Establishes an advisory connection between a compound document object and the calling object's advise sink, through which the
-			/// calling object receives notification when the compound document object is renamed, saved, or closed.
+			/// Establishes an advisory connection between a compound document object and the calling object's advise sink, through which
+			/// the calling object receives notification when the compound document object is renamed, saved, or closed.
 			/// </summary>
 			/// <param name="pAdvSink">Pointer to the IAdviseSink interface on the advise sink of the calling object.</param>
 			/// <param name="pdwConnection">Pointer to a token that can be passed to IOleObject::Unadvise to delete the advisory connection.</param>
@@ -3606,15 +4961,15 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// If container and object successfully establish an advisory connection, the object receiving the call returns a nonzero value
-			/// through pdwConnection to the container. If the attempt to establish an advisory connection fails, the object returns zero. To
-			/// delete an advisory connection, the container calls IOleObject::Unadvise and passes this nonzero token back to the object.
+			/// through pdwConnection to the container. If the attempt to establish an advisory connection fails, the object returns zero.
+			/// To delete an advisory connection, the container calls IOleObject::Unadvise and passes this nonzero token back to the object.
 			/// </para>
 			/// <para>
 			/// An object can delegate the job of managing and tracking advisory events to an OLE advise holder, to which you obtain a
 			/// pointer by calling CreateOleAdviseHolder. The returned IOleAdviseHolder interface has three methods for sending advisory
-			/// notifications, as well as IOleAdviseHolder::Advise, IOleAdviseHolder::Unadvise, and IOleAdviseHolder::EnumAdvise methods that
-			/// are identical to those for IOleObject. Calls to <c>IOleObject::Advise</c>, IOleObject::Unadvise, or IOleObject::EnumAdvise
-			/// are delegated to corresponding methods in the advise holder.
+			/// notifications, as well as IOleAdviseHolder::Advise, IOleAdviseHolder::Unadvise, and IOleAdviseHolder::EnumAdvise methods
+			/// that are identical to those for IOleObject. Calls to <c>IOleObject::Advise</c>, IOleObject::Unadvise, or
+			/// IOleObject::EnumAdvise are delegated to corresponding methods in the advise holder.
 			/// </para>
 			/// <para>To destroy the advise holder, simply call IUnknown::Release on the IOleAdviseHolder interface.</para>
 			/// </remarks>
@@ -3997,28 +5352,28 @@ namespace Vanara.PInvoke
 			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// In general, the maximum prefix of pszDisplayName that is syntactically valid and that represents an object should be consumed
-			/// by this method and converted to a moniker.
+			/// In general, the maximum prefix of pszDisplayName that is syntactically valid and that represents an object should be
+			/// consumed by this method and converted to a moniker.
 			/// </para>
 			/// <para>
-			/// Typically, this method is called by MkParseDisplayName or MkParseDisplayNameEx. In the initial step of the parsing operation,
-			/// these functions can retrieve the IParseDisplayName interface directly from an instance of a class identified with either the
-			/// "@ProgID" or "ProgID" notation. Subsequent parsing steps can query for the interface on an intermediate object.
+			/// Typically, this method is called by MkParseDisplayName or MkParseDisplayNameEx. In the initial step of the parsing
+			/// operation, these functions can retrieve the IParseDisplayName interface directly from an instance of a class identified with
+			/// either the "@ProgID" or "ProgID" notation. Subsequent parsing steps can query for the interface on an intermediate object.
 			/// </para>
 			/// <para>
-			/// The main loops of MkParseDisplayName and MkParseDisplayNameEx find the next moniker piece by calling the equivalent method in
-			/// the IMoniker interface, that is, IMoniker::ParseDisplayName, on the moniker that it currently holds. In this call to
+			/// The main loops of MkParseDisplayName and MkParseDisplayNameEx find the next moniker piece by calling the equivalent method
+			/// in the IMoniker interface, that is, IMoniker::ParseDisplayName, on the moniker that it currently holds. In this call to
 			/// <c>IMoniker::ParseDisplayName</c>, the <c>MkParseDisplayName</c> or <c>MkParseDisplayNameEx</c> function passes <c>NULL</c>
 			/// in the pmkToLeft parameter. If the moniker currently held is a generic composite, the call to
 			/// <c>IMoniker::ParseDisplayName</c> is forwarded by that composite onto its last piece, passing the prefix of the composite to
 			/// the left of the piece in pmkToLeft.
 			/// </para>
 			/// <para>
-			/// Some moniker classes will be able to handle this parsing internally to themselves because they are designed to designate only
-			/// certain kinds of objects. Others will need to bind to the object that they designate to accomplish the parsing process. As is
-			/// usual, these objects should not be released by IMoniker::ParseDisplayName but instead should be transferred to the bind
-			/// context via IBindCtx::RegisterObjectBound or IBindCtx::GetRunningObjectTable followed by IRunningObjectTable::Register for
-			/// release at a later time.
+			/// Some moniker classes will be able to handle this parsing internally to themselves because they are designed to designate
+			/// only certain kinds of objects. Others will need to bind to the object that they designate to accomplish the parsing process.
+			/// As is usual, these objects should not be released by IMoniker::ParseDisplayName but instead should be transferred to the
+			/// bind context via IBindCtx::RegisterObjectBound or IBindCtx::GetRunningObjectTable followed by IRunningObjectTable::Register
+			/// for release at a later time.
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iparsedisplayname-parsedisplayname HRESULT
@@ -4029,469 +5384,957 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// Provides the CLSID of an object that can be stored persistently in the system. Allows the object to specify which object handler
-		/// to use in the client process, as it is used in the default implementation of marshaling.
+		/// Enables an object to display itself directly without passing a data object to the caller. In addition, this interface can create
+		/// and manage a connection with an advise sink so the caller can be notified of changes in the view object.
 		/// </para>
 		/// <para>
-		/// <c>IPersist</c> is the base interface for three other interfaces: IPersistStorage, IPersistStream, and IPersistFile. Each of
-		/// these interfaces, therefore, includes the GetClassID method, and the appropriate one of these three interfaces is implemented on
-		/// objects that can be serialized to a storage, a stream, or a file. The methods of these interfaces allow the state of these
-		/// objects to be saved for later instantiations, and load the object using the saved state. Typically, the persistence interfaces
-		/// are implemented by an embedded or linked object, and are called by the container application or the default object handler.
+		/// The caller can request specific representations and specific target devices. For example, a caller can ask for either an
+		/// object's content or an iconic representation. Also, the caller can ask the object to compose a picture for a target device that
+		/// is independent of the drawing device context. As a result, the picture can be composed for one target device and drawn on
+		/// another device context. For example, to provide a print preview operation, you can compose the drawing for a printer target
+		/// device but actually draw the representation on the display.
+		/// </para>
+		/// <para>
+		/// The <c>IViewObject</c> interface is similar to IDataObject; except that <c>IViewObject</c> places a representation of the data
+		/// onto a device context while <c>IDataObject</c> places the representation onto a transfer medium.
+		/// </para>
+		/// <para>
+		/// Unlike most other interfaces, <c>IViewObject</c> cannot be marshaled to another process. This is because device contexts are
+		/// only effective in the context of one process.
 		/// </para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ipersist
-		[PInvokeData("objidl.h", MSDNShortId = "932eb0e2-35a6-482e-9138-00cff30508a9")]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0000010c-0000-0000-C000-000000000046")]
-		public interface IPersist
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-iviewobject
+		[PInvokeData("oleidl.h", MSDNShortId = "NN:oleidl.IViewObject")]
+		[ComImport, Guid("0000010d-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IViewObject
 		{
-			/// <summary>Retrieves the class identifier (CLSID) of the object.</summary>
-			/// <returns>
-			/// <para>
-			/// A pointer to the location that receives the CLSID on return. The CLSID is a globally unique identifier (GUID) that uniquely
-			/// represents an object class that defines the code that can manipulate the object's data.
-			/// </para>
-			/// <para>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</para>
-			/// </returns>
-			/// <remarks>
-			/// <para>
-			/// The <c>GetClassID</c> method retrieves the class identifier (CLSID) for an object, used in later operations to load
-			/// object-specific code into the caller's context.
-			/// </para>
-			/// <para>Notes to Callers</para>
-			/// <para>
-			/// A container application might call this method to retrieve the original CLSID of an object that it is treating as a different
-			/// class. Such a call would be necessary if a user performed an editing operation that required the object to be saved. If the
-			/// container were to save it using the treat-as CLSID, the original application would no longer be able to edit the object.
-			/// Typically, in this case, the container calls the OleSave helper function, which performs all the necessary steps. For this
-			/// reason, most container applications have no need to call this method directly.
-			/// </para>
-			/// <para>
-			/// The exception would be a container that provides an object handler for certain objects. In particular, a container
-			/// application should not get an object's CLSID and then use it to retrieve class specific information from the registry.
-			/// Instead, the container should use IOleObject and IDataObject interfaces to retrieve such class-specific information directly
-			/// from the object.
-			/// </para>
-			/// <para>Notes to Implementers</para>
-			/// <para>
-			/// Typically, implementations of this method simply supply a constant CLSID for an object. If, however, the object's
-			/// <c>TreatAs</c> registry key has been set by an application that supports emulation (and so is treating the object as one of a
-			/// different class), a call to <c>GetClassID</c> must supply the CLSID specified in the <c>TreatAs</c> key. For more information
-			/// on emulation, see CoTreatAsClass.
-			/// </para>
-			/// <para>
-			/// When an object is in the running state, the default handler calls an implementation of <c>GetClassID</c> that delegates the
-			/// call to the implementation in the object. When the object is not running, the default handler instead calls the ReadClassStg
-			/// function to read the CLSID that is saved in the object's storage.
-			/// </para>
-			/// <para>
-			/// If you are writing a custom object handler for your object, you might want to simply delegate this method to the default
-			/// handler implementation (see OleCreateDefaultHandler).
-			/// </para>
-			/// <para>URL Moniker Notes</para>
-			/// <para>This method returns CLSID_StdURLMoniker.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersist-getclassid HRESULT GetClassID( CLSID *pClassID );
-			Guid GetClassID();
-		}
-
-		/// <summary>Enables the saving and loading of objects that use a simple serial stream for their storage needs.</summary>
-		/// <remarks>
-		/// <para>
-		/// One way in which this interface is used is to support OLE moniker implementations. Each of the OLE-provided moniker interfaces
-		/// provides an <c>IPersistStream</c> implementation through which the moniker saves or loads itself. An instance of the OLE generic
-		/// composite moniker class calls the <c>IPersistStream</c> methods of its component monikers to load or save the components in the
-		/// proper sequence in a single stream.
-		/// </para>
-		/// <para>IPersistStream URL Moniker Implementation</para>
-		/// <para>
-		/// The URL moniker implementation of <c>IPersistStream</c> is found on an URL moniker object, which supports IUnknown,
-		/// <c>IAsyncMoniker</c>, and IMoniker. The <c>IMoniker</c> interface inherits its definition from <c>IPersistStream</c> and thus,
-		/// the URL moniker also provides an implementation of <c>IPersistStream</c> as part of its implementation of <c>IMoniker</c>.
-		/// </para>
-		/// <para>
-		/// The IAsyncMoniker interface on an URL moniker is simply IUnknown (there are no additional methods); it is used to allow clients
-		/// to determine if a moniker supports asynchronous binding. To get a pointer to the IMoniker interface on this object, call the
-		/// <c>CreateURLMonikerEx</c> function. Then, to get a pointer to <c>IPersistStream</c>, call the QueryInterface method.
-		/// </para>
-		/// <para>
-		/// <c>IPersistStream</c>, in addition to inheriting its definition from IUnknown, also inherits the single method of IPersist, GetClassID.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ipersiststream
-		[PInvokeData("objidl.h", MSDNShortId = "97ea64ee-d950-4872-add6-1f532a6eb33f")]
-		[ComImport, Guid("00000109-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IPersistStream : IPersist
-		{
-			/// <summary>Retrieves the class identifier (CLSID) of the object.</summary>
-			/// <returns>
-			/// <para>
-			/// A pointer to the location that receives the CLSID on return. The CLSID is a globally unique identifier (GUID) that uniquely
-			/// represents an object class that defines the code that can manipulate the object's data.
-			/// </para>
-			/// <para>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</para>
-			/// </returns>
-			/// <remarks>
-			/// <para>
-			/// The <c>GetClassID</c> method retrieves the class identifier (CLSID) for an object, used in later operations to load
-			/// object-specific code into the caller's context.
-			/// </para>
-			/// <para>Notes to Callers</para>
-			/// <para>
-			/// A container application might call this method to retrieve the original CLSID of an object that it is treating as a different
-			/// class. Such a call would be necessary if a user performed an editing operation that required the object to be saved. If the
-			/// container were to save it using the treat-as CLSID, the original application would no longer be able to edit the object.
-			/// Typically, in this case, the container calls the OleSave helper function, which performs all the necessary steps. For this
-			/// reason, most container applications have no need to call this method directly.
-			/// </para>
-			/// <para>
-			/// The exception would be a container that provides an object handler for certain objects. In particular, a container
-			/// application should not get an object's CLSID and then use it to retrieve class specific information from the registry.
-			/// Instead, the container should use IOleObject and IDataObject interfaces to retrieve such class-specific information directly
-			/// from the object.
-			/// </para>
-			/// <para>Notes to Implementers</para>
-			/// <para>
-			/// Typically, implementations of this method simply supply a constant CLSID for an object. If, however, the object's
-			/// <c>TreatAs</c> registry key has been set by an application that supports emulation (and so is treating the object as one of a
-			/// different class), a call to <c>GetClassID</c> must supply the CLSID specified in the <c>TreatAs</c> key. For more information
-			/// on emulation, see CoTreatAsClass.
-			/// </para>
-			/// <para>
-			/// When an object is in the running state, the default handler calls an implementation of <c>GetClassID</c> that delegates the
-			/// call to the implementation in the object. When the object is not running, the default handler instead calls the ReadClassStg
-			/// function to read the CLSID that is saved in the object's storage.
-			/// </para>
-			/// <para>
-			/// If you are writing a custom object handler for your object, you might want to simply delegate this method to the default
-			/// handler implementation (see OleCreateDefaultHandler).
-			/// </para>
-			/// <para>URL Moniker Notes</para>
-			/// <para>This method returns CLSID_StdURLMoniker.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersist-getclassid HRESULT GetClassID( CLSID *pClassID );
-			new Guid GetClassID();
-
-			/// <summary>Determines whether an object has changed since it was last saved to its stream.</summary>
-			/// <returns>This method returns S_OK to indicate that the object has changed. Otherwise, it returns S_FALSE.</returns>
-			/// <remarks>
-			/// <para>
-			/// Use this method to determine whether an object should be saved before closing it. The dirty flag for an object is
-			/// conditionally cleared in the IPersistStream::Save method.
-			/// </para>
-			/// <para>Notes to Callers</para>
-			/// <para>
-			/// You should treat any error return codes as an indication that the object has changed. Unless this method explicitly returns
-			/// S_FALSE, assume that the object must be saved.
-			/// </para>
-			/// <para>
-			/// Note that the OLE-provided implementations of the <c>IPersistStream::IsDirty</c> method in the OLE-provided moniker
-			/// interfaces always return S_FALSE because their internal state never changes.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersiststream-isdirty HRESULT IsDirty( );
-			[PreserveSig]
-			HRESULT IsDirty();
-
-			/// <summary>Initializes an object from the stream where it was saved previously.</summary>
-			/// <param name="pstm">The PSTM.</param>
-			/// <remarks>
-			/// <para>
-			/// This method loads an object from its associated stream. The seek pointer is set as it was in the most recent
-			/// IPersistStream::Save method. This method can seek and read from the stream, but cannot write to it.
-			/// </para>
-			/// <para>Notes to Callers</para>
-			/// <para>
-			/// Rather than calling <c>IPersistStream::Load</c> directly, you typically call the OleLoadFromStream function does the following:
-			/// </para>
-			/// <list type="number">
-			/// <item>
-			/// <term>Calls the ReadClassStm function to get the class identifier from the stream.</term>
-			/// </item>
-			/// <item>
-			/// <term>Calls the CoCreateInstance function to create an instance of the object.</term>
-			/// </item>
-			/// <item>
-			/// <term>Queries the instance for IPersistStream.</term>
-			/// </item>
-			/// <item>
-			/// <term>Calls <c>IPersistStream::Load</c>.</term>
-			/// </item>
-			/// </list>
-			/// <para>
-			/// The OleLoadFromStream function assumes that objects are stored in the stream with a class identifier followed by the object
-			/// data. This storage pattern is used by the generic, composite-moniker implementation provided by OLE.
-			/// </para>
-			/// <para>If the objects are not stored using this pattern, you must call the methods separately yourself.</para>
-			/// <para>URL Moniker Notes</para>
-			/// <para>
-			/// Initializes an URL moniker from data within a stream, usually stored there previously using its IPersistStream::Save (using
-			/// OleSaveToStream). The binary format of the URL moniker is its URL string in Unicode (may be a full or partial URL string, see
-			/// CreateURLMonikerEx for details). This is represented as a <c>ULONG</c> count of characters followed by that many Unicode characters.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersiststream-load HRESULT Load( IStream *pStm );
-			void Load([In, MarshalAs(UnmanagedType.Interface)] IStream pstm);
-
-			/// <summary>Saves an object to the specified stream.</summary>
-			/// <param name="pstm">The PSTM.</param>
-			/// <param name="fClearDirty">
-			/// Indicates whether to clear the dirty flag after the save is complete. If <c>TRUE</c>, the flag should be cleared. If
-			/// <c>FALSE</c>, the flag should be left unchanged.
+			/// <summary>Draws a representation of an object onto the specified device context.</summary>
+			/// <param name="dwDrawAspect">
+			/// Specifies the aspect to be drawn, that is, how the object is to be represented. Representations include content, an icon, a
+			/// thumbnail, or a printed document. Valid values are taken from the enumerations DVASPECT and DVASPECT2. Note that newer
+			/// objects and containers that support optimized drawing interfaces support the <c>DVASPECT2</c> enumeration values. Older
+			/// objects and containers that do not support optimized drawing interfaces may not support <c>DVASPECT2</c>. Windowless objects
+			/// allow only <c>DVASPECT</c> _CONTENT, <c>DVASPECT</c> _OPAQUE, and <c>DVASPECT</c> _TRANSPARENT.
 			/// </param>
-			/// <remarks>
+			/// <param name="lindex">
+			/// Portion of the object that is of interest for the draw operation. Its interpretation varies depending on the value in the
+			/// dwAspect parameter. See the DVASPECT enumeration for more information.
+			/// </param>
+			/// <param name="pvAspect">
+			/// Pointer to additional information in a DVASPECTINFO structure that enables drawing optimizations depending on the aspect
+			/// specified. Note that newer objects and containers that support optimized drawing interfaces support this parameter as well.
+			/// Older objects and containers that do not support optimized drawing interfaces always specify <c>NULL</c> for this parameter.
+			/// </param>
+			/// <param name="ptd">
+			/// Pointer to the DVTARGETDEVICE structure that describes the device for which the object is to be rendered. If <c>NULL</c>,
+			/// the view should be rendered for the default target device (typically the display). A value other than <c>NULL</c> is
+			/// interpreted in conjunction with hdcTargetDev and hdcDraw. For example, if hdcDraw specifies a printer as the device context,
+			/// the ptd parameter points to a structure describing that printer device. The data may actually be printed if hdcTargetDev is
+			/// a valid value or it may be displayed in print preview mode if hdcTargetDev is <c>NULL</c>.
+			/// </param>
+			/// <param name="hdcTargetDev">
+			/// Information context for the target device indicated by the ptd parameter from which the object can extract device metrics
+			/// and test the device's capabilities. If ptd is <c>NULL</c>; the object should ignore the value in the hdcTargetDev parameter.
+			/// </param>
+			/// <param name="hdcDraw">
+			/// Device context on which to draw. For a windowless object, the hdcDraw parameter should be in MM_TEXT mapping mode with its
+			/// logical coordinates matching the client coordinates of the containing window. For a windowless object, the device context
+			/// should be in the same state as the one normally passed by a WM_PAINT message.
+			/// </param>
+			/// <param name="lprcBounds">
+			/// Pointer to a RECTL structure specifying the rectangle on hdcDraw and in which the object should be drawn. This parameter
+			/// controls the positioning and stretching of the object. This parameter should be <c>NULL</c> to draw a windowless in-place
+			/// active object. In every other situation, <c>NULL</c> is not a legal value and should result in an E_INVALIDARG error code.
+			/// If the container passes a non- <c>NULL</c> value to a windowless object, the object should render the requested aspect into
+			/// the specified device context and rectangle. A container can request this from a windowless object to render a second,
+			/// non-active view of the object or to print the object.
+			/// </param>
+			/// <param name="lprcWBounds">
 			/// <para>
-			/// <c>IPersistStream::Save</c> saves an object into the specified stream and indicates whether the object should reset its dirty flag.
+			/// If hdcDraw is a metafile device context, pointer to a RECTL structure specifying the bounding rectangle in the underlying
+			/// metafile. The rectangle structure contains the window extent and window origin. These values are useful for drawing
+			/// metafiles. The rectangle indicated by lprcBounds is nested inside this lprcWBounds rectangle; they are in the same
+			/// coordinate space.
 			/// </para>
+			/// <para>If hdcDraw is not a metafile device context; lprcWBounds will be <c>NULL</c>.</para>
+			/// </param>
+			/// <param name="pfnContinue">
 			/// <para>
-			/// The seek pointer is positioned at the location in the stream at which the object should begin writing its data. The object
-			/// calls the ISequentialStream::Write method to write its data.
+			/// Pointer to a callback function that the view object should call periodically during a lengthy drawing operation to determine
+			/// whether the operation should continue or be canceled. This function returns <c>TRUE</c> to continue drawing. It returns
+			/// <c>FALSE</c> to stop the drawing in which case <c>IViewObject::Draw</c> returns DRAW_E_ABORT.
 			/// </para>
-			/// <para>
-			/// On exit, the seek pointer must be positioned immediately past the object data. The position of the seek pointer is undefined
-			/// if an error returns.
-			/// </para>
-			/// <para>Notes to Callers</para>
-			/// <para>
-			/// Rather than calling <c>IPersistStream::Save</c> directly, you typically call the OleSaveToStream helper function which does
-			/// the following:
-			/// </para>
-			/// <list type="number">
+			/// <para>dwContinue</para>
+			/// </param>
+			/// <param name="dwContinue">
+			/// Value to pass as a parameter to the function pointed to by the pfnContinue parameter. Typically, dwContinue is a pointer to
+			/// an application-defined structure needed inside the callback function.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
 			/// <item>
-			/// <term>Calls GetClassID to get the object's CLSID.</term>
+			/// <term>OLE_E_BLANK</term>
+			/// <term>No data to draw from.</term>
 			/// </item>
 			/// <item>
-			/// <term>Calls the WriteClassStm function to write the object's CLSID to the stream.</term>
+			/// <term>DRAW_E_ABORT</term>
+			/// <term>Draw operation aborted.</term>
 			/// </item>
 			/// <item>
-			/// <term>Calls <c>IPersistStream::Save</c>.</term>
+			/// <term>VIEW_E_DRAW</term>
+			/// <term>Error in drawing.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_LINDEX</term>
+			/// <term>Invalid value for lindex; currently only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_DVASPECT</term>
+			/// <term>Invalid value for dwAspect.</term>
+			/// </item>
+			/// <item>
+			/// <term>OLE_E_INVALIDRECT</term>
+			/// <term>Invalid rectangle.</term>
 			/// </item>
 			/// </list>
-			/// <para>If you call these methods directly, you can write other data into the stream after the CLSID before calling <c>IPersistStream::Save</c>.</para>
-			/// <para>The OLE-provided implementation of IPersistStream follows this same pattern.</para>
-			/// <para>Notes to Implementers</para>
-			/// <para>
-			/// The <c>IPersistStream::Save</c> method does not write the CLSID to the stream. The caller is responsible for writing the CLSID.
-			/// </para>
-			/// <para>
-			/// The <c>IPersistStream::Save</c> method can read from, write to, and seek in the stream; but it must not seek to a location in
-			/// the stream before that of the seek pointer on entry.
-			/// </para>
-			/// <para>URL Moniker Notes</para>
-			/// <para>
-			/// Saves an URL moniker to a stream. The binary format of URL moniker is its URL string in Unicode (may be a full or partial URL
-			/// string, see CreateURLMonikerEx for details). This is represented as a <c>ULONG</c> count of characters followed by that many
-			/// Unicode characters.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersiststream-save HRESULT Save( IStream *pStm, BOOL
-			// fClearDirty );
-			void Save([In, MarshalAs(UnmanagedType.Interface)] IStream pstm, [In, MarshalAs(UnmanagedType.Bool)] bool fClearDirty);
-
-			/// <summary>Retrieves the size of the stream needed to save the object.</summary>
-			/// <returns>The size in bytes of the stream needed to save this object, in bytes.</returns>
+			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// This method returns the size needed to save an object. You can call this method to determine the size and set the necessary
-			/// buffers before calling the IPersistStream::Save method.
+			/// A container application issues a call to <c>IViewObject::Draw</c> to create a representation of a contained object. This
+			/// method draws the specified piece (lindex) of the specified view (dwAspect and pvAspect) on the specified device context
+			/// (hdcDraw). Formatting, fonts, and other rendering decisions are made on the basis of the target device specified by the ptd parameter.
 			/// </para>
-			/// <para>Notes to Implementers</para>
 			/// <para>
-			/// The <c>GetSizeMax</c> implementation should return a conservative estimate of the necessary size because the caller might
-			/// call the IPersistStream::Save method with a non-growable stream.
+			/// There is a relationship between the dwDrawAspect value and the lprcbounds value. The lprcbounds value specifies the
+			/// rectangle on hdcDraw into which the drawing is to be mapped. For DVASPECT_THUMBNAIL, <c>DVASPECT</c> _ICON, and
+			/// <c>DVASPECT</c> _SMALLICON, the object draws whatever it wants to draw, and it maps it into the space given in the best way.
+			/// Some objects might scale to fit while some might scale to fit but preserve the aspect ratio. In addition, some might scale
+			/// so the drawing appears at full width, but the bottom is cropped. The container can suggest a size via IOleObject::SetExtent,
+			/// but it has no control over the rendering size. In the case of <c>DVASPECT</c> _CONTENT, the <c>IViewObject::Draw</c>
+			/// implementation should either use the extents given by <c>IOleObject::SetExtent</c> or use the bounding rectangle given in
+			/// the lprcBounds parameter.
 			/// </para>
-			/// <para>URL Moniker Notes</para>
 			/// <para>
-			/// This method retrieves the maximum number of bytes in the stream that will be required by a subsequent call to
-			/// IPersistStream::Save. This value is sizeof(ULONG)==4 plus sizeof(WCHAR)*n where n is the length of the full or partial URL
-			/// string, including the NULL terminator.
+			/// For newer objects that support optimized drawing techniques and for windowless objects, this method should be used as follows:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>New drawing aspects are supported in dwAspect as defined in DVASPECT2.</term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// The pvAspect parameter can be used to pass additional information allowing drawing optimizations through the DVASPECTINFO structure.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// The <c>IViewObject::Draw</c> method can be called to redraw a windowless in-place active object by setting the lrpcBounds
+			/// parameter to <c>NULL</c>. In every other situation, <c>NULL</c> is an illegal value and should result in an E_INVALIDARG
+			/// error code. A windowless object uses the rectangle passed by the activation verb or calls IOleInPlaceObject::SetObjectRects
+			/// instead of using this parameter. If the container passes a non- <c>NULL</c> value to a windowless object, the object should
+			/// render the requested aspect into the specified device context and rectangle. A container can request this from a windowless
+			/// object to render a second, non-active view of the object or to print the object. See the IOleInPlaceSiteWindowless interface
+			/// for more information on drawing windowless objects.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// For windowless objects, the dwAspect parameter only allows the DVASPECT_CONTENT, <c>DVASPECT</c> _OPAQUE, and
+			/// <c>DVASPECT</c> _TRANSPARENT aspects.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// For a windowless object, the hdcDraw parameter should be in MM_TEXT mapping mode with its logical coordinates matching the
+			/// client coordinates of the containing window. For a windowless object, the device context should be in the same state as the
+			/// one normally passed by a WM_PAINT message.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// To maintain compatibility with older objects and containers that do not support drawing optimizations, all objects,
+			/// rectangular or not, are required to maintain an origin and a rectangular extent. This allows the container to still consider
+			/// all its embedded objects as rectangles and to pass them appropriate rendering rectangles in <c>Draw</c>.
+			/// </para>
+			/// <para>
+			/// An object's extent depends on the drawing aspect. For non-rectangular objects, the extent should be the size of a rectangle
+			/// covering the entire aspect. By convention, the origin of an object is the top-left corner of the rectangle of the
+			/// DVASPECT_CONTENT aspect. In other words, the origin always coincides with the top-left corner of the rectangle maintained by
+			/// the object's site, even for a non-rectangular object.
 			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersiststream-getsizemax HRESULT GetSizeMax(
-			// ULARGE_INTEGER *pcbSize );
-			ulong GetSizeMax();
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-draw HRESULT Draw( DWORD dwDrawAspect, LONG
+			// lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hdcTargetDev, HDC hdcDraw, LPCRECTL lprcBounds, LPCRECTL lprcWBounds, BOOL(*
+			// )(ULONG_PTR dwContinue) pfnContinue, ULONG_PTR dwContinue );
+			unsafe HRESULT Draw(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
+				[In, Optional] HDC hdcTargetDev, [In] HDC hdcDraw, [In, Optional] PRECT lprcBounds, [In, Optional] PRECT lprcWBounds,
+				[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] Func<IntPtr, BOOL> pfnContinue, [In, Optional] IntPtr dwContinue);
+
+			/// <summary>
+			/// Returns the logical palette that the object will use for drawing in its IViewObject::Draw method with the corresponding parameters.
+			/// </summary>
+			/// <param name="dwDrawAspect">
+			/// Specifies how the object is to be represented. Representations include content, an icon, a thumbnail, or a printed document.
+			/// Valid values are taken from the enumeration DVASPECT. See the <c>DVASPECT</c> enumeration for more information.
+			/// </param>
+			/// <param name="lindex">
+			/// Portion of the object that is of interest for the draw operation. Its interpretation varies with dwDrawAspect. See the
+			/// DVASPECT enumeration for more information.
+			/// </param>
+			/// <param name="pvAspect">
+			/// Pointer to additional information about the view of the object specified in dwDrawAspect. Since none of the current aspects
+			/// support additional information, pvAspect must always be <c>NULL</c>.
+			/// </param>
+			/// <param name="ptd">
+			/// Pointer to the DVTARGETDEVICE structure that describes the device for which the object is to be rendered. If <c>NULL</c>,
+			/// the view should be rendered for the default target device (typically the display). A value other than <c>NULL</c> is
+			/// interpreted in conjunction with hicTargetDev and hdcDraw. For example, if hdcDraw specifies a printer as the device context,
+			/// ptd points to a structure describing that printer device. The data may actually be printed if hicTargetDev is a valid value
+			/// or it may be displayed in print preview mode if hicTargetDev is <c>NULL</c>.
+			/// </param>
+			/// <param name="hicTargetDev">
+			/// Information context for the target device indicated by the ptd parameter from which the object can extract device metrics
+			/// and test the device's capabilities. If ptd is <c>NULL</c>, the object should ignore the hicTargetDev parameter.
+			/// </param>
+			/// <param name="ppColorSet">
+			/// Address of LOGPALETTE pointer variable that receives a pointer to the LOGPALETTE structure. The LOGPALETTE structure
+			/// contains the set of colors that would be used if IViewObject::Draw were called with the same parameters for dwAspect,
+			/// lindex, pvAspect, ptd, and hicTargetDev. If ppColorSet is <c>NULL</c>, the object does not use a palette.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_FALSE</term>
+			/// <term>Set of colors is empty or the object will not give out the information.</term>
+			/// </item>
+			/// <item>
+			/// <term>OLE_E_BLANK</term>
+			/// <term>No presentation data for object.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_LINDEX</term>
+			/// <term>Invalid value for lindex; currently only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_DVASPECT</term>
+			/// <term>Invalid value for dwAspect.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One or more of the supplied parameter values is invalid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>IViewObject::GetColorSet</c> method recursively queries any nested objects and returns a color set that represents
+			/// the union of all colors requested. The color set eventually percolates to the top-level container that owns the window
+			/// frame. This container can call <c>IViewObject::GetColorSet</c> on each of its embedded objects to obtain all the colors
+			/// needed to draw the embedded objects. The container can use the color sets obtained in conjunction with other colors it needs
+			/// for itself to set the overall color palette.
+			/// </para>
+			/// <para>
+			/// The OLE-provided implementation of <c>IViewObject::GetColorSet</c> looks at the data it has on hand to draw the picture. If
+			/// CF_DIB is the drawing format, the palette found in the bitmap is used. For a regular bitmap, no color information is
+			/// returned. If the drawing format is a metafile, the object handler enumerates the metafile looking for a CreatePalette
+			/// metafile record. If one is found, the handler uses it as the color set.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-getcolorset HRESULT GetColorSet( DWORD
+			// dwDrawAspect, LONG lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hicTargetDev, LOGPALETTE **ppColorSet );
+			unsafe HRESULT GetColorSet(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
+				[In, Optional] HDC hicTargetDev, out LOGPALETTE ppColorSet);
+
+			/// <summary>
+			/// Freezes the drawn representation of an object so that it will not change until the IViewObject::Unfreeze method is called.
+			/// The most common use of this method is for banded printing.
+			/// </summary>
+			/// <param name="dwDrawAspect">
+			/// Specifies how the object is to be represented. Representations include content, an icon, a thumbnail, or a printed document.
+			/// Valid values are taken from the enumeration DVASPECT. See the <c>DVASPECT</c> enumeration for more information.
+			/// </param>
+			/// <param name="lindex">
+			/// Portion of the object that is of interest for the draw operation. Its interpretation varies with dwAspect. See the DVASPECT
+			/// enumeration for more information.
+			/// </param>
+			/// <param name="pvAspect">
+			/// Pointer to additional information about the view of the object specified in dwAspect. Since none of the current aspects
+			/// support additional information, pvAspect must always be <c>NULL</c>.
+			/// </param>
+			/// <param name="pdwFreeze">
+			/// Pointer to where an identifying DWORD key is returned. This unique key is later used to cancel the freeze by calling
+			/// IViewObject::Unfreeze. This key is an index that the default cache uses to keep track of which object is frozen.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>VIEW_S_ALREADY_FROZEN</term>
+			/// <term>Presentation has already been frozen. The value of pdwFreeze is the identifying key of the already frozen object.</term>
+			/// </item>
+			/// <item>
+			/// <term>OLE_E_BLANK</term>
+			/// <term>Presentation not in cache.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_LINDEX</term>
+			/// <term>Invalid value for lindex; currently; only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_DVASPECT</term>
+			/// <term>Invalid value for dwAspect.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>IViewObject::Freeze</c> method causes the view object to freeze its drawn representation until a subsequent call to
+			/// IViewObject::Unfreeze releases it. After calling <c>IViewObject::Freeze</c>, successive calls to IViewObject::Draw with the
+			/// same parameters produce the same picture until <c>IViewObject::Unfreeze</c> is called.
+			/// </para>
+			/// <para>
+			/// <c>IViewObject::Freeze</c> is not part of the persistent state of the object and does not continue across unloads and
+			/// reloads of the object.
+			/// </para>
+			/// <para>The most common use of this method is for banded printing.</para>
+			/// <para>
+			/// While in a frozen state, view notifications are not sent. Pending view notifications are deferred to the subsequent call to IViewObject::Unfreeze.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-freeze HRESULT Freeze( DWORD dwDrawAspect,
+			// LONG lindex, void *pvAspect, DWORD *pdwFreeze );
+			unsafe HRESULT Freeze(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, out uint pdwFreeze);
+
+			/// <summary>
+			/// Releases a drawing that was previously frozen using IViewObject::Freeze. The most common use of this method is for banded printing.
+			/// </summary>
+			/// <param name="dwFreeze">
+			/// Contains a key previously returned from IViewObject::Freeze that determines which view object to unfreeze.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OLE_E_NOCONNECTION</term>
+			/// <term>Error in the unfreezing process or the object is currently not frozen.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-unfreeze HRESULT Unfreeze( DWORD dwFreeze );
+			HRESULT Unfreeze(uint dwFreeze);
+
+			/// <summary>
+			/// Establishes a connection between the view object and an advise sink so that the advise sink can be notified about changes in
+			/// the object's view.
+			/// </summary>
+			/// <param name="aspects">
+			/// View for which the advisory connection is being set up. Valid values are taken from the enumeration DVASPECT. See the
+			/// <c>DVASPECT</c> enumeration for more information.
+			/// </param>
+			/// <param name="advf">
+			/// <para>
+			/// Contains a group of flags for controlling the advisory connection. Valid values are from the enumeration ADVF. However, only
+			/// some of the possible <c>ADVF</c> values are relevant for this method. The following table briefly describes the relevant
+			/// values. See the <c>ADVF</c> enumeration for a more detailed description.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADVF_ONLYONCE</term>
+			/// <term>Causes the advisory connection to be destroyed after the first notification is sent.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_PRIMEFIRST</term>
+			/// <term>Causes an initial notification to be sent regardless of whether data has changed from its current state.</term>
+			/// </item>
+			/// </list>
+			/// <para><c>Note</c> The ADVF_ONLYONCE and ADVF_PRIMEFIRST can be combined to provide an asynchronous call to IDataObject::GetData.</para>
+			/// </param>
+			/// <param name="pAdvSink">
+			/// Pointer to the IAdviseSink interface on the advisory sink that is to be informed of changes. A <c>NULL</c> value deletes any
+			/// existing advisory connection.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OLE_E_ADVISENOTSUPPORTED</term>
+			/// <term>Advisory notifications are not supported.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_DVASPECT</term>
+			/// <term>Invalid value for dwAspect.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One or more of the supplied values is invalid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// A container application that is requesting a draw operation on a view object can also register with the
+			/// <c>IViewObject::SetAdvise</c> method to be notified when the presentation of the view object changes. To find out about when
+			/// an object's underlying data changes, you must call IDataObject::DAdvise separately.
+			/// </para>
+			/// <para>To remove an existing advisory connection, call the <c>IViewObject::SetAdvise</c> method with pAdvSink set to <c>NULL</c>.</para>
+			/// <para>If the view object changes, a call is made to the appropriate advise sink through its IAdviseSink::OnViewChange method.</para>
+			/// <para>
+			/// At any time, a given view object can support only one advisory connection. Therefore, when <c>IViewObject::SetAdvise</c> is
+			/// called and the view object is already holding on to an advise sink pointer, OLE releases the existing pointer before the new
+			/// one is registered.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-setadvise HRESULT SetAdvise( DWORD aspects,
+			// DWORD advf, IAdviseSink *pAdvSink );
+			HRESULT SetAdvise(DVASPECT aspects, ADVF advf, [In, Optional] IAdviseSink pAdvSink);
+
+			/// <summary>Retrieves the advisory connection on the object that was used in the most recent call to IViewObject::SetAdvise.</summary>
+			/// <param name="pAspects">
+			/// Pointer to where the dwAspect parameter from the previous IViewObject::SetAdvise call is returned. If this pointer is
+			/// <c>NULL</c>, the caller does not permit this value to be returned.
+			/// </param>
+			/// <param name="pAdvf">
+			/// Pointer to where the advf parameter from the previous IViewObject::SetAdvise call is returned. If this pointer is
+			/// <c>NULL</c>, the caller does not permit this value to be returned.
+			/// </param>
+			/// <param name="ppAdvSink">
+			/// Address of IAdviseSink pointer variable that receives the interface pointer to the advise sink. The connection to this
+			/// advise sink must have been established with a previous IViewObject::SetAdvise call, which provides the pAdvSink parameter.
+			/// If ppvAdvSink is <c>NULL</c>, there is no established advisory connection.
+			/// </param>
+			/// <returns>This method returns S_OK on success.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-getadvise HRESULT GetAdvise( DWORD *pAspects,
+			// DWORD *pAdvf, IAdviseSink **ppAdvSink );
+			unsafe HRESULT GetAdvise([Out, Optional] DVASPECT* pAspects, [Out, Optional] ADVF* pAdvf, [Out, Optional] IntPtr ppAdvSink);
 		}
 
 		/// <summary>
-		/// <para>A replacement for IPersistStream that adds an initialization method.</para>
 		/// <para>
-		/// This interface is not derived from IPersistStream; it is mutually exclusive with <c>IPersistStream</c>. An object chooses to
-		/// support only one of the two interfaces, based on whether it requires the InitNew method.
+		/// An extension to the IViewObject interface which returns the size of the drawing for a given view of an object. You can prevent
+		/// the object from being run if it isn't already running by calling this method instead of IOleObject::GetExtent.
 		/// </para>
+		/// <para>
+		/// Like the IViewObject interface, <c>IViewObject2</c> cannot be marshaled to another process. This is because device contexts are
+		/// only effective in the context of one process.
+		/// </para>
+		/// <para>The OLE-provided default implementation provides the size of the object in the cache.</para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nn-ocidl-ipersiststreaminit
-		[PInvokeData("ocidl.h", MSDNShortId = "49c413b3-3523-4602-9ec1-19f4e0fe5651")]
-		[ComImport, Guid("7FD52380-4E07-101B-AE2D-08002B2EC713"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IPersistStreamInit : IPersist
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-iviewobject2
+		[PInvokeData("oleidl.h", MSDNShortId = "NN:oleidl.IViewObject2")]
+		[ComImport, Guid("00000127-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IViewObject2 : IViewObject
 		{
-			/// <summary>Retrieves the class identifier (CLSID) of the object.</summary>
-			/// <returns>
+			/// <summary>Draws a representation of an object onto the specified device context.</summary>
+			/// <param name="dwDrawAspect">
+			/// Specifies the aspect to be drawn, that is, how the object is to be represented. Representations include content, an icon, a
+			/// thumbnail, or a printed document. Valid values are taken from the enumerations DVASPECT and DVASPECT2. Note that newer
+			/// objects and containers that support optimized drawing interfaces support the <c>DVASPECT2</c> enumeration values. Older
+			/// objects and containers that do not support optimized drawing interfaces may not support <c>DVASPECT2</c>. Windowless objects
+			/// allow only <c>DVASPECT</c> _CONTENT, <c>DVASPECT</c> _OPAQUE, and <c>DVASPECT</c> _TRANSPARENT.
+			/// </param>
+			/// <param name="lindex">
+			/// Portion of the object that is of interest for the draw operation. Its interpretation varies depending on the value in the
+			/// dwAspect parameter. See the DVASPECT enumeration for more information.
+			/// </param>
+			/// <param name="pvAspect">
+			/// Pointer to additional information in a DVASPECTINFO structure that enables drawing optimizations depending on the aspect
+			/// specified. Note that newer objects and containers that support optimized drawing interfaces support this parameter as well.
+			/// Older objects and containers that do not support optimized drawing interfaces always specify <c>NULL</c> for this parameter.
+			/// </param>
+			/// <param name="ptd">
+			/// Pointer to the DVTARGETDEVICE structure that describes the device for which the object is to be rendered. If <c>NULL</c>,
+			/// the view should be rendered for the default target device (typically the display). A value other than <c>NULL</c> is
+			/// interpreted in conjunction with hdcTargetDev and hdcDraw. For example, if hdcDraw specifies a printer as the device context,
+			/// the ptd parameter points to a structure describing that printer device. The data may actually be printed if hdcTargetDev is
+			/// a valid value or it may be displayed in print preview mode if hdcTargetDev is <c>NULL</c>.
+			/// </param>
+			/// <param name="hdcTargetDev">
+			/// Information context for the target device indicated by the ptd parameter from which the object can extract device metrics
+			/// and test the device's capabilities. If ptd is <c>NULL</c>; the object should ignore the value in the hdcTargetDev parameter.
+			/// </param>
+			/// <param name="hdcDraw">
+			/// Device context on which to draw. For a windowless object, the hdcDraw parameter should be in MM_TEXT mapping mode with its
+			/// logical coordinates matching the client coordinates of the containing window. For a windowless object, the device context
+			/// should be in the same state as the one normally passed by a WM_PAINT message.
+			/// </param>
+			/// <param name="lprcBounds">
+			/// Pointer to a RECTL structure specifying the rectangle on hdcDraw and in which the object should be drawn. This parameter
+			/// controls the positioning and stretching of the object. This parameter should be <c>NULL</c> to draw a windowless in-place
+			/// active object. In every other situation, <c>NULL</c> is not a legal value and should result in an E_INVALIDARG error code.
+			/// If the container passes a non- <c>NULL</c> value to a windowless object, the object should render the requested aspect into
+			/// the specified device context and rectangle. A container can request this from a windowless object to render a second,
+			/// non-active view of the object or to print the object.
+			/// </param>
+			/// <param name="lprcWBounds">
 			/// <para>
-			/// A pointer to the location that receives the CLSID on return. The CLSID is a globally unique identifier (GUID) that uniquely
-			/// represents an object class that defines the code that can manipulate the object's data.
+			/// If hdcDraw is a metafile device context, pointer to a RECTL structure specifying the bounding rectangle in the underlying
+			/// metafile. The rectangle structure contains the window extent and window origin. These values are useful for drawing
+			/// metafiles. The rectangle indicated by lprcBounds is nested inside this lprcWBounds rectangle; they are in the same
+			/// coordinate space.
 			/// </para>
-			/// <para>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</para>
+			/// <para>If hdcDraw is not a metafile device context; lprcWBounds will be <c>NULL</c>.</para>
+			/// </param>
+			/// <param name="pfnContinue">
+			/// <para>
+			/// Pointer to a callback function that the view object should call periodically during a lengthy drawing operation to determine
+			/// whether the operation should continue or be canceled. This function returns <c>TRUE</c> to continue drawing. It returns
+			/// <c>FALSE</c> to stop the drawing in which case <c>IViewObject::Draw</c> returns DRAW_E_ABORT.
+			/// </para>
+			/// <para>dwContinue</para>
+			/// </param>
+			/// <param name="dwContinue">
+			/// Value to pass as a parameter to the function pointed to by the pfnContinue parameter. Typically, dwContinue is a pointer to
+			/// an application-defined structure needed inside the callback function.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OLE_E_BLANK</term>
+			/// <term>No data to draw from.</term>
+			/// </item>
+			/// <item>
+			/// <term>DRAW_E_ABORT</term>
+			/// <term>Draw operation aborted.</term>
+			/// </item>
+			/// <item>
+			/// <term>VIEW_E_DRAW</term>
+			/// <term>Error in drawing.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_LINDEX</term>
+			/// <term>Invalid value for lindex; currently only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_DVASPECT</term>
+			/// <term>Invalid value for dwAspect.</term>
+			/// </item>
+			/// <item>
+			/// <term>OLE_E_INVALIDRECT</term>
+			/// <term>Invalid rectangle.</term>
+			/// </item>
+			/// </list>
 			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// The <c>GetClassID</c> method retrieves the class identifier (CLSID) for an object, used in later operations to load
-			/// object-specific code into the caller's context.
-			/// </para>
-			/// <para>Notes to Callers</para>
-			/// <para>
-			/// A container application might call this method to retrieve the original CLSID of an object that it is treating as a different
-			/// class. Such a call would be necessary if a user performed an editing operation that required the object to be saved. If the
-			/// container were to save it using the treat-as CLSID, the original application would no longer be able to edit the object.
-			/// Typically, in this case, the container calls the OleSave helper function, which performs all the necessary steps. For this
-			/// reason, most container applications have no need to call this method directly.
+			/// A container application issues a call to <c>IViewObject::Draw</c> to create a representation of a contained object. This
+			/// method draws the specified piece (lindex) of the specified view (dwAspect and pvAspect) on the specified device context
+			/// (hdcDraw). Formatting, fonts, and other rendering decisions are made on the basis of the target device specified by the ptd parameter.
 			/// </para>
 			/// <para>
-			/// The exception would be a container that provides an object handler for certain objects. In particular, a container
-			/// application should not get an object's CLSID and then use it to retrieve class specific information from the registry.
-			/// Instead, the container should use IOleObject and IDataObject interfaces to retrieve such class-specific information directly
-			/// from the object.
-			/// </para>
-			/// <para>Notes to Implementers</para>
-			/// <para>
-			/// Typically, implementations of this method simply supply a constant CLSID for an object. If, however, the object's
-			/// <c>TreatAs</c> registry key has been set by an application that supports emulation (and so is treating the object as one of a
-			/// different class), a call to <c>GetClassID</c> must supply the CLSID specified in the <c>TreatAs</c> key. For more information
-			/// on emulation, see CoTreatAsClass.
+			/// There is a relationship between the dwDrawAspect value and the lprcbounds value. The lprcbounds value specifies the
+			/// rectangle on hdcDraw into which the drawing is to be mapped. For DVASPECT_THUMBNAIL, <c>DVASPECT</c> _ICON, and
+			/// <c>DVASPECT</c> _SMALLICON, the object draws whatever it wants to draw, and it maps it into the space given in the best way.
+			/// Some objects might scale to fit while some might scale to fit but preserve the aspect ratio. In addition, some might scale
+			/// so the drawing appears at full width, but the bottom is cropped. The container can suggest a size via IOleObject::SetExtent,
+			/// but it has no control over the rendering size. In the case of <c>DVASPECT</c> _CONTENT, the <c>IViewObject::Draw</c>
+			/// implementation should either use the extents given by <c>IOleObject::SetExtent</c> or use the bounding rectangle given in
+			/// the lprcBounds parameter.
 			/// </para>
 			/// <para>
-			/// When an object is in the running state, the default handler calls an implementation of <c>GetClassID</c> that delegates the
-			/// call to the implementation in the object. When the object is not running, the default handler instead calls the ReadClassStg
-			/// function to read the CLSID that is saved in the object's storage.
+			/// For newer objects that support optimized drawing techniques and for windowless objects, this method should be used as follows:
 			/// </para>
-			/// <para>
-			/// If you are writing a custom object handler for your object, you might want to simply delegate this method to the default
-			/// handler implementation (see OleCreateDefaultHandler).
-			/// </para>
-			/// <para>URL Moniker Notes</para>
-			/// <para>This method returns CLSID_StdURLMoniker.</para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersist-getclassid HRESULT GetClassID( CLSID *pClassID );
-			new Guid GetClassID();
-
-			/// <summary>
-			/// <para>Determines whether an object has changed since it was last saved to its stream.</para>
-			/// </summary>
-			/// <returns>
-			/// <para>This method returns S_OK to indicate that the object has changed. Otherwise, it returns S_FALSE.</para>
-			/// </returns>
-			/// <remarks>
-			/// <para>
-			/// Use this method to determine whether an object should be saved before closing it. The dirty flag for an object is
-			/// conditionally cleared in the IPersistStreamInit::Save method.
-			/// </para>
-			/// <para>Notes to Callers</para>
-			/// <para>
-			/// You should treat any error return codes as an indication that the object has changed. Unless this method explicitly returns
-			/// S_FALSE, assume that the object must be saved.
-			/// </para>
-			/// <para>
-			/// Note that the OLE-provided implementations of the <c>IPersistStreamInit::IsDirty</c> method in the OLE-provided moniker
-			/// interfaces always return S_FALSE because their internal state never changes.
-			/// </para>
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-ipersiststreaminit-isdirty HRESULT IsDirty( );
-			[PreserveSig]
-			HRESULT IsDirty();
-
-			/// <summary>Initializes an object from the stream where it was saved previously.</summary>
-			/// <param name="pstm">The PSTM.</param>
-			/// <remarks>
-			/// <para>
-			/// This method loads an object from its associated stream. The seek pointer is set as it was in the most recent
-			/// IPersistStreamInit::Save method. This method can seek and read from the stream, but cannot write to it.
-			/// </para>
-			/// <para>Notes to Callers</para>
-			/// <para>
-			/// Rather than calling <c>IPersistStreamInit::Load</c> directly, you typically call the OleLoadFromStream function does the following:
-			/// </para>
-			/// <list type="number">
+			/// <list type="bullet">
 			/// <item>
-			/// <term>Calls the ReadClassStm function to get the class identifier from the stream.</term>
+			/// <term>New drawing aspects are supported in dwAspect as defined in DVASPECT2.</term>
 			/// </item>
 			/// <item>
-			/// <term>Calls the CoCreateInstance function to create an instance of the object.</term>
+			/// <term>
+			/// The pvAspect parameter can be used to pass additional information allowing drawing optimizations through the DVASPECTINFO structure.
+			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>Queries the instance for IPersistStreamInit.</term>
+			/// <term>
+			/// The <c>IViewObject::Draw</c> method can be called to redraw a windowless in-place active object by setting the lrpcBounds
+			/// parameter to <c>NULL</c>. In every other situation, <c>NULL</c> is an illegal value and should result in an E_INVALIDARG
+			/// error code. A windowless object uses the rectangle passed by the activation verb or calls IOleInPlaceObject::SetObjectRects
+			/// instead of using this parameter. If the container passes a non- <c>NULL</c> value to a windowless object, the object should
+			/// render the requested aspect into the specified device context and rectangle. A container can request this from a windowless
+			/// object to render a second, non-active view of the object or to print the object. See the IOleInPlaceSiteWindowless interface
+			/// for more information on drawing windowless objects.
+			/// </term>
 			/// </item>
 			/// <item>
-			/// <term>Calls <c>IPersistStreamInit::Load</c>.</term>
+			/// <term>
+			/// For windowless objects, the dwAspect parameter only allows the DVASPECT_CONTENT, <c>DVASPECT</c> _OPAQUE, and
+			/// <c>DVASPECT</c> _TRANSPARENT aspects.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// For a windowless object, the hdcDraw parameter should be in MM_TEXT mapping mode with its logical coordinates matching the
+			/// client coordinates of the containing window. For a windowless object, the device context should be in the same state as the
+			/// one normally passed by a WM_PAINT message.
+			/// </term>
 			/// </item>
 			/// </list>
 			/// <para>
-			/// The OleLoadFromStream function assumes that objects are stored in the stream with a class identifier followed by the object
-			/// data. This storage pattern is used by the generic, composite-moniker implementation provided by OLE.
+			/// To maintain compatibility with older objects and containers that do not support drawing optimizations, all objects,
+			/// rectangular or not, are required to maintain an origin and a rectangular extent. This allows the container to still consider
+			/// all its embedded objects as rectangles and to pass them appropriate rendering rectangles in <c>Draw</c>.
 			/// </para>
-			/// <para>If the objects are not stored using this pattern, you must call the methods separately yourself.</para>
-			/// <para>URL Moniker Notes</para>
 			/// <para>
-			/// Initializes an URL moniker from data within a stream, usually stored there previously using its IPersistStreamInit::Save
-			/// (using OleSaveToStream). The binary format of the URL moniker is its URL string in Unicode (may be a full or partial URL
-			/// string, see CreateURLMonikerEx for details). This is represented as a <c>ULONG</c> count of characters followed by that many
-			/// Unicode characters.
+			/// An object's extent depends on the drawing aspect. For non-rectangular objects, the extent should be the size of a rectangle
+			/// covering the entire aspect. By convention, the origin of an object is the top-left corner of the rectangle of the
+			/// DVASPECT_CONTENT aspect. In other words, the origin always coincides with the top-left corner of the rectangle maintained by
+			/// the object's site, even for a non-rectangular object.
 			/// </para>
 			/// </remarks>
-			// HRESULT Load( LPSTREAM pStm ); https://msdn.microsoft.com/en-us/library/ms864774.aspx
-			void Load([In, MarshalAs(UnmanagedType.Interface)] IStream pstm);
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-draw HRESULT Draw( DWORD dwDrawAspect, LONG
+			// lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hdcTargetDev, HDC hdcDraw, LPCRECTL lprcBounds, LPCRECTL lprcWBounds, BOOL(*
+			// )(ULONG_PTR dwContinue) pfnContinue, ULONG_PTR dwContinue );
+			new unsafe HRESULT Draw(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
+				[In, Optional] HDC hdcTargetDev, [In] HDC hdcDraw, [In, Optional] PRECT lprcBounds, [In, Optional] PRECT lprcWBounds,
+				[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] Func<IntPtr, BOOL> pfnContinue, [In, Optional] IntPtr dwContinue);
 
-			/// <summary>Saves an object to the specified stream.</summary>
-			/// <param name="pstm">The PSTM.</param>
-			/// <param name="fClearDirty">
-			/// Indicates whether to clear the dirty flag after the save is complete. If <c>TRUE</c>, the flag should be cleared. If
-			/// <c>FALSE</c>, the flag should be left unchanged.
+			/// <summary>
+			/// Returns the logical palette that the object will use for drawing in its IViewObject::Draw method with the corresponding parameters.
+			/// </summary>
+			/// <param name="dwDrawAspect">
+			/// Specifies how the object is to be represented. Representations include content, an icon, a thumbnail, or a printed document.
+			/// Valid values are taken from the enumeration DVASPECT. See the <c>DVASPECT</c> enumeration for more information.
 			/// </param>
+			/// <param name="lindex">
+			/// Portion of the object that is of interest for the draw operation. Its interpretation varies with dwDrawAspect. See the
+			/// DVASPECT enumeration for more information.
+			/// </param>
+			/// <param name="pvAspect">
+			/// Pointer to additional information about the view of the object specified in dwDrawAspect. Since none of the current aspects
+			/// support additional information, pvAspect must always be <c>NULL</c>.
+			/// </param>
+			/// <param name="ptd">
+			/// Pointer to the DVTARGETDEVICE structure that describes the device for which the object is to be rendered. If <c>NULL</c>,
+			/// the view should be rendered for the default target device (typically the display). A value other than <c>NULL</c> is
+			/// interpreted in conjunction with hicTargetDev and hdcDraw. For example, if hdcDraw specifies a printer as the device context,
+			/// ptd points to a structure describing that printer device. The data may actually be printed if hicTargetDev is a valid value
+			/// or it may be displayed in print preview mode if hicTargetDev is <c>NULL</c>.
+			/// </param>
+			/// <param name="hicTargetDev">
+			/// Information context for the target device indicated by the ptd parameter from which the object can extract device metrics
+			/// and test the device's capabilities. If ptd is <c>NULL</c>, the object should ignore the hicTargetDev parameter.
+			/// </param>
+			/// <param name="ppColorSet">
+			/// Address of LOGPALETTE pointer variable that receives a pointer to the LOGPALETTE structure. The LOGPALETTE structure
+			/// contains the set of colors that would be used if IViewObject::Draw were called with the same parameters for dwAspect,
+			/// lindex, pvAspect, ptd, and hicTargetDev. If ppColorSet is <c>NULL</c>, the object does not use a palette.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_FALSE</term>
+			/// <term>Set of colors is empty or the object will not give out the information.</term>
+			/// </item>
+			/// <item>
+			/// <term>OLE_E_BLANK</term>
+			/// <term>No presentation data for object.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_LINDEX</term>
+			/// <term>Invalid value for lindex; currently only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_DVASPECT</term>
+			/// <term>Invalid value for dwAspect.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One or more of the supplied parameter values is invalid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// <c>IPersistStreamInit::Save</c> saves an object into the specified stream and indicates whether the object should reset its
-			/// dirty flag.
+			/// The <c>IViewObject::GetColorSet</c> method recursively queries any nested objects and returns a color set that represents
+			/// the union of all colors requested. The color set eventually percolates to the top-level container that owns the window
+			/// frame. This container can call <c>IViewObject::GetColorSet</c> on each of its embedded objects to obtain all the colors
+			/// needed to draw the embedded objects. The container can use the color sets obtained in conjunction with other colors it needs
+			/// for itself to set the overall color palette.
 			/// </para>
 			/// <para>
-			/// The seek pointer is positioned at the location in the stream at which the object should begin writing its data. The object
-			/// calls the ISequentialStream::Write method to write its data.
-			/// </para>
-			/// <para>
-			/// On exit, the seek pointer must be positioned immediately past the object data. The position of the seek pointer is undefined
-			/// if an error returns.
-			/// </para>
-			/// <para>Notes to Implementers</para>
-			/// <para>
-			/// The <c>IPersistStreamInit::Save</c> method does not write the CLSID to the stream. The caller is responsible for writing the CLSID.
-			/// </para>
-			/// <para>
-			/// The <c>IPersistStreamInit::Save</c> method can read from, write to, and seek in the stream; but it must not seek to a
-			/// location in the stream before that of the seek pointer on entry.
+			/// The OLE-provided implementation of <c>IViewObject::GetColorSet</c> looks at the data it has on hand to draw the picture. If
+			/// CF_DIB is the drawing format, the palette found in the bitmap is used. For a regular bitmap, no color information is
+			/// returned. If the drawing format is a metafile, the object handler enumerates the metafile looking for a CreatePalette
+			/// metafile record. If one is found, the handler uses it as the color set.
 			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-ipersiststreaminit-save HRESULT Save( LPSTREAM pStm, BOOL
-			// fClearDirty );
-			void Save([In, MarshalAs(UnmanagedType.Interface)] IStream pstm, [In, MarshalAs(UnmanagedType.Bool)] bool fClearDirty);
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-getcolorset HRESULT GetColorSet( DWORD
+			// dwDrawAspect, LONG lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hicTargetDev, LOGPALETTE **ppColorSet );
+			new unsafe HRESULT GetColorSet(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
+				[In, Optional] HDC hicTargetDev, out LOGPALETTE ppColorSet);
 
-			/// <summary>Retrieves the size of the stream needed to save the object.</summary>
-			/// <returns>The size in bytes of the stream needed to save this object, in bytes.</returns>
+			/// <summary>
+			/// Freezes the drawn representation of an object so that it will not change until the IViewObject::Unfreeze method is called.
+			/// The most common use of this method is for banded printing.
+			/// </summary>
+			/// <param name="dwDrawAspect">
+			/// Specifies how the object is to be represented. Representations include content, an icon, a thumbnail, or a printed document.
+			/// Valid values are taken from the enumeration DVASPECT. See the <c>DVASPECT</c> enumeration for more information.
+			/// </param>
+			/// <param name="lindex">
+			/// Portion of the object that is of interest for the draw operation. Its interpretation varies with dwAspect. See the DVASPECT
+			/// enumeration for more information.
+			/// </param>
+			/// <param name="pvAspect">
+			/// Pointer to additional information about the view of the object specified in dwAspect. Since none of the current aspects
+			/// support additional information, pvAspect must always be <c>NULL</c>.
+			/// </param>
+			/// <param name="pdwFreeze">
+			/// Pointer to where an identifying DWORD key is returned. This unique key is later used to cancel the freeze by calling
+			/// IViewObject::Unfreeze. This key is an index that the default cache uses to keep track of which object is frozen.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>VIEW_S_ALREADY_FROZEN</term>
+			/// <term>Presentation has already been frozen. The value of pdwFreeze is the identifying key of the already frozen object.</term>
+			/// </item>
+			/// <item>
+			/// <term>OLE_E_BLANK</term>
+			/// <term>Presentation not in cache.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_LINDEX</term>
+			/// <term>Invalid value for lindex; currently; only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_DVASPECT</term>
+			/// <term>Invalid value for dwAspect.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
 			/// <remarks>
 			/// <para>
-			/// This method returns the size needed to save an object. You can call this method to determine the size and set the necessary
-			/// buffers before calling the IPersistStreamInit::Save method.
+			/// The <c>IViewObject::Freeze</c> method causes the view object to freeze its drawn representation until a subsequent call to
+			/// IViewObject::Unfreeze releases it. After calling <c>IViewObject::Freeze</c>, successive calls to IViewObject::Draw with the
+			/// same parameters produce the same picture until <c>IViewObject::Unfreeze</c> is called.
 			/// </para>
-			/// <para>Notes to Implementers</para>
 			/// <para>
-			/// The <c>GetSizeMax</c> implementation should return a conservative estimate of the necessary size because the caller might
-			/// call the IPersistStreamInit::Save method with a non-growable stream.
+			/// <c>IViewObject::Freeze</c> is not part of the persistent state of the object and does not continue across unloads and
+			/// reloads of the object.
+			/// </para>
+			/// <para>The most common use of this method is for banded printing.</para>
+			/// <para>
+			/// While in a frozen state, view notifications are not sent. Pending view notifications are deferred to the subsequent call to IViewObject::Unfreeze.
 			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-ipersiststreaminit-getsizemax HRESULT GetSizeMax(
-			// ULARGE_INTEGER *pCbSize );
-			ulong GetSizeMax();
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-freeze HRESULT Freeze( DWORD dwDrawAspect,
+			// LONG lindex, void *pvAspect, DWORD *pdwFreeze );
+			new unsafe HRESULT Freeze(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, out uint pdwFreeze);
 
-			/// <summary>Initializes an object to a default state. This method is to be called instead of IPersistStreamInit::Load.</summary>
-			/// <remarks>If the object has already been initialized with IPersistStreamInit::Load, then this method must return E_UNEXPECTED.</remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-ipersiststreaminit-initnew HRESULT InitNew( );
-			void InitNew();
+			/// <summary>
+			/// Releases a drawing that was previously frozen using IViewObject::Freeze. The most common use of this method is for banded printing.
+			/// </summary>
+			/// <param name="dwFreeze">
+			/// Contains a key previously returned from IViewObject::Freeze that determines which view object to unfreeze.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OLE_E_NOCONNECTION</term>
+			/// <term>Error in the unfreezing process or the object is currently not frozen.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-unfreeze HRESULT Unfreeze( DWORD dwFreeze );
+			new HRESULT Unfreeze(uint dwFreeze);
+
+			/// <summary>
+			/// Establishes a connection between the view object and an advise sink so that the advise sink can be notified about changes in
+			/// the object's view.
+			/// </summary>
+			/// <param name="aspects">
+			/// View for which the advisory connection is being set up. Valid values are taken from the enumeration DVASPECT. See the
+			/// <c>DVASPECT</c> enumeration for more information.
+			/// </param>
+			/// <param name="advf">
+			/// <para>
+			/// Contains a group of flags for controlling the advisory connection. Valid values are from the enumeration ADVF. However, only
+			/// some of the possible <c>ADVF</c> values are relevant for this method. The following table briefly describes the relevant
+			/// values. See the <c>ADVF</c> enumeration for a more detailed description.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADVF_ONLYONCE</term>
+			/// <term>Causes the advisory connection to be destroyed after the first notification is sent.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_PRIMEFIRST</term>
+			/// <term>Causes an initial notification to be sent regardless of whether data has changed from its current state.</term>
+			/// </item>
+			/// </list>
+			/// <para><c>Note</c> The ADVF_ONLYONCE and ADVF_PRIMEFIRST can be combined to provide an asynchronous call to IDataObject::GetData.</para>
+			/// </param>
+			/// <param name="pAdvSink">
+			/// Pointer to the IAdviseSink interface on the advisory sink that is to be informed of changes. A <c>NULL</c> value deletes any
+			/// existing advisory connection.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OLE_E_ADVISENOTSUPPORTED</term>
+			/// <term>Advisory notifications are not supported.</term>
+			/// </item>
+			/// <item>
+			/// <term>DV_E_DVASPECT</term>
+			/// <term>Invalid value for dwAspect.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One or more of the supplied values is invalid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>Insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// A container application that is requesting a draw operation on a view object can also register with the
+			/// <c>IViewObject::SetAdvise</c> method to be notified when the presentation of the view object changes. To find out about when
+			/// an object's underlying data changes, you must call IDataObject::DAdvise separately.
+			/// </para>
+			/// <para>To remove an existing advisory connection, call the <c>IViewObject::SetAdvise</c> method with pAdvSink set to <c>NULL</c>.</para>
+			/// <para>If the view object changes, a call is made to the appropriate advise sink through its IAdviseSink::OnViewChange method.</para>
+			/// <para>
+			/// At any time, a given view object can support only one advisory connection. Therefore, when <c>IViewObject::SetAdvise</c> is
+			/// called and the view object is already holding on to an advise sink pointer, OLE releases the existing pointer before the new
+			/// one is registered.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-setadvise HRESULT SetAdvise( DWORD aspects,
+			// DWORD advf, IAdviseSink *pAdvSink );
+			new HRESULT SetAdvise(DVASPECT aspects, ADVF advf, [In, Optional] IAdviseSink pAdvSink);
+
+			/// <summary>Retrieves the advisory connection on the object that was used in the most recent call to IViewObject::SetAdvise.</summary>
+			/// <param name="pAspects">
+			/// Pointer to where the dwAspect parameter from the previous IViewObject::SetAdvise call is returned. If this pointer is
+			/// <c>NULL</c>, the caller does not permit this value to be returned.
+			/// </param>
+			/// <param name="pAdvf">
+			/// Pointer to where the advf parameter from the previous IViewObject::SetAdvise call is returned. If this pointer is
+			/// <c>NULL</c>, the caller does not permit this value to be returned.
+			/// </param>
+			/// <param name="ppAdvSink">
+			/// Address of IAdviseSink pointer variable that receives the interface pointer to the advise sink. The connection to this
+			/// advise sink must have been established with a previous IViewObject::SetAdvise call, which provides the pAdvSink parameter.
+			/// If ppvAdvSink is <c>NULL</c>, there is no established advisory connection.
+			/// </param>
+			/// <returns>This method returns S_OK on success.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-getadvise HRESULT GetAdvise( DWORD *pAspects,
+			// DWORD *pAdvf, IAdviseSink **ppAdvSink );
+			new unsafe HRESULT GetAdvise([Out, Optional] DVASPECT* pAspects, [Out, Optional] ADVF* pAdvf, [Out, Optional] IntPtr ppAdvSink);
+
+			/// <summary>Retrieves the size that the specified view object will be drawn on the specified target device.</summary>
+			/// <param name="dwDrawAspect">
+			/// Requested view of the object whose size is of interest. Possible values are taken from the DVASPECT and DVASPECT2
+			/// enumerations. Note that newer objects and containers that support optimized drawing interfaces support the <c>DVASPECT2</c>
+			/// enumeration values. Older objects and containers that do not support optimized drawing interfaces may not support <c>DVASPECT2</c>.
+			/// </param>
+			/// <param name="lindex">The portion of the object that is of interest. Currently, the only possible value is -1.</param>
+			/// <param name="ptd">
+			/// A pointer to the DVTARGETDEVICE structure defining the target device for which the object's size should be returned.
+			/// </param>
+			/// <param name="lpsizel">A pointer to where the object's size is returned.</param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>OLE_E_BLANK</term>
+			/// <term>An appropriate cache is not available.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>The OLE-provided implementation of <c>IViewObject2::GetExtent</c> searches the cache for the size of the view object.</para>
+			/// <para>The IOleObject::GetExtent method in the IOleObject interface provides some of the same information as <c>IViewObject2::GetExtent</c>.</para>
+			/// <para>
+			/// This method must return the same size as DVASPECT_CONTENT for all the new aspects in DVASPECT2. IOleObject::GetExtent must
+			/// do the same thing.
+			/// </para>
+			/// <para>
+			/// If one of the new aspects is requested in dwAspect, this method can either fail or return the same rectangle as for the
+			/// DVASPECT_CONTENT aspect.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// To prevent the object from being run if it isn't already running, you can call <c>IViewObject2::GetExtent</c> rather than
+			/// IOleObject::GetExtent to determine the size of the presentation to be drawn.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject2-getextent HRESULT GetExtent( DWORD
+			// dwDrawAspect, LONG lindex, DVTARGETDEVICE *ptd, LPSIZEL lpsizel );
+			HRESULT GetExtent(uint dwDrawAspect, int lindex, in DVTARGETDEVICE ptd, out SIZE lpsizel);
 		}
 
 		/// <summary>
@@ -4508,7 +6351,7 @@ namespace Vanara.PInvoke
 		// fMDIApp; HWND hwndFrame; HACCEL haccel; UINT cAccelEntries; } OLEINPLACEFRAMEINFO, *LPOLEINPLACEFRAMEINFO;
 		[PInvokeData("oleidl.h", MSDNShortId = "e09445d2-61e5-4691-b51e-746e0cc91c00")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct OIFI
+		public struct OLEINPLACEFRAMEINFO
 		{
 			/// <summary>
 			/// The size of this structure, in bytes. The object server must specify sizeof( <c>OLEINPLACEFRAMEINFO</c>) in the structure it

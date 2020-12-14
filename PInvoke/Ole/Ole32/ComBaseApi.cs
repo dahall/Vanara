@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Rpc;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
@@ -98,8 +99,8 @@ namespace Vanara.PInvoke
 		/// object is registered.
 		/// </para>
 		/// <para>
-		/// An EXE surrogate (in which DLL servers are run) calls CoRegisterClassObject to register a class factory using a new <c>REGCLS</c>
-		/// value, REGCLS_SURROGATE.
+		/// An EXE surrogate (in which DLL servers are run) calls CoRegisterClassObject to register a class factory using a new
+		/// <c>REGCLS</c> value, REGCLS_SURROGATE.
 		/// </para>
 		/// <para>
 		/// All class factories for DLL surrogates should be registered with REGCLS_SURROGATE set. Do not set REGCLS_SINGLUSE or
@@ -146,8 +147,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/ne-combaseapi-tagregcls typedef enum tagREGCLS { REGCLS_SINGLEUSE,
-		// REGCLS_MULTIPLEUSE, REGCLS_MULTI_SEPARATE, REGCLS_SUSPENDED, REGCLS_SURROGATE, REGCLS_AGILE } REGCLS;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/ne-combaseapi-tagregcls typedef enum tagREGCLS {
+		// REGCLS_SINGLEUSE, REGCLS_MULTIPLEUSE, REGCLS_MULTI_SEPARATE, REGCLS_SUSPENDED, REGCLS_SURROGATE, REGCLS_AGILE } REGCLS;
 		[PInvokeData("combaseapi.h", MSDNShortId = "16bca8e0-9999-4d51-b7f0-87deb7619d89")]
 		[Flags]
 		public enum REGCLS
@@ -173,8 +174,8 @@ namespace Vanara.PInvoke
 			/// not automatically register an out-of-process server (for which CLSCTX_LOCAL_SERVER is set) as an in-process server. This
 			/// allows the EXE to create multiple instances of the object for in-process needs, such as self embeddings, without disturbing
 			/// its CLSCTX_LOCAL_SERVER registration. If an EXE registers a REGCLS_MULTI_SEPARATE class factory and a CLSCTX_INPROC_SERVER
-			/// class factory, instance creation calls that specify CLSCTX_INPROC_SERVER in the CLSCTX parameter executed by the EXE would be
-			/// satisfied locally without approaching the SCM. This mechanism is useful when the EXE uses functions such as OleCreate and
+			/// class factory, instance creation calls that specify CLSCTX_INPROC_SERVER in the CLSCTX parameter executed by the EXE would
+			/// be satisfied locally without approaching the SCM. This mechanism is useful when the EXE uses functions such as OleCreate and
 			/// OleLoad to create embeddings, but at the same does not wish to launch a new instance of itself for the self-embedding case.
 			/// The distinction is important for embeddings because the default handler aggregates the proxy manager by default and the
 			/// application should override this default behavior by calling OleCreateEmbeddingHelper for the self-embedding case. If your
@@ -186,15 +187,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Suspends registration and activation requests for the specified CLSID until there is a call to CoResumeClassObjects. This is
-			/// used typically to register the CLSIDs for servers that can register multiple class objects to reduce the overall registration
-			/// time, and thus the server application startup time, by making a single call to the SCM, no matter how many CLSIDs are
-			/// registered for the server.
+			/// used typically to register the CLSIDs for servers that can register multiple class objects to reduce the overall
+			/// registration time, and thus the server application startup time, by making a single call to the SCM, no matter how many
+			/// CLSIDs are registered for the server.
 			/// </summary>
 			REGCLS_SUSPENDED = 4,
 
 			/// <summary>
-			/// The class object is a surrogate process used to run DLL servers. The class factory registered by the surrogate process is not
-			/// the actual class factory implemented by the DLL server, but a generic class factory implemented by the surrogate. This
+			/// The class object is a surrogate process used to run DLL servers. The class factory registered by the surrogate process is
+			/// not the actual class factory implemented by the DLL server, but a generic class factory implemented by the surrogate. This
 			/// generic class factory delegates instance creation and marshaling to the class factory of the DLL server running in the
 			/// surrogate. For further information on DLL surrogates, see the DllSurrogate registry value.
 			/// </summary>
@@ -247,8 +248,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// Given a ProgID, <c>CLSIDFromProgID</c> looks up its associated CLSID in the registry. If the ProgID cannot be found in the
 		/// registry, <c>CLSIDFromProgID</c> creates an OLE 1 CLSID for the ProgID and a CLSID entry in the registry. Because of the
-		/// restrictions placed on OLE 1 CLSID values, <c>CLSIDFromProgID</c> and CLSIDFromString are the only two functions that can be used
-		/// to generate a CLSID for an OLE 1 object.
+		/// restrictions placed on OLE 1 CLSID values, <c>CLSIDFromProgID</c> and CLSIDFromString are the only two functions that can be
+		/// used to generate a CLSID for an OLE 1 object.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-clsidfromprogid HRESULT CLSIDFromProgID( LPCOLESTR
 		// lpszProgID, LPCLSID lpclsid );
@@ -363,9 +364,9 @@ namespace Vanara.PInvoke
 		/// The simplest way for a local server application to make use of these functions is to call <c>CoAddRefServerProcess</c> in the
 		/// constructor for each of its instance objects, and in each of its IClassFactory::LockServer methods when the fLock parameter is
 		/// <c>TRUE</c>. The server application should also call CoReleaseServerProcess in the destruction of each of its instance objects,
-		/// and in each of its <c>LockServer</c> methods when the fLock parameter is <c>FALSE</c>. Finally, the server application should pay
-		/// attention to the return code from <c>CoReleaseServerProcess</c> and if it returns 0, the server application should initiate its
-		/// cleanup, which, for a server with multiple threads, typically means that it should signal its various threads to exit their
+		/// and in each of its <c>LockServer</c> methods when the fLock parameter is <c>FALSE</c>. Finally, the server application should
+		/// pay attention to the return code from <c>CoReleaseServerProcess</c> and if it returns 0, the server application should initiate
+		/// its cleanup, which, for a server with multiple threads, typically means that it should signal its various threads to exit their
 		/// message loops and call CoRevokeClassObject and CoUninitialize.
 		/// </para>
 		/// <para>
@@ -407,7 +408,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Requests cancellation of an outbound DCOM method call pending on a specified thread.</summary>
 		/// <param name="dwThreadId">
-		/// The identifier of the thread on which the pending DCOM call is to be canceled. If this parameter is 0, the call is on the current thread.
+		/// The identifier of the thread on which the pending DCOM call is to be canceled. If this parameter is 0, the call is on the
+		/// current thread.
 		/// </param>
 		/// <param name="ulTimeout">
 		/// The number of seconds <c>CoCancelCall</c> waits for the server to complete the outbound call after the client requests cancellation.
@@ -453,8 +455,8 @@ namespace Vanara.PInvoke
 		/// canceled, the object server should clean up and return control to the client.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cocancelcall HRESULT CoCancelCall( DWORD dwThreadId,
-		// ULONG ulTimeout );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cocancelcall HRESULT CoCancelCall( DWORD
+		// dwThreadId, ULONG ulTimeout );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "1707261c-2d8d-4f35-865d-61c8870c0624")]
 		public static extern HRESULT CoCancelCall(uint dwThreadId, uint ulTimeout);
@@ -571,11 +573,12 @@ namespace Vanara.PInvoke
 		/// <list type="bullet">
 		/// <item>
 		/// <term>
-		/// A free-threaded marshaler object cannot hold direct pointers to interfaces on an object that does not aggregate the free-threaded
-		/// marshaler as part of its state. If the object were to use direct references to ordinary single-threaded aggregate objects, it may
-		/// break their single threaded property. If the object were to use direct references to ordinary multithreaded aggregate objects,
-		/// these objects can behave in ways that show no sensitivity to the needs of direct single-threaded aggregate clients. For example,
-		/// these objects can spin new threads and pass parameters to the threads that are references to ordinary single-threaded aggregate objects.
+		/// A free-threaded marshaler object cannot hold direct pointers to interfaces on an object that does not aggregate the
+		/// free-threaded marshaler as part of its state. If the object were to use direct references to ordinary single-threaded aggregate
+		/// objects, it may break their single threaded property. If the object were to use direct references to ordinary multithreaded
+		/// aggregate objects, these objects can behave in ways that show no sensitivity to the needs of direct single-threaded aggregate
+		/// clients. For example, these objects can spin new threads and pass parameters to the threads that are references to ordinary
+		/// single-threaded aggregate objects.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -678,10 +681,10 @@ namespace Vanara.PInvoke
 		/// specified CLSID, creating an uninitialized instance, and releasing the class object. As such, it encapsulates the following functionality:
 		/// </para>
 		/// <para>
-		/// It is convenient to use <c>CoCreateInstance</c> when you need to create only a single instance of an object on the local machine.
-		/// If you are creating an instance on remote computer, call CoCreateInstanceEx. When you are creating multiple instances, it is more
-		/// efficient to obtain a pointer to the class object's IClassFactory interface and use its methods as needed. In the latter case,
-		/// you should use the CoGetClassObject function.
+		/// It is convenient to use <c>CoCreateInstance</c> when you need to create only a single instance of an object on the local
+		/// machine. If you are creating an instance on remote computer, call CoCreateInstanceEx. When you are creating multiple instances,
+		/// it is more efficient to obtain a pointer to the class object's IClassFactory interface and use its methods as needed. In the
+		/// latter case, you should use the CoGetClassObject function.
 		/// </para>
 		/// <para>
 		/// In the CLSCTX enumeration, you can specify the type of server used to manage the object. The constants can be
@@ -754,8 +757,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CO_S_NOTALLINTERFACES</term>
 		/// <term>
-		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each of
-		/// the MULTI_QI structures in pResults indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
+		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each
+		/// of the MULTI_QI structures in pResults indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -780,8 +783,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// The object so created must still be initialized through a call to one of the initialization interfaces (such as
-		/// IPersistStorage::Load). Two functions, CoGetInstanceFromFile and CoGetInstanceFromIStorage encapsulate both the instance creation
-		/// and initialization from the obvious sources.
+		/// IPersistStorage::Load). Two functions, CoGetInstanceFromFile and CoGetInstanceFromIStorage encapsulate both the instance
+		/// creation and initialization from the obvious sources.
 		/// </para>
 		/// <para>
 		/// The COSERVERINFO structure passed as the pServerInfo parameter contains the security settings that COM will use when creating a
@@ -838,8 +841,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CO_S_NOTALLINTERFACES</term>
 		/// <term>
-		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each of
-		/// the MULTI_QI structures in pResults indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
+		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each
+		/// of the MULTI_QI structures in pResults indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -910,8 +913,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// The <c>CoDecodeProxy</c> function is a COM API that enables native debuggers to locate the implementation of a COM interface in a
-		/// server process given an interface on a proxy to the object.
+		/// The <c>CoDecodeProxy</c> function is a COM API that enables native debuggers to locate the implementation of a COM interface in
+		/// a server process given an interface on a proxy to the object.
 		/// </para>
 		/// <para>
 		/// Also, the <c>CoDecodeProxy</c> function enables the debugger to monitor cross-apartment function calls and fail such calls when appropriate.
@@ -1000,8 +1003,8 @@ namespace Vanara.PInvoke
 		/// disabling call cancellation has no effect on any calls that are pending on the thread.
 		/// </para>
 		/// <para>
-		/// If a thread is uninitialized and then reinitialized by calls to CoUninitialize and CoInitialize, call cancellation is disabled on
-		/// the thread, even if it was enabled when the thread was uninitialized.
+		/// If a thread is uninitialized and then reinitialized by calls to CoUninitialize and CoInitialize, call cancellation is disabled
+		/// on the thread, even if it was enabled when the thread was uninitialized.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-codisablecallcancellation HRESULT
@@ -1058,19 +1061,19 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// The <c>CoDisconnectContext</c> function is used to support unloading services in shared service hosts where you must unload your
 		/// service's binaries without affecting other COM servers that are running in the same process. If you control the process lifetime
-		/// and you do not unload until the process exits, the COM infrastructure will perform the necessary cleanup automatically and you do
-		/// not have to call this function.
+		/// and you do not unload until the process exits, the COM infrastructure will perform the necessary cleanup automatically and you
+		/// do not have to call this function.
 		/// </para>
 		/// <para>
 		/// The <c>CoDisconnectContext</c> function enables a server to correctly disconnect all external clients of all objects in the
-		/// current context. Default contexts cannot be disconnected. To use <c>CoDisconnectContext</c>, you must first create a context that
-		/// can be disconnected and register your class factories for objects from which you want to disconnect within that context. You can
-		/// do this with the IContextCallback interface.
+		/// current context. Default contexts cannot be disconnected. To use <c>CoDisconnectContext</c>, you must first create a context
+		/// that can be disconnected and register your class factories for objects from which you want to disconnect within that context.
+		/// You can do this with the IContextCallback interface.
 		/// </para>
 		/// <para>
-		/// If <c>CoDisconnectContext</c> returns RPC_E_TIMEOUT, this does not indicate that the function did not disconnect the objects, but
-		/// that not all disconnections could be completed in the time specified by dwTimeout because of outstanding calls on the objects.
-		/// All objects will be disconnected after all calls on them have been completed.
+		/// If <c>CoDisconnectContext</c> returns RPC_E_TIMEOUT, this does not indicate that the function did not disconnect the objects,
+		/// but that not all disconnections could be completed in the time specified by dwTimeout because of outstanding calls on the
+		/// objects. All objects will be disconnected after all calls on them have been completed.
 		/// </para>
 		/// <para>
 		/// It is not safe to unload the DLL that hosts the service until <c>CoDisconnectContext</c> returns S_OK. If the function returns
@@ -1099,8 +1102,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// COM interface pointers are context-sensitive. Therefore, any interface pointer created in the context to be disconnected can only
-		/// be used within that context.
+		/// COM interface pointers are context-sensitive. Therefore, any interface pointer created in the context to be disconnected can
+		/// only be used within that context.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -1148,8 +1151,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Similarly, an OLE container that supports external links to its embedded objects can call <c>CoDisconnectObject</c> to destroy
 		/// those links. Again, this call is normally made in response to a user closing the application. The container should first call
-		/// IOleObject::Close for all its OLE objects, each of which should send IAdviseSink::OnClose notifications to their various clients.
-		/// Then the container can call <c>CoDisconnectObject</c> to close any existing connections.
+		/// IOleObject::Close for all its OLE objects, each of which should send IAdviseSink::OnClose notifications to their various
+		/// clients. Then the container can call <c>CoDisconnectObject</c> to close any existing connections.
 		/// </para>
 		/// <para>
 		/// <c>CoDisconnectObject</c> does not necessarily disconnect out-of-process clients immediately. If any marshaled calls are pending
@@ -1225,8 +1228,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// COM supplies functions to reclaim memory held by DLLs containing components. The most commonly used function is
 		/// CoFreeUnusedLibraries. <c>CoFreeUnusedLibraries</c> does not immediately release DLLs that have no active object. There is a
-		/// 10-minute delay for multithreaded apartments (MTAs) and neutral apartments (NAs). For single-threaded apartments (STAs), there is
-		/// no delay.
+		/// 10-minute delay for multithreaded apartments (MTAs) and neutral apartments (NAs). For single-threaded apartments (STAs), there
+		/// is no delay.
 		/// </para>
 		/// <para>
 		/// The 10-minute delay for CoFreeUnusedLibraries is to avoid multithread race conditions caused by unloading a component DLL. This
@@ -1240,16 +1243,16 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// Adding the DLL to the candidate-for-unloading list time-stamps the DLL dwUnloadDelay milliseconds from when this move occurs.
-		/// When <c>CoFreeUnusedLibrariesEx</c> (or CoFreeUnusedLibraries) is called again, at least dwUnloadDelay milliseconds from the call
-		/// that moved the DLL to the candidate-for-unloading list, the DLL is actually freed from memory. If COM uses the component DLL
-		/// while the DLL is on the candidate-for-unloading list, it is moved back to the active list.
+		/// When <c>CoFreeUnusedLibrariesEx</c> (or CoFreeUnusedLibraries) is called again, at least dwUnloadDelay milliseconds from the
+		/// call that moved the DLL to the candidate-for-unloading list, the DLL is actually freed from memory. If COM uses the component
+		/// DLL while the DLL is on the candidate-for-unloading list, it is moved back to the active list.
 		/// </para>
 		/// <para>
 		/// Setting dwUnloadDelay to 0 may have unexpected consequences. The component DLL may need some time for cleanup after it returns
 		/// from the DllCanUnloadNow function. For example, if the DLL had its own worker threads, using a value of 0 would most likely lead
 		/// to a problem because the code executing on these threads would be unmapped, caused by the unloading of the DLL before the worker
-		/// threads have a chance to exit. Also, using too brief of a value for dwUnloadDelay can lead to performance issues because there is
-		/// more overhead in reloading a DLL than letting it page out.
+		/// threads have a chance to exit. Also, using too brief of a value for dwUnloadDelay can lead to performance issues because there
+		/// is more overhead in reloading a DLL than letting it page out.
 		/// </para>
 		/// <para>
 		/// This behavior is triggered by the DLL supplying components with threading models set to Free, Neutral, or Both. For a threading
@@ -1397,8 +1400,8 @@ namespace Vanara.PInvoke
 		public static extern HRESULT CoGetCallerTID(out uint lpdwTID);
 
 		/// <summary>
-		/// Obtains a pointer to a call control interface, normally ICancelMethodCalls, on the cancel object corresponding to an outbound COM
-		/// method call pending on the same or another client thread.
+		/// Obtains a pointer to a call control interface, normally ICancelMethodCalls, on the cancel object corresponding to an outbound
+		/// COM method call pending on the same or another client thread.
 		/// </summary>
 		/// <param name="dwThreadId">
 		/// The identifier of the thread on which the pending COM call is to be canceled. If this parameter is 0, the call is on the current thread.
@@ -1580,8 +1583,8 @@ namespace Vanara.PInvoke
 		/// CoRegisterClassObject function.
 		/// </para>
 		/// <para>
-		/// To release a class object, use the class object's Release method. The function CoRevokeClassObject is to be used only to remove a
-		/// class object's CLSID from the system registry.
+		/// To release a class object, use the class object's Release method. The function CoRevokeClassObject is to be used only to remove
+		/// a class object's CLSID from the system registry.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetclassobject HRESULT CoGetClassObject( REFCLSID
@@ -1669,8 +1672,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// The value returned by <c>CoGetCurrentProcess</c> will uniquely identify the same thread for the life of the caller. Because
-		/// thread IDs can be reused without notice as threads are created and destroyed, this value is more reliable than the value returned
-		/// by the GetCurrentThreadId function.
+		/// thread IDs can be reused without notice as threads are created and destroyed, this value is more reliable than the value
+		/// returned by the GetCurrentThreadId function.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetcurrentprocess DWORD CoGetCurrentProcess( );
@@ -1714,9 +1717,9 @@ namespace Vanara.PInvoke
 		/// IID_IObjectContext. The default context does not support all of the normal object context interfaces.
 		/// </param>
 		/// <param name="ppv">
-		/// A reference to the interface specified by riid on the default context. If the object's component is non-configured, (that is, the
-		/// object's component has not been imported into a COM+ application), or if the <c>CoGetDefaultContext</c> function is called from a
-		/// constructor or an IUnknown method, this parameter is set to a <c>NULL</c> pointer.
+		/// A reference to the interface specified by riid on the default context. If the object's component is non-configured, (that is,
+		/// the object's component has not been imported into a COM+ application), or if the <c>CoGetDefaultContext</c> function is called
+		/// from a constructor or an IUnknown method, this parameter is set to a <c>NULL</c> pointer.
 		/// </param>
 		/// <returns>
 		/// <para>This method can return the following values.</para>
@@ -1750,10 +1753,10 @@ namespace Vanara.PInvoke
 		/// context interfaces.
 		/// </para>
 		/// <para>
-		/// The default context is also used by instances of non-configured COM components, (that is, components that have not been part of a
-		/// COM+ application), when they are created from an apartment that does not support their threading model. In other words, if a COM
-		/// object creates an instance of a non-configured component and the new object cannot be added to its creator's context because of
-		/// its threading model, the new object is instead added to the default context of an apartment that supports its threading model.
+		/// The default context is also used by instances of non-configured COM components, (that is, components that have not been part of
+		/// a COM+ application), when they are created from an apartment that does not support their threading model. In other words, if a
+		/// COM object creates an instance of a non-configured component and the new object cannot be added to its creator's context because
+		/// of its threading model, the new object is instead added to the default context of an apartment that supports its threading model.
 		/// </para>
 		/// <para>
 		/// An object should never pass an IObjectContext reference to another object. If you pass an <c>IObjectContext</c> reference to
@@ -1820,8 +1823,8 @@ namespace Vanara.PInvoke
 		/// The pointer to the IMalloc interface pointer received through the ppMalloc parameter cannot be used from a remote process; each
 		/// process must have its own allocator.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetmalloc HRESULT CoGetMalloc( DWORD dwMemContext,
-		// LPMALLOC *ppMalloc );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetmalloc HRESULT CoGetMalloc( DWORD
+		// dwMemContext, LPMALLOC *ppMalloc );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "d1d09fbe-ca5c-4480-b807-3afcc043ccb9")]
 		public static extern HRESULT CoGetMalloc(uint dwMemContext, out IMalloc ppMalloc);
@@ -1834,7 +1837,8 @@ namespace Vanara.PInvoke
 		/// parameter is 0, the size of the packet is unknown.
 		/// </param>
 		/// <param name="riid">
-		/// A reference to the identifier of the interface whose pointer is to be marshaled. This interface must be derived from the IUnknown interface.
+		/// A reference to the identifier of the interface whose pointer is to be marshaled. This interface must be derived from the
+		/// IUnknown interface.
 		/// </param>
 		/// <param name="pUnk">A pointer to the interface to be marshaled. This interface must be derived from the IUnknown interface.</param>
 		/// <param name="dwDestContext">
@@ -1867,7 +1871,8 @@ namespace Vanara.PInvoke
 		/// <list type="number">
 		/// <item>
 		/// <term>
-		/// Queries the object for an IMarshal pointer or, if the object does not implement <c>IMarshal</c>, gets a pointer to COM's standard marshaler.
+		/// Queries the object for an IMarshal pointer or, if the object does not implement <c>IMarshal</c>, gets a pointer to COM's
+		/// standard marshaler.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1885,9 +1890,9 @@ namespace Vanara.PInvoke
 		/// this function to get the correct size of the data packet to be marshaled.
 		/// </para>
 		/// <para>
-		/// The value returned by this method is guaranteed to be valid only as long as the internal state of the object being marshaled does
-		/// not change. Therefore, the actual marshaling should be done immediately after this function returns, or the stub runs the risk
-		/// that the object, because of some change in state, might require more memory to marshal than it originally indicated.
+		/// The value returned by this method is guaranteed to be valid only as long as the internal state of the object being marshaled
+		/// does not change. Therefore, the actual marshaling should be done immediately after this function returns, or the stub runs the
+		/// risk that the object, because of some change in state, might require more memory to marshal than it originally indicated.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetmarshalsizemax HRESULT CoGetMarshalSizeMax(
@@ -1990,13 +1995,14 @@ namespace Vanara.PInvoke
 		/// and returns a pointer to that object's IMarshal implementation.
 		/// </summary>
 		/// <param name="riid">
-		/// A reference to the identifier of the interface whose pointer is to be marshaled. This interface must be derived from the IUnknown interface.
+		/// A reference to the identifier of the interface whose pointer is to be marshaled. This interface must be derived from the
+		/// IUnknown interface.
 		/// </param>
 		/// <param name="pUnk">A pointer to the interface to be marshaled.</param>
 		/// <param name="dwDestContext">
-		/// The destination context where the specified interface is to be unmarshaled. Values come from the enumeration MSHCTX. Unmarshaling
-		/// can occur either in another apartment of the current process (MSHCTX_INPROC) or in another process on the same computer as the
-		/// current process (MSHCTX_LOCAL).
+		/// The destination context where the specified interface is to be unmarshaled. Values come from the enumeration MSHCTX.
+		/// Unmarshaling can occur either in another apartment of the current process (MSHCTX_INPROC) or in another process on the same
+		/// computer as the current process (MSHCTX_LOCAL).
 		/// </param>
 		/// <param name="pvDestContext">This parameter is reserved and must be <c>NULL</c>.</param>
 		/// <param name="mshlflags">
@@ -2030,8 +2036,8 @@ namespace Vanara.PInvoke
 		/// The <c>CoGetStandardMarshal</c> function creates a default, or standard, marshaling object in either the client process or the
 		/// server process, as may be necessary, and returns that object's IMarshal pointer to the caller. If you implement <c>IMarshal</c>,
 		/// you may want your implementation to call <c>CoGetStandardMarshal</c> as a way of delegating to COM's default implementation any
-		/// destination contexts that you do not fully understand or want to handle. Otherwise, you can ignore this function, which COM calls
-		/// as part of its internal marshaling procedures.
+		/// destination contexts that you do not fully understand or want to handle. Otherwise, you can ignore this function, which COM
+		/// calls as part of its internal marshaling procedures.
 		/// </para>
 		/// <para>
 		/// When the COM library in the client process receives a marshaled interface pointer, it looks for a CLSID to be used in creating a
@@ -2116,8 +2122,8 @@ namespace Vanara.PInvoke
 		/// <summary>Returns the CLSID of an object that can emulate the specified object.</summary>
 		/// <param name="clsidOld">The CLSID of the object that can be emulated (treated as) an object with a different CLSID.</param>
 		/// <param name="pClsidNew">
-		/// A pointer to where the CLSID that can emulate clsidOld objects is retrieved. This parameter cannot be <c>NULL</c>. If there is no
-		/// emulation information for clsidOld objects, the clsidOld parameter is supplied.
+		/// A pointer to where the CLSID that can emulate clsidOld objects is retrieved. This parameter cannot be <c>NULL</c>. If there is
+		/// no emulation information for clsidOld objects, the clsidOld parameter is supplied.
 		/// </param>
 		/// <returns>
 		/// <para>This function can return the following values, as well as any error values returned by the CLSIDFromString function.</para>
@@ -2141,8 +2147,8 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </returns>
 		/// <remarks>
-		/// <c>CoGetTreatAsClass</c> returns the TreatAs entry in the registry for the specified object. The <c>TreatAs</c> entry, if set, is
-		/// the CLSID of a registered object (an application) that can emulate the object in question. The <c>TreatAs</c> entry is set
+		/// <c>CoGetTreatAsClass</c> returns the TreatAs entry in the registry for the specified object. The <c>TreatAs</c> entry, if set,
+		/// is the CLSID of a registered object (an application) that can emulate the object in question. The <c>TreatAs</c> entry is set
 		/// through a call to the CoTreatAsClass function. Emulation allows an application to open and edit an object of a different format,
 		/// while retaining the original format of the object. Objects of the original CLSID are activated and treated as objects of the
 		/// second CLSID. When the object is saved, this may result in loss of edits not supported by the original format. If there is no
@@ -2197,8 +2203,8 @@ namespace Vanara.PInvoke
 		/// returned by <c>CoIncrementMTAUsage</c> is passed to <c>CoDecrementMTAUsage</c>.
 		/// </para>
 		/// <para>
-		/// <c>CoIncrementMTAUsage</c> creates the MTA, if the MTA does not already exist. <c>CoIncrementMTAUsage</c> puts the current thread
-		/// into the MTA, if the current thread is not already in an apartment
+		/// <c>CoIncrementMTAUsage</c> creates the MTA, if the MTA does not already exist. <c>CoIncrementMTAUsage</c> puts the current
+		/// thread into the MTA, if the current thread is not already in an apartment
 		/// </para>
 		/// <para>You can use <c>CoIncrementMTAUsage</c> when:</para>
 		/// <list type="bullet">
@@ -2224,8 +2230,8 @@ namespace Vanara.PInvoke
 		/// <para>Only administrators may call this function.</para>
 		/// </summary>
 		/// <param name="pszMachineName">
-		/// The computer name for which binding handles should be flushed, or an empty string to signify that all handles in the cache should
-		/// be flushed.
+		/// The computer name for which binding handles should be flushed, or an empty string to signify that all handles in the cache
+		/// should be flushed.
 		/// </param>
 		/// <returns>
 		/// <para>This function can return the following values.</para>
@@ -2258,10 +2264,10 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// The OLE Service Control Manager is used by COM to send component activation requests to other machines. To do this, the OLE
-		/// Service Control Manager maintains a cache of RPC binding handles to send activation requests to computer, keyed by computer name.
-		/// Under normal circumstances, this works well, but in some scenarios, such as Web farms and load-balancing situations, the ability
-		/// to purge this cache of specific handles might be needed in order to facilitate rebinding to a different physical server by the
-		/// same name. <c>CoInvalidateRemoteMachineBindings</c> is used for this purpose.
+		/// Service Control Manager maintains a cache of RPC binding handles to send activation requests to computer, keyed by computer
+		/// name. Under normal circumstances, this works well, but in some scenarios, such as Web farms and load-balancing situations, the
+		/// ability to purge this cache of specific handles might be needed in order to facilitate rebinding to a different physical server
+		/// by the same name. <c>CoInvalidateRemoteMachineBindings</c> is used for this purpose.
 		/// </para>
 		/// <para>
 		/// The OLE Service Control Manager will flush unused binding handles over time. It is not necessary to call
@@ -2310,19 +2316,19 @@ namespace Vanara.PInvoke
 		/// <returns>This function can return the standard return values E_INVALIDARG, E_OUTOFMEMORY, E_UNEXPECTED, and S_OK.</returns>
 		/// <remarks>
 		/// <para>
-		/// The <c>CoLockObjectExternal</c> function must be called in the process in which the object actually resides (the EXE process, not
-		/// the process in which handlers may be loaded).
+		/// The <c>CoLockObjectExternal</c> function must be called in the process in which the object actually resides (the EXE process,
+		/// not the process in which handlers may be loaded).
 		/// </para>
 		/// <para>
 		/// The <c>CoLockObjectExternal</c> function prevents the reference count of an object from going to zero, thereby "locking" it into
-		/// existence until the lock is released. The same function (with different parameters) releases the lock. The lock is implemented by
-		/// having the system call IUnknown::AddRef on the object. The system then waits to call IUnknown::Release on the object until a
-		/// later call to <c>CoLockObjectExternal</c> with fLock set to <c>FALSE</c>. This function can be used to maintain a reference count
-		/// on the object on behalf of the end user, because it acts outside of the object, as does the user.
+		/// existence until the lock is released. The same function (with different parameters) releases the lock. The lock is implemented
+		/// by having the system call IUnknown::AddRef on the object. The system then waits to call IUnknown::Release on the object until a
+		/// later call to <c>CoLockObjectExternal</c> with fLock set to <c>FALSE</c>. This function can be used to maintain a reference
+		/// count on the object on behalf of the end user, because it acts outside of the object, as does the user.
 		/// </para>
 		/// <para>
-		/// The end user has explicit control over the lifetime of an application, even if there are external locks on it. That is, if a user
-		/// decides to close the application, it must shut down. In the presence of external locks (such as the lock set by
+		/// The end user has explicit control over the lifetime of an application, even if there are external locks on it. That is, if a
+		/// user decides to close the application, it must shut down. In the presence of external locks (such as the lock set by
 		/// <c>CoLockObjectExternal</c>), the application can call the CoDisconnectObject function to force these connections to close prior
 		/// to shutdown.
 		/// </para>
@@ -2437,9 +2443,9 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pUnk">A pointer to the interface to be marshaled. This interface must be derived from the IUnknown interface.</param>
 		/// <param name="dwDestContext">
-		/// The destination context where the specified interface is to be unmarshaled. The possible values come from the enumeration MSHCTX.
-		/// Currently, unmarshaling can occur in another apartment of the current process (MSHCTX_INPROC), in another process on the same
-		/// computer as the current process (MSHCTX_LOCAL), or in a process on a different computer (MSHCTX_DIFFERENTMACHINE).
+		/// The destination context where the specified interface is to be unmarshaled. The possible values come from the enumeration
+		/// MSHCTX. Currently, unmarshaling can occur in another apartment of the current process (MSHCTX_INPROC), in another process on the
+		/// same computer as the current process (MSHCTX_LOCAL), or in a process on a different computer (MSHCTX_DIFFERENTMACHINE).
 		/// </param>
 		/// <param name="pvDestContext">This parameter is reserved and must be <c>NULL</c>.</param>
 		/// <param name="mshlflags">
@@ -2495,10 +2501,10 @@ namespace Vanara.PInvoke
 		/// Before calling <c>CoUnmarshalInterface</c>, seek back to the original position in the stream.
 		/// </para>
 		/// <para>
-		/// If you are implementing existing COM interfaces or defining your own interfaces using the Microsoft Interface Definition Language
-		/// (MIDL), the MIDL-generated proxies and stubs call <c>CoMarshalInterface</c> for you. If you are writing your own proxies and
-		/// stubs, your proxy code and stub code should each call <c>CoMarshalInterface</c> to correctly marshal interface pointers. Calling
-		/// IMarshal directly from your proxy and stub code is not recommended.
+		/// If you are implementing existing COM interfaces or defining your own interfaces using the Microsoft Interface Definition
+		/// Language (MIDL), the MIDL-generated proxies and stubs call <c>CoMarshalInterface</c> for you. If you are writing your own
+		/// proxies and stubs, your proxy code and stub code should each call <c>CoMarshalInterface</c> to correctly marshal interface
+		/// pointers. Calling IMarshal directly from your proxy and stub code is not recommended.
 		/// </para>
 		/// <para>
 		/// If you are writing your own implementation of IMarshal, and your proxy needs access to a private object, you can include an
@@ -2522,9 +2528,9 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// The <c>CoMarshalInterThreadInterfaceInStream</c> function enables an object to easily and reliably marshal an interface pointer
-		/// to another thread in the same process. The stream returned in the ppStm parameter is guaranteed to behave correctly when a client
-		/// running in the receiving thread attempts to unmarshal the pointer. The client can then call the CoGetInterfaceAndReleaseStream to
-		/// unmarshal the interface pointer and release the stream object.
+		/// to another thread in the same process. The stream returned in the ppStm parameter is guaranteed to behave correctly when a
+		/// client running in the receiving thread attempts to unmarshal the pointer. The client can then call the
+		/// CoGetInterfaceAndReleaseStream to unmarshal the interface pointer and release the stream object.
 		/// </para>
 		/// <para>The <c>CoMarshalInterThreadInterfaceInStream</c> function performs the following tasks:</para>
 		/// <list type="number">
@@ -2556,8 +2562,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// <c>CoQueryAuthenticationServices</c> retrieves a list of the authentication services currently registered. If the process calls
 		/// CoInitializeSecurity, these are the services registered through that call. If the application does not call it,
-		/// <c>CoInitializeSecurity</c> is called automatically by COM, registering the default security package, the first time an interface
-		/// is marshaled or unmarshaled.
+		/// <c>CoInitializeSecurity</c> is called automatically by COM, registering the default security package, the first time an
+		/// interface is marshaled or unmarshaled.
 		/// </para>
 		/// <para>
 		/// This function returns only the authentication services registered with CoInitializeSecurity. It does not return all of the
@@ -2577,15 +2583,13 @@ namespace Vanara.PInvoke
 		public static extern HRESULT CoQueryAuthenticationServices(out uint pcAuthSvc, out SafeCoTaskMemHandle asAuthSvc);
 
 		/// <summary>Retrieves a list of the authentication services registered when the process called CoInitializeSecurity.</summary>
-		/// <returns>
-		/// An array of SOLE_AUTHENTICATION_SERVICE structures.
-		/// </returns>
+		/// <returns>An array of SOLE_AUTHENTICATION_SERVICE structures.</returns>
 		/// <remarks>
 		/// <para>
 		/// <c>CoQueryAuthenticationServices</c> retrieves a list of the authentication services currently registered. If the process calls
 		/// CoInitializeSecurity, these are the services registered through that call. If the application does not call it,
-		/// <c>CoInitializeSecurity</c> is called automatically by COM, registering the default security package, the first time an interface
-		/// is marshaled or unmarshaled.
+		/// <c>CoInitializeSecurity</c> is called automatically by COM, registering the default security package, the first time an
+		/// interface is marshaled or unmarshaled.
 		/// </para>
 		/// <para>
 		/// This function returns only the authentication services registered with CoInitializeSecurity. It does not return all of the
@@ -2611,20 +2615,20 @@ namespace Vanara.PInvoke
 		/// authentication service constants. If the caller specifies <c>NULL</c>, the current authentication service is not retrieved.
 		/// </param>
 		/// <param name="pAuthzSvc">
-		/// A pointer to a variable that receives the current authorization service. This will be a single value taken from the authorization
-		/// constants. If the caller specifies <c>NULL</c>, the current authorization service is not retrieved.
+		/// A pointer to a variable that receives the current authorization service. This will be a single value taken from the
+		/// authorization constants. If the caller specifies <c>NULL</c>, the current authorization service is not retrieved.
 		/// </param>
 		/// <param name="pServerPrincName">The string builder.</param>
 		/// <param name="pAuthnLevel">
-		/// A pointer to a variable that receives the current authentication level. This will be a single value taken from the authentication
-		/// level constants. If the caller specifies <c>NULL</c>, the current authentication level is not retrieved.
+		/// A pointer to a variable that receives the current authentication level. This will be a single value taken from the
+		/// authentication level constants. If the caller specifies <c>NULL</c>, the current authentication level is not retrieved.
 		/// </param>
 		/// <param name="pImpLevel">This parameter must be <c>NULL</c>.</param>
 		/// <param name="pPrivs">
 		/// A pointer to a handle that receives the privilege information for the client application. The format of the structure that the
 		/// handle refers to depends on the authentication service. The application should not write or free the memory. The information is
-		/// valid only for the duration of the current call. For NTLMSSP and Kerberos, this is a string identifying the client principal. For
-		/// Schannel, this is a CERT_CONTEXT structure that represents the client's certificate. If the client has no certificate,
+		/// valid only for the duration of the current call. For NTLMSSP and Kerberos, this is a string identifying the client principal.
+		/// For Schannel, this is a CERT_CONTEXT structure that represents the client's certificate. If the client has no certificate,
 		/// <c>NULL</c> is returned. If the caller specifies <c>NULL</c>, the current privilege information is not retrieved. See RPC_AUTHZ_HANDLE.
 		/// </param>
 		/// <param name="pCapabilities">
@@ -2658,12 +2662,12 @@ namespace Vanara.PInvoke
 		/// A pointer indicating the proxy to query. This parameter cannot be <c>NULL</c>. For more information, see the Remarks section.
 		/// </param>
 		/// <param name="pwAuthnSvc">
-		/// A pointer to a variable that receives the current authentication level. This will be a single value taken from the authentication
-		/// level constants. If the caller specifies <c>NULL</c>, the current authentication level is not retrieved.
+		/// A pointer to a variable that receives the current authentication level. This will be a single value taken from the
+		/// authentication level constants. If the caller specifies <c>NULL</c>, the current authentication level is not retrieved.
 		/// </param>
 		/// <param name="pAuthzSvc">
-		/// A pointer to a variable that receives the current authorization service. This will be a single value taken from the authorization
-		/// constants. If the caller specifies <c>NULL</c>, the current authorization service is not retrieved.
+		/// A pointer to a variable that receives the current authorization service. This will be a single value taken from the
+		/// authorization constants. If the caller specifies <c>NULL</c>, the current authorization service is not retrieved.
 		/// </param>
 		/// <param name="pServerPrincName">
 		/// The current principal name. The string will be allocated by the callee using CoTaskMemAlloc, and must be freed by the caller
@@ -2671,8 +2675,8 @@ namespace Vanara.PInvoke
 		/// msstd and fullsic forms, see Principal Names. If the caller specifies <c>NULL</c>, the current principal name is not retrieved.
 		/// </param>
 		/// <param name="pAuthnLevel">
-		/// A pointer to a variable that receives the current authentication level. This will be a single value taken from the authentication
-		/// level constants. If the caller specifies <c>NULL</c>, the current authentication level is not retrieved.
+		/// A pointer to a variable that receives the current authentication level. This will be a single value taken from the
+		/// authentication level constants. If the caller specifies <c>NULL</c>, the current authentication level is not retrieved.
 		/// </param>
 		/// <param name="pImpLevel">
 		/// A pointer to a variable that receives the current impersonation level. This will be a single value taken from the impersonation
@@ -2693,18 +2697,18 @@ namespace Vanara.PInvoke
 		/// <returns>This function can return the standard return values E_INVALIDARG, E_OUTOFMEMORY, and S_OK.</returns>
 		/// <remarks>
 		/// <para>
-		/// <c>CoQueryProxyBlanket</c> is called by the client to retrieve the authentication information COM will use on calls made from the
-		/// specified proxy. This function encapsulates the following sequence of common calls (error handling excluded):
+		/// <c>CoQueryProxyBlanket</c> is called by the client to retrieve the authentication information COM will use on calls made from
+		/// the specified proxy. This function encapsulates the following sequence of common calls (error handling excluded):
 		/// </para>
 		/// <para>
 		/// This sequence calls QueryInterface on the proxy to get a pointer to IClientSecurity, and with the resulting pointer, calls
 		/// IClientSecurity::QueryBlanket and then releases the pointer.
 		/// </para>
 		/// <para>
-		/// In pProxy, you can pass any proxy, such as a proxy you get through a call to CoCreateInstance or CoUnmarshalInterface, or you can
-		/// pass an interface pointer. It can be any interface. You cannot pass a pointer to something that is not a proxy. Therefore, you
-		/// can't pass a pointer to an interface that has the local keyword in its interface definition because no proxy is created for such
-		/// an interface. IUnknown is the exception to this rule.
+		/// In pProxy, you can pass any proxy, such as a proxy you get through a call to CoCreateInstance or CoUnmarshalInterface, or you
+		/// can pass an interface pointer. It can be any interface. You cannot pass a pointer to something that is not a proxy. Therefore,
+		/// you can't pass a pointer to an interface that has the local keyword in its interface definition because no proxy is created for
+		/// such an interface. IUnknown is the exception to this rule.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-coqueryproxyblanket HRESULT CoQueryProxyBlanket(
@@ -2755,10 +2759,10 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// EXE object applications should call <c>CoRegisterClassObject</c> on startup. It can also be used to register internal objects for
-		/// use by the same EXE or other code (such as DLLs) that the EXE uses. Only EXE object applications call
-		/// <c>CoRegisterClassObject</c>. Object handlers or DLL object applications do not call this function — instead, they must implement
-		/// and export the DllGetClassObject function.
+		/// EXE object applications should call <c>CoRegisterClassObject</c> on startup. It can also be used to register internal objects
+		/// for use by the same EXE or other code (such as DLLs) that the EXE uses. Only EXE object applications call
+		/// <c>CoRegisterClassObject</c>. Object handlers or DLL object applications do not call this function — instead, they must
+		/// implement and export the DllGetClassObject function.
 		/// </para>
 		/// <para>
 		/// At startup, a multiple-use EXE object application must create a class object (with the IClassFactory interface on it), and call
@@ -2796,19 +2800,19 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// As of Windows Server 2003, if a COM object application is registered as a service, COM verifies the registration. COM makes sure
 		/// the process ID of the service, in the service control manager (SCM), matches the process ID of the registering process. If not,
-		/// COM fails the registration. If the COM object application runs in the system account with no registry key, COM treats the objects
-		/// application identity as Launching User.
+		/// COM fails the registration. If the COM object application runs in the system account with no registry key, COM treats the
+		/// objects application identity as Launching User.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-coregisterclassobject HRESULT CoRegisterClassObject(
-		// REFCLSID rclsid, LPUNKNOWN pUnk, DWORD dwClsContext, DWORD flags, LPDWORD lpdwRegister );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-coregisterclassobject HRESULT
+		// CoRegisterClassObject( REFCLSID rclsid, LPUNKNOWN pUnk, DWORD dwClsContext, DWORD flags, LPDWORD lpdwRegister );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "d27bfa6c-194a-41f1-8fcf-76c4dff14a8a")]
 		public static extern HRESULT CoRegisterClassObject(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown)] object pUnk, CLSCTX dwClsContext, REGCLS flags, out uint lpdwRegister);
 
 		/// <summary>
-		/// Enables a downloaded DLL to register its custom interfaces within its running process so that the marshaling code will be able to
-		/// marshal those interfaces.
+		/// Enables a downloaded DLL to register its custom interfaces within its running process so that the marshaling code will be able
+		/// to marshal those interfaces.
 		/// </summary>
 		/// <param name="riid">A pointer to the IID of the interface to be registered.</param>
 		/// <param name="rclsid">
@@ -2824,8 +2828,8 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// In some cases, however, it may be desirable or necessary for an in-process handler or in-process server to make its custom
 		/// interfaces available without writing to the registry. A DLL downloaded across a network may not even have permission to access
-		/// the local registry, and because the code originated on another computer, the user, for security purposes, may want to run it in a
-		/// restricted environment. Or a DLL may have custom interfaces that it uses to talk to a remote server and may also include the
+		/// the local registry, and because the code originated on another computer, the user, for security purposes, may want to run it in
+		/// a restricted environment. Or a DLL may have custom interfaces that it uses to talk to a remote server and may also include the
 		/// ProxyStub code for those interfaces. In such cases, a DLL needs an alternative way to register its interfaces.
 		/// <c>CoRegisterPSClsid</c>, used in conjunction with CoRegisterClassObject, provides that alternative.
 		/// </para>
@@ -2967,7 +2971,8 @@ namespace Vanara.PInvoke
 		/// application may be shutdown prematurely. In-process Servers typically should not call CoAddRefServerProcess or <c>CoReleaseServerProcess</c>.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-coreleaseserverprocess ULONG CoReleaseServerProcess( );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-coreleaseserverprocess ULONG
+		// CoReleaseServerProcess( );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "b28d41e2-4144-413d-9963-14f2d4dc8876")]
 		public static extern uint CoReleaseServerProcess();
@@ -2980,8 +2985,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// Servers that can register multiple class objects call <c>CoResumeClassObjects</c> once, after having first called
-		/// CoRegisterClassObject, specifying REGCLS_LOCAL_SERVER | REGCLS_SUSPENDED for each CLSID the server supports. This function causes
-		/// OLE to inform the SCM about all the registered classes, and begins letting activation requests into the server process.
+		/// CoRegisterClassObject, specifying REGCLS_LOCAL_SERVER | REGCLS_SUSPENDED for each CLSID the server supports. This function
+		/// causes OLE to inform the SCM about all the registered classes, and begins letting activation requests into the server process.
 		/// </para>
 		/// <para>
 		/// This reduces the overall registration time, and thus the server application startup time, by making a single call to the SCM, no
@@ -3159,9 +3164,9 @@ namespace Vanara.PInvoke
 		/// token). If the handle refers to a structure, that identity is used.
 		/// </para>
 		/// <para>
-		/// For Schannel, this parameter must be either a pointer to a CERT_CONTEXT structure that contains the client's X.509 certificate or
-		/// is <c>NULL</c> if the client wishes to make an anonymous connection to the server. If a certificate is specified, the caller must
-		/// not free it as long as any proxy to the object exists in the current apartment.
+		/// For Schannel, this parameter must be either a pointer to a CERT_CONTEXT structure that contains the client's X.509 certificate
+		/// or is <c>NULL</c> if the client wishes to make an anonymous connection to the server. If a certificate is specified, the caller
+		/// must not free it as long as any proxy to the object exists in the current apartment.
 		/// </para>
 		/// <para>
 		/// For Snego, this member is either <c>NULL</c>, points to a SEC_WINNT_AUTH_IDENTITY structure, or points to a
@@ -3179,10 +3184,10 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwCapabilities">
 		/// The capabilities of this proxy. For a list of possible values, see the EOLE_AUTHENTICATION_CAPABILITIES enumeration. The only
-		/// flags that can be set through this function are EOAC_MUTUAL_AUTH, EOAC_STATIC_CLOAKING, EOAC_DYNAMIC_CLOAKING, EOAC_ANY_AUTHORITY
-		/// (this flag is deprecated), EOAC_MAKE_FULLSIC, and EOAC_DEFAULT. Either EOAC_STATIC_CLOAKING or EOAC_DYNAMIC_CLOAKING can be set
-		/// if pAuthInfo is not set and Schannel is not the authentication service. (See Cloaking for more information.) If any capability
-		/// flags other than those mentioned here are set, <c>CoSetProxyBlanket</c> will fail.
+		/// flags that can be set through this function are EOAC_MUTUAL_AUTH, EOAC_STATIC_CLOAKING, EOAC_DYNAMIC_CLOAKING,
+		/// EOAC_ANY_AUTHORITY (this flag is deprecated), EOAC_MAKE_FULLSIC, and EOAC_DEFAULT. Either EOAC_STATIC_CLOAKING or
+		/// EOAC_DYNAMIC_CLOAKING can be set if pAuthInfo is not set and Schannel is not the authentication service. (See Cloaking for more
+		/// information.) If any capability flags other than those mentioned here are set, <c>CoSetProxyBlanket</c> will fail.
 		/// </param>
 		/// <returns>
 		/// <para>This function can return the following values.</para>
@@ -3228,15 +3233,16 @@ namespace Vanara.PInvoke
 		/// CLSID it has registered, in the apartment it registered in. Applications typically do not need to call this function, which is
 		/// generally only called internally by OLE when used in conjunction with the CoReleaseServerProcess function.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cosuspendclassobjects HRESULT CoSuspendClassObjects( );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cosuspendclassobjects HRESULT
+		// CoSuspendClassObjects( );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "a9e526f8-b7c1-47ec-a6ab-91690d93119e")]
 		public static extern HRESULT CoSuspendClassObjects();
 
 		/// <summary>Switches the call context object used by CoGetCallContext.</summary>
 		/// <param name="pNewObject">
-		/// A pointer to an interface on the new call context object. COM stores this pointer without adding a reference to the pointer until
-		/// <c>CoSwitchCallContext</c> is called with another object. This parameter may be <c>NULL</c> if you are calling
+		/// A pointer to an interface on the new call context object. COM stores this pointer without adding a reference to the pointer
+		/// until <c>CoSwitchCallContext</c> is called with another object. This parameter may be <c>NULL</c> if you are calling
 		/// <c>CoSwitchCallContext</c> to switch back to the original call context but there was no original call context.
 		/// </param>
 		/// <param name="ppOldObject">
@@ -3264,9 +3270,9 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// Custom marshallers call <c>CoSwitchCallContext</c> to change the call context object used by the CoGetCallContext function.
-		/// Before dispatching an arriving call, custom marshallers call <c>CoSwitchCallContext</c>, specifying the new context object. After
-		/// sending a reply, they must restore the original call context by calling <c>CoSwitchCallContext</c> again, this time passing a
-		/// pointer to the original context object.
+		/// Before dispatching an arriving call, custom marshallers call <c>CoSwitchCallContext</c>, specifying the new context object.
+		/// After sending a reply, they must restore the original call context by calling <c>CoSwitchCallContext</c> again, this time
+		/// passing a pointer to the original context object.
 		/// </para>
 		/// <para>
 		/// <c>CoSwitchCallContext</c> does not add a reference to the new context object. Custom marshallers must ensure that the lifetime
@@ -3295,9 +3301,9 @@ namespace Vanara.PInvoke
 		/// allocated block may be larger than cb bytes because of the space required for alignment and for maintenance information.
 		/// </para>
 		/// <para>
-		/// If cb is 0, <c>CoTaskMemAlloc</c> allocates a zero-length item and returns a valid pointer to that item. If there is insufficient
-		/// memory available, <c>CoTaskMemAlloc</c> returns <c>NULL</c>. Applications should always check the return value from this
-		/// function, even when requesting small amounts of memory, because there is no guarantee that the memory will be allocated.
+		/// If cb is 0, <c>CoTaskMemAlloc</c> allocates a zero-length item and returns a valid pointer to that item. If there is
+		/// insufficient memory available, <c>CoTaskMemAlloc</c> returns <c>NULL</c>. Applications should always check the return value from
+		/// this function, even when requesting small amounts of memory, because there is no guarantee that the memory will be allocated.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cotaskmemalloc LPVOID CoTaskMemAlloc( SIZE_T cb );
@@ -3332,8 +3338,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// The pv parameter points to the beginning of the memory block. If pv is <c>NULL</c>, <c>CoTaskMemRealloc</c> allocates a new
-		/// memory block in the same way as the CoTaskMemAlloc function. If pv is not <c>NULL</c>, it should be a pointer returned by a prior
-		/// call to <c>CoTaskMemAlloc</c>.
+		/// memory block in the same way as the CoTaskMemAlloc function. If pv is not <c>NULL</c>, it should be a pointer returned by a
+		/// prior call to <c>CoTaskMemAlloc</c>.
 		/// </para>
 		/// <para>
 		/// The cb parameter specifies the size of the new block. The contents of the block are unchanged up to the shorter of the new and
@@ -3343,12 +3349,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// <c>CoTaskMemRealloc</c> returns a void pointer to the reallocated (and possibly moved) memory block. The return value is
-		/// <c>NULL</c> if the size is 0 and the buffer argument is not <c>NULL</c>, or if there is not enough memory available to expand the
-		/// block to the specified size. In the first case, the original block is freed; in the second case, the original block is unchanged.
+		/// <c>NULL</c> if the size is 0 and the buffer argument is not <c>NULL</c>, or if there is not enough memory available to expand
+		/// the block to the specified size. In the first case, the original block is freed; in the second case, the original block is unchanged.
 		/// </para>
 		/// <para>
-		/// The storage space pointed to by the return value is guaranteed to be suitably aligned for storage of any type of object. To get a
-		/// pointer to a type other than <c>void</c>, use a type cast on the return value.
+		/// The storage space pointed to by the return value is guaranteed to be suitably aligned for storage of any type of object. To get
+		/// a pointer to a type other than <c>void</c>, use a type cast on the return value.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cotaskmemrealloc LPVOID CoTaskMemRealloc( LPVOID pv,
@@ -3383,14 +3389,14 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// Server objects should call <c>CoTestCancel</c> at least once before returning to detect client cancellation requests. Doing so
-		/// can save the server unnecessary work if the client has issued a cancellation request, and it can reduce the client's wait time if
-		/// it has set the cancel timeout as RPC_C_CANCEL_INFINITE_TIMEOUT. Furthermore, if the server object detects a cancellation request
-		/// before returning from a pending call, it can clean up any memory, marshaled interfaces, or handles it has created or obtained.
+		/// can save the server unnecessary work if the client has issued a cancellation request, and it can reduce the client's wait time
+		/// if it has set the cancel timeout as RPC_C_CANCEL_INFINITE_TIMEOUT. Furthermore, if the server object detects a cancellation
+		/// request before returning from a pending call, it can clean up any memory, marshaled interfaces, or handles it has created or obtained.
 		/// </para>
 		/// <para>
-		/// <c>CoTestCancel</c> calls CoGetCallContext to obtain the ICancelMethodCalls interface on the current cancel object and then calls
-		/// ICancelMethodCalls::TestCancel. Objects that implement custom marshaling should first call CoSwitchCallContext to install the
-		/// appropriate call context object.
+		/// <c>CoTestCancel</c> calls CoGetCallContext to obtain the ICancelMethodCalls interface on the current cancel object and then
+		/// calls ICancelMethodCalls::TestCancel. Objects that implement custom marshaling should first call CoSwitchCallContext to install
+		/// the appropriate call context object.
 		/// </para>
 		/// <para>This function does not test cancellation for asynchronous calls.</para>
 		/// </remarks>
@@ -3421,8 +3427,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// You do not explicitly call this function unless you are performing custom marshaling (that is, writing your own implementation of
-		/// IMarshal), and your implementation needs to unmarshal an <c>HRESULT</c>.
+		/// You do not explicitly call this function unless you are performing custom marshaling (that is, writing your own implementation
+		/// of IMarshal), and your implementation needs to unmarshal an <c>HRESULT</c>.
 		/// </para>
 		/// <para>
 		/// You must use <c>CoUnmarshalHresult</c> to unmarshal <c>HRESULT</c> values previously marshaled by a call to the CoMarshalHresult function.
@@ -3453,8 +3459,8 @@ namespace Vanara.PInvoke
 		/// by the stream, objref.iid.
 		/// </param>
 		/// <param name="ppv">
-		/// The address of pointer variable that receives the interface pointer requested in <paramref name="riid"/>. Upon successful return,
-		/// <paramref name="ppv"/> contains the requested interface pointer for the unmarshaled interface.
+		/// The address of pointer variable that receives the interface pointer requested in <paramref name="riid"/>. Upon successful
+		/// return, <paramref name="ppv"/> contains the requested interface pointer for the unmarshaled interface.
 		/// </param>
 		/// <returns>
 		/// <para>This function can return the standard return value E_FAIL, errors returned by CoCreateInstance, and the following values.</para>
@@ -3504,11 +3510,12 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// Gets an IMarshal pointer to the proxy that is to do the unmarshaling. If the object uses COM's default marshaling implementation,
-		/// the pointer thus obtained is to an instance of the generic proxy object. If the marshaling is occurring between two threads in
-		/// the same process, the pointer is to an instance of the in-process free threaded marshaler. If the object provides its own
-		/// marshaling code, <c>CoUnmarshalInterface</c> calls the CoCreateInstance function, passing the CLSID it read from the marshaling
-		/// stream. <c>CoCreateInstance</c> creates an instance of the object's proxy and returns an <c>IMarshal</c> interface pointer to the proxy.
+		/// Gets an IMarshal pointer to the proxy that is to do the unmarshaling. If the object uses COM's default marshaling
+		/// implementation, the pointer thus obtained is to an instance of the generic proxy object. If the marshaling is occurring between
+		/// two threads in the same process, the pointer is to an instance of the in-process free threaded marshaler. If the object provides
+		/// its own marshaling code, <c>CoUnmarshalInterface</c> calls the CoCreateInstance function, passing the CLSID it read from the
+		/// marshaling stream. <c>CoCreateInstance</c> creates an instance of the object's proxy and returns an <c>IMarshal</c> interface
+		/// pointer to the proxy.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -3538,8 +3545,8 @@ namespace Vanara.PInvoke
 		/// <param name="pHandles">An array of handles.</param>
 		/// <param name="lpdwindex">
 		/// <para>
-		/// A pointer to a variable that, when the returned status is S_OK, receives a value indicating the event that caused the function to
-		/// return. This value is usually the index into pHandles for the handle that was signaled.
+		/// A pointer to a variable that, when the returned status is S_OK, receives a value indicating the event that caused the function
+		/// to return. This value is usually the index into pHandles for the handle that was signaled.
 		/// </para>
 		/// <para>
 		/// If pHandles includes one or more handles to mutex objects, a value between WAIT_ABANDONED_0 and (WAIT_ABANDONED_0 + nCountâ€“ 1)
@@ -3583,8 +3590,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// Depending on which flags are set in the dwFlags parameter, <c>CoWaitForMultipleHandles</c> blocks the calling thread until one of
-		/// the following events occurs:
+		/// Depending on which flags are set in the dwFlags parameter, <c>CoWaitForMultipleHandles</c> blocks the calling thread until one
+		/// of the following events occurs:
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
@@ -3628,8 +3635,8 @@ namespace Vanara.PInvoke
 		/// <param name="pHandles">An array of handles to waitable kernel objects.</param>
 		/// <param name="lpdwindex">Receives the index of the handle that satisfied the wait.</param>
 		/// <returns>
-		/// Same return values as CoWaitForMultipleHandles, except the ASTA-specific CO_E_NOTSUPPORTED cases instead return E_INVALIDARG from
-		/// all apartment types.
+		/// Same return values as CoWaitForMultipleHandles, except the ASTA-specific CO_E_NOTSUPPORTED cases instead return E_INVALIDARG
+		/// from all apartment types.
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cowaitformultipleobjects HRESULT
 		// CoWaitForMultipleObjects( DWORD dwFlags, DWORD dwTimeout, ULONG cHandles, const HANDLE *pHandles, LPDWORD lpdwindex );
@@ -3652,8 +3659,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </summary>
 		/// <param name="hGlobal">
-		/// A memory handle allocated by the GlobalAlloc function, or if <c>NULL</c> a new handle is to be allocated instead. The handle must
-		/// be allocated as moveable and nondiscardable.
+		/// A memory handle allocated by the GlobalAlloc function, or if <c>NULL</c> a new handle is to be allocated instead. The handle
+		/// must be allocated as moveable and nondiscardable.
 		/// </param>
 		/// <param name="fDeleteOnRelease">
 		/// A value that indicates whether the underlying handle for this stream object should be automatically freed when the stream object
@@ -3668,8 +3675,8 @@ namespace Vanara.PInvoke
 		/// <para>If hGlobal is <c>NULL</c>, the function allocates a new memory handle and the stream is initially empty.</para>
 		/// <para>
 		/// If hGlobal is not <c>NULL</c>, the initial contents of the stream are the current contents of the memory block. Thus,
-		/// <c>CreateStreamOnHGlobal</c> can be used to open an existing stream in memory. The memory handle and its contents are undisturbed
-		/// by the creation of the new stream object.
+		/// <c>CreateStreamOnHGlobal</c> can be used to open an existing stream in memory. The memory handle and its contents are
+		/// undisturbed by the creation of the new stream object.
 		/// </para>
 		/// <para>
 		/// The initial size of the stream is the size of hGlobal as returned by the GlobalSize function. Because of rounding, this is not
@@ -3734,8 +3741,8 @@ namespace Vanara.PInvoke
 		/// stream may leave portions of the newly allocated memory uninitialized.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-createstreamonhglobal HRESULT CreateStreamOnHGlobal(
-		// HGLOBAL hGlobal, BOOL fDeleteOnRelease, LPSTREAM *ppstm );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-createstreamonhglobal HRESULT
+		// CreateStreamOnHGlobal( HGLOBAL hGlobal, BOOL fDeleteOnRelease, LPSTREAM *ppstm );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "413c107b-a943-4c02-9c00-aea708e876d7")]
 		public static extern HRESULT CreateStreamOnHGlobal(IntPtr hGlobal, [MarshalAs(UnmanagedType.Bool)] bool fDeleteOnRelease, out IStream ppstm);
@@ -3763,8 +3770,8 @@ namespace Vanara.PInvoke
 		/// CoGetClassObject function. (You also need to implement and export the DllGetClassObject function in the same DLL).
 		/// </para>
 		/// <para>
-		/// If a DLL loaded through a call to CoGetClassObject fails to export <c>DllCanUnloadNow</c>, the DLL will not be unloaded until the
-		/// application calls the CoUninitialize function to release the OLE libraries.
+		/// If a DLL loaded through a call to CoGetClassObject fails to export <c>DllCanUnloadNow</c>, the DLL will not be unloaded until
+		/// the application calls the CoUninitialize function to release the OLE libraries.
 		/// </para>
 		/// <para><c>DllCanUnloadNow</c> should return S_FALSE if there are any existing references to objects that the DLL manages.</para>
 		/// </remarks>
@@ -3810,8 +3817,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// If a call to the CoGetClassObject function finds the class object that is to be loaded in a DLL, <c>CoGetClassObject</c> uses the
-		/// DLL's exported <c>DllGetClassObject</c> function.
+		/// If a call to the CoGetClassObject function finds the class object that is to be loaded in a DLL, <c>CoGetClassObject</c> uses
+		/// the DLL's exported <c>DllGetClassObject</c> function.
 		/// </para>
 		/// <para>Notes to Callers</para>
 		/// <para>
@@ -3835,8 +3842,8 @@ namespace Vanara.PInvoke
 		public static extern HRESULT DllGetClassObject(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
 
 		/// <summary>
-		/// The <c>FreePropVariantArray</c> function calls PropVariantClear on each of the PROPVARIANT structures in the rgvars array to make
-		/// the value zero for each of the members of the array.
+		/// The <c>FreePropVariantArray</c> function calls PropVariantClear on each of the PROPVARIANT structures in the rgvars array to
+		/// make the value zero for each of the members of the array.
 		/// </summary>
 		/// <param name="cVariants">Count of elements in the PROPVARIANT array (rgvars).</param>
 		/// <param name="rgvars">
@@ -3988,9 +3995,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// Call the <c>RoGetAgileReference</c> function on an existing object to request an agile reference to the object. The object may or
-		/// may not be agile, but the returned IAgileReference is agile. The agile reference can be passed to another apartment within the
-		/// same process, where the original object is retrieved by using the <c>IAgileReference</c> interface.
+		/// Call the <c>RoGetAgileReference</c> function on an existing object to request an agile reference to the object. The object may
+		/// or may not be agile, but the returned IAgileReference is agile. The agile reference can be passed to another apartment within
+		/// the same process, where the original object is retrieved by using the <c>IAgileReference</c> interface.
 		/// </para>
 		/// <para>
 		/// This is conceptually similar to the existing Global Interface Table (GIT). Rather than interacting with the GIT, an
@@ -4001,16 +4008,16 @@ namespace Vanara.PInvoke
 		/// The agile reference feature provides a performance improvement over the GIT. The agile reference performs eager marshaling by
 		/// default, which saves a cross-apartment call in cases where the object is retrieved from the agile reference in an apartment
 		/// that's different from where the agile reference was created. For additional performance improvement, users of the
-		/// <c>RoGetAgileReference</c> function can use the same interface to create an IAgileReference and resolve the original object. This
-		/// saves an additional QueryInterface call to obtain the desired interface from the resolved object.
+		/// <c>RoGetAgileReference</c> function can use the same interface to create an IAgileReference and resolve the original object.
+		/// This saves an additional QueryInterface call to obtain the desired interface from the resolved object.
 		/// </para>
 		/// <para>
 		/// For example, you have a non-agile object named CDemoExample, which implements the IDemo and IExample interfaces. Call the
-		/// <c>RoGetAgileReference</c> function and pass the object, with IID_IDemo. You get back an IAgileReference interface pointer, which
-		/// is agile, so you can pass it to a different apartment. In the other apartment, call the Resolve method, with IID_IExample. You
-		/// get back an IExample pointer that you can use within this apartment. This IExample pointer is an IExample proxy that's connected
-		/// to the original CDemoExample object. The agile reference handles the complexity of operations like manually marshaling to a
-		/// stream and unmarshaling on the other side of the apartment boundary.
+		/// <c>RoGetAgileReference</c> function and pass the object, with IID_IDemo. You get back an IAgileReference interface pointer,
+		/// which is agile, so you can pass it to a different apartment. In the other apartment, call the Resolve method, with IID_IExample.
+		/// You get back an IExample pointer that you can use within this apartment. This IExample pointer is an IExample proxy that's
+		/// connected to the original CDemoExample object. The agile reference handles the complexity of operations like manually marshaling
+		/// to a stream and unmarshaling on the other side of the apartment boundary.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-rogetagilereference HRESULT RoGetAgileReference(
@@ -4069,6 +4076,5 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "92e59631-0675-4bca-bcd4-a1f83ab6ec8a")]
 		public static extern HRESULT StringFromIID(in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] out string lplpsz);
-
 	}
 }

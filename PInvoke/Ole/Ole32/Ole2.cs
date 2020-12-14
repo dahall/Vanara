@@ -3251,7 +3251,7 @@ namespace Vanara.PInvoke
 		// LPOLEINPLACEFRAME lpFrame, IN LPOLEINPLACEFRAMEINFO lpFrameInfo, IN LPMSG lpmsg );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ole2.h", MSDNShortId = "c590efef-7f03-4ae6-a35f-eff2fc4da3d9")]
-		public static extern HRESULT OleTranslateAccelerator([In] IOleInPlaceFrame lpFrame, in OIFI lpFrameInfo, in MSG lpmsg);
+		public static extern HRESULT OleTranslateAccelerator([In] IOleInPlaceFrame lpFrame, in OLEINPLACEFRAMEINFO lpFrameInfo, in MSG lpmsg);
 
 		/// <summary>
 		/// Closes the COM library on the apartment, releases any class factories, other COM objects, or servers held by the apartment,

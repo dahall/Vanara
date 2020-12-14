@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using static Vanara.PInvoke.Rpc;
 using BIND_OPTS = System.Runtime.InteropServices.ComTypes.BIND_OPTS;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -33,8 +34,8 @@ namespace Vanara.PInvoke
 		/// <summary>Specifies the set of possible COM apartment type qualifiers.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidlbase/ne-objidlbase-apttypequalifier typedef enum _APTTYPEQUALIFIER {
 		// APTTYPEQUALIFIER_NONE, APTTYPEQUALIFIER_IMPLICIT_MTA, APTTYPEQUALIFIER_NA_ON_MTA, APTTYPEQUALIFIER_NA_ON_STA,
-		// APTTYPEQUALIFIER_NA_ON_IMPLICIT_MTA, APTTYPEQUALIFIER_NA_ON_MAINSTA, APTTYPEQUALIFIER_APPLICATION_STA, APTTYPEQUALIFIER_RESERVED_1
-		// } APTTYPEQUALIFIER;
+		// APTTYPEQUALIFIER_NA_ON_IMPLICIT_MTA, APTTYPEQUALIFIER_NA_ON_MAINSTA, APTTYPEQUALIFIER_APPLICATION_STA,
+		// APTTYPEQUALIFIER_RESERVED_1 } APTTYPEQUALIFIER;
 		[PInvokeData("objidlbase.h", MSDNShortId = "ac28076d-d266-4939-b6c1-d56494ffbcd8")]
 		public enum APTTYPEQUALIFIER
 		{
@@ -67,9 +68,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// This qualifier is only valid when the pAptType parameter of the CoGetApartmentType function contains APTTYPE_NA on return.
-			/// When an implicit MTA thread creates or invokes a COM in-process object using the "Neutral" threading model, the COM apartment
-			/// type of the thread switches from the implicit MTA type to a Neutral apartment type. This qualifier informs the API caller
-			/// that the thread has switched from the implicit MTA apartment type to the NA type.
+			/// When an implicit MTA thread creates or invokes a COM in-process object using the "Neutral" threading model, the COM
+			/// apartment type of the thread switches from the implicit MTA type to a Neutral apartment type. This qualifier informs the API
+			/// caller that the thread has switched from the implicit MTA apartment type to the NA type.
 			/// </summary>
 			APTTYPEQUALIFIER_NA_ON_IMPLICIT_MTA,
 
@@ -101,8 +102,8 @@ namespace Vanara.PInvoke
 		/// available for requests to construct instances ( <c>IClassFactory::CreateInstance</c>).
 		/// </para>
 		/// <para>
-		/// To indicate that more than one context is acceptable, you can combine multiple values with Boolean ORs. The contexts are tried in
-		/// the order in which they are listed.
+		/// To indicate that more than one context is acceptable, you can combine multiple values with Boolean ORs. The contexts are tried
+		/// in the order in which they are listed.
 		/// </para>
 		/// <para>
 		/// Given a set of <c>CLSCTX</c> flags, the execution context to be used depends on the availability of registered class codes and
@@ -129,8 +130,8 @@ namespace Vanara.PInvoke
 		/// If the flags include CLSCTX_REMOTE_SERVER and no COSERVERINFO parameter is specified and if the activation request indicates a
 		/// persistent state from which to initialize the object (with CoGetInstanceFromFile, CoGetInstanceFromIStorage, or, for a file
 		/// moniker, in a call to IMoniker::BindToObject) and the class has an ActivateAtStorage subkey or no class registry information
-		/// whatsoever, the request to activate and initialize is forwarded to the computer where the persistent state resides. (Refer to the
-		/// remote activation functions listed in the See Also section for details.)
+		/// whatsoever, the request to activate and initialize is forwarded to the computer where the persistent state resides. (Refer to
+		/// the remote activation functions listed in the See Also section for details.)
 		/// </term>
 		/// </item>
 		/// <item>
@@ -141,8 +142,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// If the flags include CLSCTX_INPROC_HANDLER, the class code in the DLL found under the class's InprocHandler32 key is used if this
-		/// key exists. The class code will run within the same process as the caller.
+		/// If the flags include CLSCTX_INPROC_HANDLER, the class code in the DLL found under the class's InprocHandler32 key is used if
+		/// this key exists. The class code will run within the same process as the caller.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -154,9 +155,9 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// If the flag is set to CLSCTX_REMOTE_SERVER and an additional COSERVERINFO parameter to the function specifies a particular remote
-		/// computer, a request to activate is forwarded to this remote computer with flags modified to set to CLSCTX_LOCAL_SERVER. The class
-		/// code will run in its own process on this specific computer, which must be different from that of the caller.
+		/// If the flag is set to CLSCTX_REMOTE_SERVER and an additional COSERVERINFO parameter to the function specifies a particular
+		/// remote computer, a request to activate is forwarded to this remote computer with flags modified to set to CLSCTX_LOCAL_SERVER.
+		/// The class code will run in its own process on this specific computer, which must be different from that of the caller.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -178,8 +179,8 @@ namespace Vanara.PInvoke
 		/// Usually, a client will not care whether it uses a 32-bit or a 64-bit version of the server. However, if the server itself loads
 		/// an additional in-process server, then it and the in-process server must both be either 32-bit or 64-bit. For example, suppose
 		/// that the client wants to use a server "A", which in turn loads an in-process server "B". If only a 32-bit version of server "B"
-		/// is available, then the client must specify the 32-bit version of server "A". If only a 64-bit version of server "B" is available,
-		/// then the client must specify the 64-bit version of server "A".
+		/// is available, then the client must specify the 32-bit version of server "A". If only a 64-bit version of server "B" is
+		/// available, then the client must specify the 64-bit version of server "A".
 		/// </para>
 		/// <para>
 		/// A server can specify its own architecture preference via the PreferredServerBitness registry key, but the client's preference,
@@ -204,8 +205,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>
-		/// If a <c>CLSCTX</c> enumeration has both the CLSCTX_ACTIVATE_32_BIT_SERVER and CLSCTX_ACTIVATE_64_BIT_SERVER flags set, then it is
-		/// invalid and the activation will return E_INVALIDARG.
+		/// If a <c>CLSCTX</c> enumeration has both the CLSCTX_ACTIVATE_32_BIT_SERVER and CLSCTX_ACTIVATE_64_BIT_SERVER flags set, then it
+		/// is invalid and the activation will return E_INVALIDARG.
 		/// </para>
 		/// <para>
 		/// The following table shows the results of the various combinations of client architectures and client settings and server
@@ -350,7 +351,8 @@ namespace Vanara.PInvoke
 			CLSCTX_INPROC_SERVER16 = 0x00000008,
 
 			/// <summary>
-			/// A remote context. The LocalServer32 or LocalService code that creates and manages objects of this class is run on a different computer.
+			/// A remote context. The LocalServer32 or LocalService code that creates and manages objects of this class is run on a
+			/// different computer.
 			/// </summary>
 			CLSCTX_REMOTE_SERVER = 0x00000010,
 
@@ -399,8 +401,8 @@ namespace Vanara.PInvoke
 			/// (such as LocalSystem) to help prevent its identity from being used to launch untrusted components. Library applications that
 			/// use activation calls should always set this flag during those calls. This helps prevent the library application from being
 			/// used in an escalation-of-privilege security attack. This is the only way to disable AAA activations in a library application
-			/// because the EOAC_DISABLE_AAA flag from the EOLE_AUTHENTICATION_CAPABILITIES enumeration is applied only to the server process
-			/// and not to the library application. Windows 2000: This flag is not supported.
+			/// because the EOAC_DISABLE_AAA flag from the EOLE_AUTHENTICATION_CAPABILITIES enumeration is applied only to the server
+			/// process and not to the library application. Windows 2000: This flag is not supported.
 			/// </summary>
 			CLSCTX_DISABLE_AAA = 0x00008000,
 
@@ -499,8 +501,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// The STGFMT enumeration values specify the format of a storage object and are used in the StgCreateStorageEx and StgOpenStorageEx
-		/// functions in the stgfmt parameter. This value, in combination with the value in the riid parameter, is used to determine the file
-		/// format and the interface implementation to use.
+		/// functions in the stgfmt parameter. This value, in combination with the value in the riid parameter, is used to determine the
+		/// file format and the interface implementation to use.
 		/// </summary>
 		[PInvokeData("Objbase.h", MSDNShortId = "aa380330")]
 		public enum STGFMT
@@ -514,8 +516,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Indicates that the file must not be a compound file. This element is only valid when using the StgCreateStorageEx or
 			/// StgOpenStorageEx functions to access the NTFS file system implementation of the IPropertySetStorage interface. Therefore,
-			/// these functions return an error if the riid parameter does not specify the IPropertySetStorage interface, or if the specified
-			/// file is not located on an NTFS file system volume.
+			/// these functions return an error if the riid parameter does not specify the IPropertySetStorage interface, or if the
+			/// specified file is not located on an NTFS file system volume.
 			/// </summary>
 			STGFMT_FILE = 3,
 
@@ -541,8 +543,8 @@ namespace Vanara.PInvoke
 		/// <param name="iidResult">The interface identifier to be used to communicate with the object.</param>
 		/// <param name="ppvResult">
 		/// The address of pointer variable that receives the interface pointer requested in iidResult. Upon successful return, *ppvResult
-		/// contains the requested interface pointer. If an error occurs, *ppvResult is <c>NULL</c>. If the call is successful, the caller is
-		/// responsible for releasing the pointer with a call to the object's IUnknown::Release method.
+		/// contains the requested interface pointer. If an error occurs, *ppvResult is <c>NULL</c>. If the call is successful, the caller
+		/// is responsible for releasing the pointer with a call to the object's IUnknown::Release method.
 		/// </param>
 		/// <returns>
 		/// <para>
@@ -747,9 +749,10 @@ namespace Vanara.PInvoke
 		/// <param name="hInst">A handle to the library module to be freed, as returned by the CoLoadLibrary function.</param>
 		/// <returns>This function does not return a value.</returns>
 		/// <remarks>
-		/// The <c>CoFreeLibrary</c> function should be called to free a library that is to be freed explicitly. This is established when the
-		/// library is loaded with the bAutoFree parameter of CoLoadLibrary set to <c>FALSE</c>. It is illegal to free a library explicitly
-		/// when the corresponding <c>CoLoadLibrary</c> call specifies that it be freed automatically (the bAutoFree parameter is set to <c>TRUE</c>).
+		/// The <c>CoFreeLibrary</c> function should be called to free a library that is to be freed explicitly. This is established when
+		/// the library is loaded with the bAutoFree parameter of CoLoadLibrary set to <c>FALSE</c>. It is illegal to free a library
+		/// explicitly when the corresponding <c>CoLoadLibrary</c> call specifies that it be freed automatically (the bAutoFree parameter is
+		/// set to <c>TRUE</c>).
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-cofreelibrary void CoFreeLibrary( HINSTANCE hInst );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
@@ -760,8 +763,8 @@ namespace Vanara.PInvoke
 		/// <param name="pServerInfo">
 		/// A pointer to a COSERVERINFO structure that specifies the computer on which to instantiate the object and the authentication
 		/// setting to be used. This parameter can be <c>NULL</c>, in which case the object is instantiated on the current computer, at the
-		/// computer specified under the RemoteServerName registry value for the class, or at the computer where the pwszName file resides if
-		/// the ActivateAtStorage value is specified for the class or there is no local registry information.
+		/// computer specified under the RemoteServerName registry value for the class, or at the computer where the pwszName file resides
+		/// if the ActivateAtStorage value is specified for the class or there is no local registry information.
 		/// </param>
 		/// <param name="pClsid">
 		/// A pointer to the class identifier of the object to be created. This parameter can be <c>NULL</c>, in which case there is a call
@@ -794,8 +797,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CO_S_NOTALLINTERFACES</term>
 		/// <term>
-		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each of
-		/// the MULTI_QI structures indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
+		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each
+		/// of the MULTI_QI structures indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -834,8 +837,8 @@ namespace Vanara.PInvoke
 		/// <param name="pServerInfo">
 		/// A pointer to a COSERVERINFO structure that specifies the computer on which to instantiate the object and the authentication
 		/// setting to be used. This parameter can be <c>NULL</c>, in which case the object is instantiated on the current computer, at the
-		/// computer specified under the RemoteServerName registry value for the class, or at the computer where the pwszName file resides if
-		/// the ActivateAtStorage value is specified for the class or there is no local registry information.
+		/// computer specified under the RemoteServerName registry value for the class, or at the computer where the pwszName file resides
+		/// if the ActivateAtStorage value is specified for the class or there is no local registry information.
 		/// </param>
 		/// <param name="pClsid">
 		/// A pointer to the class identifier of the object to be created. This parameter can be <c>NULL</c>, in which case there is a call
@@ -868,8 +871,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CO_S_NOTALLINTERFACES</term>
 		/// <term>
-		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each of
-		/// the MULTI_QI structures indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
+		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each
+		/// of the MULTI_QI structures indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -943,8 +946,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CO_S_NOTALLINTERFACES</term>
 		/// <term>
-		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each of
-		/// the MULTI_QI structures indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
+		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each
+		/// of the MULTI_QI structures indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -956,8 +959,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// <c>CoGetInstanceFromIStorage</c> creates a new object and initializes it from a storage object using IPersistFile::Load. The
-		/// result of this function is similar to creating an instance with a call to CoCreateInstanceEx, followed by an initializing call to
-		/// <c>IPersistFile::Load</c>, with the following important distinctions:
+		/// result of this function is similar to creating an instance with a call to CoCreateInstanceEx, followed by an initializing call
+		/// to <c>IPersistFile::Load</c>, with the following important distinctions:
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
@@ -966,14 +969,15 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>
 		/// In the case where dwClsCtx is set to CLSCTX_REMOTE_SERVER and pServerInfo is <c>NULL</c>, if the class is registered with the
-		/// ActivateAtStorage value or has no associated registry information, this function will instantiate an object on the computer where
-		/// pstg resides, providing the least possible network traffic.
+		/// ActivateAtStorage value or has no associated registry information, this function will instantiate an object on the computer
+		/// where pstg resides, providing the least possible network traffic.
 		/// </term>
 		/// </item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-cogetinstancefromistorage HRESULT CoGetInstanceFromIStorage(
-		// COSERVERINFO *pServerInfo, CLSID *pClsid, IUnknown *punkOuter, DWORD dwClsCtx, IStorage *pstg, DWORD dwCount, MULTI_QI *pResults );
+		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-cogetinstancefromistorage HRESULT
+		// CoGetInstanceFromIStorage( COSERVERINFO *pServerInfo, CLSID *pClsid, IUnknown *punkOuter, DWORD dwClsCtx, IStorage *pstg, DWORD
+		// dwCount, MULTI_QI *pResults );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("objbase.h", MSDNShortId = "6a77770c-b7e1-4d29-9c4b-331b5950a635")]
 		public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO pServerInfo, in Guid pClsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount, [In, Out] MULTI_QI[] pResults);
@@ -1017,8 +1021,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CO_S_NOTALLINTERFACES</term>
 		/// <term>
-		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each of
-		/// the MULTI_QI structures indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
+		/// At least one, but not all of the interfaces requested in the pResults array were successfully retrieved. The hr member of each
+		/// of the MULTI_QI structures indicates with S_OK or E_NOINTERFACE whether the specific interface was returned.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1030,8 +1034,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// <c>CoGetInstanceFromIStorage</c> creates a new object and initializes it from a storage object using IPersistFile::Load. The
-		/// result of this function is similar to creating an instance with a call to CoCreateInstanceEx, followed by an initializing call to
-		/// <c>IPersistFile::Load</c>, with the following important distinctions:
+		/// result of this function is similar to creating an instance with a call to CoCreateInstanceEx, followed by an initializing call
+		/// to <c>IPersistFile::Load</c>, with the following important distinctions:
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
@@ -1040,14 +1044,15 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>
 		/// In the case where dwClsCtx is set to CLSCTX_REMOTE_SERVER and pServerInfo is <c>NULL</c>, if the class is registered with the
-		/// ActivateAtStorage value or has no associated registry information, this function will instantiate an object on the computer where
-		/// pstg resides, providing the least possible network traffic.
+		/// ActivateAtStorage value or has no associated registry information, this function will instantiate an object on the computer
+		/// where pstg resides, providing the least possible network traffic.
 		/// </term>
 		/// </item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-cogetinstancefromistorage HRESULT CoGetInstanceFromIStorage(
-		// COSERVERINFO *pServerInfo, CLSID *pClsid, IUnknown *punkOuter, DWORD dwClsCtx, IStorage *pstg, DWORD dwCount, MULTI_QI *pResults );
+		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-cogetinstancefromistorage HRESULT
+		// CoGetInstanceFromIStorage( COSERVERINFO *pServerInfo, CLSID *pClsid, IUnknown *punkOuter, DWORD dwClsCtx, IStorage *pstg, DWORD
+		// dwCount, MULTI_QI *pResults );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("objbase.h", MSDNShortId = "6a77770c-b7e1-4d29-9c4b-331b5950a635")]
 		public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO pServerInfo, [Optional] IntPtr pClsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount, [In, Out] MULTI_QI[] pResults);
@@ -1092,8 +1097,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>MK_E_CONNECTMANUALLY</term>
 		/// <term>
-		/// The binding operation requires assistance from the end user. The most common reasons for returning this value are that a password
-		/// is needed or that a floppy needs to be mounted.
+		/// The binding operation requires assistance from the end user. The most common reasons for returning this value are that a
+		/// password is needed or that a floppy needs to be mounted.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1152,8 +1157,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>MK_E_CONNECTMANUALLY</term>
 		/// <term>
-		/// The binding operation requires assistance from the end user. The most common reasons for returning this value are that a password
-		/// is needed or that a floppy needs to be mounted.
+		/// The binding operation requires assistance from the end user. The most common reasons for returning this value are that a
+		/// password is needed or that a floppy needs to be mounted.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1242,8 +1247,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>RPC_E_CHANGED_MODE</term>
 		/// <term>
-		/// A previous call to CoInitializeEx specified the concurrency model for this thread as multithread apartment (MTA). This could also
-		/// indicate that a change from neutral-threaded apartment to single-threaded apartment has occurred.
+		/// A previous call to CoInitializeEx specified the concurrency model for this thread as multithread apartment (MTA). This could
+		/// also indicate that a change from neutral-threaded apartment to single-threaded apartment has occurred.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -1263,16 +1268,16 @@ namespace Vanara.PInvoke
 		/// apartment. Applications developed today should call <c>CoInitializeEx</c> rather than <c>CoInitialize</c>.
 		/// </para>
 		/// <para>
-		/// Typically, the COM library is initialized on a thread only once. Subsequent calls to <c>CoInitialize</c> or CoInitializeEx on the
-		/// same thread will succeed, as long as they do not attempt to change the concurrency model, but will return S_FALSE. To close the
-		/// COM library gracefully, each successful call to <c>CoInitialize</c> or <c>CoInitializeEx</c>, including those that return
+		/// Typically, the COM library is initialized on a thread only once. Subsequent calls to <c>CoInitialize</c> or CoInitializeEx on
+		/// the same thread will succeed, as long as they do not attempt to change the concurrency model, but will return S_FALSE. To close
+		/// the COM library gracefully, each successful call to <c>CoInitialize</c> or <c>CoInitializeEx</c>, including those that return
 		/// S_FALSE, must be balanced by a corresponding call to CoUninitialize. However, the first thread in the application that calls
 		/// <c>CoInitialize</c> with 0 (or <c>CoInitializeEx</c> with COINIT_APARTMENTTHREADED) must be the last thread to call
 		/// <c>CoUninitialize</c>. Otherwise, subsequent calls to <c>CoInitialize</c> on the STA will fail and the application will not work.
 		/// </para>
 		/// <para>
-		/// Because there is no way to control the order in which in-process servers are loaded or unloaded, do not call <c>CoInitialize</c>,
-		/// CoInitializeEx, or CoUninitialize from the DllMain function.
+		/// Because there is no way to control the order in which in-process servers are loaded or unloaded, do not call
+		/// <c>CoInitialize</c>, CoInitializeEx, or CoUninitialize from the DllMain function.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-coinitialize HRESULT CoInitialize( LPVOID pvReserved );
@@ -1284,16 +1289,16 @@ namespace Vanara.PInvoke
 		/// Initializes the COM library for use by the calling thread, sets the thread's concurrency model, and creates a new apartment for
 		/// the thread if one is required.
 		/// <para>
-		/// You should call Windows::Foundation::Initialize to initialize the thread instead of CoInitializeEx if you want to use the Windows
-		/// Runtime APIs or if you want to use both COM and Windows Runtime components. Windows::Foundation::Initialize is sufficient to use
-		/// for COM components.
+		/// You should call Windows::Foundation::Initialize to initialize the thread instead of CoInitializeEx if you want to use the
+		/// Windows Runtime APIs or if you want to use both COM and Windows Runtime components. Windows::Foundation::Initialize is
+		/// sufficient to use for COM components.
 		/// </para>
 		/// </summary>
 		/// <param name="pvReserved">This parameter is reserved and must be NULL.</param>
 		/// <param name="coInit">
-		/// The concurrency model and initialization options for the thread. Values for this parameter are taken from the COINIT enumeration.
-		/// Any combination of values from COINIT can be used, except that the COINIT_APARTMENTTHREADED and COINIT_MULTITHREADED flags cannot
-		/// both be set. The default is COINIT_MULTITHREADED.
+		/// The concurrency model and initialization options for the thread. Values for this parameter are taken from the COINIT
+		/// enumeration. Any combination of values from COINIT can be used, except that the COINIT_APARTMENTTHREADED and
+		/// COINIT_MULTITHREADED flags cannot both be set. The default is COINIT_MULTITHREADED.
 		/// </param>
 		/// <returns>
 		/// <list type="table">
@@ -1329,9 +1334,9 @@ namespace Vanara.PInvoke
 		/// <param name="cAuthSvc">
 		/// The count of entries in the asAuthSvc parameter. This parameter is used by COM only when a server calls
 		/// <c>CoInitializeSecurity</c>. If this parameter is 0, no authentication services will be registered and the server cannot receive
-		/// secure calls. A value of -1 tells COM to choose which authentication services to register, and if this is the case, the asAuthSvc
-		/// parameter must be <c>NULL</c>. However, Schannel will never be chosen as an authentication service by the server if this
-		/// parameter is -1.
+		/// secure calls. A value of -1 tells COM to choose which authentication services to register, and if this is the case, the
+		/// asAuthSvc parameter must be <c>NULL</c>. However, Schannel will never be chosen as an authentication service by the server if
+		/// this parameter is -1.
 		/// </param>
 		/// <param name="asAuthSvc">
 		/// An array of authentication services that a server is willing to use to receive a call. This parameter is used by COM only when a
@@ -1341,8 +1346,8 @@ namespace Vanara.PInvoke
 		/// <param name="dwAuthnLevel">
 		/// The default authentication level for the process. Both servers and clients use this parameter when they call
 		/// <c>CoInitializeSecurity</c>. COM will fail calls that arrive with a lower authentication level. By default, all proxies will use
-		/// at least this authentication level. This value should contain one of the authentication level constants. By default, all calls to
-		/// <c>IUnknown</c> are made at this level.
+		/// at least this authentication level. This value should contain one of the authentication level constants. By default, all calls
+		/// to <c>IUnknown</c> are made at this level.
 		/// </param>
 		/// <param name="dwImpLevel">
 		/// <para>
@@ -1363,9 +1368,9 @@ namespace Vanara.PInvoke
 		/// only when a client calls <c>CoInitializeSecurity</c>.
 		/// </param>
 		/// <param name="dwCapabilities">
-		/// Additional capabilities of the client or server, specified by setting one or more <c>EOLE_AUTHENTICATION_CAPABILITIES</c> values.
-		/// Some of these value cannot be used simultaneously, and some cannot be set when particular authentication services are being used.
-		/// For more information about these flags, see the Remarks section.
+		/// Additional capabilities of the client or server, specified by setting one or more <c>EOLE_AUTHENTICATION_CAPABILITIES</c>
+		/// values. Some of these value cannot be used simultaneously, and some cannot be set when particular authentication services are
+		/// being used. For more information about these flags, see the Remarks section.
 		/// </param>
 		/// <param name="pReserved3">This parameter is reserved and must be <c>NULL</c>.</param>
 		/// <returns>
@@ -1412,8 +1417,8 @@ namespace Vanara.PInvoke
 		/// <returns>If the CLSID refers to an OLE 1 object, the return value is <c>TRUE</c>; otherwise, it is <c>FALSE</c>.</returns>
 		/// <remarks>
 		/// <para>
-		/// The <c>CoIsOle1Class</c> function determines whether an object class is from OLE 1. You can use it to prevent linking to embedded
-		/// OLE 1 objects within a container, which OLE 1 objects do not support. After a container has determined that copied data
+		/// The <c>CoIsOle1Class</c> function determines whether an object class is from OLE 1. You can use it to prevent linking to
+		/// embedded OLE 1 objects within a container, which OLE 1 objects do not support. After a container has determined that copied data
 		/// represents an embedded object, the container code can call <c>CoIsOle1Class</c> to determine whether the embedded object is an
 		/// OLE 1 object. If <c>CoIsOle1Class</c> returns <c>TRUE</c>, the container does not offer CF_LINKSOURCE as one of its clipboard
 		/// formats. This is one of several OLE compatibility functions. The following compatibility functions, listed below, can be used to
@@ -1457,8 +1462,8 @@ namespace Vanara.PInvoke
 		/// CoFreeLibrary function to decrement it.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-coloadlibrary HINSTANCE CoLoadLibrary( LPOLESTR lpszLibName,
-		// BOOL bAutoFree );
+		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-coloadlibrary HINSTANCE CoLoadLibrary( LPOLESTR
+		// lpszLibName, BOOL bAutoFree );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("objbase.h", MSDNShortId = "be0d9e82-2438-488e-88c3-68dc7ac3e16f")]
 		public static extern HINSTANCE CoLoadLibrary([MarshalAs(UnmanagedType.LPWStr)] string lpszLibName, [MarshalAs(UnmanagedType.Bool)] bool bAutoFree = false);
@@ -1467,15 +1472,15 @@ namespace Vanara.PInvoke
 		/// <param name="ExtensionUuid">The extension to register.</param>
 		/// <param name="pChannelHook">The channel hook to register.</param>
 		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-coregisterchannelhook HRESULT CoRegisterChannelHook( REFGUID
-		// ExtensionUuid, IChannelHook *pChannelHook );
+		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-coregisterchannelhook HRESULT CoRegisterChannelHook(
+		// REFGUID ExtensionUuid, IChannelHook *pChannelHook );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("objbase.h", MSDNShortId = "90281427-D0A3-4556-AF41-95DE7D000320")]
 		public static extern HRESULT CoRegisterChannelHook(in Guid ExtensionUuid, IChannelHook pChannelHook);
 
 		/// <summary>
-		/// Registers an implementation of the IInitializeSpy interface. The <c>IInitializeSpy</c> interface is defied to allow developers to
-		/// perform initialization and cleanup on COM apartments.
+		/// Registers an implementation of the IInitializeSpy interface. The <c>IInitializeSpy</c> interface is defied to allow developers
+		/// to perform initialization and cleanup on COM apartments.
 		/// </summary>
 		/// <param name="pSpy">A pointer to an instance of the IInitializeSpy implementation.</param>
 		/// <param name="puliCookie">The address at which to store a cookie that identifies this registration.</param>
@@ -1498,8 +1503,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// The <c>CoRegisterInitializeSpy</c> function registers an implementation of the IInitializeSpy interface, which defines methods to
-		/// be called when CoInitializeEx (or CoInitialize) or CoUninitialize is invoked.
+		/// The <c>CoRegisterInitializeSpy</c> function registers an implementation of the IInitializeSpy interface, which defines methods
+		/// to be called when CoInitializeEx (or CoInitialize) or CoUninitialize is invoked.
 		/// </para>
 		/// <para>
 		/// <c>CoRegisterInitializeSpy</c> calls QueryInterface for IID_InitializeSpy on pSpy. It stores the address of the returned
@@ -1567,8 +1572,8 @@ namespace Vanara.PInvoke
 		/// IMallocSpy::PreAlloc, calls <c>Alloc</c>, and after that allocation is completed, calls IMallocSpy::PostAlloc.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-coregistermallocspy HRESULT CoRegisterMallocSpy( LPMALLOCSPY
-		// pMallocSpy );
+		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-coregistermallocspy HRESULT CoRegisterMallocSpy(
+		// LPMALLOCSPY pMallocSpy );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("objbase.h", MSDNShortId = "28623c1f-e158-4cc5-8c7f-c13d7a65aa76")]
 		public static extern HRESULT CoRegisterMallocSpy(IMallocSpy pMallocSpy);
@@ -1592,8 +1597,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>If the instance was registered or revoked successfully, the return value is S_OK; otherwise, it is S_FALSE.</returns>
 		/// <remarks>
-		/// To revoke the registered message filter, pass the previous message filter (possibly <c>NULL</c>) as the lpMessageFilter parameter
-		/// to <c>CoRegisterMessageFilter</c>.
+		/// To revoke the registered message filter, pass the previous message filter (possibly <c>NULL</c>) as the lpMessageFilter
+		/// parameter to <c>CoRegisterMessageFilter</c>.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-coregistermessagefilter HRESULT CoRegisterMessageFilter(
 		// LPMESSAGEFILTER lpMessageFilter, LPMESSAGEFILTER *lplpMessageFilter );
@@ -1727,8 +1732,8 @@ namespace Vanara.PInvoke
 		/// to save it in the previous format, possibly losing format information not available in the older version.
 		/// </para>
 		/// <para>
-		/// One result of setting an emulation is that when you enumerate verbs, as in the IOleObject::EnumVerbs method implementation in the
-		/// default handler, this would enumerate the verbs from clsidNew instead of clsidOld.
+		/// One result of setting an emulation is that when you enumerate verbs, as in the IOleObject::EnumVerbs method implementation in
+		/// the default handler, this would enumerate the verbs from clsidNew instead of clsidOld.
 		/// </para>
 		/// <para>
 		/// To ensure that existing emulation information is removed when you install an application, your setup programs should call
@@ -1769,11 +1774,11 @@ namespace Vanara.PInvoke
 		/// IMoniker::Inverse method, and then check for an anti-moniker in your implementation of IMoniker::ComposeWith.
 		/// </para>
 		/// <para>
-		/// Like the ".." directory, which acts as the inverse to any directory name just preceding it in a path, an anti-moniker acts as the
-		/// inverse of a simple moniker that precedes it in a composite moniker. An anti-moniker is used as the inverse of simple monikers
-		/// with no internal structure. For example, the system-provided implementations of file monikers, item monikers, and pointer
-		/// monikers all use anti-monikers as their inverse; consequently, an anti-moniker composed to the right of one of these monikers
-		/// composes to nothing.
+		/// Like the ".." directory, which acts as the inverse to any directory name just preceding it in a path, an anti-moniker acts as
+		/// the inverse of a simple moniker that precedes it in a composite moniker. An anti-moniker is used as the inverse of simple
+		/// monikers with no internal structure. For example, the system-provided implementations of file monikers, item monikers, and
+		/// pointer monikers all use anti-monikers as their inverse; consequently, an anti-moniker composed to the right of one of these
+		/// monikers composes to nothing.
 		/// </para>
 		/// <para>
 		/// A moniker client (an object that is using a moniker to bind to another object) typically does not know the class of a given
@@ -1784,8 +1789,8 @@ namespace Vanara.PInvoke
 		/// <list type="number">
 		/// <item>
 		/// <term>
-		/// Call IMoniker::Enum on the composite, specifying <c>FALSE</c> as the first parameter. This creates an enumerator that returns the
-		/// component monikers in reverse order.
+		/// Call IMoniker::Enum on the composite, specifying <c>FALSE</c> as the first parameter. This creates an enumerator that returns
+		/// the component monikers in reverse order.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1796,7 +1801,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-createantimoniker HRESULT CreateAntiMoniker( LPMONIKER *ppmk );
+		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-createantimoniker HRESULT CreateAntiMoniker( LPMONIKER
+		// *ppmk );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("objbase.h", MSDNShortId = "1f8fcbd6-8f05-4d32-af8a-d8de1b56dacf")]
 		public static extern HRESULT CreateAntiMoniker(out IMoniker ppmk);
@@ -1807,9 +1813,9 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="reserved">This parameter is reserved and must be 0.</param>
 		/// <param name="ppbc">
-		/// Address of an IBindCtx* pointer variable that receives the interface pointer to the new bind context object. When the function is
-		/// successful, the caller is responsible for calling Release on the bind context. A NULL value for the bind context indicates that
-		/// an error occurred.
+		/// Address of an IBindCtx* pointer variable that receives the interface pointer to the new bind context object. When the function
+		/// is successful, the caller is responsible for calling Release on the bind context. A NULL value for the bind context indicates
+		/// that an error occurred.
 		/// </param>
 		/// <returns>This function can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
 		[DllImport(Lib.Ole32, ExactSpelling = true)]
@@ -1902,8 +1908,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="ppmk">
 		/// The address of an IMoniker* pointer variable that receives the interface pointer to the new file moniker. When successful, the
-		/// function has called AddRef on the file moniker and the caller is responsible for calling Release. When an error occurs, the value
-		/// of the interface pointer is <c>NULL</c>.
+		/// function has called AddRef on the file moniker and the caller is responsible for calling Release. When an error occurs, the
+		/// value of the interface pointer is <c>NULL</c>.
 		/// </param>
 		/// <returns>
 		/// <para>This function can return the standard return value E_OUTOFMEMORY, as well as the following values.</para>
@@ -1933,15 +1939,15 @@ namespace Vanara.PInvoke
 		/// When each object resides in its own file, as in an OLE server application that supports linking only to file-based documents in
 		/// their entirety, file monikers are the only type of moniker necessary. To identify objects smaller than a file, the moniker
 		/// provider must use another type of moniker (such as an item moniker) in addition to file monikers, creating a composite moniker.
-		/// Composite monikers would be needed in an OLE server application that supports linking to objects smaller than a document (such as
-		/// sections of a document or embedded objects).
+		/// Composite monikers would be needed in an OLE server application that supports linking to objects smaller than a document (such
+		/// as sections of a document or embedded objects).
 		/// </para>
 		/// <para>
 		/// A file moniker can be composed to the right only of another file moniker when the first moniker is based on an absolute path and
-		/// the other is a relative path, resulting in a single file moniker based on the combination of the two paths. A moniker composed to
-		/// the right of another moniker must be a refinement of that moniker, and the file moniker represents the largest unit of storage.
-		/// To identify objects stored within a file, you would compose other types of monikers (usually item monikers) to the right of a
-		/// file moniker.
+		/// the other is a relative path, resulting in a single file moniker based on the combination of the two paths. A moniker composed
+		/// to the right of another moniker must be a refinement of that moniker, and the file moniker represents the largest unit of
+		/// storage. To identify objects stored within a file, you would compose other types of monikers (usually item monikers) to the
+		/// right of a file moniker.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objbase/nf-objbase-createfilemoniker HRESULT CreateFileMoniker( LPCOLESTR
@@ -1988,8 +1994,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// <c>CreateGenericComposite</c> joins two monikers into one. The moniker classes being joined can be different, subject only to the
-		/// rules of composition. Call this function only if you are writing a new moniker class by implementing the IMoniker interface,
+		/// <c>CreateGenericComposite</c> joins two monikers into one. The moniker classes being joined can be different, subject only to
+		/// the rules of composition. Call this function only if you are writing a new moniker class by implementing the IMoniker interface,
 		/// within an implementation of IMoniker::ComposeWith that includes generic composition capability.
 		/// </para>
 		/// <para>
@@ -2001,9 +2007,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// During the process of composing the two monikers, <c>CreateGenericComposite</c> makes all possible simplifications. Consider the
-		/// example where pmkFirst is the generic composite moniker, A + B + C, and pmkRest is the generic composite moniker, C -1 + B -1 + Z
-		/// (where C -1 is the inverse of C). The function first composes C to C -1, which composes to nothing. Then it composes B and B -1
-		/// to nothing. Finally, it composes A to Z, and supplies a pointer to the generic composite moniker, A + Z.
+		/// example where pmkFirst is the generic composite moniker, A + B + C, and pmkRest is the generic composite moniker, C -1 + B -1 +
+		/// Z (where C -1 is the inverse of C). The function first composes C to C -1, which composes to nothing. Then it composes B and B
+		/// -1 to nothing. Finally, it composes A to Z, and supplies a pointer to the generic composite moniker, A + Z.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-creategenericcomposite HRESULT CreateGenericComposite(
@@ -2036,8 +2042,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// Most moniker providers are OLE applications that support linking. Applications that support linking to objects smaller than
-		/// file-based documents, such as a server application that allows linking to a selection within a document, should use item monikers
-		/// to identify the objects. Container applications that allow linking to embedded objects use item monikers to identify the embedded objects.
+		/// file-based documents, such as a server application that allows linking to a selection within a document, should use item
+		/// monikers to identify the objects. Container applications that allow linking to embedded objects use item monikers to identify
+		/// the embedded objects.
 		/// </para>
 		/// <para>
 		/// The lpszItem parameter is the name used by the document to uniquely identify the object. For example, if the object being
@@ -2080,8 +2087,8 @@ namespace Vanara.PInvoke
 		/// pointer ID (IPID) of the running object
 		/// </para>
 		/// <para>
-		/// The display name can then be transferred to the client as text. For example, the display name can reside on an HTML page that the
-		/// client downloads.
+		/// The display name can then be transferred to the client as text. For example, the display name can reside on an HTML page that
+		/// the client downloads.
 		/// </para>
 		/// <para>
 		/// The client can pass the display name to MkParseDisplayName, which creates an OBJREF moniker based on the display name. A call to
@@ -2089,9 +2096,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// For example, a server-side COM component contained in an Active Server Page can create an OBJREF moniker, obtain its display
-		/// name, and write the display name to the HTML output that is sent to the client browser. A script that runs on the client side can
-		/// use the display name to get access to the running object itself. A client-side Visual Basic script, for instance, could store the
-		/// display name in a variable called strMyName and include this line:
+		/// name, and write the display name to the HTML output that is sent to the client browser. A script that runs on the client side
+		/// can use the display name to get access to the running object itself. A client-side Visual Basic script, for instance, could
+		/// store the display name in a variable called strMyName and include this line:
 		/// </para>
 		/// <para>
 		/// The script engine internally makes the calls to MkParseDisplayName and IMoniker::BindToObject, and the script can then use
@@ -2107,9 +2114,9 @@ namespace Vanara.PInvoke
 		/// <summary>Creates a pointer moniker based on a pointer to an object.</summary>
 		/// <param name="punk">A pointer to an IUnknown interface on the object to be identified by the resulting moniker.</param>
 		/// <param name="ppmk">
-		/// The address of an IMoniker* pointer variable that receives the interface pointer to the new pointer moniker. When successful, the
-		/// function has called AddRef on the moniker and the caller is responsible for calling Release. When an error occurs, the returned
-		/// interface pointer has a <c>NULL</c> value.
+		/// The address of an IMoniker* pointer variable that receives the interface pointer to the new pointer moniker. When successful,
+		/// the function has called AddRef on the moniker and the caller is responsible for calling Release. When an error occurs, the
+		/// returned interface pointer has a <c>NULL</c> value.
 		/// </param>
 		/// <returns>This function can return the standard return values E_OUTOFMEMORY, E_UNEXPECTED, and S_OK.</returns>
 		/// <remarks>
@@ -2119,8 +2126,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>Pointer monikers are not commonly used, so this function is not often called.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-createpointermoniker HRESULT CreatePointerMoniker( LPUNKNOWN
-		// punk, LPMONIKER *ppmk );
+		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-createpointermoniker HRESULT CreatePointerMoniker(
+		// LPUNKNOWN punk, LPMONIKER *ppmk );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("objbase.h", MSDNShortId = "d4d40fd5-6035-4ddc-a443-01d32dcf4bca")]
 		public static extern HRESULT CreatePointerMoniker([MarshalAs(UnmanagedType.IUnknown)] object punk, out IMoniker ppmk);
@@ -2207,9 +2214,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// Compound-document link sources are the most common example of moniker providers. These include server applications that support
-		/// linking to their documents (or portions of a document) and container applications that support linking to embeddings within their
-		/// documents. Server applications that do not support linking can also use the ROT to cooperate with container applications that
-		/// support linking to embeddings.
+		/// linking to their documents (or portions of a document) and container applications that support linking to embeddings within
+		/// their documents. Server applications that do not support linking can also use the ROT to cooperate with container applications
+		/// that support linking to embeddings.
 		/// </para>
 		/// <para>
 		/// If you are implementing the IMoniker interface to write a new moniker class, and you need an interface pointer to the ROT, call
@@ -2217,8 +2224,8 @@ namespace Vanara.PInvoke
 		/// IBindCtx interface to modify binding behavior.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objbase/nf-objbase-getrunningobjecttable HRESULT GetRunningObjectTable( DWORD
-		// reserved, LPRUNNINGOBJECTTABLE *pprot );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objbase/nf-objbase-getrunningobjecttable HRESULT GetRunningObjectTable(
+		// DWORD reserved, LPRUNNINGOBJECTTABLE *pprot );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("objbase.h", MSDNShortId = "65d9cf7d-cc8a-4199-9a4a-7fd67ef8872d")]
 		public static extern HRESULT GetRunningObjectTable([Optional] uint reserved, out IRunningObjectTable pprot);
@@ -2242,8 +2249,8 @@ namespace Vanara.PInvoke
 		/// <param name="pbc">A pointer to the IBindCtx interface on the bind context object to be used in this binding operation.</param>
 		/// <param name="szUserName">A pointer to the display name to be parsed.</param>
 		/// <param name="pchEaten">
-		/// A pointer to the number of characters of szUserName that were consumed. If the function is successful, *pchEaten is the length of
-		/// szUserName; otherwise, it is the number of characters successfully parsed.
+		/// A pointer to the number of characters of szUserName that were consumed. If the function is successful, *pchEaten is the length
+		/// of szUserName; otherwise, it is the number of characters successfully parsed.
 		/// </param>
 		/// <param name="ppmk">
 		/// The address of the IMoniker* pointer variable that receives the interface pointer to the moniker that was built from szUserName.
@@ -2273,8 +2280,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// The <c>MkParseDisplayName</c> function parses a human-readable name into a moniker that can be used to identify a link source.
-		/// The resulting moniker can be a simple moniker (such as a file moniker), or it can be a generic composite made up of the component
-		/// moniker pieces. For example, the display name "c:\mydir\somefile!item 1"
+		/// The resulting moniker can be a simple moniker (such as a file moniker), or it can be a generic composite made up of the
+		/// component moniker pieces. For example, the display name "c:\mydir\somefile!item 1"
 		/// </para>
 		/// <para>
 		/// could be parsed into the following generic composite moniker: FileMoniker based on "c:\mydir\somefile") + (ItemMoniker based on
@@ -2310,8 +2317,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// The function checks the maximal prefix of the display name, which consists solely of valid file name characters, to see if an OLE
-		/// 1 document is registered by that name. In this case, the returned moniker is an internal moniker provided by the OLE 1
+		/// The function checks the maximal prefix of the display name, which consists solely of valid file name characters, to see if an
+		/// OLE 1 document is registered by that name. In this case, the returned moniker is an internal moniker provided by the OLE 1
 		/// compatibility layer of OLE 2.
 		/// </term>
 		/// </item>
@@ -2323,11 +2330,11 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// If the initial character of the display name is '@', the function finds the longest string immediately following it that conforms
-		/// to the legal ProgID syntax. The function converts this string to a CLSID using the CLSIDFromProgID function. If the CLSID
-		/// represents an OLE 2 class, the function loads the corresponding class object and asks for an IParseDisplayName interface pointer.
-		/// The resulting <c>IParseDisplayName</c> interface is then given the whole string to parse, starting with the '@'. If the CLSID
-		/// represents an OLE 1 class, then the function treats the string following the ProgID as an OLE1/DDE link designator having
+		/// If the initial character of the display name is '@', the function finds the longest string immediately following it that
+		/// conforms to the legal ProgID syntax. The function converts this string to a CLSID using the CLSIDFromProgID function. If the
+		/// CLSID represents an OLE 2 class, the function loads the corresponding class object and asks for an IParseDisplayName interface
+		/// pointer. The resulting <c>IParseDisplayName</c> interface is then given the whole string to parse, starting with the '@'. If the
+		/// CLSID represents an OLE 1 class, then the function treats the string following the ProgID as an OLE1/DDE link designator having
 		/// filename|item syntax.
 		/// </term>
 		/// </item>
@@ -2347,8 +2354,8 @@ namespace Vanara.PInvoke
 		/// <para>This function is intended to be called only in implementations of IMoniker::CommonPrefixWith.</para>
 		/// </summary>
 		/// <param name="pmkThis">
-		/// A pointer to the IMoniker interface on one of the monikers for which a common prefix is sought; usually the moniker in which this
-		/// call is used to implement IMoniker::CommonPrefixWith.
+		/// A pointer to the IMoniker interface on one of the monikers for which a common prefix is sought; usually the moniker in which
+		/// this call is used to implement IMoniker::CommonPrefixWith.
 		/// </param>
 		/// <param name="pmkOther">A pointer to the IMoniker interface on the moniker to be compared with the first moniker.</param>
 		/// <param name="ppmkCommon">
@@ -2396,9 +2403,9 @@ namespace Vanara.PInvoke
 		/// moniker as pmkOther. <c>MonikerCommonPrefixWith</c> correctly handles the cases where either moniker is a generic composite.
 		/// </para>
 		/// <para>
-		/// You should call this function only if pmkThis and pmkOther are both absolute monikers (where an absolute moniker is either a file
-		/// moniker or a generic composite whose leftmost component is a file moniker, and where the file moniker represents an absolute
-		/// path). Do not call this function on relative monikers.
+		/// You should call this function only if pmkThis and pmkOther are both absolute monikers (where an absolute moniker is either a
+		/// file moniker or a generic composite whose leftmost component is a file moniker, and where the file moniker represents an
+		/// absolute path). Do not call this function on relative monikers.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-monikercommonprefixwith HRESULT MonikerCommonPrefixWith(
@@ -2415,12 +2422,12 @@ namespace Vanara.PInvoke
 		/// <para>This function is intended for use only by IMoniker::RelativePathTo implementations.</para>
 		/// </summary>
 		/// <param name="pmkSrc">
-		/// A pointer to the IMoniker interface on the moniker that, when composed with the relative moniker to be created, produces pmkDest.
-		/// This moniker identifies the "source" of the relative moniker to be created.
+		/// A pointer to the IMoniker interface on the moniker that, when composed with the relative moniker to be created, produces
+		/// pmkDest. This moniker identifies the "source" of the relative moniker to be created.
 		/// </param>
 		/// <param name="pmkDest">
-		/// A pointer to the IMoniker interface on the moniker to be expressed relative to pmkSrc. This moniker identifies the destination of
-		/// the relative moniker to be created.
+		/// A pointer to the IMoniker interface on the moniker to be expressed relative to pmkSrc. This moniker identifies the destination
+		/// of the relative moniker to be created.
 		/// </param>
 		/// <param name="ppmkRelPath">
 		/// The address of an IMoniker* pointer variable that receives the interface pointer to the new relative moniker. When successful,
@@ -2457,8 +2464,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// Your implementation of IMoniker::RelativePathTo should first check whether the other moniker is of a type you recognize and
-		/// handle in a special way. If not, you should call <c>MonikerRelativePathTo</c>, passing itself as pmkThis and the other moniker as
-		/// pmkOther. <c>MonikerRelativePathTo</c> correctly handles the cases where either moniker is a generic composite.
+		/// handle in a special way. If not, you should call <c>MonikerRelativePathTo</c>, passing itself as pmkThis and the other moniker
+		/// as pmkOther. <c>MonikerRelativePathTo</c> correctly handles the cases where either moniker is a generic composite.
 		/// </para>
 		/// <para>
 		/// You should call this function only if pmkSrc and pmkDest are both absolute monikers, where an absolute moniker is either a file
@@ -2520,33 +2527,6 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
-		/// <summary>Represents an interface in a query for multiple interfaces.</summary>
-		/// <remarks>
-		/// To optimize network performance, most remote activation functions take an array of <c>MULTI_QI</c> structures rather than just a
-		/// single IID as input and a single pointer to the requested interface on the object as output, as do local activation functions.
-		/// This allows a set of pointers to interfaces to be returned from the same object in a single round-trip to the server. In network
-		/// scenarios, requesting multiple interfaces at the time of object construction can save considerable time over using a number of
-		/// calls to QueryInterface for unique interfaces, each of which would require a round-trip to the server.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-tagmulti_qi typedef struct tagMULTI_QI { const IID *pIID;
-		// IUnknown *pItf; HRESULT hr; } MULTI_QI;
-		[PInvokeData("objidl.h", MSDNShortId = "845040c9-fad4-4ac8-856d-d35edbf48ec9")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MULTI_QI
-		{
-			/// <summary>A pointer to an interface identifier.</summary>
-			public IntPtr pIID;
-
-			/// <summary>A pointer to the interface requested in <c>pIID</c>. This member must be <c>NULL</c> on input.</summary>
-			public IntPtr pItf;
-
-			/// <summary>
-			/// The return value of the QueryInterface call to locate the requested interface. Common return values include S_OK and
-			/// E_NOINTERFACE. This member must be 0 on input.
-			/// </summary>
-			public HRESULT hr;
-		}
-
 		/// <summary>
 		/// The STGOPTIONS structure specifies features of the storage object, such as sector size, in the StgCreateStorageEx and
 		/// StgOpenStorageEx functions.
@@ -2602,8 +2582,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>
-		/// To specify that Kerberos, rather than NTLMSSP, is used for machine remote activation. A nondefault client identity may or may not
-		/// be specified.
+		/// To specify that Kerberos, rather than NTLMSSP, is used for machine remote activation. A nondefault client identity may or may
+		/// not be specified.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -2623,9 +2603,9 @@ namespace Vanara.PInvoke
 		/// under the AppID registry key is used, if it exists.
 		/// </para>
 		/// <para>
-		/// Starting with Windows XP with Service Pack 2 (SP2), dwAuthnLevel is the maximum of RPC_C_AUTHN_LEVEL_CONNECT and the process-wide
-		/// authentication level of the client process that is issuing the activation request. For earlier versions of the operating system,
-		/// this is RPC_C_AUTHN_LEVEL_CONNECT.
+		/// Starting with Windows XP with Service Pack 2 (SP2), dwAuthnLevel is the maximum of RPC_C_AUTHN_LEVEL_CONNECT and the
+		/// process-wide authentication level of the client process that is issuing the activation request. For earlier versions of the
+		/// operating system, this is RPC_C_AUTHN_LEVEL_CONNECT.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-_coserverinfo typedef struct _COSERVERINFO { DWORD
