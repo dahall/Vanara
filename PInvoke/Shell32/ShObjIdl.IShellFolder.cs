@@ -455,7 +455,7 @@ namespace Vanara.PInvoke
 		/// <summary>A standard OLE enumerator used by a client to determine the available search objects for a folder.</summary>
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0E700BE1-9DB6-11d1-A1CE-00C04FD75D13")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb761992")]
-		public interface IEnumExtraSearch
+		public interface IEnumExtraSearch : Vanara.Collections.ICOMEnum<EXTRASEARCH>
 		{
 			/// <summary>Used to request information on one or more search objects.</summary>
 			/// <param name="celt">

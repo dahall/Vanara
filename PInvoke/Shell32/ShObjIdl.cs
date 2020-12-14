@@ -1023,7 +1023,7 @@ namespace Vanara.PInvoke
 		[SuppressUnmanagedCodeSecurity]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("000214F2-0000-0000-C000-000000000046")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb761982")]
-		public interface IEnumIDList
+		public interface IEnumIDList : Vanara.Collections.ICOMEnum<IntPtr>
 		{
 			/// <summary>
 			/// Retrieves the specified number of item identifiers in the enumeration sequence and advances the current position by the
@@ -1071,7 +1071,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ienumfullidlist
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IEnumFullIDList")]
 		[ComImport, Guid("d0191542-7954-4908-bc06-b2360bbe45ba"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumFullIDList
+		public interface IEnumFullIDList : Vanara.Collections.ICOMEnum<IntPtr>
 		{
 			/// <summary>Retrieves a specified number of IDLIST_ABSOLUTE items.</summary>
 			/// <param name="celt">

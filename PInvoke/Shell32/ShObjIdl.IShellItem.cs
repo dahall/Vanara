@@ -367,7 +367,7 @@ namespace Vanara.PInvoke
 		[SuppressUnmanagedCodeSecurity]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("70629033-e363-4a28-a567-0db78006e6d7")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb761962")]
-		public interface IEnumShellItems
+		public interface IEnumShellItems : Vanara.Collections.ICOMEnum<IShellItem>
 		{
 			/// <summary>Gets an array of one or more IShellItem interfaces from the enumeration.</summary>
 			/// <param name="celt">The number of elements in the array referenced by the rgelt parameter.</param>

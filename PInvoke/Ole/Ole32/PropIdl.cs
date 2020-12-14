@@ -115,7 +115,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nn-propidl-ienumstatpropsetstg
 		[PInvokeData("propidl.h", MSDNShortId = "0000013B-0000-0000-C000-000000000046")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0e6d4d92-6738-11cf-9608-00aa00680db4")]
-		public interface IEnumSTATPROPSETSTG
+		public interface IEnumSTATPROPSETSTG : Vanara.Collections.ICOMEnum<STATPROPSETSTG>
 		{
 			/// <summary>
 			/// The <c>Next</c> method retrieves a specified number of STATPROPSETSTG structures that follow subsequently in the enumeration
@@ -201,7 +201,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidlbase/nn-propidlbase-ienumstatpropstg
 		[PInvokeData("propidlbase.h", MSDNShortId = "e625e52a-5628-4d18-9282-aa1c141c83af")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000139-0000-0000-C000-000000000046")]
-		public interface IEnumSTATPROPSTG
+		public interface IEnumSTATPROPSTG : Vanara.Collections.ICOMEnum<STATPROPSTG>
 		{
 			/// <summary>
 			/// The <c>Next</c> method retrieves a specified number of STATPROPSTG structures, that follow subsequently in the enumeration

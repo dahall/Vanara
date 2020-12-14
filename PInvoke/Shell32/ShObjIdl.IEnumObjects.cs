@@ -9,7 +9,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ienumobjects
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IEnumObjects")]
 		[ComImport, Guid("2c1c7e2e-2d0e-4059-831e-1e6f82335c2e"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumObjects
+		public interface IEnumObjects : Vanara.Collections.ICOMEnum<object>
 		{
 			/// <summary>Gets the next specified number and type of objects.</summary>
 			/// <param name="celt">

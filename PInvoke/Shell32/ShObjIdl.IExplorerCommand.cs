@@ -84,7 +84,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ienumexplorercommand
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "c9a21e84-dd95-413a-b9db-e02008185bef")]
 		[ComImport, Guid("a88826f8-186f-4987-aade-ea0cef8fbfe8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumExplorerCommand
+		public interface IEnumExplorerCommand : Vanara.Collections.ICOMEnum<IExplorerCommand>
 		{
 			/// <summary>Retrieves a specified number of elements that directly follow the current element.</summary>
 			/// <param name="celt">

@@ -12,7 +12,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nn-shobjidl_core-ienumresources
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "NN:shobjidl_core.IEnumResources")]
 		[ComImport, Guid("2dd81fe3-a83c-4da9-a330-47249d345ba1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumResources
+		public interface IEnumResources : Vanara.Collections.ICOMEnum<SHELL_ITEM_RESOURCE>
 		{
 			/// <summary>Gets the next SHELL_ITEM_RESOURCE structure.</summary>
 			/// <param name="celt">

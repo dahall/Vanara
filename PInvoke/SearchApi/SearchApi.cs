@@ -537,7 +537,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nn-searchapi-ienumsearchroots
 		[PInvokeData("searchapi.h")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("AB310581-AC80-11D1-8DF3-00C04FB6EF52")]
-		public interface IEnumSearchRoots
+		public interface IEnumSearchRoots : Vanara.Collections.ICOMEnum<ISearchRoot>
 		{
 			/// <summary>Retrieves the specified number of ISearchRoot elements.</summary>
 			/// <param name="celt">
@@ -631,7 +631,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nn-searchapi-ienumsearchscoperules
 		[PInvokeData("searchapi.h")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("AB310581-AC80-11D1-8DF3-00C04FB6EF54")]
-		public interface IEnumSearchScopeRules
+		public interface IEnumSearchScopeRules : Vanara.Collections.ICOMEnum<ISearchScopeRule>
 		{
 			/// <summary>Retrieves the specified number of ISearchScopeRule elements.</summary>
 			/// <remarks>

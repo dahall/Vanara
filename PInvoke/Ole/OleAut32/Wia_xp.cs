@@ -1210,7 +1210,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nn-wia_xp-ienumwia_dev_caps
 		[PInvokeData("wia_xp.h")]
 		[ComImport, Guid("1fcc4287-aca6-11d2-a093-00c04f72dc3c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumWIA_DEV_CAPS
+		public interface IEnumWIA_DEV_CAPS : Vanara.Collections.ICOMEnum<WIA_DEV_CAP>
 		{
 			/// <summary>The <c>IEnumWIA_DEV_CAPS::Next</c> method fills an array of pointers to WIA_DEV_CAP structures.</summary>
 			/// <param name="celt">Specifies the number of array elements in the array indicated by the rgelt parameter.</param>
@@ -1287,7 +1287,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nn-wia_xp-ienumwia_dev_info
 		[PInvokeData("wia_xp.h")]
 		[ComImport, Guid("5e38b83c-8cf1-11d1-bf92-0060081ed811"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumWIA_DEV_INFO
+		public interface IEnumWIA_DEV_INFO : Vanara.Collections.ICOMEnum<IWiaPropertyStorage>
 		{
 			/// <summary>The <c>IEnumWIA_DEV_INFO::Next</c> method fills an array of pointers to IWiaPropertyStorage interfaces.</summary>
 			/// <param name="celt">Specifies the number of array elements in the array indicated by the rgelt parameter.</param>
@@ -1365,7 +1365,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nn-wia_xp-ienumwia_format_info
 		[PInvokeData("wia_xp.h")]
 		[ComImport, Guid("81BEFC5B-656D-44f1-B24C-D41D51B4DC81"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumWIA_FORMAT_INFO
+		public interface IEnumWIA_FORMAT_INFO : Vanara.Collections.ICOMEnum<WIA_FORMAT_INFO>
 		{
 			/// <summary>The <c>IEnumWIA_FORMAT_INFO::Next</c> method returns an array of WIA_FORMAT_INFO structures.</summary>
 			/// <param name="celt">Specifies the number of elements requested.</param>
@@ -1435,7 +1435,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nn-wia_xp-ienumwiaitem
 		[PInvokeData("wia_xp.h")]
 		[ComImport, Guid("5e8383fc-3391-11d2-9a33-00c04fa36145"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumWiaItem
+		public interface IEnumWiaItem : Vanara.Collections.ICOMEnum<IWiaItem>
 		{
 			/// <summary>The <c>IEnumWiaItem::Next</c> method fills an array of pointers to IWiaItem interfaces.</summary>
 			/// <param name="celt">Specifies the number of array elements in the array indicated by the ppIWiaItem parameter.</param>

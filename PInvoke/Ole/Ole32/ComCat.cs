@@ -199,7 +199,7 @@ namespace Vanara.PInvoke
 		/// <summary>Enumerates component categories registered in the system.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/comcat/nn-comcat-ienumcategoryinfo
 		[ComImport, Guid("0002E011-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumCATEGORYINFO
+		public interface IEnumCATEGORYINFO : Vanara.Collections.ICOMEnum<CATEGORYINFO>
 		{
 			/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">
@@ -256,7 +256,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/comcat/nn-comcat-ienumguid
 		[PInvokeData("comcat.h", MSDNShortId = "NN:comcat.IEnumGUID")]
 		[ComImport, Guid("0002E000-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumGUID
+		public interface IEnumGUID : Vanara.Collections.ICOMEnum<Guid>
 		{
 			/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
 			/// <param name="celt">
