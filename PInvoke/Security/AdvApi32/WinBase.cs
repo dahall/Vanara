@@ -2776,7 +2776,7 @@ namespace Vanara.PInvoke
 				{
 					lpReferencedDomainName = refDom.ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.FirstOrDefault().Name;
 					var name = names.ToArray<LSA_TRANSLATED_NAME>(1)[0];
-					lpReferencedDomainName = name.Name;
+					lpName = name.Name;
 					peUse = name.Use;
 				}
 			}
