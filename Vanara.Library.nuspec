@@ -51,6 +51,7 @@
       <dependency id="Vanara.PInvoke.PowrProf" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Printing" version="3.3.1" />
       <dependency id="Vanara.PInvoke.ProjectedFSLib" version="3.3.1" />
+      <dependency id="Vanara.PInvoke.Rpc" version="3.3.1" />
       <dependency id="Vanara.PInvoke.SearchApi" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Security" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Shared" version="3.3.1" />

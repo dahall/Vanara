@@ -261,6 +261,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Dhcp", "PInv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dhcp", "UnitTests\PInvoke\Dhcp\Dhcp.csproj", "{94D2C3ED-2101-439C-AAAA-452883A493B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Rpc", "PInvoke\Rpc\Vanara.PInvoke.Rpc.csproj", "{4108A2DD-AD00-44D0-B926-405D65E630A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -829,6 +831,12 @@ Global
 		{94D2C3ED-2101-439C-AAAA-452883A493B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94D2C3ED-2101-439C-AAAA-452883A493B4}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
 		{94D2C3ED-2101-439C-AAAA-452883A493B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4108A2DD-AD00-44D0-B926-405D65E630A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4108A2DD-AD00-44D0-B926-405D65E630A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4108A2DD-AD00-44D0-B926-405D65E630A3}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{4108A2DD-AD00-44D0-B926-405D65E630A3}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{4108A2DD-AD00-44D0-B926-405D65E630A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4108A2DD-AD00-44D0-B926-405D65E630A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -940,6 +948,7 @@ Global
 		{27FA62A4-C1EE-461D-9F5B-287C0A848B88} = {3EC6B40D-71D3-4E59-A0E0-544EC605FE11}
 		{CB2EAE48-7503-459F-BD63-69FAE9740A20} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{94D2C3ED-2101-439C-AAAA-452883A493B4} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
+		{4108A2DD-AD00-44D0-B926-405D65E630A3} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
