@@ -24,6 +24,46 @@ namespace Vanara.Collections
 	/// <returns><c>true</c> if an item is returned, otherwise <c>false</c>.</returns>
 	public delegate bool TryGetNext<TIEnum, TItem>(TIEnum enumObj, out TItem value);
 
+	/// <summary>A generic interface to identify matching COM enumerator interfaces</summary>
+	/// <typeparam name="TElem">The type of the elem.</typeparam>
+	public interface ICOMEnum<TElem>
+	{
+		/*
+		/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
+		/// <param name="celt">
+		/// The number of items to be retrieved. If there are fewer than the requested number of items left in the sequence, this method
+		/// retrieves the remaining elements.
+		/// </param>
+		/// <param name="rgelt">
+		/// <para>An array of enumerated items.</para>
+		/// <para>
+		/// The enumerator is responsible for calling AddRef, and the caller is responsible for calling Release through each pointer
+		/// enumerated. If celt is greater than 1, the caller must also pass a non-NULL pointer passed to pceltFetched to know how many
+		/// pointers to release.
+		/// </para>
+		/// </param>
+		/// <param name="pceltFetched">
+		/// The number of items that were retrieved. This parameter is always less than or equal to the number of items requested.
+		/// </param>
+		/// <returns>If the method retrieves the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
+		HRESULT Next(uint celt, TElem[] rgelt, out uint pceltFetched);
+
+		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
+		/// <param name="celt">The number of items to be skipped.</param>
+		/// <returns>If the method skips the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
+		HRESULT Skip(uint celt);
+
+		/// <summary>Resets the enumeration sequence to the beginning.</summary>
+		/// <remarks>
+		/// There is no guarantee that the same set of objects will be enumerated after the reset operation has completed. A static
+		/// collection is reset to the beginning, but it can be too expensive for some collections, such as files in a directory, to
+		/// guarantee this condition.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-reset HRESULT Reset( );
+		void Reset();
+		*/
+	}
+
 	/// <summary>An implementation the <see cref="IEnumerator"/> interface that can iterate through next and reset methods.</summary>
 	public class IEnumeratorFromNext<TIEnum, TItem> : IEnumerator<TItem> where TIEnum : class
 	{
@@ -104,6 +144,15 @@ namespace Vanara.Collections
 			cnext = next;
 			base.next = TryGet;
 			base.reset = reset;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="IEnumFromCom{TItem}"/> class from a COM enumeration interface instance.</summary>
+		/// <param name="enumObj">The COM enumeration interface instance.</param>
+		public IEnumFromCom(ICOMEnum<TItem> enumObj) : base()
+		{
+			cnext = (ComTryGetNext)Delegate.CreateDelegate(typeof(ComTryGetNext), enumObj, "Next");
+			base.next = TryGet;
+			base.reset = (Action)Delegate.CreateDelegate(typeof(Action), enumObj, "Reset");
 		}
 
 		/// <summary>
