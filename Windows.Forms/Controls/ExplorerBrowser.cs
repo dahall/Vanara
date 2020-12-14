@@ -16,9 +16,11 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
+using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
 using static Vanara.PInvoke.User32;
+using IMessageFilter = System.Windows.Forms.IMessageFilter;
 using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
 
 namespace Vanara.Windows.Forms
