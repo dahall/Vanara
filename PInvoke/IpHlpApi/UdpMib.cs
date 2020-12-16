@@ -112,7 +112,7 @@ namespace Vanara.PInvoke
 		// liCreateTimestamp; union { struct { int SpecificPortBind : 1; }; int dwFlags; }; ULONGLONG
 		// OwningModuleInfo[TCPIP_OWNING_MODULE_SIZE]; } MIB_UDP6ROW_OWNER_MODULE, *PMIB_UDP6ROW_OWNER_MODULE;
 		[PInvokeData("udpmib.h", MSDNShortId = "dcc80b3c-d4d5-44f4-9c7f-df6be2e21889")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
 		public struct MIB_UDP6ROW_OWNER_MODULE
 		{
 			/// <summary>
@@ -337,7 +337,7 @@ namespace Vanara.PInvoke
 		// struct { int SpecificPortBind : 1; }; int dwFlags; }; ULONGLONG OwningModuleInfo[TCPIP_OWNING_MODULE_SIZE]; }
 		// MIB_UDPROW_OWNER_MODULE, *PMIB_UDPROW_OWNER_MODULE;
 		[PInvokeData("udpmib.h", MSDNShortId = "9ae304e0-4653-4757-a823-d4ccf68627bf")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
 		public struct MIB_UDPROW_OWNER_MODULE
 		{
 			/// <summary>
