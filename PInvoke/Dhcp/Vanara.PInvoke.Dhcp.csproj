@@ -16,7 +16,7 @@ Functions
 DhcpCApiCleanup, DhcpCApiInitialize, DhcpDeRegisterParamChange, DhcpGetOriginalSubnetMask, DhcpRegisterParamChange, DhcpRemoveDNSRegistrations, DhcpRequestParams, DhcpUndoRequestParams, Dhcpv6CApiCleanup, Dhcpv6CApiInitialize, Dhcpv6ReleasePrefix, Dhcpv6RenewPrefix, Dhcpv6RequestParams, Dhcpv6RequestPrefix, McastApiCleanup, McastApiStartup, McastEnumerateScopes, McastGenUID, McastReleaseAddress, McastRenewAddress, McastRequestAddress
 
 Structures
-DHCP_IP_ADDRESS, DHCPAPI_PARAMS, DHCPCAPI_CLASSID, DHCPCAPI_PARAMS_ARRAY, DHCPV6CAPI_CLASSID, DHCPV6CAPI_PARAMS, DHCPV6CAPI_PARAMS_ARRAY, DHCPV6Prefix, DHCPV6PrefixLeaseInformation
+DHCP_IP_ADDRESS, DHCPAPI_PARAMS, DHCPCAPI_CLASSID, DHCPCAPI_PARAMS_ARRAY, DHCPV6CAPI_CLASSID, DHCPV6CAPI_PARAMS, DHCPV6CAPI_PARAMS_ARRAY, DHCPV6Prefix, DHCPV6PrefixLeaseInformation, IPNG_ADDRESS, MCAST_CLIENT_UID, MCAST_LEASE_REQUEST, MCAST_LEASE_RESPONSE, MCAST_SCOPE_CTX, MCAST_SCOPE_ENTRY
 
 </PackageReleaseNotes>
   </PropertyGroup>

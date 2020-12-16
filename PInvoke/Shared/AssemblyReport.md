@@ -142,6 +142,7 @@ Struct | Description
 ### Interfaces
 Interface | Description
 ---- | ----
+[Vanara.Collections.ICOMEnum<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ICOMEnum<T>) | A generic interface to identify matching COM enumerator interfaces
 [Vanara.PInvoke.IErrorProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IErrorProvider) | Common properties and methods for errors.
 [Vanara.PInvoke.IGraphicsObjectHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IGraphicsObjectHandle) | Signals that a structure or class holds a handle to a synchronization object.
 [Vanara.PInvoke.IHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IHandle) | Signals that a structure or class holds a HANDLE.

@@ -26,6 +26,7 @@ Struct | Description
 ### Interfaces
 Interface | Description
 ---- | ----
+[Vanara.PInvoke.IArrayStruct<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IArrayStruct<T>) | Interface that identifies a structure containing only a 4-byte size field followed by a pointer to an array of <typeparamref name="T" />.
 [Vanara.Collections.IHistory<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IHistory<T>) | Provides an interface for a history of items.
 [Vanara.InteropServices.IMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=IMemoryMethods) | Interface to capture unmanaged memory methods.
 [Vanara.InteropServices.ISafeMemoryHandle](https://github.com/dahall/Vanara/search?l=C%23&q=ISafeMemoryHandle) | Interface for classes that support safe memory pointers.
@@ -55,6 +56,8 @@ Class | Description
 [Vanara.Extensions.HexDempHelpers](https://github.com/dahall/Vanara/search?l=C%23&q=HexDempHelpers) | Extension to dump a byte array.
 [Vanara.InteropServices.HGlobalMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=HGlobalMemoryMethods) | Unmanaged memory methods for HGlobal.
 [Vanara.Collections.History<T>](https://github.com/dahall/Vanara/search?l=C%23&q=History<T>) | Provides a history of items that lives efficiently in memory and whose size can change easily.
+[Vanara.PInvoke.IArrayStructExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=IArrayStructExtensions) | Extension methods for `Vanara.PInvoke.IArrayStruct`1`.
+[Vanara.PInvoke.IArrayStructMarshaler<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IArrayStructMarshaler<T>) | Allows marshaling of arrays in place of a structure supporting `Vanara.PInvoke.IArrayStruct`1`.
 [Vanara.Extensions.InteropExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=InteropExtensions) | Extension methods for System.Runtime.InteropServices.
 [Vanara.InteropServices.IntPtrConverter](https://github.com/dahall/Vanara/search?l=C%23&q=IntPtrConverter) | Functions to safely convert a memory pointer to a type.
 [Vanara.Extensions.IOExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=IOExtensions) | Extensions for classes in System.IO.

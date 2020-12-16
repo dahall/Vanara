@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Dhcpcsvc.d
 
 - Includes methods from dhcpcsvc6.dll, dhcpcsvc.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Dhcp?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Dhcp?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Dhcp)  
-### Methods - 66% API coverage (14 of 21 functions)  
+### Methods - 100% API coverage (21 of 21 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DhcpCApiCleanup](https://www.google.com/search?num=5&q=DhcpCApiCleanup+site%3Adocs.microsoft.com) | dhcpcsvc.dll | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DhcpCApiCleanup](https://github.com/dahall/Vanara/search?l=C%23&q=DhcpCApiCleanup)  
@@ -20,13 +20,13 @@ Native Method | Native DLL | Header | Managed Method
 [Dhcpv6RenewPrefix](https://www.google.com/search?num=5&q=Dhcpv6RenewPrefix+site%3Adocs.microsoft.com) | dhcpcsvc6.dll | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.Dhcpv6RenewPrefix](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcpv6RenewPrefix)  
 [Dhcpv6RequestParams](https://www.google.com/search?num=5&q=Dhcpv6RequestParams+site%3Adocs.microsoft.com) | dhcpcsvc6.dll | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.Dhcpv6RequestParams](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcpv6RequestParams)  
 [Dhcpv6RequestPrefix](https://www.google.com/search?num=5&q=Dhcpv6RequestPrefix+site%3Adocs.microsoft.com) | dhcpcsvc6.dll | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.Dhcpv6RequestPrefix](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcpv6RequestPrefix)  
-[McastApiCleanup](https://www.google.com/search?num=5&q=McastApiCleanup+site%3Adocs.microsoft.com) | dhcpcsvc.dll |  |   
-[McastApiStartup](https://www.google.com/search?num=5&q=McastApiStartup+site%3Adocs.microsoft.com) | dhcpcsvc.dll |  |   
-[McastEnumerateScopes](https://www.google.com/search?num=5&q=McastEnumerateScopes+site%3Adocs.microsoft.com) | dhcpcsvc.dll |  |   
-[McastGenUID](https://www.google.com/search?num=5&q=McastGenUID+site%3Adocs.microsoft.com) | dhcpcsvc.dll |  |   
-[McastReleaseAddress](https://www.google.com/search?num=5&q=McastReleaseAddress+site%3Adocs.microsoft.com) | dhcpcsvc.dll |  |   
-[McastRenewAddress](https://www.google.com/search?num=5&q=McastRenewAddress+site%3Adocs.microsoft.com) | dhcpcsvc.dll |  |   
-[McastRequestAddress](https://www.google.com/search?num=5&q=McastRequestAddress+site%3Adocs.microsoft.com) | dhcpcsvc.dll |  |   
+[McastApiCleanup](https://www.google.com/search?num=5&q=McastApiCleanup+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastApiCleanup](https://github.com/dahall/Vanara/search?l=C%23&q=McastApiCleanup)  
+[McastApiStartup](https://www.google.com/search?num=5&q=McastApiStartup+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastApiStartup](https://github.com/dahall/Vanara/search?l=C%23&q=McastApiStartup)  
+[McastEnumerateScopes](https://www.google.com/search?num=5&q=McastEnumerateScopes+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastEnumerateScopes](https://github.com/dahall/Vanara/search?l=C%23&q=McastEnumerateScopes)  
+[McastGenUID](https://www.google.com/search?num=5&q=McastGenUID+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastGenUID](https://github.com/dahall/Vanara/search?l=C%23&q=McastGenUID)  
+[McastReleaseAddress](https://www.google.com/search?num=5&q=McastReleaseAddress+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastReleaseAddress](https://github.com/dahall/Vanara/search?l=C%23&q=McastReleaseAddress)  
+[McastRenewAddress](https://www.google.com/search?num=5&q=McastRenewAddress+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastRenewAddress](https://github.com/dahall/Vanara/search?l=C%23&q=McastRenewAddress)  
+[McastRequestAddress](https://www.google.com/search?num=5&q=McastRequestAddress+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastRequestAddress](https://github.com/dahall/Vanara/search?l=C%23&q=McastRequestAddress)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -39,3 +39,9 @@ Native Structure | Header | Managed Structure
 [DHCPV6CAPI_PARAMS_ARRAY](https://www.google.com/search?num=5&q=DHCPV6CAPI_PARAMS_ARRAY+site%3Adocs.microsoft.com) | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.DHCPV6CAPI_PARAMS_ARRAY](https://github.com/dahall/Vanara/search?l=C%23&q=DHCPV6CAPI_PARAMS_ARRAY)  
 [DHCPV6Prefix](https://www.google.com/search?num=5&q=DHCPV6Prefix+site%3Adocs.microsoft.com) | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.DHCPV6Prefix](https://github.com/dahall/Vanara/search?l=C%23&q=DHCPV6Prefix)  
 [DHCPV6PrefixLeaseInformation](https://www.google.com/search?num=5&q=DHCPV6PrefixLeaseInformation+site%3Adocs.microsoft.com) | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.DHCPV6PrefixLeaseInformation](https://github.com/dahall/Vanara/search?l=C%23&q=DHCPV6PrefixLeaseInformation)  
+[IPNG_ADDRESS](https://www.google.com/search?num=5&q=IPNG_ADDRESS+site%3Adocs.microsoft.com) | madcapcl.h | [Vanara.PInvoke.MADCAP.IPNG_ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=IPNG_ADDRESS)  
+[MCAST_CLIENT_UID](https://www.google.com/search?num=5&q=MCAST_CLIENT_UID+site%3Adocs.microsoft.com) | madcapcl.h | [Vanara.PInvoke.MADCAP.MCAST_CLIENT_UID](https://github.com/dahall/Vanara/search?l=C%23&q=MCAST_CLIENT_UID)  
+[MCAST_LEASE_REQUEST](https://www.google.com/search?num=5&q=MCAST_LEASE_REQUEST+site%3Adocs.microsoft.com) | madcapcl.h | [Vanara.PInvoke.MADCAP.MCAST_LEASE_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=MCAST_LEASE_REQUEST)  
+[MCAST_LEASE_RESPONSE](https://www.google.com/search?num=5&q=MCAST_LEASE_RESPONSE+site%3Adocs.microsoft.com) | madcapcl.h | [Vanara.PInvoke.MADCAP.MCAST_LEASE_RESPONSE](https://github.com/dahall/Vanara/search?l=C%23&q=MCAST_LEASE_RESPONSE)  
+[MCAST_SCOPE_CTX](https://www.google.com/search?num=5&q=MCAST_SCOPE_CTX+site%3Adocs.microsoft.com) | madcapcl.h | [Vanara.PInvoke.MADCAP.MCAST_SCOPE_CTX](https://github.com/dahall/Vanara/search?l=C%23&q=MCAST_SCOPE_CTX)  
+[MCAST_SCOPE_ENTRY](https://www.google.com/search?num=5&q=MCAST_SCOPE_ENTRY+site%3Adocs.microsoft.com) | madcapcl.h | [Vanara.PInvoke.MADCAP.MCAST_SCOPE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=MCAST_SCOPE_ENTRY)  
