@@ -2459,8 +2459,8 @@ Partial Public Module FirewallApi
     ''' <param name="rule">The rule.</param>
     ''' <returns>A string array with zero or more elements.</returns>
     <Extension()>
-    Public Function GetInterfaces(ByVal rule As INetFwRule) As String()
-        Return If(rule.Interfaces Is Nothing, New String(-1) {}, Array.ConvertAll(Of Object, String)(rule.Interfaces, Function(o) o.ToString()))
+    Public Function GetInterfaces(rule As INetFwRule) As String()
+        Return If(rule.Interfaces Is Nothing, New String(-1) {}, Array.ConvertAll(CType(rule.Interfaces, Object()), Function(o) o.ToString()))
     End Function
 
     ''' <summary>The <c>INetFwRules</c> interface provides a collection of firewall rules.</summary>
