@@ -106,7 +106,7 @@ namespace Vanara.InteropServices
 			if (marshalType is null)
 				throw new ArgumentNullException(nameof(marshalType));
 			if (!typeof(IVanaraMarshaler).IsAssignableFrom(marshalType))
-				throw new ArgumentException($"The supplied type must inherit from {nameof(IVanaraMarshaler)}.", nameof(marshalType));
+				throw new ArgumentException($"The supplied type ({marshalType?.FullName}) must inherit from {nameof(IVanaraMarshaler)}.", nameof(marshalType));
 			MarshalType = marshalType;
 			Cookie = cookie;
 		}
