@@ -2129,8 +2129,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowa
 		// void CreateWindowA( lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 		[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.CreateWindowA")]
-		public static void CreateWindow(string lpClassName, string lpWindowName, WindowStyles dwStyle,
-			int x, int y, int nWidth, int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu, HINSTANCE hInstance, [Optional] IntPtr lpParam)
+		public static void CreateWindow(string lpClassName, string lpWindowName, [Optional] WindowStyles dwStyle,
+			[Optional] int x, [Optional] int y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
+			[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam)
 			=> CreateWindowEx(0, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
 
 		/// <summary>
@@ -2382,8 +2383,9 @@ namespace Vanara.PInvoke
 		// HINSTANCE hInstance, LPVOID lpParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "createwindowex")]
-		public static extern SafeHWND CreateWindowEx(WindowStylesEx dwExStyle, string lpClassName, string lpWindowName, WindowStyles dwStyle,
-			int X, int Y, int nWidth, int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu, HINSTANCE hInstance, [Optional] IntPtr lpParam);
+		public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, string lpClassName, string lpWindowName, [Optional] WindowStyles dwStyle,
+			[Optional] int X, [Optional] int Y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
+			[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam);
 
 		/// <summary>
 		/// <para>
@@ -7828,6 +7830,126 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public MessageFilterInformation ExtStatus;
+		}
+
+		/// <summary>
+		/// Defines the initialization parameters passed to the window procedure of an application. These members are identical to the
+		/// parameters of the CreateWindowEx function.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Because the <c>lpszClass</c> member can contain a pointer to a local (and thus inaccessable) atom, do not obtain the class name
+		/// by using this member. Use the GetClassName function instead.
+		/// </para>
+		/// <para>
+		/// You should access the data represented by the <c>lpCreateParams</c> member using a pointer that has been declared using the
+		/// <c>UNALIGNED</c> type, because the pointer may not be <c>DWORD</c> aligned. This is demonstrated in the following example:
+		/// </para>
+		/// <para>
+		/// <code>typedef struct tagMyData { // Define creation data here. } MYDATA; typedef struct tagMyDlgData { SHORT cbExtra; MYDATA myData; } MYDLGDATA, UNALIGNED *PMYDLGDATA; PMYDLGDATA pMyDlgdata = (PMYDLGDATA) (((LPCREATESTRUCT) lParam)-&gt;lpCreateParams);</code>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-createstructa typedef struct tagCREATESTRUCTA { LPVOID
+		// lpCreateParams; HINSTANCE hInstance; HMENU hMenu; HWND hwndParent; int cy; int cx; int y; int x; LONG style; LPCSTR lpszName;
+		// LPCSTR lpszClass; DWORD dwExStyle; } CREATESTRUCTA, *LPCREATESTRUCTA;
+		[PInvokeData("winuser.h", MSDNShortId = "NS:winuser.tagCREATESTRUCTA")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct CREATESTRUCT
+		{
+			/// <summary>
+			/// <para>Type: <c>LPVOID</c></para>
+			/// <para>
+			/// Contains additional data which may be used to create the window. If the window is being created as a result of a call to the
+			/// CreateWindow or CreateWindowEx function, this member contains the value of the lpParam parameter specified in the function call.
+			/// </para>
+			/// <para>
+			/// If the window being created is a MDI client window, this member contains a pointer to a CLIENTCREATESTRUCT structure. If the
+			/// window being created is a MDI child window, this member contains a pointer to an MDICREATESTRUCT structure.
+			/// </para>
+			/// <para>
+			/// If the window is being created from a dialog template, this member is the address of a <c>SHORT</c> value that specifies the
+			/// size, in bytes, of the window creation data. The value is immediately followed by the creation data. For more information,
+			/// see the following Remarks section.
+			/// </para>
+			/// </summary>
+			public IntPtr lpCreateParams;
+
+			/// <summary>
+			/// <para>Type: <c>HINSTANCE</c></para>
+			/// <para>A handle to the module that owns the new window.</para>
+			/// </summary>
+			public HINSTANCE hInstance;
+
+			/// <summary>
+			/// <para>Type: <c>HMENU</c></para>
+			/// <para>A handle to the menu to be used by the new window.</para>
+			/// </summary>
+			public HMENU hMenu;
+
+			/// <summary>
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>
+			/// A handle to the parent window, if the window is a child window. If the window is owned, this member identifies the owner
+			/// window. If the window is not a child or owned window, this member is <c>NULL</c>.
+			/// </para>
+			/// </summary>
+			public HWND hwndParent;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>The height of the new window, in pixels.</para>
+			/// </summary>
+			public int cy;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>The width of the new window, in pixels.</para>
+			/// </summary>
+			public int cx;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>
+			/// The y-coordinate of the upper left corner of the new window. If the new window is a child window, coordinates are relative
+			/// to the parent window. Otherwise, the coordinates are relative to the screen origin.
+			/// </para>
+			/// </summary>
+			public int y;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>
+			/// The x-coordinate of the upper left corner of the new window. If the new window is a child window, coordinates are relative
+			/// to the parent window. Otherwise, the coordinates are relative to the screen origin.
+			/// </para>
+			/// </summary>
+			public int x;
+
+			/// <summary>
+			/// <para>Type: <c>LONG</c></para>
+			/// <para>The style for the new window. For a list of possible values, see Window Styles.</para>
+			/// </summary>
+			public WindowStyles style;
+
+			/// <summary>
+			/// <para>Type: <c>LPCTSTR</c></para>
+			/// <para>The name of the new window.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string lpszName;
+
+			/// <summary>
+			/// <para>Type: <c>LPCTSTR</c></para>
+			/// <para>A pointer to a null-terminated string or an atom that specifies the class name of the new window.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string lpszClass;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The extended window style for the new window. For a list of possible values, see Extended Window Styles.</para>
+			/// </summary>
+			public WindowStylesEx dwExStyle;
 		}
 
 		/// <summary>Contains the flash status for a window and the number of times the system should flash the window.</summary>
