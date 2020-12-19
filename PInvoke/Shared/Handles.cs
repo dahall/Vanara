@@ -1980,6 +1980,9 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public static HWND HWND_BOTTOM = new IntPtr(1);
 
+		/// <summary>Use as parent in CreateWindow or CreateWindowEx call to indicate a message-only window.</summary>
+		public static HWND HWND_MESSAGE = new IntPtr(-3);
+
 		/// <summary>
 		/// Places the window above all non-topmost windows (that is, behind all topmost windows). This flag has no effect if the window
 		/// is already a non-topmost window.
