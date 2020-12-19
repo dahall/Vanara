@@ -364,6 +364,8 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint dwOwningPid;
 
+			private uint padding;
+
 			/// <summary>
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A FILETIME structure that indicates when the call to the bind function for the UDP endpoint occurred.</para>
