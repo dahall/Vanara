@@ -144,7 +144,7 @@ namespace Vanara.Security.AccessControl
 		/// <returns>An array of <see cref="SecurityIdentifier"/> objects representing all accounts with the specified privilege.</returns>
 		public IEnumerable<SecurityIdentifier> EnumerateAccountsWithRight(string privilege)
 		{
-			var ret = LsaEnumerateAccountsWithUserRight(Handle, privilege, out var buffer, out var count);
+			NTStatus ret = LsaEnumerateAccountsWithUserRight(Handle, privilege, out SafeLsaMemoryHandle buffer, out var count);
 			if (ret == NTStatus.STATUS_NO_MORE_ENTRIES)
 				return new SecurityIdentifier[0];
 			ThrowIfLsaError(ret);
@@ -185,11 +185,11 @@ namespace Vanara.Security.AccessControl
 		{
 			if (names == null || names.Length == 0)
 				throw new ArgumentException(@"At least one user name must be supplied.", nameof(names));
-			var ret = LsaLookupNames2(Handle, localOnly ? LsaLookupNamesFlags.LSA_LOOKUP_ISOLATED_AS_LOCAL : 0, (uint)names.Length, names, out var domains, out var sids);
+			NTStatus ret = LsaLookupNames2(Handle, localOnly ? LsaLookupNamesFlags.LSA_LOOKUP_ISOLATED_AS_LOCAL : 0, (uint)names.Length, names, out SafeLsaMemoryHandle domains, out SafeLsaMemoryHandle sids);
 			if (ret != NTStatus.STATUS_SUCCESS && ret != NTStatus.STATUS_SOME_NOT_MAPPED)
 				ThrowIfLsaError(ret);
-			var d = domains.DangerousGetHandle().ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.ToArray();
-			var ts = sids.DangerousGetHandle().ToIEnum<LSA_TRANSLATED_SID2>(names.Length).ToArray();
+			LSA_TRUST_INFORMATION[] d = domains.DangerousGetHandle().ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.ToArray();
+			LSA_TRANSLATED_SID2[] ts = sids.DangerousGetHandle().ToIEnum<LSA_TRANSLATED_SID2>(names.Length).ToArray();
 			var retVal = new SystemAccountInfo[names.Length];
 			for (var i = 0; i < names.Length; i++)
 				retVal[i] = new SystemAccountInfo(names[i], ts[i].Use, IsValidSid(ts[i].Use) ? new SecurityIdentifier((IntPtr)ts[i].Sid) : null, ts[i].DomainIndex, d);
@@ -206,14 +206,14 @@ namespace Vanara.Security.AccessControl
 		{
 			if (sids == null || sids.Length == 0)
 				throw new ArgumentException(@"At least one SecurityIdentifier must be supplied.", nameof(sids));
-			var opts = (preferInternetNames ? LsaLookupSidsFlags.LSA_LOOKUP_PREFER_INTERNET_NAMES : 0) |
+			LsaLookupSidsFlags opts = (preferInternetNames ? LsaLookupSidsFlags.LSA_LOOKUP_PREFER_INTERNET_NAMES : 0) |
 					   (disallowConnectedAccts ? LsaLookupSidsFlags.LSA_LOOKUP_DISALLOW_CONNECTED_ACCOUNT_INTERNET_SID : 0);
-			var psids = sids.Select(s => new PinnedSid(s));
-			var ret = LsaLookupSids2(Handle, opts, (uint)sids.Length, psids.Select(s => s.PSID).ToArray(), out var domains, out var names);
+			IEnumerable<PinnedSid> psids = sids.Select(s => new PinnedSid(s));
+			NTStatus ret = LsaLookupSids2(Handle, opts, (uint)sids.Length, psids.Select(s => s.PSID).ToArray(), out SafeLsaMemoryHandle domains, out SafeLsaMemoryHandle names);
 			if (ret != NTStatus.STATUS_SUCCESS && ret != NTStatus.STATUS_SOME_NOT_MAPPED)
 				ThrowIfLsaError(ret);
-			var d = domains.DangerousGetHandle().ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.ToArray();
-			var tn = names.DangerousGetHandle().ToIEnum<LSA_TRANSLATED_NAME>(sids.Length).ToArray();
+			LSA_TRUST_INFORMATION[] d = domains.DangerousGetHandle().ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.ToArray();
+			LSA_TRANSLATED_NAME[] tn = names.DangerousGetHandle().ToIEnum<LSA_TRANSLATED_NAME>(sids.Length).ToArray();
 			var retVal = new SystemAccountInfo[sids.Length];
 			for (var i = 0; i < sids.Length; i++)
 				retVal[i] = new SystemAccountInfo(tn[i].Name.ToString(), tn[i].Use, sids[i], tn[i].DomainIndex, d);
@@ -224,7 +224,7 @@ namespace Vanara.Security.AccessControl
 		/// <returns>An enumeration of CAPIDs.</returns>
 		public IEnumerable<SecurityIdentifier> GetAvailableCAPIDs()
 		{
-			ThrowIfLsaError(LsaGetAppliedCAPIDs(svr, out var capIdArray, out var capCount));
+			ThrowIfLsaError(LsaGetAppliedCAPIDs(svr, out SafeLsaMemoryHandle capIdArray, out var capCount));
 			return capCount == 0 || capIdArray.IsInvalid ? new SecurityIdentifier[0] : capIdArray.DangerousGetHandle().ToIEnum<IntPtr>((int)capCount).Select(p => new SecurityIdentifier(p));
 		}
 
@@ -250,7 +250,7 @@ namespace Vanara.Security.AccessControl
 
 		private static void SetSystemAccess(SafeLSA_HANDLE hAcct, AccountLogonRights rights)
 		{
-			var cur = GetSystemAccess(hAcct);
+			AccountLogonRights cur = GetSystemAccess(hAcct);
 			ThrowIfLsaError(LsaSetSystemAccessAccount(hAcct, (int)(cur | rights)));
 		}
 
@@ -260,8 +260,8 @@ namespace Vanara.Security.AccessControl
 
 		private SafeLSA_HANDLE GetAccount(string accountName, LsaAccountAccessMask mask = LsaAccountAccessMask.ACCOUNT_VIEW)
 		{
-			var sid = GetSid(accountName);
-			var res = LsaNtStatusToWinError(LsaOpenAccount(Handle, sid, mask, out var hAcct));
+			PSID sid = GetSid(accountName);
+			Win32Error res = LsaNtStatusToWinError(LsaOpenAccount(Handle, sid, mask, out SafeLSA_HANDLE hAcct));
 			if (res == Win32Error.ERROR_FILE_NOT_FOUND)
 				ThrowIfLsaError(LsaCreateAccount(Handle, sid, mask, out hAcct));
 			else
@@ -285,7 +285,7 @@ namespace Vanara.Security.AccessControl
 		private PSID GetSid(string accountName)
 		{
 			int sidSize = 0, nameSize = 0;
-			LookupAccountName(svr, accountName, SafePSID.Null, ref sidSize, null, ref nameSize, out var accountType);
+			LookupAccountName(svr, accountName, SafePSID.Null, ref sidSize, null, ref nameSize, out SID_NAME_USE accountType);
 			var domainName = new System.Text.StringBuilder(nameSize);
 			var sid = new SafePSID(sidSize);
 			if (!LookupAccountName(string.Empty, accountName, sid, ref sidSize, domainName, ref nameSize, out accountType))
@@ -311,8 +311,9 @@ namespace Vanara.Security.AccessControl
 				ctrl = parent;
 
 				if (!string.IsNullOrEmpty(userName))
+				{
 					user = userName;
-
+				}
 				else
 				{
 					using var identity = WindowsIdentity.GetCurrent();
@@ -369,8 +370,9 @@ namespace Vanara.Security.AccessControl
 				ctrl = parent;
 
 				if (!string.IsNullOrEmpty(userName))
+				{
 					user = userName;
-
+				}
 				else
 				{
 					using var identity = WindowsIdentity.GetCurrent();
@@ -393,7 +395,7 @@ namespace Vanara.Security.AccessControl
 				get => (Rights & right) == right;
 				set
 				{
-					var hAcct = ctrl.GetAccount(user, LsaAccountAccessMask.ACCOUNT_VIEW | LsaAccountAccessMask.ACCOUNT_ADJUST_SYSTEM_ACCESS);
+					SafeLSA_HANDLE hAcct = ctrl.GetAccount(user, LsaAccountAccessMask.ACCOUNT_VIEW | LsaAccountAccessMask.ACCOUNT_ADJUST_SYSTEM_ACCESS);
 					EnumFlagIndexer<AccountLogonRights> cur = GetSystemAccess(hAcct);
 					if (cur[right] == value) return;
 					cur[right] = value;
