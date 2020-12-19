@@ -191,6 +191,31 @@ namespace Vanara.PInvoke
 		public static extern NTStatus LsaQueryCAPs([In] PSID[] CAPIDs, uint CAPIDCount, out SafeLsaMemoryHandle CAPs, out uint CAPCount);
 
 		/// <summary>
+		/// <para>Returns the Central Access Policies (CAPs) for the specified IDs.</para>
+		/// </summary>
+		/// <param name="CAPIDs">
+		/// <para>A pointer to a variable that contains an array of pointers to CAPIDs that identify the CAPs being queried.</para>
+		/// </param>
+		/// <param name="CAPIDCount">
+		/// <para>The number of IDs in the CAPIDs parameter.</para>
+		/// </param>
+		/// <param name="CAPs">
+		/// <para>Receives a pointer to an array of pointers to CENTRAL_ACCESS_POLICY structures representing the queried CAPs.</para>
+		/// </param>
+		/// <param name="CAPCount">
+		/// <para>The number of CENTRAL_ACCESS_POLICY structure pointers returned in the CAPs parameter.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>If the function fails, the return value is an NTSTATUS code, which can be one of the LSA Policy Function Return Values.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntlsa/nf-ntlsa-lsaquerycaps NTSTATUS LsaQueryCAPs( PSID *CAPIDs, ULONG
+		// CAPIDCount, PCENTRAL_ACCESS_POLICY *CAPs, PULONG CAPCount );
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ntlsa.h", MSDNShortId = "55D6FD6F-0FD5-41F6-967B-F5600E19C3EF")]
+		public static extern NTStatus LsaQueryCAPs([In] IntPtr CAPIDs, uint CAPIDCount, out SafeLsaMemoryHandle CAPs, out uint CAPCount);
+
+		/// <summary>
 		/// <para>Represents a central access policy that contains a set of central access policy entries.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntlsa/ns-ntlsa-_central_access_policy typedef struct _CENTRAL_ACCESS_POLICY {
