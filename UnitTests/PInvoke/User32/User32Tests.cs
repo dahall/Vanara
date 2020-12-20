@@ -36,11 +36,12 @@ namespace Vanara.PInvoke.Tests
 			timer.Stop();
 			Assert.True(gotMsg);
 
-			IntPtr meth(HWND hwnd, uint uMsg, IntPtr wParam, IntPtr lParam)
+			bool meth(HWND hwnd, uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 			{
+				lReturn = default;
 				TestContext.WriteLine($"{timer.ElapsedMilliseconds} Message: {(WindowMessage)uMsg} ({uMsg})");
 				gotMsg = true;
-				return DefWindowProc(hwnd, uMsg, wParam, lParam);
+				return false;
 			}
 		}
 

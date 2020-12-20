@@ -5,6 +5,19 @@ using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>A filter method that handles messages sent to a window.</summary>
+	/// <param name="hwnd">A handle to the window.</param>
+	/// <param name="msg">The MSG.</param>
+	/// <param name="wParam">Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</param>
+	/// <param name="lParam">Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</param>
+	/// <param name="lReturn">The return value is the result of the message processing and depends on the message sent.</param>
+	/// <returns>
+	/// <see langword="true"/> if the message is handled and <see cref="DefWindowProc(HWND, uint, IntPtr, IntPtr)"/> should not be called;
+	/// <see langword="false"/> otherwise.
+	/// </returns>
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	public delegate bool BasicMessageWindowFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn);
+
 	/// <summary>Simple window to process messages.</summary>
 	/// <seealso cref="System.MarshalByRefObject"/>
 	/// <seealso cref="System.IDisposable"/>
@@ -15,12 +28,10 @@ namespace Vanara.PInvoke
 		private bool isDisposed;
 
 		/// <summary>Initializes a new instance of the <see cref="BasicMessageWindow"/> class.</summary>
-		/// <param name="callback">
-		/// Specifies the callback method to use to process messages. A <see langword="null"/> value will just use <c>DefWindowProc</c>.
-		/// </param>
-		public BasicMessageWindow(WindowProc callback = null)
+		/// <param name="callback">Specifies the callback method to use to process messages.</param>
+		public BasicMessageWindow(BasicMessageWindowFilter callback = null)
 		{
-			Callback = callback;
+			MessageFilter = callback;
 			ClassName = $"MessageWindowBase+{Guid.NewGuid()}";
 
 			hwnd = CreateWindow();
@@ -29,10 +40,6 @@ namespace Vanara.PInvoke
 		/// <summary>Finalizes an instance of the <see cref="BasicMessageWindow"/> class.</summary>
 		~BasicMessageWindow() => Dispose(false);
 
-		/// <summary>Gets or sets the callback method used to filter window messages.</summary>
-		/// <value>The callback method.</value>
-		public WindowProc Callback { get; set; }
-
 		/// <summary>Gets the name of the class.</summary>
 		/// <value>The name of the class.</value>
 		public string ClassName { get; private set; }
@@ -40,6 +47,10 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the handle.</summary>
 		/// <value>The handle.</value>
 		public HWND Handle => hwnd;
+
+		/// <summary>Gets or sets the callback method used to filter window messages.</summary>
+		/// <value>The callback method.</value>
+		public BasicMessageWindowFilter MessageFilter { get; set; }
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
@@ -81,7 +92,11 @@ namespace Vanara.PInvoke
 
 		private IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
-			var ret = (Callback ?? DefWindowProc).Invoke(hwnd, msg, wParam, lParam);
+			IntPtr ret;
+			if (!(MessageFilter is null) && MessageFilter.Invoke(hwnd, msg, wParam, lParam, out var lRet))
+				ret = lRet;
+			else
+				ret = DefWindowProc(hwnd, msg, wParam, lParam);
 
 			if (msg == (uint)WindowMessage.WM_NCDESTROY)
 				Dispose(true);
