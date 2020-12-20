@@ -142,6 +142,7 @@ namespace Vanara.PInvoke
 		public static readonly Guid GUID_ENERGY_SAVER_SUBGROUP = new Guid("{DE830923-A562-41AF-A086-E3A2C6BAD2DA}");
 
 		/// <summary>Indicates if Energy Saver is ON or OFF.</summary>
+		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_POWER_SAVING_STATUS = new Guid("{e00958c0-c213-4ace-ac77-fecced2eeea5}");
 
 		/// <summary>Defines a guid to engage Energy Saver at specific battery charge level</summary>
@@ -251,6 +252,7 @@ namespace Vanara.PInvoke
 		/// the system power key and looks in its set of default values for the corresponding value for GUID_TYPICAL_POWER_SAVINGS power
 		/// schemes. I. This derived power setting is applied.
 		/// </summary>
+		[CorrespondingType(typeof(Guid))]
 		public static readonly Guid GUID_POWERSCHEME_PERSONALITY = new Guid("{245D8541-3943-4422-B025-13A784F679B7}");
 
 		/// <summary>
@@ -733,6 +735,7 @@ namespace Vanara.PInvoke
 		public static readonly Guid GUID_CRITICAL_POWER_TRANSITION = new Guid("{B7A27025-E569-46c2-A504-2B96CAD225A1}");
 
 		/// <summary>Specifies if the system is entering or exiting 'away mode'. 98A7F580-01F7-48AA-9C0F-44352C29E5C0</summary>
+		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_SYSTEM_AWAYMODE = new Guid("{98A7F580-01F7-48AA-9C0F-44352C29E5C0}");
 
 		/// <summary>Defines a guid for enabling/disabling standby (S1-S3) states. This does not affect hibernation (S4).</summary>
@@ -806,6 +809,7 @@ namespace Vanara.PInvoke
 		public static readonly Guid GUID_VIDEO_ADAPTIVE_POWERDOWN = new Guid("{90959D22-D6A1-49B9-AF93-BCE885AD335B}");
 
 		/// <summary>Specifies if the monitor is currently being powered or not.</summary>
+		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_MONITOR_POWER_ON = new Guid("{02731015-4510-4526-99E6-E5A17EBD1AEA}");
 
 		/// <summary>Monitor brightness policy when in normal state.</summary>
@@ -821,6 +825,7 @@ namespace Vanara.PInvoke
 		public static readonly Guid GUID_VIDEO_ADAPTIVE_DISPLAY_BRIGHTNESS = new Guid("{FBD9AA66-9553-4097-BA44-ED6E9D65EAB8}");
 
 		/// <summary>Specifies a change in the current monitor's display state.</summary>
+		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_CONSOLE_DISPLAY_STATE = new Guid("{6fe69556-704a-47a0-8f24-c28d936fda47}");
 
 		/// <summary>Defines a guid for enabling/disabling the ability to create display required power requests.</summary>
@@ -848,6 +853,7 @@ namespace Vanara.PInvoke
 		/// be the case if the system is being powered by a short-term battery supply in a backing UPS system. When this value is received,
 		/// the consumer should make preparations for either a system hibernate or system shutdown.
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_ACDC_POWER_SOURCE = new Guid("{5D3E9A59-E9D5-4B00-A6BD-FF34FF516548}");
 
 		/// <summary>
@@ -880,11 +886,13 @@ namespace Vanara.PInvoke
 		///
 		/// The consumer will receive a value between 0 and 100 (inclusive) which indicates percent battery life remaining.
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_BATTERY_PERCENTAGE_REMAINING = new Guid("{A7AD8041-B45A-4CAE-87A3-EECBB468A9E1}");
 
 		/// <summary>
 		/// Global notification indicating to listeners user activity/presence across all sessions in the system (Present, NotPresent, Inactive)
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_GLOBAL_USER_PRESENCE = new Guid("{786E8A1D-B427-4344-9207-09E70BDCBEA9}");
 
 		/// <summary>
@@ -907,6 +915,7 @@ namespace Vanara.PInvoke
 		/// N.B. This is a session-specific notification, sent only to interactive session registrants. Session 0 and kernel mode consumers
 		/// do not receive this notification.
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_SESSION_DISPLAY_STATUS = new Guid("{2B84C20E-AD23-4ddf-93DB-05FFBD7EFCA5}");
 
 		/// <summary>
@@ -917,6 +926,7 @@ namespace Vanara.PInvoke
 		///      session registrants. Session 0 and kernel mode consumers do not receive
 		///      this notification.
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_SESSION_USER_PRESENCE = new Guid("{3c0f4548-c03f-4c4d-b9f2-237ede686376}");
 
 		/// <summary>Specifies a change (start/end) in System Power Report's Active Session.</summary>
