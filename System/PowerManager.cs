@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,6 +10,7 @@ using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.PowrProf;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.Diagnostics
 {
@@ -94,8 +96,8 @@ namespace Vanara.Diagnostics
 		FastSystemS4 = 1 << 15,
 
 		/// <summary>
-		/// The system supports fast startup (aka: hiberboot, hybrid boot, or hybrid shutdown) which is a setting that helps your PC start up
-		/// faster after shutdown.
+		/// The system supports fast startup (aka: hiberboot, hybrid boot, or hybrid shutdown) which is a setting that helps your PC start
+		/// up faster after shutdown.
 		/// </summary>
 		Hiberboot = 1 << 16,
 
@@ -140,13 +142,126 @@ namespace Vanara.Diagnostics
 	/// </summary>
 	public static class PowerManager
 	{
-		/*
-		public static event EventHandler BatteryStatusChanged;
-		public static event EventHandler EnergySaverStatusChanged;
-		public static event EventHandler PowerSupplyStatusChanged;
-		public static event EventHandler RemainingChargePercentChanged;
-		public static event EventHandler RemainingDischargeTimeChanged;
-		*/
+		private static readonly Singleton Instance = new Singleton();
+
+		public static event EventHandler<PowerEventArgs<uint>> AwayModeChanged
+		{
+			add => Instance.AddEvent(GUID_SYSTEM_AWAYMODE, value);
+			remove => Instance.RemoveEvent(GUID_SYSTEM_AWAYMODE, value);
+		}
+
+		public static event EventHandler<PowerEventArgs<uint>> BatteryCapacityChanged
+		{
+			add => Instance.AddEvent(GUID_BATTERY_PERCENTAGE_REMAINING, value);
+			remove => Instance.RemoveEvent(GUID_BATTERY_PERCENTAGE_REMAINING, value);
+		}
+
+		public static event EventHandler<PowerEventArgs<uint>> BatterySaverStatusChanged
+		{
+			add => Instance.AddEvent(GUID_POWER_SAVING_STATUS, value);
+			remove => Instance.RemoveEvent(GUID_POWER_SAVING_STATUS, value);
+		}
+
+		/// <summary>
+		/// Occurs when the current monitor's display state has changed.
+		/// <para>
+		/// <strong>Windows 7, Windows Server 2008 R2, Windows Vista and Windows Server 2008</strong>: This notification is available
+		/// starting with Windows 8 and Windows Server 2012.
+		/// </para>
+		/// <para>The Data member is a DWORD with one of the following values.</para>
+		/// <list type="bullet">
+		/// <item>0x0 - The display is off.</item>
+		/// <item>0x1 - The display is on.</item>
+		/// <item>0x2 - The display is dimmed.</item>
+		/// </list>
+		/// </summary>
+		public static event EventHandler<PowerEventArgs<uint>> CurrentMonitorDisplayStateChanged
+		{
+			add => Instance.AddEvent(GUID_CONSOLE_DISPLAY_STATE, value);
+			remove => Instance.RemoveEvent(GUID_CONSOLE_DISPLAY_STATE, value);
+		}
+
+		public static event EventHandler<PowerEventArgs<uint>> GlobalUserStatusChanged
+		{
+			add => Instance.AddEvent(GUID_GLOBAL_USER_PRESENCE, value);
+			remove => Instance.RemoveEvent(GUID_GLOBAL_USER_PRESENCE, value);
+		}
+
+		internal static event EventHandler LowBattery;
+
+		public static event EventHandler<PowerEventArgs<Guid>> PowerSchemePersonalityChanged
+		{
+			add => Instance.AddEvent(GUID_POWERSCHEME_PERSONALITY, value);
+			remove => Instance.RemoveEvent(GUID_POWERSCHEME_PERSONALITY, value);
+		}
+
+		public static event EventHandler PowerStatusChanged;
+
+		public static event EventHandler<PowerEventArgs<uint>> PrimarySystemMonitorPowerChanged
+		{
+			add => Instance.AddEvent(GUID_MONITOR_POWER_ON, value);
+			remove => Instance.RemoveEvent(GUID_MONITOR_POWER_ON, value);
+		}
+
+		internal static event CancelEventHandler QueryStandby;
+
+		internal static event CancelEventHandler QuerySuspend;
+
+		internal static event EventHandler ResumedAfterFailure;
+
+		public static event EventHandler ResumedAfterSleep;
+
+		internal static event EventHandler ResumedAfterStandby;
+
+		public static event EventHandler ResumedAfterSuspend;
+
+		/// <summary>
+		/// <para>Occurs when the display associated with the application's session has been powered on or off.</para>
+		/// <para>
+		/// <strong>Windows 7, Windows Server 2008 R2, Windows Vista and Windows Server 2008</strong>: This notification is available
+		/// starting with Windows 8 and Windows Server 2012.
+		/// </para>
+		/// <para>
+		/// This notification is sent only to user-mode applications.Services and other programs running in session 0 do not receive this notification.
+		/// </para>
+		/// <para>The Data member is a DWORD with one of the following values.</para>
+		/// <list type="bullet">
+		/// <item>0x0 - The display is off.</item>
+		/// <item>0x1 - The display is on.</item>
+		/// <item>0x2 - The display is dimmed.</item>
+		/// </list>
+		/// </summary>
+		public static event EventHandler<PowerEventArgs<uint>> SessionDisplayStatusChanged
+		{
+			add => Instance.AddEvent(GUID_SESSION_DISPLAY_STATUS, value);
+			remove => Instance.RemoveEvent(GUID_SESSION_DISPLAY_STATUS, value);
+		}
+
+		public static event EventHandler<PowerEventArgs<uint>> SessionUserStatusChanged
+		{
+			add => Instance.AddEvent(GUID_SESSION_USER_PRESENCE, value);
+			remove => Instance.RemoveEvent(GUID_SESSION_USER_PRESENCE, value);
+		}
+
+		internal static event EventHandler StandbyFailed;
+
+		internal static event EventHandler StandingBy;
+
+		internal static event EventHandler SuspendFailed;
+
+		public static event EventHandler Suspending;
+
+		public static event EventHandler<PowerEventArgs<object>> SystemIsBusy
+		{
+			add => Instance.AddEvent(GUID_IDLE_BACKGROUND_TASK, value);
+			remove => Instance.RemoveEvent(GUID_IDLE_BACKGROUND_TASK, value);
+		}
+
+		public static event EventHandler<PowerEventArgs<uint>> SystemPowerSourceChanged
+		{
+			add => Instance.AddEvent(GUID_ACDC_POWER_SOURCE, value);
+			remove => Instance.RemoveEvent(GUID_ACDC_POWER_SOURCE, value);
+		}
 
 		/// <summary>Gets the device's battery status.</summary>
 		/// <value>Returns a <see cref="BatteryStatus"/> value.</value>
@@ -243,6 +358,193 @@ namespace Vanara.Diagnostics
 		private static SYSTEM_POWER_CAPABILITIES GetCapabilities() => GetPwrCapabilities(out var c) ? c : default;
 
 		private static SYSTEM_POWER_STATUS GetStatus() => GetSystemPowerStatus(out var s) ? s : default;
+
+		private class Singleton : IDisposable
+		{
+			private readonly Dictionary<Guid, Delegate> eventHandles = new Dictionary<Guid, Delegate>();
+			private readonly BasicMessageWindow msgWindow;
+			private readonly Dictionary<Guid, SafeHPOWERSETTINGNOTIFY> regs = new Dictionary<Guid, SafeHPOWERSETTINGNOTIFY>();
+
+			internal Singleton() => msgWindow = new BasicMessageWindow(ListenerWndProc);
+
+			public void AddEvent<T>(Guid guid, EventHandler<PowerEventArgs<T>> value)
+			{
+				lock (regs)
+				{
+					if (!eventHandles.TryGetValue(guid, out var h))
+					{
+						eventHandles.Add(guid, value);
+						regs.Add(guid, RegisterNotification(guid));
+					}
+					else
+						eventHandles[guid] = Delegate.Combine(h, value);
+				}
+			}
+
+			public void InvokeEvent(Guid guid)
+			{
+				if (!eventHandles.TryGetValue(guid, out var h))
+					throw new InvalidOperationException($"Event for {guid} is not registered.");
+				h.DynamicInvoke(null, new PowerEventArgs<object>(null));
+			}
+
+			public void InvokeEvent<T>(Guid guid, in POWERBROADCAST_SETTING pbs)
+			{
+				if (!eventHandles.TryGetValue(guid, out var h))
+					throw new InvalidOperationException($"Event for {guid} is not registered.");
+				object value = typeof(T) switch
+				{
+					var t when t == typeof(uint) => BitConverter.ToUInt32(pbs.Data, 0),
+					var t when t == typeof(Guid) => new Guid(pbs.Data),
+					_ => throw new InvalidOperationException("Unrecognized invoke type.")
+				};
+				h.DynamicInvoke(null, new PowerEventArgs<T>((T)value));
+			}
+
+			public void RemoveEvent<T>(Guid guid, EventHandler<PowerEventArgs<T>> value)
+			{
+				lock (regs)
+				{
+					if (eventHandles.TryGetValue(guid, out var h))
+					{
+						h = Delegate.Remove(h, value);
+						if (h is null || h.GetInvocationList().Length == 0)
+						{
+							eventHandles.Remove(guid);
+							Unreg();
+						}
+						else
+							eventHandles[guid] = h;
+					}
+					else
+						Unreg();
+				}
+
+				void Unreg()
+				{
+					if (regs.TryGetValue(guid, out var reg))
+					{
+						reg.Dispose();
+						regs.Remove(guid);
+					}
+				}
+			}
+
+			void IDisposable.Dispose()
+			{
+				msgWindow.Dispose();
+				lock (regs)
+				{
+					foreach (var reg in regs.Values)
+						reg.Dispose();
+					regs.Clear();
+				}
+			}
+
+			private bool ListenerWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
+			{
+				System.Diagnostics.Debug.WriteLine($"Message={msg}");
+				lReturn = default;
+				switch (msg)
+				{
+					case (uint)WindowMessage.WM_POWERBROADCAST:
+						var pbt = (PowerBroadcastType)wParam.ToInt32();
+						System.Diagnostics.Debug.WriteLine($"WM_POWERBROADCAST : {pbt}");
+						switch (pbt)
+						{
+							case PowerBroadcastType.PBT_APMQUERYSUSPEND:
+								var qscancel = new CancelEventArgs();
+								PowerManager.QuerySuspend?.Invoke(null, qscancel);
+								lReturn = qscancel.Cancel ? BROADCAST_QUERY_DENY : new IntPtr(-1);
+								return true;
+
+							case PowerBroadcastType.PBT_APMQUERYSTANDBY:
+								var qsbcancel = new CancelEventArgs();
+								PowerManager.QueryStandby?.Invoke(null, qsbcancel);
+								lReturn = qsbcancel.Cancel ? BROADCAST_QUERY_DENY : new IntPtr(-1);
+								return true;
+
+							case PowerBroadcastType.PBT_APMQUERYSUSPENDFAILED:
+								PowerManager.SuspendFailed?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_APMQUERYSTANDBYFAILED:
+								PowerManager.StandbyFailed?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_APMSUSPEND:
+								PowerManager.Suspending?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_APMSTANDBY:
+								PowerManager.StandingBy?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_APMRESUMECRITICAL:
+								PowerManager.ResumedAfterFailure?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_APMRESUMESUSPEND:
+								PowerManager.ResumedAfterSuspend?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_APMRESUMESTANDBY:
+								PowerManager.ResumedAfterStandby?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_APMBATTERYLOW:
+								PowerManager.LowBattery?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_APMPOWERSTATUSCHANGE:
+								PowerManager.PowerStatusChanged?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_APMOEMEVENT:
+								break;
+
+							case PowerBroadcastType.PBT_APMRESUMEAUTOMATIC:
+								PowerManager.ResumedAfterSleep?.Invoke(null, EventArgs.Empty);
+								break;
+
+							case PowerBroadcastType.PBT_POWERSETTINGCHANGE:
+								var setting = lParam.ToStructure<POWERBROADCAST_SETTING>();
+								switch (setting.PowerSetting)
+								{
+									case var g when g == GUID_IDLE_BACKGROUND_TASK:
+										InvokeEvent(g);
+										break;
+
+									case var g when g == GUID_POWERSCHEME_PERSONALITY:
+										InvokeEvent<Guid>(g, setting);
+										break;
+
+									//case var g when g == GUID_CONSOLE_DISPLAY_STATE:
+									//case var g when g == GUID_ACDC_POWER_SOURCE:
+									//case var g when g == GUID_BATTERY_PERCENTAGE_REMAINING:
+									//case var g when g == GUID_GLOBAL_USER_PRESENCE:
+									//case var g when g == GUID_MONITOR_POWER_ON:
+									//case var g when g == GUID_POWER_SAVING_STATUS:
+									//case var g when g == GUID_SESSION_DISPLAY_STATUS:
+									//case var g when g == GUID_SESSION_USER_PRESENCE:
+									//case var g when g == GUID_SYSTEM_AWAYMODE:
+									default:
+										InvokeEvent<uint>(setting.PowerSetting, setting);
+										break;
+								}
+								break;
+
+							default:
+								break;
+						}
+						break;
+				}
+				return false;
+			}
+
+			private SafeHPOWERSETTINGNOTIFY RegisterNotification(Guid guid) =>
+				Win32Error.ThrowLastErrorIfInvalid(RegisterPowerSettingNotification((IntPtr)msgWindow.Handle, guid, User32.DEVICE_NOTIFY.DEVICE_NOTIFY_WINDOW_HANDLE));
+		}
 	}
 
 	/// <summary>Represents a device on the system that has power requirements.</summary>
@@ -345,6 +647,23 @@ namespace Vanara.Diagnostics
 		}
 	}
 
+	/// <summary>Event arguments for power events.</summary>
+	/// <typeparam name="T">The data type.</typeparam>
+	/// <seealso cref="System.EventArgs"/>
+	public class PowerEventArgs<T> : EventArgs
+	{
+		/// <summary>Initializes a new instance of the <see cref="PowerEventArgs{T}"/> class.</summary>
+		/// <param name="value">The data value.</param>
+		public PowerEventArgs(T value)
+		{
+			Data = value;
+		}
+
+		/// <summary>Gets the data associated with the power event.</summary>
+		/// <value>The data.</value>
+		public T Data { get; }
+	}
+
 	/// <summary>Represents a system power scheme (power plan).</summary>
 	public class PowerScheme : IEquatable<Guid>, IEquatable<PowerScheme>
 	{
@@ -433,7 +752,8 @@ namespace Vanara.Diagnostics
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => Guid.GetHashCode();
 
-		//public System.Drawing.Icon Icon { get; set; }
+		/// <inheritdoc/>
+		public override string ToString() => Name + (IsActive ? " (Active)" : "");
 	}
 
 	/// <summary>Represents a collection of all the power schemes available on the system.</summary>
@@ -524,6 +844,9 @@ namespace Vanara.Diagnostics
 		/// <summary>Gets the settings defined for this subgroup.</summary>
 		/// <value>Returns a <see cref="PowerSchemeSettingCollection"/> value.</value>
 		public PowerSchemeSettingCollection Settings { get; }
+
+		/// <inheritdoc/>
+		public override string ToString() => Name;
 	}
 
 	/// <summary>Represents a collection of all the subgroups available under a power scheme on the system.</summary>
@@ -549,8 +872,10 @@ namespace Vanara.Diagnostics
 	{
 		/// <summary>The scheme's guid.</summary>
 		protected Guid scheme;
+
 		/// <summary>The scheme's setting guid.</summary>
 		protected Guid setting;
+
 		/// <summary>The scheme's subgroup guid.</summary>
 		protected Guid subgroup;
 
@@ -572,8 +897,7 @@ namespace Vanara.Diagnostics
 				var sz = 0U;
 				PowerReadACValue(default, scheme, subgroup, setting, out _, IntPtr.Zero, ref sz).ThrowIfFailed();
 				using var mem = new SafeHGlobalHandle((int)sz);
-				REG_VALUE_TYPE regType;
-				PowerReadACValue(default, scheme, subgroup, setting, out regType, mem, ref sz).ThrowIfFailed();
+				PowerReadACValue(default, scheme, subgroup, setting, out var regType, mem, ref sz).ThrowIfFailed();
 				return regType.GetValue(mem, sz);
 			}
 		}
@@ -607,8 +931,7 @@ namespace Vanara.Diagnostics
 				var sz = 0U;
 				PowerReadDCValue(default, scheme, subgroup, setting, out _, IntPtr.Zero, ref sz).ThrowIfFailed();
 				using var mem = new SafeHGlobalHandle((int)sz);
-				REG_VALUE_TYPE regType;
-				PowerReadDCValue(default, scheme, subgroup, setting, out regType, mem, ref sz).ThrowIfFailed();
+				PowerReadDCValue(default, scheme, subgroup, setting, out var regType, mem, ref sz).ThrowIfFailed();
 				return regType.GetValue(mem, sz);
 			}
 		}
@@ -724,6 +1047,7 @@ namespace Vanara.Diagnostics
 	{
 		/// <summary>The scheme's guid.</summary>
 		protected Guid scheme;
+
 		/// <summary>The scheme's subgroup guid.</summary>
 		protected Guid subgroup;
 

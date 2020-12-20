@@ -4,6 +4,8 @@ using NUnit.Framework;
 using System.Text;
 using System.Linq;
 using static Vanara.PInvoke.PowrProf;
+using Vanara.PInvoke;
+using Vanara.PInvoke.Tests;
 
 namespace Vanara.Diagnostics.Tests
 {
@@ -57,6 +59,54 @@ namespace Vanara.Diagnostics.Tests
 			TestContext.WriteLine($"Present count: {presIdList.Count}");
 			foreach (var i in presIdList.Take(10))
 				TestContext.WriteLine(i);
+		}
+
+		[Test]
+		public void GetMgrPropTest()
+		{
+			foreach (var pi in typeof(PowerManager).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+			{
+				var val = pi.GetValue(null);
+				if (val is System.Collections.IEnumerable ie)
+					val = string.Join(", ", ie.Cast<object>().Select(o => o.ToString()));
+				TestContext.WriteLine($"{pi.Name} = {val}");
+			}
+		}
+
+		[Test]
+		public void EventTest()
+		{
+			bool eventFired = false, eventFailed = false;
+			//PowerManager.QueryStandby += (s, e) => { e.Cancel = true; eventFired = true; };
+			//PowerManager.StandingBy += (s, e) => eventFired = true;
+			//PowerManager.StandbyFailed += (s, e) => eventFailed = true;
+
+			for (int i = 0; i < 50; i++)
+				System.Threading.Thread.Sleep(100);
+
+			//System.Diagnostics.Debug.WriteLine("Suspending...");
+			//Assert.That(SystemShutdown.Suspend(), ResultIs.Successful);
+
+			//for (int i = 0; i < 50; i++)
+			//	System.Threading.Thread.Sleep(10);
+
+			//Assert.True(eventFired);
+			//TestContext.WriteLine($"Failed={eventFailed}");
+		}
+
+		[Test]
+		public void EventGuidTest()
+		{
+			bool eventFired = false;
+			PowerManager.PowerSchemePersonalityChanged += EventHandler;
+			PowerManager.Schemes[GUID_MIN_POWER_SAVINGS].IsActive = true;
+			for (int i = 0; i < 20; i++)
+				System.Threading.Thread.Sleep(100);
+			PowerManager.Schemes[GUID_TYPICAL_POWER_SAVINGS].IsActive = true;
+			PowerManager.PowerSchemePersonalityChanged -= EventHandler;
+			Assert.True(eventFired);
+
+			void EventHandler(object sender, PowerEventArgs<Guid> e) => eventFired = true;
 		}
 
 		[Test]
