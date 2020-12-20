@@ -7,6 +7,9 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+		/// <summary>Return this value when processing a broadcast message to deny a query.</summary>
+		public static readonly IntPtr BROADCAST_QUERY_DENY = (IntPtr)0x424D5144;
+
 		/// <summary>
 		/// Used to define private messages for use by private window classes, usually of the form OCM__BASE+x, where x is an integer value.
 		/// </summary>
