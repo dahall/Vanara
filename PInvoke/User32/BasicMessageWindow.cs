@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
@@ -15,12 +11,8 @@ namespace Vanara.PInvoke
 	/// <seealso cref="Vanara.PInvoke.IHandle"/>
 	public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	{
-		private static readonly Dictionary<HWND, BasicMessageWindow> s_lookup = new Dictionary<HWND, BasicMessageWindow>();
-		private static readonly WindowProc s_WndProc = new WindowProc(WndProc);
+		private SafeHWND hwnd;
 		private bool isDisposed;
-
-		/// <summary>The safe handle of the registered and created window.</summary>
-		protected SafeHWND hWnd;
 
 		/// <summary>Initializes a new instance of the <see cref="BasicMessageWindow"/> class.</summary>
 		/// <param name="callback">
@@ -29,17 +21,13 @@ namespace Vanara.PInvoke
 		public BasicMessageWindow(WindowProc callback = null)
 		{
 			Callback = callback;
-			ClassName = "MessageWindowBaseClass+" + Guid.NewGuid().ToString();
+			ClassName = $"MessageWindowBase+{Guid.NewGuid()}";
 
-			CreateWindow();
+			hwnd = CreateWindow();
 		}
 
 		/// <summary>Finalizes an instance of the <see cref="BasicMessageWindow"/> class.</summary>
-		~BasicMessageWindow()
-		{
-			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-			Dispose(disposing: false);
-		}
+		~BasicMessageWindow() => Dispose(false);
 
 		/// <summary>Gets or sets the callback method used to filter window messages.</summary>
 		/// <value>The callback method.</value>
@@ -51,11 +39,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets the handle.</summary>
 		/// <value>The handle.</value>
-		public HWND Handle => hWnd;
-
-		/// <summary>Returns the value of the handle field.</summary>
-		/// <returns>An IntPtr representing the value of the handle field.</returns>
-		public IntPtr DangerousGetHandle() => ((IHandle)hWnd).DangerousGetHandle();
+		public HWND Handle => hwnd;
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
@@ -64,23 +48,18 @@ namespace Vanara.PInvoke
 			System.GC.SuppressFinalize(this);
 		}
 
+		/// <summary>Returns the value of the handle field.</summary>
+		/// <returns>An IntPtr representing the value of the handle field.</returns>
+		IntPtr IHandle.DangerousGetHandle() => (IntPtr)Handle;
+
 		/// <summary>
 		/// Method used to create the window. When overriding, the <c>hWnd</c> field must be set to the handle of the created window.
 		/// </summary>
-		protected virtual void CreateWindow()
+		protected virtual SafeHWND CreateWindow()
 		{
-			var wc = new WNDCLASSEX
-			{
-				cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX)),
-				lpfnWndProc = s_WndProc,
-				hInstance = GetModuleHandle(),
-				lpszClassName = ClassName,
-			};
-
-			RegisterClassEx(wc);
-
-			using var pinnedThisPtr = new PinnedObject(this);
-			hWnd = CreateWindowEx(lpClassName: ClassName, lpWindowName: "", hWndParent: HWND.HWND_MESSAGE, lpParam: pinnedThisPtr);
+			if (0 == RegisterClassEx(new WNDCLASSEX { cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX)), lpfnWndProc = WndProc, hInstance = GetModuleHandle(), lpszClassName = ClassName }))
+				Win32Error.ThrowLastError();
+			return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(lpClassName: ClassName, lpWindowName: ClassName, hWndParent: HWND.HWND_MESSAGE));
 		}
 
 		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
@@ -93,37 +72,19 @@ namespace Vanara.PInvoke
 				return;
 
 			isDisposed = true;
-			hWnd.Dispose();
+
+			hwnd?.Dispose();
+
 			UnregisterClass(ClassName, GetModuleHandle());
 			ClassName = null;
 		}
 
-		private static IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
+		private IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
-			BasicMessageWindow hwndWrapper = null;
-
-			if (msg == (uint)WindowMessage.WM_CREATE)
-			{
-				var createStruct = lParam.ToStructure<CREATESTRUCT>();
-				GCHandle gcHandle = GCHandle.FromIntPtr(createStruct.lpCreateParams);
-				hwndWrapper = (BasicMessageWindow)gcHandle.Target;
-				s_lookup.Add(hwnd, hwndWrapper);
-			}
-			else if (!s_lookup.TryGetValue(hwnd, out hwndWrapper))
-			{
-				return DefWindowProc(hwnd, msg, wParam, lParam);
-			}
-
-			if (hwndWrapper is null)
-				throw new InvalidOperationException();
-
-			var ret = (hwndWrapper.Callback ?? DefWindowProc)(hwnd, msg, wParam, lParam);
+			var ret = (Callback ?? DefWindowProc).Invoke(hwnd, msg, wParam, lParam);
 
 			if (msg == (uint)WindowMessage.WM_NCDESTROY)
-			{
-				hwndWrapper.Dispose(true);
-				System.GC.SuppressFinalize(hwndWrapper);
-			}
+				Dispose(true);
 
 			return ret;
 		}

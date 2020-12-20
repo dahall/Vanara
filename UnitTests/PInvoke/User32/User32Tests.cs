@@ -23,6 +23,27 @@ namespace Vanara.PInvoke.Tests
 				TestContext.WriteLine($"{array[i].dwID} = {array[i].dwWant} / {array[i].dwBlock}");
 		}
 
+		[Test]
+		public void WinTest()
+		{
+			var timer = System.Diagnostics.Stopwatch.StartNew();
+			var gotMsg = false;
+			using (var win = new Vanara.PInvoke.BasicMessageWindow(meth))
+			{
+				for (int i = 0; i < 100; i++)
+					System.Threading.Thread.Sleep(20);
+			}
+			timer.Stop();
+			Assert.True(gotMsg);
+
+			IntPtr meth(HWND hwnd, uint uMsg, IntPtr wParam, IntPtr lParam)
+			{
+				TestContext.WriteLine($"{timer.ElapsedMilliseconds} Message: {(WindowMessage)uMsg} ({uMsg})");
+				gotMsg = true;
+				return DefWindowProc(hwnd, uMsg, wParam, lParam);
+			}
+		}
+
 		[Test()]
 		public void GetWindowLongTest()
 		{
