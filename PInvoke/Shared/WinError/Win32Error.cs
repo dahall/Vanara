@@ -108,7 +108,7 @@ namespace Vanara.PInvoke
 		/// <summary>Throws the last error if the value is an invalid handle.</summary>
 		/// <param name="value">The SafeHandle to check.</param>
 		/// <param name="message">The message.</param>
-		public static SafeHandle ThrowLastErrorIfInvalid(SafeHandle value, string message = null) => CheckPredicateOrThrow(value, v => v.IsInvalid, message);
+		public static T ThrowLastErrorIfInvalid<T>(T value, string message = null) where T : SafeHandle => CheckPredicateOrThrow(value, v => v.IsInvalid, message);
 
 		/// <summary>Throws the last error if the value is a NULL pointer (IntPtr.Zero).</summary>
 		/// <param name="value">The pointer to check.</param>
