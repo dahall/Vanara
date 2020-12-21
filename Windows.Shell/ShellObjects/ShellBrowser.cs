@@ -4,7 +4,9 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell
@@ -84,7 +86,7 @@ namespace Vanara.Windows.Shell
 		public virtual HRESULT EnableModelessSB(bool fEnable) => HRESULT.E_NOTIMPL;
 
 		/// <inheritdoc/>
-		public virtual HRESULT Exec(in Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, in object pvaIn, ref object pvaOut) => HRESULT.E_NOTIMPL;
+		public virtual HRESULT Exec([In, Optional] GuidPtr pguidCmdGroup, uint nCmdID, uint nCmdexecopt, [In, Optional] /* VARIANT* */ IntPtr pvaIn, [In, Out, Optional] /* VARIANT* */ IntPtr pvaOut) => OLECMDERR_E_NOTSUPPORTED;
 
 		/// <inheritdoc/>
 		public virtual HRESULT GetControlWindow(FCW id, out HWND phwnd)
@@ -176,7 +178,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <inheritdoc/>
-		public virtual HRESULT QueryStatus(in Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, OLECMDTEXT pCmdText) => HRESULT.E_NOTIMPL;
+		public virtual HRESULT QueryStatus([In, Optional] GuidPtr pguidCmdGroup, uint cCmds, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] OLECMD[] prgCmds, [In, Out, Optional] IntPtr /* OLECMDTEXT* */ pCmdText) => HRESULT.E_FAIL;
 
 		/// <inheritdoc/>
 		public virtual HRESULT RemoveMenusSB(HMENU hmenuShared) => HRESULT.E_NOTIMPL;
