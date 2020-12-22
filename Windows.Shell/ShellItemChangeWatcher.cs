@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Vanara.Extensions;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell
@@ -322,7 +323,7 @@ namespace Vanara.Windows.Shell
 
 			SHGetIDListFromObject(Item.IShellItem, out PIDL pidlWatch).ThrowIfFailed();
 			SHChangeNotifyEntry[] entries = { new SHChangeNotifyEntry { pidl = pidlWatch.DangerousGetHandle(), fRecursive = IncludeChildren } };
-			ulRegister = SHChangeNotifyRegister(hPump.Handle, sources, (SHCNE)NotifyFilter, hPump.MessageId, entries.Length, entries);
+			ulRegister = SHChangeNotifyRegister(hPump.MessageWindowHandle, sources, (SHCNE)NotifyFilter, hPump.MessageId, entries.Length, entries);
 			if (ulRegister == 0) throw new InvalidOperationException("Unable to register shell notifications.");
 		}
 
@@ -355,28 +356,27 @@ namespace Vanara.Windows.Shell
 			public ChangeFilters ChangeType { get; }
 		}
 
-		private class WatcherNativeWindow : NativeWindow
+		private class WatcherNativeWindow : SystemEventHandler
 		{
 			private readonly ShellItemChangeWatcher p;
 
-			public WatcherNativeWindow(ShellItemChangeWatcher parent)
+			public WatcherNativeWindow(ShellItemChangeWatcher parent) : base()
 			{
 				MessageId = User32.RegisterWindowMessage($"{parent.GetType()}{DateTime.Now.Ticks}");
 				p = parent;
-				var cp = new CreateParams { Style = 0, ExStyle = 0, ClassStyle = 0, Parent = IntPtr.Zero, Caption = GetType().Name };
-				CreateHandle(cp);
 			}
 
 			public uint MessageId { get; set; }
 
-			protected override void WndProc(ref Message m)
+			protected override bool MessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 			{
-				if (m.Msg == MessageId && p.enabled && !p.IsSuspended)
+				lReturn = default;
+				if (msg == MessageId && p.enabled && !p.IsSuspended)
 				{
 					HLOCK hNotifyLock = default;
 					try
 					{
-						hNotifyLock = SHChangeNotification_Lock(m.WParam, (uint)m.LParam.ToInt32(), out IntPtr rgpidl, out SHCNE lEvent);
+						hNotifyLock = SHChangeNotification_Lock(wParam, (uint)lParam.ToInt32(), out IntPtr rgpidl, out SHCNE lEvent);
 						if (hNotifyLock != IntPtr.Zero && rgpidl != IntPtr.Zero && p.NotifyFilter.IsFlagSet((ChangeFilters)lEvent))
 						{
 							ShellItemChangeEventArgs args;
@@ -394,9 +394,9 @@ namespace Vanara.Windows.Shell
 						if (hNotifyLock != default)
 							SHChangeNotification_Unlock(hNotifyLock);
 					}
-					return;
+					return true;
 				}
-				base.WndProc(ref m);
+				return false;
 			}
 		}
 	}
