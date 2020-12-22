@@ -99,10 +99,13 @@ namespace Vanara.Diagnostics.Tests
 		{
 			bool eventFired = false;
 			PowerManager.PowerSchemePersonalityChanged += EventHandler;
+			System.Threading.Thread.Sleep(1000);
 			PowerManager.Schemes[GUID_MIN_POWER_SAVINGS].IsActive = true;
 			for (int i = 0; i < 20; i++)
-				System.Threading.Thread.Sleep(100);
+				System.Threading.Thread.Sleep(10);
 			PowerManager.Schemes[GUID_TYPICAL_POWER_SAVINGS].IsActive = true;
+			for (int i = 0; i < 20; i++)
+				System.Threading.Thread.Sleep(10);
 			PowerManager.PowerSchemePersonalityChanged -= EventHandler;
 			Assert.True(eventFired);
 

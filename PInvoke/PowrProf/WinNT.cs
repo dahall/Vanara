@@ -734,7 +734,9 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public static readonly Guid GUID_CRITICAL_POWER_TRANSITION = new Guid("{B7A27025-E569-46c2-A504-2B96CAD225A1}");
 
-		/// <summary>Specifies if the system is entering or exiting 'away mode'. 98A7F580-01F7-48AA-9C0F-44352C29E5C0</summary>
+		/// <summary>The system is entering or exiting away mode. The Data member is a DWORD that indicates the current away mode state.
+		/// <para>0x0 - The computer is exiting away mode.</para>
+		/// <para>0x1 - The computer is entering away mode.</para></summary>
 		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_SYSTEM_AWAYMODE = new Guid("{98A7F580-01F7-48AA-9C0F-44352C29E5C0}");
 
@@ -847,11 +849,14 @@ namespace Vanara.PInvoke
 		#region Notifications
 
 		/// <summary>
-		/// Specifies the power source for the system. consumers may register for notification when the power source changes and will be
-		/// notified with one of 3 values: 0 - Indicates the system is being powered by an AC power source. 1 - Indicates the system is being
-		/// powered by a DC power source. 2 - Indicates the system is being powered by a short-term DC power source. For example, this would
-		/// be the case if the system is being powered by a short-term battery supply in a backing UPS system. When this value is received,
-		/// the consumer should make preparations for either a system hibernate or system shutdown.
+		///   <para>
+		/// The system power source has changed. The Data member is a DWORD with values from the SYSTEM_POWER_CONDITION enumeration that indicates the current power source.</para>
+		///   <list type="bullet">
+		///     <item>0 - Indicates the system is being powered by an AC power source.</item>
+		///     <item>1 - Indicates the system is being powered by a DC power source.</item>
+		///     <item>2 - Indicates the system is being powered by a short-term DC power source. For example, this would be the case if the system is being powered by a short-term battery supply in a backing UPS system. When this value is received, the consumer should make preparations for either a system hibernate or system shutdown.
+		/// </item>
+		///   </list>
 		/// </summary>
 		[CorrespondingType(typeof(uint))]
 		public static readonly Guid GUID_ACDC_POWER_SOURCE = new Guid("{5D3E9A59-E9D5-4B00-A6BD-FF34FF516548}");
@@ -1054,6 +1059,25 @@ namespace Vanara.PInvoke
 
 			/// <summary>When set, allows the kernel power policy manager to promote from the current state.</summary>
 			AllowPromotion = 2
+		}
+
+		/// <summary>Used by the <c>GUID_ACDC_POWER_SOURCE</c> power event to indicate the current power source.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-system_power_condition
+		// typedef enum { PoAc, PoDc, PoHot, PoConditionMaximum } SYSTEM_POWER_CONDITION;
+		[PInvokeData("winnt.h", MSDNShortId = "NE:winnt.__unnamed_enum_7")]
+		public enum SYSTEM_POWER_CONDITION : uint
+		{
+			/// <summary>The computer is powered by an AC power source (or similar, such as a laptop powered by a 12V automotive adapter).</summary>
+			PoAc = 0,
+
+			/// <summary>The system is receiving power from built-in batteries.</summary>
+			PoDc,
+
+			/// <summary>The computer is powered by a short-term power source such as a UPS device.</summary>
+			PoHot,
+
+			/// <summary>Values equal to or greater than this value indicate an out of range value.</summary>
+			PoConditionMaximum,
 		}
 
 		/// <summary>
