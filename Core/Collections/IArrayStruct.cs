@@ -31,6 +31,7 @@ namespace Vanara.PInvoke
 	/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
 	public class IArrayStructMarshaler<T> : IVanaraMarshaler where T : struct
 	{
+		/// <summary>The header size.</summary>
 		public static readonly int hSz = sizeof(uint);
 
 		/// <inheritdoc/>
