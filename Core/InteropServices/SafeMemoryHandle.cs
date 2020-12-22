@@ -235,14 +235,16 @@ namespace Vanara.InteropServices
 		public virtual void UnlockMem(IntPtr hMem) { }
 	}
 
-	/// <summary>Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.</summary>
+	/// <summary>
+	/// Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
+	/// </summary>
 	/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
-	public abstract class SafeAllocatedMemoryHandle : SafeHandle
+	public abstract class SafeAllocatedMemoryHandleBase : SafeHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandle"/> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandleBase"/> class.</summary>
 		/// <param name="handle">The handle.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-		protected SafeAllocatedMemoryHandle(IntPtr handle, bool ownsHandle) : base(IntPtr.Zero, ownsHandle) => SetHandle(handle);
+		protected SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHandle) : base(IntPtr.Zero, ownsHandle) => SetHandle(handle);
 
 #if DEBUG
 		/// <summary>Dumps memory to byte string.</summary>
@@ -254,20 +256,20 @@ namespace Vanara.InteropServices
 		/// <value>The size in bytes of the allocated memory block.</value>
 		public abstract SizeT Size { get; set; }
 
-		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="byte"/> pointer.</summary>
-		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
+		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="byte"/> pointer.</summary>
+		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static unsafe explicit operator byte*(SafeAllocatedMemoryHandle hMem) => (byte*)hMem.handle;
+		public static unsafe explicit operator byte*(SafeAllocatedMemoryHandleBase hMem) => (byte*)hMem.handle;
 
-		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="SafeBuffer"/>.</summary>
-		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
+		/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="SafeBuffer"/>.</summary>
+		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator SafeBuffer(SafeAllocatedMemoryHandle hMem) => new SafeBufferImpl(hMem);
+		public static explicit operator SafeBuffer(SafeAllocatedMemoryHandleBase hMem) => new SafeBufferImpl(hMem);
 
-		/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="System.IntPtr"/>.</summary>
-		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
+		/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="System.IntPtr"/>.</summary>
+		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator IntPtr(SafeAllocatedMemoryHandle hMem) => hMem.handle;
+		public static implicit operator IntPtr(SafeAllocatedMemoryHandleBase hMem) => hMem.handle;
 
 #if ALLOWSPAN
 		/// <summary>Creates a new span over this allocated memory.</summary>
@@ -283,19 +285,6 @@ namespace Vanara.InteropServices
 		public virtual Span<byte> AsBytes() => AsSpan<byte>(Size);
 #endif
 
-		/// <summary>Fills the allocated memory with a specific byte value.</summary>
-		/// <param name="value">The byte value.</param>
-		public virtual void Fill(byte value) => Fill(value, Size);
-
-		/// <summary>Fills the allocated memory with a specific byte value.</summary>
-		/// <param name="value">The byte value.</param>
-		/// <param name="length">The number of bytes in the block of memory to be filled.</param>
-		public virtual void Fill(byte value, int length)
-		{
-			if (length > Size) throw new ArgumentOutOfRangeException(nameof(length));
-			handle.FillMemory(value, length);
-		}
-
 		/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
 		/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
 		public virtual IntPtr TakeOwnership()
@@ -306,9 +295,6 @@ namespace Vanara.InteropServices
 			Size = 0;
 			return h;
 		}
-
-		/// <summary>Zero out all allocated memory.</summary>
-		public virtual void Zero() => Fill(0, Size);
 
 		/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
 		/// <param name="startIndex">The start index.</param>
@@ -324,10 +310,36 @@ namespace Vanara.InteropServices
 
 		private class SafeBufferImpl : SafeBuffer
 		{
-			public SafeBufferImpl(SafeAllocatedMemoryHandle hMem) : base(false) => Initialize((ulong)hMem.Size);
+			public SafeBufferImpl(SafeAllocatedMemoryHandleBase hMem) : base(false) => Initialize((ulong)hMem.Size);
 
 			protected override bool ReleaseHandle() => true;
 		}
+	}
+
+	/// <summary>Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.</summary>
+	/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
+	public abstract class SafeAllocatedMemoryHandle : SafeAllocatedMemoryHandleBase
+	{
+		/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandle"/> class.</summary>
+		/// <param name="handle">The handle.</param>
+		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+		protected SafeAllocatedMemoryHandle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) { }
+
+		/// <summary>Fills the allocated memory with a specific byte value.</summary>
+		/// <param name="value">The byte value.</param>
+		public virtual void Fill(byte value) => Fill(value, Size);
+
+		/// <summary>Fills the allocated memory with a specific byte value.</summary>
+		/// <param name="value">The byte value.</param>
+		/// <param name="length">The number of bytes in the block of memory to be filled.</param>
+		public virtual void Fill(byte value, int length)
+		{
+			if (length > Size) throw new ArgumentOutOfRangeException(nameof(length));
+			handle.FillMemory(value, length);
+		}
+
+		/// <summary>Zero out all allocated memory.</summary>
+		public virtual void Zero() => Fill(0, Size);
 	}
 
 	/// <summary>Abstract base class for all SafeAllocatedMemoryHandle derivatives that apply a specific memory handling routine set.</summary>
