@@ -56,9 +56,13 @@ namespace Vanara.PInvoke
 			Dispose(false);
 		}
 
+		/// <summary>Gets a value indicating whether this instance is running in a thread.</summary>
+		/// <value><see langword="true"/> if this instance is running in a thread; otherwise, <see langword="false"/>.</value>
+		public bool IsRunningInThread => ThreadRunning is not null;
+
 		/// <summary>Gets the message window handle which can be used to register for messaged events.</summary>
 		/// <value>The message window handle.</value>
-		protected HWND MessageWindowHandle => msgWindow?.Handle ?? HWND.NULL;
+		public HWND MessageWindowHandle => msgWindow?.Handle ?? HWND.NULL;
 
 		private ManualResetEvent ThreadRunning { get; set; }
 
