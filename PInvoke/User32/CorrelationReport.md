@@ -577,6 +577,7 @@ Native Structure | Header | Managed Structure
 [CBT_CREATEWND](https://www.google.com/search?num=5&q=CBT_CREATEWND+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CBT_CREATEWND](https://github.com/dahall/Vanara/search?l=C%23&q=CBT_CREATEWND)  
 [CBTACTIVATESTRUCT](https://www.google.com/search?num=5&q=CBTACTIVATESTRUCT+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CBTACTIVATESTRUCT](https://github.com/dahall/Vanara/search?l=C%23&q=CBTACTIVATESTRUCT)  
 [CHANGEFILTERSTRUCT](https://www.google.com/search?num=5&q=CHANGEFILTERSTRUCT+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CHANGEFILTERSTRUCT](https://github.com/dahall/Vanara/search?l=C%23&q=CHANGEFILTERSTRUCT)  
+[CREATESTRUCT](https://www.google.com/search?num=5&q=CREATESTRUCT+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CREATESTRUCT](https://github.com/dahall/Vanara/search?l=C%23&q=CREATESTRUCT)  
 [CURSORINFO](https://www.google.com/search?num=5&q=CURSORINFO+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CURSORINFO](https://github.com/dahall/Vanara/search?l=C%23&q=CURSORINFO)  
 [CWPRETSTRUCT](https://www.google.com/search?num=5&q=CWPRETSTRUCT+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CWPRETSTRUCT](https://github.com/dahall/Vanara/search?l=C%23&q=CWPRETSTRUCT)  
 [CWPSTRUCT](https://www.google.com/search?num=5&q=CWPSTRUCT+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CWPSTRUCT](https://github.com/dahall/Vanara/search?l=C%23&q=CWPSTRUCT)  

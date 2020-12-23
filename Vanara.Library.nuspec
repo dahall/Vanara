@@ -69,6 +69,7 @@
       <dependency id="Vanara.PInvoke.WinTrust" version="3.3.1" />
       <dependency id="Vanara.PInvoke.WlanApi" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Ws2_32" version="3.3.1" />
+      <dependency id="Vanara.PInvoke.WTSApi32" version="3.3.1" />
       <dependency id="Vanara.Security" version="3.3.1" />
       <dependency id="Vanara.SystemServices" version="3.3.1" />
       <dependency id="Vanara.VirtualDisk" version="3.3.1" />
