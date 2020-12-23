@@ -3700,6 +3700,12 @@ namespace Vanara.PInvoke
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public string ToString(uint allocatedBytes) => StringHelper.GetString(handle, CharSet.Auto, allocatedBytes);
 
+			/// <summary>Marshals data from this memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
+			/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+			/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+			/// <returns>A managed object that contains the data that this memory points to.</returns>
+			public T ToStructure<T>(uint allocatedBytes) => handle.Convert<T>(allocatedBytes == 0 ? uint.MaxValue : allocatedBytes);
+
 #if ALLOWSPAN
 			/// <summary>Creates a new span over this allocated memory.</summary>
 			/// <returns>The span representation of the structure.</returns>
