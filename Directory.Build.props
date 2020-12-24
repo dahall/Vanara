@@ -33,6 +33,9 @@
     <ContinuousIntegrationBuild>$(CIBUILD)</ContinuousIntegrationBuild>
     <DeterministicSourcePaths>$(CIBUILD)</DeterministicSourcePaths>
   </PropertyGroup>
+  <PropertyGroup>
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);NETSDK1105;NETSDK1138</MSBuildWarningsAsMessages>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Condition="!$(MSBuildProjectDirectory.Contains('UnitTests'))" Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
