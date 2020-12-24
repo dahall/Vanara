@@ -3702,7 +3702,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Marshals data from this memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
 			/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
-			/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+			/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 			/// <returns>A managed object that contains the data that this memory points to.</returns>
 			public T ToStructure<T>(uint allocatedBytes) => handle.Convert<T>(allocatedBytes == 0 ? uint.MaxValue : allocatedBytes);
 

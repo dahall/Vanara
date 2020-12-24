@@ -76,7 +76,7 @@ namespace Vanara.Diagnostics.Tests
 		[Test]
 		public void EventTest()
 		{
-			bool eventFired = false, eventFailed = false;
+			//bool eventFired = false, eventFailed = false;
 			//PowerManager.QueryStandby += (s, e) => { e.Cancel = true; eventFired = true; };
 			//PowerManager.StandingBy += (s, e) => eventFired = true;
 			//PowerManager.StandbyFailed += (s, e) => eventFailed = true;

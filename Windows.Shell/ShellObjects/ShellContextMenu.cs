@@ -20,9 +20,9 @@ namespace Vanara.Windows.Shell
 	/// be shown.
 	/// </para>
 	/// <para>
-	/// To display a shell context menu in a Form's main menu, call the <see cref="Populate(Menu, CMF)"/> method to populate the menu. In addition, you
-	/// must intercept a number of special messages that will be sent to the menu's parent form. To do this, you must override <see
-	/// cref="Form.WndProc"/> like so:
+	/// To display a shell context menu in a Form's main menu, call the <c>Populate</c> or <see cref="GetItems"/> methods to populate the
+	/// menu. In addition, you must intercept a number of special messages that will be sent to the menu's parent form. To do this, you
+	/// must override <see cref="Form.WndProc"/> like so:
 	/// </para>
 	/// <code>
 	///protected override void WndProc(ref Message m) {

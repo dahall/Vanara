@@ -384,7 +384,8 @@ namespace Vanara.Registry
 					if (hkey == null || hkey.IsClosed || hkey.IsInvalid) throw new InvalidOperationException($"Unable to connect to registry key specified in {nameof(RegistryKeyName)}");
 					for (var i = 0; i < eventCount; i++)
 					{
-						threads[i]?.Abort();
+						if (threads[i] is not null && threads[i].IsAlive)
+							threads[i].Join(500);
 						threads[i] = new Thread(MonitorRegThreadProc) { IsBackground = false };
 						threads[i].Start(i);
 					}
