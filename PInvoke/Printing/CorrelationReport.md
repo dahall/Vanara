@@ -241,3 +241,21 @@ Native Interface | Header | Managed Interface
 [IXpsOMVisualCollection](https://www.google.com/search?num=5&q=IXpsOMVisualCollection+site%3Adocs.microsoft.com) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.IXpsOMVisualCollection](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsOMVisualCollection)  
 [IXpsPrintJob](https://www.google.com/search?num=5&q=IXpsPrintJob+site%3Adocs.microsoft.com) | xpsprint.h | [Vanara.PInvoke.XpsPrint.IXpsPrintJob](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsPrintJob)  
 [IXpsPrintJobStream](https://www.google.com/search?num=5&q=IXpsPrintJobStream+site%3Adocs.microsoft.com) | xpsprint.h | [Vanara.PInvoke.XpsPrint.IXpsPrintJobStream](https://github.com/dahall/Vanara/search?l=C%23&q=IXpsPrintJobStream)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[DocumentSource](https://www.google.com/search?num=5&q=DocumentSource+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DocumentSource](https://github.com/dahall/Vanara/search?l=C%23&q=DocumentSource)  
+[DocumentTarget](https://www.google.com/search?num=5&q=DocumentTarget+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DocumentTarget](https://github.com/dahall/Vanara/search?l=C%23&q=DocumentTarget)  
+[PrintDocumentPackageTarget](https://www.google.com/search?num=5&q=PrintDocumentPackageTarget+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DocumentTarget.PrintDocumentPackageTarget](https://github.com/dahall/Vanara/search?l=C%23&q=PrintDocumentPackageTarget)  
+[PrintDocumentPackageTargetFactory](https://www.google.com/search?num=5&q=PrintDocumentPackageTargetFactory+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DocumentTarget.PrintDocumentPackageTargetFactory](https://github.com/dahall/Vanara/search?l=C%23&q=PrintDocumentPackageTargetFactory)  
+[PRINTER_DEFAULTS](https://www.google.com/search?num=5&q=PRINTER_DEFAULTS+site%3Adocs.microsoft.com) | winspool.h | [Vanara.PInvoke.WinSpool.PRINTER_DEFAULTS](https://github.com/dahall/Vanara/search?l=C%23&q=PRINTER_DEFAULTS)  
+[SafeHPRINTER](https://www.google.com/search?num=5&q=SafeHPRINTER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinSpool.SafeHPRINTER](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHPRINTER)  
+[SafeHPRINTERCHANGENOTIFICATION](https://www.google.com/search?num=5&q=SafeHPRINTERCHANGENOTIFICATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinSpool.SafeHPRINTERCHANGENOTIFICATION](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHPRINTERCHANGENOTIFICATION)  
+[SafeHPTPROVIDER](https://www.google.com/search?num=5&q=SafeHPTPROVIDER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.PrntvPt.SafeHPTPROVIDER](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHPTPROVIDER)  
+[SafeHSPOOLFILE](https://www.google.com/search?num=5&q=SafeHSPOOLFILE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinSpool.SafeHSPOOLFILE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHSPOOLFILE)  
+[SafePRINTER_NOTIFY_INFO](https://www.google.com/search?num=5&q=SafePRINTER_NOTIFY_INFO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinSpool.SafePRINTER_NOTIFY_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=SafePRINTER_NOTIFY_INFO)  
+[SafePTMemory](https://www.google.com/search?num=5&q=SafePTMemory+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.PrntvPt.SafePTMemory](https://github.com/dahall/Vanara/search?l=C%23&q=SafePTMemory)  
+[XpsObjectModel](https://www.google.com/search?num=5&q=XpsObjectModel+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.XpsObjectModel](https://github.com/dahall/Vanara/search?l=C%23&q=XpsObjectModel)  
+[XpsOMObjectFactory](https://www.google.com/search?num=5&q=XpsOMObjectFactory+site%3Adocs.microsoft.com) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XpsOMObjectFactory](https://github.com/dahall/Vanara/search?l=C%23&q=XpsOMObjectFactory)  
+[XpsOMThumbnailGenerator](https://www.google.com/search?num=5&q=XpsOMThumbnailGenerator+site%3Adocs.microsoft.com) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XpsOMThumbnailGenerator](https://github.com/dahall/Vanara/search?l=C%23&q=XpsOMThumbnailGenerator)  
+[XpsPrint](https://www.google.com/search?num=5&q=XpsPrint+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.XpsPrint](https://github.com/dahall/Vanara/search?l=C%23&q=XpsPrint)  

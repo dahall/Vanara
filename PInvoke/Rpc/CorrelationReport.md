@@ -557,3 +557,8 @@ Native Structure | Header | Managed Structure
 [RPC_VERSION](https://www.google.com/search?num=5&q=RPC_VERSION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Rpc.RPC_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_VERSION)  
 [SEC_WINNT_AUTH_IDENTITY](https://www.google.com/search?num=5&q=SEC_WINNT_AUTH_IDENTITY+site%3Adocs.microsoft.com) | sspi.h | [Vanara.PInvoke.Rpc.SEC_WINNT_AUTH_IDENTITY](https://github.com/dahall/Vanara/search?l=C%23&q=SEC_WINNT_AUTH_IDENTITY)  
 [UUID_VECTOR](https://www.google.com/search?num=5&q=UUID_VECTOR+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.UUID_VECTOR](https://github.com/dahall/Vanara/search?l=C%23&q=UUID_VECTOR)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[Rpc](https://www.google.com/search?num=5&q=Rpc+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Rpc](https://github.com/dahall/Vanara/search?l=C%23&q=Rpc)  
+[SafeRPC_BINDING_HANDLE](https://www.google.com/search?num=5&q=SafeRPC_BINDING_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Rpc.SafeRPC_BINDING_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeRPC_BINDING_HANDLE)  

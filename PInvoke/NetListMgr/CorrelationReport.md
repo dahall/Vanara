@@ -27,3 +27,9 @@ Native Interface | Header | Managed Interface
 [INetworkListManager](https://www.google.com/search?num=5&q=INetworkListManager+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkListManager](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkListManager)  
 [INetworkListManagerEvents](https://www.google.com/search?num=5&q=INetworkListManagerEvents+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.INetworkListManagerEvents](https://github.com/dahall/Vanara/search?l=C%23&q=INetworkListManagerEvents)  
 [IPropertyBag](https://www.google.com/search?num=5&q=IPropertyBag+site%3Adocs.microsoft.com) |  |   
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[NetworkListManager](https://www.google.com/search?num=5&q=NetworkListManager+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NetworkListManager](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkListManager)  
+[NetworkPropertyName](https://www.google.com/search?num=5&q=NetworkPropertyName+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NetListMgr.NetworkPropertyName](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkPropertyName)  
+[NLM_SOCKADDR](https://www.google.com/search?num=5&q=NLM_SOCKADDR+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_SOCKADDR](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_SOCKADDR)  

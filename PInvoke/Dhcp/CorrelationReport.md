@@ -45,3 +45,8 @@ Native Structure | Header | Managed Structure
 [MCAST_LEASE_RESPONSE](https://www.google.com/search?num=5&q=MCAST_LEASE_RESPONSE+site%3Adocs.microsoft.com) | madcapcl.h | [Vanara.PInvoke.MADCAP.MCAST_LEASE_RESPONSE](https://github.com/dahall/Vanara/search?l=C%23&q=MCAST_LEASE_RESPONSE)  
 [MCAST_SCOPE_CTX](https://www.google.com/search?num=5&q=MCAST_SCOPE_CTX+site%3Adocs.microsoft.com) | madcapcl.h | [Vanara.PInvoke.MADCAP.MCAST_SCOPE_CTX](https://github.com/dahall/Vanara/search?l=C%23&q=MCAST_SCOPE_CTX)  
 [MCAST_SCOPE_ENTRY](https://www.google.com/search?num=5&q=MCAST_SCOPE_ENTRY+site%3Adocs.microsoft.com) | madcapcl.h | [Vanara.PInvoke.MADCAP.MCAST_SCOPE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=MCAST_SCOPE_ENTRY)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[Dhcp](https://www.google.com/search?num=5&q=Dhcp+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Dhcp](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcp)  
+[MADCAP](https://www.google.com/search?num=5&q=MADCAP+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MADCAP](https://github.com/dahall/Vanara/search?l=C%23&q=MADCAP)  

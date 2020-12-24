@@ -97,3 +97,12 @@ Native Structure | Header | Managed Structure
 [TA_TIMINGFUNCTION](https://www.google.com/search?num=5&q=TA_TIMINGFUNCTION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.UxTheme.TA_TIMINGFUNCTION](https://github.com/dahall/Vanara/search?l=C%23&q=TA_TIMINGFUNCTION)  
 [TA_TRANSFORM](https://www.google.com/search?num=5&q=TA_TRANSFORM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.UxTheme.TA_TRANSFORM](https://github.com/dahall/Vanara/search?l=C%23&q=TA_TRANSFORM)  
 [WTA_OPTIONS](https://www.google.com/search?num=5&q=WTA_OPTIONS+site%3Adocs.microsoft.com) | Uxtheme.h | [Vanara.PInvoke.UxTheme.WTA_OPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=WTA_OPTIONS)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[BP_PAINTPARAMS](https://www.google.com/search?num=5&q=BP_PAINTPARAMS+site%3Adocs.microsoft.com) | Uxtheme.h | [Vanara.PInvoke.UxTheme.BP_PAINTPARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=BP_PAINTPARAMS)  
+[BufferedPaintBlock](https://www.google.com/search?num=5&q=BufferedPaintBlock+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.UxTheme.BufferedPaintBlock](https://github.com/dahall/Vanara/search?l=C%23&q=BufferedPaintBlock)  
+[DTBGOPTS](https://www.google.com/search?num=5&q=DTBGOPTS+site%3Adocs.microsoft.com) | Uxtheme.h | [Vanara.PInvoke.UxTheme.DTBGOPTS](https://github.com/dahall/Vanara/search?l=C%23&q=DTBGOPTS)  
+[SafeHANIMATIONBUFFER](https://www.google.com/search?num=5&q=SafeHANIMATIONBUFFER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.UxTheme.SafeHANIMATIONBUFFER](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHANIMATIONBUFFER)  
+[SafeHPAINTBUFFER](https://www.google.com/search?num=5&q=SafeHPAINTBUFFER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.UxTheme.SafeHPAINTBUFFER](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHPAINTBUFFER)  
+[SafeHTHEME](https://www.google.com/search?num=5&q=SafeHTHEME+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.UxTheme.SafeHTHEME](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHTHEME)  

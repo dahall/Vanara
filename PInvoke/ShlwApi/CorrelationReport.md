@@ -227,3 +227,7 @@ Native Structure | Header | Managed Structure
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
 [IQueryAssociations](https://www.google.com/search?num=5&q=IQueryAssociations+site%3Adocs.microsoft.com) | Shlwapi.h | [Vanara.PInvoke.ShlwApi.IQueryAssociations](https://github.com/dahall/Vanara/search?l=C%23&q=IQueryAssociations)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeHUSKEY](https://www.google.com/search?num=5&q=SafeHUSKEY+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ShlwApi.SafeHUSKEY](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHUSKEY)  

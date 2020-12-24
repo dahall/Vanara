@@ -45,3 +45,8 @@ Native Interface | Header | Managed Interface
 [IEnumBackgroundCopyJobs](https://www.google.com/search?num=5&q=IEnumBackgroundCopyJobs+site%3Adocs.microsoft.com) | Bits.h | [Vanara.PInvoke.BITS.IEnumBackgroundCopyJobs](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumBackgroundCopyJobs)  
 [IEnumBitsPeerCacheRecords](https://www.google.com/search?num=5&q=IEnumBitsPeerCacheRecords+site%3Adocs.microsoft.com) | Bits3_0.h | [Vanara.PInvoke.BITS.IEnumBitsPeerCacheRecords](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumBitsPeerCacheRecords)  
 [IEnumBitsPeers](https://www.google.com/search?num=5&q=IEnumBitsPeers+site%3Adocs.microsoft.com) | Bits3_0.h | [Vanara.PInvoke.BITS.IEnumBitsPeers](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumBitsPeers)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[BackgroundCopyManager](https://www.google.com/search?num=5&q=BackgroundCopyManager+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.BITS.BackgroundCopyManager](https://github.com/dahall/Vanara/search?l=C%23&q=BackgroundCopyManager)  
+[BITS](https://www.google.com/search?num=5&q=BITS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.BITS](https://github.com/dahall/Vanara/search?l=C%23&q=BITS)  

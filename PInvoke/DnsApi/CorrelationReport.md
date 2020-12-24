@@ -95,3 +95,10 @@ Native Structure | Header | Managed Structure
 [IP4_ARRAY](https://www.google.com/search?num=5&q=IP4_ARRAY+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.IP4_ARRAY](https://github.com/dahall/Vanara/search?l=C%23&q=IP4_ARRAY)  
 [MDNS_QUERY_HANDLE](https://www.google.com/search?num=5&q=MDNS_QUERY_HANDLE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.MDNS_QUERY_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=MDNS_QUERY_HANDLE)  
 [MDNS_QUERY_REQUEST](https://www.google.com/search?num=5&q=MDNS_QUERY_REQUEST+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.MDNS_QUERY_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=MDNS_QUERY_REQUEST)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeDnsCacheDataTable](https://www.google.com/search?num=5&q=SafeDnsCacheDataTable+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DnsApi.SafeDnsCacheDataTable](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDnsCacheDataTable)  
+[SafeDnsRecordList](https://www.google.com/search?num=5&q=SafeDnsRecordList+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DnsApi.SafeDnsRecordList](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDnsRecordList)  
+[SafeHDNSCONTEXT](https://www.google.com/search?num=5&q=SafeHDNSCONTEXT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DnsApi.SafeHDNSCONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHDNSCONTEXT)  
+[SafePDNS_SERVICE_INSTANCE](https://www.google.com/search?num=5&q=SafePDNS_SERVICE_INSTANCE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.SafePDNS_SERVICE_INSTANCE](https://github.com/dahall/Vanara/search?l=C%23&q=SafePDNS_SERVICE_INSTANCE)  

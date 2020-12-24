@@ -82,3 +82,8 @@ Native Structure | Header | Managed Structure
 [VIRTUAL_DISK_HANDLE](https://www.google.com/search?num=5&q=VIRTUAL_DISK_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=VIRTUAL_DISK_HANDLE)  
 [VIRTUAL_DISK_PROGRESS](https://www.google.com/search?num=5&q=VIRTUAL_DISK_PROGRESS+site%3Adocs.microsoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_PROGRESS](https://github.com/dahall/Vanara/search?l=C%23&q=VIRTUAL_DISK_PROGRESS)  
 [VIRTUAL_STORAGE_TYPE](https://www.google.com/search?num=5&q=VIRTUAL_STORAGE_TYPE+site%3Adocs.microsoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=VIRTUAL_STORAGE_TYPE)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[OPEN_VIRTUAL_DISK_PARAMETERS](https://www.google.com/search?num=5&q=OPEN_VIRTUAL_DISK_PARAMETERS+site%3Adocs.microsoft.com) | VirtDisk.h | [Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=OPEN_VIRTUAL_DISK_PARAMETERS)  
+[SafeVIRTUAL_DISK_HANDLE](https://www.google.com/search?num=5&q=SafeVIRTUAL_DISK_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.VirtDisk.SafeVIRTUAL_DISK_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeVIRTUAL_DISK_HANDLE)  

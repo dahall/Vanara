@@ -22,3 +22,8 @@ Native Structure | Header | Managed Structure
 [WCM_PROFILE_INFO_LIST](https://www.google.com/search?num=5&q=WCM_PROFILE_INFO_LIST+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WCM_PROFILE_INFO_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=WCM_PROFILE_INFO_LIST)  
 [WCM_TIME_INTERVAL](https://www.google.com/search?num=5&q=WCM_TIME_INTERVAL+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WCM_TIME_INTERVAL](https://github.com/dahall/Vanara/search?l=C%23&q=WCM_TIME_INTERVAL)  
 [WCM_USAGE_DATA](https://www.google.com/search?num=5&q=WCM_USAGE_DATA+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WCM_USAGE_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WCM_USAGE_DATA)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeWcmMemory](https://www.google.com/search?num=5&q=SafeWcmMemory+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WcmApi.SafeWcmMemory](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWcmMemory)  
+[WCM_PROFILE_INFO_LIST](https://www.google.com/search?num=5&q=WCM_PROFILE_INFO_LIST+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WCM_PROFILE_INFO_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=WCM_PROFILE_INFO_LIST)  

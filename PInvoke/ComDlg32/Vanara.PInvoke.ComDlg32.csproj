@@ -10,7 +10,15 @@
     <AssemblyName>Vanara.PInvoke.ComDlg32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;ComDlg32</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+ChooseColor, ChooseFont, CommDlgExtendedError, dwLBSubclass, dwOKSubclass, FindText, GetFileTitle, GetOpenFileName, GetSaveFileName, LoadAlterBitmap, PageSetupDlg, PrintDlg, PrintDlgEx, ReplaceText, Ssync_ANSI_UNICODE_Struct_For_WOW, WantArrows
+
+Structures
+OPENFILENAME
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

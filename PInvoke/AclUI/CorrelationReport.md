@@ -28,3 +28,8 @@ Native Interface | Header | Managed Interface
 [ISecurityInformation3](https://www.google.com/search?num=5&q=ISecurityInformation3+site%3Adocs.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.ISecurityInformation3](https://github.com/dahall/Vanara/search?l=C%23&q=ISecurityInformation3)  
 [ISecurityInformation4](https://www.google.com/search?num=5&q=ISecurityInformation4+site%3Adocs.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.ISecurityInformation4](https://github.com/dahall/Vanara/search?l=C%23&q=ISecurityInformation4)  
 [ISecurityObjectTypeInfo](https://www.google.com/search?num=5&q=ISecurityObjectTypeInfo+site%3Adocs.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.ISecurityObjectTypeInfo](https://github.com/dahall/Vanara/search?l=C%23&q=ISecurityObjectTypeInfo)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SI_ACCESS](https://www.google.com/search?num=5&q=SI_ACCESS+site%3Adocs.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.SI_ACCESS](https://github.com/dahall/Vanara/search?l=C%23&q=SI_ACCESS)  
+[SI_INHERIT_TYPE](https://www.google.com/search?num=5&q=SI_INHERIT_TYPE+site%3Adocs.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.SI_INHERIT_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=SI_INHERIT_TYPE)  

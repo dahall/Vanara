@@ -40,3 +40,7 @@ Native Structure | Header | Managed Structure
 --- | --- | ---  
 [GROUP_POLICY_OBJECT](https://www.google.com/search?num=5&q=GROUP_POLICY_OBJECT+site%3Adocs.microsoft.com) | userenv.h | [Vanara.PInvoke.UserEnv.GROUP_POLICY_OBJECT](https://github.com/dahall/Vanara/search?l=C%23&q=GROUP_POLICY_OBJECT)  
 [PROFILEINFO](https://www.google.com/search?num=5&q=PROFILEINFO+site%3Adocs.microsoft.com) | profinfo.h | [Vanara.PInvoke.UserEnv.PROFILEINFO](https://github.com/dahall/Vanara/search?l=C%23&q=PROFILEINFO)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeCriticalPolicySectionHandle](https://www.google.com/search?num=5&q=SafeCriticalPolicySectionHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.UserEnv.SafeCriticalPolicySectionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeCriticalPolicySectionHandle)  

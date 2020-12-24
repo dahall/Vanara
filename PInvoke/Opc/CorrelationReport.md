@@ -37,3 +37,9 @@ Native Interface | Header | Managed Interface
 [IOpcSignatureRelationshipReferenceSet](https://www.google.com/search?num=5&q=IOpcSignatureRelationshipReferenceSet+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.IOpcSignatureRelationshipReferenceSet](https://github.com/dahall/Vanara/search?l=C%23&q=IOpcSignatureRelationshipReferenceSet)  
 [IOpcSigningOptions](https://www.google.com/search?num=5&q=IOpcSigningOptions+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.IOpcSigningOptions](https://github.com/dahall/Vanara/search?l=C%23&q=IOpcSigningOptions)  
 [IOpcUri](https://www.google.com/search?num=5&q=IOpcUri+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.IOpcUri](https://github.com/dahall/Vanara/search?l=C%23&q=IOpcUri)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[Opc](https://www.google.com/search?num=5&q=Opc+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Opc](https://github.com/dahall/Vanara/search?l=C%23&q=Opc)  
+[OpcEnumerator`2](https://www.google.com/search?num=5&q=OpcEnumerator`2+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Opc.OpcEnumerator`2](https://github.com/dahall/Vanara/search?l=C%23&q=OpcEnumerator`2)  
+[OpcFactory](https://www.google.com/search?num=5&q=OpcFactory+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OpcFactory](https://github.com/dahall/Vanara/search?l=C%23&q=OpcFactory)  

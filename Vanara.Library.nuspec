@@ -24,6 +24,7 @@
       <dependency id="Vanara.PInvoke.Cabinet" version="3.3.1" />
       <dependency id="Vanara.PInvoke.CldApi" version="3.3.1" />
       <dependency id="Vanara.PInvoke.ComCtl32" version="3.3.1" />
+      <dependency id="Vanara.PInvoke.ComDlg32" version="3.3.1" />
       <dependency id="Vanara.PInvoke.CredUI" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Cryptography" version="3.3.1" />
       <dependency id="Vanara.PInvoke.DbgHelp" version="3.3.1" />
@@ -44,6 +45,7 @@
       <dependency id="Vanara.PInvoke.NtDll" version="3.3.1" />
       <dependency id="Vanara.PInvoke.NTDSApi" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Ole" version="3.3.1" />
+      <dependency id="Vanara.PInvoke.OleDlg" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Opc" version="3.3.1" />
       <dependency id="Vanara.PInvoke.P2P" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Pdh" version="3.3.1" />

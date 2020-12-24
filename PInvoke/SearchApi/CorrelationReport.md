@@ -67,3 +67,18 @@ Native Interface | Header | Managed Interface
 [IUrlAccessor2](https://www.google.com/search?num=5&q=IUrlAccessor2+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.IUrlAccessor2](https://github.com/dahall/Vanara/search?l=C%23&q=IUrlAccessor2)  
 [IUrlAccessor3](https://www.google.com/search?num=5&q=IUrlAccessor3+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.IUrlAccessor3](https://github.com/dahall/Vanara/search?l=C%23&q=IUrlAccessor3)  
 [IUrlAccessor4](https://www.google.com/search?num=5&q=IUrlAccessor4+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.IUrlAccessor4](https://github.com/dahall/Vanara/search?l=C%23&q=IUrlAccessor4)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[CompoundCondition](https://www.google.com/search?num=5&q=CompoundCondition+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.CompoundCondition](https://github.com/dahall/Vanara/search?l=C%23&q=CompoundCondition)  
+[ConditionFactory](https://www.google.com/search?num=5&q=ConditionFactory+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.ConditionFactory](https://github.com/dahall/Vanara/search?l=C%23&q=ConditionFactory)  
+[CSearchManager](https://www.google.com/search?num=5&q=CSearchManager+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.CSearchManager](https://github.com/dahall/Vanara/search?l=C%23&q=CSearchManager)  
+[CSearchRoot](https://www.google.com/search?num=5&q=CSearchRoot+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.CSearchRoot](https://github.com/dahall/Vanara/search?l=C%23&q=CSearchRoot)  
+[CSearchScopeRule](https://www.google.com/search?num=5&q=CSearchScopeRule+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.CSearchScopeRule](https://github.com/dahall/Vanara/search?l=C%23&q=CSearchScopeRule)  
+[FilterRegistration](https://www.google.com/search?num=5&q=FilterRegistration+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.FilterRegistration](https://github.com/dahall/Vanara/search?l=C%23&q=FilterRegistration)  
+[LeafCondition](https://www.google.com/search?num=5&q=LeafCondition+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.LeafCondition](https://github.com/dahall/Vanara/search?l=C%23&q=LeafCondition)  
+[NegationCondition](https://www.google.com/search?num=5&q=NegationCondition+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.NegationCondition](https://github.com/dahall/Vanara/search?l=C%23&q=NegationCondition)  
+[QueryParser](https://www.google.com/search?num=5&q=QueryParser+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.QueryParser](https://github.com/dahall/Vanara/search?l=C%23&q=QueryParser)  
+[QueryParserManager](https://www.google.com/search?num=5&q=QueryParserManager+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi.QueryParserManager](https://github.com/dahall/Vanara/search?l=C%23&q=QueryParserManager)  
+[SearchApi](https://www.google.com/search?num=5&q=SearchApi+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SearchApi](https://github.com/dahall/Vanara/search?l=C%23&q=SearchApi)  
+[SearchFolderItemFactory](https://www.google.com/search?num=5&q=SearchFolderItemFactory+site%3Adocs.microsoft.com) | shobjidl_core.h | [Vanara.PInvoke.SearchApi.SearchFolderItemFactory](https://github.com/dahall/Vanara/search?l=C%23&q=SearchFolderItemFactory)  

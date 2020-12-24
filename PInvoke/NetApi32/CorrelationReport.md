@@ -356,3 +356,13 @@ Native Structure | Header | Managed Structure
 [WKSTA_USER_INFO_0](https://www.google.com/search?num=5&q=WKSTA_USER_INFO_0+site%3Adocs.microsoft.com) | lmwksta.h | [Vanara.PInvoke.NetApi32.WKSTA_USER_INFO_0](https://github.com/dahall/Vanara/search?l=C%23&q=WKSTA_USER_INFO_0)  
 [WKSTA_USER_INFO_1](https://www.google.com/search?num=5&q=WKSTA_USER_INFO_1+site%3Adocs.microsoft.com) | lmwksta.h | [Vanara.PInvoke.NetApi32.WKSTA_USER_INFO_1](https://github.com/dahall/Vanara/search?l=C%23&q=WKSTA_USER_INFO_1)  
 [WKSTA_USER_INFO_1101](https://www.google.com/search?num=5&q=WKSTA_USER_INFO_1101+site%3Adocs.microsoft.com) | lmwksta.h | [Vanara.PInvoke.NetApi32.WKSTA_USER_INFO_1101](https://github.com/dahall/Vanara/search?l=C%23&q=WKSTA_USER_INFO_1101)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[DFS_SUPPORTED_NAMESPACE_VERSION_INFO](https://www.google.com/search?num=5&q=DFS_SUPPORTED_NAMESPACE_VERSION_INFO+site%3Adocs.microsoft.com) | lmdfs.h | [Vanara.PInvoke.NetApi32.DFS_SUPPORTED_NAMESPACE_VERSION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=DFS_SUPPORTED_NAMESPACE_VERSION_INFO)  
+[DSREG_JOIN_INFO](https://www.google.com/search?num=5&q=DSREG_JOIN_INFO+site%3Adocs.microsoft.com) | lmjoin.h | [Vanara.PInvoke.NetApi32.DSREG_JOIN_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=DSREG_JOIN_INFO)  
+[SafeDavConnectionHandle](https://www.google.com/search?num=5&q=SafeDavConnectionHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NetApi32.SafeDavConnectionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDavConnectionHandle)  
+[SafeDCEnumHandle](https://www.google.com/search?num=5&q=SafeDCEnumHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NetApi32.SafeDCEnumHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDCEnumHandle)  
+[SafeDcRoleBuffer](https://www.google.com/search?num=5&q=SafeDcRoleBuffer+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NetApi32.SafeDcRoleBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDcRoleBuffer)  
+[SafeNetApiBuffer](https://www.google.com/search?num=5&q=SafeNetApiBuffer+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NetApi32.SafeNetApiBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNetApiBuffer)  
+[SafePwdPolicy](https://www.google.com/search?num=5&q=SafePwdPolicy+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NetApi32.SafePwdPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=SafePwdPolicy)  

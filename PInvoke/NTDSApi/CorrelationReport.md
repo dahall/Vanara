@@ -104,3 +104,14 @@ Native Structure | Header | Managed Structure
 [SCHEDULE](https://www.google.com/search?num=5&q=SCHEDULE+site%3Adocs.microsoft.com) | schedule.h | [Vanara.PInvoke.NTDSApi.SCHEDULE](https://github.com/dahall/Vanara/search?l=C%23&q=SCHEDULE)  
 [SCHEDULE_HEADER](https://www.google.com/search?num=5&q=SCHEDULE_HEADER+site%3Adocs.microsoft.com) | schedule.h | [Vanara.PInvoke.NTDSApi.SCHEDULE_HEADER](https://github.com/dahall/Vanara/search?l=C%23&q=SCHEDULE_HEADER)  
 [SpnArrayHandle](https://www.google.com/search?num=5&q=SpnArrayHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NTDSApi.SpnArrayHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SpnArrayHandle)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeAuthIdentityHandle](https://www.google.com/search?num=5&q=SafeAuthIdentityHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NTDSApi.SafeAuthIdentityHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAuthIdentityHandle)  
+[SafeDS_REPSYNCALL_ERRINFOArray](https://www.google.com/search?num=5&q=SafeDS_REPSYNCALL_ERRINFOArray+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NTDSApi.SafeDS_REPSYNCALL_ERRINFOArray](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDS_REPSYNCALL_ERRINFOArray)  
+[SafeDsHandle](https://www.google.com/search?num=5&q=SafeDsHandle+site%3Adocs.microsoft.com) | NTDSApi.h | [Vanara.PInvoke.NTDSApi.SafeDsHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDsHandle)  
+[SafeDsNameResult](https://www.google.com/search?num=5&q=SafeDsNameResult+site%3Adocs.microsoft.com) | NTDSApi.h | [Vanara.PInvoke.NTDSApi.SafeDsNameResult](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDsNameResult)  
+[SafeDsQuerySites](https://www.google.com/search?num=5&q=SafeDsQuerySites+site%3Adocs.microsoft.com) | NTDSApi.h | [Vanara.PInvoke.NTDSApi.SafeDsQuerySites](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDsQuerySites)  
+[SafeDsReplicaInfo](https://www.google.com/search?num=5&q=SafeDsReplicaInfo+site%3Adocs.microsoft.com) | NTDSApi.h | [Vanara.PInvoke.NTDSApi.SafeDsReplicaInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDsReplicaInfo)  
+[SafeDsSchemaGuidMap](https://www.google.com/search?num=5&q=SafeDsSchemaGuidMap+site%3Adocs.microsoft.com) | NTDSApi.h | [Vanara.PInvoke.NTDSApi.SafeDsSchemaGuidMap](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDsSchemaGuidMap)  
+[SCHEDULE](https://www.google.com/search?num=5&q=SCHEDULE+site%3Adocs.microsoft.com) | schedule.h | [Vanara.PInvoke.NTDSApi.SCHEDULE](https://github.com/dahall/Vanara/search?l=C%23&q=SCHEDULE)  

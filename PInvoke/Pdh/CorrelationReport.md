@@ -82,3 +82,9 @@ Native Structure | Header | Managed Structure
 [PDH_RAW_LOG_RECORD](https://www.google.com/search?num=5&q=PDH_RAW_LOG_RECORD+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PDH_RAW_LOG_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=PDH_RAW_LOG_RECORD)  
 [PDH_STATISTICS](https://www.google.com/search?num=5&q=PDH_STATISTICS+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PDH_STATISTICS](https://github.com/dahall/Vanara/search?l=C%23&q=PDH_STATISTICS)  
 [PDH_TIME_INFO](https://www.google.com/search?num=5&q=PDH_TIME_INFO+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PDH_TIME_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PDH_TIME_INFO)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafePDH_HCOUNTER](https://www.google.com/search?num=5&q=SafePDH_HCOUNTER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Pdh.SafePDH_HCOUNTER](https://github.com/dahall/Vanara/search?l=C%23&q=SafePDH_HCOUNTER)  
+[SafePDH_HLOG](https://www.google.com/search?num=5&q=SafePDH_HLOG+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Pdh.SafePDH_HLOG](https://github.com/dahall/Vanara/search?l=C%23&q=SafePDH_HLOG)  
+[SafePDH_HQUERY](https://www.google.com/search?num=5&q=SafePDH_HQUERY+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Pdh.SafePDH_HQUERY](https://github.com/dahall/Vanara/search?l=C%23&q=SafePDH_HQUERY)  

@@ -26,3 +26,8 @@ Native Structure | Header | Managed Structure
 [CREDUI_INFO](https://www.google.com/search?num=5&q=CREDUI_INFO+site%3Adocs.microsoft.com) | wincred.h | [Vanara.PInvoke.CredUI.CREDUI_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CREDUI_INFO)  
 [PSEC_WINNT_CREDUI_CONTEXT](https://www.google.com/search?num=5&q=PSEC_WINNT_CREDUI_CONTEXT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CredUI.PSEC_WINNT_CREDUI_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=PSEC_WINNT_CREDUI_CONTEXT)  
 [PSEC_WINNT_CREDUI_CONTEXT_VECTOR](https://www.google.com/search?num=5&q=PSEC_WINNT_CREDUI_CONTEXT_VECTOR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CredUI.PSEC_WINNT_CREDUI_CONTEXT_VECTOR](https://github.com/dahall/Vanara/search?l=C%23&q=PSEC_WINNT_CREDUI_CONTEXT_VECTOR)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[PSEC_WINNT_CREDUI_CONTEXT](https://www.google.com/search?num=5&q=PSEC_WINNT_CREDUI_CONTEXT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CredUI.PSEC_WINNT_CREDUI_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=PSEC_WINNT_CREDUI_CONTEXT)  
+[PSEC_WINNT_CREDUI_CONTEXT_VECTOR](https://www.google.com/search?num=5&q=PSEC_WINNT_CREDUI_CONTEXT_VECTOR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CredUI.PSEC_WINNT_CREDUI_CONTEXT_VECTOR](https://github.com/dahall/Vanara/search?l=C%23&q=PSEC_WINNT_CREDUI_CONTEXT_VECTOR)  

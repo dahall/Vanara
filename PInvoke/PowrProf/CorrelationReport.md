@@ -104,3 +104,9 @@ Native Structure | Header | Managed Structure
 [SYSTEM_POWER_LEVEL](https://www.google.com/search?num=5&q=SYSTEM_POWER_LEVEL+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.PowrProf.SYSTEM_POWER_LEVEL](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_POWER_LEVEL)  
 [THERMAL_EVENT](https://www.google.com/search?num=5&q=THERMAL_EVENT+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.THERMAL_EVENT](https://github.com/dahall/Vanara/search?l=C%23&q=THERMAL_EVENT)  
 [USER_POWER_POLICY](https://www.google.com/search?num=5&q=USER_POWER_POLICY+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.USER_POWER_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=USER_POWER_POLICY)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeEffectivePowerModeNotificationHandle](https://www.google.com/search?num=5&q=SafeEffectivePowerModeNotificationHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.PowrProf.SafeEffectivePowerModeNotificationHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeEffectivePowerModeNotificationHandle)  
+[SafeHPOWERNOTIFY](https://www.google.com/search?num=5&q=SafeHPOWERNOTIFY+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.PowrProf.SafeHPOWERNOTIFY](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHPOWERNOTIFY)  
+[SafeHPOWERSRNOTIFY](https://www.google.com/search?num=5&q=SafeHPOWERSRNOTIFY+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.PowrProf.SafeHPOWERSRNOTIFY](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHPOWERSRNOTIFY)  

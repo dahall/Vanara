@@ -277,3 +277,11 @@ Native Structure | Header | Managed Structure
 [SYMBOL_INFO](https://www.google.com/search?num=5&q=SYMBOL_INFO+site%3Adocs.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.SYMBOL_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=SYMBOL_INFO)  
 [SYMSRV_INDEX_INFO](https://www.google.com/search?num=5&q=SYMSRV_INDEX_INFO+site%3Adocs.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.SYMSRV_INDEX_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=SYMSRV_INDEX_INFO)  
 [TI_FINDCHILDREN_PARAMS](https://www.google.com/search?num=5&q=TI_FINDCHILDREN_PARAMS+site%3Adocs.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.TI_FINDCHILDREN_PARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=TI_FINDCHILDREN_PARAMS)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[ProcessSymbolHandler](https://www.google.com/search?num=5&q=ProcessSymbolHandler+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.ProcessSymbolHandler](https://github.com/dahall/Vanara/search?l=C%23&q=ProcessSymbolHandler)  
+[SafeAnysizeStringMarshaler`1](https://www.google.com/search?num=5&q=SafeAnysizeStringMarshaler`1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.SafeAnysizeStringMarshaler`1](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAnysizeStringMarshaler`1)  
+[SafeIMAGEHLP_SYMBOL](https://www.google.com/search?num=5&q=SafeIMAGEHLP_SYMBOL+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.SafeIMAGEHLP_SYMBOL](https://github.com/dahall/Vanara/search?l=C%23&q=SafeIMAGEHLP_SYMBOL)  
+[SafeIMAGEHLP_SYMBOL64](https://www.google.com/search?num=5&q=SafeIMAGEHLP_SYMBOL64+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.SafeIMAGEHLP_SYMBOL64](https://github.com/dahall/Vanara/search?l=C%23&q=SafeIMAGEHLP_SYMBOL64)  
+[SafeLOADED_IMAGE](https://www.google.com/search?num=5&q=SafeLOADED_IMAGE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.SafeLOADED_IMAGE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeLOADED_IMAGE)  

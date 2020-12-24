@@ -32,3 +32,9 @@ Native Structure | Header | Managed Structure
 [WER_REPORT_METADATA_V2](https://www.google.com/search?num=5&q=WER_REPORT_METADATA_V2+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WER_REPORT_METADATA_V2](https://github.com/dahall/Vanara/search?l=C%23&q=WER_REPORT_METADATA_V2)  
 [WER_REPORT_PARAMETER](https://www.google.com/search?num=5&q=WER_REPORT_PARAMETER+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WER_REPORT_PARAMETER](https://github.com/dahall/Vanara/search?l=C%23&q=WER_REPORT_PARAMETER)  
 [WER_REPORT_SIGNATURE](https://www.google.com/search?num=5&q=WER_REPORT_SIGNATURE+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WER_REPORT_SIGNATURE](https://github.com/dahall/Vanara/search?l=C%23&q=WER_REPORT_SIGNATURE)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[DbgHelp](https://www.google.com/search?num=5&q=DbgHelp+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DbgHelp](https://github.com/dahall/Vanara/search?l=C%23&q=DbgHelp)  
+[SafeHREPORT](https://www.google.com/search?num=5&q=SafeHREPORT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Wer.SafeHREPORT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHREPORT)  
+[SafeHREPORTSTORE](https://www.google.com/search?num=5&q=SafeHREPORTSTORE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Wer.SafeHREPORTSTORE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHREPORTSTORE)  

@@ -45,3 +45,10 @@ Native Structure | Header | Managed Structure
 [NEW_CABINET](https://www.google.com/search?num=5&q=NEW_CABINET+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Cabinet.FDIDECRYPT.NEW_CABINET](https://github.com/dahall/Vanara/search?l=C%23&q=NEW_CABINET)  
 [NEW_FOLDER](https://www.google.com/search?num=5&q=NEW_FOLDER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Cabinet.FDIDECRYPT.NEW_FOLDER](https://github.com/dahall/Vanara/search?l=C%23&q=NEW_FOLDER)  
 [Union](https://www.google.com/search?num=5&q=Union+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Cabinet.FDIDECRYPT.Union](https://github.com/dahall/Vanara/search?l=C%23&q=Union)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeCOMPRESSOR_HANDLE](https://www.google.com/search?num=5&q=SafeCOMPRESSOR_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Cabinet.SafeCOMPRESSOR_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeCOMPRESSOR_HANDLE)  
+[SafeDECOMPRESSOR_HANDLE](https://www.google.com/search?num=5&q=SafeDECOMPRESSOR_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Cabinet.SafeDECOMPRESSOR_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDECOMPRESSOR_HANDLE)  
+[SafeHFCI](https://www.google.com/search?num=5&q=SafeHFCI+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Cabinet.SafeHFCI](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHFCI)  
+[SafeHFDI](https://www.google.com/search?num=5&q=SafeHFDI+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Cabinet.SafeHFDI](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHFDI)  

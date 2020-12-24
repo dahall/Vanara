@@ -89,3 +89,7 @@ Native Structure | Header | Managed Structure
 [TRANSFERDATA](https://www.google.com/search?num=5&q=TRANSFERDATA+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CldApi.CF_OPERATION_PARAMETERS.TRANSFERDATA](https://github.com/dahall/Vanara/search?l=C%23&q=TRANSFERDATA)  
 [TRANSFERPLACEHOLDERS](https://www.google.com/search?num=5&q=TRANSFERPLACEHOLDERS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CldApi.CF_OPERATION_PARAMETERS.TRANSFERPLACEHOLDERS](https://github.com/dahall/Vanara/search?l=C%23&q=TRANSFERPLACEHOLDERS)  
 [VALIDATEDATA](https://www.google.com/search?num=5&q=VALIDATEDATA+site%3Adocs.microsoft.com) | cfapi.h | [Vanara.PInvoke.CldApi.CF_CALLBACK_PARAMETERS.VALIDATEDATA](https://github.com/dahall/Vanara/search?l=C%23&q=VALIDATEDATA)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeHCFFILE](https://www.google.com/search?num=5&q=SafeHCFFILE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CldApi.SafeHCFFILE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHCFFILE)  

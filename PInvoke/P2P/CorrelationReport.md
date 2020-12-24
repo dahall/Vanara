@@ -54,7 +54,7 @@ Native Method | Header | Managed Method
 [PeerEnumIdentities](https://www.google.com/search?num=5&q=PeerEnumIdentities+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerEnumIdentities](https://github.com/dahall/Vanara/search?l=C%23&q=PeerEnumIdentities)  
 [PeerFreeData](https://www.google.com/search?num=5&q=PeerFreeData+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerFreeData](https://github.com/dahall/Vanara/search?l=C%23&q=PeerFreeData)  
 [PeerGetItemCount](https://www.google.com/search?num=5&q=PeerGetItemCount+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGetItemCount](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGetItemCount)  
-[PeerGetNextItem](https://www.google.com/search?num=5&q=PeerGetNextItem+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGetNextItem](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGetNextItem)  
+[PeerGetNextItem](https://www.google.com/search?num=5&q=PeerGetNextItem+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.PeerGetNextItem](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGetNextItem)  
 [PeerGraphShutdown](https://www.google.com/search?num=5&q=PeerGraphShutdown+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGraphShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGraphShutdown)  
 [PeerGraphStartup](https://www.google.com/search?num=5&q=PeerGraphStartup+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGraphStartup](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGraphStartup)  
 [PeerGroupAddRecord](https://www.google.com/search?num=5&q=PeerGroupAddRecord+site%3Adocs.microsoft.com) | p2p.h | [Vanara.PInvoke.P2P.PeerGroupAddRecord](https://github.com/dahall/Vanara/search?l=C%23&q=PeerGroupAddRecord)  
@@ -173,3 +173,12 @@ Native Structure | Header | Managed Structure
 [PNRPCLOUDINFO](https://www.google.com/search?num=5&q=PNRPCLOUDINFO+site%3Adocs.microsoft.com) | pnrpns.h | [Vanara.PInvoke.P2P.PNRPCLOUDINFO](https://github.com/dahall/Vanara/search?l=C%23&q=PNRPCLOUDINFO)  
 [PNRPINFO_V1](https://www.google.com/search?num=5&q=PNRPINFO_V1+site%3Adocs.microsoft.com) | pnrpns.h | [Vanara.PInvoke.P2P.PNRPINFO_V1](https://github.com/dahall/Vanara/search?l=C%23&q=PNRPINFO_V1)  
 [PNRPINFO_V2](https://www.google.com/search?num=5&q=PNRPINFO_V2+site%3Adocs.microsoft.com) | pnrpns.h | [Vanara.PInvoke.P2P.PNRPINFO_V2](https://github.com/dahall/Vanara/search?l=C%23&q=PNRPINFO_V2)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeCollabHPEEREVENT](https://www.google.com/search?num=5&q=SafeCollabHPEEREVENT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.SafeCollabHPEEREVENT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeCollabHPEEREVENT)  
+[SafeGroupHPEEREVENT](https://www.google.com/search?num=5&q=SafeGroupHPEEREVENT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.SafeGroupHPEEREVENT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeGroupHPEEREVENT)  
+[SafeHPEERENUM](https://www.google.com/search?num=5&q=SafeHPEERENUM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.SafeHPEERENUM](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHPEERENUM)  
+[SafePeerCollabHandle](https://www.google.com/search?num=5&q=SafePeerCollabHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.SafePeerCollabHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafePeerCollabHandle)  
+[SafePeerData](https://www.google.com/search?num=5&q=SafePeerData+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.SafePeerData](https://github.com/dahall/Vanara/search?l=C%23&q=SafePeerData)  
+[SafePeerList`1](https://www.google.com/search?num=5&q=SafePeerList`1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.P2P.SafePeerList`1](https://github.com/dahall/Vanara/search?l=C%23&q=SafePeerList`1)  

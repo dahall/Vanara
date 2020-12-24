@@ -155,3 +155,9 @@ Native Structure | Header | Managed Structure
 [INTERNET_PROXY_INFO](https://www.google.com/search?num=5&q=INTERNET_PROXY_INFO+site%3Adocs.microsoft.com) | WinInet.h | [Vanara.PInvoke.WinINet.INTERNET_PROXY_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_PROXY_INFO)  
 [INTERNET_VERSION_INFO](https://www.google.com/search?num=5&q=INTERNET_VERSION_INFO+site%3Adocs.microsoft.com) | WinInet.h | [Vanara.PInvoke.WinINet.INTERNET_VERSION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_VERSION_INFO)  
 [URL_COMPONENTS](https://www.google.com/search?num=5&q=URL_COMPONENTS+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.URL_COMPONENTS](https://github.com/dahall/Vanara/search?l=C%23&q=URL_COMPONENTS)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeHCACHEENTRYSTREAM](https://www.google.com/search?num=5&q=SafeHCACHEENTRYSTREAM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinINet.SafeHCACHEENTRYSTREAM](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHCACHEENTRYSTREAM)  
+[SafeHINTERNET](https://www.google.com/search?num=5&q=SafeHINTERNET+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinINet.SafeHINTERNET](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHINTERNET)  
+[URL_COMPONENTS_MGD](https://www.google.com/search?num=5&q=URL_COMPONENTS_MGD+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinINet.URL_COMPONENTS_MGD](https://github.com/dahall/Vanara/search?l=C%23&q=URL_COMPONENTS_MGD)  

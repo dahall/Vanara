@@ -38,3 +38,9 @@ Native Structure | Header | Managed Structure
 [NETRESOURCE](https://www.google.com/search?num=5&q=NETRESOURCE+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.NETRESOURCE](https://github.com/dahall/Vanara/search?l=C%23&q=NETRESOURCE)  
 [REMOTE_NAME_INFO](https://www.google.com/search?num=5&q=REMOTE_NAME_INFO+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.REMOTE_NAME_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=REMOTE_NAME_INFO)  
 [UNIVERSAL_NAME_INFO](https://www.google.com/search?num=5&q=UNIVERSAL_NAME_INFO+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.UNIVERSAL_NAME_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=UNIVERSAL_NAME_INFO)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[NETRESOURCE](https://www.google.com/search?num=5&q=NETRESOURCE+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.NETRESOURCE](https://github.com/dahall/Vanara/search?l=C%23&q=NETRESOURCE)  
+[NetworkProviderException](https://www.google.com/search?num=5&q=NetworkProviderException+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Mpr.NetworkProviderException](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkProviderException)  
+[SafeWNetEnumHandle](https://www.google.com/search?num=5&q=SafeWNetEnumHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Mpr.SafeWNetEnumHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWNetEnumHandle)  

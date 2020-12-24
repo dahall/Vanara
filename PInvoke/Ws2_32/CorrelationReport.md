@@ -187,3 +187,13 @@ Native Structure | Header | Managed Structure
 [WSAQUERYSET2W](https://www.google.com/search?num=5&q=WSAQUERYSET2W+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAQUERYSET2W](https://github.com/dahall/Vanara/search?l=C%23&q=WSAQUERYSET2W)  
 [WSASERVICECLASSINFO](https://www.google.com/search?num=5&q=WSASERVICECLASSINFO+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASERVICECLASSINFO](https://github.com/dahall/Vanara/search?l=C%23&q=WSASERVICECLASSINFO)  
 [WSAVERSION](https://www.google.com/search?num=5&q=WSAVERSION+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAVERSION](https://github.com/dahall/Vanara/search?l=C%23&q=WSAVERSION)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeADDRINFOEXWArray](https://www.google.com/search?num=5&q=SafeADDRINFOEXWArray+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ws2_32.SafeADDRINFOEXWArray](https://github.com/dahall/Vanara/search?l=C%23&q=SafeADDRINFOEXWArray)  
+[SafeADDRINFOWArray](https://www.google.com/search?num=5&q=SafeADDRINFOWArray+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ws2_32.SafeADDRINFOWArray](https://github.com/dahall/Vanara/search?l=C%23&q=SafeADDRINFOWArray)  
+[SafeSOCKET](https://www.google.com/search?num=5&q=SafeSOCKET+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ws2_32.SafeSOCKET](https://github.com/dahall/Vanara/search?l=C%23&q=SafeSOCKET)  
+[SafeWSA](https://www.google.com/search?num=5&q=SafeWSA+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ws2_32.SafeWSA](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWSA)  
+[SafeWSAEVENT](https://www.google.com/search?num=5&q=SafeWSAEVENT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ws2_32.SafeWSAEVENT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWSAEVENT)  
+[SOCKADDR](https://www.google.com/search?num=5&q=SOCKADDR+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.SOCKADDR](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKADDR)  
+[WinSockIOControlCode](https://www.google.com/search?num=5&q=WinSockIOControlCode+site%3Adocs.microsoft.com) | ws2def.h | [Vanara.PInvoke.Ws2_32.WinSockIOControlCode](https://github.com/dahall/Vanara/search?l=C%23&q=WinSockIOControlCode)  

@@ -65,3 +65,11 @@ Native Interface | Header | Managed Interface
 [ITrigger](https://www.google.com/search?num=5&q=ITrigger+site%3Adocs.microsoft.com) | taskschd.dll | taskschd.h | [Vanara.PInvoke.TaskSchd.ITrigger](https://github.com/dahall/Vanara/search?l=C%23&q=ITrigger)  
 [ITriggerCollection](https://www.google.com/search?num=5&q=ITriggerCollection+site%3Adocs.microsoft.com) | taskschd.dll | taskschd.h | [Vanara.PInvoke.TaskSchd.ITriggerCollection](https://github.com/dahall/Vanara/search?l=C%23&q=ITriggerCollection)  
 [IWeeklyTrigger](https://www.google.com/search?num=5&q=IWeeklyTrigger+site%3Adocs.microsoft.com) | taskschd.dll | taskschd.h | [Vanara.PInvoke.TaskSchd.IWeeklyTrigger](https://github.com/dahall/Vanara/search?l=C%23&q=IWeeklyTrigger)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[CTask](https://www.google.com/search?num=5&q=CTask+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MSTask.CTask](https://github.com/dahall/Vanara/search?l=C%23&q=CTask)  
+[CTaskScheduler](https://www.google.com/search?num=5&q=CTaskScheduler+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MSTask.CTaskScheduler](https://github.com/dahall/Vanara/search?l=C%23&q=CTaskScheduler)  
+[DateTimeBSTR](https://www.google.com/search?num=5&q=DateTimeBSTR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.TaskSchd.DateTimeBSTR](https://github.com/dahall/Vanara/search?l=C%23&q=DateTimeBSTR)  
+[TaskSchedulerClass](https://www.google.com/search?num=5&q=TaskSchedulerClass+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TaskSchedulerClass](https://github.com/dahall/Vanara/search?l=C%23&q=TaskSchedulerClass)  
+[TimeSpanBSTR](https://www.google.com/search?num=5&q=TimeSpanBSTR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.TaskSchd.TimeSpanBSTR](https://github.com/dahall/Vanara/search?l=C%23&q=TimeSpanBSTR)  

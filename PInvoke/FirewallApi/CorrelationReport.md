@@ -47,3 +47,14 @@ Native Interface | Header | Managed Interface
 [INetFwService](https://www.google.com/search?num=5&q=INetFwService+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.INetFwService](https://github.com/dahall/Vanara/search?l=C%23&q=INetFwService)  
 [INetFwServiceRestriction](https://www.google.com/search?num=5&q=INetFwServiceRestriction+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.INetFwServiceRestriction](https://github.com/dahall/Vanara/search?l=C%23&q=INetFwServiceRestriction)  
 [INetFwServices](https://www.google.com/search?num=5&q=INetFwServices+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.INetFwServices](https://github.com/dahall/Vanara/search?l=C%23&q=INetFwServices)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[FirewallApi](https://www.google.com/search?num=5&q=FirewallApi+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FirewallApi](https://github.com/dahall/Vanara/search?l=C%23&q=FirewallApi)  
+[NetFwAuthorizedApplication](https://www.google.com/search?num=5&q=NetFwAuthorizedApplication+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.NetFwAuthorizedApplication](https://github.com/dahall/Vanara/search?l=C%23&q=NetFwAuthorizedApplication)  
+[NetFwMgr](https://www.google.com/search?num=5&q=NetFwMgr+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.NetFwMgr](https://github.com/dahall/Vanara/search?l=C%23&q=NetFwMgr)  
+[NetFwOpenPort](https://www.google.com/search?num=5&q=NetFwOpenPort+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.NetFwOpenPort](https://github.com/dahall/Vanara/search?l=C%23&q=NetFwOpenPort)  
+[NetFwPolicy2](https://www.google.com/search?num=5&q=NetFwPolicy2+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.NetFwPolicy2](https://github.com/dahall/Vanara/search?l=C%23&q=NetFwPolicy2)  
+[NetFwProduct](https://www.google.com/search?num=5&q=NetFwProduct+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.NetFwProduct](https://github.com/dahall/Vanara/search?l=C%23&q=NetFwProduct)  
+[NetFwProducts](https://www.google.com/search?num=5&q=NetFwProducts+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.NetFwProducts](https://github.com/dahall/Vanara/search?l=C%23&q=NetFwProducts)  
+[NetFwRule](https://www.google.com/search?num=5&q=NetFwRule+site%3Adocs.microsoft.com) | netfw.h | [Vanara.PInvoke.FirewallApi.NetFwRule](https://github.com/dahall/Vanara/search?l=C%23&q=NetFwRule)  

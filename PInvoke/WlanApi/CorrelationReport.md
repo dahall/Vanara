@@ -128,3 +128,18 @@ Native Interface | Header | Managed Interface
 [IElevateWlanUi](https://www.google.com/search?num=5&q=IElevateWlanUi+site%3Adocs.microsoft.com) | wlanui.dll |  |   
 [ISequentialStream](https://www.google.com/search?num=5&q=ISequentialStream+site%3Adocs.microsoft.com) | wlanui.dll |  |   
 [IStream](https://www.google.com/search?num=5&q=IStream+site%3Adocs.microsoft.com) | wlanui.dll |  |   
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[DOT11_NETWORK_LIST](https://www.google.com/search?num=5&q=DOT11_NETWORK_LIST+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.DOT11_NETWORK_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=DOT11_NETWORK_LIST)  
+[SafeHWFDSERVICE](https://www.google.com/search?num=5&q=SafeHWFDSERVICE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WlanApi.SafeHWFDSERVICE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWFDSERVICE)  
+[SafeHWFDSESSION](https://www.google.com/search?num=5&q=SafeHWFDSESSION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WlanApi.SafeHWFDSESSION](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWFDSESSION)  
+[SafeHWLANMEM](https://www.google.com/search?num=5&q=SafeHWLANMEM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WlanApi.SafeHWLANMEM](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWLANMEM)  
+[SafeHWLANSESSION](https://www.google.com/search?num=5&q=SafeHWLANSESSION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WlanApi.SafeHWLANSESSION](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWLANSESSION)  
+[WLAN_AVAILABLE_NETWORK_LIST](https://www.google.com/search?num=5&q=WLAN_AVAILABLE_NETWORK_LIST+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.WLAN_AVAILABLE_NETWORK_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=WLAN_AVAILABLE_NETWORK_LIST)  
+[WLAN_BSS_LIST](https://www.google.com/search?num=5&q=WLAN_BSS_LIST+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.WLAN_BSS_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=WLAN_BSS_LIST)  
+[WLAN_DEVICE_SERVICE_GUID_LIST](https://www.google.com/search?num=5&q=WLAN_DEVICE_SERVICE_GUID_LIST+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.WLAN_DEVICE_SERVICE_GUID_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=WLAN_DEVICE_SERVICE_GUID_LIST)  
+[WLAN_HOSTED_NETWORK_STATUS](https://www.google.com/search?num=5&q=WLAN_HOSTED_NETWORK_STATUS+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.WLAN_HOSTED_NETWORK_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=WLAN_HOSTED_NETWORK_STATUS)  
+[WLAN_INTERFACE_CAPABILITY](https://www.google.com/search?num=5&q=WLAN_INTERFACE_CAPABILITY+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.WLAN_INTERFACE_CAPABILITY](https://github.com/dahall/Vanara/search?l=C%23&q=WLAN_INTERFACE_CAPABILITY)  
+[WLAN_INTERFACE_INFO_LIST](https://www.google.com/search?num=5&q=WLAN_INTERFACE_INFO_LIST+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.WLAN_INTERFACE_INFO_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=WLAN_INTERFACE_INFO_LIST)  
+[WLAN_PROFILE_INFO_LIST](https://www.google.com/search?num=5&q=WLAN_PROFILE_INFO_LIST+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.WLAN_PROFILE_INFO_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=WLAN_PROFILE_INFO_LIST)  

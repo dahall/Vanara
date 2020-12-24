@@ -592,3 +592,13 @@ Native Structure | Header | Managed Structure
 [SYSTEM_REGISTRY_QUOTA_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_REGISTRY_QUOTA_INFORMATION+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_REGISTRY_QUOTA_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_REGISTRY_QUOTA_INFORMATION)  
 [SYSTEM_THREAD_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_THREAD_INFORMATION+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_THREAD_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_THREAD_INFORMATION)  
 [UNICODE_STRING](https://www.google.com/search?num=5&q=UNICODE_STRING+site%3Adocs.microsoft.com) | wudfwdm.h | [Vanara.PInvoke.NtDll.UNICODE_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=UNICODE_STRING)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[NtQueryResult`1](https://www.google.com/search?num=5&q=NtQueryResult`1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.NtQueryResult`1](https://github.com/dahall/Vanara/search?l=C%23&q=NtQueryResult`1)  
+[SafeEnlistmentHandle](https://www.google.com/search?num=5&q=SafeEnlistmentHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeEnlistmentHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeEnlistmentHandle)  
+[SafeNtHandle](https://www.google.com/search?num=5&q=SafeNtHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeNtHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNtHandle)  
+[SafeResourceManagerHandle](https://www.google.com/search?num=5&q=SafeResourceManagerHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeResourceManagerHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeResourceManagerHandle)  
+[SafeSectionHandle](https://www.google.com/search?num=5&q=SafeSectionHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeSectionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeSectionHandle)  
+[SafeTransactionHandle](https://www.google.com/search?num=5&q=SafeTransactionHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeTransactionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeTransactionHandle)  
+[SafeTransactionManagerHandle](https://www.google.com/search?num=5&q=SafeTransactionManagerHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeTransactionManagerHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeTransactionManagerHandle)  

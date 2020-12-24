@@ -3,13 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows WTSApi32.d
 
 - Includes methods from wtsapi32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WTSApi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WTSApi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WTSApi32)  
-### Methods - 87% API coverage (43 of 49 functions)  
+### Methods - 100% API coverage (44 of 44 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[IsInteractiveUserSession](https://www.google.com/search?num=5&q=IsInteractiveUserSession+site%3Adocs.microsoft.com) |  |   
-[QueryActiveSession](https://www.google.com/search?num=5&q=QueryActiveSession+site%3Adocs.microsoft.com) |  |   
-[QueryUserToken](https://www.google.com/search?num=5&q=QueryUserToken+site%3Adocs.microsoft.com) |  |   
-[RegisterUsertokenForNoWinlogon](https://www.google.com/search?num=5&q=RegisterUsertokenForNoWinlogon+site%3Adocs.microsoft.com) |  |   
 [WTSCloseServer](https://www.google.com/search?num=5&q=WTSCloseServer+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSCloseServer](https://github.com/dahall/Vanara/search?l=C%23&q=WTSCloseServer)  
 [WTSConnectSession](https://www.google.com/search?num=5&q=WTSConnectSessionA+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSConnectSession](https://github.com/dahall/Vanara/search?l=C%23&q=WTSConnectSession)  
 [WTSCreateListener](https://www.google.com/search?num=5&q=WTSCreateListenerA+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSCreateListener](https://github.com/dahall/Vanara/search?l=C%23&q=WTSCreateListener)  
@@ -37,8 +33,7 @@ Native Method | Header | Managed Method
 [WTSRegisterSessionNotificationEx](https://www.google.com/search?num=5&q=WTSRegisterSessionNotificationEx+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSRegisterSessionNotificationEx](https://github.com/dahall/Vanara/search?l=C%23&q=WTSRegisterSessionNotificationEx)  
 [WTSSendMessage](https://www.google.com/search?num=5&q=WTSSendMessageA+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSSendMessage](https://github.com/dahall/Vanara/search?l=C%23&q=WTSSendMessage)  
 [WTSSetListenerSecurity](https://www.google.com/search?num=5&q=WTSSetListenerSecurityA+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSSetListenerSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=WTSSetListenerSecurity)  
-[WTSSetRenderHint](https://www.google.com/search?num=5&q=WTSSetRenderHint+site%3Adocs.microsoft.com) |  |   
-[WTSSetSessionInformation](https://www.google.com/search?num=5&q=WTSSetSessionInformationA+site%3Adocs.microsoft.com) |  |   
+[WTSSetRenderHint](https://www.google.com/search?num=5&q=WTSSetRenderHint+site%3Adocs.microsoft.com) | wtshintapi.h | [Vanara.PInvoke.WTSApi32.WTSSetRenderHint](https://github.com/dahall/Vanara/search?l=C%23&q=WTSSetRenderHint)  
 [WTSSetUserConfig](https://www.google.com/search?num=5&q=WTSSetUserConfigA+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSSetUserConfig](https://github.com/dahall/Vanara/search?l=C%23&q=WTSSetUserConfig)  
 [WTSShutdownSystem](https://www.google.com/search?num=5&q=WTSShutdownSystem+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSShutdownSystem](https://github.com/dahall/Vanara/search?l=C%23&q=WTSShutdownSystem)  
 [WTSStartRemoteControlSession](https://www.google.com/search?num=5&q=WTSStartRemoteControlSessionA+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSStartRemoteControlSession](https://github.com/dahall/Vanara/search?l=C%23&q=WTSStartRemoteControlSession)  
@@ -77,3 +72,9 @@ Native Structure | Header | Managed Structure
 [WTSLISTENERCONFIG](https://www.google.com/search?num=5&q=WTSLISTENERCONFIG+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSLISTENERCONFIG](https://github.com/dahall/Vanara/search?l=C%23&q=WTSLISTENERCONFIG)  
 [WTSLISTENERNAME](https://www.google.com/search?num=5&q=WTSLISTENERNAME+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSLISTENERNAME](https://github.com/dahall/Vanara/search?l=C%23&q=WTSLISTENERNAME)  
 [WTSUSERCONFIG](https://www.google.com/search?num=5&q=WTSUSERCONFIG+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSUSERCONFIG](https://github.com/dahall/Vanara/search?l=C%23&q=WTSUSERCONFIG)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeHVIRTUALCHANNEL](https://www.google.com/search?num=5&q=SafeHVIRTUALCHANNEL+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WTSApi32.SafeHVIRTUALCHANNEL](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHVIRTUALCHANNEL)  
+[SafeHWTSSERVER](https://www.google.com/search?num=5&q=SafeHWTSSERVER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WTSApi32.SafeHWTSSERVER](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWTSSERVER)  
+[SafeWTSMemoryHandle](https://www.google.com/search?num=5&q=SafeWTSMemoryHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WTSApi32.SafeWTSMemoryHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWTSMemoryHandle)  

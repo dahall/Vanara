@@ -107,3 +107,11 @@ Native Structure | Header | Managed Structure
 [WINTRUST_FILE_INFO](https://www.google.com/search?num=5&q=WINTRUST_FILE_INFO+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WINTRUST_FILE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WINTRUST_FILE_INFO)  
 [WINTRUST_SGNR_INFO](https://www.google.com/search?num=5&q=WINTRUST_SGNR_INFO+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WINTRUST_SGNR_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WINTRUST_SGNR_INFO)  
 [WINTRUST_SIGNATURE_SETTINGS](https://www.google.com/search?num=5&q=WINTRUST_SIGNATURE_SETTINGS+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WINTRUST_SIGNATURE_SETTINGS](https://github.com/dahall/Vanara/search?l=C%23&q=WINTRUST_SIGNATURE_SETTINGS)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeCRYPTCATCDF](https://www.google.com/search?num=5&q=SafeCRYPTCATCDF+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.SafeCRYPTCATCDF](https://github.com/dahall/Vanara/search?l=C%23&q=SafeCRYPTCATCDF)  
+[SafeHCATADMIN](https://www.google.com/search?num=5&q=SafeHCATADMIN+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.SafeHCATADMIN](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHCATADMIN)  
+[SafeHCATALOG](https://www.google.com/search?num=5&q=SafeHCATALOG+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.SafeHCATALOG](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHCATALOG)  
+[SafeHCATINFO](https://www.google.com/search?num=5&q=SafeHCATINFO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.SafeHCATINFO](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHCATINFO)  
+[WINTRUST_DATA](https://www.google.com/search?num=5&q=WINTRUST_DATA+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WINTRUST_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WINTRUST_DATA)  

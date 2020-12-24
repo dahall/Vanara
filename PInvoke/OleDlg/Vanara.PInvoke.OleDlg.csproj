@@ -10,7 +10,15 @@
     <AssemblyName>Vanara.PInvoke.OleDlg</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;OleDlg</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+OleUIAddVerbMenu, OleUIBusy, OleUICanConvertOrActivateAs, OleUIChangeIcon, OleUIChangeSource, OleUIConvert, OleUIEditLinks, OleUIInsertObject, OleUIObjectProperties, OleUIPasteSpecial, OleUIPromptUser, OleUIUpdateLinks
+
+Structures
+OLEUIBUSY, OLEUICHANGEICON, OLEUICHANGESOURCE
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

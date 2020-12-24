@@ -10,6 +10,18 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="ShellViewTestForm.cs" />
+    <Compile Remove="ShellViewTestForm.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="ShellViewTestForm.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ShellViewTestForm.cs" />
+    <None Include="ShellViewTestForm.Designer.cs" />
+    <None Include="ShellViewTestForm.resx" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,9 +64,5 @@
     <ProjectReference Include="..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
     <ProjectReference Include="..\..\Windows.Forms\Vanara.Windows.Forms.csproj" />
     <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="ShellViewTestForm.cs" />
-    <Compile Remove="ShellViewTestForm.Designer.cs" />
   </ItemGroup>
 </Project>

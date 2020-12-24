@@ -257,3 +257,8 @@ Native Interface | Header | Managed Interface
 [IWICProgressiveLevelControl](https://www.google.com/search?num=5&q=IWICProgressiveLevelControl+site%3Adocs.microsoft.com) | wincodec.h | [Vanara.PInvoke.WindowsCodecs.IWICProgressiveLevelControl](https://github.com/dahall/Vanara/search?l=C%23&q=IWICProgressiveLevelControl)  
 [IWICStream](https://www.google.com/search?num=5&q=IWICStream+site%3Adocs.microsoft.com) | wincodec.h | [Vanara.PInvoke.WindowsCodecs.IWICStream](https://github.com/dahall/Vanara/search?l=C%23&q=IWICStream)  
 [IWICStreamProvider](https://www.google.com/search?num=5&q=IWICStreamProvider+site%3Adocs.microsoft.com) | wincodecsdk.h | [Vanara.PInvoke.WindowsCodecs.IWICStreamProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IWICStreamProvider)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[PWICRect](https://www.google.com/search?num=5&q=PWICRect+site%3Adocs.microsoft.com) | wincodec.h | [Vanara.PInvoke.WindowsCodecs.PWICRect](https://github.com/dahall/Vanara/search?l=C%23&q=PWICRect)  
+[WICGuids](https://www.google.com/search?num=5&q=WICGuids+site%3Adocs.microsoft.com) | wincodec.h | [Vanara.PInvoke.WindowsCodecs.WICGuids](https://github.com/dahall/Vanara/search?l=C%23&q=WICGuids)  

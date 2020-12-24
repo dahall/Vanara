@@ -53,3 +53,10 @@ Native Structure | Header | Managed Structure
 [HTRXNMGR](https://www.google.com/search?num=5&q=HTRXNMGR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.KtmW32.HTRXNMGR](https://github.com/dahall/Vanara/search?l=C%23&q=HTRXNMGR)  
 [TRANSACTION_NOTIFICATION](https://www.google.com/search?num=5&q=TRANSACTION_NOTIFICATION+site%3Adocs.microsoft.com) | ktmtypes.h | [Vanara.PInvoke.KtmW32.TRANSACTION_NOTIFICATION](https://github.com/dahall/Vanara/search?l=C%23&q=TRANSACTION_NOTIFICATION)  
 [TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT](https://www.google.com/search?num=5&q=TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT+site%3Adocs.microsoft.com) | ktmtypes.h | [Vanara.PInvoke.KtmW32.TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT](https://github.com/dahall/Vanara/search?l=C%23&q=TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeHENLISTMENT](https://www.google.com/search?num=5&q=SafeHENLISTMENT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.KtmW32.SafeHENLISTMENT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHENLISTMENT)  
+[SafeHRESMGR](https://www.google.com/search?num=5&q=SafeHRESMGR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.KtmW32.SafeHRESMGR](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHRESMGR)  
+[SafeHTRXN](https://www.google.com/search?num=5&q=SafeHTRXN+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.KtmW32.SafeHTRXN](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHTRXN)  
+[SafeHTRXNMGR](https://www.google.com/search?num=5&q=SafeHTRXNMGR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.KtmW32.SafeHTRXNMGR](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHTRXNMGR)  

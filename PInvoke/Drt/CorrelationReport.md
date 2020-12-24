@@ -57,3 +57,7 @@ Native Structure | Header | Managed Structure
 [SafeDRT_DATA](https://www.google.com/search?num=5&q=SafeDRT_DATA+site%3Adocs.microsoft.com) | wincrypt.h | [Vanara.PInvoke.Drt.SafeDRT_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDRT_DATA)  
 [STATUSCHANGE](https://www.google.com/search?num=5&q=STATUSCHANGE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Drt.DRT_EVENT_DATA.UNION.STATUSCHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=STATUSCHANGE)  
 [UNION](https://www.google.com/search?num=5&q=UNION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Drt.DRT_EVENT_DATA.UNION](https://github.com/dahall/Vanara/search?l=C%23&q=UNION)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[SafeDRT_DATA](https://www.google.com/search?num=5&q=SafeDRT_DATA+site%3Adocs.microsoft.com) | wincrypt.h | [Vanara.PInvoke.Drt.SafeDRT_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDRT_DATA)  
