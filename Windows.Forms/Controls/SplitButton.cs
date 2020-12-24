@@ -136,7 +136,6 @@ namespace Vanara.Windows.Forms
 		/// Raises the <see cref="E:System.Windows.Forms.Control.HandleCreated" /> event.
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-		[global::System.Security.Permissions.SecurityPermission(global::System.Security.Permissions.SecurityAction.Demand, Flags = global::System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode)]
 		protected override void OnHandleCreated(EventArgs e)
 		{
 			base.OnHandleCreated(e);
@@ -178,7 +177,6 @@ namespace Vanara.Windows.Forms
 		/// Processes Windows messages.
 		/// </summary>
 		/// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message" /> to process.</param>
-		[global::System.Security.Permissions.SecurityPermission(global::System.Security.Permissions.SecurityAction.LinkDemand, Flags = global::System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode)]
 		protected override void WndProc(ref Message m)
 		{
 			if (m.Msg == OCM_NOTIFY)

@@ -5,7 +5,6 @@ using System.Windows.Forms.Design;
 
 namespace Vanara.Windows.Forms.Design
 {
-	[global::System.Security.Permissions.PermissionSet(global::System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	internal class ExplorerBrowserDesigner : AttributedControlDesigner<ExplorerBrowser>, IToolboxUser
 	{

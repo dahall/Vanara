@@ -171,7 +171,6 @@ namespace Vanara.Extensions
 		/// <param name="titleImageIndex">Index of the title image.</param>
 		/// <param name="descriptionTop">The description top.</param>
 		/// <param name="descriptionBottom">The description bottom.</param>
-		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public static void SetImage(this ListViewGroup group, int titleImageIndex, string descriptionTop = null, string descriptionBottom = null)
 		{
 			var groupId = GetGroupId(group);
@@ -240,7 +239,6 @@ namespace Vanara.Extensions
 		/// <summary>Sets the task link for a list view group.</summary>
 		/// <param name="group">The group.</param>
 		/// <param name="taskLink">The task link.</param>
-		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public static void SetTask(this ListViewGroup group, string taskLink)
 		{
 			var groupId = GetGroupId(group);

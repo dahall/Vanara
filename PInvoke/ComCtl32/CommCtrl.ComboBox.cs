@@ -123,7 +123,6 @@ namespace Vanara.PInvoke
 			/// <summary>Creates an instance of the <see cref="COMBOBOXINFO"/> structure from a handle and retrieves its values.</summary>
 			/// <param name="hComboBox">The handle to a ComboBox.</param>
 			/// <returns>A <see cref="COMBOBOXINFO"/> structure with values from the supplied handle.</returns>
-			[System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.LinkDemand, Flags = System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode)]
 			public static COMBOBOXINFO FromHandle(HWND hComboBox)
 			{
 				if (hComboBox.IsNull)

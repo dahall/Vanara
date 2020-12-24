@@ -12,7 +12,6 @@ namespace Vanara.Windows.Forms
 {
 	/// <summary>Main DWM class, provides glass sheet effect and blur behind.</summary>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
-	[System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
 	[SecuritySafeCritical]
 	public static partial class DesktopWindowManager
 	{
@@ -448,7 +447,6 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		[System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
 		[SecuritySafeCritical]
 		private class MessageWindow : NativeWindow, IDisposable
 		{

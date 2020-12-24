@@ -224,8 +224,6 @@ namespace Vanara.Windows.Forms
 		}
 	}
 
-	[PermissionSetAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
-	[PermissionSetAttribute(SecurityAction.InheritanceDemand, Unrestricted = true)]
 	internal class RoundCornersEditor : UITypeEditor
 	{
 		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)

@@ -46,7 +46,7 @@ namespace Vanara.Windows.Forms
 		[Description("Gets or sets the icon that is displayed on a button control."), Category("Appearance"), DefaultValue(null)]
 		public Icon Icon
 		{
-			get => icon; [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get => icon;
 			set
 			{
 				icon = value;
@@ -69,7 +69,7 @@ namespace Vanara.Windows.Forms
 		[Description("Gets or sets the image that is displayed on a button control."), Category("Appearance"), DefaultValue(null)]
 		public new Image Image
 		{
-			get => base.Image; [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get => base.Image;
 			set
 			{
 				base.Image = value;
@@ -105,7 +105,6 @@ namespace Vanara.Windows.Forms
 		/// Raises the <see cref="E:System.Windows.Forms.Control.HandleCreated" /> event.
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		protected override void OnHandleCreated(EventArgs e)
 		{
 			base.OnHandleCreated(e);
@@ -124,7 +123,6 @@ namespace Vanara.Windows.Forms
 		/// <summary>
 		/// Refreshes the image displayed on the button
 		/// </summary>
-		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		private void SetImage()
 		{
 			if (!IsHandleCreated) return;

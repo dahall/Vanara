@@ -16,7 +16,6 @@ namespace Vanara.Windows.Forms
 
 	namespace Design
 	{
-		[global::System.Security.Permissions.PermissionSet(global::System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		internal class EmbeddedContainerDesigner : AttributedControlDesigner<EmbeddedContainer>
 		{

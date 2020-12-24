@@ -1895,7 +1895,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="LVCOLUMN"/> class.</summary>
 			/// <param name="mask">The mask.</param>
-			[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			public LVCOLUMN(ListViewColumMask mask)
 			{
 				this.mask = mask;
@@ -2114,7 +2113,6 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="LVGROUP"/> class.</summary>
 			/// <param name="mask">The mask.</param>
 			/// <param name="header">The header text.</param>
-			[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			public LVGROUP(ListViewGroupMask mask = ListViewGroupMask.LVGF_NONE, string header = null)
 			{
 				this.mask = mask;
@@ -2145,7 +2143,6 @@ namespace Vanara.PInvoke
 			public string DescriptionBottom
 			{
 				get => pszDescriptionBottom.ToString();
-				[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 				set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_DESCRIPTIONBOTTOM, pszDescriptionBottom.Assign(value, out cchDescriptionBottom));
 			}
 
@@ -2154,7 +2151,6 @@ namespace Vanara.PInvoke
 			public string DescriptionTop
 			{
 				get => pszDescriptionTop.ToString();
-				[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 				set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_DESCRIPTIONTOP, pszDescriptionTop.Assign(value, out cchDescriptionTop));
 			}
 
@@ -2163,7 +2159,6 @@ namespace Vanara.PInvoke
 			public string Footer
 			{
 				get => pszFooter.ToString();
-				[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 				set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_FOOTER, pszFooter.Assign(value, out cchFooter));
 			}
 
@@ -2224,7 +2219,6 @@ namespace Vanara.PInvoke
 			public string TaskLink
 			{
 				get => pszTask.ToString();
-				[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 				set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_TASK, pszTask.Assign(value, out cchTask));
 			}
 

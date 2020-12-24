@@ -28,7 +28,6 @@ namespace Vanara.Windows.Forms
 	/// <summary>
 	/// <c>CustomComboBox</c> is an extension of <see cref="ComboBox"/> which provides drop-down customization.
 	/// </summary>
-	[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 	public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	{
 		private const int maxItemLen = 1024;
@@ -979,7 +978,6 @@ namespace Vanara.Windows.Forms
 			/// </summary>
 			/// <param name="m">The message.</param>
 			/// <returns>true, if the WndProc method from the base class shouldn't be invoked.</returns>
-			[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			public bool ProcessGrip(ref Message m) => ProcessGrip(ref m, true);
 
 			public void Show(int x, int y, int width = -1, int height = -1)
@@ -1190,14 +1188,12 @@ namespace Vanara.Windows.Forms
 				return contentSize;
 			}
 
-			[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			protected override void WndProc(ref Message m)
 			{
 				if (!ProcessGrip(ref m, false))
 					base.WndProc(ref m);
 			}
 
-			[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			private bool OnGetMinMaxInfo(ref Message m)
 			{
 				var hostedControl = GetHostedControl();
@@ -1279,7 +1275,6 @@ namespace Vanara.Windows.Forms
 				return false;
 			}
 
-			[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			private bool ProcessGrip(ref Message m, bool contentControl)
 			{
 				if (ResizeMode != PopupResizeMode.None)

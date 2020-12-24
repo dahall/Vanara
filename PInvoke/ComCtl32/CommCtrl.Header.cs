@@ -646,7 +646,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="HDITEM"/> class.</summary>
 			/// <param name="mask">The mask.</param>
-			[System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.LinkDemand, Flags = System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode)]
 			public HDITEM(HeaderItemMask mask = HeaderItemMask.HDI_ALL)
 			{
 				if (mask.IsFlagSet(HeaderItemMask.HDI_TEXT))
