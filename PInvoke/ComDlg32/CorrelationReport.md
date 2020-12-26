@@ -3,26 +3,36 @@ PInvoke API (methods, structures and constants) imported from Windows ComDlg32.d
 
 - Includes methods from comdlg32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.ComDlg32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.ComDlg32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.ComDlg32)  
-### Methods - 6% API coverage (1 of 16 functions)  
+### Methods - 100% API coverage (11 of 11 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[ChooseColor](https://www.google.com/search?num=5&q=ChooseColorA+site%3Adocs.microsoft.com) |  |   
-[ChooseFont](https://www.google.com/search?num=5&q=ChooseFontA+site%3Adocs.microsoft.com) |  |   
-[CommDlgExtendedError](https://www.google.com/search?num=5&q=CommDlgExtendedError+site%3Adocs.microsoft.com) |  |   
-[dwLBSubclass](https://www.google.com/search?num=5&q=dwLBSubclass+site%3Adocs.microsoft.com) |  |   
-[dwOKSubclass](https://www.google.com/search?num=5&q=dwOKSubclass+site%3Adocs.microsoft.com) |  |   
-[FindText](https://www.google.com/search?num=5&q=FindTextA+site%3Adocs.microsoft.com) |  |   
-[GetFileTitle](https://www.google.com/search?num=5&q=GetFileTitleA+site%3Adocs.microsoft.com) |  |   
+[ChooseColor](https://www.google.com/search?num=5&q=ChooseColorA+site%3Adocs.microsoft.com) | Commdlg.h | [Vanara.PInvoke.ComDlg32.ChooseColor](https://github.com/dahall/Vanara/search?l=C%23&q=ChooseColor)  
+[ChooseFont](https://www.google.com/search?num=5&q=ChooseFontA+site%3Adocs.microsoft.com) | Commdlg.h | [Vanara.PInvoke.ComDlg32.ChooseFont](https://github.com/dahall/Vanara/search?l=C%23&q=ChooseFont)  
+[CommDlgExtendedError](https://www.google.com/search?num=5&q=CommDlgExtendedError+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.CommDlgExtendedError](https://github.com/dahall/Vanara/search?l=C%23&q=CommDlgExtendedError)  
+[FindText](https://www.google.com/search?num=5&q=FindTextA+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.FindText](https://github.com/dahall/Vanara/search?l=C%23&q=FindText)  
+[GetFileTitle](https://www.google.com/search?num=5&q=GetFileTitleA+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.GetFileTitle](https://github.com/dahall/Vanara/search?l=C%23&q=GetFileTitle)  
 [GetOpenFileName](https://www.google.com/search?num=5&q=GetOpenFileNameA+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.GetOpenFileName](https://github.com/dahall/Vanara/search?l=C%23&q=GetOpenFileName)  
-[GetSaveFileName](https://www.google.com/search?num=5&q=GetSaveFileNameA+site%3Adocs.microsoft.com) |  |   
-[LoadAlterBitmap](https://www.google.com/search?num=5&q=LoadAlterBitmap+site%3Adocs.microsoft.com) |  |   
-[PageSetupDlg](https://www.google.com/search?num=5&q=PageSetupDlgA+site%3Adocs.microsoft.com) |  |   
-[PrintDlg](https://www.google.com/search?num=5&q=PrintDlgA+site%3Adocs.microsoft.com) |  |   
-[PrintDlgEx](https://www.google.com/search?num=5&q=PrintDlgExA+site%3Adocs.microsoft.com) |  |   
-[ReplaceText](https://www.google.com/search?num=5&q=ReplaceTextA+site%3Adocs.microsoft.com) |  |   
-[Ssync_ANSI_UNICODE_Struct_For_WOW](https://www.google.com/search?num=5&q=Ssync_ANSI_UNICODE_Struct_For_WOW+site%3Adocs.microsoft.com) |  |   
-[WantArrows](https://www.google.com/search?num=5&q=WantArrows+site%3Adocs.microsoft.com) |  |   
+[GetSaveFileName](https://www.google.com/search?num=5&q=GetSaveFileNameA+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.GetSaveFileName](https://github.com/dahall/Vanara/search?l=C%23&q=GetSaveFileName)  
+[PageSetupDlg](https://www.google.com/search?num=5&q=PageSetupDlgA+site%3Adocs.microsoft.com) | Commdlg.h | [Vanara.PInvoke.ComDlg32.PageSetupDlg](https://github.com/dahall/Vanara/search?l=C%23&q=PageSetupDlg)  
+[PrintDlg](https://www.google.com/search?num=5&q=PrintDlgA+site%3Adocs.microsoft.com) | Commdlg.h | [Vanara.PInvoke.ComDlg32.PrintDlg](https://github.com/dahall/Vanara/search?l=C%23&q=PrintDlg)  
+[PrintDlgEx](https://www.google.com/search?num=5&q=PrintDlgExA+site%3Adocs.microsoft.com) | Commdlg.h | [Vanara.PInvoke.ComDlg32.PrintDlgEx](https://github.com/dahall/Vanara/search?l=C%23&q=PrintDlgEx)  
+[ReplaceText](https://www.google.com/search?num=5&q=ReplaceTextA+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.ReplaceText](https://github.com/dahall/Vanara/search?l=C%23&q=ReplaceText)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[CHOOSECOLOR](https://www.google.com/search?num=5&q=CHOOSECOLOR+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.CHOOSECOLOR](https://github.com/dahall/Vanara/search?l=C%23&q=CHOOSECOLOR)  
+[CHOOSEFONT](https://www.google.com/search?num=5&q=CHOOSEFONT+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.CHOOSEFONT](https://github.com/dahall/Vanara/search?l=C%23&q=CHOOSEFONT)  
+[DEVNAMES](https://www.google.com/search?num=5&q=DEVNAMES+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.DEVNAMES](https://github.com/dahall/Vanara/search?l=C%23&q=DEVNAMES)  
+[FINDREPLACE](https://www.google.com/search?num=5&q=FINDREPLACE+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.FINDREPLACE](https://github.com/dahall/Vanara/search?l=C%23&q=FINDREPLACE)  
+[OFNOTIFY](https://www.google.com/search?num=5&q=OFNOTIFY+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.OFNOTIFY](https://github.com/dahall/Vanara/search?l=C%23&q=OFNOTIFY)  
+[OFNOTIFYEX](https://www.google.com/search?num=5&q=OFNOTIFYEX+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.OFNOTIFYEX](https://github.com/dahall/Vanara/search?l=C%23&q=OFNOTIFYEX)  
 [OPENFILENAME](https://www.google.com/search?num=5&q=OPENFILENAME+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.OPENFILENAME](https://github.com/dahall/Vanara/search?l=C%23&q=OPENFILENAME)  
+[PAGESETUPDLG](https://www.google.com/search?num=5&q=PAGESETUPDLG+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.PAGESETUPDLG](https://github.com/dahall/Vanara/search?l=C%23&q=PAGESETUPDLG)  
+[PRINTDLG](https://www.google.com/search?num=5&q=PRINTDLG+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.PRINTDLG](https://github.com/dahall/Vanara/search?l=C%23&q=PRINTDLG)  
+[PRINTDLGEX](https://www.google.com/search?num=5&q=PRINTDLGEX+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.PRINTDLGEX](https://github.com/dahall/Vanara/search?l=C%23&q=PRINTDLGEX)  
+[PRINTPAGERANGE](https://www.google.com/search?num=5&q=PRINTPAGERANGE+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.PRINTPAGERANGE](https://github.com/dahall/Vanara/search?l=C%23&q=PRINTPAGERANGE)  
+### Interfaces  
+Native Interface | Header | Managed Interface  
+--- | --- | ---  
+[IPrintDialogCallback](https://www.google.com/search?num=5&q=IPrintDialogCallback+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.IPrintDialogCallback](https://github.com/dahall/Vanara/search?l=C%23&q=IPrintDialogCallback)  
+[IPrintDialogServices](https://www.google.com/search?num=5&q=IPrintDialogServices+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.IPrintDialogServices](https://github.com/dahall/Vanara/search?l=C%23&q=IPrintDialogServices)  

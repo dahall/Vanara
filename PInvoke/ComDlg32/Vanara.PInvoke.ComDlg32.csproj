@@ -13,10 +13,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-ChooseColor, ChooseFont, CommDlgExtendedError, dwLBSubclass, dwOKSubclass, FindText, GetFileTitle, GetOpenFileName, GetSaveFileName, LoadAlterBitmap, PageSetupDlg, PrintDlg, PrintDlgEx, ReplaceText, Ssync_ANSI_UNICODE_Struct_For_WOW, WantArrows
+ChooseColor, ChooseFont, CommDlgExtendedError, FindText, GetFileTitle, GetOpenFileName, GetSaveFileName, LoadAlterBitmap, PageSetupDlg, PrintDlg, PrintDlgEx, ReplaceText
 
 Structures
-OPENFILENAME
+CHOOSECOLOR, CHOOSEFONT, DEVNAMES, FINDREPLACE, OFNOTIFY, OFNOTIFYEX, OPENFILENAME, PAGESETUPDLG, PRINTDLG, PRINTDLGEX, PRINTPAGERANGE
+
+Interfaces
+IPrintDialogCallback, IPrintDialogServices
 
 </PackageReleaseNotes>
   </PropertyGroup>

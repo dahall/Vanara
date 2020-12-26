@@ -71,7 +71,7 @@ Class | Description
 [Vanara.Extensions.ReflectionExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ReflectionExtensions) | Extensions related to <c>System.Reflection</c>
 [Vanara.Extensions.Reflection.ReflectionExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ReflectionExtensions) | Extensions for `System.Object` related to <c>System.Reflection</c>
 [Vanara.InteropServices.SafeAllocatedMemoryHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAllocatedMemoryHandle) | Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.
-[Vanara.InteropServices.SafeAllocatedMemoryHandleBase](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAllocatedMemoryHandleBase) | 
+[Vanara.InteropServices.SafeAllocatedMemoryHandleBase](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAllocatedMemoryHandleBase) | Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
 [Vanara.InteropServices.SafeByteArray](https://github.com/dahall/Vanara/search?l=C%23&q=SafeByteArray) | An safe unmanaged array of bytes allocated on the global heap.
 [Vanara.InteropServices.SafeCoTaskMemHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeCoTaskMemHandle) | A `System.Runtime.InteropServices.SafeHandle` for memory allocated via COM.
 [Vanara.InteropServices.SafeCoTaskMemString](https://github.com/dahall/Vanara/search?l=C%23&q=SafeCoTaskMemString) | Safely handles an unmanaged memory allocated Unicode string.

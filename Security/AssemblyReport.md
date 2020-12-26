@@ -15,8 +15,8 @@ Class | Description
 [Vanara.Security.AccountUtils](https://github.com/dahall/Vanara/search?l=C%23&q=AccountUtils) | Helper methods for working with `System.Security.Principal.WindowsIdentity` and user names.
 [Vanara.Extensions.ActiveDirectoryExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ActiveDirectoryExtension) | Extensions for AD objects (e.g. DomainController).
 [Microsoft.Samples.DynamicAccessControl.BadValueException](https://github.com/dahall/Vanara/search?l=C%23&q=BadValueException) | Exception raised when value(s) of a claim value type is invalid.
-[Vanara.Security.AccountUtils.CentralAccessPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=CentralAccessPolicy) | 
-[Vanara.Security.AccountUtils.CentralAccessPolicyEntry](https://github.com/dahall/Vanara/search?l=C%23&q=CentralAccessPolicyEntry) | 
+[Vanara.Security.AccountUtils.CentralAccessPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=CentralAccessPolicy) | Represents a central access policy that contains a set of central access policy entries.
+[Vanara.Security.AccountUtils.CentralAccessPolicyEntry](https://github.com/dahall/Vanara/search?l=C%23&q=CentralAccessPolicyEntry) | Represents a central access policy entry containing a list of security descriptors and staged security descriptors.
 [Microsoft.Samples.DynamicAccessControl.ClaimValue](https://github.com/dahall/Vanara/search?l=C%23&q=ClaimValue) | Class to represent the type of claims values held, the value(s) and obtain native (unmanaged) pointers to the value as they are stored in the union members of AUTHZ_SECURITY_ATTRIBUTE_V1 structure's 'Values' field.
 [Vanara.Security.AccessControl.SystemSecurity.LogonRights](https://github.com/dahall/Vanara/search?l=C%23&q=LogonRights) | Allows for the privileges of a user to be retrieved, enumerated and set.
 [Vanara.Security.AccessControl.PinnedAcl](https://github.com/dahall/Vanara/search?l=C%23&q=PinnedAcl) | Enables access to managed `System.Security.AccessControl.RawAcl` as unmanaged `byte[]`.

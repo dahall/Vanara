@@ -49,7 +49,7 @@ Class | Description
 [Vanara.IO.PathEx](https://github.com/dahall/Vanara/search?l=C%23&q=PathEx) | Performs operations on String instances that contain file or directory path information. These operations are performed in a cross-platform manner.
 [Vanara.Diagnostics.PoweredDevice](https://github.com/dahall/Vanara/search?l=C%23&q=PoweredDevice) | Represents a device on the system that has power requirements.
 [Vanara.Diagnostics.PoweredDeviceCollection](https://github.com/dahall/Vanara/search?l=C%23&q=PoweredDeviceCollection) | Retrieves the list, optionally filtered, of the powered devices on the system.
-[Vanara.Diagnostics.PowerEventArgs<T>](https://github.com/dahall/Vanara/search?l=C%23&q=PowerEventArgs<T>) | 
+[Vanara.Diagnostics.PowerEventArgs<T>](https://github.com/dahall/Vanara/search?l=C%23&q=PowerEventArgs<T>) | Event arguments for power events.
 [Vanara.Diagnostics.PowerManager](https://github.com/dahall/Vanara/search?l=C%23&q=PowerManager) | Provides access to information about a device's battery and power supply status and configuration. This extends the capabilities Windows.System.Power.PowerManager to include more detail, schemes and devices.
 [Vanara.Diagnostics.PowerScheme](https://github.com/dahall/Vanara/search?l=C%23&q=PowerScheme) | Represents a system power scheme (power plan).
 [Vanara.Diagnostics.PowerSchemeCollection](https://github.com/dahall/Vanara/search?l=C%23&q=PowerSchemeCollection) | Represents a collection of all the power schemes available on the system.
