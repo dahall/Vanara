@@ -14,6 +14,12 @@ namespace Vanara.PInvoke
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>
+		/// Pass this value to the x, y, nWidth and nHeight parameteres of <see cref="CreateWindow"/> and <see cref="CreateWindowEx"/> to
+		/// select the default position for the parameter.
+		/// </summary>
+		public const int CW_USEDEFAULT = unchecked((int)0x80000000);
+
+		/// <summary>
 		/// An application-defined callback function used with the <c>EnumChildWindows</c> function. It receives the child window handles.
 		/// The <c>WNDENUMPROC</c> type defines a pointer to this callback function. EnumChildProc is a placeholder for the
 		/// application-defined function name.
@@ -2072,7 +2078,26 @@ namespace Vanara.PInvoke
 		/// <para>A pointer to a value to be passed to the window through the CREATESTRUCT structure (<c>lpCreateParams</c> member) pointed to by the lParam param of the WM_CREATE message. This message is sent to the created window by this function before it returns.</para>
 		/// <para>If an application calls <c>CreateWindow</c> to create a MDI client window, lpParam should point to a CLIENTCREATESTRUCT structure. If an MDI client window calls <c>CreateWindow</c> to create an MDI child window, lpParam should point to a MDICREATESTRUCT structure. lpParam may be <c>NULL</c> if no additional data is needed.</para>
 		/// </param>
-		/// <returns>None</returns>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>HWND</c></c></para>
+		/// <para>If the function succeeds, the return value is a handle to the new window.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+		/// <para>This function typically fails for one of the following reasons:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>an invalid parameter value</term>
+		/// </item>
+		/// <item>
+		/// <term>the system class was registered by a different module</term>
+		/// </item>
+		/// <item>
+		/// <term>The <c>WH_CBT</c> hook is installed and returns a failure code</term>
+		/// </item>
+		/// <item>
+		/// <term>if one of the controls in the dialog template is not registered, or its window window procedure fails WM_CREATE or WM_NCCREATE</term>
+		/// </item>
+		/// </list>
+		/// </returns>
 		/// <remarks>
 		/// <para>Before returning, <c>CreateWindow</c> sends a WM_CREATE message to the window procedure. For overlapped, pop-up, and child windows, <c>CreateWindow</c> sends <c>WM_CREATE</c>, WM_GETMINMAXINFO, and WM_NCCREATE messages to the window. The lParam parameter of the <c>WM_CREATE</c> message contains a pointer to a CREATESTRUCT structure. If the <c>WS_VISIBLE</c> style is specified, <c>CreateWindow</c> sends the window all the messages required to activate and show the window.</para>
 		/// <para>If the created window is a child window, its default position is at the bottom of the Z-order. If the created window is a top-level window, its default position is at the top of the Z-order (but beneath all topmost windows unless the created window is itself topmost).</para>
@@ -2129,7 +2154,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowa
 		// void CreateWindowA( lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 		[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.CreateWindowA")]
-		public static void CreateWindow(string lpClassName, string lpWindowName, [Optional] WindowStyles dwStyle,
+		public static SafeHWND CreateWindow(string lpClassName, string lpWindowName, [Optional] WindowStyles dwStyle,
 			[Optional] int x, [Optional] int y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
 			[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam)
 			=> CreateWindowEx(0, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
