@@ -912,6 +912,96 @@ namespace Vanara.PInvoke
 		public static extern SafeHICON LoadIcon(HINSTANCE hInstance, string lpIconName);
 
 		/// <summary>
+		/// <para>Loads the specified icon resource from the executable (.exe) file associated with an application instance.</para>
+		/// <para><c>Note</c> This function has been superseded by the LoadImage function.</para>
+		/// </summary>
+		/// <param name="hInstance">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>
+		/// A handle to an instance of the module whose executable file contains the icon to be loaded. This parameter must be <c>NULL</c>
+		/// when a standard icon is being loaded.
+		/// </para>
+		/// </param>
+		/// <param name="lpIconName">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// The name of the icon resource to be loaded. Alternatively, this parameter can contain the resource identifier in the low-order
+		/// word and zero in the high-order word. Use the MAKEINTRESOURCE macro to create this value.
+		/// </para>
+		/// <para>
+		/// To use one of the predefined icons, set the hInstance parameter to <c>NULL</c> and the lpIconName parameter to one of the
+		/// following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IDI_APPLICATION MAKEINTRESOURCE(32512)</term>
+		/// <term>Default application icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_ASTERISK MAKEINTRESOURCE(32516)</term>
+		/// <term>Asterisk icon. Same as IDI_INFORMATION.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_ERROR MAKEINTRESOURCE(32513)</term>
+		/// <term>Hand-shaped icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_EXCLAMATION MAKEINTRESOURCE(32515)</term>
+		/// <term>Exclamation point icon. Same as IDI_WARNING.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_HAND MAKEINTRESOURCE(32513)</term>
+		/// <term>Hand-shaped icon. Same as IDI_ERROR.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_INFORMATION MAKEINTRESOURCE(32516)</term>
+		/// <term>Asterisk icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_QUESTION MAKEINTRESOURCE(32514)</term>
+		/// <term>Question mark icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_SHIELD MAKEINTRESOURCE(32518)</term>
+		/// <term>Security Shield icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_WARNING MAKEINTRESOURCE(32515)</term>
+		/// <term>Exclamation point icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_WINLOGO MAKEINTRESOURCE(32517)</term>
+		/// <term>Default application icon. Windows 2000: Windows logo icon.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HICON</c></para>
+		/// <para>If the function succeeds, the return value is a handle to the newly loaded icon.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>LoadIcon</c> loads the icon resource only if it has not been loaded; otherwise, it retrieves a handle to the existing
+		/// resource. The function searches the icon resource for the icon most appropriate for the current display. The icon resource can be
+		/// a color or monochrome bitmap.
+		/// </para>
+		/// <para>
+		/// <c>LoadIcon</c> can only load an icon whose size conforms to the <c>SM_CXICON</c> and <c>SM_CYICON</c> system metric values. Use
+		/// the LoadImage function to load icons of other sizes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-loadicona HICON LoadIconA( HINSTANCE hInstance, LPCSTR
+		// lpIconName );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "loadicon")]
+		public static extern SafeHICON LoadIcon(HINSTANCE hInstance, ResourceId lpIconName);
+
+		/// <summary>
 		/// <para>Searches through icon or cursor data for the icon or cursor that best fits the current display device.</para>
 		/// <para>To specify a desired height or width, use the LookupIconIdFromDirectoryEx function.</para>
 		/// </summary>
@@ -1236,6 +1326,41 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
 			public string szResName;
+		}
+
+		/// <summary>Predefined icon values.</summary>
+		[PInvokeData("winuser.h")]
+		public static class IDI
+		{
+			/// <summary>Default application icon.</summary>
+			public static readonly ResourceId IDI_APPLICATION = Macros.MAKEINTRESOURCE(32512);
+
+			/// <summary>Hand-shaped icon. Same as IDI_ERROR.</summary>
+			public static readonly ResourceId IDI_HAND        = Macros.MAKEINTRESOURCE(32513);
+
+			/// <summary>Question mark icon.</summary>
+			public static readonly ResourceId IDI_QUESTION    = Macros.MAKEINTRESOURCE(32514);
+
+			/// <summary>Exclamation point icon. Same as IDI_WARNING.</summary>
+			public static readonly ResourceId IDI_EXCLAMATION = Macros.MAKEINTRESOURCE(32515);
+
+			/// <summary>Asterisk icon. Same as IDI_INFORMATION.</summary>
+			public static readonly ResourceId IDI_ASTERISK    = Macros.MAKEINTRESOURCE(32516);
+
+			/// <summary>Default application icon. Windows 2000: Windows logo icon.</summary>
+			public static readonly ResourceId IDI_WINLOGO     = Macros.MAKEINTRESOURCE(32517);
+
+			/// <summary>Security Shield icon.</summary>
+			public static readonly ResourceId IDI_SHIELD      = Macros.MAKEINTRESOURCE(32518);
+
+			/// <summary>Exclamation point icon.</summary>
+			public static readonly ResourceId IDI_WARNING = IDI_EXCLAMATION;
+
+			/// <summary>Hand-shaped icon.</summary>
+			public static readonly ResourceId IDI_ERROR = IDI_HAND;
+
+			/// <summary>Asterisk icon.</summary>
+			public static readonly ResourceId IDI_INFORMATION = IDI_ASTERISK;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HICON instance at disposal using DestroyIcon.</summary>
