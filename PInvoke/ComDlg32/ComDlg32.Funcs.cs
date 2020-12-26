@@ -894,7 +894,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms646914(v=vs.85)
 		// BOOL WINAPI ChooseFont( _Inout_ LPCHOOSEFONT lpcf );
-		[DllImport(Lib.comdlg32, SetLastError = false, CharSet = CharSet.Auto)]
+		[DllImport(Lib_ComDlg32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Commdlg.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ChooseFont(ref CHOOSEFONT lpcf);
