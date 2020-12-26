@@ -31,12 +31,16 @@ namespace Vanara.PInvoke
 		private BasicMessageWindow msgWindow;
 
 		/// <summary>Initializes a new instance of the <see cref="SystemEventHandler"/> class.</summary>
-		protected SystemEventHandler()
+		/// <param name="forceThread">
+		/// if set to <see langword="true"/> a new thread is created for the message pump regardless of the current apartment state.
+		/// </param>
+		/// <exception cref="System.InvalidOperationException">System events not supported.</exception>
+		protected SystemEventHandler(bool forceThread = false)
 		{
 			if (Thread.GetDomain().GetData(".appDomain") != null)
 				throw new InvalidOperationException("System events not supported.");
 
-			if (!UserSession.IsInteractive || Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
+			if (!forceThread && !UserSession.IsInteractive || Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
 			{
 				Init();
 			}
@@ -164,6 +168,17 @@ namespace Vanara.PInvoke
 		/// </returns>
 		protected abstract bool MessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn);
 
+		/// <summary>
+		/// Allows derived classes to pre-process a message in a threaded message pump so that it is not passed along. Useful for things
+		/// like <see cref="User32.IsDialogMessage"/>.
+		/// </summary>
+		/// <param name="msg">The MSG.</param>
+		/// <returns>
+		/// <see langword="true"/> if the message was processed and should not be translated and dispatched; <see langword="false"/>
+		/// otherwise. <see langword="false"/> is the default.
+		/// </returns>
+		protected virtual bool PreprocessMessage(in MSG msg) => false;
+
 		/// <summary>Called when an event has been added.</summary>
 		/// <param name="key">The event key.</param>
 		protected virtual void OnEventAdd(Guid key)
@@ -218,8 +233,11 @@ namespace Vanara.PInvoke
 									keepRunning = false;
 									break;
 								}
-								TranslateMessage(msg);
-								DispatchMessage(msg);
+								if (!handler.PreprocessMessage(msg))
+								{
+									TranslateMessage(msg);
+									DispatchMessage(msg);
+								}
 							}
 						}
 					}
