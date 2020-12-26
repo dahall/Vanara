@@ -47,7 +47,7 @@ namespace Vanara.PInvoke
 		/// <summary>An application-defined callback function that the system calls when the property sheet is being created and initialized.</summary>
 		/// <param name="hwndDlg">Handle to the property sheet dialog box.</param>
 		/// <param name="uMsg">
-		/// Message being received.This parameter is one of the following values.
+		/// Message being received. This parameter is one of the following values.
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>
@@ -82,8 +82,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>
-		/// Note that Comctl32.dll versions 6 and later are not redistributable.To use these versions of Comctl32.dll, specify the particular
-		/// version in a manifest. For more information on manifests, see Enabling Visual Styles.
+		/// Note that Comctl32.dll versions 6 and later are not redistributable.To use these versions of Comctl32.dll, specify the
+		/// particular version in a manifest. For more information on manifests, see Enabling Visual Styles.
 		/// </para>
 		/// </term>
 		/// </item>
@@ -115,13 +115,14 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		public delegate int PropSheetProc(HWND hwndDlg, PropSheetCallbackMessage uMsg, IntPtr lParam);
 
+		/// <summary>Message being received.This parameter is one of the following values.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760815")]
 		public enum PropSheetCallbackMessage
 		{
 			/// <summary>
 			/// Version 6.0 and later.Indicates the user pressed a button in the property sheet dialog box.To enable this, specify
-			/// PSH_USECALLBACK in PROPSHEETHEADER.dwFlags and specify the name of this callback function in PROPSHEETHEADER.pfnCallback. The
-			/// lParam value is one of the following. Note that only PSBTN_CANCEL is valid when you are using the Aero wizard style(PSH_AEROWIZARD).
+			/// PSH_USECALLBACK in PROPSHEETHEADER.dwFlags and specify the name of this callback function in PROPSHEETHEADER.pfnCallback.
+			/// The lParam value is one of the following. Note that only PSBTN_CANCEL is valid when you are using the Aero wizard style(PSH_AEROWIZARD).
 			/// <list type="table">
 			/// <listheader>
 			/// <term>Button pressed</term>
@@ -182,8 +183,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Version 5.80 and later. Causes the wizard property sheet to hide the header area when the page is selected. If a watermark
-			/// has been provided, it will be painted on the left side of the page. This flag should be set for welcome and completion pages,
-			/// and omitted for interior pages. This flag is not supported when using the Aero-style wizard (PSH_AEROWIZARD).
+			/// has been provided, it will be painted on the left side of the page. This flag should be set for welcome and completion
+			/// pages, and omitted for interior pages. This flag is not supported when using the Aero-style wizard (PSH_AEROWIZARD).
 			/// </summary>
 			PSP_HIDEHEADER = 0x800,
 
@@ -213,8 +214,8 @@ namespace Vanara.PInvoke
 			PSP_USEFUSIONCONTEXT = 0x4000,
 
 			/// <summary>
-			/// Version 5.80 or later. Displays the string pointed to by the pszHeaderSubTitle member as the subtitle of the header area of a
-			/// Wizard97 page. To use this flag, you must also set the PSH_WIZARD97 flag in the dwFlags member of the associated
+			/// Version 5.80 or later. Displays the string pointed to by the pszHeaderSubTitle member as the subtitle of the header area of
+			/// a Wizard97 page. To use this flag, you must also set the PSH_WIZARD97 flag in the dwFlags member of the associated
 			/// PROPSHEETHEADER structure. The PSP_USEHEADERSUBTITLE flag is ignored if PSP_HIDEHEADER is set. In Aero-style wizards, the
 			/// title appears near the top of the client area.
 			/// </summary>
@@ -222,8 +223,8 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Version 5.80 or later. Displays the string pointed to by the pszHeaderTitle member as the title in the header of a Wizard97
-			/// interior page. You must also set the PSH_WIZARD97 flag in the dwFlags member of the associated PROPSHEETHEADER structure. The
-			/// PSP_USEHEADERTITLE flag is ignored if PSP_HIDEHEADER is set. This flag is not supported when using the Aero-style wizard (PSH_AEROWIZARD).
+			/// interior page. You must also set the PSH_WIZARD97 flag in the dwFlags member of the associated PROPSHEETHEADER structure.
+			/// The PSP_USEHEADERTITLE flag is ignored if PSP_HIDEHEADER is set. This flag is not supported when using the Aero-style wizard (PSH_AEROWIZARD).
 			/// </summary>
 			PSP_USEHEADERTITLE = 0x1000,
 
@@ -257,8 +258,8 @@ namespace Vanara.PInvoke
 		public enum PropSheetHeaderFlags : uint
 		{
 			/// <summary>
-			/// Uses the default meaning for all structure members, and creates a normal property sheet. This flag has a value of zero and is
-			/// not combined with other flags.
+			/// Uses the default meaning for all structure members, and creates a normal property sheet. This flag has a value of zero and
+			/// is not combined with other flags.
 			/// </summary>
 			PSH_DEFAULT = 0x00000000,
 
@@ -330,16 +331,16 @@ namespace Vanara.PInvoke
 			PSH_RESIZABLE = 0x04000000,
 
 			/// <summary>
-			/// Displays the title of the property sheet (pszCaption) using right-to-left (RTL) reading order for Hebrew or Arabic languages.
-			/// If this flag is not specified, the title is displayed in left-to-right (LTR) reading order.
+			/// Displays the title of the property sheet (pszCaption) using right-to-left (RTL) reading order for Hebrew or Arabic
+			/// languages. If this flag is not specified, the title is displayed in left-to-right (LTR) reading order.
 			/// </summary>
 			PSH_RTLREADING = 0x00000800,
 
 			/// <summary>
-			/// Stretches the watermark in Internet Explorer 4.0-compatible Wizard97-style wizards. This flag is not supported in conjunction
-			/// with PSH_AEROWIZARD. <note>This style flag is only included to provide backward compatibility for certain applications. Its
-			/// use is not recommended, and it is only supported by common controls versions 4.0 and 4.01. With common controls version 5.80
-			/// and later, this flag is ignored.</note>
+			/// Stretches the watermark in Internet Explorer 4.0-compatible Wizard97-style wizards. This flag is not supported in
+			/// conjunction with PSH_AEROWIZARD. <note>This style flag is only included to provide backward compatibility for certain
+			/// applications. Its use is not recommended, and it is only supported by common controls versions 4.0 and 4.01. With common
+			/// controls version 5.80 and later, this flag is ignored.</note>
 			/// </summary>
 			PSH_STRETCHWATERMARK = 0x00040000,
 
@@ -371,7 +372,8 @@ namespace Vanara.PInvoke
 			PSH_USEHPLWATERMARK = 0x00020000,
 
 			/// <summary>
-			/// Uses pszIcon as the name of the icon resource to load and use as the small icon in the title bar of the property sheet dialog box.
+			/// Uses pszIcon as the name of the icon resource to load and use as the small icon in the title bar of the property sheet
+			/// dialog box.
 			/// </summary>
 			PSH_USEICONID = 0x00000004,
 
@@ -398,8 +400,8 @@ namespace Vanara.PInvoke
 			PSH_WIZARD = 0x00000020,
 
 			/// <summary>
-			/// Version 5.80 or later. Creates a Wizard97-style property sheet, which supports bitmaps in the header of interior pages and on
-			/// the left side of exterior pages. This flag is not supported in conjunction with PSH_AEROWIZARD.
+			/// Version 5.80 or later. Creates a Wizard97-style property sheet, which supports bitmaps in the header of interior pages and
+			/// on the left side of exterior pages. This flag is not supported in conjunction with PSH_AEROWIZARD.
 			/// </summary>
 			PSH_WIZARD97 = 0x00002000,
 
@@ -413,14 +415,15 @@ namespace Vanara.PInvoke
 			PSH_WIZARDHASFINISH = 0x00000010,
 
 			/// <summary>
-			/// Version 5.80 or later. Uses the Wizard-lite style. This style is similar in appearance to PSH_WIZARD97, but it is implemented
-			/// much like PSH_WIZARD. There are few restrictions on how the pages are formatted. For instance, there are no enforced borders,
-			/// and the PSH_WIZARD_LITE style does not paint the watermark and header bitmaps for you the way Wizard97 does. This flag is not
-			/// supported in conjunction with PSH_AEROWIZARD.
+			/// Version 5.80 or later. Uses the Wizard-lite style. This style is similar in appearance to PSH_WIZARD97, but it is
+			/// implemented much like PSH_WIZARD. There are few restrictions on how the pages are formatted. For instance, there are no
+			/// enforced borders, and the PSH_WIZARD_LITE style does not paint the watermark and header bitmaps for you the way Wizard97
+			/// does. This flag is not supported in conjunction with PSH_AEROWIZARD.
 			/// </summary>
 			PSH_WIZARD_LITE = 0x00400000,
 		}
 
+		/// <summary>Action flag.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760813")]
 		public enum PropSheetPageCallbackAction
 		{
@@ -501,15 +504,13 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ID_PSREBOOTSYSTEM</term>
 		/// <term>
-		/// A page sent the PSM_REBOOTSYSTEM message to the property sheet. The computer must be restarted for the user's changes to
-		/// take effect.
+		/// A page sent the PSM_REBOOTSYSTEM message to the property sheet. The computer must be restarted for the user's changes to take effect.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>ID_PSRESTARTWINDOWS</term>
 		/// <term>
-		/// A page sent the PSM_RESTARTWINDOWS message to the property sheet. Windows must be restarted for the user's changes to
-		/// take effect.
+		/// A page sent the PSM_RESTARTWINDOWS message to the property sheet. Windows must be restarted for the user's changes to take effect.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -539,14 +540,14 @@ namespace Vanara.PInvoke
 			public HWND hwndParent;
 
 			/// <summary>
-			/// Handle to the instance from which to load the icon or title string resource. If the pszIcon or pszCaption member identifies a
-			/// resource to load, this member must be specified.
+			/// Handle to the instance from which to load the icon or title string resource. If the pszIcon or pszCaption member identifies
+			/// a resource to load, this member must be specified.
 			/// </summary>
 			public HINSTANCE hInstance;
 
 			/// <summary>
-			/// Handle to the icon to use as the small icon in the title bar of the property sheet dialog box. If the dwFlags member does not
-			/// include PSH_USEHICON, this member is ignored. This member is declared as a union with pszIcon.
+			/// Handle to the icon to use as the small icon in the title bar of the property sheet dialog box. If the dwFlags member does
+			/// not include PSH_USEHICON, this member is ignored. This member is declared as a union with pszIcon.
 			/// <para><c>OR</c></para>
 			/// <para>
 			/// String icon resource to use as the small icon in the title bar of the property sheet dialog box. This member can specify
@@ -568,8 +569,8 @@ namespace Vanara.PInvoke
 			public uint nPages;
 
 			/// <summary>
-			/// Zero-based index of the initial page that appears when the property sheet dialog box is created. This member is declared as a
-			/// union with pStartPage.
+			/// Zero-based index of the initial page that appears when the property sheet dialog box is created. This member is declared as
+			/// a union with pStartPage.
 			/// <para><c>OR</c></para>
 			/// <para>
 			/// Name of the initial page that appears when the property sheet dialog box is created. This member can specify either the
@@ -581,7 +582,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Pointer to an array of PROPSHEETPAGE structures that define the pages in the property sheet. If the dwFlags member does not
 			/// include PSH_PROPSHEETPAGE, this member is ignored. Note that the PROPSHEETPAGE structure is variable in size. Applications
-			/// that parse the array pointed to by ppsp must take the size of each page into account. This member is declared as a union with phpage.
+			/// that parse the array pointed to by ppsp must take the size of each page into account. This member is declared as a union
+			/// with phpage.
 			/// <para><c>OR</c></para>
 			/// <para>
 			/// Pointer to an array of handles to the property sheet pages. Each handle must have been created by a previous call to the
@@ -659,8 +661,8 @@ namespace Vanara.PInvoke
 			/// <para><c>OR</c></para>
 			/// <para>
 			/// Icon resource to use as the icon in the tab of the page. This member can specify either the identifier of the icon resource
-			/// or the address of the string that specifies the name of the icon resource. To use this member, you must set the PSP_USEICONID
-			/// flag in the dwFlags member. This member is declared as a union with hIcon.
+			/// or the address of the string that specifies the name of the icon resource. To use this member, you must set the
+			/// PSP_USEICONID flag in the dwFlags member. This member is declared as a union with hIcon.
 			/// </para>
 			/// </summary>
 			private IntPtr _hIcon;
@@ -928,7 +930,9 @@ namespace Vanara.PInvoke
 			/// </param>
 			public SafeHPROPSHEETPAGE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHPROPSHEETPAGE() : base() { }
+			private SafeHPROPSHEETPAGE() : base()
+			{
+			}
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHPROPSHEETPAGE"/> to <see cref="HPROPSHEETPAGE"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
