@@ -22,6 +22,8 @@ OPENFILENAME
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
 </Project>
