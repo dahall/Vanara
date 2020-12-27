@@ -6,6 +6,60 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+		/// <summary>Standard arrow and small hourglass</summary>
+		public static readonly ResourceId IDC_APPSTARTING = Macros.MAKEINTRESOURCE(32650);
+
+		/// <summary>Standard arrow</summary>
+		public static readonly ResourceId IDC_ARROW = Macros.MAKEINTRESOURCE(32512);
+
+		/// <summary>Crosshair</summary>
+		public static readonly ResourceId IDC_CROSS = Macros.MAKEINTRESOURCE(32515);
+
+		/// <summary>Hand</summary>
+		public static readonly ResourceId IDC_HAND = Macros.MAKEINTRESOURCE(32649);
+
+		/// <summary>Arrow and question mark</summary>
+		public static readonly ResourceId IDC_HELP = Macros.MAKEINTRESOURCE(32651);
+
+		/// <summary>I-beam</summary>
+		public static readonly ResourceId IDC_IBEAM = Macros.MAKEINTRESOURCE(32513);
+
+		/// <summary>Obsolete for applications marked version 4.0 or later.</summary>
+		public static readonly ResourceId IDC_ICON = Macros.MAKEINTRESOURCE(32641);
+
+		/// <summary>Slashed circle</summary>
+		public static readonly ResourceId IDC_NO = Macros.MAKEINTRESOURCE(32648);
+
+		/// <summary></summary>
+		public static readonly ResourceId IDC_PERSON = Macros.MAKEINTRESOURCE(32672);
+
+		/// <summary></summary>
+		public static readonly ResourceId IDC_PIN = Macros.MAKEINTRESOURCE(32671);
+
+		/// <summary>Obsolete for applications marked version 4.0 or later. Use <c>IDC_SIZEALL</c>.</summary>
+		public static readonly ResourceId IDC_SIZE = Macros.MAKEINTRESOURCE(32640);
+
+		/// <summary>Four-pointed arrow pointing north, south, east, and west</summary>
+		public static readonly ResourceId IDC_SIZEALL = Macros.MAKEINTRESOURCE(32646);
+
+		/// <summary>Double-pointed arrow pointing northeast and southwest</summary>
+		public static readonly ResourceId IDC_SIZENESW = Macros.MAKEINTRESOURCE(32643);
+
+		/// <summary>Double-pointed arrow pointing north and south</summary>
+		public static readonly ResourceId IDC_SIZENS = Macros.MAKEINTRESOURCE(32645);
+
+		/// <summary>Double-pointed arrow pointing northwest and southeast</summary>
+		public static readonly ResourceId IDC_SIZENWSE = Macros.MAKEINTRESOURCE(32642);
+
+		/// <summary>Double-pointed arrow pointing west and east</summary>
+		public static readonly ResourceId IDC_SIZEWE = Macros.MAKEINTRESOURCE(32644);
+
+		/// <summary>Vertical arrow</summary>
+		public static readonly ResourceId IDC_UPARROW = Macros.MAKEINTRESOURCE(32516);
+
+		/// <summary>Hourglass</summary>
+		public static readonly ResourceId IDC_WAIT = Macros.MAKEINTRESOURCE(32514);
+
 		/// <summary>The cursor state.</summary>
 		[PInvokeData("winuser.h", MSDNShortId = "cursorinfo")]
 		[Flags]
