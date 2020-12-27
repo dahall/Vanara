@@ -389,10 +389,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			SS_LEFTNOWORDWRAP = 0x0000000C,
 
-			/// <summary>Prevents interpretation of any ampersand (&) characters in the control's text as accelerator prefix characters.
+			/// <summary>Prevents interpretation of any ampersand (&amp;) characters in the control's text as accelerator prefix characters.
 			/// These are displayed with the ampersand removed and the next character in the string underlined. This static control style
 			/// may be included with any of the defined static controls. You can combine SS_NOPREFIX with other styles. This can be useful
-			/// when filenames or other strings that may contain an ampersand (&) must be displayed in a static control in a dialog box.</summary>
+			/// when filenames or other strings that may contain an ampersand (&amp;) must be displayed in a static control in a dialog box.</summary>
 			SS_NOPREFIX = 0x00000080,
 
 			/// <summary>

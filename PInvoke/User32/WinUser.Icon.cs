@@ -8,6 +8,36 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+		/// <summary>Default application icon.</summary>
+		public static readonly ResourceId IDI_APPLICATION = Macros.MAKEINTRESOURCE(32512);
+
+		/// <summary>Hand-shaped icon. Same as IDI_ERROR.</summary>
+		public static readonly ResourceId IDI_HAND        = Macros.MAKEINTRESOURCE(32513);
+
+		/// <summary>Question mark icon.</summary>
+		public static readonly ResourceId IDI_QUESTION    = Macros.MAKEINTRESOURCE(32514);
+
+		/// <summary>Exclamation point icon. Same as IDI_WARNING.</summary>
+		public static readonly ResourceId IDI_EXCLAMATION = Macros.MAKEINTRESOURCE(32515);
+
+		/// <summary>Asterisk icon. Same as IDI_INFORMATION.</summary>
+		public static readonly ResourceId IDI_ASTERISK    = Macros.MAKEINTRESOURCE(32516);
+
+		/// <summary>Default application icon. Windows 2000: Windows logo icon.</summary>
+		public static readonly ResourceId IDI_WINLOGO     = Macros.MAKEINTRESOURCE(32517);
+
+		/// <summary>Security Shield icon.</summary>
+		public static readonly ResourceId IDI_SHIELD      = Macros.MAKEINTRESOURCE(32518);
+
+		/// <summary>Exclamation point icon.</summary>
+		public static readonly ResourceId IDI_WARNING = IDI_EXCLAMATION;
+
+		/// <summary>Hand-shaped icon.</summary>
+		public static readonly ResourceId IDI_ERROR = IDI_HAND;
+
+		/// <summary>Asterisk icon.</summary>
+		public static readonly ResourceId IDI_INFORMATION = IDI_ASTERISK;
+
 		/// <summary>Flags used by <see cref="DrawIconEx"/>.</summary>
 		[PInvokeData("winuser.h", MSDNShortId = "drawiconex")]
 		[Flags]
@@ -1326,41 +1356,6 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
 			public string szResName;
-		}
-
-		/// <summary>Predefined icon values.</summary>
-		[PInvokeData("winuser.h")]
-		public static class IDI
-		{
-			/// <summary>Default application icon.</summary>
-			public static readonly ResourceId IDI_APPLICATION = Macros.MAKEINTRESOURCE(32512);
-
-			/// <summary>Hand-shaped icon. Same as IDI_ERROR.</summary>
-			public static readonly ResourceId IDI_HAND        = Macros.MAKEINTRESOURCE(32513);
-
-			/// <summary>Question mark icon.</summary>
-			public static readonly ResourceId IDI_QUESTION    = Macros.MAKEINTRESOURCE(32514);
-
-			/// <summary>Exclamation point icon. Same as IDI_WARNING.</summary>
-			public static readonly ResourceId IDI_EXCLAMATION = Macros.MAKEINTRESOURCE(32515);
-
-			/// <summary>Asterisk icon. Same as IDI_INFORMATION.</summary>
-			public static readonly ResourceId IDI_ASTERISK    = Macros.MAKEINTRESOURCE(32516);
-
-			/// <summary>Default application icon. Windows 2000: Windows logo icon.</summary>
-			public static readonly ResourceId IDI_WINLOGO     = Macros.MAKEINTRESOURCE(32517);
-
-			/// <summary>Security Shield icon.</summary>
-			public static readonly ResourceId IDI_SHIELD      = Macros.MAKEINTRESOURCE(32518);
-
-			/// <summary>Exclamation point icon.</summary>
-			public static readonly ResourceId IDI_WARNING = IDI_EXCLAMATION;
-
-			/// <summary>Hand-shaped icon.</summary>
-			public static readonly ResourceId IDI_ERROR = IDI_HAND;
-
-			/// <summary>Asterisk icon.</summary>
-			public static readonly ResourceId IDI_INFORMATION = IDI_ASTERISK;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HICON instance at disposal using DestroyIcon.</summary>
