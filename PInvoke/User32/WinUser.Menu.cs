@@ -506,7 +506,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "appendmenu")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AppendMenu(HMENU hMenu, MenuFlags uFlags, UIntPtr uIDNewItem, string lpNewItem);
+		public static extern bool AppendMenu(HMENU hMenu, MenuFlags uFlags, IntPtr uIDNewItem, string lpNewItem);
 
 		/// <summary>
 		/// <para>
@@ -669,7 +669,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "appendmenu")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AppendMenu(HMENU hMenu, MenuFlags uFlags, UIntPtr uIDNewItem, IntPtr lpNewItem);
+		public static extern bool AppendMenu(HMENU hMenu, MenuFlags uFlags, IntPtr uIDNewItem, IntPtr lpNewItem);
 
 		/// <summary>
 		/// <para>
@@ -3649,7 +3649,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>ULONG_PTR</c></para>
 			/// <para>An application-defined value.</para>
 			/// </summary>
-			public UIntPtr dwMenuData;
+			public IntPtr dwMenuData;
 		}
 
 		/// <summary>
