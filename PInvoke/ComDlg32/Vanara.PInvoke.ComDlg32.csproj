@@ -13,7 +13,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-ChooseColor, ChooseFont, CommDlgExtendedError, FindText, GetFileTitle, GetOpenFileName, GetSaveFileName, LoadAlterBitmap, PageSetupDlg, PrintDlg, PrintDlgEx, ReplaceText
+ChooseColor, ChooseFont, CommDlgExtendedError, FindText, GetFileTitle, GetOpenFileName, GetSaveFileName, PageSetupDlg, PrintDlg, PrintDlgEx, ReplaceText
 
 Structures
 CHOOSECOLOR, CHOOSEFONT, DEVNAMES, FINDREPLACE, OFNOTIFY, OFNOTIFYEX, OPENFILENAME, PAGESETUPDLG, PRINTDLG, PRINTDLGEX, PRINTPAGERANGE
