@@ -1824,7 +1824,7 @@ namespace Vanara.PInvoke
 			/// for this parameter.
 			/// </para>
 			/// </summary>
-			public int lStructSize;
+			public uint lStructSize;
 
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
@@ -1951,7 +1951,7 @@ namespace Vanara.PInvoke
 			/// characters long.
 			/// </para>
 			/// </summary>
-			public int nMaxFile;
+			public uint nMaxFile;
 
 			/// <summary>
 			/// <para>Type: <c>LPTSTR</c></para>
