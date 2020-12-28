@@ -1779,7 +1779,7 @@ namespace Vanara.PInvoke
 		// DRT_DATA, *PDRT_DATA;
 		[PInvokeData("drt.h", MSDNShortId = "NS:drt.drt_data_tag")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct DRT_DATA
+		public struct DRT_DATA : IArrayStruct<byte>
 		{
 			/// <summary>The number of bytes.</summary>
 			public uint cb;
