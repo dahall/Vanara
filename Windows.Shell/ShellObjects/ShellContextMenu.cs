@@ -394,7 +394,7 @@ namespace Vanara.Windows.Shell
 			{
 				cbSize = (uint)Marshal.SizeOf(typeof(MENUINFO)),
 				fMask = MenuInfoMember.MIM_MENUDATA,
-				dwMenuData = (UIntPtr)tag
+				dwMenuData = (IntPtr)tag
 			};
 
 			foreach (Menu item in menu.MenuItems)
