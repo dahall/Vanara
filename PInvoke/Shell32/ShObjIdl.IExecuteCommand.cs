@@ -72,7 +72,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexecutecommand-setkeystate HRESULT
 			// SetKeyState( DWORD grfKeyState );
 			[PreserveSig]
-			HRESULT SetKeyState(User32.MouseButtonState grfKeyState);
+			HRESULT SetKeyState(MouseButtonState grfKeyState);
 
 			/// <summary>Provides parameter values for the verb.</summary>
 			/// <param name="pszParameters">

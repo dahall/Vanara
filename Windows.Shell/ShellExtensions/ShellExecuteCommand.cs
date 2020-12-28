@@ -88,7 +88,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets a value based on the current state of the keys CTRL and SHIFT.</summary>
 		/// <value>The value based on the current state of the keys CTRL and SHIFT.</value>
-		public User32.MouseButtonState KeyState { get; private set; }
+		public MouseButtonState KeyState { get; private set; }
 
 		/// <summary>Gets a new working directory. This value is <see langword="null"/> if the current working directory is to be used.</summary>
 		/// <value>Returns a <see cref="string"/> value.</value>
@@ -149,7 +149,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <inheritdoc/>
-		HRESULT IExecuteCommand.SetKeyState(User32.MouseButtonState grfKeyState)
+		HRESULT IExecuteCommand.SetKeyState(MouseButtonState grfKeyState)
 		{
 			KeyState = grfKeyState;
 			return HRESULT.S_OK;
