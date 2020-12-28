@@ -9,6 +9,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary/>
 		public const int MAX_COLUMN_NAME_LEN = 80;
 
 		/// <summary>

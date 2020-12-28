@@ -388,7 +388,7 @@ namespace Vanara.Windows.Shell
 				var csidl = knownFolder.SpecialFolder();
 				if (csidl == null) throw new ArgumentOutOfRangeException(nameof(knownFolder), @"Cannot translate this known folder to a value understood by systems prior to Windows 7.");
 				var path = new StringBuilder(MAX_PATH);
-				SHGetFolderPath(IntPtr.Zero, (int)csidl.Value, HTOKEN.NULL, SHGFP.SHGFP_TYPE_CURRENT, path).ThrowIfFailed();
+				SHGetFolderPath(IntPtr.Zero, (CSIDL)csidl.Value, HTOKEN.NULL, SHGFP.SHGFP_TYPE_CURRENT, path).ThrowIfFailed();
 				Init(ShellUtil.GetShellItemForPath(path.ToString()));
 			}
 		}

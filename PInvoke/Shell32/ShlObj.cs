@@ -5147,7 +5147,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762180")]
-		public static extern HRESULT SHGetFolderLocation(HWND hwndOwner, int nFolder, [Optional] HTOKEN hToken, [Optional] int dwReserved, out PIDL ppidl);
+		public static extern HRESULT SHGetFolderLocation(HWND hwndOwner, CSIDL nFolder, [Optional] HTOKEN hToken, [Optional] int dwReserved, out PIDL ppidl);
 
 		/// <summary>
 		/// Deprecated. Gets the path of a folder identified by a CSIDL value. <note>As of Windows Vista, this function is merely a wrapper
@@ -5202,7 +5202,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762181")]
-		public static extern HRESULT SHGetFolderPath(HWND hwndOwner, int nFolder, [In, Optional] HTOKEN hToken, SHGFP dwFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath);
+		public static extern HRESULT SHGetFolderPath(HWND hwndOwner, CSIDL nFolder, [In, Optional] HTOKEN hToken, SHGFP dwFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath);
 
 		/// <summary>
 		/// <para>Gets the path of a folder and appends a user-provided subfolder path.</para>
@@ -5261,7 +5261,7 @@ namespace Vanara.PInvoke
 		// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, LPSTR pszPath );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "7e92e136-1036-4c96-931f-6e0129fb839a")]
-		public static extern HRESULT SHGetFolderPathAndSubDir(HWND hwnd, int csidl, [Optional] HTOKEN hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
+		public static extern HRESULT SHGetFolderPathAndSubDir(HWND hwnd, CSIDL csidl, [Optional] HTOKEN hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
 
 		/// <summary>
 		/// Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID. This extends SHGetKnownFolderPath by allowing
