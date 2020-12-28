@@ -128,7 +128,7 @@ namespace Vanara.Windows.Shell
 		public event DragEventHandler DragOver;
 
 		/// <inheritdoc/>
-		HRESULT IDropTarget.DragEnter(IDataObject pDataObj, uint grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
+		HRESULT IDropTarget.DragEnter(IDataObject pDataObj, MouseButtonState grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
 		{
 			System.Diagnostics.Debug.WriteLine($"IDropTarget.DragEnter: effect={pdwEffect}");
 			var drgevent = CreateDragEventArgs(pDataObj, grfKeyState, pt, pdwEffect);
@@ -147,7 +147,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <inheritdoc/>
-		HRESULT IDropTarget.DragOver(uint grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
+		HRESULT IDropTarget.DragOver(MouseButtonState grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
 		{
 			System.Diagnostics.Debug.WriteLine($"IDropTarget.DragOver: effect={pdwEffect}");
 			var drgevent = CreateDragEventArgs(null, grfKeyState, pt, pdwEffect);
@@ -157,7 +157,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <inheritdoc/>
-		HRESULT IDropTarget.Drop(IDataObject pDataObj, uint grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
+		HRESULT IDropTarget.Drop(IDataObject pDataObj, MouseButtonState grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
 		{
 			System.Diagnostics.Debug.WriteLine($"IDropTarget.Drop: effect={pdwEffect}");
 			var drgevent = CreateDragEventArgs(pDataObj, grfKeyState, pt, pdwEffect);
@@ -167,7 +167,7 @@ namespace Vanara.Windows.Shell
 			return HRESULT.S_OK;
 		}
 
-		private DragEventArgs CreateDragEventArgs(IDataObject pDataObj, uint grfKeyState, Point pt, DROPEFFECT pdwEffect)
+		private DragEventArgs CreateDragEventArgs(IDataObject pDataObj, MouseButtonState grfKeyState, Point pt, DROPEFFECT pdwEffect)
 		{
 			var data = pDataObj == null ? lastDataObject : new DataObject(pDataObj);
 			var drgevent = new DragEventArgs(data, (int)grfKeyState, pt.X, pt.Y, (DragDropEffects)pdwEffect, (DragDropEffects)lastEffect);
