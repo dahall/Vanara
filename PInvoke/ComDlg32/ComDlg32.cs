@@ -1,5 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
@@ -1364,8 +1366,7 @@ namespace Vanara.PInvoke
 			/// Style</c> combo box into this buffer.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpszStyle;
+			public StrPtrAuto lpszStyle;
 
 			/// <summary>
 			/// <para>Type: <c>WORD</c></para>
@@ -1649,8 +1650,7 @@ namespace Vanara.PInvoke
 			/// <c>lpstrFindWhat</c> contains the string to be replaced.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpstrFindWhat;
+			public StrPtrAuto lpstrFindWhat;
 
 			/// <summary>
 			/// <para>Type: <c>LPTSTR</c></para>
@@ -1665,8 +1665,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>The FindText function ignores this member.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpstrReplaceWith;
+			public StrPtrAuto lpstrReplaceWith;
 
 			/// <summary>
 			/// <para>Type: <c>WORD</c></para>
@@ -1825,7 +1824,7 @@ namespace Vanara.PInvoke
 			/// for this parameter.
 			/// </para>
 			/// </summary>
-			public uint lStructSize;
+			public int lStructSize;
 
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
@@ -1894,8 +1893,7 @@ namespace Vanara.PInvoke
 			/// the <c>lpstrCustomFilter</c> buffer.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpstrCustomFilter;
+			public StrPtrAuto lpstrCustomFilter;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -1942,8 +1940,7 @@ namespace Vanara.PInvoke
 			/// bytes or characters.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpstrFile;
+			public StrPtrAuto lpstrFile;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -1954,14 +1951,13 @@ namespace Vanara.PInvoke
 			/// characters long.
 			/// </para>
 			/// </summary>
-			public uint nMaxFile;
+			public int nMaxFile;
 
 			/// <summary>
 			/// <para>Type: <c>LPTSTR</c></para>
 			/// <para>The file name and extension (without path information) of the selected file. This member can be <c>NULL</c>.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpstrFileTitle;
+			public StrPtrAuto lpstrFileTitle;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -2030,8 +2026,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpstrInitialDir;
+			public StrPtrAuto lpstrInitialDir;
 
 			/// <summary>
 			/// <para>Type: <c>LPCTSTR</c></para>
@@ -2040,8 +2035,7 @@ namespace Vanara.PInvoke
 			/// (that is, <c>Save As</c> or <c>Open</c>).
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpstrTitle;
+			public StrPtrAuto lpstrTitle;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -2297,8 +2291,7 @@ namespace Vanara.PInvoke
 			/// a period (.). If this member is <c>NULL</c> and the user fails to type an extension, no extension is appended.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpstrDefExt;
+			public StrPtrAuto lpstrDefExt;
 
 			/// <summary>
 			/// <para>Type: <c>LPARAM</c></para>
@@ -2349,13 +2342,13 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>void*</c></para>
 			/// <para>This member is reserved.</para>
 			/// </summary>
-			public IntPtr pvReserved;
+			private IntPtr pvReserved;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>This member is reserved.</para>
 			/// </summary>
-			public uint dwReserved;
+			private uint dwReserved;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -2374,7 +2367,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint FlagsEx;
+			public OFN_EX FlagsEx;
 		}
 
 		/// <summary>
