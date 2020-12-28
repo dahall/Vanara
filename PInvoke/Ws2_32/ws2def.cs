@@ -1418,6 +1418,16 @@ namespace Vanara.PInvoke
 			/// <param name="addr">The addr.</param>
 			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
 			public static explicit operator SOCKADDR(SOCKADDR_STORAGE addr) => SOCKADDR.CreateFromStructure(addr);
+
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_STORAGE"/> to <see cref="SOCKADDR_IN"/>.</summary>
+			/// <param name="addr">The addr.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_IN"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_IN(SOCKADDR_STORAGE addr) => (SOCKADDR_IN)SOCKADDR.CreateFromStructure(addr);
+
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_STORAGE"/> to <see cref="SOCKADDR_IN6"/>.</summary>
+			/// <param name="addr">The addr.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_IN6(SOCKADDR_STORAGE addr) => (SOCKADDR_IN6)SOCKADDR.CreateFromStructure(addr);
 		}
 
 		/// <summary>The <c>SOCKET_ADDRESS</c> structure stores protocol-specific address information.</summary>
