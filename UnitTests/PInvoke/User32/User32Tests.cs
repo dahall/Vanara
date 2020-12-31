@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
 
@@ -102,10 +103,13 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void SendMessageTest1()
 		{
-			throw new NotImplementedException();
+			var length = 256;
+			var sb = new StringBuilder(length);
+			Assert.That(SendMessage(FindWindow("Progman", null), (uint)WindowMessage.WM_GETTEXT, (IntPtr)sb.Capacity, sb).ToInt32(), Is.GreaterThanOrEqualTo(1));
+			TestContext.WriteLine(sb);
 		}
 
-		[Test()]
+			[Test()]
 		public void SendMessageTest2()
 		{
 			throw new NotImplementedException();
