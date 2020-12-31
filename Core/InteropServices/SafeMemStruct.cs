@@ -87,21 +87,20 @@ namespace Vanara.InteropServices
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => ReferenceEquals(this, obj)
-				? true
-				: (obj switch
-				{
-					null => false,
-					SafeMemStruct<TStruct, TMem> ms => Equals((TStruct?)this, (TStruct?)ms),
-					TStruct s => Equals(s),
-					SafeAllocatedMemoryHandle m => m.DangerousGetHandle() == handle,
-					_ => false,
-				});
+		public override bool Equals(object obj) => ReferenceEquals(this, obj) ||
+			(obj switch
+			{
+				null => false,
+				SafeMemStruct<TStruct, TMem> ms => Equals((TStruct?)this, (TStruct?)ms),
+				TStruct s => Equals(s),
+				SafeAllocatedMemoryHandle m => m.DangerousGetHandle() == handle,
+				_ => false,
+			});
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(TStruct other) => !HasValue ? false : EqualityComparer<TStruct>.Default.Equals(handle.ToStructure<TStruct>(Size), other);
+		public bool Equals(TStruct other) => HasValue && EqualityComparer<TStruct>.Default.Equals(handle.ToStructure<TStruct>(Size), other);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -158,6 +157,9 @@ namespace Vanara.InteropServices
 		[ExcludeFromCodeCoverage]
 		public SafeCoTaskMemStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
 
+		/// <summary>Represents the <see langword="null"/> equivalent of this class instances.</summary>
+		public static readonly SafeCoTaskMemStruct<TStruct> Null = new SafeCoTaskMemStruct<TStruct>(IntPtr.Zero, false);
+
 		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TStruct}"/> to <see cref="SafeCoTaskMemStruct{TStruct}"/>.</summary>
 		/// <param name="s">The value of the <typeparamref name="TStruct"/> instance or <see langword="null"/>.</param>
 		/// <returns>The resulting <see cref="SafeCoTaskMemStruct{TStruct}"/> instance from the conversion.</returns>
@@ -186,6 +188,9 @@ namespace Vanara.InteropServices
 		/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 		[ExcludeFromCodeCoverage]
 		public SafeHGlobalStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
+
+		/// <summary>Represents the <see langword="null"/> equivalent of this class instances.</summary>
+		public static readonly SafeHGlobalStruct<TStruct> Null = new SafeHGlobalStruct<TStruct>(IntPtr.Zero, false);
 
 		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TStruct}"/> to <see cref="SafeHGlobalStruct{TStruct}"/>.</summary>
 		/// <param name="s">The value of the <typeparamref name="TStruct"/> instance or <see langword="null"/>.</param>
