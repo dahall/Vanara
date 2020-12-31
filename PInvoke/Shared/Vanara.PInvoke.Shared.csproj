@@ -41,4 +41,7 @@ CharacterSet, CM_RESOURCE, CM_SHARE_DISPOSITION, CmResourceType, DMCOLLATE, DMCO
       <Version>4.6.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WTypes\" />
+  </ItemGroup>
 </Project>

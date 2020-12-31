@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.SetupAPI</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\SetupAPI\Vanara.PInvoke.SetupAPI.csproj" />
+  </ItemGroup>
+</Project>

@@ -40,8 +40,10 @@
       <dependency id="Vanara.PInvoke.KtmW32" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Magnification" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Mpr" version="3.3.1" />
+      <dependency id="Vanara.PInvoke.Msi" version="3.3.1" />
       <dependency id="Vanara.PInvoke.NetApi32" version="3.3.1" />
       <dependency id="Vanara.PInvoke.NetListMgr" version="3.3.1" />
+      <dependency id="Vanara.PInvoke.NewDev" version="3.3.1" />
       <dependency id="Vanara.PInvoke.NtDll" version="3.3.1" />
       <dependency id="Vanara.PInvoke.NTDSApi" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Ole" version="3.3.1" />
@@ -56,6 +58,7 @@
       <dependency id="Vanara.PInvoke.Rpc" version="3.3.1" />
       <dependency id="Vanara.PInvoke.SearchApi" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Security" version="3.3.1" />
+      <dependency id="Vanara.PInvoke.SetupAPI" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Shared" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Shell32" version="3.3.1" />
       <dependency id="Vanara.PInvoke.ShlwApi" version="3.3.1" />
