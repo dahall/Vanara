@@ -10,7 +10,12 @@
     <AssemblyName>Vanara.PInvoke.NewDev</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;NewDev;Device;Driver;Installation</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+DiInstallDevice, DiInstallDriver, DiRollbackDriver, DiShowUpdateDevice, DiShowUpdateDriver, DiUninstallDevice, DiUninstallDriver, UpdateDriverForPlugAndPlayDevices
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
