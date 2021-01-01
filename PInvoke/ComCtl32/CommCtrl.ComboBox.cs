@@ -6,6 +6,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
 	{
+		/// <summary>Window class for Extended Combo Box.</summary>
 		public const string WC_COMBOBOXEX = "ComboBoxEx32";
 
 		/// <summary>A value that specifies the action that generated the CBEN_ENDEDIT notification code.</summary>

@@ -8,7 +8,10 @@ namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
 	{
+		/// <summary/>
 		public const int TCM_FIRST = 0x1300;
+
+		/// <summary/>
 		public const int TCN_FIRST = -550;
 
 		/// <summary>Variable that receives the results of a hit test.</summary>
@@ -79,49 +82,450 @@ namespace Vanara.PInvoke
 			TCIS_ALL
 		}
 
+#pragma warning disable CS1572 // XML comment has a param tag, but there is no parameter by that name
+
+		/// <summary>Tab Control Messages</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/controls/bumper-tab-control-reference-messages
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760813")]
 		public enum TabControlMessage
 		{
+			/// <summary>
+			/// Retrieves the image list associated with a tab control. You can send this message explicitly or by using the
+			/// <c>TabCtrl_GetImageList</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the handle to the image list if successful, or <c>NULL</c> otherwise.</returns>
 			TCM_GETIMAGELIST = TCM_FIRST + 2,
+
+			/// <summary>
+			/// Assigns an image list to a tab control. You can send this message explicitly or by using the <c>TabCtrl_SetImageList</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Handle to the image list to assign to the tab control.</param>
+			/// <returns>Returns the handle to the previous image list, or <c>NULL</c> if there is no previous image list.</returns>
 			TCM_SETIMAGELIST = TCM_FIRST + 3,
+
+			/// <summary>
+			/// Retrieves the number of tabs in the tab control. You can send this message explicitly or by using the
+			/// <c>TabCtrl_GetItemCount</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the number of items if successful, or zero otherwise.</returns>
 			TCM_GETITEMCOUNT = TCM_FIRST + 4,
+
+			/// <summary>
+			/// Retrieves information about a tab in a tab control. You can send this message explicitly or by using the
+			/// <c>TabCtrl_GetItem</c> macro.
+			/// </summary>
+			/// <param name="wParam">Index of the tab.</param>
+			/// <param name="lParam">
+			/// Pointer to a <c>TCITEM</c> structure that specifies the information to retrieve and receives information about the tab. When
+			/// the message is sent, the <c>mask</c> member specifies which attributes to return. If the <c>mask</c> member specifies the
+			/// TCIF_TEXT value, the <c>pszText</c> member must contain the address of the buffer that receives the item text, and the
+			/// <c>cchTextMax</c> member must specify the size of the buffer.
+			/// </param>
+			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <remarks>
+			/// If the TCIF_TEXT flag is set in the <c>mask</c> member of the <c>TCITEM</c> structure, the control may change the
+			/// <c>pszText</c> member of the structure to point to the new text instead of filling the buffer with the requested text. The
+			/// control may set the <c>pszText</c> member to <c>NULL</c> to indicate that no text is associated with the item.
+			/// </remarks>
 			TCM_GETITEM = TCM_FIRST + 60,
+
+			/// <summary>
+			/// Sets some or all of a tab's attributes. You can send this message explicitly or by using the <c>TabCtrl_SetItem</c> macro.
+			/// </summary>
+			/// <param name="wParam">Index of the item.</param>
+			/// <param name="lParam">
+			/// Pointer to a <c>TCITEM</c> structure that contains the new item attributes. The <c>mask</c> member specifies which
+			/// attributes to set. If the <c>mask</c> member specifies the TCIF_TEXT value, the <c>pszText</c> member is the address of a
+			/// null-terminated string and the <c>cchTextMax</c> member is ignored.
+			/// </param>
+			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
 			TCM_SETITEM = TCM_FIRST + 61,
+
+			/// <summary>
+			/// Inserts a new tab in a tab control. You can send this message explicitly or by using the <c>TabCtrl_InsertItem</c> macro.
+			/// </summary>
+			/// <param name="wParam">Index of the new tab.</param>
+			/// <param name="lParam">
+			/// Pointer to a <c>TCITEM</c> structure that specifies the attributes of the tab. The <c>dwState</c> and <c>dwStateMask</c>
+			/// members of this structure are ignored by this message.
+			/// </param>
+			/// <returns>Returns the index of the new tab if successful, or -1 otherwise.</returns>
 			TCM_INSERTITEM = TCM_FIRST + 62,
+
+			/// <summary>
+			/// Removes an item from a tab control. You can send this message explicitly or by using the <c>TabCtrl_DeleteItem</c> macro.
+			/// </summary>
+			/// <param name="wParam">Index of the item to delete.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
 			TCM_DELETEITEM = TCM_FIRST + 8,
+
+			/// <summary>
+			/// Removes all items from a tab control. You can send this message explicitly or by using the <c>TabCtrl_DeleteAllItems</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
 			TCM_DELETEALLITEMS = TCM_FIRST + 9,
+
+			/// <summary>
+			/// Retrieves the bounding rectangle for a tab in a tab control. You can send this message explicitly or by using the
+			/// <c>TabCtrl_GetItemRect</c> macro.
+			/// </summary>
+			/// <param name="wParam">Index of the tab.</param>
+			/// <param name="lParam">Pointer to a <c>RECT</c> structure that receives the bounding rectangle of the tab, in viewport coordinates.</param>
+			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
 			TCM_GETITEMRECT = TCM_FIRST + 10,
+
+			/// <summary>
+			/// Determines the currently selected tab in a tab control. You can send this message explicitly or by using the
+			/// <c>TabCtrl_GetCurSel</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the index of the selected tab if successful, or -1 if no tab is selected.</returns>
 			TCM_GETCURSEL = TCM_FIRST + 11,
+
+			/// <summary>
+			/// Selects a tab in a tab control. You can send this message explicitly or by using the <c>TabCtrl_SetCurSel</c> macro.
+			/// </summary>
+			/// <param name="wParam">Index of the tab to select.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the index of the previously selected tab if successful, or -1 otherwise.</returns>
+			/// <remarks>
+			/// A tab control does not send a TCN_SELCHANGING or TCN_SELCHANGE notification code when a tab is selected using this message.
+			/// </remarks>
 			TCM_SETCURSEL = TCM_FIRST + 12,
+
+			/// <summary>
+			/// Determines which tab, if any, is at a specified screen position. You can send this message explicitly or by using the
+			/// <c>TabCtrl_HitTest</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Pointer to a <c>TCHITTESTINFO</c> structure that specifies the screen position to test.</param>
+			/// <returns>Returns the index of the tab, or -1 if no tab is at the specified position.</returns>
 			TCM_HITTEST = TCM_FIRST + 13,
+
+			/// <summary>
+			/// Sets the number of bytes per tab reserved for application-defined data in a tab control. You can send this message
+			/// explicitly or by using the <c>TabCtrl_SetItemExtra</c> macro.
+			/// </summary>
+			/// <param name="wParam">Number of extra bytes.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <remarks>
+			/// <para>
+			/// By default, the number of extra bytes is four. An application that changes the number of extra bytes cannot use the
+			/// <c>TCITEM</c> structure to retrieve and set the application-defined data for a tab. Instead, you must define a new structure
+			/// that consists of the <c>TCITEMHEADER</c> structure followed by application-defined members.
+			/// </para>
+			/// <para>An application should only change the number of extra bytes when a tab control does not contain any tabs.</para>
+			/// </remarks>
 			TCM_SETITEMEXTRA = TCM_FIRST + 14,
+
+			/// <summary>
+			/// Calculates a tab control's display area given a window rectangle, or calculates the window rectangle that would correspond
+			/// to a specified display area. You can send this message explicitly or by using the <c>TabCtrl_AdjustRect</c> macro.
+			/// </summary>
+			/// <param name="wParam">
+			/// Operation to perform. If this parameter is <c>TRUE</c>, lParam specifies a display rectangle and receives the corresponding
+			/// window rectangle. If this parameter is <c>FALSE</c>, lParam specifies a window rectangle and receives the corresponding
+			/// display area.
+			/// </param>
+			/// <param name="lParam">
+			/// Pointer to a <c>RECT</c> structure that specifies the given rectangle and receives the calculated rectangle.
+			/// </param>
+			/// <returns>No return value.</returns>
+			/// <remarks>
+			/// This message applies only to tab controls that are at the top. It does not apply to tab controls that are on the sides or bottom.
+			/// </remarks>
 			TCM_ADJUSTRECT = TCM_FIRST + 40,
+
+			/// <summary>
+			/// Sets the width and height of tabs in a fixed-width or owner-drawn tab control. You can send this message explicitly or by
+			/// using the <c>TabCtrl_SetItemSize</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">
+			/// The <c>LOWORD</c> is an <c>INT</c> value that specifies the new width, in pixels. The <c>HIWORD</c> is an <c>INT</c> value
+			/// that specifies the new height, in pixels.
+			/// </param>
+			/// <returns>
+			/// Returns the old width and height. The width is in the <c>LOWORD</c> of the return value, and the height is in the <c>HIWORD</c>.
+			/// </returns>
+			/// <remarks>
+			/// If the width is set to a value less than the image width set by <c>ImageList_Create</c>, the width of the tab is set to the
+			/// lowest value that is greater than the image width.
+			/// </remarks>
 			TCM_SETITEMSIZE = TCM_FIRST + 41,
+
+			/// <summary>
+			/// Removes an image from a tab control's image list. You can send this message explicitly or by using the
+			/// <c>TabCtrl_RemoveImage</c> macro.
+			/// </summary>
+			/// <param name="wParam">Index of the image to remove.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>No return value.</returns>
+			/// <remarks>
+			/// The tab control updates each tab's image index, so each tab remains associated with the same image as before. If a tab is
+			/// using the image being removed, the tab will be set to have no image.
+			/// </remarks>
 			TCM_REMOVEIMAGE = TCM_FIRST + 42,
+
+			/// <summary>
+			/// Sets the amount of space (padding) around each tab's icon and label in a tab control. You can send this message explicitly
+			/// or by using the <c>TabCtrl_SetPadding</c> macro.
+			/// </summary>
+			/// <param name="lParam">
+			/// The <c>LOWORD</c> is an <c>INT</c> value that specifies the amount of horizontal padding, in pixels. The <c>HIWORD</c> is an
+			/// <c>INT</c> value that specifies the amount of vertical padding, in pixels.
+			/// </param>
+			/// <returns>No return value.</returns>
 			TCM_SETPADDING = TCM_FIRST + 43,
+
+			/// <summary>
+			/// Retrieves the current number of rows of tabs in a tab control. You can send this message explicitly or by using the
+			/// <c>TabCtrl_GetRowCount</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the number of rows of tabs.</returns>
+			/// <remarks>Only tab controls that have the <c>TCS_MULTILINE</c> style can have multiple rows of tabs.</remarks>
 			TCM_GETROWCOUNT = TCM_FIRST + 44,
+
+			/// <summary>
+			/// Retrieves the handle to the tooltip control associated with a tab control. You can send this message explicitly or by using
+			/// the <c>TabCtrl_GetToolTips</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the handle to the tooltip control if successful, or <c>NULL</c> otherwise.</returns>
+			/// <remarks>
+			/// A tab control creates a tooltip control if it has the <c>TCS_TOOLTIPS</c> style. You can also assign a tooltip control to a
+			/// tab control by using the <c>TCM_SETTOOLTIPS</c> message.
+			/// </remarks>
 			TCM_GETTOOLTIPS = TCM_FIRST + 45,
+
+			/// <summary>
+			/// Assigns a tooltip control to a tab control. You can send this message explicitly or by using the <c>TabCtrl_SetToolTips</c> macro.
+			/// </summary>
+			/// <param name="wParam">Handle to the tooltip control.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>No return value.</returns>
+			/// <remarks>You can retrieve the tooltip control associated with a tab control by using the <c>TCM_GETTOOLTIPS</c> message.</remarks>
 			TCM_SETTOOLTIPS = TCM_FIRST + 46,
+
+			/// <summary>
+			/// Returns the index of the item that has the focus in a tab control. You can send this message explicitly or by using the
+			/// <c>TabCtrl_GetCurFocus</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the index of the tab item that has the focus.</returns>
+			/// <remarks>The item that has the focus may be different than the selected item.</remarks>
 			TCM_GETCURFOCUS = TCM_FIRST + 47,
+
+			/// <summary>
+			/// Sets the focus to a specified tab in a tab control. You can send this message explicitly or by using the
+			/// <c>TabCtrl_SetCurFocus</c> macro.
+			/// </summary>
+			/// <param name="wParam">Index of the tab that gets the focus.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>No return value.</returns>
+			/// <remarks>
+			/// <para>
+			/// If the tab control has the <c>TCS_BUTTONS</c> style (button mode), the tab with the focus may be different from the selected
+			/// tab. For example, when a tab is selected, the user can press the arrow keys to set the focus to a different tab without
+			/// changing the selected tab. In button mode, <c>TCM_SETCURFOCUS</c> sets the input focus to the button associated with the
+			/// specified tab, but it does not change the selected tab.
+			/// </para>
+			/// <para>
+			/// If the tab control does not have the <c>TCS_BUTTONS</c> style, changing the focus also changes the selected tab. In this
+			/// case, the tab control sends the TCN_SELCHANGING and TCN_SELCHANGE notification codes to its parent window.
+			/// </para>
+			/// </remarks>
 			TCM_SETCURFOCUS = TCM_FIRST + 48,
+
+			/// <summary>
+			/// Sets the minimum width of items in a tab control. You can send this message explicitly or by using the
+			/// <c>TabCtrl_SetMinTabWidth</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">
+			/// Minimum width to be set for a tab control item. If this parameter is set to -1, the control will use the default tab width.
+			/// </param>
+			/// <returns>Returns an INT value that represents the previous minimum tab width.</returns>
 			TCM_SETMINTABWIDTH = TCM_FIRST + 49,
+
+			/// <summary>
+			/// Resets items in a tab control, clearing any that were set to the <c>TCIS_BUTTONPRESSED</c> state. You can send this message
+			/// explicitly or by using the <c>TabCtrl_DeselectAll</c> macro.
+			/// </summary>
+			/// <param name="wParam">
+			/// Flag that specifies the scope of the item deselection. If this parameter is set to <c>FALSE</c>, all tab items will be
+			/// reset. If it is set to <c>TRUE</c>, then all tab items except for the one currently selected will be reset.
+			/// </param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>The return value for this message is not used.</returns>
+			/// <remarks>This message is only meaningful if the <c>TCS_BUTTONS</c> style flag has been set.</remarks>
 			TCM_DESELECTALL = TCM_FIRST + 50,
+
+			/// <summary>
+			/// Sets the highlight state of a tab item. You can send this message explicitly or by using the <c>TabCtrl_HighlightItem</c> macro.
+			/// </summary>
+			/// <param name="wParam">An <c>INT</c> value that specifies the zero-based index of a tab control item.</param>
+			/// <param name="lParam">
+			/// The <c>LOWORD</c> is a <c>BOOL</c> specifying the highlight state to be set. If this value is <c>TRUE</c>, the tab is
+			/// highlighted; if <c>FALSE</c>, the tab is set to its default state. The <c>HIWORD</c> must be zero.
+			/// </param>
+			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// <remarks>In Comctl32.dll version 6.0, this message has no visible effect when a theme is active.</remarks>
 			TCM_HIGHLIGHTITEM = TCM_FIRST + 51,
+
+			/// <summary>
+			/// Sets the extended styles that the tab control will use. You can send this message explicitly or by using the
+			/// <c>TabCtrl_SetExtendedStyle</c> macro.
+			/// </summary>
+			/// <param name="wParam">
+			/// A <c>DWORD</c> value that indicates which styles in lParam are to be affected. Only the extended styles in wParam will be
+			/// changed. All other styles will be maintained as they are. If this parameter is zero, then all of the styles in lParam will
+			/// be affected.
+			/// </param>
+			/// <param name="lParam">
+			/// Value specifying the extended tab control styles. This value is a combination of tab control extended styles.
+			/// </param>
+			/// <returns>Returns a <c>DWORD</c> value that contains the previous tab control extended styles.</returns>
+			/// <remarks>
+			/// <para>
+			/// The wParam parameter allows you to modify one or more extended styles without having to retrieve the existing styles first.
+			/// For example, if you pass <c>TCS_EX_FLATSEPARATORS</c> for wParam and 0 for lParam, the <c>TCS_EX_FLATSEPARATORS</c> style
+			/// will be cleared, but all other styles will remain the same.
+			/// </para>
+			/// <para>For backward compatibility reasons, the <c>TabCtrl_SetExtendedStyle</c> macro has not been updated to use dwExMask.</para>
+			/// </remarks>
 			TCM_SETEXTENDEDSTYLE = TCM_FIRST + 52,  // optional wParam == mask
+
+			/// <summary>
+			/// Retrieves the extended styles that are currently in use for the tab control. You can send this message explicitly or by
+			/// using the <c>TabCtrl_GetExtendedStyle</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>
+			/// Returns a <c>DWORD</c> value that represents the extended styles currently in use for the tab control. This value is a
+			/// combination of tab control extended styles.
+			/// </returns>
 			TCM_GETEXTENDEDSTYLE = TCM_FIRST + 53,
+
+			/// <summary>
+			/// Sets the Unicode character format flag for the control. This message allows you to change the character set used by the
+			/// control at run time rather than having to re-create the control. You can send this message explicitly or use the
+			/// <c>TabCtrl_SetUnicodeFormat</c> macro.
+			/// </summary>
+			/// <param name="wParam">
+			/// Determines the character set that is used by the control. If this value is nonzero, the control will use Unicode characters.
+			/// If this value is zero, the control will use ANSI characters.
+			/// </param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the previous Unicode format flag for the control.</returns>
+			/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			TCM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
+
+			/// <summary>
+			/// Retrieves the Unicode character format flag for the control. You can send this message explicitly or use the
+			/// <c>TabCtrl_GetUnicodeFormat</c> macro.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>
+			/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
+			/// value is zero, the control is using ANSI characters.
+			/// </returns>
+			/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			TCM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT
 		}
 
+		/// <summary>Tab Control Notifications</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760813")]
 		public enum TabControlNotification
 		{
+			/// <summary>
+			/// <para>
+			/// Notifies a tab control's parent window that a key has been pressed. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>TCN_KEYDOWN pnm = (NMTCKEYDOWN*) lParam;</code>
+			/// </para>
+			/// </summary>
+			/// <param name="lParam">Pointer to an <c>NMTCKEYDOWN</c> structure.</param>
+			/// <returns>No return value.</returns>
 			TCN_KEYDOWN = TCN_FIRST - 0,
+
+			/// <summary>
+			/// <para>
+			/// Notifies a tab control's parent window that the currently selected tab has changed. This notification code is sent in the
+			/// form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>TCN_SELCHANGE lpnmhdr = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// </summary>
+			/// <param name="lParam">Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</param>
+			/// <returns>No return value.</returns>
+			/// <remarks>To determine the currently selected tab, use the <c>TabCtrl_GetCurSel</c> macro.</remarks>
 			TCN_SELCHANGE = TCN_FIRST - 1,
+
+			/// <summary>
+			/// <para>
+			/// Notifies a tab control's parent window that the currently selected tab is about to change. This notification code is sent in
+			/// the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>TCN_SELCHANGING lpnmhdr = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// </summary>
+			/// <param name="lParam">Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</param>
+			/// <returns>Returns <c>TRUE</c> to prevent the selection from changing, or <c>FALSE</c> to allow the selection to change.</returns>
+			/// <remarks>To determine the currently selected tab, use the <c>TabCtrl_GetCurSel</c> macro.</remarks>
 			TCN_SELCHANGING = TCN_FIRST - 2,
+
+			/// <summary>
+			/// <para>
+			/// Sent by a tab control when it has the <c>TCS_EX_REGISTERDROP</c> extended style and an object is dragged over a tab item in
+			/// the control. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>TCN_GETOBJECT lpnmon = (LPNMOBJECTNOTIFY) lParam;</code>
+			/// </para>
+			/// </summary>
+			/// <param name="lParam">
+			/// Pointer to an <c>NMOBJECTNOTIFY</c> structure that contains information about the tab item the object is dragged over and
+			/// receives data the application returns in response to this message.
+			/// </param>
+			/// <returns>The application processing this notification code must return zero.</returns>
 			TCN_GETOBJECT = TCN_FIRST - 3,
+
+			/// <summary>
+			/// <para>
+			/// Notifies a tab control's parent window that the button focus has changed. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>TCN_FOCUSCHANGE lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// </summary>
+			/// <param name="lParam">Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</param>
+			/// <returns>No return value.</returns>
 			TCN_FOCUSCHANGE = TCN_FIRST - 4,
 		}
+
+#pragma warning restore CS1572 // XML comment has a param tag, but there is no parameter by that name
 
 		/// <summary>This section lists supported tab control styles.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760549")]

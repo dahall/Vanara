@@ -6,25 +6,252 @@ namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
 	{
+#pragma warning disable CS1572 // XML comment has a param tag, but there is no parameter by that name
+
+		/// <summary>Progress Bar Messages</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/controls/bumper-progress-bar-control-reference-messages
+		[PInvokeData("Commctrl.h")]
 		public enum ProgressMessage
 		{
+			/// <summary>Sets the minimum and maximum values for a progress bar and redraws the bar to reflect the new range.</summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">
+			/// The <c>LOWORD</c> specifies the minimum range value, and the <c>HIWORD</c> specifies the maximum range value. The minimum
+			/// range value must not be negative. By default, the minimum value is zero. The maximum range value must be greater than the
+			/// minimum range value. By default, the maximum range value is 100.
+			/// </param>
+			/// <returns>
+			/// Returns the previous range values if successful, or zero otherwise. The <c>LOWORD</c> specifies the previous minimum value,
+			/// and the <c>HIWORD</c> specifies the previous maximum value.
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// If you do not set the range values, the system sets the minimum value to 0 and the maximum value to 100. Because this
+			/// message expresses the range as a 16-bit unsigned integer, it can extend from 0 to 65,535. The minimum value in the range can
+			/// be from 0 to 65,535. Likewise, the maximum value can be from 0 to 65,535.
+			/// </para>
+			/// <para>To set a larger range, call <c>PBM_SETRANGE32</c>.</para>
+			/// </remarks>
 			PBM_SETRANGE = WindowMessage.WM_USER + 1,
+
+			/// <summary>Sets the current position for a progress bar and redraws the bar to reflect the new position.</summary>
+			/// <param name="wParam">Signed integer that becomes the new position.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the previous position.</returns>
+			/// <remarks>
+			/// <para>If wParam is outside the range of the control, the position is set to the closest boundary.</para>
+			/// <para>Do not send this message to a control that has the <c>PBS_MARQUEE</c> style.</para>
+			/// </remarks>
 			PBM_SETPOS = WindowMessage.WM_USER + 2,
+
+			/// <summary>
+			/// Advances the current position of a progress bar by a specified increment and redraws the bar to reflect the new position.
+			/// </summary>
+			/// <param name="wParam">Amount to advance the position.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the previous position.</returns>
+			/// <remarks>
+			/// <para>If the increment results in a value outside the range of the control, the position is set to the nearest boundary.</para>
+			/// <para>The behavior of this message is undefined if it is sent to a control that has the <c>PBS_MARQUEE</c> style.</para>
+			/// </remarks>
 			PBM_DELTAPOS = WindowMessage.WM_USER + 3,
+
+			/// <summary>
+			/// Specifies the step increment for a progress bar. The step increment is the amount by which the progress bar increases its
+			/// current position whenever it receives a <c>PBM_STEPIT</c> message. By default, the step increment is set to 10.
+			/// </summary>
+			/// <param name="wParam">New step increment.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the previous step increment.</returns>
 			PBM_SETSTEP = WindowMessage.WM_USER + 4,
+
+			/// <summary>
+			/// Advances the current position for a progress bar by the step increment and redraws the bar to reflect the new position. An
+			/// application sets the step increment by sending the <c>PBM_SETSTEP</c> message.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the previous position.</returns>
+			/// <remarks>
+			/// When the position exceeds the maximum range value, this message resets the current position so that the progress indicator
+			/// starts over again from the beginning.
+			/// </remarks>
 			PBM_STEPIT = WindowMessage.WM_USER + 5,
+
+			/// <summary>
+			/// Sets the minimum and maximum values for a progress bar to 32-bit values, and redraws the bar to reflect the new range.
+			/// </summary>
+			/// <param name="wParam">Minimum range value. By default, the minimum value is zero.</param>
+			/// <param name="lParam">Maximum range value. This value must be greater than wParam. By default, the maximum value is 100.</param>
+			/// <returns>
+			/// Returns a <c>DWORD</c> value that holds the previous 16-bit low limit in its <c>LOWORD</c> and the previous 16-bit high
+			/// limit in its <c>HIWORD</c>. If the previous ranges were 32-bit values, the return value consists of the <c>LOWORD</c> s of
+			/// both 32-bit limits.
+			/// </returns>
+			/// <remarks>To retrieve the entire high and low 32-bit values, use the <c>PBM_GETRANGE</c> message.</remarks>
 			PBM_SETRANGE32 = WindowMessage.WM_USER + 6,  // lParam = high, wParam = low
+
+			/// <summary>Retrieves information about the current high and low limits of a given progress bar control.</summary>
+			/// <param name="wParam">
+			/// <para>
+			/// Flag value specifying which limit value is to be used as the message's return value. This parameter can be one of the
+			/// following values:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>TRUE</term>
+			/// <term>Return the low limit.</term>
+			/// </item>
+			/// <item>
+			/// <term>FALSE</term>
+			/// <term>Return the high limit.</term>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="lParam">
+			/// Pointer to a <c>PBRANGE</c> structure that is to be filled with the high and low limits of the progress bar control. If this
+			/// parameter is set to <c>NULL</c>, the control will return only the limit specified by wParam.
+			/// </param>
+			/// <returns>
+			/// Returns an INT that represents the limit value specified by wParam. If lParam is not <c>NULL</c>, lParam must point to a
+			/// <c>PBRANGE</c> structure that is to be filled with both limit values.
+			/// </returns>
 			PBM_GETRANGE = WindowMessage.WM_USER + 7,  // wParam = return (TRUE ? low : high). lParam = PPBRANGE or NULL
+
+			/// <summary>Retrieves the current position of the progress bar.</summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns a <c>UINT</c> value that represents the current position of the progress bar.</returns>
 			PBM_GETPOS = WindowMessage.WM_USER + 8,
+
+			/// <summary>Sets the color of the progress indicator bar in the progress bar control.</summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">
+			/// The <c>COLORREF</c> value that specifies the new progress indicator bar color. Specifying the CLR_DEFAULT value causes the
+			/// progress bar to use its default progress indicator bar color.
+			/// </param>
+			/// <returns>
+			/// Returns the previous progress indicator bar color, or CLR_DEFAULT if the progress indicator bar color is the default color.
+			/// </returns>
+			/// <remarks>When visual styles are enabled, this message has no effect.</remarks>
 			PBM_SETBARCOLOR = WindowMessage.WM_USER + 9,  // lParam = bar color
+
+			/// <summary>Sets the background color in the progress bar.</summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">
+			/// <c>COLORREF</c> value that specifies the new background color. Specify the CLR_DEFAULT value to cause the progress bar to
+			/// use its default background color.
+			/// </param>
+			/// <returns>Returns the previous background color, or CLR_DEFAULT if the background color is the default color.</returns>
+			/// <remarks>When visual styles are enabled, this message has no effect.</remarks>
 			PBM_SETBKCOLOR = CommonControlMessage.CCM_SETBKCOLOR,  // lParam = bkColor
+
+			/// <summary>Sets the progress bar to marquee mode. This causes the progress bar to move like a marquee.</summary>
+			/// <param name="wParam">Indicates whether to turn the marquee mode on or off.</param>
+			/// <param name="lParam">
+			/// Time, in milliseconds, between marquee animation updates. If this parameter is zero, the marquee animation is updated every
+			/// 30 milliseconds.
+			/// </param>
+			/// <returns>Always returns <c>TRUE</c>.</returns>
+			/// <remarks>
+			/// <para>
+			/// Use this message when you do not know the amount of progress toward completion but wish to indicate that progress is being made.
+			/// </para>
+			/// <para>Send the <c>PBM_SETMARQUEE</c> message to start or stop the animation.</para>
+			/// </remarks>
 			PBM_SETMARQUEE = WindowMessage.WM_USER + 10,
+
+			/// <summary>
+			/// Retrieves the step increment from a progress bar. The step increment is the amount by which the progress bar increases its
+			/// current position whenever it receives a <c>PBM_STEPIT</c> message. By default, the step increment is set to 10.
+			/// </summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the current step increment.</returns>
 			PBM_GETSTEP = WindowMessage.WM_USER + 13,
+
+			/// <summary>Gets the background color of the progress bar.</summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the background color of the progress bar.</returns>
+			/// <remarks>
+			/// <para>
+			/// This is the color set by the <c>PBM_SETBKCOLOR</c> message. The default value is CLR_DEFAULT, which is defined in commctrl.h.
+			/// </para>
+			/// <para>This function only affects the classic mode, not any visual style.</para>
+			/// </remarks>
 			PBM_GETBKCOLOR = WindowMessage.WM_USER + 14,
+
+			/// <summary>Gets the color of the progress bar.</summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the color of the progress bar.</returns>
+			/// <remarks>
+			/// <para>
+			/// This is the color set by the <c>PBM_SETBARCOLOR</c> message. The default value is CLR_DEFAULT, which is defined in commctrl.h.
+			/// </para>
+			/// <para>This function only affects the classic mode, not any visual style.</para>
+			/// </remarks>
 			PBM_GETBARCOLOR = WindowMessage.WM_USER + 15,
+
+			/// <summary>Sets the state of the progress bar.</summary>
+			/// <param name="wParam">
+			/// <para>State of the progress bar that is being set. One of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>PBST_NORMAL</term>
+			/// <term>In progress.</term>
+			/// </item>
+			/// <item>
+			/// <term>PBST_ERROR</term>
+			/// <term>Error.</term>
+			/// </item>
+			/// <item>
+			/// <term>PBST_PAUSED</term>
+			/// <term>Paused.</term>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>Returns the previous state.</returns>
 			PBM_SETSTATE = WindowMessage.WM_USER + 16, // wParam = PBST_[State] (NORMAL, ERROR, PAUSED)
+
+			/// <summary>Gets the state of the progress bar.</summary>
+			/// <param name="wParam">Must be zero.</param>
+			/// <param name="lParam">Must be zero.</param>
+			/// <returns>
+			/// <para>Returns the current state of the progress bar. One of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>PBST_NORMAL</term>
+			/// <term>In progress.</term>
+			/// </item>
+			/// <item>
+			/// <term>PBST_ERROR</term>
+			/// <term>Error.</term>
+			/// </item>
+			/// <item>
+			/// <term>PBST_PAUSED</term>
+			/// <term>Paused.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
 			PBM_GETSTATE = WindowMessage.WM_USER + 17,
 		}
+
+#pragma warning restore CS1572 // XML comment has a param tag, but there is no parameter by that name
 
 		/// <summary>State of the progress bar used in PBM_SETSTATE and PBM_GETSTATE messages.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760850")]

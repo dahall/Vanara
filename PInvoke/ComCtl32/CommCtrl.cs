@@ -12,11 +12,19 @@ namespace Vanara.PInvoke
 		/// <summary>No color.</summary>
 		public const uint CLR_NONE = 0xFFFFFFFF;
 
+		/// <summary/>
 		public const int I_IMAGECALLBACK = -1;
+
+		/// <summary/>
 		public const int I_IMAGENONE = -2;
+
+		/// <summary/>
 		public const int INFOTIPSIZE = 1024;
+
+		/// <summary/>
 		public const int NM_FIRST = 0;
 
+		/// <summary/>
 		[PInvokeData("Commctrl.h")]
 		public static readonly IntPtr LPSTR_TEXTCALLBACK = (IntPtr)(-1);
 
@@ -612,22 +620,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>Version 5.80. Causes the button to switch states.</summary>
 			HICF_TOGGLEDROPDOWN = 0x00000100,
-		}
-
-		[Flags]
-		public enum HOTKEYF : byte
-		{
-			/// <summary>SHIFT key</summary>
-			HOTKEYF_SHIFT = 0x01,
-
-			/// <summary>CTRL key</summary>
-			HOTKEYF_CONTROL = 0x02,
-
-			/// <summary>ALT key</summary>
-			HOTKEYF_ALT = 0x04,
-
-			/// <summary>Extended key</summary>
-			HOTKEYF_EXT = 0x08,
 		}
 
 		/// <summary>The desired metric.</summary>
