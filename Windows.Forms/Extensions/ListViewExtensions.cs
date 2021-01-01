@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
-using System.Security.Permissions;
 using System.Windows.Forms;
+using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.User32;
@@ -120,9 +120,9 @@ namespace Vanara.Extensions
 			{
 				var lvc = new LVCOLUMN(ListViewColumMask.LVCF_FMT);
 				var hr = listView.Handle;
-				SendMessage(hr, ListViewMessage.LVM_GETCOLUMN, columnIndex, lvc);
+				SendLVMsg(hr, ListViewMessage.LVM_GETCOLUMN, columnIndex, lvc);
 				lvc.Format = lvc.Format.SetFlags(ListViewColumnFormat.LVCFMT_SPLITBUTTON, enable);
-				SendMessage(hr, ListViewMessage.LVM_SETCOLUMN, columnIndex, lvc);
+				SendLVMsg(hr, ListViewMessage.LVM_SETCOLUMN, columnIndex, lvc);
 				listView.InvalidateHeader();
 			}
 		}
@@ -150,7 +150,7 @@ namespace Vanara.Extensions
 			if (groupId >= 0)
 			{
 				using var lvgroup = new LVGROUP { Footer = footer, Alignment = MakeAlignment(group.HeaderAlignment, footerAlignment) };
-				SendMessage(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
+				SendLVMsg(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
 			}
 		}
 
@@ -181,7 +181,7 @@ namespace Vanara.Extensions
 					lvgroup.DescriptionBottom = descriptionBottom;
 				if (descriptionTop != null)
 					lvgroup.DescriptionTop = descriptionTop;
-				SendMessage(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
+				SendLVMsg(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
 			}
 		}
 
@@ -198,7 +198,7 @@ namespace Vanara.Extensions
 			if (lvi.ListView == null)
 				throw new ArgumentNullException(nameof(lvi), @"ListViewItem must be attached to a valid ListView.");
 			var nItem = new LVITEM(lvi.Index) { OverlayImageIndex = (uint)imageIndex };
-			if (SendMessage(lvi.ListView.Handle, ListViewMessage.LVM_SETITEM, 0, nItem).ToInt32() == 0)
+			if (SendLVMsg(lvi.ListView.Handle, ListViewMessage.LVM_SETITEM, 0, nItem).ToInt32() == 0)
 				throw new Win32Exception();
 		}
 
@@ -214,11 +214,11 @@ namespace Vanara.Extensions
 			{
 				// Get current ListView column info
 				var lvcol = new LVCOLUMN(ListViewColumMask.LVCF_FMT);
-				SendMessage(listView.Handle, ListViewMessage.LVM_GETCOLUMN, columnNumber, lvcol);
+				SendLVMsg(listView.Handle, ListViewMessage.LVM_GETCOLUMN, columnNumber, lvcol);
 
 				// Get current header info
 				var hditem = new HDITEM(HeaderItemMask.HDI_FORMAT | HeaderItemMask.HDI_DI_SETITEM);
-				SendMessage(columnHeader, HeaderMessage.HDM_GETITEM, columnNumber, hditem);
+				SendHdrMsg(columnHeader, HeaderMessage.HDM_GETITEM, columnNumber, hditem);
 
 				// Update header with column info
 				hditem.Format |= (HeaderItemFormat)((uint)lvcol.Format & 0x1001803);
@@ -232,7 +232,7 @@ namespace Vanara.Extensions
 					hditem.ImageDisplay = HeaderItemImageDisplay.None;
 
 				// Update header
-				SendMessage(columnHeader, HeaderMessage.HDM_SETITEM, columnNumber, hditem);
+				SendHdrMsg(columnHeader, HeaderMessage.HDM_SETITEM, columnNumber, hditem);
 			}
 		}
 
@@ -245,7 +245,7 @@ namespace Vanara.Extensions
 			if (groupId >= 0)
 			{
 				using var lvgroup = new LVGROUP { TaskLink = taskLink };
-				SendMessage(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
+				SendLVMsg(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
 			}
 		}
 
@@ -307,6 +307,18 @@ namespace Vanara.Extensions
 			return h | (ftr == HorizontalAlignment.Left ? ListViewGroupAlignment.LVGA_FOOTER_LEFT : (ftr == HorizontalAlignment.Center ? ListViewGroupAlignment.LVGA_FOOTER_CENTER : ListViewGroupAlignment.LVGA_FOOTER_RIGHT));
 		}
 
+		private static IntPtr SendHdrMsg<TLP>(HWND hwnd, HeaderMessage msg, int wParam, TLP lParam) where TLP : class
+		{
+			using var lpin = new PinnedObject(lParam);
+			return SendMessage(hwnd, (uint)msg, (IntPtr)wParam, lpin);
+		}
+
+		private static IntPtr SendLVMsg<TLP>(HWND hwnd, ListViewMessage msg, int wParam, TLP lParam) where TLP : class
+		{
+			using var lpin = new PinnedObject(lParam);
+			return SendMessage(hwnd, (uint)msg, (IntPtr)wParam, lpin);
+		}
+
 		private static void SetState(ListViewGroup group, ListViewGroupState state, bool value)
 		{
 			var groupId = GetGroupId(group);
@@ -315,7 +327,7 @@ namespace Vanara.Extensions
 				var lvgroup = new LVGROUP(ListViewGroupMask.LVGF_STATE);
 				{
 					lvgroup.SetState(state, value);
-					SendMessage(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
+					SendLVMsg(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
 				}
 			}
 		}
