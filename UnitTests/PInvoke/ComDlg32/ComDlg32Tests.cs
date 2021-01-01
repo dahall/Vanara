@@ -36,13 +36,12 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetOpenFileNameTest()
 		{
-			var fnch = new char[261];
-			var fn = new string(fnch);
+			using var fn = new SafeCoTaskMemString(261);
 			var ofn = new OPENFILENAME
 			{
 				lStructSize = (uint)Marshal.SizeOf(typeof(OPENFILENAME)),
 				lpstrFile = fn,
-				nMaxFile = (uint)fnch.Length,
+				nMaxFile = (uint)fnch.Capacity,
 				lpstrFilter = "All\0*.*\0Text\0*.txt\0",
 				nFilterIndex = 1,
 				Flags = OFN.OFN_PATHMUSTEXIST | OFN.OFN_FILEMUSTEXIST
@@ -55,8 +54,7 @@ namespace Vanara.PInvoke.Tests
 		public void FindTextTest()
 		{
 			using var wnd = new DlgWin(RegisterWindowMessage(FINDMSGSTRING));
-			var fwch = new char[261];
-			var fw = new string(fwch);
+			var fw = new SafeCoTaskMemString(261);
 			var fr = new FINDREPLACE
 			{
 				lStructSize = (uint)Marshal.SizeOf(typeof(FINDREPLACE)),
