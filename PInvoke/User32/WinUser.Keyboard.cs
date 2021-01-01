@@ -6,7 +6,26 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+		/// <summary>Flags used by WM_GETHOTKEY and WM_SETHOTKEY</summary>
+		[PInvokeData("winuser.h")]
+		[Flags]
+		public enum HOTKEYF : byte
+		{
+			/// <summary>SHIFT key</summary>
+			HOTKEYF_SHIFT = 0x01,
+
+			/// <summary>CTRL key</summary>
+			HOTKEYF_CONTROL = 0x02,
+
+			/// <summary>ALT key</summary>
+			HOTKEYF_ALT = 0x04,
+
+			/// <summary>Extended key</summary>
+			HOTKEYF_EXT = 0x08,
+		}
+
 		/// <summary>Modifiers for key press.</summary>
+		[PInvokeData("winuser.h")]
 		[Flags]
 		public enum HotKeyModifiers
 		{
@@ -36,7 +55,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Controls various aspects of function operation of <see cref="keybd_event"/>.</summary>
-		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[PInvokeData("winuser.h")]
 		[Flags]
 		public enum KEYEVENTF
 		{
