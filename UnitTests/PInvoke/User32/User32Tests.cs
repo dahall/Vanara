@@ -97,8 +97,52 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void SendMessageTest()
 		{
-			throw new NotImplementedException();
+			// WM_ERASEBKGND
+			SendMessage(default, WindowMessage.WM_ERASEBKGND, (IntPtr)HDC.NULL);
+
+			// WM_GETFONT
+			HFONT hFont = SendMessage(default, WindowMessage.WM_GETFONT);
+
+			// WM_GETTEXT
+			var sb = new StringBuilder(256);
+			SendMessage(default, WindowMessage.WM_GETTEXT, sb.Capacity, sb);
+
+			// WM_GETTEXTLEN
+			SendMessage(default, WindowMessage.WM_GETTEXTLENGTH);
+
+			// WM_SETFONT
+			SendMessage(default, WindowMessage.WM_SETFONT, (IntPtr)HFONT.NULL, true);
+
+			// WM_SETICON
+			SendMessage(default, WindowMessage.WM_SETICON, ICONSZ.ICON_BIG, (IntPtr)HICON.NULL);
+
+			// WM_SETTEXT
+			SendMessage(default, WindowMessage.WM_SETTEXT, default, "Text");
+			SendMessage(default, WindowMessage.WM_SETTEXT, 4, "Text");
+
+			// WM_DRAWITEM
+			var dis = new DRAWITEMSTRUCT();
+			SendMessage(default, WindowMessage.WM_DRAWITEM, 12, ref dis);
+
+			// BCM_SETSPLITINFO
+			SendMessage(default, ButtonMessage.BCM_SETSPLITINFO, default, ref dis);
+			SendMessage(default, ButtonMessage.BCM_SETSPLITINFO, true, ref dis);
+			SendMessage(default, ButtonMessage.BCM_SETSPLITINFO, 4, ref dis);
+
+
+			// BCM_SETSPLITINFO
+			SendMessage(default, ButtonMessage.BCM_SETDROPDOWNSTATE, true);
+
 		}
+
+		public enum ICONSZ
+		{
+			ICON_BIG,
+			ICON_SMALL
+		}
+
+		//public static IntPtr SendMessage<TMsg, THandle>(HWND hwnd, TMsg msg, THandle wParam) where TMsg : struct, IConvertible where THandle : IHandle
+		//	=> SendMessage(hwnd, Convert.ToUInt32(msg), (IntPtr)wParam, IntPtr.Zero);
 
 		[Test()]
 		public void SendMessageTest1()
