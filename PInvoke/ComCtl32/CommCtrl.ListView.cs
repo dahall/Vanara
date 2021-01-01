@@ -1188,8 +1188,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("commctrl.h", MSDNShortId = "listview_getitemindexrect")]
 		public static bool ListView_GetItemIndexRect(HWND hwnd, in LVITEMINDEX plvii, int iSubItem, ListViewItemRect code, out Rectangle prc)
 		{
-			var rc = new PRECT((int)code, iSubItem, 0, 0);
-			var lr = SendMessage(hwnd, ListViewMessage.LVM_GETITEMINDEXRECT, plvii, rc);
+			var rc = new RECT((int)code, iSubItem, 0, 0);
+			var lr = SendMessage(hwnd, ListViewMessage.LVM_GETITEMINDEXRECT, in plvii, ref rc);
 			prc = lr == IntPtr.Zero ? Rectangle.Empty : (Rectangle)rc;
 			return lr != IntPtr.Zero;
 		}
@@ -1340,8 +1340,12 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-listview_setitemindexstate void
 		// ListView_SetItemIndexState( hwndLV, plvii, data, mask );
 		[PInvokeData("commctrl.h", MSDNShortId = "listview_setitemindexstate")]
-		public static HRESULT ListView_SetItemIndexState(HWND hwndLV, in LVITEMINDEX plvii, uint data, ListViewItemState mask) =>
-			new HRESULT(SendMessage(hwndLV, (uint)ListViewMessage.LVM_SETITEMINDEXSTATE, in plvii, new LVITEM(0) { stateMask = mask, state = data }).ToInt32());
+		public static HRESULT ListView_SetItemIndexState(HWND hwndLV, in LVITEMINDEX plvii, uint data, ListViewItemState mask)
+		{
+			var lvi = new LVITEM(0) { stateMask = mask, state = data };
+			using var plvi = new PinnedObject(lvi);
+			return new HRESULT(SendMessage(hwndLV, (uint)ListViewMessage.LVM_SETITEMINDEXSTATE, in plvii, plvi).ToInt32());
+		}
 
 		/// <summary>
 		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed
