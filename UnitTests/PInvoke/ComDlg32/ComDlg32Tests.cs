@@ -2,6 +2,7 @@
 using NUnit.Framework.Internal;
 using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.ComDlg32;
 using static Vanara.PInvoke.User32;
 
@@ -40,8 +41,8 @@ namespace Vanara.PInvoke.Tests
 			var ofn = new OPENFILENAME
 			{
 				lStructSize = (uint)Marshal.SizeOf(typeof(OPENFILENAME)),
-				lpstrFile = fn,
-				nMaxFile = (uint)fnch.Capacity,
+				lpstrFile = (IntPtr)fn,
+				nMaxFile = (uint)fn.Capacity,
 				lpstrFilter = "All\0*.*\0Text\0*.txt\0",
 				nFilterIndex = 1,
 				Flags = OFN.OFN_PATHMUSTEXIST | OFN.OFN_FILEMUSTEXIST
@@ -59,8 +60,8 @@ namespace Vanara.PInvoke.Tests
 			{
 				lStructSize = (uint)Marshal.SizeOf(typeof(FINDREPLACE)),
 				hwndOwner = wnd.MessageWindowHandle,
-				lpstrFindWhat = fw,
-				wFindWhatLen = (ushort)fwch.Length,
+				lpstrFindWhat = (IntPtr)fw,
+				wFindWhatLen = (ushort)fw.Length,
 			};
 			Assert.That(wnd.hdlg = FindText(ref fr), Is.True);
 		}
