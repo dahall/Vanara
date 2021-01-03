@@ -954,7 +954,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiBeginTransactionA")]
 		public static extern Win32Error MsiBeginTransaction([MarshalAs(UnmanagedType.LPTStr)] string szName, MSITRANSACTION dwTransactionAttributes,
-			out SafeMSIHANDLE phTransactionHandle, out System.Threading.EventWaitHandle phChangeOfOwnerEvent);
+			out PMSIHANDLE phTransactionHandle, out System.Threading.EventWaitHandle phChangeOfOwnerEvent);
 
 		/// <summary>
 		/// The <c>MsiCloseAllHandles</c> function closes all open installation handles allocated by the current thread. This is a

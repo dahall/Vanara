@@ -682,26 +682,83 @@ namespace Vanara.PInvoke
 		/// <para>One of the following install message types, no default</para>
 		/// </summary>
 		[PInvokeData("msi.h")]
-		private enum INSTALLMESSAGE : int
+		public enum INSTALLMESSAGE : int
 		{
+			/// <summary>
+			/// Premature termination, possibly fatal out of memory.
+			/// </summary>
 			INSTALLMESSAGE_FATALEXIT = 0x00000000, // premature termination, possibly fatal OOM
+			/// <summary>
+			/// Formatted error message, [1] is message number in Error table.
+			/// </summary>
 			INSTALLMESSAGE_ERROR = 0x01000000, // formatted error message
+			/// <summary>
+			/// Formatted warning message, [1] is message number in Error table.
+			/// </summary>
 			INSTALLMESSAGE_WARNING = 0x02000000, // formatted warning message
+			/// <summary>
+			/// User request message, [1] is message number in Error table.
+			/// </summary>
 			INSTALLMESSAGE_USER = 0x03000000, // user request message
+			/// <summary>
+			/// Informative message for log, not to be displayed.
+			/// </summary>
 			INSTALLMESSAGE_INFO = 0x04000000, // informative message for log
+			/// <summary>
+			/// List of files currently in use that must be closed before being replaced.
+			/// </summary>
 			INSTALLMESSAGE_FILESINUSE = 0x05000000, // list of files in use that need to be replaced
+			/// <summary>
+			/// Request to determine a valid source location.
+			/// </summary>
 			INSTALLMESSAGE_RESOLVESOURCE = 0x06000000, // request to determine a valid source location
+			/// <summary>
+			/// Insufficient disk space message.
+			/// </summary>
 			INSTALLMESSAGE_OUTOFDISKSPACE = 0x07000000, // insufficient disk space message
+			/// <summary>
+			/// Progress: start of action, [1] action name, [2] description, [3] template for ACTIONDATA messages.
+			/// </summary>
 			INSTALLMESSAGE_ACTIONSTART = 0x08000000, // start of action: action name & description
+			/// <summary>
+			/// Action data. Record fields correspond to the template of ACTIONSTART message.
+			/// </summary>
 			INSTALLMESSAGE_ACTIONDATA = 0x09000000, // formatted data associated with individual action item
+			/// <summary>
+			/// Progress bar information. See the description of record fields below.
+			/// </summary>
 			INSTALLMESSAGE_PROGRESS = 0x0A000000, // progress gauge info: units so far, total
+			/// <summary>
+			/// To enable the Cancel button set [1] to 2 and [2] to 1. To disable the Cancel button set [1] to 2 and [2] to 0
+			/// </summary>
 			INSTALLMESSAGE_COMMONDATA = 0x0B000000, // product info for dialog: language Id, dialog caption
+			/// <summary>
+			/// sent prior to UI initialization, no string data
+			/// </summary>
 			INSTALLMESSAGE_INITIALIZE = 0x0C000000, // sent prior to UI initialization, no string data
+			/// <summary>
+			/// sent after UI termination, no string data
+			/// </summary>
 			INSTALLMESSAGE_TERMINATE = 0x0D000000, // sent after UI termination, no string data
+			/// <summary>
+			/// sent prior to display or authored dialog or wizard
+			/// </summary>
 			INSTALLMESSAGE_SHOWDIALOG = 0x0E000000, // sent prior to display or authored dialog or wizard
+			/// <summary>
+			/// log only, to log performance number like action time
+			/// </summary>
 			INSTALLMESSAGE_PERFORMANCE = 0x0F000000, // log only, to log performance number like action time
+			/// <summary>
+			/// List of files currently in use that must be closed before being replaced. Available beginning with Windows Installer version 4.0. For more information about this message see Using Restart Manager with an External UI.
+			/// </summary>
 			INSTALLMESSAGE_RMFILESINUSE = 0x19000000, // the list of apps that the user can request Restart Manager to shut down and restart
+			/// <summary>
+			/// sent prior to server-side install of a product
+			/// </summary>
 			INSTALLMESSAGE_INSTALLSTART = 0x1A000000, // sent prior to server-side install of a product
+			/// <summary>
+			/// sent after server-side install
+			/// </summary>
 			INSTALLMESSAGE_INSTALLEND = 0x1B000000, // sent after server-side install
 		}
 
@@ -960,24 +1017,24 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a self-disposing instance for <see cref="MSIHANDLE"/> that is disposed using <see cref="MsiCloseHandle"/>.</summary>
-		public class SafeMSIHANDLE : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, IDisposable
+		public class PMSIHANDLE : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, IDisposable
 		{
 			private bool disposedValue;
 			private MSIHANDLE handle;
 
-			/// <summary>Initializes a new instance of the <see cref="SafeMSIHANDLE"/> class.</summary>
-			private SafeMSIHANDLE() : base() { }
+			/// <summary>Initializes a new instance of the <see cref="PMSIHANDLE"/> class.</summary>
+			private PMSIHANDLE() : base() { }
 
-			/// <summary>Finalizes an instance of the <see cref="SafeMSIHANDLE"/> class.</summary>
-			~SafeMSIHANDLE()
+			/// <summary>Finalizes an instance of the <see cref="PMSIHANDLE"/> class.</summary>
+			~PMSIHANDLE()
 			{
 				Dispose(disposing: false);
 			}
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeMSIHANDLE"/> to <see cref="MSIHANDLE"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="PMSIHANDLE"/> to <see cref="MSIHANDLE"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator MSIHANDLE(SafeMSIHANDLE h) => h.handle;
+			public static implicit operator MSIHANDLE(PMSIHANDLE h) => h.handle;
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			public void Dispose()
