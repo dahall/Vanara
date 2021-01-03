@@ -1240,6 +1240,66 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() { SetupCloseInfFile(handle); return true; }
 		}
 
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupOpenInfFile</c> function opens an INF file and returns a handle to it.</para>
+		/// </summary>
+		/// <param name="FileName">
+		/// Pointer to a null-terminated string containing the name (and optional path) of the INF file to be opened. If the filename does
+		/// not contain path separator characters, it is searched for, first in the %windir%\inf directory, and then in the
+		/// %windir%\system32 directory. If the filename contains path separator characters, it is assumed to be a full path specification
+		/// and no further processing is performed on it.
+		/// </param>
+		/// <param name="InfClass">
+		/// Optional pointer to a null-terminated string containing the class of INF file desired. This string must match the Class value of
+		/// the <c>Version</c> section (for example, Class=Net). If there is no entry in the Class value, but there is an entry for
+		/// ClassGUID in the <c>Version</c> section, the corresponding class name for that GUID is retrieved and used for the comparison.
+		/// </param>
+		/// <param name="InfStyle">
+		/// <para>Style of INF file to open or search for. This parameter can be a combination of the following flags.</para>
+		/// <para>INF_STYLE_OLDNT</para>
+		/// <para>A legacy INF file format.</para>
+		/// <para>INF_STYLE_WIN4</para>
+		/// <para>A Windows INF file format.</para>
+		/// </param>
+		/// <param name="ErrorLine">
+		/// Optional pointer to a variable to which this function returns the (1-based) line number where an error occurred during loading
+		/// of the INF file. This value is generally reliable only if GetLastError does not return ERROR_NOT_ENOUGH_MEMORY. If an
+		/// out-of-memory condition does occur, ErrorLine may be 0.
+		/// </param>
+		/// <returns>
+		/// The function returns a handle to the opened INF file if it is successful. Otherwise, the return value is INVALID_HANDLE_VALUE.
+		/// Extended error information can be retrieved by a call to GetLastError.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the load fails because the INF file type does not match InfClass, the function returns INVALID_HANDLE_VALUE and a call to
+		/// GetLastError returns ERROR_CLASS_MISMATCH.
+		/// </para>
+		/// <para>
+		/// If multiple INF file styles are specified, the style of the INF file opened can be determined by calling the
+		/// SetupGetInfInformation function.
+		/// </para>
+		/// <para>
+		/// Because there may be more than one class GUID with the same class name, callers interested in INF files of a particular class
+		/// (that is, a particular class GUID) should retrieve the ClassGUID value from the INF file by calling SetupQueryInfVersionInformation.
+		/// </para>
+		/// <para>
+		/// For legacy INF files, the InfClass string must match the type specified in the OptionType value of the <c>Identification</c>
+		/// section in the INF file (for example, OptionType=NetAdapter).
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupopeninffilea
+		// WINSETUPAPI HINF SetupOpenInfFileA( PCSTR FileName, PCSTR InfClass, DWORD InfStyle, PUINT ErrorLine );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupOpenInfFileA")]
+		public static extern SafeHINF SetupOpenInfFile([MarshalAs(UnmanagedType.LPTStr)] string FileName,
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] string InfClass, INF_STYLE InfStyle, out uint ErrorLine);
+
 		/*
 		SetupDeleteErrorA
 		SetupDeleteErrorW
@@ -1314,8 +1374,6 @@ namespace Vanara.PInvoke
 		SetupOpenAppendInfFileA
 		SetupOpenAppendInfFileW
 		SetupOpenFileQueue
-		SetupOpenInfFileA
-		SetupOpenInfFileW
 		SetupOpenLog
 		SetupOpenMasterInf
 		SetupPromptForDiskA

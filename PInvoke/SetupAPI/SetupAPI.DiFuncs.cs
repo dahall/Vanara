@@ -259,8 +259,9 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// Each value returned is a structure that identifies a requested device interface. To get detailed information about an interface,
-		/// call <see cref="SetupDiGetDeviceInterfaceDetail"/>. The detailed information includes the name of the device interface that can
-		/// be passed to a Win32 function such as CreateFile (described in Microsoft Windows SDK documentation) to get a handle to the interface.
+		/// call <see cref="SetupDiGetDeviceInterfaceDetail(HDEVINFO, in SP_DEVICE_INTERFACE_DATA, IntPtr, uint, out uint, ref
+		/// SP_DEVINFO_DATA)"/>. The detailed information includes the name of the device interface that can be passed to a Win32 function
+		/// such as CreateFile (described in Microsoft Windows SDK documentation) to get a handle to the interface.
 		/// </para>
 		/// <para>See System Defined Device Interface Classes for a list of available device interface classes.</para>
 		/// </remarks>
