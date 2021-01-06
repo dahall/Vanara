@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Msi.dll.
 
 - Includes methods from msi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Msi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Msi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Msi)  
-### Methods - 58% API coverage (86 of 148 functions)  
+### Methods - 100% API coverage (148 of 148 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [MsiAdvertiseProduct](https://www.google.com/search?num=5&q=MsiAdvertiseProductA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiAdvertiseProduct](https://github.com/dahall/Vanara/search?l=C%23&q=MsiAdvertiseProduct)  
@@ -18,26 +18,26 @@ Native Method | Header | Managed Method
 [MsiConfigureFeature](https://www.google.com/search?num=5&q=MsiConfigureFeatureA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiConfigureFeature](https://github.com/dahall/Vanara/search?l=C%23&q=MsiConfigureFeature)  
 [MsiConfigureProduct](https://www.google.com/search?num=5&q=MsiConfigureProductA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiConfigureProduct](https://github.com/dahall/Vanara/search?l=C%23&q=MsiConfigureProduct)  
 [MsiConfigureProductEx](https://www.google.com/search?num=5&q=MsiConfigureProductExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiConfigureProductEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiConfigureProductEx)  
-[MsiCreateRecord](https://www.google.com/search?num=5&q=MsiCreateRecord+site%3Adocs.microsoft.com) |  |   
-[MsiCreateTransformSummaryInfo](https://www.google.com/search?num=5&q=MsiCreateTransformSummaryInfoA+site%3Adocs.microsoft.com) |  |   
-[MsiDatabaseApplyTransform](https://www.google.com/search?num=5&q=MsiDatabaseApplyTransformA+site%3Adocs.microsoft.com) |  |   
-[MsiDatabaseCommit](https://www.google.com/search?num=5&q=MsiDatabaseCommit+site%3Adocs.microsoft.com) |  |   
-[MsiDatabaseExport](https://www.google.com/search?num=5&q=MsiDatabaseExportA+site%3Adocs.microsoft.com) |  |   
-[MsiDatabaseGenerateTransform](https://www.google.com/search?num=5&q=MsiDatabaseGenerateTransformA+site%3Adocs.microsoft.com) |  |   
-[MsiDatabaseGetPrimaryKeys](https://www.google.com/search?num=5&q=MsiDatabaseGetPrimaryKeysA+site%3Adocs.microsoft.com) |  |   
-[MsiDatabaseImport](https://www.google.com/search?num=5&q=MsiDatabaseImportA+site%3Adocs.microsoft.com) |  |   
-[MsiDatabaseIsTablePersistent](https://www.google.com/search?num=5&q=MsiDatabaseIsTablePersistentA+site%3Adocs.microsoft.com) |  |   
-[MsiDatabaseMerge](https://www.google.com/search?num=5&q=MsiDatabaseMergeA+site%3Adocs.microsoft.com) |  |   
-[MsiDatabaseOpenView](https://www.google.com/search?num=5&q=MsiDatabaseOpenViewA+site%3Adocs.microsoft.com) |  |   
+[MsiCreateRecord](https://www.google.com/search?num=5&q=MsiCreateRecord+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiCreateRecord](https://github.com/dahall/Vanara/search?l=C%23&q=MsiCreateRecord)  
+[MsiCreateTransformSummaryInfo](https://www.google.com/search?num=5&q=MsiCreateTransformSummaryInfoA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiCreateTransformSummaryInfo](https://github.com/dahall/Vanara/search?l=C%23&q=MsiCreateTransformSummaryInfo)  
+[MsiDatabaseApplyTransform](https://www.google.com/search?num=5&q=MsiDatabaseApplyTransformA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDatabaseApplyTransform](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDatabaseApplyTransform)  
+[MsiDatabaseCommit](https://www.google.com/search?num=5&q=MsiDatabaseCommit+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDatabaseCommit](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDatabaseCommit)  
+[MsiDatabaseExport](https://www.google.com/search?num=5&q=MsiDatabaseExportA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDatabaseExport](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDatabaseExport)  
+[MsiDatabaseGenerateTransform](https://www.google.com/search?num=5&q=MsiDatabaseGenerateTransformA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDatabaseGenerateTransform](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDatabaseGenerateTransform)  
+[MsiDatabaseGetPrimaryKeys](https://www.google.com/search?num=5&q=MsiDatabaseGetPrimaryKeysA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDatabaseGetPrimaryKeys](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDatabaseGetPrimaryKeys)  
+[MsiDatabaseImport](https://www.google.com/search?num=5&q=MsiDatabaseImportA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDatabaseImport](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDatabaseImport)  
+[MsiDatabaseIsTablePersistent](https://www.google.com/search?num=5&q=MsiDatabaseIsTablePersistentA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDatabaseIsTablePersistent](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDatabaseIsTablePersistent)  
+[MsiDatabaseMerge](https://www.google.com/search?num=5&q=MsiDatabaseMergeA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDatabaseMerge](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDatabaseMerge)  
+[MsiDatabaseOpenView](https://www.google.com/search?num=5&q=MsiDatabaseOpenViewA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDatabaseOpenView](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDatabaseOpenView)  
 [MsiDetermineApplicablePatches](https://www.google.com/search?num=5&q=MsiDetermineApplicablePatchesA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiDetermineApplicablePatches](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDetermineApplicablePatches)  
 [MsiDeterminePatchSequence](https://www.google.com/search?num=5&q=MsiDeterminePatchSequenceA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiDeterminePatchSequence](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDeterminePatchSequence)  
-[MsiDoAction](https://www.google.com/search?num=5&q=MsiDoActionA+site%3Adocs.microsoft.com) |  |   
+[MsiDoAction](https://www.google.com/search?num=5&q=MsiDoActionA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiDoAction](https://github.com/dahall/Vanara/search?l=C%23&q=MsiDoAction)  
 [MsiEnableLog](https://www.google.com/search?num=5&q=MsiEnableLogA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEnableLog](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnableLog)  
-[MsiEnableUIPreview](https://www.google.com/search?num=5&q=MsiEnableUIPreview+site%3Adocs.microsoft.com) |  |   
+[MsiEnableUIPreview](https://www.google.com/search?num=5&q=MsiEnableUIPreview+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiEnableUIPreview](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnableUIPreview)  
 [MsiEndTransaction](https://www.google.com/search?num=5&q=MsiEndTransaction+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEndTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEndTransaction)  
 [MsiEnumClients](https://www.google.com/search?num=5&q=MsiEnumClientsA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEnumClients](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnumClients)  
 [MsiEnumClientsEx](https://www.google.com/search?num=5&q=MsiEnumClientsExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEnumClientsEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnumClientsEx)  
-[MsiEnumComponentCosts](https://www.google.com/search?num=5&q=MsiEnumComponentCostsA+site%3Adocs.microsoft.com) |  |   
+[MsiEnumComponentCosts](https://www.google.com/search?num=5&q=MsiEnumComponentCostsA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiEnumComponentCosts](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnumComponentCosts)  
 [MsiEnumComponentQualifiers](https://www.google.com/search?num=5&q=MsiEnumComponentQualifiersA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEnumComponentQualifiers](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnumComponentQualifiers)  
 [MsiEnumComponents](https://www.google.com/search?num=5&q=MsiEnumComponentsA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEnumComponents](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnumComponents)  
 [MsiEnumComponentsEx](https://www.google.com/search?num=5&q=MsiEnumComponentsExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEnumComponentsEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnumComponentsEx)  
@@ -47,25 +47,25 @@ Native Method | Header | Managed Method
 [MsiEnumProducts](https://www.google.com/search?num=5&q=MsiEnumProductsA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEnumProducts](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnumProducts)  
 [MsiEnumProductsEx](https://www.google.com/search?num=5&q=MsiEnumProductsExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEnumProductsEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnumProductsEx)  
 [MsiEnumRelatedProducts](https://www.google.com/search?num=5&q=MsiEnumRelatedProductsA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiEnumRelatedProducts](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEnumRelatedProducts)  
-[MsiEvaluateCondition](https://www.google.com/search?num=5&q=MsiEvaluateConditionA+site%3Adocs.microsoft.com) |  |   
+[MsiEvaluateCondition](https://www.google.com/search?num=5&q=MsiEvaluateConditionA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiEvaluateCondition](https://github.com/dahall/Vanara/search?l=C%23&q=MsiEvaluateCondition)  
 [MsiExtractPatchXMLData](https://www.google.com/search?num=5&q=MsiExtractPatchXMLDataA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiExtractPatchXMLData](https://github.com/dahall/Vanara/search?l=C%23&q=MsiExtractPatchXMLData)  
-[MsiFormatRecord](https://www.google.com/search?num=5&q=MsiFormatRecordA+site%3Adocs.microsoft.com) |  |   
-[MsiGetActiveDatabase](https://www.google.com/search?num=5&q=MsiGetActiveDatabase+site%3Adocs.microsoft.com) |  |   
+[MsiFormatRecord](https://www.google.com/search?num=5&q=MsiFormatRecordA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiFormatRecord](https://github.com/dahall/Vanara/search?l=C%23&q=MsiFormatRecord)  
+[MsiGetActiveDatabase](https://www.google.com/search?num=5&q=MsiGetActiveDatabase+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetActiveDatabase](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetActiveDatabase)  
 [MsiGetComponentPath](https://www.google.com/search?num=5&q=MsiGetComponentPathA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetComponentPath](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetComponentPath)  
 [MsiGetComponentPathEx](https://www.google.com/search?num=5&q=MsiGetComponentPathExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetComponentPathEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetComponentPathEx)  
-[MsiGetComponentState](https://www.google.com/search?num=5&q=MsiGetComponentStateA+site%3Adocs.microsoft.com) |  |   
-[MsiGetDatabaseState](https://www.google.com/search?num=5&q=MsiGetDatabaseState+site%3Adocs.microsoft.com) |  |   
-[MsiGetFeatureCost](https://www.google.com/search?num=5&q=MsiGetFeatureCostA+site%3Adocs.microsoft.com) |  |   
+[MsiGetComponentState](https://www.google.com/search?num=5&q=MsiGetComponentStateA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetComponentState](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetComponentState)  
+[MsiGetDatabaseState](https://www.google.com/search?num=5&q=MsiGetDatabaseState+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetDatabaseState](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetDatabaseState)  
+[MsiGetFeatureCost](https://www.google.com/search?num=5&q=MsiGetFeatureCostA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetFeatureCost](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetFeatureCost)  
 [MsiGetFeatureInfo](https://www.google.com/search?num=5&q=MsiGetFeatureInfoA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetFeatureInfo](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetFeatureInfo)  
-[MsiGetFeatureState](https://www.google.com/search?num=5&q=MsiGetFeatureStateA+site%3Adocs.microsoft.com) |  |   
+[MsiGetFeatureState](https://www.google.com/search?num=5&q=MsiGetFeatureStateA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetFeatureState](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetFeatureState)  
 [MsiGetFeatureUsage](https://www.google.com/search?num=5&q=MsiGetFeatureUsageA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetFeatureUsage](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetFeatureUsage)  
-[MsiGetFeatureValidStates](https://www.google.com/search?num=5&q=MsiGetFeatureValidStatesA+site%3Adocs.microsoft.com) |  |   
+[MsiGetFeatureValidStates](https://www.google.com/search?num=5&q=MsiGetFeatureValidStatesA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetFeatureValidStates](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetFeatureValidStates)  
 [MsiGetFileHash](https://www.google.com/search?num=5&q=MsiGetFileHashA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetFileHash](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetFileHash)  
 [MsiGetFileSignatureInformation](https://www.google.com/search?num=5&q=MsiGetFileSignatureInformationA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetFileSignatureInformation](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetFileSignatureInformation)  
 [MsiGetFileVersion](https://www.google.com/search?num=5&q=MsiGetFileVersionA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetFileVersion](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetFileVersion)  
-[MsiGetLanguage](https://www.google.com/search?num=5&q=MsiGetLanguage+site%3Adocs.microsoft.com) |  |   
-[MsiGetLastErrorRecord](https://www.google.com/search?num=5&q=MsiGetLastErrorRecord+site%3Adocs.microsoft.com) |  |   
-[MsiGetMode](https://www.google.com/search?num=5&q=MsiGetMode+site%3Adocs.microsoft.com) |  |   
+[MsiGetLanguage](https://www.google.com/search?num=5&q=MsiGetLanguage+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetLanguage](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetLanguage)  
+[MsiGetLastErrorRecord](https://www.google.com/search?num=5&q=MsiGetLastErrorRecord+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetLastErrorRecord](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetLastErrorRecord)  
+[MsiGetMode](https://www.google.com/search?num=5&q=MsiGetMode+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetMode](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetMode)  
 [MsiGetPatchFileList](https://www.google.com/search?num=5&q=MsiGetPatchFileListA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetPatchFileList](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetPatchFileList)  
 [MsiGetPatchInfo](https://www.google.com/search?num=5&q=MsiGetPatchInfoA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetPatchInfo](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetPatchInfo)  
 [MsiGetPatchInfoEx](https://www.google.com/search?num=5&q=MsiGetPatchInfoExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetPatchInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetPatchInfoEx)  
@@ -74,11 +74,11 @@ Native Method | Header | Managed Method
 [MsiGetProductInfoEx](https://www.google.com/search?num=5&q=MsiGetProductInfoExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetProductInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetProductInfoEx)  
 [MsiGetProductInfoFromScript](https://www.google.com/search?num=5&q=MsiGetProductInfoFromScriptA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetProductInfoFromScript](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetProductInfoFromScript)  
 [MsiGetProductProperty](https://www.google.com/search?num=5&q=MsiGetProductPropertyA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetProductProperty](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetProductProperty)  
-[MsiGetProperty](https://www.google.com/search?num=5&q=MsiGetPropertyA+site%3Adocs.microsoft.com) |  |   
+[MsiGetProperty](https://www.google.com/search?num=5&q=MsiGetPropertyA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetProperty)  
 [MsiGetShortcutTarget](https://www.google.com/search?num=5&q=MsiGetShortcutTargetA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetShortcutTarget](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetShortcutTarget)  
-[MsiGetSourcePath](https://www.google.com/search?num=5&q=MsiGetSourcePathA+site%3Adocs.microsoft.com) |  |   
-[MsiGetSummaryInformation](https://www.google.com/search?num=5&q=MsiGetSummaryInformationA+site%3Adocs.microsoft.com) |  |   
-[MsiGetTargetPath](https://www.google.com/search?num=5&q=MsiGetTargetPathA+site%3Adocs.microsoft.com) |  |   
+[MsiGetSourcePath](https://www.google.com/search?num=5&q=MsiGetSourcePathA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetSourcePath](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetSourcePath)  
+[MsiGetSummaryInformation](https://www.google.com/search?num=5&q=MsiGetSummaryInformationA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetSummaryInformation](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetSummaryInformation)  
+[MsiGetTargetPath](https://www.google.com/search?num=5&q=MsiGetTargetPathA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiGetTargetPath](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetTargetPath)  
 [MsiGetUserInfo](https://www.google.com/search?num=5&q=MsiGetUserInfoA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiGetUserInfo](https://github.com/dahall/Vanara/search?l=C%23&q=MsiGetUserInfo)  
 [MsiInstallMissingComponent](https://www.google.com/search?num=5&q=MsiInstallMissingComponentA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiInstallMissingComponent](https://github.com/dahall/Vanara/search?l=C%23&q=MsiInstallMissingComponent)  
 [MsiInstallMissingFile](https://www.google.com/search?num=5&q=MsiInstallMissingFileA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiInstallMissingFile](https://github.com/dahall/Vanara/search?l=C%23&q=MsiInstallMissingFile)  
@@ -87,14 +87,14 @@ Native Method | Header | Managed Method
 [MsiJoinTransaction](https://www.google.com/search?num=5&q=MsiJoinTransaction+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiJoinTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=MsiJoinTransaction)  
 [MsiLocateComponent](https://www.google.com/search?num=5&q=MsiLocateComponentA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiLocateComponent](https://github.com/dahall/Vanara/search?l=C%23&q=MsiLocateComponent)  
 [MsiNotifySidChange](https://www.google.com/search?num=5&q=MsiNotifySidChangeA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiNotifySidChange](https://github.com/dahall/Vanara/search?l=C%23&q=MsiNotifySidChange)  
-[MsiOpenDatabase](https://www.google.com/search?num=5&q=MsiOpenDatabaseA+site%3Adocs.microsoft.com) |  |   
+[MsiOpenDatabase](https://www.google.com/search?num=5&q=MsiOpenDatabaseA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiOpenDatabase](https://github.com/dahall/Vanara/search?l=C%23&q=MsiOpenDatabase)  
 [MsiOpenPackage](https://www.google.com/search?num=5&q=MsiOpenPackageA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiOpenPackage](https://github.com/dahall/Vanara/search?l=C%23&q=MsiOpenPackage)  
 [MsiOpenPackageEx](https://www.google.com/search?num=5&q=MsiOpenPackageExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiOpenPackageEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiOpenPackageEx)  
 [MsiOpenProduct](https://www.google.com/search?num=5&q=MsiOpenProductA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiOpenProduct](https://github.com/dahall/Vanara/search?l=C%23&q=MsiOpenProduct)  
-[MsiPreviewBillboard](https://www.google.com/search?num=5&q=MsiPreviewBillboardA+site%3Adocs.microsoft.com) |  |   
-[MsiPreviewDialog](https://www.google.com/search?num=5&q=MsiPreviewDialogA+site%3Adocs.microsoft.com) |  |   
+[MsiPreviewBillboard](https://www.google.com/search?num=5&q=MsiPreviewBillboardA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiPreviewBillboard](https://github.com/dahall/Vanara/search?l=C%23&q=MsiPreviewBillboard)  
+[MsiPreviewDialog](https://www.google.com/search?num=5&q=MsiPreviewDialogA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiPreviewDialog](https://github.com/dahall/Vanara/search?l=C%23&q=MsiPreviewDialog)  
 [MsiProcessAdvertiseScript](https://www.google.com/search?num=5&q=MsiProcessAdvertiseScriptA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiProcessAdvertiseScript](https://github.com/dahall/Vanara/search?l=C%23&q=MsiProcessAdvertiseScript)  
-[MsiProcessMessage](https://www.google.com/search?num=5&q=MsiProcessMessage+site%3Adocs.microsoft.com) |  |   
+[MsiProcessMessage](https://www.google.com/search?num=5&q=MsiProcessMessage+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiProcessMessage](https://github.com/dahall/Vanara/search?l=C%23&q=MsiProcessMessage)  
 [MsiProvideAssembly](https://www.google.com/search?num=5&q=MsiProvideAssemblyA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiProvideAssembly](https://github.com/dahall/Vanara/search?l=C%23&q=MsiProvideAssembly)  
 [MsiProvideComponent](https://www.google.com/search?num=5&q=MsiProvideComponentA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiProvideComponent](https://github.com/dahall/Vanara/search?l=C%23&q=MsiProvideComponent)  
 [MsiProvideQualifiedComponent](https://www.google.com/search?num=5&q=MsiProvideQualifiedComponentA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiProvideQualifiedComponent](https://github.com/dahall/Vanara/search?l=C%23&q=MsiProvideQualifiedComponent)  
@@ -103,30 +103,30 @@ Native Method | Header | Managed Method
 [MsiQueryFeatureState](https://www.google.com/search?num=5&q=MsiQueryFeatureStateA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiQueryFeatureState](https://github.com/dahall/Vanara/search?l=C%23&q=MsiQueryFeatureState)  
 [MsiQueryFeatureStateEx](https://www.google.com/search?num=5&q=MsiQueryFeatureStateExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiQueryFeatureStateEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiQueryFeatureStateEx)  
 [MsiQueryProductState](https://www.google.com/search?num=5&q=MsiQueryProductStateA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiQueryProductState](https://github.com/dahall/Vanara/search?l=C%23&q=MsiQueryProductState)  
-[MsiRecordClearData](https://www.google.com/search?num=5&q=MsiRecordClearData+site%3Adocs.microsoft.com) |  |   
-[MsiRecordDataSize](https://www.google.com/search?num=5&q=MsiRecordDataSize+site%3Adocs.microsoft.com) |  |   
-[MsiRecordGetFieldCount](https://www.google.com/search?num=5&q=MsiRecordGetFieldCount+site%3Adocs.microsoft.com) |  |   
-[MsiRecordGetInteger](https://www.google.com/search?num=5&q=MsiRecordGetInteger+site%3Adocs.microsoft.com) |  |   
-[MsiRecordGetString](https://www.google.com/search?num=5&q=MsiRecordGetStringA+site%3Adocs.microsoft.com) |  |   
-[MsiRecordIsNull](https://www.google.com/search?num=5&q=MsiRecordIsNull+site%3Adocs.microsoft.com) |  |   
-[MsiRecordReadStream](https://www.google.com/search?num=5&q=MsiRecordReadStream+site%3Adocs.microsoft.com) |  |   
-[MsiRecordSetInteger](https://www.google.com/search?num=5&q=MsiRecordSetInteger+site%3Adocs.microsoft.com) |  |   
-[MsiRecordSetStream](https://www.google.com/search?num=5&q=MsiRecordSetStreamA+site%3Adocs.microsoft.com) |  |   
-[MsiRecordSetString](https://www.google.com/search?num=5&q=MsiRecordSetStringA+site%3Adocs.microsoft.com) |  |   
+[MsiRecordClearData](https://www.google.com/search?num=5&q=MsiRecordClearData+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordClearData](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordClearData)  
+[MsiRecordDataSize](https://www.google.com/search?num=5&q=MsiRecordDataSize+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordDataSize](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordDataSize)  
+[MsiRecordGetFieldCount](https://www.google.com/search?num=5&q=MsiRecordGetFieldCount+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordGetFieldCount](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordGetFieldCount)  
+[MsiRecordGetInteger](https://www.google.com/search?num=5&q=MsiRecordGetInteger+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordGetInteger](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordGetInteger)  
+[MsiRecordGetString](https://www.google.com/search?num=5&q=MsiRecordGetStringA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordGetString](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordGetString)  
+[MsiRecordIsNull](https://www.google.com/search?num=5&q=MsiRecordIsNull+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordIsNull](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordIsNull)  
+[MsiRecordReadStream](https://www.google.com/search?num=5&q=MsiRecordReadStream+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordReadStream](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordReadStream)  
+[MsiRecordSetInteger](https://www.google.com/search?num=5&q=MsiRecordSetInteger+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordSetInteger](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordSetInteger)  
+[MsiRecordSetStream](https://www.google.com/search?num=5&q=MsiRecordSetStreamA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordSetStream](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordSetStream)  
+[MsiRecordSetString](https://www.google.com/search?num=5&q=MsiRecordSetStringA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiRecordSetString](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRecordSetString)  
 [MsiReinstallFeature](https://www.google.com/search?num=5&q=MsiReinstallFeatureA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiReinstallFeature](https://github.com/dahall/Vanara/search?l=C%23&q=MsiReinstallFeature)  
 [MsiReinstallProduct](https://www.google.com/search?num=5&q=MsiReinstallProductA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiReinstallProduct](https://github.com/dahall/Vanara/search?l=C%23&q=MsiReinstallProduct)  
 [MsiRemovePatches](https://www.google.com/search?num=5&q=MsiRemovePatchesA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiRemovePatches](https://github.com/dahall/Vanara/search?l=C%23&q=MsiRemovePatches)  
-[MsiSequence](https://www.google.com/search?num=5&q=MsiSequenceA+site%3Adocs.microsoft.com) |  |   
-[MsiSetComponentState](https://www.google.com/search?num=5&q=MsiSetComponentStateA+site%3Adocs.microsoft.com) |  |   
+[MsiSequence](https://www.google.com/search?num=5&q=MsiSequenceA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSequence](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSequence)  
+[MsiSetComponentState](https://www.google.com/search?num=5&q=MsiSetComponentStateA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSetComponentState](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetComponentState)  
 [MsiSetExternalUI](https://www.google.com/search?num=5&q=MsiSetExternalUIA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiSetExternalUI](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetExternalUI)  
 [MsiSetExternalUIRecord](https://www.google.com/search?num=5&q=MsiSetExternalUIRecord+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiSetExternalUIRecord](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetExternalUIRecord)  
-[MsiSetFeatureAttributes](https://www.google.com/search?num=5&q=MsiSetFeatureAttributesA+site%3Adocs.microsoft.com) |  |   
-[MsiSetFeatureState](https://www.google.com/search?num=5&q=MsiSetFeatureStateA+site%3Adocs.microsoft.com) |  |   
-[MsiSetInstallLevel](https://www.google.com/search?num=5&q=MsiSetInstallLevel+site%3Adocs.microsoft.com) |  |   
+[MsiSetFeatureAttributes](https://www.google.com/search?num=5&q=MsiSetFeatureAttributesA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSetFeatureAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetFeatureAttributes)  
+[MsiSetFeatureState](https://www.google.com/search?num=5&q=MsiSetFeatureStateA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSetFeatureState](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetFeatureState)  
+[MsiSetInstallLevel](https://www.google.com/search?num=5&q=MsiSetInstallLevel+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSetInstallLevel](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetInstallLevel)  
 [MsiSetInternalUI](https://www.google.com/search?num=5&q=MsiSetInternalUI+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiSetInternalUI](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetInternalUI)  
-[MsiSetMode](https://www.google.com/search?num=5&q=MsiSetMode+site%3Adocs.microsoft.com) |  |   
-[MsiSetProperty](https://www.google.com/search?num=5&q=MsiSetPropertyA+site%3Adocs.microsoft.com) |  |   
-[MsiSetTargetPath](https://www.google.com/search?num=5&q=MsiSetTargetPathA+site%3Adocs.microsoft.com) |  |   
+[MsiSetMode](https://www.google.com/search?num=5&q=MsiSetMode+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSetMode](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetMode)  
+[MsiSetProperty](https://www.google.com/search?num=5&q=MsiSetPropertyA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetProperty)  
+[MsiSetTargetPath](https://www.google.com/search?num=5&q=MsiSetTargetPathA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSetTargetPath](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSetTargetPath)  
 [MsiSourceListAddMediaDisk](https://www.google.com/search?num=5&q=MsiSourceListAddMediaDiskA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiSourceListAddMediaDisk](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSourceListAddMediaDisk)  
 [MsiSourceListAddSource](https://www.google.com/search?num=5&q=MsiSourceListAddSourceA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiSourceListAddSource](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSourceListAddSource)  
 [MsiSourceListAddSourceEx](https://www.google.com/search?num=5&q=MsiSourceListAddSourceExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiSourceListAddSourceEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSourceListAddSourceEx)  
@@ -140,20 +140,20 @@ Native Method | Header | Managed Method
 [MsiSourceListForceResolutionEx](https://www.google.com/search?num=5&q=MsiSourceListForceResolutionExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiSourceListForceResolutionEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSourceListForceResolutionEx)  
 [MsiSourceListGetInfo](https://www.google.com/search?num=5&q=MsiSourceListGetInfoA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiSourceListGetInfo](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSourceListGetInfo)  
 [MsiSourceListSetInfo](https://www.google.com/search?num=5&q=MsiSourceListSetInfoA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiSourceListSetInfo](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSourceListSetInfo)  
-[MsiSummaryInfoGetProperty](https://www.google.com/search?num=5&q=MsiSummaryInfoGetPropertyA+site%3Adocs.microsoft.com) |  |   
-[MsiSummaryInfoGetPropertyCount](https://www.google.com/search?num=5&q=MsiSummaryInfoGetPropertyCount+site%3Adocs.microsoft.com) |  |   
-[MsiSummaryInfoPersist](https://www.google.com/search?num=5&q=MsiSummaryInfoPersist+site%3Adocs.microsoft.com) |  |   
-[MsiSummaryInfoSetProperty](https://www.google.com/search?num=5&q=MsiSummaryInfoSetPropertyA+site%3Adocs.microsoft.com) |  |   
+[MsiSummaryInfoGetProperty](https://www.google.com/search?num=5&q=MsiSummaryInfoGetPropertyA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSummaryInfoGetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSummaryInfoGetProperty)  
+[MsiSummaryInfoGetPropertyCount](https://www.google.com/search?num=5&q=MsiSummaryInfoGetPropertyCount+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSummaryInfoGetPropertyCount](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSummaryInfoGetPropertyCount)  
+[MsiSummaryInfoPersist](https://www.google.com/search?num=5&q=MsiSummaryInfoPersist+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSummaryInfoPersist](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSummaryInfoPersist)  
+[MsiSummaryInfoSetProperty](https://www.google.com/search?num=5&q=MsiSummaryInfoSetPropertyA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiSummaryInfoSetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=MsiSummaryInfoSetProperty)  
 [MsiUseFeature](https://www.google.com/search?num=5&q=MsiUseFeatureA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiUseFeature](https://github.com/dahall/Vanara/search?l=C%23&q=MsiUseFeature)  
 [MsiUseFeatureEx](https://www.google.com/search?num=5&q=MsiUseFeatureExA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiUseFeatureEx](https://github.com/dahall/Vanara/search?l=C%23&q=MsiUseFeatureEx)  
-[MsiVerifyDiskSpace](https://www.google.com/search?num=5&q=MsiVerifyDiskSpace+site%3Adocs.microsoft.com) |  |   
+[MsiVerifyDiskSpace](https://www.google.com/search?num=5&q=MsiVerifyDiskSpace+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiVerifyDiskSpace](https://github.com/dahall/Vanara/search?l=C%23&q=MsiVerifyDiskSpace)  
 [MsiVerifyPackage](https://www.google.com/search?num=5&q=MsiVerifyPackageA+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.MsiVerifyPackage](https://github.com/dahall/Vanara/search?l=C%23&q=MsiVerifyPackage)  
-[MsiViewClose](https://www.google.com/search?num=5&q=MsiViewClose+site%3Adocs.microsoft.com) |  |   
-[MsiViewExecute](https://www.google.com/search?num=5&q=MsiViewExecute+site%3Adocs.microsoft.com) |  |   
-[MsiViewFetch](https://www.google.com/search?num=5&q=MsiViewFetch+site%3Adocs.microsoft.com) |  |   
-[MsiViewGetColumnInfo](https://www.google.com/search?num=5&q=MsiViewGetColumnInfo+site%3Adocs.microsoft.com) |  |   
-[MsiViewGetError](https://www.google.com/search?num=5&q=MsiViewGetErrorA+site%3Adocs.microsoft.com) |  |   
-[MsiViewModify](https://www.google.com/search?num=5&q=MsiViewModify+site%3Adocs.microsoft.com) |  |   
+[MsiViewClose](https://www.google.com/search?num=5&q=MsiViewClose+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiViewClose](https://github.com/dahall/Vanara/search?l=C%23&q=MsiViewClose)  
+[MsiViewExecute](https://www.google.com/search?num=5&q=MsiViewExecute+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiViewExecute](https://github.com/dahall/Vanara/search?l=C%23&q=MsiViewExecute)  
+[MsiViewFetch](https://www.google.com/search?num=5&q=MsiViewFetch+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiViewFetch](https://github.com/dahall/Vanara/search?l=C%23&q=MsiViewFetch)  
+[MsiViewGetColumnInfo](https://www.google.com/search?num=5&q=MsiViewGetColumnInfo+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiViewGetColumnInfo](https://github.com/dahall/Vanara/search?l=C%23&q=MsiViewGetColumnInfo)  
+[MsiViewGetError](https://www.google.com/search?num=5&q=MsiViewGetErrorA+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiViewGetError](https://github.com/dahall/Vanara/search?l=C%23&q=MsiViewGetError)  
+[MsiViewModify](https://www.google.com/search?num=5&q=MsiViewModify+site%3Adocs.microsoft.com) | msiquery.h | [Vanara.PInvoke.Msi.MsiViewModify](https://github.com/dahall/Vanara/search?l=C%23&q=MsiViewModify)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -182,4 +182,4 @@ Native Interface | Header | Managed Interface
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [INSTALLPROPERTY](https://www.google.com/search?num=5&q=INSTALLPROPERTY+site%3Adocs.microsoft.com) | msi.h | [Vanara.PInvoke.Msi.INSTALLPROPERTY](https://github.com/dahall/Vanara/search?l=C%23&q=INSTALLPROPERTY)  
-[SafeMSIHANDLE](https://www.google.com/search?num=5&q=SafeMSIHANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Msi.SafeMSIHANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMSIHANDLE)  
+[PMSIHANDLE](https://www.google.com/search?num=5&q=PMSIHANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Msi.PMSIHANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=PMSIHANDLE)  
