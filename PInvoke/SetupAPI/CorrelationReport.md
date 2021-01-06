@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows SetupAPI.d
 
 - Includes methods from setupapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.SetupAPI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.SetupAPI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.SetupAPI)  
-### Methods - 12% API coverage (28 of 233 functions)  
+### Methods - 52% API coverage (123 of 235 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DriverStoreAddDriverPackage](https://www.google.com/search?num=5&q=DriverStoreAddDriverPackageA+site%3Adocs.microsoft.com) |  |   
@@ -38,115 +38,117 @@ Native Method | Header | Managed Method
 [SetupDeleteError](https://www.google.com/search?num=5&q=SetupDeleteErrorA+site%3Adocs.microsoft.com) |  |   
 [SetupDestroyDiskSpaceList](https://www.google.com/search?num=5&q=SetupDestroyDiskSpaceList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDestroyDiskSpaceList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDestroyDiskSpaceList)  
 [SetupDiApplyPowerScheme](https://www.google.com/search?num=5&q=SetupDiApplyPowerScheme+site%3Adocs.microsoft.com) |  |   
-[SetupDiAskForOEMDisk](https://www.google.com/search?num=5&q=SetupDiAskForOEMDisk+site%3Adocs.microsoft.com) |  |   
-[SetupDiBuildClassInfoList](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoList+site%3Adocs.microsoft.com) |  |   
+[SetupDiAskForOEMDisk](https://www.google.com/search?num=5&q=SetupDiAskForOEMDisk+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiAskForOEMDisk](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiAskForOEMDisk)  
+[SetupDiBuildClassInfoList](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiBuildClassInfoList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiBuildClassInfoList)  
 [SetupDiBuildClassInfoListEx](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoListExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiBuildDriverInfoList](https://www.google.com/search?num=5&q=SetupDiBuildDriverInfoList+site%3Adocs.microsoft.com) |  |   
-[SetupDiCallClassInstaller](https://www.google.com/search?num=5&q=SetupDiCallClassInstaller+site%3Adocs.microsoft.com) |  |   
-[SetupDiCancelDriverInfoSearch](https://www.google.com/search?num=5&q=SetupDiCancelDriverInfoSearch+site%3Adocs.microsoft.com) |  |   
-[SetupDiChangeState](https://www.google.com/search?num=5&q=SetupDiChangeState+site%3Adocs.microsoft.com) |  |   
-[SetupDiClassGuidsFromName](https://www.google.com/search?num=5&q=SetupDiClassGuidsFromNameA+site%3Adocs.microsoft.com) |  |   
-[SetupDiClassGuidsFromNameEx](https://www.google.com/search?num=5&q=SetupDiClassGuidsFromNameExA+site%3Adocs.microsoft.com) |  |   
+[SetupDiBuildClassInfoListExAA](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoListExAA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiBuildClassInfoListExA](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiBuildClassInfoListExA)  
+[SetupDiBuildClassInfoListExAW](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoListExAW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiBuildClassInfoListExA](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiBuildClassInfoListExA)  
+[SetupDiBuildDriverInfoList](https://www.google.com/search?num=5&q=SetupDiBuildDriverInfoList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiBuildDriverInfoList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiBuildDriverInfoList)  
+[SetupDiCallClassInstaller](https://www.google.com/search?num=5&q=SetupDiCallClassInstaller+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCallClassInstaller](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCallClassInstaller)  
+[SetupDiCancelDriverInfoSearch](https://www.google.com/search?num=5&q=SetupDiCancelDriverInfoSearch+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCancelDriverInfoSearch](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCancelDriverInfoSearch)  
+[SetupDiChangeState](https://www.google.com/search?num=5&q=SetupDiChangeState+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiChangeState](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiChangeState)  
+[SetupDiClassGuidsFromName](https://www.google.com/search?num=5&q=SetupDiClassGuidsFromNameA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiClassGuidsFromName](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiClassGuidsFromName)  
+[SetupDiClassGuidsFromNameEx](https://www.google.com/search?num=5&q=SetupDiClassGuidsFromNameExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiClassGuidsFromNameEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiClassGuidsFromNameEx)  
 [SetupDiClassNameFromGuid](https://www.google.com/search?num=5&q=SetupDiClassNameFromGuidA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiClassNameFromGuid](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiClassNameFromGuid)  
-[SetupDiClassNameFromGuidEx](https://www.google.com/search?num=5&q=SetupDiClassNameFromGuidExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiCreateDeviceInfo](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInfoA+site%3Adocs.microsoft.com) |  |   
-[SetupDiCreateDeviceInfoList](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInfoList+site%3Adocs.microsoft.com) |  |   
-[SetupDiCreateDeviceInfoListEx](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInfoListExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiCreateDeviceInterface](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInterfaceA+site%3Adocs.microsoft.com) |  |   
-[SetupDiCreateDeviceInterfaceRegKey](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInterfaceRegKeyA+site%3Adocs.microsoft.com) |  |   
-[SetupDiCreateDevRegKey](https://www.google.com/search?num=5&q=SetupDiCreateDevRegKeyA+site%3Adocs.microsoft.com) |  |   
-[SetupDiDeleteDeviceInfo](https://www.google.com/search?num=5&q=SetupDiDeleteDeviceInfo+site%3Adocs.microsoft.com) |  |   
-[SetupDiDeleteDeviceInterfaceData](https://www.google.com/search?num=5&q=SetupDiDeleteDeviceInterfaceData+site%3Adocs.microsoft.com) |  |   
-[SetupDiDeleteDeviceInterfaceRegKey](https://www.google.com/search?num=5&q=SetupDiDeleteDeviceInterfaceRegKey+site%3Adocs.microsoft.com) |  |   
-[SetupDiDeleteDevRegKey](https://www.google.com/search?num=5&q=SetupDiDeleteDevRegKey+site%3Adocs.microsoft.com) |  |   
-[SetupDiDestroyClassImageList](https://www.google.com/search?num=5&q=SetupDiDestroyClassImageList+site%3Adocs.microsoft.com) |  |   
+[SetupDiClassNameFromGuidEx](https://www.google.com/search?num=5&q=SetupDiClassNameFromGuidExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiClassNameFromGuidEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiClassNameFromGuidEx)  
+[SetupDiCreateDeviceInfo](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInfoA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCreateDeviceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCreateDeviceInfo)  
+[SetupDiCreateDeviceInfoList](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInfoList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCreateDeviceInfoList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCreateDeviceInfoList)  
+[SetupDiCreateDeviceInfoListEx](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInfoListExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCreateDeviceInfoListEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCreateDeviceInfoListEx)  
+[SetupDiCreateDeviceInterface](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInterfaceA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCreateDeviceInterface](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCreateDeviceInterface)  
+[SetupDiCreateDeviceInterfaceRegKey](https://www.google.com/search?num=5&q=SetupDiCreateDeviceInterfaceRegKeyA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCreateDeviceInterfaceRegKey](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCreateDeviceInterfaceRegKey)  
+[SetupDiCreateDevRegKey](https://www.google.com/search?num=5&q=SetupDiCreateDevRegKeyA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCreateDevRegKey](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCreateDevRegKey)  
+[SetupDiDeleteDeviceInfo](https://www.google.com/search?num=5&q=SetupDiDeleteDeviceInfo+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiDeleteDeviceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiDeleteDeviceInfo)  
+[SetupDiDeleteDeviceInterfaceData](https://www.google.com/search?num=5&q=SetupDiDeleteDeviceInterfaceData+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiDeleteDeviceInterfaceData](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiDeleteDeviceInterfaceData)  
+[SetupDiDeleteDeviceInterfaceRegKey](https://www.google.com/search?num=5&q=SetupDiDeleteDeviceInterfaceRegKey+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiDeleteDeviceInterfaceRegKey](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiDeleteDeviceInterfaceRegKey)  
+[SetupDiDeleteDevRegKey](https://www.google.com/search?num=5&q=SetupDiDeleteDevRegKey+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiDeleteDevRegKey](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiDeleteDevRegKey)  
+[SetupDiDestroyClassImageList](https://www.google.com/search?num=5&q=SetupDiDestroyClassImageList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiDestroyClassImageList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiDestroyClassImageList)  
 [SetupDiDestroyDeviceInfoList](https://www.google.com/search?num=5&q=SetupDiDestroyDeviceInfoList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiDestroyDeviceInfoList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiDestroyDeviceInfoList)  
-[SetupDiDestroyDriverInfoList](https://www.google.com/search?num=5&q=SetupDiDestroyDriverInfoList+site%3Adocs.microsoft.com) |  |   
-[SetupDiDrawMiniIcon](https://www.google.com/search?num=5&q=SetupDiDrawMiniIcon+site%3Adocs.microsoft.com) |  |   
+[SetupDiDestroyDriverInfoList](https://www.google.com/search?num=5&q=SetupDiDestroyDriverInfoList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiDestroyDriverInfoList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiDestroyDriverInfoList)  
+[SetupDiDrawMiniIcon](https://www.google.com/search?num=5&q=SetupDiDrawMiniIcon+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiDrawMiniIcon](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiDrawMiniIcon)  
 [SetupDiEnumDeviceInfo](https://www.google.com/search?num=5&q=SetupDiEnumDeviceInfo+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiEnumDeviceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiEnumDeviceInfo)  
 [SetupDiEnumDeviceInterfaces](https://www.google.com/search?num=5&q=SetupDiEnumDeviceInterfaces+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiEnumDeviceInterfaces](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiEnumDeviceInterfaces)  
-[SetupDiEnumDriverInfo](https://www.google.com/search?num=5&q=SetupDiEnumDriverInfoA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetActualModelsSection](https://www.google.com/search?num=5&q=SetupDiGetActualModelsSectionA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetActualSectionToInstall](https://www.google.com/search?num=5&q=SetupDiGetActualSectionToInstallA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetActualSectionToInstallEx](https://www.google.com/search?num=5&q=SetupDiGetActualSectionToInstallExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassBitmapIndex](https://www.google.com/search?num=5&q=SetupDiGetClassBitmapIndex+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassDescription](https://www.google.com/search?num=5&q=SetupDiGetClassDescriptionA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassDescriptionEx](https://www.google.com/search?num=5&q=SetupDiGetClassDescriptionExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassDevPropertySheets](https://www.google.com/search?num=5&q=SetupDiGetClassDevPropertySheetsA+site%3Adocs.microsoft.com) |  |   
+[SetupDiEnumDriverInfo](https://www.google.com/search?num=5&q=SetupDiEnumDriverInfoA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiEnumDriverInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiEnumDriverInfo)  
+[SetupDiGetActualModelsSection](https://www.google.com/search?num=5&q=SetupDiGetActualModelsSectionA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetActualModelsSection](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetActualModelsSection)  
+[SetupDiGetActualSectionToInstall](https://www.google.com/search?num=5&q=SetupDiGetActualSectionToInstallA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetActualSectionToInstall](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetActualSectionToInstall)  
+[SetupDiGetActualSectionToInstallEx](https://www.google.com/search?num=5&q=SetupDiGetActualSectionToInstallExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetActualSectionToInstallEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetActualSectionToInstallEx)  
+[SetupDiGetClassBitmapIndex](https://www.google.com/search?num=5&q=SetupDiGetClassBitmapIndex+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassBitmapIndex](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassBitmapIndex)  
+[SetupDiGetClassDescription](https://www.google.com/search?num=5&q=SetupDiGetClassDescriptionA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassDescription](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassDescription)  
+[SetupDiGetClassDescriptionEx](https://www.google.com/search?num=5&q=SetupDiGetClassDescriptionExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassDescriptionEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassDescriptionEx)  
+[SetupDiGetClassDevPropertySheets](https://www.google.com/search?num=5&q=SetupDiGetClassDevPropertySheetsA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassDevPropertySheets](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassDevPropertySheets)  
 [SetupDiGetClassDevs](https://www.google.com/search?num=5&q=SetupDiGetClassDevsA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassDevs](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassDevs)  
-[SetupDiGetClassDevsEx](https://www.google.com/search?num=5&q=SetupDiGetClassDevsExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassImageIndex](https://www.google.com/search?num=5&q=SetupDiGetClassImageIndex+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassImageList](https://www.google.com/search?num=5&q=SetupDiGetClassImageList+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassImageListEx](https://www.google.com/search?num=5&q=SetupDiGetClassImageListExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassInstallParams](https://www.google.com/search?num=5&q=SetupDiGetClassInstallParamsA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassPropertyExW](https://www.google.com/search?num=5&q=SetupDiGetClassPropertyExW+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassPropertyKeys](https://www.google.com/search?num=5&q=SetupDiGetClassPropertyKeys+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassPropertyKeysExW](https://www.google.com/search?num=5&q=SetupDiGetClassPropertyKeysExW+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassPropertyW](https://www.google.com/search?num=5&q=SetupDiGetClassPropertyW+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetClassRegistryProperty](https://www.google.com/search?num=5&q=SetupDiGetClassRegistryPropertyA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetCustomDeviceProperty](https://www.google.com/search?num=5&q=SetupDiGetCustomDevicePropertyA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetDeviceInfoListClass](https://www.google.com/search?num=5&q=SetupDiGetDeviceInfoListClass+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetDeviceInfoListDetail](https://www.google.com/search?num=5&q=SetupDiGetDeviceInfoListDetailA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetDeviceInstallParams](https://www.google.com/search?num=5&q=SetupDiGetDeviceInstallParamsA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetDeviceInstanceId](https://www.google.com/search?num=5&q=SetupDiGetDeviceInstanceIdA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetDeviceInterfaceAlias](https://www.google.com/search?num=5&q=SetupDiGetDeviceInterfaceAlias+site%3Adocs.microsoft.com) |  |   
+[SetupDiGetClassDevsEx](https://www.google.com/search?num=5&q=SetupDiGetClassDevsExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassDevsEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassDevsEx)  
+[SetupDiGetClassImageIndex](https://www.google.com/search?num=5&q=SetupDiGetClassImageIndex+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassImageIndex](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassImageIndex)  
+[SetupDiGetClassImageList](https://www.google.com/search?num=5&q=SetupDiGetClassImageList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassImageList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassImageList)  
+[SetupDiGetClassImageListEx](https://www.google.com/search?num=5&q=SetupDiGetClassImageListExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassImageListEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassImageListEx)  
+[SetupDiGetClassInstallParams](https://www.google.com/search?num=5&q=SetupDiGetClassInstallParamsA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassInstallParams](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassInstallParams)  
+[SetupDiGetClassPropertyExW](https://www.google.com/search?num=5&q=SetupDiGetClassPropertyExW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassPropertyEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassPropertyEx)  
+[SetupDiGetClassPropertyKeys](https://www.google.com/search?num=5&q=SetupDiGetClassPropertyKeys+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassPropertyKeys](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassPropertyKeys)  
+[SetupDiGetClassPropertyKeysExW](https://www.google.com/search?num=5&q=SetupDiGetClassPropertyKeysExW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassPropertyKeysEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassPropertyKeysEx)  
+[SetupDiGetClassPropertyW](https://www.google.com/search?num=5&q=SetupDiGetClassPropertyW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassProperty)  
+[SetupDiGetClassRegistryProperty](https://www.google.com/search?num=5&q=SetupDiGetClassRegistryPropertyA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetClassRegistryProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetClassRegistryProperty)  
+[SetupDiGetCustomDeviceProperty](https://www.google.com/search?num=5&q=SetupDiGetCustomDevicePropertyA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetCustomDeviceProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetCustomDeviceProperty)  
+[SetupDiGetDeviceInfoListClass](https://www.google.com/search?num=5&q=SetupDiGetDeviceInfoListClass+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceInfoListClass](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceInfoListClass)  
+[SetupDiGetDeviceInfoListDetail](https://www.google.com/search?num=5&q=SetupDiGetDeviceInfoListDetailA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceInfoListDetail](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceInfoListDetail)  
+[SetupDiGetDeviceInstallParams](https://www.google.com/search?num=5&q=SetupDiGetDeviceInstallParamsA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceInstallParams](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceInstallParams)  
+[SetupDiGetDeviceInstanceId](https://www.google.com/search?num=5&q=SetupDiGetDeviceInstanceIdA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceInstanceId](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceInstanceId)  
+[SetupDiGetDeviceInterfaceAlias](https://www.google.com/search?num=5&q=SetupDiGetDeviceInterfaceAlias+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceInterfaceAlias](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceInterfaceAlias)  
 [SetupDiGetDeviceInterfaceDetail](https://www.google.com/search?num=5&q=SetupDiGetDeviceInterfaceDetailA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceInterfaceDetail](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceInterfaceDetail)  
-[SetupDiGetDeviceInterfacePropertyKeys](https://www.google.com/search?num=5&q=SetupDiGetDeviceInterfacePropertyKeys+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetDeviceInterfacePropertyW](https://www.google.com/search?num=5&q=SetupDiGetDeviceInterfacePropertyW+site%3Adocs.microsoft.com) |  |   
+[SetupDiGetDeviceInterfacePropertyKeys](https://www.google.com/search?num=5&q=SetupDiGetDeviceInterfacePropertyKeys+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceInterfacePropertyKeys](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceInterfacePropertyKeys)  
+[SetupDiGetDeviceInterfacePropertyW](https://www.google.com/search?num=5&q=SetupDiGetDeviceInterfacePropertyW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceInterfaceProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceInterfaceProperty)  
 [SetupDiGetDevicePropertyKeys](https://www.google.com/search?num=5&q=SetupDiGetDevicePropertyKeys+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDevicePropertyKeys](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDevicePropertyKeys)  
 [SetupDiGetDevicePropertyW](https://www.google.com/search?num=5&q=SetupDiGetDevicePropertyW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceProperty)  
-[SetupDiGetDeviceRegistryProperty](https://www.google.com/search?num=5&q=SetupDiGetDeviceRegistryPropertyA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetDriverInfoDetail](https://www.google.com/search?num=5&q=SetupDiGetDriverInfoDetailA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetDriverInstallParams](https://www.google.com/search?num=5&q=SetupDiGetDriverInstallParamsA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetHwProfileFriendlyName](https://www.google.com/search?num=5&q=SetupDiGetHwProfileFriendlyNameA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetHwProfileFriendlyNameEx](https://www.google.com/search?num=5&q=SetupDiGetHwProfileFriendlyNameExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetHwProfileList](https://www.google.com/search?num=5&q=SetupDiGetHwProfileList+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetHwProfileListEx](https://www.google.com/search?num=5&q=SetupDiGetHwProfileListExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetINFClass](https://www.google.com/search?num=5&q=SetupDiGetINFClassA+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetSelectedDevice](https://www.google.com/search?num=5&q=SetupDiGetSelectedDevice+site%3Adocs.microsoft.com) |  |   
-[SetupDiGetSelectedDriver](https://www.google.com/search?num=5&q=SetupDiGetSelectedDriverA+site%3Adocs.microsoft.com) |  |   
+[SetupDiGetDeviceRegistryProperty](https://www.google.com/search?num=5&q=SetupDiGetDeviceRegistryPropertyA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDeviceRegistryProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDeviceRegistryProperty)  
+[SetupDiGetDriverInfoDetail](https://www.google.com/search?num=5&q=SetupDiGetDriverInfoDetailA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDriverInfoDetail](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDriverInfoDetail)  
+[SetupDiGetDriverInstallParams](https://www.google.com/search?num=5&q=SetupDiGetDriverInstallParamsA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetDriverInstallParams](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetDriverInstallParams)  
+[SetupDiGetHwProfileFriendlyName](https://www.google.com/search?num=5&q=SetupDiGetHwProfileFriendlyNameA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetHwProfileFriendlyName](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetHwProfileFriendlyName)  
+[SetupDiGetHwProfileFriendlyNameEx](https://www.google.com/search?num=5&q=SetupDiGetHwProfileFriendlyNameExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetHwProfileFriendlyNameEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetHwProfileFriendlyNameEx)  
+[SetupDiGetHwProfileList](https://www.google.com/search?num=5&q=SetupDiGetHwProfileList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetHwProfileList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetHwProfileList)  
+[SetupDiGetHwProfileListEx](https://www.google.com/search?num=5&q=SetupDiGetHwProfileListExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetHwProfileListEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetHwProfileListEx)  
+[SetupDiGetINFClass](https://www.google.com/search?num=5&q=SetupDiGetINFClassA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetINFClass](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetINFClass)  
+[SetupDiGetSelectedDevice](https://www.google.com/search?num=5&q=SetupDiGetSelectedDevice+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetSelectedDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetSelectedDevice)  
+[SetupDiGetSelectedDriver](https://www.google.com/search?num=5&q=SetupDiGetSelectedDriverA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiGetSelectedDriver](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiGetSelectedDriver)  
 [SetupDiGetWizardPage](https://www.google.com/search?num=5&q=SetupDiGetWizardPage+site%3Adocs.microsoft.com) |  |   
-[SetupDiInstallClass](https://www.google.com/search?num=5&q=SetupDiInstallClassA+site%3Adocs.microsoft.com) |  |   
-[SetupDiInstallClassEx](https://www.google.com/search?num=5&q=SetupDiInstallClassExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiInstallDevice](https://www.google.com/search?num=5&q=SetupDiInstallDevice+site%3Adocs.microsoft.com) |  |   
-[SetupDiInstallDeviceInterfaces](https://www.google.com/search?num=5&q=SetupDiInstallDeviceInterfaces+site%3Adocs.microsoft.com) |  |   
-[SetupDiInstallDriverFiles](https://www.google.com/search?num=5&q=SetupDiInstallDriverFiles+site%3Adocs.microsoft.com) |  |   
-[SetupDiLoadClassIcon](https://www.google.com/search?num=5&q=SetupDiLoadClassIcon+site%3Adocs.microsoft.com) |  |   
-[SetupDiLoadDeviceIcon](https://www.google.com/search?num=5&q=SetupDiLoadDeviceIcon+site%3Adocs.microsoft.com) |  |   
+[SetupDiInstallClass](https://www.google.com/search?num=5&q=SetupDiInstallClassA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiInstallClass](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiInstallClass)  
+[SetupDiInstallClassEx](https://www.google.com/search?num=5&q=SetupDiInstallClassExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiInstallClassEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiInstallClassEx)  
+[SetupDiInstallDevice](https://www.google.com/search?num=5&q=SetupDiInstallDevice+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiInstallDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiInstallDevice)  
+[SetupDiInstallDeviceInterfaces](https://www.google.com/search?num=5&q=SetupDiInstallDeviceInterfaces+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiInstallDeviceInterfaces](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiInstallDeviceInterfaces)  
+[SetupDiInstallDriverFiles](https://www.google.com/search?num=5&q=SetupDiInstallDriverFiles+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiInstallDriverFiles](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiInstallDriverFiles)  
+[SetupDiLoadClassIcon](https://www.google.com/search?num=5&q=SetupDiLoadClassIcon+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiLoadClassIcon](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiLoadClassIcon)  
+[SetupDiLoadDeviceIcon](https://www.google.com/search?num=5&q=SetupDiLoadDeviceIcon+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiLoadDeviceIcon](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiLoadDeviceIcon)  
 [SetupDiMoveDuplicateDevice](https://www.google.com/search?num=5&q=SetupDiMoveDuplicateDevice+site%3Adocs.microsoft.com) |  |   
-[SetupDiOpenClassRegKey](https://www.google.com/search?num=5&q=SetupDiOpenClassRegKey+site%3Adocs.microsoft.com) |  |   
-[SetupDiOpenClassRegKeyEx](https://www.google.com/search?num=5&q=SetupDiOpenClassRegKeyExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiOpenDeviceInfo](https://www.google.com/search?num=5&q=SetupDiOpenDeviceInfoA+site%3Adocs.microsoft.com) |  |   
-[SetupDiOpenDeviceInterface](https://www.google.com/search?num=5&q=SetupDiOpenDeviceInterfaceA+site%3Adocs.microsoft.com) |  |   
-[SetupDiOpenDeviceInterfaceRegKey](https://www.google.com/search?num=5&q=SetupDiOpenDeviceInterfaceRegKey+site%3Adocs.microsoft.com) |  |   
-[SetupDiOpenDevRegKey](https://www.google.com/search?num=5&q=SetupDiOpenDevRegKey+site%3Adocs.microsoft.com) |  |   
-[SetupDiRegisterCoDeviceInstallers](https://www.google.com/search?num=5&q=SetupDiRegisterCoDeviceInstallers+site%3Adocs.microsoft.com) |  |   
-[SetupDiRegisterDeviceInfo](https://www.google.com/search?num=5&q=SetupDiRegisterDeviceInfo+site%3Adocs.microsoft.com) |  |   
-[SetupDiRemoveDevice](https://www.google.com/search?num=5&q=SetupDiRemoveDevice+site%3Adocs.microsoft.com) |  |   
-[SetupDiRemoveDeviceInterface](https://www.google.com/search?num=5&q=SetupDiRemoveDeviceInterface+site%3Adocs.microsoft.com) |  |   
+[SetupDiOpenClassRegKey](https://www.google.com/search?num=5&q=SetupDiOpenClassRegKey+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiOpenClassRegKey](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiOpenClassRegKey)  
+[SetupDiOpenClassRegKeyEx](https://www.google.com/search?num=5&q=SetupDiOpenClassRegKeyExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiOpenClassRegKeyEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiOpenClassRegKeyEx)  
+[SetupDiOpenDeviceInfo](https://www.google.com/search?num=5&q=SetupDiOpenDeviceInfoA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiOpenDeviceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiOpenDeviceInfo)  
+[SetupDiOpenDeviceInterface](https://www.google.com/search?num=5&q=SetupDiOpenDeviceInterfaceA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiOpenDeviceInterface](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiOpenDeviceInterface)  
+[SetupDiOpenDeviceInterfaceRegKey](https://www.google.com/search?num=5&q=SetupDiOpenDeviceInterfaceRegKey+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiOpenDeviceInterfaceRegKey](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiOpenDeviceInterfaceRegKey)  
+[SetupDiOpenDevRegKey](https://www.google.com/search?num=5&q=SetupDiOpenDevRegKey+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiOpenDevRegKey](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiOpenDevRegKey)  
+[SetupDiRegisterCoDeviceInstallers](https://www.google.com/search?num=5&q=SetupDiRegisterCoDeviceInstallers+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiRegisterCoDeviceInstallers](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiRegisterCoDeviceInstallers)  
+[SetupDiRegisterDeviceInfo](https://www.google.com/search?num=5&q=SetupDiRegisterDeviceInfo+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiRegisterDeviceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiRegisterDeviceInfo)  
+[SetupDiRemoveDevice](https://www.google.com/search?num=5&q=SetupDiRemoveDevice+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiRemoveDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiRemoveDevice)  
+[SetupDiRemoveDeviceInterface](https://www.google.com/search?num=5&q=SetupDiRemoveDeviceInterface+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiRemoveDeviceInterface](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiRemoveDeviceInterface)  
 [SetupDiReportAdditionalSoftwareRequested](https://www.google.com/search?num=5&q=SetupDiReportAdditionalSoftwareRequested+site%3Adocs.microsoft.com) |  |   
 [SetupDiReportDeviceInstallError](https://www.google.com/search?num=5&q=SetupDiReportDeviceInstallError+site%3Adocs.microsoft.com) |  |   
 [SetupDiReportDriverNotFoundError](https://www.google.com/search?num=5&q=SetupDiReportDriverNotFoundError+site%3Adocs.microsoft.com) |  |   
 [SetupDiReportDriverPackageImportationError](https://www.google.com/search?num=5&q=SetupDiReportDriverPackageImportationError+site%3Adocs.microsoft.com) |  |   
 [SetupDiReportGenericDriverInstalled](https://www.google.com/search?num=5&q=SetupDiReportGenericDriverInstalled+site%3Adocs.microsoft.com) |  |   
 [SetupDiReportPnPDeviceProblem](https://www.google.com/search?num=5&q=SetupDiReportPnPDeviceProblem+site%3Adocs.microsoft.com) |  |   
-[SetupDiRestartDevices](https://www.google.com/search?num=5&q=SetupDiRestartDevices+site%3Adocs.microsoft.com) |  |   
-[SetupDiSelectBestCompatDrv](https://www.google.com/search?num=5&q=SetupDiSelectBestCompatDrv+site%3Adocs.microsoft.com) |  |   
-[SetupDiSelectDevice](https://www.google.com/search?num=5&q=SetupDiSelectDevice+site%3Adocs.microsoft.com) |  |   
-[SetupDiSelectOEMDrv](https://www.google.com/search?num=5&q=SetupDiSelectOEMDrv+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetClassInstallParams](https://www.google.com/search?num=5&q=SetupDiSetClassInstallParamsA+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetClassPropertyExW](https://www.google.com/search?num=5&q=SetupDiSetClassPropertyExW+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetClassPropertyW](https://www.google.com/search?num=5&q=SetupDiSetClassPropertyW+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetClassRegistryProperty](https://www.google.com/search?num=5&q=SetupDiSetClassRegistryPropertyA+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetDeviceInstallParams](https://www.google.com/search?num=5&q=SetupDiSetDeviceInstallParamsA+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetDeviceInterfaceDefault](https://www.google.com/search?num=5&q=SetupDiSetDeviceInterfaceDefault+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetDeviceInterfacePropertyW](https://www.google.com/search?num=5&q=SetupDiSetDeviceInterfacePropertyW+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetDevicePropertyW](https://www.google.com/search?num=5&q=SetupDiSetDevicePropertyW+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetDeviceRegistryProperty](https://www.google.com/search?num=5&q=SetupDiSetDeviceRegistryPropertyA+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetDriverInstallParams](https://www.google.com/search?num=5&q=SetupDiSetDriverInstallParamsA+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetSelectedDevice](https://www.google.com/search?num=5&q=SetupDiSetSelectedDevice+site%3Adocs.microsoft.com) |  |   
-[SetupDiSetSelectedDriver](https://www.google.com/search?num=5&q=SetupDiSetSelectedDriverA+site%3Adocs.microsoft.com) |  |   
-[SetupDiUnremoveDevice](https://www.google.com/search?num=5&q=SetupDiUnremoveDevice+site%3Adocs.microsoft.com) |  |   
+[SetupDiRestartDevices](https://www.google.com/search?num=5&q=SetupDiRestartDevices+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiRestartDevices](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiRestartDevices)  
+[SetupDiSelectBestCompatDrv](https://www.google.com/search?num=5&q=SetupDiSelectBestCompatDrv+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSelectBestCompatDrv](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSelectBestCompatDrv)  
+[SetupDiSelectDevice](https://www.google.com/search?num=5&q=SetupDiSelectDevice+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSelectDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSelectDevice)  
+[SetupDiSelectOEMDrv](https://www.google.com/search?num=5&q=SetupDiSelectOEMDrv+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSelectOEMDrv](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSelectOEMDrv)  
+[SetupDiSetClassInstallParams](https://www.google.com/search?num=5&q=SetupDiSetClassInstallParamsA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetClassInstallParams](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetClassInstallParams)  
+[SetupDiSetClassPropertyExW](https://www.google.com/search?num=5&q=SetupDiSetClassPropertyExW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetClassPropertyEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetClassPropertyEx)  
+[SetupDiSetClassPropertyW](https://www.google.com/search?num=5&q=SetupDiSetClassPropertyW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetClassProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetClassProperty)  
+[SetupDiSetClassRegistryProperty](https://www.google.com/search?num=5&q=SetupDiSetClassRegistryPropertyA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetClassRegistryProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetClassRegistryProperty)  
+[SetupDiSetDeviceInstallParams](https://www.google.com/search?num=5&q=SetupDiSetDeviceInstallParamsA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetDeviceInstallParams](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetDeviceInstallParams)  
+[SetupDiSetDeviceInterfaceDefault](https://www.google.com/search?num=5&q=SetupDiSetDeviceInterfaceDefault+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetDeviceInterfaceDefault](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetDeviceInterfaceDefault)  
+[SetupDiSetDeviceInterfacePropertyW](https://www.google.com/search?num=5&q=SetupDiSetDeviceInterfacePropertyW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetDeviceInterfaceProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetDeviceInterfaceProperty)  
+[SetupDiSetDevicePropertyW](https://www.google.com/search?num=5&q=SetupDiSetDevicePropertyW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetDeviceProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetDeviceProperty)  
+[SetupDiSetDeviceRegistryProperty](https://www.google.com/search?num=5&q=SetupDiSetDeviceRegistryPropertyA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetDeviceRegistryProperty](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetDeviceRegistryProperty)  
+[SetupDiSetDriverInstallParams](https://www.google.com/search?num=5&q=SetupDiSetDriverInstallParamsA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetDriverInstallParams](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetDriverInstallParams)  
+[SetupDiSetSelectedDevice](https://www.google.com/search?num=5&q=SetupDiSetSelectedDevice+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetSelectedDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetSelectedDevice)  
+[SetupDiSetSelectedDriver](https://www.google.com/search?num=5&q=SetupDiSetSelectedDriverA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetSelectedDriver](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetSelectedDriver)  
+[SetupDiUnremoveDevice](https://www.google.com/search?num=5&q=SetupDiUnremoveDevice+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiUnremoveDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiUnremoveDevice)  
 [SetupDuplicateDiskSpaceList](https://www.google.com/search?num=5&q=SetupDuplicateDiskSpaceListA+site%3Adocs.microsoft.com) |  |   
 [SetupEnumInfSections](https://www.google.com/search?num=5&q=SetupEnumInfSectionsA+site%3Adocs.microsoft.com) |  |   
 [SetupEnumPublishedInf](https://www.google.com/search?num=5&q=SetupEnumPublishedInfA+site%3Adocs.microsoft.com) |  |   
@@ -194,7 +196,7 @@ Native Method | Header | Managed Method
 [SetupLogFile](https://www.google.com/search?num=5&q=SetupLogFileA+site%3Adocs.microsoft.com) |  |   
 [SetupOpenAppendInfFile](https://www.google.com/search?num=5&q=SetupOpenAppendInfFileA+site%3Adocs.microsoft.com) |  |   
 [SetupOpenFileQueue](https://www.google.com/search?num=5&q=SetupOpenFileQueue+site%3Adocs.microsoft.com) |  |   
-[SetupOpenInfFile](https://www.google.com/search?num=5&q=SetupOpenInfFileA+site%3Adocs.microsoft.com) |  |   
+[SetupOpenInfFile](https://www.google.com/search?num=5&q=SetupOpenInfFileA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupOpenInfFile](https://github.com/dahall/Vanara/search?l=C%23&q=SetupOpenInfFile)  
 [SetupOpenLog](https://www.google.com/search?num=5&q=SetupOpenLog+site%3Adocs.microsoft.com) |  |   
 [SetupOpenMasterInf](https://www.google.com/search?num=5&q=SetupOpenMasterInf+site%3Adocs.microsoft.com) |  |   
 [SetupPrepareQueueForRestore](https://www.google.com/search?num=5&q=SetupPrepareQueueForRestoreA+site%3Adocs.microsoft.com) |  |   

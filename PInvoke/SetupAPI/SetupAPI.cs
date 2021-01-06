@@ -25,6 +25,7 @@ namespace Vanara.PInvoke
 		private const int MAX_SERVICE_NAME_LEN = 256;
 		private const int MAX_SUBTITLE_LEN = 256;
 		private const int MAX_TITLE_LEN = 60;
+
 		/// <summary>Define maximum length of a machine name in the format expected by ConfigMgr32 CM_Connect_Machine (i.e., "\\\\MachineName\0").</summary>
 		private const int SP_MAX_MACHINENAME_LENGTH = MAX_PATH + 3;
 
@@ -1291,6 +1292,50 @@ namespace Vanara.PInvoke
 			DI_UNREMOVEDEVICE_CONFIGSPECIFIC = 0x00000002
 		}
 
+		/// <summary>
+		/// Flags used to control exclusion of classes from the list. If no flags are specified, all setup classes are included in the list.
+		/// </summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiBuildClassInfoList")]
+		[Flags]
+		public enum DIBCI : uint
+		{
+			/// <summary>Exclude a class if it has the <c>NoInstallClass</c> value entry in its registry key.</summary>
+			DIBCI_NOINSTALLCLASS = 0x00000001,
+
+			/// <summary>Exclude a class if it has the <c>NoDisplayClass</c> value entry in its registry key.</summary>
+			DIBCI_NODISPLAYCLASS = 0x00000002
+		}
+
+		/// <summary>A variable that controls how the device information element is created.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiCreateDeviceInfoA")]
+		[Flags]
+		public enum DICD : uint
+		{
+			/// <summary>
+			/// If this flag is specified, DeviceName contains only a Root-enumerated device ID and the system uses that ID to generate a
+			/// full device instance ID for the new device information element.
+			/// </summary>
+			DICD_GENERATE_ID = 0x00000001,
+
+			/// <summary>
+			/// If this flag is specified, the resulting device information element inherits the class driver list, if any, associated with
+			/// the device information set. In addition, if there is a selected driver for the device information set, that same driver is
+			/// selected for the new device information element.
+			/// </summary>
+			DICD_INHERIT_CLASSDRVS = 0x00000002
+		}
+
+		/// <summary>Specifies whether the class is a device setup class or a device interface class.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassPropertyW")]
+		public enum DICLASSPROP
+		{
+			/// <para>ClassGuid specifies a device setup class. This flag cannot be used with DICLASSPROP_INTERFACE.</para>
+			DICLASSPROP_INSTALLER = 0x00000001,
+
+			/// <para>ClassGuid specifies a device interface class. This flag cannot be used with DICLASSPROP_INSTALLER.</para>
+			DICLASSPROP_INTERFACE = 0x00000002,
+		}
+
 		/// <summary>State change action.</summary>
 		[PInvokeData("setupapi.h", MSDNShortId = "NS:setupapi._SP_PROPCHANGE_PARAMS")]
 		public enum DICS : uint
@@ -1365,6 +1410,38 @@ namespace Vanara.PInvoke
 			DICS_FLAG_CONFIGGENERAL = 0x00000004,
 		}
 
+		/// <summary>A flag value that indicates how the requested information should be returned.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetCustomDevicePropertyA")]
+		[Flags]
+		public enum DICUSTOMDEVPROP : uint
+		{
+			/// <summary>
+			/// If set, the function retrieves both device instance-specific property values and hardware ID-specific property values,
+			/// concatenated as a REG_MULTI_SZ-typed string. (For more information, see the <c>Remarks</c> section on this reference page.)
+			/// </summary>
+			DICUSTOMDEVPROP_MERGE_MULTISZ = 0x00000001
+		}
+
+		/// <summary>A flag that indicates one of the following types of property sheets.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassDevPropertySheetsA")]
+		public enum DIGCDP_FLAG
+		{
+			/// <summary>
+			/// Basic property sheets. Supported only in Microsoft Windows 95 and Windows 98. Do not use in Windows 2000 and later versions
+			/// of Windows.
+			/// </summary>
+			DIGCDP_FLAG_BASIC = 0x00000001,
+
+			/// <summary>Advanced property sheets.</summary>
+			DIGCDP_FLAG_ADVANCED = 0x00000002,
+
+			/// <summary>Not implemented.</summary>
+			DIGCDP_FLAG_REMOTE_BASIC = 0x00000003,
+
+			/// <summary>Advanced property sheets on a remote computer.</summary>
+			DIGCDP_FLAG_REMOTE_ADVANCED = 0x00000004,
+		}
+
 		/// <summary>Specifies control options that filter the device information elements that are added to the device information set.</summary>
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassDevsW")]
 		[Flags]
@@ -1390,6 +1467,85 @@ namespace Vanara.PInvoke
 			/// parameter if the Enumerator parameter specifies a device instance ID.
 			/// </summary>
 			DIGCF_DEVICEINTERFACE = 0x00000010,
+		}
+
+		/// <summary>The type of registry key to be opened.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiOpenClassRegKeyExA")]
+		public enum DIOCR : uint
+		{
+			/// <summary>Open a setup class key. If ClassGuid is <c>NULL</c>, open the root key of the class installer branch.</summary>
+			DIOCR_INSTALLER = 0x00000001,
+
+			/// <summary>Open an interface class key. If ClassGuid is <c>NULL</c>, open the root key of the interface class branch.</summary>
+			DIOCR_INTERFACE = 0x00000002
+		}
+
+		/// <summary>Controls how the device information element is opened.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiOpenDeviceInfoA")]
+		[Flags]
+		public enum DIOD : uint
+		{
+			/// <summary>
+			/// <para>
+			/// If this flag is specified, the resulting device information element inherits the class driver list, if any, associated with
+			/// the device information set. In addition, if there is a selected driver for the device information set, that same driver is
+			/// selected for the new device information element.
+			/// </para>
+			/// <para>
+			/// If the device information element was already present, its class driver list, if any, is replaced with the inherited list.
+			/// </para>
+			/// </summary>
+			DIOD_INHERIT_CLASSDRVS = 0x00000002,
+
+			/// <summary>
+			/// If this flag is specified and the device had been marked for pending removal, the operating system cancels the pending removal.
+			/// </summary>
+			DIOD_CANCEL_REMOVE = 0x00000004
+		}
+
+		/// <summary>Flags that determine how the device interface element is to be opened.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiOpenDeviceInterfaceW")]
+		[Flags]
+		public enum DIODI : uint
+		{
+			/// <summary>
+			/// Specifies that the device information element for the underlying device will not be created if that element is not already
+			/// present in the specified device information set. For more information, see the following <c>Remarks</c> section.
+			/// </summary>
+			DIODI_NO_ADD = 0x00000001,
+		}
+
+		/// <summary>The type of registry storage key to create.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiCreateDevRegKeyA")]
+		[Flags]
+		public enum DIREG : uint
+		{
+			/// <summary>Create a hardware key for the device.</summary>
+			DIREG_DEV = 0x00000001,
+
+			/// <summary>Create a software key for the device.</summary>
+			DIREG_DRV = 0x00000002,
+
+			/// <summary>Create both a software and hardware key for the device.</summary>
+			DIREG_BOTH = 0x00000004,
+		}
+
+		/// <summary>These flags control the drawing operation.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiDrawMiniIcon")]
+		[Flags]
+		public enum DMI : uint
+		{
+			/// <summary>Draw the mini-icon's mask into HDC.</summary>
+			DMI_MASK = 0x00000001,
+
+			/// <summary>
+			/// Use the system color index specified in the HIWORD of Flags as the background color. If this flag is not set, COLOR_WINDOW
+			/// is used.
+			/// </summary>
+			DMI_BKCOLOR = 0x00000002,
+
+			/// <summary>If set, <c>SetupDiDrawMiniIcon</c> uses the supplied rectangle and stretches the icon to fit.</summary>
+			DMI_USERECT = 0x00000004,
 		}
 
 		/// <summary>Flags that control functions operating on this driver.</summary>
@@ -1670,6 +1826,54 @@ namespace Vanara.PInvoke
 			SCWMI_CLOBBER_SECURITY = 0x00000001
 		}
 
+		/// <summary>A value that identifies the property to be retrieved.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassRegistryPropertyA")]
+		public enum SPCRP
+		{
+			/// <summary>
+			/// (Windows Vista and later) The function returns a REG_MULTI_SZ list of the service names of the upper filter drivers that are
+			/// installed for the device setup class.
+			/// </summary>
+			SPCRP_UPPERFILTERS = 0x00000011,
+
+			/// <summary>
+			/// (Windows Vista and later) The function returns a REG_MULTI_SZ list of the service names of the lower filter drivers that are
+			/// installed for the device setup class.
+			/// </summary>
+			SPCRP_LOWERFILTERS = 0x00000012,
+
+			/// <summary>
+			/// The function returns the device's security descriptor as a SECURITY_DESCRIPTOR structure in self-relative format (described
+			/// in the Microsoft Windows SDK documentation).
+			/// </summary>
+			SPCRP_SECURITY = 0x00000017,
+
+			/// <summary>
+			/// The function returns the device's security descriptor as a text string. For information about security descriptor strings,
+			/// see Security Descriptor Definition Language (Windows). For information about the format of security descriptor strings, see
+			/// Security Descriptor Definition Language (Windows).
+			/// </summary>
+			SPCRP_SECURITY_SDS = 0x00000018,
+
+			/// <summary>
+			/// The function returns a DWORD value that represents the device type for the class. For more information, see Specifying
+			/// Device Types.
+			/// </summary>
+			SPCRP_DEVTYPE = 0x00000019,
+
+			/// <summary>
+			/// The function returns a DWORD value indicating whether users can obtain exclusive access to devices for this class. The
+			/// returned value is one if exclusive access is allowed, or zero otherwise.
+			/// </summary>
+			SPCRP_EXCLUSIVE = 0x0000001A,
+
+			/// <summary>
+			/// The function returns flags indicating device characteristics for the class. For a list of characteristics flags, see the
+			/// DeviceCharacteristics parameter to IoCreateDevice.
+			/// </summary>
+			SPCRP_CHARACTERISTICS = 0x0000001B,
+		}
+
 		/// <summary>The type of driver represented by this structure.</summary>
 		[PInvokeData("setupapi.h", MSDNShortId = "NS:setupapi._SP_DRVINFO_DATA_V2_A")]
 		public enum SPDIT : uint
@@ -1682,6 +1886,210 @@ namespace Vanara.PInvoke
 
 			/// <summary>This structure represents a compatible driver.</summary>
 			SPDIT_COMPATDRIVER = 0x00000002,
+		}
+
+		/// <summary>Specifies the property to be retrieved or set.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDeviceRegistryPropertyA")]
+		public enum SPDRP
+		{
+			/// <summary>The function retrieves the device's address.</summary>
+			SPDRP_ADDRESS = 0x0000001C,
+
+			/// <summary>The function retrieves the device's bus number.</summary>
+			SPDRP_BUSNUMBER = 0x00000015,
+
+			/// <summary>The function retrieves the GUID for the device's bus type.</summary>
+			SPDRP_BUSTYPEGUID = 0x00000013,
+
+			/// <summary>
+			/// The function retrieves a bitwise OR of the following CM_DEVCAP_Xxx flags in a DWORD. The device capabilities that are
+			/// represented by these flags correspond to the device capabilities that are represented by the members of the
+			/// DEVICE_CAPABILITIES structure. The CM_DEVCAP_Xxx constants are defined in Cfgmgr32.h.
+			/// <list type="table">
+			/// <listheader>
+			/// <term>CM_DEVCAP_Xxx flag</term>
+			/// <term>Corresponding DEVICE_CAPABILITIES structure member</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CM_DEVCAP_LOCKSUPPORTED</term>
+			/// <term>LockSupported</term>
+			/// </item>
+			/// <item>
+			/// <term>CM_DEVCAP_EJECTSUPPORTED</term>
+			/// <term>EjectSupported</term>
+			/// </item>
+			/// <item>
+			/// <term>CM_DEVCAP_REMOVABLE</term>
+			/// <term>Removable</term>
+			/// </item>
+			/// <item>
+			/// <term>CM_DEVCAP_DOCKDEVICE</term>
+			/// <term>DockDevice</term>
+			/// </item>
+			/// <item>
+			/// <term>CM_DEVCAP_UNIQUEID</term>
+			/// <term>UniqueID</term>
+			/// </item>
+			/// <item>
+			/// <term>CM_DEVCAP_SILENTINSTALL</term>
+			/// <term>SilentInstall</term>
+			/// </item>
+			/// <item>
+			/// <term>CM_DEVCAP_RAWDEVICEOK</term>
+			/// <term>RawDeviceOK</term>
+			/// </item>
+			/// <item>
+			/// <term>CM_DEVCAP_SURPRISEREMOVALOK</term>
+			/// <term>SurpriseRemovalOK</term>
+			/// </item>
+			/// <item>
+			/// <term>CM_DEVCAP_HARDWAREDISABLED</term>
+			/// <term>HardwareDisabled</term>
+			/// </item>
+			/// <item>
+			/// <term>CM_DEVCAP_NONDYNAMIC</term>
+			/// <term>NonDynamic</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			SPDRP_CAPABILITIES = 0x0000000F,
+
+			/// <summary>
+			/// The function retrieves a bitwise OR of a device's characteristics flags in a DWORD. For a description of these flags, which
+			/// are defined in Wdm.h and Ntddk.h, see the DeviceCharacteristics parameter of the IoCreateDevice function.
+			/// </summary>
+			SPDRP_CHARACTERISTICS = 0x0000001B,
+
+			/// <summary>The function retrieves a REG_SZ string that contains the device setup class of a device.</summary>
+			SPDRP_CLASS = 0x00000007,
+
+			/// <summary>The function retrieves a REG_SZ string that contains the GUID that represents the device setup class of a device.</summary>
+			SPDRP_CLASSGUID = 0x00000008,
+
+			/// <summary>
+			/// The function retrieves a REG_MULTI_SZ string that contains the list of compatible IDs for a device. For information about
+			/// compatible IDs, see Device Identification Strings.
+			/// </summary>
+			SPDRP_COMPATIBLEIDS = 0x00000002,
+
+			/// <summary>
+			/// The function retrieves a bitwise OR of a device's configuration flags in a DWORD value. The configuration flags are
+			/// represented by the CONFIGFLAG_Xxx bitmasks that are defined in Regstr.h.
+			/// </summary>
+			SPDRP_CONFIGFLAGS = 0x0000000A,
+
+			/// <summary>
+			/// (Windows XP and later) The function retrieves a CM_POWER_DATA structure that contains the device's power management information.
+			/// </summary>
+			SPDRP_DEVICE_POWER_DATA = 0x0000001E,
+
+			/// <summary>The function retrieves a REG_SZ string that contains the description of a device.</summary>
+			SPDRP_DEVICEDESC = 0x00000000,
+
+			/// <summary>
+			/// The function retrieves a DWORD value that represents the device's type. For more information, see Specifying Device Types.
+			/// </summary>
+			SPDRP_DEVTYPE = 0x00000019,
+
+			/// <summary>
+			/// The function retrieves a string that identifies the device's software key (sometimes called the driver key). For more
+			/// information about driver keys, see Registry Trees and Keys for Devices and Drivers.
+			/// </summary>
+			SPDRP_DRIVER = 0x00000009,
+
+			/// <summary>The function retrieves a REG_SZ string that contains the name of the device's enumerator.</summary>
+			SPDRP_ENUMERATOR_NAME = 0x00000016,
+
+			/// <summary>
+			/// The function retrieves a DWORD value that indicates whether a user can obtain exclusive use of the device. The returned
+			/// value is one if exclusive use is allowed, or zero otherwise. For more information, see IoCreateDevice.
+			/// </summary>
+			SPDRP_EXCLUSIVE = 0x0000001A,
+
+			/// <summary>The function retrieves a REG_SZ string that contains the friendly name of a device.</summary>
+			SPDRP_FRIENDLYNAME = 0x0000000C,
+
+			/// <summary>
+			/// The function retrieves a REG_MULTI_SZ string that contains the list of hardware IDs for a device. For information about
+			/// hardware IDs, see Device Identification Strings.
+			/// </summary>
+			SPDRP_HARDWAREID = 0x00000001,
+
+			/// <summary>
+			/// (Windows XP and later) The function retrieves a DWORD value that indicates the installation state of a device. The
+			/// installation state is represented by one of the CM_INSTALL_STATE_Xxx values that are defined in Cfgmgr32.h. The
+			/// CM_INSTALL_STATE_Xxx values correspond to the DEVICE_INSTALL_STATE enumeration values.
+			/// </summary>
+			SPDRP_INSTALL_STATE = 0x00000022,
+
+			/// <summary>The function retrieves the device's legacy bus type as an INTERFACE_TYPE value (defined in Wdm.h and Ntddk.h).</summary>
+			SPDRP_LEGACYBUSTYPE = 0x00000014,
+
+			/// <summary>The function retrieves a REG_SZ string that contains the hardware location of a device.</summary>
+			SPDRP_LOCATION_INFORMATION = 0x0000000D,
+
+			/// <summary>
+			/// (Windows Server 2003 and later) The function retrieves a REG_MULTI_SZ string that represents the location of the device in
+			/// the device tree.
+			/// </summary>
+			SPDRP_LOCATION_PATHS = 0x00000023,
+
+			/// <summary>The function retrieves a REG_MULTI_SZ string that contains the names of a device's lower-filter drivers.</summary>
+			SPDRP_LOWERFILTERS = 0x00000012,
+
+			/// <summary>The function retrieves a REG_SZ string that contains the name of the device manufacturer.</summary>
+			SPDRP_MFG = 0x0000000B,
+
+			/// <summary>
+			/// The function retrieves a REG_SZ string that contains the name that is associated with the device's PDO. For more
+			/// information, see IoCreateDevice.
+			/// </summary>
+			SPDRP_PHYSICAL_DEVICE_OBJECT_NAME = 0x0000000E,
+
+			/// <summary>
+			/// (Windows XP and later) The function retrieves the device's current removal policy as a DWORD that contains one of the
+			/// CM_REMOVAL_POLICY_Xxx values that are defined in Cfgmgr32.h.
+			/// </summary>
+			SPDRP_REMOVAL_POLICY = 0x0000001F,
+
+			/// <summary>
+			/// (Windows XP and later) The function retrieves the device's hardware-specified default removal policy as a DWORD that
+			/// contains one of the CM_REMOVAL_POLICY_Xxx values that are defined in Cfgmgr32.h.
+			/// </summary>
+			SPDRP_REMOVAL_POLICY_HW_DEFAULT = 0x00000020,
+
+			/// <summary>
+			/// (Windows XP and later) The function retrieves the device's override removal policy (if it exists) from the registry, as a
+			/// DWORD that contains one of the CM_REMOVAL_POLICY_Xxx values that are defined in Cfgmgr32.h.
+			/// </summary>
+			SPDRP_REMOVAL_POLICY_OVERRIDE = 0x00000021,
+
+			/// <summary>The function retrieves a SECURITY_DESCRIPTOR structure for a device.</summary>
+			SPDRP_SECURITY = 0x00000017,
+
+			/// <summary>
+			/// The function retrieves a REG_SZ string that contains the device's security descriptor. For information about security
+			/// descriptor strings, see Security Descriptor Definition Language (Windows). For information about the format of security
+			/// descriptor strings, see Security Descriptor Definition Language (Windows).
+			/// </summary>
+			SPDRP_SECURITY_SDS = 0x00000018,
+
+			/// <summary>The function retrieves a REG_SZ string that contains the service name for a device.</summary>
+			SPDRP_SERVICE = 0x00000004,
+
+			/// <summary>
+			/// The function retrieves a DWORD value set to the value of the <c>UINumber</c> member of the device's DEVICE_CAPABILITIES structure.
+			/// </summary>
+			SPDRP_UI_NUMBER = 0x00000010,
+
+			/// <summary>The function retrieves a format string (REG_SZ) used to display the <c>UINumber</c> value.</summary>
+			SPDRP_UI_NUMBER_DESC_FORMAT = 0x0000001D,
+
+			/// <summary>The function retrieves a REG_MULTI_SZ string that contains the names of a device's upper filter drivers.</summary>
+			SPDRP_UPPERFILTERS = 0x00000011,
+
+			/// <summary>Base ContainerID (R)</summary>
+			SPDRP_BASE_CONTAINERID = 0x00000024,
 		}
 
 		/// <summary>Flags for <see cref="SetupCreateDiskSpaceList"/>.</summary>
@@ -1828,6 +2236,18 @@ namespace Vanara.PInvoke
 			/// component that supplied page(s) in response to a DIF_ADDPROPERTYPAGE_ADVANCED installation request.
 			/// </summary>
 			SPPSR_ENUM_ADV_DEVICE_PROPERTIES,
+		}
+
+		/// <summary>A flag value that controls how the device is registered.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiRegisterDeviceInfo")]
+		[Flags]
+		public enum SPRDI : uint
+		{
+			/// <summary>
+			/// Search for a previously-existing device instance that corresponds to the device that is represented by DeviceInfoData. If
+			/// this flag is not specified, the device instance is registered regardless of whether a device instance already exists for it.
+			/// </summary>
+			SPRDI_FIND_DUPS = 0x00000001
 		}
 
 		/// <summary>
@@ -2354,6 +2774,7 @@ namespace Vanara.PInvoke
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
 		}
+
 		/// <summary>
 		/// The <c>INFCONTEXT</c> structure stores context information that functions such as SetupGetLineText use to navigate INF files.
 		/// </summary>
