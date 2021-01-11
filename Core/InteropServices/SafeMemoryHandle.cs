@@ -84,6 +84,12 @@ namespace Vanara.InteropServices
 		/// <returns>An <see cref="IntPtr"/> to the internally held memory.</returns>
 		IntPtr DangerousGetHandle();
 
+		/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
+		/// <param name="startIndex">The start index.</param>
+		/// <param name="count">The number of bytes to retrieve.</param>
+		/// <returns>A byte array with the copied bytes.</returns>
+		public byte[] GetBytes(int startIndex, int count);
+
 		/// <summary>
 		/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
 		/// call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note>
