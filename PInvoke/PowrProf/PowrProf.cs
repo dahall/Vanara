@@ -64,66 +64,6 @@ namespace Vanara.PInvoke
 			EnableWakeOnRing = 0x08,
 		}
 
-		/// <summary>Flags for <see cref="DevicePowerEnumDevices"/>.</summary>
-		[PInvokeData("powrprof.h", MSDNShortId = "bb67634c-69d9-4194-ac27-4f9740d73a1a")]
-		[Flags]
-		public enum PDCAP : uint
-		{
-			/// <summary>The device supports system power state D0.</summary>
-			PDCAP_D0_SUPPORTED = 0x00000001,
-
-			/// <summary>The device supports system power state D1.</summary>
-			PDCAP_D1_SUPPORTED = 0x00000002,
-
-			/// <summary>The device supports system power state D2.</summary>
-			PDCAP_D2_SUPPORTED = 0x00000004,
-
-			/// <summary>The device supports system power state D3.</summary>
-			PDCAP_D3_SUPPORTED = 0x00000008,
-
-			/// <summary>The device supports system sleep state S0.</summary>
-			PDCAP_S0_SUPPORTED = 0x00010000,
-
-			/// <summary>The device supports system sleep state S1.</summary>
-			PDCAP_S1_SUPPORTED = 0x00020000,
-
-			/// <summary>The device supports system sleep state S2.</summary>
-			PDCAP_S2_SUPPORTED = 0x00040000,
-
-			/// <summary>The device supports system sleep state S3.</summary>
-			PDCAP_S3_SUPPORTED = 0x00080000,
-
-			/// <summary>The device supports system sleep state S4.</summary>
-			PDCAP_S4_SUPPORTED = 0x01000000,
-
-			/// <summary>The device supports system sleep state S5.</summary>
-			PDCAP_S5_SUPPORTED = 0x02000000,
-
-			/// <summary>The device supports waking from system power state D0.</summary>
-			PDCAP_WAKE_FROM_D0_SUPPORTED = 0x00000010,
-
-			/// <summary>The device supports waking from system power state D1.</summary>
-			PDCAP_WAKE_FROM_D1_SUPPORTED = 0x00000020,
-
-			/// <summary>The device supports waking from system power state D2.</summary>
-			PDCAP_WAKE_FROM_D2_SUPPORTED = 0x00000040,
-
-			/// <summary>The device supports waking from system power state D3.</summary>
-			PDCAP_WAKE_FROM_D3_SUPPORTED = 0x00000080,
-
-			/// <summary>The device supports waking from system sleep state S0.</summary>
-			PDCAP_WAKE_FROM_S0_SUPPORTED = 0x00100000,
-
-			/// <summary>The device supports waking from system sleep state S1.</summary>
-			PDCAP_WAKE_FROM_S1_SUPPORTED = 0x00200000,
-
-			/// <summary>The device supports waking from system sleep state S2.</summary>
-			PDCAP_WAKE_FROM_S2_SUPPORTED = 0x00400000,
-
-			/// <summary>The device supports waking from system sleep state S3.</summary>
-			PDCAP_WAKE_FROM_S3_SUPPORTED = 0x00800000,
-		}
-
 		/// <summary>
 		/// These flags tell us how to interpret a query of device power. Use these (or a combination of these) for the
 		/// QueryInterpretationFlags parameter sent into DevicePowerEnumDevices().
@@ -276,66 +216,6 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			ACCESS_ACTIVE_OVERLAY_SCHEME,
-		}
-
-		/// <summary>
-		/// <para>The <c>SYSTEM_POWER_STATE</c> enumeration type is used to indicate a system power state.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// A power state indicates the level of power consumption—and thus the extent of computing activity—by the system or by a single
-		/// device. The power manager sets the power state of the system as a whole, where the system power state is indicated by one of the
-		/// values of the <c>SYSTEM_POWER_STATE</c> enumeration type. Device drivers set the power state of their individual devices, where
-		/// the device power state is indicated by one of the values of the DEVICE_POWER_STATE enumeration type.
-		/// </para>
-		/// <para>
-		/// For more information about system power states, see Handling System Power State Requests and for more information about device
-		/// power states, see Managing Power for Individual Devices.
-		/// </para>
-		/// <para>For more information about power management in general, see Introduction to Power Management.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ne-wdm-_system_power_state typedef enum
-		// _SYSTEM_POWER_STATE { PowerSystemUnspecified, PowerSystemWorking, PowerSystemSleeping1, PowerSystemSleeping2,
-		// PowerSystemSleeping3, PowerSystemHibernate, PowerSystemShutdown, PowerSystemMaximum } SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
-		[PInvokeData("wdm.h", MSDNShortId = "aa027f03-7d74-4c0e-8f62-d53f41ae86ae")]
-		public enum SYSTEM_POWER_STATE
-		{
-			/// <summary>Indicates an unspecified system power state.</summary>
-			PowerSystemUnspecified,
-
-			/// <summary>Indicates maximum system power, which corresponds to system working state S0.</summary>
-			PowerSystemWorking,
-
-			/// <summary>
-			/// Indicates a system sleeping state less than PowerSystemWorking and greater than PowerSystemSleeping2, which corresponds to
-			/// system power state S1.
-			/// </summary>
-			PowerSystemSleeping1,
-
-			/// <summary>
-			/// Indicates a system sleeping state less than PowerSystemSleeping1 and greater than PowerSystemSleeping3, which corresponds to
-			/// system power state S2.
-			/// </summary>
-			PowerSystemSleeping2,
-
-			/// <summary>
-			/// Indicates a system sleeping state less than PowerSystemSleeping2 and greater than PowerSystemHibernate, which corresponds to
-			/// system power state S3.
-			/// </summary>
-			PowerSystemSleeping3,
-
-			/// <summary>Indicates the lowest-powered sleeping state, which corresponds to system power state S4.</summary>
-			PowerSystemHibernate,
-
-			/// <summary>Indicates the system is turned off, which corresponds to system shutdown state S5.</summary>
-			PowerSystemShutdown,
-
-			/// <summary>
-			/// The number of system power state values for this enumeration type that represents actual power states. This value is the
-			/// number of elements in the DeviceState member of the DEVICE_CAPABILITIES structure for a device. The other system power state
-			/// values are less than this value.
-			/// </summary>
-			PowerSystemMaximum,
 		}
 
 		/// <summary>
