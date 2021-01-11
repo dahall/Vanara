@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Security.Permissions;
-using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Collections;
@@ -113,8 +111,8 @@ namespace Vanara.Extensions
 
 		/// <summary>
 		/// Fills the memory with a particular byte value. <note type="warning">This is a very dangerous function that can cause memory
-		/// access errors if the provided <paramref name="length"/> is bigger than allocated memory of if the <paramref name="ptr"/> is not a
-		/// valid memory pointer.</note>
+		/// access errors if the provided <paramref name="length"/> is bigger than allocated memory of if the <paramref name="ptr"/> is not
+		/// a valid memory pointer.</note>
 		/// </summary>
 		/// <param name="ptr">The allocated memory pointer.</param>
 		/// <param name="value">The byte value with which to fill the memory.</param>
@@ -199,7 +197,7 @@ namespace Vanara.Extensions
 		/// <returns><see langword="true"/> if the specified type is marshalable; otherwise, <see langword="false"/>.</returns>
 		public static bool IsMarshalable(this Type type)
 		{
-			var t = type.IsNullable() ? type.GetGenericArguments()[0] : type;
+			Type t = type.IsNullable() ? type.GetGenericArguments()[0] : type;
 			return t.IsSerializable || VanaraMarshaler.CanMarshal(t, out _) || t.IsBlittable();
 		}
 
@@ -215,9 +213,9 @@ namespace Vanara.Extensions
 		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the linked list.</returns>
 		public static IEnumerable<T> LinkedListToIEnum<T>(this IntPtr ptr, Func<T, IntPtr> next)
 		{
-			for (var pCurrent = ptr; pCurrent != IntPtr.Zero;)
+			for (IntPtr pCurrent = ptr; pCurrent != IntPtr.Zero;)
 			{
-				var ret = pCurrent.ToStructure<T>();
+				T ret = pCurrent.ToStructure<T>();
 				yield return ret;
 				pCurrent = next(ret);
 			}
@@ -233,10 +231,10 @@ namespace Vanara.Extensions
 		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the linked list.</returns>
 		public static IEnumerable<T> LinkedListToIEnum<T>(this IntPtr ptr, Func<T, long> nextOffset, SizeT allocatedBytes)
 		{
-			var pEnd = ptr.Offset(allocatedBytes);
-			for (var pCurrent = ptr; pCurrent.ToInt64() < pEnd.ToInt64();)
+			IntPtr pEnd = ptr.Offset(allocatedBytes);
+			for (IntPtr pCurrent = ptr; pCurrent.ToInt64() < pEnd.ToInt64();)
 			{
-				var ret = pCurrent.ToStructure<T>();
+				T ret = pCurrent.ToStructure<T>();
 				yield return ret;
 				pCurrent = pCurrent.Offset(nextOffset(ret));
 			}
@@ -256,14 +254,16 @@ namespace Vanara.Extensions
 		/// </param>
 		/// <param name="charSet">The character set to use for strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the allocated objects.</param>
-		/// <returns>Pointer to the allocated native (unmanaged) array of objects stored using the character set defined by <paramref name="charSet"/>.</returns>
+		/// <returns>
+		/// Pointer to the allocated native (unmanaged) array of objects stored using the character set defined by <paramref name="charSet"/>.
+		/// </returns>
 		public static IntPtr MarshalObjectsToPtr(this IEnumerable<object> values, Func<int, IntPtr> memAlloc, out int bytesAllocated, bool referencePointers = false, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
 		{
 			// Bail early if empty
 			if (values is null || !values.Any())
 			{
 				bytesAllocated = prefixBytes + IntPtr.Size;
-				var ret = memAlloc(bytesAllocated);
+				IntPtr ret = memAlloc(bytesAllocated);
 				ret.FillMemory(0, bytesAllocated);
 				return ret;
 			}
@@ -284,7 +284,7 @@ namespace Vanara.Extensions
 
 				// Copy to newly allocated memory using memAlloc
 				bytesAllocated = (int)ms.Length;
-				var ret = memAlloc(bytesAllocated);
+				IntPtr ret = memAlloc(bytesAllocated);
 				ms.Pointer.CopyTo(ret, bytesAllocated);
 				return ret;
 			}
@@ -297,8 +297,8 @@ namespace Vanara.Extensions
 		/// </typeparam>
 		/// <param name="items">The enumerated list of items to marshal.</param>
 		/// <param name="ptr">
-		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of
-		/// <typeparamref name="T"/> times the number of items in the enumeration plus the number of bytes specified by <paramref name="prefixBytes"/>.
+		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of <typeparamref
+		/// name="T"/> times the number of items in the enumeration plus the number of bytes specified by <paramref name="prefixBytes"/>.
 		/// </param>
 		/// <param name="prefixBytes">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
 		[Obsolete("Please use the Vanara.Extensions.InteropExtensions.Write method instead. This will be removed from the library shortly as it performs no allocation.", true)]
@@ -323,10 +323,10 @@ namespace Vanara.Extensions
 		public static IntPtr MarshalToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null)
 		{
 			memLock ??= Passthrough;
-			if (VanaraMarshaler.CanMarshal(typeof(T), out var marshaler))
+			if (VanaraMarshaler.CanMarshal(typeof(T), out IVanaraMarshaler marshaler))
 			{
-				using var mem = marshaler.MarshalManagedToNative(value);
-				var ret = memAlloc(bytesAllocated = mem.Size + prefixBytes);
+				using SafeAllocatedMemoryHandle mem = marshaler.MarshalManagedToNative(value);
+				IntPtr ret = memAlloc(bytesAllocated = mem.Size + prefixBytes);
 				mem.DangerousGetHandle().CopyTo(memLock(ret).Offset(prefixBytes), mem.Size);
 				memUnlock?.Invoke(ret);
 				return ret;
@@ -335,14 +335,12 @@ namespace Vanara.Extensions
 			{
 				var newVal = TrueValue(value, out bytesAllocated);
 				bytesAllocated += prefixBytes;
-				var ret = memAlloc(bytesAllocated);
+				IntPtr ret = memAlloc(bytesAllocated);
 				Write(memLock(ret), newVal, prefixBytes, bytesAllocated);
 				memUnlock?.Invoke(ret);
 				return ret;
 			}
 		}
-
-		private static IntPtr Passthrough(IntPtr p) => p;
 
 		/// <summary>
 		/// Marshals data from a managed list of specified type to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
@@ -375,7 +373,7 @@ namespace Vanara.Extensions
 
 			var sz = Marshal.SizeOf(typeof(T));
 			bytesAllocated += sz * count;
-			var result = memAlloc(bytesAllocated);
+			IntPtr result = memAlloc(bytesAllocated);
 			memLock(result).Write(items, prefixBytes, bytesAllocated);
 			memUnlock?.Invoke(result);
 
@@ -432,40 +430,21 @@ namespace Vanara.Extensions
 			if (values is null || !values.Any())
 			{
 				bytesAllocated = prefixBytes + (packing == StringListPackMethod.Concatenated ? StringHelper.GetCharSize(charSet) : IntPtr.Size);
-				var ret = memAlloc(bytesAllocated);
-				memLock(ret).FillMemory(0, bytesAllocated);
-				memUnlock?.Invoke(ret);
-				return ret;
+				IntPtr nret = memAlloc(bytesAllocated);
+				memLock(nret).FillMemory(0, bytesAllocated);
+				memUnlock?.Invoke(nret);
+				return nret;
 			}
 
 			// Write to memory stream
-			using (var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet })
-			{
-				ms.SetLength(ms.Position = prefixBytes);
-				if (packing == StringListPackMethod.Packed)
-				{
-					foreach (var s in values)
-						ms.WriteReference(s);
-					ms.WriteReference(null);
-				}
-				else
-				{
-					foreach (var s in values)
-					{
-						if (string.IsNullOrEmpty(s)) throw new ArgumentException("Concatenated string arrays cannot contain empty or null strings.");
-						ms.Write(s);
-					}
-					ms.Write("");
-				}
-				ms.Flush();
+			using var ms = StringsToStream(values, packing, charSet, prefixBytes);
 
-				// Copy to newly allocated memory using memAlloc
-				bytesAllocated = (int)ms.Length;
-				var ret = memAlloc(bytesAllocated);
-				ms.Pointer.CopyTo(memLock(ret), bytesAllocated);
-				memUnlock?.Invoke(ret);
-				return ret;
-			}
+			// Copy to newly allocated memory using memAlloc
+			bytesAllocated = (int)ms.Length;
+			IntPtr ret = memAlloc(bytesAllocated);
+			ms.Pointer.CopyTo(memLock(ret), bytesAllocated);
+			memUnlock?.Invoke(ret);
+			return ret;
 		}
 
 		/// <summary>
@@ -504,7 +483,7 @@ namespace Vanara.Extensions
 		/// <returns>An HRESULT that indicates the success or failure of the call.</returns>
 		public static int QueryInterface(object iUnk, Guid iid, out object ppv)
 		{
-			var hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref iid, out var ippv);
+			var hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref iid, out IntPtr ippv);
 			ppv = hr == 0 ? Marshal.GetObjectForIUnknown(ippv) : null;
 			return hr;
 		}
@@ -521,7 +500,7 @@ namespace Vanara.Extensions
 		/// <exception cref="ArgumentException">Unable to get size of type. - type</exception>
 		public static SizeT SizeOf(Type type)
 		{
-			if (VanaraMarshaler.CanMarshal(type, out var marshaler))
+			if (VanaraMarshaler.CanMarshal(type, out IVanaraMarshaler marshaler))
 				return marshaler.GetNativeSize();
 			return type.IsEnum ? Marshal.SizeOf(Enum.GetUnderlyingType(type)) : Marshal.SizeOf(type);
 		}
@@ -561,7 +540,7 @@ namespace Vanara.Extensions
 			if (type is null) throw new ArgumentNullException(nameof(type));
 			if (ptr == IntPtr.Zero) return null;
 			var ret = Array.CreateInstance(type, count); // new object[count];
-			var stSize = SizeOf(type);
+			SizeT stSize = SizeOf(type);
 			if (allocatedBytes > 0 && stSize * count + prefixBytes > allocatedBytes)
 				throw new InsufficientMemoryException();
 			if (allocatedBytes == default) allocatedBytes = uint.MaxValue;
@@ -599,7 +578,7 @@ namespace Vanara.Extensions
 		public static string ToInsecureString(this SecureString s)
 		{
 			if (s == null) return null;
-			var p = IntPtr.Zero;
+			IntPtr p = IntPtr.Zero;
 			try
 			{
 				p = Marshal.SecureStringToCoTaskMemUnicode(s);
@@ -673,7 +652,8 @@ namespace Vanara.Extensions
 		}
 
 		/// <summary>
-		/// Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length <paramref name="count"/>.
+		/// Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length
+		/// <paramref name="count"/>.
 		/// </summary>
 		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
 		/// <param name="count">The count of expected strings.</param>
@@ -688,14 +668,14 @@ namespace Vanara.Extensions
 				throw new InsufficientMemoryException();
 			for (var i = 0; i < count; i++)
 			{
-				var sptr = Marshal.ReadIntPtr(ptr.Offset(prefixBytes + i * IntPtr.Size));
+				IntPtr sptr = Marshal.ReadIntPtr(ptr.Offset(prefixBytes + i * IntPtr.Size));
 				yield return StringHelper.GetString(sptr, charSet);
 			}
 		}
 
 		/// <summary>
-		/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and
-		/// is terminated by two '\0' characters.
+		/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
+		/// and is terminated by two '\0' characters.
 		/// </summary>
 		/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
 		/// <param name="charSet">The character set of the strings.</param>
@@ -708,9 +688,9 @@ namespace Vanara.Extensions
 			var charLength = StringHelper.GetCharSize(charSet);
 			var i = prefixBytes;
 			if (allocatedBytes == 0) allocatedBytes = SizeT.MaxValue;
-			for (var ptr = lptr.Offset(i); i + charLength <= allocatedBytes && GetCh(ptr) != 0; i += charLength, ptr = lptr.Offset(i))
+			for (IntPtr ptr = lptr.Offset(i); i + charLength <= allocatedBytes && GetCh(ptr) != 0; i += charLength, ptr = lptr.Offset(i))
 			{
-				for (var cptr = ptr; i + charLength <= allocatedBytes && GetCh(cptr) != 0; cptr = cptr.Offset(charLength), i += charLength) { }
+				for (IntPtr cptr = ptr; i + charLength <= allocatedBytes && GetCh(cptr) != 0; cptr = cptr.Offset(charLength), i += charLength) { }
 				if (i + charLength > allocatedBytes)
 					throw new InsufficientMemoryException();
 				yield return StringHelper.GetString(ptr, charSet);
@@ -718,10 +698,7 @@ namespace Vanara.Extensions
 			}
 			if (i + charLength > allocatedBytes) throw new InsufficientMemoryException();
 
-			int GetCh(IntPtr p)
-			{
-				return charLength == 1 ? Marshal.ReadByte(p) : Marshal.ReadInt16(p);
-			}
+			int GetCh(IntPtr p) => charLength == 1 ? Marshal.ReadByte(p) : Marshal.ReadInt16(p);
 		}
 
 		/// <summary>
@@ -750,14 +727,16 @@ namespace Vanara.Extensions
 		public static void ToStructure<T>(this IntPtr ptr, T instance, SizeT allocatedBytes = default, int offset = 0) where T : class
 		{
 			if (ptr == IntPtr.Zero) throw new NullReferenceException();
-			var t = TrueType(typeof(T), out var stSize);
+			Type t = TrueType(typeof(T), out var stSize);
 			if (allocatedBytes > 0 && allocatedBytes < stSize + offset)
 				throw new InsufficientMemoryException();
 			if (t == typeof(T))
 				Marshal.PtrToStructure(ptr, instance);
 			else
-				using (var pin = new PinnedObject(instance))
-					((IntPtr)pin).Write(Marshal.PtrToStructure(ptr.Offset(offset), t));
+			{
+				using var pin = new PinnedObject(instance);
+				((IntPtr)pin).Write(Marshal.PtrToStructure(ptr.Offset(offset), t));
+			}
 		}
 
 		/// <summary>Converts a single-dimensional <see cref="Array"/> to an array of <typeparamref name="T"/>.</summary>
@@ -784,7 +763,7 @@ namespace Vanara.Extensions
 		/// <returns>An array of type <typeparamref name="T"/> containing the elements of the native array.</returns>
 		public static unsafe T[] UnsafePtrToArray<T>(T* ptr, int count, SizeT allocatedBytes = default) where T : unmanaged
 		{
-			var stSize = SizeOf<T>();
+			SizeT stSize = SizeOf<T>();
 			if (allocatedBytes > 0 && stSize * count > allocatedBytes)
 				throw new InsufficientMemoryException();
 			if (allocatedBytes == default) allocatedBytes = uint.MaxValue;
@@ -801,8 +780,8 @@ namespace Vanara.Extensions
 		/// formatted class.
 		/// </typeparam>
 		/// <param name="ptr">
-		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of
-		/// <typeparamref name="T"/> times the number of items in the enumeration plus the number of bytes specified by <paramref name="offset"/>.
+		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of <typeparamref
+		/// name="T"/> times the number of items in the enumeration plus the number of bytes specified by <paramref name="offset"/>.
 		/// </param>
 		/// <param name="items">The enumerated list of items to marshal.</param>
 		/// <param name="offset">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
@@ -815,7 +794,7 @@ namespace Vanara.Extensions
 			var count = items?.Count() ?? 0;
 			if (count == 0) return 0;
 
-			var ttype = TrueType(typeof(T), out var stSize);
+			Type ttype = TrueType(typeof(T), out var stSize);
 			if (!ttype.IsMarshalable())
 				throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 
@@ -830,6 +809,43 @@ namespace Vanara.Extensions
 			return bytesReq - offset;
 		}
 
+		/// <summary>Marshals data from a managed list of strings to a pre-allocated unmanaged block of memory.</summary>
+		/// <param name="ptr">
+		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of all the strings in the
+		/// enumeration plus pointers or '\0' characters required by <paramref name="packing"/>.
+		/// </param>
+		/// <param name="items">The enumerated list of items to marshal.</param>
+		/// <param name="packing">The packing type for the strings.</param>
+		/// <param name="charSet">The character set to use for the strings.</param>
+		/// <param name="offset">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>The number of bytes written. The offset is not included.</returns>
+		/// <exception cref="System.InsufficientMemoryException"></exception>
+		/// <exception cref="System.ArgumentException">Concatenated string arrays cannot contain empty or null strings.</exception>
+		/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
+		/// <exception cref="InsufficientMemoryException"></exception>
+		public static int Write(this IntPtr ptr, IEnumerable<string> items, StringListPackMethod packing, CharSet charSet = CharSet.Auto, int offset = 0, SizeT allocatedBytes = default)
+		{
+			// Bail early if empty
+			if (items is null || !items.Any())
+			{
+				var bytesReq = offset + (packing == StringListPackMethod.Concatenated ? StringHelper.GetCharSize(charSet) : IntPtr.Size);
+				if (allocatedBytes > 0 && bytesReq > allocatedBytes)
+					throw new InsufficientMemoryException();
+				ptr.FillMemory(0, bytesReq);
+				return bytesReq - offset;
+			}
+
+			// Write to memory stream
+			using NativeMemoryStream ms = StringsToStream(items, packing, charSet, offset);
+
+			// Copy stream bits to pointer
+			if (allocatedBytes > 0 && (int)ms.Length > allocatedBytes)
+				throw new InsufficientMemoryException();
+			ms.Pointer.CopyTo(ptr, (int)ms.Length);
+			return (int)ms.Length;
+		}
+
 		/// <summary>Writes the specified value to pre-allocated memory.</summary>
 		/// <param name="ptr">The address of the memory where the value is to be written.</param>
 		/// <param name="value">The value to write.</param>
@@ -840,8 +856,8 @@ namespace Vanara.Extensions
 		public static int Write(this IntPtr ptr, object value, int offset = 0, SizeT allocatedBytes = default)
 		{
 			if (value is null) return 0;
-			if (!value.GetType().IsMarshalable())
-				throw new ArgumentException(@"Value cannot be serialized to memory.", nameof(value));
+			//if (!value.GetType().IsMarshalable())
+			//	throw new ArgumentException(@"Value cannot be serialized to memory.", nameof(value));
 			return WriteNoChecks(ptr, value, offset, allocatedBytes);
 		}
 
@@ -856,13 +872,6 @@ namespace Vanara.Extensions
 		public static int Write<T>(this IntPtr ptr, in T value, int offset = 0, SizeT allocatedBytes = default) where T : struct =>
 			WriteNoChecks(ptr, value, offset, allocatedBytes);
 
-		internal static Type TrueType(Type type, out int size)
-		{
-			var ttype = type.IsEnum ? Enum.GetUnderlyingType(type) : type == typeof(bool) ? typeof(uint) : type;
-			try { size = Marshal.SizeOf(ttype); } catch { size = 0; }
-			return ttype;
-		}
-
 		internal static T GetValueType<T>(IntPtr ptr, Type trueType = null, int offset = 0, SizeT allocatedBytes = default) =>
 			(T)GetValueType(ptr, typeof(T), trueType, offset, allocatedBytes);
 
@@ -871,13 +880,18 @@ namespace Vanara.Extensions
 			if (allocatedBytes == 0)
 				allocatedBytes = SizeT.MaxValue;
 			trueType ??= type.IsEnum ? Enum.GetUnderlyingType(type) : type;
-			var obj = VanaraMarshaler.CanMarshal(trueType, out var marshaler) ?
+			var obj = VanaraMarshaler.CanMarshal(trueType, out IVanaraMarshaler marshaler) ?
 				marshaler.MarshalNativeToManaged(ptr.Offset(offset), allocatedBytes) :
 				Marshal.SizeOf(trueType) <= allocatedBytes ? Marshal.PtrToStructure(ptr.Offset(offset), trueType) : throw new InsufficientMemoryException();
 			return type == trueType ? obj : type.IsEnum ? Enum.ToObject(type, obj) : Convert.ChangeType(obj, type);
 		}
 
-		private static object TrueValue(object value, out int size) => Convert.ChangeType(value, TrueType(value.GetType(), out size));
+		internal static Type TrueType(Type type, out int size)
+		{
+			Type ttype = type.IsEnum ? Enum.GetUnderlyingType(type) : type == typeof(bool) ? typeof(uint) : type;
+			try { size = Marshal.SizeOf(ttype); } catch { size = 0; }
+			return ttype;
+		}
 
 		internal static int WriteNoChecks(IntPtr ptr, object value, int offset, SizeT allocatedBytes)
 		{
@@ -889,15 +903,28 @@ namespace Vanara.Extensions
 				Marshal.Copy(ba, 0, ptr, ba.Length);
 				return ba.Length;
 			}
-			if (VanaraMarshaler.CanMarshal(value.GetType(), out var marshaler))
+
+			Type valType = value.GetType();
+
+			// Handle marshaled items
+			if (VanaraMarshaler.CanMarshal(valType, out IVanaraMarshaler marshaler))
 			{
-				using var mem = marshaler.MarshalManagedToNative(value);
+				using SafeAllocatedMemoryHandle mem = marshaler.MarshalManagedToNative(value);
 				if (allocatedBytes > 0 && offset + mem.Size > allocatedBytes)
 					throw new InsufficientMemoryException();
 				mem.DangerousGetHandle().CopyTo(ptr.Offset(offset), mem.Size);
 				return mem.Size;
 			}
-			if (value.GetType().IsBlittable())
+
+			// Handle strings (risk is wrong CharSet)
+			if (value is string s)
+			{
+				StringHelper.Write(s, ptr.Offset(offset), out var wrtn, true, CharSet.Auto, allocatedBytes == 0 ? long.MaxValue : allocatedBytes);
+				return wrtn;
+			}
+
+			// Handle simple types
+			if (valType.IsBlittable() && !valType.IsArray)
 			{
 				var newVal = TrueValue(value, out var cbValue);
 				if (allocatedBytes > 0 && offset + cbValue > allocatedBytes)
@@ -905,7 +932,64 @@ namespace Vanara.Extensions
 				Marshal.StructureToPtr(newVal, ptr.Offset(offset), false);
 				return cbValue;
 			}
-			if (value.GetType().IsSerializable)
+
+			// Handle string lists
+			if (value is IEnumerable<string> ies)
+			{
+				return ptr.Write(ies, StringListPackMethod.Concatenated, CharSet.Auto, offset, allocatedBytes);
+			}
+
+			// Handle arrays
+			if (valType.IsArray && ((Array)value).Rank == 1)
+			{
+				Type ttype = TrueType(valType.GetElementType(), out var stSize);
+				if (!ttype.IsMarshalable())
+					throw new ArgumentException(@"Structure layout is not sequential or explicit.");
+
+				var arr = (Array)value;
+
+				var count = arr.Length;
+				if (count == 0) return 0;
+
+				var bytesReq = stSize * count + offset;
+				if (allocatedBytes > 0 && bytesReq > allocatedBytes)
+					throw new InsufficientMemoryException();
+
+				for (var i = 0; i < count; i++)
+				{
+					var o = arr.GetValue(i);
+					if (o is null) continue;
+					var v = Convert.ChangeType(o, ttype);
+					WriteNoChecks(ptr, o, offset + i * stSize, allocatedBytes);
+				}
+
+				return bytesReq - offset;
+			}
+
+			// Handle enumerations
+			if (IsGenericEnumerable(valType))
+			{
+				Type ttype = TrueType(valType.GetGenericArguments()[0], out var stSize);
+				if (!ttype.IsMarshalable())
+					throw new ArgumentException(@"Structure layout is not sequential or explicit.");
+
+				var items = new List<object>(((System.Collections.IEnumerable)value).Cast<object>());
+				var count = items.Count;
+				if (count == 0) return 0;
+
+				var bytesReq = stSize * count + offset;
+				if (allocatedBytes > 0 && bytesReq > allocatedBytes)
+					throw new InsufficientMemoryException();
+
+				var i = 0;
+				foreach (var item in items.Select(v => Convert.ChangeType(v, ttype)).Where(v => v != null))
+					WriteNoChecks(ptr, item, offset + i++ * stSize, allocatedBytes);
+
+				return bytesReq - offset;
+			}
+
+			// Handle binary serialization
+			if (valType.IsSerializable)
 			{
 				using var str = new NativeMemoryStream();
 				var bf = new BinaryFormatter();
@@ -916,7 +1000,44 @@ namespace Vanara.Extensions
 				str.Pointer.CopyTo(ptr.Offset(offset), str.Length);
 				return (int)str.Length;
 			}
+
 			throw new ArgumentException("Unable to convert object to its binary format.");
+
+			static bool IsGenericEnumerable(Type t)
+			{
+				var genArgs = t.GetGenericArguments();
+				if (genArgs.Length == 1 && typeof(IEnumerable<>).MakeGenericType(genArgs).IsAssignableFrom(t))
+					return true;
+				else
+					return t.BaseType != null && IsGenericEnumerable(t.BaseType);
+			}
 		}
+
+		private static IntPtr Passthrough(IntPtr p) => p;
+
+		private static NativeMemoryStream StringsToStream(IEnumerable<string> items, StringListPackMethod packing, CharSet charSet, int offset)
+		{
+			var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet };
+			ms.SetLength(ms.Position = offset);
+			if (packing == StringListPackMethod.Packed)
+			{
+				foreach (var s in items)
+					ms.WriteReference(s);
+				ms.WriteReference(null);
+			}
+			else
+			{
+				foreach (var s in items)
+				{
+					if (string.IsNullOrEmpty(s)) throw new ArgumentException("Concatenated string arrays cannot contain empty or null strings.");
+					ms.Write(s);
+				}
+				ms.Write("");
+			}
+			ms.Flush();
+			return ms;
+		}
+
+		private static object TrueValue(object value, out int size) => Convert.ChangeType(value, TrueType(value.GetType(), out size));
 	}
 }
