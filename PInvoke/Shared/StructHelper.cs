@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Vanara.Extensions;
 
 namespace Vanara.PInvoke
@@ -38,6 +41,22 @@ namespace Vanara.PInvoke
 		{
 			if (count == 0) return new T[0];
 			return DangerousAddressOf(ref fieldReference).ToArray<T>(count, offset);
+		}
+
+		/// <summary>Creates a new instance of <typeparamref name="T"/> with a size field set to the size of its unmanaged type.</summary>
+		/// <typeparam name="T">The type to return .</typeparam>
+		/// <param name="fieldName">
+		/// Name of the field which is assigned the size. If <see langword="null"/>, the first public or private field is used.
+		/// </param>
+		/// <returns>An initialized instance of <typeparamref name="T"/>.</returns>
+		public static T InitWithSize<T>(string fieldName = null) where T : new()
+		{
+			const BindingFlags bf = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+			var fi = fieldName is null ? typeof(T).GetOrderedFields(bf).FirstOrDefault() : typeof(T).GetField(fieldName, bf);
+			var ret = (object)new T();
+			fi.SetValue(ret, Convert.ChangeType((uint)InteropExtensions.SizeOf<T>(), fi.FieldType));
+			return (T)ret;
 		}
 	}
 }
