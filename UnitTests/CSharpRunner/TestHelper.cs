@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke.Tests
@@ -62,12 +63,27 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		public static void WriteValues(this object value)
+		public static string GetStringVal(this object value)
 		{
-			var json = JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter());
-			if (value != null) TestContext.WriteLine(value.GetType().Name);
-			TestContext.WriteLine(json);
+			if (value is null)
+				return "(null)";
+			else
+			{
+				if (value is System.Runtime.InteropServices.ComTypes.FILETIME ft)
+					value = ft.ToDateTime();
+				else if (value is SYSTEMTIME st)
+					value = st.ToDateTime(DateTimeKind.Local);
+
+				if (value.GetType().IsPrimitive || value is DateTime || value is Decimal)
+					return $"{value.GetType().Name} : [{value}]";
+				if (value is string s)
+					return string.Concat("\"", s, "\"");
+				else
+					return JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter());
+			}
 		}
+
+		public static void WriteValues(this object value) => TestContext.WriteLine(GetStringVal(value));
 
 		private class SizeTConverter : JsonConverter<SizeT>
 		{
