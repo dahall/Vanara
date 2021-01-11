@@ -2369,37 +2369,6 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// In Windows Vista and later versions of Windows, the DEVPROPKEY structure represents a device property key for a device property
-		/// in the unified device property model.
-		/// </summary>
-		/// <remarks>
-		/// <para>The DEVPROPKEY structure is part of the unified device property model.</para>
-		/// <para>The basic set of system-supplied device property keys are defined in Devpkey.h.</para>
-		/// <para>The <c>DEFINE_DEVPROPKEY</c> macro creates an instance of a DEVPROPKEY structure that represents a device property key.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpropkey struct DEVPROPKEY { DEVPROPGUID fmtid; DEVPROPID
-		// pid; };
-		[PInvokeData("Devpropdef.h")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct DEVPROPKEY
-		{
-			/// <summary>
-			/// <para>A DEVPROPGUID-typed value that specifies a property category.</para>
-			/// <para>The DEVPROPGUID data type is defined as:</para>
-			/// </summary>
-			public Guid fmtid;
-
-			/// <summary>
-			/// <para>
-			/// <c>pid</c> A DEVPROPID-typed value that uniquely identifies the property within the property category. For internal system
-			/// reasons, a property identifier must be greater than or equal to two.
-			/// </para>
-			/// <para>The DEVPROPID data type is defined as:</para>
-			/// </summary>
-			public uint pid;
-		}
-
-		/// <summary>
 		/// The <c>FILE_IN_CABINET_INFO</c> structure provides information about a file found in the cabinet. The SetupIterateCabinet
 		/// function sends this structure as one of the parameters when it sends a SPFILENOTIFY_FILEINCABINET notification to the cabinet
 		/// callback routine.

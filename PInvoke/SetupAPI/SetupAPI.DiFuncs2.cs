@@ -1478,43 +1478,53 @@ namespace Vanara.PInvoke
 			using var mem = new SafeCoTaskMemHandle(sz);
 			if (SetupDiGetDeviceProperty(DeviceInfoSet, DeviceInfoData, PropertyKey, out var propType, mem, mem.Size, out _))
 			{
-				switch (propType)
-				{
-					case DEVPROPTYPE.DEVPROP_TYPE_EMPTY:
-					case DEVPROPTYPE.DEVPROP_TYPE_NULL:
-						Value = null;
-						return true;
-
-					case DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR:
-						Value = new RawSecurityDescriptor(mem.GetBytes(0, mem.Size), 0);
-						return true;
-
-					case DEVPROPTYPE.DEVPROP_TYPE_STRING_INDIRECT:
-						Value = mem.ToString(-1, CharSet.Unicode);
-						return true;
-
-					case DEVPROPTYPE.DEVPROP_TYPE_STRING_LIST:
-						Value = mem.ToStringEnum(CharSet.Unicode).ToArray();
-						return true;
-
-					default:
-						(DEVPROPTYPE type, DEVPROPTYPE mod) spt = propType.Split();
-						var type = CorrespondingTypeAttribute.GetCorrespondingTypes(spt.type).FirstOrDefault();
-						if (type is not null)
-						{
-							Value = spt.mod switch
-							{
-								0 => mem.DangerousGetHandle().Convert(mem.Size, type, CharSet.Unicode),
-								DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY => mem.DangerousGetHandle().ToArray(type, mem.Size / Marshal.SizeOf(type), 0, mem.Size),
-								_ => null
-							};
-							if (Value is not null)
-								return true;
-						}
-						break;
-				}
+				Value = SetupDiPropertyToManagedObject(mem, propType);
+				return true;
 			}
 			return false;
+		}
+
+		/// <summary>Converts memory retrieved from a property call to a managed object of the correct type.</summary>
+		/// <param name="mem">The allocated memory.</param>
+		/// <param name="propType">The type of the property.</param>
+		/// <returns>A managed object with the value from the memory.</returns>
+		public static object SetupDiPropertyToManagedObject(ISafeMemoryHandle mem, DEVPROPTYPE propType)
+		{
+			object Value = null;
+			switch (propType)
+			{
+				case DEVPROPTYPE.DEVPROP_TYPE_EMPTY:
+				case DEVPROPTYPE.DEVPROP_TYPE_NULL:
+					break;
+
+				case DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR:
+					Value = new RawSecurityDescriptor(mem.GetBytes(0, mem.Size), 0);
+					break;
+
+				case DEVPROPTYPE.DEVPROP_TYPE_STRING_INDIRECT:
+					Value = mem.ToString(-1, CharSet.Unicode);
+					break;
+
+				case DEVPROPTYPE.DEVPROP_TYPE_STRING_LIST:
+					Value = mem.ToStringEnum(CharSet.Unicode).ToArray();
+					break;
+
+				default:
+					(DEVPROPTYPE type, DEVPROPTYPE mod) spt = propType.Split();
+					var type = CorrespondingTypeAttribute.GetCorrespondingTypes(spt.type).FirstOrDefault();
+					if (type is not null)
+					{
+						Value = spt.mod switch
+						{
+							0 => mem.DangerousGetHandle().Convert(mem.Size, type, CharSet.Unicode),
+							DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY => mem.DangerousGetHandle().ToArray(type, mem.Size / Marshal.SizeOf(type), 0, mem.Size),
+							_ => null
+						};
+					}
+					Value ??= mem.GetBytes(0, mem.Size);
+					break;
+			}
+			return Value;
 		}
 
 		/// <summary>
@@ -2944,7 +2954,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiOpenDeviceInfoA")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetupDiOpenDeviceInfo(HDEVINFO DeviceInfoSet, [MarshalAs(UnmanagedType.LPTStr)] string DeviceInstanceId,
+		public static extern bool SetupDiOpenDeviceInfo(HDEVINFO DeviceInfoSet, [Optional, MarshalAs(UnmanagedType.LPTStr)] string DeviceInstanceId,
 			[In, Optional] HWND hwndParent, DIOD OpenFlags, ref SP_DEVINFO_DATA DeviceInfoData);
 
 		/// <summary>
@@ -4013,7 +4023,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiSetClassPropertyW")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetupDiSetClassProperty(in Guid ClassGuid, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType,
-			[In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, DICLASSPROP Flags);
+			[In, Optional] IntPtr PropertyBuffer, [In, Optional] uint PropertyBufferSize, DICLASSPROP Flags);
 
 		/// <summary>
 		/// The <c>SetupDiSetClassPropertyEx</c> function sets a device property for a device setup class or a device interface class on a
@@ -4144,7 +4154,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiSetClassPropertyExW")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetupDiSetClassPropertyEx(in Guid ClassGuid, in DEVPROPKEY PropertyKey, DEVPROPTYPE PropertyType,
-			[In, Optional] IntPtr PropertyBuffer, uint PropertyBufferSize, DICLASSPROP Flags,
+			[In, Optional] IntPtr PropertyBuffer, [In, Optional] uint PropertyBufferSize, DICLASSPROP Flags,
 			[Optional, MarshalAs(UnmanagedType.LPWStr)] string MachineName, [In, Optional] IntPtr Reserved);
 
 		/// <summary>The <c>SetupDiSetClassRegistryProperty</c> function sets a specified device class property in the registry.</summary>

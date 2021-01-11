@@ -205,7 +205,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiBuildClassInfoListExA")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetupDiBuildClassInfoListExA(DIBCI Flags, [Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[] ClassGuidList,
+		public static extern bool SetupDiBuildClassInfoListEx(DIBCI Flags, [Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[] ClassGuidList,
 			uint ClassGuidListSize, out uint RequiredSize, [Optional, MarshalAs(UnmanagedType.LPTStr)] string MachineName, IntPtr Reserved = default);
 
 		/// <summary>
@@ -1212,7 +1212,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiCreateDeviceInterfaceRegKeyA")]
 		public static extern HKEY SetupDiCreateDeviceInterfaceRegKey(HDEVINFO DeviceInfoSet, in SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
-			[Optional] uint Reserved, System.Security.AccessControl.RegistryRights samDesired, [In, Optional] HINF InfHandle, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string InfSectionName);
+			[Optional] uint Reserved, System.Security.AccessControl.RegistryRights samDesired, [In, Optional] HINF InfHandle,
+			[In, Optional, MarshalAs(UnmanagedType.LPTStr)] string InfSectionName);
 
 		/// <summary>
 		/// The <c>SetupDiCreateDevRegKey</c> function creates a registry key for device-specific configuration information and returns a
@@ -1749,7 +1750,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiEnumDeviceInterfaces")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetupDiEnumDeviceInterfaces(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData, in Guid InterfaceClassGuid, uint MemberIndex, ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData);
+		public static extern bool SetupDiEnumDeviceInterfaces(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData, in Guid InterfaceClassGuid,
+			uint MemberIndex, ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData);
 
 		/// <summary>
 		/// The <c>SetupDiEnumDeviceInterfaces</c> function enumerates the device interfaces that are contained in a device information set.
@@ -1802,7 +1804,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiEnumDeviceInterfaces")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetupDiEnumDeviceInterfaces(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData, in Guid InterfaceClassGuid, uint MemberIndex, ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData);
+		public static extern bool SetupDiEnumDeviceInterfaces(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData, in Guid InterfaceClassGuid,
+			uint MemberIndex, ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData);
 
 		/// <summary>
 		/// The <c>SetupDiEnumDeviceInterfaces</c> function enumerates the device interfaces that are contained in a device information set.
@@ -1828,7 +1831,8 @@ namespace Vanara.PInvoke
 		/// <para>See System Defined Device Interface Classes for a list of available device interface classes.</para>
 		/// </remarks>
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiEnumDeviceInterfaces")]
-		public static IEnumerable<SP_DEVICE_INTERFACE_DATA> SetupDiEnumDeviceInterfaces(HDEVINFO DeviceInfoSet, Guid InterfaceClassGuid, SP_DEVINFO_DATA? DeviceInfoData = null)
+		public static IEnumerable<SP_DEVICE_INTERFACE_DATA> SetupDiEnumDeviceInterfaces(HDEVINFO DeviceInfoSet, Guid InterfaceClassGuid,
+			SP_DEVINFO_DATA? DeviceInfoData = null)
 		{
 			using var dvidata = DeviceInfoData.HasValue ? new SafeCoTaskMemStruct<SP_DEVINFO_DATA>(DeviceInfoData.Value) : SafeCoTaskMemStruct<SP_DEVINFO_DATA>.Null;
 			var data = new SP_DEVICE_INTERFACE_DATA { cbSize = (uint)Marshal.SizeOf(typeof(SP_DEVICE_INTERFACE_DATA)) };
@@ -2825,7 +2829,8 @@ namespace Vanara.PInvoke
 		// SetupDiGetClassDevsW( const GUID *ClassGuid, PCWSTR Enumerator, HWND hwndParent, DWORD Flags );
 		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassDevsW")]
-		public static extern SafeHDEVINFO SetupDiGetClassDevs([In, Optional] IntPtr ClassGuid, [In, Optional] string Enumerator, [In, Optional] HWND hwndParent, DIGCF Flags);
+		public static extern SafeHDEVINFO SetupDiGetClassDevs([In, Optional] IntPtr ClassGuid, [In, Optional] string Enumerator,
+			[In, Optional] HWND hwndParent, DIGCF Flags);
 
 		/// <summary>
 		/// The <c>SetupDiGetClassDevsEx</c> function returns a handle to a device information set that contains requested device
