@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows SetupAPI.d
 
 - Includes methods from setupapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.SetupAPI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.SetupAPI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.SetupAPI)  
-### Methods - 52% API coverage (123 of 235 functions)  
+### Methods - 52% API coverage (122 of 233 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DriverStoreAddDriverPackage](https://www.google.com/search?num=5&q=DriverStoreAddDriverPackageA+site%3Adocs.microsoft.com) |  |   
@@ -40,9 +40,7 @@ Native Method | Header | Managed Method
 [SetupDiApplyPowerScheme](https://www.google.com/search?num=5&q=SetupDiApplyPowerScheme+site%3Adocs.microsoft.com) |  |   
 [SetupDiAskForOEMDisk](https://www.google.com/search?num=5&q=SetupDiAskForOEMDisk+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiAskForOEMDisk](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiAskForOEMDisk)  
 [SetupDiBuildClassInfoList](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiBuildClassInfoList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiBuildClassInfoList)  
-[SetupDiBuildClassInfoListEx](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoListExA+site%3Adocs.microsoft.com) |  |   
-[SetupDiBuildClassInfoListExAA](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoListExAA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiBuildClassInfoListExA](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiBuildClassInfoListExA)  
-[SetupDiBuildClassInfoListExAW](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoListExAW+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiBuildClassInfoListExA](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiBuildClassInfoListExA)  
+[SetupDiBuildClassInfoListEx](https://www.google.com/search?num=5&q=SetupDiBuildClassInfoListExA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiBuildClassInfoListEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiBuildClassInfoListEx)  
 [SetupDiBuildDriverInfoList](https://www.google.com/search?num=5&q=SetupDiBuildDriverInfoList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiBuildDriverInfoList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiBuildDriverInfoList)  
 [SetupDiCallClassInstaller](https://www.google.com/search?num=5&q=SetupDiCallClassInstaller+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCallClassInstaller](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCallClassInstaller)  
 [SetupDiCancelDriverInfoSearch](https://www.google.com/search?num=5&q=SetupDiCancelDriverInfoSearch+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiCancelDriverInfoSearch](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiCancelDriverInfoSearch)  

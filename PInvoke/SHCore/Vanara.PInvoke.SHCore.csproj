@@ -10,7 +10,12 @@
     <AssemblyName>Vanara.PInvoke.SHCore</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;SHCore</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+GetDpiForMonitor, GetDpiForShellUIComponent, GetProcessDpiAwareness, GetScaleFactorForDevice, GetScaleFactorForMonitor, RegisterScaleChangeEvent, RegisterScaleChangeNotifications, RevokeScaleChangeNotifications, SetProcessDpiAwareness, UnregisterScaleChangeEvent
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
