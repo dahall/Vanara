@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>WsmSvc.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, interfaces, structures and constants) imported from Windows WsmSvc.dll for Windows Remote Management.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <TargetFrameworks>net20;net35;net40;net45;net5.0-windows;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.WsmSvc</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;WsmSvc;remote management</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+int __cdecl DeleteKey(class IRequestContext * __ptr64,unsigned short const * __ptr64,unsigned short const * __ptr64), int __cdecl MakeUrlBinding(unsigned long,unsigned short * __ptr64,unsigned long * __ptr64,unsigned short const * __ptr64,unsigned short const * __ptr64,unsigned short const * __ptr64,unsigned short const * __ptr64), int __cdecl StringToDword(char const * __ptr64,unsigned long * __ptr64), int __cdecl StringToDword(unsigned short const * __ptr64,unsigned long * __ptr64), unsigned short * __ptr64 __cdecl CopyString(class IRequestContext * __ptr64,enum CallSiteId,unsigned short const * __ptr64), unsigned short * __ptr64 __cdecl CopyString(unsigned short const * __ptr64,int const &amp; __ptr64,class IRequestContext &amp; __ptr64), unsigned short * __ptr64 __cdecl MakeUrlBinding(class IRequestContext * __ptr64,unsigned short const * __ptr64,unsigned short const * __ptr64,unsigned short const * __ptr64,unsigned short const * __ptr64), WSManCloseCommand, WSManCloseOperation, WSManCloseSession, WSManCloseShell, WSManConnectShell, WSManConnectShellCommand, WSManCreateSession, WSManCreateShell, WSManCreateShellEx, WSManDeinitialize, WSManDisconnectShell, WSManGetErrorMessage, WSManGetSessionOptionAsDword, WSManGetSessionOptionAsString, WSManInitialize, WSManPluginAuthzOperationComplete, WSManPluginAuthzQueryQuotaComplete, WSManPluginAuthzUserComplete, WSManPluginFreeRequestDetails, WSManPluginGetOperationParameters, WSManPluginOperationComplete, WSManPluginReceiveResult, WSManPluginReportContext, WSManReceiveShellOutput, WSManReconnectShell, WSManReconnectShellCommand, WSManRunShellCommand, WSManRunShellCommandEx, WSManSendShellInput, WSManSetSessionOption, WSManSignalShell
+
+Structures
+WSMAN_API_HANDLE, WSMAN_AUTHENTICATION_CREDENTIALS, WSMAN_COMMAND_HANDLE, WSMAN_DATA, WSMAN_DATA_BINARY, WSMAN_DATA_TEXT, WSMAN_ENVIRONMENT_VARIABLE, WSMAN_ENVIRONMENT_VARIABLE_SET, WSMAN_ERROR, WSMAN_OPERATION_HANDLE, WSMAN_OPTION, WSMAN_OPTION_SET, WSMAN_PROXY_INFO, WSMAN_RECEIVE_DATA_RESULT, WSMAN_RESPONSE_DATA, WSMAN_SESSION_HANDLE, WSMAN_SHELL_ASYNC, WSMAN_SHELL_HANDLE, WSMAN_SHELL_STARTUP_INFO_V10, WSMAN_SHELL_STARTUP_INFO_V11, WSMAN_STREAM_ID_SET, WSMAN_USERNAME_PASSWORD_CREDS, WSMAN_DATA_UNION
+
+</PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>

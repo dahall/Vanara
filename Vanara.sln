@@ -89,7 +89,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "UnitTests\Core\Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "UnitTests\Security\Security.csproj", "{31F68B09-2933-45A1-B86B-9F6D647ED2D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System", "UnitTests\System\System.csproj", "{9AEC2C7E-09D3-41C7-BDA7-4A7BAAA3441E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System", "UnitTests\System\System.csproj", "{9AEC2C7E-09D3-41C7-BDA7-4A7BAAA3441E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows.Forms", "UnitTests\Windows.Forms\Windows.Forms.csproj", "{C1FFE607-1D85-49F8-9421-6B21AB778816}"
 EndProject
@@ -286,6 +286,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msi", "UnitTests\PInvoke\Msi\Msi.csproj", "{E7242839-78DE-4AFE-8AF7-E9DDCE06E18C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.SHCore", "PInvoke\SHCore\Vanara.PInvoke.SHCore.csproj", "{F1417ADE-A8D3-432F-8F43-EF626DF4A3C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WsmSvc", "PInvoke\WsmSvc\Vanara.PInvoke.WsmSvc.csproj", "{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -923,6 +925,12 @@ Global
 		{F1417ADE-A8D3-432F-8F43-EF626DF4A3C9}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{F1417ADE-A8D3-432F-8F43-EF626DF4A3C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1417ADE-A8D3-432F-8F43-EF626DF4A3C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1047,6 +1055,7 @@ Global
 		{CC8EB859-0940-4D91-B165-3B028A1B7B5D} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{E7242839-78DE-4AFE-8AF7-E9DDCE06E18C} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{F1417ADE-A8D3-432F-8F43-EF626DF4A3C9} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
