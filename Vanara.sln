@@ -289,6 +289,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.SHCore", "PI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WsmSvc", "PInvoke\WsmSvc\Vanara.PInvoke.WsmSvc.csproj", "{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WsmSvc", "UnitTests\PInvoke\WsmSvc\WsmSvc.csproj", "{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -931,6 +933,10 @@ Global
 		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1056,6 +1062,7 @@ Global
 		{E7242839-78DE-4AFE-8AF7-E9DDCE06E18C} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{F1417ADE-A8D3-432F-8F43-EF626DF4A3C9} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{28175EF4-C5CA-48EB-AD8D-1B0608AD4389} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

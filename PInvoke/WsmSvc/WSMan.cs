@@ -7,6 +7,37 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the WsmSvc.dll</summary>
 	public static partial class WsmSvc
 	{
+		/// <summary>Code page option name to be used with WSManCreateShell API to remotely set the code page</summary>
+		public const string WSMAN_CMDSHELL_OPTION_CODEPAGE = "WINRS_CODEPAGE";
+
+		/// <summary>
+		/// Option name used with WSManRunShellCommand API to indicate that the client side mode of standard input is Console; default
+		/// implies Pipe.
+		/// </summary>
+		public const string WSMAN_CMDSHELL_OPTION_CONSOLEMODE_STDIN = "WINRS_CONSOLEMODE_STDIN";
+
+		/// <summary>To be used with WSManRunShellCommand API to not use cmd.exe /c prefix when launching the command</summary>
+		public const string WSMAN_CMDSHELL_OPTION_SKIP_CMD_SHELL = "WINRS_SKIP_CMD_SHELL";
+
+		/// <summary>pre-defined command states</summary>
+		public const string WSMAN_COMMAND_STATE_DONE = "/CommandState/Done";
+
+		/// <summary>pre-defined command states</summary>
+		public const string WSMAN_COMMAND_STATE_PENDING= "/CommandState/Pending";
+
+		/// <summary>pre-defined command states</summary>
+		public const string WSMAN_COMMAND_STATE_RUNNING= "/CommandState/Running";
+
+		/// <summary>Option name used with WSManCreateShell API to not load the user profile on the remote server</summary>
+		public const string WSMAN_SHELL_OPTION_NOPROFILE = "WINRS_NOPROFILE";
+
+		/// <summary/>
+		public const string WSMAN_STREAM_ID_STDERR = "stderr";
+		/// <summary/>
+		public const string WSMAN_STREAM_ID_STDIN = "stdin";
+		/// <summary/>
+		public const string WSMAN_STREAM_ID_STDOUT = "stdout";
+
 		private const string Lib_WsmSvc = "WsmSvc.dll";
 
 		/// <summary>The callback function that is called for shell operations, which result in a remote request.</summary>
@@ -327,6 +358,36 @@ namespace Vanara.PInvoke
 			WSMAN_OPTION_USE_INTEARACTIVE_TOKEN,
 		}
 
+		/// <summary>Deletes a command and frees the resources that are associated with it.</summary>
+		/// <param name="commandHandle">Specifies the command handle to be closed. This handle is returned by a WSManRunShellCommand call.</param>
+		/// <param name="flags">Reserved for future use. Must be set to zero.</param>
+		/// <param name="async">
+		/// Defines an asynchronous structure. The asynchronous structure contains an optional user context and a mandatory callback
+		/// function. See the WSMAN_SHELL_ASYNC structure for more information. This parameter cannot be <c>NULL</c>.
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmanclosecommand void WSManCloseCommand( WSMAN_COMMAND_HANDLE
+		// commandHandle, DWORD flags, WSMAN_SHELL_ASYNC *async );
+		[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManCloseCommand")]
+		public static extern void WSManCloseCommand(WSMAN_COMMAND_HANDLE commandHandle, [In, Optional] uint flags, in WSMAN_SHELL_ASYNC async);
+
+		/// <summary>Cancels or closes an asynchronous operation. All resources that are associated with the operation are freed.</summary>
+		/// <param name="operationHandle">Specifies the operation handle to be closed.</param>
+		/// <param name="flags">Reserved for future use. Set to zero.</param>
+		/// <returns>This method returns zero on success. Otherwise, this method returns an error code.</returns>
+		/// <remarks>
+		/// The method de-allocates local and remote resources associated with the operation. After the <c>WSManCloseOperation</c> method is
+		/// called, the operationHandle parameter cannot be passed to any other call. If the callback associated with the operation is
+		/// pending and has not completed before <c>WSManCloseOperation</c> is called, the operation is marked for deletion and the method
+		/// returns immediately.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmancloseoperation DWORD WSManCloseOperation(
+		// WSMAN_OPERATION_HANDLE operationHandle, DWORD flags );
+		[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManCloseOperation")]
+		public static extern Win32Error WSManCloseOperation(WSMAN_OPERATION_HANDLE operationHandle, uint flags = 0);
+
 		/// <summary>Closes a session object.</summary>
 		/// <param name="session">
 		/// Specifies the session handle to close. This handle is returned by a WSManCreateSession call. This parameter cannot be NULL.
@@ -418,7 +479,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManCreateSession")]
 		public static extern uint WSManCreateSession(WSMAN_API_HANDLE apiHandle, [Optional, MarshalAs(UnmanagedType.LPWStr)] string connection,
-			[Optional] uint flags, IntPtr serverAuthenticationCredentials, ref WSMAN_PROXY_INFO proxyInfo, out SafeWSMAN_SESSION_HANDLE session);
+			[Optional] uint flags, IntPtr serverAuthenticationCredentials, [In, Optional] IntPtr proxyInfo, out SafeWSMAN_SESSION_HANDLE session);
 
 		/// <summary>
 		/// Creates a shell object. The returned shell handle identifies an object that defines the context in which commands can be run.
@@ -540,6 +601,198 @@ namespace Vanara.PInvoke
 		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManInitialize")]
 		public static extern Win32Error WSManInitialize(WSMAN_FLAG_REQUESTED_API_VERSION flags, out SafeWSMAN_API_HANDLE apiHandle);
 
+		/// <summary>Retrieves output from a running command or from the shell.</summary>
+		/// <param name="shell">Specifies the shell handle returned by a WSManCreateShell call. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="command">Specifies the command handle returned by a WSManRunShellCommand call.</param>
+		/// <param name="flags">Reserved for future use. Must be set to zero.</param>
+		/// <param name="desiredStreamSet">Specifies the requested output from a particular stream or a list of streams.</param>
+		/// <param name="async">
+		/// Defines an asynchronous structure. The asynchronous structure contains an optional user context and a mandatory callback
+		/// function. See the WSMAN_SHELL_ASYNC structure for more information. This parameter cannot be <c>NULL</c> and should be closed by
+		/// calling the WSManCloseOperation method.
+		/// </param>
+		/// <param name="receiveOperation">
+		/// Defines the operation handle for the receive operation. This handle is returned from a successful call of the function and can
+		/// be used to asynchronously cancel the receive operation. This handle should be closed by calling the WSManCloseOperation method.
+		/// This parameter cannot be <c>NULL</c>.
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmanreceiveshelloutput void WSManReceiveShellOutput(
+		// WSMAN_SHELL_HANDLE shell, WSMAN_COMMAND_HANDLE command, DWORD flags, WSMAN_STREAM_ID_SET *desiredStreamSet, WSMAN_SHELL_ASYNC
+		// *async, WSMAN_OPERATION_HANDLE *receiveOperation );
+		[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManReceiveShellOutput")]
+		public static extern void WSManReceiveShellOutput(WSMAN_SHELL_HANDLE shell, [In, Optional] WSMAN_COMMAND_HANDLE command, [In, Optional] uint flags,
+			in WSMAN_STREAM_ID_SET desiredStreamSet, in WSMAN_SHELL_ASYNC async, out SafeWSMAN_OPERATION_HANDLE receiveOperation);
+
+		/// <summary>Retrieves output from a running command or from the shell.</summary>
+		/// <param name="shell">Specifies the shell handle returned by a WSManCreateShell call. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="command">Specifies the command handle returned by a WSManRunShellCommand call.</param>
+		/// <param name="flags">Reserved for future use. Must be set to zero.</param>
+		/// <param name="desiredStreamSet">Specifies the requested output from a particular stream or a list of streams.</param>
+		/// <param name="async">
+		/// Defines an asynchronous structure. The asynchronous structure contains an optional user context and a mandatory callback
+		/// function. See the WSMAN_SHELL_ASYNC structure for more information. This parameter cannot be <c>NULL</c> and should be closed by
+		/// calling the WSManCloseOperation method.
+		/// </param>
+		/// <param name="receiveOperation">
+		/// Defines the operation handle for the receive operation. This handle is returned from a successful call of the function and can
+		/// be used to asynchronously cancel the receive operation. This handle should be closed by calling the WSManCloseOperation method.
+		/// This parameter cannot be <c>NULL</c>.
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmanreceiveshelloutput void WSManReceiveShellOutput(
+		// WSMAN_SHELL_HANDLE shell, WSMAN_COMMAND_HANDLE command, DWORD flags, WSMAN_STREAM_ID_SET *desiredStreamSet, WSMAN_SHELL_ASYNC
+		// *async, WSMAN_OPERATION_HANDLE *receiveOperation );
+		[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManReceiveShellOutput")]
+		public static extern void WSManReceiveShellOutput(WSMAN_SHELL_HANDLE shell, [In, Optional] WSMAN_COMMAND_HANDLE command, [In, Optional] uint flags,
+			[In, Optional] IntPtr desiredStreamSet, in WSMAN_SHELL_ASYNC async, out SafeWSMAN_OPERATION_HANDLE receiveOperation);
+
+		/// <summary>Starts the execution of a command within an existing shell and does not wait for the completion of the command.</summary>
+		/// <param name="shell">Specifies the shell handle returned by the WSManCreateShell call. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="flags">Reserved for future use. Must be zero.</param>
+		/// <param name="commandLine">
+		/// Defines a required <c>null</c>-terminated string that represents the command to be executed. Typically, the command is specified
+		/// without any arguments, which are specified separately. However, a user can specify the command line and all of the arguments by
+		/// using this parameter. If arguments are specified for the commandLine parameter, the args parameter should be <c>NULL</c>.
+		/// </param>
+		/// <param name="args">
+		/// A pointer to a WSMAN_COMMAND_ARG_SET structure that defines an array of argument values, which are passed to the command on
+		/// creation. If no arguments are required, this parameter should be <c>NULL</c>.
+		/// </param>
+		/// <param name="options">
+		/// Defines a set of options for the command. These options are passed to the service to modify or refine the command execution.
+		/// This parameter can be <c>NULL</c>. For more information about the options, see WSMAN_OPTION_SET.
+		/// </param>
+		/// <param name="async">
+		/// Defines an asynchronous structure. The asynchronous structure contains an optional user context and a mandatory callback
+		/// function. See the WSMAN_SHELL_ASYNC structure for more information. This parameter cannot be <c>NULL</c> and should be closed by
+		/// calling the WSManCloseCommand method.
+		/// </param>
+		/// <param name="command">
+		/// Defines the command object associated with a command within a shell. This handle is returned on a successful call and is used to
+		/// send and receive data and to signal the command. This handle should be closed by calling the WSManCloseCommand method. This
+		/// parameter cannot be <c>NULL</c>.
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmanrunshellcommand void WSManRunShellCommand(
+		// WSMAN_SHELL_HANDLE shell, DWORD flags, PCWSTR commandLine, WSMAN_COMMAND_ARG_SET *args, WSMAN_OPTION_SET *options,
+		// WSMAN_SHELL_ASYNC *async, WSMAN_COMMAND_HANDLE *command );
+		[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManRunShellCommand")]
+		public static extern void WSManRunShellCommand(WSMAN_SHELL_HANDLE shell, [Optional] uint flags, [MarshalAs(UnmanagedType.LPWStr)] string commandLine,
+			in WSMAN_COMMAND_ARG_SET args, in WSMAN_OPTION_SET options, in WSMAN_SHELL_ASYNC async, out WSMAN_COMMAND_HANDLE command);
+
+		/// <summary>Starts the execution of a command within an existing shell and does not wait for the completion of the command.</summary>
+		/// <param name="shell">Specifies the shell handle returned by the WSManCreateShell call. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="flags">Reserved for future use. Must be zero.</param>
+		/// <param name="commandLine">
+		/// Defines a required <c>null</c>-terminated string that represents the command to be executed. Typically, the command is specified
+		/// without any arguments, which are specified separately. However, a user can specify the command line and all of the arguments by
+		/// using this parameter. If arguments are specified for the commandLine parameter, the args parameter should be <c>NULL</c>.
+		/// </param>
+		/// <param name="args">
+		/// A pointer to a WSMAN_COMMAND_ARG_SET structure that defines an array of argument values, which are passed to the command on
+		/// creation. If no arguments are required, this parameter should be <c>NULL</c>.
+		/// </param>
+		/// <param name="options">
+		/// Defines a set of options for the command. These options are passed to the service to modify or refine the command execution.
+		/// This parameter can be <c>NULL</c>. For more information about the options, see WSMAN_OPTION_SET.
+		/// </param>
+		/// <param name="async">
+		/// Defines an asynchronous structure. The asynchronous structure contains an optional user context and a mandatory callback
+		/// function. See the WSMAN_SHELL_ASYNC structure for more information. This parameter cannot be <c>NULL</c> and should be closed by
+		/// calling the WSManCloseCommand method.
+		/// </param>
+		/// <param name="command">
+		/// Defines the command object associated with a command within a shell. This handle is returned on a successful call and is used to
+		/// send and receive data and to signal the command. This handle should be closed by calling the WSManCloseCommand method. This
+		/// parameter cannot be <c>NULL</c>.
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmanrunshellcommand void WSManRunShellCommand(
+		// WSMAN_SHELL_HANDLE shell, DWORD flags, PCWSTR commandLine, WSMAN_COMMAND_ARG_SET *args, WSMAN_OPTION_SET *options,
+		// WSMAN_SHELL_ASYNC *async, WSMAN_COMMAND_HANDLE *command );
+		[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManRunShellCommand")]
+		public static extern void WSManRunShellCommand(WSMAN_SHELL_HANDLE shell, [Optional] uint flags, [MarshalAs(UnmanagedType.LPWStr)] string commandLine,
+			[In, Optional] IntPtr args, [In, Optional] IntPtr options, in WSMAN_SHELL_ASYNC async, out WSMAN_COMMAND_HANDLE command);
+
+		/// <summary>Pipes the input stream to a running command or to the shell.</summary>
+		/// <param name="shell">Specifies the shell handle returned by a WSManCreateShell call. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="command">
+		/// Specifies the command handle returned by a WSManRunShellCommand call. This handle should be closed by calling the
+		/// WSManCloseCommand method.
+		/// </param>
+		/// <param name="flags">Reserved for future use. Must be set to zero.</param>
+		/// <param name="streamId">Specifies the input stream ID. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="streamData">
+		/// Uses the WSMAN_DATA structure to specify the stream data to be sent to the command or shell. This structure should be allocated
+		/// by the calling client and must remain allocated until <c>WSManSendShellInput</c> completes. If the end of the stream has been
+		/// reached, the endOfStream parameter should be set to <c>TRUE</c>.
+		/// </param>
+		/// <param name="endOfStream">
+		/// Set to <c>TRUE</c>, if the end of the stream has been reached. Otherwise, this parameter is set to <c>FALSE</c>.
+		/// </param>
+		/// <param name="async">
+		/// Defines an asynchronous structure. The asynchronous structure contains an optional user context and a mandatory callback
+		/// function. See the WSMAN_SHELL_ASYNC structure for more information. This parameter cannot be <c>NULL</c> and should be closed by
+		/// calling the WSManCloseCommand method.
+		/// </param>
+		/// <param name="sendOperation">
+		/// Defines the operation handle for the send operation. This handle is returned from a successful call of the function and can be
+		/// used to asynchronously cancel the send operation. This handle should be closed by calling the WSManCloseOperation method. This
+		/// parameter cannot be <c>NULL</c>.
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmansendshellinput void WSManSendShellInput(
+		// WSMAN_SHELL_HANDLE shell, WSMAN_COMMAND_HANDLE command, DWORD flags, PCWSTR streamId, WSMAN_DATA *streamData, BOOL endOfStream,
+		// WSMAN_SHELL_ASYNC *async, WSMAN_OPERATION_HANDLE *sendOperation );
+		[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManSendShellInput")]
+		public static extern void WSManSendShellInput(WSMAN_SHELL_HANDLE shell, [In, Optional] WSMAN_COMMAND_HANDLE command, [In, Optional] uint flags,
+			[MarshalAs(UnmanagedType.LPWStr)] string streamId, in WSMAN_DATA streamData, [MarshalAs(UnmanagedType.Bool)] bool endOfStream,
+			in WSMAN_SHELL_ASYNC async, out SafeWSMAN_OPERATION_HANDLE sendOperation);
+
+		/// <summary>Sets an extended set of options for the session.</summary>
+		/// <param name="session">Specifies the session handle returned by a WSManCreateSession call. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="option">
+		/// Specifies the option to be set. This parameter must be set to one of the values in the WSManSessionOption enumeration.
+		/// </param>
+		/// <param name="data">A pointer to a WSMAN_DATA structure that defines the option value.</param>
+		/// <returns>This method returns zero on success. Otherwise, this method returns an error code.</returns>
+		/// <remarks>
+		/// <para>
+		/// If the <c>WSManSetSessionOption</c> method is called with different values specified for the option parameter, the order of the
+		/// different options is important. The first time <c>WSManSetSessionOption</c> is called, the transport is set for the session. If
+		/// a second call requests a different type of transport, the call will fail.
+		/// </para>
+		/// <para>For example, the second method call will fail if the methods are called in the following order:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// <code>WSManSetSessionOption(WSMAN_OPTION_UNENCRYPTED_MESSAGES)</code>
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// <code>WSManSetSessionOption(WSMAN_OPTION_ALLOW_NEGOTIATE_IMPLICIT_CREDENTIALS)</code>
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The first method call sets the transport to HTTP because the option parameter is set to
+		/// <c>WSMAN_OPTION_UNENCRYPTED_MESSAGES</c>. The second call fails because the option that was passed is applicable for HTTPS and
+		/// the transport was set to HTTP by the first message.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmansetsessionoption DWORD WSManSetSessionOption(
+		// WSMAN_SESSION_HANDLE session, WSManSessionOption option, WSMAN_DATA *data );
+		[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManSetSessionOption")]
+		public static extern Win32Error WSManSetSessionOption(WSMAN_SESSION_HANDLE session, WSManSessionOption option, in WSMAN_DATA data);
+
 		/// <summary>Provides a handle to a Windows Remote Client unique identifier.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct WSMAN_API_HANDLE : IHandle
@@ -608,6 +861,20 @@ namespace Vanara.PInvoke
 
 			/// <summary>Defines the certificate thumbprint.</summary>
 			public string certificateThumbprint { get => userAccount.username; set => userAccount.username = value; }
+		}
+
+		/// <summary>Represents the set of arguments that are passed in to the command line.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wsman/ns-wsman-wsman_command_arg_set typedef struct _WSMAN_COMMAND_ARG_SET {
+		// DWORD argsCount; PCWSTR *args; } WSMAN_COMMAND_ARG_SET;
+		[PInvokeData("wsman.h", MSDNShortId = "NS:wsman._WSMAN_COMMAND_ARG_SET")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct WSMAN_COMMAND_ARG_SET
+		{
+			/// <summary>Specifies the number of arguments in the array.</summary>
+			public uint argsCount;
+
+			/// <summary>Defines an array of strings that specify the arguments.</summary>
+			public IntPtr args;
 		}
 
 		/// <summary>Provides a handle to a remote management command.</summary>
@@ -1257,6 +1524,28 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => WSManDeinitialize(handle).Succeeded;
 		}
 
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSMAN_OPERATION_HANDLE"/> that is disposed using <see cref="WSManCloseOperation"/>.</summary>
+		public class SafeWSMAN_OPERATION_HANDLE : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_OPERATION_HANDLE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeWSMAN_OPERATION_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_OPERATION_HANDLE"/> class.</summary>
+			private SafeWSMAN_OPERATION_HANDLE() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeWSMAN_OPERATION_HANDLE"/> to <see cref="WSMAN_OPERATION_HANDLE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator WSMAN_OPERATION_HANDLE(SafeWSMAN_OPERATION_HANDLE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => WSManCloseOperation(handle).Succeeded;
+		}
+
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> for <see cref="WSMAN_SESSION_HANDLE"/> that is disposed using <see
 		/// cref="WSManCloseSession(WSMAN_SESSION_HANDLE, uint)"/>.
@@ -1286,7 +1575,6 @@ namespace Vanara.PInvoke
 		Structures
 		WSMAN_AUTHZ_QUOTA
 		WSMAN_CERTIFICATE_DETAILS
-		WSMAN_COMMAND_ARG_SET
 		WSMAN_FILTER
 		WSMAN_FRAGMENT
 		WSMAN_KEY
@@ -1312,8 +1600,6 @@ namespace Vanara.PInvoke
 		WSMAN_PLUGIN_SIGNAL
 
 		Functions
-		WSManCloseCommand
-		WSManCloseOperation
 		WSManConnectShell
 		WSManConnectShellCommand
 		WSManCreateShellEx
@@ -1329,13 +1615,9 @@ namespace Vanara.PInvoke
 		WSManPluginOperationComplete
 		WSManPluginReceiveResult
 		WSManPluginReportContext
-		WSManReceiveShellOutput
 		WSManReconnectShell
 		WSManReconnectShellCommand
-		WSManRunShellCommand
 		WSManRunShellCommandEx
-		WSManSendShellInput
-		WSManSetSessionOption
 		WSManSignalShell
 		WSMAN_PLUGIN_STARTUP
 		*/
