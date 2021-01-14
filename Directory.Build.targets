@@ -1,17 +1,19 @@
 <Project>
   <PropertyGroup>
-	<!--<DocumentationFile>$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>-->
-	<DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);$(PlatformTarget)</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or '$(TargetFramework)' == 'net45' ">
-	<DefineConstants>$(DefineConstants);ALLOWSPAN</DefineConstants>
+    <DefineConstants>$(DefineConstants);ALLOWSPAN</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
-	<Reference Include="System" />
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-	<Compile Remove="**\~*.cs" />
-	<None Include="**\~*.cs" />
-	<SupportedPlatform Include="windows" />
+    <Compile Remove="**\~*.cs" />
+    <None Include="**\~*.cs" />
+    <SupportedPlatform Include="windows" />
   </ItemGroup>
 </Project>
