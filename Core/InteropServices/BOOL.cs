@@ -108,6 +108,11 @@ namespace Vanara
 		/// </returns>
 		public static bool operator >=(BOOL s1, BOOL s2) => (s1.CompareTo(s2) >= 0) ? true : false;
 
+		/// <summary>Implements the operator !.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the operator.</returns>
+		public static BOOL operator !(BOOL value) => value == False ? True : False;
+
 		/// <inheritdoc/>
 		public int CompareTo(BOOL other) => Value.CompareTo(other.Value);
 
