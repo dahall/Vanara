@@ -65,20 +65,35 @@ namespace Vanara.PInvoke.Tests
 
 		public static string GetStringVal(this object value)
 		{
-			if (value is null)
-				return "(null)";
-			else
+			switch (value)
 			{
-				if (value is System.Runtime.InteropServices.ComTypes.FILETIME ft)
-					value = ft.ToDateTime();
-				else if (value is SYSTEMTIME st)
-					value = st.ToDateTime(DateTimeKind.Local);
+				case null:
+					return "(null)";
 
-				if (value.GetType().IsPrimitive || value is DateTime || value is Decimal)
+				case System.Runtime.InteropServices.ComTypes.FILETIME ft:
+					value = ft.ToDateTime();
+					goto Simple;
+
+				case SYSTEMTIME st:
+					value = st.ToDateTime(DateTimeKind.Local);
+					goto Simple;
+
+				case DateTime:
+				case Decimal:
+				case var v when v.GetType().IsPrimitive:
+					Simple:
 					return $"{value.GetType().Name} : [{value}]";
-				if (value is string s)
+
+				case string s:
 					return string.Concat("\"", s, "\"");
-				else
+
+				case byte[] bytes:
+					return string.Join(" ", Array.ConvertAll(bytes, b => $"{b:X2}"));
+
+				case SafeAllocatedMemoryHandleBase mem:
+					return mem.Dump;
+
+				default:
 					return JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter());
 			}
 		}
