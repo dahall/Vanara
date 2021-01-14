@@ -3,11 +3,11 @@ PInvoke API (methods, interfaces, structures and constants) imported from Window
 
 - Includes methods from wsmsvc.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WsmSvc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WsmSvc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WsmSvc)  
-### Methods - 15% API coverage (6 of 38 functions)  
+### Methods - 39% API coverage (12 of 31 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[WSManCloseCommand](https://www.google.com/search?num=5&q=WSManCloseCommand+site%3Adocs.microsoft.com) |  |   
-[WSManCloseOperation](https://www.google.com/search?num=5&q=WSManCloseOperation+site%3Adocs.microsoft.com) |  |   
+[WSManCloseCommand](https://www.google.com/search?num=5&q=WSManCloseCommand+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManCloseCommand](https://github.com/dahall/Vanara/search?l=C%23&q=WSManCloseCommand)  
+[WSManCloseOperation](https://www.google.com/search?num=5&q=WSManCloseOperation+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManCloseOperation](https://github.com/dahall/Vanara/search?l=C%23&q=WSManCloseOperation)  
 [WSManCloseSession](https://www.google.com/search?num=5&q=WSManCloseSession+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManCloseSession](https://github.com/dahall/Vanara/search?l=C%23&q=WSManCloseSession)  
 [WSManCloseShell](https://www.google.com/search?num=5&q=WSManCloseShell+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManCloseShell](https://github.com/dahall/Vanara/search?l=C%23&q=WSManCloseShell)  
 [WSManConnectShell](https://www.google.com/search?num=5&q=WSManConnectShell+site%3Adocs.microsoft.com) |  |   
@@ -29,19 +29,20 @@ Native Method | Header | Managed Method
 [WSManPluginOperationComplete](https://www.google.com/search?num=5&q=WSManPluginOperationComplete+site%3Adocs.microsoft.com) |  |   
 [WSManPluginReceiveResult](https://www.google.com/search?num=5&q=WSManPluginReceiveResult+site%3Adocs.microsoft.com) |  |   
 [WSManPluginReportContext](https://www.google.com/search?num=5&q=WSManPluginReportContext+site%3Adocs.microsoft.com) |  |   
-[WSManReceiveShellOutput](https://www.google.com/search?num=5&q=WSManReceiveShellOutput+site%3Adocs.microsoft.com) |  |   
+[WSManReceiveShellOutput](https://www.google.com/search?num=5&q=WSManReceiveShellOutput+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManReceiveShellOutput](https://github.com/dahall/Vanara/search?l=C%23&q=WSManReceiveShellOutput)  
 [WSManReconnectShell](https://www.google.com/search?num=5&q=WSManReconnectShell+site%3Adocs.microsoft.com) |  |   
 [WSManReconnectShellCommand](https://www.google.com/search?num=5&q=WSManReconnectShellCommand+site%3Adocs.microsoft.com) |  |   
-[WSManRunShellCommand](https://www.google.com/search?num=5&q=WSManRunShellCommand+site%3Adocs.microsoft.com) |  |   
+[WSManRunShellCommand](https://www.google.com/search?num=5&q=WSManRunShellCommand+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManRunShellCommand](https://github.com/dahall/Vanara/search?l=C%23&q=WSManRunShellCommand)  
 [WSManRunShellCommandEx](https://www.google.com/search?num=5&q=WSManRunShellCommandEx+site%3Adocs.microsoft.com) |  |   
-[WSManSendShellInput](https://www.google.com/search?num=5&q=WSManSendShellInput+site%3Adocs.microsoft.com) |  |   
-[WSManSetSessionOption](https://www.google.com/search?num=5&q=WSManSetSessionOption+site%3Adocs.microsoft.com) |  |   
+[WSManSendShellInput](https://www.google.com/search?num=5&q=WSManSendShellInput+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManSendShellInput](https://github.com/dahall/Vanara/search?l=C%23&q=WSManSendShellInput)  
+[WSManSetSessionOption](https://www.google.com/search?num=5&q=WSManSetSessionOption+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManSetSessionOption](https://github.com/dahall/Vanara/search?l=C%23&q=WSManSetSessionOption)  
 [WSManSignalShell](https://www.google.com/search?num=5&q=WSManSignalShell+site%3Adocs.microsoft.com) |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [WSMAN_API_HANDLE](https://www.google.com/search?num=5&q=WSMAN_API_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.WSMAN_API_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_API_HANDLE)  
 [WSMAN_AUTHENTICATION_CREDENTIALS](https://www.google.com/search?num=5&q=WSMAN_AUTHENTICATION_CREDENTIALS+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_AUTHENTICATION_CREDENTIALS](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_AUTHENTICATION_CREDENTIALS)  
+[WSMAN_COMMAND_ARG_SET](https://www.google.com/search?num=5&q=WSMAN_COMMAND_ARG_SET+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_COMMAND_ARG_SET](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_COMMAND_ARG_SET)  
 [WSMAN_COMMAND_HANDLE](https://www.google.com/search?num=5&q=WSMAN_COMMAND_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.WSMAN_COMMAND_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_COMMAND_HANDLE)  
 [WSMAN_DATA](https://www.google.com/search?num=5&q=WSMAN_DATA+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_DATA)  
 [WSMAN_DATA_BINARY](https://www.google.com/search?num=5&q=WSMAN_DATA_BINARY+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_DATA_BINARY](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_DATA_BINARY)  
@@ -67,4 +68,5 @@ Native Structure | Header | Managed Structure
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [SafeWSMAN_API_HANDLE](https://www.google.com/search?num=5&q=SafeWSMAN_API_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.SafeWSMAN_API_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWSMAN_API_HANDLE)  
+[SafeWSMAN_OPERATION_HANDLE](https://www.google.com/search?num=5&q=SafeWSMAN_OPERATION_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.SafeWSMAN_OPERATION_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWSMAN_OPERATION_HANDLE)  
 [SafeWSMAN_SESSION_HANDLE](https://www.google.com/search?num=5&q=SafeWSMAN_SESSION_HANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.SafeWSMAN_SESSION_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeWSMAN_SESSION_HANDLE)  
