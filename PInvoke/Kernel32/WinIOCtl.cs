@@ -2116,8 +2116,42 @@ namespace Vanara.PInvoke
 			
 			/// <summary/>
 			public static uint IOCTL_VOLUME_GET_GPT_ATTRIBUTES => CTL_CODE(DEVICE_TYPE.IOCTL_VOLUME_BASE, 14, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-			
-			/// <summary/>
+
+			/// <summary>
+			/// <para>Retrieves the physical location of a specified volume on one or more disks.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para>
+			/// <code>BOOL DeviceIoControl( (HANDLE) hDevice, // handle to device IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, // dwIoControlCode NULL, // lpInBuffer 0, // nInBufferSize (LPVOID) lpOutBuffer, // output buffer (DWORD) nOutBufferSize, // size of output buffer (LPDWORD) lpBytesReturned, // number of bytes returned (LPOVERLAPPED) lpOverlapped // OVERLAPPED structure );</code>
+			/// </para>
+			/// </summary>
+			/// <remarks>
+			/// <para>In Windows 8 and Windows Server 2012, this code is supported by the following technologies.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Technology</term>
+			/// <term>Supported</term>
+			/// </listheader>
+			/// <item>
+			/// <term>Server Message Block (SMB) 3.0 protocol</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>Cluster Shared Volume File System (CsvFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-ioctl_volume_get_volume_disk_extents
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS")]
+			[CorrespondingType(typeof(VOLUME_DISK_EXTENTS), CorrespondingAction.Get)]
 			public static uint IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS => CTL_CODE(DEVICE_TYPE.IOCTL_VOLUME_BASE, 0, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 			
 			/// <summary/>
