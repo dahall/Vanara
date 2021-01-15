@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -1174,72 +1171,6 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.LPTStr)] out string ActualSourceFileName, out uint SourceFileSize, out uint TargetFileSize,
 			out FILE_COMPRESSION CompressionType);
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDSKSPC"/> that is disposed using <see cref="SetupDestroyDiskSpaceList"/>.</summary>
-		public class SafeHDSKSPC : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHDSKSPC"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHDSKSPC(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeHDSKSPC"/> class.</summary>
-			private SafeHDSKSPC() : base() { }
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeHDSKSPC"/> to <see cref="HDSKSPC"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDSKSPC(SafeHDSKSPC h) => h.handle;
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => SetupDestroyDiskSpaceList(handle);
-		}
-
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDEVINFO"/> that is disposed using <see cref="SetupDiDestroyDeviceInfoList"/>.</summary>
-		public class SafeHDEVINFO : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHDEVINFO"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHDEVINFO(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeHDEVINFO"/> class.</summary>
-			private SafeHDEVINFO() : base() { }
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeHDEVINFO"/> to <see cref="HDEVINFO"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDEVINFO(SafeHDEVINFO h) => h.handle;
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => SetupDiDestroyDeviceInfoList(handle);
-		}
-
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HINF"/> that is disposed using <see cref="SetupCloseInfFile"/>.</summary>
-		public class SafeHINF : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHINF"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHINF(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeHINF"/> class.</summary>
-			private SafeHINF() : base() { }
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeHINF"/> to <see cref="HINF"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HINF(SafeHINF h) => h.handle;
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() { SetupCloseInfFile(handle); return true; }
-		}
-
 		/// <summary>
 		/// <para>
 		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
@@ -1293,12 +1224,56 @@ namespace Vanara.PInvoke
 		/// section in the INF file (for example, OptionType=NetAdapter).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupopeninffilea
-		// WINSETUPAPI HINF SetupOpenInfFileA( PCSTR FileName, PCSTR InfClass, DWORD InfStyle, PUINT ErrorLine );
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupopeninffilea WINSETUPAPI HINF SetupOpenInfFileA(
+		// PCSTR FileName, PCSTR InfClass, DWORD InfStyle, PUINT ErrorLine );
 		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupOpenInfFileA")]
 		public static extern SafeHINF SetupOpenInfFile([MarshalAs(UnmanagedType.LPTStr)] string FileName,
 			[Optional, MarshalAs(UnmanagedType.LPTStr)] string InfClass, INF_STYLE InfStyle, out uint ErrorLine);
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDSKSPC"/> that is disposed using <see cref="SetupDestroyDiskSpaceList"/>.</summary>
+		public class SafeHDSKSPC : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHDSKSPC"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHDSKSPC(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHDSKSPC"/> class.</summary>
+			private SafeHDSKSPC() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHDSKSPC"/> to <see cref="HDSKSPC"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HDSKSPC(SafeHDSKSPC h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => SetupDestroyDiskSpaceList(handle);
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HINF"/> that is disposed using <see cref="SetupCloseInfFile"/>.</summary>
+		public class SafeHINF : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHINF"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHINF(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHINF"/> class.</summary>
+			private SafeHINF() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHINF"/> to <see cref="HINF"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HINF(SafeHINF h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { SetupCloseInfFile(handle); return true; }
+		}
 
 		/*
 		SetupDeleteErrorA

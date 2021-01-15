@@ -1,9 +1,8 @@
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -1211,7 +1210,7 @@ namespace Vanara.PInvoke
 		// REGSAM samDesired, HINF InfHandle, PCSTR InfSectionName );
 		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiCreateDeviceInterfaceRegKeyA")]
-		public static extern HKEY SetupDiCreateDeviceInterfaceRegKey(HDEVINFO DeviceInfoSet, in SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
+		public static extern SafeRegistryHandle SetupDiCreateDeviceInterfaceRegKey(HDEVINFO DeviceInfoSet, in SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
 			[Optional] uint Reserved, System.Security.AccessControl.RegistryRights samDesired, [In, Optional] HINF InfHandle,
 			[In, Optional, MarshalAs(UnmanagedType.LPTStr)] string InfSectionName);
 
@@ -1294,7 +1293,7 @@ namespace Vanara.PInvoke
 		// HINF InfHandle, PCSTR InfSectionName );
 		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiCreateDevRegKeyA")]
-		public static extern HKEY SetupDiCreateDevRegKey(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData, DICS_FLAG Scope,
+		public static extern SafeRegistryHandle SetupDiCreateDevRegKey(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData, DICS_FLAG Scope,
 			uint HwProfile, DIREG KeyType, [In, Optional] HINF InfHandle, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string InfSectionName);
 
 		/// <summary>
@@ -1687,16 +1686,10 @@ namespace Vanara.PInvoke
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiEnumDeviceInfo")]
 		public static IEnumerable<SP_DEVINFO_DATA> SetupDiEnumDeviceInfo(HDEVINFO DeviceInfoSet)
 		{
-			var data = new SP_DEVINFO_DATA { cbSize = (uint)Marshal.SizeOf(typeof(SP_DEVINFO_DATA)) };
-			for (uint i = 0; true; i++)
-			{
-				if (!SetupDiEnumDeviceInfo(DeviceInfoSet, i, ref data))
-				{
-					Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_ITEMS);
-					yield break;
-				}
+			var data = StructHelper.InitWithSize<SP_DEVINFO_DATA>();
+			for (uint i = 0; SetupDiEnumDeviceInfo(DeviceInfoSet, i, ref data); i++)
 				yield return data;
-			}
+			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_ITEMS);
 		}
 
 		/// <summary>
@@ -2845,24 +2838,13 @@ namespace Vanara.PInvoke
 		/// <para>A pointer to a NULL-terminated string that specifies:</para>
 		/// <list type="bullet">
 		/// <item>
-		/// <term>
 		/// An identifier (ID) of a Plug and Play (PnP) enumerator. This ID can either be the enumerator's globally unique identifier (GUID)
 		/// or symbolic name. For example, "PCI" can be used to specify the PCI PnP enumerator. Other examples of symbolic names for PnP
 		/// enumerators include "USB", "PCMCIA", and "SCSI".
-		/// </term>
 		/// </item>
-		/// <item>
-		/// <term>A PnP device instance IDs. When specifying a PnP device instance ID, DIGCF_DEVICEINTERFACE must be set in the Flags parameter.</term>
-		/// </item>
+		/// <item>A PnP device instance IDs. When specifying a PnP device instance ID, DIGCF_DEVICEINTERFACE must be set in the Flags parameter</item>
 		/// </list>
-		/// <para>This pointer is optional and can be</para>
-		/// <para>NULL</para>
-		/// <para>. If an</para>
-		/// <para>Enumerator</para>
-		/// <para>value is not used to select devices, set</para>
-		/// <para>Enumerator</para>
-		/// <para>to</para>
-		/// <para>NULL</para>
+		/// <para>This pointer is optional and can be NULL. If an Enumerator value is not used to select devices, set Enumerator to NULL.</para>
 		/// <para>For more information about how to set the Enumerator value, see the following <c>Remarks</c> section.</para>
 		/// </param>
 		/// <param name="hwndParent">
@@ -2875,22 +2857,34 @@ namespace Vanara.PInvoke
 		/// information set. This parameter can be a bitwise OR of one or more of the following flags. For more information about combining
 		/// these control options, see the following <c>Remarks</c> section.
 		/// </para>
-		/// <para>DIGCF_ALLCLASSES</para>
-		/// <para>Return a list of installed devices for the specified device setup classes or device interface classes.</para>
-		/// <para>DIGCF_DEVICEINTERFACE</para>
-		/// <para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>DIGCF_ALLCLASSES</term>
+		/// <description>Return a list of installed devices for the specified device setup classes or device interface classes.</description>
+		/// </item>
+		/// <item>
+		/// <term>DIGCF_DEVICEINTERFACE</term>
+		/// <description>
 		/// Return devices that support device interfaces for the specified device interface classes. This flag must be set in the Flags
 		/// parameter if the Enumerator parameter specifies a device instance ID.
-		/// </para>
-		/// <para>DIGCF_DEFAULT</para>
-		/// <para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <term>DIGCF_DEFAULT</term>
+		/// <description>
 		/// Return only the device that is associated with the system default device interface, if one is set, for the specified device
 		/// interface classes.
-		/// </para>
-		/// <para>DIGCF_PRESENT</para>
-		/// <para>Return only devices that are currently present.</para>
-		/// <para>DIGCF_PROFILE</para>
-		/// <para>Return only devices that are a part of the current hardware profile.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <term>DIGCF_PRESENT</term>
+		/// <description>Return only devices that are currently present.</description>
+		/// </item>
+		/// <item>
+		/// <term>DIGCF_PROFILE</term>
+		/// <description>Return only devices that are a part of the current hardware profile.</description>
+		/// </item>
+		/// </list>
 		/// </param>
 		/// <param name="DeviceInfoSet">
 		/// The handle to an existing device information set to which <c>SetupDiGetClassDevsEx</c> adds the requested device information
@@ -2929,29 +2923,19 @@ namespace Vanara.PInvoke
 		/// or only for a specified device setup class:
 		/// </para>
 		/// <list type="bullet">
+		/// <item>To return devices for all device setup classes, set the DIGCF_ALLCLASSES flag and set the ClassGuid parameter to <c>NULL</c>.</item>
 		/// <item>
-		/// <term>To return devices for all device setup classes, set the DIGCF_ALLCLASSES flag and set the ClassGuid parameter to <c>NULL</c>.</term>
-		/// </item>
-		/// <item>
-		/// <term>
 		/// To return devices only for a specific device setup class, do not set DIGCF_ALLCLASSES and use ClassGuid to supply the GUID of
 		/// the device setup class.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>In addition, you can use the following filtering options to further restrict which devices are returned.</para>
 		/// <list type="bullet">
+		/// <item>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</item>
+		/// <item>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</item>
 		/// <item>
-		/// <term>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</term>
-		/// </item>
-		/// <item>
-		/// <term>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</term>
-		/// </item>
-		/// <item>
-		/// <term>
 		/// To return devices for a specific PnP enumerator only, use the Enumerator parameter to supply the GUID or symbolic name of the
 		/// enumerator. If Enumerator is <c>NULL</c>, <c>SetupDiGetClassDevsEx</c> returns devices for all PnP enumerators.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>Device Interface Class Control Options</para>
@@ -2961,20 +2945,16 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
-		/// <term>
 		/// To return devices that support a device interface of any class, set the DIGCF_DEVICEINTERFACE flag, set the DIGCF_ALLCLASSES
 		/// flag, and set ClassGuid to <c>NULL</c>. The function adds to the device information set a device information element that
 		/// represents such a device, and then adds to the device information element a device interface list that contains all the device
 		/// interfaces that the device supports.
-		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>
 		/// To return only devices that support a device interface of a specified class, set the DIGCF_DEVICEINTERFACE flag and use the
 		/// ClassGuid parameter to supply the class GUID of the device interface class. The function adds to the device information set a
 		/// device information element that represents such a device, and then adds a device interface of the specified class to the device
 		/// interface list for that device information element.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>
@@ -2983,35 +2963,25 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
-		/// <term>
 		/// To return only the device that supports the system default interface, if one is set, for a specified device interface class, set
 		/// the DIGCF_DEVICEINTERFACE flag, set the DIGCF_DEFAULT flag, and use ClassGuid to supply the class GUID of the device interface
 		/// class. The function adds to the device information set a device information element that represents such a device, and then adds
 		/// the system default interface to the device interface list for that device information element.
-		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>
 		/// To return a device that supports a system default interface for an unspecified device interface class, set the
 		/// DIGCF_DEVICEINTERFACE flag, set the DIGCF_ALLCLASSES flag, set the DIGCF_DEFAULT flag, and set ClassGuid to <c>NULL</c>. The
 		/// function adds to the device information set a device information element that represents such a device, and then adds the system
 		/// default interface to the device interface list for that device information element.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>You can also use the following options in combination with the other options to further restrict which devices are returned.</para>
 		/// <list type="bullet">
+		/// <item>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</item>
+		/// <item>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</item>
 		/// <item>
-		/// <term>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</term>
-		/// </item>
-		/// <item>
-		/// <term>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</term>
-		/// </item>
-		/// <item>
-		/// <term>
 		/// To return only a specific device, set the DIGCF_DEVICEINTERFACE flag and use the Enumerator parameter to supply the device
 		/// instance ID of the device. To include all possible devices, set Enumerator to <c>NULL</c>.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>Retrieving Devices in a Device Setup Class That Support a Device Interface Class</para>
@@ -3023,14 +2993,18 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <list type="number">
 		/// <item>
-		/// <term>
 		/// Call SetupDiCreateDeviceInfoList to create an empty device information set for the "Volume" device setup class. Set ClassGuid to
 		/// a pointer to the class GUID for the "Volume" device setup class and set hwndParent as appropriate. In response to such a call,
 		/// the function will return a handle to type HDEVINFO to the device information set.
-		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>Call <c>SetupDiGetClassDevsEx</c> with the following settings:</term>
+		/// <para>Call <c>SetupDiGetClassDevsEx</c> with the following settings:</para>
+		/// <list type="bullet">
+		/// <item>Set ClassGuid to a pointer to the class GUID of the "mounted device" device interface class.</item>
+		/// <item>Set Flags to DIGCF_DEVICEINTERFACE.</item>
+		/// <item>Set DeviceInfoSet to the HDEVINFO handle obtained in step (1).</item>
+		/// <item>Set hwndParent as appropriate and the remaining parameters to NULL.</item>
+		/// </list>
 		/// </item>
 		/// </list>
 		/// <para>
@@ -3061,24 +3035,13 @@ namespace Vanara.PInvoke
 		/// <para>A pointer to a NULL-terminated string that specifies:</para>
 		/// <list type="bullet">
 		/// <item>
-		/// <term>
 		/// An identifier (ID) of a Plug and Play (PnP) enumerator. This ID can either be the enumerator's globally unique identifier (GUID)
 		/// or symbolic name. For example, "PCI" can be used to specify the PCI PnP enumerator. Other examples of symbolic names for PnP
 		/// enumerators include "USB", "PCMCIA", and "SCSI".
-		/// </term>
 		/// </item>
-		/// <item>
-		/// <term>A PnP device instance IDs. When specifying a PnP device instance ID, DIGCF_DEVICEINTERFACE must be set in the Flags parameter.</term>
-		/// </item>
+		/// <item>A PnP device instance IDs. When specifying a PnP device instance ID, DIGCF_DEVICEINTERFACE must be set in the Flags parameter</item>
 		/// </list>
-		/// <para>This pointer is optional and can be</para>
-		/// <para>NULL</para>
-		/// <para>. If an</para>
-		/// <para>Enumerator</para>
-		/// <para>value is not used to select devices, set</para>
-		/// <para>Enumerator</para>
-		/// <para>to</para>
-		/// <para>NULL</para>
+		/// <para>This pointer is optional and can be NULL. If an Enumerator value is not used to select devices, set Enumerator to NULL.</para>
 		/// <para>For more information about how to set the Enumerator value, see the following <c>Remarks</c> section.</para>
 		/// </param>
 		/// <param name="hwndParent">
@@ -3091,22 +3054,34 @@ namespace Vanara.PInvoke
 		/// information set. This parameter can be a bitwise OR of one or more of the following flags. For more information about combining
 		/// these control options, see the following <c>Remarks</c> section.
 		/// </para>
-		/// <para>DIGCF_ALLCLASSES</para>
-		/// <para>Return a list of installed devices for the specified device setup classes or device interface classes.</para>
-		/// <para>DIGCF_DEVICEINTERFACE</para>
-		/// <para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>DIGCF_ALLCLASSES</term>
+		/// <description>Return a list of installed devices for the specified device setup classes or device interface classes.</description>
+		/// </item>
+		/// <item>
+		/// <term>DIGCF_DEVICEINTERFACE</term>
+		/// <description>
 		/// Return devices that support device interfaces for the specified device interface classes. This flag must be set in the Flags
 		/// parameter if the Enumerator parameter specifies a device instance ID.
-		/// </para>
-		/// <para>DIGCF_DEFAULT</para>
-		/// <para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <term>DIGCF_DEFAULT</term>
+		/// <description>
 		/// Return only the device that is associated with the system default device interface, if one is set, for the specified device
 		/// interface classes.
-		/// </para>
-		/// <para>DIGCF_PRESENT</para>
-		/// <para>Return only devices that are currently present.</para>
-		/// <para>DIGCF_PROFILE</para>
-		/// <para>Return only devices that are a part of the current hardware profile.</para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <term>DIGCF_PRESENT</term>
+		/// <description>Return only devices that are currently present.</description>
+		/// </item>
+		/// <item>
+		/// <term>DIGCF_PROFILE</term>
+		/// <description>Return only devices that are a part of the current hardware profile.</description>
+		/// </item>
+		/// </list>
 		/// </param>
 		/// <param name="DeviceInfoSet">
 		/// The handle to an existing device information set to which <c>SetupDiGetClassDevsEx</c> adds the requested device information
@@ -3145,29 +3120,19 @@ namespace Vanara.PInvoke
 		/// or only for a specified device setup class:
 		/// </para>
 		/// <list type="bullet">
+		/// <item>To return devices for all device setup classes, set the DIGCF_ALLCLASSES flag and set the ClassGuid parameter to <c>NULL</c>.</item>
 		/// <item>
-		/// <term>To return devices for all device setup classes, set the DIGCF_ALLCLASSES flag and set the ClassGuid parameter to <c>NULL</c>.</term>
-		/// </item>
-		/// <item>
-		/// <term>
 		/// To return devices only for a specific device setup class, do not set DIGCF_ALLCLASSES and use ClassGuid to supply the GUID of
 		/// the device setup class.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>In addition, you can use the following filtering options to further restrict which devices are returned.</para>
 		/// <list type="bullet">
+		/// <item>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</item>
+		/// <item>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</item>
 		/// <item>
-		/// <term>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</term>
-		/// </item>
-		/// <item>
-		/// <term>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</term>
-		/// </item>
-		/// <item>
-		/// <term>
 		/// To return devices for a specific PnP enumerator only, use the Enumerator parameter to supply the GUID or symbolic name of the
 		/// enumerator. If Enumerator is <c>NULL</c>, <c>SetupDiGetClassDevsEx</c> returns devices for all PnP enumerators.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>Device Interface Class Control Options</para>
@@ -3177,20 +3142,16 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
-		/// <term>
 		/// To return devices that support a device interface of any class, set the DIGCF_DEVICEINTERFACE flag, set the DIGCF_ALLCLASSES
 		/// flag, and set ClassGuid to <c>NULL</c>. The function adds to the device information set a device information element that
 		/// represents such a device, and then adds to the device information element a device interface list that contains all the device
 		/// interfaces that the device supports.
-		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>
 		/// To return only devices that support a device interface of a specified class, set the DIGCF_DEVICEINTERFACE flag and use the
 		/// ClassGuid parameter to supply the class GUID of the device interface class. The function adds to the device information set a
 		/// device information element that represents such a device, and then adds a device interface of the specified class to the device
 		/// interface list for that device information element.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>
@@ -3199,35 +3160,25 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
-		/// <term>
 		/// To return only the device that supports the system default interface, if one is set, for a specified device interface class, set
 		/// the DIGCF_DEVICEINTERFACE flag, set the DIGCF_DEFAULT flag, and use ClassGuid to supply the class GUID of the device interface
 		/// class. The function adds to the device information set a device information element that represents such a device, and then adds
 		/// the system default interface to the device interface list for that device information element.
-		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>
 		/// To return a device that supports a system default interface for an unspecified device interface class, set the
 		/// DIGCF_DEVICEINTERFACE flag, set the DIGCF_ALLCLASSES flag, set the DIGCF_DEFAULT flag, and set ClassGuid to <c>NULL</c>. The
 		/// function adds to the device information set a device information element that represents such a device, and then adds the system
 		/// default interface to the device interface list for that device information element.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>You can also use the following options in combination with the other options to further restrict which devices are returned.</para>
 		/// <list type="bullet">
+		/// <item>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</item>
+		/// <item>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</item>
 		/// <item>
-		/// <term>To return only devices that are present in the system, set the DIGCF_PRESENT flag.</term>
-		/// </item>
-		/// <item>
-		/// <term>To return only devices that are part of the current hardware profile, set the DIGCF_PROFILE flag.</term>
-		/// </item>
-		/// <item>
-		/// <term>
 		/// To return only a specific device, set the DIGCF_DEVICEINTERFACE flag and use the Enumerator parameter to supply the device
 		/// instance ID of the device. To include all possible devices, set Enumerator to <c>NULL</c>.
-		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>Retrieving Devices in a Device Setup Class That Support a Device Interface Class</para>
@@ -3239,14 +3190,18 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <list type="number">
 		/// <item>
-		/// <term>
 		/// Call SetupDiCreateDeviceInfoList to create an empty device information set for the "Volume" device setup class. Set ClassGuid to
 		/// a pointer to the class GUID for the "Volume" device setup class and set hwndParent as appropriate. In response to such a call,
 		/// the function will return a handle to type HDEVINFO to the device information set.
-		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>Call <c>SetupDiGetClassDevsEx</c> with the following settings:</term>
+		/// <para>Call <c>SetupDiGetClassDevsEx</c> with the following settings:</para>
+		/// <list type="bullet">
+		/// <item>Set ClassGuid to a pointer to the class GUID of the "mounted device" device interface class.</item>
+		/// <item>Set Flags to DIGCF_DEVICEINTERFACE.</item>
+		/// <item>Set DeviceInfoSet to the HDEVINFO handle obtained in step (1).</item>
+		/// <item>Set hwndParent as appropriate and the remaining parameters to NULL.</item>
+		/// </list>
 		/// </item>
 		/// </list>
 		/// <para>
@@ -3389,5 +3344,173 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetupDiGetClassInstallParams(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData,
 			[In, Optional] IntPtr ClassInstallParams, uint ClassInstallParamsSize, out uint RequiredSize);
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDEVINFO"/> that is disposed using <see cref="SetupDiDestroyDeviceInfoList"/>.</summary>
+		public class SafeHDEVINFO : SafeHANDLE
+		{
+			private readonly Lazy<SP_DEVINFO_LIST_DETAIL_DATA> detail;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHDEVINFO"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHDEVINFO(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => detail = new Lazy<SP_DEVINFO_LIST_DETAIL_DATA>(GetDetail);
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHDEVINFO"/> class.</summary>
+			private SafeHDEVINFO() : base() => detail = new Lazy<SP_DEVINFO_LIST_DETAIL_DATA>(GetDetail);
+
+			/// <summary>
+			/// If the device information set is for a remote computer, this member is a configuration manager machine handle for the remote
+			/// computer. If the device information set is for the local computer, this member is <c>HANDLE.NULL</c>.
+			/// </summary>
+			public HANDLE MachineHandle => detail.Value.RemoteMachineHandle;
+
+			/// <summary>
+			/// A string that contains the name of the remote computer. If the device information set is for the local computer, this member
+			/// is <see langword="null"/>.
+			/// </summary>
+			public string MachineName => detail.Value.RemoteMachineName == "" ? null : detail.Value.RemoteMachineName;
+
+			/// <summary>
+			/// The setup class GUID that is associated with the device information set or <see langword="null"/> if there is no associated
+			/// setup class.
+			/// </summary>
+			public Guid? ClassGuid => detail.Value.ClassGuid == Guid.Empty ? null : detail.Value.ClassGuid;
+
+			/// <summary>
+			/// Returns a handle to a device information set that contains requested device information elements for a local or a remote computer.
+			/// </summary>
+			/// <param name="classGuid">
+			/// The GUID for a device setup class or a device interface class. This value is optional and can be <c>NULL</c>. If a GUID
+			/// value is not used to select devices, set ClassGuid to <c>NULL</c>.
+			/// </param>
+			/// <param name="pnpFilter">
+			/// <para>A pointer to a NULL-terminated string that specifies:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// An identifier (ID) of a Plug and Play (PnP) enumerator. This ID can either be the enumerator's globally unique identifier
+			/// (GUID) or symbolic name. For example, "PCI" can be used to specify the PCI PnP enumerator. Other examples of symbolic names
+			/// for PnP enumerators include "USB", "PCMCIA", and "SCSI".
+			/// </item>
+			/// <item>
+			/// A PnP device instance IDs. When specifying a PnP device instance ID, DIGCF_DEVICEINTERFACE must be set in the Flags parameter
+			/// </item>
+			/// </list>
+			/// <para>
+			/// This pointer is optional and can be NULL. If an Enumerator value is not used to select devices, set Enumerator to NULL.
+			/// </para>
+			/// </param>
+			/// <param name="flags">
+			/// <para>
+			/// A value that specifies control options that filter the device information elements that are added to the device information set.
+			/// </para>
+			/// </param>
+			/// <param name="machineName">
+			/// A string that contains the name of a remote computer on which the devices reside. A value of <c>NULL</c> for MachineName
+			/// specifies that the device is installed on the local computer.
+			/// </param>
+			/// <returns>
+			/// If the operation succeeds, <c>SetupDiGetClassDevsEx</c> returns a handle to a device information set that contains all
+			/// installed devices that matched the supplied parameters. If the operation fails, the function returns INVALID_HANDLE_VALUE.
+			/// To get extended error information, call GetLastError.
+			/// </returns>
+			/// <remarks>See <see cref="SetupDiGetClassDevsEx(in Guid, string, HWND, DIGCF, HDEVINFO, string, IntPtr)"/> for more detail.</remarks>
+			public static SafeHDEVINFO Create(Guid? classGuid, DIGCF flags = DIGCF.DIGCF_PRESENT, string pnpFilter = null, string machineName = null)
+			{
+				if (classGuid.HasValue)
+					return Win32Error.ThrowLastErrorIfInvalid(SetupDiGetClassDevsEx(classGuid.Value, pnpFilter, default, flags, default, machineName));
+				else
+					return Win32Error.ThrowLastErrorIfInvalid(SetupDiGetClassDevsEx(IntPtr.Zero, pnpFilter, default, flags, default, machineName));
+			}
+
+			/// <summary>
+			/// Creates an empty device information set on a remote or a local computer and optionally associates the set with a device
+			/// setup class.
+			/// </summary>
+			/// <param name="classGuid">
+			/// The GUID of the device setup class to associate with the newly created device information set. If this parameter is
+			/// specified, only devices of this class can be included in this device information set. If this parameter is set to <see
+			/// langword="null"/> the device information set is not associated with a specific device setup class.
+			/// </param>
+			/// <param name="machineName">
+			/// A string that contains the name of a computer on a network. If a name is specified, only devices on that computer can be
+			/// created and opened in this device information set. If this parameter is set to <see langword="null"/>, the device
+			/// information set is for devices on the local computer.
+			/// </param>
+			/// <returns>A handle to an empty device information set.</returns>
+			/// <remarks>
+			/// If the device information set is for devices on a remote computer (MachineName is not <c>NULL</c>), all subsequent
+			/// operations on this set or any of its elements must use routines that support device information sets with remote elements.
+			/// The <c>SetupDi</c> Xxx routines that do not provide this support, such as SetupDiCallClassInstaller, have a statement to
+			/// that effect in their reference page.
+			/// </remarks>
+			public static SafeHDEVINFO CreateEmpty(Guid? classGuid = null, string machineName = null)
+			{
+				if (classGuid.HasValue)
+					return Win32Error.ThrowLastErrorIfInvalid(SetupDiCreateDeviceInfoListEx(classGuid.Value, default, machineName));
+				else
+					return Win32Error.ThrowLastErrorIfInvalid(SetupDiCreateDeviceInfoListEx(IntPtr.Zero, default, machineName));
+			}
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHDEVINFO"/> to <see cref="HDEVINFO"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HDEVINFO(SafeHDEVINFO h) => h.handle;
+
+			/// <summary>Adjusts the current handle to include additional requested device information elements.</summary>
+			/// <param name="classGuid">
+			/// The GUID for a device setup class or a device interface class. This value is optional and can be <c>NULL</c>. If a GUID
+			/// value is not used to select devices, set ClassGuid to <c>NULL</c>.
+			/// </param>
+			/// <param name="pnpFilter">
+			/// <para>A pointer to a NULL-terminated string that specifies:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// An identifier (ID) of a Plug and Play (PnP) enumerator. This ID can either be the enumerator's globally unique identifier
+			/// (GUID) or symbolic name. For example, "PCI" can be used to specify the PCI PnP enumerator. Other examples of symbolic names
+			/// for PnP enumerators include "USB", "PCMCIA", and "SCSI".
+			/// </item>
+			/// <item>
+			/// A PnP device instance IDs. When specifying a PnP device instance ID, DIGCF_DEVICEINTERFACE must be set in the Flags parameter
+			/// </item>
+			/// </list>
+			/// <para>
+			/// This pointer is optional and can be NULL. If an Enumerator value is not used to select devices, set Enumerator to NULL.
+			/// </para>
+			/// </param>
+			/// <param name="flags">
+			/// <para>
+			/// A value that specifies control options that filter the device information elements that are added to the device information set.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// If the operation succeeds, <c>SetupDiGetClassDevsEx</c> returns a handle to a device information set that contains all
+			/// installed devices that matched the supplied parameters. If the operation fails, the function returns INVALID_HANDLE_VALUE.
+			/// To get extended error information, call GetLastError.
+			/// </returns>
+			/// <remarks>See <see cref="SetupDiGetClassDevsEx(in Guid, string, HWND, DIGCF, HDEVINFO, string, IntPtr)"/> for more detail.</remarks>
+			public void Adjust(Guid? classGuid, DIGCF flags = DIGCF.DIGCF_ALLCLASSES, string pnpFilter = null)
+			{
+				SafeHDEVINFO hNew;
+				if (classGuid.HasValue)
+					hNew = SetupDiGetClassDevsEx(classGuid.Value, pnpFilter, default, flags, handle, MachineName);
+				else
+					hNew = SetupDiGetClassDevsEx(IntPtr.Zero, pnpFilter, default, flags, handle, MachineName);
+				Win32Error.ThrowLastErrorIfInvalid(hNew);
+				SetHandle(hNew.handle);
+				hNew.SetHandleAsInvalid();
+			}
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => SetupDiDestroyDeviceInfoList(handle);
+
+			private SP_DEVINFO_LIST_DETAIL_DATA GetDetail()
+			{
+				var data = StructHelper.InitWithSize<SP_DEVINFO_LIST_DETAIL_DATA>();
+				Win32Error.ThrowLastErrorIfFalse(SetupDiGetDeviceInfoListDetail(handle, ref data));
+				return data;
+			}
+		}
 	}
 }

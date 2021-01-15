@@ -1484,49 +1484,6 @@ namespace Vanara.PInvoke
 			return false;
 		}
 
-		/// <summary>Converts memory retrieved from a property call to a managed object of the correct type.</summary>
-		/// <param name="mem">The allocated memory.</param>
-		/// <param name="propType">The type of the property.</param>
-		/// <returns>A managed object with the value from the memory.</returns>
-		public static object SetupDiPropertyToManagedObject(ISafeMemoryHandle mem, DEVPROPTYPE propType)
-		{
-			object Value = null;
-			switch (propType)
-			{
-				case DEVPROPTYPE.DEVPROP_TYPE_EMPTY:
-				case DEVPROPTYPE.DEVPROP_TYPE_NULL:
-					break;
-
-				case DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR:
-					Value = new RawSecurityDescriptor(mem.GetBytes(0, mem.Size), 0);
-					break;
-
-				case DEVPROPTYPE.DEVPROP_TYPE_STRING_INDIRECT:
-					Value = mem.ToString(-1, CharSet.Unicode);
-					break;
-
-				case DEVPROPTYPE.DEVPROP_TYPE_STRING_LIST:
-					Value = mem.ToStringEnum(CharSet.Unicode).ToArray();
-					break;
-
-				default:
-					(DEVPROPTYPE type, DEVPROPTYPE mod) spt = propType.Split();
-					var type = CorrespondingTypeAttribute.GetCorrespondingTypes(spt.type).FirstOrDefault();
-					if (type is not null)
-					{
-						Value = spt.mod switch
-						{
-							0 => mem.DangerousGetHandle().Convert(mem.Size, type, CharSet.Unicode),
-							DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY => mem.DangerousGetHandle().ToArray(type, mem.Size / Marshal.SizeOf(type), 0, mem.Size),
-							_ => null
-						};
-					}
-					Value ??= mem.GetBytes(0, mem.Size);
-					break;
-			}
-			return Value;
-		}
-
 		/// <summary>
 		/// The <c>SetupDiGetDevicePropertyKeys</c> function retrieves an array of the device property keys that represent the device
 		/// properties that are set for a device instance.
@@ -3136,6 +3093,50 @@ namespace Vanara.PInvoke
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiOpenDevRegKey")]
 		public static extern SafeRegistryHandle SetupDiOpenDevRegKey(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData,
 			DICS_FLAG Scope, uint HwProfile, DIREG KeyType, RegistryRights samDesired);
+
+		/// <summary>Converts memory retrieved from a property call to a managed object of the correct type.</summary>
+		/// <param name="mem">The allocated memory.</param>
+		/// <param name="propType">The type of the property.</param>
+		/// <param name="convType">The type to which to convert the result if ambiguous.</param>
+		/// <returns>A managed object with the value from the memory.</returns>
+		public static object SetupDiPropertyToManagedObject(ISafeMemoryHandle mem, DEVPROPTYPE propType, Type convType = null)
+		{
+			object Value = null;
+			switch (propType)
+			{
+				case DEVPROPTYPE.DEVPROP_TYPE_EMPTY:
+				case DEVPROPTYPE.DEVPROP_TYPE_NULL:
+					break;
+
+				case DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR:
+					Value = new RawSecurityDescriptor(mem.GetBytes(0, mem.Size), 0);
+					break;
+
+				case DEVPROPTYPE.DEVPROP_TYPE_STRING_INDIRECT:
+					Value = mem.ToString(-1, CharSet.Unicode);
+					break;
+
+				case DEVPROPTYPE.DEVPROP_TYPE_STRING_LIST:
+					Value = mem.ToStringEnum(CharSet.Unicode).ToArray();
+					break;
+
+				default:
+					(DEVPROPTYPE type, DEVPROPTYPE mod) spt = propType.Split();
+					var type = convType ?? CorrespondingTypeAttribute.GetCorrespondingTypes(spt.type).FirstOrDefault();
+					if (type is not null)
+					{
+						Value = spt.mod switch
+						{
+							0 => mem.DangerousGetHandle().Convert(mem.Size, type, CharSet.Unicode),
+							DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY => mem.DangerousGetHandle().ToArray(type, mem.Size / Marshal.SizeOf(type), 0, mem.Size),
+							_ => null
+						};
+					}
+					Value ??= mem.GetBytes(0, mem.Size);
+					break;
+			}
+			return Value;
+		}
 
 		/// <summary>The <c>SetupDiRegisterCoDeviceInstallers</c> function is the default handler for DIF_REGISTER_COINSTALLERS.</summary>
 		/// <param name="DeviceInfoSet">

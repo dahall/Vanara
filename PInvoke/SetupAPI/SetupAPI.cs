@@ -196,6 +196,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/ff543546(v=vs.85)
 		[PInvokeData("Devpropdef.h")]
+		[Flags]
 		public enum DEVPROPTYPE : uint
 		{
 			/// <summary>
@@ -576,6 +577,7 @@ namespace Vanara.PInvoke
 			/// function and set the function input parameters as follows:
 			/// </para>
 			/// </remarks>
+			[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>))]
 			DEVPROP_TYPE_STRING_LIST = DEVPROP_TYPE_STRING | DEVPROP_TYPEMOD_LIST,
 
 			/// <summary>
@@ -657,6 +659,7 @@ namespace Vanara.PInvoke
 			/// set the function input parameters as follows:
 			/// </para>
 			/// </remarks>
+			[CorrespondingType(typeof(byte[]))]
 			DEVPROP_TYPE_BINARY = DEVPROP_TYPE_BYTE | DEVPROP_TYPEMOD_ARRAY,
 
 			/// <summary>
@@ -779,6 +782,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>Note: PE images can use either resource table type (STRINGTABLE resources, or message-table resources).</para>
 			/// </remarks>
+			[CorrespondingType(typeof(string))]
 			DEVPROP_TYPE_STRING_INDIRECT = 0x00000019,
 
 			/// <summary>
@@ -1834,18 +1838,23 @@ namespace Vanara.PInvoke
 			/// (Windows Vista and later) The function returns a REG_MULTI_SZ list of the service names of the upper filter drivers that are
 			/// installed for the device setup class.
 			/// </summary>
+			[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>))]
+			[CorrespondingType(typeof(string[]))]
 			SPCRP_UPPERFILTERS = 0x00000011,
 
 			/// <summary>
 			/// (Windows Vista and later) The function returns a REG_MULTI_SZ list of the service names of the lower filter drivers that are
 			/// installed for the device setup class.
 			/// </summary>
+			[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>))]
+			[CorrespondingType(typeof(string[]))]
 			SPCRP_LOWERFILTERS = 0x00000012,
 
 			/// <summary>
 			/// The function returns the device's security descriptor as a SECURITY_DESCRIPTOR structure in self-relative format (described
 			/// in the Microsoft Windows SDK documentation).
 			/// </summary>
+			[CorrespondingType(typeof(byte[]))]
 			SPCRP_SECURITY = 0x00000017,
 
 			/// <summary>
@@ -1853,24 +1862,28 @@ namespace Vanara.PInvoke
 			/// see Security Descriptor Definition Language (Windows). For information about the format of security descriptor strings, see
 			/// Security Descriptor Definition Language (Windows).
 			/// </summary>
+			[CorrespondingType(typeof(string))]
 			SPCRP_SECURITY_SDS = 0x00000018,
 
 			/// <summary>
 			/// The function returns a DWORD value that represents the device type for the class. For more information, see Specifying
 			/// Device Types.
 			/// </summary>
+			[CorrespondingType(typeof(FILE_DEVICE))]
 			SPCRP_DEVTYPE = 0x00000019,
 
 			/// <summary>
 			/// The function returns a DWORD value indicating whether users can obtain exclusive access to devices for this class. The
 			/// returned value is one if exclusive access is allowed, or zero otherwise.
 			/// </summary>
+			[CorrespondingType(typeof(BOOL))]
 			SPCRP_EXCLUSIVE = 0x0000001A,
 
 			/// <summary>
 			/// The function returns flags indicating device characteristics for the class. For a list of characteristics flags, see the
 			/// DeviceCharacteristics parameter to IoCreateDevice.
 			/// </summary>
+			[CorrespondingType(typeof(uint))]
 			SPCRP_CHARACTERISTICS = 0x0000001B,
 		}
 
@@ -1893,12 +1906,15 @@ namespace Vanara.PInvoke
 		public enum SPDRP
 		{
 			/// <summary>The function retrieves the device's address.</summary>
+			[CorrespondingType(typeof(uint))]
 			SPDRP_ADDRESS = 0x0000001C,
 
 			/// <summary>The function retrieves the device's bus number.</summary>
+			[CorrespondingType(typeof(uint))]
 			SPDRP_BUSNUMBER = 0x00000015,
 
 			/// <summary>The function retrieves the GUID for the device's bus type.</summary>
+			[CorrespondingType(typeof(Guid))]
 			SPDRP_BUSTYPEGUID = 0x00000013,
 
 			/// <summary>
@@ -1952,67 +1968,83 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
+			[CorrespondingType(typeof(CM_DEVCAP))]
 			SPDRP_CAPABILITIES = 0x0000000F,
 
 			/// <summary>
 			/// The function retrieves a bitwise OR of a device's characteristics flags in a DWORD. For a description of these flags, which
 			/// are defined in Wdm.h and Ntddk.h, see the DeviceCharacteristics parameter of the IoCreateDevice function.
 			/// </summary>
+			[CorrespondingType(typeof(uint))]
 			SPDRP_CHARACTERISTICS = 0x0000001B,
 
 			/// <summary>The function retrieves a REG_SZ string that contains the device setup class of a device.</summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_CLASS = 0x00000007,
 
 			/// <summary>The function retrieves a REG_SZ string that contains the GUID that represents the device setup class of a device.</summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_CLASSGUID = 0x00000008,
 
 			/// <summary>
 			/// The function retrieves a REG_MULTI_SZ string that contains the list of compatible IDs for a device. For information about
 			/// compatible IDs, see Device Identification Strings.
 			/// </summary>
+			[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>))]
+			[CorrespondingType(typeof(string[]))]
 			SPDRP_COMPATIBLEIDS = 0x00000002,
 
 			/// <summary>
 			/// The function retrieves a bitwise OR of a device's configuration flags in a DWORD value. The configuration flags are
 			/// represented by the CONFIGFLAG_Xxx bitmasks that are defined in Regstr.h.
 			/// </summary>
+			[CorrespondingType(typeof(CONFIGFLAG))]
 			SPDRP_CONFIGFLAGS = 0x0000000A,
 
 			/// <summary>
 			/// (Windows XP and later) The function retrieves a CM_POWER_DATA structure that contains the device's power management information.
 			/// </summary>
+			[CorrespondingType(typeof(CM_POWER_DATA))]
 			SPDRP_DEVICE_POWER_DATA = 0x0000001E,
 
 			/// <summary>The function retrieves a REG_SZ string that contains the description of a device.</summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_DEVICEDESC = 0x00000000,
 
 			/// <summary>
 			/// The function retrieves a DWORD value that represents the device's type. For more information, see Specifying Device Types.
 			/// </summary>
+			[CorrespondingType(typeof(FILE_DEVICE))]
 			SPDRP_DEVTYPE = 0x00000019,
 
 			/// <summary>
 			/// The function retrieves a string that identifies the device's software key (sometimes called the driver key). For more
 			/// information about driver keys, see Registry Trees and Keys for Devices and Drivers.
 			/// </summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_DRIVER = 0x00000009,
 
 			/// <summary>The function retrieves a REG_SZ string that contains the name of the device's enumerator.</summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_ENUMERATOR_NAME = 0x00000016,
 
 			/// <summary>
 			/// The function retrieves a DWORD value that indicates whether a user can obtain exclusive use of the device. The returned
 			/// value is one if exclusive use is allowed, or zero otherwise. For more information, see IoCreateDevice.
 			/// </summary>
+			[CorrespondingType(typeof(BOOL))]
 			SPDRP_EXCLUSIVE = 0x0000001A,
 
 			/// <summary>The function retrieves a REG_SZ string that contains the friendly name of a device.</summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_FRIENDLYNAME = 0x0000000C,
 
 			/// <summary>
 			/// The function retrieves a REG_MULTI_SZ string that contains the list of hardware IDs for a device. For information about
 			/// hardware IDs, see Device Identification Strings.
 			/// </summary>
+			[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>))]
+			[CorrespondingType(typeof(string[]))]
 			SPDRP_HARDWAREID = 0x00000001,
 
 			/// <summary>
@@ -2020,51 +2052,64 @@ namespace Vanara.PInvoke
 			/// installation state is represented by one of the CM_INSTALL_STATE_Xxx values that are defined in Cfgmgr32.h. The
 			/// CM_INSTALL_STATE_Xxx values correspond to the DEVICE_INSTALL_STATE enumeration values.
 			/// </summary>
+			[CorrespondingType(typeof(CM_INSTALL_STATE))]
 			SPDRP_INSTALL_STATE = 0x00000022,
 
 			/// <summary>The function retrieves the device's legacy bus type as an INTERFACE_TYPE value (defined in Wdm.h and Ntddk.h).</summary>
+			[CorrespondingType(typeof(INTERFACE_TYPE))]
 			SPDRP_LEGACYBUSTYPE = 0x00000014,
 
 			/// <summary>The function retrieves a REG_SZ string that contains the hardware location of a device.</summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_LOCATION_INFORMATION = 0x0000000D,
 
 			/// <summary>
 			/// (Windows Server 2003 and later) The function retrieves a REG_MULTI_SZ string that represents the location of the device in
 			/// the device tree.
 			/// </summary>
+			[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>))]
+			[CorrespondingType(typeof(string[]))]
 			SPDRP_LOCATION_PATHS = 0x00000023,
 
 			/// <summary>The function retrieves a REG_MULTI_SZ string that contains the names of a device's lower-filter drivers.</summary>
+			[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>))]
+			[CorrespondingType(typeof(string[]))]
 			SPDRP_LOWERFILTERS = 0x00000012,
 
 			/// <summary>The function retrieves a REG_SZ string that contains the name of the device manufacturer.</summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_MFG = 0x0000000B,
 
 			/// <summary>
 			/// The function retrieves a REG_SZ string that contains the name that is associated with the device's PDO. For more
 			/// information, see IoCreateDevice.
 			/// </summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_PHYSICAL_DEVICE_OBJECT_NAME = 0x0000000E,
 
 			/// <summary>
 			/// (Windows XP and later) The function retrieves the device's current removal policy as a DWORD that contains one of the
 			/// CM_REMOVAL_POLICY_Xxx values that are defined in Cfgmgr32.h.
 			/// </summary>
+			[CorrespondingType(typeof(CM_REMOVAL_POLICY))]
 			SPDRP_REMOVAL_POLICY = 0x0000001F,
 
 			/// <summary>
 			/// (Windows XP and later) The function retrieves the device's hardware-specified default removal policy as a DWORD that
 			/// contains one of the CM_REMOVAL_POLICY_Xxx values that are defined in Cfgmgr32.h.
 			/// </summary>
+			[CorrespondingType(typeof(CM_REMOVAL_POLICY))]
 			SPDRP_REMOVAL_POLICY_HW_DEFAULT = 0x00000020,
 
 			/// <summary>
 			/// (Windows XP and later) The function retrieves the device's override removal policy (if it exists) from the registry, as a
 			/// DWORD that contains one of the CM_REMOVAL_POLICY_Xxx values that are defined in Cfgmgr32.h.
 			/// </summary>
+			[CorrespondingType(typeof(CM_REMOVAL_POLICY))]
 			SPDRP_REMOVAL_POLICY_OVERRIDE = 0x00000021,
 
 			/// <summary>The function retrieves a SECURITY_DESCRIPTOR structure for a device.</summary>
+			[CorrespondingType(typeof(byte[]))]
 			SPDRP_SECURITY = 0x00000017,
 
 			/// <summary>
@@ -2072,23 +2117,30 @@ namespace Vanara.PInvoke
 			/// descriptor strings, see Security Descriptor Definition Language (Windows). For information about the format of security
 			/// descriptor strings, see Security Descriptor Definition Language (Windows).
 			/// </summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_SECURITY_SDS = 0x00000018,
 
 			/// <summary>The function retrieves a REG_SZ string that contains the service name for a device.</summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_SERVICE = 0x00000004,
 
 			/// <summary>
 			/// The function retrieves a DWORD value set to the value of the <c>UINumber</c> member of the device's DEVICE_CAPABILITIES structure.
 			/// </summary>
+			[CorrespondingType(typeof(uint))]
 			SPDRP_UI_NUMBER = 0x00000010,
 
 			/// <summary>The function retrieves a format string (REG_SZ) used to display the <c>UINumber</c> value.</summary>
+			[CorrespondingType(typeof(string))]
 			SPDRP_UI_NUMBER_DESC_FORMAT = 0x0000001D,
 
 			/// <summary>The function retrieves a REG_MULTI_SZ string that contains the names of a device's upper filter drivers.</summary>
+			[CorrespondingType(typeof(System.Collections.Generic.IEnumerable<string>))]
+			[CorrespondingType(typeof(string[]))]
 			SPDRP_UPPERFILTERS = 0x00000011,
 
 			/// <summary>Base ContainerID (R)</summary>
+			[CorrespondingType(typeof(Guid))]
 			SPDRP_BASE_CONTAINERID = 0x00000024,
 		}
 
@@ -3236,7 +3288,11 @@ namespace Vanara.PInvoke
 		// _SP_DEVINFO_LIST_DETAIL_DATA_W { DWORD cbSize; GUID ClassGuid; HANDLE RemoteMachineHandle; WCHAR
 		// RemoteMachineName[SP_MAX_MACHINENAME_LENGTH]; } SP_DEVINFO_LIST_DETAIL_DATA_W, *PSP_DEVINFO_LIST_DETAIL_DATA_W;
 		[PInvokeData("setupapi.h", MSDNShortId = "NS:setupapi._SP_DEVINFO_LIST_DETAIL_DATA_W")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+#if x64
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 8)]
+#else
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
+#endif
 		public struct SP_DEVINFO_LIST_DETAIL_DATA
 		{
 			/// <summary>The size, in bytes, of the SP_DEVINFO_LIST_DETAIL_DATA structure.</summary>
@@ -3276,7 +3332,11 @@ namespace Vanara.PInvoke
 		// InstallMsgHandlerContext; HSPFILEQ FileQueue; ULONG_PTR ClassInstallReserved; DWORD Reserved; CHAR DriverPath[MAX_PATH]; }
 		// SP_DEVINSTALL_PARAMS_A, *PSP_DEVINSTALL_PARAMS_A;
 		[PInvokeData("setupapi.h", MSDNShortId = "NS:setupapi._SP_DEVINSTALL_PARAMS_A")]
-		[StructLayout(LayoutKind.Sequential)]
+#if x64
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 8)]
+#else
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
+#endif
 		public struct SP_DEVINSTALL_PARAMS
 		{
 			/// <summary>The size, in bytes, of the SP_DEVINSTALL_PARAMS structure.</summary>
@@ -3572,7 +3632,7 @@ namespace Vanara.PInvoke
 			public HSPFILEQ FileQueue;
 
 			/// <summary>A pointer for class-installer data. Co-installers must not use this field.</summary>
-			public UIntPtr ClassInstallReserved;
+			public IntPtr ClassInstallReserved;
 
 			/// <summary>Reserved. For internal use only.</summary>
 			public uint Reserved;
