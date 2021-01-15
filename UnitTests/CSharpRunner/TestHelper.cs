@@ -80,7 +80,7 @@ namespace Vanara.PInvoke.Tests
 
 				case DateTime:
 				case Decimal:
-				case var v when v.GetType().IsPrimitive:
+				case var v when v.GetType().IsPrimitive || v.GetType().IsEnum:
 					Simple:
 					return $"{value.GetType().Name} : [{value}]";
 
@@ -94,7 +94,8 @@ namespace Vanara.PInvoke.Tests
 					return mem.Dump;
 
 				default:
-					return JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter());
+					try { return JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter()); }
+					catch (Exception e) { return e.ToString(); }
 			}
 		}
 
