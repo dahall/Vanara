@@ -4186,6 +4186,31 @@ namespace Vanara.PInvoke
 			public long FileSizeThreshold;
 		}
 
+		/// <summary>
+		/// Represents a physical location on a disk. It is the output buffer for the IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS control code.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-volume_disk_extents
+		// typedef struct _VOLUME_DISK_EXTENTS { DWORD NumberOfDiskExtents; DISK_EXTENT Extents[ANYSIZE_ARRAY]; } VOLUME_DISK_EXTENTS, *PVOLUME_DISK_EXTENTS;
+		[PInvokeData("winioctl.h", MSDNShortId = "NS:winioctl._VOLUME_DISK_EXTENTS")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<VOLUME_DISK_EXTENTS>), nameof(NumberOfDiskExtents))]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct VOLUME_DISK_EXTENTS
+		{
+			/// <summary>
+			/// <para>The number of disks in the volume (a volume can span multiple disks).</para>
+			/// <para>
+			/// An extent is a contiguous run of sectors on one disk. When the number of extents returned is greater than one (1), the error
+			/// code <c>ERROR_MORE_DATA</c> is returned. You should call DeviceIoControl again, allocating enough buffer space based on the
+			/// value of <c>NumberOfDiskExtents</c> after the first <c>DeviceIoControl</c> call.
+			/// </para>
+			/// </summary>
+			public uint NumberOfDiskExtents;
+
+			/// <summary>An array of DISK_EXTENT structures.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public DISK_EXTENT[] Extents;
+		}
+
 		/*
 		https://docs.microsoft.com/en-us/windows/win32/api/winioctl/
 
@@ -4342,7 +4367,6 @@ TXFS_TRANSACTION_ACTIVE_INFO : 1
 TXFS_WRITE_BACKUP_INFORMATION : 1
 VERIFY_INFORMATION : 16
 VOLUME_BITMAP_BUFFER : 24
-VOLUME_DISK_EXTENTS : 32
 VOLUME_GET_GPT_ATTRIBUTES_INFORMATION : 8
 
 winioctl_CHANGER_ELEMENT_STATUS	Represents the status of the specified element.
