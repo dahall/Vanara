@@ -23,10 +23,22 @@ Interface | Description
 ---- | ----
 [Vanara.Network.NetworkListManager.IEnumerableList<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumerableList<T>) | An enumerable list that supports a length and indexer.
 [Vanara.INamedEntity](https://github.com/dahall/Vanara/search?l=C%23&q=INamedEntity) | An object that exposes a name.
+[Vanara.Diagnostics.IPropertyProvider<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IPropertyProvider<T>) | A dictionary of properties.
 ### Classes
 Class | Description
 ---- | ----
 [Vanara.Computer](https://github.com/dahall/Vanara/search?l=C%23&q=Computer) | Represents a single connected (authenticated) computer.
+[Vanara.Diagnostics.Device](https://github.com/dahall/Vanara/search?l=C%23&q=Device) | A class that represents a device on a machine.
+[Vanara.Diagnostics.DeviceClass](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceClass) | A class that provides detail about a device setup class available on a machine.
+[Vanara.Diagnostics.DeviceClassCollection](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceClassCollection) | A class that provides the collection of device setup classes available on a machine.
+[Vanara.Diagnostics.DeviceClass.DeviceClassProperties](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceClassProperties) | Accesses properties with a device class.
+[Vanara.Diagnostics.DeviceClass.DeviceClassRegProperties](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceClassRegProperties) | Accesses registry properties with a device class.
+[Vanara.Diagnostics.DeviceCollection](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceCollection) | A class that provides the collection of devices available on a machine.
+[Vanara.Diagnostics.DeviceExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceExtensions) | Extension methods for SetupAPI functions and structs.
+[Vanara.Diagnostics.DeviceInterface](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceInterface) | 
+[Vanara.Diagnostics.DeviceManager](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceManager) | Class to manage local and remote devices.
+[Vanara.Diagnostics.Device.DeviceProperties](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceProperties) | Accesses properties with a device.
+[Vanara.Diagnostics.Device.DeviceRegProperties](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceRegProperties) | Accesses registry properties with a device class.
 [Vanara.Extensions.FileInfoExtension](https://github.com/dahall/Vanara/search?l=C%23&q=FileInfoExtension) | Extension methods for `System.IO.FileSystemInfo` and derived classes to facilitate retrieval of extended properties.
 [Vanara.Network.InternetProxyOptions](https://github.com/dahall/Vanara/search?l=C%23&q=InternetProxyOptions) | Provides access to proxy settings for an internet connection.
 [Vanara.Diagnostics.IoCompletionPort](https://github.com/dahall/Vanara/search?l=C%23&q=IoCompletionPort) | Represents a system I/O completion port.
