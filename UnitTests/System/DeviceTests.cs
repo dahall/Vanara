@@ -11,7 +11,7 @@ namespace Vanara.Diagnostics.Tests
 		[Test]
 		public void ClassNamesTest()
 		{
-			var coll = DeviceManager.LocalInstance.SetupClasses;
+			var coll = DeviceManager.LocalInstance.GetSetupClasses();
 			Assert.That(coll, Is.Not.Empty);
 			TestContext.Write(string.Join("\r\n", coll.Select(c => c.Description).OrderBy(s => s)));
 		}
