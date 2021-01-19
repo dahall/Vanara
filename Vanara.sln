@@ -85,7 +85,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Cabinet", "P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{3EC6B40D-71D3-4E59-A0E0-544EC605FE11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "UnitTests\Core\Core.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "UnitTests\Core\Core.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "UnitTests\Security\Security.csproj", "{31F68B09-2933-45A1-B86B-9F6D647ED2D9}"
 EndProject
@@ -129,7 +129,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowrProf", "UnitTests\PInvo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "UnitTests\PInvoke\Security\Security.csproj", "{C580868E-D913-454C-BF9B-CAFE3BD28DF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "UnitTests\PInvoke\Shared\Shared.csproj", "{6F668E05-8141-48B8-9031-326C79745AF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "UnitTests\PInvoke\Shared\Shared.csproj", "{6F668E05-8141-48B8-9031-326C79745AF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell32", "UnitTests\PInvoke\Shell32\Shell32.csproj", "{40E5CA4E-527F-4F79-875D-2342D1136FDD}"
 EndProject
@@ -290,6 +290,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WsmSvc", "PInvoke\WsmSvc\Vanara.PInvoke.WsmSvc.csproj", "{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WsmSvc", "UnitTests\PInvoke\WsmSvc\WsmSvc.csproj", "{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.IScsiDsc", "PInvoke\IScsiDsc\Vanara.PInvoke.IScsiDsc.csproj", "{C407D019-7D53-4C6A-B27A-5468F2430F10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -937,6 +939,12 @@ Global
 		{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
 		{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C407D019-7D53-4C6A-B27A-5468F2430F10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C407D019-7D53-4C6A-B27A-5468F2430F10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C407D019-7D53-4C6A-B27A-5468F2430F10}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{C407D019-7D53-4C6A-B27A-5468F2430F10}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{C407D019-7D53-4C6A-B27A-5468F2430F10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C407D019-7D53-4C6A-B27A-5468F2430F10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1063,6 +1071,7 @@ Global
 		{F1417ADE-A8D3-432F-8F43-EF626DF4A3C9} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{1D1A06C8-57E8-4754-8383-BBFB3C98F49F} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{28175EF4-C5CA-48EB-AD8D-1B0608AD4389} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
+		{C407D019-7D53-4C6A-B27A-5468F2430F10} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
