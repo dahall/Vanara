@@ -3395,6 +3395,43 @@ namespace Vanara.PInvoke
 		public static extern bool GetVolumePathNamesForVolumeName(string lpszVolumeName, StringBuilder lpszVolumePathNames, uint cchBufferLength, out uint lpcchReturnLength);
 
 		/// <summary>
+		/// <para>Retrieves a list of drive letters and mounted folder paths for the specified volume.</para>
+		/// </summary>
+		/// <param name="lpszVolumeName">
+		/// <para>A volume <c>GUID</c> path for the volume. A volume <c>GUID</c> path is of the form "\\?\Volume{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}\".</para>
+		/// </param>
+		/// <param name="lpszVolumePathNames">
+		/// <para>
+		/// A pointer to a buffer that receives the list of drive letters and mounted folder paths. The list is an array of null-terminated
+		/// strings terminated by an additional <c>NULL</c> character. If the buffer is not large enough to hold the complete list, the
+		/// buffer holds as much of the list as possible.
+		/// </para>
+		/// </param>
+		/// <param name="cchBufferLength">
+		/// <para>The length of the lpszVolumePathNames buffer, in <c>TCHARs</c>, including all <c>NULL</c> characters.</para>
+		/// </param>
+		/// <param name="lpcchReturnLength">
+		/// <para>
+		/// If the call is successful, this parameter is the number of <c>TCHARs</c> copied to the lpszVolumePathNames buffer. Otherwise,
+		/// this parameter is the size of the buffer required to hold the complete list, in <c>TCHARs</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>
+		/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. If the buffer is
+		/// not large enough to hold the complete list, the error code is <c>ERROR_MORE_DATA</c> and the lpcchReturnLength parameter receives
+		/// the required buffer size.
+		/// </para>
+		/// </returns>
+		// BOOL WINAPI GetVolumePathNamesForVolumeName( _In_ LPCTSTR lpszVolumeName, _Out_ LPTSTR lpszVolumePathNames, _In_ DWORD
+		// cchBufferLength, _Out_ PDWORD lpcchReturnLength);
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("FileAPI.h", MSDNShortId = "aa364998")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetVolumePathNamesForVolumeName(string lpszVolumeName, [Out, Optional] IntPtr lpszVolumePathNames, uint cchBufferLength, out uint lpcchReturnLength);
+
+		/// <summary>
 		/// <para>Converts a local file time to a file time based on the Coordinated Universal Time (UTC).</para>
 		/// </summary>
 		/// <param name="lpLocalFileTime">
