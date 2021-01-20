@@ -84,6 +84,40 @@ namespace Vanara.InteropServices
 		/// </returns>
 		public static implicit operator TStruct(SafeMemStruct<TStruct, TMem> s) => !(s is null) ? s.Value : throw new ArgumentNullException(nameof(s));
 
+		/// <summary>Appends the specified bytes to the end of the allocated memory for this structure, expanding the allocation to fit the byte array.</summary>
+		/// <param name="bytes">The bytes.</param>
+		/// <returns>A pointer to the copied bytes in memory.</returns>
+		public virtual IntPtr Append(byte[] bytes)
+		{
+			var sz = Size;
+			Size += bytes.Length;
+			Marshal.Copy(bytes, 0, handle.Offset(sz), bytes.Length);
+			return handle.Offset(sz);
+		}
+
+		/// <summary>Appends the specified memory to the end of the allocated memory for this structure, expanding the allocation to fit the added memory.</summary>
+		/// <param name="mem">The memory to append.</param>
+		/// <returns>A pointer to the copied memory.</returns>
+		public virtual IntPtr Append(SafeAllocatedMemoryHandleBase mem)
+		{
+			var sz = Size;
+			Size += mem.Size;
+			((IntPtr)mem).CopyTo(handle.Offset(sz), mem.Size);
+			return handle.Offset(sz);
+		}
+
+		/// <summary>Appends the specified object to the end of the allocated memory for this structure, expanding the allocation to fit the added object.</summary>
+		/// <param name="value">The value to append.</param>
+		/// <returns>A pointer to the copied memory.</returns>
+		public virtual IntPtr Append(object value)
+		{
+			var sz = Size;
+			var vSz = InteropExtensions.SizeOf(value);
+			Size += vSz;
+			handle.Write(value, sz, Size);
+			return handle.Offset(sz);
+		}
+
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
@@ -101,6 +135,11 @@ namespace Vanara.InteropServices
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		public bool Equals(TStruct other) => HasValue && EqualityComparer<TStruct>.Default.Equals(handle.ToStructure<TStruct>(Size), other);
+
+		/// <summary>Gets the memory address of a field within <typeparamref name="TStruct"/>.</summary>
+		/// <param name="fieldName">Name of the field.</param>
+		/// <returns>The pointer to the field in memory.</returns>
+		public virtual IntPtr GetFieldAddress(string fieldName) => handle.Offset(FieldOffset(fieldName));
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
