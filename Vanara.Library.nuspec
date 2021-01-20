@@ -36,6 +36,7 @@
       <dependency id="Vanara.PInvoke.Gdi32" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Graphics" version="3.3.1" />
       <dependency id="Vanara.PInvoke.IpHlpApi" version="3.3.1" />
+      <dependency id="Vanara.PInvoke.IScsiDsc" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Kernel32" version="3.3.1" />
       <dependency id="Vanara.PInvoke.KtmW32" version="3.3.1" />
       <dependency id="Vanara.PInvoke.Magnification" version="3.3.1" />

@@ -35,7 +35,6 @@ Class | Description
 [Vanara.Diagnostics.DeviceClass.DeviceClassRegProperties](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceClassRegProperties) | Accesses registry properties with a device class.
 [Vanara.Diagnostics.DeviceCollection](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceCollection) | A class that provides the collection of devices available on a machine.
 [Vanara.Diagnostics.DeviceExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceExtensions) | Extension methods for SetupAPI functions and structs.
-[Vanara.Diagnostics.DeviceInterface](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceInterface) | 
 [Vanara.Diagnostics.DeviceManager](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceManager) | Class to manage local and remote devices.
 [Vanara.Diagnostics.Device.DeviceProperties](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceProperties) | Accesses properties with a device.
 [Vanara.Diagnostics.Device.DeviceRegProperties](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceRegProperties) | Accesses registry properties with a device class.
