@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
@@ -46,6 +48,8 @@ namespace Vanara.PInvoke
 		public const int MAX_RADIUS_ADDRESS_LEN = 41;
 
 		private const string Lib_Iscsidsc = "iscsidsc.dll";
+
+		private delegate Win32Error GetListDelegate(ref uint sz, IntPtr buf);
 
 		/// <summary>
 		/// The <c>IKE_AUTHENTICATION_METHOD</c> enumeration indicates the type of Internet Key Exchange (IKE) authentication method.
@@ -255,20 +259,25 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// A value of the TARGETPROTOCOLTYPE structure, indicating the protocol that the initiator uses to communicate with the target device.
 			/// </summary>
+			[CorrespondingType(typeof(TARGETPROTOCOLTYPE))]
 			ProtocolType,
 
 			/// <summary>A null-terminated string that contains the alias of the target device.</summary>
+			[CorrespondingType(typeof(string))]
 			TargetAlias,
 
 			/// <summary>
 			/// A list of null-terminated strings that describe the discovery mechanisms that located the indicated target. The list is
 			/// terminated by a double null.
 			/// </summary>
+			[CorrespondingType(typeof(string[]))]
+			[CorrespondingType(typeof(IEnumerable<string>))]
 			DiscoveryMechanisms,
 
 			/// <summary>
 			/// A ISCSI_TARGET_PORTAL_GROUP structure that contains descriptions of the portals in the portal group associated with the target.
 			/// </summary>
+			[CorrespondingType(typeof(ISCSI_TARGET_PORTAL_GROUP))]
 			PortalGroups,
 
 			/// <summary>
@@ -276,15 +285,19 @@ namespace Vanara.PInvoke
 			/// be reached. The array is preceded by a ULONG value that contains the number of elements in the array. Each
 			/// ISCSI_TARGET_MAPPING structure is aligned on a 4-byte boundary.
 			/// </summary>
+			[CorrespondingType(typeof(ISCSI_TARGET_MAPPING))]
 			PersistentTargetMappings,
 
 			/// <summary>A null-terminated string that contains the initiator HBA that connects to the target.</summary>
+			[CorrespondingType(typeof(string))]
 			InitiatorName,
 
 			/// <summary>The flags associated with the target. The following table lists the flags that can be associated with a target.</summary>
+			[CorrespondingType(typeof(ISCSI_TARGET_FLAGS))]
 			TargetFlags,
 
 			/// <summary>A value of the ISCSI_LOGIN_OPTIONS structure that defines the login data.</summary>
+			[CorrespondingType(typeof(ISCSI_LOGIN_OPTIONS))]
 			LoginOptions,
 		}
 
@@ -969,6 +982,49 @@ namespace Vanara.PInvoke
 		public static extern Win32Error AddPersistentIScsiDevice([MarshalAs(UnmanagedType.LPTStr)] string DevicePath);
 
 		/// <summary>
+		/// The <c>AddRadiusServer</c> function adds a new Remote Authentication Dial-In User Service (RADIUS) server to the list referenced
+		/// by the iSCSI initiator service during authentication.
+		/// </summary>
+		/// <param name="Address">A string that represents the IP address or DNS name associated with the RADIUS server.</param>
+		/// <returns>
+		/// <para>
+		/// Returns ERROR_SUCCESS if the operation is successful. If the operation fails due to a socket connection error, this function
+		/// will return a Winsock error code. Other possible error values include:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>The supplied Address is invalid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When the iSCSI initiator service receives a request from the <c>AddRadiusServer</c> user-mode library function to add a RADIUS
+		/// server, the initiator service saves data associated with the server in non-volatile storage. This allows the iSCSI initiator
+		/// service to utilize the RADIUS server to authenticate targets or obtain authentication information.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The iscsidsc.h header defines AddRadiusServer as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-addradiusserverw ISDSC_STATUS ISDSC_API AddRadiusServerW(
+		// PWSTR Address );
+		[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.AddRadiusServerW")]
+		public static extern Win32Error AddRadiusServer([MarshalAs(UnmanagedType.LPTStr)] string Address);
+
+		/// <summary>
 		/// The <c>ClearPersistentIscsiDevices</c> function removes all volumes and devices from the list of persistently bound iSCSI volumes.
 		/// </summary>
 		/// <returns>returns ERROR_SUCCESS if the operation succeeds and the appropriate Win32 or iSCSI error code if the operation fails.</returns>
@@ -1170,6 +1226,51 @@ namespace Vanara.PInvoke
 		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.GetIScsiTargetInformationA")]
 		public static extern Win32Error GetIScsiTargetInformation([MarshalAs(UnmanagedType.LPTStr)] string TargetName,
 			[Optional, MarshalAs(UnmanagedType.LPTStr)] string DiscoveryMechanism, TARGET_INFORMATION_CLASS InfoClass, ref uint BufferSize, [Out] IntPtr Buffer);
+
+		/// <summary>The <c>GetIscsiTargetInformation</c> function retrieves information about the specified target.</summary>
+		/// <param name="TargetName">The name of the target for which information is retrieved.</param>
+		/// <param name="DiscoveryMechanism">
+		/// A text description of the mechanism that was used to discover the target (for example, "iSNS:", "SendTargets:" or "HBA:"). A
+		/// value of <c>null</c> indicates that no discovery mechanism is specified.
+		/// </param>
+		/// <param name="InfoClass">A value of type TARGET_INFORMATION_CLASS that indicates the type of information to retrieve.</param>
+		/// <returns>The output data.</returns>
+		/// <remarks>
+		/// <para>
+		/// The iSCSI initiator service can acquire information about a single target through multiple discovery mechanisms and initiators,
+		/// and the information can be different in each case, so the iSCSI initiator service maintains a list of target instances which are
+		/// organized according to the discovery method.
+		/// </para>
+		/// <para>
+		/// For instance, if a single target is discovered by multiple initiators, each of which uses a different target portal group to
+		/// discover the target, the iSCSI initiator will create multiple target instances for the target, each of which refers to a
+		/// different target portal group.
+		/// </para>
+		/// <para>
+		/// Since the information associated with a target is relative to the way in which it was discovered, the caller must specify the
+		/// discovery mechanism in the DiscoveryMechanism parameter, using a correctly formatted string identifier for the discovery
+		/// mechanism. The caller can retrieve a list of valid identifiers for discovery mechanisms by setting the InfoClass parameter to <c>0</c>.
+		/// </para>
+		/// </remarks>
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.GetIScsiTargetInformationA")]
+		public static T GetIScsiTargetInformation<T>(string TargetName, TARGET_INFORMATION_CLASS InfoClass, [Optional] string DiscoveryMechanism)
+		{
+			if (!CorrespondingTypeAttribute.CanGet(InfoClass, typeof(T)))
+				throw new ArgumentException("Invalid return type for specified InfoClass.");
+			var sz = 0U;
+			var err = GetIScsiTargetInformation(TargetName, DiscoveryMechanism, InfoClass, ref sz, IntPtr.Zero);
+			if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			{
+				using var mem = new SafeCoTaskMemHandle(sz);
+				GetIScsiTargetInformation(TargetName, DiscoveryMechanism, InfoClass, ref sz, IntPtr.Zero).ThrowIfFailed();
+				if (typeof(IEnumerable<string>).IsAssignableFrom(typeof(T)))
+					return (T)(object)mem.ToStringEnum().ToArray();
+				else
+					return mem.ToType<T>();
+			}
+			err.ThrowIfFailed();
+			return default;
+		}
 
 		/// <summary>The <c>GetIscsiVersionInformation</c> function retrieves information about the initiator version.</summary>
 		/// <param name="VersionInfo">Pointer to an ISCSI_VERSION_INFO structure that contains initiator version information.</param>
@@ -1748,6 +1849,30 @@ namespace Vanara.PInvoke
 		public static extern Win32Error RemovePersistentIScsiDevice([MarshalAs(UnmanagedType.LPTStr)] string DevicePath);
 
 		/// <summary>
+		/// The <c>RemoveRadiusServer</c> function removes a Remote Authentication Dial-In User Service (RADIUS) server entry from the
+		/// RADIUS server list with which an iSCSI initiator is configured.
+		/// </summary>
+		/// <param name="Address">A string that represents the IP address or RADIUS server name.</param>
+		/// <returns>
+		/// Returns <c>ERROR_SUCCESS</c> if the operation is successful. If the operation fails due to a socket connection error, this
+		/// function will return a Winsock error code.
+		/// </returns>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The iscsidsc.h header defines RemoveRadiusServer as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-removeradiusservera ISDSC_STATUS ISDSC_API
+		// RemoveRadiusServerA( PSTR Address );
+		[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveRadiusServerA")]
+		public static extern Win32Error RemoveRadiusServer([MarshalAs(UnmanagedType.LPTStr)] string Address);
+
+		/// <summary>
 		/// <c>ReportActiveIscsiTargetMappings</c> function retrieves the target mappings that are currently active for all initiators on
 		/// the computer.
 		/// </summary>
@@ -1817,6 +1942,13 @@ namespace Vanara.PInvoke
 		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportIScsiInitiatorListA")]
 		public static extern Win32Error ReportIScsiInitiatorList(ref uint BufferSize, [Out, Optional] IntPtr Buffer);
 
+		/// <summary>
+		/// The <c>ReportIscsiInitiatorList</c> function retrieves the list of initiator Host Bus Adapters that are running on the machine.
+		/// </summary>
+		/// <returns>The list of initiator names.</returns>
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportIScsiInitiatorListA")]
+		public static string[] ReportIScsiInitiatorList() => GetStringList(ReportIScsiInitiatorList);
+
 		/// <summary>The <c>ReportIscsiPersistentLogins</c> function retrieves the list of persistent login targets.</summary>
 		/// <param name="Count">A pointer to the location that receives a count of the elements specified by PersistentLoginInfo.</param>
 		/// <param name="PersistentLoginInfo">
@@ -1853,6 +1985,37 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportIScsiPersistentLoginsA")]
 		public static extern Win32Error ReportIScsiPersistentLogins(out uint Count, [Out, Optional] IntPtr PersistentLoginInfo, ref uint BufferSizeInBytes);
+
+		/// <summary>
+		/// The <c>ReportIscsiSendTargetPortals</c> function retrieves a list of target portals that the iSCSI initiator service uses to
+		/// perform automatic discovery with <c>SendTarget</c> requests.
+		/// </summary>
+		/// <param name="PortalCount">
+		/// A pointer to a location that, on input, contains the number of entries in the PortalInfo array. On output, this parameter
+		/// specifies the number of elements that contain return data.
+		/// </param>
+		/// <param name="PortalInfo">
+		/// Pointer to an array of elements contained in ISCSI_TARGET_PORTAL_INFO structures that describe the portals that the iSCSI
+		/// initiator service utilizes to perform discovery with <c>SendTargets</c> requests.
+		/// </param>
+		/// <returns>
+		/// Returns ERROR_SUCCESS if the operation succeeds and ERROR_INSUFFICIENT_BUFFER if the buffer size of Buffer is insufficient to
+		/// contain the output data.
+		/// </returns>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The iscsidsc.h header defines ReportIScsiSendTargetPortals as an alias which automatically selects the ANSI or Unicode version
+		/// of this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with
+		/// code that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-reportiscsisendtargetportalsa ISDSC_STATUS ISDSC_API
+		// ReportIScsiSendTargetPortalsA( PULONG PortalCount, PISCSI_TARGET_PORTAL_INFOA PortalInfo );
+		[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportIScsiSendTargetPortalsA")]
+		public static extern Win32Error ReportIScsiSendTargetPortals(ref uint PortalCount, [Out, MarshalAs(UnmanagedType.LPArray)] ISCSI_TARGET_PORTAL_INFO[] PortalInfo);
 
 		/// <summary>
 		/// The <c>ReportIscsiSendTargetPortalsEx</c> function retrieves a list of static target portals that the iSCSI initiator service
@@ -1923,6 +2086,17 @@ namespace Vanara.PInvoke
 			[Out, Optional] IntPtr Buffer);
 
 		/// <summary>
+		/// The <c>ReportIscsiTargets</c> function retrieves the list of targets that the iSCSI initiator service has discovered, and can
+		/// also instruct the iSCSI initiator service to refresh the list.
+		/// </summary>
+		/// <param name="ForceUpdate">
+		/// If <c>true</c>, the iSCSI initiator service updates the list of discovered targets before returning the target list data to the caller.
+		/// </param>
+		/// <returns>The list of targets.</returns>
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportIScsiTargetsA")]
+		public static string[] ReportIScsiTargets(bool ForceUpdate) => GetStringList((ref uint sz, IntPtr p) => ReportIScsiTargets(ForceUpdate, ref sz, p));
+
+		/// <summary>
 		/// The <c>ReportIsnsServerList</c> function retrieves the list of Internet Storage Name Service (iSNS) servers that the iSCSI
 		/// initiator service queries for discovered targets.
 		/// </summary>
@@ -1955,6 +2129,14 @@ namespace Vanara.PInvoke
 		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportISNSServerListA")]
 		public static extern Win32Error ReportISNSServerList(ref uint BufferSizeInChar, [Out, Optional] IntPtr Buffer);
 
+		/// <summary>
+		/// The <c>ReportIsnsServerList</c> function retrieves the list of Internet Storage Name Service (iSNS) servers that the iSCSI
+		/// initiator service queries for discovered targets.
+		/// </summary>
+		/// <returns>The list of iSNS servers on output.</returns>
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportISNSServerListA")]
+		public static string[] ReportISNSServerList() => GetStringList(ReportISNSServerList);
+
 		/// <summary>The <c>ReportPersistentIscsiDevices</c> function retrieves the list of persistently bound volumes and devices.</summary>
 		/// <param name="BufferSizeInChar">A <c>ULONG</c> value that specifies the number of list elements contained by the Buffer parameter.</param>
 		/// <param name="Buffer">
@@ -1970,6 +2152,49 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportPersistentIScsiDevicesA")]
 		public static extern Win32Error ReportPersistentIScsiDevices(ref uint BufferSizeInChar, IntPtr Buffer);
+
+		/// <summary>The <c>ReportPersistentIscsiDevices</c> function retrieves the list of persistently bound volumes and devices.</summary>
+		/// <returns>The list of volumes and devices that are persistently bound.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-reportpersistentiscsidevicesa ISDSC_STATUS ISDSC_API
+		// ReportPersistentIScsiDevicesA( PULONG BufferSizeInChar, PCHAR Buffer );
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportPersistentIScsiDevicesA")]
+		public static string[] ReportPersistentIScsiDevices() => GetStringList(ReportPersistentIScsiDevices);
+
+		/// <summary>
+		/// The <c>ReportRadiusServerList</c> function retrieves the list of Remote Authentication Dail-In Service (RADIUS) servers the
+		/// iSCSI initiator service uses during authentication.
+		/// </summary>
+		/// <param name="BufferSizeInChar">A <c>ULONG</c> value that specifies the number of list elements contained by the Buffer parameter.</param>
+		/// <param name="Buffer">
+		/// Pointer to a buffer that receives the list of Remote Authentication Dail-In Service (RADIUS) servers on output. Each server name
+		/// is null terminated, except for the last server name, which is double null-terminated.
+		/// </param>
+		/// <returns>
+		/// Returns <c>ERROR_SUCCESS</c> if the operation is successful. If the operation fails due to a socket connection error, this
+		/// function will return a Winsock error code.
+		/// </returns>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The iscsidsc.h header defines ReportRadiusServerList as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-reportradiusserverlista ISDSC_STATUS ISDSC_API
+		// ReportRadiusServerListA( PULONG BufferSizeInChar, PCHAR Buffer );
+		[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportRadiusServerListA")]
+		public static extern Win32Error ReportRadiusServerList(ref uint BufferSizeInChar, [Out, Optional] IntPtr Buffer);
+
+		/// <summary>
+		/// The <c>ReportRadiusServerList</c> function retrieves the list of Remote Authentication Dail-In Service (RADIUS) servers the
+		/// iSCSI initiator service uses during authentication.
+		/// </summary>
+		/// <returns>The list of Remote Authentication Dail-In Service (RADIUS) servers on output.</returns>
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportRadiusServerListA")]
+		public static string[] ReportRadiusServerList() => GetStringList(ReportRadiusServerList);
 
 		/// <summary>The <c>SendScsiInquiry</c> function sends a SCSI INQUIRY command to the specified target.</summary>
 		/// <param name="UniqueSessionId">
@@ -2194,6 +2419,29 @@ namespace Vanara.PInvoke
 		public static extern Win32Error SetIScsiInitiatorNodeName([Optional, MarshalAs(UnmanagedType.LPTStr)] string InitiatorNodeName);
 
 		/// <summary>
+		/// The <c>SetIscsiInitiatorRADIUSSharedSecret</c> function establishes the Remote Authentication Dial-In User Service (RADIUS)
+		/// shared secret.
+		/// </summary>
+		/// <param name="SharedSecretLength">
+		/// A <c>ULONG</c> value that represents the size, in bytes, of the shared secret contained by the buffer specified by SharedSecret.
+		/// The shared secret must be at least 22 bytes, and less than, or equal to, 26 bytes in size.
+		/// </param>
+		/// <param name="SharedSecret">A string that specifies the buffer containing the shared secret.</param>
+		/// <returns>
+		/// Returns <c>ERROR_SUCCESS</c> if the operation is successful. If the operation fails due to a socket connection error, this
+		/// function will return a Winsock error code.
+		/// </returns>
+		/// <remarks>
+		/// When an initiator attempts to log in to a target, the initiator can use the RADIUS server for authentication, or to authenticate
+		/// a target. During this process the initiator uses the SharedSecret to communicate with the RADIUS server.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-setiscsiinitiatorradiussharedsecret ISDSC_STATUS
+		// ISDSC_API SetIScsiInitiatorRADIUSSharedSecret( ULONG SharedSecretLength, PUCHAR SharedSecret );
+		[DllImport(Lib_Iscsidsc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.SetIScsiInitiatorRADIUSSharedSecret")]
+		public static extern Win32Error SetIScsiInitiatorRADIUSSharedSecret(uint SharedSecretLength, [MarshalAs(UnmanagedType.LPStr)] string SharedSecret);
+
+		/// <summary>
 		/// <c>SetIscsiTunnelModeOuterAddress</c> function establishes the tunnel-mode outer address that the indicated initiator Host Bus
 		/// Adapter (HBA) uses when communicating in IPsec tunnel mode through the specified port.
 		/// </summary>
@@ -2230,11 +2478,57 @@ namespace Vanara.PInvoke
 			uint InitiatorPortNumber, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string DestinationAddress,
 			[In, Optional, MarshalAs(UnmanagedType.LPTStr)] string OuterModeAddress, [MarshalAs(UnmanagedType.U1)] bool Persist);
 
+		/// <summary>
+		/// The <c>SetupPersistentIscsiDevices</c> function builds the list of devices and volumes assigned to iSCSI targets that are
+		/// connected to the computer, and saves this list in non-volatile cache of the iSCSI initiator service.
+		/// </summary>
+		/// <returns>Returns ERROR_SUCCESS if the operation succeeds. Otherwise, it returns the appropriate Win32 or iSCSI error code.</returns>
+		/// <remarks>
+		/// <para>
+		/// When the iSCSI Initiator service starts, it does not complete initialization until the storage stack can access and enumerate
+		/// all persistent iSCSI volumes and devices. If there is a service that is dependent on data stored on a persistent volume or
+		/// device, it should be configured to have a dependency on the iSCSI service (MSiSCSI).
+		/// </para>
+		/// <para>The correct procedure for a system administrator to configure a computer to use external persistent volumes is as follows:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Login to all of the targets that contain the volumes</term>
+		/// </item>
+		/// <item>
+		/// <term>Configure all volumes on top of the disks</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Use management software to call the <c>SetupPersistentIscsiDevices</c> routine, so that the iSCSI initiator service will add the
+		/// volumes to its list of persistent volumes.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-setuppersistentiscsidevices ISDSC_STATUS ISDSC_API SetupPersistentIScsiDevices();
+		[DllImport(Lib_Iscsidsc, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.SetupPersistentIScsiDevices")]
+		public static extern Win32Error SetupPersistentIScsiDevices();
+
 		/// <summary>The SetupPersistentIscsiVolumes method sets iSCSI volumes to be persistent.</summary>
 		/// <returns>Returns ERROR_SUCCESS if the operation succeeds. Otherwise, it returns the appropriate Win32 or iSCSI error code.</returns>
 		[DllImport(Lib_Iscsidsc, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iscsidsc.h")]
 		public static extern Win32Error SetupPersistentIScsiVolumes();
+
+		private static string[] GetStringList(GetListDelegate func, CharSet charSet = CharSet.Auto)
+		{
+			var sz = 0U;
+			var err = func(ref sz, IntPtr.Zero);
+			if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			{
+				using var mem = new SafeCoTaskMemHandle(sz);
+				func(ref sz, mem).ThrowIfFailed();
+				return mem.ToStringEnum(charSet).ToArray();
+			}
+			err.ThrowIfFailed();
+			return new string[0];
+		}
 
 		/// <summary>
 		/// The <c>IKE_AUTHENTICATION_INFORMATION</c> structure contains Internet Key Exchange (IKE) authentication information used to
@@ -2786,6 +3080,45 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public ISCSI_TARGET_PORTAL[] Portals;
+		}
+
+		/// <summary>The <c>ISCSI_TARGET_PORTAL_INFO</c> structure contains information about a target portal.</summary>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The iscsidsc.h header defines ISCSI_TARGET_PORTAL_INFO as an alias which automatically selects the ANSI or Unicode version of
+		/// this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
+		/// that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/ns-iscsidsc-iscsi_target_portal_infoa typedef struct { CHAR
+		// InitiatorName[MAX_ISCSI_HBANAME_LEN]; ULONG InitiatorPortNumber; CHAR SymbolicName[MAX_ISCSI_PORTAL_NAME_LEN]; CHAR
+		// Address[MAX_ISCSI_PORTAL_ADDRESS_LEN]; USHORT Socket; } ISCSI_TARGET_PORTAL_INFOA, *PISCSI_TARGET_PORTAL_INFOA;
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NS:iscsidsc.__unnamed_struct_9")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct ISCSI_TARGET_PORTAL_INFO
+		{
+			/// <summary>A string representing the name of the Host-Bus Adapter initiator.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_ISCSI_HBANAME_LEN)]
+			public string InitiatorName;
+
+			/// <summary>
+			/// The port number on the Host-Bus Adapter (HBA) associated with the portal. This port number corresponds to the source IP
+			/// address on the HBA
+			/// </summary>
+			public uint InitiatorPortNumber;
+
+			/// <summary>A string representing the symbolic name of the portal.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_ISCSI_PORTAL_NAME_LEN)]
+			public string SymbolicName;
+
+			/// <summary>A string representing the IP address or DNS name of the portal.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_ISCSI_PORTAL_ADDRESS_LEN)]
+			public string Address;
+
+			/// <summary>The socket number.</summary>
+			public ushort Socket;
 		}
 
 		/// <summary>The <c>ISCSI_TARGET_PORTAL_INFO_EX</c> structure contains information about login credentials to a target portal.</summary>
