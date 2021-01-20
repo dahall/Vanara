@@ -505,6 +505,31 @@ namespace Vanara.Extensions
 			return type.IsEnum ? Marshal.SizeOf(Enum.GetUnderlyingType(type)) : Marshal.SizeOf(type);
 		}
 
+		/// <summary>Returns the native memory size of a value, if possible.</summary>
+		/// <param name="value">The value whose native size is to be returned.</param>
+		/// <param name="charSet">The character set to use for the strings.</param>
+		/// <returns>The size, in bytes, of the value that is specified by the <paramref name="value"/> parameter.</returns>
+		/// <exception cref="ArgumentException">Unable to get the size of the value.</exception>
+		public static SizeT SizeOf(object value, CharSet charSet = CharSet.Auto)
+		{
+			if (value is null) return 0;
+			if (value is string s) return StringHelper.GetByteCount(s, true, charSet);
+			var valType = value.GetType();
+			var elemType = valType.FindElementType();
+			if (elemType is null)
+				return SizeOf(valType);
+			if (elemType == typeof(string))
+				return ((System.Collections.IEnumerable)value).Cast<string>().Sum(s => StringHelper.GetByteCount(s, true, charSet)) + StringHelper.GetCharSize();
+			if (valType.IsArray)
+				return ((Array)value).Length * SizeOf(elemType);
+			if (value is System.Collections.ICollection ic)
+				return ic.Count * SizeOf(elemType);
+			if (value is System.Collections.IEnumerable ie)
+				return ie.Cast<object>().Count() * SizeOf(elemType);
+
+			throw new ArgumentException("Unable to get the size of the value.");
+		}
+
 		/// <summary>Marshals data from a managed object to an unmanaged block of memory that is allocated using <paramref name="memAlloc"/>.</summary>
 		/// <typeparam name="T">The type of the managed object.</typeparam>
 		/// <param name="value">
