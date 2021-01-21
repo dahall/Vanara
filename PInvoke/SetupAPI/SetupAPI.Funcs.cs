@@ -1076,6 +1076,50 @@ namespace Vanara.PInvoke
 		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
 		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
 		/// </para>
+		/// <para>The <c>SetupDeleteError</c> function generates a dialog box that informs the user of a delete error.</para>
+		/// </summary>
+		/// <param name="hwndParent">Handle to the parent window for this dialog box.</param>
+		/// <param name="DialogTitle">
+		/// Optional pointer to a <c>null</c>-terminated string specifying the error dialog box title. If this parameter is <c>NULL</c>, the
+		/// default title of "Delete Error" (localized) is used.
+		/// </param>
+		/// <param name="File">
+		/// Pointer to a <c>null</c>-terminated string specifying the full path of the file on which the delete operation failed.
+		/// </param>
+		/// <param name="Win32ErrorCode">The system error code encountered during the file operation.</param>
+		/// <param name="Style">
+		/// <para>Flags that control display formatting and behavior of the dialog box. This parameter can be one of the following flags.</para>
+		/// <para>IDF_NOBEEP</para>
+		/// <para>Prevent the dialog box from beeping to get the user's attention when it first appears.</para>
+		/// <para>IDF_NOFOREGROUND</para>
+		/// <para>Prevent the dialog box from becoming the foreground window.</para>
+		/// </param>
+		/// <returns>
+		/// <para>This function returns one of the following values.</para>
+		/// <para>To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupDeleteError as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdeleteerrora WINSETUPAPI UINT SetupDeleteErrorA(
+		// HWND hwndParent, PCSTR DialogTitle, PCSTR File, UINT Win32ErrorCode, DWORD Style );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDeleteErrorA")]
+		public static extern uint SetupDeleteError(HWND hwndParent, [Optional, MarshalAs(UnmanagedType.LPTStr)] string DialogTitle,
+			[MarshalAs(UnmanagedType.LPTStr)] string File, Win32Error Win32ErrorCode, IDF Style);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
 		/// <para>The <c>SetupDestroyDiskSpaceList</c> function destroys a disk-space list and releases the resources allocated to it.</para>
 		/// </summary>
 		/// <param name="DiskSpace">Handle to the disk-space list to be deconstructed.</param>
@@ -1089,6 +1133,217 @@ namespace Vanara.PInvoke
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDestroyDiskSpaceList")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetupDestroyDiskSpaceList(HDSKSPC DiskSpace);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The SetupDuplicateDiskSpaceList function duplicates a disk-space list as a new independent disk-space list.</para>
+		/// </summary>
+		/// <param name="DiskSpace">Handle to the disk-space list to be duplicated.</param>
+		/// <param name="Reserved1">Unused, must be zero.</param>
+		/// <param name="Reserved2">Unused, must be zero.</param>
+		/// <param name="Flags">Unused, must be zero.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns a handle to the new disk-space list.</para>
+		/// <para>If the function fails, it returns null. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupDuplicateDiskSpaceList as an alias which automatically selects the ANSI or Unicode version of
+		/// this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
+		/// that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupduplicatediskspacelista WINSETUPAPI HDSKSPC
+		// SetupDuplicateDiskSpaceListA( HDSKSPC DiskSpace, PVOID Reserved1, DWORD Reserved2, UINT Flags );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDuplicateDiskSpaceListA")]
+		public static extern SafeHDSKSPC SetupDuplicateDiskSpaceList(HDSKSPC DiskSpace, IntPtr Reserved1 = default, uint Reserved2 = default, uint Flags = default);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupEnumInfSections</c> function retrieves section names from an INF file.</para>
+		/// </summary>
+		/// <param name="InfHandle">Handle to the INF file that is to be queried.</param>
+		/// <param name="Index">
+		/// The zero-based index of the section name to retrieve. This index may not correspond to the order of sections as they appear in
+		/// the INF file.
+		/// </param>
+		/// <param name="Buffer">
+		/// Pointer to a buffer that receives the section name. You can call the function once to get the required buffer size, allocate the
+		/// necessary memory, and then call the function a second time to retrieve the name. Using this technique, you can avoid errors
+		/// caused by an insufficient buffer size. This parameter is optional. For more information, see the Remarks section.
+		/// </param>
+		/// <param name="Size">
+		/// Size of the buffer pointed to by ReturnBuffer in characters. This number includes the terminating <c>NULL</c> character.
+		/// </param>
+		/// <param name="SizeNeeded">
+		/// Pointer to a location that receives the required size of the buffer pointed to by ReturnBuffer. The size is specified as the
+		/// number of characters required to store the section name, including the terminating <c>NULL</c> character.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+		/// <para>If the function fails, the return value is <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// GetLastError returns <c>ERROR_NO_MORE_ITEMS</c> if the value of <c>EnumerationIndex</c> is greater than or equal to the number
+		/// of sections names in the INF file.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function can enumerate all unique section names in the INF file. If a section name appears more than once in an INF file,
+		/// the function returns the name only once using a single enumeration index. To return all section names in the INF file, call the
+		/// function beginning with an enumeration index of zero and then make repeated calls to the function while incrementing the index
+		/// until the function returns <c>FALSE</c> and GetLastError returns <c>ERROR_NO_MORE_ITEMS</c>. Your application should not rely on
+		/// the section names being returned in any order based on the enumeration index.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupEnumInfSections as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupenuminfsectionsa WINSETUPAPI BOOL
+		// SetupEnumInfSectionsA( HINF InfHandle, UINT Index, PSTR Buffer, UINT Size, UINT *SizeNeeded );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupEnumInfSectionsA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupEnumInfSections(HINF InfHandle, uint Index, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder Buffer, uint Size, out uint SizeNeeded);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupFindFirstLine</c> function locates a line in the specified section of an INF file. If the Key parameter is
+		/// <c>NULL</c>, <c>SetupFindFirstLine</c> returns the first line of the section.
+		/// </para>
+		/// </summary>
+		/// <param name="InfHandle">Handle to the INF file to query.</param>
+		/// <param name="Section">Pointer to a <c>null</c>-terminated string specifying the section of the INF files to search in.</param>
+		/// <param name="Key">
+		/// Optional pointer to a <c>null</c>-terminated string specifying the key to search for within the section. The
+		/// <c>null</c>-terminated string should not exceed the size of the destination buffer. This parameter can be <c>NULL</c>. If Key is
+		/// <c>NULL</c>, the first line in the section is returned.
+		/// </param>
+		/// <param name="Context">
+		/// Pointer to a structure that receives the context information used internally by the INF handle. Applications must not overwrite
+		/// values in this structure.
+		/// </param>
+		/// <returns>If the function could not find a line, the return value is zero. To get extended error information, call GetLastError.</returns>
+		/// <remarks>
+		/// <para>
+		/// If the InfHandle parameter references multiple INF files that have been appended together using SetupOpenAppendInfFile, the
+		/// <c>SetupFindFirstLine</c> function searches across the specified section in all of the files referenced by the specified HINF.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupFindFirstLine as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupfindfirstlinea WINSETUPAPI BOOL SetupFindFirstLineA(
+		// HINF InfHandle, PCSTR Section, PCSTR Key, PINFCONTEXT Context );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupFindFirstLineA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupFindFirstLine(HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string Section,
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] string Key, out INFCONTEXT Context);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupFindNextLine</c> returns the location of the next line in an INF file section relative to ContextIn.Line.</para>
+		/// </summary>
+		/// <param name="ContextIn">Pointer to the INF file context retrieved by a call to the SetupFindFirstLine function.</param>
+		/// <param name="ContextOut">
+		/// Pointer to a variable in which this function returns the context of the found line. ContextOut can point to ContextIn if the
+		/// caller wishes.
+		/// </param>
+		/// <returns>
+		/// If this function finds the next line, the return value is a nonzero value. Otherwise, the return value is zero. To get extended
+		/// error information, call GetLastError.
+		/// </returns>
+		/// <remarks>
+		/// If ContextIn.Line references multiple INF files that have been appended together using SetupOpenAppendInfFile, this function
+		/// searches across the specified section in all files referenced by the HINF to locate the next line.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupfindnextline WINSETUPAPI BOOL SetupFindNextLine(
+		// PINFCONTEXT ContextIn, PINFCONTEXT ContextOut );
+		[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupFindNextLine")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupFindNextLine(in INFCONTEXT ContextIn, out INFCONTEXT ContextOut);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupFindNextMatchLine</c> function returns the location of the next line in an INF file relative to ContextIn.Line that
+		/// matches a specified key.
+		/// </para>
+		/// </summary>
+		/// <param name="ContextIn">Pointer to an INF file context, as retrieved by a call to the SetupFindFirstLine function.</param>
+		/// <param name="Key">
+		/// If this optional parameter is specified, it supplies a key to match. This parameter should be a null-terminated string. This
+		/// parameter can be Null. If Key is not specified, the <c>SetupFindNextMatchLine</c> function is equivalent to the
+		/// SetupFindNextLine function.
+		/// </param>
+		/// <param name="ContextOut">
+		/// Pointer to a variable in which this function returns the context of the found line. ContextOut can point to ContextIn if the
+		/// caller wishes.
+		/// </param>
+		/// <returns>
+		/// The function returns a nonzero value if it finds a matching line. Otherwise, the return value is zero. To get extended error
+		/// information, call GetLastError.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If ContextIn.Inf references multiple INF files that have been appended together using SetupOpenAppendInfFile, the
+		/// <c>SetupFindNextMatchLine</c> function searches across the specified section in all files referenced by the HINF to locate the
+		/// next matching line.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupFindNextMatchLine as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupfindnextmatchlinea WINSETUPAPI BOOL
+		// SetupFindNextMatchLineA( PINFCONTEXT ContextIn, PCSTR Key, PINFCONTEXT ContextOut );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupFindNextMatchLineA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupFindNextMatchLine(in INFCONTEXT ContextIn, [Optional, MarshalAs(UnmanagedType.LPTStr)] string Key, out INFCONTEXT ContextOut);
 
 		/// <summary>
 		/// <para>
@@ -1276,17 +1531,6 @@ namespace Vanara.PInvoke
 		}
 
 		/*
-		SetupDeleteErrorA
-		SetupDeleteErrorW
-		SetupDuplicateDiskSpaceListA
-		SetupDuplicateDiskSpaceListW
-		SetupEnumInfSectionsA
-		SetupEnumInfSectionsW
-		SetupFindFirstLineA
-		SetupFindFirstLineW
-		SetupFindNextLine
-		SetupFindNextMatchLineA
-		SetupFindNextMatchLineW
 		SetupFreeSourceListA
 		SetupFreeSourceListW
 		SetupGetBinaryField
