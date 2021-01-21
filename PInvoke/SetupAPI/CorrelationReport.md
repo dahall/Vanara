@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows SetupAPI.d
 
 - Includes methods from setupapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.SetupAPI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.SetupAPI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.SetupAPI)  
-### Methods - 52% API coverage (122 of 233 functions)  
+### Methods - 54% API coverage (128 of 233 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DriverStoreAddDriverPackage](https://www.google.com/search?num=5&q=DriverStoreAddDriverPackageA+site%3Adocs.microsoft.com) |  |   
@@ -35,7 +35,7 @@ Native Method | Header | Managed Method
 [SetupCreateDiskSpaceList](https://www.google.com/search?num=5&q=SetupCreateDiskSpaceListA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupCreateDiskSpaceList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupCreateDiskSpaceList)  
 [SetupDecompressOrCopyFile](https://www.google.com/search?num=5&q=SetupDecompressOrCopyFileA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDecompressOrCopyFile](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDecompressOrCopyFile)  
 [SetupDefaultQueueCallback](https://www.google.com/search?num=5&q=SetupDefaultQueueCallback+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDefaultQueueCallback](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDefaultQueueCallback)  
-[SetupDeleteError](https://www.google.com/search?num=5&q=SetupDeleteErrorA+site%3Adocs.microsoft.com) |  |   
+[SetupDeleteError](https://www.google.com/search?num=5&q=SetupDeleteErrorA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDeleteError](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDeleteError)  
 [SetupDestroyDiskSpaceList](https://www.google.com/search?num=5&q=SetupDestroyDiskSpaceList+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDestroyDiskSpaceList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDestroyDiskSpaceList)  
 [SetupDiApplyPowerScheme](https://www.google.com/search?num=5&q=SetupDiApplyPowerScheme+site%3Adocs.microsoft.com) |  |   
 [SetupDiAskForOEMDisk](https://www.google.com/search?num=5&q=SetupDiAskForOEMDisk+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiAskForOEMDisk](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiAskForOEMDisk)  
@@ -147,12 +147,12 @@ Native Method | Header | Managed Method
 [SetupDiSetSelectedDevice](https://www.google.com/search?num=5&q=SetupDiSetSelectedDevice+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetSelectedDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetSelectedDevice)  
 [SetupDiSetSelectedDriver](https://www.google.com/search?num=5&q=SetupDiSetSelectedDriverA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiSetSelectedDriver](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiSetSelectedDriver)  
 [SetupDiUnremoveDevice](https://www.google.com/search?num=5&q=SetupDiUnremoveDevice+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDiUnremoveDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDiUnremoveDevice)  
-[SetupDuplicateDiskSpaceList](https://www.google.com/search?num=5&q=SetupDuplicateDiskSpaceListA+site%3Adocs.microsoft.com) |  |   
-[SetupEnumInfSections](https://www.google.com/search?num=5&q=SetupEnumInfSectionsA+site%3Adocs.microsoft.com) |  |   
+[SetupDuplicateDiskSpaceList](https://www.google.com/search?num=5&q=SetupDuplicateDiskSpaceListA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupDuplicateDiskSpaceList](https://github.com/dahall/Vanara/search?l=C%23&q=SetupDuplicateDiskSpaceList)  
+[SetupEnumInfSections](https://www.google.com/search?num=5&q=SetupEnumInfSectionsA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupEnumInfSections](https://github.com/dahall/Vanara/search?l=C%23&q=SetupEnumInfSections)  
 [SetupEnumPublishedInf](https://www.google.com/search?num=5&q=SetupEnumPublishedInfA+site%3Adocs.microsoft.com) |  |   
-[SetupFindFirstLine](https://www.google.com/search?num=5&q=SetupFindFirstLineA+site%3Adocs.microsoft.com) |  |   
-[SetupFindNextLine](https://www.google.com/search?num=5&q=SetupFindNextLine+site%3Adocs.microsoft.com) |  |   
-[SetupFindNextMatchLine](https://www.google.com/search?num=5&q=SetupFindNextMatchLineA+site%3Adocs.microsoft.com) |  |   
+[SetupFindFirstLine](https://www.google.com/search?num=5&q=SetupFindFirstLineA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupFindFirstLine](https://github.com/dahall/Vanara/search?l=C%23&q=SetupFindFirstLine)  
+[SetupFindNextLine](https://www.google.com/search?num=5&q=SetupFindNextLine+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupFindNextLine](https://github.com/dahall/Vanara/search?l=C%23&q=SetupFindNextLine)  
+[SetupFindNextMatchLine](https://www.google.com/search?num=5&q=SetupFindNextMatchLineA+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.SetupFindNextMatchLine](https://github.com/dahall/Vanara/search?l=C%23&q=SetupFindNextMatchLine)  
 [SetupFreeSourceList](https://www.google.com/search?num=5&q=SetupFreeSourceListA+site%3Adocs.microsoft.com) |  |   
 [SetupGetBackupInformation](https://www.google.com/search?num=5&q=SetupGetBackupInformationA+site%3Adocs.microsoft.com) |  |   
 [SetupGetBinaryField](https://www.google.com/search?num=5&q=SetupGetBinaryField+site%3Adocs.microsoft.com) |  |   

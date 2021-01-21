@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows ISCSI Disc
 
 - Includes methods from iscsidsc.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.IScsiDsc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.IScsiDsc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.IScsiDsc)  
-### Methods - 84% API coverage (38 of 45 functions)  
+### Methods - 97% API coverage (44 of 45 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddIScsiConnection](https://www.google.com/search?num=5&q=AddIScsiConnectionA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.AddIScsiConnection](https://github.com/dahall/Vanara/search?l=C%23&q=AddIScsiConnection)  
@@ -11,7 +11,7 @@ Native Method | Header | Managed Method
 [AddIScsiStaticTarget](https://www.google.com/search?num=5&q=AddIScsiStaticTargetA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.AddIScsiStaticTarget](https://github.com/dahall/Vanara/search?l=C%23&q=AddIScsiStaticTarget)  
 [AddISNSServer](https://www.google.com/search?num=5&q=AddISNSServerA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.AddISNSServer](https://github.com/dahall/Vanara/search?l=C%23&q=AddISNSServer)  
 [AddPersistentIScsiDevice](https://www.google.com/search?num=5&q=AddPersistentIScsiDeviceA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.AddPersistentIScsiDevice](https://github.com/dahall/Vanara/search?l=C%23&q=AddPersistentIScsiDevice)  
-[AddRadiusServer](https://www.google.com/search?num=5&q=AddRadiusServerA+site%3Adocs.microsoft.com) |  |   
+[AddRadiusServer](https://www.google.com/search?num=5&q=AddRadiusServerA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.AddRadiusServer](https://github.com/dahall/Vanara/search?l=C%23&q=AddRadiusServer)  
 [ClearPersistentIScsiDevices](https://www.google.com/search?num=5&q=ClearPersistentIScsiDevices+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ClearPersistentIScsiDevices](https://github.com/dahall/Vanara/search?l=C%23&q=ClearPersistentIScsiDevices)  
 [GetDevicesForIScsiSession](https://www.google.com/search?num=5&q=GetDevicesForIScsiSessionA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.GetDevicesForIScsiSession](https://github.com/dahall/Vanara/search?l=C%23&q=GetDevicesForIScsiSession)  
 [GetIScsiIKEInfo](https://www.google.com/search?num=5&q=GetIScsiIKEInfoA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.GetIScsiIKEInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetIScsiIKEInfo)  
@@ -29,17 +29,17 @@ Native Method | Header | Managed Method
 [RemoveIScsiStaticTarget](https://www.google.com/search?num=5&q=RemoveIScsiStaticTargetA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.RemoveIScsiStaticTarget](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveIScsiStaticTarget)  
 [RemoveISNSServer](https://www.google.com/search?num=5&q=RemoveISNSServerA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.RemoveISNSServer](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveISNSServer)  
 [RemovePersistentIScsiDevice](https://www.google.com/search?num=5&q=RemovePersistentIScsiDeviceA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.RemovePersistentIScsiDevice](https://github.com/dahall/Vanara/search?l=C%23&q=RemovePersistentIScsiDevice)  
-[RemoveRadiusServer](https://www.google.com/search?num=5&q=RemoveRadiusServerA+site%3Adocs.microsoft.com) |  |   
+[RemoveRadiusServer](https://www.google.com/search?num=5&q=RemoveRadiusServerA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.RemoveRadiusServer](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveRadiusServer)  
 [ReportActiveIScsiTargetMappings](https://www.google.com/search?num=5&q=ReportActiveIScsiTargetMappingsA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportActiveIScsiTargetMappings](https://github.com/dahall/Vanara/search?l=C%23&q=ReportActiveIScsiTargetMappings)  
 [ReportIScsiInitiatorList](https://www.google.com/search?num=5&q=ReportIScsiInitiatorListA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiInitiatorList](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiInitiatorList)  
 [ReportIScsiPersistentLogins](https://www.google.com/search?num=5&q=ReportIScsiPersistentLoginsA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiPersistentLogins](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiPersistentLogins)  
-[ReportIScsiSendTargetPortals](https://www.google.com/search?num=5&q=ReportIScsiSendTargetPortalsA+site%3Adocs.microsoft.com) |  |   
+[ReportIScsiSendTargetPortals](https://www.google.com/search?num=5&q=ReportIScsiSendTargetPortalsA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiSendTargetPortals](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiSendTargetPortals)  
 [ReportIScsiSendTargetPortalsEx](https://www.google.com/search?num=5&q=ReportIScsiSendTargetPortalsExA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiSendTargetPortalsEx](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiSendTargetPortalsEx)  
 [ReportIScsiTargetPortals](https://www.google.com/search?num=5&q=ReportIScsiTargetPortalsA+site%3Adocs.microsoft.com) |  |   
 [ReportIScsiTargets](https://www.google.com/search?num=5&q=ReportIScsiTargetsA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiTargets](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiTargets)  
 [ReportISNSServerList](https://www.google.com/search?num=5&q=ReportISNSServerListA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportISNSServerList](https://github.com/dahall/Vanara/search?l=C%23&q=ReportISNSServerList)  
 [ReportPersistentIScsiDevices](https://www.google.com/search?num=5&q=ReportPersistentIScsiDevicesA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportPersistentIScsiDevices](https://github.com/dahall/Vanara/search?l=C%23&q=ReportPersistentIScsiDevices)  
-[ReportRadiusServerList](https://www.google.com/search?num=5&q=ReportRadiusServerListA+site%3Adocs.microsoft.com) |  |   
+[ReportRadiusServerList](https://www.google.com/search?num=5&q=ReportRadiusServerListA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportRadiusServerList](https://github.com/dahall/Vanara/search?l=C%23&q=ReportRadiusServerList)  
 [SendScsiInquiry](https://www.google.com/search?num=5&q=SendScsiInquiry+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SendScsiInquiry](https://github.com/dahall/Vanara/search?l=C%23&q=SendScsiInquiry)  
 [SendScsiReadCapacity](https://www.google.com/search?num=5&q=SendScsiReadCapacity+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SendScsiReadCapacity](https://github.com/dahall/Vanara/search?l=C%23&q=SendScsiReadCapacity)  
 [SendScsiReportLuns](https://www.google.com/search?num=5&q=SendScsiReportLuns+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SendScsiReportLuns](https://github.com/dahall/Vanara/search?l=C%23&q=SendScsiReportLuns)  
@@ -47,9 +47,9 @@ Native Method | Header | Managed Method
 [SetIScsiIKEInfo](https://www.google.com/search?num=5&q=SetIScsiIKEInfoA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetIScsiIKEInfo](https://github.com/dahall/Vanara/search?l=C%23&q=SetIScsiIKEInfo)  
 [SetIScsiInitiatorCHAPSharedSecret](https://www.google.com/search?num=5&q=SetIScsiInitiatorCHAPSharedSecret+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetIScsiInitiatorCHAPSharedSecret](https://github.com/dahall/Vanara/search?l=C%23&q=SetIScsiInitiatorCHAPSharedSecret)  
 [SetIScsiInitiatorNodeName](https://www.google.com/search?num=5&q=SetIScsiInitiatorNodeNameA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetIScsiInitiatorNodeName](https://github.com/dahall/Vanara/search?l=C%23&q=SetIScsiInitiatorNodeName)  
-[SetIScsiInitiatorRADIUSSharedSecret](https://www.google.com/search?num=5&q=SetIScsiInitiatorRADIUSSharedSecret+site%3Adocs.microsoft.com) |  |   
+[SetIScsiInitiatorRADIUSSharedSecret](https://www.google.com/search?num=5&q=SetIScsiInitiatorRADIUSSharedSecret+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetIScsiInitiatorRADIUSSharedSecret](https://github.com/dahall/Vanara/search?l=C%23&q=SetIScsiInitiatorRADIUSSharedSecret)  
 [SetIScsiTunnelModeOuterAddress](https://www.google.com/search?num=5&q=SetIScsiTunnelModeOuterAddressA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetIScsiTunnelModeOuterAddress](https://github.com/dahall/Vanara/search?l=C%23&q=SetIScsiTunnelModeOuterAddress)  
-[SetupPersistentIScsiDevices](https://www.google.com/search?num=5&q=SetupPersistentIScsiDevices+site%3Adocs.microsoft.com) |  |   
+[SetupPersistentIScsiDevices](https://www.google.com/search?num=5&q=SetupPersistentIScsiDevices+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetupPersistentIScsiDevices](https://github.com/dahall/Vanara/search?l=C%23&q=SetupPersistentIScsiDevices)  
 [SetupPersistentIScsiVolumes](https://www.google.com/search?num=5&q=SetupPersistentIScsiVolumes+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetupPersistentIScsiVolumes](https://github.com/dahall/Vanara/search?l=C%23&q=SetupPersistentIScsiVolumes)  
 ### Structures  
 Native Structure | Header | Managed Structure  
@@ -63,6 +63,7 @@ Native Structure | Header | Managed Structure
 [ISCSI_TARGET_MAPPING](https://www.google.com/search?num=5&q=ISCSI_TARGET_MAPPING+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_TARGET_MAPPING](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_TARGET_MAPPING)  
 [ISCSI_TARGET_PORTAL](https://www.google.com/search?num=5&q=ISCSI_TARGET_PORTAL+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_TARGET_PORTAL](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_TARGET_PORTAL)  
 [ISCSI_TARGET_PORTAL_GROUP](https://www.google.com/search?num=5&q=ISCSI_TARGET_PORTAL_GROUP+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_TARGET_PORTAL_GROUP](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_TARGET_PORTAL_GROUP)  
+[ISCSI_TARGET_PORTAL_INFO](https://www.google.com/search?num=5&q=ISCSI_TARGET_PORTAL_INFO+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_TARGET_PORTAL_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_TARGET_PORTAL_INFO)  
 [ISCSI_TARGET_PORTAL_INFO_EX](https://www.google.com/search?num=5&q=ISCSI_TARGET_PORTAL_INFO_EX+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_TARGET_PORTAL_INFO_EX](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_TARGET_PORTAL_INFO_EX)  
 [ISCSI_UNIQUE_SESSION_ID](https://www.google.com/search?num=5&q=ISCSI_UNIQUE_SESSION_ID+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_UNIQUE_SESSION_ID](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_UNIQUE_SESSION_ID)  
 [ISCSI_VERSION_INFO](https://www.google.com/search?num=5&q=ISCSI_VERSION_INFO+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_VERSION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_VERSION_INFO)  
