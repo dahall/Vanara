@@ -331,9 +331,7 @@ namespace Vanara.Windows.Shell
 		private string GetCommandString(int command, GCS stringType)
 		{
 			using var mStr = new SafeCoTaskMemString(4096);
-			try { ComInterface.GetCommandString((IntPtr)command, stringType, default, mStr, mStr.Size / 2U).ThrowIfFailed(); }
-			catch { return null; }
-			return mStr.ToString();
+			return ComInterface.GetCommandString((IntPtr)command, stringType, default, mStr, (uint)mStr.Capacity).Succeeded ? mStr : null;
 		}
 
 #if !NET5_0 && !NETCOREAPP3_1
@@ -529,7 +527,8 @@ namespace Vanara.Windows.Shell
 				for (uint i = 0; i < SubMenus.Length; i++)
 				{
 					SubMenus[i] = new MenuItemInfo(hMenu, i, scm);
-					if (scm != null && SubMenus[i].Type.IsFlagSet(MenuItemType.MFT_STRING))
+					System.Diagnostics.Debug.WriteLine($"Processing submenu {i} ({SubMenus[i].Text})");
+					if (scm != null && SubMenus[i].Type == MenuItemType.MFT_STRING)
 					{
 						var id = SubMenus[i].Id;
 						SubMenus[i].Verb = scm.GetVerbForCommand(id);

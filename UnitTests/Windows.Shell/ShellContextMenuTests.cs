@@ -16,14 +16,15 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void CreateTest()
 		{
-			using var menu = new ShellContextMenu(new ShellItem(TestCaseSources.WordDoc));
+			using var shi = new ShellItem(TestCaseSources.WordDoc);
+			using var menu = new ShellContextMenu(shi);
 			var items = menu.GetItems();
 			for (var i = 0; i < items.Length; i++)
 				ShowMII(items[i], i);
 
 			static void ShowMII(ShellContextMenu.MenuItemInfo mii, int c, int indent = 0)
 			{
-				TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}; Tooltip={mii.HelpText}; IconLoc={mii.VerbIconLocation}");
+				System.Diagnostics.Debug.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}; Tooltip={mii.HelpText}; IconLoc={mii.VerbIconLocation}");
 				for (int j = 0; j < mii.SubMenus.Length; j++)
 					ShowMII(mii.SubMenus[j], j, indent + 1);
 			}
