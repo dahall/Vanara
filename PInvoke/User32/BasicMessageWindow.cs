@@ -24,7 +24,7 @@ namespace Vanara.PInvoke
 	/// <seealso cref="Vanara.PInvoke.IHandle"/>
 	public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	{
-		private SafeHWND hwnd;
+		private readonly SafeHWND hwnd;
 		private bool isDisposed;
 
 		/// <summary>Initializes a new instance of the <see cref="BasicMessageWindow"/> class.</summary>
@@ -32,7 +32,7 @@ namespace Vanara.PInvoke
 		public BasicMessageWindow(BasicMessageWindowFilter callback = null)
 		{
 			MessageFilter = callback;
-			ClassName = $"MessageWindowBase+{Guid.NewGuid()}";
+			ClassName = $"{GetType().Name}+{Guid.NewGuid()}";
 
 			hwnd = CreateWindow();
 		}
@@ -68,9 +68,10 @@ namespace Vanara.PInvoke
 		/// </summary>
 		protected virtual SafeHWND CreateWindow()
 		{
-			if (0 == RegisterClassEx(new WNDCLASSEX { cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX)), lpfnWndProc = WndProc, hInstance = GetModuleHandle(), lpszClassName = ClassName }))
-				Win32Error.ThrowLastError();
-			return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(lpClassName: ClassName, lpWindowName: ClassName, hWndParent: HWND.HWND_MESSAGE));
+			var hInst = GetModuleHandle();
+			var wcx = new WNDCLASSEX { cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX)), lpfnWndProc = WndProc, hInstance = hInst, lpszClassName = ClassName };
+			var atom = Win32Error.ThrowLastErrorIfNull(Macros.MAKEINTATOM(RegisterClassEx(wcx)));
+			return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(lpClassName: atom, hWndParent: HWND.HWND_MESSAGE, hInstance: hInst));
 		}
 
 		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
@@ -81,27 +82,16 @@ namespace Vanara.PInvoke
 		{
 			if (isDisposed)
 				return;
-
 			isDisposed = true;
 
-			hwnd?.Dispose();
-
+			hwnd?.Dispose(); // Calls DestroyWindow
 			UnregisterClass(ClassName, GetModuleHandle());
 			ClassName = null;
 		}
 
-		private IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
-		{
-			IntPtr ret;
-			if (!(MessageFilter is null) && MessageFilter.Invoke(hwnd, msg, wParam, lParam, out var lRet))
-				ret = lRet;
-			else
-				ret = DefWindowProc(hwnd, msg, wParam, lParam);
-
-			if (msg == (uint)WindowMessage.WM_NCDESTROY)
-				Dispose(true);
-
-			return ret;
-		}
+		private IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam) =>
+			MessageFilter is null || !MessageFilter.Invoke(hwnd, msg, wParam, lParam, out var lRet)
+				? DefWindowProc(hwnd, msg, wParam, lParam)
+				: lRet;
 	}
 }
