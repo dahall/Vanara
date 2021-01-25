@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
@@ -7,8 +8,11 @@ namespace Vanara.PInvoke
 	/// <summary>Platform invokable enumerated types, constants and functions from ntdll.h</summary>
 	public static partial class NtDll
 	{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 		/// <summary>The type of process information to be retrieved.</summary>
 		[PInvokeData("winternl.h", MSDNShortId = "0eae7899-c40b-4a5f-9e9c-adae021885e7")]
+		// Undocumented values pulled from ProcessHacker source.
 		public enum PROCESSINFOCLASS
 		{
 			/// <summary>
@@ -19,6 +23,13 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(PROCESS_BASIC_INFORMATION), CorrespondingAction.Get)]
 			ProcessBasicInformation = 0,
 
+			ProcessQuotaLimits, // qs: QUOTA_LIMITS, QUOTA_LIMITS_EX
+			ProcessIoCounters, // q: IO_COUNTERS
+			ProcessVmCounters, // q: VM_COUNTERS, VM_COUNTERS_EX, VM_COUNTERS_EX2
+			ProcessTimes, // q: KERNEL_USER_TIMES
+			ProcessBasePriority, // s: KPRIORITY
+			ProcessRaisePriority, // s: ULONG
+
 			/// <summary>
 			/// Retrieves a DWORD_PTR value that is the port number of the debugger for the process. A nonzero value indicates that the
 			/// process is being run under the control of a ring 3 debugger.
@@ -26,6 +37,25 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 			ProcessDebugPort = 7,
+
+			ProcessExceptionPort, // s: PROCESS_EXCEPTION_PORT
+			ProcessAccessToken, // s: PROCESS_ACCESS_TOKEN
+			ProcessLdtInformation, // qs: PROCESS_LDT_INFORMATION // 10
+			ProcessLdtSize, // s: PROCESS_LDT_SIZE
+			ProcessDefaultHardErrorMode, // qs: ULONG
+			ProcessIoPortHandlers, // (kernel-mode only) // PROCESS_IO_PORT_HANDLER_INFORMATION
+			ProcessPooledUsageAndLimits, // q: POOLED_USAGE_AND_LIMITS
+			ProcessWorkingSetWatch, // q: PROCESS_WS_WATCH_INFORMATION[]; s: void
+			ProcessUserModeIOPL, // qs: ULONG (requires SeTcbPrivilege)
+			ProcessEnableAlignmentFaultFixup, // s: BOOLEAN
+			ProcessPriorityClass, // qs: PROCESS_PRIORITY_CLASS
+			ProcessWx86Information, // qs: ULONG (requires SeTcbPrivilege) (VdmAllowed)
+			ProcessHandleCount, // q: ULONG, PROCESS_HANDLE_INFORMATION // 20
+			ProcessAffinityMask, // s: KAFFINITY
+			ProcessPriorityBoost, // qs: ULONG
+			ProcessDeviceMap, // qs: PROCESS_DEVICEMAP_INFORMATION, PROCESS_DEVICEMAP_INFORMATION_EX
+			ProcessSessionInformation, // q: PROCESS_SESSION_INFORMATION
+			ProcessForegroundInformation, // s: PROCESS_FOREGROUND_BACKGROUND
 
 			/// <summary>
 			/// Determines whether the process is running in the WOW64 environment (WOW64 is the x86 emulator that allows Win32-based
@@ -42,14 +72,62 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(UNICODE_STRING), CorrespondingAction.Get)]
 			ProcessImageFileName = 27,
 
+			ProcessLUIDDeviceMapsEnabled, // q: ULONG
+
 			/// <summary>
 			/// Retrieves a ULONG value indicating whether the process is considered critical.
 			/// <para>
 			/// Note This value can be used starting in Windows XP with SP3. Starting in Windows 8.1, IsProcessCritical should be used instead.
 			/// </para>
 			/// </summary>
-			[CorrespondingType(typeof(BOOL), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(BOOL), CorrespondingAction.GetSet)]
 			ProcessBreakOnTermination = 29,
+
+			ProcessDebugObjectHandle, // q: HANDLE // 30
+			ProcessDebugFlags, // qs: ULONG
+			ProcessHandleTracing, // q: PROCESS_HANDLE_TRACING_QUERY; s: size 0 disables, otherwise enables
+			ProcessIoPriority, // qs: IO_PRIORITY_HINT
+			ProcessExecuteFlags, // qs: ULONG
+			ProcessResourceManagement, // ProcessTlsInformation // PROCESS_TLS_INFORMATION
+			ProcessCookie, // q: ULONG
+			ProcessImageInformation, // q: SECTION_IMAGE_INFORMATION
+			ProcessCycleTime, // q: PROCESS_CYCLE_TIME_INFORMATION // since VISTA
+			ProcessPagePriority, // q: PAGE_PRIORITY_INFORMATION
+			ProcessInstrumentationCallback, // qs: PROCESS_INSTRUMENTATION_CALLBACK_INFORMATION // 40
+			ProcessThreadStackAllocation, // s: PROCESS_STACK_ALLOCATION_INFORMATION, PROCESS_STACK_ALLOCATION_INFORMATION_EX
+			ProcessWorkingSetWatchEx, // q: PROCESS_WS_WATCH_INFORMATION_EX[]
+			ProcessImageFileNameWin32, // q: UNICODE_STRING
+			ProcessImageFileMapping, // q: HANDLE (input)
+			ProcessAffinityUpdateMode, // qs: PROCESS_AFFINITY_UPDATE_MODE
+			ProcessMemoryAllocationMode, // qs: PROCESS_MEMORY_ALLOCATION_MODE
+			ProcessGroupInformation, // q: USHORT[]
+			ProcessTokenVirtualizationEnabled, // s: ULONG
+			ProcessConsoleHostProcess, // q: ULONG_PTR // ProcessOwnerInformation
+			ProcessWindowInformation, // q: PROCESS_WINDOW_INFORMATION // 50
+			ProcessHandleInformation, // q: PROCESS_HANDLE_SNAPSHOT_INFORMATION // since WIN8
+			ProcessMitigationPolicy, // s: PROCESS_MITIGATION_POLICY_INFORMATION
+			ProcessDynamicFunctionTableInformation,
+			ProcessHandleCheckingMode, // qs: ULONG; s: 0 disables, otherwise enables
+			ProcessKeepAliveCount, // q: PROCESS_KEEPALIVE_COUNT_INFORMATION
+			ProcessRevokeFileHandles, // s: PROCESS_REVOKE_FILE_HANDLES_INFORMATION
+			ProcessWorkingSetControl, // s: PROCESS_WORKING_SET_CONTROL
+			ProcessHandleTable, // q: ULONG[] // since WINBLUE
+			ProcessCheckStackExtentsMode,
+			ProcessCommandLineInformation, // q: UNICODE_STRING // 60
+			ProcessProtectionInformation, // q: PS_PROTECTION
+			ProcessMemoryExhaustion, // PROCESS_MEMORY_EXHAUSTION_INFO // since THRESHOLD
+			ProcessFaultInformation, // PROCESS_FAULT_INFORMATION
+			ProcessTelemetryIdInformation, // PROCESS_TELEMETRY_ID_INFORMATION
+			ProcessCommitReleaseInformation, // PROCESS_COMMIT_RELEASE_INFORMATION
+			ProcessDefaultCpuSetsInformation,
+			ProcessAllowedCpuSetsInformation,
+			ProcessSubsystemProcess,
+			ProcessJobMemoryInformation, // PROCESS_JOB_MEMORY_INFO
+			ProcessInPrivate, // since THRESHOLD2 // 70
+			ProcessRaiseUMExceptionOnInvalidHandleClose, // qs: ULONG; s: 0 disables, otherwise enables
+			ProcessIumChallengeResponse,
+			ProcessChildProcessInformation, // PROCESS_CHILD_PROCESS_INFORMATION
+			ProcessHighGraphicsPriorityInformation,
 
 			/// <summary>
 			/// Retrieves a SUBSYSTEM_INFORMATION_TYPE value indicating the subsystem type of the process. The buffer pointed to by the
@@ -57,7 +135,36 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[CorrespondingType(typeof(SUBSYSTEM_INFORMATION_TYPE), CorrespondingAction.Get)]
 			ProcessSubsystemInformation = 75,
+
+			ProcessEnergyValues, // PROCESS_ENERGY_VALUES, PROCESS_EXTENDED_ENERGY_VALUES
+			ProcessActivityThrottleState, // PROCESS_ACTIVITY_THROTTLE_STATE
+			ProcessActivityThrottlePolicy, // PROCESS_ACTIVITY_THROTTLE_POLICY
+			ProcessWin32kSyscallFilterInformation,
+			ProcessDisableSystemAllowedCpuSets, // 80
+			ProcessWakeInformation, // PROCESS_WAKE_INFORMATION
+			ProcessEnergyTrackingState, // PROCESS_ENERGY_TRACKING_STATE
+			ProcessManageWritesToExecutableMemory, // MANAGE_WRITES_TO_EXECUTABLE_MEMORY // since REDSTONE3
+			ProcessCaptureTrustletLiveDump,
+			ProcessTelemetryCoverage,
+			ProcessEnclaveInformation,
+			ProcessEnableReadWriteVmLogging, // PROCESS_READWRITEVM_LOGGING_INFORMATION
+			ProcessUptimeInformation, // PROCESS_UPTIME_INFORMATION
+			ProcessImageSection, // q: HANDLE
+			ProcessDebugAuthInformation, // since REDSTONE4 // 90
+			ProcessSystemResourceManagement, // PROCESS_SYSTEM_RESOURCE_MANAGEMENT
+			ProcessSequenceNumber, // q: ULONGLONG
+			ProcessLoaderDetour, // since REDSTONE5
+			ProcessSecurityDomainInformation, // PROCESS_SECURITY_DOMAIN_INFORMATION
+			ProcessCombineSecurityDomainsInformation, // PROCESS_COMBINE_SECURITY_DOMAINS_INFORMATION
+			ProcessEnableLogging, // PROCESS_LOGGING_INFORMATION
+			ProcessLeapSecondInformation, // PROCESS_LEAP_SECOND_INFORMATION
+			ProcessFiberShadowStackAllocation, // PROCESS_FIBER_SHADOW_STACK_ALLOCATION_INFORMATION // since 19H1
+			ProcessFreeFiberShadowStackAllocation, // PROCESS_FREE_FIBER_SHADOW_STACK_ALLOCATION_INFORMATION
+			ProcessAltSystemCallInformation, // qs: BOOLEAN (kernel-mode only) // since 20H1 // 100
+			ProcessDynamicEHContinuationTargets, // PROCESS_DYNAMIC_EH_CONTINUATION_TARGETS_INFORMATION
 		}
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>
 		/// Indicates the type of subsystem for a process or thread. This enumeration is used in NtQueryInformationProcess and
@@ -282,7 +389,9 @@ namespace Vanara.PInvoke
 		/// <exception cref="System.ArgumentException">Mismatch between requested type and class.</exception>
 		public static NtQueryResult<T> NtQueryInformationProcess<T>([In] HPROCESS ProcessHandle, PROCESSINFOCLASS ProcessInformationClass) where T : struct
 		{
-			if (!CorrespondingTypeAttribute.CanGet(ProcessInformationClass, typeof(T))) throw new ArgumentException("Mismatch between requested type and class.");
+			var validTypes = CorrespondingTypeAttribute.GetCorrespondingTypes(ProcessInformationClass, CorrespondingAction.Get).ToArray();
+			if (validTypes.Length > 0 && Array.IndexOf(validTypes, typeof(T)) == -1)
+				throw new ArgumentException("Mismatch between requested type and class.");
 			var mem = new NtQueryResult<T>();
 			var status = NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out var sz);
 			if (status.Succeeded) return mem;
