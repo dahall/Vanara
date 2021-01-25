@@ -15,6 +15,12 @@ namespace Vanara.PInvoke.Tests
 	{
 		private const string testApp = @"C:\Users\dahall\Documents\Visual Studio 2017\Projects\TestSysConsumption\bin\Debug\netcoreapp3.0\TestSysConsumption.exe";
 
+		private static Lazy<JsonSerializerSettings> jsonSet = new Lazy<JsonSerializerSettings>(() =>
+			new JsonSerializerSettings() {
+				Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter() },
+				ReferenceLoopHandling = ReferenceLoopHandling.Serialize
+			});
+
 		public static Process RunThrottleApp() => Process.Start(testApp);
 
 		public static void SetThrottle(string type, bool on)
@@ -94,7 +100,7 @@ namespace Vanara.PInvoke.Tests
 					return mem.Dump;
 
 				default:
-					try { return JsonConvert.SerializeObject(value, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter()); }
+					try { return JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value); }
 					catch (Exception e) { return e.ToString(); }
 			}
 		}
