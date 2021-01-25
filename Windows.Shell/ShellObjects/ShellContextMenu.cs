@@ -39,7 +39,7 @@ namespace Vanara.Windows.Shell
 		internal const int m_CmdFirst = 0x8000;
 		private readonly IContextMenu2 m_ComInterface2;
 		private readonly IContextMenu3 m_ComInterface3;
-		private readonly MessageWindow m_MessageWindow;
+		private readonly BasicMessageWindow m_MessageWindow;
 		private bool disposedValue;
 
 		static ShellContextMenu() => Ole32.OleInitialize(default); // Not sure why necessary, but it fails without
@@ -75,10 +75,20 @@ namespace Vanara.Windows.Shell
 				}
 			}
 
+			//using var ppidls = new PinnedObject(pidls);
+			//var dcm = new DEFCONTEXTMENU
+			//{
+			//	psf = parent.IShellFolder,
+			//	apidl = ppidls,
+			//	cidl = (uint)pidls.Length,
+
+			//};
+			//SHCreateDefaultContextMenu(ref dcm, typeof(IContextMenu).GUID, out var ppv).ThrowIfFailed();
+			//ComInterface = (IContextMenu)ppv;
 			ComInterface = parent.IShellFolder.GetUIObjectOf<IContextMenu>(HWND.NULL, pidls);
 			m_ComInterface2 = ComInterface as IContextMenu2;
 			m_ComInterface3 = ComInterface as IContextMenu3;
-			m_MessageWindow = new MessageWindow(this);
+			m_MessageWindow = new BasicMessageWindow(WindowMessageFilter);
 		}
 
 		/// <summary>Finalizes an instance of the <see cref="ShellContextMenu"/> class.</summary>
@@ -123,48 +133,28 @@ namespace Vanara.Windows.Shell
 			return MenuItemInfo.GetMenuItems(hmenu, this);
 		}
 
-		/// <summary>Handles context menu messages when the <see cref="ShellContextMenu"/> is displayed on a Form's main menu bar.</summary>
-		/// <remarks>
-		/// <para>
-		/// To display a shell context menu in a Form's main menu, call the <c>Populate(Menu, CMF)</c> method to populate the menu with the
-		/// shell item's menu items. In addition, you must intercept a number of special messages that will be sent to the menu's parent
-		/// form. To do this, you must override <see cref="Form.WndProc"/> like so:
-		/// </para>
-		/// <code>
-		///protected override void WndProc(ref Message m) {
-		///if ((m_ContextMenu == null) || (!m_ContextMenu.HandleMenuMessage(ref m))) {
-		///base.WndProc(ref m);
-		///}
-		///}
-		/// </code>
-		/// <para>Where m_ContextMenu is the <see cref="ShellContextMenu"/> being shown.</para>
-		/// </remarks>
-		/// <param name="m">The message to handle.</param>
-		/// <returns>
-		/// <see langword="true"/> if the message was a Shell Context Menu message, <see langword="false"/> if not. If the method returns
-		/// false, then the message should be passed down to the base class's <see cref="Form.WndProc"/> method.
-		/// </returns>
-		public bool HandleMenuMessage(ref Message m)
+		private bool WindowMessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 		{
+			lReturn = default;
 			try
 			{
-				if ((m.Msg == (int)WindowMessage.WM_COMMAND) && ((int)m.WParam >= m_CmdFirst))
+				if ((msg == (uint)WindowMessage.WM_COMMAND) && ((int)wParam >= m_CmdFirst))
 				{
-					InvokeCommand((int)m.WParam - m_CmdFirst);
+					InvokeCommand((int)wParam - m_CmdFirst);
 					return true;
 				}
 				else
 				{
-					if (m_ComInterface3 != null)
+					if (m_ComInterface3 is not null)
 					{
-						m_ComInterface3.HandleMenuMsg2((uint)m.Msg, m.WParam, m.LParam, out IntPtr result);
-						m.Result = result;
+						if (m_ComInterface3.HandleMenuMsg2(msg, wParam, lParam, out var lRet).Succeeded)
+							lReturn = lRet;
 						return true;
 					}
-					else if (m_ComInterface2 != null)
+					else if (m_ComInterface2 is not null)
 					{
-						m_ComInterface2.HandleMenuMsg((uint)m.Msg, m.WParam, m.LParam);
-						m.Result = IntPtr.Zero;
+						if (m_ComInterface2.HandleMenuMsg(msg, wParam, lParam).Succeeded)
+							lReturn = default;
 						return true;
 					}
 				}
@@ -322,6 +312,7 @@ namespace Vanara.Windows.Shell
 					// TODO: dispose managed state (managed objects)
 				}
 
+				m_MessageWindow?.Dispose();
 				Marshal.ReleaseComObject(ComInterface);
 				ComInterface = null;
 				disposedValue = true;
@@ -537,21 +528,6 @@ namespace Vanara.Windows.Shell
 					}
 				}
 				return SubMenus;
-			}
-		}
-
-		private class MessageWindow : Control
-		{
-			private readonly ShellContextMenu m_Parent;
-
-			public MessageWindow(ShellContextMenu parent) => m_Parent = parent;
-
-			protected override void WndProc(ref Message m)
-			{
-				if (!m_Parent.HandleMenuMessage(ref m))
-				{
-					base.WndProc(ref m);
-				}
 			}
 		}
 	}
