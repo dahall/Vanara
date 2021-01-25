@@ -92,6 +92,15 @@ namespace Vanara.PInvoke
 		/// <returns>The return value is the low-order word of the specified value.</returns>
 		public static ushort LOWORD(UIntPtr dwValue) => unchecked((ushort)(ulong)dwValue);
 
+		/// <summary>Converts the specified atom into a pointer, so it can be passed to functions which accept either atoms or strings.</summary>
+		/// <param name="i">The numeric value to be made into an integer atom. This parameter can be either an integer atom or a string atom.</param>
+		/// <returns>A pointer with the atom as the low-order word.</returns>
+		/// <remarks>Although the return value of the <c>MAKEINTATOM</c> macro is cast as an <c>LPTSTR</c> value, it cannot be used as a string pointer except when it is passed to atom-management functions that require an <c>LPTSTR</c> argument.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-makeintatom
+		// void MAKEINTATOM( i );
+		[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.MAKEINTATOM")]
+		public static IntPtr MAKEINTATOM(ushort i) => new IntPtr(unchecked((int)MAKELONG(i, 0)));
+
 		/// <summary>
 		/// Converts an integer value to a resource type compatible with the resource-management functions. This macro is used in place of a
 		/// string containing the name of the resource.
