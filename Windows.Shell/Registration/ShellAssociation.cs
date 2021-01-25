@@ -16,6 +16,11 @@ namespace Vanara.Windows.Shell
 		private IQueryAssociations qassoc;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class.</summary>
+		/// <param name="pQA">The IQueryAssociations instance to use.</param>
+		/// <param name="ext">The optional file extension. This should be in the ".ext" format.</param>
+		internal ShellAssociation(IQueryAssociations pQA, string ext) : this(ext) => qassoc = pQA;
+
+		/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class.</summary>
 		/// <param name="ext">The file extension. This should be in the ".ext" format.</param>
 		private ShellAssociation(string ext) => Extension = ext;
 
@@ -69,7 +74,7 @@ namespace Vanara.Windows.Shell
 				if (SHAssocEnumHandlers(Extension, ASSOC_FILTER.ASSOC_FILTER_NONE, out var ieah).Failed)
 					return (IReadOnlyList<ShellAssociationHandler>)new List<ShellAssociationHandler>();
 				using var pieah = ComReleaserFactory.Create(ieah);
-				var e = new Vanara.Collections.IEnumFromCom<IAssocHandler>(ieah.Next, () => { });
+				var e = new Collections.IEnumFromCom<IAssocHandler>(ieah.Next, () => { });
 				return (IReadOnlyList<ShellAssociationHandler>)e.Select(i => new ShellAssociationHandler(i)).ToList();
 			}
 		}
@@ -116,7 +121,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the command verbs for this file association.</summary>
 		/// <value>Returns a <see cref="IReadOnlyDictionary{TKey, TValue}"/> value.</value>
-		public IReadOnlyDictionary<string, CommandVerb> Verbs => throw new NotImplementedException(); // TODO
+		public IReadOnlyDictionary<string, CommandVerb> Verbs => null; //throw new NotImplementedException(); // TODO
 
 		/// <summary>Initializes a new instance of the <see cref="ShellAssociation"/> class based on the supplied executable name.</summary>
 		/// <param name="appExeName">The full path of the application executable.</param>
@@ -152,7 +157,7 @@ namespace Vanara.Windows.Shell
 		/// parameter to <see langword="null"/> if it is not used.
 		/// </param>
 		/// <returns>A value that, when this method returns successfully, receives the requested data value.</returns>
-		public Vanara.InteropServices.SafeCoTaskMemHandle GetData(ASSOCDATA data, string extra = null)
+		public SafeCoTaskMemHandle GetData(ASSOCDATA data, string extra = null)
 		{
 			try
 			{
@@ -160,11 +165,11 @@ namespace Vanara.Windows.Shell
 				var sz = 0U;
 				qassoc.GetData(flags, data, extra, default, ref sz);
 				if (sz == 0) return null;
-				var ret = new Vanara.InteropServices.SafeCoTaskMemHandle(sz);
+				var ret = new SafeCoTaskMemHandle(sz);
 				qassoc.GetData(flags, data, extra, ret, ref sz);
 				return ret;
 			}
-			catch (System.Runtime.InteropServices.COMException e) when (e.ErrorCode == (HRESULT)(Win32Error)Win32Error.ERROR_NO_ASSOCIATION)
+			catch (System.Runtime.InteropServices.COMException e) when (e.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_NO_ASSOCIATION))
 			{
 				return null;
 			}
@@ -204,7 +209,7 @@ namespace Vanara.Windows.Shell
 				qassoc.GetString(flags, astr, extra, sb, ref sz);
 				return sb.ToString();
 			}
-			catch (System.Runtime.InteropServices.COMException e) when (e.ErrorCode == (HRESULT)(Win32Error)Win32Error.ERROR_NO_ASSOCIATION)
+			catch (System.Runtime.InteropServices.COMException e) when (e.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_NO_ASSOCIATION))
 			{
 				return null;
 			}

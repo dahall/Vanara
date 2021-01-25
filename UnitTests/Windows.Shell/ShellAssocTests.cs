@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests
@@ -14,6 +15,19 @@ namespace Vanara.Windows.Shell.Tests
 			Assert.That(sha.FriendlyAppName, Is.EqualTo(@"Excel"));
 			//Assert.That(sha.Verbs, Has.Member("Open"));
 			Assert.That(sha.Handlers, Has.One.Property("UIName").EqualTo("Excel"));
+		}
+
+		[Test]
+		public void ExamineShellItemAssoc()
+		{
+			using var shi = ShellItem.Open(TestCaseSources.TempDir);
+			var sha = shi.Association;
+			sha.WriteValues();
+			foreach (var h in sha.Handlers)
+			{
+				TestContext.WriteLine(new string('=', 40));
+				h.WriteValues();
+			}
 		}
 
 		[Test]

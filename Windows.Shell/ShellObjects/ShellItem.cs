@@ -403,6 +403,11 @@ namespace Vanara.Windows.Shell
 			remove { ((INotifyPropertyChanged)Properties).PropertyChanged -= value; }
 		}
 
+		/// <summary>Gets the associations defined in the registry for this shell item.</summary>
+		/// <value>The shell associations.</value>
+		public ShellAssociation Association =>
+			new ShellAssociation(GetHandler<IQueryAssociations>(BHID.BHID_AssociationArray), FileInfo?.Extension);
+
 		/// <summary>Gets the attributes for the Shell item.</summary>
 		/// <value>The attributes of the Shell item.</value>
 		public ShellItemAttribute Attributes => (ShellItemAttribute)(iShellItem?.GetAttributes((SFGAO)0xFFFFFFFF) ?? 0);
@@ -817,11 +822,13 @@ namespace Vanara.Windows.Shell
 
 		internal static string GetStringValue(Action<StringBuilder, int> method, int buffSize = MAX_PATH)
 		{
+			var ret = new StringBuilder(buffSize);
 			while (true)
 			{
-				var ret = new StringBuilder(buffSize, buffSize);
 				try { method(ret, ret.Capacity); }
-				catch (COMException ex) { if (ex.ErrorCode == unchecked((int)0x8007007A) || ex.ErrorCode == unchecked((int)0x800700EA) || buffSize <= 8192) buffSize *= 2; else throw; }
+				catch (COMException ex) when (ex.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_INSUFFICIENT_BUFFER) || 
+					ex.ErrorCode == HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_MORE_DATA) || ret.Capacity <= 8192)
+				{ ret.Capacity *= 2; }
 				return ret.ToString();
 			}
 		}
