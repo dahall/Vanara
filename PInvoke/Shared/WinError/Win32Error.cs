@@ -58,7 +58,7 @@ namespace Vanara.PInvoke
 		/// <returns></returns>
 		[SecurityCritical]
 		[System.Diagnostics.DebuggerStepThrough]
-		public static Win32Error GetLastError() => new Win32Error(unchecked((uint)Marshal.GetLastWin32Error()));
+		public static Win32Error GetLastError() => new Win32Error(ExtGetLastError());
 
 		/// <summary>Performs an explicit conversion from <see cref="System.Int32"/> to <see cref="Win32Error"/>.</summary>
 		/// <param name="value">The value.</param>
@@ -247,6 +247,9 @@ namespace Vanara.PInvoke
 				GetLastError().ThrowIfFailed(message);
 			return value;
 		}
+
+		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetLastError")]
+		private static extern uint ExtGetLastError();
 
 		private static uint? ValueFromObj(object obj)
 		{
