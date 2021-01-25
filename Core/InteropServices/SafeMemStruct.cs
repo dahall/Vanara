@@ -153,6 +153,10 @@ namespace Vanara.InteropServices
 		/// </returns>
 		public virtual TStruct GetValueOrDefault(in TStruct defaultValue = default) => HasValue ? Value : defaultValue;
 
+		/// <summary>Initializes the size field by the specified name or the first four bytes of the structure's memory.</summary>
+		/// <param name="fieldName">Name of the field.</param>
+		public virtual void InitializeSizeField(string fieldName = null) => (fieldName is null ? handle : GetFieldAddress(fieldName)).Write((uint)BaseStructSize);
+
 		/// <summary>Returns the string value held by this instance.</summary>
 		/// <returns>A <see cref="System.String"/> value held by this instance or <c>null</c> if the handle is invalid.</returns>
 		public override string ToString() => ((TStruct?)this).ToString();
