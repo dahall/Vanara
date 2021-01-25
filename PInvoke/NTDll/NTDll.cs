@@ -4154,6 +4154,15 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public override string ToString() => StringHelper.GetString(Buffer, CharSet.Unicode, MaximumLength) ?? string.Empty;
+
+			/// <summary>Extracts the string value from this structure by reading process specific memory.</summary>
+			/// <param name="hProc">The process handle of the process from which to read the memory.</param>
+			/// <returns>A <see cref="System.String"/> that has the value.</returns>
+			public string ToString(HPROCESS hProc)
+			{
+				using var mem = new SafeCoTaskMemString(MaximumLength);
+				return ReadProcessMemory(hProc, Buffer, mem, mem.Size, out _) ? mem : string.Empty;
+			}
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to an object that releases a created handle at disposal using NtClose.</summary>
