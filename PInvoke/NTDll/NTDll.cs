@@ -3448,6 +3448,34 @@ namespace Vanara.PInvoke
 			return retList;
 		}
 
+		/// <summary>
+		/// Reads data from an area of memory in a specified process. The entire area to be read must be accessible or the operation fails.
+		/// </summary>
+		/// <param name="hProcess">
+		/// A handle to the process with memory that is being read. The handle must have PROCESS_VM_READ access to the process.
+		/// </param>
+		/// <param name="lpBaseAddress">
+		/// A pointer to the base address in the specified process from which to read. Before any data transfer occurs, the system verifies
+		/// that all data in the base address and memory of the specified size is accessible for read access, and if it is not accessible the
+		/// function fails.
+		/// </param>
+		/// <param name="lpBuffer">A pointer to a buffer that receives the contents from the address space of the specified process.</param>
+		/// <param name="nSize">The number of bytes to be read from the specified process.</param>
+		/// <param name="lpNumberOfBytesRead">
+		/// A pointer to a variable that receives the number of bytes transferred into the specified buffer. If lpNumberOfBytesRead is
+		/// <c>NULL</c>, the parameter is ignored.
+		/// </param>
+		/// <returns>
+		/// <para>Returns an NTSTATUS success or error code.</para>
+		/// <para>
+		/// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
+		/// described in the DDK documentation.
+		/// </para>
+		/// </returns>
+		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winternl.h")]
+		public static extern NTStatus NtWow64ReadVirtualMemory64([In] HPROCESS hProcess, [In] long lpBaseAddress, [Out] int lpBuffer, [In] long nSize, out long lpNumberOfBytesRead);
+
 		/// <summary>The CLIENT_ID structure contains identifiers of a process and a thread.</summary>
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct CLIENT_ID
@@ -4119,9 +4147,7 @@ namespace Vanara.PInvoke
 			public uint WaitReason;
 		}
 
-		/// <summary>
-		/// <para>The <c>UNICODE_STRING</c> structure is used to define Unicode strings.</para>
-		/// </summary>
+		/// <summary>The <c>UNICODE_STRING</c> structure is used to define Unicode strings.</summary>
 		/// <remarks>
 		/// <para>
 		/// The <c>UNICODE_STRING</c> structure is used to pass Unicode strings. Use RtlUnicodeStringInit or RtlUnicodeStringInitEx to
@@ -4136,17 +4162,13 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wudfwdm/ns-wudfwdm-_unicode_string typedef struct
 		// _UNICODE_STRING { USHORT Length; USHORT MaximumLength; PWCH Buffer; } UNICODE_STRING;
 		[PInvokeData("wudfwdm.h", MSDNShortId = "b02f29a9-1049-4e29-aac3-72bf0c70a21e")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2, Size = 8)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct UNICODE_STRING
 		{
-			/// <summary>
-			/// <para>The length, in bytes, of the string stored in <c>Buffer</c>.</para>
-			/// </summary>
+			/// <summary>The length, in bytes, of the string stored in <c>Buffer</c>.</summary>
 			public ushort Length;
 
-			/// <summary>
-			/// <para>The length, in bytes, of <c>Buffer</c>.</para>
-			/// </summary>
+			/// <summary>The length, in bytes, of <c>Buffer</c>.</summary>
 			public ushort MaximumLength;
 
 			/// <summary>Pointer to a wide-character string.</summary>
@@ -4162,6 +4184,43 @@ namespace Vanara.PInvoke
 			{
 				using var mem = new SafeCoTaskMemString(MaximumLength);
 				return ReadProcessMemory(hProc, Buffer, mem, mem.Size, out _) ? mem : string.Empty;
+			}
+		}
+
+		/// <summary>The <c>UNICODE_STRING</c> structure is used to define Unicode strings.</summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>UNICODE_STRING</c> structure is used to pass Unicode strings. Use RtlUnicodeStringInit or RtlUnicodeStringInitEx to
+		/// initialize a <c>UNICODE_STRING</c> structure.
+		/// </para>
+		/// <para>If the string is null-terminated, <c>Length</c> does not include the trailing null character.</para>
+		/// <para>
+		/// The <c>MaximumLength</c> is used to indicate the length of <c>Buffer</c> so that if the string is passed to a conversion routine
+		/// such as RtlAnsiStringToUnicodeString the returned string does not exceed the buffer size.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wudfwdm/ns-wudfwdm-_unicode_string typedef struct
+		// _UNICODE_STRING { USHORT Length; USHORT MaximumLength; PWCH Buffer; } UNICODE_STRING;
+		[PInvokeData("wudfwdm.h", MSDNShortId = "b02f29a9-1049-4e29-aac3-72bf0c70a21e")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct UNICODE_STRING_WOW64
+		{
+			/// <summary>The length, in bytes, of the string stored in <c>Buffer</c>.</summary>
+			public ushort Length;
+
+			/// <summary>The length, in bytes, of <c>Buffer</c>.</summary>
+			public ushort MaximumLength;
+
+			/// <summary>Pointer to a wide-character string.</summary>
+			public long Buffer;
+
+			/// <summary>Extracts the string value from this structure by reading process specific memory.</summary>
+			/// <param name="hProc">The process handle of the process from which to read the memory.</param>
+			/// <returns>A <see cref="System.String"/> that has the value.</returns>
+			public string ToString(HPROCESS hProc)
+			{
+				using var mem = new SafeCoTaskMemString(MaximumLength);
+				return NtWow64ReadVirtualMemory64(hProc, Buffer, ((IntPtr)mem).ToInt32(), mem.Size, out _).Succeeded ? mem : string.Empty;
 			}
 		}
 

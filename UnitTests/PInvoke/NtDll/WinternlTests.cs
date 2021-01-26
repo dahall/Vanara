@@ -9,6 +9,13 @@ using static Vanara.PInvoke.NtDll;
 
 namespace Vanara.PInvoke.Tests
 {
+	public static class ExtMeth
+	{
+		public static readonly Version minWowOSVer = new Version(5, 1);
+
+		public static bool IsWow64(this HPROCESS hProc) => Environment.OSVersion.Version >= minWowOSVer && Kernel32.IsWow64Process(hProc, out var b) && b;
+	}
+
 	[TestFixture]
 	public partial class WinternlTests
 	{
@@ -16,6 +23,9 @@ namespace Vanara.PInvoke.Tests
 		public void NtQueryInformationProcessTest()
 		{
 			HPROCESS hProc = Kernel32.GetCurrentProcess();
+			var procIsWow64 = hProc.IsWow64();
+			var procIs64 = Environment.Is64BitProcess;
+			var osIs64 = Environment.Is64BitOperatingSystem;
 
 			using var pbi = NtQueryInformationProcess<PROCESS_BASIC_INFORMATION>(hProc, PROCESSINFOCLASS.ProcessBasicInformation);
 			Assert.That(pbi, ResultIs.ValidHandle);
