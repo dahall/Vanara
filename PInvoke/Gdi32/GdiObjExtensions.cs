@@ -78,40 +78,41 @@ namespace Vanara.PInvoke
 		/// <summary>Creates a <see cref="Bitmap"/> from an <see cref="HBITMAP"/> preserving transparency, if possible.</summary>
 		/// <param name="hbmp">The HBITMAP value.</param>
 		/// <returns>The Bitmap instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
-		public static Bitmap ToBitmap(this in HBITMAP hbmp)
-		{
-			const System.Drawing.Imaging.PixelFormat fmt = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
+		public static Bitmap ToBitmap(this in HBITMAP hbmp) => Image.FromHbitmap((IntPtr)hbmp);
+		// TODO: Fix code below to process different bpp bitmaps w/o flipping
+		//{
+		//	const System.Drawing.Imaging.PixelFormat fmt = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
 
-			// If hbmp is NULL handle, return null
-			if (hbmp.IsNull) return null;
+		//	// If hbmp is NULL handle, return null
+		//	if (hbmp.IsNull) return null;
 
-			// Get detail and bail if not 32bit, empty or an old style BMP
-			var (bpp, width, height, scanBytes, bits, isdib) = GetInfo(hbmp);
-			if (bpp != Image.GetPixelFormatSize(fmt) || height == 0 || !isdib)
-				return Image.FromHbitmap((IntPtr)hbmp);
+		//	// Get detail and bail if not 32bit, empty or an old style BMP
+		//	var (bpp, width, height, scanBytes, bits, isdib) = GetInfo(hbmp);
+		//	if (bpp != Image.GetPixelFormatSize(fmt) || height == 0 || !isdib)
+		//		return Image.FromHbitmap((IntPtr)hbmp);
 
-			// Create bitmap from detail and flip if upside-down
-			var bmp = new Bitmap(width, height, scanBytes, fmt, bits);
-			if (height < 0) bmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
-			return bmp;
+		//	// Create bitmap from detail and flip if upside-down
+		//	var bmp = new Bitmap(width, height, scanBytes, fmt, bits);
+		//	if (height < 0) bmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
+		//	return bmp;
 
-			static (ushort bpp, int width, int height, int scanBytes, IntPtr bits, bool isdib) GetInfo(in HBITMAP hbmp)
-			{
-				var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
-				using var mem = GetObject(hbmp, dibSz);
-				if (mem.Size == dibSz)
-				{
-					var dib = mem.ToStructure<DIBSECTION>();
-					return (dib.dsBm.bmBitsPixel, dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes, dib.dsBm.bmBits, true);
-				}
-				else
-				{
-					var bmp = mem.ToStructure<BITMAP>();
-					return (bmp.bmBitsPixel, bmp.bmWidth, bmp.bmHeight, bmp.bmWidthBytes, bmp.bmBits, false);
-				}
-			}
+		//	static (ushort bpp, int width, int height, int scanBytes, IntPtr bits, bool isdib) GetInfo(in HBITMAP hbmp)
+		//	{
+		//		var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
+		//		using var mem = GetObject(hbmp, dibSz);
+		//		if (mem.Size == dibSz)
+		//		{
+		//			var dib = mem.ToStructure<DIBSECTION>();
+		//			return (dib.dsBm.bmBitsPixel, dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes, dib.dsBm.bmBits, true);
+		//		}
+		//		else
+		//		{
+		//			var bmp = mem.ToStructure<BITMAP>();
+		//			return (bmp.bmBitsPixel, bmp.bmWidth, bmp.bmHeight, bmp.bmWidthBytes, bmp.bmBits, false);
+		//		}
+		//	}
 
-		}
+		//}
 
 #if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
 		/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HBITMAP"/> preserving transparency, if possible.</summary>
