@@ -1818,6 +1818,32 @@ namespace Vanara.PInvoke
 			INF_STYLE_WIN4 = 0x00000002,
 		}
 
+		/// <summary>Flags for <see cref="SetupGetInfInformation(HFILE, INFINFO, IntPtr, uint, out uint)"/>.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfInformationA")]
+		public enum INFINFO : uint
+		{
+			/// <summary>
+			/// InfSpec is an INF handle. A single INF handle may reference multiple INF files if they have been append-loaded together. If
+			/// it does, the structure returned by this function contains multiple sets of information.
+			/// </summary>
+			INFINFO_INF_SPEC_IS_HINF = 1,
+
+			/// <summary>The string specified for InfSpec is a full path. No further processing is performed on InfSpec.</summary>
+			INFINFO_INF_NAME_IS_ABSOLUTE = 2,
+
+			/// <summary>
+			/// Search the default locations for the INF file specified for InfSpec, which is assumed to be a filename only. The default
+			/// locations are %windir%\inf, followed by %windir%\system32.
+			/// </summary>
+			INFINFO_DEFAULT_SEARCH = 3,
+
+			/// <summary>Same as INFINFO_DEFAULT_SEARCH, except the default locations are searched in reverse order.</summary>
+			INFINFO_REVERSE_DEFAULT_SEARCH = 4,
+
+			/// <summary>Search for the INF in each of the directories listed in the DevicePath value entry under the following: <c>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion</c></summary>
+			INFINFO_INF_PATH_LIST_SEARCH = 5,
+		}
+
 		/// <summary>Flags for <see cref="SetupConfigureWmiFromInfSection"/>.</summary>
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupConfigureWmiFromInfSectionA")]
 		[Flags]
@@ -1828,6 +1854,144 @@ namespace Vanara.PInvoke
 			/// elsewhere in the INF file. If this flag does not exist and no security information exists in the INF file, the security is set.
 			/// </summary>
 			SCWMI_CLOBBER_SECURITY = 0x00000001
+		}
+
+		/// <summary>Flags that control the behavior of the file copy operation.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInstallFileA")]
+		[Flags]
+		public enum SP_COPY : uint
+		{
+			/// <summary>Deletes the source file upon successful copy. The caller is not notified if the delete operation fails.</summary>
+			SP_COPY_DELETESOURCE = 0x0000001,
+
+			/// <summary>
+			/// Copies the file only if doing so would overwrite a file at the destination path. If the target does not exist, the function
+			/// returns FALSE and GetLastError returns NO_ERROR.
+			/// </summary>
+			SP_COPY_REPLACEONLY = 0x0000002,
+
+			/// <summary>
+			/// Examines each file being copied to see if its version resources indicate that it is either the same version or not newer
+			/// than an existing copy on the target. The file version information used during version checks is that specified in the
+			/// dwFileVersionMS and dwFileVersionLS members of a VS_FIXEDFILEINFO structure, as filled in by the version functions. If one
+			/// of the files does not have version resources, or if they have identical version information, the source file is considered
+			/// newer. If the source file is not newer or equal in version, and CopyMsgHandler is specified, the caller is notified and may
+			/// cancel the copy operation. If CopyMsgHandler is not specified, the file is not copied.
+			/// </summary>
+			SP_COPY_NEWER = 0x0000004,
+
+			/// <summary>
+			/// Examines each file being copied to see if its version resources indicate that it is either the same version or not newer
+			/// than an existing copy on the target. The file version information used during version checks is that specified in the
+			/// dwFileVersionMS and dwFileVersionLS members of a VS_FIXEDFILEINFO structure, as filled in by the version functions. If one
+			/// of the files does not have version resources, or if they have identical version information, the source file is considered
+			/// newer. If the source file is not newer or equal in version, and CopyMsgHandler is specified, the caller is notified and may
+			/// cancel the copy operation. If CopyMsgHandler is not specified, the file is not copied.
+			/// </summary>
+			SP_COPY_NEWER_OR_SAME = SP_COPY_NEWER,
+
+			/// <summary>
+			/// Check whether the target file exists, and, if so, notify the caller who may veto the copy. If CopyMsgHandler is not
+			/// specified, the file is not overwritten.
+			/// </summary>
+			SP_COPY_NOOVERWRITE = 0x0000008,
+
+			/// <summary>
+			/// Do not decompress the file. When this flag is set, the target file is not given the uncompressed form of the source name (if
+			/// appropriate). For example, copying F:\x86\cmd.ex_ to \\install\temp results in a target file of \\install\temp\cmd.ex_. If
+			/// the SP_COPY_NODECOMP flag was not specified, the file would be decompressed and the target would be called
+			/// \\install\temp\cmd.exe. The file name part of DestinationName, if specified, is stripped and replaced with the file name of
+			/// the source file. When SP_COPY_NODECOMP is specified, no language or version information can be checked.
+			/// </summary>
+			SP_COPY_NODECOMP = 0x0000010,
+
+			/// <summary>
+			/// Examine each file being copied to see if its language differs from the language of any existing file already on the target.
+			/// If so, and CopyMsgHandler is specified, the caller is notified and may cancel the copy. If CopyMsgHandler is not specified,
+			/// the file is not copied.
+			/// </summary>
+			SP_COPY_LANGUAGEAWARE = 0x0000020,
+
+			/// <summary>SourceFile is a full source path. Do not look it up in the SourceDisksNames section of the INF file.</summary>
+			SP_COPY_SOURCE_ABSOLUTE = 0x0000040,
+
+			/// <summary>
+			/// SourcePathRoot is the full path part of the source file. Ignore the relative source specified in the SourceDisksNames
+			/// section of the INF file for the source media where the file is located. This flag is ignored if SP_COPY_SOURCE_ABSOLUTE is specified.
+			/// </summary>
+			SP_COPY_SOURCEPATH_ABSOLUTE = 0x0000080,
+
+			/// <summary>If the file was in use during the copy operation, alert the user that the system requires a reboot.</summary>
+			SP_COPY_IN_USE_NEEDS_REBOOT = 0x0000100,
+
+			/// <summary>If the target exists, behaves as if it is in use and queues the file for copying on the next system restart.</summary>
+			SP_COPY_FORCE_IN_USE = 0x0000200,
+
+			/// <summary>Do not give the user the option to skip a file.</summary>
+			SP_COPY_NOSKIP = 0x0000400,
+
+			/// <summary>The current source file is continued in another cabinet file.</summary>
+			SP_FLAG_CABINETCONTINUATION = 0x0000800,
+
+			/// <summary>Checks whether the target file exists, and, if so, the file is not overwritten. The caller is not notified.</summary>
+			SP_COPY_FORCE_NOOVERWRITE = 0x0001000,
+
+			/// <summary>
+			/// Examines each file being copied to see if its version resources (or time stamps for non-image files) indicate that it is not
+			/// newer than an existing copy on the target. If the file being copied is not newer, the file is not copied. The caller is not
+			/// notified. The function returns FALSE, and GetLastError returns NO_ERROR.
+			/// </summary>
+			SP_COPY_FORCE_NEWER = 0x0002000,
+
+			/// <summary>
+			/// If the user tries to skip a file, warn them that skipping a file may affect the installation. (Used for system-critical files.)
+			/// </summary>
+			SP_COPY_WARNIFSKIP = 0x0004000,
+
+			/// <summary>Do not offer the user the option to browse.</summary>
+			SP_COPY_NOBROWSE = 0x0008000,
+
+			/// <summary>
+			/// Examine each file being copied to see if its version resources indicate that it is not newer than an existing copy on the
+			/// target. If the source file is newer but not equal in version to the existing target, the file is copied.
+			/// </summary>
+			SP_COPY_NEWER_ONLY = 0x0010000,
+
+			/// <summary>Reserved.</summary>
+			SP_COPY_RESERVED = 0x0020000,
+
+			/// <summary>
+			/// The specified .inf file's corresponding catalog files is copied to %windir%\Inf. If this flag is specified, the destination
+			/// filename information is entered upon successful return if the specified .inf file already exists in the Inf directory.
+			/// </summary>
+			SP_COPY_OEMINF_CATALOG_ONLY = 0x0040000,
+
+			/// <summary>file must be present upon reboot (i.e., it's needed by the loader); this flag implies a reboot</summary>
+			SP_COPY_REPLACE_BOOT_FILE = 0x0080000,
+
+			/// <summary>never prune this file</summary>
+			SP_COPY_NOPRUNE = 0x0100000,
+
+			/// <summary>Used when calling SetupCopyOemInf</summary>
+			SP_COPY_OEM_F6_INF = 0x0200000,
+
+			/// <summary>similar to SP_COPY_NODECOMP</summary>
+			SP_COPY_ALREADYDECOMP = 0x0400000,
+
+			/// <summary>BuildLab or WinSE signed</summary>
+			SP_COPY_WINDOWS_SIGNED = 0x1000000,
+
+			/// <summary>Used with the signature flag</summary>
+			SP_COPY_PNPLOCKED = 0x2000000,
+
+			/// <summary>If file in use, try to rename the target first</summary>
+			SP_COPY_IN_USE_TRY_RENAME = 0x4000000,
+
+			/// <summary>Referred by CopyFiles of inbox inf</summary>
+			SP_COPY_INBOX_INF = 0x8000000,
+
+			/// <summary>Copy using hardlink, if possible</summary>
+			SP_COPY_HARDLINK = 0x10000000,
 		}
 
 		/// <summary>A value that identifies the property to be retrieved.</summary>
@@ -2160,6 +2324,27 @@ namespace Vanara.PInvoke
 			SPDSL_DISALLOW_NEGATIVE_ADJUST = 0x00000002,
 		}
 
+		/// <summary>Controls the log file initialization.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInitializeFileLogA")]
+		[Flags]
+		public enum SPFILELOG : uint
+		{
+			/// <summary>
+			/// Use the system file log. The user must be an Administrator to specify this option unless SPFILELOG_QUERYONLY is specified
+			/// and LogFileName is not specified. Do not specify SPFILELOG_SYSTEMLOG in combination with SPFILELOG_FORCENEW.
+			/// </summary>
+			SPFILELOG_SYSTEMLOG = 0x00000001,
+
+			/// <summary>
+			/// If the log file exists, overwrite it. If the log file exists and this flag is not specified, any new files that are
+			/// installed are added to the list in the existing log file. Do not specify in combination with SPFILELOG_SYSTEMLOG.
+			/// </summary>
+			SPFILELOG_FORCENEW = 0x00000002,
+
+			/// <summary>Open the log file for querying only.</summary>
+			SPFILELOG_QUERYONLY = 0x00000004,
+		}
+
 		/// <summary>Notification of a queue action.</summary>
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDefaultQueueCallbackA")]
 		public enum SPFILENOTIFY : uint
@@ -2255,6 +2440,83 @@ namespace Vanara.PInvoke
 			SPFILENOTIFY_TARGETNEWER = 0x00040000,
 		}
 
+		/// <summary>Controls what actions to perform.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInstallFromInfSectionA")]
+		[Flags]
+		public enum SPINST : uint
+		{
+			/// <summary>
+			/// This flag is only used when installing a device driver.
+			/// <para>
+			/// Perform logical configuration operations ( <c>LogConf</c> lines in the <c>Install</c> section being processed). This flag is
+			/// only used if DeviceInfoSet and DeviceInfoData are specified.
+			/// </para>
+			/// <para>
+			/// For more information about installing device drivers, <c>LogConf</c>, DeviceInfoSet, or DeviceInfoData, see the DDK
+			/// Programmer's Guide.
+			/// </para>
+			/// </summary>
+			SPINST_LOGCONFIG = 0x00000001,
+
+			/// <summary>Perform INI-file operations ( <c>UpdateInis</c>, <c>UpdateIniFields</c> lines in the Install section being processed).</summary>
+			SPINST_INIFILES = 0x00000002,
+
+			/// <summary>Perform registry operations ( <c>AddReg</c>, <c>DelReg</c> lines in the <c>Install</c> section being processed).</summary>
+			SPINST_REGISTRY = 0x00000004,
+
+			/// <summary>Perform INI-file to registry operations ( <c>Ini2Reg</c> lines in the <c>Install</c> section being processed).</summary>
+			SPINST_INI2REG = 0x00000008,
+
+			/// <summary>
+			/// Perform file operations ( <c>CopyFiles</c>, <c>DelFiles</c>, <c>RenFiles</c> lines in the <c>Install</c> section being processed).
+			/// </summary>
+			SPINST_FILES = 0x00000010,
+
+			/// <summary/>
+			SPINST_BITREG = 0x00000020,
+
+			/// <summary>
+			/// To send a notification to the callback routine when registering a file, include SPINST_REGISTERCALLBACKAWARE plus
+			/// SPINST_REGSVR in Flags. The caller must also specify the MsgHandler parameter.
+			/// </summary>
+			SPINST_REGSVR = 0x00000040,
+
+			/// <summary>
+			/// To send a notification to the callback routine when unregistering a file, include SPINST_REGISTERCALLBACKAWARE plus
+			/// SPINST_UNREGSVR in the Flags. The caller must also specify the MsgHandler parameter.
+			/// </summary>
+			SPINST_UNREGSVR = 0x00000080,
+
+			/// <summary/>
+			SPINST_PROFILEITEMS = 0x00000100,
+
+			/// <summary/>
+			SPINST_COPYINF = 0x00000200,
+
+			/// <summary/>
+			SPINST_PROPERTIES = 0x00000400,
+
+			/// <summary/>
+			SPINST_SINGLESECTION = 0x00010000,
+
+			/// <summary/>
+			SPINST_LOGCONFIG_IS_FORCED = 0x00020000,
+
+			/// <summary/>
+			SPINST_LOGCONFIGS_ARE_OVERRIDES = 0x00040000,
+
+			/// <summary>
+			/// When using the <c>RegisterDlls</c> INF directive to self-register DLLs on Windows 2000, callers of
+			/// <c>SetupInstallFromInfSection</c> may receive notifications on each file as it is registered or unregistered. To send a
+			/// SPFILENOTIFY_STARTREGISTRATION or SPFILENOTIFY_ENDREGISTRATION notification to the callback routine, include
+			/// SPINST_REGISTERCALLBACKAWARE plus either SPINST_REGSVR or SPINST_UNREGSVR. The caller must also set the MsgHandler parameter.
+			/// </summary>
+			SPINST_REGISTERCALLBACKAWARE = 0x00080000,
+
+			/// <summary/>
+			SPINST_DEVICEINSTALL = 0x00100000,
+		}
+
 		/// <summary>Flags for <see cref="SP_DEVICE_INTERFACE_DATA"/>.</summary>
 		[PInvokeData("setupapi.h", MSDNShortId = "NS:setupapi._SP_DEVICE_INTERFACE_DATA")]
 		[Flags]
@@ -2288,6 +2550,32 @@ namespace Vanara.PInvoke
 			/// component that supplied page(s) in response to a DIF_ADDPROPERTYPAGE_ADVANCED installation request.
 			/// </summary>
 			SPPSR_ENUM_ADV_DEVICE_PROPERTIES,
+		}
+
+		/// <summary>Flags/FlagMask for use with SetupSetFileQueueFlags and returned by SetupGetFileQueueFlags.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetFileQueueFlags")]
+		[Flags]
+		public enum SPQ_FLAG : uint
+		{
+			/// <summary>If this flag is set, SetupCommitFileQueue issues backup notifications.</summary>
+			SPQ_FLAG_BACKUP_AWARE = 0x00000001,
+
+			/// <summary>
+			/// If set, SetupCommitFileQueue will fail with ERROR_SET_SYSTEM_RESTORE_POINT if the user elects to proceed with an unsigned
+			/// queue committal. This allows the caller to set a system restore point, then re-commit the file queue.
+			/// </summary>
+			SPQ_FLAG_ABORT_IF_UNSIGNED = 0x00000002,
+
+			/// <summary>If set, at least one file was replaced by a different version</summary>
+			SPQ_FLAG_FILES_MODIFIED = 0x00000004,
+
+			/// <summary>
+			/// If set then always do a shuffle move. A shuffle move will first try to copy the source over the destination file, but if the
+			/// destination file is in use it will rename the destination file to a temp name and queue the temp name for deletion. It will
+			/// then be free to copy the source to the destination name. It is considered an error if the destination file can't be renamed
+			/// for some reason.
+			/// </summary>
+			SPQ_FLAG_DO_SHUFFLEMOVE = 0x00000008,
 		}
 
 		/// <summary>A flag value that controls how the device is registered.</summary>
@@ -2331,6 +2619,23 @@ namespace Vanara.PInvoke
 			/// File registration or unregistration failed for an unknown reason. WinError indicates an extended error code from the component.
 			/// </summary>
 			SPREG_UNKNOWN = 0xFFFFFFFF,
+		}
+
+		/// <summary>Indicates what information is desired.</summary>
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceInfoA")]
+		public enum SRCINFO
+		{
+			/// <summary>The path specified for the source. This is not a full path, but the path relative to the installation root.</summary>
+			SRCINFO_PATH = 1,
+
+			/// <summary>The tag file that identifies the source media, or if cabinets are used, the name of the cabinet file.</summary>
+			SRCINFO_TAGFILE = 2,
+
+			/// <summary>A description for the media.</summary>
+			SRCINFO_DESCRIPTION = 3,
+
+			/// <summary/>
+			SRCINFO_FLAGS = 4,
 		}
 
 		/// <summary>List to which the source will be appended.</summary>

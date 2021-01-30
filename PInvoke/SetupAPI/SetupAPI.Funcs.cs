@@ -1351,6 +1351,134 @@ namespace Vanara.PInvoke
 		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
 		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
 		/// </para>
+		/// <para>The <c>SetupFreeSourceList</c> function frees the system resources allocated to a source list.</para>
+		/// </summary>
+		/// <param name="List">
+		/// Pointer to an array of sources from SetupQuerySourceList. The <c>null</c>-terminated string should not exceed the size of the
+		/// destination buffer. When the function returns, this pointer is set to <c>NULL</c>.
+		/// </param>
+		/// <param name="Count">Number of sources in the list.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupFreeSourceList as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupfreesourcelista WINSETUPAPI BOOL
+		// SetupFreeSourceListA( PCSTR **List, UINT Count );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupFreeSourceListA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupFreeSourceList(IntPtr List, uint Count);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupGetBinaryField</c> function retrieves binary data from a line in an INF file section, from the specified field to
+		/// the end of the line.
+		/// </para>
+		/// </summary>
+		/// <param name="Context">INF context for the line.</param>
+		/// <param name="FieldIndex">
+		/// The 1-based index of the starting field within the specified line from which the binary data should be retrieved. The binary
+		/// data is built from each field, starting at this point to the end of the line. Each field corresponds to 1 byte and is in
+		/// hexadecimal notation. A FieldIndex of zero is not valid with this function.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// Optional pointer to a buffer that receives the binary data. You should ensure the destination buffer is the same size or larger
+		/// than the source buffer. You can call the function once to get the required buffer size, allocate the necessary memory, and then
+		/// call the function a second time to retrieve the data. Using this technique, you can avoid errors due to an insufficient buffer
+		/// size. See the Remarks section.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by ReturnBuffer, in characters. This number includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// Optional pointer to a variable that receives the required size for the buffer pointed to ReturnBuffer, in characters. This
+		/// number includes the <c>null</c> terminator. If the size needed is larger than the value specified by ReturnBufferSize, the
+		/// function fails and a call to GetLastError returns ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// GetLastError returns ERROR_INVALID_DATA if a field that <c>SetupGetBinaryField</c> retrieves is not a valid hexadecimal number
+		/// in the range 0-FF.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>To better understand how this function works, consider the following line from an INF file.</para>
+		/// <para>
+		/// <code>X=34,FF,00,13</code>
+		/// </para>
+		/// <para>
+		/// If <c>SetupGetBinaryField</c> was called on the preceding line, the binary values 34, FF, 00, and 13 would be put into the
+		/// buffer specified by ReturnBuffer.
+		/// </para>
+		/// <para>
+		/// For the Unicode version of this function, the buffer sizes ReturnBufferSize and RequiredSize are specified in number of
+		/// characters. This number includes the <c>null</c> terminator. For the ANSI version of this function, the sizes are specified in
+		/// number of bytes.
+		/// </para>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// Thus, you can call the function once to get the required buffer size, allocate the necessary memory, and then call the function
+		/// a second time to retrieve the data. Using this technique, you can avoid errors due to an insufficient buffer size.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetbinaryfield WINSETUPAPI BOOL SetupGetBinaryField(
+		// PINFCONTEXT Context, DWORD FieldIndex, PBYTE ReturnBuffer, DWORD ReturnBufferSize, LPDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetBinaryField")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetBinaryField(in INFCONTEXT Context, uint FieldIndex, [Out, Optional] IntPtr ReturnBuffer,
+			uint ReturnBufferSize, out uint RequiredSize);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetFieldCount</c> function retrieves the number of fields in the specified line in an INF file.</para>
+		/// </summary>
+		/// <param name="Context">Pointer to the context for a line in an INF file.</param>
+		/// <returns>
+		/// This function returns the number of fields on the line. If Context is invalid, 0 is returned. To get extended error information,
+		/// call GetLastError.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetfieldcount WINSETUPAPI DWORD SetupGetFieldCount(
+		// PINFCONTEXT Context );
+		[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetFieldCount")]
+		public static extern uint SetupGetFieldCount(in INFCONTEXT Context);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
 		/// <para>
 		/// The <c>SetupGetFileCompressionInfo</c> function examines a physical file to determine if it is compressed and gets its full
 		/// path, size, and the size of the uncompressed target file.
@@ -1432,239 +1560,1939 @@ namespace Vanara.PInvoke
 		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
 		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
 		/// </para>
-		/// <para>The <c>SetupOpenInfFile</c> function opens an INF file and returns a handle to it.</para>
+		/// <para>
+		/// The <c>SetupGetFileCompressionInfoEx</c> function examines a potentially compressed file and gets the type of compression, the
+		/// file's full path (including file name), the compressed size, and the size of the uncompressed target file. The caller of the
+		/// function passes in the name of the file to be examined and pointers to locations for the buffer and buffer size to receive the
+		/// returned file name and path.
+		/// </para>
+		/// <para>
+		/// To determine the size of the buffer for the returned path and file name, you can call <c>SetupGetFileCompressionInfoEx</c> with
+		/// ActualSourceFileNameBuffer specified <c>Null</c> and ActualSourceFileNameLen containing 0. The function succeeds and on return
+		/// fills in RequiredBufferLen.
+		/// </para>
+		/// </summary>
+		/// <param name="SourceFileName">
+		/// File name of the potentially compressed file to be examined. If the file is not found on the source media exactly as named,
+		/// Setup searches for up to two alternate names. For example; if Setup does not find F:\x86\cmd.exe, it searches for
+		/// F:\mpis\cmd.ex_ and if that name is not found, it searches for F:\x86\cmd.ex$.
+		/// </param>
+		/// <param name="ActualSourceFileNameBuffer">
+		/// Pointer to a buffer that receives the actual file name and path if this parameter is not <c>NULL</c>. This is valid only if the
+		/// function returns NO_ERROR.
+		/// </param>
+		/// <param name="ActualSourceFileNameBufferLen">
+		/// Size of the buffer specified by ActualSourceFileNameBuffer, in characters. You would typically use a buffer size of MAX_PATH. If
+		/// ActualSourceFileNameLen is too small, the function fails with ERROR_INSUFFICIENT_BUFFER. ActualSourceFileNameLen must contain
+		/// zero if ActualSourceFileNameBuffer is <c>NULL</c>.
+		/// </param>
+		/// <param name="RequiredBufferLen">
+		/// Size of the file name and full path including the terminating <c>NULL</c>, if this parameter is not <c>NULL</c>. If
+		/// ActualSourceFileNameBuffer is <c>NULL</c> and ActualSourceFileNameLen is zero, the function succeeds but fills in
+		/// RequiredBufferLen. This parameter is valid only if the function returns NO_ERROR or ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <param name="SourceFileSize">
+		/// Pointer to a variable in which this function returns the size of the file in its current form, which is the current size of the
+		/// file named by ActualSourceFileNameBuffer. The size is determined by examining the source file; it is not retrieved from an INF
+		/// file. The source file size is valid only if the function returns NO_ERROR or ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <param name="TargetFileSize">
+		/// Pointer to a variable in which this function returns the size that the file will occupy when it is uncompressed or copied. If
+		/// the file is not compressed, this value will be the same as SourceFileSize. The size is determined by examining the file; it is
+		/// not retrieved from an INF file. The target file size is valid only if the function returns NO_ERROR or ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <param name="CompressionType">
+		/// <para>
+		/// Pointer to a variable in which this function returns a value indicating the type of compression used on ActualSourceFileName.
+		/// The compression type is valid only if the function returns NO_ERROR or ERROR_INSUFFICIENT_BUFFER. This parameter value can be
+		/// one of the following flags.
+		/// </para>
+		/// <para>FILE_COMPRESSION_NONE</para>
+		/// <para>The source file is not compressed with a recognized compression algorithm.</para>
+		/// <para>FILE_COMPRESSION_WINLZA</para>
+		/// <para>The source file is compressed with LZ compression.</para>
+		/// <para>FILE_COMPRESSION_MSZIP</para>
+		/// <para>The source file is compressed with MSZIP compression.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <c>TRUE</c> (nonzero).</para>
+		/// <para>
+		/// If the function fails, the return value is <c>FALSE</c> (zero). The function can also return one of the following system error codes.
+		/// </para>
+		/// <para>To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Because <c>SetupGetFileCompressionInfoEx</c> determines the compression by examining the physical file, your setup application
+		/// should ensure that the file is present before calling <c>SetupGetFileCompressionInfoEx</c>.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetFileCompressionInfoEx as an alias which automatically selects the ANSI or Unicode version
+		/// of this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with
+		/// code that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetfilecompressioninfoexa WINSETUPAPI BOOL
+		// SetupGetFileCompressionInfoExA( PCSTR SourceFileName, PSTR ActualSourceFileNameBuffer, DWORD ActualSourceFileNameBufferLen,
+		// PDWORD RequiredBufferLen, PDWORD SourceFileSize, PDWORD TargetFileSize, PUINT CompressionType );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetFileCompressionInfoExA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetFileCompressionInfoEx([MarshalAs(UnmanagedType.LPTStr)] string SourceFileName,
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] string ActualSourceFileNameBuffer, uint ActualSourceFileNameBufferLen,
+			out uint RequiredBufferLen, out uint SourceFileSize, out uint TargetFileSize, out uint CompressionType);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetFileQueueCount</c> function gets the count from a setup file queue.</para>
+		/// </summary>
+		/// <param name="FileQueue">Handle to an open setup file queue.</param>
+		/// <param name="SubQueueFileOp">
+		/// <para>Flag that specifies which subqueue count to be returned.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILEOP_COPY</term>
+		/// <term>Return the number of entries in the copy subqueue.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILEOP_RENAME</term>
+		/// <term>Return the number of entries in the rename subqueue.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILEOP_DELETE</term>
+		/// <term>Return the number of entries in the delete subqueue.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILEOP_BACKUP</term>
+		/// <term>Return the number of entries in the backup subqueue.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="NumOperations">Count from the setup file queue.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetfilequeuecount WINSETUPAPI BOOL
+		// SetupGetFileQueueCount( HSPFILEQ FileQueue, UINT SubQueueFileOp, PUINT NumOperations );
+		[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetFileQueueCount")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetFileQueueCount(HSPFILEQ FileQueue, FILEOP SubQueueFileOp, out uint NumOperations);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetFileQueueFlags</c> function gets the flags from a setup file queue.</para>
+		/// </summary>
+		/// <param name="FileQueue">Handle to an open setup file queue.</param>
+		/// <param name="Flags">
+		/// <para>Pointer to location that contains the flag set with SetupSetFileQueueFlags and returned by <c>SetupGetFileQueueFlags</c>.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SPQ_FLAG_BACKUP_AWARE 0x001</term>
+		/// <term>If this flag is set, SetupCommitFileQueue issues backup notifications.</term>
+		/// </item>
+		/// <item>
+		/// <term>SPQ_FLAG_ABORT_IF_UNSIGNED 0X002</term>
+		/// <term>For internal use only.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetfilequeueflags WINSETUPAPI BOOL
+		// SetupGetFileQueueFlags( HSPFILEQ FileQueue, PDWORD Flags );
+		[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetFileQueueFlags")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetFileQueueFlags(HSPFILEQ FileQueue, out SPQ_FLAG Flags);
+
+		/// <summary>
+		/// The <c>SetupGetInfDriverStoreLocation</c> function retrieves the fully qualified file name (directory path and file name) of an
+		/// INF file in the driver store that corresponds to a specified INF file in the system INF file directory or a specified INF file
+		/// in the driver store.
 		/// </summary>
 		/// <param name="FileName">
-		/// Pointer to a null-terminated string containing the name (and optional path) of the INF file to be opened. If the filename does
-		/// not contain path separator characters, it is searched for, first in the %windir%\inf directory, and then in the
-		/// %windir%\system32 directory. If the filename contains path separator characters, it is assumed to be a full path specification
-		/// and no further processing is performed on it.
+		/// <para>
+		/// A pointer to a NULL-terminated string that contains the name, and optionally the full directory path, of an INF file in the
+		/// system INF file directory. Alternatively, this parameter is a pointer to a NULL-terminated string that contains the fully
+		/// qualified file name (directory path and file name) of an INF file in the driver store.
+		/// </para>
+		/// <para>For more information about how to specify the INF file, see the following <c>Remarks</c> section.</para>
 		/// </param>
-		/// <param name="InfClass">
-		/// Optional pointer to a null-terminated string containing the class of INF file desired. This string must match the Class value of
-		/// the <c>Version</c> section (for example, Class=Net). If there is no entry in the Class value, but there is an entry for
-		/// ClassGUID in the <c>Version</c> section, the corresponding class name for that GUID is retrieved and used for the comparison.
+		/// <param name="AlternatePlatformInfo">Reserved for system use.</param>
+		/// <param name="LocaleName">Reserved for system use.</param>
+		/// <param name="ReturnBuffer">
+		/// A pointer to a buffer in which the function returns a NULL-terminated string that contains the fully qualified file name of the
+		/// specified INF file. This parameter can be set to <c>NULL</c>. The maximum supported path size is MAX_PATH. For information about
+		/// how to determine the required size of the buffer, see the following <c>Remarks</c> section.
+		/// </param>
+		/// <param name="ReturnBufferSize">The size, in characters, of the buffer supplied by ReturnBuffer.</param>
+		/// <param name="RequiredSize">
+		/// A pointer to a DWORD-typed variable that receives the size, in characters, of the ReturnBuffer buffer. This parameter is
+		/// optional and can be set to <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If <c>SetupGetInfDriverStoreLocation</c> succeeds, the function returns <c>TRUE</c>; otherwise, the function returns
+		/// <c>FALSE</c>. To obtain extended error information, call GetLastError.
+		/// </para>
+		/// <para>
+		/// If the size, in characters, of the fully qualified file name of the requested INF file, including a null-terminator, is greater
+		/// than ReturnBufferSize, the function will fail, and a call to GetLastError will return ERROR_INSUFFICIENT_BUFFER.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To determine the size of the return buffer that is required to contain the fully qualified file name of the specified INF file
+		/// in the driver store, call <c>SetupGetInfDriverStoreLocation</c> and set ReturnBuffer to <c>NULL</c>, ReturnBufferSize to zero,
+		/// and supply RequiredSize. <c>SetupGetInfDriverStoreLocation</c> will return the required buffer size in RequiredSize.
+		/// </para>
+		/// <para>
+		/// When device installation preinstalls a driver package in the driver store, it creates two copies of the driver package INF file.
+		/// Device installation installs one copy in the system INF directory and assigns that copy of the INF file a unique published file
+		/// name of the form OEMnnn.inf. Device installation installs a second copy of the INF file in the driver store and assigns that
+		/// copy the original INF file name.
+		/// </para>
+		/// <para>
+		/// <c>SetupGetInfDriverStoreLocation</c> returns the fully qualified file name of the INF file in the driver store that matches the
+		/// INF file, if any, that is supplied by FileName. Filename must specify the file name, and optionally the directory path, of an
+		/// INF file in the system INF directory. Alternatively, Filename must specify the fully qualified file name of an INF file in the
+		/// driver store.
+		/// </para>
+		/// <para>
+		/// For example, assume that the INF file for a driver package is Myinf.inf, and that for this driver package, device installation
+		/// installs the INF file OEM1.inf in the system INF directory C:\Windows\inf. Further assume that device installation installs the
+		/// corresponding INF file copy C:\windows\system32\driverstore\filerepository\myinf_12345678\myinf.inf in the driver store. In this
+		/// case, the function returns C:\windows\system32\driverstore\filerepository\myinf_12345678\myinf.inf if FileName supplies one of
+		/// the following strings: OEM1.inf, C:\Windows\inf\OEM1.inf, or C:\windows\system32\driverstore\filerepository\myinf_12345678\myinf.inf.
+		/// </para>
+		/// <para>
+		/// Class installers and co-installers can use <c>SetupGetInfDriverStoreLocation</c> to access files in a driver package that is
+		/// preinstalled in the driver store. To determine the path of the driver package in the driver store, the installer does the following:
+		/// </para>
+		/// <list type="number">
+		/// <item>
+		/// <term>
+		/// Call SetupDiGetDriverInfoDetail to retrieve a SP_DRVINFO_DETAIL_DATA structure for a driver. The <c>InfFileName</c> member of
+		/// this structure contains the fully qualified file name of the driver INF file in the system INF directory.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Call <c>SetupGetInfDriverStoreLocation</c> and supply the fully qualified file name of the driver INF file that was retrieved by
+		/// calling <c>SetupDiGetDriverInfoDetail</c>. <c>SetupGetInfDriverStoreLocation</c> will return the fully qualified file name of
+		/// the driver INF file in the driver store. The directory path part of the fully qualified file name of the INF file is the path of
+		/// the driver package files.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c><c>SetupGetInfDriverStoreLocation</c> does not process the contents of the INF file that is specified in FileName.
+		/// You cannot use this function to perform a content-specific search for an INF file in the driver store.
+		/// </para>
+		/// <para>
+		/// Call the SetupGetInfPublishedName function to retrieve the fully qualified file name of an INF file in the system INF file
+		/// directory that corresponds to a specified INF file in the system INF file directory or a specified file in the driver store.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetInfDriverStoreLocation as an alias which automatically selects the ANSI or Unicode version
+		/// of this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with
+		/// code that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetinfdriverstorelocationa WINSETUPAPI BOOL
+		// SetupGetInfDriverStoreLocationA( PCSTR FileName, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, PCSTR LocaleName, PSTR ReturnBuffer,
+		// DWORD ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfDriverStoreLocationA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetInfDriverStoreLocation([MarshalAs(UnmanagedType.LPTStr)] string FileName,
+			[In, Optional] IntPtr AlternatePlatformInfo, [Optional, MarshalAs(UnmanagedType.LPTStr)] string LocaleName,
+			[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupGetInfFileList</c> function returns a list of INF files located in a caller-specified directory to a call-supplied buffer.
+		/// </para>
+		/// </summary>
+		/// <param name="DirectoryPath">
+		/// Optional pointer to a <c>null</c>-terminated string containing the path of the directory in which to search. If this value is
+		/// <c>NULL</c>, the %windir%\inf directory is used.
 		/// </param>
 		/// <param name="InfStyle">
-		/// <para>Style of INF file to open or search for. This parameter can be a combination of the following flags.</para>
+		/// <para>Type of INF file to search for. May be a combination of the following flags.</para>
 		/// <para>INF_STYLE_OLDNT</para>
 		/// <para>A legacy INF file format.</para>
 		/// <para>INF_STYLE_WIN4</para>
 		/// <para>A Windows INF file format.</para>
 		/// </param>
-		/// <param name="ErrorLine">
-		/// Optional pointer to a variable to which this function returns the (1-based) line number where an error occurred during loading
-		/// of the INF file. This value is generally reliable only if GetLastError does not return ERROR_NOT_ENOUGH_MEMORY. If an
-		/// out-of-memory condition does occur, ErrorLine may be 0.
+		/// <param name="ReturnBuffer">
+		/// If not <c>NULL</c>, points to a buffer in which this function returns the list of all INF files of the desired styles that were
+		/// found in the specified subdirectory. File names are <c>null</c>-terminated, with an extra <c>null</c> at the end of the list.
+		/// The <c>null</c>-terminated string should not exceed the size of the destination buffer. You can call the function once to get
+		/// the required buffer size, allocate the necessary memory, and then call the function a second time to retrieve the data. Using
+		/// this technique, you can avoid errors due to an insufficient buffer size. The filenames do not include the path. See the Remarks section.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by the ReturnBuffer parameter, in characters. This includes the <c>null</c> terminator. If
+		/// ReturnBuffer is not specified, ReturnBufferSize is ignored.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// If not <c>NULL</c>, points to a variable in which this function returns the required size for the buffer pointed to by the
+		/// ReturnBuffer parameter, in characters. This includes the <c>null</c> terminator. If ReturnBuffer is specified and the size
+		/// needed is larger than ReturnBufferSize, the function fails and a call to GetLastError returns ERROR_INSUFFICIENT_BUFFER.
 		/// </param>
 		/// <returns>
-		/// The function returns a handle to the opened INF file if it is successful. Otherwise, the return value is INVALID_HANDLE_VALUE.
-		/// Extended error information can be retrieved by a call to GetLastError.
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// If the load fails because the INF file type does not match InfClass, the function returns INVALID_HANDLE_VALUE and a call to
-		/// GetLastError returns ERROR_CLASS_MISMATCH.
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
 		/// </para>
 		/// <para>
-		/// If multiple INF file styles are specified, the style of the INF file opened can be determined by calling the
-		/// SetupGetInfInformation function.
+		/// If multiple INF file styles are returned by this function, the style of a particular INF file can be determined by calling the
+		/// SetupGetInfInformation function
 		/// </para>
 		/// <para>
-		/// Because there may be more than one class GUID with the same class name, callers interested in INF files of a particular class
-		/// (that is, a particular class GUID) should retrieve the ClassGUID value from the INF file by calling SetupQueryInfVersionInformation.
-		/// </para>
+		/// <para>Note</para>
 		/// <para>
-		/// For legacy INF files, the InfClass string must match the type specified in the OptionType value of the <c>Identification</c>
-		/// section in the INF file (for example, OptionType=NetAdapter).
+		/// The setupapi.h header defines SetupGetInfFileList as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupopeninffilea WINSETUPAPI HINF SetupOpenInfFileA(
-		// PCSTR FileName, PCSTR InfClass, DWORD InfStyle, PUINT ErrorLine );
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetinffilelista WINSETUPAPI BOOL
+		// SetupGetInfFileListA( PCSTR DirectoryPath, DWORD InfStyle, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupOpenInfFileA")]
-		public static extern SafeHINF SetupOpenInfFile([MarshalAs(UnmanagedType.LPTStr)] string FileName,
-			[Optional, MarshalAs(UnmanagedType.LPTStr)] string InfClass, INF_STYLE InfStyle, out uint ErrorLine);
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfFileListA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetInfFileList([Optional, MarshalAs(UnmanagedType.LPTStr)] string DirectoryPath, INF_STYLE InfStyle,
+			[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDSKSPC"/> that is disposed using <see cref="SetupDestroyDiskSpaceList"/>.</summary>
-		public class SafeHDSKSPC : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHDSKSPC"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHDSKSPC(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetUpGetInfInformation</c> function returns the SP_INF_INFORMATION structure for the specified INF file to a buffer.</para>
+		/// </summary>
+		/// <param name="InfSpec">Handle or a file name for an INF file, depending on the value of SearchControl.</param>
+		/// <param name="SearchControl">
+		/// <para>This parameter can be one of the following constants.</para>
+		/// <para>INFINFO_INF_SPEC_IS_HINF</para>
+		/// <para>
+		/// InfSpec is an INF handle. A single INF handle may reference multiple INF files if they have been append-loaded together. If it
+		/// does, the structure returned by this function contains multiple sets of information.
+		/// </para>
+		/// <para>INFINFO_INF_NAME_IS_ABSOLUTE</para>
+		/// <para>The string specified for InfSpec is a full path. No further processing is performed on InfSpec.</para>
+		/// <para>INFINFO_DEFAULT_SEARCH</para>
+		/// <para>
+		/// Search the default locations for the INF file specified for InfSpec, which is assumed to be a filename only. The default
+		/// locations are %windir%\inf, followed by %windir%\system32.
+		/// </para>
+		/// <para>INFINFO_REVERSE_DEFAULT_SEARCH</para>
+		/// <para>Same as INFINFO_DEFAULT_SEARCH, except the default locations are searched in reverse order.</para>
+		/// <para>INFINFO_INF_PATH_LIST_SEARCH</para>
+		/// <para>Search for the INF in each of the directories listed in the DevicePath value entry under the following: <c>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion</c></para>
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// <para>If not <c>NULL</c>, points to a buffer in which this function returns the <see cref="SP_INF_INFORMATION"/> structure.</para>
+		/// <para>
+		/// You can call the function one time to get the required buffer size, allocate the necessary memory, and then call the function a
+		/// second time to retrieve the data. Using this technique, you can avoid errors due to an insufficient buffer size. For more
+		/// information, see the Remarks section of this topic.
+		/// </para>
+		/// </param>
+		/// <param name="ReturnBufferSize">Size of ReturnBuffer, in bytes.</param>
+		/// <param name="RequiredSize">
+		/// <para>
+		/// If not <c>NULL</c>, points to a variable in which this function returns the required size, in bytes, for the buffer pointed to
+		/// by ReturnBuffer.
+		/// </para>
+		/// <para>
+		/// If ReturnBuffer is specified and the size needed is larger than ReturnBufferSize, the function fails and a call to GetLastError
+		/// returns ERROR_INSUFFICIENT_BUFFER.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call GetLastError.</para>
+		/// <para>If the INF file cannot be located, the function returns <c>FALSE</c> and a subsequent call to GetLastError returns ERROR_FILE_NOT_FOUND.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of 0 (zero), the function puts the buffer
+		/// size needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds, the return value
+		/// is a nonzero value. Otherwise, the return value is 0 (zero), and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetInfInformation as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetinfinformationa WINSETUPAPI BOOL
+		// SetupGetInfInformationA( LPCVOID InfSpec, DWORD SearchControl, PSP_INF_INFORMATION ReturnBuffer, DWORD ReturnBufferSize, PDWORD
+		// RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfInformationA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetInfInformation(HFILE InfSpec, INFINFO SearchControl, [Out, Optional] IntPtr ReturnBuffer,
+			uint ReturnBufferSize, out uint RequiredSize);
 
-			/// <summary>Initializes a new instance of the <see cref="SafeHDSKSPC"/> class.</summary>
-			private SafeHDSKSPC() : base() { }
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetUpGetInfInformation</c> function returns the SP_INF_INFORMATION structure for the specified INF file to a buffer.</para>
+		/// </summary>
+		/// <param name="InfSpec">Handle or a file name for an INF file, depending on the value of SearchControl.</param>
+		/// <param name="SearchControl">
+		/// <para>This parameter can be one of the following constants.</para>
+		/// <para>INFINFO_INF_SPEC_IS_HINF</para>
+		/// <para>
+		/// InfSpec is an INF handle. A single INF handle may reference multiple INF files if they have been append-loaded together. If it
+		/// does, the structure returned by this function contains multiple sets of information.
+		/// </para>
+		/// <para>INFINFO_INF_NAME_IS_ABSOLUTE</para>
+		/// <para>The string specified for InfSpec is a full path. No further processing is performed on InfSpec.</para>
+		/// <para>INFINFO_DEFAULT_SEARCH</para>
+		/// <para>
+		/// Search the default locations for the INF file specified for InfSpec, which is assumed to be a filename only. The default
+		/// locations are %windir%\inf, followed by %windir%\system32.
+		/// </para>
+		/// <para>INFINFO_REVERSE_DEFAULT_SEARCH</para>
+		/// <para>Same as INFINFO_DEFAULT_SEARCH, except the default locations are searched in reverse order.</para>
+		/// <para>INFINFO_INF_PATH_LIST_SEARCH</para>
+		/// <para>Search for the INF in each of the directories listed in the DevicePath value entry under the following: <c>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion</c></para>
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// <para>If not <c>NULL</c>, points to a buffer in which this function returns the <see cref="SP_INF_INFORMATION"/> structure.</para>
+		/// <para>
+		/// You can call the function one time to get the required buffer size, allocate the necessary memory, and then call the function a
+		/// second time to retrieve the data. Using this technique, you can avoid errors due to an insufficient buffer size. For more
+		/// information, see the Remarks section of this topic.
+		/// </para>
+		/// </param>
+		/// <param name="ReturnBufferSize">Size of ReturnBuffer, in bytes.</param>
+		/// <param name="RequiredSize">
+		/// <para>
+		/// If not <c>NULL</c>, points to a variable in which this function returns the required size, in bytes, for the buffer pointed to
+		/// by ReturnBuffer.
+		/// </para>
+		/// <para>
+		/// If ReturnBuffer is specified and the size needed is larger than ReturnBufferSize, the function fails and a call to GetLastError
+		/// returns ERROR_INSUFFICIENT_BUFFER.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call GetLastError.</para>
+		/// <para>If the INF file cannot be located, the function returns <c>FALSE</c> and a subsequent call to GetLastError returns ERROR_FILE_NOT_FOUND.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of 0 (zero), the function puts the buffer
+		/// size needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds, the return value
+		/// is a nonzero value. Otherwise, the return value is 0 (zero), and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetInfInformation as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetinfinformationa WINSETUPAPI BOOL
+		// SetupGetInfInformationA( LPCVOID InfSpec, DWORD SearchControl, PSP_INF_INFORMATION ReturnBuffer, DWORD ReturnBufferSize, PDWORD
+		// RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfInformationA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetInfInformation([MarshalAs(UnmanagedType.LPTStr)] string InfSpec, INFINFO SearchControl, [Out, Optional] IntPtr ReturnBuffer,
+			uint ReturnBufferSize, out uint RequiredSize);
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeHDSKSPC"/> to <see cref="HDSKSPC"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDSKSPC(SafeHDSKSPC h) => h.handle;
+		/// <summary>
+		/// The <c>SetupGetInfPublishedName</c> function retrieves the fully qualified file name (directory path and file name) of an INF
+		/// file in the system INF file directory that corresponds to a specified INF file in the driver store or a specified INF file in
+		/// the system INF file directory.
+		/// </summary>
+		/// <param name="DriverStoreLocation">
+		/// A pointer to a NULL-terminated string that contains the fully qualified file name (directory path and file name) of an INF file
+		/// in the driver store. Alternatively, this parameter is a pointer to a NULL-terminated string that contains the name, and
+		/// optionally the full directory path, of an INF file in the system INF file directory. For more information about how to specify
+		/// the INF file, see the following <c>Remarks</c> section.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// A pointer to the buffer in which <c>SetupGetInfPublishedName</c> returns a NULL-terminated string that contains the fully
+		/// qualified file name of the specified INF file in the system INF directory. The maximum path size is MAX_PATH. This pointer can
+		/// be set to <c>NULL</c>. For information about how to determine the required size of the return buffer, see the following
+		/// <c>Remarks</c> section.
+		/// </param>
+		/// <param name="ReturnBufferSize">The size, in characters, of the buffer supplied by ReturnBuffer.</param>
+		/// <param name="RequiredSize">
+		/// A pointer to a DWORD-typed variable that receives the size, in characters, of the ReturnBuffer buffer. This parameter is
+		/// optional and can be set to <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If <c>SetupGetInfPublishedName</c> succeeds, the function returns <c>TRUE</c>; otherwise, the function returns <c>FALSE</c>. To
+		/// obtain extended error information, call GetLastError.
+		/// </para>
+		/// <para>
+		/// If the size, in characters, of the fully qualified file name of the requested INF file, including a null-terminator, is greater
+		/// than ReturnBufferSize, the function will fail, and a call to GetLastError will return ERROR_INSUFFICIENT_BUFFER.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To determine the size of the return buffer that is required to contain the fully qualified file name of the specified INF file
+		/// in the system INF directory, call <c>SetupGetInfPublishedName</c> and set ReturnBuffer to <c>NULL</c>, ReturnBufferSize to zero,
+		/// and supply RequiredSize. <c>SetupGetInfPublishedName</c> will return the required buffer size in RequiredSize.
+		/// </para>
+		/// <para>
+		/// When device installation preinstalls a driver package in the driver store, it creates two copies of the driver package INF file.
+		/// Device installation adds one copy to the system INF directory and assigns that copy of the INF file a unique published file name
+		/// of the form OEMnnn.inf. Device installation adds a second copy of the INF file to the driver store and assigns that copy the
+		/// original INF file name.
+		/// </para>
+		/// <para>
+		/// <c>SetupGetInfPublishedName</c> returns the fully qualified file name of the INF file in the system INF file directory that
+		/// matches the INF file, if any, that is supplied by DriverStoreLocation. DriverStoreLocation must specify the fully qualified file
+		/// name of an INF file in the driver store or must specify the file name, and optionally the directory path, of an INF file in the
+		/// system INF directory. For example, assume that the INF file for a driver package is myinf.inf, and that for this driver package,
+		/// device installation installs the INF file OEM1.inf in the system INF directory C:\Windows\inf. Further assume that device
+		/// installation installs the corresponding INF file copy C:\windows\system32\driverstore\filerepository\myinf_12345678\myinf.inf in
+		/// the driver store. In this case, the function returns C:\Windows\inf\OEM1.inf if DriverStoreLocation supplies one of the
+		/// following strings: C:\windows\system32\driverstore\filerepository\myinf_12345678\myinf.inf, OEM1.inf, or C:\Windows\inf\OEM1.inf.
+		/// </para>
+		/// <para>
+		/// Call the SetupGetInfDriverStoreLocation function to retrieve the fully qualified file name of an INF file in the driver store
+		/// that corresponds to a specified INF file in the system INF file directory or a specified file in the driver store.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetInfPublishedName as an alias which automatically selects the ANSI or Unicode version of
+		/// this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
+		/// that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetinfpublishednamea WINSETUPAPI BOOL
+		// SetupGetInfPublishedNameA( PCSTR DriverStoreLocation, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfPublishedNameA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetInfPublishedName([MarshalAs(UnmanagedType.LPTStr)] string DriverStoreLocation,
+			[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
 
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => SetupDestroyDiskSpaceList(handle);
-		}
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetIntField</c> function retrieves an integer value from the specified field of a line in an INF file.</para>
+		/// </summary>
+		/// <param name="Context">Pointer to the context for a line in an INF file.</param>
+		/// <param name="FieldIndex">
+		/// <para>The 1-based index of the field within the specified line from which the integer should be retrieved.</para>
+		/// <para>
+		/// A FieldIndex of 0 can be used to retrieve an integer key (For example, consider the following INF line, 431 = 1, 2, 4. The value
+		/// 431 would be put into the variable pointed at by IntegerValue if <c>SetupGetIntField</c> was called with a FieldIndex of 0).
+		/// </para>
+		/// </param>
+		/// <param name="IntegerValue">
+		/// Pointer to a variable that receives the integer. If the field is not an integer, the function fails and a call to GetLastError
+		/// returns ERROR_INVALID_DATA.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// The integer field may start with a positive (+) or negative (-) sign. It will be interpreted as a decimal number, unless
+		/// prefixed in the file with 0x or 0X, in which case it is hexadecimal.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetintfield WINSETUPAPI BOOL SetupGetIntField(
+		// PINFCONTEXT Context, DWORD FieldIndex, PINT IntegerValue );
+		[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetIntField")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetIntField(in INFCONTEXT Context, uint FieldIndex, out int IntegerValue);
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HINF"/> that is disposed using <see cref="SetupCloseInfFile"/>.</summary>
-		public class SafeHINF : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHINF"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHINF(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetLineByIndex</c> function locates a line by its index value in the specified section in the INF file.</para>
+		/// </summary>
+		/// <param name="InfHandle">Handle to the INF file.</param>
+		/// <param name="Section">Pointer to a null-terminated string specifying the section of the INF file to search.</param>
+		/// <param name="Index">
+		/// Index of the line to be located. The total number of lines in a particular section can be found with a call to SetupGetLineCount.
+		/// </param>
+		/// <param name="Context">Pointer to a variable that receives the context information for the found line.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is a nonzero value. If the function fails, the return value is zero. To get extended
+		/// error information, call GetLastError.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If InfHandle references multiple INF files that have been appended together using SetupOpenAppendInfFile, this function searches
+		/// across the specified section in all files referenced by the HINF to locate the indexed line.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetLineByIndex as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetlinebyindexa WINSETUPAPI BOOL
+		// SetupGetLineByIndexA( HINF InfHandle, PCSTR Section, DWORD Index, PINFCONTEXT Context );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetLineByIndexA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetLineByIndex(HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string Section, uint Index, out INFCONTEXT Context);
 
-			/// <summary>Initializes a new instance of the <see cref="SafeHINF"/> class.</summary>
-			private SafeHINF() : base() { }
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetLineCount</c> function returns the number of lines in a specified section of an INF file.</para>
+		/// </summary>
+		/// <param name="InfHandle">Handle to the INF file.</param>
+		/// <param name="Section">Pointer to a null-terminated string that specifies the section in which you want to count the lines.</param>
+		/// <returns>
+		/// <para>
+		/// If InfHandle references multiple INF files that have been appended using SetupOpenAppendInfFile, this function returns the sum
+		/// of the lines in all of the INF files containing the specified section. A return value of 0 specifies an empty section. If the
+		/// section does not exist, the function returns –1.
+		/// </para>
+		/// <para>To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetLineCount as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetlinecounta WINSETUPAPI LONG SetupGetLineCountA(
+		// HINF InfHandle, PCSTR Section );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetLineCountA")]
+		public static extern int SetupGetLineCount(HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string Section);
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeHINF"/> to <see cref="HINF"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HINF(SafeHINF h) => h.handle;
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupGetLineText</c> function returns the contents of a line in an INF file in a compact form. The line to retrieve can
+		/// be specified by an INFCONTEXT structure returned from a SetupFindLineXXX function, or by explicitly passing in the INF handle,
+		/// section, and key of the desired line.
+		/// </para>
+		/// </summary>
+		/// <param name="Context">
+		/// Context for a line in an INF file whose text is to be retrieved. This parameter can be <c>NULL</c>. If Context is <c>NULL</c>,
+		/// InfHandle, Section, and Key must all be specified.
+		/// </param>
+		/// <param name="InfHandle">
+		/// Handle to the INF file to query. This parameter can be <c>NULL</c>. This parameter is used only if Context is <c>NULL</c>. If
+		/// Context is <c>NULL</c>, InfHandle, Section, and Key must all be specified.
+		/// </param>
+		/// <param name="Section">
+		/// Pointer to a <c>null</c>-terminated string that specifies the section that contains the key name of the line whose text is to be
+		/// retrieved. This parameter can be <c>NULL</c>. This parameter is used only if Context is <c>NULL</c>. If Context is <c>NULL</c>,
+		/// InfHandle, Section, and Key must be specified.
+		/// </param>
+		/// <param name="Key">
+		/// Pointer to a <c>null</c>-terminated string that contains the key name whose associated string is to be retrieved. This parameter
+		/// can be <c>NULL</c>. This parameter is used only if Context is <c>NULL</c>. If Context is <c>NULL</c>, InfHandle, Section, and
+		/// Key must be specified.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// If not <c>NULL</c>, ReturnBuffer points to a buffer in which this function returns the contents of the line. The
+		/// <c>null</c>-terminated string must not exceed the size of the destination buffer. You can call the function once to get the
+		/// required buffer size, allocate the necessary memory, and then call the function a second time to retrieve the data. Using this
+		/// technique, you can avoid errors due to an insufficient buffer size. See the Remarks section. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by the ReturnBuffer parameter, in characters. This includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// If not <c>NULL</c>, points to a variable in which this function returns the required size for the buffer pointed to by the
+		/// ReturnBuffer parameter, in characters. This includes the <c>null</c> terminator. If ReturnBuffer is specified and the size
+		/// required is larger than the value specified in the ReturnBufferSize parameter, the function fails and does not store data in the buffer.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// required to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// This function returns the contents of a line in a compact format. All extraneous white space is removed and multi-line values
+		/// are converted into a single contiguous string. For example, this line:
+		/// </para>
+		/// <para>
+		/// <code>HKLM, , PointerClass0, 1 \ ; This is a comment 01, 02, 03</code>
+		/// </para>
+		/// <para>would be returned as:</para>
+		/// <para>
+		/// <code>HKLM,,PointerClass0,1,01,02,03</code>
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetLineText as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetlinetexta WINSETUPAPI BOOL SetupGetLineTextA(
+		// PINFCONTEXT Context, HINF InfHandle, PCSTR Section, PCSTR Key, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetLineTextA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetLineText(in INFCONTEXT Context, [In, Optional] HINF InfHandle, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string Section,
+			[In, Optional, MarshalAs(UnmanagedType.LPTStr)] string Key, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+			uint ReturnBufferSize, out uint RequiredSize);
 
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() { SetupCloseInfFile(handle); return true; }
-		}
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupGetLineText</c> function returns the contents of a line in an INF file in a compact form. The line to retrieve can
+		/// be specified by an INFCONTEXT structure returned from a SetupFindLineXXX function, or by explicitly passing in the INF handle,
+		/// section, and key of the desired line.
+		/// </para>
+		/// </summary>
+		/// <param name="Context">
+		/// Context for a line in an INF file whose text is to be retrieved. This parameter can be <c>NULL</c>. If Context is <c>NULL</c>,
+		/// InfHandle, Section, and Key must all be specified.
+		/// </param>
+		/// <param name="InfHandle">
+		/// Handle to the INF file to query. This parameter can be <c>NULL</c>. This parameter is used only if Context is <c>NULL</c>. If
+		/// Context is <c>NULL</c>, InfHandle, Section, and Key must all be specified.
+		/// </param>
+		/// <param name="Section">
+		/// Pointer to a <c>null</c>-terminated string that specifies the section that contains the key name of the line whose text is to be
+		/// retrieved. This parameter can be <c>NULL</c>. This parameter is used only if Context is <c>NULL</c>. If Context is <c>NULL</c>,
+		/// InfHandle, Section, and Key must be specified.
+		/// </param>
+		/// <param name="Key">
+		/// Pointer to a <c>null</c>-terminated string that contains the key name whose associated string is to be retrieved. This parameter
+		/// can be <c>NULL</c>. This parameter is used only if Context is <c>NULL</c>. If Context is <c>NULL</c>, InfHandle, Section, and
+		/// Key must be specified.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// If not <c>NULL</c>, ReturnBuffer points to a buffer in which this function returns the contents of the line. The
+		/// <c>null</c>-terminated string must not exceed the size of the destination buffer. You can call the function once to get the
+		/// required buffer size, allocate the necessary memory, and then call the function a second time to retrieve the data. Using this
+		/// technique, you can avoid errors due to an insufficient buffer size. See the Remarks section. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by the ReturnBuffer parameter, in characters. This includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// If not <c>NULL</c>, points to a variable in which this function returns the required size for the buffer pointed to by the
+		/// ReturnBuffer parameter, in characters. This includes the <c>null</c> terminator. If ReturnBuffer is specified and the size
+		/// required is larger than the value specified in the ReturnBufferSize parameter, the function fails and does not store data in the buffer.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// required to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// This function returns the contents of a line in a compact format. All extraneous white space is removed and multi-line values
+		/// are converted into a single contiguous string. For example, this line:
+		/// </para>
+		/// <para>
+		/// <code>HKLM, , PointerClass0, 1 \ ; This is a comment 01, 02, 03</code>
+		/// </para>
+		/// <para>would be returned as:</para>
+		/// <para>
+		/// <code>HKLM,,PointerClass0,1,01,02,03</code>
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetLineText as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetlinetexta WINSETUPAPI BOOL SetupGetLineTextA(
+		// PINFCONTEXT Context, HINF InfHandle, PCSTR Section, PCSTR Key, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetLineTextA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetLineText([In, Optional] IntPtr Context, [In] HINF InfHandle, [In, MarshalAs(UnmanagedType.LPTStr)] string Section,
+			[In, MarshalAs(UnmanagedType.LPTStr)] string Key, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+			uint ReturnBufferSize, out uint RequiredSize);
 
-		/*
-		SetupFreeSourceListA
-		SetupFreeSourceListW
-		SetupGetBinaryField
-		SetupGetFieldCount
-		SetupGetFileCompressionInfoExA
-		SetupGetFileCompressionInfoExW
-		SetupGetFileQueueCount
-		SetupGetFileQueueFlags
-		SetupGetInfDriverStoreLocationA
-		SetupGetInfDriverStoreLocationW
-		SetupGetInfFileListA
-		SetupGetInfFileListW
-		SetupGetInfInformationA
-		SetupGetInfInformationW
-		SetupGetInfPublishedNameA
-		SetupGetInfPublishedNameW
-		SetupGetIntField
-		SetupGetLineByIndexA
-		SetupGetLineByIndexW
-		SetupGetLineCountA
-		SetupGetLineCountW
-		SetupGetLineTextA
-		SetupGetLineTextW
-		SetupGetMultiSzFieldA
-		SetupGetMultiSzFieldW
-		SetupGetNonInteractiveMode
-		SetupGetSourceFileLocationA
-		SetupGetSourceFileLocationW
-		SetupGetSourceFileSizeA
-		SetupGetSourceFileSizeW
-		SetupGetSourceInfoA
-		SetupGetSourceInfoW
-		SetupGetStringFieldA
-		SetupGetStringFieldW
-		SetupGetTargetPathA
-		SetupGetTargetPathW
-		SetupGetThreadLogToken
-		SetupInitDefaultQueueCallback
-		SetupInitDefaultQueueCallbackEx
-		SetupInitializeFileLogA
-		SetupInitializeFileLogW
-		SetupInstallFileA
-		SetupInstallFileExA
-		SetupInstallFileExW
-		SetupInstallFilesFromInfSectionA
-		SetupInstallFilesFromInfSectionW
-		SetupInstallFileW
-		SetupInstallFromInfSectionA
-		SetupInstallFromInfSectionW
-		SetupInstallServicesFromInfSectionA
-		SetupInstallServicesFromInfSectionExA
-		SetupInstallServicesFromInfSectionExW
-		SetupInstallServicesFromInfSectionW
-		SetupIterateCabinetA
-		SetupIterateCabinetW
-		SetupLogErrorA
-		SetupLogErrorW
-		SetupLogFileA
-		SetupLogFileW
-		SetupOpenAppendInfFileA
-		SetupOpenAppendInfFileW
-		SetupOpenFileQueue
-		SetupOpenLog
-		SetupOpenMasterInf
-		SetupPromptForDiskA
-		SetupPromptForDiskW
-		SetupPromptReboot
-		SetupQueryDrivesInDiskSpaceListA
-		SetupQueryDrivesInDiskSpaceListW
-		SetupQueryFileLogA
-		SetupQueryFileLogW
-		SetupQueryInfFileInformationA
-		SetupQueryInfFileInformationW
-		SetupQueryInfOriginalFileInformationA
-		SetupQueryInfOriginalFileInformationW
-		SetupQueryInfVersionInformationA
-		SetupQueryInfVersionInformationW
-		SetupQuerySourceListA
-		SetupQuerySourceListW
-		SetupQuerySpaceRequiredOnDriveA
-		SetupQuerySpaceRequiredOnDriveW
-		SetupQueueCopyA
-		SetupQueueCopyIndirectA
-		SetupQueueCopyIndirectW
-		SetupQueueCopySectionA
-		SetupQueueCopySectionW
-		SetupQueueCopyW
-		SetupQueueDefaultCopyA
-		SetupQueueDefaultCopyW
-		SetupQueueDeleteA
-		SetupQueueDeleteSectionA
-		SetupQueueDeleteSectionW
-		SetupQueueDeleteW
-		SetupQueueRenameA
-		SetupQueueRenameSectionA
-		SetupQueueRenameSectionW
-		SetupQueueRenameW
-		SetupRemoveFileLogEntryA
-		SetupRemoveFileLogEntryW
-		SetupRemoveFromDiskSpaceListA
-		SetupRemoveFromDiskSpaceListW
-		SetupRemoveFromSourceListA
-		SetupRemoveFromSourceListW
-		SetupRemoveInstallSectionFromDiskSpaceListA
-		SetupRemoveInstallSectionFromDiskSpaceListW
-		SetupRemoveSectionFromDiskSpaceListA
-		SetupRemoveSectionFromDiskSpaceListW
-		SetupRenameErrorA
-		SetupRenameErrorW
-		SetupScanFileQueueA
-		SetupScanFileQueueW
-		SetupSetDirectoryIdA
-		SetupSetDirectoryIdExA
-		SetupSetDirectoryIdExW
-		SetupSetDirectoryIdW
-		SetupSetFileQueueAlternatePlatformA
-		SetupSetFileQueueAlternatePlatformW
-		SetupSetFileQueueFlags
-		SetupSetNonInteractiveMode
-		SetupSetPlatformPathOverrideA
-		SetupSetPlatformPathOverrideW
-		SetupSetSourceListA
-		SetupSetSourceListW
-		SetupSetThreadLogToken
-		SetupTermDefaultQueueCallback
-		SetupTerminateFileLog
-		SetupUninstallNewlyCopiedInfs
-		SetupUninstallOEMInfA
-		SetupUninstallOEMInfW
-		SetupVerifyInfFileA
-		SetupVerifyInfFileW
-		SetupWriteTextLog
-		SetupWriteTextLogError
-		SetupWriteTextLogInfLine
-		*/
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupGetMultiSzField</c> function retrieves multiple strings stored in a line of an INF file, from the specified field to
+		/// the end of the line.
+		/// </para>
+		/// </summary>
+		/// <param name="Context">Pointer to the context for a line in an INF file.</param>
+		/// <param name="FieldIndex">
+		/// The 1-based index of the starting field within the specified line from which the strings should be retrieved. The string list is
+		/// built from each field starting at this point to the end of the line. A FieldIndex of zero is not valid with this function.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// Optional pointer to a character buffer that receives the strings. Each string is <c>null</c>-terminated, with an extra
+		/// <c>null</c> at the end of the string list. The <c>null</c>-terminated string should not exceed the size of the destination
+		/// buffer. You can call the function once to get the required buffer size, allocate the necessary memory, and then call the
+		/// function a second time to retrieve the data. Using this technique, you can avoid errors due to an insufficient buffer size. See
+		/// the Remarks section. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by ReturnBuffer, in characters. This includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// Optional pointer to a variable that receives the size required for the buffer pointed to by ReturnBuffer, in characters. This
+		/// includes the <c>null</c> terminator. If the size needed is larger than the value specified by ReturnBufferSize, the function
+		/// fails and a call to GetLastError returns ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// <c>SetupGetMultiSzField</c> should not be used to iterate through string values on an INF line. Instead you should use
+		/// SetupGetStringField. <c>SetupGetMultiSzField</c> returns a value in the format of REG_MULTI_SZ. This is an array of
+		/// <c>null</c>-terminated strings terminated by an extra <c>null</c> character. This format does not allow zero-length strings. If
+		/// the list of strings contains any zero-length strings, <c>SetupGetMultiSzField</c> will return prematurely when it encounters the
+		/// first blank string value.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetMultiSzField as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetmultiszfielda WINSETUPAPI BOOL
+		// SetupGetMultiSzFieldA( PINFCONTEXT Context, DWORD FieldIndex, PSTR ReturnBuffer, DWORD ReturnBufferSize, LPDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetMultiSzFieldA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetMultiSzField(in INFCONTEXT Context, uint FieldIndex, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+			uint ReturnBufferSize, out uint RequiredSize);
+
+		/// <summary>
+		/// The <c>SetupGetNonInteractiveMode</c> function returns the value of a SetupAPI non-interactive flag that indicates whether the
+		/// caller's process can interact with a user through user interface components, such as dialog boxes.
+		/// </summary>
+		/// <returns>
+		/// <c>SetupGetNonInteractiveMode</c> returns <c>TRUE</c> if the caller's process cannot display interactive user interface
+		/// elements, such as dialog boxes. Otherwise, the function returns <c>FALSE</c>, which indicates that the process can display
+		/// interactive user interface elements.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Installation applications and co-installers can use this function to determine whether the current process can display
+		/// interactive user interface elements such as dialog boxes. SetupAPI runs a class installer or a co-installer either in an
+		/// interactive or in a non-interactive process, depending on which DIF code SetupAPI is processing.
+		/// </para>
+		/// <para>
+		/// An installation application can call SetupSetNonInteractiveMode to set the SetupAPI non-interactive flag that controls whether
+		/// SetupAPI can display interactive user interface elements in the caller's context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetnoninteractivemode WINSETUPAPI BOOL SetupGetNonInteractiveMode();
+		[DllImport(Lib_SetupAPI, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetNonInteractiveMode")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetNonInteractiveMode();
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetSourceFileLocation</c> function retrieves the location of a source file listed in an INF file.</para>
+		/// </summary>
+		/// <param name="InfHandle">
+		/// Handle to the INF file that contains the <c>SourceDisksNames</c> and <c>SourceDisksFiles</c> sections. If platform-specific
+		/// sections exist for the user's system (for example, <c>SourceDisksNames.x86</c> and <c>SourceDisksFiles.x86</c>), the
+		/// platform-specific section will be used.
+		/// </param>
+		/// <param name="InfContext">
+		/// Optional pointer to the context of a line in a <c>Copy Files</c> section for which the full source path is to be retrieved. If
+		/// this parameter is <c>NULL</c>, FileName is searched for in the <c>SourceDisksFiles</c> section of the INF file specified by InfHandle.
+		/// </param>
+		/// <param name="FileName">
+		/// Optional pointer to a <c>null</c>-terminated string containing the filename (no path) for which to return the full source
+		/// location. This parameter can be <c>NULL</c>, but either FileName or InfContext must be specified.
+		/// </param>
+		/// <param name="SourceId">
+		/// Pointer to a variable that receives the source identifier of the media where the file is located from the
+		/// <c>SourceDisksNames</c> section of the INF file.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// Optional pointer to a buffer to receive the relative source path. The source path does not include the filename itself, nor does
+		/// it include a drive letter/network share name. The path does not start or end with a backslash (), so the empty string specifies
+		/// the root directory. You should use a <c>null</c>-terminated string buffer. The <c>null</c>-terminated string should not exceed
+		/// the size of the destination buffer. You can call the function once to get the required buffer size, allocate the necessary
+		/// memory, and then call the function a second time to retrieve the data. Using this technique, you can avoid errors due to an
+		/// insufficient buffer size. See the Remarks section. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by ReturnBuffer, in characters. This number includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// Optional pointer to a variable that receives the required size for the buffer pointed to by the ReturnBuffer parameter, in
+		/// characters. This number includes the <c>null</c> terminator. If the required size is larger than the value specified by
+		/// ReturnBufferSize, the function fails and GetLastError returns ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetSourceFileLocation as an alias which automatically selects the ANSI or Unicode version of
+		/// this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
+		/// that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetsourcefilelocationa WINSETUPAPI BOOL
+		// SetupGetSourceFileLocationA( HINF InfHandle, PINFCONTEXT InfContext, PCSTR FileName, PUINT SourceId, PSTR ReturnBuffer, DWORD
+		// ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceFileLocationA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetSourceFileLocation(HINF InfHandle, in INFCONTEXT InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string FileName,
+			out uint SourceId, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetSourceFileLocation</c> function retrieves the location of a source file listed in an INF file.</para>
+		/// </summary>
+		/// <param name="InfHandle">
+		/// Handle to the INF file that contains the <c>SourceDisksNames</c> and <c>SourceDisksFiles</c> sections. If platform-specific
+		/// sections exist for the user's system (for example, <c>SourceDisksNames.x86</c> and <c>SourceDisksFiles.x86</c>), the
+		/// platform-specific section will be used.
+		/// </param>
+		/// <param name="InfContext">
+		/// Optional pointer to the context of a line in a <c>Copy Files</c> section for which the full source path is to be retrieved. If
+		/// this parameter is <c>NULL</c>, FileName is searched for in the <c>SourceDisksFiles</c> section of the INF file specified by InfHandle.
+		/// </param>
+		/// <param name="FileName">
+		/// Optional pointer to a <c>null</c>-terminated string containing the filename (no path) for which to return the full source
+		/// location. This parameter can be <c>NULL</c>, but either FileName or InfContext must be specified.
+		/// </param>
+		/// <param name="SourceId">
+		/// Pointer to a variable that receives the source identifier of the media where the file is located from the
+		/// <c>SourceDisksNames</c> section of the INF file.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// Optional pointer to a buffer to receive the relative source path. The source path does not include the filename itself, nor does
+		/// it include a drive letter/network share name. The path does not start or end with a backslash (), so the empty string specifies
+		/// the root directory. You should use a <c>null</c>-terminated string buffer. The <c>null</c>-terminated string should not exceed
+		/// the size of the destination buffer. You can call the function once to get the required buffer size, allocate the necessary
+		/// memory, and then call the function a second time to retrieve the data. Using this technique, you can avoid errors due to an
+		/// insufficient buffer size. See the Remarks section. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by ReturnBuffer, in characters. This number includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// Optional pointer to a variable that receives the required size for the buffer pointed to by the ReturnBuffer parameter, in
+		/// characters. This number includes the <c>null</c> terminator. If the required size is larger than the value specified by
+		/// ReturnBufferSize, the function fails and GetLastError returns ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetSourceFileLocation as an alias which automatically selects the ANSI or Unicode version of
+		/// this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
+		/// that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetsourcefilelocationa WINSETUPAPI BOOL
+		// SetupGetSourceFileLocationA( HINF InfHandle, PINFCONTEXT InfContext, PCSTR FileName, PUINT SourceId, PSTR ReturnBuffer, DWORD
+		// ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceFileLocationA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetSourceFileLocation(HINF InfHandle, [In, Optional] IntPtr InfContext, [MarshalAs(UnmanagedType.LPTStr)] string FileName,
+			out uint SourceId, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetSourceFileSize</c> function reads the uncompressed size of a source file listed in an INF file.</para>
+		/// </summary>
+		/// <param name="InfHandle">
+		/// Handle to the loaded INF file that contains the <c>SourceDisksNames</c> and <c>SourceDisksFiles</c> sections. If
+		/// platform-specific sections exist for the user's system (for example, <c>SourceDisksNames.x86</c> and
+		/// <c>SourceDisksFiles.x86</c>), the platform-specific section will be used.
+		/// </param>
+		/// <param name="InfContext">
+		/// Optional pointer to a context for a line in a <c>Copy Files</c> section for which the size is to be retrieved. If InfContext is
+		/// <c>NULL</c>, the FileName parameter is used.
+		/// </param>
+		/// <param name="FileName">
+		/// Optional pointer to a <c>null</c>-terminated string containing the filename (no path) for which to return the size. If this
+		/// parameter is <c>NULL</c> as well as InfContext, then the Section parameter is used.
+		/// </param>
+		/// <param name="Section">
+		/// Optional pointer to a <c>null</c>-terminated string containing the name of a <c>Copy Files</c> section. If this parameter is
+		/// specified, the total size of all files listed in the section is computed.
+		/// </param>
+		/// <param name="FileSize">Pointer to a variable that receives the size, in bytes, of the specified file(s).</param>
+		/// <param name="RoundingFactor">
+		/// Optional value for rounding file sizes. All file sizes are rounded up to a multiple of this number before being added to the
+		/// total size. Rounding is useful for more exact determinations of the space that a file will occupy on a given volume, because it
+		/// allows the caller to have file sizes rounded up to a multiple of the cluster size. Rounding does not occur unless RoundingFactor
+		/// is specified.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>One and only one of the optional parameters, InfContext, FileName, and Section, must be specified.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetSourceFileSize as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetsourcefilesizea WINSETUPAPI BOOL
+		// SetupGetSourceFileSizeA( HINF InfHandle, PINFCONTEXT InfContext, PCSTR FileName, PCSTR Section, PDWORD FileSize, UINT
+		// RoundingFactor );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceFileSizeA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetSourceFileSize(HINF InfHandle, in INFCONTEXT InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string FileName,
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] string Section, out uint FileSize, uint RoundingFactor = 0);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetSourceFileSize</c> function reads the uncompressed size of a source file listed in an INF file.</para>
+		/// </summary>
+		/// <param name="InfHandle">
+		/// Handle to the loaded INF file that contains the <c>SourceDisksNames</c> and <c>SourceDisksFiles</c> sections. If
+		/// platform-specific sections exist for the user's system (for example, <c>SourceDisksNames.x86</c> and
+		/// <c>SourceDisksFiles.x86</c>), the platform-specific section will be used.
+		/// </param>
+		/// <param name="InfContext">
+		/// Optional pointer to a context for a line in a <c>Copy Files</c> section for which the size is to be retrieved. If InfContext is
+		/// <c>NULL</c>, the FileName parameter is used.
+		/// </param>
+		/// <param name="FileName">
+		/// Optional pointer to a <c>null</c>-terminated string containing the filename (no path) for which to return the size. If this
+		/// parameter is <c>NULL</c> as well as InfContext, then the Section parameter is used.
+		/// </param>
+		/// <param name="Section">
+		/// Optional pointer to a <c>null</c>-terminated string containing the name of a <c>Copy Files</c> section. If this parameter is
+		/// specified, the total size of all files listed in the section is computed.
+		/// </param>
+		/// <param name="FileSize">Pointer to a variable that receives the size, in bytes, of the specified file(s).</param>
+		/// <param name="RoundingFactor">
+		/// Optional value for rounding file sizes. All file sizes are rounded up to a multiple of this number before being added to the
+		/// total size. Rounding is useful for more exact determinations of the space that a file will occupy on a given volume, because it
+		/// allows the caller to have file sizes rounded up to a multiple of the cluster size. Rounding does not occur unless RoundingFactor
+		/// is specified.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>One and only one of the optional parameters, InfContext, FileName, and Section, must be specified.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetSourceFileSize as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetsourcefilesizea WINSETUPAPI BOOL
+		// SetupGetSourceFileSizeA( HINF InfHandle, PINFCONTEXT InfContext, PCSTR FileName, PCSTR Section, PDWORD FileSize, UINT
+		// RoundingFactor );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceFileSizeA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetSourceFileSize(HINF InfHandle, [In, Optional] IntPtr InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string FileName,
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] string Section, out uint FileSize, uint RoundingFactor = 0);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupGetSourceInfo</c> function retrieves the path, tag file, or media description for a source listed in an INF file.
+		/// </para>
+		/// </summary>
+		/// <param name="InfHandle">
+		/// Handle to an open INF file that contains a <c>SourceDisksNames</c> section. If platform-specific sections exist for the user's
+		/// system (for example, <c>SourceDisksNames.x86</c>), the platform-specific section will be used.
+		/// </param>
+		/// <param name="SourceId">Identifier for a source media. This value is used to search by key in the <c>SourceDisksNames</c> section.</param>
+		/// <param name="InfoDesired">
+		/// <para>
+		/// Indicates what information is desired. Only one value may be specified per function call, and they cannot be combined. The
+		/// following types of information can be retrieved from a <c>SourceDisksNames</c> section.
+		/// </para>
+		/// <para>SRCINFO_PATH</para>
+		/// <para>The path specified for the source. This is not a full path, but the path relative to the installation root.</para>
+		/// <para>SRCINFO_TAGFILE</para>
+		/// <para>The tag file that identifies the source media, or if cabinets are used, the name of the cabinet file.</para>
+		/// <para>SRCINFO_DESCRIPTION</para>
+		/// <para>A description for the media.</para>
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// Optional pointer to a buffer to receive the retrieved information. Path returns are guaranteed not to end with . You should use
+		/// a <c>null</c>-terminated string. The <c>null</c>-terminated string should not exceed the size of the destination buffer. You can
+		/// call the function once to get the required buffer size, allocate the necessary memory, and then call the function a second time
+		/// to retrieve the data. See the Remarks section. Using this technique, you can avoid errors due to an insufficient buffer size.
+		/// This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by ReturnBuffer, in characters. This includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// Optional pointer to a variable that receives the required size for the buffer specified by ReturnBuffer, in characters. This
+		/// includes the <c>null</c> terminator. If ReturnBuffer is specified and the actual size needed is larger than the value specified
+		/// by ReturnBufferSize, the function fails and a call to GetLastError returns ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetSourceInfo as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetsourceinfoa WINSETUPAPI BOOL SetupGetSourceInfoA(
+		// HINF InfHandle, UINT SourceId, UINT InfoDesired, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceInfoA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetSourceInfo(HINF InfHandle, uint SourceId, SRCINFO InfoDesired,
+			[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>The <c>SetupGetStringField</c> function retrieves a string from the specified field of a line in an INF file.</para>
+		/// </summary>
+		/// <param name="Context">Pointer to the context for a line in an INF file.</param>
+		/// <param name="FieldIndex">
+		/// The 1-based index of the field within the specified line from which the string should be retrieved. Use a FieldIndex of 0 to
+		/// retrieve a string key, if present.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// Optional pointer to a buffer that receives the <c>null</c>-terminated string. You should ensure the destination buffer is the
+		/// same size or larger than the source buffer. This parameter can be <c>NULL</c>. See the Remarks section.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by ReturnBuffer, in characters. This includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// Optional pointer to a variable that receives the required size for the buffer pointed to by the ReturnBuffer parameter, in
+		/// characters. If ReturnBuffer is specified and the actual size needed is larger than the value specified by ReturnBufferSize, the
+		/// function fails and does not store the string in the buffer. In this case, a call to GetLastError returns
+		/// ERROR_INSUFFICIENT_BUFFER. For the Unicode version of this function, the required size is in characters. This includes the
+		/// <c>null</c> terminator.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// You can call the function once to get the required buffer size, allocate the necessary memory, and then call the function a
+		/// second time to retrieve the data. Using this technique, you can avoid errors due to an insufficient buffer size.
+		/// </para>
+		/// <para>
+		/// Note that the maximum length of any single string specified in an INF Strings section is 512 characters, including the
+		/// terminating <c>NULL</c>. If the string length is greater than 512 it will be truncated and no error will be returned. The
+		/// maximum length of any concatenated string created from one or more %strkey% tokens is 4096 characters.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetStringField as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetstringfielda WINSETUPAPI BOOL
+		// SetupGetStringFieldA( PINFCONTEXT Context, DWORD FieldIndex, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetStringFieldA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetStringField(in INFCONTEXT Context, uint FieldIndex, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer,
+			uint ReturnBufferSize, out uint RequiredSize);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupGetTargetPath</c> function determines the target directory for a file list section. The file list section can be a
+		/// <c>Copy Files</c> section, a <c>Delete Files</c> section, or a <c>Rename Files</c> section. All the files in the section must be
+		/// in a single directory that is listed in a <c>DestinationDirs</c> section of the INF file.
+		/// </para>
+		/// </summary>
+		/// <param name="InfHandle">Handle to the load INF file that contains a <c>DestinationDirs</c> section.</param>
+		/// <param name="InfContext">
+		/// Optional pointer to an INF context that specifies a line in a file list section whose destination directory is to be retrieved.
+		/// If InfContext is <c>NULL</c>, then the Section parameter is used.
+		/// </param>
+		/// <param name="Section">
+		/// Optional parameter that specifies the name of a section of the INF file whose handle is InfHandle. <c>SetupGetTargetPath</c>
+		/// retrieves the target directory for this section. The Section parameter is ignored if InfContext is specified. If neither
+		/// InfContext nor Section is specified, the function retrieves the default target path from the INF file. You should use a
+		/// <c>null</c>-terminated string.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// Optional pointer to buffer to receive the fully qualified target path. The path is guaranteed not to end with . You should use a
+		/// <c>null</c>-terminated string. You can call the function once to get the required buffer size, allocate the necessary memory,
+		/// and then call the function a second time to retrieve the data. Using this technique, you can avoid errors due to an insufficient
+		/// buffer size. See the Remarks section. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by ReturnBuffer, in characters. This includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// Optional pointer to a variable that receives the required size for the buffer pointed to by ReturnBuffer, in characters. This
+		/// includes the <c>null</c> terminator. If the actual size needed is larger than the value specified by ReturnBufferSize, the
+		/// function fails and a call to GetLastError returns ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetTargetPath as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgettargetpatha WINSETUPAPI BOOL SetupGetTargetPathA(
+		// HINF InfHandle, PINFCONTEXT InfContext, PCSTR Section, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetTargetPathA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetTargetPath(HINF InfHandle, in INFCONTEXT InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string Section,
+			[MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupGetTargetPath</c> function determines the target directory for a file list section. The file list section can be a
+		/// <c>Copy Files</c> section, a <c>Delete Files</c> section, or a <c>Rename Files</c> section. All the files in the section must be
+		/// in a single directory that is listed in a <c>DestinationDirs</c> section of the INF file.
+		/// </para>
+		/// </summary>
+		/// <param name="InfHandle">Handle to the load INF file that contains a <c>DestinationDirs</c> section.</param>
+		/// <param name="InfContext">
+		/// Optional pointer to an INF context that specifies a line in a file list section whose destination directory is to be retrieved.
+		/// If InfContext is <c>NULL</c>, then the Section parameter is used.
+		/// </param>
+		/// <param name="Section">
+		/// Optional parameter that specifies the name of a section of the INF file whose handle is InfHandle. <c>SetupGetTargetPath</c>
+		/// retrieves the target directory for this section. The Section parameter is ignored if InfContext is specified. If neither
+		/// InfContext nor Section is specified, the function retrieves the default target path from the INF file. You should use a
+		/// <c>null</c>-terminated string.
+		/// </param>
+		/// <param name="ReturnBuffer">
+		/// Optional pointer to buffer to receive the fully qualified target path. The path is guaranteed not to end with . You should use a
+		/// <c>null</c>-terminated string. You can call the function once to get the required buffer size, allocate the necessary memory,
+		/// and then call the function a second time to retrieve the data. Using this technique, you can avoid errors due to an insufficient
+		/// buffer size. See the Remarks section. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="ReturnBufferSize">
+		/// Size of the buffer pointed to by ReturnBuffer, in characters. This includes the <c>null</c> terminator.
+		/// </param>
+		/// <param name="RequiredSize">
+		/// Optional pointer to a variable that receives the required size for the buffer pointed to by ReturnBuffer, in characters. This
+		/// includes the <c>null</c> terminator. If the actual size needed is larger than the value specified by ReturnBufferSize, the
+		/// function fails and a call to GetLastError returns ERROR_INSUFFICIENT_BUFFER.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If this function is called with a ReturnBuffer of <c>NULL</c> and a ReturnBufferSize of zero, the function puts the buffer size
+		/// needed to hold the specified data into the variable pointed to by RequiredSize. If the function succeeds in this, the return
+		/// value is a nonzero value. Otherwise, the return value is zero and extended error information can be obtained by calling GetLastError.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupGetTargetPath as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgettargetpatha WINSETUPAPI BOOL SetupGetTargetPathA(
+		// HINF InfHandle, PINFCONTEXT InfContext, PCSTR Section, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetTargetPathA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupGetTargetPath(HINF InfHandle, [In, Optional] IntPtr InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string Section,
+			[MarshalAs(UnmanagedType.LPTStr)] StringBuilder ReturnBuffer, uint ReturnBufferSize, out uint RequiredSize);
+
+		/// <summary>The <c>SetupGetThreadLogToken</c> function retrieves the log token for the thread from which this function was called.</summary>
+		/// <returns>
+		/// <c>SetupGetThreadLogToken</c> returns the log token for the thread from which the function was called. If a log token is not set
+		/// for the thread, <c>SetupGetThreadLogToken</c> returns the system-defined log token LOGTOKEN_UNSPECIFIED.
+		/// </returns>
+		/// <remarks>
+		/// <para>To set a log token for a thread, call SetupSetThreadLogToken.</para>
+		/// <para>For more information about log tokens, see Log Tokens.</para>
+		/// <para>For more information about using log tokens, see Setting and Getting a Log Token for a Thread.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetthreadlogtoken WINSETUPAPI SP_LOG_TOKEN SetupGetThreadLogToken();
+		[DllImport(Lib_SetupAPI, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetThreadLogToken")]
+		public static extern ulong SetupGetThreadLogToken();
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupInitDefaultQueueCallback</c> function initializes the context used by the default queue callback routine included
+		/// with the Setup API.
+		/// </para>
+		/// </summary>
+		/// <param name="OwnerWindow">Handle to the window to use as the parent of any dialog boxes generated by the default callback routine.</param>
+		/// <returns>
+		/// <para>Pointer to the context used by the default queue callback routine.</para>
+		/// <para>If the call to <c>SetupInitDefaultQueueCallback</c> fails, the function returns a PVOID value of null.</para>
+		/// <para>To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// Regardless of whether you initialized the context used by the default queue callback routine with
+		/// <c>SetupInitDefaultQueueCallback</c> or SetupInitDefaultQueueCallbackEx, after the queued operations have finished processing,
+		/// call SetupTermDefaultQueueCallback to release the resources allocated in initializing the context structure. For more
+		/// information, see Initializing and Terminating the Callback Context.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupinitdefaultqueuecallback WINSETUPAPI PVOID
+		// SetupInitDefaultQueueCallback( HWND OwnerWindow );
+		[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInitDefaultQueueCallback")]
+		public static extern IntPtr SetupInitDefaultQueueCallback([In, Optional] HWND OwnerWindow);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupInitDefaultQueueCallbackEx</c> function initializes the context used by the default queue callback routine included
+		/// with the Setup API in the same manner as SetupInitDefaultQueueCallback, except that an additional window is provided to the
+		/// callback function to accept progress messages.
+		/// </para>
+		/// </summary>
+		/// <param name="OwnerWindow">Handle to the window to use as the parent of any dialog boxes generated by the default callback routine.</param>
+		/// <param name="AlternateProgressWindow">
+		/// Handle to a window that receives the progress messages. To prevent progress messages from being displayed, you can specify this
+		/// parameter to be INVALID_HANDLE_VALUE.
+		/// </param>
+		/// <param name="ProgressMessage">
+		/// Message that is sent to AlternateProgressWindow when the copy queue is started, and each time a file is copied.
+		/// </param>
+		/// <param name="Reserved1">First message parameter that is sent to the AlternateProgressWindow by the default callback routine.</param>
+		/// <param name="Reserved2">Second message parameter that is sent to the AlternateProgressWindow by the default callback routine.</param>
+		/// <returns>
+		/// <c>SetupInitDefaultQueueCallbackEx</c> returns a pointer to the context used by the default queue callback routine. This
+		/// function can only fail if there is insufficient memory. If this function fails, it returns <c>NULL</c> and does not set the
+		/// last-error code for the thread.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When the queue starts to commit the copy subqueue, the default queue callback routine sends a message to the window specified in
+		/// AlternateProgressWindow. Reserved1 has the value 0, and Reserved2 contains a pointer to the number of enqueued file copy operations.
+		/// </para>
+		/// <para>
+		/// For each file copy operation completed, the default queue callback routine sends a message to AlternateProgressWindow, which can
+		/// be used to 'tick' the progress bar. Reserved1 has the value 1, and Reserved2 is zero.
+		/// </para>
+		/// <para>
+		/// <c>SetupInitDefaultQueueCallbackEx</c> can be used to get the default behavior for disk prompting, error handling, and so on,
+		/// and also provide a gauge embedded in a wizard page or other specialized dialog box.
+		/// </para>
+		/// <para>
+		/// Regardless of whether you initialized the context used by the default queue callback routine with SetupInitDefaultQueueCallback
+		/// or <c>SetupInitDefaultQueueCallbackEx</c>, after the queued operations have finished processing, call
+		/// SetupTermDefaultQueueCallback to release the resources allocated in initializing the context structure. For more information see
+		/// Initializing and Terminating the Callback Context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupinitdefaultqueuecallbackex WINSETUPAPI PVOID
+		// SetupInitDefaultQueueCallbackEx( HWND OwnerWindow, HWND AlternateProgressWindow, UINT ProgressMessage, DWORD Reserved1, PVOID
+		// Reserved2 );
+		[DllImport(Lib_SetupAPI, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInitDefaultQueueCallbackEx")]
+		public static extern IntPtr SetupInitDefaultQueueCallbackEx([In, Optional] HWND OwnerWindow, [In, Optional] HWND AlternateProgressWindow, uint ProgressMessage,
+			[In, Optional] uint Reserved1, [In, Optional] IntPtr Reserved2);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupInitializeFileLog</c> function initializes a file to record installation operations and outcomes. This can be the
+		/// system log, where the system tracks the files installed as part of Windows, or any other file.
+		/// </para>
+		/// </summary>
+		/// <param name="LogFileName">
+		/// Optional pointer to the file name of the file to use as the log file. You should use a <c>null</c>-terminated string. The
+		/// LogFileName parameter must be specified if Flags does not include SPFILELOG_SYSTEMLOG. The LogFileName parameter must not be
+		/// specified if Flags includes SPFILELOG_SYSTEMLOG. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="Flags">
+		/// <para>Controls the log file initialization. This parameter can be a combination of the following values.</para>
+		/// <para>SPFILELOG_SYSTEMLOG</para>
+		/// <para>
+		/// Use the system file log. The user must be an Administrator to specify this option unless SPFILELOG_QUERYONLY is specified and
+		/// LogFileName is not specified. Do not specify SPFILELOG_SYSTEMLOG in combination with SPFILELOG_FORCENEW.
+		/// </para>
+		/// <para>SPFILELOG_FORCENEW</para>
+		/// <para>
+		/// If the log file exists, overwrite it. If the log file exists and this flag is not specified, any new files that are installed
+		/// are added to the list in the existing log file. Do not specify in combination with SPFILELOG_SYSTEMLOG.
+		/// </para>
+		/// <para>SPFILELOG_QUERYONLY</para>
+		/// <para>Open the log file for querying only.</para>
+		/// </param>
+		/// <returns>
+		/// The function returns the handle to the log file if it is successful. Otherwise, the return value is INVALID_HANDLE_VALUE and the
+		/// logged error can be retrieved by a call to GetLastError.
+		/// </returns>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupInitializeFileLog as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupinitializefileloga WINSETUPAPI HSPFILELOG
+		// SetupInitializeFileLogA( PCSTR LogFileName, DWORD Flags );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInitializeFileLogA")]
+		public static extern SafeHSPFILELOG SetupInitializeFileLog([Optional, MarshalAs(UnmanagedType.LPTStr)] string LogFileName, SPFILELOG Flags);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupInstallFile</c> function installs a file as specified either by an INFCONTEXT returned by SetupFindXXXLine or
+		/// explicitly by the file name and path.
+		/// </para>
+		/// <para>If a file is copied, the caller of this function must have write privileges into the target directory.</para>
+		/// </summary>
+		/// <param name="InfHandle">
+		/// Optional pointer to the handle to an INF file that contains SourceDisksNames and SourceDisksFiles sections. If platform-specific
+		/// sections exist for the user's system (for example, SourceDisksNames.x86 and SourceDisksFiles.x86), the platform-specific section
+		/// will be used. If InfContext is null and CopyStyle includes SP_COPY_SOURCE_ABSOLUTE or SP_COPY_SOURCEPATH_ABSOLUTE, InfHandle is ignored.
+		/// </param>
+		/// <param name="InfContext">
+		/// Optional pointer to the context of a line in a Copy Files section in an INF file. The routine looks up this file in the
+		/// SourceDisksFiles section of InfHandle to get file copy information. If InfHandle is not specified, SourceFile must be.
+		/// </param>
+		/// <param name="SourceFile">
+		/// Optional pointer to the file name (no path) of the file to copy. The file is looked up in the SourceDisksFiles section. The
+		/// SourceFile parameter must be specified if InfContext is not. SourceFile is ignored if InfContext is specified.
+		/// </param>
+		/// <param name="SourcePathRoot">
+		/// Optional pointer to the root path for the file to be copied (for example, A:\ or F:). Paths in the SourceDisksNames section are
+		/// appended to this path. The SourcePathRoot parameter is ignored if CopyStyle includes the SP_COPY_SOURCE_ABSOLUTE flag.
+		/// </param>
+		/// <param name="DestinationName">
+		/// Optional pointer to the file name only (no path) of the target file. This parameter can be null to indicate that the target file
+		/// should have the same name as the source file. If InfContext is not specified, DestinationName supplies the full path and file
+		/// name for the target.
+		/// </param>
+		/// <param name="CopyStyle">
+		/// <para>Flags that control the behavior of the file copy operation. These flags may be a combination of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SP_COPY_DELETESOURCE</term>
+		/// <term>Deletes the source file upon successful copy. The caller is not notified if the delete operation fails.</term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_REPLACEONLY</term>
+		/// <term>
+		/// Copies the file only if doing so would overwrite a file at the destination path. If the target does not exist, the function
+		/// returns FALSE and GetLastError returns NO_ERROR.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_NEWER_OR_SAME</term>
+		/// <term>
+		/// Examines each file being copied to see if its version resources indicate that it is either the same version or not newer than an
+		/// existing copy on the target. The file version information used during version checks is that specified in the dwFileVersionMS
+		/// and dwFileVersionLS members of a VS_FIXEDFILEINFO structure, as filled in by the version functions. If one of the files does not
+		/// have version resources, or if they have identical version information, the source file is considered newer. If the source file
+		/// is not newer or equal in version, and CopyMsgHandler is specified, the caller is notified and may cancel the copy operation. If
+		/// CopyMsgHandler is not specified, the file is not copied.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_NEWER_ONLY</term>
+		/// <term>
+		/// Examine each file being copied to see if its version resources indicate that it is not newer than an existing copy on the
+		/// target. If the source file is newer but not equal in version to the existing target, the file is copied.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_NOOVERWRITE</term>
+		/// <term>
+		/// Check whether the target file exists, and, if so, notify the caller who may veto the copy. If CopyMsgHandler is not specified,
+		/// the file is not overwritten.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_NODECOMP</term>
+		/// <term>
+		/// Do not decompress the file. When this flag is set, the target file is not given the uncompressed form of the source name (if
+		/// appropriate). For example, copying F:\x86\cmd.ex_ to \\install\temp results in a target file of \\install\temp\cmd.ex_. If the
+		/// SP_COPY_NODECOMP flag was not specified, the file would be decompressed and the target would be called \\install\temp\cmd.exe.
+		/// The file name part of DestinationName, if specified, is stripped and replaced with the file name of the source file. When
+		/// SP_COPY_NODECOMP is specified, no language or version information can be checked.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_LANGUAGEAWARE</term>
+		/// <term>
+		/// Examine each file being copied to see if its language differs from the language of any existing file already on the target. If
+		/// so, and CopyMsgHandler is specified, the caller is notified and may cancel the copy. If CopyMsgHandler is not specified, the
+		/// file is not copied.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_SOURCE_ABSOLUTE</term>
+		/// <term>SourceFile is a full source path. Do not look it up in the SourceDisksNames section of the INF file.</term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_SOURCEPATH_ABSOLUTE</term>
+		/// <term>
+		/// SourcePathRoot is the full path part of the source file. Ignore the relative source specified in the SourceDisksNames section of
+		/// the INF file for the source media where the file is located. This flag is ignored if SP_COPY_SOURCE_ABSOLUTE is specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_FORCE_IN_USE</term>
+		/// <term>If the target exists, behaves as if it is in use and queues the file for copying on the next system restart.</term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_FORCE_NOOVERWRITE</term>
+		/// <term>Checks whether the target file exists, and, if so, the file is not overwritten. The caller is not notified.</term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_FORCE_NEWER</term>
+		/// <term>
+		/// Examines each file being copied to see if its version resources (or time stamps for non-image files) indicate that it is not
+		/// newer than an existing copy on the target. If the file being copied is not newer, the file is not copied. The caller is not
+		/// notified. The function returns FALSE, and GetLastError returns NO_ERROR.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="CopyMsgHandler">
+		/// Optional pointer to a callback function to be notified of various conditions that may arise during the file copy operation.
+		/// </param>
+		/// <param name="Context">Optional pointer to a caller-defined value that is passed as the first parameter of the callback function.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// If GetLastError returns NO_ERROR, the file copy operation was not completed. The file may not have been copied because the file
+		/// copy operation was unnecessary or because the file callback function returned <c>FALSE</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If a UNC directory is specified as the target directory of a file installation, you must ensure it exists before you call
+		/// <c>SetupInstallFile</c>. The setup functions do not check for the existence of nor create UNC directories. If the target UNC
+		/// directory does not exist, the file installation will fail.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupInstallFile as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupinstallfilea WINSETUPAPI BOOL SetupInstallFileA(
+		// HINF InfHandle, PINFCONTEXT InfContext, PCSTR SourceFile, PCSTR SourcePathRoot, PCSTR DestinationName, DWORD CopyStyle,
+		// PSP_FILE_CALLBACK_A CopyMsgHandler, PVOID Context );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInstallFileA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupInstallFile([In, Optional] HINF InfHandle, in INFCONTEXT InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string SourceFile,
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] string SourcePathRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string DestinationName,
+			SP_COPY CopyStyle, [Optional] PSP_FILE_CALLBACK CopyMsgHandler, [In, Optional] IntPtr Context);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available for use in the operating systems indicated in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. SetupAPI should no longer be used for installing applications. Instead, use the Windows
+		/// Installer for developing application installers. SetupAPI continues to be used for installing device drivers.]
+		/// </para>
+		/// <para>
+		/// The <c>SetupInstallFile</c> function installs a file as specified either by an INFCONTEXT returned by SetupFindXXXLine or
+		/// explicitly by the file name and path.
+		/// </para>
+		/// <para>If a file is copied, the caller of this function must have write privileges into the target directory.</para>
+		/// </summary>
+		/// <param name="InfHandle">
+		/// Optional pointer to the handle to an INF file that contains SourceDisksNames and SourceDisksFiles sections. If platform-specific
+		/// sections exist for the user's system (for example, SourceDisksNames.x86 and SourceDisksFiles.x86), the platform-specific section
+		/// will be used. If InfContext is null and CopyStyle includes SP_COPY_SOURCE_ABSOLUTE or SP_COPY_SOURCEPATH_ABSOLUTE, InfHandle is ignored.
+		/// </param>
+		/// <param name="InfContext">
+		/// Optional pointer to the context of a line in a Copy Files section in an INF file. The routine looks up this file in the
+		/// SourceDisksFiles section of InfHandle to get file copy information. If InfHandle is not specified, SourceFile must be.
+		/// </param>
+		/// <param name="SourceFile">
+		/// Optional pointer to the file name (no path) of the file to copy. The file is looked up in the SourceDisksFiles section. The
+		/// SourceFile parameter must be specified if InfContext is not. SourceFile is ignored if InfContext is specified.
+		/// </param>
+		/// <param name="SourcePathRoot">
+		/// Optional pointer to the root path for the file to be copied (for example, A:\ or F:). Paths in the SourceDisksNames section are
+		/// appended to this path. The SourcePathRoot parameter is ignored if CopyStyle includes the SP_COPY_SOURCE_ABSOLUTE flag.
+		/// </param>
+		/// <param name="DestinationName">
+		/// Optional pointer to the file name only (no path) of the target file. This parameter can be null to indicate that the target file
+		/// should have the same name as the source file. If InfContext is not specified, DestinationName supplies the full path and file
+		/// name for the target.
+		/// </param>
+		/// <param name="CopyStyle">
+		/// <para>Flags that control the behavior of the file copy operation. These flags may be a combination of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SP_COPY_DELETESOURCE</term>
+		/// <term>Deletes the source file upon successful copy. The caller is not notified if the delete operation fails.</term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_REPLACEONLY</term>
+		/// <term>
+		/// Copies the file only if doing so would overwrite a file at the destination path. If the target does not exist, the function
+		/// returns FALSE and GetLastError returns NO_ERROR.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_NEWER_OR_SAME</term>
+		/// <term>
+		/// Examines each file being copied to see if its version resources indicate that it is either the same version or not newer than an
+		/// existing copy on the target. The file version information used during version checks is that specified in the dwFileVersionMS
+		/// and dwFileVersionLS members of a VS_FIXEDFILEINFO structure, as filled in by the version functions. If one of the files does not
+		/// have version resources, or if they have identical version information, the source file is considered newer. If the source file
+		/// is not newer or equal in version, and CopyMsgHandler is specified, the caller is notified and may cancel the copy operation. If
+		/// CopyMsgHandler is not specified, the file is not copied.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_NEWER_ONLY</term>
+		/// <term>
+		/// Examine each file being copied to see if its version resources indicate that it is not newer than an existing copy on the
+		/// target. If the source file is newer but not equal in version to the existing target, the file is copied.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_NOOVERWRITE</term>
+		/// <term>
+		/// Check whether the target file exists, and, if so, notify the caller who may veto the copy. If CopyMsgHandler is not specified,
+		/// the file is not overwritten.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_NODECOMP</term>
+		/// <term>
+		/// Do not decompress the file. When this flag is set, the target file is not given the uncompressed form of the source name (if
+		/// appropriate). For example, copying F:\x86\cmd.ex_ to \\install\temp results in a target file of \\install\temp\cmd.ex_. If the
+		/// SP_COPY_NODECOMP flag was not specified, the file would be decompressed and the target would be called \\install\temp\cmd.exe.
+		/// The file name part of DestinationName, if specified, is stripped and replaced with the file name of the source file. When
+		/// SP_COPY_NODECOMP is specified, no language or version information can be checked.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_LANGUAGEAWARE</term>
+		/// <term>
+		/// Examine each file being copied to see if its language differs from the language of any existing file already on the target. If
+		/// so, and CopyMsgHandler is specified, the caller is notified and may cancel the copy. If CopyMsgHandler is not specified, the
+		/// file is not copied.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_SOURCE_ABSOLUTE</term>
+		/// <term>SourceFile is a full source path. Do not look it up in the SourceDisksNames section of the INF file.</term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_SOURCEPATH_ABSOLUTE</term>
+		/// <term>
+		/// SourcePathRoot is the full path part of the source file. Ignore the relative source specified in the SourceDisksNames section of
+		/// the INF file for the source media where the file is located. This flag is ignored if SP_COPY_SOURCE_ABSOLUTE is specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_FORCE_IN_USE</term>
+		/// <term>If the target exists, behaves as if it is in use and queues the file for copying on the next system restart.</term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_FORCE_NOOVERWRITE</term>
+		/// <term>Checks whether the target file exists, and, if so, the file is not overwritten. The caller is not notified.</term>
+		/// </item>
+		/// <item>
+		/// <term>SP_COPY_FORCE_NEWER</term>
+		/// <term>
+		/// Examines each file being copied to see if its version resources (or time stamps for non-image files) indicate that it is not
+		/// newer than an existing copy on the target. If the file being copied is not newer, the file is not copied. The caller is not
+		/// notified. The function returns FALSE, and GetLastError returns NO_ERROR.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="CopyMsgHandler">
+		/// Optional pointer to a callback function to be notified of various conditions that may arise during the file copy operation.
+		/// </param>
+		/// <param name="Context">Optional pointer to a caller-defined value that is passed as the first parameter of the callback function.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a nonzero value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>
+		/// If GetLastError returns NO_ERROR, the file copy operation was not completed. The file may not have been copied because the file
+		/// copy operation was unnecessary or because the file callback function returned <c>FALSE</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If a UNC directory is specified as the target directory of a file installation, you must ensure it exists before you call
+		/// <c>SetupInstallFile</c>. The setup functions do not check for the existence of nor create UNC directories. If the target UNC
+		/// directory does not exist, the file installation will fail.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The setupapi.h header defines SetupInstallFile as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupinstallfilea WINSETUPAPI BOOL SetupInstallFileA(
+		// HINF InfHandle, PINFCONTEXT InfContext, PCSTR SourceFile, PCSTR SourcePathRoot, PCSTR DestinationName, DWORD CopyStyle,
+		// PSP_FILE_CALLBACK_A CopyMsgHandler, PVOID Context );
+		[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupInstallFileA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetupInstallFile([In, Optional] HINF InfHandle, [In, Optional] IntPtr InfContext, [Optional, MarshalAs(UnmanagedType.LPTStr)] string SourceFile,
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] string SourcePathRoot, [Optional, MarshalAs(UnmanagedType.LPTStr)] string DestinationName,
+			SP_COPY CopyStyle, [Optional] PSP_FILE_CALLBACK CopyMsgHandler, [In, Optional] IntPtr Context);
 	}
 }
