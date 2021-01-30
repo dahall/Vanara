@@ -2054,6 +2054,38 @@ namespace Vanara.PInvoke
 		public static extern Win32Error ReportIScsiSendTargetPortalsEx(out uint PortalCount, ref uint PortalInfoSize, [In, Out, Optional] IntPtr PortalInfo);
 
 		/// <summary>
+		/// The <c>ReportIscsiTargetPortals</c> function retrieves target portal information discovered by the iSCSI initiator service.
+		/// </summary>
+		/// <param name="InitiatorName">A string that represents the name of the initiator node.</param>
+		/// <param name="TargetName">A string that represents the name of the target for which the portal information is retrieved.</param>
+		/// <param name="TargetPortalTag">A <c>USHORT</c> value that represents a tag associated with the portal.</param>
+		/// <param name="ElementCount">A <c>ULONG</c> value that specifies the number of portals currently reported for the specified target.</param>
+		/// <param name="Portals">
+		/// A variable-length array of an <c>ISCSI_TARGET_PORTALW</c> structure. The number of elements contained in this array is specified
+		/// by the value of ElementCount.
+		/// </param>
+		/// <returns>
+		/// Returns <c>ERROR_SUCCESS</c> if the operation is successful. If the operation fails due to a socket connection error, this
+		/// function will return a Winsock error code.
+		/// </returns>
+		/// <remarks>
+		/// <para>Note</para>
+		/// <para>
+		/// The iscsidsc.h header defines ReportIScsiTargetPortals as an alias which automatically selects the ANSI or Unicode version of
+		/// this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
+		/// that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-reportiscsitargetportalsa ISDSC_STATUS ISDSC_API
+		// ReportIScsiTargetPortalsA( PSTR InitiatorName, PSTR TargetName, PUSHORT TargetPortalTag, PULONG ElementCount,
+		// PISCSI_TARGET_PORTALA Portals );
+		[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportIScsiTargetPortalsA")]
+		public static extern Win32Error ReportIScsiTargetPortals([Optional, MarshalAs(UnmanagedType.LPTStr)] string InitiatorName,
+			[MarshalAs(UnmanagedType.LPTStr)] string TargetName, in ushort TargetPortalTag, ref uint ElementCount, out ISCSI_TARGET_PORTAL Portals);
+
+		/// <summary>
 		/// The <c>ReportIscsiTargets</c> function retrieves the list of targets that the iSCSI initiator service has discovered, and can
 		/// also instruct the iSCSI initiator service to refresh the list.
 		/// </summary>
