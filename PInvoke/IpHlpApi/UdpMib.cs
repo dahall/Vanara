@@ -147,6 +147,8 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint dwOwningPid;
 
+			private uint padding;
+
 			/// <summary>
 			/// <para>Type: <c>LARGE_INTEGER</c></para>
 			/// <para>A FILETIME structure that indicates when the context bind operation that created this endpoint occurred.</para>
