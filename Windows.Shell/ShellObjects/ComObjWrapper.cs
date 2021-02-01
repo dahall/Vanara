@@ -29,7 +29,6 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
 		{
-			Marshal.ReleaseComObject(iObj);
 			iObj = null;
 		}
 

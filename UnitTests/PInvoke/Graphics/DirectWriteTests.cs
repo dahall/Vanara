@@ -116,8 +116,8 @@ namespace Vanara.PInvoke.Tests
 			}
 			finally
 			{
-				foreach (var i in pList)
-					Marshal.ReleaseComObject(i);
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
 			}
 		}
 

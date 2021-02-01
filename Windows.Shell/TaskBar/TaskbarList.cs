@@ -503,16 +503,8 @@ namespace Vanara.Windows.Shell
 		{
 			~TaskbarListStaticFinalizer()
 			{
-				if (taskbar2 != null)
-				{
-					Marshal.ReleaseComObject(taskbar2);
-					taskbar2 = null;
-				}
-				if (taskbar4 != null)
-				{
-					Marshal.ReleaseComObject(taskbar4);
-					taskbar4 = null;
-				}
+				taskbar2 = null;
+				taskbar4 = null;
 			}
 		}
 	}

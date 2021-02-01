@@ -6856,7 +6856,7 @@ namespace Vanara.PInvoke
 			object IEnumerator.Current => Current;
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-			public void Dispose() => Marshal.ReleaseComObject(opcEnum);
+			public void Dispose() => opcEnum = default;
 
 			/// <summary>Advances the enumerator to the next element of the collection.</summary>
 			/// <returns>
@@ -6874,7 +6874,6 @@ namespace Vanara.PInvoke
 			public void Reset()
 			{
 				var clone = opcEnum.InvokeMethod<TEnum>("Clone");
-				Marshal.ReleaseComObject(opcEnum);
 				opcEnum = clone;
 			}
 		}

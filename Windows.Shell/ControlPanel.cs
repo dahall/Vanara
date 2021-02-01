@@ -64,7 +64,7 @@ namespace Vanara.Windows.Shell
 
 		private class SafeCP : IDisposable
 		{
-			internal readonly IOpenControlPanel icp;
+			internal IOpenControlPanel icp;
 			private bool disposedValue = false;
 
 			public SafeCP() => icp = new IOpenControlPanel();
@@ -94,7 +94,7 @@ namespace Vanara.Windows.Shell
 			protected virtual void Dispose(bool disposing)
 			{
 				if (disposedValue) return;
-				Marshal.ReleaseComObject(icp);
+				icp = null;
 				disposedValue = true;
 			}
 		}

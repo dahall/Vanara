@@ -581,11 +581,7 @@ namespace Vanara.Windows.Shell
 				}
 
 				if (sink != null) op.Unadvise(sinkCookie);
-				if (op != null)
-				{
-					Marshal.FinalReleaseComObject(op);
-					op = null;
-				}
+				op = null;
 				disposedValue = true;
 			}
 		}

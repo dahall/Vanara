@@ -58,13 +58,7 @@ namespace Vanara.Network
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		void IDisposable.Dispose()
 		{
-			if (conn == null) return;
-			if (cost != null)
-			{
-				Marshal.FinalReleaseComObject(cost);
-				cost = null;
-			}
-			Marshal.FinalReleaseComObject(conn);
+			cost = null;
 			conn = null;
 		}
 	}

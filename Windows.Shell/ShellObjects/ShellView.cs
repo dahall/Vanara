@@ -335,26 +335,9 @@ namespace Vanara.Windows.Shell
 					User32.DestroyWindow(shellViewWindow);
 					shellViewWindow = HWND.NULL;
 				}
-				if (iBrowser != null)
-				{
-					if (iBrowser.GetType().IsCOMObject)
-						Marshal.ReleaseComObject(iBrowser);
-					iBrowser = null;
-				}
-				//if (Items != null)
-				//{
-				//	Items.Dispose();
-				//	Items = null;
-				//}
-				if (History != null)
-				{
-					History = null;
-				}
-				if (IShellView != null)
-				{
-					Marshal.ReleaseComObject(IShellView);
-					IShellView = null;
-				}
+				iBrowser = null;
+				History = null;
+				IShellView = null;
 			}
 			base.Dispose(disposing);
 		}
@@ -437,7 +420,7 @@ namespace Vanara.Windows.Shell
 			{
 				prev.UIActivate(SVUIA.SVUIA_DEACTIVATE);
 				prev.DestroyViewWindow();
-				Marshal.ReleaseComObject(prev);
+				prev = null;
 			}
 
 			IShellView.UIActivate(SVUIA.SVUIA_ACTIVATE_NOFOCUS);

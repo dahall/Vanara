@@ -92,11 +92,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
 		{
-			if (iPropertyStore != null)
-			{
-				Marshal.ReleaseComObject(iPropertyStore);
-				iPropertyStore = null;
-			}
+			iPropertyStore = null;
 		}
 
 		/// <summary>Gets the property.</summary>

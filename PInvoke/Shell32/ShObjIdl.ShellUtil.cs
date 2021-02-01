@@ -409,7 +409,7 @@ namespace Vanara.PInvoke
 			private class ManualParentAndItem : IParentAndItem, IDisposable
 			{
 				private readonly PIDL pChild;
-				private readonly IShellFolder psf;
+				private IShellFolder psf;
 
 				public ManualParentAndItem(IShellItem psi)
 				{
@@ -421,7 +421,7 @@ namespace Vanara.PInvoke
 
 				void IDisposable.Dispose()
 				{
-					Marshal.ReleaseComObject(psf);
+					psf = null;
 					pChild.Dispose();
 				}
 

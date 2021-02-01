@@ -170,7 +170,7 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		public override void Dispose()
 		{
-			if (iShellFolder != null) { Marshal.ReleaseComObject(iShellFolder); iShellFolder = null; }
+			iShellFolder = null;
 			base.Dispose();
 		}
 

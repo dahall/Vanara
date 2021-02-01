@@ -100,11 +100,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
 		{
-			if (array != null)
-			{
-				Marshal.ReleaseComObject(array);
-				array = null;
-			}
+			array = null;
 		}
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>

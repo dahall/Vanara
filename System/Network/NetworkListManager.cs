@@ -166,8 +166,6 @@ namespace Vanara.Network
 
 			void IDisposable.Dispose()
 			{
-				if (conns == null) return;
-				Marshal.FinalReleaseComObject(conns);
 				conns = null;
 			}
 		}

@@ -14,7 +14,7 @@ namespace Vanara.InteropServices
 	}
 
 	/// <summary>
-	/// A safe variable to hold an instance of a COM class that automatically calls <see cref="Marshal.ReleaseComObject(object)"/> on disposal.
+	/// A safe variable to hold an instance of a COM class that automatically releases the instance on disposal.
 	/// </summary>
 	/// <typeparam name="T">The type of the COM object.</typeparam>
 	/// <seealso cref="System.IDisposable"/>
@@ -59,8 +59,6 @@ namespace Vanara.InteropServices
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
 		{
-			if (Item == null) return;
-			Marshal.ReleaseComObject(Item);
 			Item = null;
 		}
 	}

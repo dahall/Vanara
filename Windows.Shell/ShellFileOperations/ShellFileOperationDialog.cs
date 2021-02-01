@@ -306,7 +306,6 @@ namespace Vanara.Windows.Shell
 
 			iProgressDialog.StopProgressDialog();
 			Thread.Sleep(500);
-			Marshal.FinalReleaseComObject(iProgressDialog);
 			iProgressDialog = null;
 		}
 

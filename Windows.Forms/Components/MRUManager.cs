@@ -148,31 +148,13 @@ namespace Vanara.Configuration
 						var type = Type.GetTypeFromProgID("Wscript.Shell");
 						if (type != null)
 						{
-							object script = null;
-							try
+							var script = Activator.CreateInstance(type);
+							foreach (var file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Recent), "*.lnk").Where(s => exts.Contains(Path.GetExtension(s.Substring(0, s.Length - 4)).Trim('.').ToLower())))
 							{
-								script = Activator.CreateInstance(type);
-								foreach (var file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Recent), "*.lnk").Where(s => exts.Contains(Path.GetExtension(s.Substring(0, s.Length - 4)).Trim('.').ToLower())))
-								{
-									object sc = null;
-									try
-									{
-										sc = script.InvokeMethod<object>("CreateShortcut", file);
-										var targetPath = sc.GetPropertyValue<string>("TargetPath");
-										if (targetPath != null)
-											recentFiles.Add(targetPath);
-									}
-									finally
-									{
-										if (sc != null)
-											Marshal.FinalReleaseComObject(sc);
-									}
-								}
-							}
-							finally
-							{
-								if (script != null)
-									Marshal.FinalReleaseComObject(script);
+								var sc = script.InvokeMethod<object>("CreateShortcut", file);
+								var targetPath = sc.GetPropertyValue<string>("TargetPath");
+								if (targetPath != null)
+									recentFiles.Add(targetPath);
 							}
 						}
 					}

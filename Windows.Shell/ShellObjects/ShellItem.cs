@@ -581,9 +581,9 @@ namespace Vanara.Windows.Shell
 		{
 			if (props != null) { props?.Dispose(); props = null; }
 			if (propDescList != null) { propDescList?.Dispose(); propDescList = null; }
-			if (qi != null) { Marshal.ReleaseComObject(qi); qi = null; }
-			if (iShellItem2 != null) { Marshal.ReleaseComObject(iShellItem2); iShellItem2 = null; }
-			if (iShellItem != null) { Marshal.ReleaseComObject(iShellItem); iShellItem = null; }
+			qi = null;
+			iShellItem2 = null;
+			iShellItem = null;
 		}
 
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>

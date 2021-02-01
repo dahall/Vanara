@@ -133,16 +133,8 @@ namespace Vanara.Windows.Shell
 		public virtual void Dispose()
 		{
 			// typeList?.Dispose();
-			if (iDesc2 != null)
-			{
-				Marshal.ReleaseComObject(iDesc2);
-				iDesc2 = null;
-			}
-			if (iDesc != null)
-			{
-				Marshal.ReleaseComObject(iDesc);
-				iDesc = null;
-			}
+			iDesc2 = null;
+			iDesc = null;
 		}
 
 		/// <summary>Gets a formatted string representation of a property value.</summary>
@@ -233,11 +225,7 @@ namespace Vanara.Windows.Shell
 		/// <inheritdoc />
 		public virtual void Dispose()
 		{
-			if (iList != null)
-			{
-				Marshal.ReleaseComObject(iList);
-				iList = null;
-			}
+			iList = null;
 		}
 
 		/// <inheritdoc />
@@ -354,16 +342,8 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
 		{
-			if (iType2 != null)
-			{
-				Marshal.ReleaseComObject(iType2);
-				iType2 = null;
-			}
-			if (iType != null)
-			{
-				Marshal.ReleaseComObject(iType);
-				iType = null;
-			}
+			iType2 = null;
+			iType = null;
 		}
 
 		/// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
@@ -399,11 +379,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
 		{
-			if (iList != null)
-			{
-				Marshal.ReleaseComObject(iList);
-				iList = null;
-			}
+			iList = null;
 		}
 
 		/// <summary>Determines the index of a specific item in the list.</summary>

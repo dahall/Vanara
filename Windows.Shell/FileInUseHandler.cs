@@ -221,7 +221,6 @@ namespace Vanara.Windows.Shell
 			using var prot = ComReleaserFactory.Create(rot);
 			try { rot.Revoke(regId); } catch { }
 			regId = 0;
-			Marshal.FinalReleaseComObject(moniker);
 			moniker = null;
 		}
 	}

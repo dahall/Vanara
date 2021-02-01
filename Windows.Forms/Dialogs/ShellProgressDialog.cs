@@ -242,7 +242,6 @@ namespace Vanara.Windows.Forms
 				return;
 			if (!closed)
 				Stop();
-			Marshal.FinalReleaseComObject(iDlg);
 			iDlg = null;
 		}
 	}

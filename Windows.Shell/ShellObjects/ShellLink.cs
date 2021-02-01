@@ -290,7 +290,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Dispose the object, releasing the COM ShellLink object</summary>
 		public override void Dispose()
 		{
-			if (link != null) { Marshal.ReleaseComObject(link); link = null; }
+			link = null;
 			//Release(link);
 			base.Dispose();
 		}

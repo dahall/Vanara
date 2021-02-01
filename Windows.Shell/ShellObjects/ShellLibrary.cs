@@ -150,11 +150,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public override void Dispose()
 		{
-			if (lib != null)
-			{
-				Marshal.ReleaseComObject(lib);
-				lib = null;
-			}
+			lib = null;
 
 			base.Dispose();
 		}
@@ -221,11 +217,7 @@ namespace Vanara.Windows.Shell
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			public override void Dispose()
 			{
-				if (lib != null)
-				{
-					Marshal.ReleaseComObject(lib);
-					lib = null;
-				}
+				lib = null;
 				base.Dispose();
 			}
 

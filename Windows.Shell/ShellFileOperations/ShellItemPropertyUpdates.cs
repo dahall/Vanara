@@ -156,8 +156,6 @@ namespace Vanara.Windows.Shell
 
 		void IDisposable.Dispose()
 		{
-			if (changes == null) return;
-			Marshal.FinalReleaseComObject(changes);
 			changes = null;
 		}
 

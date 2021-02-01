@@ -934,14 +934,9 @@ namespace Vanara.Windows.Forms
 				if (adviseCookie > 0)
 					pCtrl.TreeUnadvise(adviseCookie);
 				SetSite(null);
-				Marshal.ReleaseComObject(pCtrl);
 				pCtrl = null;
 			}
-			if (pCtrl2 != null)
-			{
-				Marshal.ReleaseComObject(pCtrl2);
-				pCtrl2 = null;
-			}
+			pCtrl2 = null;
 
 			base.OnHandleDestroyed(e);
 		}

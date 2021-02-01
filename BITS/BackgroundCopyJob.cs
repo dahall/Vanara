@@ -716,7 +716,6 @@ namespace Vanara.IO
 			}
 			catch { }
 			Files = null;
-			Marshal.FinalReleaseComObject(m_ijob);
 			m_ijob = null;
 			m_notifier = null;
 		}

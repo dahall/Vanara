@@ -15,7 +15,7 @@ namespace Vanara.Windows.Shell
 	[ComVisible(true)]
 	public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	{
-		private readonly IBindCtxV iBindCtx;
+		private IBindCtxV iBindCtx;
 
 		/// <summary>Initializes a new instance of the <see cref="BindContext"/> class.</summary>
 		public BindContext() => CreateBindCtx(0, out iBindCtx).ThrowIfFailed();
@@ -130,7 +130,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-		public void Dispose() => Marshal.FinalReleaseComObject(iBindCtx);
+		public void Dispose() => iBindCtx = null;
 
 		/// <summary>
 		/// Retrieves a pointer to an interface that can be used to enumerate the keys of the bind context's string-keyed table of pointers.

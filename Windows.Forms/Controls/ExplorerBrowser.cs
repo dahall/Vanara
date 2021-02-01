@@ -1077,7 +1077,6 @@ namespace Vanara.Windows.Forms
                 explorerBrowserControl.Destroy();
 
                 // release com reference to it
-                Marshal.ReleaseComObject(explorerBrowserControl);
                 explorerBrowserControl = null;
             }
 
@@ -1554,7 +1553,6 @@ namespace Vanara.Windows.Forms
                 viewDispatch = psv.GetItemObject(SVGIO.SVGIO_BACKGROUND, IID_IDispatch);
                 if (ConnectToConnectionPoint(this, IID_DShellFolderViewEvents, true, viewDispatch, ref viewConnectionPointCookie).Failed)
                 {
-                    Marshal.ReleaseComObject(viewDispatch);
                     viewDispatch = null;
                 }
             }
@@ -1563,7 +1561,6 @@ namespace Vanara.Windows.Forms
             {
                 if (viewDispatch is null) return;
                 ConnectToConnectionPoint(null, IID_DShellFolderViewEvents, false, viewDispatch, ref viewConnectionPointCookie);
-                Marshal.ReleaseComObject(viewDispatch);
                 viewDispatch = null;
                 viewConnectionPointCookie = 0;
             }

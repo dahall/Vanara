@@ -170,11 +170,7 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		public void Dispose()
 		{
-			if (condition != null)
-			{
-				Marshal.ReleaseComObject(condition);
-				condition = null;
-			}
+			condition = null;
 		}
 
 		/// <summary>Gets the results of the condition by level.</summary>

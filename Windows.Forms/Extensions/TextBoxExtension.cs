@@ -38,7 +38,6 @@ namespace Vanara.Extensions
 			var ac = new IAutoComplete2();
 			ac.Init(textBox.Handle, new ComEnumStringImpl(items), null, null);
 			ac.SetOptions(options);
-			Marshal.ReleaseComObject(ac);
 		}
 
 		/// <summary>Sets the tab stops in a multiline edit control. When text is copied to the control, any tab character in the text causes space to be generated up to the next tab stop.</summary>

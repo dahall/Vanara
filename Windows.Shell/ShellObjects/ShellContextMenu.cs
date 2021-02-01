@@ -313,7 +313,6 @@ namespace Vanara.Windows.Shell
 				}
 
 				m_MessageWindow?.Dispose();
-				Marshal.ReleaseComObject(ComInterface);
 				ComInterface = null;
 				disposedValue = true;
 			}
