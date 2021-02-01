@@ -14,7 +14,7 @@ namespace Vanara.PInvoke
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>
-		/// Pass this value to the x, y, nWidth and nHeight parameteres of <see cref="CreateWindow"/> and <see cref="CreateWindowEx"/> to
+		/// Pass this value to the x, y, nWidth and nHeight parameteres of <see cref="CreateWindow"/> and <c>CreateWindowEx</c> to
 		/// select the default position for the parameter.
 		/// </summary>
 		public const int CW_USEDEFAULT = unchecked((int)0x80000000);

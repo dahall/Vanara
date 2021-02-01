@@ -329,10 +329,6 @@ namespace Vanara.Windows.Shell
 		/// <summary>Populates a <see cref="Menu"/> with the context menu items for a shell item.</summary>
 		/// <param name="menu">The menu to populate.</param>
 		/// <param name="menuOptions">The flags to pass to <see cref="IContextMenu.QueryContextMenu"/>.</param>
-		/// <remarks>
-		/// If this method is being used to populate a Form's main menu then you need to call <see cref="HandleMenuMessage"/> in the Form's
-		/// message handler.
-		/// </remarks>
 		public void Populate(Menu menu, CMF menuOptions = CMF.CMF_NORMAL)
 		{
 			RemoveShellMenuItems(menu);
