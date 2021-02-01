@@ -6,8 +6,15 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the cabinet.dll</summary>
 	public static partial class Cabinet
 	{
-		public delegate void PFN_COMPRESS_ALLOCATE([In] IntPtr UserContext, [In] SizeT Size);
+		/// <summary>A callback that allocates memory.</summary>
+		/// <param name="UserContext">The user context.</param>
+		/// <param name="Size">The size.</param>
+		/// <returns>The allocated memory pointer.</returns>
+		public delegate IntPtr PFN_COMPRESS_ALLOCATE([In] IntPtr UserContext, [In] SizeT Size);
 
+		/// <summary>A callback that frees memory.</summary>
+		/// <param name="UserContext">The user context.</param>
+		/// <param name="Memory">The pointer to the memory to free.</param>
 		public delegate void PFN_COMPRESS_FREE([In] IntPtr UserContext, [In] IntPtr Memory);
 
 		/// <summary>The type of compression algorithm and mode to be used by this compressor.</summary>

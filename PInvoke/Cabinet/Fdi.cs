@@ -79,13 +79,19 @@ namespace Vanara.PInvoke
 		[PInvokeData("fdi.h", MSDNShortId = "e15d4293-2955-48cd-b8c9-77669a1e6436")]
 		public delegate uint PFNWRITE(HFILE hf, IntPtr memory, uint cb);
 
+		/// <summary/>
+		[PInvokeData("fdi.h")]
 		public enum FDIDECRYPTTYPE
 		{
+			/// <summary>New cabinet</summary>
 			fdidtNEW_CABINET,                   // New cabinet
+			/// <summary>New folder</summary>
 			fdidtNEW_FOLDER,                    // New folder
+			/// <summary>Decrypt a data block</summary>
 			fdidtDECRYPT,                       // Decrypt a data block
 		}
 
+		/// <summary>An FDI error code.</summary>
 		[PInvokeData("fdi.h")]
 		public enum FDIERROR
 		{
@@ -379,6 +385,7 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.Bool)] public bool hasnext;
 		}
 
+		/// <summary/>
 		[PInvokeData("fdi.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct FDIDECRYPT
@@ -389,21 +396,27 @@ namespace Vanara.PInvoke
 			///<summary>Decryption context</summary>
 			public IntPtr pvUser;
 
+			/// <summary/>
 			public Union union;
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Explicit)]
 			public struct Union
 			{
+				/// <summary/>
 				[FieldOffset(0)]
 				public NEW_CABINET cabinet;
 
+				/// <summary/>
 				[FieldOffset(0)]
 				public NEW_FOLDER folder;
 
+				/// <summary/>
 				[FieldOffset(0)]
 				public DECRYPT decrypt;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct NEW_CABINET
 			{
@@ -420,6 +433,7 @@ namespace Vanara.PInvoke
 				public int iCabinet;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct NEW_FOLDER
 			{
@@ -433,6 +447,7 @@ namespace Vanara.PInvoke
 				public ushort iFolder;
 			}
 
+			/// <summary/>
 			[StructLayout(LayoutKind.Sequential)]
 			public struct DECRYPT
 			{

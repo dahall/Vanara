@@ -7,19 +7,28 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the cabinet.dll</summary>
 	public static partial class Cabinet
 	{
+		/// <summary/>
 		public const int CB_MAX_CAB_PATH = 256;
+		/// <summary/>
 		public const int CB_MAX_CABINET_NAME = 256;
+		/// <summary/>
 		public const int CB_MAX_CHUNK = 32768;
+		/// <summary/>
 		public const int CB_MAX_DISK = 0x7fffffff;
+		/// <summary/>
 		public const int CB_MAX_DISK_NAME = 256;
+		/// <summary/>
 		public const int CB_MAX_FILENAME = 256;
 
+		/// <summary/>
 		[PInvokeData("fci.h")]
 		public const int tcompSHIFT_LZX_WINDOW = 8;
 
+		/// <summary/>
 		[PInvokeData("fci.h")]
 		public const int tcompSHIFT_QUANTUM_LEVEL = 4;
 
+		/// <summary/>
 		[PInvokeData("fci.h")]
 		public const int tcompSHIFT_QUANTUM_MEM = 8;
 
@@ -251,40 +260,68 @@ namespace Vanara.PInvoke
 			Cabinet
 		}
 
+		/// <summary>An FCI/FDI error code.</summary>
 		[PInvokeData("fci.h")]
 		public enum FCIERROR
 		{
-			FCIERR_NONE,
-			FCIERR_OPEN_SRC,
-			FCIERR_READ_SRC,
-			FCIERR_ALLOC_FAIL,
-			FCIERR_TEMP_FILE,
-			FCIERR_BAD_COMPR_TYPE,
-			FCIERR_CAB_FILE,
-			FCIERR_USER_ABORT,
-			FCIERR_MCI_FAIL,
-			FCIERR_CAB_FORMAT_LIMIT
+			/// <summary>No Error.</summary>
+			FCIERR_NONE = 0x00,
+			/// <summary>Failure opening the file to be stored in the cabinet.</summary>
+			FCIERR_OPEN_SRC = 0x01,
+			/// <summary>Failure reading the file to be stored in the cabinet.</summary>
+			FCIERR_READ_SRC = 0x02,
+			/// <summary>Out of memory in FCI.</summary>
+			FCIERR_ALLOC_FAIL = 0x03,
+			/// <summary>Could not create a temporary file.</summary>
+			FCIERR_TEMP_FILE = 0x04,
+			/// <summary>Unknown compression type.</summary>
+			FCIERR_BAD_COMPR_TYPE = 0x05,
+			/// <summary>Could not create the cabinet file.</summary>
+			FCIERR_CAB_FILE = 0x06,
+			/// <summary>FCI aborted.</summary>
+			FCIERR_USER_ABORT = 0x07,
+			/// <summary>Failure compressing data.</summary>
+			FCIERR_MCI_FAIL = 0x08,
+			/// <summary>Data-size or file-count exceeded CAB format limits.</summary>
+			FCIERR_CAB_FORMAT_LIMIT = 0x09,
 		}
 
+		/// <summary>The compression type to use.</summary>
 		[PInvokeData("fci.h")]
 		[Flags]
 		public enum TCOMP
 		{
+			/// <summary/>
 			tcompMASK_TYPE = 0x000F,
+			/// <summary>No compression.</summary>
 			tcompTYPE_NONE = 0x0000,
+			/// <summary>Microsoft ZIP compression.</summary>
 			tcompTYPE_MSZIP = 0x0001,
+			/// <summary/>
 			tcompTYPE_QUANTUM = 0x0002,
+			/// <summary/>
 			tcompTYPE_LZX = 0x0003,
+			/// <summary/>
 			tcompBAD = 0x000F,
+			/// <summary/>
 			tcompMASK_LZX_WINDOW = 0x1F00,
+			/// <summary/>
 			tcompLZX_WINDOW_LO = 0x0F00,
+			/// <summary/>
 			tcompLZX_WINDOW_HI = 0x1500,
+			/// <summary/>
 			tcompMASK_QUANTUM_LEVEL = 0x00F0,
+			/// <summary/>
 			tcompQUANTUM_LEVEL_LO = 0x0010,
+			/// <summary/>
 			tcompQUANTUM_LEVEL_HI = 0x0070,
+			/// <summary/>
 			tcompMASK_QUANTUM_MEM = 0x1F00,
+			/// <summary/>
 			tcompQUANTUM_MEM_LO = 0x0A00,
+			/// <summary/>
 			tcompQUANTUM_MEM_HI = 0x1500,
+			/// <summary/>
 			tcompMASK_RESERVED = 0xE000,
 		}
 
