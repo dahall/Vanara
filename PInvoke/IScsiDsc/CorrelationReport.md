@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows ISCSI Disc
 
 - Includes methods from iscsidsc.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.IScsiDsc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.IScsiDsc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.IScsiDsc)  
-### Methods - 97% API coverage (44 of 45 functions)  
+### Methods - 100% API coverage (45 of 45 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddIScsiConnection](https://www.google.com/search?num=5&q=AddIScsiConnectionA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.AddIScsiConnection](https://github.com/dahall/Vanara/search?l=C%23&q=AddIScsiConnection)  
@@ -35,7 +35,7 @@ Native Method | Header | Managed Method
 [ReportIScsiPersistentLogins](https://www.google.com/search?num=5&q=ReportIScsiPersistentLoginsA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiPersistentLogins](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiPersistentLogins)  
 [ReportIScsiSendTargetPortals](https://www.google.com/search?num=5&q=ReportIScsiSendTargetPortalsA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiSendTargetPortals](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiSendTargetPortals)  
 [ReportIScsiSendTargetPortalsEx](https://www.google.com/search?num=5&q=ReportIScsiSendTargetPortalsExA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiSendTargetPortalsEx](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiSendTargetPortalsEx)  
-[ReportIScsiTargetPortals](https://www.google.com/search?num=5&q=ReportIScsiTargetPortalsA+site%3Adocs.microsoft.com) |  |   
+[ReportIScsiTargetPortals](https://www.google.com/search?num=5&q=ReportIScsiTargetPortalsA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiTargetPortals](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiTargetPortals)  
 [ReportIScsiTargets](https://www.google.com/search?num=5&q=ReportIScsiTargetsA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportIScsiTargets](https://github.com/dahall/Vanara/search?l=C%23&q=ReportIScsiTargets)  
 [ReportISNSServerList](https://www.google.com/search?num=5&q=ReportISNSServerListA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportISNSServerList](https://github.com/dahall/Vanara/search?l=C%23&q=ReportISNSServerList)  
 [ReportPersistentIScsiDevices](https://www.google.com/search?num=5&q=ReportPersistentIScsiDevicesA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ReportPersistentIScsiDevices](https://github.com/dahall/Vanara/search?l=C%23&q=ReportPersistentIScsiDevices)  

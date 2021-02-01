@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NTDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NTDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NTDll)  
-### Methods - 4% API coverage (24 of 566 functions)  
+### Methods - 4% API coverage (26 of 568 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Adocs.microsoft.com) |  |   
@@ -132,6 +132,8 @@ Native Method | Header | Managed Method
 [NtUnlockFile](https://www.google.com/search?num=5&q=NtUnlockFile+site%3Adocs.microsoft.com) |  |   
 [NtUnmapViewOfSection](https://www.google.com/search?num=5&q=NtUnmapViewOfSection+site%3Adocs.microsoft.com) |  |   
 [NtWaitForSingleObject](https://www.google.com/search?num=5&q=NtWaitForSingleObject+site%3Adocs.microsoft.com) |  |   
+[NtWow64QueryInformationProcess64](https://www.google.com/search?num=5&q=NtWow64QueryInformationProcess64+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.NtWow64QueryInformationProcess64](https://github.com/dahall/Vanara/search?l=C%23&q=NtWow64QueryInformationProcess64)  
+[NtWow64ReadVirtualMemory64](https://www.google.com/search?num=5&q=NtWow64ReadVirtualMemory64+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.NtWow64ReadVirtualMemory64](https://github.com/dahall/Vanara/search?l=C%23&q=NtWow64ReadVirtualMemory64)  
 [NtWriteFile](https://www.google.com/search?num=5&q=NtWriteFile+site%3Adocs.microsoft.com) |  |   
 [RtlAbsoluteToSelfRelativeSD](https://www.google.com/search?num=5&q=RtlAbsoluteToSelfRelativeSD+site%3Adocs.microsoft.com) |  |   
 [RtlAddAccessAllowedAce](https://www.google.com/search?num=5&q=RtlAddAccessAllowedAce+site%3Adocs.microsoft.com) |  |   
@@ -584,14 +586,18 @@ Native Structure | Header | Managed Structure
 [LDR_DLL_NOTIFICATION_DATA](https://www.google.com/search?num=5&q=LDR_DLL_NOTIFICATION_DATA+site%3Adocs.microsoft.com) | ntldr.h | [Vanara.PInvoke.NtDll.LDR_DLL_NOTIFICATION_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=LDR_DLL_NOTIFICATION_DATA)  
 [OBJECT_ATTRIBUTES](https://www.google.com/search?num=5&q=OBJECT_ATTRIBUTES+site%3Adocs.microsoft.com) | wudfwdm.h | [Vanara.PInvoke.NtDll.OBJECT_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=OBJECT_ATTRIBUTES)  
 [PEB](https://www.google.com/search?num=5&q=PEB+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.PEB](https://github.com/dahall/Vanara/search?l=C%23&q=PEB)  
+[PEB_WOW64](https://www.google.com/search?num=5&q=PEB_WOW64+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.PEB_WOW64](https://github.com/dahall/Vanara/search?l=C%23&q=PEB_WOW64)  
 [PROCESS_BASIC_INFORMATION](https://www.google.com/search?num=5&q=PROCESS_BASIC_INFORMATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.PROCESS_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_BASIC_INFORMATION)  
+[PROCESS_BASIC_INFORMATION_WOW64](https://www.google.com/search?num=5&q=PROCESS_BASIC_INFORMATION_WOW64+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.PROCESS_BASIC_INFORMATION_WOW64](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_BASIC_INFORMATION_WOW64)  
 [RTL_USER_PROCESS_PARAMETERS](https://www.google.com/search?num=5&q=RTL_USER_PROCESS_PARAMETERS+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.RTL_USER_PROCESS_PARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=RTL_USER_PROCESS_PARAMETERS)  
+[RTL_USER_PROCESS_PARAMETERS_WOW64](https://www.google.com/search?num=5&q=RTL_USER_PROCESS_PARAMETERS_WOW64+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.RTL_USER_PROCESS_PARAMETERS_WOW64](https://github.com/dahall/Vanara/search?l=C%23&q=RTL_USER_PROCESS_PARAMETERS_WOW64)  
 [SYSTEM_BASIC_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_BASIC_INFORMATION+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_BASIC_INFORMATION)  
 [SYSTEM_PROCESS_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_PROCESS_INFORMATION+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_PROCESS_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_PROCESS_INFORMATION)  
 [SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION)  
 [SYSTEM_REGISTRY_QUOTA_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_REGISTRY_QUOTA_INFORMATION+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_REGISTRY_QUOTA_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_REGISTRY_QUOTA_INFORMATION)  
 [SYSTEM_THREAD_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_THREAD_INFORMATION+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_THREAD_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_THREAD_INFORMATION)  
 [UNICODE_STRING](https://www.google.com/search?num=5&q=UNICODE_STRING+site%3Adocs.microsoft.com) | wudfwdm.h | [Vanara.PInvoke.NtDll.UNICODE_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=UNICODE_STRING)  
+[UNICODE_STRING_WOW64](https://www.google.com/search?num=5&q=UNICODE_STRING_WOW64+site%3Adocs.microsoft.com) | wudfwdm.h | [Vanara.PInvoke.NtDll.UNICODE_STRING_WOW64](https://github.com/dahall/Vanara/search?l=C%23&q=UNICODE_STRING_WOW64)  
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
