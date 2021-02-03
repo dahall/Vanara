@@ -800,6 +800,77 @@ namespace Vanara.PInvoke
 		[PInvokeData("minidumpapiset.h", MSDNShortId = "NF:minidumpapiset.MiniDumpWriteDump")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern unsafe bool MiniDumpWriteDump(HPROCESS hProcess, uint ProcessId, HFILE hFile, MINIDUMP_TYPE DumpType,
+			[In, Optional] in MINIDUMP_EXCEPTION_INFORMATION ExceptionParam, [In, Optional] IntPtr UserStreamParam,
+			[In, Optional] IntPtr CallbackParam);
+
+		/// <summary>Writes user-mode minidump information to the specified file.</summary>
+		/// <param name="hProcess">
+		/// <para>A handle to the process for which the information is to be generated.</para>
+		/// <para>
+		/// This handle must have <c>PROCESS_QUERY_INFORMATION</c> and <c>PROCESS_VM_READ</c> access to the process. If handle information
+		/// is to be collected then <c>PROCESS_DUP_HANDLE</c> access is also required. For more information, see Process Security and Access
+		/// Rights. The caller must also be able to get <c>THREAD_ALL_ACCESS</c> access to the threads in the process. For more information,
+		/// see Thread Security and Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="ProcessId">The identifier of the process for which the information is to be generated.</param>
+		/// <param name="hFile">A handle to the file in which the information is to be written.</param>
+		/// <param name="DumpType">
+		/// The type of information to be generated. This parameter can be one or more of the values from the MINIDUMP_TYPE enumeration.
+		/// </param>
+		/// <param name="ExceptionParam">
+		/// A pointer to a MINIDUMP_EXCEPTION_INFORMATION structure describing the client exception that caused the minidump to be
+		/// generated. If the value of this parameter is <c>NULL</c>, no exception information is included in the minidump file.
+		/// </param>
+		/// <param name="UserStreamParam">
+		/// A pointer to a MINIDUMP_USER_STREAM_INFORMATION structure. If the value of this parameter is <c>NULL</c>, no user-defined
+		/// information is included in the minidump file.
+		/// </param>
+		/// <param name="CallbackParam">
+		/// A pointer to a MINIDUMP_CALLBACK_INFORMATION structure that specifies a callback routine which is to receive extended minidump
+		/// information. If the value of this parameter is <c>NULL</c>, no callbacks are performed.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is <c>TRUE</c>; otherwise, the return value is <c>FALSE</c>. To retrieve extended
+		/// error information, call GetLastError. Note that the last error will be an <c>HRESULT</c> value.
+		/// </para>
+		/// <para>If the operation is canceled, the last error code is
+		/// <code>HRESULT_FROM_WIN32(ERROR_CANCELLED)</code>
+		/// .
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The MiniDumpCallback function receives extended minidump information from <c>MiniDumpWriteDump</c>. It also provides a way for
+		/// the caller to determine the granularity of information written to the minidump file, as the callback function can filter the
+		/// default information.
+		/// </para>
+		/// <para>
+		/// <c>MiniDumpWriteDump</c> should be called from a separate process if at all possible, rather than from within the target process
+		/// being dumped. This is especially true when the target process is already not stable. For example, if it just crashed. A loader
+		/// deadlock is one of many potential side effects of calling <c>MiniDumpWriteDump</c> from within the target process.
+		/// </para>
+		/// <para>
+		/// <c>MiniDumpWriteDump</c> may not produce a valid stack trace for the calling thread. To work around this problem, you must
+		/// capture the state of the calling thread before calling <c>MiniDumpWriteDump</c> and use it as the ExceptionParam parameter. One
+		/// way to do this is to force an exception inside a <c>__try</c>/ <c>__except</c> block and use the EXCEPTION_POINTERS information
+		/// provided by GetExceptionInformation. Alternatively, you can call the function from a new worker thread and filter this worker
+		/// thread from the dump.
+		/// </para>
+		/// <para>
+		/// All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
+		/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
+		/// than one thread to this function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump BOOL MiniDumpWriteDump(
+		// HANDLE hProcess, DWORD ProcessId, HANDLE hFile, MINIDUMP_TYPE DumpType, PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
+		// PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam, PMINIDUMP_CALLBACK_INFORMATION CallbackParam );
+		[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("minidumpapiset.h", MSDNShortId = "NF:minidumpapiset.MiniDumpWriteDump")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern unsafe bool MiniDumpWriteDump(HPROCESS hProcess, uint ProcessId, HFILE hFile, MINIDUMP_TYPE DumpType,
 			[In, Optional] IntPtr ExceptionParam, [In, Optional] IntPtr UserStreamParam,
 			[In, Optional] IntPtr CallbackParam);
 

@@ -192,53 +192,62 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void MiniDumpCallbackOrderTest()
 		{
-			var memCallbackCalled = false;
-			using var hFile = CreateFile("CallbackOrder.dmp", Kernel32.FileAccess.GENERIC_READ | Kernel32.FileAccess.GENERIC_WRITE, 0, default, FileMode.Create, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL);
-			if (!hFile.IsInvalid)
+			try
 			{
-				var mdei = new MINIDUMP_EXCEPTION_INFORMATION
-				{
-					ThreadId = GetCurrentThreadId(),
-					ExceptionPointers = Marshal.GetExceptionPointers()
-				};
-
-				var mci = new MINIDUMP_CALLBACK_INFORMATION { CallbackRoutine = MyMiniDumpCallback };
-
-				Assert.That(MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MINIDUMP_TYPE.MiniDumpNormal, mdei, default, mci), ResultIs.Successful);
+				// Load an exception into the system tables
+				throw new InvalidOperationException();
 			}
-
-			bool MyMiniDumpCallback([In, Out] IntPtr CallbackParam, in MINIDUMP_CALLBACK_INPUT CallbackInput, ref MINIDUMP_CALLBACK_OUTPUT CallbackOutput)
+			catch
 			{
-				TestContext.Write($"{CallbackInput.CallbackType} ");
-				switch (CallbackInput.CallbackType)
+				// Test for debug exception info
+				var memCallbackCalled = false;
+				using var hFile = CreateFile("CallbackOrder.dmp", Kernel32.FileAccess.GENERIC_READ | Kernel32.FileAccess.GENERIC_WRITE, 0, default, FileMode.Create, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL);
+				if (!hFile.IsInvalid)
 				{
-					case MINIDUMP_CALLBACK_TYPE.ModuleCallback:
-						TestContext.WriteLine($"(module: {CallbackInput.Module.FullPath})");
-						return true;
-					case MINIDUMP_CALLBACK_TYPE.ThreadCallback:
-						TestContext.WriteLine($"(thread: {CallbackInput.Thread.ThreadId:X})");
-						return true;
-					case MINIDUMP_CALLBACK_TYPE.ThreadExCallback:
-						TestContext.WriteLine($"(thread: {CallbackInput.ThreadEx.ThreadId:X})");
-						return true;
-					case MINIDUMP_CALLBACK_TYPE.IncludeThreadCallback:
-						TestContext.WriteLine($"(thread: {CallbackInput.IncludeThread.ThreadId:X})");
-						return true;
-					case MINIDUMP_CALLBACK_TYPE.IncludeModuleCallback:
-						TestContext.WriteLine($"(module: {CallbackInput.IncludeModule.BaseOfImage:X})");
-						return true;
-					case MINIDUMP_CALLBACK_TYPE.MemoryCallback:
-						memCallbackCalled = true;
-						TestContext.WriteLine("");
-						return false;
-					case MINIDUMP_CALLBACK_TYPE.CancelCallback:
-						CallbackOutput.Cancel = false;
-						CallbackOutput.CheckCancel = !memCallbackCalled;
-						TestContext.WriteLine("");
-						return true;
-					default:
-						TestContext.WriteLine("");
-						return false;
+					var mdei = new MINIDUMP_EXCEPTION_INFORMATION
+					{
+						ThreadId = GetCurrentThreadId(),
+						ExceptionPointers = Marshal.GetExceptionPointers()
+					};
+
+					var mci = new MINIDUMP_CALLBACK_INFORMATION { CallbackRoutine = MyMiniDumpCallback };
+
+					Assert.That(MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MINIDUMP_TYPE.MiniDumpNormal, mdei, default, mci), ResultIs.Successful);
+				}
+
+				bool MyMiniDumpCallback([In, Out] IntPtr CallbackParam, in MINIDUMP_CALLBACK_INPUT CallbackInput, ref MINIDUMP_CALLBACK_OUTPUT CallbackOutput)
+				{
+					TestContext.Write($"{CallbackInput.CallbackType} ");
+					switch (CallbackInput.CallbackType)
+					{
+						case MINIDUMP_CALLBACK_TYPE.ModuleCallback:
+							TestContext.WriteLine($"(module: {CallbackInput.Module.FullPath})");
+							return true;
+						case MINIDUMP_CALLBACK_TYPE.ThreadCallback:
+							TestContext.WriteLine($"(thread: {CallbackInput.Thread.ThreadId:X})");
+							return true;
+						case MINIDUMP_CALLBACK_TYPE.ThreadExCallback:
+							TestContext.WriteLine($"(thread: {CallbackInput.ThreadEx.ThreadId:X})");
+							return true;
+						case MINIDUMP_CALLBACK_TYPE.IncludeThreadCallback:
+							TestContext.WriteLine($"(thread: {CallbackInput.IncludeThread.ThreadId:X})");
+							return true;
+						case MINIDUMP_CALLBACK_TYPE.IncludeModuleCallback:
+							TestContext.WriteLine($"(module: {CallbackInput.IncludeModule.BaseOfImage:X})");
+							return true;
+						case MINIDUMP_CALLBACK_TYPE.MemoryCallback:
+							memCallbackCalled = true;
+							TestContext.WriteLine("");
+							return false;
+						case MINIDUMP_CALLBACK_TYPE.CancelCallback:
+							CallbackOutput.Cancel = false;
+							CallbackOutput.CheckCancel = !memCallbackCalled;
+							TestContext.WriteLine("");
+							return true;
+						default:
+							TestContext.WriteLine("");
+							return false;
+					}
 				}
 			}
 		}
