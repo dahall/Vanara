@@ -3,8 +3,63 @@ using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
-	public static partial class WinVer
+	public static partial class VersionDll
 	{
+		/// <summary>Controls which MUI DLLs (if any) from which the version resource is extracted.</summary>
+		[PInvokeData("verrsrc.h")]
+		[Flags]
+		public enum FILE_VER_GET : uint
+		{
+			/// <summary>
+			/// Loads the entire version resource (both strings and binary version information) from the corresponding MUI file, if available.
+			/// </summary>
+			FILE_VER_GET_LOCALISED = 0x01,
+
+			/// <summary>
+			/// Loads the version resource strings from the corresponding MUI file, if available, and loads the binary version information
+			/// (VS_FIXEDFILEINFO) from the corresponding language-neutral file, if available.
+			/// </summary>
+			FILE_VER_GET_NEUTRAL = 0x02,
+
+			/// <summary>
+			/// Indicates a preference for version.dll to attempt to preload the image outside of the loader lock to avoid contention. This
+			/// flag does not change the behavior or semantics of the function.
+			/// </summary>
+			FILE_VER_GET_PREFETCHED = 0x04
+		}
+
+		/// <summary>Return codes for <c>VerFindFile</c>.</summary>
+		[PInvokeData("verrsrc.h")]
+		[Flags]
+		public enum VFF : uint
+		{
+			/// <summary>The currently installed version of the file is not in the recommended destination.</summary>
+			VFF_CURNEDEST = 0x0001,
+
+			/// <summary>
+			/// The system is using the currently installed version of the file; therefore, the file cannot be overwritten or deleted.
+			/// </summary>
+			VFF_FILEINUSE = 0x0002,
+
+			/// <summary>
+			/// At least one of the buffers was too small to contain the corresponding string. An application should check the output
+			/// buffers to determine which buffer was too small.
+			/// </summary>
+			VFF_BUFFTOOSMALL = 0x0004,
+		}
+
+		/// <summary>Flags for <c>VerFindFile</c>.</summary>
+		[PInvokeData("verrsrc.h")]
+		[Flags]
+		public enum VFFF : uint
+		{
+			/// <term>
+			/// The source file can be shared by multiple applications. An application can use this information to determine where the file
+			/// should be copied.
+			/// </term>
+			VFFF_ISSHAREDFILE = 0x0001,
+		}
+
 		/// <summary>The general type of file.</summary>
 		[PInvokeData("verrsrc.h", MSDNShortId = "NS:verrsrc.tagVS_FIXEDFILEINFO")]
 		public enum VFT : uint
@@ -85,6 +140,121 @@ namespace Vanara.PInvoke
 			VFT2_FONT_VECTOR = 0x00000002,
 		}
 
+		/// <summary>The return value for <see cref="VerInstallFile"/> that indicates exceptions.</summary>
+		[PInvokeData("verrsrc.h")]
+		[Flags]
+		public enum VIF : uint
+		{
+			/// <summary>
+			/// The szTmpFile buffer was too small to contain the name of the temporary source file. When the function returns,
+			/// lpuTmpFileLen contains the size of the buffer required to hold the filename.
+			/// </summary>
+			VIF_BUFFTOOSMALL = 0x00040000,
+
+			/// <summary>The function cannot create the temporary file. The specific error may be described by another flag.</summary>
+			VIF_CANNOTCREATE = 0x00000800,
+
+			/// <summary>
+			/// The function cannot delete the destination file, or cannot delete the existing version of the file located in another
+			/// directory. If the VIF_TEMPFILE bit is set, the installation failed, and the destination file probably cannot be deleted.
+			/// </summary>
+			VIF_CANNOTDELETE = 0x00001000,
+
+			/// <summary>The existing version of the file could not be deleted and VIFF_DONTDELETEOLD was not specified.</summary>
+			VIF_CANNOTDELETECUR = 0x00004000,
+
+			/// <summary>The function cannot load the cabinet file.</summary>
+			VIF_CANNOTLOADCABINET = 0x00100000,
+
+			/// <summary>The function cannot load the compressed file.</summary>
+			VIF_CANNOTLOADLZ32 = 0x00080000,
+
+			/// <summary>
+			/// The function cannot read the destination (existing) files. This prevents the function from examining the file's attributes.
+			/// </summary>
+			VIF_CANNOTREADDST = 0x00020000,
+
+			/// <summary>The function cannot read the source file. This could mean that the path was not specified properly.</summary>
+			VIF_CANNOTREADSRC = 0x00010000,
+
+			/// <summary>The function cannot rename the temporary file, but already deleted the destination file.</summary>
+			VIF_CANNOTRENAME = 0x00002000,
+
+			/// <summary>
+			/// The new file requires a code page that cannot be displayed by the version of the system currently running. This error can be
+			/// overridden by calling VerInstallFile with the VIFF_FORCEINSTALL flag set.
+			/// </summary>
+			VIF_DIFFCODEPG = 0x00000010,
+
+			/// <summary>
+			/// The new and preexisting files have different language or code-page values. This error can be overridden by calling
+			/// VerInstallFile again with the VIFF_FORCEINSTALL flag set.
+			/// </summary>
+			VIF_DIFFLANG = 0x00000008,
+
+			/// <summary>
+			/// The new file has a different type, subtype, or operating system from the preexisting file. This error can be overridden by
+			/// calling VerInstallFile again with the VIFF_FORCEINSTALL flag set.
+			/// </summary>
+			VIF_DIFFTYPE = 0x00000020,
+
+			/// <summary>The preexisting file is in use by the system and cannot be deleted.</summary>
+			VIF_FILEINUSE = 0x00000080,
+
+			/// <summary>
+			/// The new and preexisting files differ in one or more attributes. This error can be overridden by calling VerInstallFile again
+			/// with the VIFF_FORCEINSTALL flag set.
+			/// </summary>
+			VIF_MISMATCH = 0x00000002,
+
+			/// <summary>
+			/// The function cannot complete the requested operation due to insufficient memory. Generally, this means the application ran
+			/// out of memory attempting to expand a compressed file.
+			/// </summary>
+			VIF_OUTOFMEMORY = 0x00008000,
+
+			/// <summary>The function cannot create the temporary file due to insufficient disk space on the destination drive.</summary>
+			VIF_OUTOFSPACE = 0x00000100,
+
+			/// <summary>A read, create, delete, or rename operation failed due to a sharing violation.</summary>
+			VIF_SHARINGVIOLATION = 0x00000400,
+
+			/// <summary>
+			/// The file to install is older than the preexisting file. This error can be overridden by calling VerInstallFile again with
+			/// the VIFF_FORCEINSTALL flag set.
+			/// </summary>
+			VIF_SRCOLD = 0x00000004,
+
+			/// <summary>
+			/// The temporary copy of the new file is in the destination directory. The cause of failure is reflected in other flags.
+			/// </summary>
+			VIF_TEMPFILE = 0x00000001,
+
+			/// <summary>
+			/// The preexisting file is write-protected. This error can be overridden by calling VerInstallFile again with the
+			/// VIFF_FORCEINSTALL flag set.
+			/// </summary>
+			VIF_WRITEPROT = 0x00000040,
+		}
+
+		/// <summary>The flags for <see cref="VerInstallFile"/>.</summary>
+		[PInvokeData("verrsrc.h")]
+		[Flags]
+		public enum VIFF : uint
+		{
+			/// <summary>
+			/// Installs the file regardless of mismatched version numbers. The function checks only for physical errors during installation.
+			/// </summary>
+			VIFF_FORCEINSTALL = 0x0001,
+
+			/// <summary>
+			/// Installs the file without deleting the previously installed file, if the previously installed file is not in the destination directory.
+			/// </summary>
+			VIFF_DONTDELETEOLD = 0x0002,
+
+			/// <summary>A read, create, delete, or rename operation failed due to an access violation.</summary>
+			VIF_ACCESSVIOLATION = 0x00000200,
+		}
 		/// <summary>The operating system for which this file was designed.</summary>
 		[PInvokeData("verrsrc.h", MSDNShortId = "NS:verrsrc.tagVS_FIXEDFILEINFO")]
 		public enum VOS : uint
