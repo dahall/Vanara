@@ -6,8 +6,6 @@ namespace Vanara.PInvoke
 {
 	public static partial class DbgHelp
 	{
-		private const string Lib_Dbghelp = "dbghelp.dll";
-
 		/// <summary>
 		/// <para>An application-defined callback function used with MiniDumpWriteDump. It receives extended minidump information.</para>
 		/// <para>
@@ -28,6 +26,369 @@ namespace Vanara.PInvoke
 		[PInvokeData("minidumpapiset.h", MSDNShortId = "NC:minidumpapiset.MINIDUMP_CALLBACK_ROUTINE")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool MINIDUMP_CALLBACK_ROUTINE([In, Out] IntPtr CallbackParam, in MINIDUMP_CALLBACK_INPUT CallbackInput, ref MINIDUMP_CALLBACK_OUTPUT CallbackOutput);
+
+		/// <summary>
+		/// Identifies the type of information returned by the MiniDumpCallback function. Not all memory failures will cause a callback; for
+		/// example if the failure is within a stack then the failure is considered to be unrecoverable and the minidump will fail.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-minidump_callback_type typedef enum
+		// _MINIDUMP_CALLBACK_TYPE { ModuleCallback, ThreadCallback, ThreadExCallback, IncludeThreadCallback, IncludeModuleCallback,
+		// MemoryCallback, CancelCallback, WriteKernelMinidumpCallback, KernelMinidumpStatusCallback, RemoveMemoryCallback,
+		// IncludeVmRegionCallback, IoStartCallback, IoWriteAllCallback, IoFinishCallback, ReadMemoryFailureCallback,
+		// SecondaryFlagsCallback, IsProcessSnapshotCallback, VmStartCallback, VmQueryCallback, VmPreReadCallback, VmPostReadCallback } MINIDUMP_CALLBACK_TYPE;
+		[PInvokeData("minidumpapiset.h", MSDNShortId = "NE:minidumpapiset._MINIDUMP_CALLBACK_TYPE")]
+		public enum MINIDUMP_CALLBACK_TYPE
+		{
+			/// <summary>The callback function returns module information.</summary>
+			ModuleCallback,
+
+			/// <summary>The callback function returns thread information.</summary>
+			ThreadCallback,
+
+			/// <summary>The callback function returns extended thread information.</summary>
+			ThreadExCallback,
+
+			/// <summary>
+			/// The callback function indicates which threads are to be included. It is called as the minidump library is enumerating the
+			/// threads in a process, rather than after the information gathered, as it is with ThreadCallback or ThreadExCallback. It is
+			/// called for each thread. If the callback function returns FALSE, the current thread is excluded. This allows the caller to
+			/// obtain information for a subset of the threads in a process, without suspending threads that are not of interest.
+			/// Alternately, you can modify the ThreadWriteFlags member of the MINIDUMP_CALLBACK_OUTPUT structure and return TRUE to avoid
+			/// gathering unnecessary information for the thread.
+			/// </summary>
+			IncludeThreadCallback,
+
+			/// <summary>
+			/// The callback function indicates which modules are to be included. The callback function is called as the minidump library is
+			/// enumerating the modules in a process, rather than after the information is gathered, as it is with ModuleCallback. It is
+			/// called for each module. If the callback function returns FALSE, the current module is excluded. Alternatively, you can
+			/// modify the ModuleWriteFlags member of the MINIDUMP_CALLBACK_OUTPUT structure and return TRUE to avoid gathering unnecessary
+			/// information for the module.
+			/// </summary>
+			IncludeModuleCallback,
+
+			/// <summary>
+			/// The callback function returns a region of memory to be included in the dump. The callback is called only for dumps generated
+			/// without the MiniDumpWithFullMemory flag. If the callback function returns FALSE or a region of size 0, the callback will not
+			/// be called again. DbgHelp 6.1 and earlier: This value is not supported.
+			/// </summary>
+			MemoryCallback,
+
+			/// <summary>The callback function returns cancellation information. DbgHelp 6.1 and earlier: This value is not supported.</summary>
+			CancelCallback,
+
+			/// <summary>
+			/// The user-mode minidump has been successfully completed. To initiate a kernel-mode minidump, the callback should return TRUE
+			/// and set the Handle member of the MINIDUMP_CALLBACK_OUTPUT structure. DbgHelp 6.1 and earlier: This value is not supported.
+			/// </summary>
+			WriteKernelMinidumpCallback,
+
+			/// <summary>
+			/// The callback function returns status information for the kernel minidump. DbgHelp 6.1 and earlier: This value is not supported.
+			/// </summary>
+			KernelMinidumpStatusCallback,
+
+			/// <summary>
+			/// The callback function returns a region of memory to be excluded from the dump. The callback is called only for dumps
+			/// generated without the MiniDumpWithFullMemory flag. If the callback function returns FALSE or a region of size 0, the
+			/// callback will not be called again. DbgHelp 6.3 and earlier: This value is not supported.
+			/// </summary>
+			RemoveMemoryCallback,
+
+			/// <summary>
+			/// The callback function returns information about the virtual memory region. It is called twice for each region during the
+			/// full-memory writing pass. The VmRegion member of the MINIDUMP_CALLBACK_OUTPUT structure contains the current memory region.
+			/// You can modify the base address and size of the region, as long as the new region remains a subset of the original region;
+			/// changes to other members are ignored. If the callback returns TRUE and sets the Continue member of MINIDUMP_CALLBACK_OUTPUT
+			/// to TRUE, the minidump library will use the region specified by VmRegion as the region to be written. If the callback returns
+			/// FALSE or if Continue is FALSE, the callback will not be called for additional memory regions. DbgHelp 6.4 and earlier: This
+			/// value is not supported.
+			/// </summary>
+			IncludeVmRegionCallback,
+
+			/// <summary>
+			/// The callback function indicates that the caller will be providing an alternate I/O routine. If the callback returns TRUE and
+			/// sets the Status member of MINIDUMP_CALLBACK_OUTPUT to S_FALSE, the minidump library will send all I/O through callbacks. The
+			/// caller will receive an IoWriteAllCallback callback for each piece of data. DbgHelp 6.4 and earlier: This value is not supported.
+			/// </summary>
+			IoStartCallback,
+
+			/// <summary>
+			/// The callback must write all requested bytes or fail. The Io member of the MINIDUMP_CALLBACK_INPUT structure contains the
+			/// request. If the write operation fails, the callback should return FALSE. If the write operation succeeds, the callback
+			/// should return TRUE and set the Status member of MINIDUMP_CALLBACK_OUTPUT to S_OK. The caller will receive an
+			/// IoFinishCallback callback when the I/O has completed. DbgHelp 6.4 and earlier: This value is not supported.
+			/// </summary>
+			IoWriteAllCallback,
+
+			/// <summary>
+			/// The callback returns I/O completion information. If the callback returns FALSE or does not set the Status member of
+			/// MINIDUMP_CALLBACK_OUTPUT to S_OK, the minidump library assumes the minidump write operation has failed. DbgHelp 6.4 and
+			/// earlier: This value is not supported.
+			/// </summary>
+			IoFinishCallback,
+
+			/// <summary>
+			/// There has been a failure to read memory. If the callback returns TRUE and sets the Status member of MINIDUMP_CALLBACK_OUTPUT
+			/// to S_OK, the memory failure is ignored and the block is omitted from the minidump. Otherwise, this failure results in a
+			/// failure to write to the minidump. DbgHelp 6.4 and earlier: This value is not supported.
+			/// </summary>
+			ReadMemoryFailureCallback,
+
+			/// <summary>The callback returns secondary information. DbgHelp 6.5 and earlier: This value is not supported.</summary>
+			SecondaryFlagsCallback,
+
+			/// <summary>
+			/// The callback function indicates whether the target is a process or a snapshot.DbgHelp 6.2 and earlier: This value is not supported.
+			/// </summary>
+			IsProcessSnapshotCallback,
+
+			/// <summary>
+			/// The callback function indicates whether the callee supports and accepts virtual memory callbacks, such as VmQueryCallback,
+			/// VmPreReadCallback, and VmPostReadCallback. A return value of S_FALSE means that virtual memory callbacks are supported. A
+			/// value of S_OK means that virtual memory callbacks are not supported.DbgHelp 6.2 and earlier: This value is not supported.
+			/// </summary>
+			VmStartCallback,
+
+			/// <summary>
+			/// The callback function is invoked for snapshot targets to collect virtual address memory information from the target.The
+			/// callback is only called if VmStartCallback returned a value of S_FALSE.DbgHelp 6.2 and earlier: This value is not supported.
+			/// </summary>
+			VmQueryCallback,
+
+			/// <summary>
+			/// The callback function is sent for every ReadVirtual operation. These reads are not limited to the memory blocks that are
+			/// added to the dump. The engine also accesses the Process Environment Block (PEB), the Thread Environment Block (TEB), the
+			/// loader data, the unloaded module traces, and other blocks. Even if those blocks do not end up in the dump, they are read
+			/// from the target, and virtual memory callbacks are initiated for each. The callback is only called if VmStartCallback
+			/// returned S_FALSE.DbgHelp 6.2 and earlier: This value is not supported.
+			/// </summary>
+			VmPreReadCallback,
+
+			/// <summary>
+			/// The callback function allows the callee to alter the buffer contents with data from other sources, such as a cache, or
+			/// perform obfuscation. The buffer at this point is fully or partially filled by VmPreReadCallback and by ReadProcessMemory.
+			/// The callback is only called if VmStartCallback returned S_FALSE.DbgHelp 6.2 and earlier: This value is not supported.
+			/// </summary>
+			VmPostReadCallback,
+		}
+
+		/// <summary>Identifies the type of object-specific information.</summary>
+		/// <remarks>
+		/// The information represented by each of these values can vary by operating system and procesor architecture. Per-handle
+		/// object-specific information is automatically gathered when minidump type is MiniDumpWithHandleData. For more information, see MINIDUMP_TYPE.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-minidump_handle_object_information_type
+		// typedef enum _MINIDUMP_HANDLE_OBJECT_INFORMATION_TYPE { MiniHandleObjectInformationNone, MiniThreadInformation1,
+		// MiniMutantInformation1, MiniMutantInformation2, MiniProcessInformation1, MiniProcessInformation2, MiniEventInformation1,
+		// MiniSectionInformation1, MiniSemaphoreInformation1, MiniHandleObjectInformationTypeMax } MINIDUMP_HANDLE_OBJECT_INFORMATION_TYPE;
+		[PInvokeData("minidumpapiset.h", MSDNShortId = "NE:minidumpapiset._MINIDUMP_HANDLE_OBJECT_INFORMATION_TYPE")]
+		public enum MINIDUMP_HANDLE_OBJECT_INFORMATION_TYPE
+		{
+			/// <summary>There is no object-specific information for this handle type.</summary>
+			MiniHandleObjectInformationNone,
+
+			/// <summary>The information is specific to thread objects.</summary>
+			MiniThreadInformation1,
+
+			/// <summary>The information is specific to mutant objects.</summary>
+			MiniMutantInformation1,
+
+			/// <summary>The information is specific to mutant objects.</summary>
+			MiniMutantInformation2,
+
+			/// <summary>The information is specific to process objects.</summary>
+			MiniProcessInformation1,
+
+			/// <summary>The information is specific to process objects.</summary>
+			MiniProcessInformation2,
+
+			/// <summary/>
+			MiniEventInformation1,
+
+			/// <summary/>
+			MiniSectionInformation1,
+
+			/// <summary/>
+			MiniSemaphoreInformation1,
+
+			/// <summary/>
+			MiniHandleObjectInformationTypeMax,
+		}
+
+		/// <summary>Specifies the secondary flags for the minidump.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-minidump_secondary_flags typedef enum
+		// _MINIDUMP_SECONDARY_FLAGS { MiniSecondaryWithoutPowerInfo, MiniSecondaryValidFlags } MINIDUMP_SECONDARY_FLAGS;
+		[PInvokeData("minidumpapiset.h", MSDNShortId = "NE:minidumpapiset._MINIDUMP_SECONDARY_FLAGS")]
+		[Flags]
+		public enum MINIDUMP_SECONDARY_FLAGS
+		{
+			/// <summary>
+			/// The minidump information does not retrieve the processor power information contained in the MINIDUMP_MISC_INFO_2 structure.
+			/// </summary>
+			MiniSecondaryWithoutPowerInfo = 1,
+
+			/// <summary/>
+			MiniSecondaryValidFlags = 1,
+		}
+
+		/// <summary>Represents the type of a minidump data stream.</summary>
+		/// <remarks>
+		/// <para>In this context, a data stream is a set of data in a minidump file.</para>
+		/// <para>
+		/// The <c>StreamType</c> member of the MINIDUMP_DIRECTORY structure can be one of these types. Additional types may be added in the
+		/// future, so if a program reading the minidump header encounters a stream type it does not recognize, it should ignore the stream altogether.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-minidump_stream_type typedef enum
+		// _MINIDUMP_STREAM_TYPE { UnusedStream, ReservedStream0, ReservedStream1, ThreadListStream, ModuleListStream, MemoryListStream,
+		// ExceptionStream, SystemInfoStream, ThreadExListStream, Memory64ListStream, CommentStreamA, CommentStreamW, HandleDataStream,
+		// FunctionTableStream, UnloadedModuleListStream, MiscInfoStream, MemoryInfoListStream, ThreadInfoListStream,
+		// HandleOperationListStream, TokenStream, JavaScriptDataStream, SystemMemoryInfoStream, ProcessVmCountersStream, IptTraceStream,
+		// ThreadNamesStream, ceStreamNull, ceStreamSystemInfo, ceStreamException, ceStreamModuleList, ceStreamProcessList,
+		// ceStreamThreadList, ceStreamThreadContextList, ceStreamThreadCallStackList, ceStreamMemoryVirtualList,
+		// ceStreamMemoryPhysicalList, ceStreamBucketParameters, ceStreamProcessModuleMap, ceStreamDiagnosisList, LastReservedStream } MINIDUMP_STREAM_TYPE;
+		[PInvokeData("minidumpapiset.h", MSDNShortId = "NE:minidumpapiset._MINIDUMP_STREAM_TYPE")]
+		public enum MINIDUMP_STREAM_TYPE
+		{
+			/// <summary>Reserved. Do not use this enumeration value.</summary>
+			UnusedStream,
+
+			/// <summary>Reserved. Do not use this enumeration value.</summary>
+			ReservedStream0,
+
+			/// <summary>Reserved. Do not use this enumeration value.</summary>
+			ReservedStream1,
+
+			/// <summary>The stream contains thread information. For more information, see MINIDUMP_THREAD_LIST.</summary>
+			ThreadListStream,
+
+			/// <summary>The stream contains module information. For more information, see MINIDUMP_MODULE_LIST.</summary>
+			ModuleListStream,
+
+			/// <summary>The stream contains memory allocation information. For more information, see MINIDUMP_MEMORY_LIST.</summary>
+			MemoryListStream,
+
+			/// <summary>The stream contains exception information. For more information, see MINIDUMP_EXCEPTION_STREAM.</summary>
+			ExceptionStream,
+
+			/// <summary>The stream contains general system information. For more information, see MINIDUMP_SYSTEM_INFO.</summary>
+			SystemInfoStream,
+
+			/// <summary>The stream contains extended thread information. For more information, see MINIDUMP_THREAD_EX_LIST.</summary>
+			ThreadExListStream,
+
+			/// <summary>The stream contains memory allocation information. For more information, see MINIDUMP_MEMORY64_LIST.</summary>
+			Memory64ListStream,
+
+			/// <summary>The stream contains an ANSI string used for documentation purposes.</summary>
+			CommentStreamA,
+
+			/// <summary>The stream contains a Unicode string used for documentation purposes.</summary>
+			CommentStreamW,
+
+			/// <summary>
+			/// The stream contains high-level information about the active operating system handles. For more information, see MINIDUMP_HANDLE_DATA_STREAM.
+			/// </summary>
+			HandleDataStream,
+
+			/// <summary>The stream contains function table information. For more information, see MINIDUMP_FUNCTION_TABLE_STREAM.</summary>
+			FunctionTableStream,
+
+			/// <summary>
+			/// The stream contains module information for the unloaded modules. For more information, see
+			/// MINIDUMP_UNLOADED_MODULE_LIST.DbgHelp 5.1: This value is not supported.
+			/// </summary>
+			UnloadedModuleListStream,
+
+			/// <summary>
+			/// The stream contains miscellaneous information. For more information, see MINIDUMP_MISC_INFO or MINIDUMP_MISC_INFO_2.DbgHelp
+			/// 5.1: This value is not supported.
+			/// </summary>
+			MiscInfoStream,
+
+			/// <summary>
+			/// The stream contains memory region description information. It corresponds to the information that would be returned for the
+			/// process from the VirtualQuery function. For more information, see MINIDUMP_MEMORY_INFO_LIST.DbgHelp 6.1 and earlier: This
+			/// value is not supported.
+			/// </summary>
+			MemoryInfoListStream,
+
+			/// <summary>
+			/// The stream contains thread state information. For more information, see MINIDUMP_THREAD_INFO_LIST.DbgHelp 6.1 and earlier:
+			/// This value is not supported.
+			/// </summary>
+			ThreadInfoListStream,
+
+			/// <summary>
+			/// This stream contains operation list information. For more information, see MINIDUMP_HANDLE_OPERATION_LIST.DbgHelp 6.4 and
+			/// earlier: This value is not supported.
+			/// </summary>
+			HandleOperationListStream,
+
+			/// <summary/>
+			TokenStream,
+
+			/// <summary/>
+			JavaScriptDataStream,
+
+			/// <summary/>
+			SystemMemoryInfoStream,
+
+			/// <summary/>
+			ProcessVmCountersStream,
+
+			/// <summary/>
+			IptTraceStream,
+
+			/// <summary/>
+			ThreadNamesStream,
+
+			/// <summary/>
+			ceStreamNull = 0x8000,
+
+			/// <summary/>
+			ceStreamSystemInfo,
+
+			/// <summary/>
+			ceStreamException,
+
+			/// <summary/>
+			ceStreamModuleList,
+
+			/// <summary/>
+			ceStreamProcessList,
+
+			/// <summary/>
+			ceStreamThreadList,
+
+			/// <summary/>
+			ceStreamThreadContextList,
+
+			/// <summary/>
+			ceStreamThreadCallStackList,
+
+			/// <summary/>
+			ceStreamMemoryVirtualList,
+
+			/// <summary/>
+			ceStreamMemoryPhysicalList,
+
+			/// <summary/>
+			ceStreamBucketParameters,
+
+			/// <summary/>
+			ceStreamProcessModuleMap,
+
+			/// <summary/>
+			ceStreamDiagnosisList,
+
+			/// <summary>
+			/// Any value greater than this value will not be used by the system and can be used to represent application-defined data
+			/// streams. For more information, see MINIDUMP_USER_STREAM.
+			/// </summary>
+			LastReservedStream = 0xffff,
+		}
 
 		/// <summary>The flags that indicate the thread state.</summary>
 		[PInvokeData("minidumpapiset.h", MSDNShortId = "NS:minidumpapiset._MINIDUMP_THREAD_INFO")]
@@ -53,6 +414,231 @@ namespace Vanara.PInvoke
 			MINIDUMP_THREAD_INFO_WRITING_THREAD = 0x00000002,
 		}
 
+		/// <summary>
+		/// <para>Identifies the type of information that will be written to the minidump file by the MiniDumpWriteDump function.</para>
+		/// <para><c>Important</c></para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-minidump_type typedef enum _MINIDUMP_TYPE {
+		// MiniDumpNormal, MiniDumpWithDataSegs, MiniDumpWithFullMemory, MiniDumpWithHandleData, MiniDumpFilterMemory, MiniDumpScanMemory,
+		// MiniDumpWithUnloadedModules, MiniDumpWithIndirectlyReferencedMemory, MiniDumpFilterModulePaths, MiniDumpWithProcessThreadData,
+		// MiniDumpWithPrivateReadWriteMemory, MiniDumpWithoutOptionalData, MiniDumpWithFullMemoryInfo, MiniDumpWithThreadInfo,
+		// MiniDumpWithCodeSegs, MiniDumpWithoutAuxiliaryState, MiniDumpWithFullAuxiliaryState, MiniDumpWithPrivateWriteCopyMemory,
+		// MiniDumpIgnoreInaccessibleMemory, MiniDumpWithTokenInformation, MiniDumpWithModuleHeaders, MiniDumpFilterTriage,
+		// MiniDumpWithAvxXStateContext, MiniDumpWithIptTrace, MiniDumpScanInaccessiblePartialPages, MiniDumpValidTypeFlags } MINIDUMP_TYPE;
+		[PInvokeData("minidumpapiset.h", MSDNShortId = "NE:minidumpapiset._MINIDUMP_TYPE")]
+		[Flags]
+		public enum MINIDUMP_TYPE
+		{
+			/// <summary>Include just the information necessary to capture stack traces for all existing threads in a process.</summary>
+			MiniDumpNormal = 0x00000000,
+
+			/// <summary>
+			/// Include the data sections from all loaded modules. This results in the inclusion of global variables, which can make the
+			/// minidump file significantly larger. For per-module control, use the ModuleWriteDataSeg enumeration value from MODULE_WRITE_FLAGS.
+			/// </summary>
+			MiniDumpWithDataSegs = 0x00000001,
+
+			/// <summary>
+			/// Include all accessible memory in the process. The raw memory data is included at the end, so that the initial structures can
+			/// be mapped directly without the raw memory information. This option can result in a very large file.
+			/// </summary>
+			MiniDumpWithFullMemory = 0x00000002,
+
+			/// <summary>Include high-level information about the operating system handles that are active when the minidump is made.</summary>
+			MiniDumpWithHandleData = 0x00000004,
+
+			/// <summary>
+			/// Stack and backing store memory written to the minidump file should be filtered to remove all but the pointer values
+			/// necessary to reconstruct a stack trace.
+			/// </summary>
+			MiniDumpFilterMemory = 0x00000008,
+
+			/// <summary>
+			/// Stack and backing store memory should be scanned for pointer references to modules in the module list. If a module is
+			/// referenced by stack or backing store memory, the ModuleWriteFlags member of the MINIDUMP_CALLBACK_OUTPUT structure is set to ModuleReferencedByMemory.
+			/// </summary>
+			MiniDumpScanMemory = 0x00000010,
+
+			/// <summary>
+			/// Include information from the list of modules that were recently unloaded, if this information is maintained by the operating
+			/// system. Windows Server 2003 and Windows XP: The operating system does not maintain information for unloaded modules until
+			/// Windows Server 2003 with SP1 and Windows XP with SP2.DbgHelp 5.1: This value is not supported.
+			/// </summary>
+			MiniDumpWithUnloadedModules = 0x00000020,
+
+			/// <summary>
+			/// Include pages with data referenced by locals or other stack memory. This option can increase the size of the minidump file
+			/// significantly. DbgHelp 5.1: This value is not supported.
+			/// </summary>
+			MiniDumpWithIndirectlyReferencedMemory = 0x00000040,
+
+			/// <summary>
+			/// Filter module paths for information such as user names or important directories. This option may prevent the system from
+			/// locating the image file and should be used only in special situations. DbgHelp 5.1: This value is not supported.
+			/// </summary>
+			MiniDumpFilterModulePaths = 0x00000080,
+
+			/// <summary>
+			/// Include complete per-process and per-thread information from the operating system. DbgHelp 5.1: This value is not supported.
+			/// </summary>
+			MiniDumpWithProcessThreadData = 0x00000100,
+
+			/// <summary>Scan the virtual address space for PAGE_READWRITE memory to be included. DbgHelp 5.1: This value is not supported.</summary>
+			MiniDumpWithPrivateReadWriteMemory = 0x00000200,
+
+			/// <summary>
+			/// Reduce the data that is dumped by eliminating memory regions that are not essential to meet criteria specified for the dump.
+			/// This can avoid dumping memory that may contain data that is private to the user. However, it is not a guarantee that no
+			/// private information will be present. DbgHelp 6.1 and earlier: This value is not supported.
+			/// </summary>
+			MiniDumpWithoutOptionalData = 0x00000400,
+
+			/// <summary>
+			/// Include memory region information. For more information, see MINIDUMP_MEMORY_INFO_LIST. DbgHelp 6.1 and earlier: This value
+			/// is not supported.
+			/// </summary>
+			MiniDumpWithFullMemoryInfo = 0x00000800,
+
+			/// <summary>
+			/// Include thread state information. For more information, see MINIDUMP_THREAD_INFO_LIST. DbgHelp 6.1 and earlier: This value
+			/// is not supported.
+			/// </summary>
+			MiniDumpWithThreadInfo = 0x00001000,
+
+			/// <summary>
+			/// Include all code and code-related sections from loaded modules to capture executable content. For per-module control, use
+			/// the ModuleWriteCodeSegs enumeration value from MODULE_WRITE_FLAGS. DbgHelp 6.1 and earlier: This value is not supported.
+			/// </summary>
+			MiniDumpWithCodeSegs = 0x00002000,
+
+			/// <summary>Turns off secondary auxiliary-supported memory gathering.</summary>
+			MiniDumpWithoutAuxiliaryState = 0x00004000,
+
+			/// <summary>
+			/// Requests that auxiliary data providers include their state in the dump image; the state data that is included is provider
+			/// dependent. This option can result in a large dump image.
+			/// </summary>
+			MiniDumpWithFullAuxiliaryState = 0x00008000,
+
+			/// <summary>
+			/// Scans the virtual address space for PAGE_WRITECOPY memory to be included. Prior to DbgHelp 6.1: This value is not supported.
+			/// </summary>
+			MiniDumpWithPrivateWriteCopyMemory = 0x00010000,
+
+			/// <summary>
+			/// If you specify MiniDumpWithFullMemory, the MiniDumpWriteDump function will fail if the function cannot read the memory
+			/// regions; however, if you include MiniDumpIgnoreInaccessibleMemory, the MiniDumpWriteDump function will ignore the memory
+			/// read failures and continue to generate the dump. Note that the inaccessible memory regions are not included in the
+			/// dump.Prior to DbgHelp 6.1: This value is not supported.
+			/// </summary>
+			MiniDumpIgnoreInaccessibleMemory = 0x00020000,
+
+			/// <summary>
+			/// Adds security token related data. This will make the "!token" extension work when processing a user-mode dump. Prior to
+			/// DbgHelp 6.1: This value is not supported.
+			/// </summary>
+			MiniDumpWithTokenInformation = 0x00040000,
+
+			/// <summary>Adds module header related data. Prior to DbgHelp 6.1: This value is not supported.</summary>
+			MiniDumpWithModuleHeaders = 0x00080000,
+
+			/// <summary>Adds filter triage related data. Prior to DbgHelp 6.1: This value is not supported.</summary>
+			MiniDumpFilterTriage = 0x00100000,
+
+			/// <summary/>
+			MiniDumpWithAvxXStateContext = 0x00200000,
+
+			/// <summary/>
+			MiniDumpWithIptTrace = 0x00400000,
+
+			/// <summary>Indicates which flags are valid.</summary>
+			MiniDumpValidTypeFlags = 0x00800000,
+		}
+
+		/// <summary>Identifies the type of module information that will be written to the minidump file by the MiniDumpWriteDump function.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-module_write_flags typedef enum
+		// _MODULE_WRITE_FLAGS { ModuleWriteModule, ModuleWriteDataSeg, ModuleWriteMiscRecord, ModuleWriteCvRecord,
+		// ModuleReferencedByMemory, ModuleWriteTlsData, ModuleWriteCodeSegs } MODULE_WRITE_FLAGS;
+		[PInvokeData("minidumpapiset.h", MSDNShortId = "NE:minidumpapiset._MODULE_WRITE_FLAGS")]
+		[Flags]
+		public enum MODULE_WRITE_FLAGS
+		{
+			/// <summary>Only module information will be written to the minidump file.</summary>
+			ModuleWriteModule = 0x0001,
+
+			/// <summary>
+			/// Module and data segment information will be written to the minidump file. This value will only be set if the
+			/// MiniDumpWithDataSegs enumeration value from MINIDUMP_TYPE is set.
+			/// </summary>
+			ModuleWriteDataSeg = 0x0002,
+
+			/// <summary>Module, data segment, and miscellaneous record information will be written to the minidump file.</summary>
+			ModuleWriteMiscRecord = 0x0004,
+
+			/// <summary>
+			/// CodeView information will be written to the minidump file. Some debuggers need the CodeView information to properly locate symbols.
+			/// </summary>
+			ModuleWriteCvRecord = 0x0008,
+
+			/// <summary>
+			/// Indicates that a module was referenced by a pointer on the stack or backing store of a thread in the minidump. This value is
+			/// valid only if the DumpType parameter of the MiniDumpWriteDump function includes MiniDumpScanMemory.
+			/// </summary>
+			ModuleReferencedByMemory = 0x0010,
+
+			/// <summary>
+			/// Per-module automatic TLS data is written to the minidump file. (Note that automatic TLS data is created using
+			/// __declspec(thread) while TlsAlloc creates dynamic TLS data). This value is valid only if the DumpType parameter of the
+			/// MiniDumpWriteDump function includes MiniDumpWithProcessThreadData.DbgHelp 6.1 and earlier: This value is not supported.
+			/// </summary>
+			ModuleWriteTlsData = 0x0020,
+
+			/// <summary>
+			/// Code segment information will be written to the minidump file. This value will only be set if the MiniDumpWithCodeSegs
+			/// enumeration value from MINIDUMP_TYPE is set.DbgHelp 6.1 and earlier: This value is not supported.
+			/// </summary>
+			ModuleWriteCodeSegs = 0x0040,
+		}
+		/// <summary>Identifies the type of thread information that will be written to the minidump file by the MiniDumpWriteDump function.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-thread_write_flags typedef enum
+		// _THREAD_WRITE_FLAGS { ThreadWriteThread, ThreadWriteStack, ThreadWriteContext, ThreadWriteBackingStore,
+		// ThreadWriteInstructionWindow, ThreadWriteThreadData, ThreadWriteThreadInfo } THREAD_WRITE_FLAGS;
+		[PInvokeData("minidumpapiset.h", MSDNShortId = "NE:minidumpapiset._THREAD_WRITE_FLAGS")]
+		public enum THREAD_WRITE_FLAGS
+		{
+			/// <summary>Only basic thread information will be written to the minidump file.</summary>
+			ThreadWriteThread,
+
+			/// <summary>Basic thread and thread stack information will be written to the minidump file.</summary>
+			ThreadWriteStack,
+
+			/// <summary>The entire thread context will be written to the minidump file.</summary>
+			ThreadWriteContext,
+
+			/// <summary>Intel Itanium: The backing store memory of every thread will be written to the minidump file.</summary>
+			ThreadWriteBackingStore,
+
+			/// <summary>
+			/// A small amount of memory surrounding each thread's instruction pointer will be written to the minidump file. This allows
+			/// instructions near a thread's instruction pointer to be disassembled even if an executable image matching the module cannot
+			/// be found.
+			/// </summary>
+			ThreadWriteInstructionWindow,
+
+			/// <summary>
+			/// When the minidump type includes MiniDumpWithProcessThreadData, this flag is set. The callback function can clear this flag
+			/// to control which threads provide complete thread data in the minidump file.DbgHelp 5.1: This value is not supported.
+			/// </summary>
+			ThreadWriteThreadData,
+
+			/// <summary>
+			/// When the minidump type includes MiniDumpWithThreadInfo, this flag is set. The callback function can clear this flag to
+			/// control which threads provide thread state information in the minidump file. For more information, see
+			/// MINIDUMP_THREAD_INFO.DbgHelp 6.1 and earlier: This value is not supported.
+			/// </summary>
+			ThreadWriteThreadInfo,
+		}
+
 		/// <summary>Reads a stream from a user-mode minidump file.</summary>
 		/// <param name="BaseOfDump">
 		/// A pointer to the base of the mapped minidump file. The file should have been mapped into memory using the MapViewOfFile function.
@@ -70,7 +656,7 @@ namespace Vanara.PInvoke
 		/// <remarks>In this context, a data stream is a block of data written to a minidump file.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpreaddumpstream BOOL
 		// MiniDumpReadDumpStream( PVOID BaseOfDump, ULONG StreamNumber, PMINIDUMP_DIRECTORY *Dir, PVOID *StreamPointer, ULONG *StreamSize );
-		[DllImport(Lib_Dbghelp, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DbgHelp, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("minidumpapiset.h", MSDNShortId = "NF:minidumpapiset.MiniDumpReadDumpStream")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool MiniDumpReadDumpStream([In] IntPtr BaseOfDump, uint StreamNumber, out IntPtr Dir, out IntPtr StreamPointer, out uint StreamSize);
@@ -139,7 +725,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump BOOL MiniDumpWriteDump(
 		// HANDLE hProcess, DWORD ProcessId, HANDLE hFile, MINIDUMP_TYPE DumpType, PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
 		// PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam, PMINIDUMP_CALLBACK_INFORMATION CallbackParam );
-		[DllImport(Lib_Dbghelp, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("minidumpapiset.h", MSDNShortId = "NF:minidumpapiset.MiniDumpWriteDump")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern unsafe bool MiniDumpWriteDump(HPROCESS hProcess, uint ProcessId, HFILE hFile, MINIDUMP_TYPE DumpType,
@@ -210,7 +796,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump BOOL MiniDumpWriteDump(
 		// HANDLE hProcess, DWORD ProcessId, HANDLE hFile, MINIDUMP_TYPE DumpType, PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
 		// PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam, PMINIDUMP_CALLBACK_INFORMATION CallbackParam );
-		[DllImport(Lib_Dbghelp, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("minidumpapiset.h", MSDNShortId = "NF:minidumpapiset.MiniDumpWriteDump")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern unsafe bool MiniDumpWriteDump(HPROCESS hProcess, uint ProcessId, HFILE hFile, MINIDUMP_TYPE DumpType,
@@ -1475,7 +2061,7 @@ namespace Vanara.PInvoke
 			public uint ModuleNameRva;
 
 			/// <summary>A VS_FIXEDFILEINFO structure that specifies the version of the module.</summary>
-			public WinVer.VS_FIXEDFILEINFO VersionInfo;
+			public VersionDll.VS_FIXEDFILEINFO VersionInfo;
 
 			/// <summary>A MINIDUMP_LOCATION_DESCRIPTOR structure that specifies the CodeView record of the module.</summary>
 			public MINIDUMP_LOCATION_DESCRIPTOR CvRecord;
@@ -1515,7 +2101,7 @@ namespace Vanara.PInvoke
 			public time_t TimeDateStamp;
 
 			/// <summary>A VS_FIXEDFILEINFO structure that specifies the version of the module.</summary>
-			public WinVer.VS_FIXEDFILEINFO VersionInfo;
+			public VersionDll.VS_FIXEDFILEINFO VersionInfo;
 
 			/// <summary>A pointer to a string containing the CodeView record of the module.</summary>
 			public IntPtr CvRecord;

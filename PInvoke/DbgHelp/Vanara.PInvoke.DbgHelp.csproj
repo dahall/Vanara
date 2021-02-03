@@ -25,5 +25,6 @@ ADDRESS, ADDRESS64, API_VERSION, IMAGE_DEBUG_INFORMATION, IMAGEHLP_CBA_EVENT, IM
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Version\Vanara.PInvoke.Version.csproj" />
   </ItemGroup>
 </Project>

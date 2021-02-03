@@ -209,35 +209,35 @@ namespace Vanara.PInvoke.Tests
 
 			bool MyMiniDumpCallback([In, Out] IntPtr CallbackParam, in MINIDUMP_CALLBACK_INPUT CallbackInput, ref MINIDUMP_CALLBACK_OUTPUT CallbackOutput)
 			{
-				Debug.Write($"{CallbackInput.CallbackType} ");
+				TestContext.Write($"{CallbackInput.CallbackType} ");
 				switch (CallbackInput.CallbackType)
 				{
 					case MINIDUMP_CALLBACK_TYPE.ModuleCallback:
-						Debug.WriteLine($"(module: {CallbackInput.Union.Module.FullPath})");
+						TestContext.WriteLine($"(module: {CallbackInput.Module.FullPath})");
 						return true;
 					case MINIDUMP_CALLBACK_TYPE.ThreadCallback:
-						Debug.WriteLine($"(thread: {CallbackInput.Union.Thread.ThreadId:X})");
+						TestContext.WriteLine($"(thread: {CallbackInput.Thread.ThreadId:X})");
 						return true;
 					case MINIDUMP_CALLBACK_TYPE.ThreadExCallback:
-						Debug.WriteLine($"(thread: {CallbackInput.Union.ThreadEx.ThreadId:X})");
+						TestContext.WriteLine($"(thread: {CallbackInput.ThreadEx.ThreadId:X})");
 						return true;
 					case MINIDUMP_CALLBACK_TYPE.IncludeThreadCallback:
-						Debug.WriteLine($"(thread: {CallbackInput.Union.IncludeThread.ThreadId:X})");
+						TestContext.WriteLine($"(thread: {CallbackInput.IncludeThread.ThreadId:X})");
 						return true;
 					case MINIDUMP_CALLBACK_TYPE.IncludeModuleCallback:
-						Debug.WriteLine($"(module: {CallbackInput.Union.IncludeModule.BaseOfImage:X})");
+						TestContext.WriteLine($"(module: {CallbackInput.IncludeModule.BaseOfImage:X})");
 						return true;
 					case MINIDUMP_CALLBACK_TYPE.MemoryCallback:
 						memCallbackCalled = true;
-						Debug.WriteLine("");
+						TestContext.WriteLine("");
 						return false;
 					case MINIDUMP_CALLBACK_TYPE.CancelCallback:
 						CallbackOutput.Cancel = false;
 						CallbackOutput.CheckCancel = !memCallbackCalled;
-						Debug.WriteLine("");
+						TestContext.WriteLine("");
 						return true;
 					default:
-						Debug.WriteLine("");
+						TestContext.WriteLine("");
 						return false;
 				}
 			}
