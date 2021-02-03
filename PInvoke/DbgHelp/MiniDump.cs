@@ -2772,6 +2772,7 @@ namespace Vanara.PInvoke
 			public MINIDUMP_USER_STREAM[] UserStreamArray;
 		}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		[PInvokeData("minidumpapiset.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct MINIDUMP_VM_POST_READ_CALLBACK
@@ -2798,5 +2799,6 @@ namespace Vanara.PInvoke
 		{
 			public ulong Offset;
 		}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 }
