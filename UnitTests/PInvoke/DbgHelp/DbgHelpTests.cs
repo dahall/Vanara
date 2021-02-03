@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using static Vanara.PInvoke.DbgHelp;
 using static Vanara.PInvoke.ImageHlp;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -185,6 +186,60 @@ namespace Vanara.PInvoke.Tests
 			finally
 			{
 				UnMapAndLoad(ref LoadedImage);
+			}
+		}
+
+		[Test]
+		public void MiniDumpCallbackOrderTest()
+		{
+			var memCallbackCalled = false;
+			using var hFile = CreateFile("CallbackOrder.dmp", Kernel32.FileAccess.GENERIC_READ | Kernel32.FileAccess.GENERIC_WRITE, 0, default, FileMode.Create, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL);
+			if (!hFile.IsInvalid)
+			{
+				var mdei = new MINIDUMP_EXCEPTION_INFORMATION
+				{
+					ThreadId = GetCurrentThreadId(),
+					ExceptionPointers = Marshal.GetExceptionPointers()
+				};
+
+				var mci = new MINIDUMP_CALLBACK_INFORMATION { CallbackRoutine = MyMiniDumpCallback };
+
+				Assert.That(MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MINIDUMP_TYPE.MiniDumpNormal, mdei, default, mci), ResultIs.Successful);
+			}
+
+			bool MyMiniDumpCallback([In, Out] IntPtr CallbackParam, in MINIDUMP_CALLBACK_INPUT CallbackInput, ref MINIDUMP_CALLBACK_OUTPUT CallbackOutput)
+			{
+				Debug.Write($"{CallbackInput.CallbackType} ");
+				switch (CallbackInput.CallbackType)
+				{
+					case MINIDUMP_CALLBACK_TYPE.ModuleCallback:
+						Debug.WriteLine($"(module: {CallbackInput.Union.Module.FullPath})");
+						return true;
+					case MINIDUMP_CALLBACK_TYPE.ThreadCallback:
+						Debug.WriteLine($"(thread: {CallbackInput.Union.Thread.ThreadId:X})");
+						return true;
+					case MINIDUMP_CALLBACK_TYPE.ThreadExCallback:
+						Debug.WriteLine($"(thread: {CallbackInput.Union.ThreadEx.ThreadId:X})");
+						return true;
+					case MINIDUMP_CALLBACK_TYPE.IncludeThreadCallback:
+						Debug.WriteLine($"(thread: {CallbackInput.Union.IncludeThread.ThreadId:X})");
+						return true;
+					case MINIDUMP_CALLBACK_TYPE.IncludeModuleCallback:
+						Debug.WriteLine($"(module: {CallbackInput.Union.IncludeModule.BaseOfImage:X})");
+						return true;
+					case MINIDUMP_CALLBACK_TYPE.MemoryCallback:
+						memCallbackCalled = true;
+						Debug.WriteLine("");
+						return false;
+					case MINIDUMP_CALLBACK_TYPE.CancelCallback:
+						CallbackOutput.Cancel = false;
+						CallbackOutput.CheckCancel = !memCallbackCalled;
+						Debug.WriteLine("");
+						return true;
+					default:
+						Debug.WriteLine("");
+						return false;
+				}
 			}
 		}
 	}
