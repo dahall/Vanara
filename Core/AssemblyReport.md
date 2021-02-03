@@ -39,7 +39,7 @@ Class | Description
 [Vanara.Extensions.BitHelper](https://github.com/dahall/Vanara/search?l=C%23&q=BitHelper) | Static methods to help with bit manipulation.
 [Vanara.ByteSizeFormatter](https://github.com/dahall/Vanara/search?l=C%23&q=ByteSizeFormatter) | A custom formatter for byte sizes (things like files, network bandwidth, etc.) that will automatically determine the best abbreviation.
 [Vanara.InteropServices.ComConnectionPoint](https://github.com/dahall/Vanara/search?l=C%23&q=ComConnectionPoint) | Helper class to create an advised COM sink. When this class is constructed, the source is queried for an `System.Runtime.InteropServices.ComTypes.IConnectionPointContainer` reference.
-[Vanara.InteropServices.ComReleaser<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ComReleaser<T>) | A safe variable to hold an instance of a COM class that automatically calls `System.Runtime.InteropServices.Marshal.ReleaseComObject(System.Object)` on disposal.
+[Vanara.InteropServices.ComReleaser<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ComReleaser<T>) | A safe variable to hold an instance of a COM class that automatically releases the instance on disposal.
 [Vanara.InteropServices.ComReleaserFactory](https://github.com/dahall/Vanara/search?l=C%23&q=ComReleaserFactory) | Factory for creating `Vanara.InteropServices.ComReleaser`1` objects.
 [Vanara.InteropServices.ComStream](https://github.com/dahall/Vanara/search?l=C%23&q=ComStream) | Implements a .NET stream over a COM IStream instance.
 [Vanara.Extensions.ComTypeExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ComTypeExtensions) | Extensions for types in System.Runtime.InteropServices.ComTypes.

@@ -10,7 +10,15 @@
     <AssemblyName>Vanara.PInvoke.Version</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;Version</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+GetFileVersionInfo, GetFileVersionInfoByHandle, GetFileVersionInfoEx, GetFileVersionInfoSize, GetFileVersionInfoSizeEx, VerFindFile, VerInstallFile, VerLanguageName, VerQueryValue
+
+Structures
+VS_FIXEDFILEINFO
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

@@ -69,6 +69,7 @@
       <dependency id="Vanara.PInvoke.User32" version="3.3.3" />
       <dependency id="Vanara.PInvoke.UserEnv" version="3.3.3" />
       <dependency id="Vanara.PInvoke.UxTheme" version="3.3.3" />
+      <dependency id="Vanara.PInvoke.Version" version="3.3.3" />
       <dependency id="Vanara.PInvoke.VirtDisk" version="3.3.3" />
       <dependency id="Vanara.PInvoke.WcmApi" version="3.3.3" />
       <dependency id="Vanara.PInvoke.Wer" version="3.3.3" />
