@@ -374,45 +374,46 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			public MINIDUMP_VM_POST_READ_CALLBACK VmPostRead { get => Union.VmPostRead; set => Union.VmPostRead = value; }
+			
 			/// <summary>Internal union.</summary>
 			[StructLayout(LayoutKind.Explicit)]
 			private struct UNION
 			{
 				[FieldOffset(0)]
-				private HRESULT Status;
+				internal HRESULT Status;
 
 				[FieldOffset(0)]
-				private MINIDUMP_THREAD_CALLBACK Thread;
+				internal MINIDUMP_THREAD_CALLBACK Thread;
 
 				[FieldOffset(0)]
-				private MINIDUMP_THREAD_EX_CALLBACK ThreadEx;
+				internal MINIDUMP_THREAD_EX_CALLBACK ThreadEx;
 
 				[FieldOffset(0)]
-				private MINIDUMP_MODULE_CALLBACK Module;
+				internal MINIDUMP_MODULE_CALLBACK Module;
 
 				[FieldOffset(0)]
-				private MINIDUMP_INCLUDE_THREAD_CALLBACK IncludeThread;
+				internal MINIDUMP_INCLUDE_THREAD_CALLBACK IncludeThread;
 
 				[FieldOffset(0)]
-				private MINIDUMP_INCLUDE_MODULE_CALLBACK IncludeModule;
+				internal MINIDUMP_INCLUDE_MODULE_CALLBACK IncludeModule;
 
 				[FieldOffset(0)]
-				private MINIDUMP_IO_CALLBACK Io;
+				internal MINIDUMP_IO_CALLBACK Io;
 
 				[FieldOffset(0)]
-				private MINIDUMP_READ_MEMORY_FAILURE_CALLBACK ReadMemoryFailure;
+				internal MINIDUMP_READ_MEMORY_FAILURE_CALLBACK ReadMemoryFailure;
 
 				[FieldOffset(0)]
-				private MINIDUMP_SECONDARY_FLAGS SecondaryFlags;
+				internal MINIDUMP_SECONDARY_FLAGS SecondaryFlags;
 
 				[FieldOffset(0)]
-				private MINIDUMP_VM_QUERY_CALLBACK VmQuery;
+				internal MINIDUMP_VM_QUERY_CALLBACK VmQuery;
 
 				[FieldOffset(0)]
-				private MINIDUMP_VM_PRE_READ_CALLBACK VmPreRead;
+				internal MINIDUMP_VM_PRE_READ_CALLBACK VmPreRead;
 
 				[FieldOffset(0)]
-				private MINIDUMP_VM_POST_READ_CALLBACK VmPostRead;
+				internal MINIDUMP_VM_POST_READ_CALLBACK VmPostRead;
 			}
 		}
 
