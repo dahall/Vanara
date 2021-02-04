@@ -48,44 +48,33 @@ namespace Vanara.Windows.Shell
 		/// <param name="items">The items to which the context menu should refer.</param>
 		public ShellContextMenu(params ShellItem[] items)
 		{
-			var pidls = new IntPtr[items.Length];
-			ShellFolder parent = null;
+			if (items is null)
+				throw new ArgumentNullException(nameof(items));
 
-			for (var n = 0; n < items.Length; ++n)
+			if (items.Length == 1 && items[0].IsFolder)
 			{
-				pidls[n] = ILFindLastID((IntPtr)items[n].PIDL);
-
-				if (parent is null)
-				{
-					if (items[n] == ShellFolder.Desktop)
-					{
-						parent = ShellFolder.Desktop;
-					}
-					else
-					{
-						parent = items[n].Parent;
-					}
-				}
-				else
-				{
-					if (items[n].Parent != parent)
-					{
-						throw new Exception("All shell items must have the same parent");
-					}
-				}
+				var isf = items[0] is ShellFolder sf ? sf.IShellFolder : items[0].IShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
+				ComInterface = isf.CreateViewObject<IContextMenu>(HWND.NULL);
 			}
+			else
+			{
+				if (Array.IndexOf(items, ShellFolder.Desktop) != -1)
+					throw new Exception("If the desktop folder is specified, it must be the only item.");
 
-			//using var ppidls = new PinnedObject(pidls);
-			//var dcm = new DEFCONTEXTMENU
-			//{
-			//	psf = parent.IShellFolder,
-			//	apidl = ppidls,
-			//	cidl = (uint)pidls.Length,
+				var pidls = new IntPtr[items.Length];
+				ShellFolder parent = null;
 
-			//};
-			//SHCreateDefaultContextMenu(ref dcm, typeof(IContextMenu).GUID, out var ppv).ThrowIfFailed();
-			//ComInterface = (IContextMenu)ppv;
-			ComInterface = parent.IShellFolder.GetUIObjectOf<IContextMenu>(HWND.NULL, pidls);
+				for (var n = 0; n < items.Length; ++n)
+				{
+					if (n == 0)
+						parent = items[n].Parent;
+					else if (items[n].Parent != parent)
+						throw new Exception("All shell items must have the same parent");
+					pidls[n] = (IntPtr)items[n].PIDL.LastId;
+				}
+
+				ComInterface = parent.IShellFolder.GetUIObjectOf<IContextMenu>(HWND.NULL, pidls);
+			}
 			m_ComInterface2 = ComInterface as IContextMenu2;
 			m_ComInterface3 = ComInterface as IContextMenu3;
 			m_MessageWindow = new BasicMessageWindow(WindowMessageFilter);
