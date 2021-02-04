@@ -343,12 +343,59 @@ namespace Vanara.Windows.Shell
 		internal static readonly PROPERTYKEY pkItemType = PROPERTYKEY.System.ItemType;
 		internal IShellItem iShellItem;
 		internal IShellItem2 iShellItem2;
-		private static Dictionary<Type, BHID> bhidLookup;
 		private ShellItemImages images;
 		private ShellContextMenu menu;
 		private PropertyDescriptionList propDescList;
 		private ShellItemPropertyStore props;
 		private IQueryInfo qi;
+		private static Lazy<Dictionary<Type, BHID>> bhidLookup = new Lazy<Dictionary<Type, BHID>>(() =>
+			new Dictionary<Type, BHID>
+			{
+				{ typeof(IIdentityName), BHID.BHID_SFObject },
+				{ typeof(IShellFolder), BHID.BHID_SFObject },
+
+				{ typeof(IShellLinkW), BHID.BHID_SFUIObject },
+				{ typeof(IContextMenu), BHID.BHID_SFUIObject },
+				{ typeof(IContextMenu2), BHID.BHID_SFUIObject },
+				{ typeof(IExtractIconA), BHID.BHID_SFUIObject },
+				{ typeof(IExtractIconW), BHID.BHID_SFUIObject },
+				{ typeof(IQueryInfo), BHID.BHID_SFUIObject },
+
+				{ typeof(IShellItemResources), BHID.BHID_SFViewObject },
+				{ typeof(IShellFolder2), BHID.BHID_SFViewObject },
+				{ typeof(IShellView), BHID.BHID_SFViewObject },
+				{ typeof(IDropTarget), BHID.BHID_SFViewObject },
+
+				{ typeof(IStorage), BHID.BHID_Storage },
+
+				{ typeof(IStream), BHID.BHID_Stream },
+
+				{ typeof(IShellItem), BHID.BHID_LinkTargetItem },
+
+				//{ typeof(IEnumShellItems), BHID.BHID_StorageEnum }, // Can't have multiple keys
+
+				{ typeof(ITransferSource), BHID.BHID_Transfer },
+
+				{ typeof(ITransferDestination), BHID.BHID_Transfer },
+
+				{ typeof(IPropertyStore), BHID.BHID_PropertyStore },
+
+				{ typeof(IPropertyStoreFactory), BHID.BHID_PropertyStore },
+
+				{ typeof(IThumbnailProvider), BHID.BHID_ThumbnailHandler },
+				{ typeof(IExtractImage), BHID.BHID_ThumbnailHandler },
+
+				{ typeof(IEnumShellItems), BHID.BHID_EnumItems },
+
+				{ typeof(IDataObject), BHID.BHID_DataObject },
+
+				{ typeof(IQueryAssociations), BHID.BHID_AssociationArray },
+
+				// IGNORE: Not supported { typeof(IFilter), BHID.BHID_Filter },
+				{ typeof(IEnumAssocHandlers), BHID.BHID_EnumAssocHandlers },
+				// TODO: Win8+ { typeof(IRandomAccessStream), BHID.BHID_RandomAccessStream },
+				//{ typeof(??), BHID.BHID_FilePlaceholder },
+			}, false);
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="path">The file system path of the item.</param>
@@ -500,7 +547,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the of verbs defined for this item.</summary>
 		/// <value>The list of verbs.</value>
-		public IEnumerable<string> Verbs => ContextMenu.GetItems().Select(i => i.Verb).Where(v => !(v is null));
+		public IEnumerable<string> Verbs => ContextMenu.GetItems(CMF.CMF_EXTENDEDVERBS).Select(i => i.Verb).Where(v => v is not null);
 
 		/// <summary>Gets the system bind context.</summary>
 		/// <value>The bind context.</value>
@@ -766,59 +813,8 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the BHID for the supplied <typeparamref name="TInterface"/>.</summary>
 		/// <typeparam name="TInterface">The type of the interface to lookup.</typeparam>
 		/// <returns>The related BHID if found, 0 if not.</returns>
-		internal static BHID GetBHIDForInterface<TInterface>()
-		{
-			if (bhidLookup == null)
-				bhidLookup = new Dictionary<Type, BHID>
-				{
-					{ typeof(IIdentityName), BHID.BHID_SFObject },
-					{ typeof(IShellFolder), BHID.BHID_SFObject },
-
-					{ typeof(IShellLinkW), BHID.BHID_SFUIObject },
-					{ typeof(IContextMenu), BHID.BHID_SFUIObject },
-					{ typeof(IContextMenu2), BHID.BHID_SFUIObject },
-					{ typeof(IDropTarget), BHID.BHID_SFUIObject },
-					{ typeof(IExtractIconA), BHID.BHID_SFUIObject },
-					{ typeof(IExtractIconW), BHID.BHID_SFUIObject },
-					{ typeof(IQueryInfo), BHID.BHID_SFUIObject },
-
-					{ typeof(IShellItemResources), BHID.BHID_SFViewObject },
-					{ typeof(IShellFolder2), BHID.BHID_SFViewObject },
-					{ typeof(IShellView), BHID.BHID_SFViewObject },
-					{ typeof(IDropTarget), BHID.BHID_SFViewObject },
-
-					{ typeof(IStorage), BHID.BHID_Storage },
-
-					{ typeof(IStream), BHID.BHID_Stream },
-
-					{ typeof(IShellItem), BHID.BHID_LinkTargetItem },
-
-					//{ typeof(IEnumShellItems), BHID.BHID_StorageEnum }, // Can't have multiple keys
-
-					{ typeof(ITransferSource), BHID.BHID_Transfer },
-
-					{ typeof(ITransferDestination), BHID.BHID_Transfer },
-
-					{ typeof(IPropertyStore), BHID.BHID_PropertyStore },
-
-					{ typeof(IPropertyStoreFactory), BHID.BHID_PropertyStore },
-
-					{ typeof(IThumbnailProvider), BHID.BHID_ThumbnailHandler },
-					{ typeof(IExtractImage), BHID.BHID_ThumbnailHandler },
-
-					{ typeof(IEnumShellItems), BHID.BHID_EnumItems },
-
-					{ typeof(IDataObject), BHID.BHID_DataObject },
-
-					{ typeof(IQueryAssociations), BHID.BHID_AssociationArray },
-
-					// IGNORE: Not supported { typeof(IFilter), BHID.BHID_Filter },
-					{ typeof(IEnumAssocHandlers), BHID.BHID_EnumAssocHandlers },
-					// TODO: Win8+ { typeof(IRandomAccessStream), BHID.BHID_RandomAccessStream },
-					//{ typeof(??), BHID.BHID_FilePlaceholder },
-				};
-			return bhidLookup.TryGetValue(typeof(TInterface), out var value) ? value : 0;
-		}
+		internal static BHID GetBHIDForInterface<TInterface>() =>
+			bhidLookup.Value.TryGetValue(typeof(TInterface), out var value) ? value : 0;
 
 		internal static string GetStringValue(Action<StringBuilder, int> method, int buffSize = MAX_PATH)
 		{
