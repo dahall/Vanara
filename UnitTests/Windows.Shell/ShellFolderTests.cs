@@ -135,7 +135,7 @@ namespace Vanara.Windows.Shell.Tests
 			var sv = f.GetViewObject<IShellView>(null);
 			Assert.That(sv, Is.Not.Null.And.InstanceOf<IShellView>());
 			Assert.That(() => f.GetChildrenUIObjects<IShellLibrary>(null, i), Throws.TypeOf<NotImplementedException>());
-			Assert.That(() => f.GetViewObject<IShellLibrary>(null), Throws.TypeOf<NotImplementedException>());
+			Assert.That(() => f.GetViewObject<IShellLibrary>(null), Throws.TypeOf<InvalidCastException>());
 		}
 	}
 }

@@ -21,13 +21,24 @@ namespace Vanara.Windows.Shell.Tests
 			var items = menu.GetItems(CMF.CMF_EXTENDEDVERBS | CMF.CMF_EXPLORE | CMF.CMF_CANRENAME | CMF.CMF_ITEMMENU);
 			for (var i = 0; i < items.Length; i++)
 				ShowMII(items[i], i);
+		}
 
-			static void ShowMII(ShellContextMenu.MenuItemInfo mii, int c, int indent = 0)
-			{
-				TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}; Tooltip={mii.HelpText}; IconLoc={mii.VerbIconLocation}");
-				for (int j = 0; j < mii.SubMenus.Length; j++)
-					ShowMII(mii.SubMenus[j], j, indent + 1);
-			}
+		[Test]
+		public void CreateTest2()
+		{
+			using var shi = ShellItem.Open(TestCaseSources.ImageFile);
+			using var shi2 = ShellItem.Open(TestCaseSources.Image2File);
+			using var menu = new ShellContextMenu(shi, shi2);
+			var items = menu.GetItems(CMF.CMF_EXTENDEDVERBS | CMF.CMF_EXPLORE | CMF.CMF_CANRENAME | CMF.CMF_ITEMMENU);
+			for (var i = 0; i < items.Length; i++)
+				ShowMII(items[i], i);
+		}
+
+		static void ShowMII(ShellContextMenu.MenuItemInfo mii, int c, int indent = 0)
+		{
+			TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}; Tooltip={mii.HelpText}; IconLoc={mii.VerbIconLocation}");
+			for (int j = 0; j < mii.SubMenus.Length; j++)
+				ShowMII(mii.SubMenus[j], j, indent + 1);
 		}
 	}
 }

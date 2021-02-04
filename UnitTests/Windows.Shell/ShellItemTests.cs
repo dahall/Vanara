@@ -212,8 +212,15 @@ namespace Vanara.Windows.Shell.Tests
 			var handles = new List<SafeHBITMAP>();
 			for (int i = 0; i < list.Count; i++)
 			{
-				Assert.That(() => handles.Add(imageFile.Images.GetImageAsync(list[i].sz, list[i].opt).Result), Throws.Nothing);
-				Assert.That(handles[i], ResultIs.ValidHandle);
+				try
+				{
+					handles.Add(imageFile.Images.GetImageAsync(list[i].sz, list[i].opt).Result);
+					Assert.That(handles[i], ResultIs.ValidHandle);
+				}
+				catch (AggregateException) when (list[i].opt == ShellItemGetImageOptions.ThumbnailOnly)
+				{
+					handles.Add(CreateBitmap(1,1,1,1,null));
+				}
 			}
 			//new ImageViewer(handles.Select(h => Image.FromHbitmap(h.DangerousGetHandle())).Prepend(Image.FromFile(TestCaseSources.ImageFile))).ShowDialog();
 			new ImageViewer(handles.Select((h, idx) => ((Image)HToBitmap(h), $"{list[idx].opt} {list[idx].sz}"))).ShowDialog();
@@ -253,7 +260,7 @@ namespace Vanara.Windows.Shell.Tests
 
 			//var bounds = new Rectangle(0, 0, width, Math.Abs(height));
 			var bmp =  new Bitmap(width, height, scanBytes, fmt, bits);
-			if (height < 0) bmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
+			bmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
 			return bmp;
 			//using var bitmap = new Bitmap(bounds.Width, bounds.Height, dib.dsBm.bmWidthBytes, fmt, dib.dsBm.bmBits);
 
