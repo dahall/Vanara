@@ -40,8 +40,8 @@ namespace Vanara.Windows.Shell
 					hr = fctry.GetImage(size, (SIIGBF)flags, out hbmp);
 					if (hr == 0x8004B200 && flags.IsFlagSet(ShellItemGetImageOptions.ThumbnailOnly))
 						throw new InvalidOperationException("Thumbnails are not supported by this item.");
-					hr.ThrowIfFailed();
-					return hbmp;
+					if (hr.Succeeded)
+						return hbmp;
 				}
 
 				//hr = LoadImageFromThumbnailProvider(shellItem.IShellItem, ref sz, out hbmp);
