@@ -2154,7 +2154,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowa
 		// void CreateWindowA( lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 		[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.CreateWindowA")]
-		public static SafeHWND CreateWindow(string lpClassName, string lpWindowName, [Optional] WindowStyles dwStyle,
+		public static SafeHWND CreateWindow(string lpClassName, [Optional] string lpWindowName, [Optional] WindowStyles dwStyle,
 			[Optional] int x, [Optional] int y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
 			[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam)
 			=> CreateWindowEx(0, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
@@ -2408,9 +2408,10 @@ namespace Vanara.PInvoke
 		// HINSTANCE hInstance, LPVOID lpParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "createwindowex")]
-		public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, string lpClassName, [Optional] string lpWindowName,
-			[Optional] WindowStyles dwStyle, [Optional] int X, [Optional] int Y, [Optional] int nWidth, [Optional] int nHeight,
-			[Optional] HWND hWndParent, [Optional] HMENU hMenu, [Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam);
+		public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, [MarshalAs(UnmanagedType.LPTStr)] string lpClassName,
+			[MarshalAs(UnmanagedType.LPTStr), Optional] string lpWindowName, [Optional] WindowStyles dwStyle, [Optional] int X,
+			[Optional] int Y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
+			[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam);
 
 		/// <summary>
 		/// <para>
@@ -2661,9 +2662,10 @@ namespace Vanara.PInvoke
 		// HINSTANCE hInstance, LPVOID lpParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "createwindowex")]
-		public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, IntPtr lpClassName, [Optional] string lpWindowName,
-			[Optional] WindowStyles dwStyle, [Optional] int X, [Optional] int Y, [Optional] int nWidth, [Optional] int nHeight,
-			[Optional] HWND hWndParent, [Optional] HMENU hMenu, [Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam);
+		public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, IntPtr lpClassName,
+			[MarshalAs(UnmanagedType.LPTStr), Optional] string lpWindowName, [Optional] WindowStyles dwStyle, [Optional] int X,
+			[Optional] int Y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
+			[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam);
 
 		/// <summary>
 		/// <para>
@@ -3797,6 +3799,49 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetClassInfoEx(HINSTANCE hInstance, string lpszClass, ref WNDCLASSEX lpwcx);
+
+		/// <summary>
+		/// <para>
+		/// Retrieves information about a window class, including a handle to the small icon associated with the window class. The
+		/// GetClassInfo function does not retrieve a handle to the small icon.
+		/// </para>
+		/// </summary>
+		/// <param name="hInstance">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>
+		/// A handle to the instance of the application that created the class. To retrieve information about classes defined by the system
+		/// (such as buttons or list boxes), set this parameter to <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpszClass">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// The class name. The name must be that of a preregistered class or a class registered by a previous call to the RegisterClass or
+		/// RegisterClassEx function. Alternatively, this parameter can be a class atom created by a previous call to <c>RegisterClass</c> or
+		/// <c>RegisterClassEx</c>. The atom must be in the low-order word of lpszClass; the high-order word must be zero.
+		/// </para>
+		/// </param>
+		/// <param name="lpwcx">
+		/// <para>Type: <c>LPWNDCLASSEX</c></para>
+		/// <para>A pointer to a WNDCLASSEX structure that receives the information about the class.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
+		/// <para>If the function finds a matching class and successfully copies the data, the return value is nonzero.</para>
+		/// <para>
+		/// If the function does not find a matching class and successfully copy the data, the return value is zero. To get extended error
+		/// information, call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Class atoms are created using the RegisterClass or RegisterClassEx function, not the GlobalAddAtom function.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassinfoexa BOOL GetClassInfoExA( HINSTANCE hInstance,
+		// LPCSTR lpszClass, LPWNDCLASSEXA lpwcx );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetClassInfoEx(HINSTANCE hInstance, IntPtr lpszClass, ref WNDCLASSEX lpwcx);
 
 		/// <summary>
 		/// <para>Retrieves the specified value from the WNDCLASSEX structure associated with the specified window.</para>
