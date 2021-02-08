@@ -19,30 +19,27 @@ namespace Vanara.PInvoke
 	public delegate bool BasicMessageWindowFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn);
 
 	/// <summary>Simple window to process messages.</summary>
-	/// <seealso cref="System.MarshalByRefObject"/>
-	/// <seealso cref="System.IDisposable"/>
-	/// <seealso cref="Vanara.PInvoke.IHandle"/>
+	/// <seealso cref="MarshalByRefObject"/>
+	/// <seealso cref="IDisposable"/>
+	/// <seealso cref="IHandle"/>
 	public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	{
 		private readonly SafeHWND hwnd;
+		private readonly WeakReference weakSelfRef;
 		private bool isDisposed;
+		private WindowClass wCls;
 
 		/// <summary>Initializes a new instance of the <see cref="BasicMessageWindow"/> class.</summary>
 		/// <param name="callback">Specifies the callback method to use to process messages.</param>
 		public BasicMessageWindow(BasicMessageWindowFilter callback = null)
 		{
 			MessageFilter = callback;
-			ClassName = $"{GetType().Name}+{Guid.NewGuid()}";
-
+			weakSelfRef = new WeakReference(this);
 			hwnd = CreateWindow();
 		}
 
 		/// <summary>Finalizes an instance of the <see cref="BasicMessageWindow"/> class.</summary>
 		~BasicMessageWindow() => Dispose(false);
-
-		/// <summary>Gets the name of the class.</summary>
-		/// <value>The name of the class.</value>
-		public string ClassName { get; private set; }
 
 		/// <summary>Gets the handle.</summary>
 		/// <value>The handle.</value>
@@ -51,6 +48,10 @@ namespace Vanara.PInvoke
 		/// <summary>Gets or sets the callback method used to filter window messages.</summary>
 		/// <value>The callback method.</value>
 		public BasicMessageWindowFilter MessageFilter { get; set; }
+
+		/// <summary>Gets the name of the class.</summary>
+		/// <value>The name of the class.</value>
+		public string ClassName => wCls?.ClassName;
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
@@ -68,10 +69,9 @@ namespace Vanara.PInvoke
 		/// </summary>
 		protected virtual SafeHWND CreateWindow()
 		{
-			var hInst = GetModuleHandle();
-			var wcx = new WNDCLASSEX { cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX)), lpfnWndProc = WndProc, hInstance = hInst, lpszClassName = ClassName };
-			var atom = Win32Error.ThrowLastErrorIfNull(Macros.MAKEINTATOM(RegisterClassEx(wcx)));
-			return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(lpClassName: atom, hWndParent: HWND.HWND_MESSAGE, hInstance: hInst));
+			HINSTANCE hInst = GetModuleHandle();
+			wCls = new WindowClass($"{GetType().Name}+{Guid.NewGuid()}", hInst, WndProc);
+			return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(0, wCls.Atom, hWndParent: HWND.HWND_MESSAGE, hInstance: hInst));
 		}
 
 		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
@@ -85,13 +85,16 @@ namespace Vanara.PInvoke
 			isDisposed = true;
 
 			hwnd?.Dispose(); // Calls DestroyWindow
-			UnregisterClass(ClassName, GetModuleHandle());
-			ClassName = null;
+			wCls?.Unregister();
 		}
 
-		private IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam) =>
-			MessageFilter is null || !MessageFilter.Invoke(hwnd, msg, wParam, lParam, out var lRet)
+		private IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
+		{
+			if (msg == (uint)WindowMessage.WM_NCCREATE)
+				return (IntPtr)1;
+			return !weakSelfRef.IsAlive || weakSelfRef.Target is null || MessageFilter is null || !MessageFilter.Invoke(hwnd, msg, wParam, lParam, out IntPtr lRet)
 				? DefWindowProc(hwnd, msg, wParam, lParam)
 				: lRet;
+		}
 	}
 }
