@@ -69,7 +69,7 @@ namespace Windows.Forms.App
 				File.Delete(n);
 
 			// Unregister app
-			ProgId.Unregister(appId, true, systemWide);
+			try { ProgId.Unregister(appId, true, systemWide); } catch { }
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
