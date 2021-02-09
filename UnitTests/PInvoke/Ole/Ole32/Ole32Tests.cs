@@ -95,5 +95,12 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(prvRead[0].Value, Is.EqualTo("VALUE"));
 			}
 		}
+
+		[Test]
+		public void ContextSwitcher()
+		{
+			Assert.AreEqual(CLSID_ContextSwitcher, typeof(ContextSwitcher).GUID);
+			IContextCallback contextCallback = new ContextSwitcher();
+		}
 	}
 }
