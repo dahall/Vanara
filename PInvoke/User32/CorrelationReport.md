@@ -722,3 +722,4 @@ Native Class | Header | Managed Class
 [StandardCursor](https://www.google.com/search?num=5&q=StandardCursor+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.StandardCursor](https://github.com/dahall/Vanara/search?l=C%23&q=StandardCursor)  
 [SystemEventHandler](https://www.google.com/search?num=5&q=SystemEventHandler+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.SystemEventHandler](https://github.com/dahall/Vanara/search?l=C%23&q=SystemEventHandler)  
 [TPMPARAMS](https://www.google.com/search?num=5&q=TPMPARAMS+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.TPMPARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=TPMPARAMS)  
+[WindowClass](https://www.google.com/search?num=5&q=WindowClass+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WindowClass](https://github.com/dahall/Vanara/search?l=C%23&q=WindowClass)  
