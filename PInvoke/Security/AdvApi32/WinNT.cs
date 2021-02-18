@@ -3128,6 +3128,32 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// <para>The security identifier (SID) structure is a variable-length structure used to uniquely identify users or groups.</para>
+		/// <para>
+		/// Applications should not modify a SID directly. To create and manipulate a security identifier, use the functions listed in the
+		/// See Also section.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-sid typedef struct _SID { BYTE Revision; BYTE
+		// SubAuthorityCount; SID_IDENTIFIER_AUTHORITY IdentifierAuthority; #if ... DWORD *SubAuthority[]; #else DWORD
+		// SubAuthority[ANYSIZE_ARRAY]; #endif } SID, *PISID;
+		[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._SID")]
+		[VanaraMarshaler(typeof(AnySizeStringMarshaler<SID>), nameof(SubAuthorityCount))]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SID
+		{
+			/// <summary />
+			public byte Revision;
+			/// <summary />
+			public byte SubAuthorityCount;
+			/// <summary />
+			public SID_IDENTIFIER_AUTHORITY IdentifierAuthority;
+			/// <summary />
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public uint[] SubAuthority;
+		}
+
+		/// <summary>
 		/// The SID_AND_ATTRIBUTES structure represents a security identifier (SID) and its attributes. SIDs are used to uniquely identify
 		/// users or groups.
 		/// </summary>
