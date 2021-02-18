@@ -185,6 +185,26 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.U1)]
 		public delegate bool SecureMemoryCacheCallback(IntPtr Addr, SizeT Range);
 
+		/// <summary>A bitmask that specifies the compression format.</summary>
+		[PInvokeData("winnt.h")]
+		public enum COMPRESSION_FORMAT : ushort
+		{
+			/// <summary>No compression.</summary>
+			COMPRESSION_FORMAT_NONE = 0x0000,
+
+			/// <summary>The system default for compression.</summary>
+			COMPRESSION_FORMAT_DEFAULT = 0x0001,
+
+			/// <summary>The LZNT1 compression algorithm is used.</summary>
+			COMPRESSION_FORMAT_LZNT1 = 0x0002,
+
+			/// <summary>The Xpress LZ77 compression algorithm is used.</summary>
+			COMPRESSION_FORMAT_XPRESS = 0x0003,
+
+			/// <summary>The Xpress LZ77+Huffman compression algorithm is used.</summary>
+			COMPRESSION_FORMAT_XPRESS_HUFF = 0x0004,
+		}
+
 		/// <summary>The flags that control the enforcement of the minimum and maximum working set sizes.</summary>
 		[PInvokeData("winnt.h")]
 		[Flags]
