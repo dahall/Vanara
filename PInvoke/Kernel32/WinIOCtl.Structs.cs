@@ -75,376 +75,6 @@ namespace Vanara.PInvoke
 		/// <summary>Windows system partition</summary>
 		public static readonly Guid PARTITION_WINDOWS_SYSTEM_GUID = new Guid(0x57434F53, 0xE3E3, 0x4631, 0xA5, 0xC5, 0x26, 0xD2, 0x24, 0x38, 0x73, 0xAA);
 
-		/// <summary>The detected partition type.</summary>
-		[PInvokeData("winioctl.h", MSDNShortId = "57ca68f4-f748-4bc4-90c3-13d545716d87")]
-		public enum DETECTION_TYPE
-		{
-			/// <summary>The disk does not have an Int13 or an extended Int13 partition.</summary>
-			DetectNone,
-
-			/// <summary>The disk has a standard Int13 partition.</summary>
-			DetectInt13,
-
-			/// <summary>The disk has an extended Int13 partition.</summary>
-			DetectExInt13
-		}
-
-		/// <summary>
-		/// Determines the likelihood of data cached from a read operation remaining in the cache. This data might be given a different
-		/// priority than data cached under other circumstances, such as from a prefetch operation.
-		/// </summary>
-		[PInvokeData("winioctl.h", MSDNShortId = "ea175bea-5f2b-4f3e-9fe0-239b1d2e3d96")]
-		public enum DISK_CACHE_RETENTION_PRIORITY
-		{
-			/// <summary>No data is held in the cache on a preferential basis.</summary>
-			EqualPriority,
-
-			/// <summary>A preference is to be given to prefetched data.</summary>
-			KeepPrefetchedData,
-
-			/// <summary>A preference is to be given to data cached from a read operation.</summary>
-			KeepReadData
-		}
-
-		/// <summary>
-		/// Specifies the partition entry attributes used for diagnostics, recovery tools, and other firmware essential to the operation of
-		/// the device.
-		/// </summary>
-		[PInvokeData("winioctl.h", MSDNShortId = "373b4eb3-af6d-4112-9787-f14c19972189")]
-		[Flags]
-		public enum GPT_ATTRIBUTE : ulong
-		{
-			/// <summary>
-			/// If this attribute is set, the partition is required by a computer to function properly.
-			/// <para>
-			/// For example, this attribute must be set for OEM partitions. Note that if this attribute is set, you can use the DiskPart.exe
-			/// utility to perform partition operations such as deleting the partition. However, because the partition is not a volume, you
-			/// cannot use the DiskPart.exe utility to perform volume operations on the partition.
-			/// </para>
-			/// <para>
-			/// This attribute can be set for basic and dynamic disks. If it is set for a partition on a basic disk and the disk is converted
-			/// to a dynamic disk, the partition remains a basic partition, even though the rest of the disk is a dynamic disk. This is
-			/// because the partition is considered to be an OEM partition on a GPT disk.
-			/// </para>
-			/// </summary>
-			GPT_ATTRIBUTE_PLATFORM_REQUIRED = 0x0000000000000001,
-
-			/// <summary>
-			/// If this attribute is set, the partition does not receive a drive letter by default when the disk is moved to another computer
-			/// or when the disk is seen for the first time by a computer.
-			/// <para>This attribute is useful in storage area network (SAN) environments.</para>
-			/// <para>Despite its name, this attribute can be set for basic and dynamic disks.</para>
-			/// </summary>
-			GPT_BASIC_DATA_ATTRIBUTE_NO_DRIVE_LETTER = 0x8000000000000000,
-
-			/// <summary>
-			/// If this attribute is set, the partition is not detected by the Mount Manager.
-			/// <para>
-			/// As a result, the partition does not receive a drive letter, does not receive a volume GUID path, does not host mounted
-			/// folders (also called volume mount points), and is not enumerated by calls to FindFirstVolume and FindNextVolume.This ensures
-			/// that applications such as Disk Defragmenter do not access the partition. The Volume Shadow Copy Service (VSS) uses this attribute.
-			/// </para>
-			/// <para>Despite its name, this attribute can be set for basic and dynamic disks.</para>
-			/// </summary>
-			GPT_BASIC_DATA_ATTRIBUTE_HIDDEN = 0x4000000000000000,
-
-			/// <summary>
-			/// If this attribute is set, the partition is a shadow copy of another partition.
-			/// <para>
-			/// VSS uses this attribute. This attribute is an indication for file system filter driver-based software (such as antivirus
-			/// programs) to avoid attaching to the volume.
-			/// </para>
-			/// <para>
-			/// An application can use the attribute to differentiate a shadow copy volume from a production volume.An application that does
-			/// a fast recovery, for example, will break a shadow copy LUN and clear the read-only and hidden attributes and this
-			/// attribute.This attribute is set when the shadow copy is created and cleared when the shadow copy is broken.
-			/// </para>
-			/// <para>Despite its name, this attribute can be set for basic and dynamic disks.</para>
-			/// <para>Windows Server 2003: This attribute is not supported before Windows Server 2003 with SP1.</para>
-			/// </summary>
-			GPT_BASIC_DATA_ATTRIBUTE_SHADOW_COPY = 0x2000000000000000,
-
-			/// <summary>
-			/// If this attribute is set, the partition is read-only.
-			/// <para>
-			/// Writes to the partition will fail. IOCTL_DISK_IS_WRITABLE will fail with the ERROR_WRITE_PROTECT Win32 error code, which
-			/// causes the file system to mount as read only, if a file system is present.
-			/// </para>
-			/// <para>VSS uses this attribute.</para>
-			/// <para>
-			/// Do not set this attribute for dynamic disks. Setting it can cause I/O errors and prevent the file system from mounting properly.
-			/// </para>
-			/// </summary>
-			GPT_BASIC_DATA_ATTRIBUTE_READ_ONLY = 0x1000000000000000,
-
-			/// <summary>Undocumented.</summary>
-			GPT_BASIC_DATA_ATTRIBUTE_OFFLINE = 0x0800000000000000,
-
-			/// <summary>Undocumented.</summary>
-			GPT_BASIC_DATA_ATTRIBUTE_DAX = 0x0400000000000000,
-
-			/// <summary>Undocumented.</summary>
-			GPT_BASIC_DATA_ATTRIBUTE_SERVICE = 0x0200000000000000,
-
-			/// <summary>Undocumented.</summary>
-			GPT_SPACES_ATTRIBUTE_NO_METADATA = 0x8000000000000000,
-		}
-
-		/// <summary>Partition types.</summary>
-		[PInvokeData("winioctl.h")]
-		public enum PartitionType : byte
-		{
-			/// <summary>Unused entry</summary>
-			PARTITION_ENTRY_UNUSED = 0,
-
-			/// <summary>Specifies a partition with 12-bit FAT entries</summary>
-			PARTITION_FAT_12,
-
-			/// <summary>Specifies a XENIX Type 1 partition</summary>
-			PARTITION_XENIX_1,
-
-			/// <summary>Specifies a XENIX Type 2 partition</summary>
-			PARTITION_XENIX_2,
-
-			/// <summary>Specifies a partition with 16-bit FAT entries.</summary>
-			PARTITION_FAT_16,
-
-			/// <summary>Specifies an MS-DOS V4 extended partition</summary>
-			PARTITION_EXTENDED,
-
-			/// <summary>Specifies an MS-DOS V4 huge partition</summary>
-			PARTITION_HUGE,
-
-			/// <summary>Specifies an IFS partition</summary>
-			PARTITION_IFS,
-
-			/// <summary>OS/2 Boot Manager/OPUS/Coherent swap</summary>
-			PARTITION_OS2BOOTMGR = 0x0A,
-
-			/// <summary>Specifies a FAT32 partition</summary>
-			PARTITION_FAT32,
-
-			/// <summary>Win95 partition using extended int13 services</summary>
-			PARTITION_XINT13 = 0x0E,
-
-			/// <summary>Windows 95/98: Specifies a partition that uses extended INT 13 services</summary>
-			PARTITION_FAT32_XINT13,
-
-			/// <summary>Windows 95/98: Same as PARTITION_EXTENDED, but uses extended INT 13 services</summary>
-			PARTITION_XINT13_EXTENDED,
-
-			/// <summary>Microsoft recovery partition</summary>
-			PARTITION_MSFT_RECOVERY = 0x27,
-
-			/// <summary>Main OS partition</summary>
-			PARTITION_MAIN_OS = 0x28,
-
-			/// <summary>OS data partition</summary>
-			PARTIITON_OS_DATA = 0x29,
-
-			/// <summary>PreInstalled partition</summary>
-			PARTITION_PRE_INSTALLED = 0x2a,
-
-			/// <summary>BSP partition</summary>
-			PARTITION_BSP = 0x2b,
-
-			/// <summary>DPP partition</summary>
-			PARTITION_DPP = 0x2c,
-
-			/// <summary>Windows system partition</summary>
-			PARTITION_WINDOWS_SYSTEM = 0x2d,
-
-			/// <summary>Specifies a PowerPC Reference Platform partition</summary>
-			PARTITION_PREP = 0x41,
-
-			/// <summary>Specifies a logical disk manager partition</summary>
-			PARTITION_LDM,
-
-			/// <summary>OnTrack Disk Manager partition</summary>
-			PARTITION_DM = 0x54,
-
-			/// <summary>EZ-Drive partition</summary>
-			PARTITION_EZDRIVE = 0x55,
-
-			/// <summary>Specifies a UNIX partition</summary>
-			PARTITION_UNIX = 0x63,
-
-			/// <summary>Storage Spaces protective partition</summary>
-			PARTITION_SPACES_DATA = 0xD7,
-
-			/// <summary>Storage Spaces protective partition</summary>
-			PARTITION_SPACES = 0xE7,
-
-			/// <summary>Gpt protective partition</summary>
-			PARTITION_GPT = 0xEE,
-
-			/// <summary>System partition</summary>
-			PARTITION_SYSTEM = 0xEF,
-
-			/// <summary>
-			/// Specifies an NTFT partition. This value is used in combination (that is, bitwise logically ORed) with the other values in
-			/// this table
-			/// </summary>
-			PARTITION_NTFT = 0x80,
-		}
-
-		/// <summary>
-		/// <para>
-		/// The flags that identify reasons for changes that have accumulated in this file or directory journal record since the file or
-		/// directory opened.
-		/// </para>
-		/// <para>
-		/// When a file or directory closes, then a final USN record is generated with the <c>USN_REASON_CLOSE</c> flag set. The next change
-		/// (for example, after the next open operation or deletion) starts a new record with a new set of reason flags.
-		/// </para>
-		/// <para>
-		/// A rename or move operation generates two USN records, one that records the old parent directory for the item, and one that
-		/// records a new parent.
-		/// </para>
-		/// </summary>
-		[PInvokeData("winioctl.h", MSDNShortId = "1747453d-fd18-4853-a953-47131f3067ae")]
-		[Flags]
-		public enum USN_REASON : uint
-		{
-			/// <summary>
-			/// A user has either changed one or more file or directory attributes (for example, the read-only, hidden, system, archive, or
-			/// sparse attribute), or one or more time stamps.
-			/// </summary>
-			USN_REASON_BASIC_INFO_CHANGE = 0x00008000,
-
-			/// <summary>The file or directory is closed.</summary>
-			USN_REASON_CLOSE = 0x80000000,
-
-			/// <summary>The compression state of the file or directory is changed from or to compressed.</summary>
-			USN_REASON_COMPRESSION_CHANGE = 0x00020000,
-
-			/// <summary>The file or directory is extended (added to).</summary>
-			USN_REASON_DATA_EXTEND = 0x00000002,
-
-			/// <summary>The data in the file or directory is overwritten.</summary>
-			USN_REASON_DATA_OVERWRITE = 0x00000001,
-
-			/// <summary>The file or directory is truncated.</summary>
-			USN_REASON_DATA_TRUNCATION = 0x00000004,
-
-			/// <summary>
-			/// The user made a change to the extended attributes of a file or directory.
-			/// <para>These NTFS file system attributes are not accessible to Windows-based applications.</para>
-			/// </summary>
-			USN_REASON_EA_CHANGE = 0x00000400,
-
-			/// <summary>The file or directory is encrypted or decrypted.</summary>
-			USN_REASON_ENCRYPTION_CHANGE = 0x00040000,
-
-			/// <summary>The file or directory is created for the first time.</summary>
-			USN_REASON_FILE_CREATE = 0x00000100,
-
-			/// <summary>The file or directory is deleted.</summary>
-			USN_REASON_FILE_DELETE = 0x00000200,
-
-			/// <summary>
-			/// An NTFS file system hard link is added to or removed from the file or directory.
-			/// <para>
-			/// An NTFS file system hard link, similar to a POSIX hard link, is one of several directory entries that see the same file or directory.
-			/// </para>
-			/// </summary>
-			USN_REASON_HARD_LINK_CHANGE = 0x00010000,
-
-			/// <summary>
-			/// A user changes the FILE_ATTRIBUTE_NOT_CONTENT_INDEXED attribute.
-			/// <para>
-			/// That is, the user changes the file or directory from one where content can be indexed to one where content cannot be indexed,
-			/// or vice versa. Content indexing permits rapid searching of data by building a database of selected content.
-			/// </para>
-			/// </summary>
-			USN_REASON_INDEXABLE_CHANGE = 0x00004000,
-
-			/// <summary>
-			/// A user changed the state of the FILE_ATTRIBUTE_INTEGRITY_STREAM attribute for the given stream.
-			/// <para>
-			/// On the ReFS file system, integrity streams maintain a checksum of all data for that stream, so that the contents of the file
-			/// can be validated during read or write operations.
-			/// </para>
-			/// </summary>
-			USN_REASON_INTEGRITY_CHANGE = 0x00800000,
-
-			/// <summary>The one or more named data streams for a file are extended (added to).</summary>
-			USN_REASON_NAMED_DATA_EXTEND = 0x00000020,
-
-			/// <summary>The data in one or more named data streams for a file is overwritten.</summary>
-			USN_REASON_NAMED_DATA_OVERWRITE = 0x00000010,
-
-			/// <summary>The one or more named data streams for a file is truncated.</summary>
-			USN_REASON_NAMED_DATA_TRUNCATION = 0x00000040,
-
-			/// <summary>The object identifier of a file or directory is changed.</summary>
-			USN_REASON_OBJECT_ID_CHANGE = 0x00080000,
-
-			/// <summary>A file or directory is renamed, and the file name in the USN_RECORD_V2 structure is the new name.</summary>
-			USN_REASON_RENAME_NEW_NAME = 0x00002000,
-
-			/// <summary>The file or directory is renamed, and the file name in the USN_RECORD_V2 structure is the previous name.</summary>
-			USN_REASON_RENAME_OLD_NAME = 0x00001000,
-
-			/// <summary>
-			/// The reparse point that is contained in a file or directory is changed, or a reparse point is added to or deleted from a file
-			/// or directory.
-			/// </summary>
-			USN_REASON_REPARSE_POINT_CHANGE = 0x00100000,
-
-			/// <summary>A change is made in the access rights to a file or directory.</summary>
-			USN_REASON_SECURITY_CHANGE = 0x00000800,
-
-			/// <summary>A named stream is added to or removed from a file, or a named stream is renamed.</summary>
-			USN_REASON_STREAM_CHANGE = 0x00200000,
-
-			/// <summary>The given stream is modified through a TxF transaction.</summary>
-			USN_REASON_TRANSACTED_CHANGE = 0x00400000,
-		}
-
-		/// <summary>
-		/// <para>Additional information about the source of the change, set by the FSCTL_MARK_HANDLE of the DeviceIoControl operation.</para>
-		/// <para>
-		/// When a thread writes a new USN record, the source information flags in the prior record continues to be present only if the
-		/// thread also sets those flags. Therefore, the source information structure allows applications to filter out USN records that are
-		/// set only by a known source, for example, an antivirus filter.
-		/// </para>
-		/// </summary>
-		[PInvokeData("winioctl.h", MSDNShortId = "1747453d-fd18-4853-a953-47131f3067ae")]
-		[Flags]
-		public enum USN_SOURCE
-		{
-			/// <summary>
-			/// The operation adds a private data stream to a file or directory.
-			/// <para>
-			/// An example might be a virus detector adding checksum information. As the virus detector modifies the item, the system
-			/// generates USN records. USN_SOURCE_AUXILIARY_DATA indicates that the modifications did not change the application data.
-			/// </para>
-			/// </summary>
-			USN_SOURCE_AUXILIARY_DATA = 0x00000002,
-
-			/// <summary>
-			/// The operation provides information about a change to the file or directory made by the operating system.
-			/// <para>
-			/// A typical use is when the Remote Storage system moves data from external to local storage. Remote Storage is the hierarchical
-			/// storage management software. Such a move usually at a minimum adds the USN_REASON_DATA_OVERWRITE flag to a USN record.
-			/// However, the data has not changed from the user's point of view. By noting USN_SOURCE_DATA_MANAGEMENT in the SourceInfo
-			/// member, you can determine that although a write operation is performed on the item, data has not changed.
-			/// </para>
-			/// </summary>
-			USN_SOURCE_DATA_MANAGEMENT = 0x00000001,
-
-			/// <summary>
-			/// The operation is modifying a file to match the contents of the same file which exists in another member of the replica set.
-			/// </summary>
-			USN_SOURCE_REPLICATION_MANAGEMENT = 0x00000004,
-
-			/// <summary>
-			/// The operation is modifying a file on client systems to match the contents of the same file that exists in the cloud.
-			/// </summary>
-			USN_SOURCE_CLIENT_REPLICATION_MANAGEMENT = 0x00000008,
-		}
-
 		/// <summary>Contains the output for the FSCTL_GET_BOOT_AREA_INFO control code.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-boot_area_info typedef struct _BOOT_AREA_INFO { DWORD
 		// BootSectorCount; struct { LARGE_INTEGER Offset; } BootSectors[2]; } BOOT_AREA_INFO, *PBOOT_AREA_INFO;
@@ -2369,15 +1999,15 @@ namespace Vanara.PInvoke
 			public GPT_ATTRIBUTE Attributes;
 
 			// Little hack to get 72 blittable bytes for 'Name'.
-			private ulong ul1;
-			private ulong ul2;
-			private ulong ul3;
-			private ulong ul4;
-			private ulong ul5;
-			private ulong ul6;
-			private ulong ul7;
-			private ulong ul8;
-			private ulong ul9;
+			private readonly ulong ul1;
+			private readonly ulong ul2;
+			private readonly ulong ul3;
+			private readonly ulong ul4;
+			private readonly ulong ul5;
+			private readonly ulong ul6;
+			private readonly ulong ul7;
+			private readonly ulong ul8;
+			private readonly ulong ul9;
 
 			/// <summary>A wide-character string that describes the partition.</summary>
 			public string Name
@@ -2388,7 +2018,7 @@ namespace Vanara.PInvoke
 					{
 						fixed (ulong* p = &ul1)
 						{
-							return Vanara.Extensions.StringHelper.GetString((IntPtr)(void*)p, CharSet.Unicode, nameBytes);
+							return Vanara.Extensions.StringHelper.GetString((IntPtr)p, CharSet.Unicode, nameBytes);
 						}
 					}
 				}
@@ -2398,7 +2028,7 @@ namespace Vanara.PInvoke
 					{
 						fixed (ulong* p = &ul1)
 						{
-							Vanara.Extensions.StringHelper.Write(value, (IntPtr)(void*)p, out _, true, CharSet.Unicode, nameBytes);
+							Vanara.Extensions.StringHelper.Write(value, (IntPtr)p, out _, true, CharSet.Unicode, nameBytes);
 						}
 					}
 				}
@@ -4211,301 +3841,39 @@ namespace Vanara.PInvoke
 			public DISK_EXTENT[] Extents;
 		}
 
-		/*
-		https://docs.microsoft.com/en-us/windows/win32/api/winioctl/
-
-CHANGER_ELEMENT : 8
-CHANGER_ELEMENT_LIST : 12
-CHANGER_ELEMENT_STATUS : 100
-CHANGER_ELEMENT_STATUS_EX : 156
-CHANGER_EXCHANGE_MEDIUM : 36
-CHANGER_INITIALIZE_ELEMENT_STATUS : 16
-CHANGER_MOVE_MEDIUM : 28
-CHANGER_PRODUCT_DATA : 61
-CHANGER_READ_ELEMENT_STATUS : 16
-CHANGER_SEND_VOLUME_TAG_INFORMATION : 52
-CHANGER_SET_ACCESS : 12
-CHANGER_SET_POSITION : 20
-CLASS_MEDIA_CHANGE_CONTEXT : 8
-CREATE_DISK : 24
-CREATE_DISK_GPT : 20
-CREATE_DISK_MBR : 4
-CSV_CONTROL_PARAM : 16
-CSV_IS_OWNED_BY_CSVFS : 1
-CSV_NAMESPACE_INFO : 24
-CSV_QUERY_FILE_REVISION : 32
-CSV_QUERY_MDS_PATH : 16
-CSV_QUERY_REDIRECT_STATE : 12
-CSV_QUERY_VETO_FILE_DIRECT_IO_OUTPUT : 528
-DEVICE_COPY_OFFLOAD_DESCRIPTOR : 48
-DEVICE_DATA_SET_LB_PROVISIONING_STATE : 32
-DEVICE_DATA_SET_RANGE : 16
-DEVICE_DATA_SET_REPAIR_PARAMETERS : 12
-DEVICE_DSM_NOTIFICATION_PARAMETERS : 28
-DEVICE_DSM_OFFLOAD_READ_PARAMETERS : 16
-DEVICE_DSM_OFFLOAD_WRITE_PARAMETERS : 528
-DEVICE_LB_PROVISIONING_DESCRIPTOR : 40
-DEVICE_MANAGE_DATA_SET_ATTRIBUTES : 28
-DEVICE_MANAGE_DATA_SET_ATTRIBUTES_OUTPUT : 36
-DEVICE_MEDIA_INFO : 32
-DEVICE_POWER_DESCRIPTOR : 20
-DEVICE_SEEK_PENALTY_DESCRIPTOR : 12
-DEVICE_TRIM_DESCRIPTOR : 12
-DEVICE_WRITE_AGGREGATION_DESCRIPTOR : 12
-DRIVE_LAYOUT_INFORMATION : 40
-DRIVE_LAYOUT_INFORMATION_EX : 192
-DRIVE_LAYOUT_INFORMATION_GPT : 40
-DRIVE_LAYOUT_INFORMATION_MBR : 8
-DUPLICATE_EXTENTS_DATA : 32
-EXFAT_STATISTICS : 36
-FAT_STATISTICS : 36
-FILE_ALLOCATED_RANGE_BUFFER : 16
-FILE_LEVEL_TRIM : 24
-FILE_LEVEL_TRIM_OUTPUT : 4
-FILE_LEVEL_TRIM_RANGE : 16
-FILE_MAKE_COMPATIBLE_BUFFER : 1
-FILE_OBJECTID_BUFFER : 64
-FILE_QUERY_ON_DISK_VOL_INFO_BUFFER : 336
-FILE_QUERY_SPARING_BUFFER : 16
-FILE_SET_DEFECT_MGMT_BUFFER : 1
-FILE_SET_SPARSE_BUFFER : 1
-FILE_STORAGE_TIER : 1064
-FILE_STORAGE_TIER_REGION : 32
-FILE_SYSTEM_RECOGNITION_INFORMATION : 9
-FILE_ZERO_DATA_INFORMATION : 16
-FILESYSTEM_STATISTICS : 56
-FILESYSTEM_STATISTICS_EX : 104
-FIND_BY_SID_DATA : 16
-FIND_BY_SID_OUTPUT : 16
-FORMAT_EX_PARAMETERS : 28
-FORMAT_PARAMETERS : 20
-FSCTL_GET_INTEGRITY_INFORMATION_BUFFER : 16
-FSCTL_QUERY_REGION_INFO_INPUT : 32
-FSCTL_QUERY_REGION_INFO_OUTPUT : 64
-FSCTL_QUERY_STORAGE_CLASSES_OUTPUT : 1088
-FSCTL_SET_INTEGRITY_INFORMATION_BUFFER : 8
-GET_CHANGER_PARAMETERS : 60
-GET_DISK_ATTRIBUTES : 16
-GET_LENGTH_INFORMATION : 8
-GET_MEDIA_TYPES : 40
-LOOKUP_STREAM_FROM_CLUSTER_ENTRY : 32
-LOOKUP_STREAM_FROM_CLUSTER_INPUT : 16
-LOOKUP_STREAM_FROM_CLUSTER_OUTPUT : 12
-MARK_HANDLE_INFO : 12
-MFT_ENUM_DATA_V0 : 24
-MFT_ENUM_DATA_V1 : 32
-MOVE_FILE_DATA : 32
-NTFS_EXTENDED_VOLUME_DATA : 32
-NTFS_FILE_RECORD_INPUT_BUFFER : 8
-NTFS_FILE_RECORD_OUTPUT_BUFFER : 16
-NTFS_STATISTICS : 216
-NTFS_STATISTICS_EX : 496
-NTFS_VOLUME_DATA_BUFFER : 96
-PARTITION_INFORMATION : 32
-PARTITION_INFORMATION_EX : 144
-PARTITION_INFORMATION_GPT : 112
-PARTITION_INFORMATION_MBR : 24
-PLEX_READ_DATA_REQUEST : 16
-PREVENT_MEDIA_REMOVAL : 1
-READ_ELEMENT_ADDRESS_INFO : 104
-REASSIGN_BLOCKS : 8
-REASSIGN_BLOCKS_EX : 12
-REPAIR_COPIES_INPUT : 32
-REPAIR_COPIES_OUTPUT : 16
-REQUEST_OPLOCK_INPUT_BUFFER : 12
-REQUEST_OPLOCK_OUTPUT_BUFFER : 24
-RETRIEVAL_POINTER_BASE : 8
-RETRIEVAL_POINTERS_BUFFER : 32
-SET_DISK_ATTRIBUTES : 40
-SET_PARTITION_INFORMATION : 1
-SHRINK_VOLUME_INFORMATION : 24
-STARTING_LCN_INPUT_BUFFER : 8
-STARTING_VCN_INPUT_BUFFER : 8
-STORAGE_ACCESS_ALIGNMENT_DESCRIPTOR : 28
-STORAGE_ADAPTER_DESCRIPTOR : 32
-STORAGE_DESCRIPTOR_HEADER : 8
-STORAGE_DEVICE_ATTRIBUTES_DESCRIPTOR : 16
-STORAGE_DEVICE_DESCRIPTOR : 40
-STORAGE_DEVICE_ID_DESCRIPTOR : 16
-STORAGE_DEVICE_IO_CAPABILITY_DESCRIPTOR : 16
-STORAGE_DEVICE_NUMBER : 12
-STORAGE_DEVICE_POWER_CAP : 24
-STORAGE_DEVICE_RESILIENCY_DESCRIPTOR : 32
-STORAGE_HOTPLUG_INFO : 8
-STORAGE_HW_FIRMWARE_ACTIVATE : 16
-STORAGE_HW_FIRMWARE_DOWNLOAD : 40
-STORAGE_MEDIUM_PRODUCT_TYPE_DESCRIPTOR : 12
-STORAGE_MINIPORT_DESCRIPTOR : 24
-STORAGE_OFFLOAD_READ_OUTPUT : 536
-STORAGE_OFFLOAD_TOKEN : 512
-STORAGE_OFFLOAD_WRITE_OUTPUT : 16
-STORAGE_PHYSICAL_ADAPTER_DATA : 128
-STORAGE_PHYSICAL_DEVICE_DATA : 136
-STORAGE_PHYSICAL_NODE_DATA : 40
-STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR : 56
-STORAGE_PROPERTY_QUERY : 12
-STORAGE_PROTOCOL_COMMAND : 84
-STORAGE_PROTOCOL_DATA_DESCRIPTOR : 48
-STORAGE_PROTOCOL_SPECIFIC_DATA : 40
-STORAGE_RPMB_DATA_FRAME : 512
-STORAGE_RPMB_DESCRIPTOR : 20
-STORAGE_SPEC_VERSION : 4
-STORAGE_TEMPERATURE_DATA_DESCRIPTOR : 40
-STORAGE_TEMPERATURE_INFO : 16
-STORAGE_TEMPERATURE_THRESHOLD : 16
-STORAGE_WRITE_CACHE_PROPERTY : 28
-TXFS_GET_METADATA_INFO_OUT : 48
-TXFS_GET_TRANSACTED_VERSION : 16
-TXFS_LIST_TRANSACTION_LOCKED_FILES : 40
-TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY : 48
-TXFS_LIST_TRANSACTIONS : 16
-TXFS_LIST_TRANSACTIONS_ENTRY : 40
-TXFS_MODIFY_RM : 40
-TXFS_QUERY_RM_INFORMATION : 176
-TXFS_READ_BACKUP_INFORMATION_OUT : 4
-TXFS_TRANSACTION_ACTIVE_INFO : 1
-TXFS_WRITE_BACKUP_INFORMATION : 1
-VERIFY_INFORMATION : 16
-VOLUME_BITMAP_BUFFER : 24
-VOLUME_GET_GPT_ATTRIBUTES_INFORMATION : 8
-
-winioctl_CHANGER_ELEMENT_STATUS	Represents the status of the specified element.
-winioctl_CHANGER_ELEMENT_STATUS_EX	Represents the status of the specified element.
-winioctl_CHANGER_EXCHANGE_MEDIUM	Contains information the IOCTL_CHANGER_EXCHANGE_MEDIUM control code uses to move a piece of media to a destination, and the piece of media originally in the first destination to a second destination.
-winioctl_CHANGER_INITIALIZE_ELEMENT_STATUS	Represents the status of all media changer elements or the specified elements of a particular type.
-winioctl_CHANGER_MOVE_MEDIUM	Contains information that the IOCTL_CHANGER_MOVE_MEDIUM control code uses to move a piece of media to a destination.
-winioctl_CHANGER_PRODUCT_DATA	Represents product data for a changer device. It is used by the IOCTL_CHANGER_GET_PRODUCT_DATA control code.
-winioctl_CHANGER_READ_ELEMENT_STATUS	Contains information that the IOCTL_CHANGER_GET_ELEMENT_STATUS control code needs to determine the elements whose status is to be retrieved.
-winioctl_CHANGER_SEND_VOLUME_TAG_INFORMATION	Contains information that the IOCTL_CHANGER_QUERY_VOLUME_TAGS control code uses to determine the volume information to be retrieved.
-winioctl_CHANGER_SET_ACCESS	Contains information that the IOCTL_CHANGER_SET_ACCESS control code needs to set the state of the device's insert/eject port, door, or keypad.
-winioctl_CHANGER_SET_POSITION	Contains information needed by the IOCTL_CHANGER_SET_POSITION control code to set the changer's robotic transport mechanism to the specified element address.
-winioctl_CLASS_MEDIA_CHANGE_CONTEXT	Contains information associated with a media change event.
-winioctl_CSV_CONTROL_PARAM	Represents a type of CSV control operation.
-winioctl_CSV_IS_OWNED_BY_CSVFS	Contains the output for the FSCTL_IS_VOLUME_OWNED_BYCSVFS control code that determines whether a volume is owned by CSVFS.
-winioctl_CSV_NAMESPACE_INFO	Contains the output for the FSCTL_IS_CSV_FILE control code that retrieves namespace information for a file.
-winioctl_CSV_QUERY_FILE_REVISION	Contains information about whether files in a stream have been modified.
-winioctl_CSV_QUERY_MDS_PATH	Contains the path that is used by CSV to communicate to the MDS.
-winioctl_CSV_QUERY_REDIRECT_STATE	Contains information about whether files in a stream have been redirected.
-winioctl_CSV_QUERY_VETO_FILE_DIRECT_IO_OUTPUT	Contains troubleshooting information about why a volume is in redirected mode.
-winioctl_DEVICE_COPY_OFFLOAD_DESCRIPTOR	Contains the copy offload capabilities for a storage device.
-winioctl_DEVICE_DATA_SET_LB_PROVISIONING_STATE	Output structure for the DeviceDsmAction_Allocation action of the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
-winioctl_DEVICE_DATA_SET_RANGE	Provides data set range information for use with the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
-winioctl_DEVICE_DATA_SET_REPAIR_PARAMETERS	Specifies parameters for the repair operation.
-winioctl_DEVICE_DSM_NOTIFICATION_PARAMETERS	Contains parameters for the DeviceDsmAction_Notification action for the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
-winioctl_DEVICE_DSM_OFFLOAD_READ_PARAMETERS	Contains parameters for the DeviceDsmAction_OffloadRead action for the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
-winioctl_DEVICE_DSM_OFFLOAD_WRITE_PARAMETERS	Specifies parameters for the offload write operation.
-winioctl_DEVICE_LB_PROVISIONING_DESCRIPTOR	Contains the thin provisioning capabilities for a storage device.
-winioctl_DEVICE_MANAGE_DATA_SET_ATTRIBUTES	Input structure for the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
-winioctl_DEVICE_MANAGE_DATA_SET_ATTRIBUTES_OUTPUT	Output structure for the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
-winioctl_DEVICE_MEDIA_INFO	Provides information about the media supported by a device.
-winioctl_DEVICE_POWER_DESCRIPTOR	The DEVICE_POWER_DESCRIPTOR structure describes the power capabilities of a storage device.
-winioctl_DEVICE_SEEK_PENALTY_DESCRIPTOR	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY request to retrieve the seek penalty descriptor data for a device.
-winioctl_DEVICE_TRIM_DESCRIPTOR	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY request to retrieve the trim descriptor data for a device.
-winioctl_DEVICE_WRITE_AGGREGATION_DESCRIPTOR	Reserved for system use.
-winioctl_DUPLICATE_EXTENTS_DATA	Contains parameters for the FSCTL_DUPLICATE_EXTENTS control code that performs the Block Cloning operation.
-winioctl_FILE_ALLOCATED_RANGE_BUFFER	Indicates a range of bytes in a file.
-winioctl_FILE_LEVEL_TRIM	Used as input to the FSCTL_FILE_LEVEL_TRIM control code.
-winioctl_FILE_LEVEL_TRIM_OUTPUT	Used as output to the FSCTL_FILE_LEVEL_TRIM control code.
-winioctl_FILE_LEVEL_TRIM_RANGE	Specifies a range of a file that is to be trimmed.
-winioctl_FILE_MAKE_COMPATIBLE_BUFFER	Specifies the disc to close the current session for. This control code is used for UDF file systems. This structure is used for input when calling FSCTL_MAKE_MEDIA_COMPATIBLE.
-winioctl_FILE_OBJECTID_BUFFER	Contains an object identifier and user-defined metadata associated with the object identifier.
-winioctl_FILE_QUERY_ON_DISK_VOL_INFO_BUFFER	Receives the volume information from a call to FSCTL_QUERY_ON_DISK_VOLUME_INFO.
-winioctl_FILE_QUERY_SPARING_BUFFER	Contains defect management properties.
-winioctl_FILE_SET_DEFECT_MGMT_BUFFER	Specifies the defect management state to be set.
-winioctl_FILE_SET_SPARSE_BUFFER	Specifies the sparse state to be set.
-winioctl_FILE_STORAGE_TIER	Represents an identifier for the storage tier relative to the volume.
-winioctl_FILE_STORAGE_TIER_REGION	Describes a single storage tier region.
-winioctl_FILE_SYSTEM_RECOGNITION_INFORMATION	Contains file system recognition information retrieved by the FSCTL_QUERY_FILE_SYSTEM_RECOGNITION control code.
-winioctl_FILE_ZERO_DATA_INFORMATION	Contains a range of a file to set to zeros.
-winioctl_FIND_BY_SID_DATA	Contains data for the FSCTL_FIND_FILES_BY_SID control code.
-winioctl_FIND_BY_SID_OUTPUT	Represents a file name.
-winioctl_FORMAT_EX_PARAMETERS	Contains information used in formatting a contiguous set of disk tracks. It is used by the IOCTL_DISK_FORMAT_TRACKS_EX control code.
-winioctl_FORMAT_PARAMETERS	Contains information used in formatting a contiguous set of disk tracks.
-winioctl_FSCTL_GET_INTEGRITY_INFORMATION_BUFFER	Contains the integrity information for a file or directory.
-winioctl_FSCTL_QUERY_REGION_INFO_INPUT	Contains the storage tier regions from the storage stack for a particular volume.
-winioctl_FSCTL_QUERY_REGION_INFO_OUTPUT	Contains information for one or more regions.
-winioctl_FSCTL_QUERY_STORAGE_CLASSES_OUTPUT	Contains information for all tiers of a specific volume.
-winioctl_FSCTL_SET_INTEGRITY_INFORMATION_BUFFER	Input buffer passed with the FSCTL_SET_INTEGRITY_INFORMATION control code.
-winioctl_GET_CHANGER_PARAMETERS	Represents the parameters of a changer.
-winioctl_GET_DISK_ATTRIBUTES	Contains the attributes of a disk device.
-winioctl_GET_LENGTH_INFORMATION	Contains disk, volume, or partition length information used by the IOCTL_DISK_GET_LENGTH_INFO control code.
-winioctl_GET_MEDIA_TYPES	Contains information about the media types supported by a device.
-winioctl_LOOKUP_STREAM_FROM_CLUSTER_ENTRY	Returned from the FSCTL_LOOKUP_STREAM_FROM_CLUSTER control code.
-winioctl_LOOKUP_STREAM_FROM_CLUSTER_INPUT	Passed as input to the FSCTL_LOOKUP_STREAM_FROM_CLUSTER control code.
-winioctl_LOOKUP_STREAM_FROM_CLUSTER_OUTPUT	Received as output from the FSCTL_LOOKUP_STREAM_FROM_CLUSTER control code.
-winioctl_MARK_HANDLE_INFO	Contains information that is used to mark a specified file or directory, and its update sequence number (USN) change journal record with data about changes.
-winioctl_MARK_HANDLE_INFO32	Contains information that is used to mark a specified file or directory, and its update sequence number (USN) change journal record with data about changes.
-winioctl_MOVE_FILE_DATA	Contains input data for the FSCTL_MOVE_FILE control code.
-winioctl_NTFS_EXTENDED_VOLUME_DATA	Represents volume data.
-winioctl_NTFS_FILE_RECORD_INPUT_BUFFER	Contains data for the FSCTL_GET_NTFS_FILE_RECORD control code.
-winioctl_NTFS_FILE_RECORD_OUTPUT_BUFFER	Receives output data from the FSCTL_GET_NTFS_FILE_RECORD control code.
-winioctl_NTFS_VOLUME_DATA_BUFFER	Represents volume data.
-winioctl_PLEX_READ_DATA_REQUEST	Indicates the range of the read operation to perform and the plex from which to read.
-winioctl_PREVENT_MEDIA_REMOVAL	Provides removable media locking data. It is used by the IOCTL_STORAGE_MEDIA_REMOVAL control code.
-winioctl_READ_ELEMENT_ADDRESS_INFO	Represents the volume tag information. It is used by the IOCTL_CHANGER_QUERY_VOLUME_TAGS control code.
-winioctl_REASSIGN_BLOCKS	Contains disk block reassignment data.
-winioctl_REASSIGN_BLOCKS_EX	Contains disk block reassignment data.
-winioctl_REPAIR_COPIES_INPUT	Input structure for the FSCTL_REPAIR_COPIES control code.
-winioctl_REPAIR_COPIES_OUTPUT	Contains output of a repair copies operation returned from the FSCTL_REPAIR_COPIES control code.
-winioctl_REQUEST_OPLOCK_INPUT_BUFFER	Contains the information to request an opportunistic lock (oplock) or to acknowledge an oplock break with the FSCTL_REQUEST_OPLOCK control code.
-winioctl_REQUEST_OPLOCK_OUTPUT_BUFFER	Contains the opportunistic lock (oplock) information returned by the FSCTL_REQUEST_OPLOCK control code.
-winioctl_RETRIEVAL_POINTER_BASE	Contains the output for the FSCTL_GET_RETRIEVAL_POINTER_BASE control code.
-winioctl_RETRIEVAL_POINTERS_BUFFER	Contains the output for the FSCTL_GET_RETRIEVAL_POINTERS control code.
-winioctl_SET_DISK_ATTRIBUTES	Specifies the attributes to be set on a disk device.
-winioctl_SET_PARTITION_INFORMATION	Contains information used to set a disk partition's type.
-winioctl_SHRINK_VOLUME_INFORMATION	Specifies the volume shrink operation to perform.
-winioctl_STARTING_LCN_INPUT_BUFFER	Contains the starting LCN to the FSCTL_GET_VOLUME_BITMAP control code.
-winioctl_STARTING_VCN_INPUT_BUFFER	Contains the starting VCN to the FSCTL_GET_RETRIEVAL_POINTERS control code.
-winioctl_STORAGE_ACCESS_ALIGNMENT_DESCRIPTOR	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY control code to retrieve the storage access alignment descriptor data for a device.
-winioctl_STORAGE_ADAPTER_DESCRIPTOR	Used with the IOCTL_STORAGE_QUERY_PROPERTY control code to retrieve the storage adapter descriptor data for a device.
-winioctl_STORAGE_DESCRIPTOR_HEADER	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY control code to retrieve the properties of a storage device or adapter.
-winioctl_STORAGE_DEVICE_ATTRIBUTES_DESCRIPTOR	Reserved for future use.
-winioctl_STORAGE_DEVICE_DESCRIPTOR	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY control code to retrieve the storage device descriptor data for a device.
-winioctl_STORAGE_DEVICE_ID_DESCRIPTOR	Used with the IOCTL_STORAGE_QUERY_PROPERTY control code request to retrieve the device ID descriptor data for a device.
-winioctl_STORAGE_DEVICE_IO_CAPABILITY_DESCRIPTOR	The output buffer for the StorageDeviceIoCapabilityProperty as defined in STORAGE_PROPERTY_ID.
-winioctl_STORAGE_DEVICE_NUMBER	Contains information about a device. This structure is used by the IOCTL_STORAGE_GET_DEVICE_NUMBER control code.
-winioctl_STORAGE_DEVICE_POWER_CAP	This structure is used as an input and output buffer for the IOCTL_STORAGE_DEVICE_POWER_CAP.
-winioctl_STORAGE_DEVICE_RESILIENCY_DESCRIPTOR	Reserved for system use.
-winioctl_STORAGE_HOTPLUG_INFO	Provides information about the hotplug information of a device.
-winioctl_STORAGE_HW_FIRMWARE_ACTIVATE	This structure contains information about the downloaded firmware to activate.
-winioctl_STORAGE_HW_FIRMWARE_DOWNLOAD	This structure contains a firmware image payload to be downloaded to the target.
-winioctl_STORAGE_MEDIUM_PRODUCT_TYPE_DESCRIPTOR	Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY request to describe the product type of a storage device.
-winioctl_STORAGE_MINIPORT_DESCRIPTOR	Reserved for system use.
-winioctl_STORAGE_OFFLOAD_READ_OUTPUT	Output structure for the DeviceDsmAction_OffloadRead action of the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
-winioctl_STORAGE_OFFLOAD_TOKEN	The token used to represent a portion of a file used in by offload read and write operations.
-winioctl_STORAGE_OFFLOAD_WRITE_OUTPUT	Output structure for the DeviceDsmAction_OffloadWrite action of the IOCTL_STORAGE_MANAGE_DATA_SET_ATTRIBUTES control code.
-winioctl_STORAGE_PHYSICAL_ADAPTER_DATA	Describes a physical storage adapter.
-winioctl_STORAGE_PHYSICAL_DEVICE_DATA	Describes a physical storage device.
-winioctl_STORAGE_PHYSICAL_NODE_DATA	Specifies the physical device data of a storage node.
-winioctl_STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR	The STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR structure is one of the query result structures returned from an IOCTL_STORAGE_QUERY_PROPERTY request.
-winioctl_STORAGE_PROPERTY_QUERY	Indicates the properties of a storage device or adapter to retrieve as the input buffer passed to the IOCTL_STORAGE_QUERY_PROPERTY control code.
-winioctl_STORAGE_PROTOCOL_COMMAND	This structure is used as an input buffer when using the pass-through mechanism to issue a vendor-specific command to a storage device (via IOCTL_STORAGE_PROTOCOL_COMMAND).
-winioctl_STORAGE_PROTOCOL_DATA_DESCRIPTOR	This structure is used in conjunction with IOCTL_STORAGE_QUERY_PROPERTY to return protocol-specific data from a storage device or adapter.
-winioctl_STORAGE_PROTOCOL_SPECIFIC_DATA	Describes protocol-specific device data, provided in the input and output buffer of an IOCTL_STORAGE_QUERY_PROPERTY request.
-winioctl_STORAGE_RPMB_DATA_FRAME
-winioctl_STORAGE_RPMB_DESCRIPTOR
-winioctl_STORAGE_SPEC_VERSION	Storage specification version.
-winioctl_STORAGE_TEMPERATURE_DATA_DESCRIPTOR	This structure is used in conjunction with IOCTL_STORAGE_QUERY_PROPERTY to return temperature data from a storage device or adapter.
-winioctl_STORAGE_TEMPERATURE_INFO	Describes device temperature data. Returned as part of STORAGE_TEMPERATURE_DATA_DESCRIPTOR when querying for temperature data with an IOCTL_STORAGE_QUERY_PROPERTY request.
-winioctl_STORAGE_TEMPERATURE_THRESHOLD	This structure is used to set the over or under temperature threshold of a storage device (via IOCTL_STORAGE_SET_TEMPERATURE_THRESHOLD).
-winioctl_STORAGE_WRITE_CACHE_PROPERTY	Used with the IOCTL_STORAGE_QUERY_PROPERTY control code to retrieve information about a device's write cache property.
-winioctl_TXFS_CREATE_MINIVERSION_INFO	Contains the version information about the miniversion created by FSCTL_TXFS_CREATE_MINIVERSION.
-winioctl_TXFS_GET_METADATA_INFO_OUT	Contains the version information about the miniversion that is created.
-winioctl_TXFS_GET_TRANSACTED_VERSION	Contains the information about the base and latest versions of the specified file.
-winioctl_TXFS_LIST_TRANSACTION_LOCKED_FILES	Contains a list of files locked by a transacted writer.
-winioctl_TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY	Contains information about a locked transaction.
-winioctl_TXFS_LIST_TRANSACTIONS	Contains a list of transactions.
-winioctl_TXFS_LIST_TRANSACTIONS_ENTRY	Contains information about a transaction.
-winioctl_TXFS_MODIFY_RM	Contains the information required when modifying log parameters and logging mode for a secondary resource manager.
-winioctl_TXFS_QUERY_RM_INFORMATION	Contains information about the resource manager (RM).
-winioctl_TXFS_READ_BACKUP_INFORMATION_OUT	Contains a Transactional NTFS (TxF) specific structure. This information should only be used when calling TXFS_WRITE_BACKUP_INFORMATION.
-winioctl_TXFS_SAVEPOINT_INFORMATION	The FSCTL_TXFS_SAVEPOINT_INFORMATION structure specifies the action to perform, and on which transaction.
-winioctl_TXFS_TRANSACTION_ACTIVE_INFO	Contains the flag that indicates whether transactions were active or not when a snapshot was taken.
-winioctl_TXFS_WRITE_BACKUP_INFORMATION	Contains a Transactional NTFS (TxF) specific structure. This information should only be used when calling TXFS_WRITE_BACKUP_INFORMATION.
-winioctl_VERIFY_INFORMATION	Contains information used to verify a disk extent.
-winioctl_VOLUME_BITMAP_BUFFER	Represents the occupied and available clusters on a disk.
-winioctl_VOLUME_DISK_EXTENTS	Represents a physical location on a disk.
-winioctl_VOLUME_GET_GPT_ATTRIBUTES_INFORMATION Contains volume attributes retrieved with the IOCTL_VOLUME_GET_GPT_ATTRIBUTES control code.
-*/
+		/// <summary>Contains volume attributes retrieved with the IOCTL_VOLUME_GET_GPT_ATTRIBUTES control code.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-volume_get_gpt_attributes_information typedef struct
+		// _VOLUME_GET_GPT_ATTRIBUTES_INFORMATION { DWORDLONG GptAttributes; } VOLUME_GET_GPT_ATTRIBUTES_INFORMATION, *PVOLUME_GET_GPT_ATTRIBUTES_INFORMATION;
+		[PInvokeData("winioctl.h", MSDNShortId = "NS:winioctl._VOLUME_GET_GPT_ATTRIBUTES_INFORMATION")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct VOLUME_GET_GPT_ATTRIBUTES_INFORMATION
+		{
+			/// <summary>
+			/// <para>Specifies all of the attributes associated with a volume.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>GPT_BASIC_DATA_ATTRIBUTE_READ_ONLY 0x1000000000000000</term>
+			/// <term>The volume is read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>GPT_BASIC_DATA_ATTRIBUTE_SHADOW_COPY 0x2000000000000000</term>
+			/// <term>The volume is a shadow copy of another volume. For more information, see Volume Shadow Copy Service Overview.</term>
+			/// </item>
+			/// <item>
+			/// <term>GPT_BASIC_DATA_ATTRIBUTE_HIDDEN 0x4000000000000000</term>
+			/// <term>The volume is hidden.</term>
+			/// </item>
+			/// <item>
+			/// <term>GPT_BASIC_DATA_ATTRIBUTE_NO_DRIVE_LETTER 0x8000000000000000</term>
+			/// <term>The volume is not assigned a default drive letter.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public GPT_BASIC_DATA_ATTRIBUTE GptAttributes;
+		}
 	}
 }

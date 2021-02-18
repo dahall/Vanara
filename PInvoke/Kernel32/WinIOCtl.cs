@@ -5,223 +5,39 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
-		/// <summary>Device types defined by the system.</summary>
-		[PInvokeData("WinIOCtl.h")]
-		public enum DEVICE_TYPE : ushort
-		{
-			/// <summary/>
-			FILE_DEVICE_BEEP = 0x00000001,
-			/// <summary/>
-			FILE_DEVICE_CD_ROM = 0x00000002,
-			/// <summary/>
-			FILE_DEVICE_CD_ROM_FILE_SYSTEM = 0x00000003,
-			/// <summary/>
-			FILE_DEVICE_CONTROLLER = 0x00000004,
-			/// <summary/>
-			FILE_DEVICE_DATALINK = 0x00000005,
-			/// <summary/>
-			FILE_DEVICE_DFS = 0x00000006,
-			/// <summary/>
-			FILE_DEVICE_DISK = 0x00000007,
-			/// <summary/>
-			FILE_DEVICE_DISK_FILE_SYSTEM = 0x00000008,
-			/// <summary/>
-			FILE_DEVICE_FILE_SYSTEM = 0x00000009,
-			/// <summary/>
-			FILE_DEVICE_INPORT_PORT = 0x0000000a,
-			/// <summary/>
-			FILE_DEVICE_KEYBOARD = 0x0000000b,
-			/// <summary/>
-			FILE_DEVICE_MAILSLOT = 0x0000000c,
-			/// <summary/>
-			FILE_DEVICE_MIDI_IN = 0x0000000d,
-			/// <summary/>
-			FILE_DEVICE_MIDI_OUT = 0x0000000e,
-			/// <summary/>
-			FILE_DEVICE_MOUSE = 0x0000000f,
-			/// <summary/>
-			FILE_DEVICE_MULTI_UNC_PROVIDER = 0x00000010,
-			/// <summary/>
-			FILE_DEVICE_NAMED_PIPE = 0x00000011,
-			/// <summary/>
-			FILE_DEVICE_NETWORK = 0x00000012,
-			/// <summary/>
-			FILE_DEVICE_NETWORK_BROWSER = 0x00000013,
-			/// <summary/>
-			FILE_DEVICE_NETWORK_FILE_SYSTEM = 0x00000014,
-			/// <summary/>
-			FILE_DEVICE_NULL = 0x00000015,
-			/// <summary/>
-			FILE_DEVICE_PARALLEL_PORT = 0x00000016,
-			/// <summary/>
-			FILE_DEVICE_PHYSICAL_NETCARD = 0x00000017,
-			/// <summary/>
-			FILE_DEVICE_PRINTER = 0x00000018,
-			/// <summary/>
-			FILE_DEVICE_SCANNER = 0x00000019,
-			/// <summary/>
-			FILE_DEVICE_SERIAL_MOUSE_PORT = 0x0000001a,
-			/// <summary/>
-			FILE_DEVICE_SERIAL_PORT = 0x0000001b,
-			/// <summary/>
-			FILE_DEVICE_SCREEN = 0x0000001c,
-			/// <summary/>
-			FILE_DEVICE_SOUND = 0x0000001d,
-			/// <summary/>
-			FILE_DEVICE_STREAMS = 0x0000001e,
-			/// <summary/>
-			FILE_DEVICE_TAPE = 0x0000001f,
-			/// <summary/>
-			FILE_DEVICE_TAPE_FILE_SYSTEM = 0x00000020,
-			/// <summary/>
-			FILE_DEVICE_TRANSPORT = 0x00000021,
-			/// <summary/>
-			FILE_DEVICE_UNKNOWN = 0x00000022,
-			/// <summary/>
-			FILE_DEVICE_VIDEO = 0x00000023,
-			/// <summary/>
-			FILE_DEVICE_VIRTUAL_DISK = 0x00000024,
-			/// <summary/>
-			FILE_DEVICE_WAVE_IN = 0x00000025,
-			/// <summary/>
-			FILE_DEVICE_WAVE_OUT = 0x00000026,
-			/// <summary/>
-			FILE_DEVICE_8042_PORT = 0x00000027,
-			/// <summary/>
-			FILE_DEVICE_NETWORK_REDIRECTOR = 0x00000028,
-			/// <summary/>
-			FILE_DEVICE_BATTERY = 0x00000029,
-			/// <summary/>
-			FILE_DEVICE_BUS_EXTENDER = 0x0000002a,
-			/// <summary/>
-			FILE_DEVICE_MODEM = 0x0000002b,
-			/// <summary/>
-			FILE_DEVICE_VDM = 0x0000002c,
-			/// <summary/>
-			FILE_DEVICE_MASS_STORAGE = 0x0000002d,
-			/// <summary/>
-			FILE_DEVICE_SMB = 0x0000002e,
-			/// <summary/>
-			FILE_DEVICE_KS = 0x0000002f,
-			/// <summary/>
-			FILE_DEVICE_CHANGER = 0x00000030,
-			/// <summary/>
-			FILE_DEVICE_SMARTCARD = 0x00000031,
-			/// <summary/>
-			FILE_DEVICE_ACPI = 0x00000032,
-			/// <summary/>
-			FILE_DEVICE_DVD = 0x00000033,
-			/// <summary/>
-			FILE_DEVICE_FULLSCREEN_VIDEO = 0x00000034,
-			/// <summary/>
-			FILE_DEVICE_DFS_FILE_SYSTEM = 0x00000035,
-			/// <summary/>
-			FILE_DEVICE_DFS_VOLUME = 0x00000036,
-			/// <summary/>
-			FILE_DEVICE_SERENUM = 0x00000037,
-			/// <summary/>
-			FILE_DEVICE_TERMSRV = 0x00000038,
-			/// <summary/>
-			FILE_DEVICE_KSEC = 0x00000039,
-			/// <summary/>
-			FILE_DEVICE_FIPS = 0x0000003A,
-			/// <summary/>
-			FILE_DEVICE_INFINIBAND = 0x0000003B,
-			/// <summary/>
-			FILE_DEVICE_AVIO = 0x0000003C,
-			/// <summary/>
-			FILE_DEVICE_VMBUS = 0x0000003E,
-			/// <summary/>
-			FILE_DEVICE_CRYPT_PROVIDER = 0x0000003F,
-			/// <summary/>
-			FILE_DEVICE_WPD = 0x00000040,
-			/// <summary/>
-			FILE_DEVICE_BLUETOOTH = 0x00000041,
-			/// <summary/>
-			FILE_DEVICE_MT_COMPOSITE = 0x00000042,
-			/// <summary/>
-			FILE_DEVICE_MT_TRANSPORT = 0x00000043,
-			/// <summary/>
-			FILE_DEVICE_BIOMETRIC = 0x00000044,
-			/// <summary/>
-			FILE_DEVICE_PMI = 0x00000045,
-			/// <summary/>
-			FILE_DEVICE_EHSTOR = 0x00000046,
-			/// <summary/>
-			FILE_DEVICE_DEVAPI = 0x00000047,
-			/// <summary/>
-			FILE_DEVICE_GPIO = 0x00000048,
-			/// <summary/>
-			FILE_DEVICE_USBEX = 0x00000049,
-			/// <summary/>
-			FILE_DEVICE_CONSOLE = 0x00000050,
-			/// <summary/>
-			FILE_DEVICE_NFP = 0x00000051,
-			/// <summary/>
-			FILE_DEVICE_SYSENV = 0x00000052,
-			/// <summary/>
-			FILE_DEVICE_VIRTUAL_BLOCK = 0x00000053,
-			/// <summary/>
-			FILE_DEVICE_POINT_OF_SERVICE = 0x00000054,
-			/// <summary/>
-			FILE_DEVICE_STORAGE_REPLICATION = 0x00000055,
-			/// <summary/>
-			FILE_DEVICE_TRUST_ENV = 0x00000056,
-			/// <summary/>
-			FILE_DEVICE_UCM = 0x00000057,
-			/// <summary/>
-			FILE_DEVICE_UCMTCPCI = 0x00000058,
-			/// <summary/>
-			FILE_DEVICE_PERSISTENT_MEMORY = 0x00000059,
-			/// <summary/>
-			FILE_DEVICE_NVDIMM = 0x0000005a,
-			/// <summary/>
-			FILE_DEVICE_HOLOGRAPHIC = 0x0000005b,
-			/// <summary/>
-			FILE_DEVICE_SDFXHCI = 0x0000005c,
-			/// <summary/>
-			FILE_DEVICE_UCMUCSI = 0x0000005d,
-			/// <summary/>
-			IOCTL_STORAGE_BASE = FILE_DEVICE_MASS_STORAGE,
-			/// <summary/>
-			IOCTL_CHANGER_BASE = FILE_DEVICE_CHANGER,
-			/// <summary/>
-			IOCTL_VOLUME_BASE = 0x00000056,
-		}
-
-		/// <summary>
-		/// Defined access check value for any access within an I/O control code (IOCTL). The FILE_ACCESS_ANY is generally the correct value.
-		/// </summary>
-		[Flags]
-		[PInvokeData("WinIOCtl.h")]
-		public enum IOAccess : byte
-		{
-			/// <summary>Request all access.</summary>
-			FILE_ANY_ACCESS = 0,
-
-			/// <summary>Request read access. Can be used with FILE_WRITE_ACCESS.</summary>
-			FILE_READ_ACCESS = 1,
-
-			/// <summary>Request write access. Can be used with FILE_READ_ACCESS.</summary>
-			FILE_WRITE_ACCESS = 2,
-
-			/// <summary>Request read and write access. This value is equivalent to (FILE_READ_ACCESS | FILE_WRITE_ACCESS).</summary>
-			FILE_READ_WRITE_ACCESS = 3,
-		}
-
-		/// <summary>Defined method codes for how buffers are passed for I/O and file system controls within an I/O control code (IOCTL).</summary>
-		[PInvokeData("WinIOCtl.h")]
-		public enum IOMethod : byte
-		{
-			/// <summary>The method buffered</summary>
-			METHOD_BUFFERED = 0,
-			/// <summary>The method in direct</summary>
-			METHOD_IN_DIRECT = 1,
-			/// <summary>The method out direct</summary>
-			METHOD_OUT_DIRECT = 2,
-			/// <summary>The method neither</summary>
-			METHOD_NEITHER = 3,
-		}
+		/// <summary>This macro is used to determine to which partitions drive letters should be assigned.</summary>
+		/// <param name="PartitionType">Supplies the type of the partition being examined.</param>
+		/// <returns><see langword="true"/> if the partition type is recognized; otherwise, <see langword="false"/>.</returns>
+		[PInvokeData("winioctl.h")]
+		public static bool IsRecognizedPartition(PartitionType PartitionType) => Environment.OSVersion.Version.Major < 6 ?
+				((PartitionType & PartitionType.PARTITION_NTFT) != 0 &&
+					((((byte)PartitionType & ~0xC0) == (byte)PartitionType.PARTITION_HUGE) ||
+					(((byte)PartitionType & ~0xC0) == (byte)PartitionType.PARTITION_IFS) ||
+					(((byte)PartitionType & ~0xC0) == (byte)PartitionType.PARTITION_FAT32) ||
+					(((byte)PartitionType & ~0xC0) == (byte)PartitionType.PARTITION_FAT32_XINT13))) ||
+				((PartitionType) == PartitionType.PARTITION_FAT_12) ||
+				((PartitionType) == PartitionType.PARTITION_FAT_16) ||
+				((PartitionType) == PartitionType.PARTITION_HUGE) ||
+				((PartitionType) == PartitionType.PARTITION_IFS) ||
+				((PartitionType) == PartitionType.PARTITION_FAT32) ||
+				((PartitionType) == PartitionType.PARTITION_FAT32_XINT13) ||
+				((PartitionType) == PartitionType.PARTITION_XINT13)
+				:
+				((PartitionType) == PartitionType.PARTITION_BSP) ||
+				((PartitionType) == PartitionType.PARTITION_DPP) ||
+				((PartitionType) == PartitionType.PARTITION_FAT_12) ||
+				((PartitionType) == PartitionType.PARTITION_FAT_16) ||
+				((PartitionType) == PartitionType.PARTITION_FAT32) ||
+				((PartitionType) == PartitionType.PARTITION_FAT32_XINT13) ||
+				((PartitionType) == PartitionType.PARTITION_HUGE) ||
+				((PartitionType) == PartitionType.PARTITION_IFS) ||
+				((PartitionType) == PartitionType.PARTITION_MAIN_OS) ||
+				((PartitionType) == PartitionType.PARTITION_MSFT_RECOVERY) ||
+				((PartitionType) == PartitionType.PARTIITON_OS_DATA) ||
+				((PartitionType) == PartitionType.PARTITION_PRE_INSTALLED) ||
+				((PartitionType) == PartitionType.PARTITION_SYSTEM) ||
+				((PartitionType) == PartitionType.PARTITION_WINDOWS_SYSTEM) ||
+				((PartitionType) == PartitionType.PARTITION_XINT13);
 
 		/// <summary>Represents IO control codes.</summary>
 		[PInvokeData("WinIOCtl.h")]
@@ -230,35 +46,138 @@ namespace Vanara.PInvoke
 			private const ushort IOCTL_SCM_LOGICAL_DEVICE_FUNCTION_BASE = 0x300;
 			private const ushort IOCTL_SCM_PHYSICAL_DEVICE_FUNCTION_BASE = 0x600;
 			private const ushort IOCTL_SCMBUS_DEVICE_FUNCTION_BASE = 0x0;
+
 			/// <summary/>
 			public static uint FSCTL_ADD_OVERLAY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 204, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
 			/// <summary/>
 			public static uint FSCTL_ADVANCE_FILE_ID => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 177, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-			/// <summary/>
+
+			/// <summary>
+			/// <para>
+			/// Signals the file system driver not to perform any I/O boundary checks on partition read or write calls. Instead, boundary
+			/// checks are performed by the device driver.
+			/// </para>
+			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// A call using the <c>FSCTL_ALLOW_EXTENDED_DASD_IO</c> control code should only be used with great caution by programmers
+			/// familiar with the underlying structure of a hard disk drive and file system. Improper use or inaccurate checking in
+			/// subsequent write operations to the partition can result in damage to data on the partition, or destruction of the entire partition.
+			/// </para>
+			/// <para>
+			/// The <c>FSCTL_ALLOW_EXTENDED_DASD_IO</c> control code is used to signal the file system driver not to perform any I/O
+			/// boundary checks on read or write calls made with the specified handle. <c>FSCTL_ALLOW_EXTENDED_DASD_IO</c> allows access to
+			/// hidden sectors, a part of the partition that might exist between the first sector of the partition (the boot parameter
+			/// block) and the first useful sector of the partition. <c>FSCTL_ALLOW_EXTENDED_DASD_IO</c> also allows access to lost
+			/// clusters, which might exist between the last useful cluster and the end of the partition.
+			/// </para>
+			/// <para>
+			/// I/O requests issued after this operation are passed directly to the device driver. If these subsequent calls request data
+			/// beyond the partition boundary, the driver causes them to fail.
+			/// </para>
+			/// <para>For the implications of overlapped I/O on this operation, see the Remarks section of DeviceIoControl.</para>
+			/// <para>
+			/// To retrieve a handle to a partition, call CreateFile with the lpFileName parameter set to a string of the following form:
+			/// </para>
+			/// <para>\.\X:</para>
+			/// <para>where X is the drive letter.</para>
+			/// <para>
+			/// The application calling CreateFile must also specify the <c>FILE_SHARE_READ</c> and <c>FILE_SHARE_WRITE</c> flags in the
+			/// dwShareMode parameter of CreateFile. For more information, see the Disk Devices section in CreateFile.
+			/// </para>
+			/// <para>
+			/// To determine the partition structure of the drive and to determine if the system recognizes the partition, use the
+			/// IOCTL_DISK_GET_DRIVE_LAYOUT_EX or IOCTL_DISK_GET_DRIVE_LAYOUT control code, as appropriate. For similar information on a
+			/// single partition, use the IOCTL_DISK_GET_PARTITION_INFO_EX or IOCTL_DISK_GET_PARTITION_INFO control code, as appropriate. To
+			/// determine the size of a cluster, use the GetDiskFreeSpaceEx or GetDiskFreeSpace function, as appropriate.
+			/// </para>
+			/// <para>In Windows Server 2012, this function is supported by the following technologies.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Technology</term>
+			/// <term>Supported</term>
+			/// </listheader>
+			/// <item>
+			/// <term>Server Message Block (SMB) 3.0 protocol</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>Cluster Shared Volume File System (CsvFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>Resilient File System (ReFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_allow_extended_dasd_io
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.FSCTL_ALLOW_EXTENDED_DASD_IO")]
 			public static uint FSCTL_ALLOW_EXTENDED_DASD_IO => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 32, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
 			/// <summary/>
 			public static uint FSCTL_CLEAN_VOLUME_METADATA => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 223, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 			/// <summary/>
 			public static uint FSCTL_CORRUPTION_HANDLING => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 152, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
-			/// <summary/>
+
+			/// <summary>
+			/// <para>Retrieves the object identifier for the specified file or directory. If no object identifier exists, using <c>FSCTL_CREATE_OR_GET_OBJECT_ID</c> creates one.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para><code>BOOL DeviceIoControl( (HANDLE) hDevice, // handle to device FSCTL_CREATE_OR_GET_OBJECT_ID, // dwIoControlCode NULL, // lpInBuffer 0, // nInBufferSize (LPVOID) lpOutBuffer, // output buffer (DWORD) nOutBufferSize, // size of output buffer (LPDWORD) lpBytesReturned, // number of bytes returned (LPOVERLAPPED) lpOverlapped // OVERLAPPED structure ); </code></para>
+			/// </summary>
+			/// <remarks>
+			/// <para>Object identifiers are used to track files and directories. They are invisible to most applications and should never be modified by applications. Modifying an object identifier can result in the loss of data from portions of a file, up to and including entire volumes of data.</para>
+			/// <para>This operation creates an object identifier if the object does not already have one. To test for the presence of an object identifier, and retrieve it if it exists, use the FSCTL_GET_OBJECT_ID operation. To create an object identifier without first testing for the presence of one, use the FSCTL_SET_OBJECT_ID operation.</para>
+			/// <para>In Windows Server 2012, this function is supported by the following technologies.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Technology</term>
+			/// <term>Supported</term>
+			/// </listheader>
+			/// <item>
+			/// <term>Server Message Block (SMB) 3.0 protocol</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>Cluster Shared Volume File System (CsvFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>Resilient File System (ReFS)</term>
+			/// <term>No</term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_create_or_get_object_id
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.FSCTL_CREATE_OR_GET_OBJECT_ID")]
+			[CorrespondingType(typeof(FILE_OBJECTID_BUFFER), CorrespondingAction.Get)]
 			public static uint FSCTL_CREATE_OR_GET_OBJECT_ID => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 48, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary>
 			/// <para>
 			/// Creates an update sequence number (USN) change journal stream on a target volume, or modifies an existing change journal stream.
 			/// </para>
-			/// <para>Major Code</para>
-			/// <para>IRP_MJ_DEVICE_CONTROL</para>
-			/// <para>Input Buffer</para>
-			/// <para>Input Buffer Length</para>
-			/// <para>Output Buffer</para>
-			/// <para>Output Buffer Length</para>
-			/// <para>Input / Output Buffer</para>
-			/// <para>Input / Output Buffer Length</para>
-			/// <para>Status Block</para>
-			/// <para>Irp-&gt;IoStatus.Status is set to STATUS_SUCCESS if the request is successful.</para>
-			/// <para>Otherwise, Status to the appropriate error condition as a NTSTATUS code.</para>
-			/// <para>For more information, see NTSTATUS Values.</para>
+			/// <para>Input buffer</para>
+			/// <para>Input buffer length</para>
+			/// <para>Output buffer</para>
+			/// <para>Output buffer length</para>
+			/// <para>Input / Output buffer</para>
+			/// <para>Input / Output buffer length</para>
 			/// </summary>
 			/// <remarks>
 			/// <para>For the implications of overlapped I/O on this operation, see the Remarks section of the DeviceIoControl topic.</para>
@@ -273,7 +192,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>For more information, see Creating, Modifying, and Deleting a Change Journal.</para>
 			/// <para>To retrieve a handle to a volume, call CreateFile with the lpFileName parameter set to a string in the following form:</para>
-			/// <para>\.&lt;i&gt;X:</para>
+			/// <para>\.\X:</para>
 			/// <para>
 			/// In the preceding string, X is the letter identifying the drive on which the volume appears. The volume must be NTFS 3.0 or
 			/// later. To obtain the NTFS version of a volume, open a command prompt with Administrator access rights and execute the
@@ -305,15 +224,26 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_create_usn_journal?redirectedfrom=MSDN
-			[PInvokeData("winioctl.h", MSDNShortId = "92e737e6-dba6-47f1-a077-e303039e12eb")]
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_create_usn_journal
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.FSCTL_CREATE_USN_JOURNAL")]
 			[CorrespondingType(typeof(CREATE_USN_JOURNAL_DATA), CorrespondingAction.Get)]
 			public static uint FSCTL_CREATE_USN_JOURNAL => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 57, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary/>
 			public static uint FSCTL_CSC_INTERNAL => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 107, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
 
-			/// <summary/>
+			/// <summary>
+			/// <para>Retrieves the results of a CSV control operation.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para><code>BOOL DeviceIoControl( (HANDLE) hDevice, // handle to device FSCTL_CSV_CONTROL, // dwIoControlCode (LPVOID) lpInBuffer, // input buffer (DWORD) nInBufferSize, // size of input buffer (LPVOID) lpOutBuffer, // output buffer (DWORD) nOutBufferSize, // size of output buffer (LPDWORD) lpBytesReturned, // number of bytes returned (LPOVERLAPPED) lpOverlapped // OVERLAPPED structure ); </code></para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_csv_control
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.FSCTL_CSV_CONTROL")]
+			[CorrespondingType(typeof(CSV_CONTROL_PARAM), CorrespondingAction.Set)]
+			[CorrespondingType(typeof(CSV_QUERY_FILE_REVISION), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(CSV_QUERY_MDS_PATH), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(CSV_QUERY_REDIRECT_STATE), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(CSV_QUERY_VETO_FILE_DIRECT_IO_OUTPUT), CorrespondingAction.Get)]
 			public static uint FSCTL_CSV_CONTROL => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 181, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary/>
@@ -334,7 +264,13 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public static uint FSCTL_CSV_MGMT_LOCK => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 175, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
-			/// <summary/>
+			/// <summary>
+			/// <para>Retrieves information about a file system for which CSVFS is a proxy.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para><code>BOOL DeviceIoControl( (HANDLE) hDevice, // handle to device FSCTL_CSV_QUERY_DOWN_LEVEL_FILE_SYSTEM_CHARACTERISTICS, // dwIoControlCode NULL, // input buffer 0, // size of input buffer (LPVOID) lpOutBuffer, // lpOutBuffer (DWORD) nOutBufferSize, // nOutBufferSize (LPDWORD) lpBytesReturned, // number of bytes returned (LPOVERLAPPED) lpOverlapped // OVERLAPPED structure ); </code></para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_csv_query_down_level_file_system_characteristics
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.FSCTL_CSV_QUERY_DOWN_LEVEL_FILE_SYSTEM_CHARACTERISTICS")]
 			public static uint FSCTL_CSV_QUERY_DOWN_LEVEL_FILE_SYSTEM_CHARACTERISTICS => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 176, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary/>
@@ -350,12 +286,101 @@ namespace Vanara.PInvoke
 			public static uint FSCTL_DELETE_CORRUPTED_REFS_CONTAINER => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 253, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary/>
+			/// <summary>
+			/// <para>The <c>FSCTL_DELETE_EXTERNAL_BACKING</c> control code removes the association of a file with an external backing provider, including the Windows Image Format (WIM) provider or compressed file provider. As a result of this operation, the entire contents of a backed file are read, decompressed, and written into the file.</para>
+			/// <para>To perform this operation, call <c>FltFsControlFile</c> or <c>ZwFsControlFile</c> with the following parameters.</para>
+			/// <para><c>Parameters</c></para>
+			/// <para>Instance [in] <c>FltFsControlFile</c> only. An opaque instance pointer for the caller. This parameter is required and cannot be NULL.</para>
+			/// <para>FileObject [in] <c>FltFsControlFile</c> only. The file pointer object of the file for which backing association is deleted. This parameter is required and cannot be NULL.</para>
+			/// <para>FileHandle [in] <c>ZwFsControlFile</c> only. The handle of the file for which backing association is deleted. This parameter is required and cannot be NULL.</para>
+			/// <para>FsControlCode [in] The control code for the operation. Use <c>FSCTL_DELETE_EXTERNAL_BACKING</c> for this operation.</para>
+			/// <para>InputBuffer None. Set to NULL.</para>
+			/// <para>InputBufferLength [in] Set to 0.</para>
+			/// <para>OutputBuffer [out] None. Set to NULL.</para>
+			/// <para>OutputBufferLength [out] Set to 0.</para>
+			/// </summary>
+			/// <remarks>As a result of the delete operation, the contents of the file are read from the backing source and the entire file is written to the volume.</remarks>
+			// https://docs.microsoft.com/en-us/windows-hardware/drivers/ifs/fsctl-delete-external-backing
+			[PInvokeData("Ntifs.h")]
 			public static uint FSCTL_DELETE_EXTERNAL_BACKING => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 197, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
-			/// <summary/>
+			/// <summary>
+			/// <para>Removes the object identifier from a specified file or directory. The underlying object is not deleted.</para>
+			/// <para><code>BOOL DeviceIoControl( (HANDLE) hDevice, // handle to device FSCTL_DELETE_OBJECT_ID, // dwIoControlCode NULL, // lpInBuffer 0, // nInBufferSize NULL, // lpOutBuffer 0, // nOutBufferSize (LPDWORD) lpBytesReturned, // number of bytes returned (LPOVERLAPPED) lpOverlapped // OVERLAPPED structure ); </code></para>
+			/// </summary>
+			/// <remarks>
+			/// <para>Object identifiers are used to track files and directories. They are invisible to most applications and should never be modified by applications. Modifying an object identifier can result in the loss of data from portions of a file, up to and including entire volumes of data.</para>
+			/// <para>In Windows 8 and Windows Server 2012, this code is supported by the following technologies.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Technology</term>
+			/// <term>Supported</term>
+			/// </listheader>
+			/// <item>
+			/// <term>Server Message Block (SMB) 3.0 protocol</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>Cluster Shared Volume File System (CsvFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>Resilient File System (ReFS)</term>
+			/// <term>No</term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_delete_object_id
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.FSCTL_DELETE_OBJECT_ID")]
 			public static uint FSCTL_DELETE_OBJECT_ID => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 40, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
-			/// <summary/>
+			/// <summary>
+			/// <para>Deletes a reparse point from the specified file or directory. Using <c>FSCTL_DELETE_REPARSE_POINT</c> does not delete the file or directory.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para><code>BOOL DeviceIoControl( (HANDLE) hDevice, // handle to file or directory FSCTL_DELETE_REPARSE_POINT, // dwIoControlCode (LPVOID) lpInBuffer, // input buffer (DWORD) nInBufferSize, // size of input buffer NULL, // lpOutBuffer 0, // nOutBufferSize (LPDWORD) lpBytesReturned, // number of bytes returned (LPOVERLAPPED) lpOverlapped // OVERLAPPED structure ); </code></para>
+			/// </summary>
+			/// <remarks>
+			/// <para>In Windows 8 and Windows Server 2012, this code is supported by the following technologies.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Technology</term>
+			/// <term>Supported</term>
+			/// </listheader>
+			/// <item>
+			/// <term>Server Message Block (SMB) 3.0 protocol</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>Cluster Shared Volume File System (CsvFS)</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>Resilient File System (ReFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// </list>
+			/// <para>CsvFs does not support reparse points.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_delete_reparse_point
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.FSCTL_DELETE_REPARSE_POINT")]
+			//[CorrespondingType(typeof(REPARSE_GUID_DATA_BUFFER), CorrespondingAction.Set)]
+			//[CorrespondingType(typeof(REPARSE_DATA_BUFFER), CorrespondingAction.Set)]
 			public static uint FSCTL_DELETE_REPARSE_POINT => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 43, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary>
@@ -445,13 +470,126 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public static uint FSCTL_DISABLE_LOCAL_BUFFERING => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 174, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
-			/// <summary/>
+			/// <summary>
+			/// <para>Dismounts a volume regardless of whether or not the volume is currently in use. For more information, see the Remarks section.</para>
+			/// </summary>
+			/// <remarks>
+			/// <para>The <c>FSCTL_DISMOUNT_VOLUME</c> control code will attempt to dismount a volume regardless of whether or not any other processes are using the volume, which can have unpredictable results for those processes if they do not hold a lock on the volume. For information about locking a volume, see FSCTL_LOCK_VOLUME.</para>
+			/// <para>The hDevice handle passed to DeviceIoControl must be a handle to a volume, opened for direct access. To retrieve a volume handle, call CreateFile with the lpFileName parameter set to a string of the following form:</para>
+			/// <para>\.\X:</para>
+			/// <para>where X is a hard-drive partition letter, floppy disk drive, or CD-ROM drive. The application must also specify the <c>FILE_SHARE_READ</c> and <c>FILE_SHARE_WRITE</c> flags in the dwShareMode parameter of CreateFile.</para>
+			/// <para>If the specified volume is a system volume or contains a page file, the operation fails.</para>
+			/// <para>If the specified volume is locked by another process, the operation fails. To prevent another process from locking the volume, lock it as soon as you open it.</para>
+			/// <para>A dismounted volume has the following properties:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>There are no open files.</term>
+			/// </item>
+			/// <item>
+			/// <term>The operating system does detect the volume.</term>
+			/// </item>
+			/// </list>
+			/// <para>The operating system tries to mount an unmounted volume as soon as an attempt is made to access it. For example, a call to GetLogicalDrives triggers the operating system to mount unmounted volumes.</para>
+			/// <para>Dismounting a volume is useful when a volume needs to disappear for a while. For example, an application that changes a volume file system from the FAT file system to the NTFS file system might use the following procedure.</para>
+			/// <para><c>To change a volume file system</c></para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Open a volume.</term>
+			/// </item>
+			/// <item>
+			/// <term>Lock the volume.</term>
+			/// </item>
+			/// <item>
+			/// <term>Format the volume.</term>
+			/// </item>
+			/// <item>
+			/// <term>Dismount the volume.</term>
+			/// </item>
+			/// <item>
+			/// <term>Unlock the volume.</term>
+			/// </item>
+			/// <item>
+			/// <term>Close the volume handle.</term>
+			/// </item>
+			/// </list>
+			/// <para>A dismounting operation removes the volume from the FAT file system awareness. When the operating system mounts the volume, it appears as an NTFS file system volume.</para>
+			/// <para>In Windows 8 and Windows Server 2012, this code is supported by the following technologies.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Technology</term>
+			/// <term>Supported</term>
+			/// </listheader>
+			/// <item>
+			/// <term>Server Message Block (SMB) 3.0 protocol</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>Cluster Shared Volume File System (CsvFS)</term>
+			/// <term>See comment</term>
+			/// </item>
+			/// </list>
+			/// <para>On CsvFs the node where dismount is issued will see a normal dismount sequence. On all other nodes FS will invalidate all the opened files.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_dismount_volume
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.FSCTL_DISMOUNT_VOLUME")]
 			public static uint FSCTL_DISMOUNT_VOLUME => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 8, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
-			/// <summary/>
+			/// <summary>
+			/// <para>Instructs the file system to copy a range of file bytes on behalf of an application. The destination file may be the same as, or different from, the source file. See Block Cloning for more information.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para><code>BOOL DeviceIoControl( (HANDLE) hDevice, // handle to device FSCTL_DUPLICATE_EXTENTS_TO_FILE, // dwIoControlCode (LPVOID) lpInBuffer, // input buffer (DWORD) nInBufferSize, // size of input buffer NULL, // lpOutBuffer 0, // nOutBufferSize (LPDWORD) lpBytesReturned, // number of bytes returned (LPOVERLAPPED) lpOverlapped // OVERLAPPED structure ); </code></para>
+			/// </summary>
+			/// <remarks>
+			/// <para>For the implications of overlapped I/O on this operation, see the Remarks section of the DeviceIoControl topic.</para>
+			/// <para>See Block Cloning for more information on this operation.</para>
+			/// <para>In Windows Server 2016, this function is supported by the following technologies.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Technology</term>
+			/// <term>Supported</term>
+			/// </listheader>
+			/// <item>
+			/// <term>Server Message Block (SMB) 3.1.1 protocol</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.1.1 Transparent Failover (TFO)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.1.1 with Scale-out File Shares (SoFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>Cluster Shared Volume File System (CsvFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// <item>
+			/// <term>Resilient File System (ReFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_duplicate_extents_to_file
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.FSCTL_DUPLICATE_EXTENTS_TO_FILE")]
+			[CorrespondingType(typeof(DUPLICATE_EXTENTS_DATA), CorrespondingAction.Set)]
 			public static uint FSCTL_DUPLICATE_EXTENTS_TO_FILE => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 209, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
 
-			/// <summary/>
+			/// <summary>
+			/// <para>The <c>FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX</c> control code instructs the file system to copy a range of file bytes on behalf of an application. The destination file may be the same as, or different from, the source file.</para>
+			/// </summary>
+			/// <remarks>For the implications of overlapped I/O on this operation, see the Remarks section of the <c>DeviceIoControl</c> topic.</remarks>
+			// https://docs.microsoft.com/en-us/windows-hardware/drivers/ifs/fsctl-duplicate-extents-to-file-ex
+			[PInvokeData("WinIoctl.h")]
+			//[CorrespondingType(typeof(DUPLICATE_EXTENTS_DATA_EX), CorrespondingAction.Set)]
 			public static uint FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 250, IOMethod.METHOD_BUFFERED, IOAccess.FILE_WRITE_ACCESS);
 
 			/// <summary/>
@@ -599,6 +737,7 @@ namespace Vanara.PInvoke
 			public static uint FSCTL_GET_BOOT_AREA_INFO => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 140, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary/>
+			[CorrespondingType(typeof(COMPRESSION_FORMAT), CorrespondingAction.Get)]
 			public static uint FSCTL_GET_COMPRESSION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 15, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary/>
@@ -1035,8 +1174,9 @@ namespace Vanara.PInvoke
 			
 			/// <summary/>
 			public static uint FSCTL_SET_BOOTLOADER_ACCESSED => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 19, IOMethod.METHOD_NEITHER, IOAccess.FILE_ANY_ACCESS);
-			
+
 			/// <summary/>
+			[CorrespondingType(typeof(COMPRESSION_FORMAT), CorrespondingAction.Set)]
 			public static uint FSCTL_SET_COMPRESSION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_FILE_SYSTEM, 16, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
 			
 			/// <summary/>
@@ -2113,8 +2253,40 @@ namespace Vanara.PInvoke
 			
 			/// <summary/>
 			public static uint IOCTL_STORAGE_STOP_DATA_INTEGRITY_CHECK => CTL_CODE(DEVICE_TYPE.IOCTL_STORAGE_BASE, 0x0622, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_WRITE_ACCESS);
-			
-			/// <summary/>
+
+			/// <summary>
+			/// <para>Retrieves the attributes for a volume.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para><code>BOOL DeviceIoControl( (HANDLE) hDevice, // handle to the volume device IOCTL_VOLUME_GET_GPT_ATTRIBUTES, // dwIoControlCode NULL, // lpInBuffer 0, // nInBufferSize (LPVOID) lpOutBuffer, // output buffer (DWORD) nOutBufferSize, // size of output buffer (LPDWORD) lpBytesReturned, // number of bytes returned (LPOVERLAPPED) lpOverlapped // OVERLAPPED structure ); </code></para>
+			/// </summary>
+			/// <remarks>
+			/// <para>In Windows 8 and Windows Server 2012, this code is supported by the following technologies.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Technology</term>
+			/// <term>Supported</term>
+			/// </listheader>
+			/// <item>
+			/// <term>Server Message Block (SMB) 3.0 protocol</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+			/// <term>No</term>
+			/// </item>
+			/// <item>
+			/// <term>Cluster Shared Volume File System (CsvFS)</term>
+			/// <term>Yes</term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-ioctl_volume_get_gpt_attributes
+			[PInvokeData("winioctl.h", MSDNShortId = "NI:winioctl.IOCTL_VOLUME_GET_GPT_ATTRIBUTES")]
+			[CorrespondingType(typeof(VOLUME_GET_GPT_ATTRIBUTES_INFORMATION), CorrespondingAction.Get)]
 			public static uint IOCTL_VOLUME_GET_GPT_ATTRIBUTES => CTL_CODE(DEVICE_TYPE.IOCTL_VOLUME_BASE, 14, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary>
