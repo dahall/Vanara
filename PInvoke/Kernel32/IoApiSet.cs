@@ -291,7 +291,8 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI CreateIoCompletionPort( _In_ HANDLE FileHandle, _In_opt_ HANDLE ExistingCompletionPort, _In_ ULONG_PTR CompletionKey, _In_ DWORD NumberOfConcurrentThreads );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "40cb47fc-7b15-47f6-bee2-2611d4686053")]
-		public static extern HANDLE CreateIoCompletionPort([In] HANDLE FileHandle, [In, Optional] HANDLE ExistingCompletionPort, UIntPtr CompletionKey, uint NumberOfConcurrentThreads);
+		public static extern HANDLE CreateIoCompletionPort([In] HANDLE FileHandle, [In, Optional] HANDLE ExistingCompletionPort,
+			UIntPtr CompletionKey, uint NumberOfConcurrentThreads);
 
 		/// <summary>This macro is used to create a unique system I/O control code (IOCTL).</summary>
 		/// <param name="deviceType">
@@ -472,8 +473,9 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-		public static extern bool DeviceIoControl(HFILE hDevice, uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer,
-			uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
+		public static extern bool DeviceIoControl(HFILE hDevice, uint dwIoControlCode, [In, Optional] IntPtr lpInBuffer,
+			[In, Optional] uint nInBufferSize, [Out, Optional] IntPtr lpOutBuffer, [In, Optional] uint nOutBufferSize,
+			out uint lpBytesReturned, [In, Out, Optional] IntPtr lpOverlapped);
 
 		/// <summary>
 		/// Sends a control code directly to a specified device driver, causing the corresponding device to perform the corresponding operation.
@@ -571,8 +573,25 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-		public static extern unsafe bool DeviceIoControl(HFILE hDevice, uint dwIoControlCode, byte* lpInBuffer, uint nInBufferSize, byte* lpOutBuffer,
-			uint nOutBufferSize, out uint lpBytesReturned, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool DeviceIoControl(HFILE hDevice, uint dwIoControlCode, [In, Optional] byte* lpInBuffer,
+			[In, Optional] uint nInBufferSize, [Out, Optional] byte* lpOutBuffer, [In, Optional] uint nOutBufferSize,
+			out uint lpBytesReturned, [In, Out, Optional] NativeOverlapped* lpOverlapped);
+
+		/// <summary>
+		/// Sends a control code directly to a specified device driver, causing the corresponding device to perform the corresponding operation.
+		/// </summary>
+		/// <param name="hDev">
+		/// A handle to the device on which the operation is to be performed. The device is typically a volume, directory, file, or stream.
+		/// To retrieve a device handle, use the CreateFile function. For more information, see Remarks.
+		/// </param>
+		/// <param name="ioControlCode">
+		/// The control code for the operation. This value identifies the specific operation to be performed and the type of device on which
+		/// to perform it.
+		/// </param>
+		/// <returns><c>true</c> if successful.</returns>
+		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
+		public static bool DeviceIoControl(HFILE hDev, uint ioControlCode) =>
+			DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, IntPtr.Zero, 0, out _, IntPtr.Zero);
 
 		/// <summary>
 		/// Sends a control code directly to a specified device driver, causing the corresponding device to perform the corresponding operation.
@@ -597,12 +616,15 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
 		public static bool DeviceIoControl<TIn, TOut>(HFILE hDev, uint ioControlCode, TIn inVal, out TOut outVal) where TIn : struct where TOut : struct
 		{
-			using (SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>())
+			using SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>();
+			var ret = DeviceIoControl(hDev, ioControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out var bRet, IntPtr.Zero);
+			if (!ret && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			{
-				var ret = DeviceIoControl(hDev, ioControlCode, (IntPtr)ptrIn, (uint)ptrIn.Size, (IntPtr)ptrOut, (uint)ptrOut.Size, out var bRet, IntPtr.Zero);
-				outVal = ptrOut.ToStructure<TOut>();
-				return ret;
+				ptrOut.Size = bRet;
+				ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out bRet, IntPtr.Zero);
 			}
+			outVal = ret ? ptrOut.ToStructure<TOut>() : default;
+			return ret;
 		}
 
 		/// <summary>
@@ -624,12 +646,15 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
 		public static bool DeviceIoControl<TOut>(HFILE hDev, uint ioControlCode, out TOut outVal) where TOut : struct
 		{
-			using (var ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>())
+			using var ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>();
+			var ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out var bRet, IntPtr.Zero);
+			if (!ret && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			{
-				var ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, (IntPtr)ptrOut, (uint)ptrOut.Size, out var bRet, IntPtr.Zero);
-				outVal = ptrOut.ToStructure<TOut>();
-				return ret;
+				ptrOut.Size = bRet;
+				ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out bRet, IntPtr.Zero);
 			}
+			outVal = ret ? ptrOut.ToStructure<TOut>() : default;
+			return ret;
 		}
 
 		/// <summary>
@@ -651,10 +676,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
 		public static bool DeviceIoControl<TIn>(HFILE hDev, uint ioControlCode, TIn inVal) where TIn : struct
 		{
-			using (var ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal))
-			{
-				return DeviceIoControl(hDev, ioControlCode, (IntPtr)ptrIn, (uint)ptrIn.Size, IntPtr.Zero, 0, out var bRet, IntPtr.Zero);
-			}
+			using var ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal);
+			return DeviceIoControl(hDev, ioControlCode, ptrIn, ptrIn.Size, IntPtr.Zero, 0, out _, IntPtr.Zero);
 		}
 
 		/// <summary>Ends the asynchronous call to <c>BeginDeviceIoControl&lt;TIn, TOut&gt;(HFILE, uint, TIn?, TOut?, AsyncCallback)</c>.</summary>
@@ -950,7 +973,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa365458")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred, UIntPtr dwCompletionKey, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred,
+			UIntPtr dwCompletionKey, [In, Optional] NativeOverlapped* lpOverlapped);
 
 		/// <summary>Posts an I/O completion packet to an I/O completion port.</summary>
 		/// <param name="CompletionPort">A handle to an I/O completion port to which the I/O completion packet is to be posted.</param>
@@ -972,7 +996,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa365458")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred, [Optional] UIntPtr dwCompletionKey, [Optional] IntPtr lpOverlapped);
+		public static extern bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred,
+			UIntPtr dwCompletionKey, [In, Optional] IntPtr lpOverlapped);
 
 		private static unsafe IAsyncResult BeginDeviceIoControl<TIn, TOut>(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) where TIn : struct where TOut : struct =>
 			BeginDeviceIoControl(hDevice, dwIoControlCode, buffer, userCallback, userState);
@@ -992,11 +1017,9 @@ namespace Vanara.PInvoke
 
 		private static T MemRead<T>(byte[] buffer, ref int startIndex) where T : struct
 		{
-			using (var pin = new PinnedObject(buffer, startIndex))
-			{
-				startIndex += Marshal.SizeOf(typeof(T));
-				return ((IntPtr)pin).ToStructure<T>();
-			}
+			using var pin = new PinnedObject(buffer, startIndex);
+			startIndex += Marshal.SizeOf(typeof(T));
+			return ((IntPtr)pin).ToStructure<T>();
 		}
 
 		private static int MemWrite<T>(byte[] buffer, T value, int startIndex = 0) where T : struct
@@ -1009,52 +1032,44 @@ namespace Vanara.PInvoke
 
 		private static byte[] Pack<TIn, TOut>(TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
 		{
-			using (var ms = new MemoryStream())
-			using (var wtr = new BinaryWriter(ms))
-			{
-				wtr.Write(inVal.HasValue ? Marshal.SizeOf(typeof(TIn)) : 0);
-				wtr.Write(outVal.HasValue ? Marshal.SizeOf(typeof(TOut)) : 0);
-				if (inVal.HasValue) wtr.Write(inVal.Value);
-				if (outVal.HasValue) wtr.Write(outVal.Value);
-				return ms.ToArray();
-			}
+			using var ms = new MemoryStream();
+			using var wtr = new BinaryWriter(ms);
+			wtr.Write(inVal.HasValue ? Marshal.SizeOf(typeof(TIn)) : 0);
+			wtr.Write(outVal.HasValue ? Marshal.SizeOf(typeof(TOut)) : 0);
+			if (inVal.HasValue) wtr.Write(inVal.Value);
+			if (outVal.HasValue) wtr.Write(outVal.Value);
+			return ms.ToArray();
 		}
 
 		private static byte[] Pack(byte[] inputBuffer, byte[] outputBuffer)
 		{
-			using (var ms = new MemoryStream())
-			using (var wtr = new BinaryWriter(ms))
-			{
-				wtr.Write(inputBuffer != null ? inputBuffer.Length : 0);
-				wtr.Write(outputBuffer != null ? outputBuffer.Length : 0);
-				if (inputBuffer != null && inputBuffer.Length > 0)
-					wtr.Write(inputBuffer);
-				if (outputBuffer != null && outputBuffer.Length > 0)
-					wtr.Write(outputBuffer);
-				return ms.ToArray();
-			}
+			using var ms = new MemoryStream();
+			using var wtr = new BinaryWriter(ms);
+			wtr.Write(inputBuffer != null ? inputBuffer.Length : 0);
+			wtr.Write(outputBuffer != null ? outputBuffer.Length : 0);
+			if (inputBuffer != null && inputBuffer.Length > 0)
+				wtr.Write(inputBuffer);
+			if (outputBuffer != null && outputBuffer.Length > 0)
+				wtr.Write(outputBuffer);
+			return ms.ToArray();
 		}
 
 		private static Tuple<TIn?, TOut?> Unpack<TIn, TOut>(byte[] buffer) where TIn : struct where TOut : struct
 		{
-			using (var ms = new MemoryStream(buffer))
-			using (var rdr = new BinaryReader(ms))
-			{
-				var inLen = rdr.ReadInt32();
-				var outLen = rdr.ReadInt32();
-				return new Tuple<TIn?, TOut?>(inLen > 0 ? rdr.Read<TIn>() : (TIn?)null, outLen > 0 ? rdr.Read<TOut>() : (TOut?)null);
-			}
+			using var ms = new MemoryStream(buffer);
+			using var rdr = new BinaryReader(ms);
+			var inLen = rdr.ReadInt32();
+			var outLen = rdr.ReadInt32();
+			return new Tuple<TIn?, TOut?>(inLen > 0 ? rdr.Read<TIn>() : (TIn?)null, outLen > 0 ? rdr.Read<TOut>() : (TOut?)null);
 		}
 
 		private static Tuple<byte[], byte[]> Unpack(byte[] buffer)
 		{
-			using (var ms = new MemoryStream(buffer))
-			using (var rdr = new BinaryReader(ms))
-			{
-				var inLen = rdr.ReadInt32();
-				var outLen = rdr.ReadInt32();
-				return new Tuple<byte[], byte[]>(rdr.ReadBytes(inLen), rdr.ReadBytes(outLen));
-			}
+			using var ms = new MemoryStream(buffer);
+			using var rdr = new BinaryReader(ms);
+			var inLen = rdr.ReadInt32();
+			var outLen = rdr.ReadInt32();
+			return new Tuple<byte[], byte[]>(rdr.ReadBytes(inLen), rdr.ReadBytes(outLen));
 		}
 
 		/// <summary>Contains the information returned by a call to the GetQueuedCompletionStatusEx function.</summary>
