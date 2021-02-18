@@ -20,7 +20,7 @@ namespace Vanara.InteropServices
 		/// <param name="value">The initial value of the structure, if provided.</param>
 		/// <param name="sizeFieldName">
 		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first
-		/// public field will be selected.
+		/// public field will be selected. If "*", then the array size will be determined by the amount of allocated memory.
 		/// </param>
 		/// <exception cref="InvalidOperationException">This class can only manange sequential layout structures.</exception>
 		public SafeAnysizeStruct(in T value, string sizeFieldName = null) : base(baseSz)
@@ -34,7 +34,7 @@ namespace Vanara.InteropServices
 		/// <param name="size">The size of the allocated memory in <paramref name="allocatedMemory"/> in bytes.</param>
 		/// <param name="sizeFieldName">
 		/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first
-		/// public field will be selected.
+		/// public field will be selected. If "*", then the array size will be determined by the amount of allocated memory.
 		/// </param>
 		public SafeAnysizeStruct(IntPtr allocatedMemory, SizeT size, string sizeFieldName = null) : base(allocatedMemory, size, false)
 		{
@@ -65,12 +65,14 @@ namespace Vanara.InteropServices
 #if !(NET20 || NET35 || NET40)
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
-		protected override int GetArrayLength(in T local) => Convert.ToInt32(fiCount.GetValue(local));
+		protected override int GetArrayLength(in T local) => fiCount is null ? GetArrLenFromSz() : Convert.ToInt32(fiCount.GetValue(local));
+
+		private int GetArrLenFromSz() => 1 + (Size - baseSz) / Marshal.SizeOf(elemType);
 
 		private void InitCountField(string sizeFieldName)
 		{
-			fiCount = string.IsNullOrEmpty(sizeFieldName) ? structType.GetOrderedFields().First() : structType.GetField(sizeFieldName, BindingFlags.Public | BindingFlags.Instance);
-			if (fiCount is null) throw new ArgumentException("Invalid size field name.", nameof(sizeFieldName));
+			fiCount = string.IsNullOrEmpty(sizeFieldName) ? structType.GetOrderedFields(binds).First() : structType.GetField(sizeFieldName, binds);
+			if (fiCount is null && sizeFieldName != "*") throw new ArgumentException("Invalid size field name.", nameof(sizeFieldName));
 		}
 	}
 
@@ -81,6 +83,8 @@ namespace Vanara.InteropServices
 	/// <typeparam name="T">The type of the structure.</typeparam>
 	public abstract class SafeAnysizeStructBase<T> : SafeMemoryHandle<CoTaskMemoryMethods>
 	{
+		internal const BindingFlags binds = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
 		/// <summary>The base, unextended size of T.</summary>
 		protected static readonly int baseSz;
 
@@ -96,7 +100,7 @@ namespace Vanara.InteropServices
 			if (!structType.IsLayoutSequential)
 				throw new InvalidOperationException("This class can only manange sequential layout structures.");
 			baseSz = Marshal.SizeOf(structType);
-			fiArray = structType.GetOrderedFields().Last();
+			fiArray = structType.GetOrderedFields(binds).Last();
 			if (!fiArray.FieldType.IsArray)
 				throw new ArgumentException("The field information must be for an array.", nameof(fiArray));
 			elemType = fiArray.FieldType.FindElementType();
@@ -200,6 +204,114 @@ namespace Vanara.InteropServices
 			if (pNativeData == IntPtr.Zero) return null;
 			using var s = new SafeAnysizeStruct<T>(pNativeData, allocatedBytes, sizeFieldName);
 			return s.Value;
+		}
+	}
+
+	/// <summary>
+	/// A marshaler implementation of <see cref="IVanaraMarshaler"/> to marshal structures whose last field is a character array of length
+	/// (1) and that uses a field to determine the length of the full string.
+	/// <para>
+	/// Use the cookie paramter of <see cref="AnySizeStringMarshaler{T}"/> to specify the name of the field in <typeparamref name="T"/> that
+	/// specifies the length of the string in the last field of <typeparamref name="T"/> along with use indicators.
+	/// </para>
+	/// <para>
+	/// If the field specifies byte, rather than character length, follow the field name with a colon (:) followed by 'b' (for bytes) or 'c'
+	/// (for characters).
+	/// </para>
+	/// <para>
+	/// If the field specifies a length that does NOT include the NULL terminator, follow the field name, colon (:), and type specifier by
+	/// 'r' (for raw) or 'n' (for null-terminated).
+	/// </para>
+	/// <para>If the field name is "*", then the string length will be determined by the amount of allocated memory.</para>
+	/// </summary>
+	/// <typeparam name="T">The structure type to be marshaled.</typeparam>
+	public class AnySizeStringMarshaler<T> : IVanaraMarshaler
+	{
+		private static readonly int charSz;
+		private static readonly int baseSz;
+		private readonly FieldInfo fiCount;
+		private static readonly FieldInfo fiArray;
+		private static int strOffset;
+		private readonly bool cntIsBytes = false;
+		private readonly bool cntInclNull = true;
+		private readonly bool allMem = false;
+
+		static AnySizeStringMarshaler()
+		{
+			var structType = typeof(T);
+			if (!structType.IsLayoutSequential)
+				throw new InvalidOperationException("This class can only manange sequential layout structures.");
+			baseSz = Marshal.SizeOf(structType);
+			fiArray = structType.GetOrderedFields(SafeAnysizeStructBase<T>.binds).Last();
+			if (fiArray.FieldType != typeof(string))
+				throw new ArgumentException("The field information must be for a string.", nameof(fiArray));
+			charSz = StringHelper.GetCharSize(typeof(T).StructLayoutAttribute.CharSet);
+			strOffset = Marshal.OffsetOf(structType, fiArray.Name).ToInt32();// unchecked((uint)Marshal.ReadInt32(fiArray.FieldHandle.Value.Offset(4 + IntPtr.Size))) & 0x7FFFFFF;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="AnySizeStringMarshaler{T}"/> class.</summary>
+		/// <param name="cookie">
+		/// The name of the field in <typeparamref name="T"/> that specifies the number of elements in the last field of <typeparamref name="T"/>.
+		/// <para>
+		/// If the field specifies byte, rather than character length, follow the field name with a colon (:) followed by 'b' (for bytes) or
+		/// 'c' (for characters).
+		/// </para>
+		/// <para>
+		/// If the field specifies a length that does NOT include the NULL terminator, follow the field name, colon (:), and type specifier
+		/// by 'r' (for raw) or 'n' (for null-terminated).
+		/// </para>
+		/// </param>
+		public AnySizeStringMarshaler(string cookie)
+		{
+			if (string.IsNullOrEmpty(cookie))
+				fiCount = typeof(T).GetOrderedFields(SafeAnysizeStructBase<T>.binds).First();
+			else if (cookie == "*")
+				allMem = true;
+			else
+			{
+				var parts = cookie.Split(':');
+				if (parts.Length == 2 && parts[1].Length >= 2)
+				{
+					cntIsBytes = parts[1][0] == 'b';
+					cntInclNull = parts[1].Length > 1 && parts[1][1] == 'n';
+				}
+				fiCount = typeof(T).GetField(parts[0], SafeAnysizeStructBase<T>.binds);
+			}
+			if (fiCount is null && !allMem) throw new ArgumentException("Invalid string length field name.", nameof(cookie));
+		}
+
+		SizeT IVanaraMarshaler.GetNativeSize() => baseSz;
+
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject)
+		{
+			var h = managedObject is null ? SafeCoTaskMemHandle.Null : new SafeCoTaskMemHandle(baseSz);
+			var str = fiArray.GetValue(managedObject) as string;
+			var len = allMem ? StringHelper.GetByteCount(str, true, typeof(T).StructLayoutAttribute.CharSet) : Convert.ToInt32(fiCount.GetValue(managedObject));
+			var clen = cntIsBytes ? len / charSz : len;
+			if (cntInclNull && !allMem) --clen;
+			if (str is not null && str.Length > clen)
+				str = str.Substring(0, clen);
+			h.Size += StringHelper.GetByteCount(str, cntInclNull, typeof(T).StructLayoutAttribute.CharSet) - charSz;
+			Marshal.StructureToPtr(managedObject, h, false);
+			StringHelper.Write(str, ((IntPtr)h).Offset(strOffset), out _, cntInclNull, typeof(T).StructLayoutAttribute.CharSet);
+			return h;
+		}
+
+		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == IntPtr.Zero) return null;
+			var o = Marshal.PtrToStructure(pNativeData, typeof(T));
+			int len;
+			if (allMem)
+				len = (allocatedBytes - strOffset) / charSz;
+			else
+			{
+				len = Convert.ToInt32(fiCount.GetValue(o));
+				if (cntIsBytes) len /= charSz;
+				if (cntInclNull) --len;
+			}
+			fiArray.SetValue(o, StringHelper.GetString(pNativeData.Offset(strOffset), len, typeof(T).StructLayoutAttribute.CharSet));
+			return o;
 		}
 	}
 }
