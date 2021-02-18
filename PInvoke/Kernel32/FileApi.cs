@@ -2712,20 +2712,14 @@ namespace Vanara.PInvoke
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364972")]
 		public static extern uint GetLogicalDrives();
 
-		/// <summary>
-		/// <para>Fills a buffer with strings that specify valid drives in the system.</para>
-		/// </summary>
+		/// <summary>Fills a buffer with strings that specify valid drives in the system.</summary>
 		/// <param name="nBufferLength">
-		/// <para>
 		/// The maximum size of the buffer pointed to by lpBuffer, in <c>TCHARs</c>. This size does not include the terminating null
 		/// character. If this parameter is zero, lpBuffer is not used.
-		/// </para>
 		/// </param>
 		/// <param name="lpBuffer">
-		/// <para>
 		/// A pointer to a buffer that receives a series of null-terminated strings, one for each valid drive in the system, plus with an
 		/// additional null character. Each string is a device name.
-		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>
@@ -2736,12 +2730,64 @@ namespace Vanara.PInvoke
 		/// If the buffer is not large enough, the return value is greater than nBufferLength. It is the size of the buffer required to hold
 		/// the drive strings.
 		/// </para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, use the <c>GetLastError</c> function.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, use the GetLastError function.</para>
 		/// </returns>
-		// DWORD WINAPI GetLogicalDriveStrings( _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer);
+		/// <remarks>
+		/// <para>
+		/// Each string in the buffer may be used wherever a root directory is required, such as for the GetDriveType and GetDiskFreeSpace functions.
+		/// </para>
+		/// <para>
+		/// This function returns a concatenation of the drives in the Global and Local MS-DOS Device namespaces. If a drive exists in both
+		/// namespaces, this function will return the entry in the Local MS-DOS Device namespace. For more information, see Defining an MS
+		/// DOS Device Name.
+		/// </para>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// <para>SMB does not support volume management functions.</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Obtaining a File Name From a File Handle.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getlogicaldrivestringsw
+		// DWORD GetLogicalDriveStringsW( DWORD nBufferLength, LPWSTR lpBuffer );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("FileAPI.h", MSDNShortId = "aa364975")]
-		public static extern uint GetLogicalDriveStrings(uint nBufferLength, StringBuilder lpBuffer);
+		[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetLogicalDriveStrings")]
+		public static extern uint GetLogicalDriveStrings(uint nBufferLength, IntPtr lpBuffer);
+
+		/// <summary>Fills a buffer with strings that specify valid drives in the system.</summary>
+		/// <returns>A series of strings, one for each valid drive in the system. Each string is a device name.</returns>
+		[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetLogicalDriveStrings")]
+		public static IEnumerable<string> GetLogicalDriveStrings()
+		{
+			using var buf = new SafeCoTaskMemHandle((26 * 4 + 1) * Extensions.StringHelper.GetCharSize());
+			if (0 == GetLogicalDriveStrings(buf.Size, buf))
+				Win32Error.ThrowLastError();
+			return buf.ToStringEnum().ToArray();
+		}
 
 		/// <summary>
 		/// <para>Converts the specified path to its long form.</para>
