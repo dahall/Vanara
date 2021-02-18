@@ -277,9 +277,9 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetLogicalDriveStringsTest()
 		{
-			var sb = new StringBuilder(1024);
-			Assert.That(GetLogicalDriveStrings((uint)sb.Capacity, sb), Is.Not.Zero);
-			TestContext.WriteLine(sb);
+			var ie = Enumerable.Empty<string>();
+			Assert.That(ie = GetLogicalDriveStrings(), Is.Not.Empty);
+			ie.WriteValues();
 		}
 
 		[Test]

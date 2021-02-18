@@ -33,7 +33,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var output = new List<string>();
 			var attr = System.Reflection.TypeAttributes.SequentialLayout | System.Reflection.TypeAttributes.ExplicitLayout;
-			foreach (var t in typeof(AdvApi32).GetNestedTypes(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).
+			foreach (var t in type.GetNestedTypes(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).
 				Where(t => t.IsValueType && !t.IsEnum && (t.Attributes & attr) != 0 && ((filters?.Length ?? 0) == 0 || filters.Any(s => t.Name.Contains(s)))))
 				output.Add($"{t.Name} = {Marshal.SizeOf(t)}");
 			output.Sort();
