@@ -997,7 +997,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa365458")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred,
-			UIntPtr dwCompletionKey, [In, Optional] IntPtr lpOverlapped);
+			[In, Optional] UIntPtr dwCompletionKey, [In, Optional] IntPtr lpOverlapped);
 
 		private static unsafe IAsyncResult BeginDeviceIoControl<TIn, TOut>(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) where TIn : struct where TOut : struct =>
 			BeginDeviceIoControl(hDevice, dwIoControlCode, buffer, userCallback, userState);
