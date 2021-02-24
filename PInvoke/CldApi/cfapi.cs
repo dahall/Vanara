@@ -1348,7 +1348,7 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			public uint ParamSize;
 
-			private uint pad;
+			private readonly uint pad;
 
 			/// <summary/>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 56)]
@@ -1395,8 +1395,8 @@ namespace Vanara.PInvoke
 			/// <returns>The requested structure.</returns>
 			public T GetParam<T>() where T : struct
 			{
-				using var ptr = new SafeHGlobalHandle(Content);
-				return ptr.ToStructure<T>();
+				using var ptr = new PinnedObject(Content);
+				return ((IntPtr)ptr).ToStructure<T>();
 			}
 
 			/// <summary>Contains callback specific parameters such as file offset, length, flags, etc.</summary>
@@ -1607,7 +1607,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CF_CONNECTION_KEY
 		{
-			private long Internal;
+			private readonly long Internal;
 		}
 
 		/// <summary>Specifies a range of data in a placeholder file.</summary>
@@ -1730,12 +1730,12 @@ namespace Vanara.PInvoke
 			public uint ParamSize;
 
 			// Yes, this is strange, but needed to deal with struct size changing based on pointer size (40/48).
-			private uint pad4_8;
-			private ulong pad8_16;
-			private ulong pad16_24;
-			private ulong pad24_32;
-			private IntPtr padp1;
-			private IntPtr padp2;
+			private readonly uint pad4_8;
+			private readonly ulong pad8_16;
+			private readonly ulong pad16_24;
+			private readonly ulong pad24_32;
+			private readonly IntPtr padp1;
+			private readonly IntPtr padp2;
 
 			/// <summary/>
 			public TRANSFERDATA TransferData { get => GetParam<TRANSFERDATA>(); set => SetParam(value); }
@@ -1999,6 +1999,27 @@ namespace Vanara.PInvoke
 
 			/// <summary>The final USN value after create actions are performed.</summary>
 			public int CreateUsn;
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="CF_PLACEHOLDER_CREATE_INFO"/> struct with info from a file.
+			/// </summary>
+			/// <param name="fileInfo">The file information.</param>
+			public CF_PLACEHOLDER_CREATE_INFO(System.IO.FileInfo fileInfo) : this()
+			{
+				RelativeFileName = fileInfo.FullName;
+				FsMetadata = new CF_FS_METADATA
+				{
+					FileSize = fileInfo.Length,
+					BasicInfo = new FILE_BASIC_INFO
+					{
+						FileAttributes = (FileFlagsAndAttributes)fileInfo.Attributes,
+						CreationTime = fileInfo.CreationTime.ToFileTimeStruct(),
+						LastWriteTime = fileInfo.LastWriteTime.ToFileTimeStruct(),
+						LastAccessTime = fileInfo.LastAccessTime.ToFileTimeStruct(),
+						ChangeTime = fileInfo.LastWriteTime.ToFileTimeStruct()
+					}
+				};
+			}
 		}
 
 		/// <summary>Standard placeholder information.</summary>
@@ -2130,7 +2151,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CF_REQUEST_KEY
 		{
-			private long Internal;
+			private readonly long Internal;
 		}
 
 		/// <summary>Defines the sync policies used by a sync root.</summary>
@@ -2323,7 +2344,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CF_TRANSFER_KEY
 		{
-			private long Internal;
+			private readonly long Internal;
 		}
 	}
 }

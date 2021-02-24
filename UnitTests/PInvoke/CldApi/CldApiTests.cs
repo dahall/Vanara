@@ -35,17 +35,11 @@ namespace Vanara.PInvoke.Tests
 			var destDirPath = SetupTempDir(dest);
 			try
 			{
-				using var csp = new CloudSyncProvider(destDirPath, "TestSync");
-				csp.Status = CF_SYNC_PROVIDER_STATUS.CF_PROVIDER_STATUS_IDLE;
+				using var csp = new CloudSyncProvider(destDirPath, "TestSync") { Status = CF_SYNC_PROVIDER_STATUS.CF_PROVIDER_STATUS_IDLE };
 				csp.Status.WriteValues();
 
 				const string desc = "SyncStatus is good.";
-				uint descLen = (uint)(desc.Length + 1) * 2;
-				var ss = new CF_SYNC_STATUS { StructSize = (uint)Marshal.SizeOf<CF_SYNC_STATUS>() + descLen, Code = 1, DescriptionLength = descLen };
-				var mem = new SafeHGlobalHandle(Marshal.SizeOf<CF_SYNC_STATUS>() + descLen);
-				mem.Write(ss);
-				StringHelper.Write(desc, ((IntPtr)mem).Offset(Marshal.SizeOf<CF_SYNC_STATUS>()), out _, true, CharSet.Unicode, descLen);
-				Assert.That(CfReportSyncStatus(destDirPath, mem), ResultIs.Successful);
+				Assert.That(() => csp.ReportSyncStatus(desc, 1), Throws.Nothing);
 			}
 			finally
 			{
@@ -64,6 +58,7 @@ namespace Vanara.PInvoke.Tests
 			{
 				var tokSrc = new CancellationTokenSource();
 				var token = tokSrc.Token;
+				var evt = new ManualResetEventSlim();
 				var task = Task.Run(() =>
 				{
 					using var csp = new CloudSyncProvider(destDirPath, "TestSync");
@@ -88,8 +83,8 @@ namespace Vanara.PInvoke.Tests
 					Assert.That(new FileInfo(fpath).Length, Is.EqualTo(origFileInfo.Length));
 
 					Debug.WriteLine("CSP is running...................................\n");
-
-					while (!token.IsCancellationRequested) { Thread.Sleep(100); }
+					evt.Set();
+					while (!token.IsCancellationRequested) { Task.Delay(100); }
 
 					static void ShowInfo<T>(object s, CloudSyncCallbackArgs<T> e) where T : struct
 					{
@@ -124,16 +119,17 @@ namespace Vanara.PInvoke.Tests
 					}
 				}, tokSrc.Token);
 
-				Thread.Sleep(5000); // Let CSP get loaded
+				evt.Wait(); // Let CSP get loaded
 				using var hFile = GetHFILE(fpath);
-				Assert.That(CfHydratePlaceholder(hFile, 0, -1, 0), ResultIs.Successful);
+				Assert.That(hFile, ResultIs.ValidHandle);
+				Assert.That(CfHydratePlaceholder(hFile), ResultIs.Successful);
 				Assert.That(CfGetCorrelationVector(hFile, out var cv), ResultIs.Successful);
 				using var buf = new SafeHGlobalHandle(128);
 				Assert.That(CfGetPlaceholderRangeInfo(hFile, CF_PLACEHOLDER_RANGE_INFO_CLASS.CF_PLACEHOLDER_RANGE_INFO_ONDISK, 0, buf.Size, buf, buf.Size, out var rngLen), ResultIs.Successful);
 				Assert.That(CfGetTransferKey(hFile, out var txKey), ResultIs.Successful);
 				Assert.That(() => CfReleaseTransferKey(hFile, txKey), Throws.Nothing);
 				Assert.That(CfDehydratePlaceholder(hFile, 0, -1, 0), ResultIs.Successful);
-				Thread.Sleep(2000); // Wait for user interaction
+				//Thread.Sleep(2000); // Wait for user interaction
 
 				tokSrc.Cancel();
 				task.Wait();
@@ -273,11 +269,9 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void CfGetSyncRootInfoByPathTest()
 		{
-			using (var mem = SafeHGlobalHandle.CreateFromStructure<CF_SYNC_ROOT_BASIC_INFO>())
-			{
-				Assert.That(CfGetSyncRootInfoByPath(syncRootPath, CF_SYNC_ROOT_INFO_CLASS.CF_SYNC_ROOT_INFO_BASIC, mem, mem.Size, out var len), ResultIs.Successful);
-				mem.ToStructure<CF_SYNC_ROOT_BASIC_INFO>().WriteValues();
-			}
+			using var mem = new SafeCoTaskMemStruct<CF_SYNC_ROOT_BASIC_INFO>();
+			Assert.That(CfGetSyncRootInfoByPath(syncRootPath, CF_SYNC_ROOT_INFO_CLASS.CF_SYNC_ROOT_INFO_BASIC, mem, mem.Size, out var len), ResultIs.Successful);
+			mem.Value.WriteValues();
 			Assert.That(() => CfGetSyncRootInfoByPath<CF_SYNC_ROOT_PROVIDER_INFO>(syncRootPath).WriteValues(), Throws.Nothing);
 			Assert.That(() => CfGetSyncRootInfoByPath<CF_SYNC_ROOT_STANDARD_INFO>(syncRootPath).WriteValues(), Throws.Nothing);
 		}

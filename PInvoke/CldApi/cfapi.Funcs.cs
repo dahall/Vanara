@@ -551,7 +551,7 @@ namespace Vanara.PInvoke
 		// FileHandle, LARGE_INTEGER StartingOffset, LARGE_INTEGER Length, CF_HYDRATE_FLAGS HydrateFlags, LPOVERLAPPED Overlapped );
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "4FFD7580-BF59-48D0-B6D7-516559914096")]
-		public static extern HRESULT CfHydratePlaceholder(HFILE FileHandle, long StartingOffset, long Length, CF_HYDRATE_FLAGS HydrateFlags, [In, Out, Optional] IntPtr Overlapped);
+		public static extern HRESULT CfHydratePlaceholder(HFILE FileHandle, long StartingOffset = 0, long Length = -1, CF_HYDRATE_FLAGS HydrateFlags = 0, [In, Out] IntPtr Overlapped = default);
 
 		/// <summary>
 		/// Hydrates a placeholder file by ensuring that the specified byte range is present on-disk in the placeholder. This is valid for

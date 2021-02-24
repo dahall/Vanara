@@ -1,5 +1,4 @@
-﻿using ICSharpCode.Decompiler.IL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,80 +17,79 @@ using static Vanara.PInvoke.SearchApi;
 
 namespace Vanara.PInvoke.Tests
 {
+	/// <summary>Event arguments for a cloud file callback.</summary>
+	/// <typeparam name="T">The type of data handled by the callback.</typeparam>
+	/// <seealso cref="System.EventArgs"/>
 	public class CloudSyncCallbackArgs<T> : EventArgs where T : struct
 	{
+		private readonly CF_CALLBACK_INFO info;
+
+		/// <summary>Initializes a new instance of the <see cref="CloudSyncCallbackArgs{T}"/> class.</summary>
+		/// <param name="CallbackInfo">The callback information.</param>
+		/// <param name="CallbackParameters">The callback parameters.</param>
 		public CloudSyncCallbackArgs(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters)
 		{
 			//System.Diagnostics.Debug.WriteLine($"CloudSyncCallbackArgs<{typeof(T).Name}> : {string.Join(" ", CallbackParameters.Content.Select(b => b.ToString("X2")))}");
-			ConnectionKey = CallbackInfo.ConnectionKey;
-			CallbackContext = CallbackInfo.CallbackContext;
-			VolumeGuidName = CallbackInfo.VolumeGuidName;
-			VolumeDosName = CallbackInfo.VolumeDosName;
-			VolumeSerialNumber = CallbackInfo.VolumeSerialNumber;
-			SyncRootFileId = CallbackInfo.SyncRootFileId;
+			info = CallbackInfo;
 			SyncRootIdentity = new SafeHGlobalHandle(CallbackInfo.SyncRootIdentity, CallbackInfo.SyncRootIdentityLength, false);
-			FileId = CallbackInfo.FileId;
-			FileSize = CallbackInfo.FileSize;
 			FileIdentity = new SafeHGlobalHandle(CallbackInfo.FileIdentity, CallbackInfo.FileIdentityLength, false);
-			NormalizedPath = CallbackInfo.NormalizedPath;
-			TransferKey = CallbackInfo.TransferKey;
-			PriorityHint = CallbackInfo.PriorityHint;
-			pCorrelationVector = CallbackInfo.CorrelationVector;
 			ProcessInfo = CallbackInfo.ProcessInfo.ToNullableStructure<CF_PROCESS_INFO>();
-			RequestKey = CallbackInfo.RequestKey;
 			try { ParamData = CallbackParameters.GetParam<T>(); } catch { }
 			//catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"{ex.Message}"); }
 		}
 
 		/// <summary>points to an opaque blob that the sync provider provides at the sync root connect time.</summary>
-		public IntPtr CallbackContext { get; }
+		public IntPtr CallbackContext => info.CallbackContext;
 
 		/// <summary>An opaque handle created by CfConnectSyncRoot for a sync root managed by the sync provider.</summary>
-		public CF_CONNECTION_KEY ConnectionKey { get; }
-
-		/// <summary>An optional correlation vector.</summary>
-		public IntPtr pCorrelationVector { get; }
+		public CF_CONNECTION_KEY ConnectionKey => info.ConnectionKey;
 
 		/// <summary>An optional correlation vector.</summary>
 		public CORRELATION_VECTOR? CorrelationVector => pCorrelationVector.ToNullableStructure<CORRELATION_VECTOR>();
 
 		/// <summary>A 64 bit file system maintained, volume-wide unique ID of the placeholder file/directory to be serviced.</summary>
-		public long FileId { get; }
+		public long FileId => info.FileId;
 
 		/// <summary>Points to the opaque blob that the sync provider provides at the placeholder creation/conversion/update time.</summary>
 		public SafeAllocatedMemoryHandle FileIdentity { get; }
 
 		/// <summary>The logical size of the placeholder file to be serviced. It is always 0 if the subject of the callback is a directory.</summary>
-		public long FileSize { get; }
+		public long FileSize => info.FileSize;
 
 		/// <summary>
 		/// The absolute path of the placeholder file/directory to be serviced on the volume identified by VolumeGuidName/VolumeDosName. It
 		/// starts from the root directory of the volume. See the Remarks section for more details.
 		/// </summary>
-		public string NormalizedPath { get; }
+		public string NormalizedPath => info.NormalizedPath;
+
+		/// <summary>The type of operation performed.</summary>
+		public CF_OPERATION_TYPE OperationType { get; internal set; }
+
+		/// <summary>Parameters of an operation on a placeholder file or folder.</summary>
+		public CF_OPERATION_PARAMETERS? OpParam { get; internal set; }
 
 		/// <summary>Contains callback specific parameters for this action.</summary>
 		public T ParamData { get; }
 
-		/// <summary>Parameters of an operation on a placeholder file or folder.</summary>
-		public CF_OPERATION_PARAMETERS? OpParam { get; set; }
+		/// <summary>An optional correlation vector.</summary>
+		public IntPtr pCorrelationVector => info.CorrelationVector;
 
 		/// <summary>
 		/// A numeric scale given to the sync provider to describe the relative priority of one fetch compared to another fetch, in order to
 		/// provide the most responsive experience to the user. The values range from 0 (lowest possible priority) to 15 (highest possible priority).
 		/// </summary>
-		public byte PriorityHint { get; }
+		public byte PriorityHint => info.PriorityHint;
 
 		/// <summary>Points to a structure that contains the information about the user process that triggers this callback.</summary>
 		public CF_PROCESS_INFO? ProcessInfo { get; }
 
 		/// <summary/>
-		public CF_REQUEST_KEY RequestKey { get; }
+		public CF_REQUEST_KEY RequestKey => info.RequestKey;
 
 		/// <summary>
 		/// A 64 bit file system maintained volume-wide unique ID of the sync root under which the placeholder file/directory to be serviced resides.
 		/// </summary>
-		public long SyncRootFileId { get; }
+		public long SyncRootFileId => info.SyncRootFileId;
 
 		/// <summary>Points to the opaque blob provided by the sync provider at the sync root registration time.</summary>
 		public SafeAllocatedMemoryHandle SyncRootIdentity { get; }
@@ -100,31 +98,16 @@ namespace Vanara.PInvoke.Tests
 		/// An opaque handle to the placeholder file/directory to be serviced. The sync provider must pass it back to the CfExecute call in
 		/// order to perform the desired operation on the file/directory.
 		/// </summary>
-		public CF_TRANSFER_KEY TransferKey { get; }
+		public CF_TRANSFER_KEY TransferKey => info.TransferKey;
 
 		/// <summary>DOS drive letter of the volume in the form of “X:” where X is the drive letter.</summary>
-		public string VolumeDosName { get; }
+		public string VolumeDosName => info.VolumeDosName;
 
 		/// <summary>GUID name of the volume on which the placeholder file/directory to be serviced resides. It is in the form: "\?\Volume{GUID}".</summary>
-		public string VolumeGuidName { get; }
+		public string VolumeGuidName => info.VolumeGuidName;
 
 		/// <summary>The serial number of the volume.</summary>
-		public uint VolumeSerialNumber { get; }
-
-		/// <summary>The type of operation performed.</summary>
-		public CF_OPERATION_TYPE OperationType { get; set; }
-
-		/// <summary>
-		/// <note>This member is new for Windows 10, version 1803.</note>
-		/// <para>The current sync status of the platform.</para>
-		/// <para>
-		/// The platform queries this information upon any failed operations on a cloud file placeholder. If a structure is available, the
-		/// platform will use the information provided to construct a more meaningful and actionable message to the user. The platform will
-		/// keep this information on the file until the last handle on it goes away. If <see langword="null"/>, the platform will clear the
-		/// previously set sync status, if there is one.
-		/// </para>
-		/// </summary>
-		public IntPtr SyncStatus { get; set; }
+		public uint VolumeSerialNumber => info.VolumeSerialNumber;
 
 		/// <summary>Makes a CF_OPERATION_INFO instance from the properties.</summary>
 		/// <param name="opType">Type of the operation to set.</param>
@@ -141,12 +124,16 @@ namespace Vanara.PInvoke.Tests
 		};
 	}
 
+	/// <summary>Information for a placeholder representing a directory.</summary>
+	/// <seealso cref="Vanara.PInvoke.Tests.PlaceholderInfo"/>
 	public class PlaceHolderDirectoryInfo : PlaceholderInfo
 	{
 		/// <summary>The newly created child placeholder directory is considered to have all of its children present locally.</summary>
 		public bool DisableOnDemandPopulation;
 	}
 
+	/// <summary>Information for a placeholder representing a file.</summary>
+	/// <seealso cref="Vanara.PInvoke.Tests.PlaceholderInfo"/>
 	public class PlaceHolderFileInfo : PlaceholderInfo
 	{
 		/// <summary>The size of the file, in bytes.</summary>
@@ -155,6 +142,11 @@ namespace Vanara.PInvoke.Tests
 		/// <summary>The newly created placeholder is marked as in-sync. Applicable to both placeholder files and directories.</summary>
 		public bool InSync;
 
+		/// <summary>Creates a placeholder from a file.</summary>
+		/// <param name="fileInfo">The file information.</param>
+		/// <param name="inSync">if set to <see langword="true"/>, information is synchronized.</param>
+		/// <param name="relativeFilePath">The relative file path.</param>
+		/// <returns>A platholder for the file.</returns>
 		public static PlaceHolderFileInfo CreateFromFile(FileInfo fileInfo, bool inSync = true, string relativeFilePath = null)
 		{
 			return new PlaceHolderFileInfo
@@ -171,8 +163,11 @@ namespace Vanara.PInvoke.Tests
 		}
 	}
 
+	/// <summary>Information about a placeholder.</summary>
 	public abstract class PlaceholderInfo
 	{
+		protected CF_PLACEHOLDER_CREATE_INFO info;
+
 		/// <summary>The time the file was changed in FILETIME format.</summary>
 		public DateTime ChangeTime;
 
@@ -212,12 +207,22 @@ namespace Vanara.PInvoke.Tests
 		public HRESULT Result;
 	}
 
+	/// <summary>Represents a provider (server) of a cloud file system.</summary>
+	/// <seealso cref="System.IDisposable"/>
 	internal class CloudSyncProvider : IDisposable
 	{
 		private const string MSSEARCH_INDEX = "SystemIndex";
-
+		private CF_CALLBACK_REGISTRATION[] callbackTable;
+		private bool disposed = false;
 		private CF_CONNECTION_KEY? key = null;
 
+		/// <summary>Initializes a new instance of the <see cref="CloudSyncProvider"/> class.</summary>
+		/// <param name="syncRootPath">The path to the sync root.</param>
+		/// <param name="name">An optional display name that maps to the existing sync root registration.</param>
+		/// <param name="iconResource">A path to an icon resource for the custom state of a file or folder.</param>
+		/// <param name="version">The version number of the sync root.</param>
+		/// <param name="customProperties">The custom properties.</param>
+		/// <exception cref="System.ArgumentException">Name cannot have spaces. - name</exception>
 		public CloudSyncProvider(string syncRootPath, string name, string iconResource = ",0", Version version = null, IEnumerable<(string name, int id)> customProperties = null)
 		{
 			if (name.Contains(" "))
@@ -262,24 +267,31 @@ namespace Vanara.PInvoke.Tests
 
 		public event EventHandler<CloudSyncCallbackArgs<CF_CALLBACK_PARAMETERS.VALIDATEDATA>> ValidateData;
 
+		/// <summary>Gets an optional display name that maps to the existing sync root registration.</summary>
 		public string DisplayName { get; }
 
+		/// <summary>Gets a path to an icon resource for the custom state of a file or folder.</summary>
 		public string IconResource { get; }
 
 		public IEnumerable<StorageProviderItemPropertyDefinition> PropertyDefinitions { get; }
 
+		/// <summary>Gets a Uri to a cloud storage recycle bin.</summary>
 		public Uri RecycleBinUri { get; }
 
+		/// <summary>Gets or sets the current status of the sync provider.</summary>
 		public CF_SYNC_PROVIDER_STATUS Status
 		{
 			get => CfQuerySyncProviderStatus(key.Value, out var stat).Succeeded ? stat : CF_SYNC_PROVIDER_STATUS.CF_PROVIDER_STATUS_ERROR;
 			set => CfUpdateSyncProviderStatus(key.Value, value);
 		}
 
+		/// <summary>Gets an identifier for the sync root.</summary>
 		public string SyncRootId { get; }
 
+		/// <summary>Gets the path to the sync root.</summary>
 		public string SyncRootPath { get; }
 
+		/// <summary>Gets the version number of the sync root.</summary>
 		public Version Version { get; }
 
 		public static bool IsSyncRoot(string syncRootPath)
@@ -288,12 +300,119 @@ namespace Vanara.PInvoke.Tests
 			return CfGetSyncRootInfoByPath(syncRootPath, CF_SYNC_ROOT_INFO_CLASS.CF_SYNC_ROOT_INFO_BASIC, mem, mem.Size, out var len).Succeeded;
 		}
 
+		/// <summary>Converts a normal file/directory to a placeholder file/directory using oplocks.</summary>
+		/// <param name="fileHandle">Handle to the file or directory to be converted.</param>
+		/// <param name="inSync">
+		/// if set to <see langword="true"/>, the platform marks the converted placeholder as in sync with cloud upon a successful
+		/// conversion of the file.
+		/// </param>
+		/// <param name="dehydrate">
+		/// if set to <see langword="true"/> the platform dehydrates the file after converting it to a placeholder successfully. The caller
+		/// must acquire an exclusive handle when specifying this flag or data corruptions can occur.
+		/// </param>
+		/// <param name="fileIdentity">
+		/// A user mode buffer that contains the opaque file or directory information supplied by the caller. Optional if the caller is not
+		/// dehydrating the file at the same time, or if the caller is converting a directory. Cannot exceed 4KB in size.
+		/// </param>
+		/// <param name="fileIdentityLength">Length, in bytes, of the FileIdentity.</param>
+		/// <returns>The final USN value after convert actions are performed.</returns>
+		/// <remarks>
+		/// <para>To convert a placeholder:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// The file or directory to be converted must be contained in a registered sync root tree; it can be the sync root directory
+		/// itself, or any descendant directory; otherwise, the call with be failed with HRESULT(ERROR_CLOUD_FILE_NOT_UNDER_SYNC_ROOT).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If dehydration is requested, the sync root must be registered with a valid hydration policy that is not
+		/// CF_HYDRATION_POLICY_ALWAYS_FULL; otherwise the call will be failed with HRESULT(ERROR_CLOUD_FILE_NOT_SUPPORTED).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>If dehydration is requested, the placeholder must not be pinned locally or the call with be failed with HRESULT(ERROR_CLOUD_FILE_PINNED).</term>
+		/// </item>
+		/// <item>
+		/// <term>If dehydration is requested, the placeholder must be in sync or the call with be failed with HRESULT(ERROR_CLOUD_FILE_NOT_IN_SYNC).</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The caller must have WRITE_DATA or WRITE_DAC access to the file or directory to be converted. Otherwise the operation will be
+		/// failed with HRESULT(ERROR_CLOUD_FILE_ACCESS_DENIED).
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
 		public int ConvertToPlaceholder(string relativeFilePath, bool inSync = true, bool dehydrate = false, IntPtr fileIdentity = default, uint fileIdentityLength = 0)
 		{
-			using var hFile = CreateFile(Path.Combine(SyncRootPath, relativeFilePath), Kernel32.FileAccess.FILE_READ_ATTRIBUTES, FileShare.Read, null, FileMode.Open, 0);
-			return ConvertToPlaceholder(hFile, inSync, dehydrate, fileIdentity, fileIdentityLength);
+			CfOpenFileWithOplock(relativeFilePath, CF_OPEN_FILE_FLAGS.CF_OPEN_FILE_FLAG_EXCLUSIVE, out var hCfFile).ThrowIfFailed();
+			using (hCfFile)
+			{
+				CfReferenceProtectedHandle(hCfFile);
+				try
+				{
+					var hFile = CfGetWin32HandleFromProtectedHandle(hCfFile);
+					return ConvertToPlaceholder(hFile, inSync, dehydrate, fileIdentity, fileIdentityLength);
+				}
+				finally
+				{
+					CfReleaseProtectedHandle(hCfFile);
+				}
+			}
 		}
 
+		/// <summary>Converts a normal file/directory to a placeholder file/directory.</summary>
+		/// <param name="fileHandle">Handle to the file or directory to be converted.</param>
+		/// <param name="inSync">
+		/// if set to <see langword="true"/>, the platform marks the converted placeholder as in sync with cloud upon a successful
+		/// conversion of the file.
+		/// </param>
+		/// <param name="dehydrate">
+		/// if set to <see langword="true"/> the platform dehydrates the file after converting it to a placeholder successfully. The caller
+		/// must acquire an exclusive handle when specifying this flag or data corruptions can occur.
+		/// </param>
+		/// <param name="fileIdentity">
+		/// A user mode buffer that contains the opaque file or directory information supplied by the caller. Optional if the caller is not
+		/// dehydrating the file at the same time, or if the caller is converting a directory. Cannot exceed 4KB in size.
+		/// </param>
+		/// <param name="fileIdentityLength">Length, in bytes, of the FileIdentity.</param>
+		/// <returns>The final USN value after convert actions are performed.</returns>
+		/// <remarks>
+		/// <para>
+		/// In the file case, the caller must acquire an exclusive handle to the file if it also intends to dehydrate the file at the same
+		/// time or data corruption can occur. To minimize the impact on user applications it is highly recommended that the caller obtain
+		/// the exclusiveness using proper oplocks (via CfOpenFileWithOplock) as opposed to using a share-nothing handle.
+		/// </para>
+		/// <para>To convert a placeholder:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// The file or directory to be converted must be contained in a registered sync root tree; it can be the sync root directory
+		/// itself, or any descendant directory; otherwise, the call with be failed with HRESULT(ERROR_CLOUD_FILE_NOT_UNDER_SYNC_ROOT).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If dehydration is requested, the sync root must be registered with a valid hydration policy that is not
+		/// CF_HYDRATION_POLICY_ALWAYS_FULL; otherwise the call will be failed with HRESULT(ERROR_CLOUD_FILE_NOT_SUPPORTED).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>If dehydration is requested, the placeholder must not be pinned locally or the call with be failed with HRESULT(ERROR_CLOUD_FILE_PINNED).</term>
+		/// </item>
+		/// <item>
+		/// <term>If dehydration is requested, the placeholder must be in sync or the call with be failed with HRESULT(ERROR_CLOUD_FILE_NOT_IN_SYNC).</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The caller must have WRITE_DATA or WRITE_DAC access to the file or directory to be converted. Otherwise the operation will be
+		/// failed with HRESULT(ERROR_CLOUD_FILE_ACCESS_DENIED).
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
 		public int ConvertToPlaceholder(HFILE fileHandle, bool inSync = true, bool dehydrate = false, IntPtr fileIdentity = default, uint fileIdentityLength = 0)
 		{
 			var flags = (inSync ? CF_CONVERT_FLAGS.CF_CONVERT_FLAG_MARK_IN_SYNC : 0) | (dehydrate ? CF_CONVERT_FLAGS.CF_CONVERT_FLAG_DEHYDRATE : 0);
@@ -301,6 +420,11 @@ namespace Vanara.PInvoke.Tests
 			return usn;
 		}
 
+		/// <summary>Creates a new placeholder files under a sync root tree.</summary>
+		/// <param name="relativeFilePath">The relative file path of the file.</param>
+		/// <param name="fileInfo">The file information of the file.</param>
+		/// <param name="inSync">if set to <see langword="true"/>, the file is synchronized.</param>
+		/// <returns>The final USN value for the file.</returns>
 		public int CreatePlaceholderFromFile(string relativeFilePath, FileInfo fileInfo, bool inSync = true)
 		{
 			using var pRelativeName = new SafeCoTaskMemString(relativeFilePath);
@@ -312,6 +436,23 @@ namespace Vanara.PInvoke.Tests
 			return ph[0].CreateUsn;
 		}
 
+		/// <summary>Creates one or more new placeholder files or directories under a sync root tree.</summary>
+		/// <param name="placeholders">
+		/// On successful creation, the PlaceholderArray contains the final USN value and a STATUS_OK message. On return, this array
+		/// contains an HRESULT value describing whether the placeholder was created or not.
+		/// </param>
+		/// <returns>The number of entries processed, including failed entries.</returns>
+		/// <remarks>
+		/// <para>
+		/// Creating a placeholder with this function is preferred compared to creating a new file with CreateFile and then converting it to
+		/// a placeholder with CfConvertToPlaceholder; both for efficiency and because it eliminates the time window where the file is not a
+		/// placeholder. The function can also create multiple files or directories in a batch, which can also be more efficient.
+		/// </para>
+		/// <para>
+		/// This function is useful when performing an initial sync of files or directories from the cloud down to the client, or when
+		/// syncing down a newly created single file or directory from the cloud.
+		/// </para>
+		/// </remarks>
 		public uint CreatePlaceholders(IList<PlaceholderInfo> placeholders)
 		{
 			var entries = new CF_PLACEHOLDER_CREATE_INFO[placeholders.Count];
@@ -378,43 +519,52 @@ namespace Vanara.PInvoke.Tests
 			//}
 		}
 
+		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
 		{
+			disposed = true;
 			if (!key.HasValue) return;
 			CfDisconnectSyncRoot(key.Value).ThrowIfFailed();
 			key = null;
 			UnregisterWithShell();
 		}
 
-		protected virtual void OnCancelFetchData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(CancelFetchData, CallbackInfo, CallbackParameters);
+		/// <summary>Allows a sync provider to notify the platform of its status.</summary>
+		/// <param name="description">
+		/// A localized string that is expected to contain more meaningful and actionable information about the file in question. Sync
+		/// providers are expected to balance the requirement of providing more actionable information and maintaining an as small as
+		/// possible memory footprint.
+		/// </param>
+		/// <param name="code">
+		/// <para>The use of this parameter is completely up to the sync provider that supports this rich sync status construct.</para>
+		/// <para>For a particular sync provider, it is expected that there is a 1:1 mapping between the code and the description string.</para>
+		/// <para>
+		/// It is recommended that you use the highest bit order to describe the type of error code: 1 for an error-level code, and 0
+		/// for an information-level code.
+		/// </para>
+		/// <para><c>Note</c><c>Code</c> is opaque to the platform, and is used only for tracking purposes.</para>
+		/// </param>
+		public void ReportSyncStatus(string description, uint code)
+		{
+			var ssLen = (uint)Marshal.SizeOf<CF_SYNC_STATUS>();
+			uint descLen = (uint)(description.Length + 1) * 2;
+			var ss = new CF_SYNC_STATUS { StructSize = ssLen + descLen, Code = code, DescriptionLength = descLen, DescriptionOffset = ssLen };
+			using var mem = new SafeCoTaskMemStruct<CF_SYNC_STATUS>(ss, ss.StructSize);
+			StringHelper.Write(description, ((IntPtr)mem).Offset(Marshal.SizeOf<CF_SYNC_STATUS>()), out _, true, CharSet.Unicode, descLen);
+			CfReportSyncStatus(SyncRootPath, mem).ThrowIfFailed();
+		}
 
-		protected virtual void OnCancelFetchPlaceholders(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(CancelFetchPlaceholders, CallbackInfo, CallbackParameters);
+		/// <summary>Clears the previously-saved sync status.</summary>
+		public void ClearSyncStatus() => CfReportSyncStatus(SyncRootPath).ThrowIfFailed();
 
-		protected virtual void OnFetchData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(FetchData, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnFetchPlaceholders(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(FetchPlaceholders, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnNotifyDehydrate(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDehydrate, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnNotifyDehydrateCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDehydrateCompletion, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnNotifyDelete(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDelete, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnNotifyDeleteCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDeleteCompletion, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnNotifyFileCloseCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyFileCloseCompletion, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnNotifyFileOpenCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyFileOpenCompletion, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnNotifyRename(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyRename, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnNotifyRenameCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyRenameCompletion, CallbackInfo, CallbackParameters);
-
-		protected virtual void OnValidateData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(ValidateData, CallbackInfo, CallbackParameters);
-
+		/// <summary>Handles the registered event.</summary>
+		/// <typeparam name="T">The type contained with CF_CALLBACK_PARAMETERS.</typeparam>
+		/// <param name="handler">The handler method.</param>
+		/// <param name="CallbackInfo">The callback information.</param>
+		/// <param name="CallbackParameters">The callback parameters.</param>
 		protected virtual void HandleEvent<T>(EventHandler<CloudSyncCallbackArgs<T>> handler, in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) where T : struct
 		{
-			if (handler != null)
+			if (handler != null && !disposed)
 			{
 				var args = new CloudSyncCallbackArgs<T>(CallbackInfo, CallbackParameters);
 				handler.Invoke(this, args);
@@ -426,6 +576,55 @@ namespace Vanara.PInvoke.Tests
 				}
 			}
 		}
+
+		/// <summary>Callback to cancel an ongoing placeholder hydration.</summary>
+		protected virtual void OnCancelFetchData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(CancelFetchData, CallbackInfo, CallbackParameters);
+
+		/// <summary>Callback to cancel a request for the contents of placeholder files.</summary>
+		protected virtual void OnCancelFetchPlaceholders(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(CancelFetchPlaceholders, CallbackInfo, CallbackParameters);
+
+		/// <summary>Callback to satisfy an I/O request, or a placeholder hydration request.</summary>
+		protected virtual void OnFetchData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(FetchData, CallbackInfo, CallbackParameters);
+
+		/// <summary>Callback to request information about the contents of placeholder files.</summary>
+		protected virtual void OnFetchPlaceholders(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(FetchPlaceholders, CallbackInfo, CallbackParameters);
+
+		/// <summary>Callback to inform the sync provider that a placeholder under one of its sync roots is about to be dehydrated.</summary>
+		protected virtual void OnNotifyDehydrate(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDehydrate, CallbackInfo, CallbackParameters);
+
+		/// <summary>Callback to inform the sync provider that a placeholder under one of its sync roots has been successfully dehydrated.</summary>
+		protected virtual void OnNotifyDehydrateCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDehydrateCompletion, CallbackInfo, CallbackParameters);
+
+		/// <summary>Callback to inform the sync provider that a placeholder under one of its sync roots is about to be deleted.</summary>
+		protected virtual void OnNotifyDelete(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDelete, CallbackInfo, CallbackParameters);
+
+		/// <summary>Callback to inform the sync provider that a placeholder under one of its sync roots has been successfully deleted.</summary>
+		protected virtual void OnNotifyDeleteCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyDeleteCompletion, CallbackInfo, CallbackParameters);
+
+		/// <summary>
+		/// Callback to inform the sync provider that a placeholder under one of its sync roots that has been previously opened for
+		/// read/write/delete access is now closed.
+		/// </summary>
+		protected virtual void OnNotifyFileCloseCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyFileCloseCompletion, CallbackInfo, CallbackParameters);
+
+		/// <summary>
+		/// Callback to inform the sync provider that a placeholder under one of its sync roots has been successfully opened for
+		/// read/write/delete access.
+		/// </summary>
+		protected virtual void OnNotifyFileOpenCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyFileOpenCompletion, CallbackInfo, CallbackParameters);
+
+		/// <summary>
+		/// Callback to inform the sync provider that a placeholder under one of its sync roots is about to be renamed or moved.
+		/// </summary>
+		protected virtual void OnNotifyRename(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyRename, CallbackInfo, CallbackParameters);
+
+		/// <summary>
+		/// Callback to inform the sync provider that a placeholder under one of its sync roots has been successfully renamed or moved.
+		/// </summary>
+		protected virtual void OnNotifyRenameCompletion(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(NotifyRenameCompletion, CallbackInfo, CallbackParameters);
+
+		/// <summary>Callback to validate placeholder data.</summary>
+		protected virtual void OnValidateData(in CF_CALLBACK_INFO CallbackInfo, in CF_CALLBACK_PARAMETERS CallbackParameters) => HandleEvent(ValidateData, CallbackInfo, CallbackParameters);
 
 		private static void AddFolderToSearchIndexer(string folder)
 		{
@@ -440,7 +639,7 @@ namespace Vanara.PInvoke.Tests
 
 		private void ConnectSyncRootTransferCallbacks()
 		{
-			CF_CALLBACK_REGISTRATION[] callbackTable =
+			callbackTable ??= new CF_CALLBACK_REGISTRATION[]
 			{
 				new CF_CALLBACK_REGISTRATION { Type = CF_CALLBACK_TYPE.CF_CALLBACK_TYPE_CANCEL_FETCH_DATA, Callback = OnCancelFetchData },
 				new CF_CALLBACK_REGISTRATION { Type = CF_CALLBACK_TYPE.CF_CALLBACK_TYPE_CANCEL_FETCH_PLACEHOLDERS, Callback = OnCancelFetchPlaceholders },
