@@ -3177,7 +3177,7 @@ namespace Vanara.PInvoke
 		/// <returns>List of strings returned by <paramref name="first"/> and <paramref name="next"/> methods.</returns>
 		private static IEnumerable<string> EnumFindMethods<THandle>(FindFirstDelegate<THandle> first, FindNextDelegate<THandle> next, uint strSz = MAX_PATH + 1, uint done = Win32Error.ERROR_HANDLE_EOF) where THandle : SafeHandle
 		{
-			var sb = new StringBuilder((int)strSz, (int)strSz);
+			var sb = new StringBuilder((int)strSz);
 			THandle h;
 			while ((h = first(sb, ref strSz)).IsInvalid)
 			{
