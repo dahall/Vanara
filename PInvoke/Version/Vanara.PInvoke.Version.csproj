@@ -13,7 +13,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-GetFileVersionInfo, GetFileVersionInfoByHandle, GetFileVersionInfoEx, GetFileVersionInfoSize, GetFileVersionInfoSizeEx, VerFindFile, VerInstallFile, VerLanguageName, VerQueryValue
+GetFileVersionInfo, GetFileVersionInfoEx, GetFileVersionInfoSize, GetFileVersionInfoSizeEx, VerFindFile, VerInstallFile, VerLanguageName, VerQueryValue
 
 Structures
 VS_FIXEDFILEINFO

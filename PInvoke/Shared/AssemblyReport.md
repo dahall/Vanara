@@ -171,6 +171,7 @@ Interface | Description
 ### Classes
 Class | Description
 ---- | ----
+[Vanara.InteropServices.AnySizeStringMarshaler<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AnySizeStringMarshaler<T>) | 
 [Vanara.PInvoke.AssociateAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=AssociateAttribute) | Associates a Guid with an element.
 [Vanara.PInvoke.AssociateStringAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=AssociateStringAttribute) | Associates a string with an element.
 [Vanara.Collections.IEnumFromCom<T>.ComTryGetNext](https://github.com/dahall/Vanara/search?l=C%23&q=ComTryGetNext) | Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
