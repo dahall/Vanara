@@ -1775,7 +1775,7 @@ namespace Vanara.PInvoke
 		// dwFlagsAndAttributes );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "caa757a2-fc3f-4883-8d3e-b98d28f92517")]
-		public static extern IntPtr OpenFileById(HFILE hVolumeHint, in FILE_ID_DESCRIPTOR lpFileId, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes);
+		public static extern SafeHFILE OpenFileById(HFILE hVolumeHint, in FILE_ID_DESCRIPTOR lpFileId, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes);
 
 		/// <summary>
 		/// <para>Decrements the count of power requests of the specified type for a power request object.</para>

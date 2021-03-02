@@ -236,7 +236,9 @@ namespace Vanara.Extensions
 			{
 				T ret = pCurrent.ToStructure<T>();
 				yield return ret;
-				pCurrent = pCurrent.Offset(nextOffset(ret));
+				var offset = nextOffset(ret);
+				if (offset == 0) break;
+				pCurrent = pCurrent.Offset(offset);
 			}
 		}
 
