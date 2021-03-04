@@ -53,6 +53,21 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CloseHandle(IntPtr hObject);
 
+		/// <summary>Closes an open object handle.</summary>
+		/// <typeparam name="THandle">The type of the handle.</typeparam>
+		/// <param name="handle">The handle.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// If the application is running under a debugger, the function will throw an exception if it receives either a handle value that
+		/// is not valid or a pseudo-handle value. This can happen if you close a handle twice, or if you call <c>CloseHandle</c> on a
+		/// handle returned by the <c>FindFirstFile</c> function instead of calling the <c>FindClose</c> function.
+		/// </para>
+		/// </returns>
+		[PInvokeData("Winbase.h", MSDNShortId = "ms724211")]
+		public static bool CloseHandle<THandle>(THandle handle) where THandle : struct, IKernelHandle => CloseHandle(handle.DangerousGetHandle());
+
 		/// <summary>Compares two object handles to determine if they refer to the same underlying kernel object.</summary>
 		/// <param name="hFirstObjectHandle">The first object handle to compare.</param>
 		/// <param name="hSecondObjectHandle">The second object handle to compare.</param>
@@ -72,6 +87,7 @@ namespace Vanara.PInvoke
 		public static bool Equals(this IKernelHandle h1, IKernelHandle h2) => CompareObjectHandles(h1.DangerousGetHandle(), h2?.DangerousGetHandle() ?? IntPtr.Zero);
 
 		/// <summary>Duplicates an object handle.</summary>
+		/// <typeparam name="TAccess">The type of the access value (enum or uint).</typeparam>
 		/// <param name="hSourceHandle">
 		/// The handle to be duplicated. This is an open object handle that is valid in the context of the source process. For a list of
 		/// objects whose handles can be duplicated, see the following Remarks section.
@@ -115,8 +131,59 @@ namespace Vanara.PInvoke
 		/// converts it to a real handle to a process or thread, respectively.
 		/// </para>
 		/// </returns>
-		public static IntPtr Duplicate(this IKernelHandle hSourceHandle, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS, uint dwDesiredAccess = 0) =>
-			DuplicateHandle(GetCurrentProcess(), hSourceHandle.DangerousGetHandle(), GetCurrentProcess(), out var h, dwDesiredAccess, bInheritHandle, dwOptions) ? h : IntPtr.Zero;
+		public static IntPtr Duplicate<TAccess>(this IKernelHandle hSourceHandle, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS, TAccess dwDesiredAccess = default)
+			where TAccess : struct, IConvertible =>
+			DuplicateHandle(GetCurrentProcess(), hSourceHandle.DangerousGetHandle(), GetCurrentProcess(), out var h, Convert.ToUInt32(dwDesiredAccess), bInheritHandle, dwOptions) ? h : IntPtr.Zero;
+
+		/// <summary>Duplicates an object handle.</summary>
+		/// <typeparam name="THandle">The type of the handle.</typeparam>
+		/// <typeparam name="TAccess">The type of the access value (enum or uint).</typeparam>
+		/// <param name="hSourceHandle">
+		/// The handle to be duplicated. This is an open object handle that is valid in the context of the source process. For a list of
+		/// objects whose handles can be duplicated, see the following Remarks section.
+		/// </param>
+		/// <param name="bInheritHandle">
+		/// A variable that indicates whether the handle is inheritable. If <c>TRUE</c>, the duplicate handle can be inherited by new
+		/// processes created by the target process. If <c>FALSE</c>, the new handle cannot be inherited.
+		/// </param>
+		/// <param name="dwOptions">
+		/// <para>Optional actions. This parameter can be zero, or any combination of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DUPLICATE_CLOSE_SOURCE0x00000001</term>
+		/// <term>Closes the source handle. This occurs regardless of any error status returned.</term>
+		/// </item>
+		/// <item>
+		/// <term>DUPLICATE_SAME_ACCESS0x00000002</term>
+		/// <term>Ignores the dwDesiredAccess parameter. The duplicate handle has the same access as the source handle.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="dwDesiredAccess">
+		/// <para>
+		/// The access requested for the new handle. For the flags that can be specified for each object type, see the following Remarks section.
+		/// </para>
+		/// <para>
+		/// This parameter is ignored if the dwOptions parameter specifies the DUPLICATE_SAME_ACCESS flag. Otherwise, the flags that can be
+		/// specified depend on the type of object whose handle is to be duplicated.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>The duplicate handle. This handle value is valid in the context of the target process.</para>
+		/// <para>
+		/// If hSourceHandle is a pseudo handle returned by <c>GetCurrentProcess</c> or <c>GetCurrentThread</c>, <c>DuplicateHandle</c>
+		/// converts it to a real handle to a process or thread, respectively.
+		/// </para>
+		/// </returns>
+		public static THandle Duplicate<THandle, TAccess>(this THandle hSourceHandle, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS, TAccess dwDesiredAccess = default)
+			where THandle : SafeKernelHandle where TAccess : struct, IConvertible =>
+			Win32Error.ThrowLastErrorIfFalse(SafeKernelHandle.DuplicateHandle(hSourceHandle, out var ret, dwDesiredAccess, default, default, bInheritHandle, dwOptions)) ? ret : default;
 
 		/// <summary>Duplicates an object handle.</summary>
 		/// <param name="hSourceProcessHandle">
@@ -293,6 +360,80 @@ namespace Vanara.PInvoke
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
 			protected SafeKernelHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Duplicates an object handle.</summary>
+			/// <typeparam name="THandle">The type of the handle.</typeparam>
+			/// <typeparam name="TAccess">The type of the access value (enum or uint).</typeparam>
+			/// <param name="hSourceHandle">
+			/// The handle to be duplicated. This is an open object handle that is valid in the context of the source process. For a list of
+			/// objects whose handles can be duplicated, see the following Remarks section.
+			/// </param>
+			/// <param name="lpTargetHandle">
+			/// <para>
+			/// A pointer to a variable that receives the duplicate handle. This handle value is valid in the context of the target process.
+			/// </para>
+			/// <para>
+			/// If hSourceHandle is a pseudo handle returned by <c>GetCurrentProcess</c> or <c>GetCurrentThread</c>, <c>DuplicateHandle</c>
+			/// converts it to a real handle to a process or thread, respectively.
+			/// </para>
+			/// <para>
+			/// If lpTargetHandle is <c>NULL</c>, the function duplicates the handle, but does not return the duplicate handle value to the
+			/// caller. This behavior exists only for backward compatibility with previous versions of this function. You should not use
+			/// this feature, as you will lose system resources until the target process terminates.
+			/// </para>
+			/// </param>
+			/// <param name="dwDesiredAccess">
+			/// <para>
+			/// The access requested for the new handle. For the flags that can be specified for each object type, see the following Remarks section.
+			/// </para>
+			/// <para>
+			/// This parameter is ignored if the dwOptions parameter specifies the DUPLICATE_SAME_ACCESS flag. Otherwise, the flags that can
+			/// be specified depend on the type of object whose handle is to be duplicated.
+			/// </para>
+			/// </param>
+			/// <param name="hSourceProcessHandle">
+			/// <para>A handle to the process with the handle to be duplicated.</para>
+			/// <para>The handle must have the PROCESS_DUP_HANDLE access right. For more information, see Process Security and Access Rights.</para>
+			/// </param>
+			/// <param name="hTargetProcessHandle">
+			/// A handle to the process that is to receive the duplicated handle. The handle must have the PROCESS_DUP_HANDLE access right.
+			/// </param>
+			/// <param name="bInheritHandle">
+			/// A variable that indicates whether the handle is inheritable. If <c>TRUE</c>, the duplicate handle can be inherited by new
+			/// processes created by the target process. If <c>FALSE</c>, the new handle cannot be inherited.
+			/// </param>
+			/// <param name="dwOptions">
+			/// <para>Optional actions. This parameter can be zero, or any combination of the following values.</para>
+			/// <para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>DUPLICATE_CLOSE_SOURCE0x00000001</term>
+			/// <term>Closes the source handle. This occurs regardless of any error status returned.</term>
+			/// </item>
+			/// <item>
+			/// <term>DUPLICATE_SAME_ACCESS0x00000002</term>
+			/// <term>Ignores the dwDesiredAccess parameter. The duplicate handle has the same access as the source handle.</term>
+			/// </item>
+			/// </list>
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>If the function succeeds, the return value is nonzero.</para>
+			/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+			/// </returns>
+			public static bool DuplicateHandle<THandle, TAccess>(THandle hSourceHandle, out THandle lpTargetHandle, TAccess dwDesiredAccess,
+				HPROCESS hSourceProcessHandle = default, HPROCESS hTargetProcessHandle = default, bool bInheritHandle = false, DUPLICATE_HANDLE_OPTIONS dwOptions = 0)
+				where THandle : SafeKernelHandle where TAccess : struct, IConvertible
+			{
+				var ret = Kernel32.DuplicateHandle(hSourceProcessHandle == default ? GetCurrentProcess() : hSourceProcessHandle, hSourceHandle.DangerousGetHandle(),
+					hTargetProcessHandle == default ? GetCurrentProcess() : hTargetProcessHandle, out IntPtr h, Convert.ToUInt32(dwDesiredAccess), bInheritHandle, dwOptions);
+				lpTargetHandle = (THandle)Activator.CreateInstance(typeof(THandle), h, true);
+				return ret;
+			}
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CloseHandle(handle);
