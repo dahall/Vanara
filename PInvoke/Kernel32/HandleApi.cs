@@ -131,9 +131,8 @@ namespace Vanara.PInvoke
 		/// converts it to a real handle to a process or thread, respectively.
 		/// </para>
 		/// </returns>
-		public static IntPtr Duplicate<TAccess>(this IKernelHandle hSourceHandle, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS, TAccess dwDesiredAccess = default)
-			where TAccess : struct, IConvertible =>
-			DuplicateHandle(GetCurrentProcess(), hSourceHandle.DangerousGetHandle(), GetCurrentProcess(), out var h, Convert.ToUInt32(dwDesiredAccess), bInheritHandle, dwOptions) ? h : IntPtr.Zero;
+		public static IntPtr Duplicate(this IKernelHandle hSourceHandle, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS, uint dwDesiredAccess = default) =>
+			DuplicateHandle(GetCurrentProcess(), hSourceHandle.DangerousGetHandle(), GetCurrentProcess(), out var h, dwDesiredAccess, bInheritHandle, dwOptions) ? h : IntPtr.Zero;
 
 		/// <summary>Duplicates an object handle.</summary>
 		/// <typeparam name="THandle">The type of the handle.</typeparam>
@@ -141,6 +140,15 @@ namespace Vanara.PInvoke
 		/// <param name="hSourceHandle">
 		/// The handle to be duplicated. This is an open object handle that is valid in the context of the source process. For a list of
 		/// objects whose handles can be duplicated, see the following Remarks section.
+		/// </param>
+		/// <param name="dwDesiredAccess">
+		/// <para>
+		/// The access requested for the new handle. For the flags that can be specified for each object type, see the following Remarks section.
+		/// </para>
+		/// <para>
+		/// This parameter is ignored if the dwOptions parameter specifies the DUPLICATE_SAME_ACCESS flag. Otherwise, the flags that can be
+		/// specified depend on the type of object whose handle is to be duplicated.
+		/// </para>
 		/// </param>
 		/// <param name="bInheritHandle">
 		/// A variable that indicates whether the handle is inheritable. If <c>TRUE</c>, the duplicate handle can be inherited by new
@@ -155,23 +163,14 @@ namespace Vanara.PInvoke
 		/// <term>Meaning</term>
 		/// </listheader>
 		/// <item>
-		/// <term>DUPLICATE_CLOSE_SOURCE0x00000001</term>
+		/// <term>DUPLICATE_CLOSE_SOURCE 0x00000001</term>
 		/// <term>Closes the source handle. This occurs regardless of any error status returned.</term>
 		/// </item>
 		/// <item>
-		/// <term>DUPLICATE_SAME_ACCESS0x00000002</term>
+		/// <term>DUPLICATE_SAME_ACCESS 0x00000002</term>
 		/// <term>Ignores the dwDesiredAccess parameter. The duplicate handle has the same access as the source handle.</term>
 		/// </item>
 		/// </list>
-		/// </para>
-		/// </param>
-		/// <param name="dwDesiredAccess">
-		/// <para>
-		/// The access requested for the new handle. For the flags that can be specified for each object type, see the following Remarks section.
-		/// </para>
-		/// <para>
-		/// This parameter is ignored if the dwOptions parameter specifies the DUPLICATE_SAME_ACCESS flag. Otherwise, the flags that can be
-		/// specified depend on the type of object whose handle is to be duplicated.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -181,7 +180,7 @@ namespace Vanara.PInvoke
 		/// converts it to a real handle to a process or thread, respectively.
 		/// </para>
 		/// </returns>
-		public static THandle Duplicate<THandle, TAccess>(this THandle hSourceHandle, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS, TAccess dwDesiredAccess = default)
+		public static THandle Duplicate<THandle, TAccess>(this THandle hSourceHandle, TAccess dwDesiredAccess, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS)
 			where THandle : SafeKernelHandle where TAccess : struct, IConvertible =>
 			Win32Error.ThrowLastErrorIfFalse(SafeKernelHandle.DuplicateHandle(hSourceHandle, out var ret, dwDesiredAccess, default, default, bInheritHandle, dwOptions)) ? ret : default;
 
