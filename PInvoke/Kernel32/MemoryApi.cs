@@ -830,8 +830,8 @@ namespace Vanara.PInvoke
 		// dwMaximumSizeHigh, _In_ DWORD dwMaximumSizeLow, _In_opt_ LPCTSTR lpName);
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366537")]
-		public static extern SafeHSECTION CreateFileMapping([In] HFILE hFile, [In] SECURITY_ATTRIBUTES lpAttributes, MEM_PROTECTION flProtect,
-			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, string lpName);
+		public static extern SafeHSECTION CreateFileMapping([In] HFILE hFile, [In, Optional] SECURITY_ATTRIBUTES lpAttributes, MEM_PROTECTION flProtect,
+			[Optional] uint dwMaximumSizeHigh, [Optional] uint dwMaximumSizeLow, [Optional] string lpName);
 
 		/// <summary>Creates or opens a named or unnamed file mapping object for a specified file from a Windows Store app.</summary>
 		/// <param name="hFile">
@@ -1006,8 +1006,8 @@ namespace Vanara.PInvoke
 		// PageProtection, _In_ ULONG64 MaximumSize, _In_opt_ PCWSTR Name);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "hh994453")]
-		public static extern SafeHSECTION CreateFileMappingFromApp([In] HFILE hFile, [In] SECURITY_ATTRIBUTES SecurityAttributes,
-			MEM_PROTECTION PageProtection, ulong MaximumSize, string Name);
+		public static extern SafeHSECTION CreateFileMappingFromApp([In] HFILE hFile, [In, Optional] SECURITY_ATTRIBUTES SecurityAttributes,
+			MEM_PROTECTION PageProtection, ulong MaximumSize, [Optional] string Name);
 
 		/// <summary>
 		/// Creates or opens a named or unnamed file mapping object for a specified file and specifies the NUMA node for the physical memory.
@@ -1226,7 +1226,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366539")]
 		public static extern SafeHSECTION CreateFileMappingNuma([In] HFILE hFile, [In, Optional] SECURITY_ATTRIBUTES lpFileMappingAttributes, MEM_PROTECTION flProtect,
-			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, string lpName, uint nndPreferred);
+			[Optional] uint dwMaximumSizeHigh, [Optional] uint dwMaximumSizeLow, [Optional] string lpName, uint nndPreferred);
 
 		/// <summary>
 		/// <para>Creates a memory resource notification object.</para>
