@@ -109,7 +109,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="SafeHANDLE"/> to <see cref="HANDLE"/>.</summary>
 		/// <param name="h">The h.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HANDLE(SafeHANDLE h) => new HANDLE(h.DangerousGetHandle());
+		public static implicit operator HANDLE(SafeHandle h) => new HANDLE(h.DangerousGetHandle());
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
