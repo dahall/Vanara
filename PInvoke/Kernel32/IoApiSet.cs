@@ -292,7 +292,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "40cb47fc-7b15-47f6-bee2-2611d4686053")]
 		public static extern HANDLE CreateIoCompletionPort([In] HANDLE FileHandle, [In, Optional] HANDLE ExistingCompletionPort,
-			UIntPtr CompletionKey, uint NumberOfConcurrentThreads);
+			IntPtr CompletionKey, uint NumberOfConcurrentThreads);
 
 		/// <summary>This macro is used to create a unique system I/O control code (IOCTL).</summary>
 		/// <param name="deviceType">
@@ -848,7 +848,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364986")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool GetQueuedCompletionStatus([In] HANDLE CompletionPort, out uint lpNumberOfBytes, out UIntPtr lpCompletionKey, NativeOverlapped** lpOverlapped, uint dwMilliseconds);
+		public static extern unsafe bool GetQueuedCompletionStatus([In] HANDLE CompletionPort, out uint lpNumberOfBytes, out IntPtr lpCompletionKey, NativeOverlapped** lpOverlapped, uint dwMilliseconds);
 
 		/// <summary>
 		/// <para>
@@ -901,7 +901,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364986")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetQueuedCompletionStatus([In] HANDLE CompletionPort, out uint lpNumberOfBytes, out UIntPtr lpCompletionKey, out IntPtr lpOverlapped, uint dwMilliseconds);
+		public static extern bool GetQueuedCompletionStatus([In] HANDLE CompletionPort, out uint lpNumberOfBytes, out IntPtr lpCompletionKey, out IntPtr lpOverlapped, uint dwMilliseconds);
 
 		/// <summary>
 		/// <para>
@@ -974,7 +974,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa365458")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern unsafe bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred,
-			UIntPtr dwCompletionKey, [In, Optional] NativeOverlapped* lpOverlapped);
+			IntPtr dwCompletionKey, [In, Optional] NativeOverlapped* lpOverlapped);
 
 		/// <summary>Posts an I/O completion packet to an I/O completion port.</summary>
 		/// <param name="CompletionPort">A handle to an I/O completion port to which the I/O completion packet is to be posted.</param>
@@ -997,7 +997,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa365458")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool PostQueuedCompletionStatus([In] HANDLE CompletionPort, uint dwNumberOfBytesTransferred,
-			[In, Optional] UIntPtr dwCompletionKey, [In, Optional] IntPtr lpOverlapped);
+			[In, Optional] IntPtr dwCompletionKey, [In, Optional] IntPtr lpOverlapped);
 
 		private static unsafe IAsyncResult BeginDeviceIoControl<TIn, TOut>(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) where TIn : struct where TOut : struct =>
 			BeginDeviceIoControl(hDevice, dwIoControlCode, buffer, userCallback, userState);
@@ -1083,7 +1083,7 @@ namespace Vanara.PInvoke
 			/// Receives the completion key value associated with the file handle whose I/O operation has completed. A completion key is a
 			/// per-file key that is specified in a call to CreateIoCompletionPort.
 			/// </summary>
-			public UIntPtr lpCompletionKey;
+			public IntPtr lpCompletionKey;
 
 			/// <summary>Receives the address of the OVERLAPPED structure that was specified when the completed I/O operation was started.</summary>
 			public IntPtr lpOverlapped;
