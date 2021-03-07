@@ -86,8 +86,8 @@ namespace Vanara.Diagnostics
 
 			// Create completion port
 			complPort = IoCompletionPort.Create();
-			complPort.AddKeyHandler(hJob.DangerousGetHandle().ToUIntPtr(), FireEventThread);
-			AssociateCompletionPort(complPort.Handle, hJob.DangerousGetHandle().ToUIntPtr());
+			complPort.AddKeyHandler(hJob.DangerousGetHandle(), FireEventThread);
+			AssociateCompletionPort(complPort.Handle, hJob.DangerousGetHandle());
 		}
 
 		/// <summary>Finalizes an instance of the <see cref="Job"/> class.</summary>
@@ -325,7 +325,7 @@ namespace Vanara.Diagnostics
 		/// <param name="key">
 		/// The value to use in the dwCompletionKey parameter of PostQueuedCompletionStatus when messages are sent on behalf of the job.
 		/// </param>
-		public void AssociateCompletionPort(HANDLE completionPort, UIntPtr key = default) =>
+		public void AssociateCompletionPort(HANDLE completionPort, IntPtr key = default) =>
 			CheckThenSet((ref JOBOBJECT_ASSOCIATE_COMPLETION_PORT i) => { i.CompletionKey = key; i.CompletionPort = completionPort; });
 
 		/// <summary>Determines whether the process is running in this job.</summary>
@@ -507,7 +507,7 @@ namespace Vanara.Diagnostics
 			}
 		}
 
-		private void FireEventThread(uint msg, UIntPtr key, IntPtr ppid)
+		private void FireEventThread(uint msg, IntPtr key, IntPtr ppid)
 		{
 			if (disposedValue) return;
 			var t = new JobEventArgs((JOB_OBJECT_MSG)msg, ppid.ToInt32());

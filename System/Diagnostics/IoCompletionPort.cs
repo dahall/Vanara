@@ -12,7 +12,7 @@ namespace Vanara.Diagnostics
 	/// <seealso cref="System.IDisposable"/>
 	public class IoCompletionPort : IDisposable
 	{
-		private readonly ConcurrentDictionary<UIntPtr, Action<uint, UIntPtr, IntPtr>> handlers = new ConcurrentDictionary<UIntPtr, Action<uint, UIntPtr, IntPtr>>();
+		private readonly ConcurrentDictionary<IntPtr, Action<uint, IntPtr, IntPtr>> handlers = new ConcurrentDictionary<IntPtr, Action<uint, IntPtr, IntPtr>>();
 		private bool disposedValue = false;
 		private HANDLE hComplPort;
 
@@ -45,11 +45,11 @@ namespace Vanara.Diagnostics
 		/// <summary>Adds key and handler to the I/O completion port.</summary>
 		/// <param name="key">A unique completion key to be passed to the handler when called.</param>
 		/// <param name="handler">An action to perform when an I/O operation is complete.</param>
-		/// <exception cref="ArgumentOutOfRangeException">The value for <paramref name="key"/> cannot be <c>UIntPtr.Zero</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">The value for <paramref name="key"/> cannot be <c>IntPtr.Zero</c>.</exception>
 		/// <exception cref="InvalidOperationException">Key already exists.</exception>
-		public void AddKeyHandler(UIntPtr key, Action<uint, UIntPtr, IntPtr> handler)
+		public void AddKeyHandler(IntPtr key, Action<uint, IntPtr, IntPtr> handler)
 		{
-			if (key == UIntPtr.Zero)
+			if (key == IntPtr.Zero)
 				throw new ArgumentOutOfRangeException(nameof(key), "Key value cannot be 0.");
 
 			if (!handlers.TryAdd(key, handler))
@@ -66,9 +66,9 @@ namespace Vanara.Diagnostics
 		/// </param>
 		/// <param name="key">A unique completion key to be passed to the handler when called.</param>
 		/// <param name="handler">An action to perform when an I/O operation is complete.</param>
-		/// <exception cref="ArgumentOutOfRangeException">The value for <paramref name="key"/> cannot be <c>UIntPtr.Zero</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">The value for <paramref name="key"/> cannot be <c>IntPtr.Zero</c>.</exception>
 		/// <exception cref="InvalidOperationException">Key already exists.</exception>
-		public void AddKeyHandler(IntPtr overlappedHandle, UIntPtr key, Action<uint, UIntPtr, IntPtr> handler)
+		public void AddKeyHandler(IntPtr overlappedHandle, IntPtr key, Action<uint, IntPtr, IntPtr> handler)
 		{
 			AddKeyHandler(key, handler);
 
@@ -94,9 +94,9 @@ namespace Vanara.Diagnostics
 		/// <param name="lpOverlapped">
 		/// The value to be returned through the lpOverlapped parameter of the <c>GetQueuedCompletionStatus</c> function.
 		/// </param>
-		public void PostQueuedStatus(UIntPtr completionKey, uint numberOfBytesTransferred = 0, IntPtr lpOverlapped = default)
+		public void PostQueuedStatus(IntPtr completionKey, uint numberOfBytesTransferred = 0, IntPtr lpOverlapped = default)
 		{
-			if (completionKey == UIntPtr.Zero)
+			if (completionKey == IntPtr.Zero)
 				throw new ArgumentOutOfRangeException(nameof(completionKey), "Key value cannot be 0.");
 
 			if (!PostQueuedCompletionStatus(hComplPort, numberOfBytesTransferred, completionKey, lpOverlapped))
@@ -113,9 +113,9 @@ namespace Vanara.Diagnostics
 		/// <param name="lpOverlapped">
 		/// The value to be returned through the lpOverlapped parameter of the <c>GetQueuedCompletionStatus</c> function.
 		/// </param>
-		public unsafe void PostQueuedStatus(UIntPtr completionKey, uint numberOfBytesTransferred, NativeOverlapped* lpOverlapped)
+		public unsafe void PostQueuedStatus(IntPtr completionKey, uint numberOfBytesTransferred, NativeOverlapped* lpOverlapped)
 		{
-			if (completionKey == UIntPtr.Zero)
+			if (completionKey == IntPtr.Zero)
 				throw new ArgumentOutOfRangeException(nameof(completionKey), "Key value cannot be 0.");
 
 			if (!PostQueuedCompletionStatus(hComplPort, numberOfBytesTransferred, completionKey, lpOverlapped))
@@ -125,7 +125,7 @@ namespace Vanara.Diagnostics
 		/// <summary>Removes the handler associated with <paramref name="key"/>.</summary>
 		/// <param name="key">The key of the handler to remove.</param>
 		/// <exception cref="InvalidOperationException">Key does not exist.</exception>
-		public void RemoveKeyHandler(UIntPtr key)
+		public void RemoveKeyHandler(IntPtr key)
 		{
 			if (!handlers.TryRemove(key, out _))
 				throw new InvalidOperationException("Key does not exist.");
@@ -172,12 +172,12 @@ namespace Vanara.Diagnostics
 				}
 
 				// End the thread if terminating completion key signals
-				if (byteCount == 0 && completionKey == UIntPtr.Zero && overlapped == IntPtr.Zero)
+				if (byteCount == 0 && completionKey == IntPtr.Zero && overlapped == IntPtr.Zero)
 					break;
 
 				// Spin this off so we don't hang the completion port.
 				if (handlers.TryGetValue(completionKey, out var action))
-					Task.Factory.StartNew(o => { if (o is Tuple<uint, UIntPtr, IntPtr> t) action(t.Item1, t.Item2, t.Item3); }, new Tuple<uint, UIntPtr, IntPtr>(byteCount, completionKey, overlapped));
+					Task.Factory.StartNew(o => { if (o is Tuple<uint, IntPtr, IntPtr> t) action(t.Item1, t.Item2, t.Item3); }, new Tuple<uint, IntPtr, IntPtr>(byteCount, completionKey, overlapped));
 			}
 		}
 	}

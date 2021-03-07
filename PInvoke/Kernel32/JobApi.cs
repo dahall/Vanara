@@ -1652,7 +1652,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// The value to use in the dwCompletionKey parameter of PostQueuedCompletionStatus when messages are sent on behalf of the job.
 			/// </summary>
-			public UIntPtr CompletionKey;
+			public IntPtr CompletionKey;
 
 			/// <summary>
 			/// The completion port to use in the CompletionPort parameter of the PostQueuedCompletionStatus function when messages are sent
