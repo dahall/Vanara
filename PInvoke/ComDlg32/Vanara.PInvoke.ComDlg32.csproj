@@ -13,13 +13,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-ChooseColor, ChooseFont, CommDlgExtendedError, FindText, GetFileTitle, GetOpenFileName, GetSaveFileName, PageSetupDlg, PrintDlg, PrintDlgEx, ReplaceText
+ChooseColor ChooseFont CommDlgExtendedError FindText GetFileTitle GetOpenFileName GetSaveFileName PageSetupDlg PrintDlg PrintDlgEx ReplaceText
 
 Structures
-CHOOSECOLOR, CHOOSEFONT, DEVNAMES, FINDREPLACE, OFNOTIFY, OFNOTIFYEX, OPENFILENAME, PAGESETUPDLG, PRINTDLG, PRINTDLGEX, PRINTPAGERANGE
+CHOOSECOLOR CHOOSEFONT DEVNAMES FINDREPLACE OFNOTIFY OFNOTIFYEX OPENFILENAME PAGESETUPDLG PRINTDLG PRINTDLGEX PRINTPAGERANGE
 
 Interfaces
-IPrintDialogCallback, IPrintDialogServices
+IPrintDialogCallback IPrintDialogServices
 
 </PackageReleaseNotes>
   </PropertyGroup>

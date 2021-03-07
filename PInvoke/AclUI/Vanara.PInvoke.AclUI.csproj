@@ -14,13 +14,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CreateSecurityPage, EditSecurity, EditSecurityAdvanced
+CreateSecurityPage EditSecurity EditSecurityAdvanced
 
 Structures
-EFFPERM_RESULT_LIST, SECURITY_OBJECT, SI_OBJECT_INFO, SID_INFO, SI_ACCESS, SI_INHERIT_TYPE
+EFFPERM_RESULT_LIST SECURITY_OBJECT SID_INFO SI_ACCESS SI_INHERIT_TYPE SI_OBJECT_INFO
 
 Interfaces
-IEffectivePermission, IEffectivePermission2, ISecurityInformation, ISecurityInformation2, ISecurityInformation3, ISecurityInformation4, ISecurityObjectTypeInfo
+IEffectivePermission IEffectivePermission2 ISecurityInformation ISecurityInformation2 ISecurityInformation3 ISecurityInformation4 ISecurityObjectTypeInfo
 
 </PackageReleaseNotes>
   </PropertyGroup>

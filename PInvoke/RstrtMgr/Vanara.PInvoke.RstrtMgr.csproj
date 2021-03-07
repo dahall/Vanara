@@ -13,10 +13,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-RmAddFilter, RmCancelCurrentTask, RmEndSession, RmGetFilterList, RmGetList, RmJoinSession, RmRegisterResources, RmRemoveFilter, RmRestart, RmShutdown, RmStartSession
+RmAddFilter RmCancelCurrentTask RmEndSession RmGetFilterList RmGetList RmJoinSession RmRegisterResources RmRemoveFilter RmRestart RmShutdown RmStartSession
 
 Structures
-RM_FILTER_INFO, RM_PROCESS_INFO, RM_UNIQUE_PROCESS
+RM_FILTER_INFO RM_PROCESS_INFO RM_UNIQUE_PROCESS
 
 </PackageReleaseNotes>
   </PropertyGroup>

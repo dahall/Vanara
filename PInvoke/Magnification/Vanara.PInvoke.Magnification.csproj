@@ -14,10 +14,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-MagGetColorEffect, MagGetFullscreenColorEffect, MagGetFullscreenTransform, MagGetImageScalingCallback, MagGetInputTransform, MagGetWindowFilterList, MagGetWindowSource, MagGetWindowTransform, MagInitialize, MagSetColorEffect, MagSetFullscreenColorEffect, MagSetFullscreenTransform, MagSetImageScalingCallback, MagSetInputTransform, MagSetWindowFilterList, MagSetWindowSource, MagSetWindowTransform, MagShowSystemCursor, MagUninitialize
+MagGetColorEffect MagGetFullscreenColorEffect MagGetFullscreenTransform MagGetImageScalingCallback MagGetInputTransform MagGetWindowFilterList MagGetWindowSource MagGetWindowTransform MagInitialize MagSetColorEffect MagSetFullscreenColorEffect MagSetFullscreenTransform MagSetImageScalingCallback MagSetInputTransform MagSetWindowFilterList MagSetWindowSource MagSetWindowTransform MagShowSystemCursor MagUninitialize
 
 Structures
-MAGCOLOREFFECT, MAGIMAGEHEADER, MAGTRANSFORM
+MAGCOLOREFFECT MAGIMAGEHEADER MAGTRANSFORM
 
 </PackageReleaseNotes>
   </PropertyGroup>

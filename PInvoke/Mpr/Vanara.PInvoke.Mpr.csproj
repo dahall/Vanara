@@ -14,10 +14,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-MultinetGetConnectionPerformance, WNetAddConnection, WNetAddConnection2, WNetAddConnection3, WNetCancelConnection2, WNetCloseEnum, WNetConnectionDialog, WNetConnectionDialog1, WNetDisconnectDialog, WNetDisconnectDialog1, WNetEnumResource, WNetGetConnection, WNetGetLastError, WNetGetNetworkInformation, WNetGetProviderName, WNetGetResourceInformation, WNetGetResourceParent, WNetGetUniversalName, WNetGetUser, WNetOpenEnum, WNetSetLastError, WNetUseConnection
+MultinetGetConnectionPerformance WNetAddConnection WNetAddConnection2 WNetAddConnection3 WNetCancelConnection2 WNetCloseEnum WNetConnectionDialog WNetConnectionDialog1 WNetDisconnectDialog WNetDisconnectDialog1 WNetEnumResource WNetGetConnection WNetGetLastError WNetGetNetworkInformation WNetGetProviderName WNetGetResourceInformation WNetGetResourceParent WNetGetUniversalName WNetGetUser WNetOpenEnum WNetSetLastError WNetUseConnection
 
 Structures
-CONNECTDLGSTRUCT, DISCDLGSTRUCT, NETCONNECTINFOSTRUCT, NETINFOSTRUCT, NETRESOURCE, REMOTE_NAME_INFO, UNIVERSAL_NAME_INFO
+CONNECTDLGSTRUCT DISCDLGSTRUCT NETCONNECTINFOSTRUCT NETINFOSTRUCT NETRESOURCE REMOTE_NAME_INFO UNIVERSAL_NAME_INFO
 
 </PackageReleaseNotes>
   </PropertyGroup>

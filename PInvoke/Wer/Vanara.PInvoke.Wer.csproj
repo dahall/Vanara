@@ -14,10 +14,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-WerAddExcludedApplication, WerFreeString, WerRemoveExcludedApplication, WerReportAddDump, WerReportAddFile, WerReportCloseHandle, WerReportCreate, WerReportSetParameter, WerReportSetUIOption, WerReportSubmit, WerStoreClose, WerStoreGetFirstReportKey, WerStoreGetNextReportKey, WerStoreOpen, WerStoreQueryReportMetadataV2
+WerAddExcludedApplication WerFreeString WerRemoveExcludedApplication WerReportAddDump WerReportAddFile WerReportCloseHandle WerReportCreate WerReportSetParameter WerReportSetUIOption WerReportSubmit WerStoreClose WerStoreGetFirstReportKey WerStoreGetNextReportKey WerStoreOpen WerStoreQueryReportMetadataV2
 
 Structures
-HREPORT, HREPORTSTORE, WER_DUMP_CUSTOM_OPTIONS, WER_EXCEPTION_INFORMATION, WER_REPORT_INFORMATION, WER_REPORT_METADATA_V2, WER_REPORT_PARAMETER, WER_REPORT_SIGNATURE
+HREPORT HREPORTSTORE WER_DUMP_CUSTOM_OPTIONS WER_EXCEPTION_INFORMATION WER_REPORT_INFORMATION WER_REPORT_METADATA_V2 WER_REPORT_PARAMETER WER_REPORT_SIGNATURE
 
 </PackageReleaseNotes>
   </PropertyGroup>

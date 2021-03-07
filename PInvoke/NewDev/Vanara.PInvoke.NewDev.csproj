@@ -13,7 +13,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-DiInstallDevice, DiInstallDriver, DiRollbackDriver, DiShowUpdateDevice, DiShowUpdateDriver, DiUninstallDevice, DiUninstallDriver, UpdateDriverForPlugAndPlayDevices
+DiInstallDevice DiInstallDriver DiRollbackDriver DiShowUpdateDevice DiShowUpdateDriver DiUninstallDevice DiUninstallDriver UpdateDriverForPlugAndPlayDevices
 
 </PackageReleaseNotes>
   </PropertyGroup>

@@ -14,7 +14,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-AccessibleChildren, AccessibleObjectFromEvent, AccessibleObjectFromPoint, AccessibleObjectFromWindow, AccNotifyTouchInteraction, AccSetRunningUtilityState, CreateStdAccessibleObject, CreateStdAccessibleProxy, GetOleaccVersionInfo, GetProcessHandleFromHwnd, GetRoleText, GetStateText, LresultFromObject, ObjectFromLresult, WindowFromAccessibleObject
+AccessibleChildren AccessibleObjectFromEvent AccessibleObjectFromPoint AccessibleObjectFromWindow AccNotifyTouchInteraction AccSetRunningUtilityState CreateStdAccessibleObject CreateStdAccessibleProxy GetOleaccVersionInfo GetProcessHandleFromHwnd GetRoleText GetStateText LresultFromObject ObjectFromLresult WindowFromAccessibleObject
 
 </PackageReleaseNotes>
   </PropertyGroup>

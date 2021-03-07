@@ -14,13 +14,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-GetNetScheduleAccountInformation, SetNetScheduleAccountInformation
+GetNetScheduleAccountInformation SetNetScheduleAccountInformation
 
 Structures
-DAILY, MONTHLYDATE, MONTHLYDOW, TASK_TRIGGER, TRIGGER_TYPE_UNION, WEEKLY
+DAILY MONTHLYDATE MONTHLYDOW TASK_TRIGGER TRIGGER_TYPE_UNION WEEKLY
 
 Interfaces
-ITask, ITaskScheduler, IAction, IActionCollection, IBootTrigger, IComHandlerAction, IDailyTrigger, IEmailAction, IEventTrigger, IExecAction, IIdleSettings, IIdleTrigger, ILogonTrigger, IMaintenanceSettings, IMonthlyDOWTrigger, IMonthlyTrigger, INetworkSettings, IPrincipal, IPrincipal2, IRegisteredTask, IRegisteredTaskCollection, IRegistrationInfo, IRegistrationTrigger, IRepetitionPattern, IRunningTask, IRunningTaskCollection, ISessionStateChangeTrigger, IShowMessageAction, ITaskDefinition, ITaskFolder, ITaskFolderCollection, ITaskHandler, ITaskHandlerStatus, ITaskNamedValueCollection, ITaskNamedValuePair, ITaskService, ITaskSettings, ITaskSettings2, ITaskSettings3, ITaskVariables, ITimeTrigger, ITrigger, ITriggerCollection, IWeeklyTrigger
+IAction IActionCollection IBootTrigger IComHandlerAction IDailyTrigger IEmailAction IEventTrigger IExecAction IIdleSettings IIdleTrigger ILogonTrigger IMaintenanceSettings IMonthlyDOWTrigger IMonthlyTrigger INetworkSettings IPrincipal IPrincipal2 IRegisteredTask IRegisteredTaskCollection IRegistrationInfo IRegistrationTrigger IRepetitionPattern IRunningTask IRunningTaskCollection ISessionStateChangeTrigger IShowMessageAction ITask ITaskDefinition ITaskFolder ITaskFolderCollection ITaskHandler ITaskHandlerStatus ITaskNamedValueCollection ITaskNamedValuePair ITaskScheduler ITaskService ITaskSettings ITaskSettings2 ITaskSettings3 ITaskVariables ITimeTrigger ITrigger ITriggerCollection IWeeklyTrigger
 
 </PackageReleaseNotes>
   </PropertyGroup>

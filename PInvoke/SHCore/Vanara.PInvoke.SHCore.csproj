@@ -13,7 +13,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-GetDpiForMonitor, GetDpiForShellUIComponent, GetProcessDpiAwareness, GetScaleFactorForDevice, GetScaleFactorForMonitor, RegisterScaleChangeEvent, RegisterScaleChangeNotifications, RevokeScaleChangeNotifications, SetProcessDpiAwareness, UnregisterScaleChangeEvent
+GetDpiForMonitor GetDpiForShellUIComponent GetProcessDpiAwareness GetScaleFactorForDevice GetScaleFactorForMonitor RegisterScaleChangeEvent RegisterScaleChangeNotifications RevokeScaleChangeNotifications SetProcessDpiAwareness UnregisterScaleChangeEvent
 
 </PackageReleaseNotes>
   </PropertyGroup>

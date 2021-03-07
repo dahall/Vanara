@@ -14,10 +14,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CloseCompressor, CloseDecompressor, Compress, CreateCompressor, CreateDecompressor, Decompress, FCIAddFile, FCICreate, FCIDestroy, FCIFlushCabinet, FCIFlushFolder, FDICopy, FDICreate, FDIDestroy, FDIIsCabinet, FDITruncateCabinet, QueryCompressorInformation, QueryDecompressorInformation, ResetCompressor, ResetDecompressor, SetCompressorInformation, SetDecompressorInformation
+CloseCompressor CloseDecompressor Compress CreateCompressor CreateDecompressor Decompress FCIAddFile FCICreate FCIDestroy FCIFlushCabinet FCIFlushFolder FDICopy FDICreate FDIDestroy FDIIsCabinet FDITruncateCabinet QueryCompressorInformation QueryDecompressorInformation ResetCompressor ResetDecompressor SetCompressorInformation SetDecompressorInformation
 
 Structures
-COMPRESS_ALLOCATION_ROUTINES, COMPRESSOR_HANDLE, DECOMPRESSOR_HANDLE, CCAB, ERF, HFCI, FDICABINETINFO, FDIDECRYPT, FDINOTIFICATION, HFDI, Union, NEW_CABINET, NEW_FOLDER, DECRYPT
+CCAB COMPRESSOR_HANDLE COMPRESS_ALLOCATION_ROUTINES DECOMPRESSOR_HANDLE DECRYPT ERF FDICABINETINFO FDIDECRYPT FDINOTIFICATION HFCI HFDI NEW_CABINET NEW_FOLDER Union
 
 </PackageReleaseNotes>
   </PropertyGroup>
