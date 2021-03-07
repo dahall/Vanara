@@ -87,7 +87,6 @@ namespace Vanara.PInvoke
 		public static bool Equals(this IKernelHandle h1, IKernelHandle h2) => CompareObjectHandles(h1.DangerousGetHandle(), h2?.DangerousGetHandle() ?? IntPtr.Zero);
 
 		/// <summary>Duplicates an object handle.</summary>
-		/// <typeparam name="TAccess">The type of the access value (enum or uint).</typeparam>
 		/// <param name="hSourceHandle">
 		/// The handle to be duplicated. This is an open object handle that is valid in the context of the source process. For a list of
 		/// objects whose handles can be duplicated, see the following Remarks section.

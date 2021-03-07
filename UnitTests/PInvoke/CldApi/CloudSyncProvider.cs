@@ -570,7 +570,7 @@ namespace Vanara.PInvoke.Tests
 				handler.Invoke(this, args);
 				if (args.OperationType != 0 && args.OpParam.HasValue)
 				{
-					var opInfo = args.MakeOpInfo(args.OperationType, args.SyncStatus);
+					var opInfo = args.MakeOpInfo(args.OperationType);
 					var opParam = args.OpParam.Value;
 					CfExecute(opInfo, ref opParam).ThrowIfFailed();
 				}
