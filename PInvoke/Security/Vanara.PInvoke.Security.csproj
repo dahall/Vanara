@@ -28,7 +28,7 @@ ACTRL_ACCESS_ENTRY, ACTRL_ACCESS_ENTRY_LIST, ACTRL_ALIST, ACTRL_PROPERTY_ENTRY, 
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="System.Security.AccessControl" Version="4.6.0" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="4.6.0" />
+    <PackageReference Include="System.Security.AccessControl" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
   </ItemGroup>
 </Project>
