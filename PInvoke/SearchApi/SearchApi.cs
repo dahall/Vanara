@@ -4347,53 +4347,130 @@ namespace Vanara.PInvoke
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("04C18CCF-1F57-4CBD-88CC-3900F5195CE3"), CoClass(typeof(CSearchRoot))]
 		public interface ISearchRoot
 		{
-			/// <summary>The name of the task to be inserted.</summary>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_schedule HRESULT put_Schedule(
+			/// <summary>Not implemented.</summary>
+			/// <param name="pszTaskArg">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>Pointer to a null-terminated, Unicode buffer that contains the name of the task to be inserted.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_schedule HRESULT put_Schedule(
 			// LPCWSTR pszTaskArg );
-			[PInvokeData("searchapi.h", MSDNShortId = "")]
-			[DispId(0x60010000)]
-			string Schedule { [return: MarshalAs(UnmanagedType.LPWStr)] get; [param: In, MarshalAs(UnmanagedType.LPWStr)] set; }
+			[PInvokeData("searchapi.h", MSDNShortId = "NF:searchapi.ISearchRoot.put_Schedule")]
+			void put_Schedule([MarshalAs(UnmanagedType.LPWStr)] string pszTaskArg);
+
+			/// <summary>Not implemented.</summary>
+			/// <returns>
+			/// <para>Type: <c>LPWSTR*</c></para>
+			/// <para>Returns the address of a pointer to a null-terminated, Unicode buffer that contains the name of the task.</para>
+			/// </returns>
+			/// <remarks>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_schedule HRESULT get_Schedule(
+			// LPWSTR *ppszTaskArg );
+			[PInvokeData("searchapi.h", MSDNShortId = "NF:searchapi.ISearchRoot.get_Schedule")]
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string get_Schedule();
 
 			/// <summary>Sets the URL of the current search root.</summary>
+			/// <param name="pszURL">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>Pointer to a null-terminated, Unicode buffer that contains the URL of this search root.</para>
+			/// </param>
 			/// <remarks>
-			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
-			/// line options for Crawl Scope Manager (CSM) indexing operations.
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_rooturl HRESULT put_RootURL(
-			// LPCWSTR pszURL );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x60010002)]
-			string RootURL { [return: MarshalAs(UnmanagedType.LPWStr)] get; [param: In, MarshalAs(UnmanagedType.LPWStr)] set; }
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_rooturl
+			void put_RootURL([MarshalAs(UnmanagedType.LPWStr)] string pszURL);
+
+			/// <summary>Gets the URL of the starting point for this search root.</summary>
+			/// <returns>
+			/// <para>Type: <c>LPWSTR*</c></para>
+			/// <para>A null-terminated, Unicode buffer that contains the URL.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_rooturl
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string get_RootURL();
 
 			/// <summary>Sets a value that indicates whether the search is rooted on a hierarchical tree structure.</summary>
+			/// <param name="fIsHierarchical">
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> for hierarchical tree structures, <c>FALSE</c> for non-hierarchical systems such as websites.</para>
+			/// </param>
 			/// <remarks>
-			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
-			/// line options for Crawl Scope Manager (CSM) indexing operations.
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_ishierarchical HRESULT
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_ishierarchical HRESULT
 			// put_IsHierarchical( BOOL fIsHierarchical );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x60010004)]
-			bool IsHierarchical { [return: MarshalAs(UnmanagedType.Bool)] get; [param: In, MarshalAs(UnmanagedType.Bool)] set; }
+			[PInvokeData("searchapi.h", MSDNShortId = "NF:searchapi.ISearchRoot.put_IsHierarchical")]
+			void put_IsHierarchical([MarshalAs(UnmanagedType.Bool)] bool fIsHierarchical);
+
+			/// <summary>Gets a value that indicates whether the search is rooted on a hierarchical tree structure.</summary>
+			/// <returns>
+			/// <para>Type: <c>BOOL*</c></para>
+			/// <para>On return, points to <c>TRUE</c> for hierarchical tree structures, and <c>FALSE</c> for other structures such as websites.</para>
+			/// </returns>
+			/// <remarks>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_ishierarchical HRESULT
+			// get_IsHierarchical( BOOL *pfIsHierarchical );
+			[return: MarshalAs(UnmanagedType.Bool)]
+			bool get_IsHierarchical();
 
 			/// <summary>
 			/// Sets a value that indicates whether the search engine is notified (by protocol handlers or other applications) about changes
 			/// to the URLs under the search root.
 			/// </summary>
+			/// <param name="fProvidesNotifications">
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> if notifications are provided; otherwise, <c>FALSE</c>.</para>
+			/// </param>
 			/// <remarks>
 			/// <para>That value that <c>ISearchRoot::put_ProvidesNotifications</c> sets is not protocol specific.</para>
 			/// <para>
-			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
-			/// line options for Crawl Scope Manager (CSM) indexing operations.
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
 			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_providesnotifications HRESULT
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_providesnotifications HRESULT
 			// put_ProvidesNotifications( BOOL fProvidesNotifications );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x60010006)]
-			bool ProvidesNotifications { [return: MarshalAs(UnmanagedType.Bool)] get; [param: In, MarshalAs(UnmanagedType.Bool)] set; }
+			void put_ProvidesNotifications([MarshalAs(UnmanagedType.Bool)] bool fProvidesNotifications);
+
+			/// <summary>
+			/// Gets a value that indicates whether the search engine is notified (by protocol handlers or other applications) about changes
+			/// to the URLs under the search root.
+			/// </summary>
+			/// <returns>
+			/// <para>Type: <c>BOOL*</c></para>
+			/// <para>On return, points to <c>TRUE</c> if this search root provides notifications; otherwise, <c>FALSE</c>.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>The value <c>ISearchRoot::get_ProvidesNotifications</c> returns is not protocol specific.</para>
+			/// <para>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_providesnotifications HRESULT
+			// get_ProvidesNotifications( BOOL *pfProvidesNotifications );
+			[return: MarshalAs(UnmanagedType.Bool)]
+			bool get_ProvidesNotifications();
 
 			/// <summary>Sets a value that indicates whether this search root should be indexed only by notification and not crawled.</summary>
+			/// <param name="fUseNotificationsOnly">
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> if this search root should be indexed only by notification; otherwise, <c>FALSE</c>.</para>
+			/// </param>
 			/// <remarks>
 			/// <para>
 			/// For search root URLs in a custom data store or on a remote system, it can be useful to limit the search engine to indexing
@@ -4401,79 +4478,178 @@ namespace Vanara.PInvoke
 			/// the store or across the network by avoiding the incremental crawls when the store is unchanged.
 			/// </para>
 			/// <para>
-			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
-			/// line options for Crawl Scope Manager (CSM) indexing operations.
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
 			/// </para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_usenotificationsonly HRESULT
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_usenotificationsonly HRESULT
 			// put_UseNotificationsOnly( BOOL fUseNotificationsOnly );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x60010008)]
-			bool UseNotificationsOnly { [return: MarshalAs(UnmanagedType.Bool)] get; [param: In, MarshalAs(UnmanagedType.Bool)] set; }
+			void put_UseNotificationsOnly([MarshalAs(UnmanagedType.Bool)] bool fUseNotificationsOnly);
+
+			/// <summary>Gets a value that indicates whether this search root should be indexed only by notification and not crawled.</summary>
+			/// <returns>
+			/// <para>Type: <c>BOOL*</c></para>
+			/// <para>On return, points to <c>TRUE</c> if this search root should be indexed only by notification; otherwise, <c>FALSE</c>.</para>
+			/// </returns>
+			/// <remarks>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_usenotificationsonly HRESULT
+			// get_UseNotificationsOnly( BOOL *pfUseNotificationsOnly );
+			[return: MarshalAs(UnmanagedType.Bool)]
+			bool get_UseNotificationsOnly();
 
 			/// <summary>Sets the enumeration depth for this search root.</summary>
+			/// <param name="dwDepth">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The depth (number of levels) to enumerate.</para>
+			/// </param>
 			/// <remarks>
-			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
-			/// line options for Crawl Scope Manager (CSM) indexing operations.
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_enumerationdepth HRESULT
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_enumerationdepth HRESULT
 			// put_EnumerationDepth( DWORD dwDepth );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x6001000a)]
-			uint EnumerationDepth { get; [param: In] set; }
+			void put_EnumerationDepth(uint dwDepth);
+
+			/// <summary>Gets the enumeration depth for this search root.</summary>
+			/// <returns>
+			/// <para>Type: <c>DWORD*</c></para>
+			/// <para>A pointer to the depth (number of levels) to enumerate.</para>
+			/// </returns>
+			/// <remarks>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_enumerationdepth HRESULT
+			// get_EnumerationDepth( DWORD *pdwDepth );
+			uint get_EnumerationDepth();
 
 			/// <summary>
 			/// <para>[ <c>put_HostDepth</c> may be altered or unavailable in subsequent versions of the operating system or product.]</para>
 			/// <para>Sets a value that indicates how far into a host tree to crawl when indexing.</para>
 			/// </summary>
+			/// <param name="dwDepth">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The depth (number of levels) to crawl a host tree.</para>
+			/// </param>
 			/// <remarks>
-			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
-			/// line options for Crawl Scope Manager (CSM) indexing operations.
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_hostdepth HRESULT put_HostDepth(
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_hostdepth HRESULT put_HostDepth(
 			// DWORD dwDepth );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x6001000c)]
-			uint HostDepth { get; [param: In] set; }
+			void put_HostDepth(uint dwDepth);
+
+			/// <summary>
+			/// <para>[ <c>get_HostDepth</c> may be altered or unavailable in subsequent versions of the operating system or product.]</para>
+			/// <para>Gets a value that indicates how far into a host tree to crawl when indexing.</para>
+			/// </summary>
+			/// <returns>
+			/// <para>Type: <c>DWORD*</c></para>
+			/// <para>On return, points to the depth (number of levels) to crawl in the host tree.</para>
+			/// </returns>
+			/// <remarks>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_hostdepth HRESULT get_HostDepth(
+			// DWORD *pdwDepth );
+			uint get_HostDepth();
 
 			/// <summary>
 			/// Sets a <c>BOOL</c> value that indicates whether the search engine should follow subdirectories and hierarchical scopes for
 			/// this search root.
 			/// </summary>
+			/// <param name="fFollowDirectories">
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to follow directories or hierarchical scopes, otherwise <c>FALSE</c>. The default for this value is <c>TRUE</c>.</para>
+			/// </param>
 			/// <remarks>
-			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
-			/// line options for Crawl Scope Manager (CSM) indexing operations.
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_followdirectories HRESULT
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_followdirectories HRESULT
 			// put_FollowDirectories( BOOL fFollowDirectories );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x6001000e)]
-			bool FollowDirectories { [return: MarshalAs(UnmanagedType.Bool)] get; [param: In, MarshalAs(UnmanagedType.Bool)] set; }
+			void put_FollowDirectories([MarshalAs(UnmanagedType.Bool)] bool fFollowDirectories);
+
+			/// <summary>Gets a <c>BOOL</c> value that indicates whether the search engine follows subdirectories and hierarchical scopes.</summary>
+			/// <returns>
+			/// <para>Type: <c>BOOL*</c></para>
+			/// <para>On return, points to <c>TRUE</c> if the search engine follows subdirectories and hierarchical scopes; otherwise, <c>FALSE</c>.</para>
+			/// </returns>
+			/// <remarks>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_followdirectories HRESULT
+			// get_FollowDirectories( BOOL *pfFollowDirectories );
+			[return: MarshalAs(UnmanagedType.Bool)]
+			bool get_FollowDirectories();
 
 			/// <summary>Sets the type of authentication required to access the URLs under this search root.</summary>
+			/// <param name="authType">
+			/// <para>Type: <c>AUTH_TYPE</c></para>
+			/// <para>A value from the AUTH_TYPE enumeration that indicates the authentication type.</para>
+			/// </param>
 			/// <remarks>
-			/// The CrawlScopeCommandLine code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to define command
-			/// line options for Crawl Scope Manager (CSM) indexing operations.
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_authenticationtype HRESULT
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_authenticationtype HRESULT
 			// put_AuthenticationType( AUTH_TYPE authType );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x60010010)]
-			AUTH_TYPE AuthenticationType { get; [param: In] set; }
+			void put_AuthenticationType(AUTH_TYPE authType);
+
+			/// <summary>Retrieves the type of authentication needed to access the URLs under this this search root.</summary>
+			/// <returns>
+			/// <para>Type: <c>AUTH_TYPE*</c></para>
+			/// <para>
+			/// A pointer to a value from the AUTH_TYPE enumeration that indicates the authentication type required to access URLs under
+			/// this search root.
+			/// </para>
+			/// </returns>
+			/// <remarks>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_authenticationtype HRESULT
+			// get_AuthenticationType( AUTH_TYPE *pAuthType );
+			AUTH_TYPE get_AuthenticationType();
 
 			/// <summary>Not implemented.</summary>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_user HRESULT put_User( LPCWSTR
+			/// <param name="pszUser">This parameter is unused.</param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_user HRESULT put_User( LPCWSTR
 			// pszUser );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x60010012)]
-			string User { [return: MarshalAs(UnmanagedType.LPWStr)] get; [param: In, MarshalAs(UnmanagedType.LPWStr)] set; }
+			void put_User([MarshalAs(UnmanagedType.LPWStr)] string pszUser);
 
 			/// <summary>Not implemented.</summary>
-			// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchroot-put_password HRESULT put_Password(
+			/// <returns>This parameter is unused.</returns>
+			/// <remarks>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_user HRESULT get_User( LPWSTR
+			// *ppszUser );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string get_User();
+
+			/// <summary>Not implemented.</summary>
+			/// <param name="pszPassword">This parameter is unused.</param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-put_password HRESULT put_Password(
 			// LPCWSTR pszPassword );
-			[PInvokeData("searchapi.h")]
-			[DispId(0x60010014)]
-			string Password { [return: MarshalAs(UnmanagedType.LPWStr)] get; [param: In, MarshalAs(UnmanagedType.LPWStr)] set; }
+			void put_Password([MarshalAs(UnmanagedType.LPWStr)] string pszPassword);
+
+			/// <summary>Not implemented.</summary>
+			/// <returns>This parameter is unused.</returns>
+			/// <remarks>
+			/// <c>Windows 7 and later</c>: Check out the CrawlScopeCommandLine code sample to see how to define command line options for
+			/// Crawl Scope Manager (CSM) indexing operations.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/searchapi/nf-searchapi-isearchroot-get_password HRESULT get_Password(
+			// LPWSTR *ppszPassword );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string get_Password();
 		}
 
 		/// <summary>Provides methods to define scope rules for crawling and indexing.</summary>
