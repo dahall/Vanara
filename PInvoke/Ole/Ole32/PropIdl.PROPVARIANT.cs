@@ -818,10 +818,29 @@ namespace Vanara.PInvoke
 				if (dims != 1) throw new NotSupportedException("Only single-dimensional arrays are supported");
 				SafeArrayGetLBound(sa, 1U, out var lBound);
 				SafeArrayGetUBound(sa, 1U, out var uBound);
-				var elemSz = SafeArrayGetElemsize(sa);
-				if (elemSz == 0) throw new Win32Exception();
-				using (var d = new SafeArrayScopedAccessData(sa))
+
+				// If these are variants, then use Marshal to get them all
+				if (vt.IsFlagSet(VARTYPE.VT_VARIANT))
+				{
+					using var d = new SafeArrayScopedAccessData(sa);
 					return Marshal.GetObjectsForNativeVariants(d.Data, uBound - lBound + 1);
+				}
+				// Otherwise, pull each element out separately and stuff in an object array
+				else
+				{
+					var ret = new object[uBound - lBound + 1];
+					var elemSz = SafeArrayGetElemsize(sa);
+					if (elemSz == 0) throw new Win32Exception();
+					using var mem = new SafeCoTaskMemHandle(elemSz);
+					SafeArrayGetVartype(sa, out var elemVT);
+					var elemType = GetType(elemVT);
+					for (int i = lBound; i <= uBound; i++)
+					{
+						SafeArrayGetElement(sa, i, mem).ThrowIfFailed();
+						ret[i - lBound] = mem.DangerousGetHandle().Convert(mem.Size, elemType);
+					}
+					return ret;
+				}
 			}
 
 			private string GetString(VarEnum ve) => GetString(ve, _ptr);
@@ -963,6 +982,13 @@ namespace Vanara.PInvoke
 				psa.SetHandleAsInvalid();
 			}
 
+			private void SetSafeArray(SafeSAFEARRAY array)
+			{
+				SafeArrayCopy(array, out var myArray).ThrowIfFailed();
+				_ptr = myArray.DangerousGetHandle();
+				myArray.SetHandleAsInvalid();
+			}
+
 			[SecurityCritical, SecuritySafeCritical]
 			private void SetStringVector(IEnumerable<string> value, VarEnum ve)
 			{
@@ -1029,7 +1055,17 @@ namespace Vanara.PInvoke
 				// Handle SAFEARRAY
 				if (vt.IsFlagSet(VARTYPE.VT_ARRAY))
 				{
-					SetSafeArray(ConvertToEnum<object>(value).ToList());
+					if (value is SafeSAFEARRAY sa)
+					{
+						SetSafeArray(sa);
+						SafeArrayGetVartype(sa, out vt);
+						vt |= VARTYPE.VT_ARRAY;
+					}
+					else
+					{
+						SetSafeArray(ConvertToEnum<object>(value).ToList());
+						vt = VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
+					}
 					return;
 				}
 
