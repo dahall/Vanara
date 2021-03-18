@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -405,6 +409,35 @@ namespace Vanara.PInvoke
 
 			/// <summary>A void pointer for local use.</summary>
 			VT_BYREF = 0x4000,
+		}
+
+		/// <summary>Gets the .NET runtime type which corresponds to the <see cref="VARTYPE"/>.</summary>
+		/// <param name="vt">The <see cref="VARTYPE"/> enumeration value to evaluate.</param>
+		/// <returns>
+		/// <para>The corresponding .NET runtime type.</para>
+		/// <para>
+		/// If <paramref name="vt"/> specifies <see cref="VARTYPE.VT_VECTOR"/> or <see cref="VARTYPE.VT_ARRAY"/>, the return type is an
+		/// array of the element type.
+		/// </para>
+		/// <para>
+		/// If <paramref name="vt"/> specifies <see cref="VARTYPE.VT_BYREF"/> and the element type is a value type, the return type is a
+		/// pointer to the element type.
+		/// </para>
+		/// </returns>
+		public static Type GetCorrespondingType(this VARTYPE vt)
+		{
+			var elemVT = vt & ~(VARTYPE)0xF000;
+			var specVT = vt & (VARTYPE)0xF000;
+			var type = CorrespondingTypeAttribute.GetCorrespondingTypes(elemVT).FirstOrDefault();
+			if (type is null || elemVT == 0)
+				return null;
+			// Change type if by reference
+			if (specVT.IsFlagSet(VARTYPE.VT_BYREF) && type.IsValueType)
+				type = type.MakePointerType();
+			// Change type if vector
+			if (specVT.IsFlagSet(VARTYPE.VT_VECTOR) || specVT.IsFlagSet(VARTYPE.VT_ARRAY))
+				type = type.MakeArrayType();
+			return type;
 		}
 
 		/// <summary>Contains an operating system platform and processor architecture.</summary>
