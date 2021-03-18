@@ -3863,7 +3863,7 @@ namespace Vanara.PInvoke
 		// FreePropVariantArray( ULONG cVariants, PROPVARIANT *rgvars );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "2eefb57e-9311-46e1-9eed-e25aa3b5afaa")]
-		public static extern HRESULT FreePropVariantArray(uint cVariants, PROPVARIANT rgvars);
+		public static extern HRESULT FreePropVariantArray(uint cVariants, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgvars);
 
 		/// <summary>
 		/// The <c>GetHGlobalFromStream</c> function retrieves the global memory handle to a stream that was created through a call to the
