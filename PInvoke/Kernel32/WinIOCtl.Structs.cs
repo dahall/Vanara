@@ -2118,7 +2118,7 @@ namespace Vanara.PInvoke
 			/// Buffer of Change Journal Records.
 			/// </para>
 			/// </summary>
-			public int StartUsn;
+			public long StartUsn;
 
 			/// <summary>
 			/// <para>
@@ -2362,7 +2362,7 @@ namespace Vanara.PInvoke
 			/// Buffer of Change Journal Records.
 			/// </para>
 			/// </summary>
-			public int StartUsn;
+			public long StartUsn;
 
 			/// <summary>
 			/// <para>
