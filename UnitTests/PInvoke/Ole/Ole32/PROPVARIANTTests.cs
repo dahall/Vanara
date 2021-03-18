@@ -102,6 +102,7 @@ namespace Vanara.PInvoke.Tests
 
 		[TestCase(VARTYPE.VT_CF, "pclipdata")]
 		[TestCase(VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT, "parray")]
+		[TestCase(VARTYPE.VT_ARRAY | VARTYPE.VT_I4, "parray")]
 		[TestCase(VARTYPE.VT_BLOB, "blob")]
 		[TestCase(VARTYPE.VT_BSTR, "bstrVal")]
 		[TestCase(VARTYPE.VT_BYREF | VARTYPE.VT_BSTR, "pbstrVal")]
@@ -158,6 +159,23 @@ namespace Vanara.PInvoke.Tests
 						Assert.That(piVal, Is.EqualTo(value));
 				}
 			}, Throws.Nothing);
+		}
+
+		[Test]
+		public void PROPVARIANTArrayTest()
+		{
+			// Setup SAFEARRAY
+			var array = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+			using var sa = SafeSAFEARRAY.CreateFromArray(array, VARTYPE.VT_I4);
+
+			// Add it to a PV
+			using var pv = new PROPVARIANT(sa, VarEnum.VT_ARRAY | VarEnum.VT_I4);
+			Assert.That(PropVariantGetElementCount(pv), Is.EqualTo(array.Length));
+			Assert.That(PropVariantGetInt32Elem(pv, 5, out var iVal), ResultIs.Successful);
+			Assert.That(iVal, Is.EqualTo(array[5]));
+
+			// Check GetValue func
+			Assert.That(pv.parray, Is.EquivalentTo(array));
 		}
 
 		[TestCase(true, VARTYPE.VT_BOOL, "boolVal")]
@@ -241,6 +259,14 @@ namespace Vanara.PInvoke.Tests
 			{
 				case VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT:
 					return new object[] { 100, "100" };
+				case VARTYPE.VT_ARRAY | VARTYPE.VT_I4:
+					var sa = SafeArrayCreateVector(VARTYPE.VT_I4, 0, 4U);
+					for (int i = 0; i < 4U; i++)
+					{
+						using var p = new PinnedObject(i);
+						SafeArrayPutElement(sa, i, p);
+					}
+					return sa;
 				case VARTYPE.VT_BLOB:
 					return new BLOB { cbSize = 200, pBlobData = Marshal.AllocCoTaskMem(200) };
 				case VARTYPE.VT_CY:

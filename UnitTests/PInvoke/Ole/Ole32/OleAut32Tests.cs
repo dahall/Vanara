@@ -27,7 +27,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SafeArrayCreateTest()
 		{
-			using (var psa = SafeArrayCreate(VARTYPE.VT_I8, 1, new SAFEARRAYBOUND(5)))
+			using (var psa = SafeArrayCreate(VARTYPE.VT_I8, 1, new[] { new SAFEARRAYBOUND(5) }))
 				SafeArrayMethodTest<long>(psa, 5);
 		}
 
@@ -45,7 +45,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SafeArrayCreateExTest()
 		{
-			using (var psa = SafeArrayCreateEx(VARTYPE.VT_I8, 1, new SAFEARRAYBOUND(5), IntPtr.Zero))
+			using (var psa = SafeArrayCreateEx(VARTYPE.VT_I8, 1, new[] { new SAFEARRAYBOUND(5) }, IntPtr.Zero))
 				SafeArrayMethodTest<long>(psa, 5);
 		}
 
@@ -103,6 +103,45 @@ namespace Vanara.PInvoke.Tests
 			}
 			psa.Dispose();
 		}
+
+		[Test]
+		public void SafeSAFEARRAYConvert1DimTest()
+		{
+			// Setup SAFEARRAY
+			var array = new int[] { 1, 2, 3, 4 };
+			using var sa = SafeSAFEARRAY.CreateFromArray(array, VARTYPE.VT_I4);
+			Assert.That(sa.Length, Is.EqualTo(array.Length));
+			Assert.That(sa.Rank, Is.EqualTo(array.Rank));
+
+			var toarray = sa.ToArray();
+			Assert.That(toarray, Is.EquivalentTo(array));
+
+			var i = sa.GetValue<int>(3);
+			Assert.That(i, Is.EqualTo(array[3]));
+			sa.SetValue(i + 10, 3);
+			Assert.That(sa.GetValue<int>(3), Is.EqualTo(i + 10));
+			Assert.That(sa.GetValue(3), Is.EqualTo(i + 10));
+		}
+
+		[Test]
+		public void SafeSAFEARRAYConvertMultDimTest()
+		{
+			// Setup SAFEARRAY
+			var array = new int[2, 3, 4] { { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 } }, { { 13, 14, 15, 16 }, { 17, 18, 19, 20 }, { 21, 22, 23, 24 } } };
+			using var sa = SafeSAFEARRAY.CreateFromArray(array, VARTYPE.VT_I4);
+			Assert.That(sa.Length, Is.EqualTo(array.Length));
+			Assert.That(sa.Rank, Is.EqualTo(array.Rank));
+
+			var toarray = sa.ToArray();
+			Assert.That(toarray, Is.EquivalentTo(array));
+
+			var i = sa.GetValue<int>(1, 2, 3);
+			Assert.That(i, Is.EqualTo(array[1, 2, 3]));
+			sa.SetValue(i + 10, 1, 2, 3);
+			Assert.That(sa.GetValue<int>(1, 2, 3), Is.EqualTo(i + 10));
+			Assert.That(sa.GetValue(1, 2, 3), Is.EqualTo(i + 10));
+		}
+
 
 		// TODO: [Test]
 		public void VariantClearTest()
