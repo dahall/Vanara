@@ -4,6 +4,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PInvoke\FirewallApi\Vanara.PInvoke.FirewallApi.vbproj" />
+    <ProjectReference Include="..\..\..\PInvoke\FirewallApi\Vanara.PInvoke.FirewallApi.csproj" />
   </ItemGroup>
 </Project>

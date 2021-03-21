@@ -241,7 +241,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.PeerDist", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Drt", "PInvoke\Drt\Vanara.PInvoke.Drt.csproj", "{1AB1FB9D-CE35-4A2D-9132-FFA681654031}"
 EndProject
-Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Vanara.PInvoke.FirewallApi", "PInvoke\FirewallApi\Vanara.PInvoke.FirewallApi.vbproj", "{E74C1A09-1051-4616-8693-B69A6A95AD03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.FirewallApi", "PInvoke\FirewallApi\Vanara.PInvoke.FirewallApi.csproj", "{E74C1A09-1051-4616-8693-B69A6A95AD03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirewallApi", "UnitTests\PInvoke\FirewallApi\FirewallApi.csproj", "{6A9599A6-89D5-4072-8DA1-A13E37023613}"
 EndProject
