@@ -106,5 +106,13 @@ namespace Vanara.Windows.Shell.Tests
 			Assert.That(i.Properties.ReadOnly, Is.True);
 			Assert.That(i.Properties.Temporary, Is.False);
 		}
+
+		[Test]
+		public void PropXlsGetTest()
+		{
+			using ShellItem Item = new ShellItem(TestCaseSources.TempDirWhack + "Test.xlsx");
+			if (Item.Properties.TryGetValue(PROPERTYKEY.System.Document.PageCount, out int PageCount))
+				TestContext.Write($"PageCount={PageCount}");
+		}
 	}
 }
