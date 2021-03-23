@@ -3,7 +3,7 @@
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
     <Authors>David Hall</Authors>
     <Company>GitHub Community</Company>
-    <Copyright>Copyright © 2017-2020</Copyright>
+    <Copyright>Copyright © 2017-2021</Copyright>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <IncludeSource>true</IncludeSource>
