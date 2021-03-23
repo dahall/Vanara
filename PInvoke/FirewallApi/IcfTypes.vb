@@ -1,4 +1,6 @@
-﻿Partial Public Module FirewallApi
+﻿Imports System
+
+Partial Public Module FirewallApi
 
     ''' <summary>The <c>NET_FW_ACTION</c> enumerated type specifies the action for a rule or default setting.</summary>
     <PInvokeData("icftypes.h", MSDNShortId:="NE:icftypes.NET_FW_ACTION_")>

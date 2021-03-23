@@ -1,3 +1,5 @@
+Imports System
+Imports System.Collections
 Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
 Imports System.Runtime.InteropServices.CustomMarshalers
@@ -278,15 +280,15 @@ Partial Public Module FirewallApi
         <DispId(3)>
         Property AllowInboundEchoRequest As Boolean
 
-        ''' <summary>Gets Or sets a flag indicating whether to allow “outbound time exceeded” messages.</summary>
+        ''' <summary>Gets Or sets a flag indicating whether to allow ï¿½outbound time exceededï¿½ messages.</summary>
         <DispId(4)>
         Property AllowOutboundTimeExceeded As Boolean
 
-        ''' <summary>Gets Or sets a flag indicating whether to allow “outbound parameter problem” messages.</summary>
+        ''' <summary>Gets Or sets a flag indicating whether to allow ï¿½outbound parameter problemï¿½ messages.</summary>
         <DispId(5)>
         Property AllowOutboundParameterProblem As Boolean
 
-        ''' <summary>Gets Or sets a flag indicating whether to allow “outbound source quench” messages.</summary>
+        ''' <summary>Gets Or sets a flag indicating whether to allow ï¿½outbound source quenchï¿½ messages.</summary>
         <DispId(6)>
         Property AllowOutboundSourceQuench As Boolean
 
@@ -302,7 +304,7 @@ Partial Public Module FirewallApi
         <DispId(9)>
         Property AllowInboundMaskRequest As Boolean
 
-        ''' <summary>Gets Or sets a flag indicating whether to allow “outbound packet too big” messages.</summary>
+        ''' <summary>Gets Or sets a flag indicating whether to allow ï¿½outbound packet too bigï¿½ messages.</summary>
         <DispId(10)>
         Property AllowOutboundPacketTooBig As Boolean
 

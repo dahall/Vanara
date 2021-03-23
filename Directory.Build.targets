@@ -1,5 +1,24 @@
 <Project>
   <PropertyGroup>
+    <Net5OrAbove>false</Net5OrAbove>
+    <Net5OrAbove Condition=" $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) Or $(TargetFramework.StartsWith('net7')) ">true</Net5OrAbove>
+  </PropertyGroup>
+
+  <!-- Explicit FrameworkReference in .NET 5 or above -->
+  <PropertyGroup Condition=" $(Net5OrAbove) ">
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <ImportWindowsDesktopTargets>false</ImportWindowsDesktopTargets>
+    <UseWindowsForms>false</UseWindowsForms>
+    <UseWPF>false</UseWPF>
+  </PropertyGroup>
+
+  <!-- Explict framework reference for .NET 5 or above -->
+  <ItemGroup Condition=" $(Net5OrAbove) ">
+    <FrameworkReference Include="Microsoft.NETCore.App" PrivateAssets="all" />
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App" PrivateAssets="all" />
+  </ItemGroup>
+
+  <PropertyGroup>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
@@ -14,6 +33,11 @@
   <ItemGroup>
     <Compile Remove="**\~*.cs" />
     <None Include="**\~*.cs" />
+    <SupportedPlatform Include="windows" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="**\~*.vb" />
+    <None Include="**\~*.vb" />
     <SupportedPlatform Include="windows" />
   </ItemGroup>
 </Project>

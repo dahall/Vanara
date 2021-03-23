@@ -1,4 +1,6 @@
-﻿Imports System.Runtime.InteropServices
+﻿Imports System
+Imports System.Collections
+Imports System.Runtime.InteropServices
 Imports System.Runtime.InteropServices.CustomMarshalers
 
 Partial Public Module FirewallApi

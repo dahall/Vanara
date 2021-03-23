@@ -6,6 +6,7 @@
     <TargetFrameworks>net20;net35;net40;net45;net5.0-windows;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>
+    <TargetFrameworks>net20;net35;net40;net45;net5.0;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.Windows.Forms</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
