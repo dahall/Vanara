@@ -9,13 +9,6 @@ using static Vanara.PInvoke.NtDll;
 
 namespace Vanara.PInvoke.Tests
 {
-	public static class ExtMeth
-	{
-		public static readonly Version minWowOSVer = new Version(5, 1);
-
-		public static bool IsWow64(this HPROCESS hProc) => Environment.OSVersion.Version >= minWowOSVer && Kernel32.IsWow64Process(hProc, out var b) && b;
-	}
-
 	[TestFixture]
 	public partial class WinternlTests
 	{

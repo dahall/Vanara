@@ -31,5 +31,21 @@ namespace Vanara.PInvoke.Tests
 
 			TestContext.WriteLine($"{bi.NumberOfProcessors} Cores; {pti.Count} Processes; {pti.Sum(t => t.Item2.Length)} Threads");
 		}
+
+		[Test]
+		public void SafeUNICODE_STRING_Test()
+		{
+			const string testStr = "Testing. 1. 2. 3.";
+			SafeUNICODE_STRING sstr = null;
+			try
+			{
+				Assert.That(() => sstr = testStr, Throws.Nothing);
+				Assert.That((string)sstr, Is.EqualTo(testStr));
+			}
+			finally
+			{
+				sstr?.Dispose();
+			}
+		}
 	}
 }

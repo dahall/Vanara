@@ -140,16 +140,17 @@ namespace Vanara.PInvoke
 		/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
 		public class SafeUNICODE_STRING : SafeHANDLE
 		{
+			private readonly int size;
+
 			/// <summary>Initializes a new instance of the <see cref="SafeUNICODE_STRING"/> class with a string value.</summary>
 			/// <param name="value">The string value.</param>
 			public SafeUNICODE_STRING(string value) : base(IntPtr.Zero, true)
 			{
-				var structLen = GetStructSize();
-
+				var structLen = GetStructSize(GetCurrentProcess());
 				if (string.IsNullOrEmpty(value))
-					SetHandle(Marshal.AllocCoTaskMem(structLen));
+					SetHandle(Marshal.AllocCoTaskMem(size = structLen));
 				else
-					SetHandle(InitMemForString(value, structLen));
+					SetHandle(InitMemForString(value, structLen, out size));
 			}
 
 			internal SafeUNICODE_STRING(IntPtr ptr, bool own) : base(ptr, own)
@@ -160,10 +161,19 @@ namespace Vanara.PInvoke
 			{
 			}
 
+			/// <summary>The length, in bytes, of the string stored in <c>Buffer</c>.</summary>
+			public ushort Length => IsInvalid ? (ushort)0 : unchecked((ushort)Marshal.ReadInt16(handle, 0));
+
+			/// <summary>The length, in bytes, of <c>Buffer</c>.</summary>
+			public ushort MaximumLength => IsInvalid ? (ushort)0 : unchecked((ushort)Marshal.ReadInt16(handle, 2));
+
+			/// <summary>The size of the allocated memory holding the structure and the string.</summary>
+			public int Size => size;
+
 			/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="SafeUNICODE_STRING"/>.</summary>
 			/// <param name="value">The string value.</param>
 			/// <returns>The resulting <see cref="SafeUNICODE_STRING"/> instance from the conversion.</returns>
-			public static implicit operator SafeUNICODE_STRING(string value) => new SafeUNICODE_STRING(value);
+			public static implicit operator SafeUNICODE_STRING(string value) => new(value);
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeUNICODE_STRING"/> to <see cref="string"/>.</summary>
 			/// <param name="value">The value.</param>
@@ -176,37 +186,43 @@ namespace Vanara.PInvoke
 			public string ToString(HPROCESS hProc)
 			{
 				if (IsInvalid) return null;
-				var len = unchecked((ushort)Marshal.ReadInt16(handle, 2));
+				var maxlen = unchecked((ushort)Marshal.ReadInt16(handle, 2));
 				hProc = hProc == default ? GetCurrentProcess() : hProc;
-				using var mem = new SafeCoTaskMemString(len);
-				if (IsWow64Process(hProc))
-					return NtWow64ReadVirtualMemory64(hProc, handle.Offset(Marshal.OffsetOf(typeof(UNICODE_STRING_WOW64), "Buffer").ToInt64()).ToInt64(), ((IntPtr)mem).ToInt32(), mem.Size, out _).Succeeded ? mem : string.Empty;
-				return ReadProcessMemory(hProc, handle.Offset(Marshal.OffsetOf(typeof(UNICODE_STRING), "Buffer").ToInt64()), mem, mem.Size, out _) ? mem : string.Empty;
+				var bufOffset = GetBufferOffset(hProc);
+				var bufPtr = Marshal.ReadIntPtr(handle, bufOffset);
+				if (hProc == GetCurrentProcess())
+					return StringHelper.GetString(bufPtr, CharSet.Unicode, MaximumLength) ?? string.Empty;
+				using var mem = new SafeCoTaskMemString(maxlen);
+				if (hProc.IsWow64())
+					return NtWow64ReadVirtualMemory64(hProc, bufPtr.ToInt64(), ((IntPtr)mem).ToInt32(), mem.Size, out _).Succeeded ? mem : string.Empty;
+				return ReadProcessMemory(hProc, bufPtr, mem, mem.Size, out _) ? mem : string.Empty;
 			}
 
 			/// <summary>Extracts the string value from this structure by reading process specific memory.</summary>
 			/// <returns>A <see cref="string"/> that has the value.</returns>
 			public override string ToString() => ToString(default);
 
-			internal static int GetStructSize() => Marshal.SizeOf(IsWow64Process() ? typeof(UNICODE_STRING_WOW64) : typeof(UNICODE_STRING));
+			internal static int GetStructSize(HPROCESS hProc) => Marshal.SizeOf(hProc.IsWow64() ? typeof(UNICODE_STRING_WOW64) : typeof(UNICODE_STRING));
 
-			internal static IntPtr InitMemForString(string value, int structLen)
+			internal static int GetBufferOffset(HPROCESS hProc) => Marshal.OffsetOf(hProc.IsWow64() ? typeof(UNICODE_STRING_WOW64) : typeof(UNICODE_STRING), "Buffer").ToInt32();
+
+			internal static IntPtr InitMemForString(string value, int structLen, out int allocatedSize)
 			{
 				// Collect lengths
-				var strLen = (ushort)StringHelper.GetByteCount(value, true, CharSet.Unicode);
+				var strLen = StringHelper.GetByteCount(value, true, CharSet.Unicode);
 
 				// Create mem and append string after struct
-				IntPtr mem = Marshal.AllocCoTaskMem(structLen + strLen);
+				IntPtr mem = Marshal.AllocCoTaskMem(allocatedSize = structLen + strLen);
 				IntPtr strOffset = mem.Offset(structLen);
+				Marshal.WriteInt16(mem, 0, (short)(strLen - 2));
+				Marshal.WriteInt16(mem, 2, (short)strLen);
 				StringHelper.Write(value, strOffset, out _, true, CharSet.Unicode, strLen);
-				RtlInitUnicodeString(mem, strOffset);
+				Marshal.WriteIntPtr(mem, GetBufferOffset(GetCurrentProcess()), strOffset);
 				return mem;
 			}
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { Marshal.FreeCoTaskMem(handle); return true; }
-
-			private static bool IsWow64Process(HPROCESS hProc = default) => Kernel32.IsWow64Process(hProc == default ? GetCurrentProcess() : hProc, out var w) && w;
 		}
 
 		/// <summary>A custom marshaler for functions using UNICODE_STRING so that managed strings can be used.</summary>
@@ -221,9 +237,9 @@ namespace Vanara.PInvoke
 
 			void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) => Marshal.FreeCoTaskMem(pNativeData);
 
-			int ICustomMarshaler.GetNativeDataSize() => SafeUNICODE_STRING.GetStructSize();
+			int ICustomMarshaler.GetNativeDataSize() => SafeUNICODE_STRING.GetStructSize(GetCurrentProcess());
 
-			IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj) => ManagedObj is string s ? SafeUNICODE_STRING.InitMemForString(s, SafeUNICODE_STRING.GetStructSize()) : IntPtr.Zero;
+			IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj) => ManagedObj is string s ? SafeUNICODE_STRING.InitMemForString(s, SafeUNICODE_STRING.GetStructSize(GetCurrentProcess()), out _) : IntPtr.Zero;
 
 			object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => new SafeUNICODE_STRING(pNativeData, false).ToString();
 		}
