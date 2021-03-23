@@ -4,10 +4,6 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Design" />
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
     <ProjectReference Include="..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj" />

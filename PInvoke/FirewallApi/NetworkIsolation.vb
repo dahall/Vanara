@@ -1,4 +1,5 @@
-﻿Imports System.Runtime.InteropServices
+﻿Imports System
+Imports System.Runtime.InteropServices
 
 Partial Public Module FirewallApi
 

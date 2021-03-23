@@ -9,5 +9,8 @@ dotnet_diagnostic.CA1034.severity = none
 # CA1401: P/Invokes should not be visible
 dotnet_diagnostic.CA1401.severity = none
 
+# CA1416: This call site is reachable on all platforms.
+dotnet_diagnostic.CA1416.severity = none
+
 # CA2101: Specify marshaling for P/Invoke string arguments
 dotnet_diagnostic.CA2101.severity = none
