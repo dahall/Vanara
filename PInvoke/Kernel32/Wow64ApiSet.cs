@@ -187,6 +187,20 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsWow64Process([In] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] out bool Wow64Process);
 
+		/// <summary>Determines whether the specified process is running under WOW64.</summary>
+		/// <param name="hProc">
+		/// <para>
+		/// A handle to the process. The handle must have the PROCESS_QUERY_INFORMATION or PROCESS_QUERY_LIMITED_INFORMATION access right.
+		/// For more information, see Process Security and Access Rights.
+		/// </para>
+		/// <para><c>Windows Server 2003 and Windows XP:</c> The handle must have the PROCESS_QUERY_INFORMATION access right.</para>
+		/// </param>
+		/// <returns>
+		/// <see langword="true"/> if the process is running under WOW64. If the process is running under 32-bit Windows, the value is set
+		/// to <see langword="false"/>. If the process is a 64-bit application running under 64-bit Windows, the value is also set to <see langword="false"/>.
+		/// </returns>
+		public static bool IsWow64(this HPROCESS hProc) => Environment.OSVersion.Version >= new Version(5, 1) && Kernel32.IsWow64Process(hProc, out var b) && b;
+
 		/// <summary>
 		/// Determines whether the specified process is running under WOW64; also returns additional machine process and architecture information.
 		/// </summary>
