@@ -1,4 +1,4 @@
-﻿#if !(NET20 || NET35 || NET40 || NET45)
+﻿#if NETSTANDARD || NETCOREAPP2_1 || NETCOREAPP2_0
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

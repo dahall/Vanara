@@ -24,6 +24,10 @@ AccessibleChildren AccessibleObjectFromEvent AccessibleObjectFromPoint Accessibl
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="Accessibility" />
   </ItemGroup>
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) ">
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
