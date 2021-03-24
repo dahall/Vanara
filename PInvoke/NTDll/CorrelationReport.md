@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NTDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NTDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NTDll)  
-### Methods - 4% API coverage (26 of 568 functions)  
+### Methods - 4% API coverage (27 of 568 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Adocs.microsoft.com) |  |   
@@ -281,7 +281,7 @@ Native Method | Header | Managed Method
 [RtlInitializeSListHead](https://www.google.com/search?num=5&q=RtlInitializeSListHead+site%3Adocs.microsoft.com) |  |   
 [RtlInitString](https://www.google.com/search?num=5&q=RtlInitString+site%3Adocs.microsoft.com) |  |   
 [RtlInitStringEx](https://www.google.com/search?num=5&q=RtlInitStringEx+site%3Adocs.microsoft.com) |  |   
-[RtlInitUnicodeString](https://www.google.com/search?num=5&q=RtlInitUnicodeString+site%3Adocs.microsoft.com) |  |   
+[RtlInitUnicodeString](https://www.google.com/search?num=5&q=RtlInitUnicodeString+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.RtlInitUnicodeString](https://github.com/dahall/Vanara/search?l=C%23&q=RtlInitUnicodeString)  
 [RtlInitUTF8String](https://www.google.com/search?num=5&q=RtlInitUTF8String+site%3Adocs.microsoft.com) |  |   
 [RtlInitUTF8StringEx](https://www.google.com/search?num=5&q=RtlInitUTF8StringEx+site%3Adocs.microsoft.com) |  |   
 [RtlInsertElementGenericTable](https://www.google.com/search?num=5&q=RtlInsertElementGenericTable+site%3Adocs.microsoft.com) |  |   
@@ -608,3 +608,4 @@ Native Class | Header | Managed Class
 [SafeSectionHandle](https://www.google.com/search?num=5&q=SafeSectionHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeSectionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeSectionHandle)  
 [SafeTransactionHandle](https://www.google.com/search?num=5&q=SafeTransactionHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeTransactionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeTransactionHandle)  
 [SafeTransactionManagerHandle](https://www.google.com/search?num=5&q=SafeTransactionManagerHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeTransactionManagerHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeTransactionManagerHandle)  
+[SafeUNICODE_STRING](https://www.google.com/search?num=5&q=SafeUNICODE_STRING+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeUNICODE_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=SafeUNICODE_STRING)  
