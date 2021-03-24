@@ -1,4 +1,5 @@
 <Project>
+  <!-- Define Net5OrAbove variable -->
   <PropertyGroup>
     <Net5OrAbove>false</Net5OrAbove>
     <Net5OrAbove Condition=" $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) Or $(TargetFramework.StartsWith('net7')) ">true</Net5OrAbove>
@@ -18,6 +19,7 @@
     <FrameworkReference Include="Microsoft.WindowsDesktop.App" PrivateAssets="all" />
   </ItemGroup>
 
+  <!-- Add common settings for all projects -->
   <PropertyGroup>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
@@ -30,6 +32,8 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
+    
+  <!-- Establish exclude pattern for files starting with ~ -->
   <ItemGroup>
     <Compile Remove="**\~*.cs" />
     <None Include="**\~*.cs" />
