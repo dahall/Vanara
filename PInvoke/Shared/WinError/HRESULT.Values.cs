@@ -9502,5 +9502,275 @@ namespace Vanara.PInvoke
 		public static readonly HRESULT DRT_E_INVALID_SECURITY_MODE = Make(true, 98U, 0x210e);
 		/// <summary/>
 		public static readonly HRESULT DRT_E_CAPABILITY_MISMATCH = Make(true, 98U, 0x210f);
+
+		/// <summary>The request was cancelled.</summary>
+		public const int E_IMAPI_REQUEST_CANCELLED = unchecked((int)0xC0AA0002);
+
+		/// <summary>The request requires a current disc recorder to be selected.</summary>
+		public const int E_IMAPI_RECORDER_REQUIRED = unchecked((int)0xC0AA0003);
+
+		/// <summary>The requested write speed was not supported by the drive and the speed was adjusted.</summary>
+		public const int S_IMAPI_SPEEDADJUSTED = unchecked((int)0x00AA0004);
+
+		/// <summary>The requested rotation type was not supported by the drive and the rotation type was adjusted.</summary>
+		public const int S_IMAPI_ROTATIONADJUSTED = unchecked((int)0x00AA0005);
+
+		/// <summary>The requested write speed and rotation type were not supported by the drive and they were both adjusted.</summary>
+		public const int S_IMAPI_BOTHADJUSTED = unchecked((int)0x00AA0006);
+
+		/// <summary>The disc did not pass burn verification and may contain corrupt data or be unusable. </summary>
+		public const int E_IMAPI_BURN_VERIFICATION_FAILED = unchecked((int)0xC0AA0007);
+
+		/// <summary>The device accepted the command, but returned sense data, indicating an error.</summary>
+		public const int S_IMAPI_COMMAND_HAS_SENSE_DATA = unchecked((int)0x00AA0200);
+
+		/// <summary>The device reported that the requested mode page (and type) is not present.</summary>
+		public const int E_IMAPI_RECORDER_NO_SUCH_MODE_PAGE = unchecked((int)0xC0AA0201);
+
+		/// <summary>There is no media in the device.</summary>
+		public const int E_IMAPI_RECORDER_MEDIA_NO_MEDIA = unchecked((int)0xC0AA0202);
+
+		/// <summary>The media is not compatible or of unknown physical format.</summary>
+		public const int E_IMAPI_RECORDER_MEDIA_INCOMPATIBLE = unchecked((int)0xC0AA0203);
+
+		/// <summary>The media is inserted upside down.</summary>
+		public const int E_IMAPI_RECORDER_MEDIA_UPSIDE_DOWN = unchecked((int)0xC0AA0204);
+
+		/// <summary>The drive reported that it is in the process of becoming ready. Please try the request again later.</summary>
+		public const int E_IMAPI_RECORDER_MEDIA_BECOMING_READY = unchecked((int)0xC0AA0205);
+
+		/// <summary>The media is currently being formatted. Please wait for the format to complete before attempting to use the media.</summary>
+		public const int E_IMAPI_RECORDER_MEDIA_FORMAT_IN_PROGRESS = unchecked((int)0xC0AA0206);
+
+		/// <summary>The drive reported that it is performing a long-running operation, such as finishing a write. The drive may be unusable for a long period of time.</summary>
+		public const int E_IMAPI_RECORDER_MEDIA_BUSY = unchecked((int)0xC0AA0207);
+
+		/// <summary>The drive reported that the combination of parameters provided in the mode page for a MODE SELECT command were not supported.</summary>
+		public const int E_IMAPI_RECORDER_INVALID_MODE_PARAMETERS = unchecked((int)0xC0AA0208);
+
+		/// <summary>The drive reported that the media is write protected.</summary>
+		public const int E_IMAPI_RECORDER_MEDIA_WRITE_PROTECTED = unchecked((int)0xC0AA0209);
+
+		/// <summary>The feature page requested is not supported by the device.</summary>
+		public const int E_IMAPI_RECORDER_NO_SUCH_FEATURE = unchecked((int)0xC0AA020A);
+
+		/// <summary>The feature page requested is supported, but is not marked as current.</summary>
+		public const int E_IMAPI_RECORDER_FEATURE_IS_NOT_CURRENT = unchecked((int)0xC0AA020B);
+
+		/// <summary>The drive does not support the GET CONFIGURATION command.</summary>
+		public const int E_IMAPI_RECORDER_GET_CONFIGURATION_NOT_SUPPORTED = unchecked((int)0xC0AA020C);
+
+		/// <summary>The device failed to accept the command within the timeout period. This may be caused by the device having entered an inconsistent state, or the timeout value for the command may need to be increased.</summary>
+		public const int E_IMAPI_RECORDER_COMMAND_TIMEOUT = unchecked((int)0xC0AA020D);
+
+		/// <summary>The DVD structure is not present. This may be caused by incompatible drive/medium used.</summary>
+		public const int E_IMAPI_RECORDER_DVD_STRUCTURE_NOT_PRESENT = unchecked((int)0xC0AA020E);
+
+		/// <summary>The media's speed is incompatible with the device. This may be caused by using higher or lower speed media than the range of speeds supported by the device.</summary>
+		public const int E_IMAPI_RECORDER_MEDIA_SPEED_MISMATCH = unchecked((int)0xC0AA020F);
+
+		/// <summary>The device associated with this recorder during the last operation has been exclusively locked, causing this operation to failed.</summary>
+		public const int E_IMAPI_RECORDER_LOCKED = unchecked((int)0xC0AA0210);
+
+		/// <summary>The client name is not valid.</summary>
+		public const int E_IMAPI_RECORDER_CLIENT_NAME_IS_NOT_VALID = unchecked((int)0xC0AA0211);
+
+		/// <summary>The media is not formatted. Please format the media before attempting to use it.</summary>
+		public const int E_IMAPI_RECORDER_MEDIA_NOT_FORMATTED = unchecked((int)0xC0AA0212);
+
+		/// <summary>The device reported unexpected or invalid data for a command.</summary>
+		public const int E_IMAPI_RECORDER_INVALID_RESPONSE_FROM_DEVICE = unchecked((int)0xC0AA02FF);
+
+		/// <summary>The write failed because the drive did not receive data quickly enough to continue writing. Moving the source data to the local computer, reducing the write speed, or enabling a "buffer underrun free" setting may resolve this issue.</summary>
+		public const int E_IMAPI_LOSS_OF_STREAMING = unchecked((int)0xC0AA0300);
+
+		/// <summary>The write failed because the drive returned error information that could not be recovered from.</summary>
+		public const int E_IMAPI_UNEXPECTED_RESPONSE_FROM_DEVICE = unchecked((int)0xC0AA0301);
+
+		/// <summary>There is no write operation currently in progress.</summary>
+		public const int S_IMAPI_WRITE_NOT_IN_PROGRESS = unchecked((int)0x00AA0302);
+
+		/// <summary>There is currently a write operation in progress.</summary>
+		public const int E_IMAPI_DF2DATA_WRITE_IN_PROGRESS = unchecked((int)0xC0AA0400);
+
+		/// <summary>There is no write operation currently in progress.</summary>
+		public const int E_IMAPI_DF2DATA_WRITE_NOT_IN_PROGRESS = unchecked((int)0xC0AA0401);
+
+		/// <summary>The requested operation is only valid with supported media.</summary>
+		public const int E_IMAPI_DF2DATA_INVALID_MEDIA_STATE = unchecked((int)0xC0AA0402);
+
+		/// <summary>The provided stream to write is not supported.</summary>
+		public const int E_IMAPI_DF2DATA_STREAM_NOT_SUPPORTED = unchecked((int)0xC0AA0403);
+
+		/// <summary>The provided stream to write is too large for the currently inserted media.</summary>
+		public const int E_IMAPI_DF2DATA_STREAM_TOO_LARGE_FOR_CURRENT_MEDIA = unchecked((int)0xC0AA0404);
+
+		/// <summary>Overwriting non-blank media is not allowed without the ForceOverwrite property set to VARIANT_TRUE.</summary>
+		public const int E_IMAPI_DF2DATA_MEDIA_NOT_BLANK = unchecked((int)0xC0AA0405);
+
+		/// <summary>The current media type is unsupported.</summary>
+		public const int E_IMAPI_DF2DATA_MEDIA_IS_NOT_SUPPORTED = unchecked((int)0xC0AA0406);
+
+		/// <summary>This device does not support the operations required by this disc format.</summary>
+		public const int E_IMAPI_DF2DATA_RECORDER_NOT_SUPPORTED = unchecked((int)0xC0AA0407);
+
+		/// <summary>The client name is not valid.</summary>
+		public const int E_IMAPI_DF2DATA_CLIENT_NAME_IS_NOT_VALID = unchecked((int)0xC0AA0408);
+
+		/// <summary>There is currently a write operation in progress.</summary>
+		public const int E_IMAPI_DF2TAO_WRITE_IN_PROGRESS = unchecked((int)0xC0AA0500);
+
+		/// <summary>There is no write operation currently in progress.</summary>
+		public const int E_IMAPI_DF2TAO_WRITE_NOT_IN_PROGRESS = unchecked((int)0xC0AA0501);
+
+		/// <summary>The requested operation is only valid when media has been "prepared".</summary>
+		public const int E_IMAPI_DF2TAO_MEDIA_IS_NOT_PREPARED = unchecked((int)0xC0AA0502);
+
+		/// <summary>The requested operation is not valid when media has been "prepared" but not released.</summary>
+		public const int E_IMAPI_DF2TAO_MEDIA_IS_PREPARED = unchecked((int)0xC0AA0503);
+
+		/// <summary>The property cannot be changed once the media has been written to.</summary>
+		public const int E_IMAPI_DF2TAO_PROPERTY_FOR_BLANK_MEDIA_ONLY = unchecked((int)0xC0AA0504);
+
+		/// <summary>The table of contents cannot be retrieved from an empty disc.</summary>
+		public const int E_IMAPI_DF2TAO_TABLE_OF_CONTENTS_EMPTY_DISC = unchecked((int)0xC0AA0505);
+
+		/// <summary>Only blank CD-R/RW media is supported.</summary>
+		public const int E_IMAPI_DF2TAO_MEDIA_IS_NOT_BLANK = unchecked((int)0xC0AA0506);
+
+		/// <summary>Only blank CD-R/RW media is supported.</summary>
+		public const int E_IMAPI_DF2TAO_MEDIA_IS_NOT_SUPPORTED = unchecked((int)0xC0AA0507);
+
+		/// <summary>CD-R and CD-RW media support a maximum of 99 audio tracks.</summary>
+		public const int E_IMAPI_DF2TAO_TRACK_LIMIT_REACHED = unchecked((int)0xC0AA0508);
+
+		/// <summary>There is not enough space left on the media to add the provided audio track.</summary>
+		public const int E_IMAPI_DF2TAO_NOT_ENOUGH_SPACE = unchecked((int)0xC0AA0509);
+
+		/// <summary>You cannot prepare the media until you choose a recorder to use.</summary>
+		public const int E_IMAPI_DF2TAO_NO_RECORDER_SPECIFIED = unchecked((int)0xC0AA050A);
+
+		/// <summary>The ISRC provided is not valid.</summary>
+		public const int E_IMAPI_DF2TAO_INVALID_ISRC = unchecked((int)0xC0AA050B);
+
+		/// <summary>The Media Catalog Number provided is not valid.</summary>
+		public const int E_IMAPI_DF2TAO_INVALID_MCN = unchecked((int)0xC0AA050C);
+
+		/// <summary>The provided audio stream is not valid.</summary>
+		public const int E_IMAPI_DF2TAO_STREAM_NOT_SUPPORTED = unchecked((int)0xC0AA050D);
+
+		/// <summary>This device does not support the operations required by this disc format.</summary>
+		public const int E_IMAPI_DF2TAO_RECORDER_NOT_SUPPORTED = unchecked((int)0xC0AA050E);
+
+		/// <summary>The client name is not valid.</summary>
+		public const int E_IMAPI_DF2TAO_CLIENT_NAME_IS_NOT_VALID = unchecked((int)0xC0AA050F);
+
+		/// <summary>There is currently a write operation in progress.</summary>
+		public const int E_IMAPI_DF2RAW_WRITE_IN_PROGRESS = unchecked((int)0xC0AA0600);
+
+		/// <summary>There is no write operation currently in progress.</summary>
+		public const int E_IMAPI_DF2RAW_WRITE_NOT_IN_PROGRESS = unchecked((int)0xC0AA0601);
+
+		/// <summary>The requested operation is only valid when media has been "prepared".</summary>
+		public const int E_IMAPI_DF2RAW_MEDIA_IS_NOT_PREPARED = unchecked((int)0xC0AA0602);
+
+		/// <summary>The requested operation is not valid when media has been "prepared" but not released.</summary>
+		public const int E_IMAPI_DF2RAW_MEDIA_IS_PREPARED = unchecked((int)0xC0AA0603);
+
+		/// <summary>The client name is not valid.</summary>
+		public const int E_IMAPI_DF2RAW_CLIENT_NAME_IS_NOT_VALID = unchecked((int)0xC0AA0604);
+
+		/// <summary>Only blank CD-R/RW media is supported.</summary>
+		public const int E_IMAPI_DF2RAW_MEDIA_IS_NOT_BLANK = unchecked((int)0xC0AA0606);
+
+		/// <summary>Only blank CD-R/RW media is supported.</summary>
+		public const int E_IMAPI_DF2RAW_MEDIA_IS_NOT_SUPPORTED = unchecked((int)0xC0AA0607);
+
+		/// <summary>There is not enough space on the media to add the provided session.</summary>
+		public const int E_IMAPI_DF2RAW_NOT_ENOUGH_SPACE = unchecked((int)0xC0AA0609);
+
+		/// <summary>You cannot prepare the media until you choose a recorder to use.</summary>
+		public const int E_IMAPI_DF2RAW_NO_RECORDER_SPECIFIED = unchecked((int)0xC0AA060A);
+
+		/// <summary>The provided audio stream is not valid.</summary>
+		public const int E_IMAPI_DF2RAW_STREAM_NOT_SUPPORTED = unchecked((int)0xC0AA060D);
+
+		/// <summary>The requested data block type is not supported by the current device.</summary>
+		public const int E_IMAPI_DF2RAW_DATA_BLOCK_TYPE_NOT_SUPPORTED = unchecked((int)0xC0AA060E);
+
+		/// <summary>The stream does not contain a sufficient number of sectors in the leadin for the current media.</summary>
+		public const int E_IMAPI_DF2RAW_STREAM_LEADIN_TOO_SHORT = unchecked((int)0xC0AA060F);
+
+		/// <summary>This device does not support the operations required by this disc format.</summary>
+		public const int E_IMAPI_DF2RAW_RECORDER_NOT_SUPPORTED = unchecked((int)0xC0AA0610);
+
+		/// <summary>The format is currently using the disc recorder for an erase operation. Please wait for the erase to complete before attempting to set or clear the current disc recorder.</summary>
+		public const int E_IMAPI_ERASE_RECORDER_IN_USE = unchecked((int)0x80AA0900);
+
+		/// <summary>The erase format only supports one recorder. You must clear the current recorder before setting a new one.</summary>
+		public const int E_IMAPI_ERASE_ONLY_ONE_RECORDER_SUPPORTED = unchecked((int)0x80AA0901);
+
+		/// <summary>The drive did not report sufficient data for a READ DISC INFORMATION command. The drive may not be supported, or the media may not be correct.</summary>
+		public const int E_IMAPI_ERASE_DISC_INFORMATION_TOO_SMALL = unchecked((int)0x80AA0902);
+
+		/// <summary>The drive did not report sufficient data for a MODE SENSE (page 0x2A) command. The drive may not be supported, or the media may not be correct.</summary>
+		public const int E_IMAPI_ERASE_MODE_PAGE_2A_TOO_SMALL = unchecked((int)0x80AA0903);
+
+		/// <summary>The drive reported that the media is not erasable.</summary>
+		public const int E_IMAPI_ERASE_MEDIA_IS_NOT_ERASABLE = unchecked((int)0x80AA0904);
+
+		/// <summary>The drive failed the erase command.</summary>
+		public const int E_IMAPI_ERASE_DRIVE_FAILED_ERASE_COMMAND = unchecked((int)0x80AA0905);
+
+		/// <summary>The drive did not complete the erase in one hour. The drive may require a power cycle, media removal, or other manual intervention to resume proper operation.</summary>
+		public const int E_IMAPI_ERASE_TOOK_LONGER_THAN_ONE_HOUR = unchecked((int)0x80AA0906);
+
+		/// <summary>The drive returned an unexpected error during the erase. The the media may be unusable, the erase may be complete, or the drive may still be in the process of erasing the disc.</summary>
+		public const int E_IMAPI_ERASE_UNEXPECTED_DRIVE_RESPONSE_DURING_ERASE = unchecked((int)0x80AA0907);
+
+		/// <summary>The drive returned an error for a START UNIT (spinup) command. Manual intervention may be required.</summary>
+		public const int E_IMAPI_ERASE_DRIVE_FAILED_SPINUP_COMMAND = unchecked((int)0x80AA0908);
+
+		/// <summary>The current media type is unsupported.</summary>
+		public const int E_IMAPI_ERASE_MEDIA_IS_NOT_SUPPORTED = unchecked((int)0xC0AA0909);
+
+		/// <summary>This device does not support the operations required by this disc format.</summary>
+		public const int E_IMAPI_ERASE_RECORDER_NOT_SUPPORTED = unchecked((int)0xC0AA090A);
+
+		/// <summary>The client name is not valid.</summary>
+		public const int E_IMAPI_ERASE_CLIENT_NAME_IS_NOT_VALID = unchecked((int)0xC0AA090B);
+
+		/// <summary>The image has become read-only from a call to CreateResultImage(). The object can no longer be modified.</summary>
+		public const int E_IMAPI_RAW_IMAGE_IS_READ_ONLY = unchecked((int)0x80AA0A00);
+
+		/// <summary>No more tracks may be added, as CD media is restricted to track numbers between 1 and 99.</summary>
+		public const int E_IMAPI_RAW_IMAGE_TOO_MANY_TRACKS = unchecked((int)0x80AA0A01);
+
+		/// <summary>The requested sector type is not supported.</summary>
+		public const int E_IMAPI_RAW_IMAGE_SECTOR_TYPE_NOT_SUPPORTED = unchecked((int)0x80AA0A02);
+
+		/// <summary>Tracks must be added to the image before using this function.</summary>
+		public const int E_IMAPI_RAW_IMAGE_NO_TRACKS = unchecked((int)0x80AA0A03);
+
+		/// <summary>Tracks may not be added to the image prior to the use of this function.</summary>
+		public const int E_IMAPI_RAW_IMAGE_TRACKS_ALREADY_ADDED = unchecked((int)0x80AA0A04);
+
+		/// <summary>Adding the track would result in exceeding the limit for the start of the leadout.</summary>
+		public const int E_IMAPI_RAW_IMAGE_INSUFFICIENT_SPACE = unchecked((int)0x80AA0A05);
+
+		/// <summary>Adding the track index would result in exceeding the 99 index limit.</summary>
+		public const int E_IMAPI_RAW_IMAGE_TOO_MANY_TRACK_INDEXES = unchecked((int)0x80AA0A06);
+
+		/// <summary>The specified LBA offset is not in the list of track indexes.</summary>
+		public const int E_IMAPI_RAW_IMAGE_TRACK_INDEX_NOT_FOUND = unchecked((int)0x80AA0A07);
+
+		/// <summary>The specified LBA offset is already in the list of track indexes.</summary>
+		public const int S_IMAPI_RAW_IMAGE_TRACK_INDEX_ALREADY_EXISTS = unchecked((int)0x00AA0A08);
+
+		/// <summary>Index 1 (LBA offset zero) may not be cleared.</summary>
+		public const int E_IMAPI_RAW_IMAGE_TRACK_INDEX_OFFSET_ZERO_CANNOT_BE_CLEARED = unchecked((int)0x80AA0A09);
+
+		/// <summary>Each index must have a minimum size of ten sectors.</summary>
+		public const int E_IMAPI_RAW_IMAGE_TRACK_INDEX_TOO_CLOSE_TO_OTHER_INDEX = unchecked((int)0x80AA0A0A);
 	}
 }
