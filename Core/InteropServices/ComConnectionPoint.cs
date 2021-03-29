@@ -12,7 +12,7 @@ namespace Vanara.InteropServices
 	/// </summary>
 	public class ComConnectionPoint : IDisposable
 	{
-		private List<Tuple<IConnectionPoint, int>> connectionPoints = new List<Tuple<IConnectionPoint, int>>();
+		private readonly List<(IConnectionPoint, int)> connectionPoints = new List<(IConnectionPoint, int)>();
 
 		/// <summary>Initializes a new instance of the <see cref="ComConnectionPoint"/> class.</summary>
 		/// <param name="source">The COM object from which to query the <see cref="IConnectionPointContainer"/> reference.</param>
@@ -20,19 +20,20 @@ namespace Vanara.InteropServices
 		/// <param name="interfaces">The interfaces supported by <paramref name="source"/> that support events.</param>
 		public ComConnectionPoint(object source, object sink, params Type[] interfaces)
 		{
-			if (source == null) throw new ArgumentNullException(nameof(source));
-			if (sink == null) sink = this;
-			if (interfaces == null) interfaces = GetComInterfaces(sink);
+			if (source is null) throw new ArgumentNullException(nameof(source));
+			if (source is not IConnectionPointContainer connectionPointContainer)
+				throw new ArgumentException("The source object must be COM object that supports the IConnectionPointContainer interface.", nameof(source));
+			Sink = sink ?? this;
+			if (interfaces == null) interfaces = GetComInterfaces(Sink);
 			if (interfaces.Length < 1) throw new ArgumentOutOfRangeException(nameof(interfaces));
 
 			// Start the event sink
-			if (!(source is IConnectionPointContainer connectionPointContainer)) throw new InvalidOperationException("The source object must be COM object that supports the IConnectionPointContainer interface.");
 			foreach (var i in interfaces)
 			{
 				var comappEventsInterfaceId = i.GUID;
 				connectionPointContainer.FindConnectionPoint(ref comappEventsInterfaceId, out var connectionPoint);
-				connectionPoint.Advise(sink, out var cookie);
-				connectionPoints.Add(new Tuple<IConnectionPoint, int>(connectionPoint, cookie));
+				connectionPoint.Advise(Sink, out var cookie);
+				connectionPoints.Add((connectionPoint, cookie));
 			}
 		}
 
@@ -45,16 +46,14 @@ namespace Vanara.InteropServices
 		/// </param>
 		public ComConnectionPoint(object source, object sink) : this(source, sink, null) { }
 
-		private static Type[] GetComInterfaces(object sink)
-		{
-			var ii = sink?.GetType().GetInterfaces().ToList() ?? new List<Type>();
-			for (int i = ii.Count - 1; i >= 0; i--)
-			{
-				if (!ii[i].GetCustomAttributes(true).Any(a => a.GetType() == typeof(ComImportAttribute) || a.GetType() == typeof(InterfaceTypeAttribute)))
-					ii.RemoveAt(i);
-			}
-			return ii.ToArray();
-		}
+		/// <summary>Gets the sink.</summary>
+		/// <value>The sink.</value>
+		public object Sink { get; private set; }
+
+		private static Type[] GetComInterfaces(object sink) => 
+			sink?.GetType().GetInterfaces().
+			Where(i => i.GetCustomAttributes(true).Any(a => a.GetType() == typeof(ComImportAttribute) || a.GetType() == typeof(InterfaceTypeAttribute))).
+			ToArray();
 
 		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
 		public void Dispose()
@@ -65,6 +64,7 @@ namespace Vanara.InteropServices
 				pair.Item1.Unadvise(pair.Item2);
 			}
 			connectionPoints.Clear();
+			Sink = null;
 		}
 	}
 }
