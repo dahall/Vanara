@@ -55,9 +55,48 @@ namespace Vanara.PInvoke
 			// *object, IDispatch *progress );
 			[DispId(0x200)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			[PreserveSig]
-			HRESULT Update([In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2Data @object,
+			void Update([In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2Data @object,
 						[In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2DataEventArgs progress);
+		}
+
+		/// <summary>Receive notifications of the current write operation.</summary>
+		/// <seealso cref="Vanara.PInvoke.IMAPI.DDiscFormat2DataEvents"/>
+		[ClassInterface(ClassInterfaceType.None)]
+		public class DDiscFormat2DataEventsSink : DDiscFormat2DataEvents
+		{
+			/// <summary>Initializes a new instance of the <see cref="DDiscFormat2DataEventsSink"/> class.</summary>
+			/// <param name="onUpdate">The update.</param>
+			public DDiscFormat2DataEventsSink(Action<IDiscFormat2Data, IDiscFormat2DataEventArgs> onUpdate)
+			{
+				if (onUpdate is not null) Update += onUpdate;
+			}
+
+			/// <summary>Occurs when the current write operation sends a progress notification.</summary>
+			/// <remarks>
+			/// <para>Notifications are sent in response to calling the IDiscFormat2Data::Write method.</para>
+			/// <para>Notification is sent when the current action changes:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>Once when initializing the hardware</term>
+			/// </item>
+			/// <item>
+			/// <term>Once when calibrating the power</term>
+			/// </item>
+			/// <item>
+			/// <term>Once when formatting the media, if required by the media type</term>
+			/// </item>
+			/// <item>
+			/// <term>Every 0.5 seconds during the write operation</term>
+			/// </item>
+			/// <item>
+			/// <term>Once after the operation completes</term>
+			/// </item>
+			/// </list>
+			/// <para>To stop the write process, call the IDiscFormat2Data::CancelWrite method.</para>
+			/// </remarks>
+			public event Action<IDiscFormat2Data, IDiscFormat2DataEventArgs> Update;
+
+			void DDiscFormat2DataEvents.Update(IDiscFormat2Data @object, IDiscFormat2DataEventArgs progress) => Update?.Invoke(@object, progress);
 		}
 
 		/// <summary>Implement this interface to receive notifications of the current erase operation.</summary>
@@ -78,16 +117,40 @@ namespace Vanara.PInvoke
 			/// <para>Notifications are sent in response to calling the IDiscFormat2Erase::EraseMedia method.</para>
 			/// <para>Notification is sent every 0.5 or 1.0 seconds depending on the method required to blank the media.</para>
 			/// <para>
-			/// Total time estimates for a single erasure can vary as the operation progresses. The drive provides updated information that can
-			/// affect the projected duration of the erasure.
+			/// Total time estimates for a single erasure can vary as the operation progresses. The drive provides updated information that
+			/// can affect the projected duration of the erasure.
 			/// </para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-ddiscformat2eraseevents-update HRESULT Update( IDispatch
 			// *object, LONG elapsedSeconds, LONG estimatedTotalSeconds );
 			[DispId(0x200)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			[PreserveSig]
-			HRESULT Update([In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2Erase @object, int elapsedSeconds, int estimatedTotalSeconds);
+			void Update([In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2Erase @object, int elapsedSeconds, int estimatedTotalSeconds);
+		}
+
+		/// <summary>Receive notifications of the current erase operation.</summary>
+		[ClassInterface(ClassInterfaceType.None)]
+		public class DDiscFormat2EraseEventsSink : DDiscFormat2EraseEvents
+		{
+			/// <summary>Initializes a new instance of the <see cref="DDiscFormat2EraseEventsSink"/> class.</summary>
+			/// <param name="onUpdate">The on update.</param>
+			public DDiscFormat2EraseEventsSink(Action<IDiscFormat2Erase, int, int> onUpdate)
+			{
+				if (onUpdate is not null) Update += onUpdate;
+			}
+
+			/// <summary>Implement this method to receive progress notification of the current erase operation.</summary>
+			/// <remarks>
+			/// <para>Notifications are sent in response to calling the IDiscFormat2Erase::EraseMedia method.</para>
+			/// <para>Notification is sent every 0.5 or 1.0 seconds depending on the method required to blank the media.</para>
+			/// <para>
+			/// Total time estimates for a single erasure can vary as the operation progresses. The drive provides updated information that
+			/// can affect the projected duration of the erasure.
+			/// </para>
+			/// </remarks>
+			public event Action<IDiscFormat2Erase, int, int> Update;
+
+			void DDiscFormat2EraseEvents.Update(IDiscFormat2Erase @object, int elapsedSeconds, int estimatedTotalSeconds) => Update?.Invoke(@object, elapsedSeconds, estimatedTotalSeconds);
 		}
 
 		/// <summary>Implement this interface to receive notifications of the current raw-image write operation.</summary>
@@ -107,16 +170,40 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>Return values are ignored.</returns>
 			/// <remarks>
-			/// <para>Notifications are sent in response to calling the IDiscFormat2RawCD::WriteMedia or IDiscFormat2RawCD::WriteMedia2 method.</para>
+			/// <para>
+			/// Notifications are sent in response to calling the IDiscFormat2RawCD::WriteMedia or IDiscFormat2RawCD::WriteMedia2 method.
+			/// </para>
 			/// <para>To stop the write process, call the IDiscFormat2RawCD::CancelWrite method.</para>
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-ddiscformat2rawcdevents-update HRESULT Update( IDispatch
 			// *object, IDispatch *progress );
 			[DispId(0x200)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			[PreserveSig]
-			HRESULT Update([In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2RawCD @object,
+			void Update([In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2RawCD @object,
 				[In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2RawCDEventArgs progress);
+		}
+
+		/// <summary>Receive notifications of the current raw-image write operation.</summary>
+		[ClassInterface(ClassInterfaceType.None)]
+		public class DDiscFormat2RawCDEventsSink : DDiscFormat2RawCDEvents
+		{
+			/// <summary>Initializes a new instance of the <see cref="DDiscFormat2RawCDEventsSink"/> class.</summary>
+			/// <param name="onUpdate">The on update.</param>
+			public DDiscFormat2RawCDEventsSink(Action<IDiscFormat2RawCD, IDiscFormat2RawCDEventArgs> onUpdate)
+			{
+				if (onUpdate is not null) Update += onUpdate;
+			}
+
+			/// <summary>Implement this method to receive progress notification of the current raw-image write operation.</summary>
+			/// <remarks>
+			/// <para>
+			/// Notifications are sent in response to calling the IDiscFormat2RawCD::WriteMedia or IDiscFormat2RawCD::WriteMedia2 method.
+			/// </para>
+			/// <para>To stop the write process, call the IDiscFormat2RawCD::CancelWrite method.</para>
+			/// </remarks>
+			public event Action<IDiscFormat2RawCD, IDiscFormat2RawCDEventArgs> Update;
+
+			void DDiscFormat2RawCDEvents.Update(IDiscFormat2RawCD @object, IDiscFormat2RawCDEventArgs progress) => Update?.Invoke(@object, progress);
 		}
 
 		/// <summary>Implement this interface to receive notifications of the current track-writing operation.</summary>
@@ -143,9 +230,29 @@ namespace Vanara.PInvoke
 			// IDispatch *object, IDispatch *progress );
 			[DispId(0x200)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			[PreserveSig]
-			HRESULT Update([In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2TrackAtOnce @object,
+			void Update([In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2TrackAtOnce @object,
 				[In, MarshalAs(UnmanagedType.IDispatch)] IDiscFormat2TrackAtOnceEventArgs progress);
+		}
+
+		/// <summary>Receive notifications of the current track-writing operation.</summary>
+		[ClassInterface(ClassInterfaceType.None)]
+		public class DDiscFormat2TrackAtOnceEventsSink : DDiscFormat2TrackAtOnceEvents
+		{
+			/// <summary>Initializes a new instance of the <see cref="DDiscFormat2TrackAtOnceEventsSink"/> class.</summary>
+			/// <param name="onUpdate">The on update.</param>
+			public DDiscFormat2TrackAtOnceEventsSink(Action<IDiscFormat2TrackAtOnce, IDiscFormat2TrackAtOnceEventArgs> onUpdate)
+			{
+				if (onUpdate is not null) Update += onUpdate;
+			}
+
+			/// <summary>Implement this method to receive progress notification of the current track-writing operation.</summary>
+			/// <remarks>
+			/// <para>Notifications are sent in response to calling the IDiscFormat2TrackAtOnce::AddAudioTrack method.</para>
+			/// <para>To stop the write process, call the IDiscFormat2TrackAtOnce::CancelAddTrack method.</para>
+			/// </remarks>
+			public event Action<IDiscFormat2TrackAtOnce, IDiscFormat2TrackAtOnceEventArgs> Update;
+
+			void DDiscFormat2TrackAtOnceEvents.Update(IDiscFormat2TrackAtOnce @object, IDiscFormat2TrackAtOnceEventArgs progress) => Update?.Invoke(@object, progress);
 		}
 
 		/// <summary>Implement this interface to receive notification when a CD or DVD device is added to or removed from the computer.</summary>
@@ -167,8 +274,7 @@ namespace Vanara.PInvoke
 			// NotifyDeviceAdded( IDispatch *object, BSTR uniqueId );
 			[DispId(0x100)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			[PreserveSig]
-			HRESULT NotifyDeviceAdded([In, MarshalAs(UnmanagedType.IDispatch)] IDiscMaster2 @object, [In, MarshalAs(UnmanagedType.BStr)] string uniqueId);
+			void NotifyDeviceAdded([In, MarshalAs(UnmanagedType.IDispatch)] IDiscMaster2 @object, [In, MarshalAs(UnmanagedType.BStr)] string uniqueId);
 
 			/// <summary>Receives notification when an optical media device is removed from the computer.</summary>
 			/// <param name="object">
@@ -183,8 +289,29 @@ namespace Vanara.PInvoke
 			// NotifyDeviceRemoved( IDispatch *object, BSTR uniqueId );
 			[DispId(0x101)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			[PreserveSig]
-			HRESULT NotifyDeviceRemoved([In, MarshalAs(UnmanagedType.IDispatch)] IDiscMaster2 @object, [In, MarshalAs(UnmanagedType.BStr)] string uniqueId);
+			void NotifyDeviceRemoved([In, MarshalAs(UnmanagedType.IDispatch)] IDiscMaster2 @object, [In, MarshalAs(UnmanagedType.BStr)] string uniqueId);
+		}
+
+		/// <summary>Receive notifications of the current track-writing operation.</summary>
+		[ClassInterface(ClassInterfaceType.None)]
+		public class DDiscMaster2EventsSink : DDiscMaster2Events
+		{
+			/// <summary>Initializes a new instance of the <see cref="DDiscMaster2EventsSink"/> class.</summary>
+			/// <param name="onUpdate">The on update.</param>
+			public DDiscMaster2EventsSink(Action<IDiscMaster2, string> onAdded, Action<IDiscMaster2, string> onRemoved)
+			{
+				if (onAdded is not null) NotifyDeviceAdded += onAdded;
+				if (onRemoved is not null) NotifyDeviceRemoved += onRemoved;
+			}
+
+			/// <summary>Receives notification when an optical media device is added to the computer.</summary>
+			public event Action<IDiscMaster2, string> NotifyDeviceAdded;
+
+			/// <summary>Receives notification when an optical media device is removed from the computer.</summary>
+			public event Action<IDiscMaster2, string> NotifyDeviceRemoved;
+
+			void DDiscMaster2Events.NotifyDeviceAdded(IDiscMaster2 @object, string uniqueId) => NotifyDeviceAdded?.Invoke(@object, uniqueId);
+			void DDiscMaster2Events.NotifyDeviceRemoved(IDiscMaster2 @object, string uniqueId) => NotifyDeviceRemoved?.Invoke(@object, uniqueId);
 		}
 
 		/// <summary>Implement this interface to receive notifications of the current write operation.</summary>
@@ -219,12 +346,45 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para>To stop the write process, call the IWriteEngine2::CancelWrite method.</para>
 			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-dwriteengine2events-update HRESULT Update( IDispatch *object,
-			// IDispatch *progress );
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-dwriteengine2events-update HRESULT Update( IDispatch
+			// *object, IDispatch *progress );
 			[DispId(0x100)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			[PreserveSig]
-			HRESULT Update([In, MarshalAs(UnmanagedType.IDispatch)] IWriteEngine2 @object, [In, MarshalAs(UnmanagedType.IDispatch)] IWriteEngine2EventArgs progress);
+			void Update([In, MarshalAs(UnmanagedType.IDispatch)] IWriteEngine2 @object, [In, MarshalAs(UnmanagedType.IDispatch)] IWriteEngine2EventArgs progress);
+		}
+
+		/// <summary>Receive notifications of the current write operation.</summary>
+		/// <seealso cref="Vanara.PInvoke.IMAPI.DWriteEngine2Events"/>
+		[ClassInterface(ClassInterfaceType.None)]
+		public class DWriteEngine2EventsSink : DWriteEngine2Events
+		{
+			/// <summary>Initializes a new instance of the <see cref="DWriteEngine2EventsSink"/> class.</summary>
+			/// <param name="onUpdate">The on update.</param>
+			public DWriteEngine2EventsSink(Action<IWriteEngine2, IWriteEngine2EventArgs> onUpdate)
+			{
+				if (onUpdate is not null) Update += onUpdate;
+			}
+
+			/// <summary>Implement this method to receive progress notification of the current write operation.</summary>
+			/// <remarks>
+			/// <para>Notifications are sent in response to calling the IWriteEngine2::WriteSection method.</para>
+			/// <para>Notification is sent:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>Once before the operation begins</term>
+			/// </item>
+			/// <item>
+			/// <term>Every 0.5 seconds during the write operation</term>
+			/// </item>
+			/// <item>
+			/// <term>Once after the operation completes</term>
+			/// </item>
+			/// </list>
+			/// <para>To stop the write process, call the IWriteEngine2::CancelWrite method.</para>
+			/// </remarks>
+			public event Action<IWriteEngine2, IWriteEngine2EventArgs> Update;
+
+			void DWriteEngine2Events.Update(IWriteEngine2 @object, IWriteEngine2EventArgs progress) => Update?.Invoke(@object, progress);
 		}
 
 #pragma warning restore IDE1006 // Naming Styles

@@ -168,6 +168,65 @@ namespace Vanara.PInvoke
 						long totalSectors);
 		}
 
+		/// <summary>Receives notifications of the current write operation.</summary>
+		[ClassInterface(ClassInterfaceType.None)]
+		public class DFileSystemImageEventsSink : DFileSystemImageEvents
+		{
+			/// <summary>Initializes a new instance of the <see cref="DFileSystemImageEventsSink"/> class.</summary>
+			/// <param name="onUpdate">The delegate to assign to the <see cref="Update"/> event.</param>
+			public DFileSystemImageEventsSink(Action<IFileSystemImage, string, long, long> onUpdate)
+			{
+				if (onUpdate is not null) Update += onUpdate;
+			}
+
+			/// <summary>
+			/// Occurs on progress notifications from the current write operation. The notifications are sent when
+			/// copying the content of a file or while adding directories or files to the file system image.
+			/// </summary>
+			/// <remarks>
+			/// <para>Notifications are sent in response to calling one of the following methods:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>IFsiDirectoryItem::Add</term>
+			/// </item>
+			/// <item>
+			/// <term>IFsiDirectoryItem::AddFile</term>
+			/// </item>
+			/// <item>
+			/// <term>IFsiDirectoryItem::AddTree</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// Notifications can also be sent when calling one of the following methods to import a UDF file system that was created using
+			/// immediate allocation (immediate allocation means that the file data is contained within the file descriptor instead of
+			/// having allocation descriptors in the file descriptor that point to sectors of data):
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>IFileSystemImage::ImportFileSystem</term>
+			/// </item>
+			/// <item>
+			/// <term>IFileSystemImage::ImportSpecificFileSystem</term>
+			/// </item>
+			/// </list>
+			/// <para>Notification is sent:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>Once before adding the first sector of a file (copiedSectors is 0)</term>
+			/// </item>
+			/// <item>
+			/// <term>For every megabyte that is written</term>
+			/// </item>
+			/// <item>
+			/// <term>Once after the final write if the file did not end on a megabyte boundary</term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			public event Action<IFileSystemImage, string, long, long> Update;
+
+			void DFileSystemImageEvents.Update(IFileSystemImage @object, string currentFile, long copiedSectors, long totalSectors) => Update?.Invoke(@object, currentFile, copiedSectors, totalSectors);
+		}
+
 		/// <summary>Use this interface to receives notifications regarding the current file system import operation.</summary>
 		/// <remarks>This interface supports import notifications for ISO9660, Joliet and UDF file systems.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nn-imapi2fs-dfilesystemimageimportevents
@@ -218,12 +277,56 @@ namespace Vanara.PInvoke
 			[DispId(0x101)]
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void UpdateImport([In, MarshalAs(UnmanagedType.IDispatch)] IFileSystemImage @object,
-							  [In, MarshalAs(UnmanagedType.I4)] FsiFileSystems fileSystem,
+							  FsiFileSystems fileSystem,
 							  [In, MarshalAs(UnmanagedType.BStr)] string currentItem,
 							  long importedDirectoryItems,
 							  long totalDirectoryItems,
 							  long importedFileItems,
 							  long totalFileItems);
+		}
+
+		[ClassInterface(ClassInterfaceType.None)]
+		public class DFileSystemImageImportEventsSink : DFileSystemImageImportEvents
+		{
+			/// <summary>Initializes a new instance of the <see cref="DFileSystemImageEventsSink"/> class.</summary>
+			/// <param name="onUpdate">The delegate to assign to the <see cref="Update"/> event.</param>
+			public DFileSystemImageImportEventsSink(Action<IFileSystemImage, FsiFileSystems, string, long, long, long, long> onUpdateImport)
+			{
+				if (onUpdateImport is not null) UpdateImport += onUpdateImport;
+			}
+
+			/// <summary>Receives import notification for every file and directory item imported from an optical medium.</summary>
+			/// <remarks>
+			/// <para>Notifications are sent in response to calling one of the following methods for importing a file system.</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>IFileSystemImage::ImportFileSystem</term>
+			/// </item>
+			/// <item>
+			/// <term>IFileSystemImage::ImportSpecificFileSystem</term>
+			/// </item>
+			/// </list>
+			/// <para>UpdateImport method receives import notifications from ISO9660, Joliet and UDF file systems. A notification is sent:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>Once after every individual imported file.</term>
+			/// </item>
+			/// <item>
+			/// <term>Once before every directory import begins.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// The totalFileItems parameter of an <c>UpdateImport</c> event is always set to (-1) for ISO9660 and Joliet file systems,
+			/// because of the difficulty quickly and accurately determining the total number of files in an ISO9660/Joliet file system
+			/// prior to import.
+			/// </para>
+			/// <para>Import notifications are generated only for files and directories, and not for associated named streams.</para>
+			/// <para>If the currentItem is a directory, it contains a back slash '' at the end.</para>
+			/// </remarks>
+			public event Action<IFileSystemImage, FsiFileSystems, string, long, long, long, long> UpdateImport;
+
+			void DFileSystemImageImportEvents.UpdateImport(IFileSystemImage @object, FsiFileSystems fileSystem, string currentItem, long importedDirectoryItems, long totalDirectoryItems, long importedFileItems, long totalFileItems) =>
+				UpdateImport?.Invoke(@object, fileSystem, currentItem, importedDirectoryItems, totalDirectoryItems, importedFileItems, totalFileItems);
 		}
 
 		/// <summary>
@@ -552,6 +655,15 @@ namespace Vanara.PInvoke
 			[DispId(2)]
 			int FreeMediaBlocks { get; set; }
 
+			/// <summary>Set maximum number of blocks available based on the capabilities of the recorder.</summary>
+			/// <param name="discRecorder">
+			/// An IDiscRecorder2 interface that identifies the recording device from which you want to set the maximum number of blocks available.
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-setmaxmediablocksfromdevice HRESULT
+			// SetMaxMediaBlocksFromDevice( IDiscRecorder2 *discRecorder );
+			[DispId(36)]
+			void SetMaxMediaBlocksFromDevice(IDiscRecorder2 discRecorder);
+
 			/// <summary>Retrieves the number of blocks in use.</summary>
 			/// <value>Estimated number of blocks used in the file-system image.</value>
 			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_usedblocks HRESULT
@@ -671,6 +783,68 @@ namespace Vanara.PInvoke
 			// get_FileSystemsSupported( FsiFileSystems *pVal );
 			[DispId(14)]
 			FsiFileSystems FileSystemsSupported { get; }
+
+			/// <summary>Retrieves the UDF revision level of the imported file system image.</summary>
+			/// <value>UDF revision level of the imported file system image.</value>
+			/// <remarks>
+			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
+			/// is represented as 0x102.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevision HRESULT
+			// get_UDFRevision( LONG *pVal );
+			[DispId(37)]
+			int UDFRevision { set; get; }
+
+			/// <summary>Retrieves a list of supported UDF revision levels.</summary>
+			/// <value>
+			/// List of supported UDF revision levels. Each element of the list is VARIANT. The variant type is <c>VT_I4</c>. The
+			/// <c>lVal</c> member of the variant contains the revision level.
+			/// </value>
+			/// <remarks>
+			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
+			/// is represented as 0x102.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevisionssupported HRESULT
+			// get_UDFRevisionsSupported( SAFEARRAY **pVal );
+			[DispId(31)]
+			int[] UDFRevisionsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<int>))] get; }
+
+			/// <summary>Sets the default file system types and the image size based on the current media.</summary>
+			/// <param name="discRecorder">An IDiscRecorder2 the identifies the device that contains the current media.</param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaults HRESULT
+			// ChooseImageDefaults( IDiscRecorder2 *discRecorder );
+			[DispId(32)]
+			void ChooseImageDefaults(IDiscRecorder2 discRecorder);
+
+			/// <summary>Sets the default file system types and the image size based on the specified media type.</summary>
+			/// <param name="value">
+			/// Identifies the physical media type that will receive the burn image. For possible values, see the IMAPI_MEDIA_PHYSICAL_TYPE
+			/// enumeration type.
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaultsformediatype
+			// HRESULT ChooseImageDefaultsForMediaType( IMAPI_MEDIA_PHYSICAL_TYPE value );
+			[DispId(33)]
+			void ChooseImageDefaultsForMediaType(IMAPI_MEDIA_PHYSICAL_TYPE value);
+
+			/// <summary>Retrieves the ISO9660 compatibility level to use when creating the result image.</summary>
+			/// <value>Identifies the interchange level of the ISO9660 file system.</value>
+			/// <remarks>
+			/// For a list of supported compatibility levels, call the IFileSystemImage::get_ISO9660InterchangeLevelsSupported method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevel HRESULT
+			// get_ISO9660InterchangeLevel( LONG *pVal );
+			[DispId(34)]
+			int ISO9660InterchangeLevel { set; get; }
+
+			/// <summary>Retrieves the supported ISO9660 compatibility levels.</summary>
+			/// <value>
+			/// List of supported ISO9660 compatibility levels. Each item in the list is a VARIANT that identifies one supported interchange
+			/// level. The variant type is <c>VT_UI4</c>. The <c>ulVal</c> member of the variant contains the compatibility level.
+			/// </value>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevelssupported
+			// HRESULT get_ISO9660InterchangeLevelsSupported( SAFEARRAY **pVal );
+			[DispId(38)]
+			uint[] ISO9660InterchangeLevelsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<uint>))] get; }
 
 			/// <summary>Create the result object that contains the file system and file data.</summary>
 			/// <returns>
@@ -936,77 +1110,6 @@ namespace Vanara.PInvoke
 			[DispId(30)]
 			bool StageFiles { [return: MarshalAs(UnmanagedType.VariantBool)] get; set; }
 
-			/// <summary>Retrieves a list of supported UDF revision levels.</summary>
-			/// <value>
-			/// List of supported UDF revision levels. Each element of the list is VARIANT. The variant type is <c>VT_I4</c>. The
-			/// <c>lVal</c> member of the variant contains the revision level.
-			/// </value>
-			/// <remarks>
-			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
-			/// is represented as 0x102.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevisionssupported HRESULT
-			// get_UDFRevisionsSupported( SAFEARRAY **pVal );
-			[DispId(31)]
-			int[] UDFRevisionsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<int>))] get; }
-
-			/// <summary>Sets the default file system types and the image size based on the current media.</summary>
-			/// <param name="discRecorder">An IDiscRecorder2 the identifies the device that contains the current media.</param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaults HRESULT
-			// ChooseImageDefaults( IDiscRecorder2 *discRecorder );
-			[DispId(32)]
-			void ChooseImageDefaults(IDiscRecorder2 discRecorder);
-
-			/// <summary>Sets the default file system types and the image size based on the specified media type.</summary>
-			/// <param name="value">
-			/// Identifies the physical media type that will receive the burn image. For possible values, see the IMAPI_MEDIA_PHYSICAL_TYPE
-			/// enumeration type.
-			/// </param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaultsformediatype
-			// HRESULT ChooseImageDefaultsForMediaType( IMAPI_MEDIA_PHYSICAL_TYPE value );
-			[DispId(33)]
-			void ChooseImageDefaultsForMediaType(IMAPI_MEDIA_PHYSICAL_TYPE value);
-
-			/// <summary>Retrieves the ISO9660 compatibility level to use when creating the result image.</summary>
-			/// <value>Identifies the interchange level of the ISO9660 file system.</value>
-			/// <remarks>
-			/// For a list of supported compatibility levels, call the IFileSystemImage::get_ISO9660InterchangeLevelsSupported method.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevel HRESULT
-			// get_ISO9660InterchangeLevel( LONG *pVal );
-			[DispId(34)]
-			int ISO9660InterchangeLevel { set; get; }
-
-			/// <summary>Set maximum number of blocks available based on the capabilities of the recorder.</summary>
-			/// <param name="discRecorder">
-			/// An IDiscRecorder2 interface that identifies the recording device from which you want to set the maximum number of blocks available.
-			/// </param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-setmaxmediablocksfromdevice HRESULT
-			// SetMaxMediaBlocksFromDevice( IDiscRecorder2 *discRecorder );
-			[DispId(36)]
-			void SetMaxMediaBlocksFromDevice(IDiscRecorder2 discRecorder);
-
-			/// <summary>Retrieves the UDF revision level of the imported file system image.</summary>
-			/// <value>UDF revision level of the imported file system image.</value>
-			/// <remarks>
-			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
-			/// is represented as 0x102.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevision HRESULT
-			// get_UDFRevision( LONG *pVal );
-			[DispId(37)]
-			int UDFRevision { set; get; }
-
-			/// <summary>Retrieves the supported ISO9660 compatibility levels.</summary>
-			/// <value>
-			/// List of supported ISO9660 compatibility levels. Each item in the list is a VARIANT that identifies one supported interchange
-			/// level. The variant type is <c>VT_UI4</c>. The <c>ulVal</c> member of the variant contains the compatibility level.
-			/// </value>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevelssupported
-			// HRESULT get_ISO9660InterchangeLevelsSupported( SAFEARRAY **pVal );
-			[DispId(38)]
-			uint[] ISO9660InterchangeLevelsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<uint>))] get; }
-
 			/// <summary>Retrieves the list of multi-session interfaces for the optical media.</summary>
 			/// <value>
 			/// List of multi-session interfaces for the optical media. Each element of the list is a <c>VARIANT</c> of type
@@ -1068,6 +1171,15 @@ namespace Vanara.PInvoke
 			// get_FreeMediaBlocks( LONG *pVal );
 			[DispId(2)]
 			new int FreeMediaBlocks { get; set; }
+
+			/// <summary>Set maximum number of blocks available based on the capabilities of the recorder.</summary>
+			/// <param name="discRecorder">
+			/// An IDiscRecorder2 interface that identifies the recording device from which you want to set the maximum number of blocks available.
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-setmaxmediablocksfromdevice HRESULT
+			// SetMaxMediaBlocksFromDevice( IDiscRecorder2 *discRecorder );
+			[DispId(36)]
+			new void SetMaxMediaBlocksFromDevice(IDiscRecorder2 discRecorder);
 
 			/// <summary>Retrieves the number of blocks in use.</summary>
 			/// <value>Estimated number of blocks used in the file-system image.</value>
@@ -1188,6 +1300,68 @@ namespace Vanara.PInvoke
 			// get_FileSystemsSupported( FsiFileSystems *pVal );
 			[DispId(14)]
 			new FsiFileSystems FileSystemsSupported { get; }
+
+			/// <summary>Retrieves the UDF revision level of the imported file system image.</summary>
+			/// <value>UDF revision level of the imported file system image.</value>
+			/// <remarks>
+			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
+			/// is represented as 0x102.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevision HRESULT
+			// get_UDFRevision( LONG *pVal );
+			[DispId(37)]
+			new int UDFRevision { set; get; }
+
+			/// <summary>Retrieves a list of supported UDF revision levels.</summary>
+			/// <value>
+			/// List of supported UDF revision levels. Each element of the list is VARIANT. The variant type is <c>VT_I4</c>. The
+			/// <c>lVal</c> member of the variant contains the revision level.
+			/// </value>
+			/// <remarks>
+			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
+			/// is represented as 0x102.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevisionssupported HRESULT
+			// get_UDFRevisionsSupported( SAFEARRAY **pVal );
+			[DispId(31)]
+			new int[] UDFRevisionsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<int>))] get; }
+
+			/// <summary>Sets the default file system types and the image size based on the current media.</summary>
+			/// <param name="discRecorder">An IDiscRecorder2 the identifies the device that contains the current media.</param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaults HRESULT
+			// ChooseImageDefaults( IDiscRecorder2 *discRecorder );
+			[DispId(32)]
+			new void ChooseImageDefaults(IDiscRecorder2 discRecorder);
+
+			/// <summary>Sets the default file system types and the image size based on the specified media type.</summary>
+			/// <param name="value">
+			/// Identifies the physical media type that will receive the burn image. For possible values, see the IMAPI_MEDIA_PHYSICAL_TYPE
+			/// enumeration type.
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaultsformediatype
+			// HRESULT ChooseImageDefaultsForMediaType( IMAPI_MEDIA_PHYSICAL_TYPE value );
+			[DispId(33)]
+			new void ChooseImageDefaultsForMediaType(IMAPI_MEDIA_PHYSICAL_TYPE value);
+
+			/// <summary>Retrieves the ISO9660 compatibility level to use when creating the result image.</summary>
+			/// <value>Identifies the interchange level of the ISO9660 file system.</value>
+			/// <remarks>
+			/// For a list of supported compatibility levels, call the IFileSystemImage::get_ISO9660InterchangeLevelsSupported method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevel HRESULT
+			// get_ISO9660InterchangeLevel( LONG *pVal );
+			[DispId(34)]
+			new int ISO9660InterchangeLevel { set; get; }
+
+			/// <summary>Retrieves the supported ISO9660 compatibility levels.</summary>
+			/// <value>
+			/// List of supported ISO9660 compatibility levels. Each item in the list is a VARIANT that identifies one supported interchange
+			/// level. The variant type is <c>VT_UI4</c>. The <c>ulVal</c> member of the variant contains the compatibility level.
+			/// </value>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevelssupported
+			// HRESULT get_ISO9660InterchangeLevelsSupported( SAFEARRAY **pVal );
+			[DispId(38)]
+			new uint[] ISO9660InterchangeLevelsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<uint>))] get; }
 
 			/// <summary>Create the result object that contains the file system and file data.</summary>
 			/// <returns>
@@ -1452,77 +1626,6 @@ namespace Vanara.PInvoke
 			// get_StageFiles( VARIANT_BOOL *pVal );
 			[DispId(30)]
 			new bool StageFiles { [return: MarshalAs(UnmanagedType.VariantBool)] get; set; }
-
-			/// <summary>Retrieves a list of supported UDF revision levels.</summary>
-			/// <value>
-			/// List of supported UDF revision levels. Each element of the list is VARIANT. The variant type is <c>VT_I4</c>. The
-			/// <c>lVal</c> member of the variant contains the revision level.
-			/// </value>
-			/// <remarks>
-			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
-			/// is represented as 0x102.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevisionssupported HRESULT
-			// get_UDFRevisionsSupported( SAFEARRAY **pVal );
-			[DispId(31)]
-			new int[] UDFRevisionsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<int>))] get; }
-
-			/// <summary>Sets the default file system types and the image size based on the current media.</summary>
-			/// <param name="discRecorder">An IDiscRecorder2 the identifies the device that contains the current media.</param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaults HRESULT
-			// ChooseImageDefaults( IDiscRecorder2 *discRecorder );
-			[DispId(32)]
-			new void ChooseImageDefaults(IDiscRecorder2 discRecorder);
-
-			/// <summary>Sets the default file system types and the image size based on the specified media type.</summary>
-			/// <param name="value">
-			/// Identifies the physical media type that will receive the burn image. For possible values, see the IMAPI_MEDIA_PHYSICAL_TYPE
-			/// enumeration type.
-			/// </param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaultsformediatype
-			// HRESULT ChooseImageDefaultsForMediaType( IMAPI_MEDIA_PHYSICAL_TYPE value );
-			[DispId(33)]
-			new void ChooseImageDefaultsForMediaType(IMAPI_MEDIA_PHYSICAL_TYPE value);
-
-			/// <summary>Retrieves the ISO9660 compatibility level to use when creating the result image.</summary>
-			/// <value>Identifies the interchange level of the ISO9660 file system.</value>
-			/// <remarks>
-			/// For a list of supported compatibility levels, call the IFileSystemImage::get_ISO9660InterchangeLevelsSupported method.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevel HRESULT
-			// get_ISO9660InterchangeLevel( LONG *pVal );
-			[DispId(34)]
-			new int ISO9660InterchangeLevel { set; get; }
-
-			/// <summary>Set maximum number of blocks available based on the capabilities of the recorder.</summary>
-			/// <param name="discRecorder">
-			/// An IDiscRecorder2 interface that identifies the recording device from which you want to set the maximum number of blocks available.
-			/// </param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-setmaxmediablocksfromdevice HRESULT
-			// SetMaxMediaBlocksFromDevice( IDiscRecorder2 *discRecorder );
-			[DispId(36)]
-			new void SetMaxMediaBlocksFromDevice(IDiscRecorder2 discRecorder);
-
-			/// <summary>Retrieves the UDF revision level of the imported file system image.</summary>
-			/// <value>UDF revision level of the imported file system image.</value>
-			/// <remarks>
-			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
-			/// is represented as 0x102.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevision HRESULT
-			// get_UDFRevision( LONG *pVal );
-			[DispId(37)]
-			new int UDFRevision { set; get; }
-
-			/// <summary>Retrieves the supported ISO9660 compatibility levels.</summary>
-			/// <value>
-			/// List of supported ISO9660 compatibility levels. Each item in the list is a VARIANT that identifies one supported interchange
-			/// level. The variant type is <c>VT_UI4</c>. The <c>ulVal</c> member of the variant contains the compatibility level.
-			/// </value>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevelssupported
-			// HRESULT get_ISO9660InterchangeLevelsSupported( SAFEARRAY **pVal );
-			[DispId(38)]
-			new uint[] ISO9660InterchangeLevelsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<uint>))] get; }
 
 			/// <summary>Retrieves the list of multi-session interfaces for the optical media.</summary>
 			/// <value>
@@ -1605,6 +1708,15 @@ namespace Vanara.PInvoke
 			[DispId(2)]
 			new int FreeMediaBlocks { get; set; }
 
+			/// <summary>Set maximum number of blocks available based on the capabilities of the recorder.</summary>
+			/// <param name="discRecorder">
+			/// An IDiscRecorder2 interface that identifies the recording device from which you want to set the maximum number of blocks available.
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-setmaxmediablocksfromdevice HRESULT
+			// SetMaxMediaBlocksFromDevice( IDiscRecorder2 *discRecorder );
+			[DispId(36)]
+			new void SetMaxMediaBlocksFromDevice(IDiscRecorder2 discRecorder);
+
 			/// <summary>Retrieves the number of blocks in use.</summary>
 			/// <value>Estimated number of blocks used in the file-system image.</value>
 			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_usedblocks HRESULT
@@ -1724,6 +1836,68 @@ namespace Vanara.PInvoke
 			// get_FileSystemsSupported( FsiFileSystems *pVal );
 			[DispId(14)]
 			new FsiFileSystems FileSystemsSupported { get; }
+
+			/// <summary>Retrieves the UDF revision level of the imported file system image.</summary>
+			/// <value>UDF revision level of the imported file system image.</value>
+			/// <remarks>
+			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
+			/// is represented as 0x102.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevision HRESULT
+			// get_UDFRevision( LONG *pVal );
+			[DispId(37)]
+			new int UDFRevision { set; get; }
+
+			/// <summary>Retrieves a list of supported UDF revision levels.</summary>
+			/// <value>
+			/// List of supported UDF revision levels. Each element of the list is VARIANT. The variant type is <c>VT_I4</c>. The
+			/// <c>lVal</c> member of the variant contains the revision level.
+			/// </value>
+			/// <remarks>
+			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
+			/// is represented as 0x102.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevisionssupported HRESULT
+			// get_UDFRevisionsSupported( SAFEARRAY **pVal );
+			[DispId(31)]
+			new int[] UDFRevisionsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<int>))] get; }
+
+			/// <summary>Sets the default file system types and the image size based on the current media.</summary>
+			/// <param name="discRecorder">An IDiscRecorder2 the identifies the device that contains the current media.</param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaults HRESULT
+			// ChooseImageDefaults( IDiscRecorder2 *discRecorder );
+			[DispId(32)]
+			new void ChooseImageDefaults(IDiscRecorder2 discRecorder);
+
+			/// <summary>Sets the default file system types and the image size based on the specified media type.</summary>
+			/// <param name="value">
+			/// Identifies the physical media type that will receive the burn image. For possible values, see the IMAPI_MEDIA_PHYSICAL_TYPE
+			/// enumeration type.
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaultsformediatype
+			// HRESULT ChooseImageDefaultsForMediaType( IMAPI_MEDIA_PHYSICAL_TYPE value );
+			[DispId(33)]
+			new void ChooseImageDefaultsForMediaType(IMAPI_MEDIA_PHYSICAL_TYPE value);
+
+			/// <summary>Retrieves the ISO9660 compatibility level to use when creating the result image.</summary>
+			/// <value>Identifies the interchange level of the ISO9660 file system.</value>
+			/// <remarks>
+			/// For a list of supported compatibility levels, call the IFileSystemImage::get_ISO9660InterchangeLevelsSupported method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevel HRESULT
+			// get_ISO9660InterchangeLevel( LONG *pVal );
+			[DispId(34)]
+			new int ISO9660InterchangeLevel { set; get; }
+
+			/// <summary>Retrieves the supported ISO9660 compatibility levels.</summary>
+			/// <value>
+			/// List of supported ISO9660 compatibility levels. Each item in the list is a VARIANT that identifies one supported interchange
+			/// level. The variant type is <c>VT_UI4</c>. The <c>ulVal</c> member of the variant contains the compatibility level.
+			/// </value>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevelssupported
+			// HRESULT get_ISO9660InterchangeLevelsSupported( SAFEARRAY **pVal );
+			[DispId(38)]
+			new uint[] ISO9660InterchangeLevelsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<uint>))] get; }
 
 			/// <summary>Create the result object that contains the file system and file data.</summary>
 			/// <returns>
@@ -1988,77 +2162,6 @@ namespace Vanara.PInvoke
 			// get_StageFiles( VARIANT_BOOL *pVal );
 			[DispId(30)]
 			new bool StageFiles { [return: MarshalAs(UnmanagedType.VariantBool)] get; set; }
-
-			/// <summary>Retrieves a list of supported UDF revision levels.</summary>
-			/// <value>
-			/// List of supported UDF revision levels. Each element of the list is VARIANT. The variant type is <c>VT_I4</c>. The
-			/// <c>lVal</c> member of the variant contains the revision level.
-			/// </value>
-			/// <remarks>
-			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
-			/// is represented as 0x102.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevisionssupported HRESULT
-			// get_UDFRevisionsSupported( SAFEARRAY **pVal );
-			[DispId(31)]
-			new int[] UDFRevisionsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<int>))] get; }
-
-			/// <summary>Sets the default file system types and the image size based on the current media.</summary>
-			/// <param name="discRecorder">An IDiscRecorder2 the identifies the device that contains the current media.</param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaults HRESULT
-			// ChooseImageDefaults( IDiscRecorder2 *discRecorder );
-			[DispId(32)]
-			new void ChooseImageDefaults(IDiscRecorder2 discRecorder);
-
-			/// <summary>Sets the default file system types and the image size based on the specified media type.</summary>
-			/// <param name="value">
-			/// Identifies the physical media type that will receive the burn image. For possible values, see the IMAPI_MEDIA_PHYSICAL_TYPE
-			/// enumeration type.
-			/// </param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-chooseimagedefaultsformediatype
-			// HRESULT ChooseImageDefaultsForMediaType( IMAPI_MEDIA_PHYSICAL_TYPE value );
-			[DispId(33)]
-			new void ChooseImageDefaultsForMediaType(IMAPI_MEDIA_PHYSICAL_TYPE value);
-
-			/// <summary>Retrieves the ISO9660 compatibility level to use when creating the result image.</summary>
-			/// <value>Identifies the interchange level of the ISO9660 file system.</value>
-			/// <remarks>
-			/// For a list of supported compatibility levels, call the IFileSystemImage::get_ISO9660InterchangeLevelsSupported method.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevel HRESULT
-			// get_ISO9660InterchangeLevel( LONG *pVal );
-			[DispId(34)]
-			new int ISO9660InterchangeLevel { set; get; }
-
-			/// <summary>Set maximum number of blocks available based on the capabilities of the recorder.</summary>
-			/// <param name="discRecorder">
-			/// An IDiscRecorder2 interface that identifies the recording device from which you want to set the maximum number of blocks available.
-			/// </param>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-setmaxmediablocksfromdevice HRESULT
-			// SetMaxMediaBlocksFromDevice( IDiscRecorder2 *discRecorder );
-			[DispId(36)]
-			new void SetMaxMediaBlocksFromDevice(IDiscRecorder2 discRecorder);
-
-			/// <summary>Retrieves the UDF revision level of the imported file system image.</summary>
-			/// <value>UDF revision level of the imported file system image.</value>
-			/// <remarks>
-			/// The value is encoded according to the UDF specification, except the variable size is LONG. For example, revision level 1.02
-			/// is represented as 0x102.
-			/// </remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_udfrevision HRESULT
-			// get_UDFRevision( LONG *pVal );
-			[DispId(37)]
-			new int UDFRevision { set; get; }
-
-			/// <summary>Retrieves the supported ISO9660 compatibility levels.</summary>
-			/// <value>
-			/// List of supported ISO9660 compatibility levels. Each item in the list is a VARIANT that identifies one supported interchange
-			/// level. The variant type is <c>VT_UI4</c>. The <c>ulVal</c> member of the variant contains the compatibility level.
-			/// </value>
-			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage-get_iso9660interchangelevelssupported
-			// HRESULT get_ISO9660InterchangeLevelsSupported( SAFEARRAY **pVal );
-			[DispId(38)]
-			new uint[] ISO9660InterchangeLevelsSupported { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<uint>))] get; }
 
 			/// <summary>Retrieves the list of multi-session interfaces for the optical media.</summary>
 			/// <value>
