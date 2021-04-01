@@ -615,10 +615,10 @@ namespace Vanara.Windows.Shell
                 if (this.viewStateStream != null)
                     Marshal.ReleaseComObject(this.viewStateStream);
 
-                this.viewStateStreamIdentifier = shellObject.ParsingName;
+                this.viewStateStreamIdentifier = shellItem.ParsingName;
 
                 var viewHandler = new ShellBrowserViewHandler(this,
-                    new ShellFolder(shellObject),
+                    new ShellFolder(shellItem),
                     ref this.folderSettings,
                     ref this.emptyFolderText);
 
