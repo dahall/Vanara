@@ -191,7 +191,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the default size of the control.</summary>
 		protected override Size DefaultSize => new Size(250, 200);
 
-		private IShellBrowser Browser => iBrowser ??= new ShellBrowser(this);
+		private IShellBrowser Browser => iBrowser ??= new ShellBrowser(/* this */);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="left">The left.</param>
