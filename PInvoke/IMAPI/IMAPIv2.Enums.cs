@@ -429,6 +429,14 @@ namespace Vanara.PInvoke
 			IMAPI_FEATURE_PAGE_TYPE_VCPS = 0x110,
 		}
 
+		/// <summary>Reports information (but not errors) about the media state.</summary>
+		[Description("Mask of 'supported/informational' media flags")]
+		public const IMAPI_FORMAT2_DATA_MEDIA_STATE IMAPI_FORMAT2_DATA_MEDIA_STATE_INFORMATIONAL_MASK = (IMAPI_FORMAT2_DATA_MEDIA_STATE)0x000F;
+
+		/// <summary>Reports an unsupported media state.</summary>
+		[Description("Mask of 'not supported' media flags")]
+		public const IMAPI_FORMAT2_DATA_MEDIA_STATE IMAPI_FORMAT2_DATA_MEDIA_STATE_UNSUPPORTED_MASK = (IMAPI_FORMAT2_DATA_MEDIA_STATE)0xFC00;
+
 		/// <summary>Defines values for the possible media states.</summary>
 		/// <remarks>
 		/// This enumeration should be treated as a bitmask. Nearly all of the values set one bit set to one and the other bits to zero. Three
@@ -450,14 +458,6 @@ namespace Vanara.PInvoke
 			/// <summary>Indicates that the interface does not know the media state.</summary>
 			[Description("Unknown")]
 			IMAPI_FORMAT2_DATA_MEDIA_STATE_UNKNOWN = 0x0,
-
-			/// <summary>Reports information (but not errors) about the media state.</summary>
-			[Description("Mask of 'supported/informational' media flags")]
-			IMAPI_FORMAT2_DATA_MEDIA_STATE_INFORMATIONAL_MASK = 0x000F,
-
-			/// <summary>Reports an unsupported media state.</summary>
-			[Description("Mask of 'not supported' media flags")]
-			IMAPI_FORMAT2_DATA_MEDIA_STATE_UNSUPPORTED_MASK = 0xFC00,
 
 			/// <summary>Write operations can occur on used portions of the disc.</summary>
 			[Description("Media may only be overwritten")]

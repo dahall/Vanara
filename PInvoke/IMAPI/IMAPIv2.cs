@@ -489,9 +489,28 @@ namespace Vanara.PInvoke
 			IMAPI_BURN_VERIFICATION_LEVEL BurnVerificationLevel { set; get; }
 		}
 
-		/// <summary></summary>
+		/// <summary>
+		/// <para>Use this interface to write a data stream to a disc.</para>
+		/// <para>
+		/// To create an instance of this interface, call the <c>CoCreateInstance</c> function. Use__uuidof(MsftDiscFormat2Data) for the
+		/// class identifier and __uuidof(IDiscFormat2Data) for the interface identifier.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// To create the <c>MsftDiscFormat2Data</c> object in a script, use IMAPI2.MsftDiscFormat2Data as the program identifier when
+		/// calling <c>CreateObject</c>.
+		/// </para>
+		/// <para>
+		/// It is possible for a power state transition to take place during a burn operation (i.e. user log-off or system suspend) which
+		/// leads to the interruption of the burn process and possible data loss. For programming considerations, see Preventing Logoff or
+		/// Suspend During a Burn.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nn-imapi2-idiscformat2data
+		[PInvokeData("imapi2.h", MSDNShortId = "NN:imapi2.IDiscFormat2Data")]
 		[ComImport, Guid("27354153-9F64-5B0F-8F00-5D77AFBE261E"), InterfaceType(ComInterfaceType.InterfaceIsDual), CoClass(typeof(MsftDiscFormat2Data))]
-		public interface IDiscFormat2Data : IDiskFormat2
+		public interface IDiscFormat2Data : IDiscFormat2
 		{
 			/// <summary>Determines if the recorder supports the given format.</summary>
 			/// <param name="recorder">An IDiscRecorder2 interface of the recorder to test.</param>
@@ -1122,7 +1141,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nn-imapi2-idiscformat2erase
 		[PInvokeData("imapi2.h", MSDNShortId = "NN:imapi2.IDiscFormat2Erase")]
 		[ComImport, Guid("27354156-8F64-5B0F-8F00-5D77AFBE261E"), InterfaceType(ComInterfaceType.InterfaceIsDual), CoClass(typeof(MsftDiscFormat2Erase))]
-		public interface IDiscFormat2Erase : IDiskFormat2
+		public interface IDiscFormat2Erase : IDiscFormat2
 		{
 			/// <summary>Determines if the recorder supports the given format.</summary>
 			/// <param name="recorder">An IDiscRecorder2 interface of the recorder to test.</param>
@@ -1286,7 +1305,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nn-imapi2-idiscformat2rawcd
 		[PInvokeData("imapi2.h", MSDNShortId = "NN:imapi2.IDiscFormat2RawCD")]
 		[ComImport, Guid("27354155-8F64-5B0F-8F00-5D77AFBE261E"), InterfaceType(ComInterfaceType.InterfaceIsDual), CoClass(typeof(MsftDiscFormat2RawCD))]
-		public interface IDiscFormat2RawCD : IDiskFormat2
+		public interface IDiscFormat2RawCD : IDiscFormat2
 		{
 			/// <summary>Determines if the recorder supports the given format.</summary>
 			/// <param name="recorder">An IDiscRecorder2 interface of the recorder to test.</param>
@@ -1794,7 +1813,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nn-imapi2-idiscformat2trackatonce
 		[PInvokeData("imapi2.h", MSDNShortId = "NN:imapi2.IDiscFormat2TrackAtOnce")]
 		[ComImport, Guid("27354154-8F64-5B0F-8F00-5D77AFBE261E"), InterfaceType(ComInterfaceType.InterfaceIsDual), CoClass(typeof(MsftDiscFormat2TrackAtOnce))]
-		public interface IDiscFormat2TrackAtOnce : IDiskFormat2
+		public interface IDiscFormat2TrackAtOnce : IDiscFormat2
 		{
 			/// <summary>Determines if the recorder supports the given format.</summary>
 			/// <param name="recorder">An IDiscRecorder2 interface of the recorder to test.</param>
@@ -2325,15 +2344,34 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// To create the <c>MsftDiscMaster2</c> object in a script, use IMAPI2.MsftDiscMaster2 as the program identifier when calling <c>CreateObject</c>.
 		/// </para>
-		/// <para>To receive notification when a device is added or removed from the computer, implement the DDiscMaster2Events interface.</para>
+		/// <para>To receive notification when a device is added or removed from the computer, implement the <see cref="DDiscMaster2Events"/> interface.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nn-imapi2-idiscmaster2
 		[PInvokeData("imapi2.h", MSDNShortId = "NN:imapi2.IDiscMaster2")]
 		[ComImport, Guid("27354130-7F64-5B0F-8F00-5D77AFBE261E"), InterfaceType(ComInterfaceType.InterfaceIsDual), CoClass(typeof(MsftDiscMaster2))]
 		public interface IDiscMaster2 : IEnumerable
 		{
-			/// <summary>Returns an enumerator that iterates through a collection.</summary>
-			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			/// <summary>Retrieves a list of the CD and DVD devices installed on the computer.</summary>
+			/// <returns>
+			/// An <c>IEnumVariant</c> interface that you use to enumerate the CD and DVD devices installed on the computer. The items of
+			/// the enumeration are variants whose type is <c>VT_BSTR</c>. Use the <c>bstrVal</c> member to retrieve the unique identifier
+			/// of the device.
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The enumeration is a snapshot of the devices on the computer at the time of the call and will not reflect devices that are
+			/// added and removed. To receive notification when a device is added or removed from the computer, implement the
+			/// DDiscMaster2Events interface.
+			/// </para>
+			/// <para>To retrieve a single identifier, see the IDiscMaster2::get_Item property.</para>
+			/// <para>
+			/// The device identifier is guaranteed to be unique and static for a given device as recognized by Windows Plug and Play. You
+			/// can use the identifier as a key value for saving the user's default burner, and can also be used to cache other
+			/// device-specific static information (for example, VendorID and ProductID) by an advanced application.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-idiscmaster2-get__newenum
+			// HRESULT get__NewEnum( IEnumVARIANT **ppunk );
 			[DispId(-4)]
 			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(EnumeratorToEnumVariantMarshaler))]
 			new IEnumerator GetEnumerator();
@@ -3177,6 +3215,34 @@ namespace Vanara.PInvoke
 			uint GetMaximumPageAlignedTransferSize();
 		}
 
+		/// <summary>Reads a DVD structure from the media.</summary>
+		/// <param name="format">
+		/// <para>Format field of the command packet. Acceptable values range from zero to 0xFF.</para>
+		/// <para><c>Note</c> This value is truncated to <c>UCHAR</c>.</para>
+		/// </param>
+		/// <param name="address">Address field of the command packet.</param>
+		/// <param name="layer">Layer field of the command packet.</param>
+		/// <param name="agid">Authentication grant ID (AGID) field of the command packet.</param>
+		/// <returns>
+		/// <para>
+		/// Data buffer that contains the DVD structure. For details of the contents of the data buffer, see the READ DISC STRUCTURE command
+		/// in the latest revision of the MMC specification at ftp://ftp.t10.org/t10/drafts/mmc5.
+		/// </para>
+		/// <para>This method removes headers from the buffer.</para>
+		/// </returns>
+		/// <remarks>
+		/// This method removes the complexity of working with the READ DISC STRUCTURE command. For details on the values to specify for the
+		/// format, address, layer, and agid parameters, see their field descriptions for the READ DISC STRUCTURE command in the latest
+		/// revision of the MMC specification at ftp://ftp.t10.org/t10/drafts/mmc5.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-idiscrecorder2ex-readdvdstructure HRESULT ReadDvdStructure(
+		// ULONG format, ULONG address, ULONG layer, ULONG agid, BYTE **data, ULONG_IMAPI2_DVD_STRUCTURE *count );
+		public static byte[] ReadDvdStructure(this IDiscRecorder2Ex obj, byte format, uint address, uint layer, uint agid)
+		{
+			obj.ReadDvdStructure(format, address, layer, agid, out var mem, out var sz);
+			return mem.GetBytes(0, (int)sz);
+		}
+
 		/// <summary>
 		/// <para>This is a base interface. Use the following interfaces which inherit this interface:</para>
 		/// <list type="bullet">
@@ -3197,7 +3263,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nn-imapi2-idiscformat2
 		[PInvokeData("imapi2.h", MSDNShortId = "NN:imapi2.IDiscFormat2")]
 		[ComImport, Guid("27354152-8F64-5B0F-8F00-5D77AFBE261E"), InterfaceType(ComInterfaceType.InterfaceIsDual)]
-		public interface IDiskFormat2
+		public interface IDiscFormat2
 		{
 			/// <summary>Determines if the recorder supports the given format.</summary>
 			/// <param name="recorder">An IDiscRecorder2 interface of the recorder to test.</param>
@@ -3258,6 +3324,18 @@ namespace Vanara.PInvoke
 			[DispId(1794)]
 			IMAPI_MEDIA_PHYSICAL_TYPE[] SupportedMediaTypes { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IMAPI_MEDIA_PHYSICAL_TYPE>))] get; }
 		}
+
+		public static IMAPI_MEDIA_PHYSICAL_TYPE GetCurrentPhysicalMediaType(this IDiscFormat2 formatter) =>
+			(IMAPI_MEDIA_PHYSICAL_TYPE)formatter.GetType().InvokeMember("CurrentPhysicalMediaType", System.Reflection.BindingFlags.GetProperty, null, formatter, null);
+
+		public static IDiscRecorder2 GetRecorder(this IDiscFormat2 formatter) =>
+			(IDiscRecorder2)formatter.GetType().InvokeMember("Recorder", System.Reflection.BindingFlags.GetProperty, null, formatter, null);
+
+		public static void SetRecorder(this IDiscFormat2 formatter, IDiscRecorder2 recorder) =>
+			formatter.GetType().InvokeMember("Recorder", System.Reflection.BindingFlags.SetProperty, null, formatter, new object[] { recorder });
+
+		public static void SetClientName(this IDiscFormat2 formatter, string clientName) =>
+			formatter.GetType().InvokeMember("ClientName", System.Reflection.BindingFlags.SetProperty, null, formatter, new object[] { clientName });
 
 		/// <summary>
 		/// <para>Base interface containing properties common to derived multisession interfaces.</para>
@@ -3393,7 +3471,6 @@ namespace Vanara.PInvoke
 			[DispId(0x207)]
 			int TotalSectorsOnMedia { get; }
 		}
-
 
 		/// <summary>
 		/// <para>
