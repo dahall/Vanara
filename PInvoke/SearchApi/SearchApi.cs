@@ -4475,7 +4475,6 @@ namespace Vanara.PInvoke
 			[DispId(0x60010014)]
 			string Password { [param: In, MarshalAs(UnmanagedType.LPWStr)] set; [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 		}
-	}
 
 		/// <summary>Provides methods to define scope rules for crawling and indexing.</summary>
 		/// <remarks>
