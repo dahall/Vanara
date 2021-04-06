@@ -486,8 +486,10 @@ namespace Vanara.Configuration
 namespace Vanara.Windows.Forms
 {
 	using System.Drawing;
+	using System.Text;
 	using System.Windows.Forms;
 	using Vanara.Configuration;
+	using Vanara.PInvoke;
 
 	/// <summary>
 	/// A class that manages a Most Recently Used file listing and interacts with a MenuStrip to display a menu list of the files. By
@@ -555,17 +557,6 @@ namespace Vanara.Windows.Forms
 			/// <value>The recent file menu item.</value>
 			public ToolStripMenuItem RecentFileMenuItem { get; set; }
 
-			/// <summary>Compacts the path.</summary>
-			/// <param name="stringToCompact">The string to compact.</param>
-			/// <param name="font">The font.</param>
-			/// <param name="maxWidthInPts">The maximum width in PTS.</param>
-			/// <returns></returns>
-			public static string CompactPath(string stringToCompact, Font font, int maxWidthInPts)
-			{
-				TextRenderer.MeasureText(stringToCompact, font, new Size(maxWidthInPts, 0), TextFormatFlags.PathEllipsis | TextFormatFlags.ModifyString);
-				return string.Concat(stringToCompact.TakeWhile(c => c != '\0'));
-			}
-
 			/// <summary>Clears the recent files.</summary>
 			public void ClearRecentFiles()
 			{
@@ -607,7 +598,7 @@ namespace Vanara.Windows.Forms
 				fileMenuItemClickAction = fileMenuItemClick;
 				foreach (var f in files)
 				{
-					RecentFileMenuItem.DropDownItems.Add(new ToolStripMenuItem(CompactPath(f, RecentFileMenuItem.Font, RecentFileMenuItem.Width), menuImageCallback?.Invoke(f) as Image, OnFileMenuItemClick) { Tag = f });
+					RecentFileMenuItem.DropDownItems.Add(new ToolStripMenuItem(CompactPath(RecentFileMenuItem.GetCurrentParent().CreateGraphics(), f, RecentFileMenuItem.Font, RecentFileMenuItem.Width), menuImageCallback?.Invoke(f) as Image, OnFileMenuItemClick) { Tag = f });
 				}
 
 				if (!clearListMenuItemOnTop && !string.IsNullOrEmpty(clearListMenuItemText))
@@ -616,6 +607,18 @@ namespace Vanara.Windows.Forms
 					RecentFileMenuItem.DropDownItems.Add(clearListMenuItemText, clearListMenuItemImage as Image, (o, e) => clearListMenuItemClick?.Invoke());
 				}
 				RecentFileMenuItem.Enabled = true;
+			}
+
+			/// <summary>Compacts the path.</summary>
+			/// <param name="stringToCompact">The string to compact.</param>
+			/// <param name="font">The font.</param>
+			/// <param name="maxWidthInPts">The maximum width in PTS.</param>
+			/// <returns></returns>
+			private static string CompactPath(Graphics g, string stringToCompact, Font font, int maxWidthInPts)
+			{
+				var sb = new StringBuilder(stringToCompact);
+				g.MeasureText(sb, font, new Size(maxWidthInPts, 0), TextFormatFlags.PathEllipsis | TextFormatFlags.ModifyString);
+				return sb.ToString(); // string.Concat(stringToCompact.TakeWhile(c => c != '\0'));
 			}
 
 			private void OnFileMenuItemClick(object sender, EventArgs e)
