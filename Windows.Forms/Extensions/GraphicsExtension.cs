@@ -2,6 +2,9 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using Vanara.PInvoke;
+using static Vanara.PInvoke.Gdi32;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.Extensions
 {
@@ -241,5 +244,25 @@ namespace Vanara.Extensions
 		[Obsolete("Please use matching function in Vanara.Extensions.GdiExtension.")]
 		public static Bitmap GetTransparentBitmap(Bitmap whiteBmp, Bitmap blackBmp) =>
 			GdiExtension.GetTransparentBitmap(whiteBmp, blackBmp);
+
+		/// <summary>
+		/// Provides the size, in pixels, of the specified text when drawn with the specified font and formatting instructions, using the
+		/// specified size to create the initial bounding rectangle for the text.
+		/// </summary>
+		/// <param name="dc">The device context object.</param>
+		/// <param name="text">The text to measure.</param>
+		/// <param name="font">The <see cref="Font"/> to apply to the measured text.</param>
+		/// <param name="proposedSize">The <see cref="Size"/> of the initial bounding rectangle.</param>
+		/// <param name="flags">The formatting instructions to apply to the measured text.</param>
+		/// <returns>
+		/// The return value is the text height in logical units. If <see cref="TextFormatFlags.VerticalCenter"/> or <see
+		/// cref="TextFormatFlags.Bottom"/> is specified, the return value is the offset to the bottom of the drawn text.
+		/// </returns>
+		public static int MeasureText(this IDeviceContext dc, System.Text.StringBuilder text, Font font, Size proposedSize, TextFormatFlags flags)
+		{
+			using var hdc = new SafeHDC(dc);
+			using var ctx = hdc.SelectObject((HFONT)font.ToHfont());
+			return Win32Error.ThrowLastErrorIf(DrawTextEx(hdc, text, text.Length, new RECT(0, 0, proposedSize.Width, proposedSize.Height), (DrawTextFlags)(int)flags | DrawTextFlags.DT_CALCRECT), h => h == 0);
+		}
 	}
 }
