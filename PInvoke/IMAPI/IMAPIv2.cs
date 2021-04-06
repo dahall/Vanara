@@ -297,7 +297,8 @@ namespace Vanara.PInvoke
 		public class DDiscMaster2EventsSink : DDiscMaster2Events
 		{
 			/// <summary>Initializes a new instance of the <see cref="DDiscMaster2EventsSink"/> class.</summary>
-			/// <param name="onUpdate">The on update.</param>
+			/// <param name="onAdded">The delegate to call when a device is added.</param>
+			/// <param name="onRemoved">The delegate to call when a device is removed.</param>
 			public DDiscMaster2EventsSink(Action<IDiscMaster2, string> onAdded, Action<IDiscMaster2, string> onRemoved)
 			{
 				if (onAdded is not null) NotifyDeviceAdded += onAdded;
@@ -3216,6 +3217,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Reads a DVD structure from the media.</summary>
+		/// <param name="obj">The <see cref="IDiscRecorder2Ex"/> instance.</param>
 		/// <param name="format">
 		/// <para>Format field of the command packet. Acceptable values range from zero to 0xFF.</para>
 		/// <para><c>Note</c> This value is truncated to <c>UCHAR</c>.</para>
@@ -3324,18 +3326,6 @@ namespace Vanara.PInvoke
 			[DispId(1794)]
 			IMAPI_MEDIA_PHYSICAL_TYPE[] SupportedMediaTypes { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IMAPI_MEDIA_PHYSICAL_TYPE>))] get; }
 		}
-
-		public static IMAPI_MEDIA_PHYSICAL_TYPE GetCurrentPhysicalMediaType(this IDiscFormat2 formatter) =>
-			(IMAPI_MEDIA_PHYSICAL_TYPE)formatter.GetType().InvokeMember("CurrentPhysicalMediaType", System.Reflection.BindingFlags.GetProperty, null, formatter, null);
-
-		public static IDiscRecorder2 GetRecorder(this IDiscFormat2 formatter) =>
-			(IDiscRecorder2)formatter.GetType().InvokeMember("Recorder", System.Reflection.BindingFlags.GetProperty, null, formatter, null);
-
-		public static void SetRecorder(this IDiscFormat2 formatter, IDiscRecorder2 recorder) =>
-			formatter.GetType().InvokeMember("Recorder", System.Reflection.BindingFlags.SetProperty, null, formatter, new object[] { recorder });
-
-		public static void SetClientName(this IDiscFormat2 formatter, string clientName) =>
-			formatter.GetType().InvokeMember("ClientName", System.Reflection.BindingFlags.SetProperty, null, formatter, new object[] { clientName });
 
 		/// <summary>
 		/// <para>Base interface containing properties common to derived multisession interfaces.</para>

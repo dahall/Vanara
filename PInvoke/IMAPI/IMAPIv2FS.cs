@@ -285,11 +285,13 @@ namespace Vanara.PInvoke
 							  long totalFileItems);
 		}
 
+		/// <summary>Sink implementation for <see cref="DFileSystemImageImportEvents"/>.</summary>
+		/// <seealso cref="Vanara.PInvoke.IMAPI.DFileSystemImageImportEvents"/>
 		[ClassInterface(ClassInterfaceType.None)]
 		public class DFileSystemImageImportEventsSink : DFileSystemImageImportEvents
 		{
-			/// <summary>Initializes a new instance of the <see cref="DFileSystemImageEventsSink"/> class.</summary>
-			/// <param name="onUpdate">The delegate to assign to the <see cref="Update"/> event.</param>
+			/// <summary>Initializes a new instance of the <see cref="DFileSystemImageImportEventsSink"/> class.</summary>
+			/// <param name="onUpdateImport">The delegate to call on import update.</param>
 			public DFileSystemImageImportEventsSink(Action<IFileSystemImage, FsiFileSystems, string, long, long, long, long> onUpdateImport)
 			{
 				if (onUpdateImport is not null) UpdateImport += onUpdateImport;
