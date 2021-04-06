@@ -112,7 +112,7 @@ namespace Vanara.Extensions
 				contentRectangle = new Rectangle(contentLocation, contentSize);
 			}
 
-			actualImageBounds = Rectangle.Empty;
+			actualImageBounds = System.Drawing.Rectangle.Empty;
 			if (image != null)
 			{
 				// Get ActualImageBounds
@@ -152,7 +152,7 @@ namespace Vanara.Extensions
 			}
 
 			// Get ActualTextBounds
-			actualTextBounds = Rectangle.Empty;
+			actualTextBounds = System.Drawing.Rectangle.Empty;
 			if (!(text?.Length > 0)) return;
 
 			actualTextBounds = new Rectangle(Point.Empty, actualTextSize);
