@@ -4390,6 +4390,172 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>Moves the file pointer of the specified file.</para>
+		/// <para>
+		/// This function stores the file pointer in two <c>LONG</c> values. To work with file pointers that are larger than a single
+		/// <c>LONG</c> value, it is easier to use the <c>SetFilePointerEx</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="hFile">
+		/// <para>A handle to the file.</para>
+		/// <para>
+		/// The file handle must be created with the <c>GENERIC_READ</c> or <c>GENERIC_WRITE</c> access right. For more information, see File
+		/// Security and Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="lDistanceToMove">
+		/// <para>The low order 32-bits of a signed value that specifies the number of bytes to move the file pointer.</para>
+		/// <para>
+		/// If lpDistanceToMoveHigh is not <c>NULL</c>, lpDistanceToMoveHigh and lDistanceToMove form a single 64-bit signed value that
+		/// specifies the distance to move.
+		/// </para>
+		/// <para>
+		/// If lpDistanceToMoveHigh is <c>NULL</c>, lDistanceToMove is a 32-bit signed value. A positive value for lDistanceToMove moves the
+		/// file pointer forward in the file, and a negative value moves the file pointer back.
+		/// </para>
+		/// </param>
+		/// <param name="lpDistanceToMoveHigh">
+		/// <para>A pointer to the high order 32-bits of the signed 64-bit distance to move.</para>
+		/// <para>If you do not need the high order 32-bits, this pointer must be set to <c>NULL</c>.</para>
+		/// <para>
+		/// When not <c>NULL</c>, this parameter also receives the high order <c>DWORD</c> of the new value of the file pointer. For more
+		/// information, see the Remarks section in this topic.
+		/// </para>
+		/// </param>
+		/// <param name="dwMoveMethod">
+		/// <para>The starting point for the file pointer move.</para>
+		/// <para>This parameter can be one of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_BEGIN = 0</term>
+		/// <term>The starting point is zero or the beginning of the file.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_CURRENT = 1</term>
+		/// <term>The starting point is the current value of the file pointer.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_END = 2</term>
+		/// <term>The starting point is the current end-of-file position.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds and lpDistanceToMoveHigh is <c>NULL</c>, the return value is the low-order <c>DWORD</c> of the new file pointer.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If the function returns a value other than <c>INVALID_SET_FILE_POINTER</c>, the call to <c>SetFilePointer</c> has
+		/// succeeded. You do not need to call <c>GetLastError</c>.
+		/// </para>
+		/// <para>
+		/// If function succeeds and lpDistanceToMoveHigh is not <c>NULL</c>, the return value is the low-order <c>DWORD</c> of the new file
+		/// pointer and lpDistanceToMoveHigh contains the high order <c>DWORD</c> of the new file pointer.
+		/// </para>
+		/// <para>If the function fails, the return value is <c>INVALID_SET_FILE_POINTER</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// If a new file pointer is a negative value, the function fails, the file pointer is not moved, and the code returned by
+		/// <c>GetLastError</c> is <c>ERROR_NEGATIVE_SEEK</c>.
+		/// </para>
+		/// <para>
+		/// If lpDistanceToMoveHigh is <c>NULL</c> and the new file position does not fit in a 32-bit value, the function fails and returns <c>INVALID_SET_FILE_POINTER</c>.
+		/// </para>
+		/// </returns>
+		// DWORD WINAPI SetFilePointer( _In_ HANDLE hFile, _In_ LONG lDistanceToMove, _Inout_opt_ PLONG lpDistanceToMoveHigh, _In_ DWORD dwMoveMethod);
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("FileAPI.h", MSDNShortId = "aa365541")]
+		public static extern uint SetFilePointer([In] HFILE hFile, int lDistanceToMove, [In, Optional] IntPtr lpDistanceToMoveHigh, SeekOrigin dwMoveMethod);
+
+		/// <summary>
+		/// <para>Moves the file pointer of the specified file.</para>
+		/// <para>
+		/// This function stores the file pointer in two <c>LONG</c> values. To work with file pointers that are larger than a single
+		/// <c>LONG</c> value, it is easier to use the <c>SetFilePointerEx</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="hFile">
+		/// <para>A handle to the file.</para>
+		/// <para>
+		/// The file handle must be created with the <c>GENERIC_READ</c> or <c>GENERIC_WRITE</c> access right. For more information, see File
+		/// Security and Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="lDistanceToMove">
+		/// <para>The low order 32-bits of a signed value that specifies the number of bytes to move the file pointer.</para>
+		/// <para>
+		/// If lpDistanceToMoveHigh is not <c>NULL</c>, lpDistanceToMoveHigh and lDistanceToMove form a single 64-bit signed value that
+		/// specifies the distance to move.
+		/// </para>
+		/// <para>
+		/// If lpDistanceToMoveHigh is <c>NULL</c>, lDistanceToMove is a 32-bit signed value. A positive value for lDistanceToMove moves the
+		/// file pointer forward in the file, and a negative value moves the file pointer back.
+		/// </para>
+		/// </param>
+		/// <param name="lpDistanceToMoveHigh">
+		/// <para>A pointer to the high order 32-bits of the signed 64-bit distance to move.</para>
+		/// <para>If you do not need the high order 32-bits, this pointer must be set to <c>NULL</c>.</para>
+		/// <para>
+		/// When not <c>NULL</c>, this parameter also receives the high order <c>DWORD</c> of the new value of the file pointer. For more
+		/// information, see the Remarks section in this topic.
+		/// </para>
+		/// </param>
+		/// <param name="dwMoveMethod">
+		/// <para>The starting point for the file pointer move.</para>
+		/// <para>This parameter can be one of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_BEGIN = 0</term>
+		/// <term>The starting point is zero or the beginning of the file.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_CURRENT = 1</term>
+		/// <term>The starting point is the current value of the file pointer.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_END = 2</term>
+		/// <term>The starting point is the current end-of-file position.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds and lpDistanceToMoveHigh is <c>NULL</c>, the return value is the low-order <c>DWORD</c> of the new file pointer.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If the function returns a value other than <c>INVALID_SET_FILE_POINTER</c>, the call to <c>SetFilePointer</c> has
+		/// succeeded. You do not need to call <c>GetLastError</c>.
+		/// </para>
+		/// <para>
+		/// If function succeeds and lpDistanceToMoveHigh is not <c>NULL</c>, the return value is the low-order <c>DWORD</c> of the new file
+		/// pointer and lpDistanceToMoveHigh contains the high order <c>DWORD</c> of the new file pointer.
+		/// </para>
+		/// <para>If the function fails, the return value is <c>INVALID_SET_FILE_POINTER</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// If a new file pointer is a negative value, the function fails, the file pointer is not moved, and the code returned by
+		/// <c>GetLastError</c> is <c>ERROR_NEGATIVE_SEEK</c>.
+		/// </para>
+		/// <para>
+		/// If lpDistanceToMoveHigh is <c>NULL</c> and the new file position does not fit in a 32-bit value, the function fails and returns <c>INVALID_SET_FILE_POINTER</c>.
+		/// </para>
+		/// </returns>
+		// DWORD WINAPI SetFilePointer( _In_ HANDLE hFile, _In_ LONG lDistanceToMove, _Inout_opt_ PLONG lpDistanceToMoveHigh, _In_ DWORD dwMoveMethod);
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("FileAPI.h", MSDNShortId = "aa365541")]
+		public static extern uint SetFilePointer([In] HFILE hFile, uint lDistanceToMove, [In, Optional] IntPtr lpDistanceToMoveHigh, SeekOrigin dwMoveMethod);
+
+		/// <summary>
+		/// <para>Moves the file pointer of the specified file.</para>
 		/// </summary>
 		/// <param name="hFile">
 		/// <para>
@@ -4442,6 +4608,61 @@ namespace Vanara.PInvoke
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365542")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetFilePointerEx([In] HFILE hFile, long liDistanceToMove, out long lpNewFilePointer, SeekOrigin dwMoveMethod);
+
+		/// <summary>
+		/// <para>Moves the file pointer of the specified file.</para>
+		/// </summary>
+		/// <param name="hFile">
+		/// <para>
+		/// A handle to the file. The file handle must have been created with the <c>GENERIC_READ</c> or <c>GENERIC_WRITE</c> access right.
+		/// For more information, see File Security and Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="liDistanceToMove">
+		/// <para>
+		/// The number of bytes to move the file pointer. A positive value moves the pointer forward in the file and a negative value moves
+		/// the file pointer backward.
+		/// </para>
+		/// </param>
+		/// <param name="lpNewFilePointer">
+		/// <para>
+		/// A pointer to a variable to receive the new file pointer. If this parameter is <c>NULL</c>, the new file pointer is not returned.
+		/// </para>
+		/// </param>
+		/// <param name="dwMoveMethod">
+		/// <para>The starting point for the file pointer move. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_BEGIN = 0</term>
+		/// <term>
+		/// The starting point is zero or the beginning of the file. If this flag is specified, then the liDistanceToMove parameter is
+		/// interpreted as an unsigned value.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_CURRENT = 1</term>
+		/// <term>The start point is the current value of the file pointer.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_END = 2</term>
+		/// <term>The starting point is the current end-of-file position.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI SetFilePointerEx( _In_ HANDLE hFile, _In_ LARGE_INTEGER liDistanceToMove, _Out_opt_ PLARGE_INTEGER lpNewFilePointer,
+		// _In_ DWORD dwMoveMethod);
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("FileAPI.h", MSDNShortId = "aa365542")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetFilePointerEx([In] HFILE hFile, long liDistanceToMove, [In, Optional] IntPtr lpNewFilePointer, SeekOrigin dwMoveMethod);
 
 		/// <summary>
 		/// <para>Sets the date and time that the specified file or directory was created, last accessed, or last modified.</para>
