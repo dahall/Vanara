@@ -309,16 +309,6 @@ namespace Vanara.Windows.Forms
         Tile = FOLDERVIEWMODE.FVM_TILE
     }
 
-    /// <summary>The direction argument for Navigate</summary>
-    public enum NavigationLogDirection
-    {
-        /// <summary>Navigates forward through the navigation log</summary>
-        Forward,
-
-        /// <summary>Navigates backward through the travel log</summary>
-        Backward
-    }
-
     /// <summary>Indicates the visibility state of an ExplorerBrowser pane.</summary>
     public enum PaneVisibilityState
     {
