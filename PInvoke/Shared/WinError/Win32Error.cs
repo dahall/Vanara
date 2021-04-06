@@ -106,7 +106,7 @@ namespace Vanara.PInvoke
 		/// <param name="valueIsFailure">The delegate which returns <see langword="true"/> on failure.</param>
 		/// <param name="message">The message.</param>
 		/// <returns>The <paramref name="value"/> passed in on success.</returns>
-		public static T ThrowLastErrorIf<T>(T value, Func<T, bool> valueIsFailure, string message) =>
+		public static T ThrowLastErrorIf<T>(T value, Func<T, bool> valueIsFailure, string message = null) =>
 			!valueIsFailure(value) ? value : throw GetLastError().GetException(message);
 
 		/// <summary>Throws the last error if the function returns <see langword="false"/>.</summary>
