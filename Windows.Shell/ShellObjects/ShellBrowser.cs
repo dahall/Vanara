@@ -103,7 +103,7 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		/// <param name="shellBrowserViewHandler">A (possible) <see cref="ShellBrowserViewHandler"/> reference.</param>
 		/// <returns></returns>
-		public static ShellBrowserViewHandler Validated(this ShellBrowserViewHandler shellBrowserViewHandler) =>
+		public static ShellBrowserViewHandler GetValidInstance(this ShellBrowserViewHandler shellBrowserViewHandler) =>
 			((!(shellBrowserViewHandler is null)) && shellBrowserViewHandler.IsValid) ? shellBrowserViewHandler : null;
 	}
 
@@ -153,9 +153,7 @@ namespace Vanara.Windows.Shell
 	public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IServiceProvider
 	{
 		internal const int defaultThumbnailSize = 32;
-
 		private const string processCmdKeyClassNameEdit = "Edit";
-
 		private const int processCmdKeyClassNameMaxLength = 31;
 
 		private readonly StringBuilder processCmdKeyClassName = new(processCmdKeyClassNameMaxLength + 1);
@@ -164,10 +162,7 @@ namespace Vanara.Windows.Shell
 		private IContainer components;
 
 		private string emptyFolderText = "This folder is empty.";
-
-		private FOLDERSETTINGS folderSettings = new(FOLDERVIEWMODE.FVM_AUTO,
-			FOLDERFLAGS.FWF_NOHEADERINALLVIEWS | FOLDERFLAGS.FWF_NOWEBVIEW | FOLDERFLAGS.FWF_USESEARCHFOLDER);
-
+		private FOLDERSETTINGS folderSettings = new(FOLDERVIEWMODE.FVM_AUTO, FOLDERFLAGS.FWF_NOHEADERINALLVIEWS | FOLDERFLAGS.FWF_NOWEBVIEW | FOLDERFLAGS.FWF_USESEARCHFOLDER);
 		private IStream viewStateStream;
 		private string viewStateStreamIdentifier;
 
@@ -175,14 +170,14 @@ namespace Vanara.Windows.Shell
 		public ShellBrowser()
 			: base()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 
-			this.History = new ShellNavigationHistory();
-			this.Items = new ShellItemCollection(this, SVGIO.SVGIO_ALLVIEW);
-			this.SelectedItems = new ShellItemCollection(this, SVGIO.SVGIO_SELECTION);
+			History = new ShellNavigationHistory();
+			Items = new ShellItemCollection(this, SVGIO.SVGIO_ALLVIEW);
+			SelectedItems = new ShellItemCollection(this, SVGIO.SVGIO_SELECTION);
 
-			this.Resize += this.ShellBrowser_Resize;
-			this.HandleDestroyed += this.ShellBrowser_HandleDestroyed;
+			Resize += ShellBrowser_Resize;
+			HandleDestroyed += ShellBrowser_HandleDestroyed;
 		}
 
 		/// <summary>Fires when the Items collection changes.</summary>
@@ -204,19 +199,19 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		[Bindable(false), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public override Image BackgroundImage { get => base.BackgroundImage; }
+		public override Image BackgroundImage => base.BackgroundImage;
 
 		/// <summary>The default text that is displayed when an empty folder is shown</summary>
 		[Category("Appearance"), DefaultValue("This folder is empty."), Description("The default text that is displayed when an empty folder is shown.")]
 		public string EmptyFolderText
 		{
-			get => this.emptyFolderText;
+			get => emptyFolderText;
 			set
 			{
-				this.emptyFolderText = value;
+				emptyFolderText = value;
 
-				if (this.ViewHandler.IsValid)
-					this.ViewHandler.Text = value;
+				if (ViewHandler.IsValid)
+					ViewHandler.Text = value;
 			}
 		}
 
@@ -236,11 +231,11 @@ namespace Vanara.Windows.Shell
 		[Category("Appearance"), DefaultValue(defaultThumbnailSize), Description("The size of the thumbnails in pixels.")]
 		public int ThumbnailSize
 		{
-			get => (this.ViewHandler.IsValid) ? this.ViewHandler.ThumbnailSize : defaultThumbnailSize;
+			get => ViewHandler.IsValid ? ViewHandler.ThumbnailSize : defaultThumbnailSize;
 			set
 			{
-				if (this.ViewHandler.IsValid)
-					this.ViewHandler.ThumbnailSize = value;
+				if (ViewHandler.IsValid)
+					ViewHandler.ThumbnailSize = value;
 			}
 		}
 
@@ -249,14 +244,14 @@ namespace Vanara.Windows.Shell
 		[Category("Appearance"), DefaultValue(typeof(ShellBrowserViewMode), "Auto"), Description("The viewing mode of the ShellBrowser.")]
 		public ShellBrowserViewMode ViewMode
 		{
-			get => (ShellBrowserViewMode)this.folderSettings.ViewMode;
+			get => (ShellBrowserViewMode)folderSettings.ViewMode;
 			set
 			{
 				// TODO: Set ThumbnailSize accordingly?
-				this.folderSettings.ViewMode = (FOLDERVIEWMODE)value;
+				folderSettings.ViewMode = (FOLDERVIEWMODE)value;
 
-				if (this.ViewHandler.IsValid)
-					this.ViewHandler.ViewMode = this.folderSettings.ViewMode;
+				if (ViewHandler.IsValid)
+					ViewHandler.ViewMode = folderSettings.ViewMode;
 			}
 		}
 
@@ -289,8 +284,8 @@ namespace Vanara.Windows.Shell
 			// SBSP_NAVIGATEBACK stands for the last item in the navigation history list (and ignores the pidl)
 			else if (wFlags.HasFlag(SBSP.SBSP_NAVIGATEBACK))
 			{
-				if (this.History.CanSeekBackward)
-					shellObject = this.History.SeekBackward();
+				if (History.CanSeekBackward)
+					shellObject = History.SeekBackward();
 				else
 					return HRESULT.STG_E_PATHNOTFOUND;
 			}
@@ -298,8 +293,8 @@ namespace Vanara.Windows.Shell
 			// SBSP_NAVIGATEFORWARD stands for the next item in the navigation history list (and ignores the pidl)
 			else if (wFlags.HasFlag(SBSP.SBSP_NAVIGATEFORWARD))
 			{
-				if (this.History.CanSeekForward)
-					shellObject = this.History.SeekForward();
+				if (History.CanSeekForward)
+					shellObject = History.SeekForward();
 				else
 					return HRESULT.STG_E_PATHNOTFOUND;
 			}
@@ -307,9 +302,9 @@ namespace Vanara.Windows.Shell
 			// SBSP_RELATIVE stands for a pidl relative to the current folder
 			else if (wFlags.HasFlag(SBSP.SBSP_RELATIVE))
 			{
-				var currentObject = this.History.Current;
+				ShellItem currentObject = History.Current;
 
-				var targetObject = PIDLUtil.ILCombine((IntPtr)currentObject.PIDL, pidl);
+				PIDL targetObject = PIDLUtil.ILCombine((IntPtr)currentObject.PIDL, pidl);
 
 				shellObject = new ShellItem(targetObject);
 			}
@@ -317,10 +312,10 @@ namespace Vanara.Windows.Shell
 			// SBSP_PARENT stands for the parent folder (and ignores the pidl)
 			else if (wFlags.HasFlag(SBSP.SBSP_PARENT))
 			{
-				var currentObject = this.History.Current;
-				var parentObject = currentObject.Parent;
+				ShellItem currentObject = History.Current;
+				ShellFolder parentObject = currentObject.Parent;
 
-				if ((parentObject != null) && (parentObject.PIDL.IsParentOf(currentObject.PIDL)))
+				if ((parentObject is not null) && parentObject.PIDL.IsParentOf(currentObject.PIDL))
 					shellObject = parentObject;
 				else
 					return HRESULT.STG_E_PATHNOTFOUND;
@@ -333,8 +328,8 @@ namespace Vanara.Windows.Shell
 				shellObject = new ShellItem(new PIDL(pidl, true));
 			}
 
-			if (this.InvokeRequired)
-				this.BeginInvoke((Action)(() => BrowseShellItemInternal(shellObject)));
+			if (InvokeRequired)
+				BeginInvoke((Action)(() => BrowseShellItemInternal(shellObject)));
 			else
 				BrowseShellItemInternal(shellObject);
 
@@ -345,30 +340,30 @@ namespace Vanara.Windows.Shell
 			void BrowseShellItemInternal(ShellItem shellItem)
 			{
 				// Save ViewState of current folder
-				this.ViewHandler.Validated()?.ShellView.SaveViewState();
+				ViewHandler.GetValidInstance()?.ShellView.SaveViewState();
 
-				if (this.viewStateStream != null)
-					Marshal.ReleaseComObject(this.viewStateStream);
+				if (viewStateStream is not null)
+					Marshal.ReleaseComObject(viewStateStream);
 
-				this.viewStateStreamIdentifier = shellItem.ParsingName;
+				viewStateStreamIdentifier = shellItem.ParsingName;
 
 				var viewHandler = new ShellBrowserViewHandler(this,
 					new ShellFolder(shellItem),
-					ref this.folderSettings,
-					ref this.emptyFolderText);
+					ref folderSettings,
+					ref emptyFolderText);
 
 				// Clone the PIDL, to have our own object copy on the heap!
 				if (!wFlags.HasFlag(SBSP.SBSP_WRITENOHISTORY))
-					this.History.Add(new PIDL(viewHandler.ShellFolder.PIDL));
+					History.Add(new PIDL(viewHandler.ShellFolder.PIDL));
 
-				var oldViewHandler = this.ViewHandler;
-				this.ViewHandler = viewHandler;
+				ShellBrowserViewHandler oldViewHandler = ViewHandler;
+				ViewHandler = viewHandler;
 				oldViewHandler?.UIDeactivate();
 				viewHandler.UIActivate();
 				oldViewHandler?.DestroyView();
 
-				this.OnNavigated(viewHandler.ShellFolder);
-				this.OnSelectionChanged();
+				OnNavigated(viewHandler.ShellFolder);
+				OnSelectionChanged();
 			}
 
 			#endregion BrowseShellItemInternal
@@ -390,22 +385,19 @@ namespace Vanara.Windows.Shell
 		/// <inheritdoc/>
 		public HRESULT GetViewStateStream(STGM grfMode, out IStream stream)
 		{
-			if (this.viewStateStream != null)
-				Marshal.ReleaseComObject(this.viewStateStream);
+			if (viewStateStream is not null)
+				Marshal.ReleaseComObject(viewStateStream);
 
-			stream = this.viewStateStream = ShlwApi.SHOpenRegStream2(
-				hkey: HKEY.HKEY_CURRENT_USER,
-				pszSubkey: this.ViewStateRegistryKey,
-				pszValue: this.viewStateStreamIdentifier,
+			stream = viewStateStream = ShlwApi.SHOpenRegStream2(hkey: HKEY.HKEY_CURRENT_USER, pszSubkey: ViewStateRegistryKey, pszValue: viewStateStreamIdentifier,
 				grfMode: grfMode);
 
-			return stream == null ? HRESULT.E_FAIL : HRESULT.S_OK;
+			return stream is null ? HRESULT.E_FAIL : HRESULT.S_OK;
 		}
 
 		/// <inheritdoc/>
 		public HRESULT GetWindow(out HWND phwnd)
 		{
-			phwnd = this.Handle;
+			phwnd = Handle;
 			return HRESULT.S_OK;
 		}
 
@@ -416,55 +408,37 @@ namespace Vanara.Windows.Shell
 		/// Navigates to the last item in the navigation history list. This does not change the set of locations in the navigation log.
 		/// </summary>
 		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
-		public bool NavigateBack()
-		{
-			return this.BrowseObject(IntPtr.Zero, SBSP.SBSP_NAVIGATEBACK).Succeeded;
-		}
+		public bool NavigateBack() => BrowseObject(IntPtr.Zero, SBSP.SBSP_NAVIGATEBACK).Succeeded;
 
 		/// <summary>
 		/// Navigates to the next item in the navigation history list. This does not change the set of locations in the navigation log.
 		/// </summary>
 		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
-		public bool NavigateForward()
-		{
-			return this.BrowseObject(IntPtr.Zero, SBSP.SBSP_NAVIGATEFORWARD).Succeeded;
-		}
+		public bool NavigateForward() => BrowseObject(IntPtr.Zero, SBSP.SBSP_NAVIGATEFORWARD).Succeeded;
 
 		/// <summary>
 		/// Navigate within the navigation log in a specific direciton. This does not change the set of locations in the navigation log.
 		/// </summary>
 		/// <param name="direction">The direction to navigate within the navigation logs collection.</param>
 		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
-		public bool NavigateFromHistory(NavigationLogDirection direction)
+		public bool NavigateFromHistory(NavigationLogDirection direction) => direction switch
 		{
-			return direction switch
-			{
-				NavigationLogDirection.Backward => this.NavigateBack(),
-				NavigationLogDirection.Forward => this.NavigateForward(),
-				_ => false,
-			};
-		}
+			NavigationLogDirection.Backward => NavigateBack(),
+			NavigationLogDirection.Forward => NavigateForward(),
+			_ => false,
+		};
 
 		/// <summary>Navigates to the parent folder.</summary>
 		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
-		public bool NavigateParent()
-		{
-			return this.BrowseObject(IntPtr.Zero, SBSP.SBSP_PARENT).Succeeded;
-		}
+		public bool NavigateParent() => BrowseObject(IntPtr.Zero, SBSP.SBSP_PARENT).Succeeded;
 
 		/// <summary>Navigate within the navigation log. This does not change the set of locations in the navigation log.</summary>
 		/// <param name="historyIndex">An index into the navigation logs Locations collection.</param>
 		/// <returns>True if the navigation succeeded, false if it failed for any reason.</returns>
 		public bool NavigateToHistoryIndex(int historyIndex)
 		{
-			using (ShellItem shellFolder = this.History.Seek(historyIndex, SeekOrigin.Current))
-			{
-				if (shellFolder != null)
-					return this.BrowseObject((IntPtr)shellFolder.PIDL,
-						SBSP.SBSP_ABSOLUTE | SBSP.SBSP_WRITENOHISTORY).Succeeded;
-			}
-
-			return false;
+			using ShellItem shellFolder = History.Seek(historyIndex, SeekOrigin.Current);
+			return shellFolder is not null && BrowseObject((IntPtr)shellFolder.PIDL, SBSP.SBSP_ABSOLUTE | SBSP.SBSP_WRITENOHISTORY).Succeeded;
 		}
 
 		/// <inheritdoc/>
@@ -473,10 +447,10 @@ namespace Vanara.Windows.Shell
 		/// <inheritdoc/>
 		public HRESULT QueryActiveShellView(out IShellView shellView)
 		{
-			if (this.ViewHandler.Validated() != null)
+			if (ViewHandler.GetValidInstance() is not null)
 			{
-				Marshal.AddRef(Marshal.GetIUnknownForObject(this.ViewHandler.ShellView));
-				shellView = this.ViewHandler.ShellView;
+				Marshal.AddRef(Marshal.GetIUnknownForObject(ViewHandler.ShellView));
+				shellView = ViewHandler.ShellView;
 
 				return HRESULT.S_OK;
 			}
@@ -491,9 +465,9 @@ namespace Vanara.Windows.Shell
 		/// <summary>Selects all items in the current view.</summary>
 		public void SelectAll()
 		{
-			var viewHandler = this.ViewHandler.Validated();
+			ShellBrowserViewHandler viewHandler = ViewHandler.GetValidInstance();
 
-			if (viewHandler != null)
+			if (viewHandler is not null)
 			{
 				// NOTE: The for-loop is rather slow, so send (Ctrl+A)-KeyDown-Message instead and let the ShellView do the work for (var i
 				// = 0; i < viewHandler.FolderView2.ItemCount(SVGIO.SVGIO_ALLVIEW); i++) viewHandler.FolderView2.SelectItem(i, SVSIF.SVSI_SELECT);
@@ -502,11 +476,11 @@ namespace Vanara.Windows.Shell
 
 				var msg = new Message()
 				{
-					HWnd = (IntPtr)this.ViewHandler.ViewWindow,
+					HWnd = (IntPtr)ViewHandler.ViewWindow,
 					Msg = (int)User32.WindowMessage.WM_KEYDOWN,
 				};
 
-				this.ProcessCmdKey(ref msg, Keys.Control | Keys.A);
+				ProcessCmdKey(ref msg, Keys.Control | Keys.A);
 			}
 		}
 
@@ -532,9 +506,9 @@ namespace Vanara.Windows.Shell
 		/// <summary>Unselects all items in the current view.</summary>
 		public void UnselectAll()
 		{
-			var viewHandler = this.ViewHandler.Validated();
+			ShellBrowserViewHandler viewHandler = ViewHandler.GetValidInstance();
 
-			if (viewHandler != null)
+			if (viewHandler is not null)
 				viewHandler.FolderView2.SelectItem(-1, SVSIF.SVSI_DESELECTOTHERS);
 		}
 
@@ -564,7 +538,7 @@ namespace Vanara.Windows.Shell
 			// IShellFolderViewCB: Guid("2047E320-F2A9-11CE-AE65-08002B2E1262")
 			if (riid.Equals(typeof(IShellFolderViewCB).GUID))
 			{
-				ShellBrowserViewHandler shvwHandler = this.ViewHandler.Validated();
+				ShellBrowserViewHandler shvwHandler = ViewHandler.GetValidInstance();
 
 				if (!(shvwHandler is null))
 				{
@@ -584,56 +558,47 @@ namespace Vanara.Windows.Shell
 		{
 			try
 			{
-				var viewHandler = this.ViewHandler.Validated();
+				ShellBrowserViewHandler viewHandler = ViewHandler.GetValidInstance();
 
-				if (viewHandler != null)
-					return viewHandler.FolderView2.Items<IShellItemArray>(opt);
-				else
-					return null;
+				return viewHandler is not null ? viewHandler.FolderView2.Items<IShellItemArray>(opt) : null;
 			}
 			catch { return null; }
 		}
 
 		/// <summary>Raises the <see cref="ItemsChanged"/> event.</summary>
-		protected internal virtual void OnItemsChanged() => this.ItemsChanged?.Invoke(this, EventArgs.Empty);
+		protected internal virtual void OnItemsChanged() => ItemsChanged?.Invoke(this, EventArgs.Empty);
 
 		/// <summary>Raises the <see cref="Navigated"/> event.</summary>
 		protected internal virtual void OnNavigated(ShellFolder shellFolder)
 		{
-			if (this.Navigated != null)
+			if (Navigated is not null)
 			{
 				ShellBrowserNavigatedEventArgs eventArgs = new(shellFolder);
 
-				this.Navigated.Invoke(this, eventArgs);
+				Navigated.Invoke(this, eventArgs);
 			}
 		}
 
 		/// <summary>Raises the <see cref="SelectionChanged"/> event.</summary>
-		protected internal virtual void OnSelectionChanged() => this.SelectionChanged?.Invoke(this, EventArgs.Empty);
+		protected internal virtual void OnSelectionChanged() => SelectionChanged?.Invoke(this, EventArgs.Empty);
 
 		/// <summary>
 		/// <seealso cref="ShellBrowser"/>'s event handler for <seealso cref="Control.HandleDestroyed"/> event: Save ViewState when
 		/// ShellBrowser gets closed.
 		/// </summary>
-		protected internal virtual void ShellBrowser_HandleDestroyed(object sender, EventArgs e)
-		{
-			this.ViewHandler.Validated()?.ShellView.SaveViewState();
-		}
+		protected internal virtual void ShellBrowser_HandleDestroyed(object sender, EventArgs e) => ViewHandler.GetValidInstance()?.ShellView.SaveViewState();
 
 		/// <summary>
 		/// <seealso cref="ShellBrowser"/>'s event handler for <seealso cref="Control.Resize"/> event: Resize ViewWindow when ShellBrowser
 		/// gets resized.
 		/// </summary>
-		protected internal virtual void ShellBrowser_Resize(object sender, EventArgs e)
-		{
-			this.ViewHandler?.MoveWindow(0, 0, this.ClientRectangle.Width, this.ClientRectangle.Height, false);
-		}
+		protected internal virtual void ShellBrowser_Resize(object sender, EventArgs e) => ViewHandler?.MoveWindow(0, 0, ClientRectangle.Width, ClientRectangle.Height, false);
 
 		/// <summary>Clean up any resources being used.</summary>
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && (components is not null))
 			{
 				components.Dispose();
 			}
@@ -650,11 +615,11 @@ namespace Vanara.Windows.Shell
 			// its parent window is our ViewWindow, the ShellView is currently showing an Edit-field to let the User edit an item's name.
 			// Thus, we have to pass all Key Strokes directly to the ShellView.
 
-			if (this.ViewHandler.Validated() != null)
+			if (ViewHandler.GetValidInstance() is not null)
 			{
 				// Note: I tried using the LVM_GETEDITCONTROL message for finding the edit control without luck
 				if (User32.GetClassName(msg.HWnd,
-					this.processCmdKeyClassName,
+					processCmdKeyClassName,
 					processCmdKeyClassNameMaxLength) > 0)
 				{
 					if (processCmdKeyClassName.ToString().Equals(processCmdKeyClassNameEdit))
@@ -662,14 +627,14 @@ namespace Vanara.Windows.Shell
 						// Try to get Edit field's parent 'SysListView32' handle
 						HWND hSysListView32 = User32.GetParent(msg.HWnd);
 
-						if (hSysListView32 != null)
+						if (!hSysListView32.IsNull)
 						{
 							// Try to get SysListView32's parent 'SHELLDLL_DefView' handle
 							HWND hShellDllDefViewWindow = User32.GetParent(hSysListView32);
 
-							if ((hShellDllDefViewWindow != null) && (hShellDllDefViewWindow == this.ViewHandler.ViewWindow))
+							if (!hShellDllDefViewWindow.IsNull && (hShellDllDefViewWindow == ViewHandler.ViewWindow))
 							{
-								this.ViewHandler.ShellView.TranslateAccelerator(
+								ViewHandler.ShellView.TranslateAccelerator(
 									new MSG(msg.HWnd, (uint)msg.Msg, msg.WParam, msg.LParam));
 
 								return true;
@@ -682,13 +647,9 @@ namespace Vanara.Windows.Shell
 			// Process tab key for control focus cycle: Tab => Focus next control Tab + Shift => Focus previous control
 			if ((keyData & Keys.KeyCode) == Keys.Tab)
 			{
-				bool forward = (keyData & Keys.Shift) != Keys.Shift;
+				var forward = (keyData & Keys.Shift) != Keys.Shift;
 
-				this.Parent.SelectNextControl(ActiveControl,
-					forward: forward,
-					tabStopOnly: true,
-					nested: true,
-					wrap: true);
+				Parent.SelectNextControl(ActiveControl, forward: forward, tabStopOnly: true, nested: true, wrap: true);
 
 				return true;
 			}
@@ -699,27 +660,26 @@ namespace Vanara.Windows.Shell
 			{
 				case Keys.BrowserBack:
 				case Keys.Alt | Keys.Left:
-					this.NavigateBack();
+					NavigateBack();
 
 					return true;
 
 				case Keys.BrowserForward:
 				case Keys.Alt | Keys.Right:
-					this.NavigateForward();
+					NavigateForward();
 
 					return true;
 
 				case Keys.Back:
-					this.NavigateParent();
+					NavigateParent();
 
 					return true;
 			}
 
 			// Let the ShellView process all other keystrokes
-			if (this.ViewHandler.Validated() != null)
+			if (ViewHandler.GetValidInstance() is not null)
 			{
-				this.ViewHandler.ShellView.TranslateAccelerator(
-					new MSG(msg.HWnd, (uint)msg.Msg, msg.WParam, msg.LParam));
+				ViewHandler.ShellView.TranslateAccelerator(new MSG(msg.HWnd, (uint)msg.Msg, msg.WParam, msg.LParam));
 
 				return true;
 			}
@@ -731,7 +691,7 @@ namespace Vanara.Windows.Shell
 		private void InitializeComponent()
 		{
 			components = new Container();
-			this.AutoScaleMode = AutoScaleMode.Font;
+			AutoScaleMode = AutoScaleMode.Font;
 		}
 
 		/// <summary>Represents a collection of <see cref="ShellItem"/> attached to an <see cref="ShellBrowser"/>.</summary>
@@ -743,7 +703,7 @@ namespace Vanara.Windows.Shell
 			internal ShellItemCollection(ShellBrowser shellBrowser, SVGIO opt)
 			{
 				this.shellBrowser = shellBrowser;
-				this.option = opt;
+				option = opt;
 			}
 
 			/// <summary>Gets the number of elements in the collection.</summary>
@@ -752,22 +712,19 @@ namespace Vanara.Windows.Shell
 			{
 				get
 				{
-					var viewHandler = this.shellBrowser.ViewHandler.Validated();
+					ShellBrowserViewHandler viewHandler = shellBrowser.ViewHandler.GetValidInstance();
 
-					if (viewHandler != null)
-						return viewHandler.FolderView2.ItemCount(this.option);
-
-					return 0;
+					return viewHandler is not null ? viewHandler.FolderView2.ItemCount(option) : 0;
 				}
 			}
 
-			private IShellItemArray Array => this.shellBrowser.GetItemsArray(this.option);
+			private IShellItemArray Array => shellBrowser.GetItemsArray(option);
 
 			private IEnumerable<IShellItem> Items
 			{
 				get
 				{
-					var array = this.Array;
+					IShellItemArray array = Array;
 
 					if (array is null)
 						yield break;
@@ -790,7 +747,7 @@ namespace Vanara.Windows.Shell
 			{
 				get
 				{
-					var array = Array;
+					IShellItemArray array = Array;
 					try
 					{
 						return array is null ? null : ShellItem.Open(array.GetItemAt((uint)index));
@@ -801,7 +758,7 @@ namespace Vanara.Windows.Shell
 					}
 					finally
 					{
-						if (array != null)
+						if (array is not null)
 							Marshal.ReleaseComObject(array);
 					}
 				}
@@ -821,10 +778,7 @@ namespace Vanara.Windows.Shell
 	public class ShellBrowserNavigatedEventArgs : EventArgs
 	{
 		/// <summary>Initializes a new instance of the <see cref="ShellBrowserNavigatedEventArgs"/> class.</summary>
-		public ShellBrowserNavigatedEventArgs(ShellFolder currentFolder)
-		{
-			this.CurrentFolder = currentFolder ?? throw new ArgumentNullException(nameof(currentFolder));
-		}
+		public ShellBrowserNavigatedEventArgs(ShellFolder currentFolder) => CurrentFolder = currentFolder ?? throw new ArgumentNullException(nameof(currentFolder));
 
 		/// <summary>The new location of the ShellBrowser</summary>
 		public ShellFolder CurrentFolder { get; }
@@ -864,8 +818,8 @@ namespace Vanara.Windows.Shell
 		/// <param name="emptyFolderText">Text to display if the folder is empty.</param>
 		public ShellBrowserViewHandler(ShellBrowser owner, ShellFolder shellFolder, ref FOLDERSETTINGS folderSettings, ref string emptyFolderText)
 		{
-			this.Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-			this.ShellFolder = shellFolder ?? throw new ArgumentNullException(nameof(shellFolder));
+			Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+			ShellFolder = shellFolder ?? throw new ArgumentNullException(nameof(shellFolder));
 
 			// Create ShellView and FolderView2 objects, then its ViewWindow
 			try
@@ -880,34 +834,34 @@ namespace Vanara.Windows.Shell
 
 				SHCreateShellFolderView(ref sfvCreate, out IShellView shellView).ThrowIfFailed();
 
-				this.ShellView = shellView ??
-					throw new InvalidComObjectException(nameof(this.ShellView));
+				ShellView = shellView ??
+					throw new InvalidComObjectException(nameof(ShellView));
 
-				this.FolderView2 = (IFolderView2)this.ShellView ??
-					throw new InvalidComObjectException(nameof(this.FolderView2));
+				FolderView2 = (IFolderView2)ShellView ??
+					throw new InvalidComObjectException(nameof(FolderView2));
 
 				// Try to create ViewWindow and take special care of Exception {"The operation was canceled by the user. (Exception from
 				// HRESULT: 0x800704C7)"} cause this happens when there's no disk in a drive.
 				try
 				{
-					this.ViewWindow = this.ShellView.CreateViewWindow(null, folderSettings, owner, owner.ClientRectangle);
+					ViewWindow = ShellView.CreateViewWindow(null, folderSettings, owner, owner.ClientRectangle);
 
-					this.IsValid = true;
+					IsValid = true;
 
-					this.Text = emptyFolderText;
+					Text = emptyFolderText;
 				}
 				catch (COMException ex)
 				{
 					// TODO: Check if the target folder IS actually a drive with removable disks in it!
 					if (HRESULT_CANCELLED.Equals(ex.ErrorCode))
-						this.NoDiskInDriveError = true;
+						NoDiskInDriveError = true;
 					throw;
 				}
 			}
 			catch (COMException ex)
 			{
 				// TODO: e.g. C:\Windows\CSC => Permission denied! 0x8007 0005 E_ACCESSDENIED
-				this.ValidationError = ex;
+				ValidationError = ex;
 			}
 		}
 
@@ -932,14 +886,13 @@ namespace Vanara.Windows.Shell
 		/// <summary>The default text to be used when there are no items in the view.</summary>
 		public string Text
 		{
-			get => this.text;
-
+			get => text;
 			set
 			{
-				this.text = value;
+				text = value;
 
-				if (this.IsValid)
-					this.FolderView2.SetText(FVTEXTTYPE.FVST_EMPTYTEXT, value);
+				if (IsValid)
+					FolderView2.SetText(FVTEXTTYPE.FVST_EMPTYTEXT, value);
 			}
 		}
 
@@ -948,17 +901,17 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (this.IsValid)
-					this.FolderView2.GetViewModeAndIconSize(out _, out this.thumbnailSize);
+				if (IsValid)
+					FolderView2.GetViewModeAndIconSize(out _, out thumbnailSize);
 
-				return this.thumbnailSize;
+				return thumbnailSize;
 			}
 			set
 			{
-				if (this.IsValid)
+				if (IsValid)
 				{
-					this.FolderView2.GetViewModeAndIconSize(out var fvm, out _);
-					this.FolderView2.SetViewModeAndIconSize(fvm, this.thumbnailSize = value);
+					FolderView2.GetViewModeAndIconSize(out FOLDERVIEWMODE fvm, out _);
+					FolderView2.SetViewModeAndIconSize(fvm, thumbnailSize = value);
 				}
 			}
 		}
@@ -971,9 +924,9 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (this.IsValid)
+				if (IsValid)
 				{
-					return this.FolderView2.GetCurrentViewMode();
+					return FolderView2.GetCurrentViewMode();
 					// TODO: Check ThumbNailSize for new ViewModes with larger sized icons
 				}
 
@@ -981,8 +934,8 @@ namespace Vanara.Windows.Shell
 			}
 			set
 			{
-				if (this.IsValid)
-					this.FolderView2.SetCurrentViewMode(value);
+				if (IsValid)
+					FolderView2.SetCurrentViewMode(value);
 			}
 		}
 
@@ -992,16 +945,16 @@ namespace Vanara.Windows.Shell
 		/// <summary>Destroy the view.</summary>
 		public void DestroyView()
 		{
-			this.IsValid = false;
+			IsValid = false;
 
 			// TODO: Remove MessageSFVCB here!
 
 			// Destroy ShellView's ViewWindow
-			this.ViewWindow = HWND.NULL;
-			this.ShellView.DestroyViewWindow();
+			ViewWindow = HWND.NULL;
+			ShellView.DestroyViewWindow();
 
-			this.FolderView2 = null;
-			this.ShellView = null;
+			FolderView2 = null;
+			ShellView = null;
 			//this.ShellFolder = null;      // NOTE: I >>think<< this one causes RPC-Errors
 		}
 
@@ -1013,14 +966,14 @@ namespace Vanara.Windows.Shell
 		/// <param name="bRepaint">Force redraw</param>
 		/// <returns>If the function succeeds, the return value is nonzero.</returns>
 		public bool MoveWindow(int X, int Y, int nWidth, int nHeight, bool bRepaint) =>
-			this.ViewWindow != HWND.NULL && User32.MoveWindow(this.ViewWindow, X, Y, nWidth, nHeight, bRepaint);
+			ViewWindow != HWND.NULL && User32.MoveWindow(ViewWindow, X, Y, nWidth, nHeight, bRepaint);
 
 		/// <summary>Activate the ShellView of this ShellBrowser.</summary>
 		/// <param name="uState">The <seealso cref="SVUIA"/> to be set</param>
-		public void UIActivate(SVUIA uState = SVUIA.SVUIA_ACTIVATE_NOFOCUS) => this.ShellView?.UIActivate(uState);
+		public void UIActivate(SVUIA uState = SVUIA.SVUIA_ACTIVATE_NOFOCUS) => ShellView?.UIActivate(uState);
 
 		/// <summary>Deactivate the ShellView of this ShellBrowser.</summary>
-		public void UIDeactivate() => this.UIActivate(SVUIA.SVUIA_DEACTIVATE);
+		public void UIDeactivate() => UIActivate(SVUIA.SVUIA_DEACTIVATE);
 
 		/// <summary>Allows communication between the system folder view object and a system folder view callback object.</summary>
 		/// <param name="uMsg">One of the SFVM_* notifications.</param>
@@ -1033,11 +986,11 @@ namespace Vanara.Windows.Shell
 			switch ((SFVMUD)uMsg)
 			{
 				case SFVMUD.SFVM_SELECTIONCHANGED:
-					this.Owner.OnSelectionChanged();
+					Owner.OnSelectionChanged();
 					return HRESULT.S_OK;
 
 				case SFVMUD.SFVM_LISTREFRESHED:
-					this.Owner.OnItemsChanged();
+					Owner.OnItemsChanged();
 					return HRESULT.S_OK;
 
 				default:
