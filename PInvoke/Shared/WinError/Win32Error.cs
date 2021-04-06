@@ -100,20 +100,29 @@ namespace Vanara.PInvoke
 		[System.Diagnostics.DebuggerStepThrough]
 		public static void ThrowLastError(string message = null) => GetLastError().ThrowIfFailed(message);
 
+		/// <summary>Throws the last error if the predicate delegate returns <see langword="true"/>.</summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="value">The value to check.</param>
+		/// <param name="valueIsFailure">The delegate which returns <see langword="true"/> on failure.</param>
+		/// <param name="message">The message.</param>
+		/// <returns>The <paramref name="value"/> passed in on success.</returns>
+		public static T ThrowLastErrorIf<T>(T value, Func<T, bool> valueIsFailure, string message) =>
+			!valueIsFailure(value) ? value : throw GetLastError().GetException(message);
+
 		/// <summary>Throws the last error if the function returns <see langword="false"/>.</summary>
 		/// <param name="value">The value to check.</param>
 		/// <param name="message">The message.</param>
-		public static bool ThrowLastErrorIfFalse(bool value, string message = null) => CheckPredicateOrThrow(value, v => !v, message);
+		public static bool ThrowLastErrorIfFalse(bool value, string message = null) => ThrowLastErrorIf(value, v => !v, message);
 
 		/// <summary>Throws the last error if the value is an invalid handle.</summary>
 		/// <param name="value">The SafeHandle to check.</param>
 		/// <param name="message">The message.</param>
-		public static T ThrowLastErrorIfInvalid<T>(T value, string message = null) where T : SafeHandle => CheckPredicateOrThrow(value, v => v.IsInvalid, message);
+		public static T ThrowLastErrorIfInvalid<T>(T value, string message = null) where T : SafeHandle => ThrowLastErrorIf(value, v => v.IsInvalid, message);
 
 		/// <summary>Throws the last error if the value is a NULL pointer (IntPtr.Zero).</summary>
 		/// <param name="value">The pointer to check.</param>
 		/// <param name="message">The message.</param>
-		public static IntPtr ThrowLastErrorIfNull(IntPtr value, string message = null) => CheckPredicateOrThrow(value, v => v == IntPtr.Zero, message);
+		public static IntPtr ThrowLastErrorIfNull(IntPtr value, string message = null) => ThrowLastErrorIf(value, v => v == IntPtr.Zero, message);
 
 		/// <summary>Throws if the last error failed, unless the error is the specified value.</summary>
 		/// <param name="exception">The failure code to ignore.</param>
@@ -240,13 +249,6 @@ namespace Vanara.PInvoke
 		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)value).ToUInt32(provider);
 
 		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)value).ToUInt64(provider);
-
-		private static T CheckPredicateOrThrow<T>(T value, Func<T, bool> failure, string message)
-		{
-			if (failure(value))
-				GetLastError().ThrowIfFailed(message);
-			return value;
-		}
 
 		[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetLastError")]
 		private static extern uint ExtGetLastError();
