@@ -610,10 +610,11 @@ namespace Vanara.Windows.Forms
 			}
 
 			/// <summary>Compacts the path.</summary>
+			/// <param name="g">The Graphics instance to use.</param>
 			/// <param name="stringToCompact">The string to compact.</param>
 			/// <param name="font">The font.</param>
 			/// <param name="maxWidthInPts">The maximum width in PTS.</param>
-			/// <returns></returns>
+			/// <returns>The compacted string.</returns>
 			private static string CompactPath(Graphics g, string stringToCompact, Font font, int maxWidthInPts)
 			{
 				var sb = new StringBuilder(stringToCompact);
