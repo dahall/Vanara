@@ -127,7 +127,6 @@ Native Interface | Header | Managed Interface
 --- | --- | ---  
 [IElevateWlanUi](https://www.google.com/search?num=5&q=IElevateWlanUi+site%3Adocs.microsoft.com) | wlanui.dll |  |   
 [ISequentialStream](https://www.google.com/search?num=5&q=ISequentialStream+site%3Adocs.microsoft.com) | wlanui.dll |  |   
-[IStream](https://www.google.com/search?num=5&q=IStream+site%3Adocs.microsoft.com) | wlanui.dll |  |   
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
