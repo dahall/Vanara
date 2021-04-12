@@ -725,7 +725,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HRAWINPUT h1, HRAWINPUT h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HRAWINPUT h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HRAWINPUT h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -744,7 +744,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-taginput typedef struct tagINPUT { DWORD type; union {
 		// MOUSEINPUT mi; KEYBDINPUT ki; HARDWAREINPUT hi; } DUMMYUNIONNAME; } INPUT, *PINPUT, *LPINPUT;
 		[PInvokeData("winuser.h", MSDNShortId = "")]
-		[StructLayout(LayoutKind.Explicit)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct INPUT
 		{
 			/// <summary>
@@ -769,29 +769,40 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(0)]
 			public INPUTTYPE type;
+
+			private UNION union;
 
 			/// <summary>
 			/// <para>Type: <c>MOUSEINPUT</c></para>
 			/// <para>The information about a simulated mouse event.</para>
 			/// </summary>
-			[FieldOffset(4)]
-			public MOUSEINPUT mi;
+			public MOUSEINPUT mi { get => union.mi; set => union.mi = value; }
 
 			/// <summary>
 			/// <para>Type: <c>KEYBDINPUT</c></para>
 			/// <para>The information about a simulated keyboard event.</para>
 			/// </summary>
-			[FieldOffset(4)]
-			public KEYBDINPUT ki;
+			public KEYBDINPUT ki { get => union.ki; set => union.ki = value; }
 
 			/// <summary>
 			/// <para>Type: <c>HARDWAREINPUT</c></para>
 			/// <para>The information about a simulated hardware event.</para>
 			/// </summary>
-			[FieldOffset(4)]
-			public HARDWAREINPUT hi;
+			public HARDWAREINPUT hi { get => union.hi; set => union.hi = value; }
+
+			[StructLayout(LayoutKind.Explicit)]
+			private struct UNION
+			{
+				[FieldOffset(0)]
+				public MOUSEINPUT mi;
+
+				[FieldOffset(0)]
+				public KEYBDINPUT ki;
+
+				[FieldOffset(0)]
+				public HARDWAREINPUT hi;
+			}
 		}
 
 		/// <summary>Contains information about the source of the input message.</summary>
