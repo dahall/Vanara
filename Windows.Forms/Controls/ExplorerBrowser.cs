@@ -889,19 +889,22 @@ namespace Vanara.Windows.Forms
         HRESULT IExplorerBrowserEvents.OnNavigationComplete(IntPtr pidlFolder)
         {
             folderSettings.ViewMode = GetCurrentViewMode();
-            OnNavigated(new NavigatedEventArgs { NewLocation = new ShellItem(pidlFolder) });
+            OnNavigated(new NavigatedEventArgs { NewLocation = new ShellItem(new PIDL(pidlFolder, clone: true)) });
+            // Remember! We're not the owner of the given PIDL, so we have to make our own copy for our own heap! See Issue #158
             return HRESULT.S_OK;
         }
 
         HRESULT IExplorerBrowserEvents.OnNavigationFailed(IntPtr pidlFolder)
         {
-            OnNavigationFailed(new NavigationFailedEventArgs { FailedLocation = new ShellItem(pidlFolder) });
+            OnNavigationFailed(new NavigationFailedEventArgs { FailedLocation = new ShellItem(new PIDL(pidlFolder, clone: true)) });
+            // Remember! We're not the owner of the given PIDL, so we have to make our own copy for our own heap! See Issue #158
             return HRESULT.S_OK;
         }
 
         HRESULT IExplorerBrowserEvents.OnNavigationPending(IntPtr pidlFolder)
         {
-            OnNavigating(new NavigatingEventArgs { PendingLocation = new ShellItem(pidlFolder) }, out var cancelled);
+            OnNavigating(new NavigatingEventArgs { PendingLocation = new ShellItem(new PIDL(pidlFolder, clone: true)) }, out var cancelled);
+            // Remember! We're not the owner of the given PIDL, so we have to make our own copy for our own heap! See Issue #158
             return cancelled ? (HRESULT)HRESULT_CANCELLED : HRESULT.S_OK;
         }
 
