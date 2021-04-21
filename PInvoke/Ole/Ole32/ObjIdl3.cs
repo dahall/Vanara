@@ -638,17 +638,17 @@ namespace Vanara.PInvoke
 		/// <summary>Enumerates the values in a <see cref="IEnumContextProps"/> instance.</summary>
 		/// <param name="e">The <see cref="IEnumContextProps"/> instance.</param>
 		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<ContextProperty> Enumerate(this IEnumContextProps e) => new Vanara.Collections.IEnumFromCom<ContextProperty>(e);
+		public static IEnumerable<ContextProperty> Enumerate(this IEnumContextProps e) => Vanara.Collections.IEnumFromCom<ContextProperty>.Create(e);
 
 		/// <summary>Enumerates the values in a <see cref="IEnumSTATSTG"/> instance.</summary>
 		/// <param name="e">The <see cref="IEnumSTATSTG"/> instance.</param>
 		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<STATSTG> Enumerate(this IEnumSTATSTG e) => new Vanara.Collections.IEnumFromCom<STATSTG>(e);
+		public static IEnumerable<STATSTG> Enumerate(this IEnumSTATSTG e) => Vanara.Collections.IEnumFromCom<STATSTG>.Create(e);
 
 		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
 		/// <param name="e">The <see cref="IEnumUnknown"/> instance.</param>
 		/// <returns>The enumerated values.</returns>
-		public static IEnumerable<IntPtr> Enumerate(this IEnumUnknown e) => new Vanara.Collections.IEnumFromCom<IntPtr>(e);
+		public static IEnumerable<IntPtr> Enumerate(this IEnumUnknown e) => Vanara.Collections.IEnumFromCom<IntPtr>.Create(e);
 
 		/// <summary>Enumerates the values in a <see cref="IEnumUnknown"/> instance.</summary>
 		/// <typeparam name="T">
