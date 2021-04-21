@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Vanara.PInvoke;
 
 namespace Vanara.Collections
@@ -134,6 +135,7 @@ namespace Vanara.Collections
 	public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 	{
 		private readonly ComTryGetNext cnext;
+		private readonly object comObj;
 
 		/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
 		/// <param name="next">The method used to try to get the next item in the enumeration.</param>
@@ -150,9 +152,10 @@ namespace Vanara.Collections
 		/// <param name="enumObj">The COM enumeration interface instance.</param>
 		public IEnumFromCom(ICOMEnum<TItem> enumObj) : base()
 		{
-			cnext = (ComTryGetNext)Delegate.CreateDelegate(typeof(ComTryGetNext), enumObj, "Next");
-			base.next = TryGet;
-			base.reset = (Action)Delegate.CreateDelegate(typeof(Action), enumObj, "Reset");
+			comObj = enumObj;
+			cnext = ComObjTryGetNext;
+			next = TryGet;
+			reset = ComObjReset;
 		}
 
 		/// <summary>
@@ -176,6 +179,19 @@ namespace Vanara.Collections
 				return false;
 			item = res[0];
 			return true;
+		}
+
+		private HRESULT ComObjTryGetNext(uint celt, TItem[] rgelt, out uint celtFetched)
+		{
+			var para = new object[] { celt, rgelt, 0U };
+			var hr = (HRESULT)comObj.GetType().InvokeMember("Next", BindingFlags.InvokeMethod, null, comObj, para);
+			celtFetched = (uint)para[2];
+			return hr;
+		}
+
+		private void ComObjReset()
+		{
+			comObj.GetType().InvokeMember("Reset", BindingFlags.InvokeMethod, null, comObj, null);
 		}
 	}
 
