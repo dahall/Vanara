@@ -142,7 +142,8 @@ namespace Vanara.Collections
 		/// <param name="reset">The method used to reset the enumeration to the first element.</param>
 		public IEnumFromCom(ComTryGetNext next, Action reset) : base()
 		{
-			if (next == null || reset == null) throw new ArgumentNullException();
+			if (next is null || reset is null)
+				throw new ArgumentNullException();
 			cnext = next;
 			base.next = TryGet;
 			base.reset = reset;
@@ -152,6 +153,8 @@ namespace Vanara.Collections
 		/// <param name="enumObj">The COM enumeration interface instance.</param>
 		public IEnumFromCom(ICOMEnum<TItem> enumObj) : base()
 		{
+			if (enumObj is null)
+				throw new ArgumentNullException(nameof(enumObj));
 			comObj = enumObj;
 			cnext = ComObjTryGetNext;
 			next = TryGet;
@@ -171,16 +174,6 @@ namespace Vanara.Collections
 		/// </returns>
 		public delegate HRESULT ComTryGetNext(uint celt, TItem[] rgelt, out uint celtFetched);
 
-		private bool TryGet(out TItem item)
-		{
-			var res = new TItem[1];
-			item = default;
-			if (cnext(1, res, out var ret) != HRESULT.S_OK)
-				return false;
-			item = res[0];
-			return true;
-		}
-
 		private HRESULT ComObjTryGetNext(uint celt, TItem[] rgelt, out uint celtFetched)
 		{
 			var para = new object[] { celt, rgelt, 0U };
@@ -189,9 +182,16 @@ namespace Vanara.Collections
 			return hr;
 		}
 
-		private void ComObjReset()
+		private void ComObjReset() => comObj.GetType().InvokeMember("Reset", BindingFlags.InvokeMethod, null, comObj, null);
+
+		private bool TryGet(out TItem item)
 		{
-			comObj.GetType().InvokeMember("Reset", BindingFlags.InvokeMethod, null, comObj, null);
+			var res = new TItem[1];
+			item = default;
+			if (cnext(1, res, out var ret) != HRESULT.S_OK)
+				return false;
+			item = res[0];
+			return true;
 		}
 	}
 
