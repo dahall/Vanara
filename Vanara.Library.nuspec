@@ -22,6 +22,7 @@
       <dependency id="Vanara.PInvoke.AclUI" version="3.3.9" />
       <dependency id="Vanara.PInvoke.BITS" version="3.3.9" />
       <dependency id="Vanara.PInvoke.Cabinet" version="3.3.9" />
+      <dependency id="Vanara.PInvoke.CfgMgr32" version="3.3.9" />
       <dependency id="Vanara.PInvoke.CldApi" version="3.3.9" />
       <dependency id="Vanara.PInvoke.ComCtl32" version="3.3.9" />
       <dependency id="Vanara.PInvoke.ComDlg32" version="3.3.9" />
