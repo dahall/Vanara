@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -4687,7 +4688,8 @@ namespace Vanara.PInvoke
 		// hClientHandle, WLAN_FILTER_LIST_TYPE wlanFilterListType, const PDOT11_NETWORK_LIST pNetworkList, PVOID pReserved );
 		[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wlanapi.h", MSDNShortId = "697682c9-cb26-42d6-86b5-d7adebcedc68")]
-		public static extern Win32Error WlanSetFilterList(HWLANSESSION hClientHandle, WLAN_FILTER_LIST_TYPE wlanFilterListType, [Optional] DOT11_NETWORK_LIST pNetworkList, IntPtr pReserved = default);
+		public static extern Win32Error WlanSetFilterList(HWLANSESSION hClientHandle, WLAN_FILTER_LIST_TYPE wlanFilterListType,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<DOT11_NETWORK_LIST>))] DOT11_NETWORK_LIST pNetworkList, IntPtr pReserved = default);
 
 		/// <summary>The <c>WlanSetInterface</c> function sets user-configurable parameters for a specified interface.</summary>
 		/// <param name="hClientHandle">The client's session handle, obtained by a previous call to the WlanOpenHandle function.</param>
@@ -5716,14 +5718,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HWFDSERVICE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HWFDSERVICE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HWFDSERVICE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HWFDSERVICE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HWFDSERVICE NULL => new HWFDSERVICE(IntPtr.Zero);
+			public static HWFDSERVICE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -5736,7 +5738,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HWFDSERVICE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HWFDSERVICE(IntPtr h) => new HWFDSERVICE(h);
+			public static implicit operator HWFDSERVICE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -5764,14 +5766,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HWFDSESSION : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HWFDSESSION"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HWFDSESSION(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HWFDSESSION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HWFDSESSION NULL => new HWFDSESSION(IntPtr.Zero);
+			public static HWFDSESSION NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -5784,7 +5786,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HWFDSESSION"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HWFDSESSION(IntPtr h) => new HWFDSESSION(h);
+			public static implicit operator HWFDSESSION(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -5812,14 +5814,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HWLANSESSION : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HWLANSESSION"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HWLANSESSION(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HWLANSESSION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HWLANSESSION NULL => new HWLANSESSION(IntPtr.Zero);
+			public static HWLANSESSION NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -5832,7 +5834,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HWLANSESSION"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HWLANSESSION(IntPtr h) => new HWLANSESSION(h);
+			public static implicit operator HWLANSESSION(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>

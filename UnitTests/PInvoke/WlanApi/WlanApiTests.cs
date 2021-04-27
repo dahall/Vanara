@@ -112,19 +112,16 @@ namespace WlanApi
 		}
 
 		[Test]
-		public void WlanGetFilterListTest()
+		public void WlanGetFilterListTest([Values] WLAN_FILTER_LIST_TYPE listType)
 		{
-			foreach (WLAN_FILTER_LIST_TYPE e in Enum.GetValues(typeof(WLAN_FILTER_LIST_TYPE)))
+			Assert.That(WlanGetFilterList(hWlan, listType, default, out var list), ResultIs.Successful);
+			if (list is null)
+				TestContext.WriteLine($"{listType} => [none]");
+			else
 			{
-				Assert.That(WlanGetFilterList(hWlan, e, default, out var list), ResultIs.Successful);
-				if (list is null)
-					TestContext.WriteLine($"{e} => [none]");
-				else
-				{
-					Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
-					Assert.That(list.Network.Length, Is.EqualTo(list.dwNumberOfItems));
-					TestContext.WriteLine("{0} => {1}", e, string.Join(", ", list.Network.Select(n => $"{n.dot11BssType}")));
-				}
+				Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
+				Assert.That(list.Network.Length, Is.EqualTo(list.dwNumberOfItems));
+				TestContext.WriteLine("{0} => {1}", listType, string.Join(", ", list.Network.Select(n => $"{n.dot11Ssid} : {n.dot11BssType}")));
 			}
 		}
 
@@ -180,14 +177,11 @@ namespace WlanApi
 		}
 
 		[Test]
-		public void WlanGetSecuritySettingsTest()
+		public void WlanGetSecuritySettingsTest([Values] WLAN_SECURABLE_OBJECT e)
 		{
-			foreach (WLAN_SECURABLE_OBJECT e in Enum.GetValues(typeof(WLAN_SECURABLE_OBJECT)))
-			{
-				if (e == WLAN_SECURABLE_OBJECT.WLAN_SECURABLE_OBJECT_COUNT) continue;
-				Assert.That(WlanGetSecuritySettings(hWlan, e, out var value, out var sddl, out var access), ResultIs.Successful);
-				TestContext.WriteLine($"{e}: {access}, {value}\n\t{sddl}");
-			}
+			if (e == WLAN_SECURABLE_OBJECT.WLAN_SECURABLE_OBJECT_COUNT) return;
+			Assert.That(WlanGetSecuritySettings(hWlan, e, out var value, out var sddl, out var access), ResultIs.Successful);
+			TestContext.WriteLine($"{e}: {access}, {value}\n\t{sddl}");
 		}
 
 		[Test]
@@ -202,17 +196,14 @@ namespace WlanApi
 		}
 
 		[Test]
-		public void WlanHostedNetworkQueryPropertyTest()
+		public void WlanHostedNetworkQueryPropertyTest([Values] WLAN_HOSTED_NETWORK_OPCODE e)
 		{
-			foreach (WLAN_HOSTED_NETWORK_OPCODE e in Enum.GetValues(typeof(WLAN_HOSTED_NETWORK_OPCODE)))
-			{
-				var err = WlanHostedNetworkQueryProperty(hWlan, e, out var sz, out var data, out var type);
-				if (err == Win32Error.ERROR_BAD_CONFIGURATION) continue;
-				Assert.That(err, ResultIs.Successful);
-				TestContext.WriteLine($"{e} = {type}");
-				var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Get).First();
-				data.DangerousGetHandle().Convert(sz, t).WriteValues();
-			}
+			var err = WlanHostedNetworkQueryProperty(hWlan, e, out var sz, out var data, out var type);
+			if (err == Win32Error.ERROR_BAD_CONFIGURATION) return;
+			Assert.That(err, ResultIs.Successful);
+			TestContext.WriteLine($"{e} = {type}");
+			var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Get).First();
+			data.DangerousGetHandle().Convert(sz, t).WriteValues();
 		}
 
 		[Test]
@@ -268,29 +259,23 @@ namespace WlanApi
 		}
 
 		[Test]
-		public void WlanQueryAutoConfigParameterTest()
+		public void WlanQueryAutoConfigParameterTest([Values] WLAN_AUTOCONF_OPCODE e)
 		{
-			foreach (WLAN_AUTOCONF_OPCODE e in Enum.GetValues(typeof(WLAN_AUTOCONF_OPCODE)))
-			{
-				var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Get).FirstOrDefault();
-				if (t is null) continue;
-				Assert.That(WlanQueryAutoConfigParameter(hWlan, e, default, out var sz, out var data, out var type), ResultIs.Successful);
-				TestContext.WriteLine($"{e} = {type}");
-				data.DangerousGetHandle().Convert(sz, t).WriteValues();
-			}
+			var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Get).FirstOrDefault();
+			if (t is null) return;
+			Assert.That(WlanQueryAutoConfigParameter(hWlan, e, default, out var sz, out var data, out var type), ResultIs.Successful);
+			TestContext.WriteLine($"{e} = {type}");
+			data.DangerousGetHandle().Convert(sz, t).WriteValues();
 		}
 
 		[Test]
-		public void WlanQueryInterfaceTest()
+		public void WlanQueryInterfaceTest([Values] WLAN_INTF_OPCODE e)
 		{
-			foreach (WLAN_INTF_OPCODE e in Enum.GetValues(typeof(WLAN_INTF_OPCODE)))
-			{
-				var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Get).FirstOrDefault();
-				if (t is null) continue;
-				if (WlanQueryInterface(hWlan, PrimaryInterface, e, default, out var sz, out var data, out var type).Failed) continue;
-				TestContext.WriteLine($"{e} = {type}");
-				data.DangerousGetHandle().Convert(sz, t).WriteValues();
-			}
+			var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Get).FirstOrDefault();
+			if (t is null) return;
+			if (WlanQueryInterface(hWlan, PrimaryInterface, e, default, out var sz, out var data, out var type).Failed) return;
+			TestContext.WriteLine($"{e} = {type}");
+			data.DangerousGetHandle().Convert(sz, t).WriteValues();
 		}
 
 		[Test]
@@ -304,10 +289,7 @@ namespace WlanApi
 		{
 			Assert.That(WlanRegisterNotification(hWlan, WLAN_NOTIFICATION_SOURCE.WLAN_NOTIFICATION_SOURCE_ALL, true, Callback, default, default, out var prev), ResultIs.Successful);
 
-			void Callback(ref WLAN_NOTIFICATION_DATA Arg1, IntPtr Arg2)
-			{
-				Arg1.WriteValues();
-			}
+			static void Callback(ref WLAN_NOTIFICATION_DATA Arg1, IntPtr Arg2) => Arg1.WriteValues();
 		}
 
 		[Test]
@@ -338,33 +320,44 @@ namespace WlanApi
 		}
 
 		[Test]
-		public void WlanSetAutoConfigParameterTest()
+		public void WlanSetAutoConfigParameterTest([Values] WLAN_AUTOCONF_OPCODE e)
 		{
-			foreach (WLAN_AUTOCONF_OPCODE e in Enum.GetValues(typeof(WLAN_AUTOCONF_OPCODE)))
-			{
-				var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Set).FirstOrDefault();
-				if (t is null) continue;
-				Assert.That(WlanQueryAutoConfigParameter(hWlan, e, default, out var sz, out var data, out var type), ResultIs.Successful);
-				Assert.That(WlanSetAutoConfigParameter(hWlan, e, sz, data), ResultIs.Successful);
-			}
+			var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Set).FirstOrDefault();
+			if (t is null) return;
+			Assert.That(WlanQueryAutoConfigParameter(hWlan, e, default, out var sz, out var data, out var type), ResultIs.Successful);
+			Assert.That(WlanSetAutoConfigParameter(hWlan, e, sz, data), ResultIs.Successful);
 		}
 
 		[Test]
 		public void WlanSetFilterListTest()
 		{
+			Assert.That(WlanGetFilterList(hWlan, WLAN_FILTER_LIST_TYPE.wlan_filter_list_type_user_permit, default, out var filters), ResultIs.Successful);
+
 			Assert.That(WlanSetFilterList(hWlan, WLAN_FILTER_LIST_TYPE.wlan_filter_list_type_user_permit, null), ResultIs.Successful);
+			Assert.That(WlanGetFilterList(hWlan, WLAN_FILTER_LIST_TYPE.wlan_filter_list_type_user_permit, default, out var clearedfilters), ResultIs.Successful);
+			Assert.That(clearedfilters.dwNumberOfItems, Is.EqualTo(0U));
+
+			DOT11_NETWORK_LIST allow_filters = new(new DOT11_NETWORK[]
+			{
+				new("TestFilter1", DOT11_BSS_TYPE.dot11_BSS_type_infrastructure),
+				new("TestFilter2", DOT11_BSS_TYPE.dot11_BSS_type_infrastructure),
+				new("TestFilter3", DOT11_BSS_TYPE.dot11_BSS_type_infrastructure),
+			});
+			Assert.That(WlanSetFilterList(hWlan, WLAN_FILTER_LIST_TYPE.wlan_filter_list_type_user_permit, allow_filters), ResultIs.Successful);
+
+			Assert.That(WlanGetFilterList(hWlan, WLAN_FILTER_LIST_TYPE.wlan_filter_list_type_user_permit, default, out var addedfilters), ResultIs.Successful);
+			Assert.That(addedfilters.dwNumberOfItems, Is.EqualTo(allow_filters.dwNumberOfItems));
+
+			Assert.That(WlanSetFilterList(hWlan, WLAN_FILTER_LIST_TYPE.wlan_filter_list_type_user_permit, filters), ResultIs.Successful);
 		}
 
 		[Test]
-		public void WlanSetInterfaceTest()
+		public void WlanSetInterfaceTest([Values] WLAN_INTF_OPCODE e)
 		{
-			foreach (WLAN_INTF_OPCODE e in Enum.GetValues(typeof(WLAN_INTF_OPCODE)))
-			{
-				var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Set).FirstOrDefault();
-				if (t is null || e == WLAN_INTF_OPCODE.wlan_intf_opcode_radio_state) continue;
-				if (WlanQueryInterface(hWlan, PrimaryInterface, e, default, out var sz, out var data, out var type).Failed) continue;
-				Assert.That(WlanSetInterface(hWlan, PrimaryInterface, e, sz, data), ResultIs.Successful);
-			}
+			var t = CorrespondingTypeAttribute.GetCorrespondingTypes(e, CorrespondingAction.Set).FirstOrDefault();
+			if (t is null || e == WLAN_INTF_OPCODE.wlan_intf_opcode_radio_state) return;
+			if (WlanQueryInterface(hWlan, PrimaryInterface, e, default, out var sz, out var data, out _).Failed) return;
+			Assert.That(WlanSetInterface(hWlan, PrimaryInterface, e, sz, data), ResultIs.Successful);
 		}
 
 		[Test]

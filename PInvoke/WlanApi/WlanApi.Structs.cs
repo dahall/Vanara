@@ -103,6 +103,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>A DOT11_BSS_TYPE value that indicates the BSS type of the network.</summary>
 			public DOT11_BSS_TYPE dot11BssType;
+
+			/// <summary>Initializes a new instance of the <see cref="DOT11_NETWORK"/> struct.</summary>
+			/// <param name="ssid">The SSID of a visible wireless network.</param>
+			/// <param name="bssType">A DOT11_BSS_TYPE value that indicates the BSS type of the network.</param>
+			public DOT11_NETWORK(string ssid, DOT11_BSS_TYPE bssType = DOT11_BSS_TYPE.dot11_BSS_type_infrastructure)
+			{
+				dot11BssType = bssType;
+				dot11Ssid = new DOT11_SSID { ucSSID = ssid, uSSIDLength = (uint)(ssid?.Length ?? 0) };
+			}
 		}
 
 		/// <summary>A <c>DOT11_SSID</c> structure contains the SSID of an interface.</summary>
@@ -119,15 +128,18 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/nativewifi/dot11-ssid typedef struct _DOT11_SSID { ULONG uSSIDLength; UCHAR
 		// ucSSID[DOT11_SSID_MAX_LENGTH]; } DOT11_SSID, *PDOT11_SSID;
 		[PInvokeData("wlantypes.h", MSDNShortId = "f2b15ef9-99ee-4505-8575-224112024d7a")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct DOT11_SSID
 		{
 			/// <summary>The length, in bytes, of the <c>ucSSID</c> array.</summary>
 			public uint uSSIDLength;
 
 			/// <summary>The SSID. DOT11_SSID_MAX_LENGTH is set to 32.</summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = DOT11_SSID_MAX_LENGTH)]
-			public byte[] ucSSID;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = DOT11_SSID_MAX_LENGTH)]
+			public string ucSSID;
+
+			/// <inheritdoc/>
+			public override string ToString() => ucSSID?.Substring(0, (int)uSSIDLength);
 		}
 
 		/// <summary>The <c>EAP_METHOD_TYPE</c> structure contains type, identification, and author information about an EAP method.</summary>
@@ -3034,6 +3046,20 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public class DOT11_NETWORK_LIST
 		{
+			/// <summary>Initializes a new instance of the <see cref="DOT11_NETWORK_LIST"/> class.</summary>
+			public DOT11_NETWORK_LIST() { }
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="DOT11_NETWORK_LIST"/> class setting the <see cref="Network"/> and <see
+			/// cref="dwNumberOfItems"/> fields based on <paramref name="network"/>.
+			/// </summary>
+			/// <param name="network">An array of DOT11_NETWORK structures that contain 802.11 wireless network information.</param>
+			public DOT11_NETWORK_LIST(DOT11_NETWORK[] network)
+			{
+				Network = network;
+				dwNumberOfItems = (uint)(network?.Length ?? 0);
+			}
+
 			/// <summary>Contains the number of items in the <c>Network</c> member.</summary>
 			public uint dwNumberOfItems;
 
