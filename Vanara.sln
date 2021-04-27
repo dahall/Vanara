@@ -307,6 +307,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.IMAPI", "PIn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.CfgMgr32", "PInvoke\CfgMgr32\Vanara.PInvoke.CfgMgr32.csproj", "{2ECB955C-F05D-4FD7-BCC7-449A494CA66B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.TextServicesFramework", "PInvoke\TextServicesFramework\Vanara.PInvoke.TextServicesFramework.csproj", "{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -999,6 +1001,12 @@ Global
 		{2ECB955C-F05D-4FD7-BCC7-449A494CA66B}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{2ECB955C-F05D-4FD7-BCC7-449A494CA66B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ECB955C-F05D-4FD7-BCC7-449A494CA66B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1133,6 +1141,7 @@ Global
 		{55952C51-B68B-432E-A168-4ADD569B9274} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{17EFDD95-3E52-44C1-80D9-48031E3F6B3F} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{2ECB955C-F05D-4FD7-BCC7-449A494CA66B} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

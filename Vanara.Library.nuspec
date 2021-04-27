@@ -69,6 +69,7 @@
       <dependency id="Vanara.PInvoke.Shell32" version="3.3.9" />
       <dependency id="Vanara.PInvoke.ShlwApi" version="3.3.9" />
       <dependency id="Vanara.PInvoke.TaskSchd" version="3.3.9" />
+      <dependency id="Vanara.PInvoke.TextServicesFramework" version="3.3.9" />
       <dependency id="Vanara.PInvoke.UrlMon" version="3.3.9" />
       <dependency id="Vanara.PInvoke.User32" version="3.3.9" />
       <dependency id="Vanara.PInvoke.UserEnv" version="3.3.9" />
