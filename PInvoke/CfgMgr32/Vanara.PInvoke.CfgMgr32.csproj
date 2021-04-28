@@ -10,10 +10,11 @@
     <AssemblyName>Vanara.PInvoke.CfgMgr32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;CfgMgr32</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes />
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\SetupAPI\Vanara.PInvoke.SetupAPI.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>
