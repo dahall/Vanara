@@ -715,6 +715,8 @@ namespace Vanara.Extensions
 			var charLength = StringHelper.GetCharSize(charSet);
 			var i = prefixBytes;
 			if (allocatedBytes == 0) allocatedBytes = SizeT.MaxValue;
+			// handle condition where there is just the null terminator
+			if (allocatedBytes - prefixBytes - charLength <= 0) yield break;
 			for (IntPtr ptr = lptr.Offset(i); i + charLength <= allocatedBytes && GetCh(ptr) != 0; i += charLength, ptr = lptr.Offset(i))
 			{
 				for (IntPtr cptr = ptr; i + charLength <= allocatedBytes && GetCh(cptr) != 0; cptr = cptr.Offset(charLength), i += charLength) { }
