@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -2686,6 +2687,68 @@ namespace Vanara.PInvoke
 			/// in the registry as f:\x86 is returned as f:. If this flag is specified, the platform-specific component is not stripped.
 			/// </summary>
 			SRCLIST_NOSTRIPPLATFORM = 0x00000400,
+		}
+
+		/// <summary>Extracts a value from memory of the type specified.</summary>
+		/// <param name="pType">Type of the value to extract.</param>
+		/// <param name="mem">The memory handle holding the value.</param>
+		/// <returns>An object of the specified type.</returns>
+		public static object GetObject(this DEVPROPTYPE pType, ISafeMemoryHandle mem) => GetObject(pType, mem.DangerousGetHandle(), mem.Size);
+
+		/// <summary>Extracts a value from memory of the type specified.</summary>
+		/// <param name="pType">Type of the value to extract.</param>
+		/// <param name="mem">The pointer to the memory holding the value.</param>
+		/// <param name="memSize">Size of the allocated memory.</param>
+		/// <returns>An object of the specified type.</returns>
+		public static object GetObject(this DEVPROPTYPE pType, IntPtr mem, SizeT memSize)
+		{
+			switch (pType)
+			{
+				case DEVPROPTYPE.DEVPROP_TYPE_EMPTY:
+				case DEVPROPTYPE.DEVPROP_TYPE_NULL:
+					return null;
+				case DEVPROPTYPE.DEVPROP_TYPE_SBYTE:
+				case DEVPROPTYPE.DEVPROP_TYPE_BYTE:
+				case DEVPROPTYPE.DEVPROP_TYPE_INT16:
+				case DEVPROPTYPE.DEVPROP_TYPE_UINT16:
+				case DEVPROPTYPE.DEVPROP_TYPE_INT32:
+				case DEVPROPTYPE.DEVPROP_TYPE_UINT32:
+				case DEVPROPTYPE.DEVPROP_TYPE_INT64:
+				case DEVPROPTYPE.DEVPROP_TYPE_UINT64:
+				case DEVPROPTYPE.DEVPROP_TYPE_FLOAT:
+				case DEVPROPTYPE.DEVPROP_TYPE_DOUBLE:
+				case DEVPROPTYPE.DEVPROP_TYPE_DECIMAL:
+				case DEVPROPTYPE.DEVPROP_TYPE_GUID:
+				case DEVPROPTYPE.DEVPROP_TYPE_FILETIME:
+				case DEVPROPTYPE.DEVPROP_TYPE_CURRENCY:
+				case DEVPROPTYPE.DEVPROP_TYPE_DATE:
+				case DEVPROPTYPE.DEVPROP_TYPE_STRING:
+				case DEVPROPTYPE.DEVPROP_TYPE_DEVPROPKEY:
+				case DEVPROPTYPE.DEVPROP_TYPE_DEVPROPTYPE:
+				case DEVPROPTYPE.DEVPROP_TYPE_ERROR:
+				case DEVPROPTYPE.DEVPROP_TYPE_NTSTATUS:
+				case DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING:
+				case DEVPROPTYPE.DEVPROP_TYPE_BINARY:
+					return mem.Convert(memSize, CorrespondingTypeAttribute.GetCorrespondingTypes(pType).First());
+				case DEVPROPTYPE.DEVPROP_TYPE_STRING_LIST:
+				case DEVPROPTYPE.DEVPROP_TYPEMOD_LIST | DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING:
+					return mem.ToStringEnum(CharSet.Auto, 0, memSize).ToArray();
+				case DEVPROPTYPE.DEVPROP_TYPE_BOOLEAN:
+					return mem.ToStructure<BOOLEAN>(memSize).Value;
+				case DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR:
+					return new System.Security.AccessControl.RawSecurityDescriptor(mem.ToArray<byte>(memSize, 0, memSize), 0);
+				case DEVPROPTYPE.DEVPROP_TYPE_STRING_INDIRECT:
+					return Environment.ExpandEnvironmentVariables(StringHelper.GetString(mem, CharSet.Auto, memSize));
+				default:
+					if (pType.IsFlagSet(DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY))
+					{
+						var elemtype = CorrespondingTypeAttribute.GetCorrespondingTypes(pType.ClearFlags(DEVPROPTYPE.DEVPROP_TYPEMOD_ARRAY)).First();
+						var elemsz = Marshal.SizeOf(elemtype);
+						return mem.ToArray(elemtype, memSize / elemsz, 0, memSize);
+					}
+					break;
+			}
+			throw new ArgumentException($"Unable to convert to {pType}.");
 		}
 
 		/// <summary>Splits the provided <see cref="DEVPROPTYPE"/> value into its parts.</summary>
