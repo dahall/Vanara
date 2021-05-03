@@ -309,7 +309,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.CfgMgr32", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.TextServicesFramework", "PInvoke\TextServicesFramework\Vanara.PInvoke.TextServicesFramework.csproj", "{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CfgMgr32", "UnitTests\PInvoke\CfgMgr32\CfgMgr32.csproj", "{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CfgMgr32", "UnitTests\PInvoke\CfgMgr32\CfgMgr32.csproj", "{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1012,9 +1012,7 @@ Global
 		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
