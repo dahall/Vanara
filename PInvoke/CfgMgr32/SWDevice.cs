@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke
 {
@@ -88,12 +90,18 @@ namespace Vanara.PInvoke
 			SWDeviceCapabilitiesDriverRequired = 0x00000008
 		}
 
+		/// <summary>Indicates the current lifetime value for the software device.</summary>
 		[PInvokeData("swdevicedef.h")]
 		public enum SW_DEVICE_LIFETIME
 		{
+			/// <summary>
+			/// Indicates that the lifetime of the software device is determined by the lifetime of the handle that is associated with the
+			/// software device. As long as the handle is open, the software device is enumerated by PnP.
+			/// </summary>
 			SWDeviceLifetimeHandle,
+
+			/// <summary>Indicates that the lifetime of the software device is tied to the lifetime of its parent.</summary>
 			SWDeviceLifetimeParentPresent,
-			SWDeviceLifetimeMax
 		}
 
 		/// <summary>Closes the software device handle. When the handle is closed, PnP will initiate the process of removing the device.</summary>
@@ -124,6 +132,326 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceClose")]
 		public static extern void SwDeviceClose(HSWDEVICE hSwDevice);
+
+		/// <summary>Initiates the enumeration of a software device.</summary>
+		/// <param name="pszEnumeratorName">
+		/// A string that names the enumerator of the software device. Choose a name that represents the component that enumerates the devices.
+		/// </param>
+		/// <param name="pszParentDeviceInstance">
+		/// <para>A string that specifies the device instance ID of the device that is the parent of the software device.</para>
+		/// <para>
+		/// This can be HTREE\ROOT\0, but we recommend to keep children of the root device to a minimum. We also recommend that the
+		/// preferred parent of a software device be a real device that the software device is extending the functionality for. In
+		/// situations where a software device doesn't have such a natural parent, create a device as a child of the root that can collect
+		/// all the software devices that a component will enumerate; then, enumerate the actual software devices as children of this device
+		/// grouping node. This keeps the children of the root device to a manageable number.
+		/// </para>
+		/// </param>
+		/// <param name="pCreateInfo">A pointer to a SW_DEVICE_CREATE_INFO structure that describes info that PnP uses to create the device.</param>
+		/// <param name="cPropertyCount">The number of DEVPROPERTY structures in the pProperties array.</param>
+		/// <param name="pProperties">
+		/// An optional array of DEVPROPERTY structures. These properties are set on the device after it is created but before a
+		/// notification that the device has been created are sent. For more info, see Remarks. This pointer can be <c>NULL</c>.
+		/// </param>
+		/// <param name="pCallback">
+		/// The SW_DEVICE_CREATE_CALLBACK callback function that the operating system calls after PnP enumerates the device.
+		/// </param>
+		/// <param name="pContext">
+		/// An optional client context that the operating system passes to the callback function. This pointer can be <c>NULL</c>.
+		/// </param>
+		/// <param name="phSwDevice">
+		/// A pointer to a variable that receives the <c>HSWDEVICE</c> handle that represents the device. Call SwDeviceClose to close this
+		/// handle after the client app wants PnP to remove the device.
+		/// </param>
+		/// <returns>
+		/// S_OK is returned if device enumeration was successfully initiated. This does not mean that the device has been successfully
+		/// enumerated. Check the CreateResult parameter of the SW_DEVICE_CREATE_CALLBACK callback function to determine if the device was
+		/// successfully enumerated.
+		/// </returns>
+		/// <remarks>
+		/// <para><c>SwDeviceCreate</c> returns a handle that represents the device. After this handle is closed, PnP will remove the device.</para>
+		/// <para>The calling process must have Administrator access in order to initiate the enumeration of a software device.</para>
+		/// <para>
+		/// PnP forms the device instance ID of a software device as "SWD&amp;lt;pszEnumeratorName&gt;&amp;lt;pszInstanceId&gt;," but this
+		/// string might change or PnP might decorate the name. Always get the device instance ID from the callback function.
+		/// </para>
+		/// <para>
+		/// There is a subtle difference between properties that are set as part of a <c>SwDeviceCreate</c> call and properties that are
+		/// later set by calling SwDevicePropertySet. Properties that are set as part of <c>SwDeviceCreate</c> are stored in memory; if the
+		/// device is uninstalled or a null driver wipes out the property stores, these properties are written out again by the Software
+		/// Device API feature when PnP re-enumerates the devices. This is all transparent to the client. Properties that are set using
+		/// <c>SwDevicePropertySet</c> after the enumeration don't persist in memory. But, if you set a property by using
+		/// <c>SwDeviceCreate</c>, you can update the value with <c>SwDevicePropertySet</c>, and this update is applied to the in-memory
+		/// value as well as the persisted store.
+		/// </para>
+		/// <para>
+		/// We recommend that all properties be specified as part of the call to <c>SwDeviceCreate</c> when possible and that these
+		/// properties be specified for every call to <c>SwDeviceCreate</c>.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The operating system might possibly call SW_DEVICE_CREATE_CALLBACK before the call to <c>SwDeviceCreate</c> returns.
+		/// For this reason, the software device handle for the device is supplied as a parameter to the callback function.
+		/// </para>
+		/// <para>
+		/// You can create a software device as the child of a parent that is not present at the time. PnP will enumerate the software
+		/// device after the parent becomes present.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swdevicecreate HRESULT SwDeviceCreate( PCWSTR
+		// pszEnumeratorName, PCWSTR pszParentDeviceInstance, const SW_DEVICE_CREATE_INFO *pCreateInfo, ULONG cPropertyCount, const
+		// DEVPROPERTY *pProperties, SW_DEVICE_CREATE_CALLBACK pCallback, PVOID pContext, PHSWDEVICE phSwDevice );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceCreate")]
+		public static extern HRESULT SwDeviceCreate([MarshalAs(UnmanagedType.LPWStr)] string pszEnumeratorName, [MarshalAs(UnmanagedType.LPWStr)] string pszParentDeviceInstance,
+			in SW_DEVICE_CREATE_INFO pCreateInfo, uint cPropertyCount, [In, Optional, MarshalAs(UnmanagedType.LPArray)] DEVPROPERTY[] pProperties, SW_DEVICE_CREATE_CALLBACK pCallback,
+			[In, Optional] IntPtr pContext, out SafeHSWDEVICE phSwDevice);
+
+		/// <summary>Gets the lifetime of a software device.</summary>
+		/// <param name="hSwDevice">The <c>HSWDEVICE</c> handle to the software device to retrieve.</param>
+		/// <param name="pLifetime">
+		/// <para>
+		/// A pointer to a variable that receives a <c>SW_DEVICE_LIFETIME</c>-typed value that indicates the current lifetime value for the
+		/// software device. Here are possible values:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SWDeviceLifetimeHandle</term>
+		/// <term>
+		/// Indicates that the lifetime of the software device is determined by the lifetime of the handle that is associated with the
+		/// software device. As long as the handle is open, the software device is enumerated by PnP.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SWDeviceLifetimeParentPresent</term>
+		/// <term>Indicates that the lifetime of the software device is tied to the lifetime of its parent.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>S_OK is returned if SwDeviceSetLifetime successfully retrieved the lifetime.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swdevicegetlifetime HRESULT SwDeviceGetLifetime(
+		// HSWDEVICE hSwDevice, PSW_DEVICE_LIFETIME pLifetime );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceGetLifetime")]
+		public static extern HRESULT SwDeviceGetLifetime(HSWDEVICE hSwDevice, out SW_DEVICE_LIFETIME pLifetime);
+
+		/// <summary>Sets properties on a software device interface.</summary>
+		/// <param name="hSwDevice">The <c>HSWDEVICE</c> handle to the software device of the interface to set properties for.</param>
+		/// <param name="pszDeviceInterfaceId">A string that identifies the interface to set properties on.</param>
+		/// <param name="cPropertyCount">The number of DEVPROPERTY structures in the pProperties array.</param>
+		/// <param name="pProperties">An array of DEVPROPERTY structures containing the properties to set on the interface.</param>
+		/// <returns>
+		/// S_OK is returned if <c>SwDeviceInterfacePropertySet</c> successfully set the properties on the interface; otherwise, an
+		/// appropriate error value.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Typically, only the operating system and Administrators of the computer can set properties on an interface, but the creator of a
+		/// device can call <c>SwDeviceInterfacePropertySet</c> to set properties on an interface for that device even if the creator isn't
+		/// the operating system or an Administrator.
+		/// </para>
+		/// <para>
+		/// You can call <c>SwDeviceInterfacePropertySet</c> only after the operating system has called your client app's
+		/// SW_DEVICE_CREATE_CALLBACK callback function to notify the client app that device enumeration completed.
+		/// </para>
+		/// <para>
+		/// There is a subtle difference between properties that are set as part of a SwDeviceInterfaceRegister call and properties that are
+		/// later set by calling <c>SwDeviceInterfacePropertySet</c>. Properties that are set as part of <c>SwDeviceInterfaceRegister</c>
+		/// are stored in memory; if the device is uninstalled or a null driver wipes out the property stores, these properties are written
+		/// out again by the Software Device API feature when PnP re-enumerates the devices. This is all transparent to the client.
+		/// Properties that are set using <c>SwDeviceInterfacePropertySet</c> after the enumeration don't persist in memory. But, if you set
+		/// a property by using <c>SwDeviceInterfaceRegister</c>, you can update the value with <c>SwDeviceInterfacePropertySet</c>, and
+		/// this update is applied to the in-memory value as well as the persisted store.
+		/// </para>
+		/// <para>You can use <c>SwDeviceInterfacePropertySet</c> only to set properties in the operating system store for the interface.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swdeviceinterfacepropertyset HRESULT
+		// SwDeviceInterfacePropertySet( HSWDEVICE hSwDevice, PCWSTR pszDeviceInterfaceId, ULONG cPropertyCount, const DEVPROPERTY
+		// *pProperties );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceInterfacePropertySet")]
+		public static extern HRESULT SwDeviceInterfacePropertySet(HSWDEVICE hSwDevice, [MarshalAs(UnmanagedType.LPWStr)] string pszDeviceInterfaceId,
+			uint cPropertyCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPERTY[] pProperties);
+
+		/// <summary>Registers a device interface for a software device and optionally sets properties on that interface.</summary>
+		/// <param name="hSwDevice">The <c>HSWDEVICE</c> handle to the software device to register a device interface for.</param>
+		/// <param name="pInterfaceClassGuid">A pointer to the interface class GUID that names the contract that this interface implements.</param>
+		/// <param name="pszReferenceString">
+		/// An optional reference string that differentiates multiple interfaces of the same class for this device. This pointer can be <c>NULL</c>.
+		/// </param>
+		/// <param name="cPropertyCount">The number of DEVPROPERTY structures in the pProperties array.</param>
+		/// <param name="pProperties">
+		/// <para>An optional array of DEVPROPERTY structures for the properties to set on the interface. This pointer can be <c>NULL</c>.</para>
+		/// <para>
+		/// Set these properties on the interface after it is created but before a notification that the interface has been created are
+		/// sent. For more info, see Remarks. This pointer can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="fEnabled">
+		/// A Boolean value that indicates whether to either enable or disable the interface. <c>TRUE</c> to enable; <c>FALSE</c> to disable.
+		/// </param>
+		/// <param name="ppszDeviceInterfaceId">
+		/// A pointer to a variable that receives a pointer to the device interface ID for the interface. The caller must free this value
+		/// with SwMemFree. This value can be <c>NULL</c> if the client app doesn't need to retrieve the name.
+		/// </param>
+		/// <returns>
+		/// S_OK is returned if <c>SwDeviceInterfaceRegister</c> successfully registered the interface; otherwise, an appropriate error value.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// You can call <c>SwDeviceInterfaceRegister</c> only after the operating system has called your client app's
+		/// SW_DEVICE_CREATE_CALLBACK callback function to notify the client app that device enumeration completed.
+		/// </para>
+		/// <para>
+		/// You can't call <c>SwDeviceInterfaceRegister</c> for software devices that specify the SWDeviceCapabilitiesDriverRequired capability.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swdeviceinterfaceregister HRESULT
+		// SwDeviceInterfaceRegister( HSWDEVICE hSwDevice, const GUID *pInterfaceClassGuid, PCWSTR pszReferenceString, ULONG cPropertyCount,
+		// const DEVPROPERTY *pProperties, BOOL fEnabled, PWSTR *ppszDeviceInterfaceId );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceInterfaceRegister")]
+		public static extern HRESULT SwDeviceInterfaceRegister(HSWDEVICE hSwDevice, in Guid pInterfaceClassGuid, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pszReferenceString,
+			uint cPropertyCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] DEVPROPERTY[] pProperties, [MarshalAs(UnmanagedType.Bool)] bool fEnabled,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SwMemMarshaler))] out string ppszDeviceInterfaceId);
+
+		/// <summary>Enables or disables a device interface for a software device.</summary>
+		/// <param name="hSwDevice">The <c>HSWDEVICE</c> handle to the software device to register a device interface for.</param>
+		/// <param name="pszDeviceInterfaceId">A string that identifies the interface to enable or disable.</param>
+		/// <param name="fEnabled">
+		/// A Boolean value that indicates whether to either enable or disable the interface. <c>TRUE</c> to enable; <c>FALSE</c> to disable.
+		/// </param>
+		/// <returns>
+		/// S_OK is returned if <c>SwDeviceInterfaceSetState</c> successfully enabled or disabled the interface; otherwise, an appropriate
+		/// error value.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// You can call <c>SwDeviceInterfaceSetState</c> only after the operating system has called your client app's
+		/// SW_DEVICE_CREATE_CALLBACK callback function to notify the client app that device enumeration completed.
+		/// </para>
+		/// <para>
+		/// You can only use <c>SwDeviceInterfaceSetState</c> to manage interfaces that were previously registered with
+		/// SwDeviceInterfaceRegister against the software device that hSwDevice represents.
+		/// </para>
+		/// <para>
+		/// Client apps use <c>SwDeviceInterfaceSetState</c> to manage the state that they want the interface to have. The software device
+		/// changes the actual interface state as needed. For example, a client app disables and re-enables the interface if the device is
+		/// re-enumerated for any reason. The state always tries to reflect the client app’s required state.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swdeviceinterfacesetstate HRESULT
+		// SwDeviceInterfaceSetState( HSWDEVICE hSwDevice, PCWSTR pszDeviceInterfaceId, BOOL fEnabled );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceInterfaceSetState")]
+		public static extern HRESULT SwDeviceInterfaceSetState(HSWDEVICE hSwDevice, [MarshalAs(UnmanagedType.LPWStr)] string pszDeviceInterfaceId, [MarshalAs(UnmanagedType.Bool)] bool fEnabled);
+
+		/// <summary>Sets properties on a software device.</summary>
+		/// <param name="hSwDevice">The <c>HSWDEVICE</c> handle to the software device to set properties for.</param>
+		/// <param name="cPropertyCount">The number of DEVPROPERTY structures in the pProperties array.</param>
+		/// <param name="pProperties">An array of DEVPROPERTY structures containing the properties to set.</param>
+		/// <returns>
+		/// S_OK is returned if <c>SwDevicePropertySet</c> successfully set the properties; otherwise, an appropriate error value.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Typically, only the operating system and Administrators of the computer can set properties on a device, but the creator of a
+		/// device can call <c>SwDevicePropertySet</c> to set properties on that device even if it isn't the operating system or an Administrator.
+		/// </para>
+		/// <para>
+		/// You can call <c>SwDevicePropertySet</c> only after the operating system has called your client app's SW_DEVICE_CREATE_CALLBACK
+		/// callback function to notify the client app that device enumeration completed.
+		/// </para>
+		/// <para>
+		/// There is a subtle difference between properties that are set as part of a SwDeviceCreate call and properties that are later set
+		/// by calling <c>SwDevicePropertySet</c>. Properties that are set as part of <c>SwDeviceCreate</c> are stored in memory; if the
+		/// device is uninstalled or a null driver wipes out the property stores, these properties are written out again by the Software
+		/// Device API feature when PnP re-enumerates the devices. This is all transparent to the client. Properties that are set using
+		/// <c>SwDevicePropertySet</c> after the enumeration don't persist in memory. But, if you set a property by using
+		/// <c>SwDeviceCreate</c>, you can update the value with <c>SwDevicePropertySet</c>, and this update is applied to the in-memory
+		/// value as well as the persisted store.
+		/// </para>
+		/// <para>You can use <c>SwDevicePropertySet</c> only to set properties in the operating system store for the device.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swdevicepropertyset HRESULT SwDevicePropertySet(
+		// HSWDEVICE hSwDevice, ULONG cPropertyCount, const DEVPROPERTY *pProperties );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDevicePropertySet")]
+		public static extern HRESULT SwDevicePropertySet(HSWDEVICE hSwDevice, uint cPropertyCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DEVPROPERTY[] pProperties);
+
+		/// <summary>Manages the lifetime of a software device.</summary>
+		/// <param name="hSwDevice">The <c>HSWDEVICE</c> handle to the software device to manage.</param>
+		/// <param name="Lifetime">
+		/// <para>
+		/// A <c>SW_DEVICE_LIFETIME</c>-typed value that indicates the new lifetime value for the software device. Here are possible values:
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SWDeviceLifetimeHandle</term>
+		/// <term>
+		/// Indicates that the lifetime of the software device is determined by the lifetime of the handle that is associated with the
+		/// software device. As long as the handle is open, the software device is enumerated by PnP.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SWDeviceLifetimeParentPresent</term>
+		/// <term>Indicates that the lifetime of the software device is tied to the lifetime of its parent.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>S_OK is returned if <c>SwDeviceSetLifetime</c> successfully updated the lifetime.</returns>
+		/// <remarks>
+		/// <para>
+		/// After a software device is initially created by calling SwDeviceCreate, its default lifetime is set to
+		/// <c>SwDeviceLifetimeHandle</c>. When a software device has a lifetime of <c>SwDeviceLifetimeHandle</c>, PnP stops enumerating the
+		/// device after the device's handle is closed.
+		/// </para>
+		/// <para>
+		/// You can use <c>SwDeviceSetLifetime</c> to set the lifetime of the software device to <c>SwDeviceLifetimeParentPresent</c>. The
+		/// lifetime of the software device is then tied to the lifetime of the closest non-software device parent. The creator of the
+		/// software device can then close the handle to the software device and the device will still be enumerated. This can be useful for
+		/// services that manage software devices but want to idle stop.
+		/// </para>
+		/// <para>
+		/// A client app can only call <c>SwDeviceSetLifetime</c> after it has received a call to its SW_DEVICE_CREATE_CALLBACK callback
+		/// function that is associated with its call to SwDeviceCreate.
+		/// </para>
+		/// <para>
+		/// When a client app calls SwDeviceCreate for a software device that was previously marked for
+		/// <c>SwDeviceLifetimeParentPresent</c>, <c>SwDeviceCreate</c> succeeds if there are no open software device handles for the device
+		/// (only one handle can be open for a device). A client app can then regain control over a persistent software device for the
+		/// purposes of updating properties and interfaces or changing the lifetime.
+		/// </para>
+		/// <para>
+		/// If the client app specifies info in SW_DEVICE_CREATE_INFO that is different form a previous enumeration, the device might stop
+		/// being enumerated and immediately re-enumerated to apply the changes. The operating system reports only some properties when PnP
+		/// enumerates the device.
+		/// </para>
+		/// <para>
+		/// To uninstall a software device with a lifetime of <c>SwDeviceLifetimeParentPresent</c>, we recommend that you change the
+		/// lifetime back to <c>SwDeviceLifetimeHandle</c> before the device is uninstalled.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swdevicesetlifetime HRESULT SwDeviceSetLifetime(
+		// HSWDEVICE hSwDevice, SW_DEVICE_LIFETIME Lifetime );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceSetLifetime")]
+		public static extern HRESULT SwDeviceSetLifetime(HSWDEVICE hSwDevice, SW_DEVICE_LIFETIME Lifetime);
+
+		/// <summary>Frees memory that other Software Device API functions allocated.</summary>
+		/// <param name="pMem">A pointer to the block of memory to free.</param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swmemfree void SwMemFree( PVOID pMem );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwMemFree")]
+		public static extern void SwMemFree(IntPtr pMem);
 
 		/// <summary>Provides a handle to a software device.</summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -329,87 +657,19 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() { SwDeviceClose(handle); return true; }
 		}
 
-		/*
-		/// <summary>Initiates the enumeration of a software device.</summary>
-		/// <param name="pszEnumeratorName">
-		/// A string that names the enumerator of the software device. Choose a name that represents the component that enumerates the devices.
-		/// </param>
-		/// <param name="pszParentDeviceInstance">
-		/// <para>A string that specifies the device instance ID of the device that is the parent of the software device.</para>
-		/// <para>
-		/// This can be HTREE\ROOT\0, but we recommend to keep children of the root device to a minimum. We also recommend that the
-		/// preferred parent of a software device be a real device that the software device is extending the functionality for. In
-		/// situations where a software device doesn't have such a natural parent, create a device as a child of the root that can collect
-		/// all the software devices that a component will enumerate; then, enumerate the actual software devices as children of this device
-		/// grouping node. This keeps the children of the root device to a manageable number.
-		/// </para>
-		/// </param>
-		/// <param name="pCreateInfo">A pointer to a SW_DEVICE_CREATE_INFO structure that describes info that PnP uses to create the device.</param>
-		/// <param name="cPropertyCount">The number of DEVPROPERTY structures in the pProperties array.</param>
-		/// <param name="pProperties">
-		/// An optional array of DEVPROPERTY structures. These properties are set on the device after it is created but before a
-		/// notification that the device has been created are sent. For more info, see Remarks. This pointer can be <c>NULL</c>.
-		/// </param>
-		/// <param name="pCallback">
-		/// The SW_DEVICE_CREATE_CALLBACK callback function that the operating system calls after PnP enumerates the device.
-		/// </param>
-		/// <param name="pContext">
-		/// An optional client context that the operating system passes to the callback function. This pointer can be <c>NULL</c>.
-		/// </param>
-		/// <param name="phSwDevice">
-		/// A pointer to a variable that receives the <c>HSWDEVICE</c> handle that represents the device. Call SwDeviceClose to close this
-		/// handle after the client app wants PnP to remove the device.
-		/// </param>
-		/// <returns>
-		/// S_OK is returned if device enumeration was successfully initiated. This does not mean that the device has been successfully
-		/// enumerated. Check the CreateResult parameter of the SW_DEVICE_CREATE_CALLBACK callback function to determine if the device was
-		/// successfully enumerated.
-		/// </returns>
-		/// <remarks>
-		/// <para><c>SwDeviceCreate</c> returns a handle that represents the device. After this handle is closed, PnP will remove the device.</para>
-		/// <para>The calling process must have Administrator access in order to initiate the enumeration of a software device.</para>
-		/// <para>
-		/// PnP forms the device instance ID of a software device as "SWD&amp;lt;pszEnumeratorName&gt;&amp;lt;pszInstanceId&gt;," but this
-		/// string might change or PnP might decorate the name. Always get the device instance ID from the callback function.
-		/// </para>
-		/// <para>
-		/// There is a subtle difference between properties that are set as part of a <c>SwDeviceCreate</c> call and properties that are
-		/// later set by calling SwDevicePropertySet. Properties that are set as part of <c>SwDeviceCreate</c> are stored in memory; if the
-		/// device is uninstalled or a null driver wipes out the property stores, these properties are written out again by the Software
-		/// Device API feature when PnP re-enumerates the devices. This is all transparent to the client. Properties that are set using
-		/// <c>SwDevicePropertySet</c> after the enumeration don't persist in memory. But, if you set a property by using
-		/// <c>SwDeviceCreate</c>, you can update the value with <c>SwDevicePropertySet</c>, and this update is applied to the in-memory
-		/// value as well as the persisted store.
-		/// </para>
-		/// <para>
-		/// We recommend that all properties be specified as part of the call to <c>SwDeviceCreate</c> when possible and that these
-		/// properties be specified for every call to <c>SwDeviceCreate</c>.
-		/// </para>
-		/// <para>
-		/// <c>Note</c> The operating system might possibly call SW_DEVICE_CREATE_CALLBACK before the call to <c>SwDeviceCreate</c> returns.
-		/// For this reason, the software device handle for the device is supplied as a parameter to the callback function.
-		/// </para>
-		/// <para>
-		/// You can create a software device as the child of a parent that is not present at the time. PnP will enumerate the software
-		/// device after the parent becomes present.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swdevicecreate HRESULT SwDeviceCreate( PCWSTR
-		// pszEnumeratorName, PCWSTR pszParentDeviceInstance, const SW_DEVICE_CREATE_INFO *pCreateInfo, ULONG cPropertyCount, const
-		// DEVPROPERTY *pProperties, SW_DEVICE_CREATE_CALLBACK pCallback, PVOID pContext, PHSWDEVICE phSwDevice );
-		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceCreate")]
-		public static extern HRESULT SwDeviceCreate([MarshalAs(UnmanagedType.LPWStr)] string pszEnumeratorName, [MarshalAs(UnmanagedType.LPWStr)] string pszParentDeviceInstance,
-			in SW_DEVICE_CREATE_INFO pCreateInfo, uint cPropertyCount, [In, Optional, MarshalAs(UnmanagedType.LPArray)] DEVPROPERTY[] pProperties, SW_DEVICE_CREATE_CALLBACK pCallback,
-			[In, Optional] IntPtr pContext, out SafeHSWDEVICE phSwDevice);
+		internal class SwMemMarshaler : ICustomMarshaler
+		{
+			public static ICustomMarshaler GetInstance() => new SwMemMarshaler();
 
-		SwDeviceGetLifetime	Gets the lifetime of a software device.
-		SwDeviceInterfacePropertySet	Sets properties on a software device interface.
-		SwDeviceInterfaceRegister	Registers a device interface for a software device and optionally sets properties on that interface.
-		SwDeviceInterfaceSetState	Enables or disables a device interface for a software device.
-		SwDevicePropertySet	Sets properties on a software device.
-		SwDeviceSetLifetime	Manages the lifetime of a software device.
-		SwMemFree	Frees memory that other Software Device API functions allocated.
-		*/
+			void ICustomMarshaler.CleanUpManagedData(object ManagedObj) => throw new NotImplementedException();
+
+			void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) => SwMemFree(pNativeData);
+
+			int ICustomMarshaler.GetNativeDataSize() => -1;
+
+			IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj) => throw new NotImplementedException();
+
+			object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => StringHelper.GetString(pNativeData, CharSet.Unicode);
+		}
 	}
 }
