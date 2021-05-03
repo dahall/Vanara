@@ -1,6 +1,9 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke
@@ -102,14 +105,8 @@ namespace Vanara.PInvoke
 			/// <summary>UpperFilters REG_MULTI_SZ property (RW)</summary>
 			CM_DRP_UPPERFILTERS = 0x00000012,
 
-			/// <summary>UpperFilters REG_MULTI_SZ property (RW)</summary>
-			CM_CRP_UPPERFILTERS = CM_DRP_UPPERFILTERS,
-
 			/// <summary>LowerFilters REG_MULTI_SZ property (RW)</summary>
 			CM_DRP_LOWERFILTERS = 0x00000013,
-
-			/// <summary>LowerFilters REG_MULTI_SZ property (RW)</summary>
-			CM_CRP_LOWERFILTERS = CM_DRP_LOWERFILTERS,
 
 			/// <summary>Bus Type Guid, GUID, (R)</summary>
 			CM_DRP_BUSTYPEGUID = 0x00000014,
@@ -126,32 +123,17 @@ namespace Vanara.PInvoke
 			/// <summary>Security - Device override (RW)</summary>
 			CM_DRP_SECURITY = 0x00000018,
 
-			/// <summary>Class default security (RW)</summary>
-			CM_CRP_SECURITY = CM_DRP_SECURITY,
-
 			/// <summary>Security - Device override (RW)</summary>
 			CM_DRP_SECURITY_SDS = 0x00000019,
-
-			/// <summary>Class default security (RW)</summary>
-			CM_CRP_SECURITY_SDS = CM_DRP_SECURITY_SDS,
 
 			/// <summary>Device Type - Device override (RW)</summary>
 			CM_DRP_DEVTYPE = 0x0000001A,
 
-			/// <summary>Class default Device-type (RW)</summary>
-			CM_CRP_DEVTYPE = CM_DRP_DEVTYPE,
-
 			/// <summary>Exclusivity - Device override (RW)</summary>
 			CM_DRP_EXCLUSIVE = 0x0000001B,
 
-			/// <summary>Class default (RW)</summary>
-			CM_CRP_EXCLUSIVE = CM_DRP_EXCLUSIVE,
-
 			/// <summary>Characteristics - Device Override (RW)</summary>
 			CM_DRP_CHARACTERISTICS = 0x0000001C,
-
-			/// <summary>Class default (RW)</summary>
-			CM_CRP_CHARACTERISTICS = CM_DRP_CHARACTERISTICS,
 
 			/// <summary>Device Address (R)</summary>
 			CM_DRP_ADDRESS = 0x0000001D,
@@ -430,7 +412,7 @@ namespace Vanara.PInvoke
 		// CM_Get_Device_ID_List_SizeA( PULONG pulLen, PCSTR pszFilter, ULONG ulFlags );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_ID_List_SizeA")]
-		public static extern CONFIGRET CM_Get_Device_ID_List_Size(out uint pulLen, [Optional, MarshalAs(UnmanagedType.LPTStr)] string pszFilter, CM_GETIDLIST ulFlags);
+		public static extern CONFIGRET CM_Get_Device_ID_List_Size(out uint pulLen, [Optional, MarshalAs(UnmanagedType.LPTStr)] string pszFilter, CM_GETIDLIST ulFlags = 0);
 
 		/// <summary>
 		/// <para>
@@ -479,7 +461,7 @@ namespace Vanara.PInvoke
 		// CM_Get_Device_ID_List_Size_ExW( PULONG pulLen, PCWSTR pszFilter, ULONG ulFlags, HMACHINE hMachine );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_ID_List_Size_ExW")]
-		public static extern CONFIGRET CM_Get_Device_ID_List_Size_Ex(out uint pulLen, [Optional, MarshalAs(UnmanagedType.LPTStr)] string pszFilter, CM_GETIDLIST ulFlags, [In, Optional] HMACHINE hMachine);
+		public static extern CONFIGRET CM_Get_Device_ID_List_Size_Ex(out uint pulLen, [Optional, MarshalAs(UnmanagedType.LPTStr)] string pszFilter, [In, Optional] CM_GETIDLIST ulFlags, [In, Optional] HMACHINE hMachine);
 
 		/// <summary>
 		/// The <c>CM_Get_Device_ID_Size</c> function retrieves the buffer size required to hold a device instance ID for a device instance
@@ -572,7 +554,7 @@ namespace Vanara.PInvoke
 		// DEVINST dnDevInst, PWSTR Buffer, ULONG BufferLen, ULONG ulFlags );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_IDW")]
-		public static extern CONFIGRET CM_Get_Device_IDW(uint dnDevInst, StringBuilder Buffer, uint BufferLen, uint ulFlags = 0);
+		public static extern CONFIGRET CM_Get_Device_ID(uint dnDevInst, StringBuilder Buffer, uint BufferLen, uint ulFlags = 0);
 
 		/// <summary>
 		/// The <c>CM_Get_Device_Interface_Alias</c> function returns the alias of the specified device interface instance, if the alias exists.
@@ -723,7 +705,45 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_Interface_ListA")]
 		public static extern CONFIGRET CM_Get_Device_Interface_List(in Guid InterfaceClassGuid, [Optional, MarshalAs(UnmanagedType.LPTStr)] string pDeviceID,
-			[MarshalAs(UnmanagedType.LPTStr)] StringBuilder Buffer, uint BufferLen, CM_GET_DEVICE_INTERFACE_LIST ulFlags);
+			IntPtr Buffer, uint BufferLen, CM_GET_DEVICE_INTERFACE_LIST ulFlags);
+
+		/// <summary>
+		/// The <c>CM_Get_Device_Interface_List</c> function retrieves a list of device interface instances that belong to a specified
+		/// device interface class.
+		/// </summary>
+		/// <param name="InterfaceClassGuid">Supplies a GUID that identifies a device interface class.</param>
+		/// <param name="ulFlags">
+		/// <para>Contains one of the following caller-supplied flags:</para>
+		/// <para>CM_GET_DEVICE_INTERFACE_LIST_ALL_DEVICES</para>
+		/// <para>
+		/// The function provides a list containing device interfaces associated with all devices that match the specified GUID and device
+		/// instance ID, if any.
+		/// </para>
+		/// <para>CM_GET_DEVICE_INTERFACE_LIST_PRESENT</para>
+		/// <para>
+		/// The function provides a list containing device interfaces associated with devices that are currently active, and which match the
+		/// specified GUID and device instance ID, if any.
+		/// </para>
+		/// </param>
+		/// <param name="pDeviceID">
+		/// Caller-supplied string that represents a device instance ID. If specified, the function retrieves device interfaces that are
+		/// supported by the device for the specified class. If this value is <see langword="null"/>, or if it is a zero-length string, the
+		/// function retrieves all interfaces that belong to the specified class.
+		/// </param>
+		/// <returns>An array of strings, each representing the symbolic link name of an interface instance.</returns>
+		public static string[] CM_Get_Device_Interface_List(in Guid InterfaceClassGuid, CM_GET_DEVICE_INTERFACE_LIST ulFlags, string pDeviceID = null)
+		{
+			while (true)
+			{
+				CM_Get_Device_Interface_List_Size(out var len, InterfaceClassGuid, pDeviceID, ulFlags).ThrowIfFailed();
+				using var mem = new SafeCoTaskMemHandle(len * StringHelper.GetCharSize());
+				var ret = CM_Get_Device_Interface_List(InterfaceClassGuid, pDeviceID, mem, len, ulFlags);
+				if (ret == CONFIGRET.CR_SUCCESS)
+					return mem.ToStringEnum().ToArray();
+				else if (ret != CONFIGRET.CR_BUFFER_SMALL)
+					ret.ThrowIfFailed();
+			}
+		}
 
 		/// <summary>
 		/// The <c>CM_Get_Device_Interface_List_Size</c> function retrieves the buffer size that must be passed to the
@@ -2237,102 +2257,5 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Resource_Conflict_DetailsW")]
 		public static extern CONFIGRET CM_Get_Resource_Conflict_Details(CONFLICT_LIST clConflictList, uint ulIndex, ref CONFLICT_DETAILS pConflictDetails);
-
-		/// <summary>The CONFLICT_DETAILS structure is used as a parameter to the CM_Get_Resource_Conflict_Details function.</summary>
-		/// <remarks>
-		/// <para>Note</para>
-		/// <para>
-		/// The cfgmgr32.h header defines CONFLICT_DETAILS as an alias which automatically selects the ANSI or Unicode version of this
-		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
-		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
-		/// for Function Prototypes.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/ns-cfgmgr32-conflict_details_a typedef struct _CONFLICT_DETAILS_A {
-		// ULONG CD_ulSize; ULONG CD_ulMask; DEVINST CD_dnDevInst; RES_DES CD_rdResDes; ULONG CD_ulFlags; CHAR CD_szDescription[MAX_PATH]; }
-		// CONFLICT_DETAILS_A, *PCONFLICT_DETAILS_A;
-		[PInvokeData("cfgmgr32.h", MSDNShortId = "NS:cfgmgr32._CONFLICT_DETAILS_A")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct CONFLICT_DETAILS
-		{
-			/// <summary>Size, in bytes, of the CONFLICT_DETAILS structure.</summary>
-			public uint CD_ulSize;
-
-			/// <summary>
-			/// <para>
-			/// One or more bit flags supplied by the caller of <c>CM_Get_Resource_Conflict_Details</c>. The bit flags are described in the
-			/// following table.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Flag</term>
-			/// <term>Description</term>
-			/// </listheader>
-			/// <item>
-			/// <term>CM_CDMASK_DEVINST</term>
-			/// <term>If set, CM_Get_Resource_Conflict_Details supplies a value for the CD_dnDevInst member.</term>
-			/// </item>
-			/// <item>
-			/// <term>CM_CDMASK_RESDES</term>
-			/// <term>Not used.</term>
-			/// </item>
-			/// <item>
-			/// <term>CM_CDMASK_FLAGS</term>
-			/// <term>If set, CM_Get_Resource_Conflict_Details supplies a value for the CD_ulFlags member.</term>
-			/// </item>
-			/// <item>
-			/// <term>CM_CDMASK_DESCRIPTION</term>
-			/// <term>If set, CM_Get_Resource_Conflict_Details supplies a value for the CD_szDescription member.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public CM_CDMASK CD_ulMask;
-
-			/// <summary>
-			/// If CM_CDMASK_DEVINST is set in <c>CD_ulMask</c>, this member will receive a handle to a device instance that has conflicting
-			/// resources. If a handle is not obtainable, the member receives -1.
-			/// </summary>
-			public uint CD_dnDevInst;
-
-			/// <summary>Not used.</summary>
-			public RES_DES CD_rdResDes;
-
-			/// <summary>
-			/// <para>If CM_CDMASK_FLAGS is set in <c>CD_ulMask</c>, this member can receive bit flags listed in the following table.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Flag</term>
-			/// <term>Description</term>
-			/// </listheader>
-			/// <item>
-			/// <term>CM_CDFLAGS_DRIVER</term>
-			/// <term>
-			/// If set, the string contained in the CD_szDescription member represents a driver name instead of a device name, and
-			/// CD_dnDevInst is -1.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>CM_CDFLAGS_ROOT_OWNED</term>
-			/// <term>If set, the conflicting resources are owned by the root device (that is, the HAL), and CD_dnDevInst is -1.</term>
-			/// </item>
-			/// <item>
-			/// <term>CM_CDFLAGS_RESERVED</term>
-			/// <term>If set, the owner of the conflicting resources cannot be determined, and CD_dnDevInst is -1.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public CM_CDFLAGS CD_ulFlags;
-
-			/// <summary>
-			/// If CM_CDMASK_DESCRIPTION is set in <c>CD_ulMask</c>, this member will receive a NULL-terminated text string representing a
-			/// description of the device that owns the resources. If CM_CDFLAGS_DRIVER is set in <c>CD_ulFlags</c>, this string represents
-			/// a driver name. If CM_CDFLAGS_ROOT_OWNED or CM_CDFLAGS_RESERVED is set, the string value is <c>NULL</c>.
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260 /*MAX_PATH*/)]
-			public string CD_szDescription;
-
-			/// <summary>Gets a default value for the structure with the size field set.</summary>
-			public static readonly CONFLICT_DETAILS Default = new() { CD_ulSize = (uint)Marshal.SizeOf(typeof(CONFLICT_DETAILS)) };
-		}
 	}
 }

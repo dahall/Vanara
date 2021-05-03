@@ -1,14 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke
 {
-	/// <summary>Items from the CfgMgr32.dll</summary>
+	/// <summary>
+	/// Items from the CfgMgr32.dll
+	/// </summary>
 	public static partial class CfgMgr32
 	{
+		// Win95 compatibility--not applicable to 32-bit ConfigMgr Win95 compatibility--not applicable to 32-bit ConfigMgr Win95
+		// compatibility--not applicable to 32-bit ConfigMgr
+		private const string Lib_Cfgmgr32 = "CfgMgr32.dll";
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public const int CONFIGMG_VERSION = 0x0400;
 		public const int MAX_CLASS_NAME_LEN = 32;
@@ -23,10 +32,6 @@ namespace Vanara.PInvoke
 		public const int MAX_MEM_REGISTERS = 9;
 		public const int MAX_PROFILE_LEN = 80;
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-		// Win95 compatibility--not applicable to 32-bit ConfigMgr Win95 compatibility--not applicable to 32-bit ConfigMgr Win95
-		// compatibility--not applicable to 32-bit ConfigMgr
-		private const string Lib_Cfgmgr32 = "CfgMgr32.dll";
 
 		/// <summary>Caller-supplied flag constant that specifies the list onto which the supplied device ID should be appended.</summary>
 		[PInvokeData("cfgmgr32.h")]
@@ -48,6 +53,34 @@ namespace Vanara.PInvoke
 
 			/// <summary>ClassGUID specifies a device interface class. Do not combine with CM_CLASS_PROPERTY_INSTALLER.</summary>
 			CM_CLASS_PROPERTY_INTERFACE = 0x00000001,
+		}
+
+		/// <summary>
+		/// A value of type ULONG that identifies the property to be retrieved.
+		/// </summary>
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Class_Registry_PropertyW")]
+		public enum CM_CRP
+		{
+			/// <summary>UpperFilters REG_MULTI_SZ property (RW)</summary>
+			CM_CRP_UPPERFILTERS = CM_DRP.CM_DRP_UPPERFILTERS,
+
+			/// <summary>LowerFilters REG_MULTI_SZ property (RW)</summary>
+			CM_CRP_LOWERFILTERS = CM_DRP.CM_DRP_LOWERFILTERS,
+
+			/// <summary>Class default security (RW)</summary>
+			CM_CRP_SECURITY = CM_DRP.CM_DRP_SECURITY,
+
+			/// <summary>Class default security (RW)</summary>
+			CM_CRP_SECURITY_SDS = CM_DRP.CM_DRP_SECURITY_SDS,
+
+			/// <summary>Class default Device-type (RW)</summary>
+			CM_CRP_DEVTYPE = CM_DRP.CM_DRP_DEVTYPE,
+
+			/// <summary>Class default (RW)</summary>
+			CM_CRP_EXCLUSIVE = CM_DRP.CM_DRP_EXCLUSIVE,
+
+			/// <summary>Class default (RW)</summary>
+			CM_CRP_CHARACTERISTICS = CM_DRP.CM_DRP_CHARACTERISTICS,
 		}
 
 		/// <summary>Delete class key flags</summary>
@@ -479,21 +512,27 @@ namespace Vanara.PInvoke
 			ResType_None = 0x00000000,
 
 			/// <summary>Physical address resource</summary>
+			[CorrespondingType(typeof(MEM_RESOURCE))]
 			ResType_Mem = 0x00000001,
 
 			/// <summary>Physical I/O address resource</summary>
+			[CorrespondingType(typeof(IO_RESOURCE))]
 			ResType_IO = 0x00000002,
 
 			/// <summary>DMA channels resource</summary>
+			[CorrespondingType(typeof(DMA_RESOURCE))]
 			ResType_DMA = 0x00000003,
 
 			/// <summary>IRQ resource</summary>
+			[CorrespondingType(typeof(IRQ_RESOURCE_32))]
+			[CorrespondingType(typeof(IRQ_RESOURCE_64))]
 			ResType_IRQ = 0x00000004,
 
 			/// <summary>Used as spacer to sync subsequent ResTypes w/NT</summary>
 			ResType_DoNotUse = 0x00000005,
 
 			/// <summary>bus number resource</summary>
+			[CorrespondingType(typeof(BUSNUMBER_RESOURCE))]
 			ResType_BusNumber = 0x00000006,
 
 			/// <summary>Memory resources &gt;= 4GB</summary>
@@ -506,18 +545,22 @@ namespace Vanara.PInvoke
 			ResType_Ignored_Bit = 0x00008000,
 
 			/// <summary>class-specific resource</summary>
+			[CorrespondingType(typeof(CS_RESOURCE))]
 			ResType_ClassSpecific = 0x0000FFFF,
 
 			/// <summary>reserved for internal use</summary>
 			ResType_Reserved = 0x00008000,
 
 			/// <summary>device private data</summary>
+			//[CorrespondingType(typeof(DEVPRIVATE_RESOURCE))]
 			ResType_DevicePrivate = 0x00008001,
 
 			/// <summary>PC Card configuration data</summary>
+			[CorrespondingType(typeof(PCCARD_RESOURCE))]
 			ResType_PcCardConfig = 0x00008002,
 
 			/// <summary>MF Card configuration data</summary>
+			[CorrespondingType(typeof(MFCARD_RESOURCE))]
 			ResType_MfCardConfig = 0x00008003,
 		}
 
@@ -939,6 +982,48 @@ namespace Vanara.PInvoke
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Add_Res_Des")]
 		public static extern CONFIGRET CM_Add_Res_Des(out SafeRES_DES prdResDes, LOG_CONF lcLogConf, RESOURCEID ResourceID, IntPtr ResourceData, uint ResourceLen, uint ulFlags = 0);
 
+		/// <summary>The <c>CM_Add_Res_Des</c> function adds a resource descriptor to a logical configuration.</summary>
+		/// <typeparam name="T">The type of the data.</typeparam>
+		/// <param name="lcLogConf">
+		/// <para>
+		/// Caller-supplied handle to the logical configuration to which the resource descriptor should be added. This handle must have been
+		/// previously obtained by calling one of the following functions:
+		/// </para>
+		/// <para>CM_Add_Empty_Log_Conf</para>
+		/// <para>CM_Add_Empty_Log_Conf_Ex</para>
+		/// <para>CM_Get_First_Log_Conf</para>
+		/// <para>CM_Get_First_Log_Conf_Ex</para>
+		/// <para>CM_Get_Next_Log_Conf</para>
+		/// <para>CM_Get_Next_Log_Conf_Ex</para>
+		/// </param>
+		/// <param name="data">Caller-supplied resource structure.</param>
+		/// <param name="ResourceID">
+		/// Caller-supplied resource type identifier, which identifies the type of structure supplied by ResourceData. If this value is 0,
+		/// the method will attempt to determine the value using <typeparamref name="T"/>.
+		/// </param>
+		/// <returns>
+		/// <para>Pointer to a location to receive a handle to the new resource descriptor.</para>
+		/// <para>
+		/// <c>Note</c> Starting with Windows 8, <c>CM_Add_Res_Des</c> throws CR_CALL_NOT_IMPLEMENTED when used in a Wow64 scenario. To
+		/// request information about the hardware resources on a local machine it is necessary implement an architecture-native version of
+		/// the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Callers of this function must have <c>SeLoadDriverPrivilege</c>. (Privileges are described in the Microsoft Windows SDK documentation.)
+		/// </para>
+		/// </remarks>
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Add_Res_Des")]
+		public static SafeRES_DES CM_Add_Res_Des<T>(LOG_CONF lcLogConf, T data, RESOURCEID ResourceID = 0) where T : struct
+		{
+			if (ResourceID == 0 && !CorrespondingTypeAttribute.CanSet<T, RESOURCEID>(out ResourceID))
+				throw new ArgumentException("Unable to determine RESOURCEID from type.", nameof(T));
+			using var mem = new SafeAnysizeStruct<T>(data);
+			CM_Add_Res_Des(out var hRD, lcLogConf, ResourceID, mem, mem.Size).ThrowIfFailed();
+			return hRD;
+		}
+
 		/// <summary>
 		/// <para>[Beginning with Windows 8 and Windows Server 2012, this function has been deprecated. Please use CM_Add_Res_Des instead.]</para>
 		/// <para>
@@ -1211,7 +1296,7 @@ namespace Vanara.PInvoke
 		// DEVINST dnDevInst, ULONG ulFlags );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Disable_DevNode")]
-		public static extern CONFIGRET CM_Disable_DevNode(uint dnDevInst, CM_DISABLE ulFlags);
+		public static extern CONFIGRET CM_Disable_DevNode(uint dnDevInst, CM_DISABLE ulFlags = 0);
 
 		/// <summary>
 		/// <para>
@@ -1309,12 +1394,15 @@ namespace Vanara.PInvoke
 		public static IEnumerable<Guid> CM_Enumerate_Classes(CM_ENUMERATE_CLASSES ulFlags)
 		{
 			var i = 0U;
-			CONFIGRET cr;
-			while ((cr = CM_Enumerate_Classes(i, out var guid, ulFlags)) == CONFIGRET.CR_SUCCESS)
+			var cr = CM_Enumerate_Classes(i, out var guid, ulFlags);
+			while (cr == CONFIGRET.CR_SUCCESS || cr == CONFIGRET.CR_INVALID_DATA)
 			{
-				yield return guid;
-				i++;
+				if (cr == CONFIGRET.CR_SUCCESS)
+					yield return guid;
+				cr = CM_Enumerate_Classes(++i, out guid, ulFlags);
 			}
+			if (cr != CONFIGRET.CR_NO_SUCH_VALUE && cr != CONFIGRET.CR_SUCCESS && cr != CONFIGRET.CR_INVALID_DATA)
+				throw cr.GetException();
 		}
 
 		/// <summary>
@@ -1421,6 +1509,8 @@ namespace Vanara.PInvoke
 				i++;
 				sbCap = sb.Capacity;
 			}
+			if (cr != CONFIGRET.CR_NO_SUCH_VALUE && cr != CONFIGRET.CR_SUCCESS)
+				throw cr.GetException();
 		}
 
 		/// <summary>
@@ -2077,7 +2167,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Class_Property_Keys")]
 		public static extern CONFIGRET CM_Get_Class_Property_Keys(in Guid ClassGUID, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[] PropertyKeyArray,
-			ref uint PropertyKeyCount, CM_CLASS_PROPERTY ulFlags);
+			ref int PropertyKeyCount, CM_CLASS_PROPERTY ulFlags);
 
 		/// <summary>
 		/// <para>
@@ -2199,7 +2289,7 @@ namespace Vanara.PInvoke
 		// ulFlags, HMACHINE hMachine );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Class_Registry_PropertyW")]
-		public static extern CONFIGRET CM_Get_Class_Registry_Property(in Guid ClassGuid, uint ulProperty, out REG_VALUE_TYPE pulRegDataType, [Out, Optional] IntPtr Buffer,
+		public static extern CONFIGRET CM_Get_Class_Registry_Property(in Guid ClassGuid, CM_DRP ulProperty, out REG_VALUE_TYPE pulRegDataType, [Out, Optional] IntPtr Buffer,
 			ref uint pulLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 		/// <summary>
@@ -2424,8 +2514,58 @@ namespace Vanara.PInvoke
 		// CM_Get_Device_ID_ListA( PCSTR pszFilter, PZZSTR Buffer, ULONG BufferLen, ULONG ulFlags );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_ID_ListA")]
-		public static extern CONFIGRET CM_Get_Device_ID_List([MarshalAs(UnmanagedType.LPTStr)] string pszFilter, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder Buffer,
-			uint BufferLen, CM_GETIDLIST ulFlags);
+		public static extern CONFIGRET CM_Get_Device_ID_List([In, Optional, MarshalAs(UnmanagedType.LPTStr)] string pszFilter, [Out] IntPtr Buffer,
+			uint BufferLen, CM_GETIDLIST ulFlags = 0);
+
+		/// <summary>
+		/// The <c>CM_Get_Device_ID_List</c> function retrieves a list of device instance IDs for the local computer's device instances.
+		/// </summary>
+		/// <param name="ulFlags">Bit flags that specifies search filters</param>
+		/// <param name="pszFilter">
+		/// Caller-supplied string that is either set to a subset of the computer's device instance identifiers
+		/// (IDs), or to <see langword="null"/>. See the description of ulFlags.
+		/// </param>
+		/// <returns>A sequence of device instance identifier strings.</returns>
+		/// <remarks>
+		/// <para>
+		/// Starting with Windows 7, a device that supports multiple transport paths for packet-based data is referred to as a composite
+		/// device and is represented by a composite devnode. A composite devnode logically represents the composite device to the user and
+		/// applications as a single device, even though the composite devnode can have multiple paths to the physical device.
+		/// </para>
+		/// <para>
+		/// Each active transport path to the physical device is represented by a transport devnode and is referred to as a transport
+		/// relation for the composite device.
+		/// </para>
+		/// <para>
+		/// The composite devnode (but not the related transport devnodes) exposes device interfaces to applications and the system. When an
+		/// application uses these public device interfaces, the composite device routes the packet-based data to one or more of these
+		/// transport devnodes, which then transport the data to the physical device.
+		/// </para>
+		/// <para>
+		/// For example, if a physical cell phone is simultaneously connected to the computer on the USB and the Bluetooth buses, each bus
+		/// enumerates a child transport devnode on that bus to represent the device's physical connection.
+		/// </para>
+		/// <para>
+		/// In this case, if you set the CM_GETIDLIST_FILTER_TRANSPORTRELATIONS flags in ulFlags and specify the device instance ID of the
+		/// cell phone's composite devnode in pszFilter, the function returns the device instance IDs for the two transport devnodes in the
+		/// Buffer parameter.
+		/// </para>
+		/// <para>For more information about device instance IDs, see Device Identification Strings.</para>
+		/// </remarks>
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_ID_ListA")]
+		public static IEnumerable<string> CM_Get_Device_ID_List(CM_GETIDLIST ulFlags = 0, string pszFilter = null)
+		{
+			while (true)
+			{
+				CM_Get_Device_ID_List_Size(out var len, pszFilter, ulFlags).ThrowIfFailed();
+				using var mem = new SafeCoTaskMemHandle(len * StringHelper.GetCharSize());
+				var ret = CM_Get_Device_ID_List(pszFilter, mem, len, ulFlags);
+				if (ret == CONFIGRET.CR_SUCCESS)
+					return mem.ToStringEnum().ToArray();
+				else if (ret != CONFIGRET.CR_BUFFER_SMALL)
+					ret.ThrowIfFailed();
+			}
+		}
 
 		/// <summary>
 		/// <para>
@@ -2470,8 +2610,8 @@ namespace Vanara.PInvoke
 		// CM_Get_Device_ID_List_ExW( PCWSTR pszFilter, PZZWSTR Buffer, ULONG BufferLen, ULONG ulFlags, HMACHINE hMachine );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_ID_List_ExW")]
-		public static extern CONFIGRET CM_Get_Device_ID_List_Ex([In, Optional, MarshalAs(UnmanagedType.LPTStr)] string pszFilter, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder Buffer,
-			uint BufferLen, CM_GETIDLIST ulFlags, [In, Optional] HMACHINE hMachine);
+		public static extern CONFIGRET CM_Get_Device_ID_List_Ex([In, Optional, MarshalAs(UnmanagedType.LPTStr)] string pszFilter, [Out] IntPtr Buffer,
+			uint BufferLen, [In, Optional] CM_GETIDLIST ulFlags, [In, Optional] HMACHINE hMachine);
 
 		/// <summary>
 		/// The <c>CM_Get_Parent</c> function obtains a device instance handle to the parent node of a specified device node (devnode) in
@@ -2492,60 +2632,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Parent")]
 		public static extern CONFIGRET CM_Get_Parent(out uint pdnDevInst, uint dnDevInst, uint ulFlags = 0);
-
-		/// <summary>
-		/// The <c>CM_Request_Device_Eject</c> function prepares a local device instance for safe removal, if the device is removable. If
-		/// the device can be physically ejected, it will be.
-		/// </summary>
-		/// <param name="dnDevInst">Caller-supplied device instance handle that is bound to the local machine.</param>
-		/// <param name="pVetoType">
-		/// (Optional.) If not <c>NULL</c>, this points to a location that, if the removal request fails, receives a PNP_VETO_TYPE-typed
-		/// value indicating the reason for the failure.
-		/// </param>
-		/// <param name="pszVetoName">
-		/// (Optional.) If not <c>NULL</c>, this is a caller-supplied pointer to a string buffer that receives a text string. The type of
-		/// information this string provides is dependent on the value received by pVetoType. For information about these strings, see PNP_VETO_TYPE.
-		/// </param>
-		/// <param name="ulNameLength">
-		/// (Optional.) Caller-supplied value representing the length of the string buffer supplied by pszVetoName. This should be set to MAX_PATH.
-		/// </param>
-		/// <param name="ulFlags">Not used.</param>
-		/// <returns>
-		/// If the operation succeeds, the function returns CR_SUCCESS. Otherwise, it returns one of the CR_-prefixed error codes defined in Cfgmgr32.h.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// If pszVetoName is <c>NULL</c>, the PnP manager displays a message to the user indicating the device was removed or, if the
-		/// request failed, identifying the reason for the failure. If pszVetoName is not <c>NULL</c>, the PnP manager does not display a
-		/// message. (Note, however, that for Microsoft Windows 2000 only, the PnP manager displays a message even if pszVetoName is not
-		/// <c>NULL</c>, if the device's CM_DEVCAP_DOCKDEVICE capability is set.)
-		/// </para>
-		/// <para>
-		/// Callers of <c>CM_Request_Device_Eject</c> sometimes require <c>SeUndockPrivilege</c> or <c>SeLoadDriverPrivilege</c>, as follows:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>
-		/// If the device's CM_DEVCAP_DOCKDEVICE capability is set (the device is a "dock" device), callers must have
-		/// <c>SeUndockPrivilege</c>. ( <c>SeLoadDriverPrivilege</c> is not required.)
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>
-		/// If the device's CM_DEVCAP_DOCKDEVICE capability is not set (the device is not a "dock" device), and if the calling process is
-		/// either not interactive or is running in a multi-user environment in a session not attached to the physical console (such as a
-		/// remote Terminal Services session), callers of this function must have <c>SeLoadDriverPrivilege</c>.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// <para>Privileges are described in the Microsoft Windows SDK documentation.</para>
-		/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_request_device_ejectw CMAPI CONFIGRET
-		// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
-		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_EjectW")]
-		public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, out PNP_VETO_TYPE pVetoType, [In, Out, Optional] StringBuilder pszVetoName, [Optional] uint ulNameLength, uint ulFlags = 0);
 
 		/// <summary>Provides a handle to a resource conflict list.</summary>
 		[PInvokeData("cfgmgr32.h")]
@@ -2588,6 +2674,54 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public override bool Equals(object obj) => obj is CONFLICT_LIST h && handle == h.handle;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a notification context.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HCMNOTIFICATION : IHandle
+		{
+			private readonly IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HCMNOTIFICATION"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HCMNOTIFICATION(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HCMNOTIFICATION"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HCMNOTIFICATION NULL => new(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HCMNOTIFICATION"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HCMNOTIFICATION h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCMNOTIFICATION"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HCMNOTIFICATION(IntPtr h) => new(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HCMNOTIFICATION h1, HCMNOTIFICATION h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HCMNOTIFICATION h1, HCMNOTIFICATION h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HCMNOTIFICATION h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -2741,6 +2875,50 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="CONFLICT_LIST"/> that is disposed using <see cref="CM_Free_Resource_Conflict_Handle(CONFLICT_LIST)"/>.</summary>
+		public class SafeCONFLICT_LIST : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeCONFLICT_LIST"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeCONFLICT_LIST(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeCONFLICT_LIST"/> class.</summary>
+			private SafeCONFLICT_LIST() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeCONFLICT_LIST"/> to <see cref="CONFLICT_LIST"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator CONFLICT_LIST(SafeCONFLICT_LIST h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CM_Free_Resource_Conflict_Handle(handle) == 0;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCMNOTIFICATION"/> that is disposed using <see cref="CM_Unregister_Notification"/>.</summary>
+		public class SafeHCMNOTIFICATION : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHCMNOTIFICATION"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHCMNOTIFICATION(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHCMNOTIFICATION"/> class.</summary>
+			private SafeHCMNOTIFICATION() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHCMNOTIFICATION"/> to <see cref="HCMNOTIFICATION"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HCMNOTIFICATION(SafeHCMNOTIFICATION h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CM_Unregister_Notification(handle) == 0;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HMACHINE"/> that is disposed using <see cref="CM_Disconnect_Machine"/>.</summary>
