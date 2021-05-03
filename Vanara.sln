@@ -305,9 +305,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WcnApi", "PI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.IMAPI", "PInvoke\IMAPI\Vanara.PInvoke.IMAPI.csproj", "{17EFDD95-3E52-44C1-80D9-48031E3F6B3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.CfgMgr32", "PInvoke\CfgMgr32\Vanara.PInvoke.CfgMgr32.csproj", "{2ECB955C-F05D-4FD7-BCC7-449A494CA66B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.CfgMgr32", "PInvoke\CfgMgr32\Vanara.PInvoke.CfgMgr32.csproj", "{2ECB955C-F05D-4FD7-BCC7-449A494CA66B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.TextServicesFramework", "PInvoke\TextServicesFramework\Vanara.PInvoke.TextServicesFramework.csproj", "{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CfgMgr32", "UnitTests\PInvoke\CfgMgr32\CfgMgr32.csproj", "{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1007,6 +1009,12 @@ Global
 		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1142,6 +1150,7 @@ Global
 		{17EFDD95-3E52-44C1-80D9-48031E3F6B3F} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{2ECB955C-F05D-4FD7-BCC7-449A494CA66B} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
