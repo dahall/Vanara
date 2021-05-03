@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -71,6 +72,19 @@ namespace Vanara.PInvoke
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 			public override int GetHashCode() => (pid, fmtid).GetHashCode();
+
+			/// <summary>Performs a lookup of this <see cref="DEVPROPKEY"/> against defined values in this assembly to find a name.</summary>
+			/// <returns>The name, if found, otherwise <see langword="null"/>.</returns>
+			public string LookupName()
+			{
+				var dpkType = GetType();
+				var lthis = this;
+				return dpkType.DeclaringType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).
+					Where(fi => fi.FieldType == dpkType && lthis.Equals(fi.GetValue(null))).Select(fi => fi.Name).FirstOrDefault();
+			}
+
+			/// <inheritdoc/>
+			public override string ToString() => LookupName() ?? $"{fmtid}:{pid}";
 		}
 	}
 }
