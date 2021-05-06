@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -356,7 +358,9 @@ namespace Vanara.PInvoke
 			CM_PROB_GUEST_ASSIGNMENT_FAILED = 0x00000039,
 		}
 
-		/// <summary>configuration flags</summary>
+		/// <summary>Configuration flags</summary>
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_HW_Prof_FlagsA")]
+		[Flags]
 		public enum CSCONFIGFLAG
 		{
 			/// <summary>The device instance is disabled in the specified hardware profile.</summary>
@@ -367,9 +371,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>The device cannot be started in the specified hardware profile.</summary>
 			CSCONFIGFLAG_DO_NOT_START = 4,
-
-			/// <summary>Bitwise OR of the other CSCONFIGFLAG_Xxx flags.</summary>
-			CSCONFIGFLAG_BITS = 7,
 		}
 
 		/// <summary>
@@ -1576,6 +1577,68 @@ namespace Vanara.PInvoke
 			[In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 		/// <summary>
+		/// The <c>CM_Get_Log_Conf_List</c> function obtains the logical configurations, of a specified configuration type, associated with
+		/// a specified device instance on the local machine.
+		/// </summary>
+		/// <param name="dnDevInst">Caller-supplied device instance handle that is bound to the local machine.</param>
+		/// <param name="ulFlags">
+		/// <para>
+		/// Caller-supplied flag value indicating the type of logical configuration being requested. One of the flags in the following table
+		/// must be specified.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Configuration Type Flags</term>
+		/// <term>Definitions</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BASIC_LOG_CONF</term>
+		/// <term>The caller is requesting basic configuration information.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILTERED_LOG_CONF</term>
+		/// <term>The caller is requesting filtered configuration information.</term>
+		/// </item>
+		/// <item>
+		/// <term>ALLOC_LOG_CONF</term>
+		/// <term>The caller is requesting allocated configuration information.</term>
+		/// </item>
+		/// <item>
+		/// <term>BOOT_LOG_CONF</term>
+		/// <term>The caller is requesting boot configuration information.</term>
+		/// </item>
+		/// <item>
+		/// <term>FORCED_LOG_CONF</term>
+		/// <term>The caller is requesting forced configuration information.</term>
+		/// </item>
+		/// <item>
+		/// <term>OVERRIDE_LOG_CONF</term>
+		/// <term>The caller is requesting override configuration information.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>A sequence of safe handles to a logical configurations.</para>
+		/// <para>
+		/// <c>Note</c> Starting with Windows 8, <c>CM_Get_First_Log_Conf</c> returns CR_CALL_NOT_IMPLEMENTED when used in a Wow64 scenario.
+		/// To request information about the hardware resources on a local machine it is necessary implement an architecture-native version
+		/// of the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// </returns>
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_First_Log_Conf")]
+		public static IEnumerable<SafeLOG_CONF> CM_Get_Log_Conf_List(uint dnDevInst, LOG_CONF_FLAG ulFlags)
+		{
+			CONFIGRET ret = CM_Get_First_Log_Conf(out var lc, dnDevInst, ulFlags);
+			if (ret == CONFIGRET.CR_NO_MORE_LOG_CONF)
+				yield break;
+			ret.ThrowIfFailed();
+			yield return lc;
+			while ((ret = CM_Get_Next_Log_Conf(out lc, lc)) == CONFIGRET.CR_SUCCESS)
+				yield return lc;
+			if (ret != CONFIGRET.CR_NO_MORE_LOG_CONF) ret.ThrowIfFailed();
+		}
+
+		/// <summary>
 		/// The <c>CM_Get_Log_Conf_Priority</c> function obtains the configuration priority of a specified logical configuration on the
 		/// local machine.
 		/// </summary>
@@ -1938,6 +2001,54 @@ namespace Vanara.PInvoke
 		public static extern CONFIGRET CM_Get_Next_Res_Des(out SafeRES_DES prdResDes, RES_DES rdResDes, RESOURCEID ForResource, out RESOURCEID pResourceID, uint ulFlags = 0);
 
 		/// <summary>
+		/// The <c>CM_Get_Next_Res_Des</c> function obtains a handle to the next resource descriptor, of a specified resource type, for a
+		/// logical configuration on the local machine.
+		/// </summary>
+		/// <param name="prdResDes">Pointer to a location to receive a resource descriptor handle.</param>
+		/// <param name="rdResDes">
+		/// Caller-supplied handle to either a resource descriptor or a logical configuration. For more information, see the following
+		/// <c>Remarks</c> section.
+		/// </param>
+		/// <param name="ForResource">
+		/// Caller-supplied resource type identifier, indicating the type of resource descriptor being requested. This must be one of the
+		/// <c>ResType_</c>-prefixed constants defined in Cfgmgr32.h.
+		/// </param>
+		/// <param name="pResourceID">
+		/// Pointer to a location to receive a resource type identifier, if ForResource specifies <c>ResType_All</c>. For any other
+		/// ForResource value, callers should set this to <c>NULL</c>.
+		/// </param>
+		/// <param name="ulFlags">Not used, must be zero.</param>
+		/// <returns>
+		/// <para>
+		/// If the operation succeeds, the function returns CR_SUCCESS. Otherwise, it returns one of the CR_-prefixed error codes defined in Cfgmgr32.h.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Starting with Windows 8, <c>CM_Get_Next_Res_Des</c> returns CR_CALL_NOT_IMPLEMENTED when used in a Wow64 scenario.
+		/// To request information about the hardware resources on a local machine it is necessary implement an architecture-native version
+		/// of the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To enumerate a logical configuration's resource descriptors, begin by calling <c>CM_Get_Next_Res_Des</c> with the logical
+		/// configuration's handle as the argument for rdResDes. This obtains a handle to the first resource descriptor of the type
+		/// specified by ForResource. Then for each subsequent call to <c>CM_Get_Next_Res_Des</c>, specify the most recently obtained
+		/// descriptor handle as the argument for rdResDes. Repeat until the function returns CR_NO_MORE_RES_DES.
+		/// </para>
+		/// <para>To retrieve the information stored in a resource descriptor, call CM_Get_Res_Des_Data.</para>
+		/// <para>To modify the information stored in a resource descriptor, call CM_Modify_Res_Des.</para>
+		/// <para>
+		/// Callers of <c>CM_Get_Next_Res_Des</c> must call CM_Free_Res_Des_Handle to deallocate the resource descriptor handle, after it is
+		/// no longer needed.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_get_next_res_des CMAPI CONFIGRET CM_Get_Next_Res_Des(
+		// PRES_DES prdResDes, RES_DES rdResDes, RESOURCEID ForResource, PRESOURCEID pResourceID, ULONG ulFlags );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Next_Res_Des")]
+		public static extern CONFIGRET CM_Get_Next_Res_Des(out SafeRES_DES prdResDes, LOG_CONF rdResDes, RESOURCEID ForResource, out RESOURCEID pResourceID, uint ulFlags = 0);
+
+		/// <summary>
 		/// <para>[Beginning with Windows 8 and Windows Server 2012, this function has been deprecated. Please use CM_Get_Next_Res_Des instead.]</para>
 		/// <para>
 		/// The <c>CM_Get_Next_Res_Des_Ex</c> function obtains a handle to the next resource descriptor, of a specified resource type, for a
@@ -1999,6 +2110,69 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Next_Res_Des_Ex")]
 		public static extern CONFIGRET CM_Get_Next_Res_Des_Ex(out SafeRES_DES prdResDes, RES_DES rdResDes, RESOURCEID ForResource, out RESOURCEID pResourceID, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+
+		/// <summary>
+		/// <para>[Beginning with Windows 8 and Windows Server 2012, this function has been deprecated. Please use CM_Get_Next_Res_Des instead.]</para>
+		/// <para>
+		/// The <c>CM_Get_Next_Res_Des_Ex</c> function obtains a handle to the next resource descriptor, of a specified resource type, for a
+		/// logical configuration on a local or a remote machine.
+		/// </para>
+		/// </summary>
+		/// <param name="prdResDes">Pointer to a location to receive a resource descriptor handle.</param>
+		/// <param name="rdResDes">
+		/// Caller-supplied handle to either a resource descriptor or a logical configuration. For more information, see the following
+		/// <c>Remarks</c> section.
+		/// </param>
+		/// <param name="ForResource">
+		/// Caller-supplied resource type identifier, indicating the type of resource descriptor being requested. This must be one of the
+		/// ResType_-prefixed constants defined in Cfgmgr32.h.
+		/// </param>
+		/// <param name="pResourceID">
+		/// Pointer to a location to receive a resource type identifier, if ForResource specifies <c>ResType_All</c>. For any other
+		/// ForResource value, callers should set this to <c>NULL</c>.
+		/// </param>
+		/// <param name="ulFlags">Not used, must be zero.</param>
+		/// <param name="hMachine">
+		/// <para>Caller-supplied machine handle, obtained from a previous call to CM_Connect_Machine.</para>
+		/// <para>
+		/// <c>Note</c> Using this function to access remote machines is not supported beginning with Windows 8 and Windows Server 2012, as
+		/// this functionality has been removed.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the operation succeeds, the function returns CR_SUCCESS. Otherwise, it returns one of the CR_-prefixed error codes defined in Cfgmgr32.h.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Starting with Windows 8, <c>CM_Get_Next_Res_Des_Ex</c> returns CR_CALL_NOT_IMPLEMENTED when used in a Wow64
+		/// scenario. To request information about the hardware resources on a local machine it is necessary implement an
+		/// architecture-native version of the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To enumerate a logical configuration's resource descriptors, begin by calling <c>CM_Get_Next_Res_Des_Ex</c> with the logical
+		/// configuration's handle as the argument for rdResDes. This obtains a handle to the first resource descriptor of the type
+		/// specified by ForResource. Then for each subsequent call to <c>CM_Get_Next_Res_Des_Ex</c>, specify the most recently obtained
+		/// descriptor handle as the argument for rdResDes. Repeat until the function returns CR_NO_MORE_RES_DES.
+		/// </para>
+		/// <para>To retrieve the information stored in a resource descriptor, call CM_Get_Res_Des_Data_Ex.</para>
+		/// <para>To modify the information stored in a resource descriptor, call CM_Modify_Res_Des_Ex.</para>
+		/// <para>
+		/// Callers of <c>CM_Get_Next_Res_Des_Ex</c> must call CM_Free_Res_Des_Handle to deallocate the resource descriptor handle, after it
+		/// is no longer needed.
+		/// </para>
+		/// <para>
+		/// Functionality to access remote machines has been removed in Windows 8 and Windows Server 2012 and later operating systems thus
+		/// you cannot access remote machines when running on these versions of Windows.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_get_next_res_des_ex CMAPI CONFIGRET
+		// CM_Get_Next_Res_Des_Ex( PRES_DES prdResDes, RES_DES rdResDes, RESOURCEID ForResource, PRESOURCEID pResourceID, ULONG ulFlags,
+		// HMACHINE hMachine );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Next_Res_Des_Ex")]
+		public static extern CONFIGRET CM_Get_Next_Res_Des_Ex(out SafeRES_DES prdResDes, LOG_CONF rdResDes, RESOURCEID ForResource, out RESOURCEID pResourceID, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 		/// <summary>
 		/// <para>[Beginning with Windows 8 and Windows Server 2012, this function has been deprecated. Please use CM_Get_Parent instead.]</para>
@@ -2063,6 +2237,30 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Res_Des_Data")]
 		public static extern CONFIGRET CM_Get_Res_Des_Data(RES_DES rdResDes, [Out] IntPtr Buffer, uint BufferLen, uint ulFlags = 0);
+
+		/// <summary>
+		/// The <c>CM_Get_Res_Des_Data</c> function retrieves the information stored in a resource descriptor on the local machine.
+		/// </summary>
+		/// <typeparam name="T">The type of the data to retrieve.</typeparam>
+		/// <param name="rdResDes">Caller-supplied handle to a resource descriptor, obtained by a previous call to CM_Get_Next_Res_Des.</param>
+		/// <returns>
+		/// <para>
+		/// Returns the structure specified in as the contents of the resource descriptor.
+		/// </para>
+		/// <para>
+		///   <c>Note</c> Starting with Windows 8, <c>CM_Get_Res_Des_Data</c> throws CR_CALL_NOT_IMPLEMENTED when used in a Wow64 scenario.
+		/// To request information about the hardware resources on a local machine it is necessary implement an architecture-native version
+		/// of the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// </returns>
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Res_Des_Data")]
+		public static T CM_Get_Res_Des_Data<T>(RES_DES rdResDes) where T : struct
+		{
+			CM_Get_Res_Des_Data_Size(out var size, rdResDes).ThrowIfFailed();
+			using var mem = new SafeCoTaskMemHandle(size);
+			CM_Get_Res_Des_Data(rdResDes, mem, size).ThrowIfFailed();
+			return mem.ToStructure<T>();
+		}
 
 		/// <summary>
 		/// <para>[Beginning with Windows 8 and Windows Server 2012, this function has been deprecated. Please use CM_Get_Res_Des_Data instead.]</para>
@@ -2183,6 +2381,38 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Res_Des_Data_Size_Ex")]
 		public static extern CONFIGRET CM_Get_Res_Des_Data_Size_Ex(out uint pulSize, RES_DES rdResDes, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+
+		/// <summary>
+		/// The <c>CM_Get_Next_Res_Des</c> function obtains a handle to the next resource descriptor, of a specified resource type, for a
+		/// logical configuration on the local machine.
+		/// </summary>
+		/// <param name="lcLogConf">Handle to a logical configuration.</param>
+		/// <param name="ForResource">
+		/// Caller-supplied resource type identifier, indicating the type of resource descriptor being requested. This must be one of the
+		/// <c>ResType_</c>-prefixed constants defined in Cfgmgr32.h.
+		/// </param>
+		/// <returns>A sequence of resource descriptor handles and their associated resource type identifiers.</returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Note</c> Starting with Windows 8, <c>CM_Get_Next_Res_Des</c> returns CR_CALL_NOT_IMPLEMENTED when used in a Wow64 scenario.
+		/// To request information about the hardware resources on a local machine it is necessary implement an architecture-native version
+		/// of the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// <para>To retrieve the information stored in a resource descriptor, call CM_Get_Res_Des_Data.</para>
+		/// <para>To modify the information stored in a resource descriptor, call CM_Modify_Res_Des.</para>
+		/// </remarks>
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Next_Res_Des")]
+		public static IEnumerable<(SafeRES_DES prdResDes, RESOURCEID pResourceID)> CM_Get_Res_Des_List([In] LOG_CONF lcLogConf, RESOURCEID ForResource = RESOURCEID.ResType_All)
+		{
+			CONFIGRET ret = CM_Get_Next_Res_Des(out var rd, lcLogConf, ForResource, out var resId);
+			if (ret == CONFIGRET.CR_NO_MORE_RES_DES)
+				yield break;
+			ret.ThrowIfFailed();
+			yield return (rd, resId);
+			while ((ret = CM_Get_Next_Res_Des(out rd, rd, ForResource, out resId)) == CONFIGRET.CR_SUCCESS)
+				yield return (rd, resId);
+			if (ret != CONFIGRET.CR_NO_MORE_RES_DES) ret.ThrowIfFailed();
+		}
 
 		/// <summary>
 		/// The <c>CM_Get_Resource_Conflict_Count</c> function obtains the number of conflicts contained in a specified resource conflict list.

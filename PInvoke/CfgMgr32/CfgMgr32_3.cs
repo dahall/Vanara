@@ -2,6 +2,7 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.SetupAPI;
 
@@ -1103,6 +1104,58 @@ namespace Vanara.PInvoke
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Modify_Res_Des")]
 		public static extern CONFIGRET CM_Modify_Res_Des(out SafeRES_DES prdResDes, RES_DES rdResDes, RESOURCEID ResourceID, [In] IntPtr ResourceData, uint ResourceLen, uint ulFlags = 0);
 
+		/// <summary>The <c>CM_Modify_Res_Des</c> function modifies a specified resource descriptor on the local machine.</summary>
+		/// <typeparam name="T">The type of the data.</typeparam>
+		/// <param name="rdResDes">
+		/// <para>
+		/// Caller-supplied handle to the resource descriptor to be modified. This handle must have been previously obtained by calling one
+		/// of the following functions:
+		/// </para>
+		/// <para>CM_Add_Res_Des</para>
+		/// <para>CM_Add_Res_Des_Ex</para>
+		/// <para>CM_Get_Next_Res_Des</para>
+		/// <para>CM_Get_Next_Res_Des_Ex</para>
+		/// <para><c>CM_Modify_Res_Des</c></para>
+		/// <para>CM_Modify_Res_Des_Ex</para>
+		/// </param>
+		/// <param name="data">
+		/// Caller-supplied pointer to a resource descriptor, which can be one of the structures listed under the CM_Add_Res_Des function's
+		/// description of ResourceData.
+		/// </param>
+		/// <param name="ResourceID">
+		/// Caller-supplied resource type identifier. This must be one of the <c>ResType_</c>-prefixed constants defined in Cfgmgr32.h.
+		/// </param>
+		/// <returns>
+		/// <para>A handle to the modified resource descriptor.</para>
+		/// <para>
+		/// <c>Note</c> Starting with Windows 8, <c>CM_Modify_Res_Des</c> throws CR_CALL_NOT_IMPLEMENTED when used in a Wow64 scenario. To
+		/// request information about the hardware resources on a local machine it is necessary implement an architecture-native version of
+		/// the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// </returns>
+		/// <exception cref="ArgumentException">Unable to determine RESOURCEID from type. - T</exception>
+		/// <remarks>
+		/// <para>
+		/// The caller-supplied resource descriptor data replaces the existing data. The values specified for ResourceID and ResourceLen do
+		/// not have to match the existing resource descriptor.
+		/// </para>
+		/// <para>
+		/// If the value specified for ResourceID is <c>ResType_ClassSpecific</c>, then the specified resource descriptor must be the last
+		/// one associated with the logical configuration.
+		/// </para>
+		/// <para>
+		/// Callers of this function must have <c>SeLoadDriverPrivilege</c>. (Privileges are described in the Microsoft Windows SDK documentation.)
+		/// </para>
+		/// </remarks>
+		public static SafeRES_DES CM_Modify_Res_Des<T>(RES_DES rdResDes, T data, RESOURCEID ResourceID = 0) where T : struct
+		{
+			if (ResourceID == 0 && !CorrespondingTypeAttribute.CanSet<T, RESOURCEID>(out ResourceID))
+				throw new ArgumentException("Unable to determine RESOURCEID from type.", nameof(T));
+			using var mem = new SafeAnysizeStruct<T>(data);
+			CM_Modify_Res_Des(out var hRD, rdResDes, ResourceID, mem, mem.Size).ThrowIfFailed();
+			return hRD;
+		}
+
 		/// <summary>
 		/// <para>[Beginning with Windows 8 and Windows Server 2012, this function has been deprecated. Please use CM_Modify_Res_Des instead.]</para>
 		/// <para>The <c>CM_Modify_Res_Des_Ex</c> function modifies a specified resource descriptor on a local or a remote machine.</para>
@@ -1684,8 +1737,53 @@ namespace Vanara.PInvoke
 		// ULONG ResourceLen, ULONG ulFlags, HMACHINE hMachine );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_Resource_Conflict_List")]
-		public static extern CONFIGRET CM_Query_Resource_Conflict_List(out SafeCONFLICT_LIST pclConflictList, uint dnDevInst, RESOURCEID ResourceID, IntPtr ResourceData,
-			uint ResourceLen, uint ulFlags, [In, Optional] HMACHINE hMachine);
+		public static extern CONFIGRET CM_Query_Resource_Conflict_List(out SafeCONFLICT_LIST pclConflictList, uint dnDevInst, RESOURCEID ResourceID, [In] IntPtr ResourceData,
+			uint ResourceLen, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+
+		/// <summary>
+		/// The <c>CM_Query_Resource_Conflict_List</c> function identifies device instances having resource requirements that conflict with
+		/// a specified device instance's resource description.
+		/// </summary>
+		/// <typeparam name="T">The type of the supplied data.</typeparam>
+		/// <param name="dnDevInst">Caller-supplied device instance handle that is bound to the machine handle supplied by hMachine.</param>
+		/// <param name="data">
+		/// Caller-supplied pointer to a resource descriptor, which can be one of the structures listed under the CM_Add_Res_Des function's
+		/// description of ResourceData.
+		/// </param>
+		/// <param name="ResourceID">
+		/// Caller-supplied resource type identifier. If <c>0</c>, then the <see cref="RESOURCEID"/> is determined by <typeparamref name="T"/>.
+		/// </param>
+		/// <returns>
+		/// <para>A handle to a conflict list.</para>
+		/// <para>
+		/// <c>Note</c> Starting with Windows 8, <c>CM_Query_Resource_Conflict_List</c> throws CR_CALL_NOT_IMPLEMENTED when used in a Wow64
+		/// scenario. To request information about the hardware resources on a local machine it is necessary implement an
+		/// architecture-native version of the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When calling <c>CM_Query_Resource_Conflict_List</c>, specify a device instance handle and resource descriptor. (Resource
+		/// descriptors for existing device nodes can be obtained by calling CM_Get_Res_Des_Data.) These parameters indicate the specific
+		/// resources you'd like a specific device to use. The resulting conflict list identifies devices that use the same resources, along
+		/// with resources reserved by the machine.
+		/// </para>
+		/// <para>
+		/// After calling <c>CM_Query_Resource_Conflict_List</c>, an application can call CM_Get_Resource_Conflict_Count to determine the
+		/// number of conflicts contained in the resource conflict list. (The number of conflicts can be zero.) Then the application can
+		/// call CM_Get_Resource_Conflict_Details for each entry in the conflict list.
+		/// </para>
+		/// <para>For information about using device instance handles that are bound to a local or a remote machine, see CM_Get_Child_Ex.</para>
+		/// </remarks>
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_Resource_Conflict_List")]
+		public static SafeCONFLICT_LIST CM_Query_Resource_Conflict_List<T>(uint dnDevInst, T data, RESOURCEID ResourceID = 0) where T : struct
+		{
+			if (ResourceID == 0 && !CorrespondingTypeAttribute.CanSet<T, RESOURCEID>(out ResourceID))
+				throw new ArgumentException("Unable to determine RESOURCEID from type.", nameof(T));
+			using var mem = new SafeAnysizeStruct<T>(data);
+			CM_Query_Resource_Conflict_List(out var hcl, dnDevInst, ResourceID, mem, mem.Size).ThrowIfFailed();
+			return hcl;
+		}
 
 		/// <summary>
 		/// The <c>CM_Reenumerate_DevNode</c> function enumerates the devices identified by a specified device node and all of its children.

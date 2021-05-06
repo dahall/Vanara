@@ -2,6 +2,7 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.SetupAPI;
@@ -359,6 +360,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct CONFLICT_DETAILS
 		{
+			/// <summary>Initializes a new instance of the <see cref="CONFLICT_DETAILS"/> struct with the size and mask set.</summary>
+			/// <param name="mask">The mask of items to retrieve.</param>
+			public CONFLICT_DETAILS(CM_CDMASK mask) : this()
+			{
+				CD_ulSize = (uint)Marshal.SizeOf(typeof(CONFLICT_DETAILS));
+				CD_ulMask = mask;
+			}
+
 			/// <summary>Size, in bytes, of the CONFLICT_DETAILS structure.</summary>
 			public uint CD_ulSize;
 
@@ -434,9 +443,6 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260 /*MAX_PATH*/)]
 			public string CD_szDescription;
-
-			/// <summary>Gets a default value for the structure with the size field set.</summary>
-			public static readonly CONFLICT_DETAILS Default = new() { CD_ulSize = (uint)Marshal.SizeOf(typeof(CONFLICT_DETAILS)) };
 		}
 
 		/// <summary>

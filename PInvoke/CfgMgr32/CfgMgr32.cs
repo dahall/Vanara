@@ -1743,6 +1743,55 @@ namespace Vanara.PInvoke
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Free_Res_Des")]
 		public static extern CONFIGRET CM_Free_Res_Des(out SafeRES_DES prdResDes, RES_DES rdResDes, uint ulFlags = 0);
 
+		/// <summary>The <c>CM_Free_Res_Des</c> function removes a resource descriptor from a logical configuration on the local machine.</summary>
+		/// <param name="prdResDes">
+		/// Caller-supplied location to receive a handle to the configuration's previous resource descriptor. This parameter can be
+		/// <c>NULL</c>. For more information, see the following <c>Remarks</c> section.
+		/// </param>
+		/// <param name="rdResDes">
+		/// <para>
+		/// Caller-supplied handle to the resource descriptor to be removed. This handle must have been previously obtained by calling one
+		/// of the following functions:
+		/// </para>
+		/// <para>CM_Add_Res_Des</para>
+		/// <para>CM_Add_Res_Des_Ex</para>
+		/// <para>CM_Get_Next_Res_Des</para>
+		/// <para>CM_Get_Next_Res_Des_Ex</para>
+		/// <para>CM_Modify_Res_Des</para>
+		/// <para>CM_Modify_Res_Des_Ex</para>
+		/// </param>
+		/// <param name="ulFlags">Not used, must be zero.</param>
+		/// <returns>
+		/// <para>
+		/// If the operation succeeds, the function returns CR_SUCCESS. Otherwise, it returns one of the CR_-prefixed error codes defined in Cfgmgr32.h.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Starting with Windows 8, <c>CM_Free_Res_Des</c> returns CR_CALL_NOT_IMPLEMENTED when used in a Wow64 scenario. To
+		/// request information about the hardware resources on a local machine it is necessary implement an architecture-native version of
+		/// the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Resource descriptors for each configuration are stored in an array. If you specify an address for prdResDes, then
+		/// <c>CM_Free_Res_Des</c> returns a handle to the resource descriptor that was previous, in the array, to the one removed. If the
+		/// handle specified by rdResDes represents the resource descriptor located first in the array, then prdResDes receives a handle to
+		/// the logical configuration.
+		/// </para>
+		/// <para>
+		/// Note that calling <c>CM_Free_Res_Des</c> frees the resource descriptor, but not the descriptor's handle. To free the handle,
+		/// call <c>CM_Free_Res_Des_Handle</c>.
+		/// </para>
+		/// <para>
+		/// Callers of this function must have <c>SeLoadDriverPrivilege</c>. (Privileges are described in the Microsoft Windows SDK documentation.)
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_free_res_des CMAPI CONFIGRET CM_Free_Res_Des( PRES_DES
+		// prdResDes, RES_DES rdResDes, ULONG ulFlags );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Free_Res_Des")]
+		public static extern CONFIGRET CM_Free_Res_Des([In, Optional] IntPtr prdResDes, RES_DES rdResDes, uint ulFlags = 0);
+
 		/// <summary>
 		/// <para>[Beginning with Windows 8 and Windows Server 2012, this function has been deprecated. Please use CM_Free_Res_Des instead.]</para>
 		/// <para>
@@ -1807,6 +1856,71 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Free_Res_Des_Ex")]
 		public static extern CONFIGRET CM_Free_Res_Des_Ex(out SafeRES_DES prdResDes, RES_DES rdResDes, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+
+		/// <summary>
+		/// <para>[Beginning with Windows 8 and Windows Server 2012, this function has been deprecated. Please use CM_Free_Res_Des instead.]</para>
+		/// <para>
+		/// The <c>CM_Free_Res_Des_Ex</c> function removes a resource descriptor from a logical configuration on either a local or a remote machine.
+		/// </para>
+		/// </summary>
+		/// <param name="prdResDes">
+		/// Caller-supplied location to receive a handle to the configuration's previous resource descriptor. This parameter can be
+		/// <c>NULL</c>. For more information, see the following <c>Remarks</c> section.
+		/// </param>
+		/// <param name="rdResDes">
+		/// <para>
+		/// Caller-supplied handle to the resource descriptor to be removed. This handle must have been previously obtained by calling one
+		/// of the following functions:
+		/// </para>
+		/// <para>CM_Add_Res_Des</para>
+		/// <para>CM_Add_Res_Des_Ex</para>
+		/// <para>CM_Get_Next_Res_Des</para>
+		/// <para>CM_Get_Next_Res_Des_Ex</para>
+		/// <para>CM_Modify_Res_Des</para>
+		/// <para>CM_Modify_Res_Des_Ex</para>
+		/// </param>
+		/// <param name="ulFlags">Not used, must be zero.</param>
+		/// <param name="hMachine">
+		/// <para>Caller-supplied machine handle, obtained from a previous call to CM_Connect_Machine.</para>
+		/// <para>
+		/// <c>Note</c> Using this function to access remote machines is not supported beginning with Windows 8 and Windows Server 2012, as
+		/// this functionality has been removed.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the operation succeeds, the function returns CR_SUCCESS. Otherwise, it returns one of the CR_-prefixed error codes defined in Cfgmgr32.h.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Starting with Windows 8, <c>CM_Free_Res_Des_Ex</c> returns CR_CALL_NOT_IMPLEMENTED when used in a Wow64 scenario. To
+		/// request information about the hardware resources on a local machine it is necessary implement an architecture-native version of
+		/// the application using the hardware resource APIs. For example: An AMD64 application for AMD64 systems.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Resource descriptors for each configuration are stored in an array. If you specify an address for prdResDes, then
+		/// <c>CM_Free_Res_Des</c> returns a handle to the resource descriptor that was previous, in the array, to the one removed. If the
+		/// handle specified by rdResDes represents the resource descriptor located first in the array, then prdResDes receives a handle to
+		/// the logical configuration.
+		/// </para>
+		/// <para>
+		/// Note that calling <c>CM_Free_Res_Des_Ex</c> frees the resource descriptor, but not the descriptor's handle. To free the handle,
+		/// call <c>CM_Free_Res_Des_Handle_Ex</c>.
+		/// </para>
+		/// <para>
+		/// Callers of this function must have <c>SeLoadDriverPrivilege</c>. (Privileges are described in the Microsoft Windows SDK documentation.)
+		/// </para>
+		/// <para>
+		/// Functionality to access remote machines has been removed in Windows 8 and Windows Server 2012 and later operating systems thus
+		/// you cannot access remote machines when running on these versions of Windows.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_free_res_des_ex CMAPI CONFIGRET CM_Free_Res_Des_Ex(
+		// PRES_DES prdResDes, RES_DES rdResDes, ULONG ulFlags, HMACHINE hMachine );
+		[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Free_Res_Des_Ex")]
+		public static extern CONFIGRET CM_Free_Res_Des_Ex([In, Optional] IntPtr prdResDes, RES_DES rdResDes, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 		/// <summary>
 		/// The <c>CM_Free_Res_Des_Handle</c> function invalidates a resource description handle and frees its associated memory allocation.
@@ -2289,7 +2403,7 @@ namespace Vanara.PInvoke
 		// ulFlags, HMACHINE hMachine );
 		[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Class_Registry_PropertyW")]
-		public static extern CONFIGRET CM_Get_Class_Registry_Property(in Guid ClassGuid, CM_DRP ulProperty, out REG_VALUE_TYPE pulRegDataType, [Out, Optional] IntPtr Buffer,
+		public static extern CONFIGRET CM_Get_Class_Registry_Property(in Guid ClassGuid, CM_CRP ulProperty, out REG_VALUE_TYPE pulRegDataType, [Out, Optional] IntPtr Buffer,
 			ref uint pulLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 		/// <summary>

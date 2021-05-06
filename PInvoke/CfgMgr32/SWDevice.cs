@@ -522,6 +522,7 @@ namespace Vanara.PInvoke
 			/// <c>BusQueryInstanceID</c>. Because all software devices are considered "UniqueId" devices, this string must be a unique name
 			/// for all devices on this software device enumerator. For more info, see Instance IDs.
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pszInstanceId;
 
 			/// <summary>
@@ -529,8 +530,9 @@ namespace Vanara.PInvoke
 			/// <c>BusQueryHardwareIDs</c>. If a client expects a driver or device metadata to bind to the device, the client specifies
 			/// hardware IDs.
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler))]
-			public string[] pszzHardwareIds;
+			//[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler))]
+			//public string[] pszzHardwareIds;
+			public IntPtr pszzHardwareIds;
 
 			/// <summary>
 			/// A list of strings for the compatible IDs for the software device. This value is used for IRP_MN_QUERY_ID
@@ -539,8 +541,9 @@ namespace Vanara.PInvoke
 			/// addition to the compatible IDs specified in this member, SWD\Generic and possibly SWD\GenericRaw will always be added as the
 			/// least specific compatible IDs.
 			/// </summary>
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler))]
-			public string[] pszzCompatibleIds;
+			//[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler))]
+			//public string[] pszzCompatibleIds;
+			public IntPtr pszzCompatibleIds;
 
 			/// <summary>
 			/// A value that is used to control the base container ID for the software device. This value will be used for IRP_MN_QUERY_ID
@@ -616,6 +619,7 @@ namespace Vanara.PInvoke
 			/// We recommend that this string be a reference to a localizable resource. For the syntax of referencing resources, see DEVPROP_TYPE_STRING_INDIRECT.
 			/// </para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pszDeviceDescription;
 
 			/// <summary>
@@ -625,6 +629,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><c>Note</c> Specifying a location is uncommon.</para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pszDeviceLocation;
 
 			/// <summary>
