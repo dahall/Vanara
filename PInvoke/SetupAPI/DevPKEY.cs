@@ -9,7 +9,7 @@ namespace Vanara.PInvoke
 	{
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_AdditionalSoftwareRequested = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 19);
+		public static readonly DEVPROPKEY DEVPKEY_Device_AdditionalSoftwareRequested = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 19);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_Address device property represents the bus-specific address of a device instance.</para>
@@ -54,12 +54,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-address
-		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Address = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 30);
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Address = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 30);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_AssignedToGuest = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 24);
+		public static readonly DEVPROPKEY DEVPKEY_Device_AssignedToGuest = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 24);
 
 		/// <summary>
 		/// <para>
@@ -129,12 +129,12 @@ namespace Vanara.PInvoke
 		/// <para>For more information about container IDs, see Container IDs.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-basecontainerid
-		[CorrespondingType(typeof(Guid))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_BaseContainerId = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 38);
+		[CorrespondingType(typeof(Guid), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_BaseContainerId = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 38);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_BiosDeviceName = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 10);
+		public static readonly DEVPROPKEY DEVPKEY_Device_BiosDeviceName = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 10);
 
 		/// <summary>
 		/// <para>
@@ -182,8 +182,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-busnumber
-		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_BusNumber = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 23);
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_BusNumber = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 23);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_BusRelations device property represents the <c>bus relations</c> for a device instance.</para>
@@ -218,8 +218,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-busrelations
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_BusRelations = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 7);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_BusRelations = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 7);
 
 		/// <summary>
 		/// <para>
@@ -257,8 +257,8 @@ namespace Vanara.PInvoke
 		/// <para>You can call <c>SetupDiGetDeviceProperty</c> to retrieve the value of DEVPKEY_Device_BusReportedDeviceDesc.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-busreporteddevicedesc
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_BusReportedDeviceDesc = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 4);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_BusReportedDeviceDesc = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 4);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_BusTypeGuid device property represents the GUID that identifies the bus type of a device instance.</para>
@@ -303,8 +303,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-bustypeguid
-		[CorrespondingType(typeof(Guid))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_BusTypeGuid = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 21);
+		[CorrespondingType(typeof(Guid), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_BusTypeGuid = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 21);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_Capabilities device property represents the capabilities of a device instance.</para>
@@ -351,8 +351,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-capabilities
-		[CorrespondingType(typeof(CM_DEVCAP))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Capabilities = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 17);
+		[CorrespondingType(typeof(CM_DEVCAP), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Capabilities = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 17);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_Characteristics device property represents the characteristics of a device instance.</para>
@@ -402,8 +402,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-characteristics
-		[CorrespondingType(typeof(CM_FILE))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Characteristics = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 29);
+		[CorrespondingType(typeof(CM_FILE), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Characteristics = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 29);
 
 		/// <summary>
 		/// <para>
@@ -441,8 +441,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-children
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Children = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 9);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Children = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 9);
 
 		/// <summary></summary>
 		/// <summary>
@@ -490,8 +490,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-class
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Class = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 9);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Class = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 9);
 
 		/// <summary>
 		/// <para>
@@ -538,8 +538,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-classguid
-		[CorrespondingType(typeof(Guid))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ClassGuid = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 10);
+		[CorrespondingType(typeof(Guid), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_ClassGuid = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 10);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DEVICE_CompatibleIds device property represents the list of compatible identifiers for a device instance.</para>
@@ -588,8 +588,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-compatibleids
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_CompatibleIds = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 4);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_CompatibleIds = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 4);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_ConfigFlags device property represents the configuration flags that are set for a device instance.</para>
@@ -632,11 +632,11 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-configflags
 		[CorrespondingType(typeof(CONFIGFLAG))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ConfigFlags = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 12);
+		public static readonly DEVPROPKEY DEVPKEY_Device_ConfigFlags = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 12);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ConfigurationId = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 7);
+		public static readonly DEVPROPKEY DEVPKEY_Device_ConfigurationId = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 7);
 
 		/// <summary>
 		/// <para>
@@ -700,20 +700,20 @@ namespace Vanara.PInvoke
 		/// <para>For more information about ContainerIDs, see Container IDs.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-containerid
-		[CorrespondingType(typeof(Guid))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ContainerId = new DEVPROPKEY(0x8c7ed206, 0x3f8a, 0x4827, 0xb3, 0xab, 0xae, 0x9e, 0x1f, 0xae, 0xfc, 0x6c, 2);
+		[CorrespondingType(typeof(Guid), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_ContainerId = new(0x8c7ed206, 0x3f8a, 0x4827, 0xb3, 0xab, 0xae, 0x9e, 0x1f, 0xae, 0xfc, 0x6c, 2);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DebuggerSafe = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 12);
+		public static readonly DEVPROPKEY DEVPKEY_Device_DebuggerSafe = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 12);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DependencyDependents = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 21);
+		public static readonly DEVPROPKEY DEVPKEY_Device_DependencyDependents = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 21);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DependencyProviders = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 20);
+		public static readonly DEVPROPKEY DEVPKEY_Device_DependencyProviders = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 20);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_DeviceDesc device property represents a description of a device instance.</para>
@@ -762,8 +762,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-devicedesc
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DeviceDesc = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 2);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DeviceDesc = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 2);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_DevNodeStatus device property represents the status of a device node (devnode).</para>
@@ -799,8 +799,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-devnodestatus
-		[CorrespondingType(typeof(DN))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DevNodeStatus = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 2);
+		[CorrespondingType(typeof(DN), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DevNodeStatus = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 2);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_DevType device property represents the device type of a device instance.</para>
@@ -850,8 +850,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-devtype
-		[CorrespondingType(typeof(FILE_DEVICE))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DevType = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 27);
+		[CorrespondingType(typeof(FILE_DEVICE), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DevType = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 27);
 
 		/// <summary>
 		/// <para>
@@ -923,7 +923,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-dhp-rebalance-policy
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DHP_Rebalance_Policy = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 2);
+		public static readonly DEVPROPKEY DEVPKEY_Device_DHP_Rebalance_Policy = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 2);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_Driver device property represents the registry entry name of the driver key for a device instance.</para>
@@ -965,8 +965,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driver
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Driver = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 11);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Driver = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 11);
 
 		/// <summary>
 		/// <para>
@@ -1018,8 +1018,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-drivercoinstallers
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverCoInstallers = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 11);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverCoInstallers = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 11);
 
 		/// <summary>
 		/// <para>
@@ -1067,8 +1067,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverdate
-		[CorrespondingType(typeof(FILETIME))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverDate = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 2);
+		[CorrespondingType(typeof(FILETIME), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverDate = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 2);
 
 		/// <summary>
 		/// <para>
@@ -1118,8 +1118,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverdesc
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverDesc = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 4);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverDesc = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 4);
 
 		/// <summary>
 		/// <para>The PKEY_Device_DriverInfPath device property represents the name of the INF file that installed a device instance.</para>
@@ -1164,8 +1164,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverinfpath
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverInfPath = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 5);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverInfPath = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 5);
 
 		/// <summary>
 		/// <para>
@@ -1210,8 +1210,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverinfsection
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverInfSection = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 6);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverInfSection = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 6);
 
 		/// <summary>
 		/// <para>
@@ -1256,8 +1256,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverinfsectionext
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverInfSectionExt = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 7);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverInfSectionExt = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 7);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_DriverLogoLevel device property represents the Microsoft Windows Logo level for a device instance.</para>
@@ -1290,12 +1290,12 @@ namespace Vanara.PInvoke
 		/// <para>Windows Server 2003, Windows XP, and Windows 2000 do not support this property.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverlogolevel
-		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverLogoLevel = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 15);
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverLogoLevel = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 15);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverProblemDesc = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 11);
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverProblemDesc = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 11);
 
 		/// <summary>
 		/// <para>
@@ -1343,8 +1343,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverproppageprovider
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverPropPageProvider = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 10);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverPropPageProvider = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 10);
 
 		/// <summary>
 		/// <para>
@@ -1391,8 +1391,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverprovider
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverProvider = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 9);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverProvider = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 9);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_DriverRank device property represents the rank of the driver that is installed for a device instance.</para>
@@ -1430,8 +1430,8 @@ namespace Vanara.PInvoke
 		/// <para>For information about driver rank, see How Windows Ranks Drivers.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverrank
-		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverRank = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 14);
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverRank = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 14);
 
 		/// <summary>
 		/// <para>
@@ -1479,8 +1479,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-driverversion
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_DriverVersion = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 3);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_DriverVersion = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 3);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_EjectionRelations device property represents the <c>ejection relations</c> for a device instance.</para>
@@ -1515,8 +1515,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-ejectionrelations
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_EjectionRelations = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 4);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_EjectionRelations = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 4);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_EnumeratorName device property represents the name of the enumerator for a device instance.</para>
@@ -1558,8 +1558,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-enumeratorname
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_EnumeratorName = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 24);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_EnumeratorName = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 24);
 
 		/// <summary>
 		/// <para>
@@ -1612,27 +1612,27 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-exclusive
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Exclusive = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 28);
+		public static readonly DEVPROPKEY DEVPKEY_Device_Exclusive = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 28);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(ulong))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ExtendedAddress = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 23);
+		public static readonly DEVPROPKEY DEVPKEY_Device_ExtendedAddress = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 23);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ExtendedConfigurationIds = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 15);
+		public static readonly DEVPROPKEY DEVPKEY_Device_ExtendedConfigurationIds = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 15);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(FILETIME))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_FirmwareDate = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 17);
+		public static readonly DEVPROPKEY DEVPKEY_Device_FirmwareDate = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 17);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_FirmwareRevision = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 19);
+		public static readonly DEVPROPKEY DEVPKEY_Device_FirmwareRevision = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 19);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_FirmwareVersion = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 18);
+		public static readonly DEVPROPKEY DEVPKEY_Device_FirmwareVersion = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 18);
 
 		/// <summary>
 		/// <para>
@@ -1674,8 +1674,8 @@ namespace Vanara.PInvoke
 		/// <para>You can call <c>SetupDiGetDeviceProperty</c> to retrieve the value of DEVPKEY_Device_FirstInstallDate property.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-firstinstalldate
-		[CorrespondingType(typeof(FILETIME))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_FirstInstallDate = new DEVPROPKEY(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 101);
+		[CorrespondingType(typeof(FILETIME), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_FirstInstallDate = new(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 101);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_FriendlyName device property represents the friendly name of a device instance.</para>
@@ -1728,11 +1728,11 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-friendlyname
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_FriendlyName = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 14);
+		public static readonly DEVPROPKEY DEVPKEY_Device_FriendlyName = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 14);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_FriendlyNameAttributes = new DEVPROPKEY(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 3);
+		public static readonly DEVPROPKEY DEVPKEY_Device_FriendlyNameAttributes = new(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 3);
 
 		/// <summary>
 		/// <para>
@@ -1772,8 +1772,8 @@ namespace Vanara.PInvoke
 		/// <para>Windows Server 2003, Windows XP, and Windows 2000 do not support this property.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-genericdriverinstalled
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_GenericDriverInstalled = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 18);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_GenericDriverInstalled = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 18);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DEVICE_HardwareIds device property represents the list of hardware identifiers for a device instance.</para>
@@ -1822,16 +1822,16 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-hardwareids
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_HardwareIds = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 3);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_HardwareIds = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 3);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_HasProblem = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 6);
+		public static readonly DEVPROPKEY DEVPKEY_Device_HasProblem = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 6);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_InLocalMachineContainer = new DEVPROPKEY(0x8c7ed206, 0x3f8a, 0x4827, 0xb3, 0xab, 0xae, 0x9e, 0x1f, 0xae, 0xfc, 0x6c, 4);
+		public static readonly DEVPROPKEY DEVPKEY_Device_InLocalMachineContainer = new(0x8c7ed206, 0x3f8a, 0x4827, 0xb3, 0xab, 0xae, 0x9e, 0x1f, 0xae, 0xfc, 0x6c, 4);
 
 		/// <summary>
 		/// <para>
@@ -1872,8 +1872,8 @@ namespace Vanara.PInvoke
 		/// <para>You can call <c>SetupDiGetDeviceProperty</c> to retrieve the value of DEVPKEY_Device_FirstInstallDate property.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-installdate
-		[CorrespondingType(typeof(FILETIME))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_InstallDate = new DEVPROPKEY(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 100);
+		[CorrespondingType(typeof(FILETIME), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_InstallDate = new(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 100);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_InstallState device property represents the installation state of a device instance.</para>
@@ -1918,8 +1918,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-installstate
-		[CorrespondingType(typeof(CM_INSTALL_STATE))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_InstallState = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 36);
+		[CorrespondingType(typeof(CM_INSTALL_STATE), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_InstallState = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 36);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_InstanceId device property represents the device instance identifier of a device.</para>
@@ -1956,28 +1956,28 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-instanceid
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_InstanceId = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 256);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_InstanceId = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 256);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_IsAssociateableByUserAction = new DEVPROPKEY(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 7);
+		public static readonly DEVPROPKEY DEVPKEY_Device_IsAssociateableByUserAction = new(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 7);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_IsPresent = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 5);
+		public static readonly DEVPROPKEY DEVPKEY_Device_IsPresent = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 5);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_IsRebootRequired = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 16);
+		public static readonly DEVPROPKEY DEVPKEY_Device_IsRebootRequired = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 16);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(FILETIME))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_LastArrivalDate = new DEVPROPKEY(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 102);
+		public static readonly DEVPROPKEY DEVPKEY_Device_LastArrivalDate = new(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 102);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(FILETIME))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_LastRemovalDate = new DEVPROPKEY(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 103);
+		public static readonly DEVPROPKEY DEVPKEY_Device_LastRemovalDate = new(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 103);
 
 		/// <summary>
 		/// <para>
@@ -2017,8 +2017,8 @@ namespace Vanara.PInvoke
 		/// <para>Windows Server 2003, Windows XP, and Windows 2000 do not support this property.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-legacy
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Legacy = new DEVPROPKEY(0x80497100, 0x8c73, 0x48b9, 0xaa, 0xd9, 0xce, 0x38, 0x7e, 0x19, 0xc5, 0x6e, 3);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Legacy = new(0x80497100, 0x8c73, 0x48b9, 0xaa, 0xd9, 0xce, 0x38, 0x7e, 0x19, 0xc5, 0x6e, 3);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_LegacyBusType device property represents the legacy bus number of a device instance.</para>
@@ -2064,8 +2064,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-legacybustype
-		[CorrespondingType(typeof(INTERFACE_TYPE))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_LegacyBusType = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 22);
+		[CorrespondingType(typeof(INTERFACE_TYPE), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_LegacyBusType = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 22);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_LocationInfo device property represents the bus-specific physical location of a device instance.</para>
@@ -2111,7 +2111,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-locationinfo
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_LocationInfo = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 15);
+		public static readonly DEVPROPKEY DEVPKEY_Device_LocationInfo = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 15);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_LocationPaths device property represents the location of a device instance in the device tree.</para>
@@ -2152,8 +2152,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-locationpaths
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_LocationPaths = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 37);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_LocationPaths = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 37);
 
 		/// <summary>
 		/// <para>
@@ -2202,7 +2202,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-lowerfilters
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_LowerFilters = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 20);
+		public static readonly DEVPROPKEY DEVPKEY_Device_LowerFilters = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 20);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DEVICE_Manufacturer device property represents the name of the manufacturer of a device instance.</para>
@@ -2247,12 +2247,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-manufacturer
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Manufacturer = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 13);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Manufacturer = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 13);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ManufacturerAttributes = new DEVPROPKEY(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 4);
+		public static readonly DEVPROPKEY DEVPKEY_Device_ManufacturerAttributes = new(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 4);
 
 		/// <summary>
 		/// <para>
@@ -2300,12 +2300,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-matchingdeviceid
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_MatchingDeviceId = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 8);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_MatchingDeviceId = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 8);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Model = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 39);
+		public static readonly DEVPROPKEY DEVPKEY_Device_Model = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 39);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_ModelId device property matches a device to a device metadata package.</para>
@@ -2346,7 +2346,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-modelid
 		[CorrespondingType(typeof(Guid))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ModelId = new DEVPROPKEY(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 2);
+		public static readonly DEVPROPKEY DEVPKEY_Device_ModelId = new(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 2);
 
 		/// <summary>
 		/// <para>
@@ -2389,15 +2389,15 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-noconnectsound
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_NoConnectSound = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 17);
+		public static readonly DEVPROPKEY DEVPKEY_Device_NoConnectSound = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 17);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Numa_Node = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 3);
+		public static readonly DEVPROPKEY DEVPKEY_Device_Numa_Node = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 3);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Numa_Proximity_Domain = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 1);
+		public static readonly DEVPROPKEY DEVPKEY_Device_Numa_Proximity_Domain = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 1);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_Parent device property represents the device instance identifier of the parent for a device instance.</para>
@@ -2432,8 +2432,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-parent
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Parent = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 8);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Parent = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 8);
 
 		/// <summary>
 		/// <para>
@@ -2480,8 +2480,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-pdoname
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_PDOName = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 16);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_PDOName = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 16);
 
 		/// <summary>
 		/// <para>
@@ -2523,12 +2523,12 @@ namespace Vanara.PInvoke
 		/// <para>You can call <c>SetupDiGetDeviceProperty</c> to retrieve the value of DEVPKEY_Device_PhysicalDeviceLocation.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-physicaldevicelocation
-		[CorrespondingType(typeof(byte[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_PhysicalDeviceLocation = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 9);
+		[CorrespondingType(typeof(byte[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_PhysicalDeviceLocation = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 9);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_PostInstallInProgress = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 13);
+		public static readonly DEVPROPKEY DEVPKEY_Device_PostInstallInProgress = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 13);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_PowerData device property represents power information about a device instance.</para>
@@ -2572,8 +2572,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-powerdata
-		[CorrespondingType(typeof(CM_POWER_DATA))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_PowerData = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 32);
+		[CorrespondingType(typeof(CM_POWER_DATA), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_PowerData = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 32);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_PowerRelations device property represents the <c>power relations</c> for a device instance.</para>
@@ -2608,12 +2608,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-powerrelations
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_PowerRelations = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 6);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_PowerRelations = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 6);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_PresenceNotForDevice = new DEVPROPKEY(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 5);
+		public static readonly DEVPROPKEY DEVPKEY_Device_PresenceNotForDevice = new(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 5);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_ProblemCode device property represents the problem code for a device instance.</para>
@@ -2654,8 +2654,8 @@ namespace Vanara.PInvoke
 		/// <para>For additional information that may help with the problem code, see <c>DEVPKEY_Device_ProblemStatus</c>.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-problemcode
-		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ProblemCode = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 3);
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_ProblemCode = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 3);
 
 		/// <summary>
 		/// <para>
@@ -2694,8 +2694,8 @@ namespace Vanara.PInvoke
 		/// <para>You can call <c>SetupDiGetDeviceProperty</c> to retrieve the value of DEVPKEY_Device_ProblemStatus.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-problemstatus
-		[CorrespondingType(typeof(NTStatus))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ProblemStatus = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 12);
+		[CorrespondingType(typeof(NTStatus), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_ProblemStatus = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 12);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_RemovalPolicy device property represents the current removal policy for a device instance.</para>
@@ -2739,8 +2739,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-removalpolicy
-		[CorrespondingType(typeof(CM_REMOVAL_POLICY))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_RemovalPolicy = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 33);
+		[CorrespondingType(typeof(CM_REMOVAL_POLICY), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_RemovalPolicy = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 33);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_RemovalPolicyDefault device property represents the default removal policy for a device instance.</para>
@@ -2784,8 +2784,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-removalpolicydefault
-		[CorrespondingType(typeof(CM_REMOVAL_POLICY))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_RemovalPolicyDefault = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 34);
+		[CorrespondingType(typeof(CM_REMOVAL_POLICY), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_RemovalPolicyDefault = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 34);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_RemovalPolicyOverride device property represents the removal policy override for a device instance.</para>
@@ -2831,7 +2831,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-removalpolicyoverride
 		[CorrespondingType(typeof(CM_REMOVAL_POLICY))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_RemovalPolicyOverride = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 35);
+		public static readonly DEVPROPKEY DEVPKEY_Device_RemovalPolicyOverride = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 35);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_RemovalRelations device property represents the <c>removal relations</c> for a device instance.</para>
@@ -2866,8 +2866,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-removalrelations
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_RemovalRelations = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 5);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_RemovalRelations = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 5);
 
 		/// <summary>
 		/// <para>
@@ -2907,12 +2907,12 @@ namespace Vanara.PInvoke
 		/// <para>Windows Server 2003, Windows XP, and Windows 2000 do not support this property.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-reported
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Reported = new DEVPROPKEY(0x80497100, 0x8c73, 0x48b9, 0xaa, 0xd9, 0xce, 0x38, 0x7e, 0x19, 0xc5, 0x6e, 2);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Reported = new(0x80497100, 0x8c73, 0x48b9, 0xaa, 0xd9, 0xce, 0x38, 0x7e, 0x19, 0xc5, 0x6e, 2);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ReportedDeviceIdsHash = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 8);
+		public static readonly DEVPROPKEY DEVPKEY_Device_ReportedDeviceIdsHash = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 8);
 
 		/// <summary>
 		/// <para>
@@ -2960,8 +2960,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-resourcepickerexceptions
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ResourcePickerExceptions = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 13);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_ResourcePickerExceptions = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 13);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_ResourcePickerTags device property represents resource picker tags for a device instance.</para>
@@ -3006,8 +3006,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-resourcepickertags
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ResourcePickerTags = new DEVPROPKEY(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 12);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_ResourcePickerTags = new(0xa8b865dd, 0x2e3d, 0x4094, 0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6, 12);
 
 		/// <summary>
 		/// <para>
@@ -3092,8 +3092,8 @@ namespace Vanara.PInvoke
 		/// <para>You can call <c>SetupDiGetDeviceProperty</c> to retrieve the value of DEVPKEY_Device_SafeRemovalRequired.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-saferemovalrequired
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_SafeRemovalRequired = new DEVPROPKEY(0xafd97640, 0x86a3, 0x4210, 0xb6, 0x7c, 0x28, 0x9c, 0x41, 0xaa, 0xbe, 0x55, 2);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_SafeRemovalRequired = new(0xafd97640, 0x86a3, 0x4210, 0xb6, 0x7c, 0x28, 0x9c, 0x41, 0xaa, 0xbe, 0x55, 2);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_SafeRemovalRequiredOverride device property represents the safe removal override for the device instance.</para>
@@ -3162,7 +3162,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-saferemovalrequiredoverride
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_SafeRemovalRequiredOverride = new DEVPROPKEY(0xafd97640, 0x86a3, 0x4210, 0xb6, 0x7c, 0x28, 0x9c, 0x41, 0xaa, 0xbe, 0x55, 3);
+		public static readonly DEVPROPKEY DEVPKEY_Device_SafeRemovalRequiredOverride = new(0xafd97640, 0x86a3, 0x4210, 0xb6, 0x7c, 0x28, 0x9c, 0x41, 0xaa, 0xbe, 0x55, 3);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_Security device property represents a security descriptor structure for a device instance.</para>
@@ -3211,7 +3211,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-security
 		[CorrespondingType(typeof(byte[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Security = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 25);
+		public static readonly DEVPROPKEY DEVPKEY_Device_Security = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 25);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_SecuritySDS device property represents a security descriptor string for a device instance.</para>
@@ -3256,7 +3256,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-securitysds
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_SecuritySDS = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 26);
+		public static readonly DEVPROPKEY DEVPKEY_Device_SecuritySDS = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 26);
 
 		/// <summary>
 		/// <para>The DEVPKEY_Device_Service device property represents the name of the service that is installed for a device instance.</para>
@@ -3301,8 +3301,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-service
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Service = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 6);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Service = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 6);
 
 		/// <summary>
 		/// <para>
@@ -3370,11 +3370,11 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-sessionid
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_SessionId = new DEVPROPKEY(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 6);
+		public static readonly DEVPROPKEY DEVPKEY_Device_SessionId = new(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 6);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_ShowInUninstallUI = new DEVPROPKEY(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 8);
+		public static readonly DEVPROPKEY DEVPKEY_Device_ShowInUninstallUI = new(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 8);
 
 		/// <summary>
 		/// <para>
@@ -3412,24 +3412,24 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-siblings
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Siblings = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 10);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_Siblings = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 10);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(int))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_SignalStrength = new DEVPROPKEY(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 6);
+		public static readonly DEVPROPKEY DEVPKEY_Device_SignalStrength = new(0x80d81ea6, 0x7473, 0x4b0c, 0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b, 6);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_SoftRestartSupported = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 22);
+		public static readonly DEVPROPKEY DEVPKEY_Device_SoftRestartSupported = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 22);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_Stack = new DEVPROPKEY(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 14);
+		public static readonly DEVPROPKEY DEVPKEY_Device_Stack = new(0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 14);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_TransportRelations = new DEVPROPKEY(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 11);
+		public static readonly DEVPROPKEY DEVPKEY_Device_TransportRelations = new(0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 11);
 
 		/// <summary>
 		/// <para>
@@ -3478,8 +3478,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-uinumber
-		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_UINumber = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 18);
+		[CorrespondingType(typeof(uint), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_Device_UINumber = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 18);
 
 		/// <summary>
 		/// <para>
@@ -3527,7 +3527,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-uinumberdescformat
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_UINumberDescFormat = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 31);
+		public static readonly DEVPROPKEY DEVPKEY_Device_UINumberDescFormat = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 31);
 
 		/// <summary>
 		/// <para>
@@ -3576,7 +3576,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-device-upperfilters
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_Device_UpperFilters = new DEVPROPKEY(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 19);
+		public static readonly DEVPROPKEY DEVPKEY_Device_UpperFilters = new(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 19);
 
 		/// <summary>
 		/// <para>
@@ -3625,8 +3625,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-characteristics
-		[CorrespondingType(typeof(CM_FILE))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Characteristics = new DEVPROPKEY(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 29);
+		[CorrespondingType(typeof(CM_FILE), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Characteristics = new(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 29);
 
 		/// <summary>
 		/// <para>
@@ -3679,7 +3679,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-classcoinstallers
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_ClassCoInstallers = new DEVPROPKEY(0x713d1703, 0xa2e2, 0x49f5, 0x92, 0x14, 0x56, 0x47, 0x2e, 0xf3, 0xda, 0x5c, 2);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_ClassCoInstallers = new(0x713d1703, 0xa2e2, 0x49f5, 0x92, 0x14, 0x56, 0x47, 0x2e, 0xf3, 0xda, 0x5c, 2);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_ClassInstaller device property represents the class installer for a device setup class.</para>
@@ -3732,8 +3732,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-classinstaller
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_ClassInstaller = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 5);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_ClassInstaller = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 5);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_ClassName device property represents the class name of a device setup class.</para>
@@ -3773,8 +3773,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-classname
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_ClassName = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 3);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_ClassName = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 3);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_DefaultService device property represents the name of the default service for a device setup class.</para>
@@ -3823,8 +3823,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-defaultservice
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_DefaultService = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 11);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_DefaultService = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 11);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_DevType device property represents the default device type for a device setup class.</para>
@@ -3874,8 +3874,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-devtype
-		[CorrespondingType(typeof(FILE_DEVICE))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_DevType = new DEVPROPKEY(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 27);
+		[CorrespondingType(typeof(FILE_DEVICE), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_DevType = new(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 27);
 
 		/// <summary>
 		/// <para>
@@ -3943,7 +3943,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-dhprebalanceoptout
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_DHPRebalanceOptOut = new DEVPROPKEY(0xd14d3ef3, 0x66cf, 0x4ba2, 0x9d, 0x38, 0x0d, 0xdb, 0x37, 0xab, 0x47, 0x01, 2);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_DHPRebalanceOptOut = new(0xd14d3ef3, 0x66cf, 0x4ba2, 0x9d, 0x38, 0x0d, 0xdb, 0x37, 0xab, 0x47, 0x01, 2);
 
 		/// <summary>
 		/// <para>
@@ -3992,8 +3992,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-exclusive
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Exclusive = new DEVPROPKEY(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 28);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Exclusive = new(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 28);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_Icon device property represents the icon for a device setup class.</para>
@@ -4040,8 +4040,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-icon
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Icon = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 4);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Icon = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 4);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_IconPath device property represents an icon list for a device setup class.</para>
@@ -4088,8 +4088,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-iconpath
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_IconPath = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 12);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_IconPath = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 12);
 
 		/// <summary>
 		/// <para>
@@ -4145,8 +4145,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-lowerfilters
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_LowerFilters = new DEVPROPKEY(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 20);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_LowerFilters = new(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 20);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_Name device property represents the friendly name of a device setup class.</para>
@@ -4187,8 +4187,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-name
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Name = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 2);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Name = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 2);
 
 		/// <summary>
 		/// <para>
@@ -4240,8 +4240,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-nodisplayclass
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_NoDisplayClass = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 8);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_NoDisplayClass = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 8);
 
 		/// <summary>
 		/// <para>
@@ -4294,8 +4294,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-noinstallclass
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_NoInstallClass = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 7);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_NoInstallClass = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 7);
 
 		/// <summary>
 		/// <para>
@@ -4347,8 +4347,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-nouseclass
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_NoUseClass = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 10);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_NoUseClass = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 10);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_PropPageProvider device property represents the property page provider for a device setup class.</para>
@@ -4402,8 +4402,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-proppageprovider
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_PropPageProvider = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 6);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_PropPageProvider = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 6);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_Security device property represents a security descriptor structure for a device setup class.</para>
@@ -4452,7 +4452,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-security
 		[CorrespondingType(typeof(byte[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Security = new DEVPROPKEY(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 25);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_Security = new(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 25);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceClass_SecuritySDS device property represents a security descriptor string for a device setup class.</para>
@@ -4501,7 +4501,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-securitysds
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_SecuritySDS = new DEVPROPKEY(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 26);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_SecuritySDS = new(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 26);
 
 		/// <summary>
 		/// <para>
@@ -4554,8 +4554,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-silentinstall
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_SilentInstall = new DEVPROPKEY(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 9);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_SilentInstall = new(0x259abffc, 0x50a7, 0x47ce, 0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66, 9);
 
 		/// <summary>
 		/// <para>
@@ -4611,209 +4611,209 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceclass-upperfilters
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_UpperFilters = new DEVPROPKEY(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 19);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceClass_UpperFilters = new(0x4321918b, 0xf69e, 0x470d, 0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b, 19);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Address = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 51);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Address = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 51);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 101);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 101);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_AssociationArray = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 80);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_AssociationArray = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 80);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(Guid))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_BaselineExperienceId = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 78);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_BaselineExperienceId = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 78);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Category = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 90);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Category = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 90);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Category_Desc_Plural = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 92);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Category_Desc_Plural = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 92);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Category_Desc_Singular = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 91);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Category_Desc_Singular = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 91);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Category_Icon = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 93);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Category_Icon = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 93);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_CategoryGroup_Desc = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 94);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_CategoryGroup_Desc = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 94);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_CategoryGroup_Icon = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 95);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_CategoryGroup_Icon = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 95);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_ConfigFlags = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 105);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_ConfigFlags = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 105);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_CustomPrivilegedPackageFamilyNames = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 107);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_CustomPrivilegedPackageFamilyNames = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 107);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_DeviceDescription1 = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 81);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_DeviceDescription1 = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 81);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_DeviceDescription2 = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 82);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_DeviceDescription2 = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 82);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_DeviceFunctionSubRank = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 100);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_DeviceFunctionSubRank = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 100);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_DiscoveryMethod = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 52);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_DiscoveryMethod = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 52);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(Guid))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_ExperienceId = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 89);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_ExperienceId = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 89);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_FriendlyName = new DEVPROPKEY(0x656A3BB3, 0xECC0, 0x43FD, 0x84, 0x77, 0x4A, 0xE0, 0x40, 0x4A, 0x96, 0xCD, 12288);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_FriendlyName = new(0x656A3BB3, 0xECC0, 0x43FD, 0x84, 0x77, 0x4A, 0xE0, 0x40, 0x4A, 0x96, 0xCD, 12288);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_HasProblem = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 83);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_HasProblem = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 83);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Icon = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 57);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Icon = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 57);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_InstallInProgress = new DEVPROPKEY(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 9);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_InstallInProgress = new(0x83da6326, 0x97a6, 0x4088, 0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29, 9);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsAuthenticated = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 54);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsAuthenticated = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 54);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsConnected = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 55);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsConnected = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 55);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsDefaultDevice = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 86);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsDefaultDevice = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 86);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsDeviceUniquelyIdentifiable = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 79);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsDeviceUniquelyIdentifiable = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 79);
 
 		// DE
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsEncrypted = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 53);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsEncrypted = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 53);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsLocalMachine = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 70);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsLocalMachine = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 70);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsMetadataSearchInProgress = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 72);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsMetadataSearchInProgress = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 72);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsNetworkDevice = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 85);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsNetworkDevice = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 85);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsNotInterestingForDisplay = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 74);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsNotInterestingForDisplay = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 74);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsPaired = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 56);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsPaired = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 56);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsRebootRequired = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 108);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsRebootRequired = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 108);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsSharedDevice = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 84);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsSharedDevice = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 84);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsShowInDisconnectedState = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 68);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_IsShowInDisconnectedState = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 68);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(FILETIME))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Last_Connected = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 67);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Last_Connected = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 67);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(FILETIME))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Last_Seen = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 66);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Last_Seen = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 66);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_LaunchDeviceStageFromExplorer = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 77);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_LaunchDeviceStageFromExplorer = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 77);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_LaunchDeviceStageOnDeviceConnect = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 76);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_LaunchDeviceStageOnDeviceConnect = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 76);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Manufacturer = new DEVPROPKEY(0x656A3BB3, 0xECC0, 0x43FD, 0x84, 0x77, 0x4A, 0xE0, 0x40, 0x4A, 0x96, 0xCD, 8192);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Manufacturer = new(0x656A3BB3, 0xECC0, 0x43FD, 0x84, 0x77, 0x4A, 0xE0, 0x40, 0x4A, 0x96, 0xCD, 8192);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_MetadataCabinet = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 87);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_MetadataCabinet = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 87);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(byte[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_MetadataChecksum = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 73);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_MetadataChecksum = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 73);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_MetadataPath = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 71);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_MetadataPath = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 71);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_ModelName = new DEVPROPKEY(0x656A3BB3, 0xECC0, 0x43FD, 0x84, 0x77, 0x4A, 0xE0, 0x40, 0x4A, 0x96, 0xCD, 8194);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_ModelName = new(0x656A3BB3, 0xECC0, 0x43FD, 0x84, 0x77, 0x4A, 0xE0, 0x40, 0x4A, 0x96, 0xCD, 8194);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_ModelNumber = new DEVPROPKEY(0x656A3BB3, 0xECC0, 0x43FD, 0x84, 0x77, 0x4A, 0xE0, 0x40, 0x4A, 0x96, 0xCD, 8195);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_ModelNumber = new(0x656A3BB3, 0xECC0, 0x43FD, 0x84, 0x77, 0x4A, 0xE0, 0x40, 0x4A, 0x96, 0xCD, 8195);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_PrimaryCategory = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 97);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_PrimaryCategory = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 97);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_PrivilegedPackageFamilyNames = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 106);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_PrivilegedPackageFamilyNames = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 106);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_RequiresPairingElevation = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 88);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_RequiresPairingElevation = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 88);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_RequiresUninstallElevation = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 99);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_RequiresUninstallElevation = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 99);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_UnpairUninstall = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 98);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_UnpairUninstall = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 98);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Version = new DEVPROPKEY(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 65);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceContainer_Version = new(0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 65);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(bool))]
@@ -4876,7 +4876,7 @@ namespace Vanara.PInvoke
 		/// <para>You can access the DEVPKEY_DeviceDisplay_Category property by calling <c>SetupDiGetDeviceProperty</c>.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-devicedisplay-category
-		[CorrespondingType(typeof(string[]))]
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
 		public static readonly DEVPROPKEY DEVPKEY_DeviceDisplay_Category = DEVPKEY_DeviceContainer_Category;
 
 		/// <summary></summary>
@@ -4944,8 +4944,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceinterface-classguid
-		[CorrespondingType(typeof(Guid))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_ClassGuid = new DEVPROPKEY(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 4);
+		[CorrespondingType(typeof(Guid), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_ClassGuid = new(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 4);
 
 		/// <summary>
 		/// <para>
@@ -4987,8 +4987,8 @@ namespace Vanara.PInvoke
 		/// <para>For more information about device interfaces, see Device Interface Classes and the <c>INF AddInterface Directive</c>.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceinterface-enabled
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_Enabled = new DEVPROPKEY(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 3);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_Enabled = new(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 3);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DeviceInterface_FriendlyName device property represents the friendly name of a device interface.</para>
@@ -5043,11 +5043,11 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceinterface-friendlyname
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_FriendlyName = new DEVPROPKEY(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 2);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_FriendlyName = new(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 2);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_ReferenceString = new DEVPROPKEY(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 5);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_ReferenceString = new(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 5);
 
 		/// <summary>
 		/// <para>
@@ -5079,16 +5079,16 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <remarks>You can call <c>SetupDiGetDeviceInterfaceProperty</c> to retrieve the value of DEVPKEY_DeviceInterface_Restricted.</remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceinterface-restricted
-		[CorrespondingType(typeof(bool))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_Restricted = new DEVPROPKEY(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 6);
+		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_Restricted = new(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 6);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_SchematicName = new DEVPROPKEY(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 9);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_SchematicName = new(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 9);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_UnrestrictedAppCapabilities = new DEVPROPKEY(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 8);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceInterface_UnrestrictedAppCapabilities = new(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22, 8);
 
 		/// <summary>
 		/// <para>
@@ -5134,15 +5134,15 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-deviceinterface-defaultinterface
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceInterfaceClass_DefaultInterface = new DEVPROPKEY(0x14c83a99, 0x0b3f, 0x44b7, 0xbe, 0x4c, 0xa1, 0x78, 0xd3, 0x99, 0x05, 0x64, 2);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceInterfaceClass_DefaultInterface = new(0x14c83a99, 0x0b3f, 0x44b7, 0xbe, 0x4c, 0xa1, 0x78, 0xd3, 0x99, 0x05, 0x64, 2);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DeviceInterfaceClass_Name = new DEVPROPKEY(0x14c83a99, 0x0b3f, 0x44b7, 0xbe, 0x4c, 0xa1, 0x78, 0xd3, 0x99, 0x05, 0x64, 3);
+		public static readonly DEVPROPKEY DEVPKEY_DeviceInterfaceClass_Name = new(0x14c83a99, 0x0b3f, 0x44b7, 0xbe, 0x4c, 0xa1, 0x78, 0xd3, 0x99, 0x05, 0x64, 3);
 
 		/// <summary></summary>
 		[CorrespondingType(typeof(uint))]
-		public static readonly DEVPROPKEY DEVPKEY_DevQuery_ObjectType = new DEVPROPKEY(0x13673f42, 0xa3d6, 0x49f6, 0xb4, 0xda, 0xae, 0x46, 0xe0, 0xc5, 0x23, 0x7c, 2);
+		public static readonly DEVPROPKEY DEVPKEY_DevQuery_ObjectType = new(0x13673f42, 0xa3d6, 0x49f6, 0xb4, 0xda, 0xae, 0x46, 0xe0, 0xc5, 0x23, 0x7c, 2);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DrvPkg_BrandingIcon device property represents a list of icons that associate a device instance with a vendor.</para>
@@ -5175,8 +5175,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-drvpkg-brandingicon
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_BrandingIcon = new DEVPROPKEY(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 7);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_BrandingIcon = new(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 7);
 
 		/// <summary>
 		/// <para>
@@ -5228,8 +5228,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-drvpkg-detaileddescription
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_DetailedDescription = new DEVPROPKEY(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 4);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_DetailedDescription = new(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 4);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DrvPkg_DocumentationLink device property represents a URL to the documentation for a device instance.</para>
@@ -5328,8 +5328,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-drvpkg-documentationlink
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_DocumentationLink = new DEVPROPKEY(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 5);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_DocumentationLink = new(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 5);
 
 		/// <summary>
 		/// <para>
@@ -5429,8 +5429,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-drvpkg-icon
-		[CorrespondingType(typeof(string[]))]
-		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_Icon = new DEVPROPKEY(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 6);
+		[CorrespondingType(typeof(string[]), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_Icon = new(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 6);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DrvPkg_Model device driver package property represents the model name for a device instance.</para>
@@ -5467,8 +5467,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-drvpkg-model
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_Model = new DEVPROPKEY(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 2);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_Model = new(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 2);
 
 		/// <summary>
 		/// <para>The DEVPKEY_DrvPkg_VendorWebSite device property represents a vendor URL for a device instance.</para>
@@ -5518,8 +5518,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-drvpkg-vendorwebsite
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_VendorWebSite = new DEVPROPKEY(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 3);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_DrvPkg_VendorWebSite = new(0xcf73bb51, 0x3abf, 0x44a2, 0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32, 3);
 
 		/// <summary>
 		/// <para>The DEVPKEY_NAME device property represents the name of a device setup class.</para>
@@ -5558,7 +5558,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/install/devpkey-name--device-setup-class-
-		[CorrespondingType(typeof(string))]
-		public static readonly DEVPROPKEY DEVPKEY_NAME = new DEVPROPKEY(0xb725f130, 0x47ef, 0x101a, 0xa5, 0xf1, 0x02, 0x60, 0x8c, 0x9e, 0xeb, 0xac, 10);
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
+		public static readonly DEVPROPKEY DEVPKEY_NAME = new(0xb725f130, 0x47ef, 0x101a, 0xa5, 0xf1, 0x02, 0x60, 0x8c, 0x9e, 0xeb, 0xac, 10);
 	}
 }
