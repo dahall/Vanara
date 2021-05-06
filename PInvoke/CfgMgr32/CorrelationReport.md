@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows CfgMgr32.d
 
 - Includes methods from cfgmgr32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.CfgMgr32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.CfgMgr32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.CfgMgr32)  
-### Methods - 92% API coverage (115 of 125 functions)  
+### Methods - 100% API coverage (124 of 124 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CM_Add_Empty_Log_Conf](https://www.google.com/search?num=5&q=CM_Add_Empty_Log_Conf+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_Add_Empty_Log_Conf](https://github.com/dahall/Vanara/search?l=C%23&q=CM_Add_Empty_Log_Conf)  
@@ -55,7 +55,6 @@ Native Method | Header | Managed Method
 [CM_Get_Device_Interface_Property_Keys_ExW](https://www.google.com/search?num=5&q=CM_Get_Device_Interface_Property_Keys_ExW+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_Get_Device_Interface_Property_Keys_Ex](https://github.com/dahall/Vanara/search?l=C%23&q=CM_Get_Device_Interface_Property_Keys_Ex)  
 [CM_Get_Device_Interface_Property_KeysW](https://www.google.com/search?num=5&q=CM_Get_Device_Interface_Property_KeysW+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_Get_Device_Interface_Property_Keys](https://github.com/dahall/Vanara/search?l=C%23&q=CM_Get_Device_Interface_Property_Keys)  
 [CM_Get_Device_Interface_PropertyW](https://www.google.com/search?num=5&q=CM_Get_Device_Interface_PropertyW+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_Get_Device_Interface_Property](https://github.com/dahall/Vanara/search?l=C%23&q=CM_Get_Device_Interface_Property)  
-[CM_Get_DevNode_Custom_Property_Ex](https://www.google.com/search?num=5&q=CM_Get_DevNode_Custom_Property_ExA+site%3Adocs.microsoft.com) |  |   
 [CM_Get_DevNode_Property_ExW](https://www.google.com/search?num=5&q=CM_Get_DevNode_Property_ExW+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_Get_DevNode_Property_Ex](https://github.com/dahall/Vanara/search?l=C%23&q=CM_Get_DevNode_Property_Ex)  
 [CM_Get_DevNode_Property_Keys](https://www.google.com/search?num=5&q=CM_Get_DevNode_Property_Keys+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_Get_DevNode_Property_Keys](https://github.com/dahall/Vanara/search?l=C%23&q=CM_Get_DevNode_Property_Keys)  
 [CM_Get_DevNode_Property_Keys_Ex](https://www.google.com/search?num=5&q=CM_Get_DevNode_Property_Keys_Ex+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_Get_DevNode_Property_Keys_Ex](https://github.com/dahall/Vanara/search?l=C%23&q=CM_Get_DevNode_Property_Keys_Ex)  
@@ -122,15 +121,15 @@ Native Method | Header | Managed Method
 [CM_Uninstall_DevNode](https://www.google.com/search?num=5&q=CM_Uninstall_DevNode+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_Uninstall_DevNode](https://github.com/dahall/Vanara/search?l=C%23&q=CM_Uninstall_DevNode)  
 [CM_Unregister_Notification](https://www.google.com/search?num=5&q=CM_Unregister_Notification+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_Unregister_Notification](https://github.com/dahall/Vanara/search?l=C%23&q=CM_Unregister_Notification)  
 [CM_WaitNoPendingInstallEvents](https://www.google.com/search?num=5&q=CM_WaitNoPendingInstallEvents+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.CM_WaitNoPendingInstallEvents](https://github.com/dahall/Vanara/search?l=C%23&q=CM_WaitNoPendingInstallEvents)  
-[SwDeviceClose](https://www.google.com/search?num=5&q=SwDeviceClose+site%3Adocs.microsoft.com) |  |   
-[SwDeviceCreate](https://www.google.com/search?num=5&q=SwDeviceCreate+site%3Adocs.microsoft.com) |  |   
-[SwDeviceGetLifetime](https://www.google.com/search?num=5&q=SwDeviceGetLifetime+site%3Adocs.microsoft.com) |  |   
-[SwDeviceInterfacePropertySet](https://www.google.com/search?num=5&q=SwDeviceInterfacePropertySet+site%3Adocs.microsoft.com) |  |   
-[SwDeviceInterfaceRegister](https://www.google.com/search?num=5&q=SwDeviceInterfaceRegister+site%3Adocs.microsoft.com) |  |   
-[SwDeviceInterfaceSetState](https://www.google.com/search?num=5&q=SwDeviceInterfaceSetState+site%3Adocs.microsoft.com) |  |   
-[SwDevicePropertySet](https://www.google.com/search?num=5&q=SwDevicePropertySet+site%3Adocs.microsoft.com) |  |   
-[SwDeviceSetLifetime](https://www.google.com/search?num=5&q=SwDeviceSetLifetime+site%3Adocs.microsoft.com) |  |   
-[SwMemFree](https://www.google.com/search?num=5&q=SwMemFree+site%3Adocs.microsoft.com) |  |   
+[SwDeviceClose](https://www.google.com/search?num=5&q=SwDeviceClose+site%3Adocs.microsoft.com) | swdevice.h | [Vanara.PInvoke.CfgMgr32.SwDeviceClose](https://github.com/dahall/Vanara/search?l=C%23&q=SwDeviceClose)  
+[SwDeviceCreate](https://www.google.com/search?num=5&q=SwDeviceCreate+site%3Adocs.microsoft.com) | swdevice.h | [Vanara.PInvoke.CfgMgr32.SwDeviceCreate](https://github.com/dahall/Vanara/search?l=C%23&q=SwDeviceCreate)  
+[SwDeviceGetLifetime](https://www.google.com/search?num=5&q=SwDeviceGetLifetime+site%3Adocs.microsoft.com) | swdevice.h | [Vanara.PInvoke.CfgMgr32.SwDeviceGetLifetime](https://github.com/dahall/Vanara/search?l=C%23&q=SwDeviceGetLifetime)  
+[SwDeviceInterfacePropertySet](https://www.google.com/search?num=5&q=SwDeviceInterfacePropertySet+site%3Adocs.microsoft.com) | swdevice.h | [Vanara.PInvoke.CfgMgr32.SwDeviceInterfacePropertySet](https://github.com/dahall/Vanara/search?l=C%23&q=SwDeviceInterfacePropertySet)  
+[SwDeviceInterfaceRegister](https://www.google.com/search?num=5&q=SwDeviceInterfaceRegister+site%3Adocs.microsoft.com) | swdevice.h | [Vanara.PInvoke.CfgMgr32.SwDeviceInterfaceRegister](https://github.com/dahall/Vanara/search?l=C%23&q=SwDeviceInterfaceRegister)  
+[SwDeviceInterfaceSetState](https://www.google.com/search?num=5&q=SwDeviceInterfaceSetState+site%3Adocs.microsoft.com) | swdevice.h | [Vanara.PInvoke.CfgMgr32.SwDeviceInterfaceSetState](https://github.com/dahall/Vanara/search?l=C%23&q=SwDeviceInterfaceSetState)  
+[SwDevicePropertySet](https://www.google.com/search?num=5&q=SwDevicePropertySet+site%3Adocs.microsoft.com) | swdevice.h | [Vanara.PInvoke.CfgMgr32.SwDevicePropertySet](https://github.com/dahall/Vanara/search?l=C%23&q=SwDevicePropertySet)  
+[SwDeviceSetLifetime](https://www.google.com/search?num=5&q=SwDeviceSetLifetime+site%3Adocs.microsoft.com) | swdevice.h | [Vanara.PInvoke.CfgMgr32.SwDeviceSetLifetime](https://github.com/dahall/Vanara/search?l=C%23&q=SwDeviceSetLifetime)  
+[SwMemFree](https://www.google.com/search?num=5&q=SwMemFree+site%3Adocs.microsoft.com) | swdevice.h | [Vanara.PInvoke.CfgMgr32.SwMemFree](https://github.com/dahall/Vanara/search?l=C%23&q=SwMemFree)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -155,6 +154,7 @@ Native Structure | Header | Managed Structure
 [DMA_RESOURCE](https://www.google.com/search?num=5&q=DMA_RESOURCE+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.DMA_RESOURCE](https://github.com/dahall/Vanara/search?l=C%23&q=DMA_RESOURCE)  
 [HCMNOTIFICATION](https://www.google.com/search?num=5&q=HCMNOTIFICATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.HCMNOTIFICATION](https://github.com/dahall/Vanara/search?l=C%23&q=HCMNOTIFICATION)  
 [HMACHINE](https://www.google.com/search?num=5&q=HMACHINE+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.HMACHINE](https://github.com/dahall/Vanara/search?l=C%23&q=HMACHINE)  
+[HSWDEVICE](https://www.google.com/search?num=5&q=HSWDEVICE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.HSWDEVICE](https://github.com/dahall/Vanara/search?l=C%23&q=HSWDEVICE)  
 [IO_DES](https://www.google.com/search?num=5&q=IO_DES+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.IO_DES](https://github.com/dahall/Vanara/search?l=C%23&q=IO_DES)  
 [IO_RANGE](https://www.google.com/search?num=5&q=IO_RANGE+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.IO_RANGE](https://github.com/dahall/Vanara/search?l=C%23&q=IO_RANGE)  
 [IO_RESOURCE](https://www.google.com/search?num=5&q=IO_RESOURCE+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.IO_RESOURCE](https://github.com/dahall/Vanara/search?l=C%23&q=IO_RESOURCE)  
@@ -172,6 +172,7 @@ Native Structure | Header | Managed Structure
 [PCCARD_DES](https://www.google.com/search?num=5&q=PCCARD_DES+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.PCCARD_DES](https://github.com/dahall/Vanara/search?l=C%23&q=PCCARD_DES)  
 [PCCARD_RESOURCE](https://www.google.com/search?num=5&q=PCCARD_RESOURCE+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.PCCARD_RESOURCE](https://github.com/dahall/Vanara/search?l=C%23&q=PCCARD_RESOURCE)  
 [RES_DES](https://www.google.com/search?num=5&q=RES_DES+site%3Adocs.microsoft.com) | cfgmgr32.h | [Vanara.PInvoke.CfgMgr32.RES_DES](https://github.com/dahall/Vanara/search?l=C%23&q=RES_DES)  
+[SW_DEVICE_CREATE_INFO](https://www.google.com/search?num=5&q=SW_DEVICE_CREATE_INFO+site%3Adocs.microsoft.com) | swdevicedef.h | [Vanara.PInvoke.CfgMgr32.SW_DEVICE_CREATE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=SW_DEVICE_CREATE_INFO)  
 [UNION](https://www.google.com/search?num=5&q=UNION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.CM_NOTIFY_EVENT_DATA.UNION](https://github.com/dahall/Vanara/search?l=C%23&q=UNION)  
 [UNION](https://www.google.com/search?num=5&q=UNION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.CM_NOTIFY_FILTER.UNION](https://github.com/dahall/Vanara/search?l=C%23&q=UNION)  
 ### Classes  
@@ -180,5 +181,6 @@ Native Class | Header | Managed Class
 [SafeCONFLICT_LIST](https://www.google.com/search?num=5&q=SafeCONFLICT_LIST+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.SafeCONFLICT_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=SafeCONFLICT_LIST)  
 [SafeHCMNOTIFICATION](https://www.google.com/search?num=5&q=SafeHCMNOTIFICATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.SafeHCMNOTIFICATION](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHCMNOTIFICATION)  
 [SafeHMACHINE](https://www.google.com/search?num=5&q=SafeHMACHINE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.SafeHMACHINE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHMACHINE)  
+[SafeHSWDEVICE](https://www.google.com/search?num=5&q=SafeHSWDEVICE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.SafeHSWDEVICE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHSWDEVICE)  
 [SafeLOG_CONF](https://www.google.com/search?num=5&q=SafeLOG_CONF+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.SafeLOG_CONF](https://github.com/dahall/Vanara/search?l=C%23&q=SafeLOG_CONF)  
 [SafeRES_DES](https://www.google.com/search?num=5&q=SafeRES_DES+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CfgMgr32.SafeRES_DES](https://github.com/dahall/Vanara/search?l=C%23&q=SafeRES_DES)  
