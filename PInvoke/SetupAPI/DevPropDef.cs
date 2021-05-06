@@ -839,16 +839,32 @@ namespace Vanara.PInvoke
 
 			/// <summary>Performs a lookup of this <see cref="DEVPROPKEY"/> against defined values in this assembly to find a name.</summary>
 			/// <returns>The name, if found, otherwise <see langword="null"/>.</returns>
-			public string LookupName()
+			public string LookupName() => Lookup()?.Name;
+
+			/// <inheritdoc/>
+			public override string ToString() => LookupName() ?? $"{fmtid}:{pid}";
+
+			/// <summary>
+			/// Tries to determine if the property is read-only by performing a reverse lookup on known keys and, if found, reading its attributes.
+			/// </summary>
+			/// <param name="readOnly">if set to <see langword="true"/>, the property is known to be read-only.</param>
+			/// <returns>If <see langword="true"/>, the known key was found and the <paramref name="readOnly"/> output is valid.</returns>
+			public bool TryGetReadOnly(out bool readOnly)
+			{
+				readOnly = false;
+				var fi = Lookup();
+				if (fi is null) return false;
+				readOnly = !fi.GetCustomAttributes(typeof(CorrespondingTypeAttribute), false).Cast<CorrespondingTypeAttribute>().Any(a => a.Action.IsFlagSet(CorrespondingAction.Set));
+				return true;
+			}
+
+			private System.Reflection.FieldInfo Lookup()
 			{
 				var dpkType = GetType();
 				var lthis = this;
 				return dpkType.DeclaringType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).
-					Where(fi => fi.FieldType == dpkType && lthis.Equals(fi.GetValue(null))).Select(fi => fi.Name).FirstOrDefault();
+					Where(fi => fi.FieldType == dpkType && lthis.Equals(fi.GetValue(null))).FirstOrDefault();
 			}
-
-			/// <inheritdoc/>
-			public override string ToString() => LookupName() ?? $"{fmtid}:{pid}";
 		}
 	}
 }
