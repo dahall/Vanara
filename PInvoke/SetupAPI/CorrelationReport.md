@@ -216,6 +216,8 @@ Native Method | Header | Managed Method
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [CABINET_INFO](https://www.google.com/search?num=5&q=CABINET_INFO+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.CABINET_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CABINET_INFO)  
+[DEVPROPCOMPKEY](https://www.google.com/search?num=5&q=DEVPROPCOMPKEY+site%3Adocs.microsoft.com) | Devpropdef.h | [Vanara.PInvoke.SetupAPI.DEVPROPCOMPKEY](https://github.com/dahall/Vanara/search?l=C%23&q=DEVPROPCOMPKEY)  
+[DEVPROPERTY](https://www.google.com/search?num=5&q=DEVPROPERTY+site%3Adocs.microsoft.com) | Devpropdef.h | [Vanara.PInvoke.SetupAPI.DEVPROPERTY](https://github.com/dahall/Vanara/search?l=C%23&q=DEVPROPERTY)  
 [DEVPROPKEY](https://www.google.com/search?num=5&q=DEVPROPKEY+site%3Adocs.microsoft.com) | Devpropdef.h | [Vanara.PInvoke.SetupAPI.DEVPROPKEY](https://github.com/dahall/Vanara/search?l=C%23&q=DEVPROPKEY)  
 [FILE_IN_CABINET_INFO](https://www.google.com/search?num=5&q=FILE_IN_CABINET_INFO+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.FILE_IN_CABINET_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_IN_CABINET_INFO)  
 [FILEPATHS](https://www.google.com/search?num=5&q=FILEPATHS+site%3Adocs.microsoft.com) | setupapi.h | [Vanara.PInvoke.SetupAPI.FILEPATHS](https://github.com/dahall/Vanara/search?l=C%23&q=FILEPATHS)  
