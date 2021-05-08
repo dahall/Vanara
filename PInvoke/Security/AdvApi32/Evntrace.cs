@@ -8472,7 +8472,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="TRACEHANDLE"/> that is disposed using <see cref="CloseTrace"/>.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public class SafeTRACEHANDLE : MarshalByRefObject, IDisposable
+		public class SafeTRACEHANDLE : IDisposable
 		{
 			private readonly ulong handle;
 

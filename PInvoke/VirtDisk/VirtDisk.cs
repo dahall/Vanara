@@ -2102,8 +2102,7 @@ namespace Vanara.PInvoke
 
 				/// <summary>The file path for the default Snapshot of the Vhd Set.</summary>
 				[FieldOffset(0)]
-				[MarshalAs(UnmanagedType.LPWStr)]
-				public string DefaultFilePath;
+				public StrPtrUni DefaultFilePath;
 			}
 
 			/// <summary>A structure with the following members.</summary>
@@ -2115,8 +2114,7 @@ namespace Vanara.PInvoke
 				public Guid SnapshotId;
 
 				/// <summary>The new file path for the Snapshot indicated by the SnapshotId field.</summary>
-				[MarshalAs(UnmanagedType.LPWStr)]
-				public string SnapshotFilePath;
+				public StrPtrUni SnapshotFilePath;
 			}
 		}
 
@@ -2257,7 +2255,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Path to the parent backing store.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
-			[FieldOffset(8)] public string ParentFilePath;
+			[FieldOffset(8)] public StrPtrUni ParentFilePath;
 
 			/// <summary>Unique identifier of the VHD.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
