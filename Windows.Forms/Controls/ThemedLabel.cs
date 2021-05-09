@@ -204,7 +204,7 @@ namespace Vanara.Windows.Forms
 					{
 						if (rtl == RightToLeft.Yes) tff |= TextFormatFlags.RightToLeft;
 
-						if (GlowingText && Environment.OSVersion.Version.Major == 10 && !SystemInformation.HighContrast)
+						if (GlowingText && Environment.OSVersion.Version.Major == 10 && !SystemInformation.HighContrast && !DesignMode)
                         {
 							Color textColor = SystemColors.ControlText;
 
