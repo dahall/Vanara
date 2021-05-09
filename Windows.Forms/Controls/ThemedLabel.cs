@@ -159,15 +159,15 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <inheritdoc/>
-        protected override void OnSystemColorsChanged(EventArgs e)
-        {
-            base.OnSystemColorsChanged(e);
+		protected override void OnSystemColorsChanged(EventArgs e)
+		{
+			base.OnSystemColorsChanged(e);
 			Invalidate(); // OnPaint() recalculates colors
-        }
+		}
 
-        /// <summary>Raises the Paint event.</summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
-        protected override void OnPaint(PaintEventArgs e)
+		/// <summary>Raises the Paint event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
+		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
 			if (!Visible) return;
@@ -205,7 +205,7 @@ namespace Vanara.Windows.Forms
 						if (rtl == RightToLeft.Yes) tff |= TextFormatFlags.RightToLeft;
 
 						if (GlowingText && Environment.OSVersion.Version.Major == 10 && !SystemInformation.HighContrast && !DesignMode)
-                        {
+						{
 							Color textColor = SystemColors.ControlText;
 
 							// SystemColors.ActiveCaption always returns an ugly shade of blue. SystemColors.ActiveCaptionText returns black.
@@ -215,7 +215,7 @@ namespace Vanara.Windows.Forms
 							{
 								var prevalenceValue = key.GetValue("ColorPrevalence", null);
 								if (prevalenceValue != null && Convert.ToBoolean(prevalenceValue))
-                                {
+								{
 									// While this API does not return the *exact* shade used in title bars, its value
 									// is pretty close; certainly close enough to be useful for the below test.
 									DwmApi.DwmGetColorizationColor(out uint colorValue, out _).ThrowIfFailed();
@@ -226,7 +226,7 @@ namespace Vanara.Windows.Forms
 									else
 										textColor = Color.White;
 								}
-                                else
+								else
 								{
 									// If we get here, then "Show accent color on title bars" has been disabled in Settings.
 									if (Form.ActiveForm.Equals(FindForm())) textColor = SystemColors.ControlText;
