@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Web.UI.Design.WebControls;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.User32;
@@ -194,7 +196,47 @@ namespace Vanara.Windows.Forms
 					if (theme != null && ThemingSupported)
 					{
 						if (rtl == RightToLeft.Yes) tff |= TextFormatFlags.RightToLeft;
-						if (GlowingText)
+
+						if (GlowingText && Environment.OSVersion.Version.Major == 10 && !SystemInformation.HighContrast)
+                        {
+							Color textColor = SystemColors.ControlText;
+
+							// SystemColors.ActiveCaption always returns an ugly shade of blue. SystemColors.ActiveCaptionText returns black.
+							// We must therefore ask DWM for the title bar color. However, the user has the option to use white title bars,
+							// which we must check for first. (I don't know any public API calls that return this value.)
+							using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\DWM"))
+							{
+								var prevalenceValue = key.GetValue("ColorPrevalence", null);
+								if (prevalenceValue != null && Convert.ToBoolean(prevalenceValue))
+                                {
+									// While this API does not return the *exact* shade used in title bars, its value
+									// is pretty close; certainly close enough to be useful for the below test.
+									DwmApi.DwmGetColorizationColor(out uint colorValue, out _).ThrowIfFailed();
+									Color color = Color.FromArgb((int)colorValue);
+
+									if ((color.R * 0.299 + color.G * 0.587 + color.B * 0.114) > 186)
+										textColor = SystemColors.ControlText;
+									else
+										textColor = Color.White;
+								}
+                                else
+								{
+									// If we get here, then "Show accent color on title bars" has been disabled in Settings.
+									if (Form.ActiveForm.Equals(FindForm())) textColor = SystemColors.ControlText;
+									else textColor = SystemColors.GrayText;
+								}
+							}
+
+							DTTOPTS opts = new DTTOPTS(null)
+							{
+								AntiAliasedAlpha = true,
+								crText = new COLORREF(textColor),
+							};
+
+							e.Graphics.DrawViaDIB(tRect, (hdc, rc) =>
+								theme.DrawText(Graphics.FromHdc(hdc.DangerousGetHandle()), stylePart, styleState, r, Text, tff, opts));
+						}
+						else if (GlowingText)
 							e.Graphics.DrawViaDIB(tRect, (hdc, rc) =>
 								theme.DrawText(Graphics.FromHdc(hdc.DangerousGetHandle()), stylePart, styleState, r, Text, tff, new DTTOPTS(null) { GlowSize = 10, AntiAliasedAlpha = true }));
 						else
