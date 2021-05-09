@@ -158,9 +158,16 @@ namespace Vanara.Windows.Forms
 			return rect;
 		}
 
-		/// <summary>Raises the Paint event.</summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
-		protected override void OnPaint(PaintEventArgs e)
+		/// <inheritdoc/>
+        protected override void OnSystemColorsChanged(EventArgs e)
+        {
+            base.OnSystemColorsChanged(e);
+			Invalidate(); // OnPaint() recalculates colors
+        }
+
+        /// <summary>Raises the Paint event.</summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
+        protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
 			if (!Visible) return;
