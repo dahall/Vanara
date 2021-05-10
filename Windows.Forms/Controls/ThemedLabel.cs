@@ -220,6 +220,8 @@ namespace Vanara.Windows.Forms
 									DwmApi.DwmGetColorizationColor(out uint colorValue, out _).ThrowIfFailed();
 									Color color = Color.FromArgb((int)colorValue);
 
+									// These values were taken from here:
+									// https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color/3943023
 									if ((color.R * 0.299 + color.G * 0.587 + color.B * 0.114) > 186)
 										textColor = SystemColors.ControlText;
 									else
