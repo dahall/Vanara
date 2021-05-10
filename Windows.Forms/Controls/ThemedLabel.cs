@@ -213,7 +213,7 @@ namespace Vanara.Windows.Forms
 							using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\DWM"))
 							{
 								var prevalenceValue = key.GetValue("ColorPrevalence", null);
-								if (prevalenceValue != null && Convert.ToBoolean(prevalenceValue))
+								if (prevalenceValue is int i && Convert.ToBoolean(i))
 								{
 									// While this API does not return the *exact* shade used in title bars, its value
 									// is pretty close; certainly close enough to be useful for the below test.
