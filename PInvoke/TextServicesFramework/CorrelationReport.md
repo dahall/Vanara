@@ -3,58 +3,15 @@ PInvoke API (methods, structures and constants) imported from Windows Text Servi
 
 - Includes methods from msctf.dll, input.dll, msimtf.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.TextServicesFramework?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.TextServicesFramework?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.TextServicesFramework)  
-### Methods - 26% API coverage (26 of 98 functions)  
+### Methods - 100% API coverage (26 of 26 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
-[ActivateInputProfile](https://www.google.com/search?num=5&q=ActivateInputProfile+site%3Adocs.microsoft.com) | input.dll |  |   
-[CPlApplet](https://www.google.com/search?num=5&q=CPlApplet+site%3Adocs.microsoft.com) | input.dll |  |   
-[CtfImeAssociateFocus](https://www.google.com/search?num=5&q=CtfImeAssociateFocus+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeConfigure](https://www.google.com/search?num=5&q=CtfImeConfigure+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeConversionList](https://www.google.com/search?num=5&q=CtfImeConversionList+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeCreateInputContext](https://www.google.com/search?num=5&q=CtfImeCreateInputContext+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeCreateThreadMgr](https://www.google.com/search?num=5&q=CtfImeCreateThreadMgr+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeDestroy](https://www.google.com/search?num=5&q=CtfImeDestroy+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeDestroyInputContext](https://www.google.com/search?num=5&q=CtfImeDestroyInputContext+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeDestroyThreadMgr](https://www.google.com/search?num=5&q=CtfImeDestroyThreadMgr+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeDispatchDefImeMessage](https://www.google.com/search?num=5&q=CtfImeDispatchDefImeMessage+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeEnumRegisterWord](https://www.google.com/search?num=5&q=CtfImeEnumRegisterWord+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeEscape](https://www.google.com/search?num=5&q=CtfImeEscape+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeEscapeEx](https://www.google.com/search?num=5&q=CtfImeEscapeEx+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeGetGuidAtom](https://www.google.com/search?num=5&q=CtfImeGetGuidAtom+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeGetRegisterWordStyle](https://www.google.com/search?num=5&q=CtfImeGetRegisterWordStyle+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeInquire](https://www.google.com/search?num=5&q=CtfImeInquire+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeInquireExW](https://www.google.com/search?num=5&q=CtfImeInquireExW+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeIsGuidMapEnable](https://www.google.com/search?num=5&q=CtfImeIsGuidMapEnable+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeIsIME](https://www.google.com/search?num=5&q=CtfImeIsIME+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeProcessCicHotkey](https://www.google.com/search?num=5&q=CtfImeProcessCicHotkey+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeProcessKey](https://www.google.com/search?num=5&q=CtfImeProcessKey+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeRegisterWord](https://www.google.com/search?num=5&q=CtfImeRegisterWord+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeSelect](https://www.google.com/search?num=5&q=CtfImeSelect+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeSelectEx](https://www.google.com/search?num=5&q=CtfImeSelectEx+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeSetActiveContext](https://www.google.com/search?num=5&q=CtfImeSetActiveContext+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeSetCompositionString](https://www.google.com/search?num=5&q=CtfImeSetCompositionString+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeSetFocus](https://www.google.com/search?num=5&q=CtfImeSetFocus+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeToAsciiEx](https://www.google.com/search?num=5&q=CtfImeToAsciiEx+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfImeUnregisterWord](https://www.google.com/search?num=5&q=CtfImeUnregisterWord+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[CtfNotifyIME](https://www.google.com/search?num=5&q=CtfNotifyIME+site%3Adocs.microsoft.com) | msctf.dll |  |   
 [DoMsCtfMonitor](https://www.google.com/search?num=5&q=DoMsCtfMonitor+site%3Adocs.microsoft.com) | msctf.dll | msctfmonitorapi.h | [Vanara.PInvoke.MSCTF.DoMsCtfMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=DoMsCtfMonitor)  
 [EnumEnabledLayoutOrTip](https://www.google.com/search?num=5&q=EnumEnabledLayoutOrTip+site%3Adocs.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.EnumEnabledLayoutOrTip](https://github.com/dahall/Vanara/search?l=C%23&q=EnumEnabledLayoutOrTip)  
-[EnumEnabledLayoutOrTipPrivate](https://www.google.com/search?num=5&q=EnumEnabledLayoutOrTipPrivate+site%3Adocs.microsoft.com) | input.dll |  |   
 [EnumLayoutOrTipForSetup](https://www.google.com/search?num=5&q=EnumLayoutOrTipForSetup+site%3Adocs.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.EnumLayoutOrTipForSetup](https://github.com/dahall/Vanara/search?l=C%23&q=EnumLayoutOrTipForSetup)  
-[GetDefaultLayout](https://www.google.com/search?num=5&q=GetDefaultLayout+site%3Adocs.microsoft.com) | input.dll |  |   
-[GetLayoutDescription](https://www.google.com/search?num=5&q=GetLayoutDescription+site%3Adocs.microsoft.com) | input.dll |  |   
-[HasDeferredInputForCoreDispatcher](https://www.google.com/search?num=5&q=HasDeferredInputForCoreDispatcher+site%3Adocs.microsoft.com) | msctf.dll |  |   
 [InitLocalMsCtfMonitor](https://www.google.com/search?num=5&q=InitLocalMsCtfMonitor+site%3Adocs.microsoft.com) | msctf.dll | msctfmonitorapi.h | [Vanara.PInvoke.MSCTF.InitLocalMsCtfMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=InitLocalMsCtfMonitor)  
-[InputDll_DownlevelEnumLayoutOrTipForSetup](https://www.google.com/search?num=5&q=InputDll_DownlevelEnumLayoutOrTipForSetup+site%3Adocs.microsoft.com) | input.dll |  |   
-[InputDll_DownlevelInitialize](https://www.google.com/search?num=5&q=InputDll_DownlevelInitialize+site%3Adocs.microsoft.com) | input.dll |  |   
-[InputDll_DownlevelSetUILanguage](https://www.google.com/search?num=5&q=InputDll_DownlevelSetUILanguage+site%3Adocs.microsoft.com) | input.dll |  |   
-[InputDll_DownlevelUninitialize](https://www.google.com/search?num=5&q=InputDll_DownlevelUninitialize+site%3Adocs.microsoft.com) | input.dll |  |   
-[InputFocusMonitorCreate](https://www.google.com/search?num=5&q=InputFocusMonitorCreate+site%3Adocs.microsoft.com) | msctf.dll |  |   
 [InstallLayoutOrTip](https://www.google.com/search?num=5&q=InstallLayoutOrTip+site%3Adocs.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.InstallLayoutOrTip](https://github.com/dahall/Vanara/search?l=C%23&q=InstallLayoutOrTip)  
-[InstallLayoutOrTipOffline](https://www.google.com/search?num=5&q=InstallLayoutOrTipOffline+site%3Adocs.microsoft.com) | input.dll |  |   
-[InstallLayoutOrTipPrivate](https://www.google.com/search?num=5&q=InstallLayoutOrTipPrivate+site%3Adocs.microsoft.com) | input.dll |  |   
 [InstallLayoutOrTipUserReg](https://www.google.com/search?num=5&q=InstallLayoutOrTipUserReg+site%3Adocs.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.InstallLayoutOrTipUserReg](https://github.com/dahall/Vanara/search?l=C%23&q=InstallLayoutOrTipUserReg)  
-[MsimtfIsGuidMapEnable](https://www.google.com/search?num=5&q=MsimtfIsGuidMapEnable+site%3Adocs.microsoft.com) | msimtf.dll |  |   
 [MsimtfIsWindowFiltered](https://www.google.com/search?num=5&q=MsimtfIsWindowFiltered+site%3Adocs.microsoft.com) | msimtf.dll |  | [Vanara.PInvoke.MSCTF.MsimtfIsWindowFiltered](https://github.com/dahall/Vanara/search?l=C%23&q=MsimtfIsWindowFiltered)  
 [QueryLayoutOrTipString](https://www.google.com/search?num=5&q=QueryLayoutOrTipString+site%3Adocs.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.QueryLayoutOrTipString](https://github.com/dahall/Vanara/search?l=C%23&q=QueryLayoutOrTipString)  
 [QueryLayoutOrTipStringUserReg](https://www.google.com/search?num=5&q=QueryLayoutOrTipStringUserReg+site%3Adocs.microsoft.com) | input.dll |  | [Vanara.PInvoke.MSCTF.QueryLayoutOrTipStringUserReg](https://github.com/dahall/Vanara/search?l=C%23&q=QueryLayoutOrTipStringUserReg)  
@@ -66,43 +23,14 @@ Native Method | Native DLL | Header | Managed Method
 [SetInputScopes](https://www.google.com/search?num=5&q=SetInputScopes+site%3Adocs.microsoft.com) | msctf.dll | inputscope.h | [Vanara.PInvoke.MSCTF.SetInputScopes](https://github.com/dahall/Vanara/search?l=C%23&q=SetInputScopes)  
 [SetInputScopes2](https://www.google.com/search?num=5&q=SetInputScopes2+site%3Adocs.microsoft.com) | msctf.dll | inputscope.h | [Vanara.PInvoke.MSCTF.SetInputScopes2](https://github.com/dahall/Vanara/search?l=C%23&q=SetInputScopes2)  
 [SetInputScopeXML](https://www.google.com/search?num=5&q=SetInputScopeXML+site%3Adocs.microsoft.com) | msctf.dll | inputscope.h | [Vanara.PInvoke.MSCTF.SetInputScopeXML](https://github.com/dahall/Vanara/search?l=C%23&q=SetInputScopeXML)  
-[TextInputClientWrapperCreate](https://www.google.com/search?num=5&q=TextInputClientWrapperCreate+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_CanUninitialize](https://www.google.com/search?num=5&q=TF_CanUninitialize+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_CleanUpPrivateMessages](https://www.google.com/search?num=5&q=TF_CleanUpPrivateMessages+site%3Adocs.microsoft.com) | msctf.dll |  |   
 [TF_CreateCategoryMgr](https://www.google.com/search?num=5&q=TF_CreateCategoryMgr+site%3Adocs.microsoft.com) | msctf.dll | msctf.h | [Vanara.PInvoke.MSCTF.TF_CreateCategoryMgr](https://github.com/dahall/Vanara/search?l=C%23&q=TF_CreateCategoryMgr)  
-[TF_CreateCicLoadMutex](https://www.google.com/search?num=5&q=TF_CreateCicLoadMutex+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_CreateCicLoadWinStaMutex](https://www.google.com/search?num=5&q=TF_CreateCicLoadWinStaMutex+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_CreateCTFWatchdogMutex](https://www.google.com/search?num=5&q=TF_CreateCTFWatchdogMutex+site%3Adocs.microsoft.com) | msctf.dll |  |   
 [TF_CreateDisplayAttributeMgr](https://www.google.com/search?num=5&q=TF_CreateDisplayAttributeMgr+site%3Adocs.microsoft.com) | msctf.dll | msctf.h | [Vanara.PInvoke.MSCTF.TF_CreateDisplayAttributeMgr](https://github.com/dahall/Vanara/search?l=C%23&q=TF_CreateDisplayAttributeMgr)  
 [TF_CreateInputProcessorProfiles](https://www.google.com/search?num=5&q=TF_CreateInputProcessorProfiles+site%3Adocs.microsoft.com) | msctf.dll | msctf.h | [Vanara.PInvoke.MSCTF.TF_CreateInputProcessorProfiles](https://github.com/dahall/Vanara/search?l=C%23&q=TF_CreateInputProcessorProfiles)  
 [TF_CreateLangBarItemMgr](https://www.google.com/search?num=5&q=TF_CreateLangBarItemMgr+site%3Adocs.microsoft.com) | msctf.dll | msctf.h | [Vanara.PInvoke.MSCTF.TF_CreateLangBarItemMgr](https://github.com/dahall/Vanara/search?l=C%23&q=TF_CreateLangBarItemMgr)  
 [TF_CreateLangBarMgr](https://www.google.com/search?num=5&q=TF_CreateLangBarMgr+site%3Adocs.microsoft.com) | msctf.dll | msctf.h | [Vanara.PInvoke.MSCTF.TF_CreateLangBarMgr](https://github.com/dahall/Vanara/search?l=C%23&q=TF_CreateLangBarMgr)  
 [TF_CreateThreadMgr](https://www.google.com/search?num=5&q=TF_CreateThreadMgr+site%3Adocs.microsoft.com) | msctf.dll | msctf.h | [Vanara.PInvoke.MSCTF.TF_CreateThreadMgr](https://github.com/dahall/Vanara/search?l=C%23&q=TF_CreateThreadMgr)  
-[TF_CUASAppFix](https://www.google.com/search?num=5&q=TF_CUASAppFix+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_GetAppCompatFlags](https://www.google.com/search?num=5&q=TF_GetAppCompatFlags+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_GetCompatibleKeyboardLayout](https://www.google.com/search?num=5&q=TF_GetCompatibleKeyboardLayout+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_GetGlobalCompartment](https://www.google.com/search?num=5&q=TF_GetGlobalCompartment+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_GetInitSystemFlags](https://www.google.com/search?num=5&q=TF_GetInitSystemFlags+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_GetInputScope](https://www.google.com/search?num=5&q=TF_GetInputScope+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_GetShowFloatingStatus](https://www.google.com/search?num=5&q=TF_GetShowFloatingStatus+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_GetThreadFlags](https://www.google.com/search?num=5&q=TF_GetThreadFlags+site%3Adocs.microsoft.com) | msctf.dll |  |   
 [TF_GetThreadMgr](https://www.google.com/search?num=5&q=TF_GetThreadMgr+site%3Adocs.microsoft.com) | msctf.dll | msctf.h | [Vanara.PInvoke.MSCTF.TF_GetThreadMgr](https://github.com/dahall/Vanara/search?l=C%23&q=TF_GetThreadMgr)  
-[TF_InitSystem](https://www.google.com/search?num=5&q=TF_InitSystem+site%3Adocs.microsoft.com) | msctf.dll |  |   
 [TF_InvalidAssemblyListCacheIfExist](https://www.google.com/search?num=5&q=TF_InvalidAssemblyListCacheIfExist+site%3Adocs.microsoft.com) | msctf.dll |  | [Vanara.PInvoke.MSCTF.TF_InvalidAssemblyListCacheIfExist](https://github.com/dahall/Vanara/search?l=C%23&q=TF_InvalidAssemblyListCacheIfExist)  
-[TF_IsCtfmonRunning](https://www.google.com/search?num=5&q=TF_IsCtfmonRunning+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_IsLanguageBarEnabled](https://www.google.com/search?num=5&q=TF_IsLanguageBarEnabled+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_IsThreadWithFlags](https://www.google.com/search?num=5&q=TF_IsThreadWithFlags+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_MapCompatibleHKL](https://www.google.com/search?num=5&q=TF_MapCompatibleHKL+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_MapCompatibleKeyboardTip](https://www.google.com/search?num=5&q=TF_MapCompatibleKeyboardTip+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_Notify](https://www.google.com/search?num=5&q=TF_Notify+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_PostAllThreadMsg](https://www.google.com/search?num=5&q=TF_PostAllThreadMsg+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_RunInputCPL](https://www.google.com/search?num=5&q=TF_RunInputCPL+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_SendLangBandMsg](https://www.google.com/search?num=5&q=TF_SendLangBandMsg+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_SetDefaultRemoteKeyboardLayout](https://www.google.com/search?num=5&q=TF_SetDefaultRemoteKeyboardLayout+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_SetShowFloatingStatus](https://www.google.com/search?num=5&q=TF_SetShowFloatingStatus+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_SetThreadFlags](https://www.google.com/search?num=5&q=TF_SetThreadFlags+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_UninitSystem](https://www.google.com/search?num=5&q=TF_UninitSystem+site%3Adocs.microsoft.com) | msctf.dll |  |   
-[TF_WaitForInitialized](https://www.google.com/search?num=5&q=TF_WaitForInitialized+site%3Adocs.microsoft.com) | msctf.dll |  |   
 [UninitLocalMsCtfMonitor](https://www.google.com/search?num=5&q=UninitLocalMsCtfMonitor+site%3Adocs.microsoft.com) | msctf.dll | msctfmonitorapi.h | [Vanara.PInvoke.MSCTF.UninitLocalMsCtfMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=UninitLocalMsCtfMonitor)  
 ### Structures  
 Native Structure | Header | Managed Structure  
