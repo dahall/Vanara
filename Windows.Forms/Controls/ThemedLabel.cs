@@ -218,7 +218,7 @@ namespace Vanara.Windows.Forms
 									// While this API does not return the *exact* shade used in title bars, its value
 									// is pretty close; certainly close enough to be useful for the below test.
 									DwmApi.DwmGetColorizationColor(out uint colorValue, out _).ThrowIfFailed();
-									Color color = Color.FromArgb((int)colorValue);
+									Color color = Color.FromArgb(unchecked((int)colorValue));
 
 									// These values were taken from here:
 									// https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color/3943023
