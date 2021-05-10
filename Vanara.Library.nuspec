@@ -42,6 +42,7 @@
       <dependency id="Vanara.PInvoke.IScsiDsc" version="3.3.10" />
       <dependency id="Vanara.PInvoke.Kernel32" version="3.3.10" />
       <dependency id="Vanara.PInvoke.KtmW32" version="3.3.10" />
+      <dependency id="Vanara.PInvoke.Lz32" version="3.3.10" />
       <dependency id="Vanara.PInvoke.Magnification" version="3.3.10" />
       <dependency id="Vanara.PInvoke.Mpr" version="3.3.10" />
       <dependency id="Vanara.PInvoke.Msi" version="3.3.10" />
