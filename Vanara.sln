@@ -313,6 +313,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CfgMgr32", "UnitTests\PInvo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Lz32", "PInvoke\Lz32\Vanara.PInvoke.Lz32.csproj", "{553081F3-A380-44B4-94ED-E8CE510F3E96}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Multimedia", "PInvoke\Multimedia\Vanara.PInvoke.Multimedia.csproj", "{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1021,6 +1023,12 @@ Global
 		{553081F3-A380-44B4-94ED-E8CE510F3E96}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{553081F3-A380-44B4-94ED-E8CE510F3E96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{553081F3-A380-44B4-94ED-E8CE510F3E96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1158,6 +1166,7 @@ Global
 		{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{553081F3-A380-44B4-94ED-E8CE510F3E96} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
