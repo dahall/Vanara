@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
-using static Vanara.PInvoke.Winmm;
+using static Vanara.PInvoke.WinMm;
 
 namespace Vanara.PInvoke
 {
 	/// <summary>Functions, structures and constants from Windows Core Audio Api.</summary>
 	public static partial class CoreAudio
 	{
+		public const uint WM_APP_SESSION_DUCKED = 0x8000;
+		public const uint WM_APP_SESSION_UNDUCKED = 0x8001;
+		public const uint WM_APP_GRAPHNOTIFY = 0x8002;
+		public const uint WM_APP_SESSION_VOLUME_CHANGED = 0x8003;
+
 		/// <summary>The <c>_AUDCLNT_BUFFERFLAGS</c> enumeration defines flags that indicate the status of an audio endpoint buffer.</summary>
 		/// <remarks>
 		/// The IAudioCaptureClient::GetBuffer and IAudioRenderClient::ReleaseBuffer methods use the constants defined in the
@@ -1205,7 +1210,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getmixformat HRESULT GetMixFormat(
 			// WAVEFORMATEX **ppDeviceFormat );
 			[PreserveSig]
-			HRESULT GetMixFormat(out SafeCoTaskMemHandle ppDeviceFormat);
+			HRESULT GetMixFormat(out SafeCoTaskMemStruct<WAVEFORMATEX> ppDeviceFormat);
 
 			/// <summary>
 			/// The <c>GetDevicePeriod</c> method retrieves the length of the periodic interval separating successive processing passes by
@@ -1367,7 +1372,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-seteventhandle HRESULT
 			// SetEventHandle( HANDLE eventHandle );
-			void SetEventHandle(IntPtr eventHandle);
+			void SetEventHandle(HEVENT eventHandle);
 
 			/// <summary>The <c>GetService</c> method accesses additional services from the audio client object.</summary>
 			/// <param name="riid">
@@ -2245,7 +2250,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getmixformat HRESULT GetMixFormat(
 			// WAVEFORMATEX **ppDeviceFormat );
 			[PreserveSig]
-			new HRESULT GetMixFormat(out SafeCoTaskMemHandle ppDeviceFormat);
+			new HRESULT GetMixFormat(out SafeCoTaskMemStruct<WAVEFORMATEX> ppDeviceFormat);
 
 			/// <summary>
 			/// The <c>GetDevicePeriod</c> method retrieves the length of the periodic interval separating successive processing passes by
@@ -2407,7 +2412,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-seteventhandle HRESULT
 			// SetEventHandle( HANDLE eventHandle );
-			new void SetEventHandle(IntPtr eventHandle);
+			new void SetEventHandle(HEVENT eventHandle);
 
 			/// <summary>The <c>GetService</c> method accesses additional services from the audio client object.</summary>
 			/// <param name="riid">
@@ -3327,7 +3332,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getmixformat HRESULT GetMixFormat(
 			// WAVEFORMATEX **ppDeviceFormat );
 			[PreserveSig]
-			new HRESULT GetMixFormat(out SafeCoTaskMemHandle ppDeviceFormat);
+			new HRESULT GetMixFormat(out SafeCoTaskMemStruct<WAVEFORMATEX> ppDeviceFormat);
 
 			/// <summary>
 			/// The <c>GetDevicePeriod</c> method retrieves the length of the periodic interval separating successive processing passes by
@@ -3489,7 +3494,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-seteventhandle HRESULT
 			// SetEventHandle( HANDLE eventHandle );
-			new void SetEventHandle(IntPtr eventHandle);
+			new void SetEventHandle(HEVENT eventHandle);
 
 			/// <summary>The <c>GetService</c> method accesses additional services from the audio client object.</summary>
 			/// <param name="riid">
@@ -3719,7 +3724,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient3-getcurrentsharedmodeengineperiod
 			// HRESULT GetCurrentSharedModeEnginePeriod( WAVEFORMATEX **ppFormat, UINT32 *pCurrentPeriodInFrames );
-			void GetCurrentSharedModeEnginePeriod(out SafeCoTaskMemHandle ppFormat, out uint pCurrentPeriodInFrames);
+			void GetCurrentSharedModeEnginePeriod(out SafeCoTaskMemStruct<WAVEFORMATEX> ppFormat, out uint pCurrentPeriodInFrames);
 
 			/// <summary>Initializes a shared stream with the specified periodicity.</summary>
 			/// <param name="StreamFlags">
@@ -4702,63 +4707,11 @@ namespace Vanara.PInvoke
 		/// <c>Note</c> The values returned by this method are instantaneous values and may be invalid immediately after the call returns
 		/// if, for example, another audio client sets the periodicity or format to a different value.
 		/// </remarks>
-		public static (WAVEFORMATEX ppFormat, uint pCurrentPeriodInFrames) GetCurrentSharedModeEnginePeriod(this IAudioClient3 client)
+		public static (SafeCoTaskMemStruct<WAVEFORMATEX> ppFormat, uint pCurrentPeriodInFrames) GetCurrentSharedModeEnginePeriod(this IAudioClient3 client)
 		{
 			client.GetCurrentSharedModeEnginePeriod(out var fmt, out var fr);
-			using (fmt)
-				return (fmt.ToStructure<WAVEFORMATEX>(), fr);
+			return (fmt, fr);
 		}
-
-		/// <summary>
-		/// The <c>GetMixFormat</c> method retrieves the stream format that the audio engine uses for its internal processing of shared-mode streams.
-		/// </summary>
-		/// <param name="client">The client.</param>
-		/// <returns>A variable into which the method writes the address of the mix format.</returns>
-		/// <remarks>
-		/// <para>
-		/// The client can call this method before calling the IAudioClient::Initialize method. When creating a shared-mode stream for an
-		/// audio endpoint device, the <c>Initialize</c> method always accepts the stream format obtained from a <c>GetMixFormat</c> call on
-		/// the same device.
-		/// </para>
-		/// <para>
-		/// The mix format is the format that the audio engine uses internally for digital processing of shared-mode streams. This format is
-		/// not necessarily a format that the audio endpoint device supports. Thus, the caller might not succeed in creating an
-		/// exclusive-mode stream with a format obtained by calling <c>GetMixFormat</c>.
-		/// </para>
-		/// <para>
-		/// For example, to facilitate digital audio processing, the audio engine might use a mix format that represents samples as
-		/// floating-point values. If the device supports only integer PCM samples, then the engine converts the samples to or from integer
-		/// PCM values at the connection between the device and the engine. However, to avoid resampling, the engine might use a mix format
-		/// with a sample rate that the device supports.
-		/// </para>
-		/// <para>
-		/// To determine whether the <c>Initialize</c> method can create a shared-mode or exclusive-mode stream with a particular format,
-		/// call the IAudioClient::IsFormatSupported method.
-		/// </para>
-		/// <para>
-		/// By itself, a <c>WAVEFORMATEX</c> structure cannot specify the mapping of channels to speaker positions. In addition, although
-		/// <c>WAVEFORMATEX</c> specifies the size of the container for each audio sample, it cannot specify the number of bits of precision
-		/// in a sample (for example, 20 bits of precision in a 24-bit container). However, the <c>WAVEFORMATEXTENSIBLE</c> structure can
-		/// specify both the mapping of channels to speakers and the number of bits of precision in each sample. For this reason, the
-		/// <c>GetMixFormat</c> method retrieves a format descriptor that is in the form of a <c>WAVEFORMATEXTENSIBLE</c> structure instead
-		/// of a standalone <c>WAVEFORMATEX</c> structure. Through the ppDeviceFormat parameter, the method outputs a pointer to the
-		/// <c>WAVEFORMATEX</c> structure that is embedded at the start of this <c>WAVEFORMATEXTENSIBLE</c> structure. For more information
-		/// about <c>WAVEFORMATEX</c> and <c>WAVEFORMATEXTENSIBLE</c>, see the Windows DDK documentation.
-		/// </para>
-		/// <para>
-		/// For more information about the <c>GetMixFormat</c> method, see Device Formats. For code examples that call <c>GetMixFormat</c>,
-		/// see the following topics:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		public static WAVEFORMATEX GetMixFormat(this IAudioClient client) { var hr = client.GetMixFormat(out var mem); return hr.Succeeded && !mem.IsInvalid ? mem.ToStructure<WAVEFORMATEX>() : throw hr.GetException(); }
 
 		/// <summary>The <c>GetService</c> method accesses additional services from the audio client object.</summary>
 		/// <param name="client">The client.</param>
