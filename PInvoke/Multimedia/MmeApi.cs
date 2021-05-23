@@ -2641,7 +2641,7 @@ namespace Vanara.PInvoke
 		// WORD nChannels; DWORD nSamplesPerSec; DWORD nAvgBytesPerSec; WORD nBlockAlign; WORD wBitsPerSample; WORD cbSize; } WAVEFORMATEX,
 		// *PWAVEFORMATEX, *NPWAVEFORMATEX, *LPWAVEFORMATEX;
 		[PInvokeData("mmeapi.h", MSDNShortId = "NS:mmeapi.tWAVEFORMATEX")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct WAVEFORMATEX
 		{
 			/// <summary>
