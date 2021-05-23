@@ -700,6 +700,11 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HEVENT(IntPtr h) => new HEVENT(h);
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeEventHandle"/> to <see cref="HEVENT"/>.</summary>
+		/// <param name="h">The safe handle.</param>
+		/// <returns>The resulting <see cref="HEVENT"/> instance from the conversion.</returns>
+		public static implicit operator HEVENT(SafeEventHandle h) => h.DangerousGetHandle();
+
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
