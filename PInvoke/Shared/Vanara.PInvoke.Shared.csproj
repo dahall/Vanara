@@ -37,7 +37,4 @@ CharacterSet, CM_DEVCAP, CM_FILE, CM_INSTALL_STATE, CM_REMOVAL_POLICY, CM_RESOUR
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5.0')) ">
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WTypes\" />
-  </ItemGroup>
 </Project>
