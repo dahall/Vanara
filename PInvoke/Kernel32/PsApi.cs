@@ -9,6 +9,8 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		private const string Lib_Psapi = "psapi.dll";
+
 		/// <summary>
 		/// <para>An application-defined callback function used with the EnumPageFiles function.</para>
 		/// <para>
@@ -24,8 +26,8 @@ namespace Vanara.PInvoke
 		/// <para>To stop enumeration, the callback function must return FALSE.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nc-psapi-penum_page_file_callbacka PENUM_PAGE_FILE_CALLBACKA
-		// PenumPageFileCallbacka; BOOL PenumPageFileCallbacka( LPVOID pContext, PENUM_PAGE_FILE_INFORMATION pPageFileInfo, LPCSTR lpFilename
-		// ) {...}
+		// PenumPageFileCallbacka; BOOL PenumPageFileCallbacka( LPVOID pContext, PENUM_PAGE_FILE_INFORMATION pPageFileInfo, LPCSTR
+		// lpFilename ) {...}
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "eb3610fb-2c95-4f7b-973d-8dc41d2829f1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -76,13 +78,13 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32EmptyWorkingSet</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// K32EmptyWorkingSet. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the program
-		/// with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as K32EmptyWorkingSet. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
+		/// program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-emptyworkingset BOOL EmptyWorkingSet( HANDLE hProcess );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib_Psapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "76f2252e-7305-46b0-b1af-40ac084e6696")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EmptyWorkingSet(HPROCESS hProcess);
@@ -116,21 +118,21 @@ namespace Vanara.PInvoke
 		/// version number affects the name used to call the function and the library that a program must load.
 		/// </para>
 		/// <para>
-		/// If PSAPI_VERSION is 2 or greater, this function is defined as <c>K32EnumDeviceDrivers</c> in Psapi.h and exported in Kernel32.lib
-		/// and Kernel32.dll. If PSAPI_VERSION is 1, this function is defined as <c>EnumDeviceDrivers</c> in Psapi.h and exported in
-		/// Psapi.lib and Psapi.dll as a wrapper that calls <c>K32EnumDeviceDrivers</c>.
+		/// If PSAPI_VERSION is 2 or greater, this function is defined as <c>K32EnumDeviceDrivers</c> in Psapi.h and exported in
+		/// Kernel32.lib and Kernel32.dll. If PSAPI_VERSION is 1, this function is defined as <c>EnumDeviceDrivers</c> in Psapi.h and
+		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32EnumDeviceDrivers</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>EnumDeviceDrivers</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the program
-		/// with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>EnumDeviceDrivers</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the
+		/// program with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>For an example, see Enumerating all Device Drivers in the System.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-enumdevicedrivers BOOL EnumDeviceDrivers( LPVOID *lpImageBase,
-		// DWORD cb, LPDWORD lpcbNeeded );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-enumdevicedrivers BOOL EnumDeviceDrivers( LPVOID
+		// *lpImageBase, DWORD cb, LPDWORD lpcbNeeded );
+		[DllImport(Lib_Psapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "55925741-da23-44b1-93e8-0e9468434a61")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumDeviceDrivers([In, Out, MarshalAs(UnmanagedType.LPArray)] IntPtr[] lpImageBase, uint cb, out uint lpcbNeeded);
@@ -172,14 +174,14 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32EnumPageFiles</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>EnumPageFiles</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>EnumPageFiles</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
 		/// program with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-enumpagefilesa BOOL EnumPageFilesA( PENUM_PAGE_FILE_CALLBACKA
 		// pCallBackRoutine, LPVOID pContext );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "9289fe3c-a7d9-4acb-aeb6-a50de65db0a2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumPageFiles(EnumPageFilesProc pCallBackRoutine, IntPtr pContext);
@@ -222,8 +224,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// To determine how many processes were enumerated, divide the pBytesReturned value by sizeof(DWORD). There is no indication given
-		/// when the buffer is too small to store all process identifiers. Therefore, if pBytesReturned equals cb, consider retrying the call
-		/// with a larger array.
+		/// when the buffer is too small to store all process identifiers. Therefore, if pBytesReturned equals cb, consider retrying the
+		/// call with a larger array.
 		/// </para>
 		/// <para>To obtain process handles for the processes whose identifiers you have just obtained, call the OpenProcess function.</para>
 		/// <para>
@@ -231,21 +233,21 @@ namespace Vanara.PInvoke
 		/// version number affects the name used to call the function and the library that a program must load.
 		/// </para>
 		/// <para>
-		/// If PSAPI_VERSION is 2 or greater, this function is defined as <c>K32EnumProcesses</c> in Psapi.h and exported in Kernel32.lib and
-		/// Kernel32.dll. If PSAPI_VERSION is 1, this function is defined as <c>EnumProcesses</c> in Psapi.h and exported in Psapi.lib and
-		/// Psapi.dll as a wrapper that calls <c>K32EnumProcesses</c>.
+		/// If PSAPI_VERSION is 2 or greater, this function is defined as <c>K32EnumProcesses</c> in Psapi.h and exported in Kernel32.lib
+		/// and Kernel32.dll. If PSAPI_VERSION is 1, this function is defined as <c>EnumProcesses</c> in Psapi.h and exported in Psapi.lib
+		/// and Psapi.dll as a wrapper that calls <c>K32EnumProcesses</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>EnumProcesses</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the program with
-		/// –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>EnumProcesses</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the program
+		/// with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>For an example, see Enumerating All Processes or Enumerating All Modules for a Process.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-enumprocesses BOOL EnumProcesses( DWORD *lpidProcess, DWORD
 		// cb, LPDWORD lpcbNeeded );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "0c0445cb-27d2-4857-a4a5-7a4c180b068b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumProcesses([In, Out, MarshalAs(UnmanagedType.LPArray)] uint[] lpidProcess, uint cb, out uint lpcbNeeded);
@@ -297,10 +299,10 @@ namespace Vanara.PInvoke
 		/// return incorrect information.
 		/// </para>
 		/// <para>
-		/// It is a good idea to specify a large array of <c>HMODULE</c> values, because it is hard to predict how many modules there will be
-		/// in the process at the time you call <c>EnumProcessModules</c>. To determine if the lphModule array is too small to hold all
-		/// module handles for the process, compare the value returned in lpcbNeeded with the value specified in cb. If lpcbNeeded is greater
-		/// than cb, increase the size of the array and call <c>EnumProcessModules</c> again.
+		/// It is a good idea to specify a large array of <c>HMODULE</c> values, because it is hard to predict how many modules there will
+		/// be in the process at the time you call <c>EnumProcessModules</c>. To determine if the lphModule array is too small to hold all
+		/// module handles for the process, compare the value returned in lpcbNeeded with the value specified in cb. If lpcbNeeded is
+		/// greater than cb, increase the size of the array and call <c>EnumProcessModules</c> again.
 		/// </para>
 		/// <para>
 		/// To determine how many modules were enumerated by the call to <c>EnumProcessModules</c>, divide the resulting value in the
@@ -328,20 +330,20 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// If <c>PSAPI_VERSION</c> is 2 or greater, this function is defined as <c>K32EnumProcessModules</c> in Psapi.h and exported in
-		/// Kernel32.lib and Kernel32.dll. If <c>PSAPI_VERSION</c> is 1, this function is defined as <c>EnumProcessModules</c> in Psapi.h and
-		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32EnumProcessModules</c>.
+		/// Kernel32.lib and Kernel32.dll. If <c>PSAPI_VERSION</c> is 1, this function is defined as <c>EnumProcessModules</c> in Psapi.h
+		/// and exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32EnumProcessModules</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>EnumProcessModules</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
-		/// program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>EnumProcessModules</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
+		/// the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>For an example, see Enumerating All Processes or Enumerating All Modules for a Process.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-enumprocessmodules BOOL EnumProcessModules( HANDLE hProcess,
 		// HMODULE *lphModule, DWORD cb, LPDWORD lpcbNeeded );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib_Psapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "b4088506-2f69-4cf0-9bab-3e6a7185f5b2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumProcessModules(HPROCESS hProcess, [In, Out, MarshalAs(UnmanagedType.LPArray)] HINSTANCE[] lphModule, uint cb, out uint lpcbNeeded);
@@ -410,10 +412,10 @@ namespace Vanara.PInvoke
 		/// WOW64, the dwFilterFlag option is ignored and the function provides the same results as the EnumProcessModules function.
 		/// </para>
 		/// <para>
-		/// It is a good idea to specify a large array of <c>HMODULE</c> values, because it is hard to predict how many modules there will be
-		/// in the process at the time you call <c>EnumProcessModulesEx</c>. To determine if the lphModule array is too small to hold all
-		/// module handles for the process, compare the value returned in lpcbNeeded with the value specified in cb. If lpcbNeeded is greater
-		/// than cb, increase the size of the array and call <c>EnumProcessModulesEx</c> again.
+		/// It is a good idea to specify a large array of <c>HMODULE</c> values, because it is hard to predict how many modules there will
+		/// be in the process at the time you call <c>EnumProcessModulesEx</c>. To determine if the lphModule array is too small to hold all
+		/// module handles for the process, compare the value returned in lpcbNeeded with the value specified in cb. If lpcbNeeded is
+		/// greater than cb, increase the size of the array and call <c>EnumProcessModulesEx</c> again.
 		/// </para>
 		/// <para>
 		/// To determine how many modules were enumerated by the call to <c>EnumProcessModulesEx</c>, divide the resulting value in the
@@ -441,14 +443,14 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32EnumProcessModulesEx</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>EnumProcessModulesEx</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>EnumProcessModulesEx</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the
 		/// program with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-enumprocessmodulesex
-		// BOOL EnumProcessModulesEx( HANDLE hProcess, HMODULE *lphModule, DWORD cb, LPDWORD lpcbNeeded, DWORD dwFilterFlag );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-enumprocessmodulesex BOOL EnumProcessModulesEx( HANDLE
+		// hProcess, HMODULE *lphModule, DWORD cb, LPDWORD lpcbNeeded, DWORD dwFilterFlag );
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "0f982f32-31f4-47b6-85d2-d6e17aa4eeb9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumProcessModulesEx(HPROCESS hProcess, [In, Out, MarshalAs(UnmanagedType.LPArray)] HINSTANCE[] lphModule, uint cb, out uint lpcbNeeded, LIST_MODULES dwFilterFlag);
@@ -531,8 +533,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value specifies the length of the string copied to the buffer, not including any terminating
-		/// null character.
+		/// If the function succeeds, the return value specifies the length of the string copied to the buffer, not including any
+		/// terminating null character.
 		/// </para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
@@ -547,16 +549,16 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetDeviceDriverBaseName</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetDeviceDriverBaseName</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the
-		/// program with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetDeviceDriverBaseName</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile
+		/// the program with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>For an example, see Enumerating all Device Drivers in the System.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getdevicedriverbasenamea DWORD GetDeviceDriverBaseNameA(
 		// LPVOID ImageBase, LPSTR lpFilename, DWORD nSize );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "a19a927d-4669-4d4c-951e-43f294a8fb40")]
 		public static extern uint GetDeviceDriverBaseName(IntPtr ImageBase, StringBuilder lpFilename, uint nSize);
 
@@ -577,8 +579,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value specifies the length of the string copied to the buffer, not including any terminating
-		/// null character.
+		/// If the function succeeds, the return value specifies the length of the string copied to the buffer, not including any
+		/// terminating null character.
 		/// </para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
@@ -593,14 +595,14 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetDeviceDriverFileName</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetDeviceDriverFileName</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the
-		/// program with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetDeviceDriverFileName</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile
+		/// the program with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getdevicedriverfilenamea DWORD GetDeviceDriverFileNameA(
 		// LPVOID ImageBase, LPSTR lpFilename, DWORD nSize );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "6ddbcf7e-e41c-4ea7-b60a-01ed5c98c530")]
 		public static extern uint GetDeviceDriverFileName(IntPtr ImageBase, StringBuilder lpFilename, uint nSize);
 
@@ -640,9 +642,9 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetMappedFileName</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetMappedFileName</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
-		/// program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetMappedFileName</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
+		/// the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// <para>In Windows Server 2012, this function is supported by the following technologies.</para>
 		/// <list type="table">
@@ -676,7 +678,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getmappedfilenamea DWORD GetMappedFileNameA( HANDLE hProcess,
 		// LPVOID lpv, LPSTR lpFilename, DWORD nSize );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "10a2e5ab-f495-486d-8ef7-ef763716afd1")]
 		public static extern uint GetMappedFileName(HPROCESS hProcess, IntPtr lpv, StringBuilder lpFilename, uint nSize);
 
@@ -716,8 +718,8 @@ namespace Vanara.PInvoke
 		/// or return incorrect information.
 		/// </para>
 		/// <para>
-		/// To retrieve the base name of a module in the current process, use the GetModuleFileName function to retrieve the full module name
-		/// and then use a function call such as to scan to the beginning of the base name within the module name string. This is more
+		/// To retrieve the base name of a module in the current process, use the GetModuleFileName function to retrieve the full module
+		/// name and then use a function call such as to scan to the beginning of the base name within the module name string. This is more
 		/// efficient and more reliable than calling <c>GetModuleBaseName</c> with a handle to the current process.
 		/// </para>
 		/// <para>
@@ -739,18 +741,91 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetModuleBaseName</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetModuleBaseName</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
-		/// program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetModuleBaseName</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
+		/// the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>For an example, see Enumerating All Processes.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getmodulebasenamea DWORD GetModuleBaseNameA( HANDLE hProcess,
 		// HMODULE hModule, LPSTR lpBaseName, DWORD nSize );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "31a9eb69-95f0-4dd7-8fd5-296f2cff0b8a")]
-		public static extern uint GetModuleBaseName(HPROCESS hProcess, [Optional] HINSTANCE hModule, StringBuilder lpBaseName, uint nSize);
+		public static extern uint GetModuleBaseName(HPROCESS hProcess, [Optional] HINSTANCE hModule, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpBaseName, uint nSize);
+
+		/// <summary>Retrieves the fully qualified path for the file containing the specified module.</summary>
+		/// <param name="hProcess">
+		/// <para>A handle to the process that contains the module.</para>
+		/// <para>
+		/// The handle must have the <c>PROCESS_QUERY_INFORMATION</c> or <c>PROCESS_QUERY_LIMITED_INFORMATION</c> access rights. For more
+		/// information, see Process Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// The <c>GetModuleFileNameEx</c> function does not retrieve the path for modules that were loaded using the
+		/// <c>LOAD_LIBRARY_AS_DATAFILE</c> flag. For more information, see LoadLibraryEx.
+		/// </para>
+		/// </param>
+		/// <param name="hModule">
+		/// A handle to the module. If this parameter is NULL, <c>GetModuleFileNameEx</c> returns the path of the executable file of the
+		/// process specified in hProcess.
+		/// </param>
+		/// <param name="lpFilename">
+		/// A pointer to a buffer that receives the fully qualified path to the module. If the size of the file name is larger than the
+		/// value of the nSize parameter, the function succeeds but the file name is truncated and null-terminated.
+		/// </param>
+		/// <param name="nSize">The size of the lpFilename buffer, in characters.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value specifies the length of the string copied to the buffer.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>GetModuleFileNameEx</c> function is primarily designed for use by debuggers and similar applications that must extract
+		/// module information from another process. If the module list in the target process is corrupted or is not yet initialized, or if
+		/// the module list changes during the function call as a result of DLLs being loaded or unloaded, <c>GetModuleFileNameEx</c> may
+		/// fail or return incorrect information.
+		/// </para>
+		/// <para>
+		/// To retrieve the name of a module in the current process, use the GetModuleFileName function. This is more efficient and more
+		/// reliable than calling <c>GetModuleFileNameEx</c> with a handle to the current process.
+		/// </para>
+		/// <para>
+		/// To retrieve the name of the main executable module for a remote process, use the GetProcessImageFileName or
+		/// QueryFullProcessImageName function. This is more efficient and more reliable than calling the <c>GetModuleFileNameEx</c>
+		/// function with a NULL module handle.
+		/// </para>
+		/// <para>
+		/// Starting with Windows 7 and Windows Server 2008 R2, Psapi.h establishes version numbers for the PSAPI functions. The PSAPI
+		/// version number affects the name used to call the function and the library that a program must load.
+		/// </para>
+		/// <para>
+		/// If <c>PSAPI_VERSION</c> is 2 or greater, this function is defined as <c>K32GetModuleFileNameEx</c> in Psapi.h and exported in
+		/// Kernel32.lib and Kernel32.dll. If <c>PSAPI_VERSION</c> is 1, this function is defined as <c>GetModuleFileNameEx</c> in Psapi.h
+		/// and exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetModuleFileNameEx</c>.
+		/// </para>
+		/// <para>
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetModuleFileNameEx</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
+		/// the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Enumerating All Modules for a Process.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The psapi.h header defines GetModuleFileNameEx as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexa DWORD GetModuleFileNameExA( HANDLE
+		// hProcess, HMODULE hModule, LPSTR lpFilename, DWORD nSize );
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("psapi.h", MSDNShortId = "NF:psapi.GetModuleFileNameExA")]
+		public static extern uint GetModuleFileNameEx(HPROCESS hProcess, [Optional] HINSTANCE hModule, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpFilename, uint nSize);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified module in the MODULEINFO structure.</para>
@@ -791,14 +866,14 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetModuleInformation</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// K32GetModuleInformation. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
-		/// program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as K32GetModuleInformation. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
+		/// the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getmoduleinformation BOOL GetModuleInformation( HANDLE
 		// hProcess, HMODULE hModule, LPMODULEINFO lpmodinfo, DWORD cb );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib_Psapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "afb9f4c8-c8ae-4497-96c1-b559cfa2cedf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetModuleInformation(HPROCESS hProcess, HINSTANCE hModule, out MODULEINFO lpmodinfo, uint cb);
@@ -829,14 +904,14 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetPerformanceInfo</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetPerformanceInfo</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the program
-		/// with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetPerformanceInfo</c>. To ensure correct resolution of symbols, add Psapi.lib to the TARGETLIBS macro and compile the
+		/// program with –DPSAPI_VERSION=1. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getperformanceinfo BOOL GetPerformanceInfo(
 		// PPERFORMANCE_INFORMATION pPerformanceInformation, DWORD cb );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib_Psapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "21655278-49da-4e63-a4f9-0ee9f6179f4a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetPerformanceInfo(out PERFORMANCE_INFORMATION pPerformanceInformation, uint cb);
@@ -863,10 +938,10 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// The file Psapi.dll is installed in the %windir%\System32 directory. If there is another copy of this DLL on your computer, it can
-		/// lead to the following error when running applications on your system: "The procedure entry point GetProcessImageFileName could
-		/// not be located in the dynamic link library PSAPI.DLL." To work around this problem, locate any versions that are not in the
-		/// %windir%\System32 directory and delete or rename them, then restart.
+		/// The file Psapi.dll is installed in the %windir%\System32 directory. If there is another copy of this DLL on your computer, it
+		/// can lead to the following error when running applications on your system: "The procedure entry point GetProcessImageFileName
+		/// could not be located in the dynamic link library PSAPI.DLL." To work around this problem, locate any versions that are not in
+		/// the %windir%\System32 directory and delete or rename them, then restart.
 		/// </para>
 		/// <para>
 		/// The <c>GetProcessImageFileName</c> function returns the path in device form, rather than drive letters. For example, the file
@@ -885,19 +960,19 @@ namespace Vanara.PInvoke
 		/// version number affects the name used to call the function and the library that a program must load.
 		/// </para>
 		/// <para>
-		/// If <c>PSAPI_VERSION</c> is 2 or greater, this function is defined as <c>K32GetProcessImageFileName</c> in Psapi.h and exported in
-		/// Kernel32.lib and Kernel32.dll. If <c>PSAPI_VERSION</c> is 1, this function is defined as <c>GetProcessImageFileName</c> in
+		/// If <c>PSAPI_VERSION</c> is 2 or greater, this function is defined as <c>K32GetProcessImageFileName</c> in Psapi.h and exported
+		/// in Kernel32.lib and Kernel32.dll. If <c>PSAPI_VERSION</c> is 1, this function is defined as <c>GetProcessImageFileName</c> in
 		/// Psapi.h and exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetProcessImageFileName</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetProcessImageFileName</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
-		/// the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetProcessImageFileName</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and
+		/// compile the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getprocessimagefilenamea DWORD GetProcessImageFileNameA(
 		// HANDLE hProcess, LPSTR lpImageFileName, DWORD nSize );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "819fc2f4-0801-417b-9cbb-d7fd2894634e")]
 		public static extern uint GetProcessImageFileName(HPROCESS hProcess, StringBuilder lpImageFileName, uint nSize);
 
@@ -916,8 +991,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="ppsmemCounters">
 		/// <para>
-		/// A pointer to the PROCESS_MEMORY_COUNTERS or PROCESS_MEMORY_COUNTERS_EX structure that receives information about the memory usage
-		/// of the process.
+		/// A pointer to the PROCESS_MEMORY_COUNTERS or PROCESS_MEMORY_COUNTERS_EX structure that receives information about the memory
+		/// usage of the process.
 		/// </para>
 		/// </param>
 		/// <param name="cb">
@@ -938,16 +1013,16 @@ namespace Vanara.PInvoke
 		/// and exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetProcessMemoryInfo</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetProcessMemoryInfo</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
-		/// the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetProcessMemoryInfo</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and
+		/// compile the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>For an example, see Collecting Memory Usage Information for a Process.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getprocessmemoryinfo BOOL GetProcessMemoryInfo( HANDLE
 		// Process, PPROCESS_MEMORY_COUNTERS ppsmemCounters, DWORD cb );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "12990e8d-6097-4502-824e-db6c3f76c715")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetProcessMemoryInfo(HPROCESS Process, out PROCESS_MEMORY_COUNTERS ppsmemCounters, uint cb);
@@ -967,8 +1042,8 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="ppsmemCounters">
 		/// <para>
-		/// A pointer to the PROCESS_MEMORY_COUNTERS or PROCESS_MEMORY_COUNTERS_EX structure that receives information about the memory usage
-		/// of the process.
+		/// A pointer to the PROCESS_MEMORY_COUNTERS or PROCESS_MEMORY_COUNTERS_EX structure that receives information about the memory
+		/// usage of the process.
 		/// </para>
 		/// </param>
 		/// <param name="cb">
@@ -989,16 +1064,16 @@ namespace Vanara.PInvoke
 		/// and exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetProcessMemoryInfo</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetProcessMemoryInfo</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
-		/// the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetProcessMemoryInfo</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and
+		/// compile the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>For an example, see Collecting Memory Usage Information for a Process.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getprocessmemoryinfo BOOL GetProcessMemoryInfo( HANDLE
 		// Process, PPROCESS_MEMORY_COUNTERS ppsmemCounters, DWORD cb );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "12990e8d-6097-4502-824e-db6c3f76c715")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetProcessMemoryInfo(HPROCESS Process, out PROCESS_MEMORY_COUNTERS_EX ppsmemCounters, uint cb);
@@ -1063,14 +1138,14 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetWsChanges</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetWsChanges</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetWsChanges</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
 		/// program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getwschanges BOOL GetWsChanges( HANDLE hProcess,
 		// PPSAPI_WS_WATCH_INFORMATION lpWatchInfo, DWORD cb );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib_Psapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "ace5106c-9c7b-4d5f-a69a-c3a8bff0bb2d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetWsChanges(HPROCESS hProcess, IntPtr lpWatchInfo, uint cb);
@@ -1082,12 +1157,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>To retrieve extended information, use the GetWsChangesEx function.</para>
 		/// </summary>
-		/// <param name="hProcess">A handle to the process. The handle must have the <c>PROCESS_QUERY_INFORMATION</c> access right. For more information, see
-		/// Process Security and Access Rights.</param>
+		/// <param name="hProcess">
+		/// A handle to the process. The handle must have the <c>PROCESS_QUERY_INFORMATION</c> access right. For more information, see
+		/// Process Security and Access Rights.
+		/// </param>
 		/// <param name="sizeHint">The size at which to initially allocate the buffer. The default is 16KB.</param>
-		/// <returns>
-		/// An array of PSAPI_WS_WATCH_INFORMATION structures.
-		/// </returns>
+		/// <returns>An array of PSAPI_WS_WATCH_INFORMATION structures.</returns>
 		/// <remarks>
 		/// <para>
 		/// The operating system uses one buffer per process to maintain working set change records. If more than one application (or
@@ -1102,19 +1177,17 @@ namespace Vanara.PInvoke
 		[PInvokeData("psapi.h", MSDNShortId = "ace5106c-9c7b-4d5f-a69a-c3a8bff0bb2d")]
 		public static PSAPI_WS_WATCH_INFORMATION[] GetWsChanges(HPROCESS hProcess, int sizeHint = 1024 * 16)
 		{
-			using (var mem = new SafeHGlobalHandle(sizeHint))
+			using var mem = new SafeHGlobalHandle(sizeHint);
+			while (!GetWsChanges(hProcess, mem, mem.Size))
 			{
-				while (!GetWsChanges(hProcess, (IntPtr)mem, (uint)mem.Size))
-				{
-					var err = Win32Error.GetLastError();
-					if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) throw err.GetException();
-					mem.Size *= 2;
-				}
-				var cb = Marshal.SizeOf(typeof(PSAPI_WS_WATCH_INFORMATION));
-				var c = 0;
-				for (int i = 0; i < mem.Size && Marshal.ReadIntPtr((IntPtr)mem, i) != IntPtr.Zero; c++, i += cb) ;
-				return mem.ToArray<PSAPI_WS_WATCH_INFORMATION>(c);
+				var err = Win32Error.GetLastError();
+				if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) throw err.GetException();
+				mem.Size *= 2;
 			}
+			var cb = Marshal.SizeOf(typeof(PSAPI_WS_WATCH_INFORMATION));
+			var c = 0;
+			for (var i = 0; i < mem.Size && Marshal.ReadIntPtr(mem, i) != IntPtr.Zero; c++, i += cb) ;
+			return mem.ToArray<PSAPI_WS_WATCH_INFORMATION>(c);
 		}
 
 		/// <summary>
@@ -1142,8 +1215,8 @@ namespace Vanara.PInvoke
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call the GetLastError function.</para>
 		/// <para>
-		/// The GetLastError function returns <c>ERROR_INSUFFICIENT_BUFFER</c> if the lpWatchInfoEx buffer is not large enough to contain all
-		/// the working set change records; the buffer is returned empty. Reallocate a larger block of memory for the buffer and call again.
+		/// The GetLastError function returns <c>ERROR_INSUFFICIENT_BUFFER</c> if the lpWatchInfoEx buffer is not large enough to contain
+		/// all the working set change records; the buffer is returned empty. Reallocate a larger block of memory for the buffer and call again.
 		/// </para>
 		/// </returns>
 		/// <remarks>
@@ -1153,8 +1226,8 @@ namespace Vanara.PInvoke
 		/// complete accounting of the working set changes because each call empties the buffer.
 		/// </para>
 		/// <para>
-		/// The operating system does not record new change records while it is processing the query (and emptying the buffer). This function
-		/// sets the error code to <c>NO_MORE_ENTRIES</c> if a concurrent query is received while it is processing another query.
+		/// The operating system does not record new change records while it is processing the query (and emptying the buffer). This
+		/// function sets the error code to <c>NO_MORE_ENTRIES</c> if a concurrent query is received while it is processing another query.
 		/// </para>
 		/// <para>
 		/// If the buffer becomes full, no new records are added to the buffer until this function or the InitializeProcessForWsWatch
@@ -1172,14 +1245,14 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32GetWsChangesEx</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>GetWsChangesEx</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>GetWsChangesEx</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
 		/// program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getwschangesex BOOL GetWsChangesEx( HANDLE hProcess,
 		// PPSAPI_WS_WATCH_INFORMATION_EX lpWatchInfoEx, PDWORD cb );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "8572db5c-2ffc-424f-8cec-b6a6902fed62")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetWsChangesEx(HPROCESS hProcess, IntPtr lpWatchInfoEx, ref uint cb);
@@ -1200,8 +1273,8 @@ namespace Vanara.PInvoke
 		/// complete accounting of the working set changes because each call empties the buffer.
 		/// </para>
 		/// <para>
-		/// The operating system does not record new change records while it is processing the query (and emptying the buffer). This function
-		/// sets the error code to <c>NO_MORE_ENTRIES</c> if a concurrent query is received while it is processing another query.
+		/// The operating system does not record new change records while it is processing the query (and emptying the buffer). This
+		/// function sets the error code to <c>NO_MORE_ENTRIES</c> if a concurrent query is received while it is processing another query.
 		/// </para>
 		/// <para>
 		/// If the buffer becomes full, no new records are added to the buffer until this function or the InitializeProcessForWsWatch
@@ -1219,18 +1292,16 @@ namespace Vanara.PInvoke
 				var err = Win32Error.GetLastError();
 				if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) throw err.GetException();
 			}
-			using (var mem = new SafeHGlobalHandle((int)sz))
+			using var mem = new SafeHGlobalHandle((int)sz);
+			if (!GetWsChangesEx(hProcess, mem, ref sz))
 			{
-				if (!GetWsChangesEx(hProcess, (IntPtr)mem, ref sz))
-				{
-					var err = Win32Error.GetLastError();
-					if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) throw err.GetException();
-				}
-				var cb = Marshal.SizeOf(typeof(PSAPI_WS_WATCH_INFORMATION_EX));
-				var c = 0;
-				for (int i = 0; i < mem.Size && Marshal.ReadIntPtr((IntPtr)mem, i) != IntPtr.Zero; c++, i += cb) ;
-				return mem.ToArray<PSAPI_WS_WATCH_INFORMATION_EX>(c);
+				var err = Win32Error.GetLastError();
+				if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) throw err.GetException();
 			}
+			var cb = Marshal.SizeOf(typeof(PSAPI_WS_WATCH_INFORMATION_EX));
+			var c = 0;
+			for (var i = 0; i < mem.Size && Marshal.ReadIntPtr(mem, i) != IntPtr.Zero; c++, i += cb) ;
+			return mem.ToArray<PSAPI_WS_WATCH_INFORMATION_EX>(c);
 		}
 
 		/// <summary>
@@ -1259,14 +1330,14 @@ namespace Vanara.PInvoke
 		/// <c>InitializeProcessForWsWatch</c> in Psapi.h and exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32InitializeProcessForWsWatch</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>InitializeProcessForWsWatch</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>InitializeProcessForWsWatch</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and
 		/// compile the program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-initializeprocessforwswatch BOOL InitializeProcessForWsWatch(
 		// HANDLE hProcess );
-		[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "c928656c-a59d-41b5-9434-911329b0278e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool InitializeProcessForWsWatch(HPROCESS hProcess);
@@ -1288,8 +1359,9 @@ namespace Vanara.PInvoke
 		/// <para>A pointer to the buffer that receives the information. For more information, see PSAPI_WORKING_SET_INFORMATION.</para>
 		/// <para>
 		/// If the buffer pointed to by the pv parameter is not large enough to contain all working set entries for the target process, the
-		/// function fails with <c>ERROR_BAD_LENGTH</c>. In this case, the <c>NumberOfEntries</c> member of the PSAPI_WORKING_SET_INFORMATION
-		/// structure is set to the required number of entries, but the function does not return information about the working set entries.
+		/// function fails with <c>ERROR_BAD_LENGTH</c>. In this case, the <c>NumberOfEntries</c> member of the
+		/// PSAPI_WORKING_SET_INFORMATION structure is set to the required number of entries, but the function does not return information
+		/// about the working set entries.
 		/// </para>
 		/// </param>
 		/// <param name="cb">
@@ -1310,14 +1382,14 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32QueryWorkingSet</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>QueryWorkingSet</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>QueryWorkingSet</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
 		/// program with <c>-DPSAPI_VERSION=1</c>. To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-queryworkingset BOOL QueryWorkingSet( HANDLE hProcess, PVOID
 		// pv, DWORD cb );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib_Psapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "b932153f-2bbd-460e-8ff7-b3e493c397bb")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool QueryWorkingSet(HPROCESS hProcess, IntPtr pv, uint cb);
@@ -1335,23 +1407,19 @@ namespace Vanara.PInvoke
 		/// more information, see Process Security and Access Rights.
 		/// </para>
 		/// </param>
-		/// <returns>
-		/// A list of <see cref="PSAPI_WORKING_SET_BLOCK"/> entires.
-		/// </returns>
+		/// <returns>A list of <see cref="PSAPI_WORKING_SET_BLOCK"/> entires.</returns>
 		[PInvokeData("psapi.h", MSDNShortId = "b932153f-2bbd-460e-8ff7-b3e493c397bb")]
 		public static PSAPI_WORKING_SET_BLOCK[] QueryWorkingSet(HPROCESS hProcess)
 		{
-			using (var mem = SafeHGlobalHandle.CreateFromStructure<PSAPI_WORKING_SET_INFORMATION>())
+			using var mem = SafeHGlobalHandle.CreateFromStructure<PSAPI_WORKING_SET_INFORMATION>();
+			var entries = 0;
+			while (!QueryWorkingSet(GetCurrentProcess(), mem, mem.Size))
 			{
-				var entries = 0;
-				while (!QueryWorkingSet(GetCurrentProcess(), (IntPtr)mem, (uint)mem.Size))
-				{
-					entries = (int)mem.ToStructure<UIntPtr>().ToUInt64();
-					mem.Size = (entries + 1) * UIntPtr.Size + 1024;
-				}
 				entries = (int)mem.ToStructure<UIntPtr>().ToUInt64();
-				return mem.ToArray<PSAPI_WORKING_SET_BLOCK>(entries, UIntPtr.Size);
+				mem.Size = (entries + 1) * UIntPtr.Size + 1024;
 			}
+			entries = (int)mem.ToStructure<UIntPtr>().ToUInt64();
+			return mem.ToArray<PSAPI_WORKING_SET_BLOCK>(entries, UIntPtr.Size);
 		}
 
 		/// <summary>
@@ -1392,16 +1460,16 @@ namespace Vanara.PInvoke
 		/// exported in Psapi.lib and Psapi.dll as a wrapper that calls <c>K32QueryWorkingSetEx</c>.
 		/// </para>
 		/// <para>
-		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function as
-		/// <c>QueryWorkingSetEx</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile the
-		/// program with "–DPSAPI_VERSION=1". To use run-time dynamic linking, load Psapi.dll.
+		/// Programs that must run on earlier versions of Windows as well as Windows 7 and later versions should always call this function
+		/// as <c>QueryWorkingSetEx</c>. To ensure correct resolution of symbols, add Psapi.lib to the <c>TARGETLIBS</c> macro and compile
+		/// the program with "–DPSAPI_VERSION=1". To use run-time dynamic linking, load Psapi.dll.
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>For an example, see Allocating Memory from a NUMA Node.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-queryworkingsetex BOOL QueryWorkingSetEx( HANDLE hProcess,
 		// PVOID pv, DWORD cb );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib_Psapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "59ae76c9-e954-4648-9c9f-787136375b02")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool QueryWorkingSetEx(HPROCESS hProcess, [In, Out] PSAPI_WORKING_SET_EX_INFORMATION[] pv, uint cb);
@@ -1409,8 +1477,10 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Retrieves extended information about the pages at specific virtual addresses in the address space of the specified process.
 		/// </summary>
-		/// <param name="hProcess">A handle to the process. The handle must have the <c>PROCESS_QUERY_INFORMATION</c> and <c>PROCESS_VM_READ</c> access rights. For
-		/// more information, see Process Security and Access Rights.</param>
+		/// <param name="hProcess">
+		/// A handle to the process. The handle must have the <c>PROCESS_QUERY_INFORMATION</c> and <c>PROCESS_VM_READ</c> access rights. For
+		/// more information, see Process Security and Access Rights.
+		/// </param>
 		/// <param name="virtualAddresses">The virtual addresses.</param>
 		/// <returns>
 		/// An array of PSAPI_WORKING_SET_EX_INFORMATION structures. On input, each item in the array specifies a virtual address of
@@ -1424,7 +1494,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("psapi.h", MSDNShortId = "59ae76c9-e954-4648-9c9f-787136375b02")]
 		public static PSAPI_WORKING_SET_EX_INFORMATION[] QueryWorkingSetEx(HPROCESS hProcess, [Optional] params IntPtr[] virtualAddresses)
 		{
-			var info = virtualAddresses == null || virtualAddresses.Length == 0 ?
+			PSAPI_WORKING_SET_EX_INFORMATION[] info = virtualAddresses == null || virtualAddresses.Length == 0 ?
 				Array.ConvertAll(QueryWorkingSet(hProcess), b => new PSAPI_WORKING_SET_EX_INFORMATION() { VirtualAddress = b.VirtualPage }) :
 				Array.ConvertAll(virtualAddresses, p => new PSAPI_WORKING_SET_EX_INFORMATION() { VirtualAddress = p });
 
@@ -1433,8 +1503,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains information about a pagefile.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-_enum_page_file_information
-		// typedef struct _ENUM_PAGE_FILE_INFORMATION { DWORD cb; DWORD Reserved; SIZE_T TotalSize; SIZE_T TotalInUse; SIZE_T PeakUsage; } ENUM_PAGE_FILE_INFORMATION, *PENUM_PAGE_FILE_INFORMATION;
+		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-_enum_page_file_information typedef struct
+		// _ENUM_PAGE_FILE_INFORMATION { DWORD cb; DWORD Reserved; SIZE_T TotalSize; SIZE_T TotalInUse; SIZE_T PeakUsage; }
+		// ENUM_PAGE_FILE_INFORMATION, *PENUM_PAGE_FILE_INFORMATION;
 		[PInvokeData("psapi.h", MSDNShortId = "020f3be8-f624-4788-8079-0f7679c9bef0")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct ENUM_PAGE_FILE_INFORMATION
@@ -1514,9 +1585,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// The current maximum number of pages that can be committed by the system without extending the paging file(s). This number can
-			/// change if memory is added or deleted, or if pagefiles have grown, shrunk, or been added. If the paging file can be extended,
-			/// this is a soft limit.
+			/// The current maximum number of pages that can be committed by the system without extending the paging file(s). This number
+			/// can change if memory is added or deleted, or if pagefiles have grown, shrunk, or been added. If the paging file can be
+			/// extended, this is a soft limit.
 			/// </para>
 			/// </summary>
 			public SizeT CommitLimit;
@@ -1580,7 +1651,7 @@ namespace Vanara.PInvoke
 			public uint ThreadCount;
 
 			/// <summary>A default initialized instance.</summary>
-			public static readonly PERFORMANCE_INFORMATION Default = new PERFORMANCE_INFORMATION { cb = (uint)Marshal.SizeOf(typeof(PERFORMANCE_INFORMATION)) };
+			public static readonly PERFORMANCE_INFORMATION Default = new() { cb = (uint)Marshal.SizeOf(typeof(PERFORMANCE_INFORMATION)) };
 		}
 
 		/// <summary>
@@ -1648,7 +1719,7 @@ namespace Vanara.PInvoke
 			public SizeT PeakPagefileUsage;
 
 			/// <summary>A default initialized instance.</summary>
-			public static readonly PROCESS_MEMORY_COUNTERS Default = new PROCESS_MEMORY_COUNTERS { cb = (uint)Marshal.SizeOf(typeof(PROCESS_MEMORY_COUNTERS)) };
+			public static readonly PROCESS_MEMORY_COUNTERS Default = new() { cb = (uint)Marshal.SizeOf(typeof(PROCESS_MEMORY_COUNTERS)) };
 		}
 
 		/// <summary>Contains extended memory statistics for a process.</summary>
@@ -1705,12 +1776,14 @@ namespace Vanara.PInvoke
 			public SizeT PrivateUsage;
 
 			/// <summary>A default initialized instance.</summary>
-			public static readonly PROCESS_MEMORY_COUNTERS_EX Default = new PROCESS_MEMORY_COUNTERS_EX { cb = (uint)Marshal.SizeOf(typeof(PROCESS_MEMORY_COUNTERS_EX)) };
+			public static readonly PROCESS_MEMORY_COUNTERS_EX Default = new() { cb = (uint)Marshal.SizeOf(typeof(PROCESS_MEMORY_COUNTERS_EX)) };
 		}
 
 		/// <summary>Contains working set information for a page.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-psapi_working_set_block
-		// typedef union _PSAPI_WORKING_SET_BLOCK { ULONG_PTR Flags; struct { ULONG_PTR Protection : 5; ULONG_PTR ShareCount : 3; ULONG_PTR Shared : 1; ULONG_PTR Reserved : 3; #if ... ULONG_PTR VirtualPage : 52; #elif ULONG_PTR VirtualPage : 52; #elif ULONG_PTR VirtualPage : 20; #else ULONG_PTR VirtualPage : 20; #endif }; } PSAPI_WORKING_SET_BLOCK, *PPSAPI_WORKING_SET_BLOCK;
+		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-psapi_working_set_block typedef union _PSAPI_WORKING_SET_BLOCK
+		// { ULONG_PTR Flags; struct { ULONG_PTR Protection : 5; ULONG_PTR ShareCount : 3; ULONG_PTR Shared : 1; ULONG_PTR Reserved : 3; #if
+		// ... ULONG_PTR VirtualPage : 52; #elif ULONG_PTR VirtualPage : 52; #elif ULONG_PTR VirtualPage : 20; #else ULONG_PTR VirtualPage :
+		// 20; #endif }; } PSAPI_WORKING_SET_BLOCK, *PPSAPI_WORKING_SET_BLOCK;
 		[PInvokeData("psapi.h", MSDNShortId = "feb64235-1003-4595-a6a9-aca1f94f94b8")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PSAPI_WORKING_SET_BLOCK
@@ -1727,166 +1800,171 @@ namespace Vanara.PInvoke
 			public uint ShareCount => GetBits(Flags.ToUInt32(), 5, 3);
 
 			/// <summary>
-			///   <para>The protection attributes of the page. This member can be one of the following values.</para>
-			///   <list type="table">
-			///     <listheader>
-			///       <term>Value</term>
-			///       <term>Meaning</term>
-			///     </listheader>
-			///     <item>
-			///       <term>0</term>
-			///       <term>The page is not accessed.</term>
-			///     </item>
-			///     <item>
-			///       <term>1</term>
-			///       <term>Read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>2</term>
-			///       <term>Executable.</term>
-			///     </item>
-			///     <item>
-			///       <term>3</term>
-			///       <term>Executable and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>4</term>
-			///       <term>Read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>5</term>
-			///       <term>Copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>6</term>
-			///       <term>Executable and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>7</term>
-			///       <term>Executable and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>8</term>
-			///       <term>The page is not accessed.</term>
-			///     </item>
-			///     <item>
-			///       <term>9</term>
-			///       <term>Non-cacheable and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>10</term>
-			///       <term>Non-cacheable and executable.</term>
-			///     </item>
-			///     <item>
-			///       <term>11</term>
-			///       <term>Non-cacheable, executable, and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>12</term>
-			///       <term>Non-cacheable and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>13</term>
-			///       <term>Non-cacheable and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>14</term>
-			///       <term>Non-cacheable, executable, and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>15</term>
-			///       <term>Non-cacheable, executable, and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>16</term>
-			///       <term>The page is not accessed.</term>
-			///     </item>
-			///     <item>
-			///       <term>17</term>
-			///       <term>Guard page and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>18</term>
-			///       <term>Guard page and executable.</term>
-			///     </item>
-			///     <item>
-			///       <term>19</term>
-			///       <term>Guard page, executable, and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>20</term>
-			///       <term>Guard page and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>21</term>
-			///       <term>Guard page and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>22</term>
-			///       <term>Guard page, executable, and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>23</term>
-			///       <term>Guard page, executable, and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>24</term>
-			///       <term>The page is not accessed.</term>
-			///     </item>
-			///     <item>
-			///       <term>25</term>
-			///       <term>Non-cacheable, guard page, and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>26</term>
-			///       <term>Non-cacheable, guard page, and executable.</term>
-			///     </item>
-			///     <item>
-			///       <term>27</term>
-			///       <term>Non-cacheable, guard page, executable, and read-only.</term>
-			///     </item>
-			///     <item>
-			///       <term>28</term>
-			///       <term>Non-cacheable, guard page, and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>29</term>
-			///       <term>Non-cacheable, guard page, and copy-on-write.</term>
-			///     </item>
-			///     <item>
-			///       <term>30</term>
-			///       <term>Non-cacheable, guard page, executable, and read/write.</term>
-			///     </item>
-			///     <item>
-			///       <term>31</term>
-			///       <term>Non-cacheable, guard page, executable, and copy-on-write.</term>
-			///     </item>
-			///   </list>
+			/// <para>The protection attributes of the page. This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>The page is not accessed.</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Executable.</term>
+			/// </item>
+			/// <item>
+			/// <term>3</term>
+			/// <term>Executable and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>4</term>
+			/// <term>Read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>5</term>
+			/// <term>Copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>6</term>
+			/// <term>Executable and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>7</term>
+			/// <term>Executable and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>8</term>
+			/// <term>The page is not accessed.</term>
+			/// </item>
+			/// <item>
+			/// <term>9</term>
+			/// <term>Non-cacheable and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>10</term>
+			/// <term>Non-cacheable and executable.</term>
+			/// </item>
+			/// <item>
+			/// <term>11</term>
+			/// <term>Non-cacheable, executable, and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>12</term>
+			/// <term>Non-cacheable and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>13</term>
+			/// <term>Non-cacheable and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>14</term>
+			/// <term>Non-cacheable, executable, and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>15</term>
+			/// <term>Non-cacheable, executable, and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>16</term>
+			/// <term>The page is not accessed.</term>
+			/// </item>
+			/// <item>
+			/// <term>17</term>
+			/// <term>Guard page and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>18</term>
+			/// <term>Guard page and executable.</term>
+			/// </item>
+			/// <item>
+			/// <term>19</term>
+			/// <term>Guard page, executable, and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>20</term>
+			/// <term>Guard page and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>21</term>
+			/// <term>Guard page and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>22</term>
+			/// <term>Guard page, executable, and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>23</term>
+			/// <term>Guard page, executable, and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>24</term>
+			/// <term>The page is not accessed.</term>
+			/// </item>
+			/// <item>
+			/// <term>25</term>
+			/// <term>Non-cacheable, guard page, and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>26</term>
+			/// <term>Non-cacheable, guard page, and executable.</term>
+			/// </item>
+			/// <item>
+			/// <term>27</term>
+			/// <term>Non-cacheable, guard page, executable, and read-only.</term>
+			/// </item>
+			/// <item>
+			/// <term>28</term>
+			/// <term>Non-cacheable, guard page, and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>29</term>
+			/// <term>Non-cacheable, guard page, and copy-on-write.</term>
+			/// </item>
+			/// <item>
+			/// <term>30</term>
+			/// <term>Non-cacheable, guard page, executable, and read/write.</term>
+			/// </item>
+			/// <item>
+			/// <term>31</term>
+			/// <term>Non-cacheable, guard page, executable, and copy-on-write.</term>
+			/// </item>
+			/// </list>
 			/// </summary>
 			public uint Protection => GetBits(Flags.ToUInt32(), 0, 5);
 
 			/// <summary/>
-			public IntPtr VirtualPage => new IntPtr((long)Flags.ToUInt64() & ~0xFFFL);
+			public IntPtr VirtualPage => new((long)Flags.ToUInt64() & ~0xFFFL);
 		}
 
 		/// <summary>Contains extended working set information for a page.</summary>
-		// https://https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-psapi_working_set_ex_block
-		// typedef union _PSAPI_WORKING_SET_EX_BLOCK { ULONG_PTR Flags; union { struct { ULONG_PTR Valid : 1; ULONG_PTR ShareCount : 3; ULONG_PTR Win32Protection : 11; ULONG_PTR Shared : 1; ULONG_PTR Node : 6; ULONG_PTR Locked : 1; ULONG_PTR LargePage : 1; ULONG_PTR Reserved : 7; ULONG_PTR Bad : 1; ULONG_PTR ReservedUlong : 32; }; struct { ULONG_PTR Valid : 1; ULONG_PTR Reserved0 : 14; ULONG_PTR Shared : 1; ULONG_PTR Reserved1 : 15; ULONG_PTR Bad : 1; ULONG_PTR ReservedUlong : 32; } Invalid; }; } PSAPI_WORKING_SET_EX_BLOCK, *PPSAPI_WORKING_SET_EX_BLOCK;
+		// https://https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-psapi_working_set_ex_block typedef union
+		// _PSAPI_WORKING_SET_EX_BLOCK { ULONG_PTR Flags; union { struct { ULONG_PTR Valid : 1; ULONG_PTR ShareCount : 3; ULONG_PTR
+		// Win32Protection : 11; ULONG_PTR Shared : 1; ULONG_PTR Node : 6; ULONG_PTR Locked : 1; ULONG_PTR LargePage : 1; ULONG_PTR Reserved
+		// : 7; ULONG_PTR Bad : 1; ULONG_PTR ReservedUlong : 32; }; struct { ULONG_PTR Valid : 1; ULONG_PTR Reserved0 : 14; ULONG_PTR Shared
+		// : 1; ULONG_PTR Reserved1 : 15; ULONG_PTR Bad : 1; ULONG_PTR ReservedUlong : 32; } Invalid; }; } PSAPI_WORKING_SET_EX_BLOCK, *PPSAPI_WORKING_SET_EX_BLOCK;
 		[PInvokeData("psapi.h", MSDNShortId = "4ba17fa0-2aed-4099-9380-fc13f1b826ca")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PSAPI_WORKING_SET_EX_BLOCK
 		{
-			/// <summary>The working set information. See the description of the structure members for information about the layout of this variable.</summary>
+			/// <summary>
+			/// The working set information. See the description of the structure members for information about the layout of this variable.
+			/// </summary>
 			public UIntPtr Flags;
 
 			/// <summary>If <see langword="true"/>, the page is valid; otherwise, the page is not valid.</summary>
 			public bool Valid => GetBit(Flags.ToUInt32(), 0);
 
 			/// <summary>Gets a value indicating whether the virtual page is locked in physical memory.</summary>
-			public bool Locked => Valid ? GetBit(Flags.ToUInt32(), 22) : false;
+			public bool Locked => Valid && GetBit(Flags.ToUInt32(), 22);
 
 			/// <summary>Gets a value indicating whether this page is a large page.</summary>
-			public bool LargePage => Valid ? GetBit(Flags.ToUInt32(), 23) : false;
+			public bool LargePage => Valid && GetBit(Flags.ToUInt32(), 23);
 
 			/// <summary>Gets a value indicating whether the page is has been reported as bad.</summary>
 			public bool Bad => GetBit(Flags.ToUInt32(), 31);
@@ -2040,6 +2118,21 @@ namespace Vanara.PInvoke
 			public uint Node => Valid ? GetBits(Flags.ToUInt32(), 16, 6) : 0U;
 		}
 
+		/// <summary>Contains extended working set information for a process.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-_psapi_working_set_ex_information typedef struct
+		// _PSAPI_WORKING_SET_EX_INFORMATION { PVOID VirtualAddress; PSAPI_WORKING_SET_EX_BLOCK VirtualAttributes; }
+		// PSAPI_WORKING_SET_EX_INFORMATION, *PPSAPI_WORKING_SET_EX_INFORMATION;
+		[PInvokeData("psapi.h", MSDNShortId = "d3500737-b9af-41a8-bf69-61d0bfbd6ce4")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PSAPI_WORKING_SET_EX_INFORMATION
+		{
+			/// <summary>The virtual address.</summary>
+			public IntPtr VirtualAddress;
+
+			/// <summary>A PSAPI_WORKING_SET_EX_BLOCK union that indicates the attributes of the page at <c>VirtualAddress</c>.</summary>
+			public PSAPI_WORKING_SET_EX_BLOCK VirtualAttributes;
+		}
+
 		/// <summary>Contains working set information for a process.</summary>
 		// https://docs.microsoft.com/zh-cn/windows/win32/api/psapi/ns-psapi-psapi_working_set_information typedef struct
 		// _PSAPI_WORKING_SET_INFORMATION { ULONG_PTR NumberOfEntries; PSAPI_WORKING_SET_BLOCK WorkingSetInfo[1]; }
@@ -2071,20 +2164,6 @@ namespace Vanara.PInvoke
 					}
 				}
 			}
-		}
-
-		/// <summary>Contains extended working set information for a process.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-_psapi_working_set_ex_information
-		// typedef struct _PSAPI_WORKING_SET_EX_INFORMATION { PVOID VirtualAddress; PSAPI_WORKING_SET_EX_BLOCK VirtualAttributes; } PSAPI_WORKING_SET_EX_INFORMATION, *PPSAPI_WORKING_SET_EX_INFORMATION;
-		[PInvokeData("psapi.h", MSDNShortId = "d3500737-b9af-41a8-bf69-61d0bfbd6ce4")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct PSAPI_WORKING_SET_EX_INFORMATION
-		{
-			/// <summary>The virtual address.</summary>
-			public IntPtr VirtualAddress;
-
-			/// <summary>A PSAPI_WORKING_SET_EX_BLOCK union that indicates the attributes of the page at <c>VirtualAddress</c>.</summary>
-			public PSAPI_WORKING_SET_EX_BLOCK VirtualAttributes;
 		}
 
 		/// <summary>
