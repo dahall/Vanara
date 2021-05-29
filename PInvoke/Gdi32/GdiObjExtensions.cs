@@ -45,7 +45,7 @@ namespace Vanara.PInvoke
 			using var memoryHdc = hdc.GetCompatibleDCHandle();
 			// Create a device-independent bitmap and select it into our DC
 			var info = new BITMAPINFO(bounds.Width, -bounds.Height);
-			using (memoryHdc.SelectObject(CreateDIBSection(hdc, ref info, 0, out var pBits, IntPtr.Zero, 0)))
+			using (memoryHdc.SelectObject(CreateDIBSection(hdc, info, DIBColorMode.DIB_RGB_COLORS, out var pBits)))
 			{
 				// Call method
 				drawMethod(memoryHdc, bounds);
