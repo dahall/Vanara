@@ -2088,7 +2088,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd144871(v=vs.85).aspx
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winuser.h", MSDNShortId = "dd144871")]
-		public static extern SafeHDC GetDC(HWND ptr);
+		public static extern SafeHDC GetDC([In, Optional] HWND ptr);
 
 		/// <summary>
 		/// <para>
@@ -2187,7 +2187,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdcex HDC GetDCEx( HWND hWnd, HRGN hrgnClip, DWORD flags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "590cf928-0ad6-43f8-97e9-1dafbcfa9f49")]
-		public static extern HDC GetDCEx(HWND hWnd, HRGN hrgnClip, DCX flags);
+		public static extern HDC GetDCEx([In, Optional] HWND hWnd, [In, Optional] HRGN hrgnClip, DCX flags);
 
 		/// <summary>Retrieves the count of handles to graphical user interface (GUI) objects in use by the specified process.</summary>
 		/// <param name="hProcess">
