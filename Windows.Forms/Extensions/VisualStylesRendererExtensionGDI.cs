@@ -195,7 +195,7 @@ namespace Vanara.Extensions
 			{
 				// Create a device-independent bitmap and select it into our DC
 				var info = new BITMAPINFO(bounds.Width, -bounds.Height);
-				using (memoryHdc.SelectObject(CreateDIBSection(HDC.NULL, ref info, DIBColorMode.DIB_RGB_COLORS, out var ppv, IntPtr.Zero, 0)))
+				using (memoryHdc.SelectObject(CreateDIBSection(HDC.NULL, info, DIBColorMode.DIB_RGB_COLORS, out var ppv)))
 				{
 					using (var memoryGraphics = (Graphics)memoryHdc)
 					{
