@@ -1277,7 +1277,7 @@ namespace Vanara.PInvoke
 			private const int RGBQUADSZ = 4;
 
 			/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
-			/// <param name="bmpInfo">The <see cref="SafeBITMAPINFO"/> value.</param>
+			/// <param name="bmpInfo">The <see cref="BITMAPINFO"/> value.</param>
 			public SafeBITMAPINFO(in BITMAPINFO bmpInfo) : base(BaseStructSize + (bmpInfo.bmiColors?.Length ?? 0) * RGBQUADSZ)
 			{
 				handle.Write(bmpInfo.bmiHeader, 0, Size);
@@ -1385,6 +1385,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Represents the <see langword="null"/> equivalent of this class instances.</summary>
 			public static new readonly SafeBITMAPINFO Null = new(IntPtr.Zero, false);
+
+			/// <summary>Performs an implicit conversion from <see cref=BITMAPINFO"/> to <see cref="SafeBITMAPINFO"/>.</summary>
+			/// <param name="bi">The <see cref="BITMAPINFO"/> value.</param>
+			/// <returns>The resulting <see cref="SafeBITMAPINFO"/> instance from the conversion.</returns>
+			public static implicit operator SafeBITMAPINFO(in BITMAPINFO bi) => new(bi);
 
 			/// <summary>Gets a header of the specified type <typeparamref name="T"/>.</summary>
 			/// <typeparam name="T">The type of the header to get.</typeparam>
