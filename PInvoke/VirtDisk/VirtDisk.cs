@@ -11,7 +11,10 @@ namespace Vanara.PInvoke
 	public static partial class VirtDisk
 	{
 		/// <summary>The virtual storage type vendor Microsoft</summary>
-		public static readonly Guid VIRTUAL_STORAGE_TYPE_VENDOR_MICROSOFT = new Guid("EC984AEC-A0F9-47e9-901F-71415A66345B");
+		public static readonly Guid VIRTUAL_STORAGE_TYPE_VENDOR_MICROSOFT = new(0xec984aec, 0xa0f9, 0x47e9, 0x90, 0x1f, 0x71, 0x41, 0x5a, 0x66, 0x34, 0x5b);
+
+		/// <summary>The virtual storage type vendor unknown.</summary>
+		public static readonly Guid VIRTUAL_STORAGE_TYPE_VENDOR_UNKNOWN = new(0x00000000, 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
 
 		/// <summary>Contains flags affecting the behavior of the ApplySnapshotVhdSet function.</summary>
 		[PInvokeData("VirtDisk.h", MSDNShortId = "mt638035")]
@@ -827,7 +830,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		[PInvokeData("VirtDisk.h")]
-		public static extern Win32Error AddVirtualDiskParent(VIRTUAL_DISK_HANDLE VirtualDiskHandle, [MarshalAs(UnmanagedType.LPWStr)] string ParentPath);
+		public static extern Win32Error AddVirtualDiskParent([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, [MarshalAs(UnmanagedType.LPWStr)] string ParentPath);
 
 		/// <summary>Applies a snapshot of the current virtual disk for VHD Set files.</summary>
 		/// <param name="VirtualDiskHandle">
@@ -842,7 +845,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		[PInvokeData("VirtDisk.h")]
-		public static extern Win32Error ApplySnapshotVhdSet(VIRTUAL_DISK_HANDLE VirtualDiskHandle, in APPLY_SNAPSHOT_VHDSET_PARAMETERS Parameters, APPLY_SNAPSHOT_VHDSET_FLAG Flags);
+		public static extern Win32Error ApplySnapshotVhdSet([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in APPLY_SNAPSHOT_VHDSET_PARAMETERS Parameters, APPLY_SNAPSHOT_VHDSET_FLAG Flags);
 
 		/// <summary>
 		/// Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.
@@ -872,8 +875,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		[PInvokeData("VirtDisk.h")]
-		public static extern Win32Error AttachVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, [Optional] PSECURITY_DESCRIPTOR SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags,
-			uint ProviderSpecificFlags, in ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, [In] IntPtr Overlapped);
+		public static extern Win32Error AttachVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, [In, Optional] PSECURITY_DESCRIPTOR SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags,
+			uint ProviderSpecificFlags, in ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, [In, Optional] IntPtr Overlapped);
 
 		/// <summary>
 		/// Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.
@@ -903,8 +906,39 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		[PInvokeData("VirtDisk.h")]
-		public static extern Win32Error AttachVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, [Optional] PSECURITY_DESCRIPTOR SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags,
-			uint ProviderSpecificFlags, in ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
+		public static extern Win32Error AttachVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, [In, Optional] PSECURITY_DESCRIPTOR SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags,
+			uint ProviderSpecificFlags, [In, Optional] IntPtr Parameters, [In, Optional] IntPtr Overlapped);
+
+		/// <summary>
+		/// Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.
+		/// </summary>
+		/// <param name="VirtualDiskHandle">
+		/// A handle to an open virtual disk. For information on how to open a virtual disk, see the OpenVirtualDisk function.
+		/// </param>
+		/// <param name="SecurityDescriptor">
+		/// An optional pointer to a SECURITY_DESCRIPTOR to apply to the attached virtual disk. If this parameter is NULL, the security
+		/// descriptor of the virtual disk image file is used.
+		/// <para>
+		/// Ensure that the security descriptor that AttachVirtualDisk applies to the attached virtual disk grants the write attributes
+		/// permission for the user, or that the security descriptor of the virtual disk image file grants the write attributes permission
+		/// for the user if you specify NULL for this parameter. If the security descriptor does not grant write attributes permission for a
+		/// user, Shell displays the following error when the user accesses the attached virtual disk: The Recycle Bin is corrupted. Do you
+		/// want to empty the Recycle Bin for this drive?
+		/// </para>
+		/// </param>
+		/// <param name="Flags">A valid combination of values of the ATTACH_VIRTUAL_DISK_FLAG enumeration.</param>
+		/// <param name="ProviderSpecificFlags">Flags specific to the type of virtual disk being attached. May be zero if none are required.</param>
+		/// <param name="Parameters">A pointer to a valid ATTACH_VIRTUAL_DISK_PARAMETERS structure that contains attachment parameter data.</param>
+		/// <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+		/// <returns>
+		/// Status of the request.
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>If the function fails, the return value is an error code. For more information, see System Error Codes.</para>
+		/// </returns>
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		[PInvokeData("VirtDisk.h")]
+		public static extern Win32Error AttachVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, [In, Optional] PSECURITY_DESCRIPTOR SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags,
+			uint ProviderSpecificFlags, in ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, in NativeOverlapped Overlapped);
 
 		/// <summary>Breaks a previously initiated mirror operation and sets the mirror to be the active virtual disk.</summary>
 		/// <param name="VirtualDiskHandle">
@@ -918,7 +952,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h", MSDNShortId = "hh448676")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error BreakMirrorVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle);
+		public static extern Win32Error BreakMirrorVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle);
 
 		/// <summary>Reduces the size of a virtual hard disk (VHD) backing store file.</summary>
 		/// <param name="VirtualDiskHandle">
@@ -970,7 +1004,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error CompactVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, COMPACT_VIRTUAL_DISK_FLAG Flags, in COMPACT_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
+		public static extern Win32Error CompactVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, COMPACT_VIRTUAL_DISK_FLAG Flags, in COMPACT_VIRTUAL_DISK_PARAMETERS Parameters, in NativeOverlapped Overlapped);
 
 		/// <summary>Reduces the size of a virtual hard disk (VHD) backing store file.</summary>
 		/// <param name="VirtualDiskHandle">
@@ -1022,7 +1056,59 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error CompactVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, COMPACT_VIRTUAL_DISK_FLAG Flags, in COMPACT_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped);
+		public static extern Win32Error CompactVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, COMPACT_VIRTUAL_DISK_FLAG Flags, in COMPACT_VIRTUAL_DISK_PARAMETERS Parameters, [In, Optional] IntPtr Overlapped);
+
+		/// <summary>Reduces the size of a virtual hard disk (VHD) backing store file.</summary>
+		/// <param name="VirtualDiskHandle">
+		/// A handle to the open virtual disk, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag in the
+		/// VirtualDiskAccessMask parameter passed to OpenVirtualDisk. For information on how to open a virtual disk, see the OpenVirtualDisk function.
+		/// </param>
+		/// <param name="Flags">Must be the COMPACT_VIRTUAL_DISK_FLAG_NONE value (0) of the COMPACT_VIRTUAL_DISK_FLAG enumeration.</param>
+		/// <param name="Parameters">
+		/// A optional pointer to a valid COMPACT_VIRTUAL_DISK_PARAMETERS structure that contains compaction parameter data.
+		/// </param>
+		/// <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code. For more
+		/// information, see System Error Codes.
+		/// </returns>
+		/// <remarks>
+		/// Compaction can be run only on a virtual disk that is dynamically expandable or differencing.
+		/// <para>There are two different types of compaction.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>
+		/// The first type, file-system-aware compaction, uses the NTFS file system to determine free space. This is done by attaching the
+		/// VHD as a read-only device by including the VIRTUAL_DISK_ACCESS_METAOPS and VIRTUAL_DISK_ACCESS_ATTACH_RO flags in the
+		/// VirtualDiskAccessMask parameter passed to OpenVirtualDisk, attaching the VHD by calling AttachVirtualDisk, and while the VHD is
+		/// attached calling CompactVirtualDisk. Detaching the VHD before compaction is done can cause compaction to return failure before it
+		/// is done (similar to cancellation of compaction).
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// The second type, file-system-agnostic compaction, does not involve the file system but only looks for VHD blocks filled entirely
+		/// with zeros (0). This is done by including the VIRTUAL_DISK_ACCESS_METAOPS flag in the VirtualDiskAccessMask parameter passed to
+		/// OpenVirtualDisk, and calling CompactVirtualDisk.
+		/// </description>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// File-system-aware compaction is the most efficient compaction type but using first the file-system-aware compaction followed by
+		/// the file-system-agnostic compaction will produce the smallest VHD.
+		/// </para>
+		/// <para>
+		/// A compaction operation on a virtual disk can be safely interrupted and re-run later. Re-opening a virtual disk file that has been
+		/// interrupted may result in the reduction of a virtual disk file's size at the time of opening.
+		/// </para>
+		/// <para>
+		/// Compaction can be CPU-intensive and/or I/O-intensive, depending on how large the virtual disk is and how many blocks require movement.
+		/// </para>
+		/// <para>The CompactVirtualDisk function runs on the virtual disk in the same security context as the caller.</para>
+		/// </remarks>
+		[PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error CompactVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, COMPACT_VIRTUAL_DISK_FLAG Flags, [In, Optional] IntPtr Parameters, [In, Optional] IntPtr Overlapped);
 
 		/// <summary>
 		/// Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.
@@ -1047,8 +1133,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern Win32Error CreateVirtualDisk(in VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, PSECURITY_DESCRIPTOR SecurityDescriptor,
-			CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags, in CREATE_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped, out SafeVIRTUAL_DISK_HANDLE Handle);
+		public static extern Win32Error CreateVirtualDisk(in VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask,
+			[In, Optional] PSECURITY_DESCRIPTOR SecurityDescriptor, CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags,
+			in CREATE_VIRTUAL_DISK_PARAMETERS Parameters, [In, Optional] IntPtr Overlapped, out SafeVIRTUAL_DISK_HANDLE Handle);
 
 		/// <summary>
 		/// Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.
@@ -1073,8 +1160,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern Win32Error CreateVirtualDisk(in VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, PSECURITY_DESCRIPTOR SecurityDescriptor,
-			CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags, in CREATE_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped, out SafeVIRTUAL_DISK_HANDLE Handle);
+		public static extern Win32Error CreateVirtualDisk(in VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask,
+			[In, Optional] PSECURITY_DESCRIPTOR SecurityDescriptor, CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags,
+			in CREATE_VIRTUAL_DISK_PARAMETERS Parameters, in NativeOverlapped Overlapped, out SafeVIRTUAL_DISK_HANDLE Handle);
 
 		/// <summary>Deletes a snapshot from a VHD Set file.</summary>
 		/// <param name="VirtualDiskHandle">A handle to the open virtual disk.</param>
@@ -1086,7 +1174,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error DeleteSnapshotVhdSet(VIRTUAL_DISK_HANDLE VirtualDiskHandle, in DELETE_SNAPSHOT_VHDSET_PARAMETERS Parameters, DELETE_SNAPSHOT_VHDSET_FLAG Flags);
+		public static extern Win32Error DeleteSnapshotVhdSet([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in DELETE_SNAPSHOT_VHDSET_PARAMETERS Parameters, DELETE_SNAPSHOT_VHDSET_FLAG Flags);
 
 		/// <summary>Deletes metadata from a virtual disk.</summary>
 		/// <param name="VirtualDiskHandle">A handle to the open virtual disk.</param>
@@ -1097,7 +1185,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error DeleteVirtualDiskMetadata(VIRTUAL_DISK_HANDLE VirtualDiskHandle, in Guid Item);
+		public static extern Win32Error DeleteVirtualDiskMetadata([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in Guid Item);
 
 		/// <summary>
 		/// Detaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate virtual disk provider to accomplish
@@ -1116,7 +1204,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error DetachVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, DETACH_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags);
+		public static extern Win32Error DetachVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, DETACH_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags);
 
 		/// <summary>Enumerates the metadata associated with a virtual disk.</summary>
 		/// <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
@@ -1135,7 +1223,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error EnumerateVirtualDiskMetadata(VIRTUAL_DISK_HANDLE VirtualDiskHandle, ref uint NumberOfItems, IntPtr Items);
+		public static extern Win32Error EnumerateVirtualDiskMetadata([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, ref uint NumberOfItems,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[] Items);
 
 		/// <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
 		/// <param name="VirtualDiskHandle">
@@ -1150,7 +1239,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error ExpandVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, EXPAND_VIRTUAL_DISK_FLAG Flags, in EXPAND_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped);
+		public static extern Win32Error ExpandVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, EXPAND_VIRTUAL_DISK_FLAG Flags,
+			in EXPAND_VIRTUAL_DISK_PARAMETERS Parameters, [In, Optional] IntPtr Overlapped);
 
 		/// <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
 		/// <param name="VirtualDiskHandle">
@@ -1165,7 +1255,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error ExpandVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, EXPAND_VIRTUAL_DISK_FLAG Flags, in EXPAND_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
+		public static extern Win32Error ExpandVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, EXPAND_VIRTUAL_DISK_FLAG Flags,
+			in EXPAND_VIRTUAL_DISK_PARAMETERS Parameters, in NativeOverlapped Overlapped);
 
 		/// <summary>Get the paths of all attached virtual disks.</summary>
 		/// <param name="PathsBufferSizeInBytes">Size of the buffer supplied in <paramref name="PathsBuffer"/>.</param>
@@ -1176,7 +1267,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error GetAllAttachedVirtualDiskPhysicalPaths(ref uint PathsBufferSizeInBytes, IntPtr PathsBuffer);
+		public static extern Win32Error GetAllAttachedVirtualDiskPhysicalPaths(ref uint PathsBufferSizeInBytes, [Out] IntPtr PathsBuffer);
 
 		/// <summary>
 		/// Returns the relationships between virtual hard disks (VHDs) or the volumes contained within those disks and their parent disk or volume.
@@ -1194,7 +1285,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error GetStorageDependencyInformation(VIRTUAL_DISK_HANDLE ObjectHandle, GET_STORAGE_DEPENDENCY_FLAG Flags, int StorageDependencyInfoSize, IntPtr StorageDependencyInfo, ref int SizeUsed);
+		public static extern Win32Error GetStorageDependencyInformation([In] VIRTUAL_DISK_HANDLE ObjectHandle, GET_STORAGE_DEPENDENCY_FLAG Flags,
+			int StorageDependencyInfoSize, [In, Out] IntPtr StorageDependencyInfo, ref int SizeUsed);
 
 		/// <summary>Retrieves information about a virtual hard disk (VHD).</summary>
 		/// <param name="VirtualDiskHandle">
@@ -1212,7 +1304,27 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error GetVirtualDiskInformation(VIRTUAL_DISK_HANDLE VirtualDiskHandle, ref uint VirtualDiskInfoSize, IntPtr VirtualDiskInfo, out uint SizeUsed);
+		public static extern Win32Error GetVirtualDiskInformation([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, ref uint VirtualDiskInfoSize,
+			ref GET_VIRTUAL_DISK_INFO VirtualDiskInfo, out uint SizeUsed);
+
+		/// <summary>Retrieves information about a virtual hard disk (VHD).</summary>
+		/// <param name="VirtualDiskHandle">
+		/// A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_GET_INFO flag.
+		/// </param>
+		/// <param name="VirtualDiskInfoSize">A pointer to a ULONG that contains the size of the VirtualDiskInfo parameter.</param>
+		/// <param name="VirtualDiskInfo">
+		/// A pointer to a valid <see cref="GET_VIRTUAL_DISK_INFO"/> structure. The format of the data returned is dependent on the value
+		/// passed in the Version member by the caller.
+		/// </param>
+		/// <param name="SizeUsed">A pointer to a ULONG that contains the size used.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual
+		/// disk object. If the function fails, the return value is an error code and the value of the Handle parameter is undefined.
+		/// </returns>
+		[PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error GetVirtualDiskInformation([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, ref uint VirtualDiskInfoSize,
+			[In, Out] IntPtr VirtualDiskInfo, out uint SizeUsed);
 
 		/// <summary>Retrieves the specified metadata from the virtual disk.</summary>
 		/// <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
@@ -1230,7 +1342,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error GetVirtualDiskMetadata(VIRTUAL_DISK_HANDLE VirtualDiskHandle, in Guid Item, ref uint MetaDataSize, IntPtr MetaData);
+		public static extern Win32Error GetVirtualDiskMetadata([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in Guid Item, ref uint MetaDataSize, [Out] IntPtr MetaData);
 
 		/// <summary>Checks the progress of an asynchronous virtual hard disk (VHD) operation.</summary>
 		/// <param name="VirtualDiskHandle">A valid handle to a virtual disk with a pending asynchronous operation.</param>
@@ -1246,7 +1358,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error GetVirtualDiskOperationProgress(VIRTUAL_DISK_HANDLE VirtualDiskHandle, ref NativeOverlapped Overlapped, out VIRTUAL_DISK_PROGRESS Progress);
+		public static extern Win32Error GetVirtualDiskOperationProgress([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in NativeOverlapped Overlapped, out VIRTUAL_DISK_PROGRESS Progress);
 
 		/// <summary>Retrieves the path to the physical device object that contains a virtual hard disk (VHD).</summary>
 		/// <param name="VirtualDiskHandle">
@@ -1260,7 +1372,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern Win32Error GetVirtualDiskPhysicalPath(VIRTUAL_DISK_HANDLE VirtualDiskHandle, ref int DiskPathSizeInBytes, StringBuilder DiskPath);
+		public static extern Win32Error GetVirtualDiskPhysicalPath([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, ref int DiskPathSizeInBytes, [Out] StringBuilder DiskPath);
 
 		/// <summary>Merges a child virtual hard disk (VHD) in a differencing chain with parent disks in the chain.</summary>
 		/// <param name="VirtualDiskHandle">
@@ -1275,7 +1387,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error MergeVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, MERGE_VIRTUAL_DISK_FLAG Flags, in MERGE_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped);
+		public static extern Win32Error MergeVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, MERGE_VIRTUAL_DISK_FLAG Flags,
+			in MERGE_VIRTUAL_DISK_PARAMETERS Parameters, [In, Optional] IntPtr Overlapped);
 
 		/// <summary>Merges a child virtual hard disk (VHD) in a differencing chain with parent disks in the chain.</summary>
 		/// <param name="VirtualDiskHandle">
@@ -1290,7 +1403,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error MergeVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, MERGE_VIRTUAL_DISK_FLAG Flags, in MERGE_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
+		public static extern Win32Error MergeVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, MERGE_VIRTUAL_DISK_FLAG Flags,
+			in MERGE_VIRTUAL_DISK_PARAMETERS Parameters, in NativeOverlapped Overlapped);
 
 		/// <summary>
 		/// Initiates a mirror operation for a virtual disk. Once the mirroring operation is initiated it will not complete until either
@@ -1310,7 +1424,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error MirrorVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, MIRROR_VIRTUAL_DISK_FLAG Flags, in MIRROR_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
+		public static extern Win32Error MirrorVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, MIRROR_VIRTUAL_DISK_FLAG Flags,
+			in MIRROR_VIRTUAL_DISK_PARAMETERS Parameters, in NativeOverlapped Overlapped);
 
 		/// <summary>
 		/// Modifies the internal contents of a virtual disk file. Can be used to set the active leaf, or to fix up snapshot entries.
@@ -1324,7 +1439,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error ModifyVhdSet(VIRTUAL_DISK_HANDLE VirtualDiskHandle, in MODIFY_VHDSET_PARAMETERS Parameters, MODIFY_VHDSET_FLAG Flags);
+		public static extern Win32Error ModifyVhdSet([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in MODIFY_VHDSET_PARAMETERS Parameters, MODIFY_VHDSET_FLAG Flags);
 
 		/// <summary>Opens a virtual hard disk (VHD) or CD or DVD image file (ISO) for use.</summary>
 		/// <param name="VirtualStorageType">A pointer to a valid VIRTUAL_STORAGE_TYPE structure.</param>
@@ -1343,8 +1458,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true, ThrowOnUnmappableChar = true)]
-		public static extern Win32Error OpenVirtualDisk(in VIRTUAL_STORAGE_TYPE VirtualStorageType, [MarshalAs(UnmanagedType.LPWStr)] string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask,
-			OPEN_VIRTUAL_DISK_FLAG Flags, [In] OPEN_VIRTUAL_DISK_PARAMETERS Parameters, out SafeVIRTUAL_DISK_HANDLE Handle);
+		public static extern Win32Error OpenVirtualDisk(in VIRTUAL_STORAGE_TYPE VirtualStorageType, [MarshalAs(UnmanagedType.LPWStr)] string Path,
+			VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, OPEN_VIRTUAL_DISK_FLAG Flags,
+			[In, Optional] OPEN_VIRTUAL_DISK_PARAMETERS Parameters, out SafeVIRTUAL_DISK_HANDLE Handle);
 
 		/// <summary>
 		/// Retrieves information about changes to the specified areas of a virtual hard disk (VHD) that are tracked by resilient change
@@ -1387,8 +1503,10 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error QueryChangesVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, [MarshalAs(UnmanagedType.LPWStr)] string ChangeTrackingId, ulong ByteOffset, ulong ByteLength,
-			QUERY_CHANGES_VIRTUAL_DISK_FLAG Flags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] QUERY_CHANGES_VIRTUAL_DISK_RANGE[] Ranges, ref uint RangeCount, out ulong ProcessedLength);
+		public static extern Win32Error QueryChangesVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, [MarshalAs(UnmanagedType.LPWStr)] string ChangeTrackingId,
+			ulong ByteOffset, ulong ByteLength, QUERY_CHANGES_VIRTUAL_DISK_FLAG Flags,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] QUERY_CHANGES_VIRTUAL_DISK_RANGE[] Ranges, ref uint RangeCount,
+			out ulong ProcessedLength);
 
 		/// <summary>Issues an embedded SCSI request directly to a virtual hard disk.</summary>
 		/// <param name="VirtualDiskHandle">
@@ -1408,7 +1526,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error RawSCSIVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, in RAW_SCSI_VIRTUAL_DISK_PARAMETERS Parameters, RAW_SCSI_VIRTUAL_DISK_FLAG Flags, out RAW_SCSI_VIRTUAL_DISK_RESPONSE Response);
+		public static extern Win32Error RawSCSIVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in RAW_SCSI_VIRTUAL_DISK_PARAMETERS Parameters,
+			RAW_SCSI_VIRTUAL_DISK_FLAG Flags, out RAW_SCSI_VIRTUAL_DISK_RESPONSE Response);
 
 		/// <summary>Resizes a virtual disk.</summary>
 		/// <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
@@ -1425,7 +1544,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error ResizeVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, RESIZE_VIRTUAL_DISK_FLAG Flags, in RESIZE_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped);
+		public static extern Win32Error ResizeVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, RESIZE_VIRTUAL_DISK_FLAG Flags,
+			in RESIZE_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped);
 
 		/// <summary>Resizes a virtual disk.</summary>
 		/// <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
@@ -1442,7 +1562,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error ResizeVirtualDisk(VIRTUAL_DISK_HANDLE VirtualDiskHandle, RESIZE_VIRTUAL_DISK_FLAG Flags, in RESIZE_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
+		public static extern Win32Error ResizeVirtualDisk([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, RESIZE_VIRTUAL_DISK_FLAG Flags,
+			in RESIZE_VIRTUAL_DISK_PARAMETERS Parameters, in NativeOverlapped Overlapped);
 
 		/// <summary>Sets information about a virtual hard disk (VHD).</summary>
 		/// <param name="VirtualDiskHandle">
@@ -1455,7 +1576,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error SetVirtualDiskInformation(VIRTUAL_DISK_HANDLE VirtualDiskHandle, in SET_VIRTUAL_DISK_INFO VirtualDiskInfo);
+		public static extern Win32Error SetVirtualDiskInformation([In, Out] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in SET_VIRTUAL_DISK_INFO VirtualDiskInfo);
 
 		/// <summary>Sets a metadata item for a virtual disk.</summary>
 		/// <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
@@ -1468,7 +1589,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error SetVirtualDiskMetadata(VIRTUAL_DISK_HANDLE VirtualDiskHandle, in Guid Item, uint MetaDataSize, IntPtr MetaData);
+		public static extern Win32Error SetVirtualDiskMetadata([In, Out] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in Guid Item, uint MetaDataSize, IntPtr MetaData);
 
 		/// <summary>Creates a snapshot of the current virtual disk for VHD Set files.</summary>
 		/// <param name="VirtualDiskHandle">A handle to the open virtual disk. This must be a VHD Set file.</param>
@@ -1480,7 +1601,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error TakeSnapshotVhdSet(VIRTUAL_DISK_HANDLE VirtualDiskHandle, in TAKE_SNAPSHOT_VHDSET_PARAMETERS Parameters, TAKE_SNAPSHOT_VHDSET_FLAG Flags);
+		public static extern Win32Error TakeSnapshotVhdSet([In] VIRTUAL_DISK_HANDLE VirtualDiskHandle, in TAKE_SNAPSHOT_VHDSET_PARAMETERS Parameters, TAKE_SNAPSHOT_VHDSET_FLAG Flags);
 
 		/// <summary>Contains snapshot parameters, indicating information about the new snapshot to be applied.</summary>
 		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
@@ -1528,7 +1649,7 @@ namespace Vanara.PInvoke
 			public ATTACH_VIRTUAL_DISK_PARAMETERS_Version1 Version1;
 
 			/// <summary>Gets the default value for this structure. This is currently the only valid value for <see cref="ATTACH_VIRTUAL_DISK_PARAMETERS"/>.</summary>
-			public static ATTACH_VIRTUAL_DISK_PARAMETERS Default => new ATTACH_VIRTUAL_DISK_PARAMETERS { Version = ATTACH_VIRTUAL_DISK_VERSION.ATTACH_VIRTUAL_DISK_VERSION_1 };
+			public static ATTACH_VIRTUAL_DISK_PARAMETERS Default => new() { Version = ATTACH_VIRTUAL_DISK_VERSION.ATTACH_VIRTUAL_DISK_VERSION_1 };
 
 			/// <summary>A structure with the following member.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
@@ -1555,7 +1676,7 @@ namespace Vanara.PInvoke
 			public COMPACT_VIRTUAL_DISK_PARAMETERS_Version1 Version1;
 
 			/// <summary>Gets the default value for this structure. This is currently the only valid value for <see cref="COMPACT_VIRTUAL_DISK_PARAMETERS"/>.</summary>
-			public static COMPACT_VIRTUAL_DISK_PARAMETERS Default => new COMPACT_VIRTUAL_DISK_PARAMETERS { Version = COMPACT_VIRTUAL_DISK_VERSION.COMPACT_VIRTUAL_DISK_VERSION_1 };
+			public static COMPACT_VIRTUAL_DISK_PARAMETERS Default => new() { Version = COMPACT_VIRTUAL_DISK_VERSION.COMPACT_VIRTUAL_DISK_VERSION_1 };
 
 			/// <summary>A structure with the following member.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
@@ -2244,48 +2365,74 @@ namespace Vanara.PInvoke
 
 		/// <summary>Contains virtual hard disk (VHD) information for set request.</summary>
 		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323686", MinClient = PInvokeClient.Windows7)]
-		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode,
+#if X64
+			Pack = 8
+#else
+			Pack = 4
+#endif
+		)]
 		public struct SET_VIRTUAL_DISK_INFO
 		{
 			/// <summary>
 			/// A SET_VIRTUAL_DISK_INFO_VERSION enumeration that specifies the version of the SET_VIRTUAL_DISK_INFO structure being passed to
 			/// or from the VHD functions. This determines the type of information set.
 			/// </summary>
-			[FieldOffset(0)] public SET_VIRTUAL_DISK_INFO_VERSION Version;
+			public SET_VIRTUAL_DISK_INFO_VERSION Version;
+
+			private UNION union;
 
 			/// <summary>Path to the parent backing store.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
-			[FieldOffset(8)] public StrPtrUni ParentFilePath;
+			public StrPtrUni ParentFilePath { get => union.ParentFilePath; set => union.ParentFilePath = value; }
 
 			/// <summary>Unique identifier of the VHD.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
-			[FieldOffset(8)] public Guid UniqueIdentifier;
+			public Guid UniqueIdentifier { get => union.UniqueIdentifier; set => union.UniqueIdentifier = value; }
 
 			/// <summary>Sets the parent file path and the child depth.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
-			[FieldOffset(8)] public SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo ParentPathWithDepthInfo;
+			public SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo ParentPathWithDepthInfo { get => union.ParentPathWithDepthInfo; set => union.ParentPathWithDepthInfo = value; }
 
 			/// <summary>Sets the physical sector size reported by the VHD.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
-			[FieldOffset(8)] public uint VhdPhysicalSectorSize;
+			public uint VhdPhysicalSectorSize { get => union.VhdPhysicalSectorSize; set => union.VhdPhysicalSectorSize = value; }
 
 			/// <summary>
 			/// The identifier that is uniquely created when a user first creates the virtual disk to attempt to uniquely identify that
 			/// virtual disk.
 			/// </summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows81)]
-			[FieldOffset(8)] public Guid VirtualDiskId;
+			public Guid VirtualDiskId { get => union.VirtualDiskId; set => union.VirtualDiskId = value; }
 
 			/// <summary>Turns resilient change tracking (RCT) on or off for the VHD. TRUE turns RCT on. FALSE turns RCT off.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
-			[FieldOffset(8), MarshalAs(UnmanagedType.Bool)] public bool ChangeTrackingEnabled;
+			public bool ChangeTrackingEnabled { get => union.ChangeTrackingEnabled; set => union.ChangeTrackingEnabled = value; }
 
 			/// <summary>
 			/// Sets the parent linkage information that differencing VHDs store. Parent linkage information is metadata used to locate and
 			/// correctly identify the next parent in the virtual disk chain.
 			/// </summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
-			[FieldOffset(8)] public SET_VIRTUAL_DISK_INFO_ParentLocator ParentLocator;
+			public SET_VIRTUAL_DISK_INFO_ParentLocator ParentLocator { get => union.ParentLocator; set => union.ParentLocator = value; }
+
+			[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
+			private struct UNION
+			{
+				[FieldOffset(0)] public StrPtrUni ParentFilePath;
+
+				[FieldOffset(0)] public Guid UniqueIdentifier;
+
+				[FieldOffset(0)] public SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo ParentPathWithDepthInfo;
+
+				[FieldOffset(0)] public uint VhdPhysicalSectorSize;
+
+				[FieldOffset(0)] public Guid VirtualDiskId;
+
+				[FieldOffset(0), MarshalAs(UnmanagedType.Bool)] public bool ChangeTrackingEnabled;
+
+				[FieldOffset(0)] public SET_VIRTUAL_DISK_INFO_ParentLocator ParentLocator;
+			}
 
 			/// <summary>
 			/// Sets the parent linkage information that differencing VHDs store. Parent linkage information is metadata used to locate and
@@ -2299,7 +2446,7 @@ namespace Vanara.PInvoke
 				public Guid LinkageId;
 
 				/// <summary>The path of the file for the parent VHD.</summary>
-				public IntPtr ParentFilePath;
+				public StrPtrUni ParentFilePath;
 			}
 
 			/// <summary>Sets the parent file path and the child depth.</summary>
@@ -2311,7 +2458,7 @@ namespace Vanara.PInvoke
 				public uint ChildDepth;
 
 				/// <summary>Specifies the depth to the parent from the leaf. The leaf itself is at depth 1.</summary>
-				public IntPtr ParentFilePath;
+				public StrPtrUni ParentFilePath;
 			}
 		}
 
@@ -2403,14 +2550,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct VIRTUAL_DISK_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="VIRTUAL_DISK_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public VIRTUAL_DISK_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="VIRTUAL_DISK_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static VIRTUAL_DISK_HANDLE NULL => new VIRTUAL_DISK_HANDLE(IntPtr.Zero);
+			public static VIRTUAL_DISK_HANDLE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2423,7 +2570,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="VIRTUAL_DISK_HANDLE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator VIRTUAL_DISK_HANDLE(IntPtr h) => new VIRTUAL_DISK_HANDLE(h);
+			public static implicit operator VIRTUAL_DISK_HANDLE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2438,7 +2585,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(VIRTUAL_DISK_HANDLE h1, VIRTUAL_DISK_HANDLE h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is VIRTUAL_DISK_HANDLE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is VIRTUAL_DISK_HANDLE h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -2496,7 +2643,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets an instance of <see cref="VIRTUAL_STORAGE_TYPE"/> that represents a Microsoft Virtual Hard Drive or .vhd file.
 			/// </summary>
-			public static VIRTUAL_STORAGE_TYPE VHD => new VIRTUAL_STORAGE_TYPE(VIRTUAL_STORAGE_TYPE_DEVICE_TYPE.VIRTUAL_STORAGE_TYPE_DEVICE_VHD);
+			public static VIRTUAL_STORAGE_TYPE VHD => new(VIRTUAL_STORAGE_TYPE_DEVICE_TYPE.VIRTUAL_STORAGE_TYPE_DEVICE_VHD);
 		}
 
 		/// <summary>Contains virtual disk open request parameters.</summary>
@@ -2574,7 +2721,7 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Gets the default value for this structure. This is currently the only valid value for <see cref="ATTACH_VIRTUAL_DISK_PARAMETERS"/>.</summary>
-			public static OPEN_VIRTUAL_DISK_PARAMETERS DefaultV2 => new OPEN_VIRTUAL_DISK_PARAMETERS(false);
+			public static OPEN_VIRTUAL_DISK_PARAMETERS DefaultV2 => new(false);
 
 			/// <inheritdoc/>
 			public override string ToString()

@@ -34,7 +34,7 @@ namespace Vanara.IO
 			ver = version;
 		}
 
-		private delegate Win32Error RunAsyncMethod(ref NativeOverlapped overlap);
+		private delegate Win32Error RunAsyncMethod(in NativeOverlapped overlap);
 
 		/// <summary>Represents the format of the virtual disk.</summary>
 		public enum DeviceType : uint
@@ -83,9 +83,6 @@ namespace Vanara.IO
 		/// <summary>The device identifier.</summary>
 		public DeviceType DiskType => (DeviceType)GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_VIRTUAL_STORAGE_TYPE);
 
-		/// <summary>Whether RCT is turned on. TRUE if RCT is turned on; otherwise FALSE.</summary>
-		public bool Enabled => GetInformation<bool>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE);
-
 		/// <summary>The fragmentation level of the virtual disk.</summary>
 		public uint FragmentationPercentage => GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_FRAGMENTATION);
 
@@ -117,7 +114,7 @@ namespace Vanara.IO
 
 		/// <summary>Gets the metadata associated with this virtual disk. Currently on VHDX files support metadata.</summary>
 		/// <value>The metadata.</value>
-		public VirtualDiskMetadata Metadata => metadata ?? (metadata = new VirtualDiskMetadata(this));
+		public VirtualDiskMetadata Metadata => metadata ??= new VirtualDiskMetadata(this);
 
 		/// <summary>
 		/// The change tracking identifier for the change that identifies the state of the virtual disk that you want to use as the basis of
@@ -195,6 +192,17 @@ namespace Vanara.IO
 
 		/// <summary>Provider-specific subtype.</summary>
 		public Subtype ProviderSubtype => (Subtype)GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE);
+
+		/// <summary>Whether RCT is turned on. TRUE if RCT is turned on; otherwise FALSE.</summary>
+		public bool ResilientChangeTrackingEnabled
+		{
+			get => GetInformation<bool>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE);
+			set
+			{
+				var si = new SET_VIRTUAL_DISK_INFO { Version = SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE, ChangeTrackingEnabled = value };
+				SetVirtualDiskInformation(Handle, si).ThrowIfFailed();
+			}
+		}
 
 		/// <summary>Sector size of the VHD, in bytes.</summary>
 		public uint SectorSize => GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_SIZE, 20);
@@ -275,8 +283,8 @@ namespace Vanara.IO
 		/// size of the virtual disk.
 		/// </param>
 		/// <param name="blockSize">
-		/// Internal size of the virtual disk object blocks, in bytes. For VHDX this must be a multiple of 1 MB between 1 and 256 MB. For VHD
-		/// 1 this must be set to one of the following values: 0 (default), 0x80000 (512K), or 0x200000 (2MB)
+		/// Internal size of the virtual disk object blocks, in bytes. For VHDX this must be a multiple of 1 MB between 1 and 256 MB. For
+		/// VHD 1 this must be set to one of the following values: 0 (default), 0x80000 (512K), or 0x200000 (2MB)
 		/// </param>
 		/// <param name="logicalSectorSize">
 		/// Internal size of the virtual disk object sectors. For VHDX must be set to 512 (0x200) or 4096 (0x1000). For VHD 1 must be set to 512.
@@ -358,8 +366,8 @@ namespace Vanara.IO
 		}
 
 		/// <summary>
-		/// Detach a virtual disk that was previously attached with the ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME flag or calling
-		/// <see cref="Attach(bool, bool, bool, FileSecurity)"/> and setting autoDetach to <c>false</c>.
+		/// Detach a virtual disk that was previously attached with the ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME flag or calling <see
+		/// cref="Attach(bool, bool, bool, FileSecurity)"/> and setting autoDetach to <c>false</c>.
 		/// </summary>
 		/// <param name="path">A valid path to the virtual disk image to detach.</param>
 		public static void Detach(string path)
@@ -498,8 +506,8 @@ namespace Vanara.IO
 		/// </param>
 		/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
 		public async Task<bool> Compact(CancellationToken cancellationToken, IProgress<int> progress) =>
-			await RunAsync(cancellationToken, progress, Handle, (ref NativeOverlapped vhdOverlap) =>
-				CompactVirtualDisk(Handle, COMPACT_VIRTUAL_DISK_FLAG.COMPACT_VIRTUAL_DISK_FLAG_NONE, COMPACT_VIRTUAL_DISK_PARAMETERS.Default, ref vhdOverlap));
+			await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
+				CompactVirtualDisk(Handle, COMPACT_VIRTUAL_DISK_FLAG.COMPACT_VIRTUAL_DISK_FLAG_NONE, COMPACT_VIRTUAL_DISK_PARAMETERS.Default, vhdOverlap));
 
 		/// <summary>
 		/// Detaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate virtual disk provider to accomplish
@@ -523,7 +531,7 @@ namespace Vanara.IO
 		/// <param name="newSize">New size, in bytes, for the expansion request.</param>
 		public void Expand(ulong newSize)
 		{
-			if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2) 
+			if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
 				throw new NotSupportedException(@"Expansion is only available to virtual disks opened under version 2 or higher.");
 			ExpandVirtualDisk(Handle, EXPAND_VIRTUAL_DISK_FLAG.EXPAND_VIRTUAL_DISK_FLAG_NONE, new EXPAND_VIRTUAL_DISK_PARAMETERS(newSize), IntPtr.Zero).ThrowIfFailed();
 		}
@@ -538,12 +546,12 @@ namespace Vanara.IO
 		/// disable progress reporting.
 		/// </param>
 		/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
-		public async Task<bool> Expand(ulong newSize, CancellationToken cancellationToken, IProgress<int> progress) => 
-			await RunAsync(cancellationToken, progress, Handle, (ref NativeOverlapped vhdOverlap) =>
+		public async Task<bool> Expand(ulong newSize, CancellationToken cancellationToken, IProgress<int> progress) =>
+			await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
 				{
 					if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2) throw new NotSupportedException(@"Expansion is only available to virtual disks opened under version 2 or higher.");
 					var param = new EXPAND_VIRTUAL_DISK_PARAMETERS(newSize);
-					return ExpandVirtualDisk(Handle, EXPAND_VIRTUAL_DISK_FLAG.EXPAND_VIRTUAL_DISK_FLAG_NONE, param, ref vhdOverlap);
+					return ExpandVirtualDisk(Handle, EXPAND_VIRTUAL_DISK_FLAG.EXPAND_VIRTUAL_DISK_FLAG_NONE, param, vhdOverlap);
 				}
 			);
 
@@ -570,7 +578,7 @@ namespace Vanara.IO
 		/// </param>
 		public void Resize(ulong newSize)
 		{
-			if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2) 
+			if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
 				throw new NotSupportedException(@"Expansion is only available to virtual disks opened under version 2 or higher.");
 			var flags = newSize == 0 ? RESIZE_VIRTUAL_DISK_FLAG.RESIZE_VIRTUAL_DISK_FLAG_RESIZE_TO_SMALLEST_SAFE_VIRTUAL_SIZE : RESIZE_VIRTUAL_DISK_FLAG.RESIZE_VIRTUAL_DISK_FLAG_NONE;
 			var param = new RESIZE_VIRTUAL_DISK_PARAMETERS(newSize);
@@ -588,18 +596,18 @@ namespace Vanara.IO
 		/// </param>
 		/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
 		public async Task<bool> Resize(ulong newSize, CancellationToken cancellationToken, IProgress<int> progress) =>
-			await RunAsync(cancellationToken, progress, Handle, (ref NativeOverlapped vhdOverlap) =>
+			await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
 				{
 					if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
 						throw new NotSupportedException(@"Expansion is only available to virtual disks opened under version 2 or higher.");
 					var param = new RESIZE_VIRTUAL_DISK_PARAMETERS(newSize);
-					return ResizeVirtualDisk(Handle, RESIZE_VIRTUAL_DISK_FLAG.RESIZE_VIRTUAL_DISK_FLAG_NONE, param, ref vhdOverlap);
+					return ResizeVirtualDisk(Handle, RESIZE_VIRTUAL_DISK_FLAG.RESIZE_VIRTUAL_DISK_FLAG_NONE, param, vhdOverlap);
 				}
 			);
 
 		/// <summary>
-		/// Resizes a virtual disk without checking the virtual disk's partition table to ensure that this truncation is safe.
-		/// <note type="warning">This method can cause unrecoverable data loss; use with care.</note>
+		/// Resizes a virtual disk without checking the virtual disk's partition table to ensure that this truncation is safe. <note
+		/// type="warning">This method can cause unrecoverable data loss; use with care.</note>
 		/// </summary>
 		/// <param name="newSize">New size, in bytes, for the expansion request.</param>
 		public void UnsafeResize(ulong newSize)
@@ -634,7 +642,7 @@ namespace Vanara.IO
 
 			var param = new CREATE_VIRTUAL_DISK_PARAMETERS(0, IsPreWin8 ? 1U : 2U);
 			var h = IntPtr.Zero;
-			var b = await RunAsync(cancellationToken, progress, VIRTUAL_DISK_HANDLE.NULL, (ref NativeOverlapped vhdOverlap) =>
+			var b = await RunAsync(cancellationToken, progress, VIRTUAL_DISK_HANDLE.NULL, (in NativeOverlapped vhdOverlap) =>
 				{
 					var sp = new SafeCoTaskMemString(sourcePath);
 					var stType = new VIRTUAL_STORAGE_TYPE();
@@ -644,7 +652,7 @@ namespace Vanara.IO
 					else
 						param.Version2.SourcePath = sp;
 					var flags = CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE;
-					var err = CreateVirtualDisk(stType, path, mask, PSECURITY_DESCRIPTOR.NULL, flags, 0, param, ref vhdOverlap, out var hVhd);
+					var err = CreateVirtualDisk(stType, path, mask, PSECURITY_DESCRIPTOR.NULL, flags, 0, param, vhdOverlap, out var hVhd);
 					if (err.Succeeded)
 					{
 						h = hVhd.DangerousGetHandle();
@@ -670,7 +678,7 @@ namespace Vanara.IO
 			progress?.Report(0);
 			while (true)
 			{
-				var perr = GetVirtualDiskOperationProgress(phVhd, ref reset, out var prog);
+				var perr = GetVirtualDiskOperationProgress(phVhd, reset, out var prog);
 				perr.ThrowIfFailed();
 				if (cancellationToken.IsCancellationRequested) return false;
 				switch (prog.OperationStatus)
@@ -700,7 +708,7 @@ namespace Vanara.IO
 		{
 			var vhdOverlapEvent = new ManualResetEvent(false);
 			var vhdOverlap = new NativeOverlapped { EventHandle = vhdOverlapEvent.SafeWaitHandle.DangerousGetHandle() };
-			var err = method(ref vhdOverlap);
+			var err = method(in vhdOverlap);
 			if (err != Win32Error.ERROR_IO_PENDING) err.ThrowIfFailed();
 			return await GetProgress(hVhd, vhdOverlap, cancellationToken, progress);
 		}
@@ -819,19 +827,29 @@ namespace Vanara.IO
 			{
 				get
 				{
-					if (!supported) return new Guid[0];
-					if (parent.Handle.IsClosed) throw new InvalidOperationException("Virtual disk not valid.");
-					uint count = 0;
-					var err = EnumerateVirtualDiskMetadata(parent.Handle, ref count, IntPtr.Zero);
-					if (err != Win32Error.ERROR_MORE_DATA && err != Win32Error.ERROR_INSUFFICIENT_BUFFER) err.ThrowIfFailed();
-					if (count == 0) return new Guid[0];
-					var mem = new SafeCoTaskMemHandle(Marshal.SizeOf(typeof(Guid)) * (int)count);
-					EnumerateVirtualDiskMetadata(parent.Handle, ref count, mem).ThrowIfFailed();
-					return mem.ToArray<Guid>((int)count);
+					var ret = new Guid[0];
+					if (supported)
+					{
+						if (parent.Handle.IsClosed)
+							throw new InvalidOperationException("Virtual disk not valid.");
+						uint count = 0;
+						var err = EnumerateVirtualDiskMetadata(parent.Handle, ref count, null);
+						if (err != Win32Error.ERROR_MORE_DATA && err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+							err.ThrowIfFailed();
+						if (count != 0)
+						{
+							ret = new Guid[count];
+							EnumerateVirtualDiskMetadata(parent.Handle, ref count, ret).ThrowIfFailed();
+							return ret;
+						}
+					}
+					return ret;
 				}
 			}
 
-			/// <summary>Gets an <see cref="ICollection{SafeCoTaskMemHandle}"/> containing the values in the <see cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>.</summary>
+			/// <summary>
+			/// Gets an <see cref="ICollection{SafeCoTaskMemHandle}"/> containing the values in the <see cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>.
+			/// </summary>
 			public ICollection<SafeCoTaskMemHandle> Values => Keys.Select(k => this[k]).ToList();
 
 			/// <summary>Gets the number of elements contained in the <see cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>.</summary>
@@ -880,8 +898,8 @@ namespace Vanara.IO
 			/// at a particular <see cref="T:System.Array"/> index.
 			/// </summary>
 			/// <param name="array">
-			/// The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from
-			/// <see cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>. The <see cref="T:System.Array"/> must have zero-based indexing.
+			/// The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see
+			/// cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>. The <see cref="T:System.Array"/> must have zero-based indexing.
 			/// </param>
 			/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 			public void CopyTo(KeyValuePair<Guid, SafeCoTaskMemHandle>[] array, int arrayIndex)
@@ -946,7 +964,8 @@ namespace Vanara.IO
 			/// <param name="item">The object to remove from the <see cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>.</param>
 			/// <returns>
 			/// true if <paramref name="item"/> was successfully removed from the <see cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>;
-			/// otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>.
+			/// otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see
+			/// cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>.
 			/// </returns>
 			bool ICollection<KeyValuePair<Guid, SafeCoTaskMemHandle>>.Remove(KeyValuePair<Guid, SafeCoTaskMemHandle> item) => Remove(item.Key);
 
