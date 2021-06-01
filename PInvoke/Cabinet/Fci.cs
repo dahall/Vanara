@@ -9,14 +9,19 @@ namespace Vanara.PInvoke
 	{
 		/// <summary/>
 		public const int CB_MAX_CAB_PATH = 256;
+
 		/// <summary/>
 		public const int CB_MAX_CABINET_NAME = 256;
+
 		/// <summary/>
 		public const int CB_MAX_CHUNK = 32768;
+
 		/// <summary/>
 		public const int CB_MAX_DISK = 0x7fffffff;
+
 		/// <summary/>
 		public const int CB_MAX_DISK_NAME = 256;
+
 		/// <summary/>
 		public const int CB_MAX_FILENAME = 256;
 
@@ -56,7 +61,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciclose
 		[PInvokeData("fci.h", MSDNShortId = "c4edf6ca-0b16-4e30-933b-934f8930c6d6")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
-		public delegate int PFNFCICLOSE(HFILE hf, out int err, IntPtr pv);
+		public delegate int PFNFCICLOSE(IntPtr hf, out int err, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCIDELETE</c> macro provides the declaration for the application-defined callback function to delete a file in the FCI context.
@@ -85,20 +90,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("fci.h", MSDNShortId = "f8a1bcfc-8a13-49cf-a3e7-caec6c6421b0")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
 		public delegate int PFNFCIFILEPLACED(ref CCAB pccab, string pszFile, int cbFile, [MarshalAs(UnmanagedType.Bool)] bool fContinuation, IntPtr pv);
-
-		/// <summary>
-		/// The <c>FNFCIFREE</c> macro provides the declaration for the application-defined callback function to free previously allocated
-		/// memory in an FCI context.
-		/// </summary>
-		/// <param name="memory">The pointer to the memory to be freed.</param>
-		/// <remarks>
-		/// <para>The function accepts parameters similar to free.</para>
-		/// <para>Examples</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcifree
-		[PInvokeData("fci.h", MSDNShortId = "48f052e2-7786-430a-b3dc-afcfdffae387")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
-		public delegate void PFNFREE(IntPtr memory);
 
 		/// <summary>
 		/// The <c>FNFCIGETNEXTCABINET</c> macro provides the declaration for the application-defined callback function to request
@@ -138,7 +129,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcigetopeninfo
 		[PInvokeData("fci.h", MSDNShortId = "5baccb69-7872-4d67-ad74-70cdd7459f8d")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
-		public delegate HFILE PFNFCIGETOPENINFO(string pszName, ref ushort pdate, ref ushort ptime, ref ushort pattribs, out int err, IntPtr pv);
+		public delegate IntPtr PFNFCIGETOPENINFO(string pszName, ref ushort pdate, ref ushort ptime, ref ushort pattribs, out int err, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCIGETTEMPFILE</c> macro provides the declaration for the application-defined callback function to obtain a temporary
@@ -171,7 +162,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciopen
 		[PInvokeData("fci.h", MSDNShortId = "72cf50cb-c895-4953-9c4d-f8ddaa294f2a")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
-		public delegate HFILE PFNFCIOPEN(string pszFile, int oflag, int pmode, out int err, IntPtr pv);
+		public delegate IntPtr PFNFCIOPEN(string pszFile, int oflag, int pmode, out int err, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCIREAD</c> macro provides the declaration for the application-defined callback function to read data from a file in an
@@ -189,7 +180,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciread
 		[PInvokeData("fci.h", MSDNShortId = "dd4e97ff-efbc-462b-b954-bc3260fa1513")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
-		public delegate uint PFNFCIREAD(HFILE hf, IntPtr memory, uint cb, out int err, IntPtr pv);
+		public delegate uint PFNFCIREAD(IntPtr hf, IntPtr memory, uint cb, out int err, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCISEEK</c> macro provides the declaration for the application-defined callback function to move a file pointer to the
@@ -207,7 +198,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciseek
 		[PInvokeData("fci.h", MSDNShortId = "e5a14c98-4de6-452e-8993-afb7964aeee7")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
-		public delegate int PFNFCISEEK(HFILE hf, int dist, int seektype, out int err, IntPtr pv);
+		public delegate int PFNFCISEEK(IntPtr hf, int dist, int seektype, out int err, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCISTATUS</c> macro provides the declaration for the application-defined callback function to update the user.
@@ -215,7 +206,7 @@ namespace Vanara.PInvoke
 		/// <param name="typeStatus">The type status.</param>
 		/// <param name="cb1">
 		/// File: Size of compressed block. Folder: Amount of folder copied to cabinet so far. Cabinet: Estimated cabinet size that was
-		///       previously passed to fnfciGetNextCabinet().
+		/// previously passed to fnfciGetNextCabinet().
 		/// </param>
 		/// <param name="cb2">File: Size of uncompressed block. Folder: Total size of folder. Cabinet: Actual cabinet size.</param>
 		/// <param name="pv">An application-defined value.</param>
@@ -244,7 +235,21 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciwrite
 		[PInvokeData("fci.h", MSDNShortId = "ca4c3b5b-1ed5-4f12-8317-c1e1dac5f816")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
-		public delegate uint PFNFCIWRITE(HFILE hf, IntPtr memory, uint cb, out int err, IntPtr pv);
+		public delegate uint PFNFCIWRITE(IntPtr hf, IntPtr memory, uint cb, out int err, IntPtr pv);
+
+		/// <summary>
+		/// The <c>FNFCIFREE</c> macro provides the declaration for the application-defined callback function to free previously allocated
+		/// memory in an FCI context.
+		/// </summary>
+		/// <param name="memory">The pointer to the memory to be freed.</param>
+		/// <remarks>
+		/// <para>The function accepts parameters similar to free.</para>
+		/// <para>Examples</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcifree
+		[PInvokeData("fci.h", MSDNShortId = "48f052e2-7786-430a-b3dc-afcfdffae387")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		public delegate void PFNFREE(IntPtr memory);
 
 		/// <summary>Used by <see cref="PFNFCISTATUS"/>.</summary>
 		[PInvokeData("fci.h")]
@@ -266,22 +271,31 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No Error.</summary>
 			FCIERR_NONE = 0x00,
+
 			/// <summary>Failure opening the file to be stored in the cabinet.</summary>
 			FCIERR_OPEN_SRC = 0x01,
+
 			/// <summary>Failure reading the file to be stored in the cabinet.</summary>
 			FCIERR_READ_SRC = 0x02,
+
 			/// <summary>Out of memory in FCI.</summary>
 			FCIERR_ALLOC_FAIL = 0x03,
+
 			/// <summary>Could not create a temporary file.</summary>
 			FCIERR_TEMP_FILE = 0x04,
+
 			/// <summary>Unknown compression type.</summary>
 			FCIERR_BAD_COMPR_TYPE = 0x05,
+
 			/// <summary>Could not create the cabinet file.</summary>
 			FCIERR_CAB_FILE = 0x06,
+
 			/// <summary>FCI aborted.</summary>
 			FCIERR_USER_ABORT = 0x07,
+
 			/// <summary>Failure compressing data.</summary>
 			FCIERR_MCI_FAIL = 0x08,
+
 			/// <summary>Data-size or file-count exceeded CAB format limits.</summary>
 			FCIERR_CAB_FORMAT_LIMIT = 0x09,
 		}
@@ -293,34 +307,49 @@ namespace Vanara.PInvoke
 		{
 			/// <summary/>
 			tcompMASK_TYPE = 0x000F,
+
 			/// <summary>No compression.</summary>
 			tcompTYPE_NONE = 0x0000,
+
 			/// <summary>Microsoft ZIP compression.</summary>
 			tcompTYPE_MSZIP = 0x0001,
+
 			/// <summary/>
 			tcompTYPE_QUANTUM = 0x0002,
+
 			/// <summary/>
 			tcompTYPE_LZX = 0x0003,
+
 			/// <summary/>
 			tcompBAD = 0x000F,
+
 			/// <summary/>
 			tcompMASK_LZX_WINDOW = 0x1F00,
+
 			/// <summary/>
 			tcompLZX_WINDOW_LO = 0x0F00,
+
 			/// <summary/>
 			tcompLZX_WINDOW_HI = 0x1500,
+
 			/// <summary/>
 			tcompMASK_QUANTUM_LEVEL = 0x00F0,
+
 			/// <summary/>
 			tcompQUANTUM_LEVEL_LO = 0x0010,
+
 			/// <summary/>
 			tcompQUANTUM_LEVEL_HI = 0x0070,
+
 			/// <summary/>
 			tcompMASK_QUANTUM_MEM = 0x1F00,
+
 			/// <summary/>
 			tcompQUANTUM_MEM_LO = 0x0A00,
+
 			/// <summary/>
 			tcompQUANTUM_MEM_HI = 0x1500,
+
 			/// <summary/>
 			tcompMASK_RESERVED = 0xE000,
 		}
@@ -335,12 +364,12 @@ namespace Vanara.PInvoke
 		/// be declared using the FNFCIGETNEXTCABINET macro.
 		/// </param>
 		/// <param name="pfnfcis">
-		/// Pointer to an application-defined callback function to update the progress information available to the user. The function should
-		/// be declared using the FNFCISTATUS macro.
+		/// Pointer to an application-defined callback function to update the progress information available to the user. The function
+		/// should be declared using the FNFCISTATUS macro.
 		/// </param>
 		/// <param name="pfnfcigoi">
-		/// Pointer to an application-defined callback function to open a file and retrieve the file date, time, and attributes. The function
-		/// should be declared using the FNFCIGETOPENINFO macro.
+		/// Pointer to an application-defined callback function to open a file and retrieve the file date, time, and attributes. The
+		/// function should be declared using the FNFCIGETOPENINFO macro.
 		/// </param>
 		/// <param name="typeCompress">
 		/// <para>The compression type to use.</para>
@@ -374,7 +403,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "f99e8718-853b-4d35-98ae-61a8333dbaba")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FCIAddFile(HFCI hfci, string pszSourceFile, string pszFileName, [MarshalAs(UnmanagedType.Bool)] bool fExecute, PFNFCIGETNEXTCABINET pfnfcignc, PFNFCISTATUS pfnfcis, PFNFCIGETOPENINFO pfnfcigoi, TCOMP typeCompress);
+		public static extern bool FCIAddFile([In] HFCI hfci, string pszSourceFile, string pszFileName, [MarshalAs(UnmanagedType.Bool)] bool fExecute,
+			[In] PFNFCIGETNEXTCABINET pfnfcignc, [In] PFNFCISTATUS pfnfcis, [In] PFNFCIGETOPENINFO pfnfcigoi, TCOMP typeCompress);
 
 		/// <summary>The <c>FCICreate</c> function creates an FCI context.</summary>
 		/// <param name="perf">Pointer to an ERF structure that receives the error information.</param>
@@ -393,10 +423,12 @@ namespace Vanara.PInvoke
 		/// Pointer to an application-defined callback function to open a file. The function should be declared using the FNFCIOPEN macro.
 		/// </param>
 		/// <param name="pfnread">
-		/// Pointer to an application-defined callback function to read data from a file. The function should be declared using the FNFCIREAD macro.
+		/// Pointer to an application-defined callback function to read data from a file. The function should be declared using the
+		/// FNFCIREAD macro.
 		/// </param>
 		/// <param name="pfnwrite">
-		/// Pointer to an application-defined callback function to write data to a file. The function should be declared using the FNFCIWRITE macro.
+		/// Pointer to an application-defined callback function to write data to a file. The function should be declared using the
+		/// FNFCIWRITE macro.
 		/// </param>
 		/// <param name="pfnclose">
 		/// Pointer to an application-defined callback function to close a file. The function should be declared using the FNFCICLOSE macro.
@@ -429,7 +461,9 @@ namespace Vanara.PInvoke
 		// PFNFCISEEK pfnseek, PFNFCIDELETE pfndelete, PFNFCIGETTEMPFILE pfnfcigtf, PCCAB pccab, void *pv );
 		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "bfcea06d-2f09-405c-955c-0f56149148f2")]
-		public static extern SafeHFCI FCICreate(out ERF perf, PFNFCIFILEPLACED pfnfcifp, PFNALLOC pfna, PFNFREE pfnf, PFNFCIOPEN pfnopen, PFNFCIREAD pfnread, PFNFCIWRITE pfnwrite, PFNFCICLOSE pfnclose, PFNFCISEEK pfnseek, PFNFCIDELETE pfndelete, PFNFCIGETTEMPFILE pfnfcigtf, in CCAB pccab, IntPtr pv);
+		public static extern SafeHFCI FCICreate(ref ERF perf, [In] PFNFCIFILEPLACED pfnfcifp, [In] PFNALLOC pfna, [In] PFNFREE pfnf,
+			[In] PFNFCIOPEN pfnopen, [In] PFNFCIREAD pfnread, [In] PFNFCIWRITE pfnwrite, [In] PFNFCICLOSE pfnclose, [In] PFNFCISEEK pfnseek,
+			[In] PFNFCIDELETE pfndelete, [In] PFNFCIGETTEMPFILE pfnfcigtf, in CCAB pccab, [In, Optional] IntPtr pv);
 
 		/// <summary>
 		/// The <c>FCIDestroy</c> function deletes an open FCI context, freeing any memory and temporary files associated with the context.
@@ -443,7 +477,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "bb1a6294-664f-450f-b8ec-d6f8957d920e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FCIDestroy(HFCI hfci);
+		public static extern bool FCIDestroy([In] HFCI hfci);
 
 		/// <summary>The <c>FCIFlushCabinet</c> function completes the current cabinet.</summary>
 		/// <param name="hfci">A valid FCI context handle returned by theFCICreate function.</param>
@@ -469,8 +503,8 @@ namespace Vanara.PInvoke
 		/// internal buffers will be placed into another cabinet.
 		/// </para>
 		/// <para>
-		/// The fGetNextCab flag determines whether the function pointed to by the GetNextCab parameter will be called. If fGetNextCab is set
-		/// <c>TRUE</c>, GetNextCab is called to obtain continuation information. If <c>FALSE</c>, then GetNextCab is called only in the
+		/// The fGetNextCab flag determines whether the function pointed to by the GetNextCab parameter will be called. If fGetNextCab is
+		/// set <c>TRUE</c>, GetNextCab is called to obtain continuation information. If <c>FALSE</c>, then GetNextCab is called only in the
 		/// event the cabinet overflows.
 		/// </para>
 		/// </remarks>
@@ -479,7 +513,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "dc586260-180e-4a6b-accf-2ddd62ac1335")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FCIFlushCabinet(HFCI hfci, [MarshalAs(UnmanagedType.Bool)] bool fGetNextCab, PFNFCIGETNEXTCABINET pfnfcignc, PFNFCISTATUS pfnfcis);
+		public static extern bool FCIFlushCabinet([In] HFCI hfci, [MarshalAs(UnmanagedType.Bool)] bool fGetNextCab, [In] PFNFCIGETNEXTCABINET pfnfcignc, [In] PFNFCISTATUS pfnfcis);
 
 		/// <summary>The <c>FCIFlushFolder</c> function forces the current folder under construction to be completed immediately.</summary>
 		/// <param name="hfci">A valid FCI context handle returned by the FCICreate function.</param>
@@ -509,7 +543,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "dc9c226e-e309-48c3-9edb-3f0a040c0c18")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FCIFlushFolder(HFCI hfci, PFNFCIGETNEXTCABINET pfnfcignc, PFNFCISTATUS pfnfcis);
+		public static extern bool FCIFlushFolder([In] HFCI hfci, [In] PFNFCIGETNEXTCABINET pfnfcignc, [In] PFNFCISTATUS pfnfcis);
 
 		/// <summary>The <c>CCAB</c> structure contains cabinet information.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/ns-fci-ccab typedef struct { ULONG cb; ULONG cbFolderThresh; UINT
@@ -563,139 +597,18 @@ namespace Vanara.PInvoke
 			public string szCabPath;
 		}
 
-		/// <summary>The <c>ERF</c> structure contains error information from FCI/FDI. The caller should not modify this structure.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi_fci_types/ns-fdi_fci_types-erf typedef struct { int erfOper; int erfType;
-		// BOOL fError; } ERF;
-		[PInvokeData("fdi_fci_types.h", MSDNShortId = "ddbccad9-a68c-4be7-90dc-e3dd25f5cf3b")]
-		public struct ERF
-		{
-			/// <summary>
-			/// <para>An FCI/FDI error code.</para>
-			/// <para>The following values are returned for FCI:</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>FCIERR_NONE 0x00</term>
-			/// <term>No Error.</term>
-			/// </item>
-			/// <item>
-			/// <term>FCIERR_OPEN_SRC 0x01</term>
-			/// <term>Failure opening the file to be stored in the cabinet.</term>
-			/// </item>
-			/// <item>
-			/// <term>FCIERR_READ_SRC 0x02</term>
-			/// <term>Failure reading the file to be stored in the cabinet.</term>
-			/// </item>
-			/// <item>
-			/// <term>FCIERR_ALLOC_FAIL 0x03</term>
-			/// <term>Out of memory in FCI.</term>
-			/// </item>
-			/// <item>
-			/// <term>FCIERR_TEMP_FILE 0x04</term>
-			/// <term>Could not create a temporary file.</term>
-			/// </item>
-			/// <item>
-			/// <term>FCIERR_BAD_COMPR_TYPE 0x05</term>
-			/// <term>Unknown compression type.</term>
-			/// </item>
-			/// <item>
-			/// <term>FCIERR_CAB_FILE 0x06</term>
-			/// <term>Could not create the cabinet file.</term>
-			/// </item>
-			/// <item>
-			/// <term>FCIERR_USER_ABORT 0x07</term>
-			/// <term>FCI aborted.</term>
-			/// </item>
-			/// <item>
-			/// <term>FCIERR_MCI_FAIL 0x08</term>
-			/// <term>Failure compressing data.</term>
-			/// </item>
-			/// <item>
-			/// <term>FCIERR_CAB_FORMAT_LIMIT 0x09</term>
-			/// <term>Data-size or file-count exceeded CAB format limits.</term>
-			/// </item>
-			/// </list>
-			/// <para>The following values are returned for FDI:</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>FDIERROR_NONE 0x00</term>
-			/// <term>No error.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_CABINET_NOT_FOUND 0x01</term>
-			/// <term>The cabinet file was not found.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_NOT_A_CABINET 0x02</term>
-			/// <term>The cabinet file does not have the correct format.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_UNKNOWN_CABINET_VERSION 0x03</term>
-			/// <term>The cabinet file has an unknown version number.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_CORRUPT_CABINET 0x04</term>
-			/// <term>The cabinet file is corrupt.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_ALLOC_FAIL 0x05</term>
-			/// <term>Insufficient memory.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_BAD_COMPR_TYPE 0x06</term>
-			/// <term>Unknown compression type used in the cabinet folder.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_MDI_FAIL 0x07</term>
-			/// <term>Failure decompressing data from the cabinet file.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_TARGET_FILE 0x08</term>
-			/// <term>Failure writing to the target file.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_RESERVE_MISMATCH 0x09</term>
-			/// <term>The cabinets within a set do not have the same RESERVE sizes.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_WRONG_CABINET 0x0A</term>
-			/// <term>The cabinet returned by fdintNEXT_CABINET is incorrect.</term>
-			/// </item>
-			/// <item>
-			/// <term>FDIERROR_USER_ABORT 0x0B</term>
-			/// <term>FDI aborted.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public int erfOper;
-
-			/// <summary>An optional error value filled in by FCI/FDI. For FCI, this is usually the C runtime errno value.</summary>
-			public int erfType;
-
-			/// <summary>A flag that indicates an error. If <c>TRUE</c>, an error is present.</summary>
-			[MarshalAs(UnmanagedType.Bool)]
-			public bool fError;
-		}
-
 		/// <summary>Provides a handle to a file compression interface.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HFCI : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HFCI"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HFCI(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HFCI"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HFCI NULL => new HFCI(IntPtr.Zero);
+			public static HFCI NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -708,7 +621,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFCI"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HFCI(IntPtr h) => new HFCI(h);
+			public static implicit operator HFCI(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -723,7 +636,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HFCI h1, HFCI h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HFCI h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HFCI h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();

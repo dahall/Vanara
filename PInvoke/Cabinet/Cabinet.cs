@@ -570,7 +570,7 @@ namespace Vanara.PInvoke
 			public COMPRESSOR_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="COMPRESSOR_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static COMPRESSOR_HANDLE NULL => new COMPRESSOR_HANDLE(IntPtr.Zero);
+			public static COMPRESSOR_HANDLE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -583,7 +583,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="COMPRESSOR_HANDLE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator COMPRESSOR_HANDLE(IntPtr h) => new COMPRESSOR_HANDLE(h);
+			public static implicit operator COMPRESSOR_HANDLE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -618,7 +618,7 @@ namespace Vanara.PInvoke
 			public DECOMPRESSOR_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="DECOMPRESSOR_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static DECOMPRESSOR_HANDLE NULL => new DECOMPRESSOR_HANDLE(IntPtr.Zero);
+			public static DECOMPRESSOR_HANDLE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -631,7 +631,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="DECOMPRESSOR_HANDLE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator DECOMPRESSOR_HANDLE(IntPtr h) => new DECOMPRESSOR_HANDLE(h);
+			public static implicit operator DECOMPRESSOR_HANDLE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
