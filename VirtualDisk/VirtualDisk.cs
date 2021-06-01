@@ -100,6 +100,10 @@ namespace Vanara.IO
 		/// <summary>Indicates whether the virtual disk is 4 KB aligned.</summary>
 		public bool Is4kAligned => GetInformation<bool>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_IS_4K_ALIGNED);
 
+		/// <summary>Gets a value indicating whether this virtual disk has a parent backing store.</summary>
+		/// <value><see langword="true"/> if this instance  has a parent backing store; otherwise, <see langword="false"/>.</value>
+		public bool IsChild => ProviderSubtype == Subtype.Differencing;
+
 		/// <summary>
 		/// Indicates whether the virtual disk is currently mounted and in use. TRUE if the virtual disk is currently mounted and in use;
 		/// otherwise FALSE.
@@ -129,27 +133,25 @@ namespace Vanara.IO
 		public bool NewerChanges => GetInformation<bool>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE, 4);
 
 		/// <summary>The path of the parent backing store, if it can be resolved.</summary>
-		public string ParentBackingStore
-		{
-			get
-			{
-				var parentResolved = GetInformation<bool>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION);
-				//return pl.ParentResolved ? Marshal.PtrToStringUni(pl.ParentLocationBuffer) : null;
-				return parentResolved ? GetInformation<string>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4) : null;
-			}
-		}
+		public string ParentBackingStore => IsChild ? GetInformation<string>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4) : null;
 
 		/// <summary>Unique identifier of the parent disk backing store.</summary>
 		public Guid ParentIdentifier => GetInformation<Guid>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_IDENTIFIER);
 
-		/// <summary>The path of the parent backing store, if it can be resolved.</summary>
-		public string ParentPaths
+		/// <summary>
+		/// If this is a child, contains the path of the parent backing store. If is a parent disk, contains all of the parent paths present
+		/// in the search list.
+		/// </summary>
+		public string[] ParentPaths
 		{
 			get
 			{
-				var parentResolved = GetInformation<bool>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION);
-				//return pl.ParentResolved ? Marshal.PtrToStringUni(pl.ParentLocationBuffer) : null;
-				return !parentResolved ? GetInformation<string>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4) : null;
+				if (IsChild)
+				{
+					var pPath = GetInformation<string>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4);
+					return !string.IsNullOrEmpty(pPath) ? new[] { pPath } : null;
+				}
+				return GetInformation<string[]>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4);
 			}
 		}
 
@@ -335,9 +337,9 @@ namespace Vanara.IO
 			var param = new CREATE_VIRTUAL_DISK_PARAMETERS { Version = IsPreWin8 ? CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_1 : CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_2 };
 			using var pp = new SafeCoTaskMemString(parentPath);
 			if (IsPreWin8)
-				param.Version1.ParentPath = pp;
+				param.Version1.ParentPath = (IntPtr)pp;
 			else
-				param.Version2.ParentPath = pp;
+				param.Version2.ParentPath = (IntPtr)pp;
 			return Create(path, ref param, CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE, mask, sd);
 		}
 
@@ -359,9 +361,9 @@ namespace Vanara.IO
 			var mask = IsPreWin8 ? VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE : VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
 			using var sp = new SafeCoTaskMemString(sourcePath);
 			if (IsPreWin8)
-				param.Version1.SourcePath = sp;
+				param.Version1.SourcePath = (IntPtr)sp;
 			else
-				param.Version2.SourcePath = sp;
+				param.Version2.SourcePath = (IntPtr)sp;
 			return Create(path, ref param, CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE, mask);
 		}
 
@@ -648,9 +650,9 @@ namespace Vanara.IO
 					var stType = new VIRTUAL_STORAGE_TYPE();
 					var mask = IsPreWin8 ? VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE : VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
 					if (IsPreWin8)
-						param.Version1.SourcePath = sp;
+						param.Version1.SourcePath = (IntPtr)sp;
 					else
-						param.Version2.SourcePath = sp;
+						param.Version2.SourcePath = (IntPtr)sp;
 					var flags = CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE;
 					var err = CreateVirtualDisk(stType, path, mask, PSECURITY_DESCRIPTOR.NULL, flags, 0, param, vhdOverlap, out var hVhd);
 					if (err.Succeeded)
@@ -780,28 +782,32 @@ namespace Vanara.IO
 
 		private T GetInformation<T>(GET_VIRTUAL_DISK_INFO_VERSION info, long offset = 0)
 		{
-			var sz = 32U;
-			using var mem = new SafeHGlobalHandle(sz);
-			Marshal.WriteInt32(mem.DangerousGetHandle(), (int)info);
+			using var mem = GetInformation(info);
+
+			offset += 8; // Add size of version
+			if (typeof(T) == typeof(string[]))
+			{
+				if (mem.DangerousGetHandle().Offset(offset).ToStructure<ushort>() == 0)
+					return (T)(object)new string[0];
+				return (T)(object)mem.DangerousGetHandle().ToStringEnum(CharSet.Unicode, (int)offset).ToArray();
+			}
+
+			return mem.DangerousGetHandle().Offset(offset).Convert<T>((uint)(mem.Size - offset), CharSet.Unicode);
+		}
+
+		private SafeCoTaskMemStruct<GET_VIRTUAL_DISK_INFO> GetInformation(GET_VIRTUAL_DISK_INFO_VERSION info)
+		{
+			SafeCoTaskMemStruct<GET_VIRTUAL_DISK_INFO> mem = new(new GET_VIRTUAL_DISK_INFO { Version = info });
+			uint sz = mem.Size;
 			var err = GetVirtualDiskInformation(Handle, ref sz, mem, out var req);
 			if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			{
 				mem.Size = sz;
-				Marshal.WriteInt32(mem.DangerousGetHandle(), (int)info);
 				err = GetVirtualDiskInformation(Handle, ref sz, mem, out req);
 			}
-			Debug.WriteLineIf(err.Succeeded, $"GetVirtualDiskInformation: Id={info.ToString().Remove(0, 22)}; Unk={Marshal.ReadInt32(mem, 4)}; Sz={req}; Bytes={string.Join(" ", mem.ToEnumerable<uint>((int)req / 4).Select(b => b.ToString("X8")).ToArray())}");
+			Debug.WriteLineIf(err.Succeeded, $"GetVirtualDiskInformation: Id={info.ToString().Remove(0, 22)}; Unk={Marshal.ReadInt32(mem, 4)}; Sz={req}; Bytes={string.Join(" ", mem.DangerousGetHandle().ToIEnum<uint>((int)req / 4).Select(b => b.ToString("X8")).ToArray())}");
 			err.ThrowIfFailed();
-
-			if (typeof(T) == typeof(string))
-			{
-				if (mem.DangerousGetHandle().Offset(8 + offset).ToStructure<ushort>() == 0)
-					return (T)(object)string.Empty;
-				return (T)(object)Encoding.Unicode.GetString(mem.ToArray<byte>((int)sz), 8 + (int)offset, (int)sz - 8 - (int)offset).TrimEnd('\0');
-			}
-
-			using var ms = new NativeMemoryStream(mem.DangerousGetHandle(), mem.Size) { Position = 8 + offset };
-			return typeof(T) == typeof(bool) ? (T)Convert.ChangeType(ms.Read<uint>() != 0, typeof(bool)) : ms.Read<T>();
+			return mem;
 		}
 
 		/// <summary>Supports getting and setting metadata on a virtual disk.</summary>

@@ -61,7 +61,7 @@ namespace Vanara.IO.Tests
 				Assert.That(vhd.NewerChanges, Is.False);
 				Assert.That(vhd.ParentBackingStore, Is.EqualTo(tmpfn)); // must be differencing
 				Assert.That(vhd.ParentIdentifier, Is.Not.EqualTo(Guid.Empty)); // must be differencing
-				Assert.That(vhd.ParentPaths, Is.Null); // must be differencing
+				Assert.That(vhd.ParentPaths, Has.One.EqualTo(tmpfn)); // must be differencing
 				Assert.That(vhd.ParentTimeStamp, Is.Zero); // must be differencing
 														   //TestContext.WriteLine(vhd.PhysicalPath); // must be attached
 				Assert.That(vhd.PhysicalSectorSize, Is.EqualTo(0x200));
@@ -199,13 +199,12 @@ namespace Vanara.IO.Tests
 		[Test()]
 		public void GetAllAttachedVirtualDiskPathsTest()
 		{
-			Assert.That(VirtualDisk.GetAllAttachedVirtualDiskPaths(), Is.Empty);
+			Assert.That(VirtualDisk.GetAllAttachedVirtualDiskPaths(), Is.Not.Empty);
 			using (var vhd = VirtualDisk.Open(fn, true))
 			{
 				vhd.Attach();
 				Assert.That(VirtualDisk.GetAllAttachedVirtualDiskPaths(), Has.Some.EqualTo(fn));
 			}
-			Assert.That(VirtualDisk.GetAllAttachedVirtualDiskPaths(), Is.Empty);
 		}
 
 		[Test]
@@ -398,150 +397,6 @@ namespace Vanara.IO.Tests
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpfn);
-			}
-		}
-
-		[Test]
-		public void ParentChildTest()
-		{
-			const uint PhysicalSectorSize = 4096;
-			const int sz = 0x03010400;
-
-			var tmpfn = VirtualDiskTests.tmpfn + "x";
-			var tmpcfn = VirtualDiskTests.tmpcfn + "x";
-
-			try
-			{
-				VirtualDisk.Create(tmpfn, sz).Dispose();
-				VirtualDisk.CreateDifferencing(tmpcfn, tmpfn).Dispose();
-
-				//
-				// Specify UNKNOWN for both device and vendor so the system will use the
-				// file extension to determine the correct VHD format.
-				//
-
-				VIRTUAL_STORAGE_TYPE storageType = new();
-				storageType.DeviceId = VIRTUAL_STORAGE_TYPE_DEVICE_TYPE.VIRTUAL_STORAGE_TYPE_DEVICE_UNKNOWN;
-				storageType.VendorId = VIRTUAL_STORAGE_TYPE_VENDOR_UNKNOWN;
-
-				//
-				// Open the parent so it's properties can be queried.
-				//
-				// A "GetInfoOnly" handle is a handle that can only be used to query properties or
-				// metadata.
-				//
-
-				OPEN_VIRTUAL_DISK_PARAMETERS openParameters = new(false, true);
-
-				//
-				// Open the VHD/VHDX.
-				//
-				// VIRTUAL_DISK_ACCESS_NONE is the only acceptable access mask for V2 handle opens.
-				// OPEN_VIRTUAL_DISK_FLAG_NO_PARENTS indicates the parent chain should not be opened.
-				//
-
-				OpenVirtualDisk(storageType, tmpfn,
-					VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE,
-					OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NO_PARENTS,
-					openParameters, out var parentVhdHandle).ThrowIfFailed();
-
-				using (parentVhdHandle)
-				{
-					//
-					// Get the disk ID of the parent.
-					//
-
-					GET_VIRTUAL_DISK_INFO parentDiskInfo = new();
-					var diskInfoSize = (uint)Marshal.SizeOf(typeof(GET_VIRTUAL_DISK_INFO));
-					parentDiskInfo.Version = GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_IDENTIFIER;
-
-					GetVirtualDiskInformation(parentVhdHandle, ref diskInfoSize, ref parentDiskInfo, out _).ThrowIfFailed();
-
-					//
-					// Open the VHD/VHDX so it's properties can be queried.
-					//
-					// VIRTUAL_DISK_ACCESS_NONE is the only acceptable access mask for V2 handle opens.
-					// OPEN_VIRTUAL_DISK_FLAG_NO_PARENTS indicates the parent chain should not be opened.
-					//
-
-					OpenVirtualDisk(storageType, tmpcfn,
-						VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE,
-						OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NO_PARENTS,
-						openParameters, out var childVhdHandle).ThrowIfFailed();
-
-					using (childVhdHandle)
-					{
-						//
-						// Get the disk ID expected for the parent.
-						//
-
-						GET_VIRTUAL_DISK_INFO childDiskInfo = new();
-						childDiskInfo.Version = GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_IDENTIFIER;
-						diskInfoSize = (uint)Marshal.SizeOf(childDiskInfo);
-
-						GetVirtualDiskInformation(childVhdHandle, ref diskInfoSize, ref childDiskInfo, out _).ThrowIfFailed();
-
-						//
-						// Verify the disk IDs match.
-						//
-
-						if (parentDiskInfo.Identifier != childDiskInfo.ParentIdentifier)
-							Assert.Fail("Disk ID mismatch");
-
-						//
-						// Reset the parent locators in the child.
-						//
-					}
-
-					//
-					// This cannot be a "GetInfoOnly" handle because the intent is to alter the properties of the 
-					// VHD/VHDX.
-					//
-					// VIRTUAL_DISK_ACCESS_NONE is the only acceptable access mask for V2 handle opens.
-					// OPEN_VIRTUAL_DISK_FLAG_NO_PARENTS indicates the parent chain should not be opened.
-					//
-
-					openParameters.Version2.GetInfoOnly = false;
-
-					OpenVirtualDisk(storageType, tmpcfn,
-						VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE,
-						OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NO_PARENTS,
-						openParameters, out childVhdHandle).ThrowIfFailed();
-
-					using (childVhdHandle)
-					{
-						//
-						// Update the path to the parent.
-						//
-
-						using var pParentPath = new SafeCoTaskMemString(tmpfn);
-						SET_VIRTUAL_DISK_INFO setInfo = new();
-						setInfo.Version = SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PARENT_PATH_WITH_DEPTH;
-						setInfo.ParentPathWithDepthInfo = new SET_VIRTUAL_DISK_INFO.SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo
-						{
-							ChildDepth = 1,
-							ParentFilePath = (IntPtr)pParentPath
-						};
-
-						SetVirtualDiskInformation(childVhdHandle, setInfo).ThrowIfFailed();
-
-						//
-						// Set the physical sector size.
-						//
-						// This operation will only succeed on VHDX.
-						//
-
-						setInfo.Version = SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PHYSICAL_SECTOR_SIZE;
-						setInfo.VhdPhysicalSectorSize = PhysicalSectorSize;
-
-						SetVirtualDiskInformation(childVhdHandle, setInfo).ThrowIfFailed();
-					}
-				}
-			}
-			finally
-			{
-				System.IO.File.Delete(tmpcfn);
 				System.IO.File.Delete(tmpfn);
 			}
 		}

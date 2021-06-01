@@ -1767,13 +1767,13 @@ namespace Vanara.PInvoke
 				/// Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this
 				/// parameter is not NULL, SourcePath must be NULL.
 				/// </summary>
-				public IntPtr ParentPath;
+				public StrPtrUni ParentPath;
 
 				/// <summary>
 				/// Optional fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path
 				/// may refer to a virtual disk or a physical disk. If this parameter is not NULL, ParentPath must be NULL.
 				/// </summary>
-				public IntPtr SourcePath;
+				public StrPtrUni SourcePath;
 			}
 
 			/// <summary>
@@ -1812,13 +1812,13 @@ namespace Vanara.PInvoke
 				/// Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this
 				/// parameter is not NULL, SourcePath must be NULL.
 				/// </summary>
-				public IntPtr ParentPath;
+				public StrPtrUni ParentPath;
 
 				/// <summary>
 				/// Optional fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path
 				/// may refer to a virtual disk or a physical disk. If this parameter is not NULL, ParentPath must be NULL.
 				/// </summary>
-				public IntPtr SourcePath;
+				public StrPtrUni SourcePath;
 
 				/// <summary>Zero or more flags from the OPEN_VIRTUAL_DISK_FLAG enumeration describing how the virtual disk is to be opened.</summary>
 				public OPEN_VIRTUAL_DISK_FLAG OpenFlags;
@@ -1869,13 +1869,13 @@ namespace Vanara.PInvoke
 				/// Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this
 				/// parameter is not NULL, SourcePath must be NULL.
 				/// </summary>
-				public IntPtr ParentPath;
+				public StrPtrUni ParentPath;
 
 				/// <summary>
 				/// Optional fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path
 				/// may refer to a virtual disk or a physical disk. If this parameter is not NULL, ParentPath must be NULL.
 				/// </summary>
-				public IntPtr SourcePath;
+				public StrPtrUni SourcePath;
 
 				/// <summary>Zero or more flags from the OPEN_VIRTUAL_DISK_FLAG enumeration describing how the virtual disk is to be opened.</summary>
 				public OPEN_VIRTUAL_DISK_FLAG OpenFlags;
@@ -1890,7 +1890,7 @@ namespace Vanara.PInvoke
 				public Guid ResiliencyGuid;
 
 				/// <summary></summary>
-				public IntPtr SourceLimitPath;
+				public StrPtrUni SourceLimitPath;
 
 				/// <summary></summary>
 				public VIRTUAL_STORAGE_TYPE BackingStorageType;
