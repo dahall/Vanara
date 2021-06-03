@@ -47,7 +47,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcialloc
 		[PInvokeData("fci.h", MSDNShortId = "339ac9d2-60bc-4a90-8a46-6fbb073be9d1")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate IntPtr PFNALLOC(uint cb);
 
 		/// <summary>
@@ -60,7 +60,7 @@ namespace Vanara.PInvoke
 		/// <remarks>The function accepts parameters similar to _close, with the addition of err and pv.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciclose
 		[PInvokeData("fci.h", MSDNShortId = "c4edf6ca-0b16-4e30-933b-934f8930c6d6")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate int PFNFCICLOSE(IntPtr hf, out int err, IntPtr pv);
 
 		/// <summary>
@@ -73,7 +73,7 @@ namespace Vanara.PInvoke
 		/// <remarks>The function accepts parameters similar to remove, with the addition of err and pv.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcidelete
 		[PInvokeData("fci.h", MSDNShortId = "5c85ad86-2794-4f7c-8c10-18fea3519b11")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate int PFNFCIDELETE(string pszFile, out int err, IntPtr pv);
 
 		/// <summary>
@@ -88,7 +88,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns 0 if the file was successfully replaced. A return value of –1 indicates an error.</returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcifileplaced
 		[PInvokeData("fci.h", MSDNShortId = "f8a1bcfc-8a13-49cf-a3e7-caec6c6421b0")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate int PFNFCIFILEPLACED(ref CCAB pccab, string pszFile, int cbFile, [MarshalAs(UnmanagedType.Bool)] bool fContinuation, IntPtr pv);
 
 		/// <summary>
@@ -110,7 +110,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcigetnextcabinet
 		[PInvokeData("fci.h", MSDNShortId = "d56fb63e-91bf-4991-a954-176211697a2e")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool PFNFCIGETNEXTCABINET(ref CCAB pccab, uint cbPrevCab, IntPtr pv);
 
@@ -128,7 +128,7 @@ namespace Vanara.PInvoke
 		/// <remarks>The function should open the file using the file open function compatible with those passed into FCICreate.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcigetopeninfo
 		[PInvokeData("fci.h", MSDNShortId = "5baccb69-7872-4d67-ad74-70cdd7459f8d")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate IntPtr PFNFCIGETOPENINFO(string pszName, ref ushort pdate, ref ushort ptime, ref ushort pattribs, out int err, IntPtr pv);
 
 		/// <summary>
@@ -145,7 +145,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcigettempfile
 		[PInvokeData("fci.h", MSDNShortId = "8978f688-d8f1-437a-b298-eed1e7dac012")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool PFNFCIGETTEMPFILE(StringBuilder pszTempName, int cbTempName, IntPtr pv);
 
@@ -161,7 +161,7 @@ namespace Vanara.PInvoke
 		/// <remarks>The function accepts parameters similar to _open.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciopen
 		[PInvokeData("fci.h", MSDNShortId = "72cf50cb-c895-4953-9c4d-f8ddaa294f2a")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate IntPtr PFNFCIOPEN(string pszFile, int oflag, int pmode, out int err, IntPtr pv);
 
 		/// <summary>
@@ -179,7 +179,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciread
 		[PInvokeData("fci.h", MSDNShortId = "dd4e97ff-efbc-462b-b954-bc3260fa1513")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate uint PFNFCIREAD(IntPtr hf, IntPtr memory, uint cb, out int err, IntPtr pv);
 
 		/// <summary>
@@ -197,7 +197,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciseek
 		[PInvokeData("fci.h", MSDNShortId = "e5a14c98-4de6-452e-8993-afb7964aeee7")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate int PFNFCISEEK(IntPtr hf, int dist, int seektype, out int err, IntPtr pv);
 
 		/// <summary>
@@ -218,7 +218,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcistatus
 		[PInvokeData("fci.h", MSDNShortId = "529fd3c8-9783-4dbe-9268-a9137935cf9b")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate int PFNFCISTATUS(CabinetFileStatus typeStatus, uint cb1, uint cb2, IntPtr pv);
 
 		/// <summary>
@@ -234,7 +234,7 @@ namespace Vanara.PInvoke
 		/// <remarks>The function accepts parameters similar to _write.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciwrite
 		[PInvokeData("fci.h", MSDNShortId = "ca4c3b5b-1ed5-4f12-8317-c1e1dac5f816")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate uint PFNFCIWRITE(IntPtr hf, IntPtr memory, uint cb, out int err, IntPtr pv);
 
 		/// <summary>
@@ -248,7 +248,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfcifree
 		[PInvokeData("fci.h", MSDNShortId = "48f052e2-7786-430a-b3dc-afcfdffae387")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate void PFNFREE(IntPtr memory);
 
 		/// <summary>Used by <see cref="PFNFCISTATUS"/>.</summary>
@@ -400,7 +400,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fciaddfile BOOL DIAMONDAPI FCIAddFile( HFCI hfci, LPSTR
 		// pszSourceFile, LPSTR pszFileName, BOOL fExecute, PFNFCIGETNEXTCABINET pfnfcignc, PFNFCISTATUS pfnfcis, PFNFCIGETOPENINFO
 		// pfnfcigoi, TCOMP typeCompress );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "f99e8718-853b-4d35-98ae-61a8333dbaba")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FCIAddFile([In] HFCI hfci, string pszSourceFile, string pszFileName, [MarshalAs(UnmanagedType.Bool)] bool fExecute,
@@ -459,7 +459,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fcicreate HFCI DIAMONDAPI FCICreate( PERF perf, PFNFCIFILEPLACED
 		// pfnfcifp, PFNFCIALLOC pfna, PFNFCIFREE pfnf, PFNFCIOPEN pfnopen, PFNFCIREAD pfnread, PFNFCIWRITE pfnwrite, PFNFCICLOSE pfnclose,
 		// PFNFCISEEK pfnseek, PFNFCIDELETE pfndelete, PFNFCIGETTEMPFILE pfnfcigtf, PCCAB pccab, void *pv );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "bfcea06d-2f09-405c-955c-0f56149148f2")]
 		public static extern SafeHFCI FCICreate(ref ERF perf, [In] PFNFCIFILEPLACED pfnfcifp, [In] PFNALLOC pfna, [In] PFNFREE pfnf,
 			[In] PFNFCIOPEN pfnopen, [In] PFNFCIREAD pfnread, [In] PFNFCIWRITE pfnwrite, [In] PFNFCICLOSE pfnclose, [In] PFNFCISEEK pfnseek,
@@ -474,7 +474,7 @@ namespace Vanara.PInvoke
 		/// <para>Extended error information is provided in the ERF structure used to create the FCI context.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fcidestroy BOOL DIAMONDAPI FCIDestroy( HFCI hfci );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "bb1a6294-664f-450f-b8ec-d6f8957d920e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FCIDestroy([In] HFCI hfci);
@@ -510,7 +510,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fciflushcabinet BOOL DIAMONDAPI FCIFlushCabinet( HFCI hfci, BOOL
 		// fGetNextCab, PFNFCIGETNEXTCABINET pfnfcignc, PFNFCISTATUS pfnfcis );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "dc586260-180e-4a6b-accf-2ddd62ac1335")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FCIFlushCabinet([In] HFCI hfci, [MarshalAs(UnmanagedType.Bool)] bool fGetNextCab, [In] PFNFCIGETNEXTCABINET pfnfcignc, [In] PFNFCISTATUS pfnfcis);
@@ -540,7 +540,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fciflushfolder BOOL DIAMONDAPI FCIFlushFolder( HFCI hfci,
 		// PFNFCIGETNEXTCABINET pfnfcignc, PFNFCISTATUS pfnfcis );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fci.h", MSDNShortId = "dc9c226e-e309-48c3-9edb-3f0a040c0c18")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FCIFlushFolder([In] HFCI hfci, [In] PFNFCIGETNEXTCABINET pfnfcignc, [In] PFNFCISTATUS pfnfcis);
@@ -664,7 +664,7 @@ namespace Vanara.PInvoke
 			public static implicit operator HFCI(SafeHFCI h) => h.handle;
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => FCIDestroy(this);
+			protected override bool InternalReleaseHandle() => FCIDestroy(handle);
 		}
 	}
 }

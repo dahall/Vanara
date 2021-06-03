@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -20,6 +21,7 @@ namespace Vanara.PInvoke
 		/// <param name="pfdid">The FDIDECRYPT structure.</param>
 		/// <returns>Undocumented</returns>
 		[PInvokeData("fdi.h")]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate int PFNFDIDECRYPT(ref FDIDECRYPT pfdid);
 
 		/// <summary>
@@ -35,6 +37,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fnfdinotify
 		[PInvokeData("fdi.h", MSDNShortId = "7655ddb2-7cd4-4012-913c-9909fcea639a")]
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public delegate IntPtr PFNFDINOTIFY(FDINOTIFICATIONTYPE fdint, ref FDINOTIFICATION pfdin);
 
 		/// <summary>
@@ -47,7 +50,8 @@ namespace Vanara.PInvoke
 		/// <remarks>The function accepts parameters similar to _open.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fnopen
 		[PInvokeData("fdi.h", MSDNShortId = "45bd2d23-1f6d-42a6-8afb-86227da6118f")]
-		public delegate IntPtr PFNOPEN(string pszFile, int oflag, int pmode);
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public delegate IntPtr PFNOPEN(string pszFile, RunTimeLib.FileOpConstant oflag, RunTimeLib.FilePermissionConstant pmode);
 
 		/// <summary>
 		/// The <c>FNREAD</c> macro provides the declaration for the application-defined callback function to read data from a file in an
@@ -60,7 +64,8 @@ namespace Vanara.PInvoke
 		/// <remarks>The function accepts parameters similar to _read.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fnread
 		[PInvokeData("fdi.h", MSDNShortId = "0a8c6c9f-051c-43a0-b43b-1fd8b4fef10c")]
-		public delegate uint PFNREAD(IntPtr hf, IntPtr memory, uint cb);
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public delegate uint PFNREAD(IntPtr hf, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] memory, uint cb);
 
 		/// <summary>
 		/// The <c>FNSEEK</c> macro provides the declaration for the application-defined callback function to move a file pointer to the
@@ -73,7 +78,8 @@ namespace Vanara.PInvoke
 		/// <remarks>The function accepts parameters similar to _lseek.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fnseek
 		[PInvokeData("fdi.h", MSDNShortId = "e49b5086-6b89-40ce-b6fa-905d21593dec")]
-		public delegate int PFNSEEK(IntPtr hf, int dist, int seektype);
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public delegate int PFNSEEK(IntPtr hf, int dist, SeekOrigin seektype);
 
 		/// <summary>
 		/// The <c>FNWRITE</c> macro provides the declaration for the application-defined callback function to write data to a file in an
@@ -86,7 +92,22 @@ namespace Vanara.PInvoke
 		/// <remarks>The function accepts parameters similar to _write.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fnwrite
 		[PInvokeData("fdi.h", MSDNShortId = "e15d4293-2955-48cd-b8c9-77669a1e6436")]
-		public delegate uint PFNWRITE(IntPtr hf, IntPtr memory, uint cb);
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public delegate uint PFNWRITE(IntPtr hf, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] memory, uint cb);
+
+		/// <summary>Specifies the CPU type.</summary>
+		[PInvokeData("fdi.h")]
+		public enum FDICPU
+		{
+			/// <summary>FDI should determine the CPU type.</summary>
+			cpuUNKNOWN = -1,
+
+			/// <summary>Only 80286 instructions can be used.</summary>
+			cpu80286 = 0,
+
+			/// <summary>80386 instructions can be used.</summary>
+			cpu80386 = 1
+		}
 
 		/// <summary/>
 		[PInvokeData("fdi.h")]
@@ -229,55 +250,117 @@ namespace Vanara.PInvoke
 		public enum FDINOTIFICATIONTYPE
 		{
 			/// <summary>
-			/// General information about the cabinet. When this value is set, the FDINOTIFICATION structure is populated with the following
-			/// information: The application should return 0 to indicate success, or -1 to indicate failure, which will abort FDICopy. An
+			/// <para>General information about the cabinet.</para>
+			/// <para>When this value is set, the FDINOTIFICATION structure is populated with the following information:</para>
+			/// <list type="bullet">
+			/// <item>psz1 will point to the name of the next cabinet (excluding path information)</item>
+			/// <item>psz2 will point to the name of the next disk</item>
+			/// <item>psz3 will point to the cabinet path name</item>
+			/// <item>setID will equal the set ID of the current cabinet</item>
+			/// <item>
+			/// iCabinet will equal the cabinet number within the cabinet set (0 for the first cabinet, 1 for the second cabinet, etc.)
+			/// </item>
+			/// </list>
+			/// <para>
+			/// The application should return 0 to indicate success, or -1 to indicate failure, which will abort FDICopy. An
 			/// fdintCABINET_INFO notification will be provided once for each cabinet opened by FDICopy; this includes continuation cabinets
 			/// opened due to files spanning cabinet boundaries.
+			/// </para>
 			/// </summary>
 			fdintCABINET_INFO,
 
 			/// <summary>
-			/// First file in the cabinet is a continuation of a file from previous cabinet. When this value is set, the FDINOTIFICATION
-			/// structure is populated with the following information: The fdintPARTIAL_FILE notification is called for files at the
-			/// beginning of a cabinet that have continued from a previous cabinet. This notification will occur only when FDICopy is
-			/// started on the second or subsequent cabinet in a series, which has files continued from a previous cabinet. The application
-			/// should return 0 for success, or -1 to indicate failure.
+			/// <para>First file in the cabinet is a continuation of a file from previous cabinet.</para>
+			/// <para>When this value is set, the FDINOTIFICATION structure is populated with the following information:</para>
+			/// <list type="bullet">
+			/// <item>psz1 will point to the name of the file continued from a previous cabinet</item>
+			/// <item>psz2 will point to the name of the cabinet on which the first segment of the file exists</item>
+			/// <item>psz3 will point to the name of the disk on which the first segment of the file exists</item>
+			/// </list>
+			/// <para>
+			/// The fdintPARTIAL_FILE notification is called for files at the beginning of a cabinet that have continued from a previous
+			/// cabinet. This notification will occur only when FDICopy is started on the second or subsequent cabinet in a series, which
+			/// has files continued from a previous cabinet. The application should return 0 for success, or -1 to indicate failure.
+			/// </para>
 			/// </summary>
 			fdintPARTIAL_FILE,
 
 			/// <summary>
-			/// Information identifying the file to be copied. When this value is set, the FDINOTIFICATION structure is populated with the
-			/// following information: The application should return one of three values; 0 to skip (i.e. not copy) the file; -1 (negative
+			/// <para>Information identifying the file to be copied.</para>
+			/// <para>When this value is set, the FDINOTIFICATION structure is populated with the following information:</para>
+			/// <list type="bullet">
+			/// <item>psz1 will point to the name of a file in the cabinet</item>
+			/// <item>cb will equal the uncompressed size of the file</item>
+			/// <item>date will equal the file's 16-bit MS-DOS date</item>
+			/// <item>time will equal the file's 16-bit MS-DOS time</item>
+			/// <item>attribs will equal the file's 16-bit MS-DOS attributes</item>
+			/// </list>
+			/// <para>
+			/// The application should return one of three values; 0 to skip (i.e. not copy) the file; -1 (negative
 			/// one) to abort FDICopy; or a nonzero (and non-negative-one) file handle that indicates where to write the file. The file
 			/// handle must be compatible with the PFNCLOSE function supplied to FDICreate. The fdintCOPY_FILE notification is called for
 			/// each file that starts within the current cabinet, providing the opportunity for the application to request that the file be
 			/// copied or skipped.
+			/// </para>
 			/// </summary>
 			fdintCOPY_FILE,
 
 			/// <summary>
-			/// Close the file, set relevant information. When this value is set, the FDINOTIFICATION structure is populated with the
-			/// following information: It is the responsibility of the application to execute the file if cb equals 1. The
-			/// fdintCLOSE_FILE_INFO notification is called after all of the data has been written to a target file. The application must
-			/// close the file (using the provided hf handle), and set the file date, time, and attributes. The application should return
-			/// TRUE for success, and FALSE or -1 to abort FDICopy. FDI assumes that the target file was closed, even if this callback
-			/// returns failure; FDI will not attempt to use PFNCLOSE to close the file.
+			/// <para>Close the file, set relevant information.</para>
+			/// <para>When this value is set, the FDINOTIFICATION structure is populated with the following information:</para>
+			/// <list type="bullet">
+			/// <item>psz1 will point to the name of a file in the cabinet</item>
+			/// <item>hf will be a file handle (which originated from fdintCOPY_FILE)</item>
+			/// <item>date date will equal the file's 16-bit MS-DOS date</item>
+			/// <item>time time will equal the file's 16-bit MS-DOS time</item>
+			/// <item>attribs attributes will equal the file's 16-bit MS-DOS attributes (minus the _A_EXEC bit)</item>
+			/// <item>cb will equal either 0 or 1, indicating whether the file should be executed after extract (1), or not (0)</item>
+			/// </list>
+			/// <para>
+			/// It is the responsibility of the application to execute the file if cb equals 1. The fdintCLOSE_FILE_INFO notification is
+			/// called after all of the data has been written to a target file. The application must close the file (using the provided hf
+			/// handle), and set the file date, time, and attributes. The application should return TRUE for success, and FALSE or -1 to
+			/// abort FDICopy. FDI assumes that the target file was closed, even if this callback returns failure; FDI will not attempt to
+			/// use PFNCLOSE to close the file.
+			/// </para>
 			/// </summary>
 			fdintCLOSE_FILE_INFO,
 
 			/// <summary>
-			/// File continued to next cabinet. When this value is set, the FDINOTIFICATION structure is populated with the following
-			/// information: This notification is called only if fdintCOPY_FILE is instructed to copy a file, which is continued from a
-			/// subsequent cabinet, to the current cabinet . Since it is possible for the application to modify the cabinet name, it is
-			/// important that the cabinet path name, indicated by psz3, be validated before it is returned. Additionally, the application
-			/// should ensure that the cabinet exists and is readable before returning; if necessary, the application should issue a disk
-			/// change prompt to confirm. When this function returns to FDI, FDI will verify that the setID and iCabinet fields of the
-			/// supplied cabinet match the expected values for that cabinet. If not, FDI will continue to send fdintNEXT_CABINET
-			/// notification messages with the fdie field set to FDIERROR_WRONG_CABINET, until the correct cabinet file is specified, or
-			/// until this function returns -1 and aborts the FDICopy call. If, after returning from this function, the cabinet file is not
-			/// present, readable, or has been damaged, then the fdie field will equal one of the following values: If there was no error,
-			/// fdie will equal FDIERROR_NONE. The application should return 0 to indicate success, or -1 to indicate failure, which will
-			/// abort FDICopy.
+			/// <para>File continued to next cabinet.</para>
+			/// <para>When this value is set, the FDINOTIFICATION structure is populated with the following information:</para>
+			/// <list type="bullet">
+			/// <item>psz1 will point to the name of the next cabinet on which the current file is continued</item>
+			/// <item>psz2 will be a file handle (which originated from fdintCOPY_FILE)</item>
+			/// <item>psz3 will point to the cabinet path information</item>
+			/// <item>fdie will equal a success or error value</item>
+			/// </list>
+			/// <para>
+			/// This notification is called only if fdintCOPY_FILE is instructed to copy a file, which is continued from a subsequent
+			/// cabinet, to the current cabinet . Since it is possible for the application to modify the cabinet name, it is important that
+			/// the cabinet path name, indicated by psz3, be validated before it is returned. Additionally, the application should ensure
+			/// that the cabinet exists and is readable before returning; if necessary, the application should issue a disk change prompt to confirm.
+			/// </para>
+			/// <para>
+			/// When this function returns to FDI, FDI will verify that the setID and iCabinet fields of the supplied cabinet match the
+			/// expected values for that cabinet. If not, FDI will continue to send fdintNEXT_CABINET notification messages with the fdie
+			/// field set to FDIERROR_WRONG_CABINET, until the correct cabinet file is specified, or until this function returns -1 and
+			/// aborts the FDICopy call. If, after returning from this function, the cabinet file is not present, readable, or has been
+			/// damaged, then the fdie field will equal one of the following values:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>FDIERROR_CABINET_NOT_FOUND</item>
+			/// <item>FDIERROR_NOT_A_CABINET</item>
+			/// <item>FDIERROR_UNKNOWN_CABINET_VERSION</item>
+			/// <item>FDIERROR_CORRUPT_CABINET</item>
+			/// <item>FDIERROR_BAD_COMPR_TYPE</item>
+			/// <item>FDIERROR_RESERVE_MISMATCH</item>
+			/// <item>FDIERROR_WRONG_CABINET</item>
+			/// </list>
+			/// <para>
+			/// If there was no error, fdie will equal FDIERROR_NONE. The application should return 0 to indicate success, or -1 to indicate
+			/// failure, which will abort FDICopy.
+			/// </para>
 			/// </summary>
 			fdintNEXT_CABINET,
 
@@ -308,11 +391,11 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fdicopy BOOL DIAMONDAPI FDICopy( HFDI hfdi, LPSTR pszCabinet,
 		// LPSTR pszCabPath, int flags, PFNFDINOTIFY pfnfdin, PFNFDIDECRYPT pfnfdid, void *pvUser );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fdi.h", MSDNShortId = "6ec2b10b-f70a-4a22-beff-df6b6a4c4cfd")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FDICopy([In] HFDI hfdi, string pszCabinet, string pszCabPath, int flags, [In] PFNFDINOTIFY pfnfdin,
-			[In] PFNFDIDECRYPT pfnfdid, [In, Optional] IntPtr pvUser);
+		public static extern bool FDICopy([In] HFDI hfdi, string pszCabinet, string pszCabPath, [Optional] int flags, [In] PFNFDINOTIFY pfnfdin,
+			[In, Optional] PFNFDIDECRYPT pfnfdid, [In, Optional] IntPtr pvUser);
 
 		/// <summary>The <c>FDICreate</c> function creates an FDI context.</summary>
 		/// <param name="pfnalloc">
@@ -367,10 +450,15 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fdicreate HFDI DIAMONDAPI FDICreate( PFNALLOC pfnalloc, PFNFREE
 		// pfnfree, PFNOPEN pfnopen, PFNREAD pfnread, PFNWRITE pfnwrite, PFNCLOSE pfnclose, PFNSEEK pfnseek, int cpuType, PERF perf );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fdi.h", MSDNShortId = "90634725-b7a8-4369-8a91-684debee9548")]
-		public static extern SafeHFDI FDICreate([In] PFNALLOC pfnalloc, [In] PFNFREE pfnfree, [In] PFNOPEN pfnopen, [In] PFNREAD pfnread,
-			[In] PFNWRITE pfnwrite, [In] PFNCLOSE pfnclose, [In] PFNSEEK pfnseek, int cpuType, ref ERF perf);
+		public static extern SafeHFDI FDICreate([In, MarshalAs(UnmanagedType.FunctionPtr)] PFNALLOC pfnalloc,
+			[In, MarshalAs(UnmanagedType.FunctionPtr)] PFNFREE pfnfree,
+			[In, MarshalAs(UnmanagedType.FunctionPtr)] PFNOPEN pfnopen,
+			[In, MarshalAs(UnmanagedType.FunctionPtr)] PFNREAD pfnread,
+			[In, MarshalAs(UnmanagedType.FunctionPtr)] PFNWRITE pfnwrite,
+			[In, MarshalAs(UnmanagedType.FunctionPtr)] PFNCLOSE pfnclose,
+			[In, MarshalAs(UnmanagedType.FunctionPtr)] PFNSEEK pfnseek, FDICPU cpuType, ref ERF perf);
 
 		/// <summary>The <c>FDIDestroy</c> function deletes an open FDI context.</summary>
 		/// <param name="hfdi">A valid FDI context handle returned by the FDICreate function.</param>
@@ -379,7 +467,7 @@ namespace Vanara.PInvoke
 		/// <para>Extended error information is provided in the ERF structure used to create the FDI context.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fdidestroy BOOL DIAMONDAPI FDIDestroy( HFDI hfdi );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fdi.h", MSDNShortId = "fe3b8045-a476-4a21-b732-0d4799798faf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FDIDestroy([In] HFDI hfdi);
@@ -401,7 +489,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fdiiscabinet BOOL DIAMONDAPI FDIIsCabinet( HFDI hfdi, INT_PTR hf,
 		// PFDICABINETINFO pfdici );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fdi.h", MSDNShortId = "01d223ca-56c6-49fa-b9e6-e5eeda88936a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FDIIsCabinet([In] HFDI hfdi, [In] IntPtr hf, out FDICABINETINFO pfdici);
@@ -416,7 +504,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fditruncatecabinet BOOL DIAMONDAPI FDITruncateCabinet( HFDI hfdi,
 		// LPSTR pszCabinetName, USHORT iFolderToDelete );
-		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[PInvokeData("fdi.h", MSDNShortId = "c923b0a5-1a8d-42aa-bd05-0d318199756d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FDITruncateCabinet([In] HFDI hfdi, string pszCabinetName, ushort iFolderToDelete);
@@ -444,19 +532,22 @@ namespace Vanara.PInvoke
 			public ushort iCabinet;
 
 			/// <summary>If this value is set to <c>TRUE</c>, a reserved area is present in the cabinet.</summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool fReserve;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fReserve;
 
 			/// <summary>
 			/// If this value is set to <c>TRUE</c>, the cabinet is linked to a previous cabinet. This is accomplished by having a file
 			/// continued from the previous cabinet into the current one.
 			/// </summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool hasprev;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool hasprev;
 
 			/// <summary>
 			/// If this value is set to <c>TRUE</c>, the current cabinet is linked to the next cabinet by having a file continued from the
 			/// current cabinet into the next one.
 			/// </summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool hasnext;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool hasnext;
 		}
 
 		/// <summary/>
@@ -538,6 +629,7 @@ namespace Vanara.PInvoke
 				public ushort cbData;
 
 				///<summary>TRUE if this is a split data block</summary>
+				[MarshalAs(UnmanagedType.Bool)]
 				public bool fSplit;
 
 				///<summary>0 if this is not a split block, or the first piece of a split block; Greater than 0 if this is the second piece of a split block.</summary>
@@ -687,6 +779,26 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public FDIERROR fdie;
+
+			/// <summary>The file attributes.</summary>
+			public FileFlagsAndAttributes Attributes => (FileFlagsAndAttributes)attribs;
+
+			/// <summary>Gets the date and time.</summary>
+			/// <value>The date and time value.</value>
+			public DateTime DateTime
+			{
+				get
+				{
+					return new(Extensions.BitHelper.GetBits(date, 9, 7) + 1980, GetValidBits(date, 5, 4, 1, 12, 1), GetValidBits(date, 0, 5, 1, 31, 1),
+						GetValidBits(time, 11, 5, 0, 23, 0), GetValidBits(time, 5, 6, 0, 59, 0), GetValidBits(time, 0, 5, 0, 29, 0) * 2, DateTimeKind.Local);
+
+					static ushort GetValidBits(ushort bits, byte start, byte len, ushort low, ushort high, ushort def)
+					{
+						var ret = Extensions.BitHelper.GetBits(bits, start, len);
+						return ret < low || ret > high ? def : ret;
+					}
+				}
+			}
 		}
 
 		/// <summary>Provides a handle to a file decompression interface.</summary>
@@ -756,7 +868,7 @@ namespace Vanara.PInvoke
 			public static implicit operator HFDI(SafeHFDI h) => h.handle;
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => FDIDestroy(this);
+			protected override bool InternalReleaseHandle() => FDIDestroy(handle);
 		}
 	}
 }
