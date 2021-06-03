@@ -1386,7 +1386,7 @@ namespace Vanara.PInvoke
 			/// <summary>Represents the <see langword="null"/> equivalent of this class instances.</summary>
 			public static new readonly SafeBITMAPINFO Null = new(IntPtr.Zero, false);
 
-			/// <summary>Performs an implicit conversion from <see cref=BITMAPINFO"/> to <see cref="SafeBITMAPINFO"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="BITMAPINFO"/> to <see cref="SafeBITMAPINFO"/>.</summary>
 			/// <param name="bi">The <see cref="BITMAPINFO"/> value.</param>
 			/// <returns>The resulting <see cref="SafeBITMAPINFO"/> instance from the conversion.</returns>
 			public static implicit operator SafeBITMAPINFO(in BITMAPINFO bi) => new(bi);
