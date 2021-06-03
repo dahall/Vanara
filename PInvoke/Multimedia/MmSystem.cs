@@ -285,6 +285,16 @@ namespace Vanara.PInvoke
 		public static uint MAKEFOURCC(char ch0, char ch1, char ch2, char ch3) => (byte)ch0 | ((uint)(byte)ch1 << 8) |
 			((uint)(byte)ch2 << 16) | ((uint)(byte)ch3 << 24);
 
+		/// <summary>Makes a four character code.</summary>
+		/// <param name="chars">The four character code.</param>
+		/// <returns>The character code.</returns>
+		public static uint MAKEFOURCC(string chars)
+		{
+			if (chars is null || chars.Length != 4)
+				throw new ArgumentException("The character code was not a four-character string.");
+			return MAKEFOURCC(chars[0], chars[1], chars[2], chars[3]);
+		}
+
 		/// <summary>
 		/// The <c>PlaySound</c> function plays a sound specified by the given file name, resource, or system event. (A system event may be
 		/// associated with a sound in the registry or in the WIN.INI file.)

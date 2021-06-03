@@ -269,7 +269,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WTSApi32", "UnitTests\PInvo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.OleDlg", "PInvoke\OleDlg\Vanara.PInvoke.OleDlg.csproj", "{52DB113A-CE55-437C-B6DF-6A4CA1B3F965}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.ComDlg32", "PInvoke\ComDlg32\Vanara.PInvoke.ComDlg32.csproj", "{8452C9E4-39CB-431F-BBD6-EF3E64675BB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.ComDlg32", "PInvoke\ComDlg32\Vanara.PInvoke.ComDlg32.csproj", "{8452C9E4-39CB-431F-BBD6-EF3E64675BB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OleDlg", "UnitTests\PInvoke\OleDlg\OleDlg.csproj", "{76740A8B-28F1-41C8-A724-F2E3F56AA75A}"
 EndProject
@@ -314,6 +314,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Lz32", "PInvoke\Lz32\Vanara.PInvoke.Lz32.csproj", "{553081F3-A380-44B4-94ED-E8CE510F3E96}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Multimedia", "PInvoke\Multimedia\Vanara.PInvoke.Multimedia.csproj", "{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multimedia", "UnitTests\PInvoke\Multimedia\Multimedia.csproj", "{A9F11EBE-C1CE-40C3-A611-B444652215A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1029,6 +1031,10 @@ Global
 		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9F11EBE-C1CE-40C3-A611-B444652215A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9F11EBE-C1CE-40C3-A611-B444652215A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9F11EBE-C1CE-40C3-A611-B444652215A0}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9F11EBE-C1CE-40C3-A611-B444652215A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1167,6 +1173,7 @@ Global
 		{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{553081F3-A380-44B4-94ED-E8CE510F3E96} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{A9F11EBE-C1CE-40C3-A611-B444652215A0} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

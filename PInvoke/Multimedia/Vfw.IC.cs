@@ -1,7 +1,9 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
@@ -9,6 +11,11 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the Msvfw32.dll</summary>
 	public static partial class Msvfw32
 	{
+		private const uint DRV_USER = 0x4000;
+		private const uint ICM_RESERVED = ICM_RESERVED_LOW;
+		private const uint ICM_RESERVED_HIGH = DRV_USER + 0x2000;
+		private const uint ICM_RESERVED_LOW = DRV_USER + 0x1000;
+		private const uint ICM_USER = DRV_USER + 0x0000;
 		private const string Lib_Msvfw32 = "msvfw32.dll";
 
 		/// <summary>Applicable flags for the function.</summary>
@@ -78,6 +85,386 @@ namespace Vanara.PInvoke
 			/// with DrawDibDraw, set this value with DrawDibBegin rather than DrawDibDraw.
 			/// </summary>
 			DDF_HALFTONE = 0x1000,
+		}
+
+		/// <summary>Flags used for compression.</summary>
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_2")]
+		[Flags]
+		public enum ICCOMPRESSF : uint
+		{
+			/// <summary>Input data should be treated as a key frame.</summary>
+			ICCOMPRESS_KEYFRAME = 0x00000001
+		}
+
+		/// <summary>Applicable flags.</summary>
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_3")]
+		[Flags]
+		public enum ICCOMPRESSFRAMESF : uint
+		{
+			/// <summary>Padding is used with the frame.</summary>
+			ICCOMPRESSFRAMES_PADDING = 1
+		}
+
+		/// <summary>Applicable flags.</summary>
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_5")]
+		[Flags]
+		public enum ICDECOMPRESSF : uint
+		{
+			/// <summary>
+			/// Tries to decompress at a faster rate. When an application uses this flag, the driver should buffer the decompressed data but
+			/// not draw the image.
+			/// </summary>
+			ICDECOMPRESS_HURRYUP = 0x80000000,
+
+			/// <summary>Screen is being updated or refreshed.</summary>
+			ICDECOMPRESS_UPDATE = 0x40000000,
+
+			/// <summary>Current frame precedes the point in the movie where playback starts and, therefore, will not be drawn.</summary>
+			ICDECOMPRESS_PREROLL = 0x20000000,
+
+			/// <summary>Current frame does not contain data and the decompressed image should be left the same.</summary>
+			ICDECOMPRESS_NULLFRAME = 0x10000000,
+
+			/// <summary>Current frame is not a key frame.</summary>
+			ICDECOMPRESS_NOTKEYFRAME = 0x08000000,
+		}
+
+		/// <summary>Flags from the AVI file index.</summary>
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_8")]
+		[Flags]
+		public enum ICDRAWF : uint
+		{
+			/// <summary>Determines if the decompressor can handle the decompression. The driver does not actually decompress the data.</summary>
+			ICDRAW_QUERY = 0x00000001,
+
+			/// <summary>Draws the decompressed data on the full screen.</summary>
+			ICDRAW_FULLSCREEN = 0x00000002,
+
+			/// <summary>Draws the decompressed data to a window or a DC.</summary>
+			ICDRAW_HDC = 0x00000004,
+
+			/// <summary>Application can animate the palette.</summary>
+			ICDRAW_ANIMATE = 0x00000008,
+
+			/// <summary>Drawing is a continuation of the previous frame.</summary>
+			ICDRAW_CONTINUE = 0x00000010,
+
+			/// <summary>DC is off-screen.</summary>
+			ICDRAW_MEMORYDC = 0x00000020,
+
+			/// <summary>Current frame is being updated rather than played.</summary>
+			ICDRAW_UPDATING = 0x00000040,
+
+			/// <summary>Renders but does not draw the data.</summary>
+			ICDRAW_RENDER = 0x00000080,
+
+			/// <summary>Buffers this data off-screen; it will need to be updated.</summary>
+			ICDRAW_BUFFER = 0x00000100,
+
+			/// <summary>Data is buffered and not drawn to the screen. Use this flag for fastest decompression.</summary>
+			ICDRAW_HURRYUP = 0x80000000,
+
+			/// <summary>Updates the screen based on data previously received. In this case, lpData should be ignored.</summary>
+			ICDRAW_UPDATE = 0x40000000,
+
+			/// <summary>
+			/// Current frame of video occurs before playback should start. For example, if playback will begin on frame 10, and frame 0 is
+			/// the nearest previous key frame, frames 0 through 9 are sent to the driver with this flag set. The driver needs this data to
+			/// display frame 10 properly.
+			/// </summary>
+			ICDRAW_PREROLL = 0x20000000,
+
+			/// <summary>Current frame does not contain any data, and the previous frame should be redrawn.</summary>
+			ICDRAW_NULLFRAME = 0x10000000,
+
+			/// <summary>Current frame is not a key frame.</summary>
+			ICDRAW_NOTKEYFRAME = 0x08000000,
+		}
+
+		/// <summary>Error values returns by some IC* functions.</summary>
+		[PInvokeData("vfw.h")]
+		public enum ICERR
+		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+			ICERR_OK = 0,
+			ICERR_DONTDRAW = 1,
+			ICERR_NEWPALETTE = 2,
+			ICERR_GOTOKEYFRAME = 3,
+			ICERR_STOPDRAWING = 4,
+			ICERR_UNSUPPORTED = -1,
+			ICERR_BADFORMAT = -2,
+			ICERR_MEMORY = -3,
+			ICERR_INTERNAL = -4,
+			ICERR_BADFLAGS = -5,
+			ICERR_BADPARAM = -6,
+			ICERR_BADSIZE = -7,
+			ICERR_BADHANDLE = -8,
+			ICERR_CANTUPDATE = -9,
+			ICERR_ABORT = -10,
+			ICERR_ERROR = -100,
+			ICERR_BADBITDEPTH = -200,
+			ICERR_BADIMAGESIZE = -201,
+			ICERR_CUSTOM = -400,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+		}
+
+		/// <summary>Message codes for <see cref="ICSendMessage(HIC, uint, IntPtr, IntPtr)"/>.</summary>
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICSendMessage")]
+		public enum ICM_Message : uint
+		{
+			/// <summary>Get compressor state</summary>
+			ICM_GETSTATE = ICM_RESERVED + 0,
+
+			/// <summary>Set compressor state</summary>
+			ICM_SETSTATE = ICM_RESERVED + 1,
+
+			/// <summary>Query info about the compressor</summary>
+			ICM_GETINFO = ICM_RESERVED + 2,
+
+			/// <summary>show the configure dialog</summary>
+			ICM_CONFIGURE = ICM_RESERVED + 10,
+
+			/// <summary>show the about box</summary>
+			ICM_ABOUT = ICM_RESERVED + 11,
+
+			/// <summary>get error text TBD ;Internal</summary>
+			ICM_GETERRORTEXT = ICM_RESERVED + 12,
+
+			/// <summary>get a name for a format ;Internal</summary>
+			ICM_GETFORMATNAME = ICM_RESERVED + 20,
+
+			/// <summary>cycle through formats ;Internal</summary>
+			ICM_ENUMFORMATS = ICM_RESERVED + 21,
+
+			/// <summary>get the default value for quality</summary>
+			ICM_GETDEFAULTQUALITY = ICM_RESERVED + 30,
+
+			/// <summary>get the current value for quality</summary>
+			ICM_GETQUALITY = ICM_RESERVED + 31,
+
+			/// <summary>set the default value for quality</summary>
+			ICM_SETQUALITY = ICM_RESERVED + 32,
+
+			/// <summary>Tell the driver something</summary>
+			ICM_SET = ICM_RESERVED + 40,
+
+			/// <summary>Ask the driver something</summary>
+			ICM_GET = ICM_RESERVED + 41,
+
+			/// <summary>get compress format or size</summary>
+			ICM_COMPRESS_GET_FORMAT = ICM_USER + 4,
+
+			/// <summary>get output size</summary>
+			ICM_COMPRESS_GET_SIZE = ICM_USER + 5,
+
+			/// <summary>query support for compress</summary>
+			ICM_COMPRESS_QUERY = ICM_USER + 6,
+
+			/// <summary>begin a series of compress calls.</summary>
+			ICM_COMPRESS_BEGIN = ICM_USER + 7,
+
+			/// <summary>compress a frame</summary>
+			ICM_COMPRESS = ICM_USER + 8,
+
+			/// <summary>end of a series of compress calls.</summary>
+			ICM_COMPRESS_END = ICM_USER + 9,
+
+			/// <summary>
+			/// <para>
+			/// The <c>ICM_DECOMPRESS_GET_FORMAT</c> message requests the output format of the decompressed data from a video decompression
+			/// driver. You can send this message explicitly or by using the <c>ICDecompressGetFormat</c> macro.
+			/// </para>
+			/// <para><c>lpbiInput</c> - Pointer to a <c>BITMAPINFO</c> structure containing the input format.</para>
+			/// <para>
+			/// <c>lpbiOutput</c> - Pointer to a <c>BITMAPINFO</c> structure to contain the output format. You can specify zero to request
+			/// only the size of the output format, as in the <c>ICDecompressGetFormatSize</c> macro.
+			/// </para>
+			/// </summary>
+			/// <returns>
+			/// <para>If lpbiOutput is zero, returns the size of the structure.</para>
+			/// <para>If lpbiOutput is nonzero, returns ICERR_OK if successful or an error otherwise.</para>
+			/// </returns>
+			/// <remarks>
+			/// If lpbiOutput is nonzero, the driver should fill the <c>BITMAPINFO</c> structure with the default output format
+			/// corresponding to the input format specified for lpbiInput. If the compressor can produce several formats, the default format
+			/// should be the one that preserves the greatest amount of information.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/multimedia/icm-decompress-get-format
+			ICM_DECOMPRESS_GET_FORMAT = ICM_USER + 10,
+
+			/// <summary>query support for dempress</summary>
+			ICM_DECOMPRESS_QUERY = ICM_USER + 11,
+
+			/// <summary>start a series of decompress calls</summary>
+			ICM_DECOMPRESS_BEGIN = ICM_USER + 12,
+
+			/// <summary>decompress a frame</summary>
+			ICM_DECOMPRESS = ICM_USER + 13,
+
+			/// <summary>end a series of decompress calls</summary>
+			ICM_DECOMPRESS_END = ICM_USER + 14,
+
+			/// <summary>fill in the DIB color table</summary>
+			ICM_DECOMPRESS_SET_PALETTE = ICM_USER + 29,
+
+			/// <summary>fill in the DIB color table</summary>
+			ICM_DECOMPRESS_GET_PALETTE = ICM_USER + 30,
+
+			/// <summary>query support for dempress</summary>
+			ICM_DRAW_QUERY = ICM_USER + 31,
+
+			/// <summary>start a series of draw calls</summary>
+			ICM_DRAW_BEGIN = ICM_USER + 15,
+
+			/// <summary>get the palette needed for drawing</summary>
+			ICM_DRAW_GET_PALETTE = ICM_USER + 16,
+
+			/// <summary>update screen with current frame ;Internal</summary>
+			ICM_DRAW_UPDATE = ICM_USER + 17,
+
+			/// <summary>start decompress clock</summary>
+			ICM_DRAW_START = ICM_USER + 18,
+
+			/// <summary>stop decompress clock</summary>
+			ICM_DRAW_STOP = ICM_USER + 19,
+
+			/// <summary>decompress a frame to screen ;Internal</summary>
+			ICM_DRAW_BITS = ICM_USER + 20,
+
+			/// <summary>end a series of draw calls</summary>
+			ICM_DRAW_END = ICM_USER + 21,
+
+			/// <summary>get value of decompress clock</summary>
+			ICM_DRAW_GETTIME = ICM_USER + 32,
+
+			/// <summary>generalized "render" message</summary>
+			ICM_DRAW = ICM_USER + 33,
+
+			/// <summary>drawing window has moved or hidden</summary>
+			ICM_DRAW_WINDOW = ICM_USER + 34,
+
+			/// <summary>set correct value for decompress clock</summary>
+			ICM_DRAW_SETTIME = ICM_USER + 35,
+
+			/// <summary>realize palette for drawing</summary>
+			ICM_DRAW_REALIZE = ICM_USER + 36,
+
+			/// <summary>clear out buffered frames</summary>
+			ICM_DRAW_FLUSH = ICM_USER + 37,
+
+			/// <summary>draw undrawn things in queue</summary>
+			ICM_DRAW_RENDERBUFFER = ICM_USER + 38,
+
+			/// <summary>start of a play</summary>
+			ICM_DRAW_START_PLAY = ICM_USER + 39,
+
+			/// <summary>end of a play</summary>
+			ICM_DRAW_STOP_PLAY = ICM_USER + 40,
+
+			/// <summary>Like ICGetDisplayFormat</summary>
+			ICM_DRAW_SUGGESTFORMAT = ICM_USER + 50,
+
+			/// <summary>for animating palette</summary>
+			ICM_DRAW_CHANGEPALETTE = ICM_USER + 51,
+
+			/// <summary>send each frame time ;Internal</summary>
+			ICM_DRAW_IDLE = ICM_USER + 52,
+
+			/// <summary>ask about prebuffering</summary>
+			ICM_GETBUFFERSWANTED = ICM_USER + 41,
+
+			/// <summary>get the default value for key frames</summary>
+			ICM_GETDEFAULTKEYFRAMERATE = ICM_USER + 42,
+
+			/// <summary>start a series of decompress calls</summary>
+			ICM_DECOMPRESSEX_BEGIN = ICM_USER + 60,
+
+			/// <summary>start a series of decompress calls</summary>
+			ICM_DECOMPRESSEX_QUERY = ICM_USER + 61,
+
+			/// <summary>decompress a frame</summary>
+			ICM_DECOMPRESSEX = ICM_USER + 62,
+
+			/// <summary>end a series of decompress calls</summary>
+			ICM_DECOMPRESSEX_END = ICM_USER + 63,
+
+			/// <summary>tell about compress to come</summary>
+			ICM_COMPRESS_FRAMES_INFO = ICM_USER + 70,
+
+			/// <summary>compress a bunch of frames ;Internal</summary>
+			ICM_COMPRESS_FRAMES = ICM_USER + 71,
+
+			/// <summary>set status callback</summary>
+			ICM_SET_STATUS_PROC = ICM_USER + 72,
+		}
+
+		/// <summary>Applicable flags.</summary>
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_11")]
+		public enum ICMF_COMPVARS
+		{
+			/// <summary>
+			/// Data in this structure is valid and has been manually entered. Set this flag before you call any function if you fill this
+			/// structure manually. Do not set this flag if you let ICCompressorChoose initialize this structure.
+			/// </summary>
+			ICMF_COMPVARS_VALID = 0x00000001
+		}
+
+		/// <summary>Applicable flags indicating why the driver is opened.</summary>
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_0")]
+		public enum ICMODE : ushort
+		{
+			/// <summary>Driver is opened to compress data.</summary>
+			ICMODE_COMPRESS = 1,
+
+			/// <summary>Driver is opened to decompress data.</summary>
+			ICMODE_DECOMPRESS = 2,
+
+			/// <summary></summary>
+			ICMODE_FASTDECOMPRESS = 3,
+
+			/// <summary>Driver is opened for informational purposes, rather than for compression.</summary>
+			ICMODE_QUERY = 4,
+
+			/// <summary></summary>
+			ICMODE_FASTCOMPRESS = 5,
+
+			/// <summary>Device driver is opened to decompress data directly to hardware.</summary>
+			ICMODE_DRAW = 8,
+		}
+
+		/// <summary>Applicable flags.</summary>
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_1")]
+		[Flags]
+		public enum VIDCF : uint
+		{
+			/// <summary>Driver supports quality values.</summary>
+			VIDCF_QUALITY = 0x0001,
+
+			/// <summary>Driver supports compressing to a frame size.</summary>
+			VIDCF_CRUNCH = 0x0002,
+
+			/// <summary>Driver supports inter-frame compression.</summary>
+			VIDCF_TEMPORAL = 0x0004,
+
+			/// <summary>
+			/// Driver is requesting to compress all frames. For information about compressing all frames, see the ICM_COMPRESS_FRAMES_INFO message.
+			/// </summary>
+			VIDCF_COMPRESSFRAMES = 0x0008,
+
+			/// <summary>Driver supports drawing.</summary>
+			VIDCF_DRAW = 0x0010,
+
+			/// <summary>
+			/// Driver can perform temporal compression and maintains its own copy of the current frame. When compressing a stream of frame
+			/// data, the driver doesn't need image data from the previous frame.
+			/// </summary>
+			VIDCF_FASTTEMPORALC = 0x0020,
+
+			/// <summary>
+			/// Driver can perform temporal decompression and maintains its own copy of the current frame. When decompressing a stream of
+			/// frame data, the driver doesn't need image data from the previous frame.
+			/// </summary>
+			VIDCF_FASTTEMPORALD = 0x0080,
 		}
 
 		/// <summary>The <c>DrawDib</c> function changes parameters of a DrawDib DC or initializes a new DrawDib DC.</summary>
@@ -679,6 +1066,949 @@ namespace Vanara.PInvoke
 		public static extern bool GetSaveFileNamePreview(ref ComDlg32.OPENFILENAME lpofn);
 
 		/// <summary>
+		/// The <c>ICAbout</c> macro notifies a video compression driver to display its About dialog box. You can use this macro or
+		/// explicitly call the ICM_ABOUT message.
+		/// </summary>
+		/// <param name="hic">Handle of the compressor.</param>
+		/// <param name="hwnd">
+		/// <para>Handle of the parent window of the displayed dialog box.</para>
+		/// <para>
+		/// You can also determine if a driver has an About dialog box by specifying -1 in this parameter, as in the ICQueryAbout macro. The
+		/// driver returns ICERR_OK if it has an About dialog box or ICERR_UNSUPPORTED otherwise.
+		/// </para>
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icabout void ICAbout( hic, hwnd );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICAbout")]
+		public static ICERR ICAbout(HIC hic, HWND hwnd) => (ICERR)ICSendMessage(hic, ICM_Message.ICM_ABOUT, (IntPtr)hwnd).ToInt32();
+
+		/// <summary>The <c>ICClose</c> function closes a compressor or decompressor.</summary>
+		/// <param name="hic">Handle to a compressor or decompressor.</param>
+		/// <returns>Returns ICERR_OK if successful or an error otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icclose LRESULT VFWAPI ICClose( HIC hic );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICClose")]
+		public static extern IntPtr ICClose(HIC hic);
+
+		/// <summary>The <c>ICCompress</c> function compresses a single video image.</summary>
+		/// <param name="hic">Handle to the compressor to use.</param>
+		/// <param name="dwFlags">
+		/// <para>Compression flag. The following value is defined:</para>
+		/// <para>ICCOMPRESS_KEYFRAME</para>
+		/// <para>Compressor should make this frame a key frame.</para>
+		/// </param>
+		/// <param name="lpbiOutput">Pointer to a BITMAPINFOHEADER structure containing the output format.</param>
+		/// <param name="lpData">Pointer to an output buffer large enough to contain a compressed frame.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFOHEADER structure containing the input format.</param>
+		/// <param name="lpBits">Pointer to the input buffer.</param>
+		/// <param name="lpckid">Reserved; do not use.</param>
+		/// <param name="lpdwFlags">
+		/// <para>Pointer to the return flags used in the AVI index. The following value is defined:</para>
+		/// <para>AVIIF_KEYFRAME</para>
+		/// <para>Current frame is a key frame.</para>
+		/// </param>
+		/// <param name="lFrameNum">Frame number.</param>
+		/// <param name="dwFrameSize">
+		/// <para>
+		/// Requested frame size, in bytes. Specify a nonzero value if the compressor supports a suggested frame size, as indicated by the
+		/// presence of the <c>VIDCF_CRUNCH</c> flag returned by the ICGetInfo function. If this flag is not set or a data rate for the
+		/// frame is not specified, specify zero for this parameter.
+		/// </para>
+		/// <para>
+		/// A compressor might have to sacrifice image quality or make some other trade-off to obtain the size goal specified in this parameter.
+		/// </para>
+		/// </param>
+		/// <param name="dwQuality">
+		/// Requested quality value for the frame. Specify a nonzero value if the compressor supports a suggested quality value, as
+		/// indicated by the presence of the <c>VIDCF_QUALITY</c> flag returned by ICGetInfo. Otherwise, specify zero for this parameter.
+		/// </param>
+		/// <param name="lpbiPrev">Pointer to a BITMAPINFOHEADER structure containing the format of the previous frame.</param>
+		/// <param name="lpPrev">
+		/// Pointer to the uncompressed image of the previous frame. This parameter is not used for fast temporal compression. Specify
+		/// <c>NULL</c> for this parameter when compressing a key frame, if the compressor does not support temporal compression, or if the
+		/// compressor does not require an external buffer to store the format and data of the previous image.
+		/// </param>
+		/// <returns>Returns <c>ICERR_OK</c> if successful or an error otherwise.</returns>
+		/// <remarks>
+		/// <para>
+		/// You can obtain the required by size of the output buffer by sending the ICM_COMPRESS_GET_SIZE message (or by using the
+		/// ICCompressGetSize macro).
+		/// </para>
+		/// <para>
+		/// The compressor sets the contents of lpdwFlags to <c>AVIIF_KEYFRAME</c> when it creates a key frame. If your application creates
+		/// AVI files, it should save the information returned for lpckid and lpdwFlags in the file.
+		/// </para>
+		/// <para>
+		/// Compressors use lpbiPrev and lpPrev to perform temporal compression and require an external buffer to store the format and data
+		/// of the previous frame. Specify <c>NULL</c> for lpbiPrev and lpPrev when compressing a key frame, when performing fast
+		/// compression, or if the compressor has its own buffer to store the format and data of the previous image. Specify non-
+		/// <c>NULL</c> values for these parameters if ICGetInfo returns the <c>VIDCF_TEMPORAL</c> flag, the compressor is performing normal
+		/// compression, and the frame to compress is not a key frame.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompress DWORD VFWAPIV ICCompress( HIC hic, DWORD dwFlags,
+		// LPBITMAPINFOHEADER lpbiOutput, LPVOID lpData, LPBITMAPINFOHEADER lpbiInput, LPVOID lpBits, LPDWORD lpckid, LPDWORD lpdwFlags,
+		// LONG lFrameNum, DWORD dwFrameSize, DWORD dwQuality, LPBITMAPINFOHEADER lpbiPrev, LPVOID lpPrev );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompress")]
+		public static extern ICERR ICCompress([In] HIC hic, ICCOMPRESSF dwFlags, in BITMAPINFOHEADER lpbiOutput, [Out] IntPtr lpData,
+			in BITMAPINFOHEADER lpbiInput, [In] IntPtr lpBits, [Out, Optional] IntPtr lpckid, out AviFil32.AVIIF lpdwFlags, int lFrameNum, uint dwFrameSize,
+			uint dwQuality, in BITMAPINFOHEADER lpbiPrev, [In, Optional] IntPtr lpPrev);
+
+		/// <summary>The <c>ICCompress</c> function compresses a single video image.</summary>
+		/// <param name="hic">Handle to the compressor to use.</param>
+		/// <param name="dwFlags">
+		/// <para>Compression flag. The following value is defined:</para>
+		/// <para>ICCOMPRESS_KEYFRAME</para>
+		/// <para>Compressor should make this frame a key frame.</para>
+		/// </param>
+		/// <param name="lpbiOutput">Pointer to a BITMAPINFOHEADER structure containing the output format.</param>
+		/// <param name="lpData">Pointer to an output buffer large enough to contain a compressed frame.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFOHEADER structure containing the input format.</param>
+		/// <param name="lpBits">Pointer to the input buffer.</param>
+		/// <param name="lpckid">Reserved; do not use.</param>
+		/// <param name="lpdwFlags">
+		/// <para>Pointer to the return flags used in the AVI index. The following value is defined:</para>
+		/// <para>AVIIF_KEYFRAME</para>
+		/// <para>Current frame is a key frame.</para>
+		/// </param>
+		/// <param name="lFrameNum">Frame number.</param>
+		/// <param name="dwFrameSize">
+		/// <para>
+		/// Requested frame size, in bytes. Specify a nonzero value if the compressor supports a suggested frame size, as indicated by the
+		/// presence of the <c>VIDCF_CRUNCH</c> flag returned by the ICGetInfo function. If this flag is not set or a data rate for the
+		/// frame is not specified, specify zero for this parameter.
+		/// </para>
+		/// <para>
+		/// A compressor might have to sacrifice image quality or make some other trade-off to obtain the size goal specified in this parameter.
+		/// </para>
+		/// </param>
+		/// <param name="dwQuality">
+		/// Requested quality value for the frame. Specify a nonzero value if the compressor supports a suggested quality value, as
+		/// indicated by the presence of the <c>VIDCF_QUALITY</c> flag returned by ICGetInfo. Otherwise, specify zero for this parameter.
+		/// </param>
+		/// <param name="lpbiPrev">Pointer to a BITMAPINFOHEADER structure containing the format of the previous frame.</param>
+		/// <param name="lpPrev">
+		/// Pointer to the uncompressed image of the previous frame. This parameter is not used for fast temporal compression. Specify
+		/// <c>NULL</c> for this parameter when compressing a key frame, if the compressor does not support temporal compression, or if the
+		/// compressor does not require an external buffer to store the format and data of the previous image.
+		/// </param>
+		/// <returns>Returns <c>ICERR_OK</c> if successful or an error otherwise.</returns>
+		/// <remarks>
+		/// <para>
+		/// You can obtain the required by size of the output buffer by sending the ICM_COMPRESS_GET_SIZE message (or by using the
+		/// ICCompressGetSize macro).
+		/// </para>
+		/// <para>
+		/// The compressor sets the contents of lpdwFlags to <c>AVIIF_KEYFRAME</c> when it creates a key frame. If your application creates
+		/// AVI files, it should save the information returned for lpckid and lpdwFlags in the file.
+		/// </para>
+		/// <para>
+		/// Compressors use lpbiPrev and lpPrev to perform temporal compression and require an external buffer to store the format and data
+		/// of the previous frame. Specify <c>NULL</c> for lpbiPrev and lpPrev when compressing a key frame, when performing fast
+		/// compression, or if the compressor has its own buffer to store the format and data of the previous image. Specify non-
+		/// <c>NULL</c> values for these parameters if ICGetInfo returns the <c>VIDCF_TEMPORAL</c> flag, the compressor is performing normal
+		/// compression, and the frame to compress is not a key frame.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompress DWORD VFWAPIV ICCompress( HIC hic, DWORD dwFlags,
+		// LPBITMAPINFOHEADER lpbiOutput, LPVOID lpData, LPBITMAPINFOHEADER lpbiInput, LPVOID lpBits, LPDWORD lpckid, LPDWORD lpdwFlags,
+		// LONG lFrameNum, DWORD dwFrameSize, DWORD dwQuality, LPBITMAPINFOHEADER lpbiPrev, LPVOID lpPrev );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompress")]
+		public static extern ICERR ICCompress([In] HIC hic, ICCOMPRESSF dwFlags, in BITMAPINFOHEADER lpbiOutput, [Out] IntPtr lpData,
+			in BITMAPINFOHEADER lpbiInput, [In] IntPtr lpBits, [Out, Optional] IntPtr lpckid, out AviFil32.AVIIF lpdwFlags, int lFrameNum, uint dwFrameSize,
+			uint dwQuality, [In, Optional] IntPtr lpbiPrev, [In, Optional] IntPtr lpPrev);
+
+		/// <summary>
+		/// The ICCompressBegin macro notifies a video compression driver to prepare to compress data. You can use this macro or explicitly
+		/// call the ICM_COMPRESS_BEGIN message.
+		/// </summary>
+		/// <param name="hic">Handle to a compressor.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFO structure containing the input format.</param>
+		/// <param name="lpbiOutput">Pointer to a BITMAPINFO structure containing the output format.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>
+		/// The driver should allocate and initialize any tables or memory that it needs for compressing the data formats when it receives
+		/// the ICM_COMPRESS message.
+		/// </para>
+		/// <para>
+		/// VCM saves the settings of the most recent <c>ICCompressBegin</c> macro. The <c>ICCompressBegin</c> and <c>ICCompressEnd</c>
+		/// messages do not nest. If your driver receives <c>ICM_COMPRESS_BEGIN</c> before compression is stopped with
+		/// <c>ICM_COMPRESS_END</c>, it should restart compression with new parameters.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompressbegin void ICCompressBegin( hic, lpbiInput, lpbiOutput );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressBegin")]
+		public static ICERR ICCompressBegin(HIC hic, in BITMAPINFO lpbiInput, in BITMAPINFO lpbiOutput) =>
+			(ICERR)ICSendMessage(hic, ICM_Message.ICM_COMPRESS_BEGIN, lpbiInput, lpbiOutput).ToInt32();
+
+		/// <summary>
+		/// The <c>ICCompressEnd</c> macro notifies a video compression driver to end compression and free resources allocated for
+		/// compression. You can use this macro or explicitly call the ICM_COMPRESS_END message.
+		/// </summary>
+		/// <param name="hic">Handle of the compressor.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// VCM saves the settings of the most recent <c>ICCompressBegin</c> macro. <c>ICCompressBegin</c> and <c>ICCompressEnd</c> do not
+		/// nest. If your driver receives the <c>ICM_COMPRESS_BEGIN</c> message before compression is stopped with the
+		/// <c>ICM_COMPRESS_END</c> message, it should restart compression with new parameters.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompressend void ICCompressEnd( hic );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressEnd")]
+		public static ICERR ICCompressEnd(HIC hic) => (ICERR)ICSendMessage(hic, ICM_Message.ICM_COMPRESS_END).ToInt32();
+
+		/// <summary>
+		/// The <c>ICCompressGetFormat</c> macro requests the output format of the compressed data from a video compression driver. You can
+		/// use this macro or explicitly call the ICM_COMPRESS_GET_FORMAT message.
+		/// </summary>
+		/// <param name="hic">Handle of the compressor.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFO structure containing the input format.</param>
+		/// <param name="lpbiOutput">Pointer to a BITMAPINFO structure containing the output format.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// If lpbiOutput is nonzero, the driver should fill the <c>BITMAPINFO</c> structure with the default output format corresponding to
+		/// the input format specified for lpbiInput. If the compressor can produce several formats, the default format should be the one
+		/// that preserves the greatest amount of information.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompressgetformat void ICCompressGetFormat( hic, lpbiInput,
+		// lpbiOutput );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressGetFormat")]
+		public static ICERR ICCompressGetFormat(HIC hic, in BITMAPINFO lpbiInput, in BITMAPINFO lpbiOutput)
+		{
+			using var dw1 = SafeCoTaskMemHandle.CreateFromStructure(lpbiInput);
+			using var dw2 = SafeCoTaskMemHandle.CreateFromStructure(lpbiOutput);
+			return (ICERR)ICSendMessage(hic, ICM_Message.ICM_COMPRESS_GET_FORMAT, dw1, dw2).ToInt32();
+		}
+
+		/// <summary>
+		/// The <c>ICCompressGetFormatSize</c> macro requests the size of the output format of the compressed data from a video compression
+		/// driver. You can use this macro or explicitly call the ICM_COMPRESS_GET_FORMAT message.
+		/// </summary>
+		/// <param name="hic">Handle of the compressor.</param>
+		/// <param name="lpbi">Pointer to a <c>BITMAPINFO</c> structure containing the input format.</param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompressgetformatsize void ICCompressGetFormatSize( hic, lpbi );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressGetFormatSize")]
+		public static int ICCompressGetFormatSize(HIC hic, in BITMAPINFO lpbi)
+		{
+			using var dw1 = SafeCoTaskMemHandle.CreateFromStructure(lpbi);
+			return ICSendMessage(hic, ICM_Message.ICM_COMPRESS_GET_FORMAT, dw1).ToInt32();
+		}
+
+		/// <summary>
+		/// The <c>ICCompressGetSize</c> macro requests that the video compression driver supply the maximum size of one frame of data when
+		/// compressed into the specified output format. You can use this macro or explicitly call the ICM_COMPRESS_GET_SIZE message.
+		/// </summary>
+		/// <param name="hic">Handle to a compressor.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFO structure containing the input format.</param>
+		/// <param name="lpbiOutput">Pointer to a BITMAPINFO structure containing the output format.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>Typically, applications send this message to determine how large a buffer to allocate for the compressed frame.</para>
+		/// <para>The driver should calculate the size of the largest possible frame based on the input and output formats.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompressgetsize void ICCompressGetSize( hic, lpbiInput,
+		// lpbiOutput );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressGetSize")]
+		public static int ICCompressGetSize(HIC hic, in BITMAPINFO lpbiInput, in BITMAPINFO lpbiOutput)
+		{
+			using var dw1 = SafeCoTaskMemHandle.CreateFromStructure(lpbiInput);
+			using var dw2 = SafeCoTaskMemHandle.CreateFromStructure(lpbiOutput);
+			return ICSendMessage(hic, ICM_Message.ICM_COMPRESS_GET_SIZE, dw1, dw2).ToInt32();
+		}
+
+		/// <summary>
+		/// The <c>ICCompressorChoose</c> function displays a dialog box in which a user can select a compressor. This function can display
+		/// all registered compressors or list only the compressors that support a specific format.
+		/// </summary>
+		/// <param name="hwnd">Handle to a parent window for the dialog box.</param>
+		/// <param name="uiFlags">
+		/// <para>Applicable flags. The following values are defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICMF_CHOOSE_ALLCOMPRESSORS</term>
+		/// <term>
+		/// All compressors should appear in the selection list. If this flag is not specified, only the compressors that can handle the
+		/// input format appear in the selection list.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ICMF_CHOOSE_DATARATE</term>
+		/// <term>Displays a check box and edit box to enter the data rate for the movie.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMF_CHOOSE_KEYFRAME</term>
+		/// <term>Displays a check box and edit box to enter the frequency of key frames.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMF_CHOOSE_PREVIEW</term>
+		/// <term>
+		/// Displays a button to expand the dialog box to include a preview window. The preview window shows how frames of your movie will
+		/// appear when compressed with the current settings.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pvIn">
+		/// Uncompressed data input format. Only compressors that support the specified data input format are included in the compressor
+		/// list. This parameter is optional.
+		/// </param>
+		/// <param name="lpData">
+		/// Pointer to an AVI stream interface to use in the preview window. You must specify a video stream. This parameter is optional.
+		/// </param>
+		/// <param name="pc">Pointer to a COMPVARS structure. The information returned initializes the structure for use with other functions.</param>
+		/// <param name="lpszTitle">Pointer to a null-terminated string containing a title for the dialog box. This parameter is optional.</param>
+		/// <returns>
+		/// Returns <c>TRUE</c> if the user chooses a compressor and presses OK. Returns <c>FALSE</c> on error or if the user presses CANCEL.
+		/// </returns>
+		/// <remarks>
+		/// Before using this function, set the <c>cbSize</c> member of the COMPVARS structure to the size of the structure. Initialize the
+		/// rest of the structure to zeros unless you want to specify some valid defaults for the dialog box. If specifying defaults, set
+		/// the dwFlags member to ICMF_COMPVARS_VALID and initialize the other members of the structure. For more information about
+		/// initializing the structure, see the ICSeqCompressFrameStart function and <c>COMPVARS</c>.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompressorchoose BOOL VFWAPI ICCompressorChoose( HWND hwnd, UINT
+		// uiFlags, LPVOID pvIn, LPVOID lpData, PCOMPVARS pc, LPSTR lpszTitle );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressorChoose")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ICCompressorChoose([In, Optional] HWND hwnd, ICMF_CHOOSE uiFlags, [In, Optional] IntPtr pvIn, [In, Optional] IntPtr lpData,
+			ref COMPVARS pc, [Optional, MarshalAs(UnmanagedType.LPStr)] string lpszTitle);
+
+		/// <summary>Applicable flags.</summary>
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressorChoose")]
+		[Flags]
+		public enum ICMF_CHOOSE : uint
+		{
+			/// <summary>Displays a check box and edit box to enter the frequency of key frames.</summary>
+			ICMF_CHOOSE_KEYFRAME = 0x0001,
+			/// <summary>Displays a check box and edit box to enter the data rate for the movie.</summary>
+			ICMF_CHOOSE_DATARATE = 0x0002,
+			/// <summary>
+			/// Displays a button to expand the dialog box to include a preview window. The preview window shows how frames of your movie will
+			/// appear when compressed with the current settings.
+			/// </summary>
+			ICMF_CHOOSE_PREVIEW = 0x0004,
+			/// <summary>
+			/// All compressors should appear in the selection list. If this flag is not specified, only the compressors that can handle the
+			/// input format appear in the selection list.
+			/// </summary>
+			ICMF_CHOOSE_ALLCOMPRESSORS = 0x0008,
+		}
+
+		/// <summary>The <c>ICCompressorFree</c> function frees the resources in the COMPVARS structure used by other VCM functions.</summary>
+		/// <param name="pc">Pointer to the COMPVARS structure containing the resources to be freed.</param>
+		/// <returns>This function does not return a value.</returns>
+		/// <remarks>
+		/// Use this function to release the resources in the COMPVARS structure after using the ICCompressorChoose,
+		/// ICSeqCompressFrameStart, ICSeqCompressFrame, and ICSeqCompressFrameEnd functions.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompressorfree void VFWAPI ICCompressorFree( PCOMPVARS pc );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressorFree")]
+		public static extern void ICCompressorFree(in COMPVARS pc);
+
+		/// <summary>
+		/// The <c>ICCompressQuery</c> macro queries a video compression driver to determine if it supports a specific input format or if it
+		/// can compress a specific input format to a specific output format. You can use this macro or explicitly call the
+		/// ICM_COMPRESS_QUERY message.
+		/// </summary>
+		/// <param name="hic">Handle to a compressor.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFO structure containing the input format.</param>
+		/// <param name="lpbiOutput">
+		/// Pointer to a BITMAPINFO structure containing the output format. You can specify zero for this parameter to indicate any output
+		/// format is acceptable.
+		/// </param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// When a driver receives this message, it should examine the BITMAPINFO structure associated with lpbiInput to determine if it can
+		/// compress the input format.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompressquery void ICCompressQuery( hic, lpbiInput, lpbiOutput );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressQuery")]
+		public static ICERR ICCompressQuery(HIC hic, in BITMAPINFO lpbiInput, in BITMAPINFO lpbiOutput)
+		{
+			using var dw1 = SafeCoTaskMemHandle.CreateFromStructure(lpbiInput);
+			using var dw2 = SafeCoTaskMemHandle.CreateFromStructure(lpbiOutput);
+			return (ICERR)ICSendMessage(hic, ICM_Message.ICM_COMPRESS_QUERY, dw1, dw2).ToInt32();
+		}
+
+		/// <summary>
+		/// The <c>ICConfigure</c> macro notifies a video compression driver to display its configuration dialog box. You can use this macro
+		/// or explicitly send the ICM_CONFIGURE message.
+		/// </summary>
+		/// <param name="hic">Handle of the compressor.</param>
+		/// <param name="hwnd">Handle of the parent window of the displayed dialog box.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// The ICM_CONFIGURE message is different from the DRV_CONFIGURE message used for hardware configuration. The dialog box for this
+		/// message should let the user set and edit the internal state referenced by the ICGetState and ICSetState macros. For example,
+		/// this dialog box can let the user change parameters affecting the quality level and other similar compression options.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icconfigure void ICConfigure( hic, hwnd );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICConfigure")]
+		public static ICERR ICConfigure(HIC hic, HWND hwnd) => (ICERR)ICSendMessage(hic, ICM_Message.ICM_CONFIGURE, (IntPtr)hwnd).ToInt32();
+
+		/// <summary>The <c>ICDecompress</c> function decompresses a single video frame.</summary>
+		/// <param name="hic">Handle to the decompressor to use.</param>
+		/// <param name="dwFlags">
+		/// <para>Applicable decompression flags. The following values are defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICDECOMPRESS_HURRYUP</term>
+		/// <term>
+		/// Tries to decompress at a faster rate. When an application uses this flag, the driver should buffer the decompressed data but not
+		/// draw the image.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_NOTKEYFRAME</term>
+		/// <term>Current frame is not a key frame.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_NULLFRAME</term>
+		/// <term>Current frame does not contain data and the decompressed image should be left the same.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_PREROLL</term>
+		/// <term>Current frame precedes the point in the movie where playback starts and, therefore, will not be drawn.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_UPDATE</term>
+		/// <term>Screen is being updated or refreshed.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpbiFormat">Pointer to a BITMAPINFOHEADER structure containing the format of the compressed data.</param>
+		/// <param name="lpData">Pointer to the input data.</param>
+		/// <param name="lpbi">Pointer to a BITMAPINFOHEADER structure containing the output format.</param>
+		/// <param name="lpBits">Pointer to a buffer that is large enough to contain the decompressed data.</param>
+		/// <returns>Returns ICERR_OK if successful or an error otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompress DWORD VFWAPIV ICDecompress( HIC hic, DWORD dwFlags,
+		// LPBITMAPINFOHEADER lpbiFormat, LPVOID lpData, LPBITMAPINFOHEADER lpbi, LPVOID lpBits );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompress")]
+		public static extern ICERR ICDecompress([In] HIC hic, ICDECOMPRESSF dwFlags, in BITMAPINFOHEADER lpbiFormat, [In] IntPtr lpData, in BITMAPINFOHEADER lpbi, [Out] IntPtr lpBits);
+
+		/// <summary>
+		/// The <c>ICDecompressBegin</c> macro notifies a video decompression driver to prepare to decompress data. You can use this macro
+		/// or explicitly call the ICM_DECOMPRESS_BEGIN message.
+		/// </summary>
+		/// <param name="hic">Handle to a decompressor.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFO structure containing the input format.</param>
+		/// <param name="lpbiOutput">Pointer to a BITMAPINFO structure containing the output format.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>
+		/// When the driver receives this message, it should allocate buffers and do any time-consuming operations so that it can process
+		/// ICM_DECOMPRESS messages efficiently.
+		/// </para>
+		/// <para>
+		/// The <c>ICDecompressBegin</c> and ICDecompressEnd macros do not nest. If your driver receives ICM_DECOMPRESS_BEGIN before
+		/// decompression is stopped with ICM_DECOMPRESS_END, it should restart decompression with new parameters.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressbegin void ICDecompressBegin( hic, lpbiInput,
+		// lpbiOutput );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressBegin")]
+		public static ICERR ICDecompressBegin([In] HIC hic, in BITMAPINFOHEADER lpbiInput, in BITMAPINFOHEADER lpbiOutput) =>
+			(ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESS_BEGIN, lpbiInput, lpbiOutput).ToInt32();
+
+		/// <summary>
+		/// The <c>ICDecompressEnd</c> macro notifies a video decompression driver to end decompression and free resources allocated for
+		/// decompression. You can use this macro or explicitly call the ICM_DECOMPRESS_END message.
+		/// </summary>
+		/// <param name="hic">Handle to a decompressor.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>The driver should free any resources allocated for the ICM_DECOMPRESS_BEGIN message.</para>
+		/// <para>
+		/// The ICDecompressBegin and <c>ICDecompressEnd</c> macros do not nest. If your driver receives ICM_DECOMPRESS_BEGIN before
+		/// decompression is stopped with ICM_DECOMPRESS_END, it should restart decompression with new parameters.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressend void ICDecompressEnd( hic );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressEnd")]
+		public static ICERR ICDecompressEnd([In] HIC hic) => (ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESS_END).ToInt32();
+
+		/// <summary>The <c>ICDecompressEx</c> function decompresses a single video frame.</summary>
+		/// <param name="hic">Handle to the decompressor.</param>
+		/// <param name="dwFlags">
+		/// <para>Decompression flags. The following values are defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICDECOMPRESS_HURRYUP</term>
+		/// <term>
+		/// Tries to decompress at a faster rate. When an application uses this flag, the driver should buffer the decompressed data but not
+		/// draw the image.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_NOTKEYFRAME</term>
+		/// <term>Current frame is not a key frame.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_NULLFRAME</term>
+		/// <term>Current frame does not contain data and the decompressed image should be left the same.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_PREROLL</term>
+		/// <term>Current frame precedes the point in the movie where playback starts and, therefore, will not be drawn.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_UPDATE</term>
+		/// <term>Screen is being updated or refreshed.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpbiSrc">Pointer to a BITMAPINFOHEADER structure containing the format of the compressed data.</param>
+		/// <param name="lpSrc">Pointer to the input data.</param>
+		/// <param name="xSrc">The x-coordinate of the source rectangle for the DIB specified by lpbiSrc.</param>
+		/// <param name="ySrc">The y-coordinate of the source rectangle for the DIB specified by lpbiSrc.</param>
+		/// <param name="dxSrc">Width of the source rectangle.</param>
+		/// <param name="dySrc">Height of the source rectangle.</param>
+		/// <param name="lpbiDst">Pointer to a BITMAPINFOHEADER structure containing the output format.</param>
+		/// <param name="lpDst">Pointer to a buffer that is large enough to contain the decompressed data.</param>
+		/// <param name="xDst">The x-coordinate of the destination rectangle for the DIB specified by lpbiDst.</param>
+		/// <param name="yDst">The y-coordinate of the destination rectangle for the DIB specified by lpbiDst.</param>
+		/// <param name="dxDst">Width of the destination rectangle.</param>
+		/// <param name="dyDst">Height of the destination rectangle.</param>
+		/// <returns>Returns <c>ICERR_OK</c> if successful or an error otherwise.</returns>
+		/// <remarks>
+		/// Typically, applications use the <c>ICDECOMPRESS_PREROLL</c> flag to seek to a key frame in a compressed stream. The flag is sent
+		/// with the key frame and with subsequent frames required to decompress the desired frame.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressex LRESULT VFWAPI_INLINE ICDecompressEx( HIC hic, DWORD
+		// dwFlags, LPBITMAPINFOHEADER lpbiSrc, LPVOID lpSrc, int xSrc, int ySrc, int dxSrc, int dySrc, LPBITMAPINFOHEADER lpbiDst, LPVOID
+		// lpDst, int xDst, int yDst, int dxDst, int dyDst );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressEx")]
+#if !(NET20 || NET35 || NET40)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+		public static ICERR ICDecompressEx([In] HIC hic, ICDECOMPRESSF dwFlags, in BITMAPINFOHEADER lpbiSrc, [In] IntPtr lpSrc, int xSrc, int ySrc,
+			int dxSrc, int dySrc, in BITMAPINFOHEADER lpbiDst, [Out] IntPtr lpDst, int xDst, int yDst, int dxDst, int dyDst)
+		{
+			unsafe
+			{
+				fixed (void* pIn = &lpbiSrc, pOut = &lpbiDst)
+				{
+					ICDECOMPRESSEX ic = new ICDECOMPRESSEX
+					{
+						dwFlags = dwFlags,
+						lpbiSrc = (IntPtr)pIn,
+						lpSrc = lpSrc,
+						xSrc = xSrc,
+						ySrc = ySrc,
+						dxSrc = dxSrc,
+						dySrc = dySrc,
+						lpbiDst = (IntPtr)pOut,
+						lpDst = lpDst,
+						xDst = xDst,
+						yDst = yDst,
+						dxDst = dxDst,
+						dyDst = dyDst
+					};
+
+					// note that ICM swaps round the length and pointer length in lparam2, pointer in lparam1
+					return (ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESSEX, (IntPtr)(void*)&ic, (IntPtr)Marshal.SizeOf(ic)).ToInt32();
+				}
+			}
+		}
+
+		/// <summary>The <c>ICDecompressExBegin</c> function prepares a decompressor for decompressing data.</summary>
+		/// <param name="hic">Handle to the decompressor to use.</param>
+		/// <param name="dwFlags">
+		/// <para>Decompression flags. The following values are defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICDECOMPRESS_HURRYUP</term>
+		/// <term>
+		/// Tries to decompress at a faster rate. When an application uses this flag, the driver should buffer the decompressed data but not
+		/// draw the image.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_NOTKEYFRAME</term>
+		/// <term>Current frame is not a key frame.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_NULLFRAME</term>
+		/// <term>Current frame does not contain data and the decompressed image should be left the same.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_PREROLL</term>
+		/// <term>Current frame precedes the point in the movie where playback starts and, therefore, will not be drawn.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDECOMPRESS_UPDATE</term>
+		/// <term>Screen is being updated or refreshed.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpbiSrc">Pointer to a BITMAPINFOHEADER structure containing the format of the compressed data.</param>
+		/// <param name="lpSrc">Pointer to the input data.</param>
+		/// <param name="xSrc">The x-coordinate of the source rectangle for the DIB specified by lpbiSrc.</param>
+		/// <param name="ySrc">The y-coordinate of the source rectangle for the DIB specified by lpbiSrc.</param>
+		/// <param name="dxSrc">Width of the source rectangle.</param>
+		/// <param name="dySrc">Height of the source rectangle.</param>
+		/// <param name="lpbiDst">Pointer to a BITMAPINFOHEADER structure containing the output format.</param>
+		/// <param name="lpDst">Pointer to a buffer that is large enough to contain the decompressed data.</param>
+		/// <param name="xDst">The x-coordinate of the destination rectangle for the DIB specified by lpbiDst.</param>
+		/// <param name="yDst">The y-coordinate of the destination rectangle for the DIB specified by lpbiDst.</param>
+		/// <param name="dxDst">Width of the destination rectangle.</param>
+		/// <param name="dyDst">Height of the destination rectangle.</param>
+		/// <returns>Returns <c>ICERR_OK</c> if successful or an error otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressexbegin LRESULT VFWAPI_INLINE ICDecompressExBegin( HIC
+		// hic, DWORD dwFlags, LPBITMAPINFOHEADER lpbiSrc, LPVOID lpSrc, int xSrc, int ySrc, int dxSrc, int dySrc, LPBITMAPINFOHEADER
+		// lpbiDst, LPVOID lpDst, int xDst, int yDst, int dxDst, int dyDst );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressExBegin")]
+#if !(NET20 || NET35 || NET40)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+		public static ICERR ICDecompressExBegin([In] HIC hic, ICDECOMPRESSF dwFlags, in BITMAPINFOHEADER lpbiSrc, [In] IntPtr lpSrc, int xSrc, int ySrc,
+			int dxSrc, int dySrc, in BITMAPINFOHEADER lpbiDst, [Out] IntPtr lpDst, int xDst, int yDst, int dxDst, int dyDst)
+		{
+			unsafe
+			{
+				fixed (void* pIn = &lpbiSrc, pOut = &lpbiDst)
+				{
+					ICDECOMPRESSEX ic = new ICDECOMPRESSEX
+					{
+						dwFlags = dwFlags,
+						lpbiSrc = (IntPtr)pIn,
+						lpSrc = lpSrc,
+						xSrc = xSrc,
+						ySrc = ySrc,
+						dxSrc = dxSrc,
+						dySrc = dySrc,
+						lpbiDst = (IntPtr)pOut,
+						lpDst = lpDst,
+						xDst = xDst,
+						yDst = yDst,
+						dxDst = dxDst,
+						dyDst = dyDst
+					};
+
+					// note that ICM swaps round the length and pointer length in lparam2, pointer in lparam1
+					return (ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESSEX_BEGIN, (IntPtr)(void*)&ic, (IntPtr)Marshal.SizeOf(ic)).ToInt32();
+				}
+			}
+		}
+
+		/// <summary>
+		/// The <c>ICDecompressExEnd</c> macro notifies a video decompression driver to end decompression and free resources allocated for
+		/// decompression. You can use this macro or explicitly call the ICM_DECOMPRESSEX_END message.
+		/// </summary>
+		/// <param name="hic">Handle to a decompressor.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>The driver frees any resources allocated for the ICM_DECOMPRESSEX_BEGIN message.</para>
+		/// <para>
+		/// ICM_DECOMPRESSEX_BEGIN and ICM_DECOMPRESSEX_END do not nest. If your driver receives ICM_DECOMPRESSEX_BEGIN before decompression
+		/// is stopped with <c>ICM_DECOMPRESSEX_END</c>, it should restart decompression with new parameters.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressexend void ICDecompressExEnd( hic );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressExEnd")]
+		public static ICERR ICDecompressExEnd([In] HIC hic) => (ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESSEX_END).ToInt32();
+
+		/// <summary>The <c>ICDecompressExQuery</c> function determines if a decompressor can decompress data with a specific format.</summary>
+		/// <param name="hic">Handle to the decompressor to use.</param>
+		/// <param name="lpbiSrc">Pointer to a BITMAPINFOHEADER structure containing the format of the compressed data to decompress.</param>
+		/// <param name="xSrc">The x-coordinate of the source rectangle for the DIB specified by lpbiSrc.</param>
+		/// <param name="ySrc">The y-coordinate of the source rectangle for the DIB specified by lpbiSrc.</param>
+		/// <param name="dxSrc">Width of the source rectangle.</param>
+		/// <param name="dySrc">Height of the source rectangle.</param>
+		/// <param name="lpbiDst">
+		/// Pointer to a BITMAPINFOHEADER structure containing the output format. If the value of this parameter is <c>NULL</c>, the
+		/// function determines whether the input format is supported and this parameter is ignored.
+		/// </param>
+		/// <param name="lpDst">Pointer to a buffer that is large enough to contain the decompressed data.</param>
+		/// <param name="xDst">The x-coordinate of the destination rectangle for the DIB specified by lpbiDst.</param>
+		/// <param name="yDst">The y-coordinate of the destination rectangle for the DIB specified by lpbiDst.</param>
+		/// <param name="dxDst">Width of the destination rectangle.</param>
+		/// <param name="dyDst">Height of the destination rectangle.</param>
+		/// <returns>Returns <c>ICERR_OK</c> if successful or an error otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressexquery LRESULT VFWAPI_INLINE ICDecompressExQuery( HIC
+		// hic, DWORD dwFlags, LPBITMAPINFOHEADER lpbiSrc, LPVOID lpSrc, int xSrc, int ySrc, int dxSrc, int dySrc, LPBITMAPINFOHEADER
+		// lpbiDst, LPVOID lpDst, int xDst, int yDst, int dxDst, int dyDst );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressExQuery")]
+		public static ICERR ICDecompressExQuery([In] HIC hic, in BITMAPINFOHEADER lpbiSrc, int xSrc, int ySrc,
+			int dxSrc, int dySrc, in BITMAPINFOHEADER lpbiDst, [Out] IntPtr lpDst, int xDst, int yDst, int dxDst, int dyDst)
+		{
+			unsafe
+			{
+				fixed (void* pIn = &lpbiSrc, pOut = &lpbiDst)
+				{
+					ICDECOMPRESSEX ic = new ICDECOMPRESSEX
+					{
+						dwFlags = 0,
+						lpbiSrc = (IntPtr)pIn,
+						lpSrc = IntPtr.Zero,
+						xSrc = xSrc,
+						ySrc = ySrc,
+						dxSrc = dxSrc,
+						dySrc = dySrc,
+						lpbiDst = (IntPtr)pOut,
+						lpDst = lpDst,
+						xDst = xDst,
+						yDst = yDst,
+						dxDst = dxDst,
+						dyDst = dyDst
+					};
+
+					// note that ICM swaps round the length and pointer length in lparam2, pointer in lparam1
+					return (ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESSEX_QUERY, (IntPtr)(void*)&ic, (IntPtr)Marshal.SizeOf(ic)).ToInt32();
+				}
+			}
+		}
+
+		/// <summary>
+		/// The <c>ICDecompressGetFormat</c> macro requests the output format of the decompressed data from a video decompression driver.
+		/// You can use this macro or explicitly call the ICM_DECOMPRESS_GET_FORMAT message.
+		/// </summary>
+		/// <param name="hic">Handle to a decompressor.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFO structure containing the input format.</param>
+		/// <param name="lpbiOutput">
+		/// Pointer to a BITMAPINFO structure to contain the output format. You can specify zero to request only the size of the output
+		/// format, as in the ICDecompressGetFormatSize macro.
+		/// </param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// If lpbiOutput is nonzero, the driver should fill the BITMAPINFO structure with the default output format corresponding to the
+		/// input format specified for lpbiInput. If the compressor can produce several formats, the default format should be the one that
+		/// preserves the greatest amount of information.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressgetformat void ICDecompressGetFormat( hic, lpbiInput,
+		// lpbiOutput );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressGetFormat")]
+		public static ICERR ICDecompressGetFormat([In] HIC hic, in BITMAPINFO lpbiInput, in BITMAPINFO lpbiOutput) =>
+			(ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESS_GET_FORMAT, lpbiInput, lpbiOutput).ToInt32();
+
+		/// <summary>
+		/// The <c>ICDecompressGetFormatSize</c> macro requests the size of the output format of the decompressed data from a video
+		/// decompression driver. You can use this macro or explicitly call the ICM_DECOMPRESS_GET_FORMAT message.
+		/// </summary>
+		/// <param name="hic">Handle to a decompressor.</param>
+		/// <param name="lpbi">Pointer to a BITMAPINFO structure containing the input format.</param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressgetformatsize void ICDecompressGetFormatSize( hic, lpbi );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressGetFormatSize")]
+		public static int ICDecompressGetFormatSize([In] HIC hic, in BITMAPINFO lpbi)
+		{
+			using var pIn = SafeCoTaskMemHandle.CreateFromStructure(lpbi);
+			return ICSendMessage(hic, ICM_Message.ICM_DECOMPRESS_GET_FORMAT, pIn).ToInt32();
+		}
+
+		/// <summary>The <c>ICDraw</c> function decompresses an image for drawing.</summary>
+		/// <param name="hic">Handle to an decompressor.</param>
+		/// <param name="dwFlags">
+		/// <para>Decompression flags. The following values are defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICDRAW_HURRYUP</term>
+		/// <term>Data is buffered and not drawn to the screen. Use this flag for fastest decompression.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_NOTKEYFRAME</term>
+		/// <term>Current frame is not a key frame.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_NULLFRAME</term>
+		/// <term>Current frame does not contain any data and the previous frame should be redrawn.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_PREROLL</term>
+		/// <term>
+		/// Current frame of video occurs before playback should start. For example, if playback will begin on frame 10, and frame 0 is the
+		/// nearest previous key frame, frames 0 through 9 are sent to the driver with the ICDRAW_PREROLL flag set. The driver needs this
+		/// data to display frame 10 properly.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_UPDATE</term>
+		/// <term>Updates the screen based on previously received data. Set lpData to NULL when this flag is used.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpFormat">Pointer to a BITMAPINFOHEADER structure containing the input format of the data.</param>
+		/// <param name="lpData">Pointer to the input data.</param>
+		/// <param name="cbData">Size of the input data, in bytes.</param>
+		/// <param name="lTime">
+		/// Time, in samples, to draw this frame. The units for video data are frames. For a definition of the playback rate, see the
+		/// <c>dwRate</c> and <c>dwScale</c> members of the ICDRAWBEGIN structure.
+		/// </param>
+		/// <returns>Returns <c>ICERR_OK</c> if successful or an error otherwise.</returns>
+		/// <remarks>
+		/// You can initiate drawing the frames by sending the ICM_DRAW_START message (or by using the ICDrawStart macro). The application
+		/// should be sure to buffer the required number of frames before drawing is started. Send the <c>KM_GETBUFFERSWANTED</c> message
+		/// (or use the ICGetBuffersWanted macro) to obtain this value.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdraw DWORD VFWAPIV ICDraw( HIC hic, DWORD dwFlags, LPVOID
+		// lpFormat, LPVOID lpData, DWORD cbData, LONG lTime );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDraw")]
+		public static extern ICERR ICDraw([In] HIC hic, ICDRAWF dwFlags, in BITMAPINFOHEADER lpFormat, [In, Optional] IntPtr lpData, uint cbData, int lTime);
+
+		/// <summary>The <c>ICDrawBegin</c> function initializes the renderer and prepares the drawing destination for drawing.</summary>
+		/// <param name="hic">Handle to the decompressor to use.</param>
+		/// <param name="dwFlags">
+		/// <para>Decompression flags. The following values are defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICDRAW_ANIMATE</term>
+		/// <term>Application can animate the palette.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_CONTINUE</term>
+		/// <term>Drawing is a continuation of the previous frame.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_FULLSCREEN</term>
+		/// <term>Draws the decompressed data on the full screen.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_HDC</term>
+		/// <term>Draws the decompressed data to a window or a DC.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_MEMORYDC</term>
+		/// <term>DC is off-screen.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_QUERY</term>
+		/// <term>Determines if the decompressor can decompress the data. The driver does not decompress the data.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICDRAW_UPDATING</term>
+		/// <term>Current frame is being updated rather than played.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hpal">Handle to the palette used for drawing.</param>
+		/// <param name="hwnd">Handle to the window used for drawing.</param>
+		/// <param name="hdc">DC used for drawing.</param>
+		/// <param name="xDst">The x-coordinate of the upper right corner of the destination rectangle.</param>
+		/// <param name="yDst">The y-coordinate of the upper right corner of the destination rectangle.</param>
+		/// <param name="dxDst">Width of the destination rectangle.</param>
+		/// <param name="dyDst">Height of the destination rectangle.</param>
+		/// <param name="lpbi">Pointer to a BITMAPINFOHEADER structure containing the format of the input data to be decompressed.</param>
+		/// <param name="xSrc">The x-coordinate of the upper right corner of the source rectangle.</param>
+		/// <param name="ySrc">The y-coordinate of the upper right corner of the source rectangle.</param>
+		/// <param name="dxSrc">Width of the source rectangle.</param>
+		/// <param name="dySrc">Height of the source rectangle.</param>
+		/// <param name="dwRate">Frame rate numerator. The frame rate, in frames per second, is obtained by dividing dwRate by dwScale.</param>
+		/// <param name="dwScale">Frame rate denominator. The frame rate, in frames per second, is obtained by dividing dwRate by dwScale.</param>
+		/// <returns>Returns ICERR_OK if the renderer can decompress the data or <c>ICERR_UNSUPPORTED</c> otherwise.</returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>ICDRAW_HDC</c> and <c>ICDRAW_FULLSCREEN</c> flags are mutually exclusive. If an application sets the ICDRAW_HDC flag in
+		/// dwFlags, the decompressor uses hwnd, hdc, and the parameters defining the destination rectangle (xDst, yDst, dxDst, and dyDst).
+		/// Your application should set these parameters to the size of the destination rectangle. Specify destination rectangle values
+		/// relative to the current window or DC.
+		/// </para>
+		/// <para>
+		/// If an application sets the <c>ICDRAW_FULLSCREEN</c> flag in dwFlags, the hwnd and hdc parameters are not used and should be set
+		/// to <c>NULL</c>. Also, the destination rectangle is not used and its parameters can be set to zero.
+		/// </para>
+		/// <para>
+		/// The source rectangle is relative to the full video frame. The portion of the video frame specified by the source rectangle is
+		/// stretched or shrunk to fit the destination rectangle.
+		/// </para>
+		/// <para>
+		/// The dwRate and dwScale parameters specify the decompression rate. The integer value specified for dwRate divided by the integer
+		/// value specified for dwScale defines the frame rate in frames per second. This value is used by the renderer when it is
+		/// responsible for timing frames during playback.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdrawbegin DWORD VFWAPIV ICDrawBegin( HIC hic, DWORD dwFlags,
+		// HPALETTE hpal, HWND hwnd, HDC hdc, int xDst, int yDst, int dxDst, int dyDst, LPBITMAPINFOHEADER lpbi, int xSrc, int ySrc, int
+		// dxSrc, int dySrc, DWORD dwRate, DWORD dwScale );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDrawBegin")]
+		public static extern ICERR ICDrawBegin([In] HIC hic, ICDRAWF dwFlags, [In, Optional] HPALETTE hpal, [In, Optional] HWND hwnd,
+			[In, Optional] HDC hdc, int xDst, int yDst, int dxDst, int dyDst, in BITMAPINFOHEADER lpbi, int xSrc, int ySrc,
+			int dxSrc, int dySrc, uint dwRate, uint dwScale);
+
+		/// <summary>The <c>ICSendMessage</c> function sends a message to a compressor.</summary>
+		/// <param name="hic">Handle to the compressor to receive the message.</param>
+		/// <param name="msg">Message to send.</param>
+		/// <param name="dw1">Additional message-specific information.</param>
+		/// <param name="dw2">Additional message-specific information.</param>
+		/// <returns>Returns a message-specific result.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icsendmessage LRESULT VFWAPI ICSendMessage( HIC hic, UINT msg,
+		// DWORD_PTR dw1, DWORD_PTR dw2 );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICSendMessage")]
+		public static extern IntPtr ICSendMessage(HIC hic, uint msg, IntPtr dw1 = default, IntPtr dw2 = default);
+
+		/// <summary>The <c>ICSendMessage</c> function sends a message to a compressor.</summary>
+		/// <param name="hic">Handle to the compressor to receive the message.</param>
+		/// <param name="msg">Message to send.</param>
+		/// <param name="dw1">Additional message-specific information.</param>
+		/// <param name="dw2">Additional message-specific information.</param>
+		/// <returns>Returns a message-specific result.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icsendmessage LRESULT VFWAPI ICSendMessage( HIC hic, UINT msg,
+		// DWORD_PTR dw1, DWORD_PTR dw2 );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICSendMessage")]
+		public static extern IntPtr ICSendMessage(HIC hic, ICM_Message msg, IntPtr dw1 = default, IntPtr dw2 = default);
+
+		/// <summary>The <c>ICSendMessage</c> function sends a message to a compressor.</summary>
+		/// <param name="hic">Handle to the compressor to receive the message.</param>
+		/// <param name="msg">Message to send.</param>
+		/// <param name="lpbiInput">Additional message-specific information.</param>
+		/// <param name="lpbiOutput">Additional message-specific information.</param>
+		/// <returns>Returns a message-specific result.</returns>
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICSendMessage")]
+		public static IntPtr ICSendMessage(HIC hic, ICM_Message msg, in BITMAPINFOHEADER lpbiInput, in BITMAPINFOHEADER lpbiOutput)
+		{
+			unsafe
+			{
+				fixed (void* pIn = &lpbiInput, pOut = &lpbiOutput)
+				{
+					return ICSendMessage(hic, msg, (IntPtr)pIn, (IntPtr)pOut);
+				}
+			}
+		}
+
+		/// <summary>The <c>ICSendMessage</c> function sends a message to a compressor.</summary>
+		/// <param name="hic">Handle to the compressor to receive the message.</param>
+		/// <param name="msg">Message to send.</param>
+		/// <param name="lpbiInput">Additional message-specific information.</param>
+		/// <param name="lpbiOutput">Additional message-specific information.</param>
+		/// <returns>Returns a message-specific result.</returns>
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICSendMessage")]
+		internal static IntPtr ICSendMessage(HIC hic, ICM_Message msg, [In] SafeBITMAPINFO lpbiInput, [In, Optional] SafeBITMAPINFO lpbiOutput) =>
+			ICSendMessage(hic, msg, lpbiInput ?? SafeBITMAPINFO.Null, lpbiOutput ?? SafeBITMAPINFO.Null);
+
+		/// <summary>
 		/// The <c>StretchDIB</c> function copies a device independent bitmap from one memory location to another and resizes the image to
 		/// fit the destination rectangle.
 		/// </summary>
@@ -720,6 +2050,110 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.StretchDIB")]
 		public static extern void StretchDIB(in BITMAPINFOHEADER biDst, [Out] IntPtr lpDst, int DstX, int DstY, int DstXE, int DstYE, in BITMAPINFOHEADER biSrc, [In] IntPtr lpSrc, int SrcX, int SrcY, int SrcXE, int SrcYE);
+
+#region // Structs
+		/// <summary>
+		/// The <c>COMPVARS</c> structure describes compressor settings for functions such as ICCompressorChoose, ICSeqCompressFrame, and ICCompressorFree.
+		/// </summary>
+		/// <remarks>
+		/// You can let ICCompressorChoose fill the contents of this structure or you can do it manually. If you manually fill the
+		/// structure, you must provide information for the following members: <c>cbSize</c>, <c>hic</c>, <c>lpbiOut</c>, <c>lKey</c>, and
+		/// <c>lQ</c>. Also, you must set the <c>ICMF_COMPVARS_VALID</c> flag in the <c>dwFlags</c> member.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-compvars typedef struct { LONG cbSize; DWORD dwFlags; HIC hic;
+		// DWORD fccType; DWORD fccHandler; LPBITMAPINFO lpbiIn; LPBITMAPINFO lpbiOut; LPVOID lpBitsOut; LPVOID lpBitsPrev; LONG lFrame;
+		// LONG lKey; LONG lDataRate; LONG lQ; LONG lKeyCount; LPVOID lpState; LONG cbState; } COMPVARS, *PCOMPVARS;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_11")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct COMPVARS
+		{
+			/// <summary>
+			/// Size, in bytes, of this structure. This member must be set to validate the structure before calling any function using this structure.
+			/// </summary>
+			public int cbSize;
+
+			/// <summary>
+			/// <para>Applicable flags. The following value is defined:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Name</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ICMF_COMPVARS_VALID</term>
+			/// <term>
+			/// Data in this structure is valid and has been manually entered. Set this flag before you call any function if you fill this
+			/// structure manually. Do not set this flag if you let ICCompressorChoose initialize this structure.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ICMF_COMPVARS dwFlags;
+
+			/// <summary>
+			/// Handle to the compressor to use. You can open a compressor and obtain a handle of it by using the ICOpen function. You can
+			/// also choose a compressor by using ICCompressorChoose. <c>ICCompressorChoose</c> opens the chosen compressor and returns the
+			/// handle of the compressor in this member. You can close the compressor by using ICCompressorFree.
+			/// </summary>
+			public HIC hic;
+
+			/// <summary>Type of compressor used. Currently only <c>ICTYPE_VIDEO</c> (VIDC) is supported. This member can be set to zero.</summary>
+			public uint fccType;
+
+			/// <summary>
+			/// Four-character code of the compressor. Specify <c>NULL</c> to indicate the data is not to be recompressed. Specify "DIB" to
+			/// indicate the data is an uncompressed, full frame. You can use this member to specify which compressor is selected by default
+			/// when the dialog box is displayed.
+			/// </summary>
+			public uint fccHandler;
+
+			/// <summary>Reserved; do not use.</summary>
+			public IntPtr lpbiIn;
+
+			/// <summary>
+			/// Pointer to a BITMAPINFO structure containing the image output format. You can specify a specific format to use or you can
+			/// specify <c>NULL</c> to use the default compressor associated with the input format. You can also set the image output format
+			/// by using ICCompressorChoose.
+			/// </summary>
+			public IntPtr lpbiOut;
+
+			/// <summary>Reserved; do not use.</summary>
+			public IntPtr lpBitsOut;
+
+			/// <summary>Reserved; do not use.</summary>
+			public IntPtr lpBitsPrev;
+
+			/// <summary>Reserved; do not use.</summary>
+			public int lFrame;
+
+			/// <summary>
+			/// Key-frame rate. Specify an integer to indicate the frequency that key frames are to occur in the compressed sequence or zero
+			/// to not use key frames. You can also let ICCompressorChoose set the key-frame rate selected in the dialog box. The
+			/// ICSeqCompressFrameStart function uses the value of this member for making key frames.
+			/// </summary>
+			public int lKey;
+
+			/// <summary>
+			/// Data rate, in kilobytes per second. ICCompressorChoose copies the selected data rate from the dialog box to this member.
+			/// </summary>
+			public int lDataRate;
+
+			/// <summary>
+			/// Quality setting. Specify a quality setting of 1 to 10,000 or specify <c>ICQUALITY_DEFAULT</c> to use the default quality
+			/// setting. You can also let ICCompressorChoose set the quality value selected in the dialog box. ICSeqCompressFrameStart uses
+			/// the value of this member as its quality setting.
+			/// </summary>
+			public int lQ;
+
+			/// <summary>Reserved; do not use.</summary>
+			public int lKeyCount;
+
+			/// <summary>Reserved; do not use.</summary>
+			public IntPtr lpState;
+
+			/// <summary>Reserved; do not use.</summary>
+			public int cbState;
+		}
 
 		/// <summary>
 		/// The <c>DRAWDIBTIME</c> structure contains elapsed timing information for performing a set of DrawDib operations. The DrawDibTime
@@ -823,6 +2257,688 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>Provides a handle to an image decompressor.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HIC : IHandle
+		{
+			private readonly IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HIC"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HIC(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HIC"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HIC NULL => new(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HIC"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HIC h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HIC"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HIC(IntPtr h) => new(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HIC h1, HIC h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HIC h1, HIC h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HIC h && handle == h.handle;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>The <c>ICCOMPRESS</c> structure contains compression parameters used with the ICM_COMPRESS message.</summary>
+		/// <remarks>
+		/// Drivers that perform temporal compression use data from the previous frame (found in the <c>lpbiPrev</c> and <c>lpPrev</c>
+		/// members) to prune redundant data from the current frame.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-iccompress typedef struct { DWORD dwFlags; LPBITMAPINFOHEADER
+		// lpbiOutput; LPVOID lpOutput; LPBITMAPINFOHEADER lpbiInput; LPVOID lpInput; LPDWORD lpckid; LPDWORD lpdwFlags; LONG lFrameNum;
+		// DWORD dwFrameSize; DWORD dwQuality; LPBITMAPINFOHEADER lpbiPrev; LPVOID lpPrev; } ICCOMPRESS;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_2")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ICCOMPRESS
+		{
+			/// <summary>
+			/// <para>Flags used for compression. The following value is defined:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Name</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ICCOMPRESS_KEYFRAME</term>
+			/// <term>Input data should be treated as a key frame.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ICCOMPRESSF dwFlags;
+
+			/// <summary>
+			/// Pointer to a BITMAPINFOHEADER structure containing the output (compressed) format. The <c>biSizeImage</c> member must
+			/// contain the size of the compressed data.
+			/// </summary>
+			public IntPtr lpbiOutput;
+
+			/// <summary>Pointer to the buffer where the driver should write the compressed data.</summary>
+			public IntPtr lpOutput;
+
+			/// <summary>Pointer to a BITMAPINFOHEADER structure containing the input (uncompressed) format.</summary>
+			public IntPtr lpbiInput;
+
+			/// <summary>Pointer to the buffer containing input data.</summary>
+			public IntPtr lpInput;
+
+			/// <summary>
+			/// Address to contain the chunk identifier for data in the AVI file. If the value of this member is not <c>NULL</c>, the driver
+			/// should specify a two-character code for the chunk identifier corresponding to the chunk identifier used in the AVI file.
+			/// </summary>
+			public uint lpckid;
+
+			/// <summary>
+			/// Address to contain flags for the AVI index. If the returned frame is a key frame, the driver should set the
+			/// <c>AVIIF_KEYFRAME</c> flag.
+			/// </summary>
+			public uint lpdwFlags;
+
+			/// <summary>Number of the frame to compress.</summary>
+			public int lFrameNum;
+
+			/// <summary>
+			/// Desired maximum size, in bytes, for compressing this frame. The size value is used for compression methods that can make
+			/// tradeoffs between compressed image size and image quality. Specify zero for this member to use the default setting.
+			/// </summary>
+			public uint dwFrameSize;
+
+			/// <summary>Quality setting.</summary>
+			public uint dwQuality;
+
+			/// <summary>
+			/// Pointer to a BITMAPINFOHEADER structure containing the format of the previous frame, which is typically the same as the
+			/// input format.
+			/// </summary>
+			public IntPtr lpbiPrev;
+
+			/// <summary>Pointer to the buffer containing input data of the previous frame.</summary>
+			public IntPtr lpPrev;
+		}
+
+		/// <summary>The <c>ICCOMPRESSFRAMES</c> structure contains compression parameters used with the ICM_COMPRESS_FRAMES_INFO message.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-iccompressframes typedef struct { DWORD dwFlags; LPBITMAPINFOHEADER
+		// lpbiOutput; LPARAM lOutput; LPBITMAPINFOHEADER lpbiInput; LPARAM lInput; LONG lStartFrame; LONG lFrameCount; LONG lQuality; LONG
+		// lDataRate; LONG lKeyRate; DWORD dwRate; DWORD dwScale; DWORD dwOverheadPerFrame; DWORD dwReserved2; LONG( )(LPARAM lInput,LONG
+		// lFrame,LPVOID lpBits,LONG len) *GetData; LONG( )(LPARAM lOutput,LONG lFrame,LPVOID lpBits,LONG len) *PutData; } ICCOMPRESSFRAMES;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_3")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ICCOMPRESSFRAMES
+		{
+			/// <summary>
+			/// Applicable flags. The following value is defined: <c>ICCOMPRESSFRAMES_PADDING</c>. If this value is used, padding is used
+			/// with the frame.
+			/// </summary>
+			public ICCOMPRESSFRAMESF dwFlags;
+
+			/// <summary>Pointer to a BITMAPINFOHEADER structure containing the output format.</summary>
+			public IntPtr lpbiOutput;
+
+			/// <summary>Reserved; do not use.</summary>
+			public IntPtr lOutput;
+
+			/// <summary>Pointer to a BITMAPINFOHEADER structure containing the input format.</summary>
+			public IntPtr lpbiInput;
+
+			/// <summary>Reserved; do not use.</summary>
+			public IntPtr lInput;
+
+			/// <summary>Number of the first frame to compress.</summary>
+			public int lStartFrame;
+
+			/// <summary>Number of frames to compress.</summary>
+			public int lFrameCount;
+
+			/// <summary>Quality setting.</summary>
+			public int lQuality;
+
+			/// <summary>Maximum data rate, in bytes per second.</summary>
+			public int lDataRate;
+
+			/// <summary>Maximum number of frames between consecutive key frames.</summary>
+			public int lKeyRate;
+
+			/// <summary>
+			/// Compression rate in an integer format. To obtain the rate in frames per second, divide this value by the value in <c>dwScale</c>.
+			/// </summary>
+			public uint dwRate;
+
+			/// <summary>Value used to scale <c>dwRate</c> to frames per second.</summary>
+			public uint dwScale;
+
+			/// <summary>Reserved; do not use.</summary>
+			public uint dwOverheadPerFrame;
+
+			/// <summary>Reserved; do not use.</summary>
+			public uint dwReserved2;
+		}
+
+		/// <summary>The <c>ICDECOMPRESS</c> structure contains decompression parameters used with the ICM_DECOMPRESS message.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-icdecompress typedef struct { DWORD dwFlags; LPBITMAPINFOHEADER
+		// lpbiInput; LPVOID lpInput; LPBITMAPINFOHEADER lpbiOutput; LPVOID lpOutput; DWORD ckid; } ICDECOMPRESS;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_5")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ICDECOMPRESS
+		{
+			/// <summary>
+			/// <para>Applicable flags. The following values are defined:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Name</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ICDECOMPRESS_HURRYUP</term>
+			/// <term>
+			/// Tries to decompress at a faster rate. When an application uses this flag, the driver should buffer the decompressed data but
+			/// not draw the image.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ICDECOMPRESS_NOTKEYFRAME</term>
+			/// <term>Current frame is not a key frame.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDECOMPRESS_NULLFRAME</term>
+			/// <term>Current frame does not contain data and the decompressed image should be left the same.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDECOMPRESS_PREROLL</term>
+			/// <term>Current frame precedes the point in the movie where playback starts and, therefore, will not be drawn.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDECOMPRESS_UPDATE</term>
+			/// <term>Screen is being updated or refreshed.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ICDECOMPRESSF dwFlags;
+
+			/// <summary>Pointer to a BITMAPINFOHEADER structure containing the input format.</summary>
+			public IntPtr lpbiInput;
+
+			/// <summary>Pointer to a buffer containing the input data.</summary>
+			public IntPtr lpInput;
+
+			/// <summary>Pointer to a BITMAPINFOHEADER structure containing the output format.</summary>
+			public IntPtr lpbiOutput;
+
+			/// <summary>Pointer to a buffer where the driver should write the decompressed image.</summary>
+			public IntPtr lpOutput;
+
+			/// <summary>Chunk identifier from the AVI file.</summary>
+			public uint ckid;
+		}
+
+		/// <summary>The <c>ICDECOMPRESSEX</c> structure contains decompression parameters used with the ICM_DECOMPRESSEX message</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-icdecompressex typedef struct { DWORD dwFlags; LPBITMAPINFOHEADER
+		// lpbiSrc; LPVOID lpSrc; LPBITMAPINFOHEADER lpbiDst; LPVOID lpDst; int xDst; int yDst; int dxDst; int dyDst; int xSrc; int ySrc;
+		// int dxSrc; int dySrc; } ICDECOMPRESSEX;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_6")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ICDECOMPRESSEX
+		{
+			/// <summary>
+			/// <para>Applicable flags. The following values are defined:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Name</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ICDECOMPRESS_HURRYUP</term>
+			/// <term>
+			/// Tries to decompress at a faster rate. When an application uses this flag, the driver should buffer the decompressed data but
+			/// not draw the image.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ICDECOMPRESS_NOTKEYFRAME</term>
+			/// <term>Current frame is not a key frame.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDECOMPRESS_NULLFRAME</term>
+			/// <term>Current frame does not contain data and the decompressed image should be left the same.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDECOMPRESS_PREROLL</term>
+			/// <term>Current frame precedes the point in the movie where playback starts and, therefore, will not be drawn.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDECOMPRESS_UPDATE</term>
+			/// <term>Screen is being updated or refreshed.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ICDECOMPRESSF dwFlags;
+
+			/// <summary>Pointer to a BITMAPINFOHEADER structure containing the input format.</summary>
+			public IntPtr lpbiSrc;
+
+			/// <summary>Pointer to a buffer containing the input data.</summary>
+			public IntPtr lpSrc;
+
+			/// <summary>Pointer to a BITMAPINFOHEADER structure containing the output format.</summary>
+			public IntPtr lpbiDst;
+
+			/// <summary>Pointer to a buffer where the driver should write the decompressed image.</summary>
+			public IntPtr lpDst;
+
+			/// <summary>The x-coordinate of the destination rectangle within the DIB specified by <c>lpbiDst</c>.</summary>
+			public int xDst;
+
+			/// <summary>The y-coordinate of the destination rectangle within the DIB specified by <c>lpbiDst</c>.</summary>
+			public int yDst;
+
+			/// <summary>Width of the destination rectangle.</summary>
+			public int dxDst;
+
+			/// <summary>Height of the destination rectangle.</summary>
+			public int dyDst;
+
+			/// <summary>The x-coordinate of the source rectangle within the DIB specified by <c>lpbiSrc</c>.</summary>
+			public int xSrc;
+
+			/// <summary>The y-coordinate of the source rectangle within the DIB specified by <c>lpbiSrc</c>.</summary>
+			public int ySrc;
+
+			/// <summary>Width of the source rectangle.</summary>
+			public int dxSrc;
+
+			/// <summary>Height of the source rectangle.</summary>
+			public int dySrc;
+		}
+
+		/// <summary>
+		/// The <c>ICDRAW</c> structure contains parameters for drawing video data to the screen. This structure is used with the ICM_DRAW message.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-icdraw typedef struct { DWORD dwFlags; LPVOID lpFormat; LPVOID
+		// lpData; DWORD cbData; LONG lTime; } ICDRAW;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_8")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct ICDRAW
+		{
+			/// <summary>
+			/// <para>Flags from the AVI file index. The following values are defined:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Name</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ICDRAW_HURRYUP</term>
+			/// <term>Data is buffered and not drawn to the screen. Use this flag for fastest decompression.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_NOTKEYFRAME</term>
+			/// <term>Current frame is not a key frame.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_NULLFRAME</term>
+			/// <term>Current frame does not contain any data, and the previous frame should be redrawn.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_PREROLL</term>
+			/// <term>
+			/// Current frame of video occurs before playback should start. For example, if playback will begin on frame 10, and frame 0 is
+			/// the nearest previous key frame, frames 0 through 9 are sent to the driver with this flag set. The driver needs this data to
+			/// display frame 10 properly.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_UPDATE</term>
+			/// <term>Updates the screen based on data previously received. In this case, lpData should be ignored.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ICDRAWF dwFlags;
+
+			/// <summary>Pointer to a structure containing the data format. For video streams, this is a BITMAPINFOHEADER structure.</summary>
+			public IntPtr lpFormat;
+
+			/// <summary>Pointer to the data to render.</summary>
+			public IntPtr lpData;
+
+			/// <summary>Number of data bytes to render.</summary>
+			public uint cbData;
+
+			/// <summary>Time, in samples, when this data should be drawn. For video data this is normally a frame number.</summary>
+			public int lTime;
+		}
+
+		/// <summary>The <c>ICDRAWBEGIN</c> structure contains decompression parameters used with the ICM_DRAW_BEGIN message.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-icdrawbegin typedef struct { DWORD dwFlags; HPALETTE hpal; HWND
+		// hwnd; HDC hdc; int xDst; int yDst; int dxDst; int dyDst; LPBITMAPINFOHEADER lpbi; int xSrc; int ySrc; int dxSrc; int dySrc; DWORD
+		// dwRate; DWORD dwScale; } ICDRAWBEGIN;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_7")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ICDRAWBEGIN
+		{
+			/// <summary>
+			/// <para>Applicable flags. The following values are defined:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Name</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ICDRAW_ANIMATE</term>
+			/// <term>Application can animate the palette.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_BUFFER</term>
+			/// <term>Buffers this data off-screen; it will need to be updated.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_CONTINUE</term>
+			/// <term>Drawing is a continuation of the previous frame.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_FULLSCREEN</term>
+			/// <term>Draws the decompressed data on the full screen.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_HDC</term>
+			/// <term>Draws the decompressed data to a window or a DC.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_MEMORYDC</term>
+			/// <term>DC is off-screen.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_QUERY</term>
+			/// <term>Determines if the decompressor can handle the decompression. The driver does not actually decompress the data.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_RENDER</term>
+			/// <term>Renders but does not draw the data.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICDRAW_UPDATING</term>
+			/// <term>Current frame is being updated rather than played.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ICDRAWF dwFlags;
+
+			/// <summary>Handle to the palette used for drawing.</summary>
+			public HPALETTE hpal;
+
+			/// <summary>Handle to the window used for drawing.</summary>
+			public HWND hwnd;
+
+			/// <summary>Handle to the DC used for drawing. Specify <c>NULL</c> to use a DC associated with the specified window.</summary>
+			public HDC hdc;
+
+			/// <summary>The x-coordinate of the destination rectangle.</summary>
+			public int xDst;
+
+			/// <summary>The y-coordinate of the destination rectangle.</summary>
+			public int yDst;
+
+			/// <summary>Width of the destination rectangle.</summary>
+			public int dxDst;
+
+			/// <summary>Height of the destination rectangle.</summary>
+			public int dyDst;
+
+			/// <summary>Pointer to a BITMAPINFOHEADER structure containing the input format.</summary>
+			public IntPtr lpbi;
+
+			/// <summary>The x-coordinate of the source rectangle.</summary>
+			public int xSrc;
+
+			/// <summary>The y-coordinate of the source rectangle.</summary>
+			public int ySrc;
+
+			/// <summary>Width of the source rectangle.</summary>
+			public int dxSrc;
+
+			/// <summary>Height of the source rectangle.</summary>
+			public int dySrc;
+
+			/// <summary>
+			/// Decompression rate in an integer format. To obtain the rate in frames per second, divide this value by the value in <c>dwScale</c>.
+			/// </summary>
+			public uint dwRate;
+
+			/// <summary>Value used to scale <c>dwRate</c> to frames per second.</summary>
+			public uint dwScale;
+		}
+
+		/// <summary>
+		/// The <c>ICDRAWSUGGEST</c> structure contains compression parameters used with the ICM_DRAW_SUGGESTFORMAT message to suggest an
+		/// appropriate input format.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-icdrawsuggest typedef struct { LPBITMAPINFOHEADER lpbiIn;
+		// LPBITMAPINFOHEADER lpbiSuggest; int dxSrc; int dySrc; int dxDst; int dyDst; HIC hicDecompressor; } ICDRAWSUGGEST;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_9")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ICDRAWSUGGEST
+		{
+			/// <summary>Pointer to the structure containing the compressed input format.</summary>
+			public IntPtr lpbiIn;
+
+			/// <summary>Pointer to a buffer to return a compatible input format for the renderer.</summary>
+			public IntPtr lpbiSuggest;
+
+			/// <summary>Width of the source rectangle.</summary>
+			public int dxSrc;
+
+			/// <summary>Height of the source rectangle.</summary>
+			public int dySrc;
+
+			/// <summary>Width of the destination rectangle.</summary>
+			public int dxDst;
+
+			/// <summary>Height of the destination rectangle.</summary>
+			public int dyDst;
+
+			/// <summary>Handle to a decompressor that supports the format of data described in <c>lpbiIn</c>.</summary>
+			public HIC hicDecompressor;
+		}
+
+		/// <summary>
+		/// The <c>ICINFO</c> structure contains compression parameters supplied by a video compression driver. The driver fills or updates
+		/// the structure when it receives the ICM_GETINFO message.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-icinfo typedef struct { DWORD dwSize; DWORD fccType; DWORD
+		// fccHandler; DWORD dwFlags; DWORD dwVersion; DWORD dwVersionICM; WCHAR szName[16]; WCHAR szDescription[128]; WCHAR szDriver[128];
+		// } ICINFO;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_1")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct ICINFO
+		{
+			/// <summary>Size, in bytes, of the <c>ICINFO</c> structure.</summary>
+			public uint dwSize;
+
+			/// <summary>
+			/// Four-character code indicating the type of stream being compressed or decompressed. Specify "VIDC" for video streams.
+			/// </summary>
+			public uint fccType;
+
+			/// <summary>A four-character code identifying a specific compressor.</summary>
+			public uint fccHandler;
+
+			/// <summary>
+			/// <para>Applicable flags. Zero or more of the following flags can be set:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Name</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>VIDCF_COMPRESSFRAMES</term>
+			/// <term>
+			/// Driver is requesting to compress all frames. For information about compressing all frames, see the ICM_COMPRESS_FRAMES_INFO message.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>VIDCF_CRUNCH</term>
+			/// <term>Driver supports compressing to a frame size.</term>
+			/// </item>
+			/// <item>
+			/// <term>VIDCF_DRAW</term>
+			/// <term>Driver supports drawing.</term>
+			/// </item>
+			/// <item>
+			/// <term>VIDCF_FASTTEMPORALC</term>
+			/// <term>
+			/// Driver can perform temporal compression and maintains its own copy of the current frame. When compressing a stream of frame
+			/// data, the driver doesn't need image data from the previous frame.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>VIDCF_FASTTEMPORALD</term>
+			/// <term>
+			/// Driver can perform temporal decompression and maintains its own copy of the current frame. When decompressing a stream of
+			/// frame data, the driver doesn't need image data from the previous frame.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>VIDCF_QUALITY</term>
+			/// <term>Driver supports quality values.</term>
+			/// </item>
+			/// <item>
+			/// <term>VIDCF_TEMPORAL</term>
+			/// <term>Driver supports inter-frame compression.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public VIDCF dwFlags;
+
+			/// <summary>Version number of the driver.</summary>
+			public uint dwVersion;
+
+			/// <summary>Version of VCM supported by the driver. This member should be set to ICVERSION.</summary>
+			public uint dwVersionICM;
+
+			/// <summary>
+			/// Short version of the compressor name. The name in the null-terminated string should be suitable for use in list boxes.
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+			public string szName;
+
+			/// <summary>Long version of the compressor name.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+			public string szDescription;
+
+			/// <summary>Name of the module containing VCM compression driver. Normally, a driver does not need to fill this out.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+			public string szDriver;
+		}
+
+		/// <summary>
+		/// The <c>ICOPEN</c> structure contains information about the data stream being compressed or decompressed, the version number of
+		/// the driver, and how the driver is used.
+		/// </summary>
+		/// <remarks>
+		/// This structure is passed to video capture drivers when they are opened. This allows a single installable driver to function as
+		/// either an installable compressor or a video capture device. By examining the <c>fccType</c> member of the <c>ICOPEN</c>
+		/// structure, the driver can determine its function. For example, a <c>fccType</c> value of "VIDC" indicates that it is opened as
+		/// an installable video compressor.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-icopen typedef struct { DWORD dwSize; DWORD fccType; DWORD
+		// fccHandler; DWORD dwVersion; DWORD dwFlags; LRESULT dwError; LPVOID pV1Reserved; LPVOID pV2Reserved; DWORD dnDevNode; } ICOPEN;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_0")]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+		public struct ICOPEN
+		{
+			/// <summary>Size, in bytes, of the structure.</summary>
+			public uint dwSize;
+
+			/// <summary>
+			/// Four-character code indicating the type of stream being compressed or decompressed. Specify "VIDC" for video streams.
+			/// </summary>
+			public uint fccType;
+
+			/// <summary>Four-character code identifying a specific compressor.</summary>
+			public uint fccHandler;
+
+			/// <summary>Version of the installable driver interface used to open the driver.</summary>
+			public uint dwVersion;
+
+			/// <summary>
+			/// <para>Applicable flags indicating why the driver is opened. The following values are defined:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Name</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ICMODE_COMPRESS</term>
+			/// <term>Driver is opened to compress data.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICMODE_DECOMPRESS</term>
+			/// <term>Driver is opened to decompress data.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICMODE_DRAW</term>
+			/// <term>Device driver is opened to decompress data directly to hardware.</term>
+			/// </item>
+			/// <item>
+			/// <term>ICMODE_QUERY</term>
+			/// <term>Driver is opened for informational purposes, rather than for compression.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ICMODE dwFlags;
+
+			private readonly ushort dwFlagsPadding;
+
+			/// <summary/>
+			public IntPtr dwError;
+
+			/// <summary>Reserved; do not use.</summary>
+			public IntPtr pV1Reserved;
+
+			/// <summary>Reserved; do not use.</summary>
+			public IntPtr pV2Reserved;
+
+			/// <summary>Device node for plug and play devices.</summary>
+			public uint dnDevNode;
+		}
+
+		/// <summary>The <c>ICSETSTATUSPROC</c> structure contains status information used with the ICM_SET_STATUS_PROC message.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/ns-vfw-icsetstatusproc typedef struct { DWORD dwFlags; LPARAM lParam;
+		// LONG( )(LPARAM lParam,UINT message,LONG l) *Status; } ICSETSTATUSPROC;
+		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_4")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ICSETSTATUSPROC
+		{
+			/// <summary>Reserved; set to zero.</summary>
+			public uint dwFlags;
+
+			/// <summary>Parameter that contains a constant to pass to the status procedure.</summary>
+			public IntPtr lParam;
+		}
+
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDRAWDIB"/> that is disposed using <see cref="DrawDibClose"/>.</summary>
 		public class SafeHDRAWDIB : SafeHANDLE
 		{
@@ -844,73 +2960,361 @@ namespace Vanara.PInvoke
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => DrawDibClose(handle);
 		}
+		#endregion
 
+		/// <summary>The <c>ICDecompressGetPalette</c> macro requests that the video decompression driver supply the color table of the output BITMAPINFOHEADER structure. You can use this macro or explicitly call the ICM_DECOMPRESS_GET_PALETTE message.</summary>
+		/// <param name="hic">Handle to a decompressor.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFOHEADER structure containing the input format.</param>
+		/// <param name="lpbiOutput">Pointer to a BITMAPINFOHEADER structure to contain the color table. The space reserved for the color table is always at least 256 colors. You can specify zero for this parameter to return only the size of the color table.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>If lpbiOutput is nonzero, the driver sets the <c>biClrUsed</c> member of BITMAPINFOHEADER to the number of colors in the color table. The driver fills the <c>bmiColors</c> members of BITMAPINFO with the actual colors.</para>
+		/// <para>The driver should support this message only if it uses a palette other than the one specified in the input format.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressgetpalette
+		// void ICDecompressGetPalette( hic, lpbiInput, lpbiOutput );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressGetPalette")]
+		public static ICERR ICDecompressGetPalette([In] HIC hic, in BITMAPINFOHEADER lpbiInput, in BITMAPINFOHEADER lpbiOutput) =>
+			(ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESS_GET_PALETTE, lpbiInput, lpbiOutput).ToInt32();
+
+		/// <summary>The <c>ICDecompressOpen</c> macro opens a decompressor that is compatible with the specified formats.</summary>
+		/// <param name="fccType">Four-character code indicating the type of compressor to open. For video streams, the value of this parameter is "VIDC" or ICTYPE_VIDEO.</param>
+		/// <param name="fccHandler">Four-character code indicating the preferred stream handler to use. Typically, this information is stored in the stream header in an AVI file.</param>
+		/// <param name="lpbiIn">Pointer to a structure defining the input format. A decompressor handle is not returned unless it can decompress this format. For bitmaps, this parameter refers to a BITMAPINFOHEADER structure.</param>
+		/// <param name="lpbiOut">
+		/// <para>Pointer to a structure defining an optional decompression format. You can also specify zero to use the default output format associated with the input format.</para>
+		/// <para>If this parameter is nonzero, a compressor handle is not returned unless it can create this output format. For bitmaps, this parameter refers to a BITMAPINFOHEADER structure.</para>
+		/// </param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>The <c>ICDecompressOpen</c> macro is defined as follows:</para>
+		/// <para><code> #define ICDecompressOpen(fccType, fccHandler, lpbiIn, lpbiOut) \ ICLocate(fccType, fccHandler, lpbiIn, lpbiOut, ICMODE_DECOMPRESS); </code></para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressopen
+		// void ICDecompressOpen( fccType, fccHandler, lpbiIn, lpbiOut );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressOpen")]
+		public static SafeHIC ICDecompressOpen(uint fccType, [Optional] uint fccHandler, in BITMAPINFOHEADER lpbiIn, in BITMAPINFOHEADER lpbiOut) =>
+			ICLocate(fccType, fccHandler, lpbiIn, lpbiOut, ICMODE.ICMODE_DECOMPRESS);
+
+		/// <summary>The <c>ICDecompressOpen</c> macro opens a decompressor that is compatible with the specified formats.</summary>
+		/// <param name="fccType">Four-character code indicating the type of compressor to open. For video streams, the value of this parameter is "VIDC" or ICTYPE_VIDEO.</param>
+		/// <param name="fccHandler">Four-character code indicating the preferred stream handler to use. Typically, this information is stored in the stream header in an AVI file.</param>
+		/// <param name="lpbiIn">Pointer to a structure defining the input format. A decompressor handle is not returned unless it can decompress this format. For bitmaps, this parameter refers to a BITMAPINFOHEADER structure.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>The <c>ICDecompressOpen</c> macro is defined as follows:</para>
+		/// <para><code> #define ICDecompressOpen(fccType, fccHandler, lpbiIn, lpbiOut) \ ICLocate(fccType, fccHandler, lpbiIn, lpbiOut, ICMODE_DECOMPRESS); </code></para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressopen
+		// void ICDecompressOpen( fccType, fccHandler, lpbiIn, lpbiOut );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressOpen")]
+		public static SafeHIC ICDecompressOpen(uint fccType, [Optional] uint fccHandler, in BITMAPINFOHEADER lpbiIn) =>
+			ICLocate(fccType, fccHandler, lpbiIn, IntPtr.Zero, ICMODE.ICMODE_DECOMPRESS);
+
+		/// <summary>The <c>ICLocate</c> function finds a compressor or decompressor that can handle images with the specified formats, or finds a driver that can decompress an image with a specified format directly to hardware.</summary>
+		/// <param name="fccType">Four-character code indicating the type of compressor or decompressor to open. For video streams, the value of this parameter is 'VIDC'.</param>
+		/// <param name="fccHandler">Preferred handler of the specified type. Typically, the handler type is stored in the stream header in an AVI file. Specify <c>NULL</c> if your application can use any handler type or it does not know the handler type to use.</param>
+		/// <param name="lpbiIn">Pointer to a BITMAPINFOHEADER structure defining the input format. A compressor handle is not returned unless it supports this format.</param>
+		/// <param name="lpbiOut">
+		/// <para>Pointer to a BITMAPINFOHEADER structure defining an optional decompressed format. You can also specify zero to use the default output format associated with the input format.</para>
+		/// <para>If this parameter is nonzero, a compressor handle is not returned unless it can create this output format.</para>
+		/// </param>
+		/// <param name="wFlags">
+		/// <para>Flags that describe the search criteria for a compressor or decompressor. The following values are defined:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICMODE_COMPRESS</term>
+		/// <term>Finds a compressor that can compress an image with a format defined by lpbiIn to the format defined by lpbiOut.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_DECOMPRESS</term>
+		/// <term>Finds a decompressor that can decompress an image with a format defined by lpbiIn to the format defined by lpbiOut.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_DRAW</term>
+		/// <term>Finds a decompressor that can decompress an image with a format defined by lpbiIn and draw it directly to hardware.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_FASTCOMPRESS</term>
+		/// <term>Has the same meaning as ICMODE_COMPRESS except the compressor is used for a real-time operation and emphasizes speed over quality.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_FASTDECOMPRESS</term>
+		/// <term>Has the same meaning as ICMODE_DECOMPRESS except the decompressor is used for a real-time operation and emphasizes speed over quality.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>Returns a handle to a compressor or decompressor if successful or zero otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iclocate
+		// HIC VFWAPI ICLocate( DWORD fccType, DWORD fccHandler, LPBITMAPINFOHEADER lpbiIn, LPBITMAPINFOHEADER lpbiOut, WORD wFlags );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICLocate")]
+		public static extern SafeHIC ICLocate(uint fccType, [Optional] uint fccHandler, in BITMAPINFOHEADER lpbiIn, in BITMAPINFOHEADER lpbiOut, ICMODE wFlags);
+
+		/// <summary>The <c>ICLocate</c> function finds a compressor or decompressor that can handle images with the specified formats, or finds a driver that can decompress an image with a specified format directly to hardware.</summary>
+		/// <param name="fccType">Four-character code indicating the type of compressor or decompressor to open. For video streams, the value of this parameter is 'VIDC'.</param>
+		/// <param name="fccHandler">Preferred handler of the specified type. Typically, the handler type is stored in the stream header in an AVI file. Specify <c>NULL</c> if your application can use any handler type or it does not know the handler type to use.</param>
+		/// <param name="lpbiIn">Pointer to a BITMAPINFOHEADER structure defining the input format. A compressor handle is not returned unless it supports this format.</param>
+		/// <param name="lpbiOut">
+		/// <para>Pointer to a BITMAPINFOHEADER structure defining an optional decompressed format. You can also specify zero to use the default output format associated with the input format.</para>
+		/// <para>If this parameter is nonzero, a compressor handle is not returned unless it can create this output format.</para>
+		/// </param>
+		/// <param name="wFlags">
+		/// <para>Flags that describe the search criteria for a compressor or decompressor. The following values are defined:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICMODE_COMPRESS</term>
+		/// <term>Finds a compressor that can compress an image with a format defined by lpbiIn to the format defined by lpbiOut.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_DECOMPRESS</term>
+		/// <term>Finds a decompressor that can decompress an image with a format defined by lpbiIn to the format defined by lpbiOut.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_DRAW</term>
+		/// <term>Finds a decompressor that can decompress an image with a format defined by lpbiIn and draw it directly to hardware.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_FASTCOMPRESS</term>
+		/// <term>Has the same meaning as ICMODE_COMPRESS except the compressor is used for a real-time operation and emphasizes speed over quality.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_FASTDECOMPRESS</term>
+		/// <term>Has the same meaning as ICMODE_DECOMPRESS except the decompressor is used for a real-time operation and emphasizes speed over quality.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>Returns a handle to a compressor or decompressor if successful or zero otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iclocate
+		// HIC VFWAPI ICLocate( DWORD fccType, DWORD fccHandler, LPBITMAPINFOHEADER lpbiIn, LPBITMAPINFOHEADER lpbiOut, WORD wFlags );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICLocate")]
+		public static extern SafeHIC ICLocate(uint fccType, [Optional] uint fccHandler, in BITMAPINFOHEADER lpbiIn, [In, Optional] IntPtr lpbiOut, ICMODE wFlags);
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HIC"/> that is disposed using <see cref="ICClose"/>.</summary>
+		public class SafeHIC : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHIC"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHIC(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHIC"/> class.</summary>
+			private SafeHIC() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHIC"/> to <see cref="HIC"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HIC(SafeHIC h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => ICClose(handle) == IntPtr.Zero;
+		}
+
+		/// <summary>The <c>ICOpen</c> function opens a compressor or decompressor.</summary>
+		/// <param name="fccType">Four-character code indicating the type of compressor or decompressor to open. For video streams, the value of this parameter is "VIDC".</param>
+		/// <param name="fccHandler">Preferred handler of the specified type. Typically, the handler type is stored in the stream header in an AVI file.</param>
+		/// <param name="wMode">
+		/// <para>Flag defining the use of the compressor or decompressor. The following values are defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICMODE_COMPRESS</term>
+		/// <term>Compressor will perform normal compression.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_DECOMPRESS</term>
+		/// <term>Decompressor will perform normal decompression.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_DRAW</term>
+		/// <term>Decompressor will decompress and draw the data directly to hardware.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_FASTCOMPRESS</term>
+		/// <term>Compressor will perform fast (real-time) compression.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_FASTDECOMPRESS</term>
+		/// <term>Decompressor will perform fast (real-time) decompression.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMODE_QUERY</term>
+		/// <term>Queries the compressor or decompressor for information.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>Returns a handle to a compressor or decompressor if successful or zero otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icopen
+		// HIC VFWAPI ICOpen( DWORD fccType, DWORD fccHandler, UINT wMode );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICOpen")]
+		public static extern SafeHIC ICOpen(uint fccType, uint fccHandler, ICMODE wMode);
+
+		/// <summary>The <c>ICInfo</c> function retrieves information about specific installed compressors or enumerates the installed compressors.</summary>
+		/// <param name="fccType">Four-character code indicating the type of compressor. Specify zero to match all compressor types.</param>
+		/// <param name="fccHandler">Four-character code identifying a specific compressor or a number between zero and the number of installed compressors of the type specified by fccType.</param>
+		/// <param name="lpicinfo">Pointer to a ICINFO structure to return information about the compressor.</param>
+		/// <returns>Returns <c>TRUE</c> if successful or an error otherwise.</returns>
+		/// <remarks>To enumerate the compressors or decompressors, specify an integer for fccHandler. This function returns information for integers between zero and the number of installed compressors or decompressors of the type specified for fccType.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icinfo
+		// BOOL VFWAPI ICInfo( DWORD fccType, DWORD fccHandler, ICINFO *lpicinfo );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICInfo")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ICInfo(uint fccType, uint fccHandler, out ICINFO lpicinfo);
+
+		/// <summary>The <c>ICGetDisplayFormat</c> function determines the best format available for displaying a compressed image. The function also opens a compressor if a handle of an open compressor is not specified.</summary>
+		/// <param name="hic">Handle to the compressor to use. Specify <c>NULL</c> to have VCM select and open an appropriate compressor.</param>
+		/// <param name="lpbiIn">Pointer to BITMAPINFOHEADER structure containing the compressed format.</param>
+		/// <param name="lpbiOut">Pointer to a buffer to return the decompressed format. The buffer should be large enough for a BITMAPINFOHEADER structure and 256 color entries.</param>
+		/// <param name="BitDepth">Preferred bit depth, if nonzero.</param>
+		/// <param name="dx">Width multiplier to stretch the image. If this parameter is zero, that dimension is not stretched.</param>
+		/// <param name="dy">Height multiplier to stretch the image. If this parameter is zero, that dimension is not stretched.</param>
+		/// <returns>Returns a handle to a decompressor if successful or zero otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icgetdisplayformat
+		// HIC VFWAPI ICGetDisplayFormat( HIC hic, LPBITMAPINFOHEADER lpbiIn, LPBITMAPINFOHEADER lpbiOut, int BitDepth, int dx, int dy );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICGetDisplayFormat")]
+		public static extern SafeHIC ICGetDisplayFormat(HIC hic, in BITMAPINFOHEADER lpbiIn, IntPtr lpbiOut, [Optional] int BitDepth, [Optional] int dx, [Optional] int dy);
+
+		/// <summary>The <c>ICGetInfo</c> function obtains information about a compressor.</summary>
+		/// <param name="hic">Handle to a compressor.</param>
+		/// <param name="picinfo">Pointer to the ICINFO structure to return information about the compressor.</param>
+		/// <param name="cb">Size, in bytes, of the structure pointed to by lpicinfo.</param>
+		/// <returns>Returns the number of bytes copied into the structure or zero if an error occurs.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icgetinfo
+		// LRESULT VFWAPI ICGetInfo( HIC hic, ICINFO *picinfo, DWORD cb );
+		[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICGetInfo")]
+		public static extern IntPtr ICGetInfo(HIC hic, ref ICINFO picinfo, uint cb);
+
+		/// <summary>The <c>ICDecompressQuery</c> macro queries a video decompression driver to determine if it supports a specific input format or if it can decompress a specific input format to a specific output format. You can use this macro or explicitly call the ICM_DECOMPRESS_QUERY message.</summary>
+		/// <param name="hic">Handle to a decompressor.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFO structure containing the input format.</param>
+		/// <param name="lpbiOutput">Pointer to a BITMAPINFO structure containing the output format. You can specify zero for this parameter to indicate any output format is acceptable.</param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompressquery
+		// void ICDecompressQuery( hic, lpbiInput, lpbiOutput );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressQuery")]
+		public static ICERR ICDecompressQuery([In] HIC hic, in BITMAPINFO lpbiInput, in BITMAPINFO lpbiOutput) =>
+			(ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESS_QUERY, lpbiInput, lpbiOutput).ToInt32();
+
+		/// <summary>The <c>ICDecompressSetPalette</c> macro specifies a palette for a video decompression driver to use if it is decompressing to a format that uses a palette. You can use this macro or explicitly call the ICM_DECOMPRESS_SET_PALETTE message.</summary>
+		/// <param name="hic">Handle to a decompressor.</param>
+		/// <param name="lpbiPalette">Pointer to a BITMAPINFOHEADER structure whose color table contains the colors that should be used if possible. You can specify zero to use the default set of output colors.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>This macro should not affect decompression already in progress; rather, colors passed using this message should be returned in response to future ICDecompressGetFormat and ICDecompressGetPalette macros. Colors are sent back to the decompression driver in a future ICDecompressBegin macro.</para>
+		/// <para>This macro is used primarily when a driver decompresses images to the screen and another application that uses a palette is in the foreground, forcing the decompression driver to adapt to a foreign set of colors.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdecompresssetpalette
+		// void ICDecompressSetPalette( hic, lpbiPalette );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressSetPalette")]
+		public static ICERR ICDecompressSetPalette([In] HIC hic, [In, Optional] SafeBITMAPINFO lpbiPalette) =>
+			(ICERR)ICSendMessage(hic, ICM_Message.ICM_DECOMPRESS_SET_PALETTE, lpbiPalette).ToInt32();
+
+		/// <summary>The <c>ICDrawChangePalette</c> macro notifies a rendering driver that the movie palette is changing. You can use this macro or explicitly call the ICM_DRAW_CHANGEPALETTE message.</summary>
+		/// <param name="hic">Handle to a rendering driver.</param>
+		/// <param name="lpbiInput">Pointer to a BITMAPINFO structure containing the new format and optional color table.</param>
+		/// <returns>None</returns>
+		/// <remarks>This message should be supported by installable rendering handlers that draw DIBs with an internal structure that includes a palette.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdrawchangepalette
+		// void ICDrawChangePalette( hic, lpbiInput );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDrawChangePalette")]
+		public static ICERR ICDrawChangePalette([In] HIC hic, in BITMAPINFO lpbiInput) =>
+			(ICERR)ICSendMessage(hic, ICM_Message.ICM_DRAW_CHANGEPALETTE, lpbiInput).ToInt32();
+
+		/// <summary>The <c>ICDrawEnd</c> macro notifies a rendering driver to decompress the current image to the screen and to release resources allocated for decompression and drawing. You can use this macro or explicitly call the ICM_DRAW_END message.</summary>
+		/// <param name="hic">Handle to a driver.</param>
+		/// <returns>None</returns>
+		/// <remarks>The ICM_DRAW_BEGIN and ICM_DRAW_END messages do not nest. If your driver receives <c>ICM_DRAW_BEGIN</c> before decompression is stopped with <c>ICM_DRAW_END</c>, it should restart decompression with new parameters.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdrawend
+		// void ICDrawEnd( hic );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDrawEnd")]
+		public static ICERR ICDrawEnd([In] HIC hic) => (ICERR)ICSendMessage(hic, ICM_Message.ICM_DRAW_END).ToInt32();
+
+		/// <summary>The <c>ICDrawFlush</c> macro notifies a rendering driver to render the contents of any image buffers that are waiting to be drawn. You can use this macro or explicitly call the ICM_DRAW_FLUSH message.</summary>
+		/// <param name="hic">Handle to a driver.</param>
+		/// <returns>None</returns>
+		/// <remarks>This message is used only by hardware that performs its own asynchronous decompression, timing, and drawing.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdrawflush
+		// void ICDrawFlush( hic );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDrawFlush")]
+		public static ICERR ICDrawFlush([In] HIC hic) => (ICERR)ICSendMessage(hic, ICM_Message.ICM_DRAW_FLUSH).ToInt32();
+
+		/// <summary>The <c>ICDrawGetTime</c> macro requests a rendering driver that controls the timing of drawing frames to return the current value of its internal clock. You can use this macro or explicitly call the ICM_DRAW_GETTIME message.</summary>
+		/// <param name="hic">Handle to a driver.</param>
+		/// <param name="lplTime">Address to contain the current time. The return value should be specified in samples.</param>
+		/// <returns>None</returns>
+		/// <remarks>This message is generally supported by hardware that performs its own asynchronous decompression, timing, and drawing. The message can also be sent if the hardware is being used as the synchronization master.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdrawgettime
+		// void ICDrawGetTime( hic, lplTime );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDrawGetTime")]
+		public static ICERR ICDrawGetTime([In] HIC hic, out int lplTime)
+		{
+			unsafe
+			{
+				int val = 0;
+				var ret = (ICERR)ICSendMessage(hic, ICM_Message.ICM_DRAW_GETTIME, (IntPtr)(void*)&val).ToInt32();
+				lplTime = val;
+				return ret;
+			}
+		}
+
+		/// <summary>The <c>ICDrawOpen</c> macro opens a driver that can draw images with the specified format.</summary>
+		/// <param name="fccType">Four-character code indicating the type of driver to open. For video streams, the value of this parameter is "VIDC" or ICTYPE_VIDEO.</param>
+		/// <param name="fccHandler">Four-character code indicating the preferred stream handler to use. Typically, this information is stored in the stream header in an AVI file.</param>
+		/// <param name="lpbiIn">Pointer to the structure defining the input format. A driver handle will not be returned unless it can decompress this format. For images, this parameter refers to a BITMAPINFOHEADER structure.</param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// <para>The <c>ICDrawOpen</c> macro is defined as follows:</para>
+		/// <para><code> #define ICDrawOpen(fccType, fccHandler, lpbiIn) \ ICLocate(fccType, fccHandler, lpbiIn, NULL, ICMODE_DRAW); </code></para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icdrawopen
+		// void ICDrawOpen( fccType, fccHandler, lpbiIn );
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDrawOpen")]
+		public static SafeHIC ICDrawOpen(uint fccType, [Optional] uint fccHandler, in BITMAPINFOHEADER lpbiIn) => ICLocate(fccType, fccHandler, lpbiIn, IntPtr.Zero, ICMODE.ICMODE_DRAW);
+		
 		/*
-		ICAbout
-		ICClose
-		ICCompress
-		ICCompressBegin
-		ICCompressEnd
-		ICCompressGetFormat
-		ICCompressGetFormatSize
-		ICCompressGetSize
-		ICCompressorChoose
-		ICCompressorFree
-		ICCompressQuery
-		ICConfigure
-		ICDecompress
-		ICDecompressBegin
-		ICDecompressEnd
-		ICDecompressEx
-		ICDecompressExBegin
-		ICDecompressExEnd
-		ICDecompressExQuery
-		ICDecompressGetFormat
-		ICDecompressGetFormatSize
-		ICDecompressGetPalette
-		ICDecompressOpen
-		ICDecompressQuery
-		ICDecompressSetPalette
-		ICDraw
-		ICDrawBegin
-		ICDrawChangePalette
-		ICDrawEnd
-		ICDrawFlush
-		ICDrawGetTime
-		ICDrawOpen
-		ICDrawQuery
-		ICDrawRealize
-		ICDrawRenderBuffer
-		ICDrawSetTime
-		ICDrawStart
-		ICDrawStartPlay
-		ICDrawStop
-		ICDrawStopPlay
-		ICDrawSuggestFormat
-		ICDrawWindow
-		ICGetBuffersWanted
-		ICGetDefaultKeyFrameRate
-		ICGetDefaultQuality
-		ICGetDisplayFormat
-		ICGetInfo
-		ICGetState
-		ICGetStateSize
-		ICImageCompress
-		ICImageDecompress
-		ICInfo
-		ICInstall
-		ICLocate
-		ICOpen
-		ICOpenFunction
-		ICQueryAbout
-		ICQueryConfigure
-		ICRemove
-		ICSendMessage
-		ICSeqCompressFrame
-		ICSeqCompressFrameEnd
-		ICSeqCompressFrameStart
-		ICSetState
-		ICSetStatusProc
+		function ICDrawQuery
+		function ICDrawRealize
+		function ICDrawRenderBuffer
+		function ICDrawSetTime
+		function ICDrawStart
+		function ICDrawStartPlay
+		function ICDrawStop
+		function ICDrawStopPlay
+		function ICDrawSuggestFormat
+		function ICDrawWindow
+		function ICGetBuffersWanted
+		function ICGetDefaultKeyFrameRate
+		function ICGetDefaultQuality
+		function ICGetState
+		function ICGetStateSize
+		function ICImageCompress
+		function ICImageDecompress
+		function ICInstall
+		function ICOpenFunction
+		function ICQueryAbout
+		function ICQueryConfigure
+		function ICRemove
+		function ICSeqCompressFrame
+		function ICSeqCompressFrameEnd
+		function ICSeqCompressFrameStart
+		function ICSetState
+		function ICSetStatusProc
 		*/
 	}
 }
