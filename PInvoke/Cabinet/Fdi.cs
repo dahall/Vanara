@@ -65,7 +65,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fnread
 		[PInvokeData("fdi.h", MSDNShortId = "0a8c6c9f-051c-43a0-b43b-1fd8b4fef10c")]
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-		public delegate uint PFNREAD(IntPtr hf, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] memory, uint cb);
+		public delegate uint PFNREAD(IntPtr hf, [Out] IntPtr memory, uint cb);
 
 		/// <summary>
 		/// The <c>FNSEEK</c> macro provides the declaration for the application-defined callback function to move a file pointer to the
@@ -93,7 +93,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fnwrite
 		[PInvokeData("fdi.h", MSDNShortId = "e15d4293-2955-48cd-b8c9-77669a1e6436")]
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-		public delegate uint PFNWRITE(IntPtr hf, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] memory, uint cb);
+		public delegate uint PFNWRITE(IntPtr hf, [In] IntPtr memory, uint cb);
 
 		/// <summary>Specifies the CPU type.</summary>
 		[PInvokeData("fdi.h")]

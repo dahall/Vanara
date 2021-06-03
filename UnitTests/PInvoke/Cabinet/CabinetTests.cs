@@ -99,14 +99,16 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		private uint ReadCallback(IntPtr hf, byte[] memory, uint cb)
+		private uint ReadCallback(IntPtr hf, IntPtr memory, uint cb)
 		{
 			FileStream stream = StreamFromHandle(hf);
 
 			int numCharactersRead;
 			try
 			{
-				numCharactersRead = stream.Read(memory, 0, (int)cb);
+				var arr = new byte[(int)cb];
+				numCharactersRead = stream.Read(arr, 0, (int)cb);
+				Marshal.Copy(arr, 0, memory, numCharactersRead);
 			}
 			catch (ArgumentNullException) { numCharactersRead = -1; }
 			catch (ArgumentOutOfRangeException) { numCharactersRead = -1; }
@@ -134,14 +136,14 @@ namespace Vanara.PInvoke.Tests
 			return (int)status;
 		}
 
-		private uint WriteCallback(IntPtr hf, byte[] memory, uint cb)
+		private uint WriteCallback(IntPtr hf, IntPtr memory, uint cb)
 		{
 			FileStream stream = StreamFromHandle(hf);
 
 			int numCharactersWritten;
 			try
 			{
-				stream.Write(memory, 0, (int)cb);
+				stream.Write(memory.AsReadOnlySpan<byte>((int)cb).ToArray(), 0, (int)cb);
 				numCharactersWritten = (int)cb; // Write doesn't return the number of bytes written. Per MSDN, if it succeeds, it will have written count bytes.
 			}
 			catch (ArgumentNullException) { numCharactersWritten = -1; }
