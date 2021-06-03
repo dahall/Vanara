@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NTDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NTDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NTDll)  
-### Methods - 4% API coverage (27 of 568 functions)  
+### Methods - 4% API coverage (27 of 569 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Adocs.microsoft.com) |  |   
@@ -261,6 +261,7 @@ Native Method | Header | Managed Method
 [RtlGetSaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetSaclSecurityDescriptor+site%3Adocs.microsoft.com) |  |   
 [RtlGetSystemBootStatus](https://www.google.com/search?num=5&q=RtlGetSystemBootStatus+site%3Adocs.microsoft.com) |  |   
 [RtlGetSystemBootStatusEx](https://www.google.com/search?num=5&q=RtlGetSystemBootStatusEx+site%3Adocs.microsoft.com) |  |   
+[RtlGetSystemTimeAndBias](https://www.google.com/search?num=5&q=RtlGetSystemTimeAndBias+site%3Adocs.microsoft.com) |  |   
 [RtlGetUnloadEventTrace](https://www.google.com/search?num=5&q=RtlGetUnloadEventTrace+site%3Adocs.microsoft.com) |  |   
 [RtlGetUnloadEventTraceEx](https://www.google.com/search?num=5&q=RtlGetUnloadEventTraceEx+site%3Adocs.microsoft.com) |  |   
 [RtlGetVersion](https://www.google.com/search?num=5&q=RtlGetVersion+site%3Adocs.microsoft.com) |  |   

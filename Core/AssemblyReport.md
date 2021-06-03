@@ -9,6 +9,9 @@ This library includes shared methods, structures and constants for use throughou
 Enum | Description | Values
 ---- | ---- | ----
 [Vanara.InteropServices.CorrespondingAction](https://github.com/dahall/Vanara/search?l=C%23&q=CorrespondingAction) | Actions that can be taken with a corresponding type. | None, Get, Set, GetSet, Exception
+[Vanara.RunTimeLib.FileAttributeConstant](https://github.com/dahall/Vanara/search?l=C%23&q=FileAttributeConstant) |  | _A_NORMAL, _A_RDONLY, _A_HIDDEN, _A_SYSTEM, _A_SUBDIR, _A_ARCH
+[Vanara.RunTimeLib.FileOpConstant](https://github.com/dahall/Vanara/search?l=C%23&q=FileOpConstant) |  | _O_RDONLY, _O_WRONLY, _O_RDWR, _O_APPEND, _O_RANDOM, _O_SEQUENTIAL, _O_TEMPORARY, _O_NOINHERIT, _O_CREAT, _O_TRUNC, _O_EXCL, _O_SHORT_LIVED, _O_OBTAIN_DIR, _O_TEXT, _O_RAW, _O_BINARY, _O_WTEXT, _O_U16TEXT, _O_U8TEXT
+[Vanara.RunTimeLib.FilePermissionConstant](https://github.com/dahall/Vanara/search?l=C%23&q=FilePermissionConstant) |  | _S_IEXEC, _S_IWRITE, _S_IREAD, _S_IFIFO, _S_IFCHR, _S_IFDIR, _S_IFREG, _S_IFMT
 [Vanara.InteropServices.StringListPackMethod](https://github.com/dahall/Vanara/search?l=C%23&q=StringListPackMethod) | Method used to pack a list of strings into memory. | Concatenated, Packed
 ### Structures
 Struct | Description
@@ -43,6 +46,7 @@ Class | Description
 [Vanara.InteropServices.ComReleaserFactory](https://github.com/dahall/Vanara/search?l=C%23&q=ComReleaserFactory) | Factory for creating `Vanara.InteropServices.ComReleaser`1` objects.
 [Vanara.InteropServices.ComStream](https://github.com/dahall/Vanara/search?l=C%23&q=ComStream) | Implements a .NET stream derivation and a COM IStream instance.
 [Vanara.Extensions.ComTypeExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ComTypeExtensions) | Extensions for types in System.Runtime.InteropServices.ComTypes.
+[Vanara.RunTimeLib.ConstantConversionExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ConstantConversionExtensions) | 
 [Vanara.InteropServices.CorrespondingTypeAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=CorrespondingTypeAttribute) | Attribute for enum values that provides information about corresponding types and related actions. Useful for Get/Set methods that use an enumeration value to determine the type to get or set.
 [Vanara.InteropServices.CoTaskMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=CoTaskMemoryMethods) | Unmanaged memory methods for COM.
 [Vanara.Collections.EnumerableEqualityComparer<T>](https://github.com/dahall/Vanara/search?l=C%23&q=EnumerableEqualityComparer<T>) | Checks the linear equality of two enumerated lists. For lists to be equal, they must have the same number of elements and each index must hold the same value in each list.
