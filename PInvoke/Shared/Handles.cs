@@ -2258,6 +2258,15 @@ namespace Vanara.PInvoke
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => base.GetHashCode();
 
+		/// <summary>Releases the ownership of the underlying handle and returns the current handle.</summary>
+		/// <returns>The value of the current handle.</returns>
+		public IntPtr ReleaseOwnership()
+		{
+			var ret = handle;
+			SetHandleAsInvalid();
+			return ret;
+		}
+
 		/// <summary>
 		/// Internal method that actually releases the handle. This is called by <see cref="ReleaseHandle"/> for valid handles and afterwards
 		/// zeros the handle.
