@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -147,7 +148,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("fci.h", MSDNShortId = "8978f688-d8f1-437a-b298-eed1e7dac012")]
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool PFNFCIGETTEMPFILE(StringBuilder pszTempName, int cbTempName, IntPtr pv);
+		public delegate bool PFNFCIGETTEMPFILE(IntPtr pszTempName, int cbTempName, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCIOPEN</c> macro provides the declaration for the application-defined callback function to open a file in an FCI context.
@@ -162,7 +163,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciopen
 		[PInvokeData("fci.h", MSDNShortId = "72cf50cb-c895-4953-9c4d-f8ddaa294f2a")]
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-		public delegate IntPtr PFNFCIOPEN(string pszFile, int oflag, int pmode, out int err, IntPtr pv);
+		public delegate IntPtr PFNFCIOPEN(string pszFile, RunTimeLib.FileOpConstant oflag, RunTimeLib.FilePermissionConstant pmode, out int err, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCIREAD</c> macro provides the declaration for the application-defined callback function to read data from a file in an
@@ -180,7 +181,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciread
 		[PInvokeData("fci.h", MSDNShortId = "dd4e97ff-efbc-462b-b954-bc3260fa1513")]
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-		public delegate uint PFNFCIREAD(IntPtr hf, IntPtr memory, uint cb, out int err, IntPtr pv);
+		public delegate uint PFNFCIREAD(IntPtr hf, [Out] IntPtr memory, uint cb, out int err, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCISEEK</c> macro provides the declaration for the application-defined callback function to move a file pointer to the
@@ -198,7 +199,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciseek
 		[PInvokeData("fci.h", MSDNShortId = "e5a14c98-4de6-452e-8993-afb7964aeee7")]
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-		public delegate int PFNFCISEEK(IntPtr hf, int dist, int seektype, out int err, IntPtr pv);
+		public delegate int PFNFCISEEK(IntPtr hf, int dist, System.IO.SeekOrigin seektype, out int err, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCISTATUS</c> macro provides the declaration for the application-defined callback function to update the user.
@@ -235,7 +236,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fnfciwrite
 		[PInvokeData("fci.h", MSDNShortId = "ca4c3b5b-1ed5-4f12-8317-c1e1dac5f816")]
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-		public delegate uint PFNFCIWRITE(IntPtr hf, IntPtr memory, uint cb, out int err, IntPtr pv);
+		public delegate uint PFNFCIWRITE(IntPtr hf, [In] IntPtr memory, uint cb, out int err, IntPtr pv);
 
 		/// <summary>
 		/// The <c>FNFCIFREE</c> macro provides the declaration for the application-defined callback function to free previously allocated
@@ -571,11 +572,12 @@ namespace Vanara.PInvoke
 			/// <summary>The number of created cabinets.</summary>
 			public int iCab;
 
-			/// <summary>The maximum size, in bytes, of a cabinet created by FCI.</summary>
+			/// <summary>The number of disks.</summary>
 			public int iDisk;
 
 			/// <summary>TRUE if fail if a block is incompressible.</summary>
-			public int fFailOnIncompressible;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fFailOnIncompressible;
 
 			/// <summary>A value that represents the association between a collection of linked cabinet files.</summary>
 			public ushort setID;
@@ -595,6 +597,26 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = CB_MAX_CAB_PATH)]
 			public string szCabPath;
+
+			/// <summary>Initializes a new instance of the <see cref="CCAB"/> struct.</summary>
+			/// <param name="cabFullPath">The full path to the cabinet to create.</param>
+			/// <param name="setId">A value that represents the association between a collection of linked cabinet files.</param>
+			/// <param name="disk">The number of disks.</param>
+			/// <param name="maxSize">The maximum size, in bytes, of a cabinet created by FCI.</param>
+			public CCAB(string cabFullPath, ushort setId = 1, int disk = 1, uint maxSize = CB_MAX_DISK)
+			{
+				cb = cbFolderThresh = maxSize;
+				setID = setId;
+				iDisk = disk;
+				cbReserveCFData = cbReserveCFFolder = cbReserveCFHeader = 0;
+				iCab = 0;
+				fFailOnIncompressible = false;
+				szDisk = string.Empty;
+				szCab = Path.GetFileName(cabFullPath);
+				szCabPath = Path.GetDirectoryName(cabFullPath);
+				if (szCabPath[szCabPath.Length - 1] != Path.DirectorySeparatorChar)
+					szCabPath += Path.DirectorySeparatorChar;
+			}
 		}
 
 		/// <summary>Provides a handle to a file compression interface.</summary>
