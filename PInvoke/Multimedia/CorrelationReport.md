@@ -1,9 +1,9 @@
 ## Vanara.PInvoke.Multimedia  
-PInvoke API (methods, structures and constants) imported from Windows Multimedia (winmm.dll, msacm32.dll, avifil32.dll).
+PInvoke API (methods, structures and constants) imported from Windows Multimedia (avicap32.dll, avifil32.dll, msacm32.dll, msvfw32.dll, winmm.dll).
 
-- Includes methods from winmm.dll, msacm32.dll, avifil32.dll  
+- Includes methods from avicap32.dll, avifil32.dll, msacm32.dll, msvfw32.dll, winmm.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Multimedia?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Multimedia?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Multimedia)  
-### Methods - 57% API coverage (154 of 270 functions)  
+### Methods - 60% API coverage (164 of 272 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [acmDriverAdd](https://www.google.com/search?num=5&q=acmDriverAddA+site%3Adocs.microsoft.com) | msacm32.dll | msacm.h | [Vanara.PInvoke.MsAcm32.acmDriverAdd](https://github.com/dahall/Vanara/search?l=C%23&q=acmDriverAdd)  
@@ -84,6 +84,8 @@ Native Method | Native DLL | Header | Managed Method
 [AVIStreamTimeToSample](https://www.google.com/search?num=5&q=AVIStreamTimeToSample+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.AVIStreamTimeToSample](https://github.com/dahall/Vanara/search?l=C%23&q=AVIStreamTimeToSample)  
 [AVIStreamWrite](https://www.google.com/search?num=5&q=AVIStreamWrite+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.AVIStreamWrite](https://github.com/dahall/Vanara/search?l=C%23&q=AVIStreamWrite)  
 [AVIStreamWriteData](https://www.google.com/search?num=5&q=AVIStreamWriteData+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.AVIStreamWriteData](https://github.com/dahall/Vanara/search?l=C%23&q=AVIStreamWriteData)  
+[capCreateCaptureWindow](https://www.google.com/search?num=5&q=capCreateCaptureWindowA+site%3Adocs.microsoft.com) | avicap32.dll | vfw.h | [Vanara.PInvoke.Vfw32.capCreateCaptureWindow](https://github.com/dahall/Vanara/search?l=C%23&q=capCreateCaptureWindow)  
+[capGetDriverDescription](https://www.google.com/search?num=5&q=capGetDriverDescriptionA+site%3Adocs.microsoft.com) | avicap32.dll | vfw.h | [Vanara.PInvoke.Vfw32.capGetDriverDescription](https://github.com/dahall/Vanara/search?l=C%23&q=capGetDriverDescription)  
 [CloseDriver](https://www.google.com/search?num=5&q=CloseDriver+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [CreateEditableStream](https://www.google.com/search?num=5&q=CreateEditableStream+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.CreateEditableStream](https://github.com/dahall/Vanara/search?l=C%23&q=CreateEditableStream)  
 [DefDriverProc](https://www.google.com/search?num=5&q=DefDriverProc+site%3Adocs.microsoft.com) | winmm.dll |  |   
@@ -110,10 +112,8 @@ Native Method | Native DLL | Header | Managed Method
 [EditStreamSetInfo](https://www.google.com/search?num=5&q=EditStreamSetInfo+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.EditStreamSetInfo](https://github.com/dahall/Vanara/search?l=C%23&q=EditStreamSetInfo)  
 [EditStreamSetName](https://www.google.com/search?num=5&q=EditStreamSetName+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.EditStreamSetName](https://github.com/dahall/Vanara/search?l=C%23&q=EditStreamSetName)  
 [GetDriverModuleHandle](https://www.google.com/search?num=5&q=GetDriverModuleHandle+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[GetOpenFileNamePreviewA](https://www.google.com/search?num=5&q=GetOpenFileNamePreviewA+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.GetOpenFileNamePreview](https://github.com/dahall/Vanara/search?l=C%23&q=GetOpenFileNamePreview)  
-[GetOpenFileNamePreviewW](https://www.google.com/search?num=5&q=GetOpenFileNamePreviewW+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.GetOpenFileNamePreview](https://github.com/dahall/Vanara/search?l=C%23&q=GetOpenFileNamePreview)  
-[GetSaveFileNamePreviewA](https://www.google.com/search?num=5&q=GetSaveFileNamePreviewA+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.GetSaveFileNamePreview](https://github.com/dahall/Vanara/search?l=C%23&q=GetSaveFileNamePreview)  
-[GetSaveFileNamePreviewW](https://www.google.com/search?num=5&q=GetSaveFileNamePreviewW+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.GetSaveFileNamePreview](https://github.com/dahall/Vanara/search?l=C%23&q=GetSaveFileNamePreview)  
+[GetOpenFileNamePreview](https://www.google.com/search?num=5&q=GetOpenFileNamePreview+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.GetOpenFileNamePreview](https://github.com/dahall/Vanara/search?l=C%23&q=GetOpenFileNamePreview)  
+[GetSaveFileNamePreview](https://www.google.com/search?num=5&q=GetSaveFileNamePreviewA+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.GetSaveFileNamePreview](https://github.com/dahall/Vanara/search?l=C%23&q=GetSaveFileNamePreview)  
 [ICClose](https://www.google.com/search?num=5&q=ICClose+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICClose](https://github.com/dahall/Vanara/search?l=C%23&q=ICClose)  
 [ICCompress](https://www.google.com/search?num=5&q=ICCompress+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICCompress](https://github.com/dahall/Vanara/search?l=C%23&q=ICCompress)  
 [ICCompressorChoose](https://www.google.com/search?num=5&q=ICCompressorChoose+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICCompressorChoose](https://github.com/dahall/Vanara/search?l=C%23&q=ICCompressorChoose)  
@@ -123,10 +123,18 @@ Native Method | Native DLL | Header | Managed Method
 [ICDrawBegin](https://www.google.com/search?num=5&q=ICDrawBegin+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICDrawBegin](https://github.com/dahall/Vanara/search?l=C%23&q=ICDrawBegin)  
 [ICGetDisplayFormat](https://www.google.com/search?num=5&q=ICGetDisplayFormat+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICGetDisplayFormat](https://github.com/dahall/Vanara/search?l=C%23&q=ICGetDisplayFormat)  
 [ICGetInfo](https://www.google.com/search?num=5&q=ICGetInfo+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICGetInfo](https://github.com/dahall/Vanara/search?l=C%23&q=ICGetInfo)  
+[ICImageCompress](https://www.google.com/search?num=5&q=ICImageCompress+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICImageCompress](https://github.com/dahall/Vanara/search?l=C%23&q=ICImageCompress)  
+[ICImageDecompress](https://www.google.com/search?num=5&q=ICImageDecompress+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICImageDecompress](https://github.com/dahall/Vanara/search?l=C%23&q=ICImageDecompress)  
 [ICInfo](https://www.google.com/search?num=5&q=ICInfo+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICInfo](https://github.com/dahall/Vanara/search?l=C%23&q=ICInfo)  
+[ICInstall](https://www.google.com/search?num=5&q=ICInstall+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICInstall](https://github.com/dahall/Vanara/search?l=C%23&q=ICInstall)  
 [ICLocate](https://www.google.com/search?num=5&q=ICLocate+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICLocate](https://github.com/dahall/Vanara/search?l=C%23&q=ICLocate)  
 [ICOpen](https://www.google.com/search?num=5&q=ICOpen+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICOpen](https://github.com/dahall/Vanara/search?l=C%23&q=ICOpen)  
+[ICOpenFunction](https://www.google.com/search?num=5&q=ICOpenFunction+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICOpenFunction](https://github.com/dahall/Vanara/search?l=C%23&q=ICOpenFunction)  
+[ICRemove](https://www.google.com/search?num=5&q=ICRemove+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICRemove](https://github.com/dahall/Vanara/search?l=C%23&q=ICRemove)  
 [ICSendMessage](https://www.google.com/search?num=5&q=ICSendMessage+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICSendMessage](https://github.com/dahall/Vanara/search?l=C%23&q=ICSendMessage)  
+[ICSeqCompressFrame](https://www.google.com/search?num=5&q=ICSeqCompressFrame+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICSeqCompressFrame](https://github.com/dahall/Vanara/search?l=C%23&q=ICSeqCompressFrame)  
+[ICSeqCompressFrameEnd](https://www.google.com/search?num=5&q=ICSeqCompressFrameEnd+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICSeqCompressFrameEnd](https://github.com/dahall/Vanara/search?l=C%23&q=ICSeqCompressFrameEnd)  
+[ICSeqCompressFrameStart](https://www.google.com/search?num=5&q=ICSeqCompressFrameStart+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICSeqCompressFrameStart](https://github.com/dahall/Vanara/search?l=C%23&q=ICSeqCompressFrameStart)  
 [IID_IAVIEditStream](https://www.google.com/search?num=5&q=IID_IAVIEditStream+site%3Adocs.microsoft.com) | avifil32.dll |  |   
 [IID_IAVIFile](https://www.google.com/search?num=5&q=IID_IAVIFile+site%3Adocs.microsoft.com) | avifil32.dll |  |   
 [IID_IAVIStream](https://www.google.com/search?num=5&q=IID_IAVIStream+site%3Adocs.microsoft.com) | avifil32.dll |  |   
@@ -140,21 +148,17 @@ Native Method | Native DLL | Header | Managed Method
 [joyReleaseCapture](https://www.google.com/search?num=5&q=joyReleaseCapture+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [joySetCapture](https://www.google.com/search?num=5&q=joySetCapture+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [joySetThreshold](https://www.google.com/search?num=5&q=joySetThreshold+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciDriverNotify](https://www.google.com/search?num=5&q=mciDriverNotify+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciDriverYield](https://www.google.com/search?num=5&q=mciDriverYield+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mciExecute](https://www.google.com/search?num=5&q=mciExecute+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciFreeCommandResource](https://www.google.com/search?num=5&q=mciFreeCommandResource+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mciGetCreatorTask](https://www.google.com/search?num=5&q=mciGetCreatorTask+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mciGetDeviceID](https://www.google.com/search?num=5&q=mciGetDeviceIDA+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mciGetDeviceIDFromElementID](https://www.google.com/search?num=5&q=mciGetDeviceIDFromElementIDA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciGetDriverData](https://www.google.com/search?num=5&q=mciGetDriverData+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mciGetErrorString](https://www.google.com/search?num=5&q=mciGetErrorStringA+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mciGetYieldProc](https://www.google.com/search?num=5&q=mciGetYieldProc+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciLoadCommandResource](https://www.google.com/search?num=5&q=mciLoadCommandResource+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mciSendCommand](https://www.google.com/search?num=5&q=mciSendCommandA+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mciSendString](https://www.google.com/search?num=5&q=mciSendStringA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciSetDriverData](https://www.google.com/search?num=5&q=mciSetDriverData+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mciSetYieldProc](https://www.google.com/search?num=5&q=mciSetYieldProc+site%3Adocs.microsoft.com) | winmm.dll |  |   
+[MCIWndCreate](https://www.google.com/search?num=5&q=MCIWndCreate+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Vfw32.MCIWndCreate](https://github.com/dahall/Vanara/search?l=C%23&q=MCIWndCreate)  
+[MCIWndRegisterClass](https://www.google.com/search?num=5&q=MCIWndRegisterClass+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Vfw32.MCIWndRegisterClass](https://github.com/dahall/Vanara/search?l=C%23&q=MCIWndRegisterClass)  
 [midiConnect](https://www.google.com/search?num=5&q=midiConnect+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [midiDisconnect](https://www.google.com/search?num=5&q=midiDisconnect+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [midiInAddBuffer](https://www.google.com/search?num=5&q=midiInAddBuffer+site%3Adocs.microsoft.com) | winmm.dll |  |   
@@ -204,7 +208,6 @@ Native Method | Native DLL | Header | Managed Method
 [mixerMessage](https://www.google.com/search?num=5&q=mixerMessage+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mixerOpen](https://www.google.com/search?num=5&q=mixerOpen+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mixerSetControlDetails](https://www.google.com/search?num=5&q=mixerSetControlDetails+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmDrvInstall](https://www.google.com/search?num=5&q=mmDrvInstall+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mmGetCurrentTask](https://www.google.com/search?num=5&q=mmGetCurrentTask+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mmioAdvance](https://www.google.com/search?num=5&q=mmioAdvance+site%3Adocs.microsoft.com) | winmm.dll |  |   
 [mmioAscend](https://www.google.com/search?num=5&q=mmioAscend+site%3Adocs.microsoft.com) | winmm.dll |  |   
@@ -275,7 +278,6 @@ Native Method | Native DLL | Header | Managed Method
 [waveOutSetVolume](https://www.google.com/search?num=5&q=waveOutSetVolume+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.waveOutSetVolume](https://github.com/dahall/Vanara/search?l=C%23&q=waveOutSetVolume)  
 [waveOutUnprepareHeader](https://www.google.com/search?num=5&q=waveOutUnprepareHeader+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.waveOutUnprepareHeader](https://github.com/dahall/Vanara/search?l=C%23&q=waveOutUnprepareHeader)  
 [waveOutWrite](https://www.google.com/search?num=5&q=waveOutWrite+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.waveOutWrite](https://github.com/dahall/Vanara/search?l=C%23&q=waveOutWrite)  
-[WOWAppExit](https://www.google.com/search?num=5&q=WOWAppExit+site%3Adocs.microsoft.com) | winmm.dll |  |   
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -292,9 +294,13 @@ Native Structure | Header | Managed Structure
 [AVIFILEINFO](https://www.google.com/search?num=5&q=AVIFILEINFO+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVIFILEINFO](https://github.com/dahall/Vanara/search?l=C%23&q=AVIFILEINFO)  
 [AVISTREAMINFO](https://www.google.com/search?num=5&q=AVISTREAMINFO+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVISTREAMINFO](https://github.com/dahall/Vanara/search?l=C%23&q=AVISTREAMINFO)  
 [CAPDRIVERCAPS](https://www.google.com/search?num=5&q=CAPDRIVERCAPS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.CAPDRIVERCAPS](https://github.com/dahall/Vanara/search?l=C%23&q=CAPDRIVERCAPS)  
+[CAPDRIVERCAPS](https://www.google.com/search?num=5&q=CAPDRIVERCAPS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Vfw32.CAPDRIVERCAPS](https://github.com/dahall/Vanara/search?l=C%23&q=CAPDRIVERCAPS)  
 [CAPINFOCHUNK](https://www.google.com/search?num=5&q=CAPINFOCHUNK+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.CAPINFOCHUNK](https://github.com/dahall/Vanara/search?l=C%23&q=CAPINFOCHUNK)  
+[CAPINFOCHUNK](https://www.google.com/search?num=5&q=CAPINFOCHUNK+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Vfw32.CAPINFOCHUNK](https://github.com/dahall/Vanara/search?l=C%23&q=CAPINFOCHUNK)  
 [CAPSTATUS](https://www.google.com/search?num=5&q=CAPSTATUS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.CAPSTATUS](https://github.com/dahall/Vanara/search?l=C%23&q=CAPSTATUS)  
+[CAPSTATUS](https://www.google.com/search?num=5&q=CAPSTATUS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Vfw32.CAPSTATUS](https://github.com/dahall/Vanara/search?l=C%23&q=CAPSTATUS)  
 [CAPTUREPARMS](https://www.google.com/search?num=5&q=CAPTUREPARMS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.CAPTUREPARMS](https://github.com/dahall/Vanara/search?l=C%23&q=CAPTUREPARMS)  
+[CAPTUREPARMS](https://www.google.com/search?num=5&q=CAPTUREPARMS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Vfw32.CAPTUREPARMS](https://github.com/dahall/Vanara/search?l=C%23&q=CAPTUREPARMS)  
 [COMPVARS](https://www.google.com/search?num=5&q=COMPVARS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Msvfw32.COMPVARS](https://github.com/dahall/Vanara/search?l=C%23&q=COMPVARS)  
 [DRAWDIBTIME](https://www.google.com/search?num=5&q=DRAWDIBTIME+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.DRAWDIBTIME](https://github.com/dahall/Vanara/search?l=C%23&q=DRAWDIBTIME)  
 [DRAWDIBTIME](https://www.google.com/search?num=5&q=DRAWDIBTIME+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Msvfw32.DRAWDIBTIME](https://github.com/dahall/Vanara/search?l=C%23&q=DRAWDIBTIME)  
@@ -320,6 +326,7 @@ Native Structure | Header | Managed Structure
 [PCMWAVEFORMAT](https://www.google.com/search?num=5&q=PCMWAVEFORMAT+site%3Adocs.microsoft.com) | mmreg.h | [Vanara.PInvoke.WinMm.PCMWAVEFORMAT](https://github.com/dahall/Vanara/search?l=C%23&q=PCMWAVEFORMAT)  
 [SAMPLES](https://www.google.com/search?num=5&q=SAMPLES+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.WAVEFORMATEXTENSIBLE.SAMPLES](https://github.com/dahall/Vanara/search?l=C%23&q=SAMPLES)  
 [VIDEOHDR](https://www.google.com/search?num=5&q=VIDEOHDR+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.VIDEOHDR](https://github.com/dahall/Vanara/search?l=C%23&q=VIDEOHDR)  
+[VIDEOHDR](https://www.google.com/search?num=5&q=VIDEOHDR+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Vfw32.VIDEOHDR](https://github.com/dahall/Vanara/search?l=C%23&q=VIDEOHDR)  
 [WAVEFILTER](https://www.google.com/search?num=5&q=WAVEFILTER+site%3Adocs.microsoft.com) | mmreg.h | [Vanara.PInvoke.WinMm.WAVEFILTER](https://github.com/dahall/Vanara/search?l=C%23&q=WAVEFILTER)  
 [WAVEFORMAT](https://www.google.com/search?num=5&q=WAVEFORMAT+site%3Adocs.microsoft.com) | mmreg.h | [Vanara.PInvoke.WinMm.WAVEFORMAT](https://github.com/dahall/Vanara/search?l=C%23&q=WAVEFORMAT)  
 [WAVEFORMATEX](https://www.google.com/search?num=5&q=WAVEFORMATEX+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.WAVEFORMATEX](https://github.com/dahall/Vanara/search?l=C%23&q=WAVEFORMATEX)  
@@ -338,7 +345,6 @@ Native Interface | Header | Managed Interface
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
-[Msvfw32](https://www.google.com/search?num=5&q=Msvfw32+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Msvfw32](https://github.com/dahall/Vanara/search?l=C%23&q=Msvfw32)  
 [SafeHACMDRIVER](https://www.google.com/search?num=5&q=SafeHACMDRIVER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MsAcm32.SafeHACMDRIVER](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHACMDRIVER)  
 [SafeHACMSTREAM](https://www.google.com/search?num=5&q=SafeHACMSTREAM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MsAcm32.SafeHACMSTREAM](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHACMSTREAM)  
 [SafeHDRAWDIB](https://www.google.com/search?num=5&q=SafeHDRAWDIB+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Msvfw32.SafeHDRAWDIB](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHDRAWDIB)  
