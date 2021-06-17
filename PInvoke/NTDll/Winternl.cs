@@ -191,6 +191,42 @@ namespace Vanara.PInvoke
 			MaxSubsystemInformationType,
 		}
 
+		/// <summary></summary>
+		[Flags]
+		public enum PROCESS_CREATE_FLAGS : uint
+		{
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_BREAKAWAY = 0x00000001,
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_NO_DEBUG_INHERIT = 0x00000002,
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_INHERIT_HANDLES = 0x00000004,
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_OVERRIDE_ADDRESS_SPACE = 0x00000008,
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_LARGE_PAGES = 0x00000010,
+		}
+
+		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+		public static extern NTStatus NtCreateProcess(out HPROCESS ProcessHandle, [In] ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes,
+			[In] HPROCESS ParentProcess, [In, MarshalAs(UnmanagedType.U1)] bool InheritObjectTable, [In, Optional] IntPtr SectionHandle,
+			[In, Optional] IntPtr DebugPort, [In, Optional] IntPtr ExceptionPort);
+
+		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+		public static extern NTStatus NtCreateProcess(out HPROCESS ProcessHandle, [In] ACCESS_MASK DesiredAccess, [In, Optional] IntPtr ObjectAttributes,
+			[In] HPROCESS ParentProcess, [In, MarshalAs(UnmanagedType.U1)] bool InheritObjectTable, [In, Optional] IntPtr SectionHandle,
+			[In, Optional] IntPtr DebugPort, [In, Optional] IntPtr ExceptionPort);
+
+		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+		public static extern NTStatus NtCreateProcessEx(out HPROCESS ProcessHandle, [In] ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes,
+			[In] HPROCESS ParentProcess, [In] PROCESS_CREATE_FLAGS Flags, [In, Optional] IntPtr SectionHandle,
+			[In, Optional] IntPtr DebugPort, [In, Optional] IntPtr ExceptionPort, uint JobMemberLevel);
+
+		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+		public static extern NTStatus NtCreateProcessEx(out HPROCESS ProcessHandle, [In] ACCESS_MASK DesiredAccess, [In, Optional] IntPtr ObjectAttributes,
+			[In] HPROCESS ParentProcess, [In] PROCESS_CREATE_FLAGS Flags, [In, Optional] IntPtr SectionHandle,
+			[In, Optional] IntPtr DebugPort, [In, Optional] IntPtr ExceptionPort, uint JobMemberLevel);
+
 		/// <summary>
 		/// <para>
 		/// [ <c>NtQueryInformationProcess</c> may be altered or unavailable in future versions of Windows. Applications should use the
