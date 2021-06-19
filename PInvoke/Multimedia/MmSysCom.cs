@@ -17,6 +17,14 @@ namespace Vanara.PInvoke
 		/// <summary>Microsoft Corporation</summary>
 		public const ushort MM_MICROSOFT = 1;
 
+		internal const int JOYERR_BASE = 160;
+		internal const int MCIERR_BASE = 256;
+		internal const int MIDIERR_BASE = 64;
+		internal const int MIXERR_BASE = 1024;
+		internal const int MMSYSERR_BASE = 0;
+		internal const int TIMERR_BASE = 96;
+		internal const int WAVERR_BASE = 32;
+
 		/// <summary>
 		/// The <c>DRVCALLBACK</c> function is the callback function used with the waveform-audio input device. This function is a
 		/// placeholder for the application-defined function name. The address of this function can be specified in the callback-address
@@ -208,6 +216,45 @@ namespace Vanara.PInvoke
 
 			/// <summary>last error in range</summary>
 			WAVERR_LASTERROR = WAVERR_BASE + 3,
+
+			/// <summary>header not prepared</summary>
+			MIDIERR_UNPREPARED = MIDIERR_BASE + 0,
+
+			/// <summary>still something playing</summary>
+			MIDIERR_STILLPLAYING = MIDIERR_BASE + 1,
+
+			/// <summary>no configured instruments</summary>
+			MIDIERR_NOMAP = MIDIERR_BASE + 2,
+
+			/// <summary>hardware is still busy</summary>
+			MIDIERR_NOTREADY = MIDIERR_BASE + 3,
+
+			/// <summary>port no longer connected</summary>
+			MIDIERR_NODEVICE = MIDIERR_BASE + 4,
+
+			/// <summary>invalid MIF</summary>
+			MIDIERR_INVALIDSETUP = MIDIERR_BASE + 5,
+
+			/// <summary>operation unsupported w/ open mode</summary>
+			MIDIERR_BADOPENMODE = MIDIERR_BASE + 6,
+
+			/// <summary>thru device 'eating' a message</summary>
+			MIDIERR_DONT_CONTINUE = MIDIERR_BASE + 7,
+
+			/// <summary>last error in range</summary>
+			MIDIERR_LASTERROR = MIDIERR_BASE + 7,
+
+			/// <summary></summary>
+			MIXERR_INVALLINE = MIXERR_BASE + 0,
+
+			/// <summary></summary>
+			MIXERR_INVALCONTROL = MIXERR_BASE + 1,
+
+			/// <summary></summary>
+			MIXERR_INVALVALUE = MIXERR_BASE + 2,
+
+			/// <summary></summary>
+			MIXERR_LASTERROR = MIXERR_BASE + 2,
 		}
 
 		/// <summary>Time format.</summary>
@@ -267,6 +314,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>The value.</summary>
 			public uint u;
+
+			/// <summary>Gets the native size of this structure.</summary>
+			public static uint NativeSize = unchecked((uint)Marshal.SizeOf(typeof(MMTIME)));
 		}
 	}
 }
