@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Multimedia
 
 - Includes methods from avicap32.dll, avifil32.dll, msacm32.dll, msvfw32.dll, winmm.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Multimedia?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Multimedia?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Multimedia)  
-### Methods - 60% API coverage (164 of 272 functions)  
+### Methods - 99% API coverage (252 of 253 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [acmDriverAdd](https://www.google.com/search?num=5&q=acmDriverAddA+site%3Adocs.microsoft.com) | msacm32.dll | msacm.h | [Vanara.PInvoke.MsAcm32.acmDriverAdd](https://github.com/dahall/Vanara/search?l=C%23&q=acmDriverAdd)  
@@ -86,9 +86,9 @@ Native Method | Native DLL | Header | Managed Method
 [AVIStreamWriteData](https://www.google.com/search?num=5&q=AVIStreamWriteData+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.AVIStreamWriteData](https://github.com/dahall/Vanara/search?l=C%23&q=AVIStreamWriteData)  
 [capCreateCaptureWindow](https://www.google.com/search?num=5&q=capCreateCaptureWindowA+site%3Adocs.microsoft.com) | avicap32.dll | vfw.h | [Vanara.PInvoke.Vfw32.capCreateCaptureWindow](https://github.com/dahall/Vanara/search?l=C%23&q=capCreateCaptureWindow)  
 [capGetDriverDescription](https://www.google.com/search?num=5&q=capGetDriverDescriptionA+site%3Adocs.microsoft.com) | avicap32.dll | vfw.h | [Vanara.PInvoke.Vfw32.capGetDriverDescription](https://github.com/dahall/Vanara/search?l=C%23&q=capGetDriverDescription)  
-[CloseDriver](https://www.google.com/search?num=5&q=CloseDriver+site%3Adocs.microsoft.com) | winmm.dll |  |   
+[CloseDriver](https://www.google.com/search?num=5&q=CloseDriver+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.CloseDriver](https://github.com/dahall/Vanara/search?l=C%23&q=CloseDriver)  
 [CreateEditableStream](https://www.google.com/search?num=5&q=CreateEditableStream+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.CreateEditableStream](https://github.com/dahall/Vanara/search?l=C%23&q=CreateEditableStream)  
-[DefDriverProc](https://www.google.com/search?num=5&q=DefDriverProc+site%3Adocs.microsoft.com) | winmm.dll |  |   
+[DefDriverProc](https://www.google.com/search?num=5&q=DefDriverProc+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.DefDriverProc](https://github.com/dahall/Vanara/search?l=C%23&q=DefDriverProc)  
 [DrawDibBegin](https://www.google.com/search?num=5&q=DrawDibBegin+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.DrawDibBegin](https://github.com/dahall/Vanara/search?l=C%23&q=DrawDibBegin)  
 [DrawDibChangePalette](https://www.google.com/search?num=5&q=DrawDibChangePalette+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.DrawDibChangePalette](https://github.com/dahall/Vanara/search?l=C%23&q=DrawDibChangePalette)  
 [DrawDibClose](https://www.google.com/search?num=5&q=DrawDibClose+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.DrawDibClose](https://github.com/dahall/Vanara/search?l=C%23&q=DrawDibClose)  
@@ -103,8 +103,9 @@ Native Method | Native DLL | Header | Managed Method
 [DrawDibStart](https://www.google.com/search?num=5&q=DrawDibStart+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.DrawDibStart](https://github.com/dahall/Vanara/search?l=C%23&q=DrawDibStart)  
 [DrawDibStop](https://www.google.com/search?num=5&q=DrawDibStop+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.DrawDibStop](https://github.com/dahall/Vanara/search?l=C%23&q=DrawDibStop)  
 [DrawDibTime](https://www.google.com/search?num=5&q=DrawDibTime+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.DrawDibTime](https://github.com/dahall/Vanara/search?l=C%23&q=DrawDibTime)  
-[DriverCallback](https://www.google.com/search?num=5&q=DriverCallback+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[DrvGetModuleHandle](https://www.google.com/search?num=5&q=DrvGetModuleHandle+site%3Adocs.microsoft.com) | winmm.dll |  |   
+[DriverCallback](https://www.google.com/search?num=5&q=DriverCallback+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.DriverCallback](https://github.com/dahall/Vanara/search?l=C%23&q=DriverCallback)  
+[DrvDefDriverProc](https://www.google.com/search?num=5&q=DrvDefDriverProc+site%3Adocs.microsoft.com) | WinMm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.DrvDefDriverProc](https://github.com/dahall/Vanara/search?l=C%23&q=DrvDefDriverProc)  
+[DrvGetModuleHandle](https://www.google.com/search?num=5&q=DrvGetModuleHandle+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.DrvGetModuleHandle](https://github.com/dahall/Vanara/search?l=C%23&q=DrvGetModuleHandle)  
 [EditStreamClone](https://www.google.com/search?num=5&q=EditStreamClone+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.EditStreamClone](https://github.com/dahall/Vanara/search?l=C%23&q=EditStreamClone)  
 [EditStreamCopy](https://www.google.com/search?num=5&q=EditStreamCopy+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.EditStreamCopy](https://github.com/dahall/Vanara/search?l=C%23&q=EditStreamCopy)  
 [EditStreamCut](https://www.google.com/search?num=5&q=EditStreamCut+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.EditStreamCut](https://github.com/dahall/Vanara/search?l=C%23&q=EditStreamCut)  
@@ -135,114 +136,94 @@ Native Method | Native DLL | Header | Managed Method
 [ICSeqCompressFrame](https://www.google.com/search?num=5&q=ICSeqCompressFrame+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICSeqCompressFrame](https://github.com/dahall/Vanara/search?l=C%23&q=ICSeqCompressFrame)  
 [ICSeqCompressFrameEnd](https://www.google.com/search?num=5&q=ICSeqCompressFrameEnd+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICSeqCompressFrameEnd](https://github.com/dahall/Vanara/search?l=C%23&q=ICSeqCompressFrameEnd)  
 [ICSeqCompressFrameStart](https://www.google.com/search?num=5&q=ICSeqCompressFrameStart+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICSeqCompressFrameStart](https://github.com/dahall/Vanara/search?l=C%23&q=ICSeqCompressFrameStart)  
-[IID_IAVIEditStream](https://www.google.com/search?num=5&q=IID_IAVIEditStream+site%3Adocs.microsoft.com) | avifil32.dll |  |   
-[IID_IAVIFile](https://www.google.com/search?num=5&q=IID_IAVIFile+site%3Adocs.microsoft.com) | avifil32.dll |  |   
-[IID_IAVIStream](https://www.google.com/search?num=5&q=IID_IAVIStream+site%3Adocs.microsoft.com) | avifil32.dll |  |   
-[IID_IGetFrame](https://www.google.com/search?num=5&q=IID_IGetFrame+site%3Adocs.microsoft.com) | avifil32.dll |  |   
-[joyConfigChanged](https://www.google.com/search?num=5&q=joyConfigChanged+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[joyGetDevCaps](https://www.google.com/search?num=5&q=joyGetDevCapsA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[joyGetNumDevs](https://www.google.com/search?num=5&q=joyGetNumDevs+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[joyGetPos](https://www.google.com/search?num=5&q=joyGetPos+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[joyGetPosEx](https://www.google.com/search?num=5&q=joyGetPosEx+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[joyGetThreshold](https://www.google.com/search?num=5&q=joyGetThreshold+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[joyReleaseCapture](https://www.google.com/search?num=5&q=joyReleaseCapture+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[joySetCapture](https://www.google.com/search?num=5&q=joySetCapture+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[joySetThreshold](https://www.google.com/search?num=5&q=joySetThreshold+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciExecute](https://www.google.com/search?num=5&q=mciExecute+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciGetCreatorTask](https://www.google.com/search?num=5&q=mciGetCreatorTask+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciGetDeviceID](https://www.google.com/search?num=5&q=mciGetDeviceIDA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciGetDeviceIDFromElementID](https://www.google.com/search?num=5&q=mciGetDeviceIDFromElementIDA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciGetErrorString](https://www.google.com/search?num=5&q=mciGetErrorStringA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciGetYieldProc](https://www.google.com/search?num=5&q=mciGetYieldProc+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciSendCommand](https://www.google.com/search?num=5&q=mciSendCommandA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciSendString](https://www.google.com/search?num=5&q=mciSendStringA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mciSetYieldProc](https://www.google.com/search?num=5&q=mciSetYieldProc+site%3Adocs.microsoft.com) | winmm.dll |  |   
+[joyConfigChanged](https://www.google.com/search?num=5&q=joyConfigChanged+site%3Adocs.microsoft.com) | winmm.dll | joystickapi.h | [Vanara.PInvoke.WinMm.joyConfigChanged](https://github.com/dahall/Vanara/search?l=C%23&q=joyConfigChanged)  
+[joyGetDevCaps](https://www.google.com/search?num=5&q=joyGetDevCapsA+site%3Adocs.microsoft.com) | winmm.dll | joystickapi.h | [Vanara.PInvoke.WinMm.joyGetDevCaps](https://github.com/dahall/Vanara/search?l=C%23&q=joyGetDevCaps)  
+[joyGetNumDevs](https://www.google.com/search?num=5&q=joyGetNumDevs+site%3Adocs.microsoft.com) | winmm.dll | joystickapi.h | [Vanara.PInvoke.WinMm.joyGetNumDevs](https://github.com/dahall/Vanara/search?l=C%23&q=joyGetNumDevs)  
+[joyGetPos](https://www.google.com/search?num=5&q=joyGetPos+site%3Adocs.microsoft.com) | winmm.dll | joystickapi.h | [Vanara.PInvoke.WinMm.joyGetPos](https://github.com/dahall/Vanara/search?l=C%23&q=joyGetPos)  
+[joyGetPosEx](https://www.google.com/search?num=5&q=joyGetPosEx+site%3Adocs.microsoft.com) | winmm.dll | joystickapi.h | [Vanara.PInvoke.WinMm.joyGetPosEx](https://github.com/dahall/Vanara/search?l=C%23&q=joyGetPosEx)  
+[joyGetThreshold](https://www.google.com/search?num=5&q=joyGetThreshold+site%3Adocs.microsoft.com) | winmm.dll | joystickapi.h | [Vanara.PInvoke.WinMm.joyGetThreshold](https://github.com/dahall/Vanara/search?l=C%23&q=joyGetThreshold)  
+[joyReleaseCapture](https://www.google.com/search?num=5&q=joyReleaseCapture+site%3Adocs.microsoft.com) | winmm.dll | joystickapi.h | [Vanara.PInvoke.WinMm.joyReleaseCapture](https://github.com/dahall/Vanara/search?l=C%23&q=joyReleaseCapture)  
+[joySetCapture](https://www.google.com/search?num=5&q=joySetCapture+site%3Adocs.microsoft.com) | winmm.dll | joystickapi.h | [Vanara.PInvoke.WinMm.joySetCapture](https://github.com/dahall/Vanara/search?l=C%23&q=joySetCapture)  
+[joySetThreshold](https://www.google.com/search?num=5&q=joySetThreshold+site%3Adocs.microsoft.com) | winmm.dll | joystickapi.h | [Vanara.PInvoke.WinMm.joySetThreshold](https://github.com/dahall/Vanara/search?l=C%23&q=joySetThreshold)  
 [MCIWndCreate](https://www.google.com/search?num=5&q=MCIWndCreate+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Vfw32.MCIWndCreate](https://github.com/dahall/Vanara/search?l=C%23&q=MCIWndCreate)  
 [MCIWndRegisterClass](https://www.google.com/search?num=5&q=MCIWndRegisterClass+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Vfw32.MCIWndRegisterClass](https://github.com/dahall/Vanara/search?l=C%23&q=MCIWndRegisterClass)  
-[midiConnect](https://www.google.com/search?num=5&q=midiConnect+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiDisconnect](https://www.google.com/search?num=5&q=midiDisconnect+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInAddBuffer](https://www.google.com/search?num=5&q=midiInAddBuffer+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInClose](https://www.google.com/search?num=5&q=midiInClose+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInGetDevCaps](https://www.google.com/search?num=5&q=midiInGetDevCapsA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInGetErrorText](https://www.google.com/search?num=5&q=midiInGetErrorTextA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInGetID](https://www.google.com/search?num=5&q=midiInGetID+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInGetNumDevs](https://www.google.com/search?num=5&q=midiInGetNumDevs+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInMessage](https://www.google.com/search?num=5&q=midiInMessage+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInOpen](https://www.google.com/search?num=5&q=midiInOpen+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInPrepareHeader](https://www.google.com/search?num=5&q=midiInPrepareHeader+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInReset](https://www.google.com/search?num=5&q=midiInReset+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInStart](https://www.google.com/search?num=5&q=midiInStart+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInStop](https://www.google.com/search?num=5&q=midiInStop+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiInUnprepareHeader](https://www.google.com/search?num=5&q=midiInUnprepareHeader+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutCacheDrumPatches](https://www.google.com/search?num=5&q=midiOutCacheDrumPatches+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutCachePatches](https://www.google.com/search?num=5&q=midiOutCachePatches+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutClose](https://www.google.com/search?num=5&q=midiOutClose+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutGetDevCaps](https://www.google.com/search?num=5&q=midiOutGetDevCapsA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutGetErrorText](https://www.google.com/search?num=5&q=midiOutGetErrorTextA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutGetID](https://www.google.com/search?num=5&q=midiOutGetID+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutGetNumDevs](https://www.google.com/search?num=5&q=midiOutGetNumDevs+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutGetVolume](https://www.google.com/search?num=5&q=midiOutGetVolume+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutLongMsg](https://www.google.com/search?num=5&q=midiOutLongMsg+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutMessage](https://www.google.com/search?num=5&q=midiOutMessage+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutOpen](https://www.google.com/search?num=5&q=midiOutOpen+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutPrepareHeader](https://www.google.com/search?num=5&q=midiOutPrepareHeader+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutReset](https://www.google.com/search?num=5&q=midiOutReset+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutSetVolume](https://www.google.com/search?num=5&q=midiOutSetVolume+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutShortMsg](https://www.google.com/search?num=5&q=midiOutShortMsg+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiOutUnprepareHeader](https://www.google.com/search?num=5&q=midiOutUnprepareHeader+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiStreamClose](https://www.google.com/search?num=5&q=midiStreamClose+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiStreamOpen](https://www.google.com/search?num=5&q=midiStreamOpen+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiStreamOut](https://www.google.com/search?num=5&q=midiStreamOut+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiStreamPause](https://www.google.com/search?num=5&q=midiStreamPause+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiStreamPosition](https://www.google.com/search?num=5&q=midiStreamPosition+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiStreamProperty](https://www.google.com/search?num=5&q=midiStreamProperty+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiStreamRestart](https://www.google.com/search?num=5&q=midiStreamRestart+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[midiStreamStop](https://www.google.com/search?num=5&q=midiStreamStop+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerClose](https://www.google.com/search?num=5&q=mixerClose+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerGetControlDetails](https://www.google.com/search?num=5&q=mixerGetControlDetailsA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerGetDevCaps](https://www.google.com/search?num=5&q=mixerGetDevCapsA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerGetID](https://www.google.com/search?num=5&q=mixerGetID+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerGetLineControls](https://www.google.com/search?num=5&q=mixerGetLineControlsA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerGetLineInfo](https://www.google.com/search?num=5&q=mixerGetLineInfoA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerGetNumDevs](https://www.google.com/search?num=5&q=mixerGetNumDevs+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerMessage](https://www.google.com/search?num=5&q=mixerMessage+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerOpen](https://www.google.com/search?num=5&q=mixerOpen+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mixerSetControlDetails](https://www.google.com/search?num=5&q=mixerSetControlDetails+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmGetCurrentTask](https://www.google.com/search?num=5&q=mmGetCurrentTask+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioAdvance](https://www.google.com/search?num=5&q=mmioAdvance+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioAscend](https://www.google.com/search?num=5&q=mmioAscend+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioClose](https://www.google.com/search?num=5&q=mmioClose+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioCreateChunk](https://www.google.com/search?num=5&q=mmioCreateChunk+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioDescend](https://www.google.com/search?num=5&q=mmioDescend+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioFlush](https://www.google.com/search?num=5&q=mmioFlush+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioGetInfo](https://www.google.com/search?num=5&q=mmioGetInfo+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioInstallIOProc](https://www.google.com/search?num=5&q=mmioInstallIOProcA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioOpen](https://www.google.com/search?num=5&q=mmioOpenA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioRead](https://www.google.com/search?num=5&q=mmioRead+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioRename](https://www.google.com/search?num=5&q=mmioRenameA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioSeek](https://www.google.com/search?num=5&q=mmioSeek+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioSendMessage](https://www.google.com/search?num=5&q=mmioSendMessage+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioSetBuffer](https://www.google.com/search?num=5&q=mmioSetBuffer+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioSetInfo](https://www.google.com/search?num=5&q=mmioSetInfo+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioStringToFOURCC](https://www.google.com/search?num=5&q=mmioStringToFOURCCA+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmioWrite](https://www.google.com/search?num=5&q=mmioWrite+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmsystemGetVersion](https://www.google.com/search?num=5&q=mmsystemGetVersion+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmTaskBlock](https://www.google.com/search?num=5&q=mmTaskBlock+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmTaskCreate](https://www.google.com/search?num=5&q=mmTaskCreate+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmTaskSignal](https://www.google.com/search?num=5&q=mmTaskSignal+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[mmTaskYield](https://www.google.com/search?num=5&q=mmTaskYield+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[OpenDriver](https://www.google.com/search?num=5&q=OpenDriver+site%3Adocs.microsoft.com) | winmm.dll |  |   
+[midiConnect](https://www.google.com/search?num=5&q=midiConnect+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiConnect](https://github.com/dahall/Vanara/search?l=C%23&q=midiConnect)  
+[midiDisconnect](https://www.google.com/search?num=5&q=midiDisconnect+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiDisconnect](https://github.com/dahall/Vanara/search?l=C%23&q=midiDisconnect)  
+[midiInAddBuffer](https://www.google.com/search?num=5&q=midiInAddBuffer+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInAddBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=midiInAddBuffer)  
+[midiInClose](https://www.google.com/search?num=5&q=midiInClose+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInClose](https://github.com/dahall/Vanara/search?l=C%23&q=midiInClose)  
+[midiInGetDevCaps](https://www.google.com/search?num=5&q=midiInGetDevCapsA+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInGetDevCaps](https://github.com/dahall/Vanara/search?l=C%23&q=midiInGetDevCaps)  
+[midiInGetErrorText](https://www.google.com/search?num=5&q=midiInGetErrorTextA+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInGetErrorText](https://github.com/dahall/Vanara/search?l=C%23&q=midiInGetErrorText)  
+[midiInGetID](https://www.google.com/search?num=5&q=midiInGetID+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInGetID](https://github.com/dahall/Vanara/search?l=C%23&q=midiInGetID)  
+[midiInGetNumDevs](https://www.google.com/search?num=5&q=midiInGetNumDevs+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInGetNumDevs](https://github.com/dahall/Vanara/search?l=C%23&q=midiInGetNumDevs)  
+[midiInMessage](https://www.google.com/search?num=5&q=midiInMessage+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInMessage](https://github.com/dahall/Vanara/search?l=C%23&q=midiInMessage)  
+[midiInOpen](https://www.google.com/search?num=5&q=midiInOpen+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInOpen](https://github.com/dahall/Vanara/search?l=C%23&q=midiInOpen)  
+[midiInPrepareHeader](https://www.google.com/search?num=5&q=midiInPrepareHeader+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInPrepareHeader](https://github.com/dahall/Vanara/search?l=C%23&q=midiInPrepareHeader)  
+[midiInReset](https://www.google.com/search?num=5&q=midiInReset+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInReset](https://github.com/dahall/Vanara/search?l=C%23&q=midiInReset)  
+[midiInStart](https://www.google.com/search?num=5&q=midiInStart+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInStart](https://github.com/dahall/Vanara/search?l=C%23&q=midiInStart)  
+[midiInStop](https://www.google.com/search?num=5&q=midiInStop+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInStop](https://github.com/dahall/Vanara/search?l=C%23&q=midiInStop)  
+[midiInUnprepareHeader](https://www.google.com/search?num=5&q=midiInUnprepareHeader+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiInUnprepareHeader](https://github.com/dahall/Vanara/search?l=C%23&q=midiInUnprepareHeader)  
+[midiOutCacheDrumPatches](https://www.google.com/search?num=5&q=midiOutCacheDrumPatches+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutCacheDrumPatches](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutCacheDrumPatches)  
+[midiOutCachePatches](https://www.google.com/search?num=5&q=midiOutCachePatches+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutCachePatches](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutCachePatches)  
+[midiOutClose](https://www.google.com/search?num=5&q=midiOutClose+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutClose](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutClose)  
+[midiOutGetDevCaps](https://www.google.com/search?num=5&q=midiOutGetDevCapsA+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutGetDevCaps](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutGetDevCaps)  
+[midiOutGetErrorText](https://www.google.com/search?num=5&q=midiOutGetErrorTextA+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutGetErrorText](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutGetErrorText)  
+[midiOutGetID](https://www.google.com/search?num=5&q=midiOutGetID+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutGetID](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutGetID)  
+[midiOutGetNumDevs](https://www.google.com/search?num=5&q=midiOutGetNumDevs+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutGetNumDevs](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutGetNumDevs)  
+[midiOutGetVolume](https://www.google.com/search?num=5&q=midiOutGetVolume+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutGetVolume](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutGetVolume)  
+[midiOutLongMsg](https://www.google.com/search?num=5&q=midiOutLongMsg+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutLongMsg](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutLongMsg)  
+[midiOutMessage](https://www.google.com/search?num=5&q=midiOutMessage+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutMessage](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutMessage)  
+[midiOutOpen](https://www.google.com/search?num=5&q=midiOutOpen+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutOpen](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutOpen)  
+[midiOutPrepareHeader](https://www.google.com/search?num=5&q=midiOutPrepareHeader+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutPrepareHeader](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutPrepareHeader)  
+[midiOutReset](https://www.google.com/search?num=5&q=midiOutReset+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutReset](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutReset)  
+[midiOutSetVolume](https://www.google.com/search?num=5&q=midiOutSetVolume+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutSetVolume](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutSetVolume)  
+[midiOutShortMsg](https://www.google.com/search?num=5&q=midiOutShortMsg+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutShortMsg](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutShortMsg)  
+[midiOutUnprepareHeader](https://www.google.com/search?num=5&q=midiOutUnprepareHeader+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiOutUnprepareHeader](https://github.com/dahall/Vanara/search?l=C%23&q=midiOutUnprepareHeader)  
+[midiStreamClose](https://www.google.com/search?num=5&q=midiStreamClose+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiStreamClose](https://github.com/dahall/Vanara/search?l=C%23&q=midiStreamClose)  
+[midiStreamOpen](https://www.google.com/search?num=5&q=midiStreamOpen+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiStreamOpen](https://github.com/dahall/Vanara/search?l=C%23&q=midiStreamOpen)  
+[midiStreamOut](https://www.google.com/search?num=5&q=midiStreamOut+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiStreamOut](https://github.com/dahall/Vanara/search?l=C%23&q=midiStreamOut)  
+[midiStreamPause](https://www.google.com/search?num=5&q=midiStreamPause+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiStreamPause](https://github.com/dahall/Vanara/search?l=C%23&q=midiStreamPause)  
+[midiStreamPosition](https://www.google.com/search?num=5&q=midiStreamPosition+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiStreamPosition](https://github.com/dahall/Vanara/search?l=C%23&q=midiStreamPosition)  
+[midiStreamProperty](https://www.google.com/search?num=5&q=midiStreamProperty+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiStreamProperty](https://github.com/dahall/Vanara/search?l=C%23&q=midiStreamProperty)  
+[midiStreamRestart](https://www.google.com/search?num=5&q=midiStreamRestart+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiStreamRestart](https://github.com/dahall/Vanara/search?l=C%23&q=midiStreamRestart)  
+[midiStreamStop](https://www.google.com/search?num=5&q=midiStreamStop+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.midiStreamStop](https://github.com/dahall/Vanara/search?l=C%23&q=midiStreamStop)  
+[mixerClose](https://www.google.com/search?num=5&q=mixerClose+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerClose](https://github.com/dahall/Vanara/search?l=C%23&q=mixerClose)  
+[mixerGetControlDetails](https://www.google.com/search?num=5&q=mixerGetControlDetailsA+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerGetControlDetails](https://github.com/dahall/Vanara/search?l=C%23&q=mixerGetControlDetails)  
+[mixerGetDevCaps](https://www.google.com/search?num=5&q=mixerGetDevCapsA+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerGetDevCaps](https://github.com/dahall/Vanara/search?l=C%23&q=mixerGetDevCaps)  
+[mixerGetID](https://www.google.com/search?num=5&q=mixerGetID+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerGetID](https://github.com/dahall/Vanara/search?l=C%23&q=mixerGetID)  
+[mixerGetLineControls](https://www.google.com/search?num=5&q=mixerGetLineControlsA+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerGetLineControls](https://github.com/dahall/Vanara/search?l=C%23&q=mixerGetLineControls)  
+[mixerGetLineInfo](https://www.google.com/search?num=5&q=mixerGetLineInfoA+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerGetLineInfo](https://github.com/dahall/Vanara/search?l=C%23&q=mixerGetLineInfo)  
+[mixerGetNumDevs](https://www.google.com/search?num=5&q=mixerGetNumDevs+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerGetNumDevs](https://github.com/dahall/Vanara/search?l=C%23&q=mixerGetNumDevs)  
+[mixerMessage](https://www.google.com/search?num=5&q=mixerMessage+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerMessage](https://github.com/dahall/Vanara/search?l=C%23&q=mixerMessage)  
+[mixerOpen](https://www.google.com/search?num=5&q=mixerOpen+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerOpen](https://github.com/dahall/Vanara/search?l=C%23&q=mixerOpen)  
+[mixerSetControlDetails](https://www.google.com/search?num=5&q=mixerSetControlDetails+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.mixerSetControlDetails](https://github.com/dahall/Vanara/search?l=C%23&q=mixerSetControlDetails)  
+[mmioAdvance](https://www.google.com/search?num=5&q=mmioAdvance+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioAdvance](https://github.com/dahall/Vanara/search?l=C%23&q=mmioAdvance)  
+[mmioAscend](https://www.google.com/search?num=5&q=mmioAscend+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioAscend](https://github.com/dahall/Vanara/search?l=C%23&q=mmioAscend)  
+[mmioClose](https://www.google.com/search?num=5&q=mmioClose+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioClose](https://github.com/dahall/Vanara/search?l=C%23&q=mmioClose)  
+[mmioCreateChunk](https://www.google.com/search?num=5&q=mmioCreateChunk+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioCreateChunk](https://github.com/dahall/Vanara/search?l=C%23&q=mmioCreateChunk)  
+[mmioDescend](https://www.google.com/search?num=5&q=mmioDescend+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioDescend](https://github.com/dahall/Vanara/search?l=C%23&q=mmioDescend)  
+[mmioFlush](https://www.google.com/search?num=5&q=mmioFlush+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioFlush](https://github.com/dahall/Vanara/search?l=C%23&q=mmioFlush)  
+[mmioGetInfo](https://www.google.com/search?num=5&q=mmioGetInfo+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioGetInfo](https://github.com/dahall/Vanara/search?l=C%23&q=mmioGetInfo)  
+[mmioInstallIOProc](https://www.google.com/search?num=5&q=mmioInstallIOProcA+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioInstallIOProc](https://github.com/dahall/Vanara/search?l=C%23&q=mmioInstallIOProc)  
+[mmioOpen](https://www.google.com/search?num=5&q=mmioOpenA+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioOpen](https://github.com/dahall/Vanara/search?l=C%23&q=mmioOpen)  
+[mmioRead](https://www.google.com/search?num=5&q=mmioRead+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioRead](https://github.com/dahall/Vanara/search?l=C%23&q=mmioRead)  
+[mmioRename](https://www.google.com/search?num=5&q=mmioRenameA+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioRename](https://github.com/dahall/Vanara/search?l=C%23&q=mmioRename)  
+[mmioSeek](https://www.google.com/search?num=5&q=mmioSeek+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioSeek](https://github.com/dahall/Vanara/search?l=C%23&q=mmioSeek)  
+[mmioSendMessage](https://www.google.com/search?num=5&q=mmioSendMessage+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioSendMessage](https://github.com/dahall/Vanara/search?l=C%23&q=mmioSendMessage)  
+[mmioSetBuffer](https://www.google.com/search?num=5&q=mmioSetBuffer+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioSetBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=mmioSetBuffer)  
+[mmioSetInfo](https://www.google.com/search?num=5&q=mmioSetInfo+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioSetInfo](https://github.com/dahall/Vanara/search?l=C%23&q=mmioSetInfo)  
+[mmioStringToFOURCC](https://www.google.com/search?num=5&q=mmioStringToFOURCCA+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioStringToFOURCC](https://github.com/dahall/Vanara/search?l=C%23&q=mmioStringToFOURCC)  
+[mmioWrite](https://www.google.com/search?num=5&q=mmioWrite+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.mmioWrite](https://github.com/dahall/Vanara/search?l=C%23&q=mmioWrite)  
+[OpenDriver](https://www.google.com/search?num=5&q=OpenDriver+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.OpenDriver](https://github.com/dahall/Vanara/search?l=C%23&q=OpenDriver)  
 [PlaySound](https://www.google.com/search?num=5&q=PlaySound+site%3Adocs.microsoft.com) | winmm.dll | Mmsystem.h | [Vanara.PInvoke.WinMm.PlaySound](https://github.com/dahall/Vanara/search?l=C%23&q=PlaySound)  
-[SendDriverMessage](https://www.google.com/search?num=5&q=SendDriverMessage+site%3Adocs.microsoft.com) | winmm.dll |  |   
+[SendDriverMessage](https://www.google.com/search?num=5&q=SendDriverMessage+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.SendDriverMessage](https://github.com/dahall/Vanara/search?l=C%23&q=SendDriverMessage)  
+[sndOpenSound](https://www.google.com/search?num=5&q=sndOpenSound+site%3Adocs.microsoft.com) | WinMm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.sndOpenSound](https://github.com/dahall/Vanara/search?l=C%23&q=sndOpenSound)  
 [sndPlaySound](https://www.google.com/search?num=5&q=sndPlaySoundA+site%3Adocs.microsoft.com) | winmm.dll | Mmsystem.h | [Vanara.PInvoke.WinMm.sndPlaySound](https://github.com/dahall/Vanara/search?l=C%23&q=sndPlaySound)  
 [StretchDIB](https://www.google.com/search?num=5&q=StretchDIB+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.StretchDIB](https://github.com/dahall/Vanara/search?l=C%23&q=StretchDIB)  
-[timeBeginPeriod](https://www.google.com/search?num=5&q=timeBeginPeriod+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[timeEndPeriod](https://www.google.com/search?num=5&q=timeEndPeriod+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[timeGetDevCaps](https://www.google.com/search?num=5&q=timeGetDevCaps+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[timeGetSystemTime](https://www.google.com/search?num=5&q=timeGetSystemTime+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[timeGetTime](https://www.google.com/search?num=5&q=timeGetTime+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[timeKillEvent](https://www.google.com/search?num=5&q=timeKillEvent+site%3Adocs.microsoft.com) | winmm.dll |  |   
-[timeSetEvent](https://www.google.com/search?num=5&q=timeSetEvent+site%3Adocs.microsoft.com) | winmm.dll |  |   
+[timeBeginPeriod](https://www.google.com/search?num=5&q=timeBeginPeriod+site%3Adocs.microsoft.com) | winmm.dll | timeapi.h | [Vanara.PInvoke.WinMm.timeBeginPeriod](https://github.com/dahall/Vanara/search?l=C%23&q=timeBeginPeriod)  
+[timeEndPeriod](https://www.google.com/search?num=5&q=timeEndPeriod+site%3Adocs.microsoft.com) | winmm.dll | timeapi.h | [Vanara.PInvoke.WinMm.timeEndPeriod](https://github.com/dahall/Vanara/search?l=C%23&q=timeEndPeriod)  
+[timeGetDevCaps](https://www.google.com/search?num=5&q=timeGetDevCaps+site%3Adocs.microsoft.com) | winmm.dll | timeapi.h | [Vanara.PInvoke.WinMm.timeGetDevCaps](https://github.com/dahall/Vanara/search?l=C%23&q=timeGetDevCaps)  
+[timeGetSystemTime](https://www.google.com/search?num=5&q=timeGetSystemTime+site%3Adocs.microsoft.com) | winmm.dll | timeapi.h | [Vanara.PInvoke.WinMm.timeGetSystemTime](https://github.com/dahall/Vanara/search?l=C%23&q=timeGetSystemTime)  
+[timeGetTime](https://www.google.com/search?num=5&q=timeGetTime+site%3Adocs.microsoft.com) | winmm.dll | timeapi.h | [Vanara.PInvoke.WinMm.timeGetTime](https://github.com/dahall/Vanara/search?l=C%23&q=timeGetTime)  
 [waveInAddBuffer](https://www.google.com/search?num=5&q=waveInAddBuffer+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.waveInAddBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=waveInAddBuffer)  
 [waveInClose](https://www.google.com/search?num=5&q=waveInClose+site%3Adocs.microsoft.com) | winmm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.waveInClose](https://github.com/dahall/Vanara/search?l=C%23&q=waveInClose)  
 [waveInGetDevCaps](https://www.google.com/search?num=5&q=waveInGetDevCaps+site%3Adocs.microsoft.com) | WinMm.dll | mmeapi.h | [Vanara.PInvoke.WinMm.waveInGetDevCaps](https://github.com/dahall/Vanara/search?l=C%23&q=waveInGetDevCaps)  
@@ -293,6 +274,7 @@ Native Structure | Header | Managed Structure
 [AVICOMPRESSOPTIONS](https://www.google.com/search?num=5&q=AVICOMPRESSOPTIONS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVICOMPRESSOPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=AVICOMPRESSOPTIONS)  
 [AVIFILEINFO](https://www.google.com/search?num=5&q=AVIFILEINFO+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVIFILEINFO](https://github.com/dahall/Vanara/search?l=C%23&q=AVIFILEINFO)  
 [AVISTREAMINFO](https://www.google.com/search?num=5&q=AVISTREAMINFO+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.AVISTREAMINFO](https://github.com/dahall/Vanara/search?l=C%23&q=AVISTREAMINFO)  
+[BOUNDS](https://www.google.com/search?num=5&q=BOUNDS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.MIXERCONTROL.BOUNDS](https://github.com/dahall/Vanara/search?l=C%23&q=BOUNDS)  
 [CAPDRIVERCAPS](https://www.google.com/search?num=5&q=CAPDRIVERCAPS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.CAPDRIVERCAPS](https://github.com/dahall/Vanara/search?l=C%23&q=CAPDRIVERCAPS)  
 [CAPDRIVERCAPS](https://www.google.com/search?num=5&q=CAPDRIVERCAPS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Vfw32.CAPDRIVERCAPS](https://github.com/dahall/Vanara/search?l=C%23&q=CAPDRIVERCAPS)  
 [CAPINFOCHUNK](https://www.google.com/search?num=5&q=CAPINFOCHUNK+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.CAPINFOCHUNK](https://github.com/dahall/Vanara/search?l=C%23&q=CAPINFOCHUNK)  
@@ -304,12 +286,21 @@ Native Structure | Header | Managed Structure
 [COMPVARS](https://www.google.com/search?num=5&q=COMPVARS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Msvfw32.COMPVARS](https://github.com/dahall/Vanara/search?l=C%23&q=COMPVARS)  
 [DRAWDIBTIME](https://www.google.com/search?num=5&q=DRAWDIBTIME+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.DRAWDIBTIME](https://github.com/dahall/Vanara/search?l=C%23&q=DRAWDIBTIME)  
 [DRAWDIBTIME](https://www.google.com/search?num=5&q=DRAWDIBTIME+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Msvfw32.DRAWDIBTIME](https://github.com/dahall/Vanara/search?l=C%23&q=DRAWDIBTIME)  
+[DRVCONFIGINFO](https://www.google.com/search?num=5&q=DRVCONFIGINFO+site%3Adocs.microsoft.com) | mmiscapi.h | [Vanara.PInvoke.WinMm.DRVCONFIGINFO](https://github.com/dahall/Vanara/search?l=C%23&q=DRVCONFIGINFO)  
 [HACMDRIVER](https://www.google.com/search?num=5&q=HACMDRIVER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MsAcm32.HACMDRIVER](https://github.com/dahall/Vanara/search?l=C%23&q=HACMDRIVER)  
 [HACMDRIVERID](https://www.google.com/search?num=5&q=HACMDRIVERID+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MsAcm32.HACMDRIVERID](https://github.com/dahall/Vanara/search?l=C%23&q=HACMDRIVERID)  
 [HACMOBJ](https://www.google.com/search?num=5&q=HACMOBJ+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MsAcm32.HACMOBJ](https://github.com/dahall/Vanara/search?l=C%23&q=HACMOBJ)  
 [HACMSTREAM](https://www.google.com/search?num=5&q=HACMSTREAM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MsAcm32.HACMSTREAM](https://github.com/dahall/Vanara/search?l=C%23&q=HACMSTREAM)  
 [HDRAWDIB](https://www.google.com/search?num=5&q=HDRAWDIB+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Msvfw32.HDRAWDIB](https://github.com/dahall/Vanara/search?l=C%23&q=HDRAWDIB)  
+[HDRVR](https://www.google.com/search?num=5&q=HDRVR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HDRVR](https://github.com/dahall/Vanara/search?l=C%23&q=HDRVR)  
 [HIC](https://www.google.com/search?num=5&q=HIC+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Msvfw32.HIC](https://github.com/dahall/Vanara/search?l=C%23&q=HIC)  
+[HMIDI](https://www.google.com/search?num=5&q=HMIDI+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HMIDI](https://github.com/dahall/Vanara/search?l=C%23&q=HMIDI)  
+[HMIDIIN](https://www.google.com/search?num=5&q=HMIDIIN+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HMIDIIN](https://github.com/dahall/Vanara/search?l=C%23&q=HMIDIIN)  
+[HMIDIOUT](https://www.google.com/search?num=5&q=HMIDIOUT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HMIDIOUT](https://github.com/dahall/Vanara/search?l=C%23&q=HMIDIOUT)  
+[HMIDISTRM](https://www.google.com/search?num=5&q=HMIDISTRM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HMIDISTRM](https://github.com/dahall/Vanara/search?l=C%23&q=HMIDISTRM)  
+[HMIXER](https://www.google.com/search?num=5&q=HMIXER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HMIXER](https://github.com/dahall/Vanara/search?l=C%23&q=HMIXER)  
+[HMIXEROBJ](https://www.google.com/search?num=5&q=HMIXEROBJ+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HMIXEROBJ](https://github.com/dahall/Vanara/search?l=C%23&q=HMIXEROBJ)  
+[HMMIO](https://www.google.com/search?num=5&q=HMMIO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HMMIO](https://github.com/dahall/Vanara/search?l=C%23&q=HMMIO)  
 [HWAVEIN](https://www.google.com/search?num=5&q=HWAVEIN+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HWAVEIN](https://github.com/dahall/Vanara/search?l=C%23&q=HWAVEIN)  
 [HWAVEOUT](https://www.google.com/search?num=5&q=HWAVEOUT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.HWAVEOUT](https://github.com/dahall/Vanara/search?l=C%23&q=HWAVEOUT)  
 [ICCOMPRESS](https://www.google.com/search?num=5&q=ICCOMPRESS+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Msvfw32.ICCOMPRESS](https://github.com/dahall/Vanara/search?l=C%23&q=ICCOMPRESS)  
@@ -322,9 +313,39 @@ Native Structure | Header | Managed Structure
 [ICINFO](https://www.google.com/search?num=5&q=ICINFO+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Msvfw32.ICINFO](https://github.com/dahall/Vanara/search?l=C%23&q=ICINFO)  
 [ICOPEN](https://www.google.com/search?num=5&q=ICOPEN+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Msvfw32.ICOPEN](https://github.com/dahall/Vanara/search?l=C%23&q=ICOPEN)  
 [ICSETSTATUSPROC](https://www.google.com/search?num=5&q=ICSETSTATUSPROC+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Msvfw32.ICSETSTATUSPROC](https://github.com/dahall/Vanara/search?l=C%23&q=ICSETSTATUSPROC)  
+[JOYCAPS](https://www.google.com/search?num=5&q=JOYCAPS+site%3Adocs.microsoft.com) | joystickapi.h | [Vanara.PInvoke.WinMm.JOYCAPS](https://github.com/dahall/Vanara/search?l=C%23&q=JOYCAPS)  
+[JOYINFO](https://www.google.com/search?num=5&q=JOYINFO+site%3Adocs.microsoft.com) | joystickapi.h | [Vanara.PInvoke.WinMm.JOYINFO](https://github.com/dahall/Vanara/search?l=C%23&q=JOYINFO)  
+[JOYINFOEX](https://www.google.com/search?num=5&q=JOYINFOEX+site%3Adocs.microsoft.com) | joystickapi.h | [Vanara.PInvoke.WinMm.JOYINFOEX](https://github.com/dahall/Vanara/search?l=C%23&q=JOYINFOEX)  
+[JOYPOS](https://www.google.com/search?num=5&q=JOYPOS+site%3Adocs.microsoft.com) | mmddk.h | [Vanara.PInvoke.WinMm.JOYPOS](https://github.com/dahall/Vanara/search?l=C%23&q=JOYPOS)  
+[JOYRANGE](https://www.google.com/search?num=5&q=JOYRANGE+site%3Adocs.microsoft.com) | mmddk.h | [Vanara.PInvoke.WinMm.JOYRANGE](https://github.com/dahall/Vanara/search?l=C%23&q=JOYRANGE)  
+[JOYREGHWVALUES](https://www.google.com/search?num=5&q=JOYREGHWVALUES+site%3Adocs.microsoft.com) | mmddk.h | [Vanara.PInvoke.WinMm.JOYREGHWVALUES](https://github.com/dahall/Vanara/search?l=C%23&q=JOYREGHWVALUES)  
+[MDEVICECAPSEX](https://www.google.com/search?num=5&q=MDEVICECAPSEX+site%3Adocs.microsoft.com) | mmddk.h | [Vanara.PInvoke.WinMm.MDEVICECAPSEX](https://github.com/dahall/Vanara/search?l=C%23&q=MDEVICECAPSEX)  
+[METRICS](https://www.google.com/search?num=5&q=METRICS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.MIXERCONTROL.METRICS](https://github.com/dahall/Vanara/search?l=C%23&q=METRICS)  
+[MIDIEVENT](https://www.google.com/search?num=5&q=MIDIEVENT+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIDIEVENT](https://github.com/dahall/Vanara/search?l=C%23&q=MIDIEVENT)  
+[MIDIHDR](https://www.google.com/search?num=5&q=MIDIHDR+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIDIHDR](https://github.com/dahall/Vanara/search?l=C%23&q=MIDIHDR)  
+[MIDIINCAPS](https://www.google.com/search?num=5&q=MIDIINCAPS+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIDIINCAPS](https://github.com/dahall/Vanara/search?l=C%23&q=MIDIINCAPS)  
+[MIDIOPENDESC](https://www.google.com/search?num=5&q=MIDIOPENDESC+site%3Adocs.microsoft.com) | mmddk.h | [Vanara.PInvoke.WinMm.MIDIOPENDESC](https://github.com/dahall/Vanara/search?l=C%23&q=MIDIOPENDESC)  
+[MIDIOPENSTRMID](https://www.google.com/search?num=5&q=MIDIOPENSTRMID+site%3Adocs.microsoft.com) | mmddk.h | [Vanara.PInvoke.WinMm.MIDIOPENSTRMID](https://github.com/dahall/Vanara/search?l=C%23&q=MIDIOPENSTRMID)  
+[MIDIOUTCAPS](https://www.google.com/search?num=5&q=MIDIOUTCAPS+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIDIOUTCAPS](https://github.com/dahall/Vanara/search?l=C%23&q=MIDIOUTCAPS)  
+[MIDIPROPTEMPO](https://www.google.com/search?num=5&q=MIDIPROPTEMPO+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIDIPROPTEMPO](https://github.com/dahall/Vanara/search?l=C%23&q=MIDIPROPTEMPO)  
+[MIDIPROPTIMEDIV](https://www.google.com/search?num=5&q=MIDIPROPTIMEDIV+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIDIPROPTIMEDIV](https://github.com/dahall/Vanara/search?l=C%23&q=MIDIPROPTIMEDIV)  
+[MIDISTRMBUFFVER](https://www.google.com/search?num=5&q=MIDISTRMBUFFVER+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIDISTRMBUFFVER](https://github.com/dahall/Vanara/search?l=C%23&q=MIDISTRMBUFFVER)  
+[MIXERCAPS](https://www.google.com/search?num=5&q=MIXERCAPS+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIXERCAPS](https://github.com/dahall/Vanara/search?l=C%23&q=MIXERCAPS)  
+[MIXERCONTROL](https://www.google.com/search?num=5&q=MIXERCONTROL+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIXERCONTROL](https://github.com/dahall/Vanara/search?l=C%23&q=MIXERCONTROL)  
+[MIXERCONTROLDETAILS](https://www.google.com/search?num=5&q=MIXERCONTROLDETAILS+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIXERCONTROLDETAILS](https://github.com/dahall/Vanara/search?l=C%23&q=MIXERCONTROLDETAILS)  
+[MIXERCONTROLDETAILS_BOOLEAN](https://www.google.com/search?num=5&q=MIXERCONTROLDETAILS_BOOLEAN+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIXERCONTROLDETAILS_BOOLEAN](https://github.com/dahall/Vanara/search?l=C%23&q=MIXERCONTROLDETAILS_BOOLEAN)  
+[MIXERCONTROLDETAILS_LISTTEXT](https://www.google.com/search?num=5&q=MIXERCONTROLDETAILS_LISTTEXT+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIXERCONTROLDETAILS_LISTTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=MIXERCONTROLDETAILS_LISTTEXT)  
+[MIXERCONTROLDETAILS_SIGNED](https://www.google.com/search?num=5&q=MIXERCONTROLDETAILS_SIGNED+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIXERCONTROLDETAILS_SIGNED](https://github.com/dahall/Vanara/search?l=C%23&q=MIXERCONTROLDETAILS_SIGNED)  
+[MIXERCONTROLDETAILS_UNSIGNED](https://www.google.com/search?num=5&q=MIXERCONTROLDETAILS_UNSIGNED+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIXERCONTROLDETAILS_UNSIGNED](https://github.com/dahall/Vanara/search?l=C%23&q=MIXERCONTROLDETAILS_UNSIGNED)  
+[MIXERLINE](https://www.google.com/search?num=5&q=MIXERLINE+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIXERLINE](https://github.com/dahall/Vanara/search?l=C%23&q=MIXERLINE)  
+[MIXERLINECONTROLS](https://www.google.com/search?num=5&q=MIXERLINECONTROLS+site%3Adocs.microsoft.com) | mmeapi.h | [Vanara.PInvoke.WinMm.MIXERLINECONTROLS](https://github.com/dahall/Vanara/search?l=C%23&q=MIXERLINECONTROLS)  
+[MMCKINFO](https://www.google.com/search?num=5&q=MMCKINFO+site%3Adocs.microsoft.com) | mmiscapi.h | [Vanara.PInvoke.WinMm.MMCKINFO](https://github.com/dahall/Vanara/search?l=C%23&q=MMCKINFO)  
+[MMIOINFO](https://www.google.com/search?num=5&q=MMIOINFO+site%3Adocs.microsoft.com) | Mmsystem.h | [Vanara.PInvoke.WinMm.MMIOINFO](https://github.com/dahall/Vanara/search?l=C%23&q=MMIOINFO)  
 [MMTIME](https://www.google.com/search?num=5&q=MMTIME+site%3Adocs.microsoft.com) | Mmsystem.h | [Vanara.PInvoke.WinMm.MMTIME](https://github.com/dahall/Vanara/search?l=C%23&q=MMTIME)  
 [PCMWAVEFORMAT](https://www.google.com/search?num=5&q=PCMWAVEFORMAT+site%3Adocs.microsoft.com) | mmreg.h | [Vanara.PInvoke.WinMm.PCMWAVEFORMAT](https://github.com/dahall/Vanara/search?l=C%23&q=PCMWAVEFORMAT)  
 [SAMPLES](https://www.google.com/search?num=5&q=SAMPLES+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.WAVEFORMATEXTENSIBLE.SAMPLES](https://github.com/dahall/Vanara/search?l=C%23&q=SAMPLES)  
+[TARGET](https://www.google.com/search?num=5&q=TARGET+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.MIXERLINE.TARGET](https://github.com/dahall/Vanara/search?l=C%23&q=TARGET)  
+[TIMECAPS](https://www.google.com/search?num=5&q=TIMECAPS+site%3Adocs.microsoft.com) | timeapi.h | [Vanara.PInvoke.WinMm.TIMECAPS](https://github.com/dahall/Vanara/search?l=C%23&q=TIMECAPS)  
 [VIDEOHDR](https://www.google.com/search?num=5&q=VIDEOHDR+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.AviFil32.VIDEOHDR](https://github.com/dahall/Vanara/search?l=C%23&q=VIDEOHDR)  
 [VIDEOHDR](https://www.google.com/search?num=5&q=VIDEOHDR+site%3Adocs.microsoft.com) | vfw.h | [Vanara.PInvoke.Vfw32.VIDEOHDR](https://github.com/dahall/Vanara/search?l=C%23&q=VIDEOHDR)  
 [WAVEFILTER](https://www.google.com/search?num=5&q=WAVEFILTER+site%3Adocs.microsoft.com) | mmreg.h | [Vanara.PInvoke.WinMm.WAVEFILTER](https://github.com/dahall/Vanara/search?l=C%23&q=WAVEFILTER)  
@@ -348,6 +369,7 @@ Native Class | Header | Managed Class
 [SafeHACMDRIVER](https://www.google.com/search?num=5&q=SafeHACMDRIVER+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MsAcm32.SafeHACMDRIVER](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHACMDRIVER)  
 [SafeHACMSTREAM](https://www.google.com/search?num=5&q=SafeHACMSTREAM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MsAcm32.SafeHACMSTREAM](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHACMSTREAM)  
 [SafeHDRAWDIB](https://www.google.com/search?num=5&q=SafeHDRAWDIB+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Msvfw32.SafeHDRAWDIB](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHDRAWDIB)  
+[SafeHDRVR](https://www.google.com/search?num=5&q=SafeHDRVR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.SafeHDRVR](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHDRVR)  
 [SafeHIC](https://www.google.com/search?num=5&q=SafeHIC+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Msvfw32.SafeHIC](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHIC)  
 [SafeHWAVEIN](https://www.google.com/search?num=5&q=SafeHWAVEIN+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.SafeHWAVEIN](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWAVEIN)  
 [SafeHWAVEOUT](https://www.google.com/search?num=5&q=SafeHWAVEOUT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinMm.SafeHWAVEOUT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWAVEOUT)  

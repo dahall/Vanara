@@ -511,7 +511,16 @@ namespace Vanara.PInvoke
 		// hDriver );
 		[DllImport(Lib_Winmm, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.DrvGetModuleHandle")]
-		public static extern HINSTANCE DrvGetModuleHandle(HDRVR hDriver);
+		public static extern HINSTANCE DrvGetModuleHandle([In] HDRVR hDriver);
+
+		/// <summary>Retrieves the instance handle of the module that contains the installable driver.</summary>
+		/// <param name="hDriver">Handle of the installable driver instance. The handle must have been previously created by using the OpenDriver function.</param>
+		/// <returns>Returns an instance handle of the driver module if successful or <c>NULL</c> otherwise.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-getdrivermodulehandle
+		// HMODULE GetDriverModuleHandle( HDRVR hDriver );
+		[DllImport(Lib_Winmm, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.GetDriverModuleHandle")]
+		public static extern HINSTANCE GetDriverModuleHandle([In] HDRVR hDriver);
 
 		/// <summary>
 		/// The <c>mmioAdvance</c> function advances the I/O buffer of a file set up for direct I/O buffer access with the mmioGetInfo function.
