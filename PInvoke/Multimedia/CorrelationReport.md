@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Multimedia
 
 - Includes methods from avicap32.dll, avifil32.dll, msacm32.dll, msvfw32.dll, winmm.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Multimedia?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Multimedia?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Multimedia)  
-### Methods - 99% API coverage (252 of 253 functions)  
+### Methods - 100% API coverage (253 of 253 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [acmDriverAdd](https://www.google.com/search?num=5&q=acmDriverAddA+site%3Adocs.microsoft.com) | msacm32.dll | msacm.h | [Vanara.PInvoke.MsAcm32.acmDriverAdd](https://github.com/dahall/Vanara/search?l=C%23&q=acmDriverAdd)  
@@ -112,7 +112,7 @@ Native Method | Native DLL | Header | Managed Method
 [EditStreamPaste](https://www.google.com/search?num=5&q=EditStreamPaste+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.EditStreamPaste](https://github.com/dahall/Vanara/search?l=C%23&q=EditStreamPaste)  
 [EditStreamSetInfo](https://www.google.com/search?num=5&q=EditStreamSetInfo+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.EditStreamSetInfo](https://github.com/dahall/Vanara/search?l=C%23&q=EditStreamSetInfo)  
 [EditStreamSetName](https://www.google.com/search?num=5&q=EditStreamSetName+site%3Adocs.microsoft.com) | avifil32.dll | vfw.h | [Vanara.PInvoke.AviFil32.EditStreamSetName](https://github.com/dahall/Vanara/search?l=C%23&q=EditStreamSetName)  
-[GetDriverModuleHandle](https://www.google.com/search?num=5&q=GetDriverModuleHandle+site%3Adocs.microsoft.com) | winmm.dll |  |   
+[GetDriverModuleHandle](https://www.google.com/search?num=5&q=GetDriverModuleHandle+site%3Adocs.microsoft.com) | winmm.dll | mmiscapi.h | [Vanara.PInvoke.WinMm.GetDriverModuleHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GetDriverModuleHandle)  
 [GetOpenFileNamePreview](https://www.google.com/search?num=5&q=GetOpenFileNamePreview+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.GetOpenFileNamePreview](https://github.com/dahall/Vanara/search?l=C%23&q=GetOpenFileNamePreview)  
 [GetSaveFileNamePreview](https://www.google.com/search?num=5&q=GetSaveFileNamePreviewA+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.GetSaveFileNamePreview](https://github.com/dahall/Vanara/search?l=C%23&q=GetSaveFileNamePreview)  
 [ICClose](https://www.google.com/search?num=5&q=ICClose+site%3Adocs.microsoft.com) | msvfw32.dll | vfw.h | [Vanara.PInvoke.Msvfw32.ICClose](https://github.com/dahall/Vanara/search?l=C%23&q=ICClose)  
