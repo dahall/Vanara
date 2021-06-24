@@ -7,7 +7,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the NewDev.dll</summary>
 	public static partial class NewDev
 	{
-		private const string Lib_NewDev = "NewDev.dll";
+		private const string Lib_NewDev = "newdev.dll";
 
 		/// <summary>Flags for <see cref="DiInstallDevice(HWND, HDEVINFO, in SP_DEVINFO_DATA, in SP_DRVINFO_DATA_V2, DIID_FLAG, out bool)"/>.</summary>
 		[PInvokeData("newdev.h", MSDNShortId = "NF:newdev.DiInstallDevice")]

@@ -9,7 +9,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the WinMm.dll</summary>
 	public static partial class WinMm
 	{
-		private const string Lib_Winmm = "WinMm.dll";
+		private const string Lib_Winmm = "winmm.dll";
 
 		/// <summary>Describes optional functionality supported by the auxiliary audio device.</summary>
 		[PInvokeData("mmeapi.h", MSDNShortId = "NS:mmeapi.auxcaps_tag")]

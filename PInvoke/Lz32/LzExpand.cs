@@ -8,7 +8,7 @@ namespace Vanara.PInvoke
 	/// <summary>Functions and structures from Lz32.dll</summary>
 	public static partial class Lz32
 	{
-		private const string Lib_Lz32 = "Lz32.dll";
+		private const string Lib_Lz32 = "lz32.dll";
 
 		/// <summary>Style flags for <see cref="LZOpenFile"/>.</summary>
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365430")]

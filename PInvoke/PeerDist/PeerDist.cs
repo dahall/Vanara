@@ -7,7 +7,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the PeerDist.dll</summary>
 	public static partial class PeerDist
 	{
-		private const string Lib_PeerDist = "PeerDist.dll";
+		private const string Lib_PeerDist = "peerdist.dll";
 
 		/// <summary/>
 		public const uint PEERDIST_READ_TIMEOUT_DEFAULT = 0xfffffffe;

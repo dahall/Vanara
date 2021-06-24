@@ -16,7 +16,7 @@ namespace Vanara.PInvoke
 	{
 		// Win95 compatibility--not applicable to 32-bit ConfigMgr Win95 compatibility--not applicable to 32-bit ConfigMgr Win95
 		// compatibility--not applicable to 32-bit ConfigMgr
-		private const string Lib_Cfgmgr32 = "CfgMgr32.dll";
+		private const string Lib_Cfgmgr32 = "cfgmgr32.dll";
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public const int CONFIGMG_VERSION = 0x0400;

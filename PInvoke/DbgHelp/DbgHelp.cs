@@ -11,7 +11,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the DbgHelp.dll</summary>
 	public static partial class DbgHelp
 	{
-		private const string Lib_DbgHelp = "DbgHelp.dll";
+		private const string Lib_DbgHelp = "dbghelp.dll";
 
 		/// <summary>
 		/// <para>An application-defined callback function used with the EnumDirTree function. It is called every time a match is found.</para>

@@ -12,7 +12,7 @@ namespace Vanara.PInvoke
 		/// <summary>Handle returned is to an event</summary>
 		public const uint DHCPCAPI_REGISTER_HANDLE_EVENT = 0x01;
 
-		private const string Lib_Dhcp = "Dhcpcsvc.dll";
+		private const string Lib_Dhcp = "dhcpcsvc.dll";
 
 		/// <summary>
 		/// DHCP options. See <a href="https://kb.isc.org/docs/isc-dhcp-44-manual-pages-dhcp-options">ISC DHCP 4.4 Manual Pages -

@@ -7,7 +7,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the ComDlg32.dll</summary>
 	public static partial class ComDlg32
 	{
-		private const string Lib_ComDlg32 = "ComDlg32.dll";
+		private const string Lib_ComDlg32 = "comdlg32.dll";
 
 		/// <summary>
 		/// A Color dialog box sends the COLOROKSTRING registered message to your hook procedure, CCHookProc, when the user selects a color

@@ -16,7 +16,7 @@ namespace Vanara.PInvoke
 		private const int CLIENTADDRESS_LENGTH = 30;
 		private const int CLIENTNAME_LENGTH = 20;
 		private const int DOMAIN_LENGTH = 17;
-		private const string Lib_WTSApi32 = "WTSApi32.dll";
+		private const string Lib_WTSApi32 = "wtsapi32.dll";
 		private const int MAX_PATH = 260;
 		private const int USERNAME_LENGTH = 20;
 		private const int WINSTATIONNAME_LENGTH = 32;

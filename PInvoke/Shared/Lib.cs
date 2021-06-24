@@ -55,7 +55,7 @@
 		public const string Gdi32 = "gdi32.dll";
 
 		/// <summary>The gdi32</summary>
-		public const string IpHlpApi = "Iphlpapi.dll";
+		public const string IpHlpApi = "iphlpapi.dll";
 
 		/// <summary>The kernel32</summary>
 		public const string Kernel32 = "kernel32.dll";
@@ -112,7 +112,7 @@
 		public const string PropSys = "propsys.dll";
 
 		/// <summary>The Schannel</summary>
-		public const string Schannel = "Schannel.dll";
+		public const string Schannel = "schannel.dll";
 
 		/// <summary>The secur32</summary>
 		public const string Secur32 = "secur32.dll";
@@ -121,10 +121,10 @@
 		public const string Shell32 = "shell32.dll";
 
 		/// <summary>The shlwapi</summary>
-		public const string Shlwapi = "Shlwapi.dll";
+		public const string Shlwapi = "shlwapi.dll";
 
 		/// <summary>The sspi cli</summary>
-		public const string SspiCli = "SspiCli.dll";
+		public const string SspiCli = "sspicli.dll";
 
 		/// <summary>The tokenbinding</summary>
 		public const string Tokenbinding = "tokenbinding.dll";

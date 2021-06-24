@@ -9,7 +9,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the P2P.dll</summary>
 	public static partial class P2P
 	{
-		private const string Lib_P2P = "P2P.dll";
+		private const string Lib_P2P = "p2p.dll";
 		private const string Lib_P2PGraph = "p2pgraph.dll";
 
 		/// <summary/>

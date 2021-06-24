@@ -8,7 +8,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the SetupAPI.dll</summary>
 	public static partial class SetupAPI
 	{
-		private const string Lib_SetupAPI = "SetupAPI.dll";
+		private const string Lib_SetupAPI = "setupapi.dll";
 
 		/// <summary>
 		/// <para>

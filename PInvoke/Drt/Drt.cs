@@ -12,7 +12,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the Drt.dll</summary>
 	public static partial class Drt
 	{
-		private const string Lib_Drt = "Drt.dll";
+		private const string Lib_Drt = "drt.dll";
 
 		/// <summary/>
 		public const uint DRT_PAYLOAD_REVOKED = (1 << 0);

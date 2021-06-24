@@ -6,7 +6,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the Msi.dll</summary>
 	public static partial class Msi
 	{
-		private const string Lib_Msi = "Msi.dll";
+		private const string Lib_Msi = "msi.dll";
 
 		/// <summary>To advertise the product locally to the computer.</summary>
 		[PInvokeData("msi.h")]
