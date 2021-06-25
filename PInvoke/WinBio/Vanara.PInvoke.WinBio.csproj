@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>WinBio.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows WinBio.dll.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <TargetFrameworks>net20;net35;net40;net45;net5.0-windows;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.WinBio</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;WinBio;windows biometric framework;biometric</PackageTags>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+WinBioAcquireFocus WinBioAsyncEnumBiometricUnits WinBioAsyncEnumDatabases WinBioAsyncEnumServiceProviders WinBioAsyncMonitorFrameworkChanges WinBioAsyncOpenFramework WinBioAsyncOpenSession WinBioCancel WinBioCaptureSample WinBioCaptureSampleWithCallback WinBioCloseFramework WinBioCloseSession WinBioControlUnit WinBioControlUnitPrivileged WinBioDeleteTemplate WinBioDiscardTicket WinBioEnrollAuthorize WinBioEnrollBegin WinBioEnrollCapture WinBioEnrollCaptureWithCallback WinBioEnrollCommit WinBioEnrollDiscard WinBioEnrollRevoke WinBioEnrollSelect WinBioEnumBiometricUnits WinBioEnumDatabases WinBioEnumEnrollments WinBioEnumServiceProviders WinBioFree WinBioGetCredentialState WinBioGetCredentialWithTicket WinBioGetDomainLogonSetting WinBioGetEnabledSetting WinBioGetEnrolledFactors WinBioGetGestureMetadata WinBioGetLogonSetting WinBioGetPolicyProtectionSupport WinBioGetProperty WinBioGetProtectionPolicy WinBioIdentify WinBioIdentifyAndReleaseTicket WinBioIdentifyWithCallback WinBioLocateSensor WinBioLocateSensorWithCallback WinBioLockUnit WinBioLogonIdentifiedUser WinBioMonitorPresence WinBioNgcAuthorizeEnrollment WinBioNgcCloseAuthorizationSession WinBioNgcGetAuthorizationWithTicket WinBioNgcOpenAuthorizationSession WinBioNotifyPasswordChange WinBioOpenSession WinBioProtectData WinBioProtectDataWithPolicy WinBioRegisterEventMonitor WinBioRegisterServiceMonitor WinBioReleaseFocus WinBioRemoveAllCredentials WinBioRemoveAllDomainCredentials WinBioRemoveCredential WinBioSetCredential WinBioSetMSACredential WinBioSetProperty WinBioUnlockUnit WinBioUnprotectData WinBioUnregisterEventMonitor WinBioUnregisterServiceMonitor WinBioVerify WinBioVerifyAndReleaseTicket WinBioVerifyWithCallback WinBioWait _BioLogonIdentifiedUser
+
+Structures
+ACCOUNTSID AUTHORIZATION CAPTURESAMPLE CONTROLUNIT DELETETEMPLATE ENROLLBEGIN ENROLLCAPTURE ENROLLCOMMIT ENROLLMENTREQUIREMENTS ENROLLMENTREQUIREMENTS ENROLLMENTREQUIREMENTS ENROLLMENTREQUIREMENTS ENROLLSELECT ENUMBIOMETRICUNITS ENUMDATABASES ENUMENROLLMENTS ENUMSERVICEPROVIDERS ERROR FACIALFEATURES FACIALFEATURES FACIALFEATURES FACIALFEATURES FACIALFEATURES FINGERPRINT FINGERPRINT FINGERPRINT FINGERPRINT GETEVENT GETPROPERTY GETPROTECTIONPOLICY HARDWAREINFO IDENTIFY IDENTIFYANDRELEASETICKET IRIS IRIS IRIS IRIS IRIS MONITORPRESENCE NOTIFYUNITSTATUSCHANGE OPAQUEENGINEDATA OPAQUEENGINEDATA PARAMETERS PARAMETERS POINT3D SETPROPERTY SPECIFIC SPECIFIC SPECIFIC SPECIFIC UNCLAIMED UNCLAIMEDIDENTIFY VALIDITYPERIOD VALUE VERIFY VERIFYANDRELEASETICKET VOICE VOICE VOICE VOICE WINBIO_ANTI_SPOOF_POLICY WINBIO_ASYNC_RESULT WINBIO_BDB_ANSI_381_HEADER WINBIO_BDB_ANSI_381_RECORD WINBIO_BIR WINBIO_BIR_DATA WINBIO_BIR_HEADER WINBIO_BSP_SCHEMA WINBIO_EVENT WINBIO_EXTENDED_ENGINE_INFO WINBIO_EXTENDED_ENROLLMENT_STATUS WINBIO_EXTENDED_SENSOR_INFO WINBIO_EXTENDED_STORAGE_INFO WINBIO_EXTENDED_UNIT_STATUS WINBIO_IDENTITY WINBIO_PRESENCE WINBIO_PRESENCE_PROPERTIES WINBIO_PROTECTION_POLICY WINBIO_REGISTERED_FORMAT WINBIO_STORAGE_SCHEMA WINBIO_UNIT_SCHEMA WINBIO_VERSION
+
+</PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>

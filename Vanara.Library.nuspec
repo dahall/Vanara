@@ -81,6 +81,7 @@
       <dependency id="Vanara.PInvoke.WcmApi" version="3.3.11" />
       <dependency id="Vanara.PInvoke.WcnApi" version="3.3.11" />
       <dependency id="Vanara.PInvoke.Wer" version="3.3.11" />
+      <dependency id="Vanara.PInvoke.WinBio" version="3.3.11" />
       <dependency id="Vanara.PInvoke.WinINet" version="3.3.11" />
       <dependency id="Vanara.PInvoke.WinTrust" version="3.3.11" />
       <dependency id="Vanara.PInvoke.WlanApi" version="3.3.11" />
