@@ -3002,6 +3002,368 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock.h", MSDNShortId = "3e4282e0-3ed0-43e7-9b27-72ec36b9cfa1")]
 		public static extern int recvfrom(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR from, ref int fromlen);
 
+		/// <summary>
+		/// The <c>select</c> function determines the status of one or more sockets, waiting if necessary, to perform synchronous I/O.
+		/// </summary>
+		/// <param name="nfds">Ignored. The nfds parameter is included only for compatibility with Berkeley sockets.</param>
+		/// <param name="readfds">An optional pointer to a set of sockets to be checked for readability.</param>
+		/// <param name="writefds">An optional pointer to a set of sockets to be checked for writability.</param>
+		/// <param name="exceptfds">An optional pointer to a set of sockets to be checked for errors.</param>
+		/// <param name="timeout">
+		/// The maximum time for <c>select</c> to wait, provided in the form of a TIMEVAL structure. Set the timeout parameter to
+		/// <c>null</c> for blocking operations.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// The <c>select</c> function returns the total number of socket handles that are ready and contained in the fd_set structures,
+		/// zero if the time limit expired, or SOCKET_ERROR if an error occurred. If the return value is SOCKET_ERROR, WSAGetLastError can
+		/// be used to retrieve a specific error code.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The Windows Sockets implementation was unable to allocate needed resources for its internal operations, or the readfds,
+		/// writefds, exceptfds, or timeval parameters are not part of the user address space.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The time-out value is not valid, or all three descriptor parameters were null.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Socket 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>One of the descriptor sets contains an entry that is not a socket.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>select</c> function is used to determine the status of one or more sockets. For each socket, the caller can request
+		/// information on read, write, or error status. The set of sockets for which a given status is requested is indicated by an fd_set
+		/// structure. The sockets contained within the <c>fd_set</c> structures must be associated with a single service provider. For the
+		/// purpose of this restriction, sockets are considered to be from the same service provider if the WSAPROTOCOL_INFO structures
+		/// describing their protocols have the same providerId value. Upon return, the structures are updated to reflect the subset of
+		/// these sockets that meet the specified condition. The <c>select</c> function returns the number of sockets meeting the
+		/// conditions. A set of macros is provided for manipulating an <c>fd_set</c> structure. These macros are compatible with those used
+		/// in the Berkeley software, but the underlying representation is completely different.
+		/// </para>
+		/// <para>
+		/// The parameter readfds identifies the sockets that are to be checked for readability. If the socket is currently in the listen
+		/// state, it will be marked as readable if an incoming connection request has been received such that an accept is guaranteed to
+		/// complete without blocking. For other sockets, readability means that queued data is available for reading such that a call to
+		/// recv, WSARecv, WSARecvFrom, or recvfrom is guaranteed not to block.
+		/// </para>
+		/// <para>
+		/// For connection-oriented sockets, readability can also indicate that a request to close the socket has been received from the
+		/// peer. If the virtual circuit was closed gracefully, and all data was received, then a recv will return immediately with zero
+		/// bytes read. If the virtual circuit was reset, then a <c>recv</c> will complete immediately with an error code such as
+		/// WSAECONNRESET. The presence of OOB data will be checked if the socket option SO_OOBINLINE has been enabled (see setsockopt).
+		/// </para>
+		/// <para>
+		/// The parameter writefds identifies the sockets that are to be checked for writability. If a socket is processing a connect call
+		/// (nonblocking), a socket is writeable if the connection establishment successfully completes. If the socket is not processing a
+		/// <c>connect</c> call, writability means a send, sendto, or WSASendto are guaranteed to succeed. However, they can block on a
+		/// blocking socket if the len parameter exceeds the amount of outgoing system buffer space available. It is not specified how long
+		/// these guarantees can be assumed to be valid, particularly in a multithreaded environment.
+		/// </para>
+		/// <para>
+		/// The parameter exceptfds identifies the sockets that are to be checked for the presence of OOB data or any exceptional error conditions.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Out-of-band data will only be reported in this way if the option SO_OOBINLINE is <c>FALSE</c>. If a socket is
+		/// processing a connect call (nonblocking), failure of the connect attempt is indicated in exceptfds (application must then call
+		/// getsockopt SO_ERROR to determine the error value to describe why the failure occurred). This document does not define which
+		/// other errors will be included.
+		/// </para>
+		/// <para>
+		/// Any two of the parameters, readfds, writefds, or exceptfds, can be given as <c>null</c>. At least one must be non- <c>null</c>,
+		/// and any non- <c>null</c> descriptor set must contain at least one handle to a socket.
+		/// </para>
+		/// <para>In summary, a socket will be identified in a particular set when <c>select</c> returns if:</para>
+		/// <para>readfds:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>If listen has been called and a connection is pending, accept will succeed.</term>
+		/// </item>
+		/// <item>
+		/// <term>Data is available for reading (includes OOB data if SO_OOBINLINE is enabled).</term>
+		/// </item>
+		/// <item>
+		/// <term>Connection has been closed/reset/terminated.</term>
+		/// </item>
+		/// </list>
+		/// <para>writefds:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>If processing a connect call (nonblocking), connection has succeeded.</term>
+		/// </item>
+		/// <item>
+		/// <term>Data can be sent.</term>
+		/// </item>
+		/// </list>
+		/// <para>exceptfds:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>If processing a <c>connect</c> call (nonblocking), connection attempt failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>OOB data is available for reading (only if SO_OOBINLINE is disabled).</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Four macros are defined in the header file Winsock2.h for manipulating and checking the descriptor sets. The variable FD_SETSIZE
+		/// determines the maximum number of descriptors in a set. (The default value of FD_SETSIZE is 64, which can be modified by defining
+		/// FD_SETSIZE to another value before including Winsock2.h.) Internally, socket handles in an fd_set structure are not represented
+		/// as bit flags as in Berkeley Unix. Their data representation is opaque. Use of these macros will maintain software portability
+		/// between different socket environments. The macros to manipulate and check <c>fd_set</c> contents are:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>FD_ZERO(*set) - Initializes set to the empty set. A set should always be cleared before using.</term>
+		/// </item>
+		/// <item>
+		/// <term>FD_CLR(s, *set) - Removes socket s from set.</term>
+		/// </item>
+		/// <item>
+		/// <term>FD_ISSET(s, *set) - Checks to see if s is a member of set and returns TRUE if so.</term>
+		/// </item>
+		/// <item>
+		/// <term>FD_SET(s, *set) - Adds socket s to set.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The parameter time-out controls how long the <c>select</c> can take to complete. If time-out is a <c>null</c> pointer,
+		/// <c>select</c> will block indefinitely until at least one descriptor meets the specified criteria. Otherwise, time-out points to
+		/// a TIMEVAL structure that specifies the maximum time that <c>select</c> should wait before returning. When <c>select</c> returns,
+		/// the contents of the <c>TIMEVAL</c> structure are not altered. If <c>TIMEVAL</c> is initialized to {0, 0}, <c>select</c> will
+		/// return immediately; this is used to poll the state of the selected sockets. If <c>select</c> returns immediately, then the
+		/// <c>select</c> call is considered nonblocking and the standard assumptions for nonblocking calls apply. For example, the blocking
+		/// hook will not be called, and Windows Sockets will not yield.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The <c>select</c> function has no effect on the persistence of socket events registered with WSAAsyncSelect or WSAEventSelect.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>select</c> with the timeout parameter set to <c>NULL</c>, Winsock
+		/// may need to wait for a network event before the call can complete. Winsock performs an alertable wait in this situation, which
+		/// can be interrupted by an asynchronous procedure call (APC) scheduled on the same thread. Issuing another blocking Winsock call
+		/// inside an APC that interrupted an ongoing blocking Winsock call on the same thread will lead to undefined behavior, and must
+		/// never be attempted by Winsock clients.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-select int WSAAPI select( int nfds, fd_set *readfds,
+		// fd_set *writefds, fd_set *exceptfds, const timeval *timeout );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.select")]
+		public static extern int select([Optional] int nfds, ref fd_set readfds, ref fd_set writefds, ref fd_set exceptfds, in TIMEVAL timeout);
+
+		/// <summary>
+		/// The <c>select</c> function determines the status of one or more sockets, waiting if necessary, to perform synchronous I/O.
+		/// </summary>
+		/// <param name="nfds">Ignored. The nfds parameter is included only for compatibility with Berkeley sockets.</param>
+		/// <param name="readfds">An optional pointer to a set of sockets to be checked for readability.</param>
+		/// <param name="writefds">An optional pointer to a set of sockets to be checked for writability.</param>
+		/// <param name="exceptfds">An optional pointer to a set of sockets to be checked for errors.</param>
+		/// <param name="timeout">
+		/// The maximum time for <c>select</c> to wait, provided in the form of a TIMEVAL structure. Set the timeout parameter to
+		/// <c>null</c> for blocking operations.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// The <c>select</c> function returns the total number of socket handles that are ready and contained in the fd_set structures,
+		/// zero if the time limit expired, or SOCKET_ERROR if an error occurred. If the return value is SOCKET_ERROR, WSAGetLastError can
+		/// be used to retrieve a specific error code.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The Windows Sockets implementation was unable to allocate needed resources for its internal operations, or the readfds,
+		/// writefds, exceptfds, or timeval parameters are not part of the user address space.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The time-out value is not valid, or all three descriptor parameters were null.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Socket 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>One of the descriptor sets contains an entry that is not a socket.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>select</c> function is used to determine the status of one or more sockets. For each socket, the caller can request
+		/// information on read, write, or error status. The set of sockets for which a given status is requested is indicated by an fd_set
+		/// structure. The sockets contained within the <c>fd_set</c> structures must be associated with a single service provider. For the
+		/// purpose of this restriction, sockets are considered to be from the same service provider if the WSAPROTOCOL_INFO structures
+		/// describing their protocols have the same providerId value. Upon return, the structures are updated to reflect the subset of
+		/// these sockets that meet the specified condition. The <c>select</c> function returns the number of sockets meeting the
+		/// conditions. A set of macros is provided for manipulating an <c>fd_set</c> structure. These macros are compatible with those used
+		/// in the Berkeley software, but the underlying representation is completely different.
+		/// </para>
+		/// <para>
+		/// The parameter readfds identifies the sockets that are to be checked for readability. If the socket is currently in the listen
+		/// state, it will be marked as readable if an incoming connection request has been received such that an accept is guaranteed to
+		/// complete without blocking. For other sockets, readability means that queued data is available for reading such that a call to
+		/// recv, WSARecv, WSARecvFrom, or recvfrom is guaranteed not to block.
+		/// </para>
+		/// <para>
+		/// For connection-oriented sockets, readability can also indicate that a request to close the socket has been received from the
+		/// peer. If the virtual circuit was closed gracefully, and all data was received, then a recv will return immediately with zero
+		/// bytes read. If the virtual circuit was reset, then a <c>recv</c> will complete immediately with an error code such as
+		/// WSAECONNRESET. The presence of OOB data will be checked if the socket option SO_OOBINLINE has been enabled (see setsockopt).
+		/// </para>
+		/// <para>
+		/// The parameter writefds identifies the sockets that are to be checked for writability. If a socket is processing a connect call
+		/// (nonblocking), a socket is writeable if the connection establishment successfully completes. If the socket is not processing a
+		/// <c>connect</c> call, writability means a send, sendto, or WSASendto are guaranteed to succeed. However, they can block on a
+		/// blocking socket if the len parameter exceeds the amount of outgoing system buffer space available. It is not specified how long
+		/// these guarantees can be assumed to be valid, particularly in a multithreaded environment.
+		/// </para>
+		/// <para>
+		/// The parameter exceptfds identifies the sockets that are to be checked for the presence of OOB data or any exceptional error conditions.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Out-of-band data will only be reported in this way if the option SO_OOBINLINE is <c>FALSE</c>. If a socket is
+		/// processing a connect call (nonblocking), failure of the connect attempt is indicated in exceptfds (application must then call
+		/// getsockopt SO_ERROR to determine the error value to describe why the failure occurred). This document does not define which
+		/// other errors will be included.
+		/// </para>
+		/// <para>
+		/// Any two of the parameters, readfds, writefds, or exceptfds, can be given as <c>null</c>. At least one must be non- <c>null</c>,
+		/// and any non- <c>null</c> descriptor set must contain at least one handle to a socket.
+		/// </para>
+		/// <para>In summary, a socket will be identified in a particular set when <c>select</c> returns if:</para>
+		/// <para>readfds:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>If listen has been called and a connection is pending, accept will succeed.</term>
+		/// </item>
+		/// <item>
+		/// <term>Data is available for reading (includes OOB data if SO_OOBINLINE is enabled).</term>
+		/// </item>
+		/// <item>
+		/// <term>Connection has been closed/reset/terminated.</term>
+		/// </item>
+		/// </list>
+		/// <para>writefds:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>If processing a connect call (nonblocking), connection has succeeded.</term>
+		/// </item>
+		/// <item>
+		/// <term>Data can be sent.</term>
+		/// </item>
+		/// </list>
+		/// <para>exceptfds:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>If processing a <c>connect</c> call (nonblocking), connection attempt failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>OOB data is available for reading (only if SO_OOBINLINE is disabled).</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Four macros are defined in the header file Winsock2.h for manipulating and checking the descriptor sets. The variable FD_SETSIZE
+		/// determines the maximum number of descriptors in a set. (The default value of FD_SETSIZE is 64, which can be modified by defining
+		/// FD_SETSIZE to another value before including Winsock2.h.) Internally, socket handles in an fd_set structure are not represented
+		/// as bit flags as in Berkeley Unix. Their data representation is opaque. Use of these macros will maintain software portability
+		/// between different socket environments. The macros to manipulate and check <c>fd_set</c> contents are:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>FD_ZERO(*set) - Initializes set to the empty set. A set should always be cleared before using.</term>
+		/// </item>
+		/// <item>
+		/// <term>FD_CLR(s, *set) - Removes socket s from set.</term>
+		/// </item>
+		/// <item>
+		/// <term>FD_ISSET(s, *set) - Checks to see if s is a member of set and returns TRUE if so.</term>
+		/// </item>
+		/// <item>
+		/// <term>FD_SET(s, *set) - Adds socket s to set.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The parameter time-out controls how long the <c>select</c> can take to complete. If time-out is a <c>null</c> pointer,
+		/// <c>select</c> will block indefinitely until at least one descriptor meets the specified criteria. Otherwise, time-out points to
+		/// a TIMEVAL structure that specifies the maximum time that <c>select</c> should wait before returning. When <c>select</c> returns,
+		/// the contents of the <c>TIMEVAL</c> structure are not altered. If <c>TIMEVAL</c> is initialized to {0, 0}, <c>select</c> will
+		/// return immediately; this is used to poll the state of the selected sockets. If <c>select</c> returns immediately, then the
+		/// <c>select</c> call is considered nonblocking and the standard assumptions for nonblocking calls apply. For example, the blocking
+		/// hook will not be called, and Windows Sockets will not yield.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The <c>select</c> function has no effect on the persistence of socket events registered with WSAAsyncSelect or WSAEventSelect.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>select</c> with the timeout parameter set to <c>NULL</c>, Winsock
+		/// may need to wait for a network event before the call can complete. Winsock performs an alertable wait in this situation, which
+		/// can be interrupted by an asynchronous procedure call (APC) scheduled on the same thread. Issuing another blocking Winsock call
+		/// inside an APC that interrupted an ongoing blocking Winsock call on the same thread will lead to undefined behavior, and must
+		/// never be attempted by Winsock clients.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-select int WSAAPI select( int nfds, fd_set *readfds,
+		// fd_set *writefds, fd_set *exceptfds, const timeval *timeout );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.select")]
+		public static extern int select([Optional] int nfds, [In, Out, Optional] IntPtr readfds, [In, Out, Optional] IntPtr writefds, [In, Out, Optional] IntPtr exceptfds, [In, Optional] IntPtr timeout);
+
 		/// <summary>The <c>send</c> function sends data on a connected socket.</summary>
 		/// <param name="s">A descriptor identifying a connected socket.</param>
 		/// <param name="buf">A pointer to a buffer containing the data to be transmitted.</param>
