@@ -1,10 +1,9 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using WINBIO_FRAMEWORK_HANDLE = System.UInt32;
-using WINBIO_SESSION_HANDLE = System.UInt32;
 using WINBIO_UNIT_ID = System.UInt32;
 
 namespace Vanara.PInvoke
@@ -50,9 +49,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winbio/nc-winbio-pwinbio_async_completion_callback
 		// PWINBIO_ASYNC_COMPLETION_CALLBACK PwinbioAsyncCompletionCallback; void PwinbioAsyncCompletionCallback( PWINBIO_ASYNC_RESULT
 		// AsyncResult ) {...}
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[UnmanagedFunctionPointer(CallingConvention.ThisCall)]
 		[PInvokeData("winbio.h", MSDNShortId = "NC:winbio.PWINBIO_ASYNC_COMPLETION_CALLBACK")]
-		public delegate void PWINBIO_ASYNC_COMPLETION_CALLBACK(in WINBIO_ASYNC_RESULT AsyncResult);
+		public delegate void PWINBIO_ASYNC_COMPLETION_CALLBACK(/*in WINBIO_ASYNC_RESULT*/ [In] IntPtr AsyncResult);
 
 		/// <summary>
 		/// <para>
@@ -462,8 +461,6 @@ namespace Vanara.PInvoke
 			WINBIO_ASYNC_NOTIFY_CALLBACK,   // Caller receives a new-style callback
 			/// <summary>The framework sends completion notices to the client application window message queue.</summary>
 			WINBIO_ASYNC_NOTIFY_MESSAGE,    // Caller receives a window message
-			/// <summary>The maximum enumeration value. This constant is not directly used by the WinBioAsyncOpenFramework and WinBioAsyncOpenSession.</summary>
-			WINBIO_ASYNC_NOTIFY_MAXIMUM_VALUE
 		}
 
 		/// <summary>Acquires window focus.</summary>
@@ -1004,10 +1001,10 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winbio/nf-winbio-winbioasyncopenframework HRESULT WinBioAsyncOpenFramework(
 		// WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, HWND TargetWindow, UINT MessageCode, PWINBIO_ASYNC_COMPLETION_CALLBACK
 		// CallbackRoutine, PVOID UserData, BOOL AsynchronousOpen, WINBIO_FRAMEWORK_HANDLE *FrameworkHandle );
-		[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Winapi)]
 		[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioAsyncOpenFramework")]
 		public static extern HRESULT WinBioAsyncOpenFramework(WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, [In, Optional] HWND TargetWindow, [In, Optional] uint MessageCode,
-			[In, Optional] PWINBIO_ASYNC_COMPLETION_CALLBACK CallbackRoutine, [In, Optional] IntPtr UserData,
+			/*[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] PWINBIO_ASYNC_COMPLETION_CALLBACK*/ [In, Optional] IntPtr CallbackRoutine, [In, Optional] IntPtr UserData,
 			[MarshalAs(UnmanagedType.Bool)] bool AsynchronousOpen, out WINBIO_FRAMEWORK_HANDLE FrameworkHandle);
 
 		/// <summary>
@@ -1353,7 +1350,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioAsyncOpenSession")]
 		public static extern HRESULT WinBioAsyncOpenSession(WINBIO_BIOMETRIC_TYPE Factor, WINBIO_POOL_TYPE PoolType, WINBIO_SESSION_FLAGS Flags,
-			[In, MarshalAs(UnmanagedType.LPArray)] uint[] UnitArray, [Optional] SizeT UnitCount, in Guid DatabaseId,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[] UnitArray, [Optional] SizeT UnitCount, in Guid DatabaseId,
 			WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, [In, Optional] HWND TargetWindow,
 			[In, Optional] uint MessageCode, [In, Optional] PWINBIO_ASYNC_COMPLETION_CALLBACK CallbackRoutine,
 			[In, Optional] IntPtr UserData, [MarshalAs(UnmanagedType.Bool)] bool AsynchronousOpen,
@@ -1702,7 +1699,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioAsyncOpenSession")]
 		public static extern HRESULT WinBioAsyncOpenSession(WINBIO_BIOMETRIC_TYPE Factor, WINBIO_POOL_TYPE PoolType, WINBIO_SESSION_FLAGS Flags,
-			[In, MarshalAs(UnmanagedType.LPArray)] uint[] UnitArray, [Optional] SizeT UnitCount, [In, Optional] InteropServices.GuidPtr DatabaseId,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[] UnitArray, [Optional] SizeT UnitCount, [In, Optional] GuidPtr DatabaseId,
 			WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, [In, Optional] HWND TargetWindow,
 			[In, Optional] uint MessageCode, [In, Optional] PWINBIO_ASYNC_COMPLETION_CALLBACK CallbackRoutine,
 			[In, Optional] IntPtr UserData, [MarshalAs(UnmanagedType.Bool)] bool AsynchronousOpen,
@@ -4358,12 +4355,15 @@ namespace Vanara.PInvoke
 		/// Gets information about the biometric enrollments that the specified user has on the computer. Biometric enrollments include
 		/// enrollments for facial recognition, fingerprint scanning, iris scanning, and so on.
 		/// </summary>
-		/// <param name="AccountOwner">A WINBIO_IDENTITY structure for the user whose biometric enrollments you want to get. For example:</param>
-		/// <param name="WINBIO_IDENTITY identity = {};&#xA;identity.Type = WINBIO_ID_TYPE_SID;&#xA;&#xA;// Move an account SID into identity.Value.AccountSid.Data.&#xA;// For example, CopySid(...)">
-		/// To see the enrollments for every user on the computer, specify the <c>WINBIO_ID_TYPE_WILDCARD</c> identity type for the
-		/// WINBIO_IDENTITY structure that you specify for the AccountOwner parameter. For example:
-		/// </param>
-		/// <param name="WINBIO_IDENTITY identity = {};&#xA;identity.Type = WINBIO_ID_TYPE_WILDCARD;&#xA;"/>
+		/// <param name="AccountOwner"><para>A WINBIO_IDENTITY structure for the user whose biometric enrollments you want to get. For example:</para>
+		/// <para><code>WINBIO_IDENTITY identity = {};
+		/// identity.Type = WINBIO_ID_TYPE_SID;
+		/// // Move an account SID into identity.Value.AccountSid.Data.
+		/// // For example, CopySid(...)</code></para>
+		/// <para>To see the enrollments for every user on the computer, specify the <c>WINBIO_ID_TYPE_WILDCARD</c> identity type for the
+		/// WINBIO_IDENTITY structure that you specify for the AccountOwner parameter. For example:</para>
+		/// <para><code>WINBIO_IDENTITY identity = {};
+		/// identity.Type = WINBIO_ID_TYPE_WILDCARD;</code></para></param>
 		/// <param name="EnrolledFactors">
 		/// <para>
 		/// A set of WINBIO_BIOMETRIC_TYPE flags that indicate the biometric enrollments that the specified user has on the computer. A
@@ -4414,7 +4414,12 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>Examples</para>
 		/// <para>
-		/// <code>WINBIO_BIOMETRIC_TYPE enrolledFactors = WINBIO_NO_TYPE_AVAILABLE; WINBIO_IDENTITY identity = {}; identity.Type = WINBIO_ID_TYPE_SID; // Move an account SID into identity.Value.AccountSid.Data. // e.g., CopySid(...) HRESULT hr = WinBioGetEnrolledFactors(&amp;identity, &amp;enrolledFactors);</code>
+		/// <code>WINBIO_BIOMETRIC_TYPE enrolledFactors = WINBIO_NO_TYPE_AVAILABLE;
+		/// WINBIO_IDENTITY identity = {};
+		/// identity.Type = WINBIO_ID_TYPE_SID;
+		/// // Move an account SID into identity.Value.AccountSid.Data.
+		/// // e.g., CopySid(...)
+		/// HRESULT hr = WinBioGetEnrolledFactors(&amp;identity, &amp;enrolledFactors);</code>
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winbio/nf-winbio-winbiogetenrolledfactors HRESULT WinBioGetEnrolledFactors(
@@ -7292,7 +7297,10 @@ namespace Vanara.PInvoke
 					public SizeT SubFactorCount;
 
 					/// <summary>Pointer to an array of sub-factors. For more information, see Remarks.</summary>
-					public IntPtr SubFactorArray;
+					public IntPtr _SubFactorArray;
+
+					/// <summary>Pointer to an array of sub-factors. For more information, see Remarks.</summary>
+					public WINBIO_BIOMETRIC_SUBTYPE[] SubFactorArray => _SubFactorArray.ToArray<WINBIO_BIOMETRIC_SUBTYPE>(SubFactorCount);
 				}
 
 				/// <summary>Contains the results of an asynchronous call to WinBioCaptureSample.</summary>
@@ -7470,7 +7478,12 @@ namespace Vanara.PInvoke
 					/// <summary>
 					/// Pointer to an array of WINBIO_BSP_SCHEMA structures that contain information about each of the available service providers.
 					/// </summary>
-					public IntPtr BspSchemaArray;
+					public IntPtr _BspSchemaArray;
+
+					/// <summary>
+					/// An array of WINBIO_BSP_SCHEMA structures that contain information about each of the available service providers.
+					/// </summary>
+					public WINBIO_BSP_SCHEMA[] BspSchemaArray => _BspSchemaArray.ToArray<WINBIO_BSP_SCHEMA>(BspCount);
 				}
 
 				/// <summary>Contains the results of an asynchronous call to WinBioEnumBiometricUnits or WinBioAsyncEnumBiometricUnits.</summary>
@@ -7485,7 +7498,10 @@ namespace Vanara.PInvoke
 					public SizeT UnitCount;
 
 					/// <summary>An array of WINBIO_UNIT_SCHEMA structures that contain information about each enumerated biometric unit.</summary>
-					public IntPtr UnitSchemaArray;
+					public IntPtr _UnitSchemaArray;
+
+					/// <summary>An array of WINBIO_UNIT_SCHEMA structures that contain information about each enumerated biometric unit.</summary>
+					public WINBIO_UNIT_SCHEMA[] UnitSchemaArray => _UnitSchemaArray.ToArray<WINBIO_UNIT_SCHEMA>(UnitCount);
 				}
 
 				/// <summary>Contains the results of an asynchronous call to WinBioEnumDatabases or WinBioAsyncEnumDatabases.</summary>
@@ -7500,7 +7516,10 @@ namespace Vanara.PInvoke
 					public SizeT StorageCount;
 
 					/// <summary>Array of WINBIO_STORAGE_SCHEMA structures that contain information about each database.</summary>
-					public IntPtr StorageSchemaArray;
+					public IntPtr _StorageSchemaArray;
+
+					/// <summary>Array of WINBIO_STORAGE_SCHEMA structures that contain information about each database.</summary>
+					public WINBIO_STORAGE_SCHEMA[] StorageSchemaArray => _StorageSchemaArray.ToArray<WINBIO_STORAGE_SCHEMA>(StorageCount);
 				}
 
 				/// <summary>Reserved. This member is supported starting in Windows 10.</summary>
@@ -7578,7 +7597,10 @@ namespace Vanara.PInvoke
 					public SizeT PresenceCount;
 
 					/// <summary>Address of the array of WINBIO_PRESENCE structures, one for each individual monitored.</summary>
-					public IntPtr PresenceArray;
+					public IntPtr _PresenceArray;
+
+					/// <summary>Address of the array of WINBIO_PRESENCE structures, one for each individual monitored.</summary>
+					public WINBIO_PRESENCE[] PresenceArray => _PresenceArray.ToArray<WINBIO_PRESENCE>(PresenceCount);
 				}
 
 				/// <summary/>
@@ -7609,8 +7631,37 @@ namespace Vanara.PInvoke
 				}
 			}
 		}
+
+		/// <summary>An unsigned long integer that contains the handle for an open framework session.</summary>
+		[PInvokeData("winbio.h")]
+		[DebuggerDisplay("{value}")]
+		[StructLayout(LayoutKind.Sequential, Size = 4)]
+		public struct WINBIO_FRAMEWORK_HANDLE
+		{
+			private readonly uint value;
+
+			/// <summary>Performs an implicit conversion from <see cref="WINBIO_FRAMEWORK_HANDLE"/> to <see cref="System.UInt32"/>.</summary>
+			/// <param name="handle">The handle.</param>
+			/// <returns>The resulting <see cref="System.UInt32"/> instance from the conversion.</returns>
+			public static implicit operator uint(WINBIO_FRAMEWORK_HANDLE handle) => handle.value;
+		}
+
+		/// <summary>An unsigned long integer that contains the handle for an open biometric session.</summary>
+		[PInvokeData("winbio.h")]
+		[DebuggerDisplay("{value}")]
+		[StructLayout(LayoutKind.Sequential, Size = 4)]
+		public struct WINBIO_SESSION_HANDLE
+		{
+			private readonly uint value;
+
+			/// <summary>Performs an implicit conversion from <see cref="WINBIO_SESSION_HANDLE"/> to <see cref="System.UInt32"/>.</summary>
+			/// <param name="handle">The handle.</param>
+			/// <returns>The resulting <see cref="System.UInt32"/> instance from the conversion.</returns>
+			public static implicit operator uint(WINBIO_SESSION_HANDLE handle) => handle.value;
+		}
+
 		/// <summary>A safe handle for memory allocated by WinBio methods and freed using <see cref="WinBioFree"/>.</summary>
-		/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
+		/// <seealso cref="SafeHANDLE"/>
 		public class SafeWinBioMemory : SafeHANDLE
 		{
 			private SafeWinBioMemory() : base(IntPtr.Zero, true) { }
@@ -7639,7 +7690,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>A structure handler based on unmanaged memory allocated by AllocCoTaskMem.</summary>
 		/// <typeparam name="TStruct">The type of the structure.</typeparam>
-		/// <seealso cref="Vanara.InteropServices.SafeMemStruct{TStruct, TMem}"/>
+		/// <seealso cref="SafeMemStruct{TStruct, TMem}"/>
 		public class SafeWinBioStruct<TStruct> : SafeMemStruct<TStruct, WinBioMemoryMethods> where TStruct : struct
 		{
 			/// <summary>Represents the <see langword="null"/> equivalent of this class instances.</summary>
@@ -7660,20 +7711,20 @@ namespace Vanara.PInvoke
 			/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 			[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 			public SafeWinBioStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
-			/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TStruct}"/> to <see cref="SafeCoTaskMemStruct{TStruct}"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="Nullable{TStruct}"/> to <see cref="SafeCoTaskMemStruct{TStruct}"/>.</summary>
 			/// <param name="s">The value of the <typeparamref name="TStruct"/> instance or <see langword="null"/>.</param>
 			/// <returns>The resulting <see cref="SafeWinBioStruct{TStruct}"/> instance from the conversion.</returns>
 			public static implicit operator SafeWinBioStruct<TStruct>(TStruct? s) => s.HasValue ? new SafeWinBioStruct<TStruct>(s.Value) : new SafeWinBioStruct<TStruct>(IntPtr.Zero);
 		}
 
 		/// <summary>Internal use only.</summary>
-		/// <seealso cref="Vanara.InteropServices.MemoryMethodsBase"/>
+		/// <seealso cref="MemoryMethodsBase"/>
 		public sealed class WinBioMemoryMethods : MemoryMethodsBase
 		{
 			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
 			/// <param name="size">The size, in bytes, of memory to allocate.</param>
 			/// <returns>A memory handle.</returns>
-			/// <exception cref="System.NotImplementedException"></exception>
+			/// <exception cref="NotImplementedException"></exception>
 			public override IntPtr AllocMem(int size) => throw new NotImplementedException();
 			/// <summary>Frees the memory associated with a handle.</summary>
 			/// <param name="hMem">A memory handle.</param>

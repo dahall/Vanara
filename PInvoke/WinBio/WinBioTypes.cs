@@ -3549,6 +3549,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>A <c>DWORD</c> that contains the minor version number.</summary>
 			public uint MinorVersion;
+
+			/// <inheritdoc/>
+			public override string ToString() => $"{MajorVersion}.{MinorVersion}";
 		}
 	}
 }

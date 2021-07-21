@@ -3,10 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows WinBio.dll
 
 - Includes methods from winbio.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WinBio?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WinBio?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinBio)  
-### Methods - 71% API coverage (52 of 73 functions)  
+### Methods - 100% API coverage (52 of 52 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[_BioLogonIdentifiedUser](https://www.google.com/search?num=5&q=_BioLogonIdentifiedUser+site%3Adocs.microsoft.com) |  |   
 [WinBioAcquireFocus](https://www.google.com/search?num=5&q=WinBioAcquireFocus+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioAcquireFocus](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioAcquireFocus)  
 [WinBioAsyncEnumBiometricUnits](https://www.google.com/search?num=5&q=WinBioAsyncEnumBiometricUnits+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioAsyncEnumBiometricUnits](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioAsyncEnumBiometricUnits)  
 [WinBioAsyncEnumDatabases](https://www.google.com/search?num=5&q=WinBioAsyncEnumDatabases+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioAsyncEnumDatabases](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioAsyncEnumDatabases)  
@@ -22,14 +21,11 @@ Native Method | Header | Managed Method
 [WinBioControlUnit](https://www.google.com/search?num=5&q=WinBioControlUnit+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioControlUnit](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioControlUnit)  
 [WinBioControlUnitPrivileged](https://www.google.com/search?num=5&q=WinBioControlUnitPrivileged+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioControlUnitPrivileged](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioControlUnitPrivileged)  
 [WinBioDeleteTemplate](https://www.google.com/search?num=5&q=WinBioDeleteTemplate+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioDeleteTemplate](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioDeleteTemplate)  
-[WinBioDiscardTicket](https://www.google.com/search?num=5&q=WinBioDiscardTicket+site%3Adocs.microsoft.com) |  |   
-[WinBioEnrollAuthorize](https://www.google.com/search?num=5&q=WinBioEnrollAuthorize+site%3Adocs.microsoft.com) |  |   
 [WinBioEnrollBegin](https://www.google.com/search?num=5&q=WinBioEnrollBegin+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnrollBegin](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnrollBegin)  
 [WinBioEnrollCapture](https://www.google.com/search?num=5&q=WinBioEnrollCapture+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnrollCapture](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnrollCapture)  
 [WinBioEnrollCaptureWithCallback](https://www.google.com/search?num=5&q=WinBioEnrollCaptureWithCallback+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnrollCaptureWithCallback](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnrollCaptureWithCallback)  
 [WinBioEnrollCommit](https://www.google.com/search?num=5&q=WinBioEnrollCommit+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnrollCommit](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnrollCommit)  
 [WinBioEnrollDiscard](https://www.google.com/search?num=5&q=WinBioEnrollDiscard+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnrollDiscard](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnrollDiscard)  
-[WinBioEnrollRevoke](https://www.google.com/search?num=5&q=WinBioEnrollRevoke+site%3Adocs.microsoft.com) |  |   
 [WinBioEnrollSelect](https://www.google.com/search?num=5&q=WinBioEnrollSelect+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnrollSelect](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnrollSelect)  
 [WinBioEnumBiometricUnits](https://www.google.com/search?num=5&q=WinBioEnumBiometricUnits+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnumBiometricUnits](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnumBiometricUnits)  
 [WinBioEnumDatabases](https://www.google.com/search?num=5&q=WinBioEnumDatabases+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnumDatabases](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnumDatabases)  
@@ -37,46 +33,29 @@ Native Method | Header | Managed Method
 [WinBioEnumServiceProviders](https://www.google.com/search?num=5&q=WinBioEnumServiceProviders+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnumServiceProviders](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnumServiceProviders)  
 [WinBioFree](https://www.google.com/search?num=5&q=WinBioFree+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioFree](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioFree)  
 [WinBioGetCredentialState](https://www.google.com/search?num=5&q=WinBioGetCredentialState+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetCredentialState](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetCredentialState)  
-[WinBioGetCredentialWithTicket](https://www.google.com/search?num=5&q=WinBioGetCredentialWithTicket+site%3Adocs.microsoft.com) |  |   
 [WinBioGetDomainLogonSetting](https://www.google.com/search?num=5&q=WinBioGetDomainLogonSetting+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetDomainLogonSetting](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetDomainLogonSetting)  
 [WinBioGetEnabledSetting](https://www.google.com/search?num=5&q=WinBioGetEnabledSetting+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetEnabledSetting](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetEnabledSetting)  
 [WinBioGetEnrolledFactors](https://www.google.com/search?num=5&q=WinBioGetEnrolledFactors+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetEnrolledFactors](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetEnrolledFactors)  
-[WinBioGetGestureMetadata](https://www.google.com/search?num=5&q=WinBioGetGestureMetadata+site%3Adocs.microsoft.com) |  |   
 [WinBioGetLogonSetting](https://www.google.com/search?num=5&q=WinBioGetLogonSetting+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetLogonSetting](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetLogonSetting)  
-[WinBioGetPolicyProtectionSupport](https://www.google.com/search?num=5&q=WinBioGetPolicyProtectionSupport+site%3Adocs.microsoft.com) |  |   
 [WinBioGetProperty](https://www.google.com/search?num=5&q=WinBioGetProperty+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioGetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioGetProperty)  
-[WinBioGetProtectionPolicy](https://www.google.com/search?num=5&q=WinBioGetProtectionPolicy+site%3Adocs.microsoft.com) |  |   
 [WinBioIdentify](https://www.google.com/search?num=5&q=WinBioIdentify+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioIdentify](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioIdentify)  
-[WinBioIdentifyAndReleaseTicket](https://www.google.com/search?num=5&q=WinBioIdentifyAndReleaseTicket+site%3Adocs.microsoft.com) |  |   
 [WinBioIdentifyWithCallback](https://www.google.com/search?num=5&q=WinBioIdentifyWithCallback+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioIdentifyWithCallback](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioIdentifyWithCallback)  
 [WinBioLocateSensor](https://www.google.com/search?num=5&q=WinBioLocateSensor+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioLocateSensor](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioLocateSensor)  
 [WinBioLocateSensorWithCallback](https://www.google.com/search?num=5&q=WinBioLocateSensorWithCallback+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioLocateSensorWithCallback](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioLocateSensorWithCallback)  
 [WinBioLockUnit](https://www.google.com/search?num=5&q=WinBioLockUnit+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioLockUnit](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioLockUnit)  
 [WinBioLogonIdentifiedUser](https://www.google.com/search?num=5&q=WinBioLogonIdentifiedUser+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioLogonIdentifiedUser](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioLogonIdentifiedUser)  
 [WinBioMonitorPresence](https://www.google.com/search?num=5&q=WinBioMonitorPresence+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioMonitorPresence](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioMonitorPresence)  
-[WinBioNgcAuthorizeEnrollment](https://www.google.com/search?num=5&q=WinBioNgcAuthorizeEnrollment+site%3Adocs.microsoft.com) |  |   
-[WinBioNgcCloseAuthorizationSession](https://www.google.com/search?num=5&q=WinBioNgcCloseAuthorizationSession+site%3Adocs.microsoft.com) |  |   
-[WinBioNgcGetAuthorizationWithTicket](https://www.google.com/search?num=5&q=WinBioNgcGetAuthorizationWithTicket+site%3Adocs.microsoft.com) |  |   
-[WinBioNgcOpenAuthorizationSession](https://www.google.com/search?num=5&q=WinBioNgcOpenAuthorizationSession+site%3Adocs.microsoft.com) |  |   
-[WinBioNotifyPasswordChange](https://www.google.com/search?num=5&q=WinBioNotifyPasswordChange+site%3Adocs.microsoft.com) |  |   
 [WinBioOpenSession](https://www.google.com/search?num=5&q=WinBioOpenSession+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioOpenSession](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioOpenSession)  
-[WinBioProtectData](https://www.google.com/search?num=5&q=WinBioProtectData+site%3Adocs.microsoft.com) |  |   
-[WinBioProtectDataWithPolicy](https://www.google.com/search?num=5&q=WinBioProtectDataWithPolicy+site%3Adocs.microsoft.com) |  |   
 [WinBioRegisterEventMonitor](https://www.google.com/search?num=5&q=WinBioRegisterEventMonitor+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioRegisterEventMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioRegisterEventMonitor)  
-[WinBioRegisterServiceMonitor](https://www.google.com/search?num=5&q=WinBioRegisterServiceMonitor+site%3Adocs.microsoft.com) |  |   
 [WinBioReleaseFocus](https://www.google.com/search?num=5&q=WinBioReleaseFocus+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioReleaseFocus](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioReleaseFocus)  
 [WinBioRemoveAllCredentials](https://www.google.com/search?num=5&q=WinBioRemoveAllCredentials+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioRemoveAllCredentials](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioRemoveAllCredentials)  
 [WinBioRemoveAllDomainCredentials](https://www.google.com/search?num=5&q=WinBioRemoveAllDomainCredentials+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioRemoveAllDomainCredentials](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioRemoveAllDomainCredentials)  
 [WinBioRemoveCredential](https://www.google.com/search?num=5&q=WinBioRemoveCredential+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioRemoveCredential](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioRemoveCredential)  
 [WinBioSetCredential](https://www.google.com/search?num=5&q=WinBioSetCredential+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioSetCredential](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioSetCredential)  
-[WinBioSetMSACredential](https://www.google.com/search?num=5&q=WinBioSetMSACredential+site%3Adocs.microsoft.com) |  |   
 [WinBioSetProperty](https://www.google.com/search?num=5&q=WinBioSetProperty+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioSetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioSetProperty)  
 [WinBioUnlockUnit](https://www.google.com/search?num=5&q=WinBioUnlockUnit+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioUnlockUnit](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioUnlockUnit)  
-[WinBioUnprotectData](https://www.google.com/search?num=5&q=WinBioUnprotectData+site%3Adocs.microsoft.com) |  |   
 [WinBioUnregisterEventMonitor](https://www.google.com/search?num=5&q=WinBioUnregisterEventMonitor+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioUnregisterEventMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioUnregisterEventMonitor)  
-[WinBioUnregisterServiceMonitor](https://www.google.com/search?num=5&q=WinBioUnregisterServiceMonitor+site%3Adocs.microsoft.com) |  |   
 [WinBioVerify](https://www.google.com/search?num=5&q=WinBioVerify+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioVerify](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioVerify)  
-[WinBioVerifyAndReleaseTicket](https://www.google.com/search?num=5&q=WinBioVerifyAndReleaseTicket+site%3Adocs.microsoft.com) |  |   
 [WinBioVerifyWithCallback](https://www.google.com/search?num=5&q=WinBioVerifyWithCallback+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioVerifyWithCallback](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioVerifyWithCallback)  
 [WinBioWait](https://www.google.com/search?num=5&q=WinBioWait+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioWait](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioWait)  
 ### Structures  
@@ -156,11 +135,13 @@ Native Structure | Header | Managed Structure
 [WINBIO_EXTENDED_SENSOR_INFO](https://www.google.com/search?num=5&q=WINBIO_EXTENDED_SENSOR_INFO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinBio.WINBIO_EXTENDED_SENSOR_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_EXTENDED_SENSOR_INFO)  
 [WINBIO_EXTENDED_STORAGE_INFO](https://www.google.com/search?num=5&q=WINBIO_EXTENDED_STORAGE_INFO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinBio.WINBIO_EXTENDED_STORAGE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_EXTENDED_STORAGE_INFO)  
 [WINBIO_EXTENDED_UNIT_STATUS](https://www.google.com/search?num=5&q=WINBIO_EXTENDED_UNIT_STATUS+site%3Adocs.microsoft.com) | winbio_types.h | [Vanara.PInvoke.WinBio.WINBIO_EXTENDED_UNIT_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_EXTENDED_UNIT_STATUS)  
+[WINBIO_FRAMEWORK_HANDLE](https://www.google.com/search?num=5&q=WINBIO_FRAMEWORK_HANDLE+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WINBIO_FRAMEWORK_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_FRAMEWORK_HANDLE)  
 [WINBIO_IDENTITY](https://www.google.com/search?num=5&q=WINBIO_IDENTITY+site%3Adocs.microsoft.com) | winbio_types.h | [Vanara.PInvoke.WinBio.WINBIO_IDENTITY](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_IDENTITY)  
 [WINBIO_PRESENCE](https://www.google.com/search?num=5&q=WINBIO_PRESENCE+site%3Adocs.microsoft.com) | winbio_types.h | [Vanara.PInvoke.WinBio.WINBIO_PRESENCE](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_PRESENCE)  
 [WINBIO_PRESENCE_PROPERTIES](https://www.google.com/search?num=5&q=WINBIO_PRESENCE_PROPERTIES+site%3Adocs.microsoft.com) | winbio_types.h | [Vanara.PInvoke.WinBio.WINBIO_PRESENCE_PROPERTIES](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_PRESENCE_PROPERTIES)  
 [WINBIO_PROTECTION_POLICY](https://www.google.com/search?num=5&q=WINBIO_PROTECTION_POLICY+site%3Adocs.microsoft.com) | winbio_types.h | [Vanara.PInvoke.WinBio.WINBIO_PROTECTION_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_PROTECTION_POLICY)  
 [WINBIO_REGISTERED_FORMAT](https://www.google.com/search?num=5&q=WINBIO_REGISTERED_FORMAT+site%3Adocs.microsoft.com) | winbio_types.h | [Vanara.PInvoke.WinBio.WINBIO_REGISTERED_FORMAT](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_REGISTERED_FORMAT)  
+[WINBIO_SESSION_HANDLE](https://www.google.com/search?num=5&q=WINBIO_SESSION_HANDLE+site%3Adocs.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WINBIO_SESSION_HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_SESSION_HANDLE)  
 [WINBIO_STORAGE_SCHEMA](https://www.google.com/search?num=5&q=WINBIO_STORAGE_SCHEMA+site%3Adocs.microsoft.com) | winbio_types.h | [Vanara.PInvoke.WinBio.WINBIO_STORAGE_SCHEMA](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_STORAGE_SCHEMA)  
 [WINBIO_UNIT_SCHEMA](https://www.google.com/search?num=5&q=WINBIO_UNIT_SCHEMA+site%3Adocs.microsoft.com) | winbio_types.h | [Vanara.PInvoke.WinBio.WINBIO_UNIT_SCHEMA](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_UNIT_SCHEMA)  
 [WINBIO_VERSION](https://www.google.com/search?num=5&q=WINBIO_VERSION+site%3Adocs.microsoft.com) | winbio_types.h | [Vanara.PInvoke.WinBio.WINBIO_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=WINBIO_VERSION)  

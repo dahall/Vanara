@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.WinBio</AssemblyName>
+    <!--<OutputType>Exe</OutputType>-->
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\WinBio\Vanara.PInvoke.WinBio.csproj" />
   </ItemGroup>
 </Project>
