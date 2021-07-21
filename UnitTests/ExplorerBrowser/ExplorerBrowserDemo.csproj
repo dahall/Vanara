@@ -61,6 +61,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Theraot.Core" Version="3.2.5" Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) " />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
     <ProjectReference Include="..\..\Windows.Forms\Vanara.Windows.Forms.csproj" />
     <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj" />

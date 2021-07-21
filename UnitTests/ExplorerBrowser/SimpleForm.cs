@@ -20,7 +20,7 @@ namespace Microsoft.WindowsAPICodePack.Samples
 
         private void SimpleForm_Load(object sender, EventArgs e)
         {
-            explorerBrowser1.Navigate(ShellFolder.Desktop);
+            //explorerBrowser1.Navigate(ShellFolder.Desktop);
         }
     }
 }
