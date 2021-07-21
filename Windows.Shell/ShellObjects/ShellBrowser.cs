@@ -108,8 +108,8 @@ namespace Vanara.Windows.Shell
 	}
 
 	/// <summary>
-	/// Encapsulates a <see cref="IShellBrowser"/>-Implementation within an <see cref="UserControl"/>. <br/><br/> Implements the
-	/// following Interfaces: <br/>
+	/// Encapsulates a <see cref="IShellBrowser"/>-Implementation within an <see cref="UserControl"/>. <br/><br/> Implements the following
+	/// Interfaces: <br/>
 	/// - <seealso cref="IWin32Window"/><br/>
 	/// - <seealso cref="IShellBrowser"/><br/>
 	/// - <seealso cref="Shell32.IServiceProvider"/><br/><br/> For more Information on used techniques see: <br/>
@@ -126,7 +126,7 @@ namespace Vanara.Windows.Shell
 	/// - DONE: Disable header in Details view when grouping is enabled
 	/// - DONE: Creating ViewWindow using '.CreateViewWindow()' fails on Zip-Folders; =&gt; Fixed again by returning HRESULT.E_NOTIMPL from MessageSFVCB
 	/// - TODO: internal static readonly bool IsMinVista = Environment.OSVersion.Version.Major &gt;= 6; // TODO: We use one interface,
-	///   afaik, that only works in vista and above: IFolderView2
+	/// afaik, that only works in vista and above: IFolderView2
 	/// - TODO: Windows 10' Quick Access folder has a special type of grouping, can't find out how this works yet. As soon as we would be
 	/// able to get all the available properties for an particular item, we would be able found out how this grouping works. However, it
 	/// seems to be a special group, since folders are Tiles, whereas files are shown in Details mode.
@@ -175,9 +175,6 @@ namespace Vanara.Windows.Shell
 			History = new ShellNavigationHistory();
 			Items = new ShellItemCollection(this, SVGIO.SVGIO_ALLVIEW);
 			SelectedItems = new ShellItemCollection(this, SVGIO.SVGIO_SELECTION);
-
-			Resize += ShellBrowser_Resize;
-			HandleDestroyed += ShellBrowser_HandleDestroyed;
 		}
 
 		/// <summary>Fires when the Items collection changes.</summary>
@@ -191,15 +188,6 @@ namespace Vanara.Windows.Shell
 		/// <summary>Fires when the SelectedItems collection changes.</summary>
 		[Category("Behavior"), Description("Selection changed.")]
 		public event EventHandler SelectionChanged;
-
-		/// <summary>
-		/// <inheritdoc/><br/><br/>
-		/// Note: I've tried using ComCtl32.ListViewMessage.LVM_SETBKIMAGE, but this doesn't work properly. That's why this property has
-		/// been hidden.
-		/// </summary>
-		[Bindable(false), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public override Image BackgroundImage => base.BackgroundImage;
 
 		/// <summary>The default text that is displayed when an empty folder is shown</summary>
 		[Category("Appearance"), DefaultValue("This folder is empty."), Description("The default text that is displayed when an empty folder is shown.")]
@@ -260,6 +248,15 @@ namespace Vanara.Windows.Shell
 		[Category("Behavior"), Description("The Registry Key where Browser ViewStates get serialized.")]
 		public string ViewStateRegistryKey { get; set; } =
 			$"Software\\{ Application.CompanyName }\\{ Application.ProductName }\\ShellBrowser\\ViewStateStreams";
+
+		/// <summary>
+		/// <inheritdoc/><br/><br/>
+		/// Note: I've tried using ComCtl32.ListViewMessage.LVM_SETBKIMAGE, but this doesn't work properly. That's why this property has
+		/// been hidden.
+		/// </summary>
+		[Bindable(false), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public override Image BackgroundImage => base.BackgroundImage;
 
 		/// <inheritdoc/>
 		protected override Size DefaultSize => new(200, 150);
@@ -582,18 +579,6 @@ namespace Vanara.Windows.Shell
 		/// <summary>Raises the <see cref="SelectionChanged"/> event.</summary>
 		protected internal virtual void OnSelectionChanged() => SelectionChanged?.Invoke(this, EventArgs.Empty);
 
-		/// <summary>
-		/// <seealso cref="ShellBrowser"/>'s event handler for <seealso cref="Control.HandleDestroyed"/> event: Save ViewState when
-		/// ShellBrowser gets closed.
-		/// </summary>
-		protected internal virtual void ShellBrowser_HandleDestroyed(object sender, EventArgs e) => ViewHandler.GetValidInstance()?.ShellView.SaveViewState();
-
-		/// <summary>
-		/// <seealso cref="ShellBrowser"/>'s event handler for <seealso cref="Control.Resize"/> event: Resize ViewWindow when ShellBrowser
-		/// gets resized.
-		/// </summary>
-		protected internal virtual void ShellBrowser_Resize(object sender, EventArgs e) => ViewHandler?.MoveWindow(0, 0, ClientRectangle.Width, ClientRectangle.Height, false);
-
 		/// <summary>Clean up any resources being used.</summary>
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
@@ -603,6 +588,22 @@ namespace Vanara.Windows.Shell
 				components.Dispose();
 			}
 			base.Dispose(disposing);
+		}
+
+		/// <summary>Raises the <see cref="E:HandleDestroyed"/> event. Saves ViewState when ShellBrowser gets closed.</summary>
+		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+		protected override void OnHandleDestroyed(EventArgs e)
+		{
+			ViewHandler.GetValidInstance()?.ShellView.SaveViewState();
+			base.OnHandleDestroyed(e);
+		}
+
+		/// <summary>Raises the <see cref="E:Resize"/> event. Resize ViewWindow when ShellBrowser gets resized.</summary>
+		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+		protected override void OnResize(EventArgs e)
+		{
+			ViewHandler?.MoveWindow(0, 0, ClientRectangle.Width, ClientRectangle.Height, false);
+			base.OnResize(e);
 		}
 
 		/// <summary>Process known command keys of the ShellBrowser.</summary>
@@ -785,26 +786,25 @@ namespace Vanara.Windows.Shell
 	}
 
 	/// <summary>
-	/// Encapsulates an <see cref="IShellFolderViewCB">IShellFolderViewCB</see>-Implementation within an <see
-	/// cref="IDisposable"/>-Object. Beside that it's implemented as a Wrapper-Object that is responsible for creating and disposing the
-	/// following objects aka Interface-Instances: <br/>
+	/// Encapsulates an <see cref="IShellFolderViewCB">IShellFolderViewCB</see>-Implementation within an <see cref="IDisposable"/>-Object.
+	/// Beside that it's implemented as a Wrapper-Object that is responsible for creating and disposing the following objects aka
+	/// Interface-Instances: <br/>
 	/// - <seealso cref="Shell.ShellFolder"/><br/>
 	/// - <seealso cref="IShellView"/><br/>
 	/// - <seealso cref="IFolderView2"/><br/><br/> While doing that, it also handles some common error cases: <br/>
 	/// - When there's no disk in a disk drive <br/><br/> Implements the following Interfaces: <br/>
-	/// - <seealso cref="IShellFolderViewCB"/><br/><br/> This class make use of some <see cref="SFVMUD">undocumented Messages</see>
-	/// in its <see cref="IShellFolderViewCB.MessageSFVCB"/> Callback Handler. <br/><br/> For more Information on these see: <br/>
-	/// - Google Drive Shell Extension: <seealso href="https://github.com/google/google-drive-shell-extension/blob/master/DriveFusion/ShellFolderViewCBHandler.cpp">
-	/// ShellFolderViewCBHandler.cpp </seealso><br/>
-	/// - ReactOS: <seealso href="https://doxygen.reactos.org/d2/dbb/IShellFolderViewCB_8cpp.html"> IShellFolderViewCB.cpp File Reference
-	/// </seealso>, <seealso href="https://doxygen.reactos.org/d2/dbb/IShellFolderViewCB_8cpp_source.html"> IShellFolderViewCB.cpp </seealso>
+	/// - <seealso cref="IShellFolderViewCB"/><br/><br/> This class make use of some <see cref="SFVMUD">undocumented Messages</see> in its
+	/// <see cref="IShellFolderViewCB.MessageSFVCB"/> Callback Handler. <br/><br/> For more Information on these see: <br/>
+	/// - Google Drive Shell Extension: <seealso href="https://github.com/google/google-drive-shell-extension/blob/master/DriveFusion/ShellFolderViewCBHandler.cpp"> ShellFolderViewCBHandler.cpp</seealso><br/>
+	/// - ReactOS: <seealso href="https://doxygen.reactos.org/d2/dbb/IShellFolderViewCB_8cpp.html">IShellFolderViewCB.cpp File Reference
+	/// </seealso>, <seealso href="https://doxygen.reactos.org/d2/dbb/IShellFolderViewCB_8cpp_source.html">IShellFolderViewCB.cpp</seealso>
 	/// </summary>
 	public class ShellBrowserViewHandler : IShellFolderViewCB
 	{
 		/// <summary>
 		/// <code>{"The operation was canceled by the user. (Exception from HRESULT: 0x800704C7)"}</code>
-		/// is the result of a call to <see cref="IShellView.CreateViewWindow"/> on a Shell Item that targets a removable Disk Drive
-		/// when currently no Media is present. Let's catch these to use our own error handling for this.
+		/// is the result of a call to <see cref="IShellView.CreateViewWindow"/> on a Shell Item that targets a removable Disk Drive when
+		/// currently no Media is present. Let's catch these to use our own error handling for this.
 		/// </summary>
 		internal static readonly HRESULT HRESULT_CANCELLED = new(0x800704C7);
 
