@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NTDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NTDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NTDll)  
-### Methods - 4% API coverage (27 of 569 functions)  
+### Methods - 5% API coverage (29 of 571 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Adocs.microsoft.com) |  |   
@@ -40,6 +40,8 @@ Native Method | Header | Managed Method
 [NtCreateFile](https://www.google.com/search?num=5&q=NtCreateFile+site%3Adocs.microsoft.com) |  |   
 [NtCreateFileA](https://www.google.com/search?num=5&q=NtCreateFileA+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateFile](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateFile)  
 [NtCreateFileW](https://www.google.com/search?num=5&q=NtCreateFileW+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateFile](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateFile)  
+[NtCreateProcess](https://www.google.com/search?num=5&q=NtCreateProcess+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.NtCreateProcess](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateProcess)  
+[NtCreateProcessEx](https://www.google.com/search?num=5&q=NtCreateProcessEx+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.NtCreateProcessEx](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateProcessEx)  
 [NtCreateResourceManager](https://www.google.com/search?num=5&q=NtCreateResourceManager+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.NtCreateResourceManager](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateResourceManager)  
 [NtCreateSection](https://www.google.com/search?num=5&q=NtCreateSection+site%3Adocs.microsoft.com) |  |   
 [NtCreateSectionA](https://www.google.com/search?num=5&q=NtCreateSectionA+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.NtCreateSection](https://github.com/dahall/Vanara/search?l=C%23&q=NtCreateSection)  

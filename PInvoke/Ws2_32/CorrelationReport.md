@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Ws2_32.dll
 
 - Includes methods from ws2_32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Ws2_32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Ws2_32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Ws2_32)  
-### Methods - 100% API coverage (132 of 132 functions)  
+### Methods - 100% API coverage (133 of 133 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [__WSAFDIsSet](https://www.google.com/search?num=5&q=__WSAFDIsSet+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.__WSAFDIsSet](https://github.com/dahall/Vanara/search?l=C%23&q=__WSAFDIsSet)  
@@ -41,6 +41,7 @@ Native Method | Header | Managed Method
 [ntohs](https://www.google.com/search?num=5&q=ntohs+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.ntohs](https://github.com/dahall/Vanara/search?l=C%23&q=ntohs)  
 [recv](https://www.google.com/search?num=5&q=recv+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.recv](https://github.com/dahall/Vanara/search?l=C%23&q=recv)  
 [recvfrom](https://www.google.com/search?num=5&q=recvfrom+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.recvfrom](https://github.com/dahall/Vanara/search?l=C%23&q=recvfrom)  
+[select](https://www.google.com/search?num=5&q=select+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.select](https://github.com/dahall/Vanara/search?l=C%23&q=select)  
 [send](https://www.google.com/search?num=5&q=send+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.send](https://github.com/dahall/Vanara/search?l=C%23&q=send)  
 [sendto](https://www.google.com/search?num=5&q=sendto+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.sendto](https://github.com/dahall/Vanara/search?l=C%23&q=sendto)  
 [SetAddrInfoEx](https://www.google.com/search?num=5&q=SetAddrInfoExA+site%3Adocs.microsoft.com) | ws2tcpip.h | [Vanara.PInvoke.Ws2_32.SetAddrInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetAddrInfoEx)  
