@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
+using USN = System.Int64;
 
 namespace Vanara.PInvoke
 {
@@ -115,7 +116,7 @@ namespace Vanara.PInvoke
 		// Overlapped );
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "FDDE9CB0-E1A2-46D6-94E0-228495675271")]
-		public static extern HRESULT CfConvertToPlaceholder(HFILE FileHandle, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength, CF_CONVERT_FLAGS ConvertFlags, out int ConvertUsn, [In, Out, Optional] IntPtr Overlapped);
+		public static extern HRESULT CfConvertToPlaceholder(HFILE FileHandle, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength, CF_CONVERT_FLAGS ConvertFlags, out USN ConvertUsn, [In, Out, Optional] IntPtr Overlapped);
 
 		/// <summary>Converts a normal file/directory to a placeholder file/directory.</summary>
 		/// <param name="FileHandle">Handle to the file or directory to be converted.</param>
@@ -177,7 +178,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "FDDE9CB0-E1A2-46D6-94E0-228495675271")]
 		public static unsafe extern HRESULT CfConvertToPlaceholder(HFILE FileHandle, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength, CF_CONVERT_FLAGS ConvertFlags,
-			[Out, Optional] int* ConvertUsn, [In, Out, Optional] NativeOverlapped* Overlapped);
+			[Out, Optional] USN* ConvertUsn, [In, Out, Optional] NativeOverlapped* Overlapped);
 
 		/// <summary>Creates one or more new placeholder files or directories under a sync root tree.</summary>
 		/// <param name="BaseDirectoryPath">Local directory path under which placeholders are created.</param>
@@ -869,7 +870,7 @@ namespace Vanara.PInvoke
 		// CF_IN_SYNC_STATE InSyncState, CF_SET_IN_SYNC_FLAGS InSyncFlags, USN *InSyncUsn );
 		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("cfapi.h", MSDNShortId = "1CB7955D-E530-4F34-8D67-BC608F8B6AF1")]
-		public static extern HRESULT CfSetInSyncState(HFILE FileHandle, CF_IN_SYNC_STATE InSyncState, CF_SET_IN_SYNC_FLAGS InSyncFlags, ref int InSyncUsn);
+		public static extern HRESULT CfSetInSyncState(HFILE FileHandle, CF_IN_SYNC_STATE InSyncState, CF_SET_IN_SYNC_FLAGS InSyncFlags, ref USN InSyncUsn);
 
 		/// <summary>
 		/// This sets the pin state of a placeholder, used to represent a user’s intent. Any application (not just the sync provider) can
@@ -1027,7 +1028,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("cfapi.h", MSDNShortId = "13F2BF9A-505F-4CFB-B008-7DDE85A3C581")]
 		public static extern HRESULT CfUpdatePlaceholder(HFILE FileHandle, in CF_FS_METADATA FsMetadata, [In] IntPtr FileIdentity, uint FileIdentityLength,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray)] CF_FILE_RANGE[] DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
-			ref int UpdateUsn, [In, Out, Optional] IntPtr Overlapped);
+			ref USN UpdateUsn, [In, Out, Optional] IntPtr Overlapped);
 
 		/// <summary>Updates characteristics of the placeholder file or directory.</summary>
 		/// <param name="FileHandle">A handle to the file or directory whose metadata is to be updated.</param>
@@ -1097,7 +1098,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("cfapi.h", MSDNShortId = "13F2BF9A-505F-4CFB-B008-7DDE85A3C581")]
 		public static unsafe extern HRESULT CfUpdatePlaceholder(HFILE FileHandle, in CF_FS_METADATA FsMetadata, [In] IntPtr FileIdentity, uint FileIdentityLength,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray)] CF_FILE_RANGE[] DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
-			ref int UpdateUsn, [In, Out] NativeOverlapped* Overlapped);
+			ref USN UpdateUsn, [In, Out] NativeOverlapped* Overlapped);
 
 		/// <summary>Updates the current status of the sync provider.</summary>
 		/// <param name="ConnectionKey">A connection key representing a communication channel with the sync filter.</param>

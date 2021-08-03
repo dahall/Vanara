@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
+using USN = System.Int64;
 
 namespace Vanara.PInvoke
 {
@@ -1998,7 +1999,7 @@ namespace Vanara.PInvoke
 			public HRESULT Result;
 
 			/// <summary>The final USN value after create actions are performed.</summary>
-			public int CreateUsn;
+			public USN CreateUsn;
 
 			/// <summary>
 			/// Initializes a new instance of the <see cref="CF_PLACEHOLDER_CREATE_INFO"/> struct with info from a file.
