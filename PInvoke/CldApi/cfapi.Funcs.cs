@@ -872,6 +872,22 @@ namespace Vanara.PInvoke
 		[PInvokeData("cfapi.h", MSDNShortId = "1CB7955D-E530-4F34-8D67-BC608F8B6AF1")]
 		public static extern HRESULT CfSetInSyncState(HFILE FileHandle, CF_IN_SYNC_STATE InSyncState, CF_SET_IN_SYNC_FLAGS InSyncFlags, ref USN InSyncUsn);
 
+		/// <summary>Sets the in-sync state for a placeholder file or folder.</summary>
+		/// <param name="FileHandle">A handle to the placeholder. The caller must have WRITE_DATA or WRITE_DAC access to the placeholder.</param>
+		/// <param name="InSyncState">The in-sync state. See CF_IN_SYNC_STATE for more details.</param>
+		/// <param name="InSyncFlags">The in-sync state flags. See CF_SET_IN_SYNC_FLAGS for more details.</param>
+		/// <param name="InSyncUsn">
+		/// When specified, this instructs the platform to only perform in-sync setting if the file still has the same USN value as the one
+		/// passed in. Passing a pointer to a USN value of 0 on input is the same as passing a NULL pointer. On return, this is the final
+		/// USN value after setting the in-sync state.
+		/// </param>
+		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/cfapi/nf-cfapi-cfsetinsyncstate HRESULT CfSetInSyncState( HANDLE FileHandle,
+		// CF_IN_SYNC_STATE InSyncState, CF_SET_IN_SYNC_FLAGS InSyncFlags, USN *InSyncUsn );
+		[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("cfapi.h", MSDNShortId = "1CB7955D-E530-4F34-8D67-BC608F8B6AF1")]
+		public static extern HRESULT CfSetInSyncState(HFILE FileHandle, CF_IN_SYNC_STATE InSyncState, CF_SET_IN_SYNC_FLAGS InSyncFlags, [In, Optional] IntPtr InSyncUsn);
+
 		/// <summary>
 		/// This sets the pin state of a placeholder, used to represent a user’s intent. Any application (not just the sync provider) can
 		/// call this function.

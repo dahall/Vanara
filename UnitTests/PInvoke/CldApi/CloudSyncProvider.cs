@@ -14,6 +14,7 @@ using Windows.Storage.Provider;
 using static Vanara.PInvoke.CldApi;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.SearchApi;
+using USN = System.Int64;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -172,7 +173,7 @@ namespace Vanara.PInvoke.Tests
 		public DateTime ChangeTime;
 
 		/// <summary>The final USN value after create actions are performed.</summary>
-		public int CreateUsn;
+		public USN CreateUsn;
 
 		/// <summary>
 		/// The time the file was created in FILETIME format, which is a 64-bit value representing the number of 100-nanosecond intervals
@@ -345,7 +346,7 @@ namespace Vanara.PInvoke.Tests
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public int ConvertToPlaceholder(string relativeFilePath, bool inSync = true, bool dehydrate = false, IntPtr fileIdentity = default, uint fileIdentityLength = 0)
+		public USN ConvertToPlaceholder(string relativeFilePath, bool inSync = true, bool dehydrate = false, IntPtr fileIdentity = default, uint fileIdentityLength = 0)
 		{
 			CfOpenFileWithOplock(relativeFilePath, CF_OPEN_FILE_FLAGS.CF_OPEN_FILE_FLAG_EXCLUSIVE, out var hCfFile).ThrowIfFailed();
 			using (hCfFile)
@@ -413,7 +414,7 @@ namespace Vanara.PInvoke.Tests
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public int ConvertToPlaceholder(HFILE fileHandle, bool inSync = true, bool dehydrate = false, IntPtr fileIdentity = default, uint fileIdentityLength = 0)
+		public USN ConvertToPlaceholder(HFILE fileHandle, bool inSync = true, bool dehydrate = false, IntPtr fileIdentity = default, uint fileIdentityLength = 0)
 		{
 			var flags = (inSync ? CF_CONVERT_FLAGS.CF_CONVERT_FLAG_MARK_IN_SYNC : 0) | (dehydrate ? CF_CONVERT_FLAGS.CF_CONVERT_FLAG_DEHYDRATE : 0);
 			CfConvertToPlaceholder(fileHandle, fileIdentity, fileIdentityLength, flags, out var usn).ThrowIfFailed();
@@ -425,7 +426,7 @@ namespace Vanara.PInvoke.Tests
 		/// <param name="fileInfo">The file information of the file.</param>
 		/// <param name="inSync">if set to <see langword="true"/>, the file is synchronized.</param>
 		/// <returns>The final USN value for the file.</returns>
-		public int CreatePlaceholderFromFile(string relativeFilePath, FileInfo fileInfo, bool inSync = true)
+		public USN CreatePlaceholderFromFile(string relativeFilePath, FileInfo fileInfo, bool inSync = true)
 		{
 			using var pRelativeName = new SafeCoTaskMemString(relativeFilePath);
 			var ph = new PlaceholderInfo[] { PlaceHolderFileInfo.CreateFromFile(fileInfo, inSync, relativeFilePath) };
