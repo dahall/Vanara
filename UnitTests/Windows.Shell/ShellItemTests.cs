@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -168,21 +169,28 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void GetPropTest()
 		{
-			using var i = new ShellItem(testDoc);
-			Assert.That(i.Properties.Count, Is.GreaterThan(0));
-			Assert.That(i.Properties[PROPERTYKEY.System.Author], Has.Member("TestAuthor"));
-			Assert.That(i.Properties[PROPERTYKEY.System.ItemTypeText], Does.StartWith("Microsoft Word"));
-			Assert.That(i.Properties[PROPERTYKEY.System.DateAccessed], Is.TypeOf<FILETIME>());
-			Assert.That(i.Properties[new PROPERTYKEY()], Is.Null);
-			Assert.That(i.Properties[new PROPERTYKEY(Guid.NewGuid(), 2)], Is.Null);
+			using (var i = new ShellItem(testDoc))
+			{
+				Assert.That(i.Properties.Count, Is.GreaterThan(0));
+				Assert.That(i.Properties[PROPERTYKEY.System.Author], Has.Member("TestAuthor"));
+				Assert.That(i.Properties[PROPERTYKEY.System.ItemTypeText], Does.StartWith("Microsoft Word"));
+				Assert.That(i.Properties[PROPERTYKEY.System.DateAccessed], Is.TypeOf<FILETIME>());
+				Assert.That((ulong)i.Properties[PROPERTYKEY.System.FileFRN], Is.GreaterThan((ulong)0));
+				Assert.That(i.Properties[new PROPERTYKEY()], Is.Null);
+				Assert.That(i.Properties[new PROPERTYKEY(Guid.NewGuid(), 2)], Is.Null);
 
-			Assert.That(i.Properties["System.Author"], Has.Member("TestAuthor"));
-			Assert.That(i.Properties["DocAuthor"], Has.Member("TestAuthor"));
-			Assert.That(() => i.Properties[null], Throws.Exception);
-			Assert.That(() => i.Properties["Arthur"], Throws.Exception);
+				Assert.That(i.Properties["System.Author"], Has.Member("TestAuthor"));
+				Assert.That(i.Properties["DocAuthor"], Has.Member("TestAuthor"));
+				Assert.That(() => i.Properties[null], Throws.Exception);
+				Assert.That(() => i.Properties["Arthur"], Throws.Exception);
 
-			Assert.That(i.Properties.GetProperty<string>(PROPERTYKEY.System.ApplicationName), Is.InstanceOf<string>().And.StartWith("Microsoft"));
-			Assert.That(() => i.Properties.GetProperty<int>(PROPERTYKEY.System.ApplicationName), Throws.Exception);
+				Assert.That(i.Properties.GetProperty<string>(PROPERTYKEY.System.ApplicationName), Is.InstanceOf<string>().And.StartWith("Microsoft"));
+				Assert.That(() => i.Properties.GetProperty<int>(PROPERTYKEY.System.ApplicationName), Throws.Exception);
+			}
+
+			// Test to ensure file handle was released
+			GC.Collect(); // -- This is needed or IPropertyStore may not be released which holds a lock to the file.
+			Assert.That(() => { using var fs = new FileStream(testDoc, FileMode.Open, FileAccess.Read, FileShare.None); fs.Close(); }, Throws.Nothing);
 		}
 
 		[Test]

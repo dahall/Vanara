@@ -14,7 +14,7 @@ namespace Vanara.Windows.Shell
 	public sealed class ShellItemPropertyStore : PropertyStore
 	{
 		/// <summary>The shell item</summary>
-		private readonly ShellItem shellItem;
+		private ShellItem shellItem;
 
 		/// <summary>The flags.</summary>
 		private GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_DEFAULT;
