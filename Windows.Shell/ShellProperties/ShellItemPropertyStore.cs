@@ -98,7 +98,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="ShellItemPropertyStore"/> provides a writable store, with no initial
-		/// properties, that exists for the lifetime of the Shell item instance; basically, a property bag attached to the item instance..
+		/// properties, that exists for the lifetime of the Shell item instance; basically, a property bag attached to the item instance.
 		/// </summary>
 		/// <value><c>true</c> if temporary; otherwise, <c>false</c>.</value>
 		[DefaultValue(false)]
@@ -119,6 +119,13 @@ namespace Vanara.Windows.Shell
 					flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_TEMPORARY, false);
 				}
 			}
+		}
+
+		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+		public override void Dispose()
+		{
+			shellItem = null;
+			base.Dispose();
 		}
 
 		/// <summary>Gets the CLSID of a supplied property key.</summary>
