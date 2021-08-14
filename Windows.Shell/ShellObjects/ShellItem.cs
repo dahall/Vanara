@@ -626,8 +626,10 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
 		{
-			if (props != null) { props?.Dispose(); props = null; }
-			if (propDescList != null) { propDescList?.Dispose(); propDescList = null; }
+			props?.Dispose();
+			props = null;
+			propDescList?.Dispose();
+			propDescList = null;
 			qi = null;
 			iShellItem2 = null;
 			iShellItem = null;
