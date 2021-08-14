@@ -1,12 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Runtime.InteropServices;
-using System.Text;
+using System.IO;
 using System.Windows.Forms;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
-using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests
 {
@@ -24,11 +20,10 @@ namespace Vanara.Windows.Shell.Tests
 			lnk.IconLocation = new IconLocation(TestCaseSources.ResourceFile, -107);
 			lnk.ShowState = FormWindowState.Minimized;
 
-			var fn = System.IO.Path.GetTempFileName() + ".lnk";
-			lnk.SaveAs(fn);
-			Assert.That(System.IO.File.Exists(fn), Is.True);
+			using var fn = new TempFile("lnk", null);
+			lnk.SaveAs(fn.FullName);
+			Assert.IsTrue(File.Exists(fn.FullName));
 			lnk.ViewInExplorer();
-			System.IO.File.Delete(fn);
 		}
 
 		[Test]
