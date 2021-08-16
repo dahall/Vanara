@@ -330,7 +330,7 @@ namespace Vanara.PInvoke
 			public string cFileName;
 
 			/// <summary>The file size, in bytes.</summary>
-			public ulong nFileSIze
+			public ulong nFileSize
 			{
 				get => Macros.MAKELONG64(nFileSizeLow, nFileSizeHigh);
 				set
@@ -466,11 +466,11 @@ namespace Vanara.PInvoke
 		/// is contained in an accompanying STGMEDIUM structure.
 		/// </para>
 		/// <note type="note">Standard clipboard format identifiers have the form CF_XXX.A common example is CF_TEXT, which is used for
-		/// transferring ANSI text data.These identifiers have predefined values and can be used directly with FORMATETC structures. With
+		/// transferring ANSI text data. These identifiers have predefined values and can be used directly with FORMATETC structures. With
 		/// the exception of CF_HDROP, Shell format identifiers are not predefined. With the exception of DragWindow, they have the form
 		/// CFSTR_XXX.To differentiate these values from predefined formats, they are often referred to as simply formats. However, unlike
-		/// predefined formats, they must be registered by both source and target before they can be used to transfer data.To register a
-		/// Shell format, include the Shlobj.h header file and pass the CFSTR_XXX format identifier to RegisterClipboardFormat.This function
+		/// predefined formats, they must be registered by both source and target before they can be used to transfer data. To register a
+		/// Shell format, include the Shlobj.h header file and pass the CFSTR_XXX format identifier to RegisterClipboardFormat. This function
 		/// returns a valid clipboard format value, which can then be used as the cfFormat member of a FORMATETC structure.</note>
 		/// </summary>
 		public static class ShellClipboardFormat
@@ -766,7 +766,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public const string CFSTR_SHELLIDLISTOFFSET = "Shell Object Offsets";
 
-			/// <summary><note type="note">This format identifier has been deprecated; use CFSTR_INETURL instead.</note></summary>
+			/// <summary><note type="note">This format identifier has been deprecated; use <see cref="ShellClipboardFormat.CFSTR_INETURL"/> instead.</note></summary>
 			public const string CFSTR_SHELLURL = "UniformResourceLocator";
 
 			/// <summary>
