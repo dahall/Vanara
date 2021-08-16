@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -16,9 +17,68 @@ using IComDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
 
 namespace Vanara.Windows.Shell
 {
+	/// <summary>
+	/// Describes the properties of a file that is being copied by means of the clipboard during a Microsoft ActiveX drag-and-drop operation.
+	/// </summary>
+	public class ShellFileDescriptor
+	{
+		/// <summary>Initializes a new instance of the <see cref="ShellFileDescriptor"/> class.</summary>
+		/// <param name="fileInfo">The file information.</param>
+		public ShellFileDescriptor(FileInfo fileInfo) => Info = fileInfo;
+
+		internal ShellFileDescriptor(in FILEDESCRIPTOR fd)
+		{
+			Info = new FileInfo(fd.cFileName);
+			if (fd.dwFlags.IsFlagSet(FD_FLAGS.FD_CLSID))
+				TypeIdClsid = fd.clsid;
+			if (fd.dwFlags.IsFlagSet(FD_FLAGS.FD_SIZEPOINT))
+			{
+				IconSize = fd.sizel;
+				ScreenPosition = fd.pointl;
+			}
+			ShowProgressUI = fd.dwFlags.IsFlagSet(FD_FLAGS.FD_PROGRESSUI);
+			IsShortcut = fd.dwFlags.IsFlagSet(FD_FLAGS.FD_LINKUI);
+		}
+
+		/// <summary>The width and height of the file icon.</summary>
+		public Size? IconSize { get; set; }
+
+		/// <summary>Gets the file information.</summary>
+		/// <value>The file information.</value>
+		public FileInfo Info { get; }
+
+		/// <summary>Treat the operation as a shortcut.</summary>
+		public bool IsShortcut { get; set; }
+
+		/// <summary>The screen coordinates of the file object.</summary>
+		public Point? ScreenPosition { get; set; }
+
+		/// <summary>progress indicator is shown with drag-and-drop operations.</summary>
+		public bool ShowProgressUI { get; set; }
+
+		/// <summary>The file type identifier.</summary>
+		public Guid? TypeIdClsid { get; set; }
+
+		internal FILEDESCRIPTOR ToFileDesc() => new()
+		{
+			dwFlags = FD_FLAGS.FD_ATTRIBUTES | FD_FLAGS.FD_WRITESTIME | FD_FLAGS.FD_FILESIZE | FD_FLAGS.FD_ACCESSTIME | FD_FLAGS.FD_CREATETIME |
+					(ShowProgressUI ? FD_FLAGS.FD_PROGRESSUI : 0) | (IsShortcut ? FD_FLAGS.FD_LINKUI : 0) | (TypeIdClsid.HasValue ? FD_FLAGS.FD_CLSID : 0) |
+					(IconSize.HasValue ? FD_FLAGS.FD_SIZEPOINT : 0),
+			clsid = TypeIdClsid ?? Guid.Empty,
+			cFileName = Info.FullName,
+			dwFileAttributes = (FileFlagsAndAttributes)Info.Attributes,
+			nFileSize = unchecked((ulong)Info.Length),
+			ftCreationTime = Info.CreationTimeUtc.ToFileTimeStruct(),
+			ftLastAccessTime = Info.LastAccessTimeUtc.ToFileTimeStruct(),
+			ftLastWriteTime = Info.LastWriteTimeUtc.ToFileTimeStruct(),
+			sizel = IconSize ?? SIZE.Empty,
+			pointl = ScreenPosition ?? Point.Empty
+		};
+	}
+
 	/// <summary>Shell extended <see cref="DataObject"/>.</summary>
 	// TODO: Finish adding ShellClipboardFormat handling, tests and release
-	class ShellDataObject : DataObject
+	internal class ShellDataObject : DataObject
 	{
 		/// <summary>Initializes a new instance of the <see cref="ShellDataObject"/> class.</summary>
 		public ShellDataObject() : base()
@@ -38,31 +98,64 @@ namespace Vanara.Windows.Shell
 		/// The format of the specified data. See <see cref="T:System.Windows.Forms.DataFormats"/> for predefined formats.
 		/// </param>
 		/// <param name="data">The data to store.</param>
-		public ShellDataObject(string format, object data) : base(format, data)
+		public ShellDataObject(string format, object data) : base()
 		{
+			SetData(format, data);
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="ShellDataObject"/> class.</summary>
 		/// <param name="items">A list of ShellItem instances.</param>
-		public ShellDataObject(ShellItem[] items) : base(ShellClipboardFormat.CFSTR_SHELLIDLIST, GetPIDLArrayStream(items))
+		public ShellDataObject(IEnumerable<ShellItem> items) : base()
 		{
-		}
+			if ((items?.Count() ?? 0) == 0)
+				throw new ArgumentNullException(nameof(items));
 
-		private static Stream GetPIDLArrayStream(ShellItem[] items)
-		{
-			var str = new MemoryStream();
-			var pidlBytes = Array.ConvertAll(items, i => i.PIDL.GetBytes());
-			int offset = 0;
-			str.Write(BitConverter.GetBytes((uint)pidlBytes.Length), offset, sizeof(uint));
-			offset += sizeof(uint);
-			for (var i = 0; i < pidlBytes.Length; i++, offset += sizeof(uint))
-				str.Write(BitConverter.GetBytes((uint)pidlBytes[i].Length), offset, sizeof(uint));
-			for (var i = 0; i < pidlBytes.Length; i++)
+			// Set the drop effect
+			PreferredDropEffect = DragDropEffects.Copy | DragDropEffects.Link;
+
+			// Set data for Vista+ that includes IDList, file descriptors, and content stream.
+			if (items is not ShellItemArray litems)
+				litems = new ShellItemArray(items);
+			SetData(ShellClipboardFormat.CFSTR_SHELLIDLIST, GetPIDLArrayStream(litems));
+			SetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, GetFileDescriptor(litems));
+			for (var idx = 0; idx < litems.Count; idx++)
 			{
-				str.Write(pidlBytes[i], offset, pidlBytes[i].Length);
-				offset += pidlBytes[i].Length;
+				SetOleStreamData(ShellClipboardFormat.CFSTR_FILECONTENTS, litems[idx].GetStream(STGM.STGM_READ), idx);
 			}
-			return str;
+
+			// For all file system objects, provide CF_HDROP and CFSTR_FILENAMEx values for first file
+			var files = items.Where(i => i.IsFileSystem).Select(i => i.FileSystemPath).ToArray();
+			if (files.Length > 0)
+			{
+				SetData(DataFormats.FileDrop, true, files);
+				FunctionHelper.CallMethodWithStrBuf((sb, sz) => Kernel32.GetShortPathName(files[0], sb, sz), 1024U, out var dosfn);
+				SetData(ShellClipboardFormat.CFSTR_FILENAMEA, Encoding.ASCII.GetBytes(dosfn));
+				SetData(ShellClipboardFormat.CFSTR_FILENAMEW, Encoding.Unicode.GetBytes(files[0]));
+			}
+
+			// Writes a FILEGROUPDESCRIPTOR structure to memory populated with shell items
+			static Stream GetFileDescriptor(IEnumerable<ShellItem> items)
+			{
+				var mem = new NativeMemoryStream();
+				// Write out the FILEGROUPDESCRIPTOR.cItems value
+				mem.Write((uint)items.Count());
+				// Write out the FILEGROUPDESCRIPTOR.fgd array
+				mem.Write(items.Select(i => MakeFD(i)));
+				return mem;
+
+				static FILEDESCRIPTOR MakeFD(ShellItem si)
+				{
+					var fi = si.FileInfo;
+					return new()
+					{
+						dwFlags = FD_FLAGS.FD_WRITESTIME | FD_FLAGS.FD_FILESIZE | FD_FLAGS.FD_ATTRIBUTES | FD_FLAGS.FD_PROGRESSUI,
+						dwFileAttributes = (FileFlagsAndAttributes)fi.Attributes,
+						ftLastWriteTime = fi.LastWriteTimeUtc.ToFileTimeStruct(),
+						nFileSize = unchecked((ulong)fi.Length),
+						cFileName = si.ParsingName,
+					};
+				}
+			}
 		}
 
 		/// <summary>This format identifier is used by a data object to indicate whether it is in a drag-and-drop loop.</summary>
@@ -140,8 +233,8 @@ namespace Vanara.Windows.Shell
 			{
 				case ShellClipboardFormat.CFSTR_FILEDESCRIPTORA:
 				case ShellClipboardFormat.CFSTR_FILEDESCRIPTORW:
-					//override the default handling of FileGroupDescriptor which returns a
-					//MemoryStream and instead return a string array of file names
+					// override the default handling of FileGroupDescriptor which returns a MemoryStream and instead return a string array
+					// of file names
 
 					// Pick format based on CharSet.Auto size
 					format = StringHelper.GetCharSize() == 1 ? ShellClipboardFormat.CFSTR_FILEDESCRIPTORA : ShellClipboardFormat.CFSTR_FILEDESCRIPTORW;
@@ -157,35 +250,40 @@ namespace Vanara.Windows.Shell
 					{
 						Marshal.Copy(fileGroupDescriptorBytes, 0, fileGroupDescriptorAPointer, fileGroupDescriptorBytes.Length);
 
-						//marshal the unmanaged memory to to FILEGROUPDESCRIPTOR struct
-						var fileGroupDescriptor = fileGroupDescriptorAPointer.ToStructure<FILEGROUPDESCRIPTOR>();
+						// marshal the unmanaged memory to to FILEGROUPDESCRIPTOR struct
+						FILEGROUPDESCRIPTOR fileGroupDescriptor = fileGroupDescriptorAPointer.ToStructure<FILEGROUPDESCRIPTOR>();
 
 						// Extract and return filenames from each FILEDESCRIPTOR
 						return fileGroupDescriptor.Select(fd => new ShellFileDescriptor(fd)).ToArray();
 					}
 
 				case ShellClipboardFormat.CFSTR_FILECONTENTS:
-					//override the default handling of FileContents which returns the
-					//contents of the first file as a memory stream and instead return
-					//a array of MemoryStreams containing the data to each file dropped
+					// override the default handling of FileContents which returns the contents of the first file as a memory stream and
+					// instead return a array of MemoryStreams containing the data to each file dropped
 
-					//get the array of filenames which lets us know how many file contents exist
+					// get the array of filenames which lets us know how many file contents exist
 					var fileContentNames = (string[])GetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORA);
 
-					//create a MemoryStream array to store the file contents
+					// create a MemoryStream array to store the file contents
 					var fileContents = new MemoryStream[fileContentNames.Length];
 
-					//loop for the number of files acording to the file names
+					// loop for the number of files acording to the file names
 					for (var fileIndex = 0; fileIndex < fileContentNames.Length; fileIndex++)
 					{
-						//get the data at the file index and store in array
+						// get the data at the file index and store in array
 						fileContents[fileIndex] = GetData(format, fileIndex) as MemoryStream;
 					}
 
-					//return array of MemoryStreams containing file contents
+					// return array of MemoryStreams containing file contents
 					return fileContents;
+
+				case ShellClipboardFormat.CFSTR_INETURLW:
+					return base.GetText(TextDataFormat.UnicodeText);
+
+				case ShellClipboardFormat.CFSTR_INETURLA:
+					return base.GetText(TextDataFormat.Text);
 			}
-			//if (format == DataFormats.FileDrop && (int)base.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP) != 0 && obj is StringCollection s)
+			// if (format == DataFormats.FileDrop && (int)base.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP) != 0 && obj is StringCollection s)
 			//{
 			//}
 			return obj;
@@ -199,7 +297,7 @@ namespace Vanara.Windows.Shell
 		/// <returns>An object containing the raw data for the specified data format at the specified index.</returns>
 		public object GetData(string format, int index)
 		{
-			//create a FORMATETC struct to request the data with
+			// create a FORMATETC struct to request the data with
 			var formatetc = new FORMATETC
 			{
 				cfFormat = (short)DataFormats.GetFormat(format).Id,
@@ -209,65 +307,62 @@ namespace Vanara.Windows.Shell
 				tymed = TYMED.TYMED_ISTREAM | TYMED.TYMED_ISTORAGE | TYMED.TYMED_HGLOBAL
 			};
 
-			//using the Com IDataObject interface get the data using the defined FORMATETC
-			((IComDataObject)this).GetData(ref formatetc, out var medium);
+			// using the Com IDataObject interface get the data using the defined FORMATETC
+			((IComDataObject)this).GetData(ref formatetc, out STGMEDIUM medium);
 
-			//retrieve the data depending on the returned store type
+			// retrieve the data depending on the returned store type
 			switch (medium.tymed)
 			{
 				case TYMED.TYMED_ISTORAGE:
-					//to handle a IStorage it needs to be written into a second unmanaged
-					//memory mapped storage and then the data can be read from memory into
-					//a managed byte and returned as a MemoryStream
+					// to handle a IStorage it needs to be written into a second unmanaged memory mapped storage and then the data can be
+					// read from memory into a managed byte and returned as a MemoryStream
 					{
-						//marshal the returned pointer to a IStorage object
-						using var pStorage = ComReleaserFactory.Create((IStorage)Marshal.GetObjectForIUnknown(medium.unionmember));
+						// marshal the returned pointer to a IStorage object
+						using ComReleaser<IStorage> pStorage = ComReleaserFactory.Create((IStorage)Marshal.GetObjectForIUnknown(medium.unionmember));
 						Marshal.Release(medium.unionmember);
 
-						//create a ILockBytes (unmanaged byte array) and then create a IStorage using the byte array as a backing store
-						CreateILockBytesOnHGlobal(IntPtr.Zero, true, out var iLockBytes).ThrowIfFailed();
-						using var pLockBytes = ComReleaserFactory.Create(iLockBytes);
-						StgCreateDocfileOnILockBytes(iLockBytes, STGM.STGM_CREATE | STGM.STGM_WRITE | STGM.STGM_READWRITE, default, out var iStorage2).ThrowIfFailed();
-						using var pStorage2 = ComReleaserFactory.Create(iStorage2);
+						// create a ILockBytes (unmanaged byte array) and then create a IStorage using the byte array as a backing store
+						CreateILockBytesOnHGlobal(IntPtr.Zero, true, out ILockBytes iLockBytes).ThrowIfFailed();
+						using ComReleaser<ILockBytes> pLockBytes = ComReleaserFactory.Create(iLockBytes);
+						StgCreateDocfileOnILockBytes(iLockBytes, STGM.STGM_CREATE | STGM.STGM_WRITE | STGM.STGM_READWRITE, default, out IStorage iStorage2).ThrowIfFailed();
+						using ComReleaser<IStorage> pStorage2 = ComReleaserFactory.Create(iStorage2);
 
-						//copy the returned IStorage into the new IStorage
+						// copy the returned IStorage into the new IStorage
 						pStorage.Item.CopyTo(0, null, IntPtr.Zero, iStorage2);
 						iLockBytes.Flush();
 						iStorage2.Commit(0);
 
-						//get the STATSTG of the ILockBytes to determine how many bytes were written to it
-						iLockBytes.Stat(out var iLockBytesStat, STATFLAG.STATFLAG_NONAME);
+						// get the STATSTG of the ILockBytes to determine how many bytes were written to it
+						iLockBytes.Stat(out System.Runtime.InteropServices.ComTypes.STATSTG iLockBytesStat, STATFLAG.STATFLAG_NONAME);
 
-						//read the data from the ILockBytes (unmanaged byte array) into a managed byte array
+						// read the data from the ILockBytes (unmanaged byte array) into a managed byte array
 						using var iLockBytesContent = new SafeHGlobalHandle(iLockBytesStat.cbSize);
 						iLockBytes.ReadAt(0, iLockBytesContent, iLockBytesContent.Size, out _);
 
-						//wrapped the managed byte array into a memory stream and return it
+						// wrapped the managed byte array into a memory stream and return it
 						return new MemoryStream(iLockBytesContent.GetBytes(0, iLockBytesContent.Size));
 					}
 
 				case TYMED.TYMED_ISTREAM:
-					//to handle a IStream it needs to be read into a managed byte and
-					//returned as a MemoryStream
+					// to handle a IStream it needs to be read into a managed byte and returned as a MemoryStream
 					{
-						//marshal the returned pointer to a IStream object
-						using var pStream = ComReleaserFactory.Create((IStream)Marshal.GetObjectForIUnknown(medium.unionmember));
+						// marshal the returned pointer to a IStream object
+						using ComReleaser<IStream> pStream = ComReleaserFactory.Create((IStream)Marshal.GetObjectForIUnknown(medium.unionmember));
 						Marshal.Release(medium.unionmember);
 
-						//get the STATSTG of the IStream to determine how many bytes are in it
-						pStream.Item.Stat(out var iStreamStat, 0);
+						// get the STATSTG of the IStream to determine how many bytes are in it
+						pStream.Item.Stat(out System.Runtime.InteropServices.ComTypes.STATSTG iStreamStat, 0);
 
-						//read the data from the IStream into a managed byte array
+						// read the data from the IStream into a managed byte array
 						var iStreamContent = new byte[((int)iStreamStat.cbSize)];
 						pStream.Item.Read(iStreamContent, iStreamContent.Length, IntPtr.Zero);
 
-						//wrapped the managed byte array into a memory stream and return it
+						// wrapped the managed byte array into a memory stream and return it
 						return new MemoryStream(iStreamContent);
 					}
 
 				case TYMED.TYMED_HGLOBAL:
-					//to handle a HGlobal the exisitng "GetDataFromHGLOBLAL" method is invoked via
-					//reflection
+					// to handle a HGlobal the exisitng "GetDataFromHGLOBLAL" method is invoked via reflection
 					return GetObjectFromHGlobal(DataFormats.GetFormat(formatetc.cfFormat).Name, medium.unionmember);
 			}
 
@@ -322,15 +417,66 @@ namespace Vanara.Windows.Shell
 		public PIDL[] GetShellIdList() => GetComData(ShellClipboardFormat.CFSTR_SHELLIDLIST,
 			p => Array.ConvertAll(p.Offset(sizeof(uint)).ToArray<uint>((int)p.ToStructure<uint>() + 1), u => new PIDL(p.Offset(u), true)), new PIDL[0]);
 
+		public override void SetData(string format, object data)
+		{
+			if (format == ShellClipboardFormat.CFSTR_DROPDESCRIPTION)
+			{
+				if (data is not DROPDESCRIPTION dd)
+					throw new ArgumentException("Data value must be of type DROPDESCRIPTION.", nameof(data));
+				base.SetData(format, GetMemoryStream(dd));
+				return;
+			}
+			base.SetData(format, data);
+		}
+
+		/// <summary>Sets the data value for a format and index to a <see cref="IStream"/>.</summary>
+		/// <param name="format">
+		/// The format of the specified data. See <see cref="T:System.Windows.Forms.DataFormats"/> for predefined formats.
+		/// </param>
+		/// <param name="stream">The stream interface instance to set for the format.</param>
+		/// <param name="index">Specifies part of the aspect when the data must be split across page boundaries.</param>
+		/// <param name="aspect">
+		/// Specifies one of the DVASPECT enumeration constants that indicates how much detail should be contained in the rendering.
+		/// </param>
+		public void SetOleStreamData(string format, IStream stream, int index = -1, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT)
+		{
+			FORMATETC formatetc = new()
+			{
+				cfFormat = unchecked((short)(ushort)(DataFormats.GetFormat(format).Id)),
+				dwAspect = aspect,
+				lindex = index,
+				tymed = TYMED.TYMED_ISTREAM
+			};
+			STGMEDIUM medium = new() { tymed = TYMED.TYMED_ISTREAM, unionmember = Marshal.GetIUnknownForObject(stream) };
+			((System.Runtime.InteropServices.ComTypes.IDataObject)this).SetData(ref formatetc, ref medium, true);
+		}
+
 		private static DataFormats.Format GetFormat(string format) => DataFormats.GetFormat(format);
+
+		private static Stream GetPIDLArrayStream(IEnumerable<ShellItem> items)
+		{
+			var str = new MemoryStream();
+			var pidlBytes = items.Select(i => i.PIDL.GetBytes()).ToArray();
+			var offset = 0;
+			str.Write(BitConverter.GetBytes((uint)pidlBytes.Length), offset, sizeof(uint));
+			offset += sizeof(uint);
+			for (var i = 0; i < pidlBytes.Length; i++, offset += sizeof(uint))
+				str.Write(BitConverter.GetBytes((uint)pidlBytes[i].Length), offset, sizeof(uint));
+			for (var i = 0; i < pidlBytes.Length; i++)
+			{
+				str.Write(pidlBytes[i], offset, pidlBytes[i].Length);
+				offset += pidlBytes[i].Length;
+			}
+			return str;
+		}
 
 		private T GetComData<T>(string fmt, Func<IntPtr, T> convert, T defValue = default)
 		{
-			var ret = defValue;
+			T ret = defValue;
 			var fc = new FORMATETC { cfFormat = (short)GetFormat(fmt).Id, dwAspect = DVASPECT.DVASPECT_CONTENT, lindex = -1, tymed = TYMED.TYMED_HGLOBAL };
 			try
 			{
-				((IComDataObject)this).GetData(ref fc, out var medium);
+				((IComDataObject)this).GetData(ref fc, out STGMEDIUM medium);
 				if (medium.unionmember != default)
 					ret = convert(medium.unionmember);
 				ReleaseStgMedium(medium);
@@ -339,9 +485,16 @@ namespace Vanara.Windows.Shell
 			return ret;
 		}
 
+		private Stream GetMemoryStream<T>(T value) where T : struct
+		{
+			var mem = new NativeMemoryStream(InteropExtensions.SizeOf(value));
+			mem.Write(value);
+			return mem;
+		}
+
 		private object GetObjectFromHGlobal(string format, IntPtr hGlobal)
 		{
-			var ptr = Win32Error.ThrowLastErrorIfNull(Kernel32.GlobalLock(hGlobal));
+			IntPtr ptr = Win32Error.ThrowLastErrorIfNull(Kernel32.GlobalLock(hGlobal));
 			try
 			{
 				if (format == DataFormats.Text || format == DataFormats.Rtf || format == DataFormats.CommaSeparatedValue || format == DataFormats.OemText)
@@ -354,6 +507,8 @@ namespace Vanara.Windows.Shell
 					return new[] { StringHelper.GetString(ptr, CharSet.Ansi) };
 				else if (format == ShellClipboardFormat.CFSTR_FILENAMEW)
 					return new[] { StringHelper.GetString(ptr, CharSet.Unicode) };
+				else if (format == ShellClipboardFormat.CFSTR_DROPDESCRIPTION)
+					return ptr.ToStructure<DROPDESCRIPTION>();
 				else if (format == DataFormats.FileDrop)
 					// TODO
 					return new MemoryStream();
@@ -365,71 +520,6 @@ namespace Vanara.Windows.Shell
 			{
 				Kernel32.GlobalUnlock(hGlobal);
 			}
-		}
-	}
-
-	/// <summary>
-	/// Describes the properties of a file that is being copied by means of the clipboard during a Microsoft ActiveX drag-and-drop operation.
-	/// </summary>
-	public class ShellFileDescriptor
-	{
-		/// <summary>Initializes a new instance of the <see cref="ShellFileDescriptor"/> class.</summary>
-		/// <param name="fileInfo">The file information.</param>
-		public ShellFileDescriptor(FileInfo fileInfo)
-		{
-			Info = fileInfo;
-		}
-
-		internal ShellFileDescriptor(in FILEDESCRIPTOR fd)
-		{
-			Info = new FileInfo(fd.cFileName);
-			if (fd.dwFlags.IsFlagSet(FD_FLAGS.FD_CLSID))
-				TypeIdClsid = fd.clsid;
-			if (fd.dwFlags.IsFlagSet(FD_FLAGS.FD_SIZEPOINT))
-			{
-				IconSize = fd.sizel;
-				ScreenPosition = fd.pointl;
-			}
-			ShowProgressUI = fd.dwFlags.IsFlagSet(FD_FLAGS.FD_PROGRESSUI);
-			IsShortcut = fd.dwFlags.IsFlagSet(FD_FLAGS.FD_LINKUI);
-		}
-
-		/// <summary>The width and height of the file icon.</summary>
-		public Size? IconSize { get; set; }
-
-		/// <summary>Gets the file information.</summary>
-		/// <value>The file information.</value>
-		public FileInfo Info { get; }
-
-		/// <summary>Treat the operation as a shortcut.</summary>
-		public bool IsShortcut { get; set; }
-
-		/// <summary>The screen coordinates of the file object.</summary>
-		public Point? ScreenPosition { get; set; }
-
-		/// <summary>progress indicator is shown with drag-and-drop operations.</summary>
-		public bool ShowProgressUI { get; set; }
-
-		/// <summary>The file type identifier.</summary>
-		public Guid? TypeIdClsid { get; set; }
-
-		internal FILEDESCRIPTOR ToFileDesc()
-		{
-			return new FILEDESCRIPTOR
-			{
-				dwFlags = FD_FLAGS.FD_ATTRIBUTES | FD_FLAGS.FD_WRITESTIME | FD_FLAGS.FD_FILESIZE | FD_FLAGS.FD_ACCESSTIME | FD_FLAGS.FD_CREATETIME |
-					(ShowProgressUI ? FD_FLAGS.FD_PROGRESSUI : 0) | (IsShortcut ? FD_FLAGS.FD_LINKUI : 0) | (TypeIdClsid.HasValue ? FD_FLAGS.FD_CLSID : 0) |
-					(IconSize.HasValue ? FD_FLAGS.FD_SIZEPOINT : 0),
-				clsid = TypeIdClsid ?? Guid.Empty,
-				cFileName = Info.FullName,
-				dwFileAttributes = (FileFlagsAndAttributes)Info.Attributes,
-				nFileSIze = unchecked((ulong)Info.Length),
-				ftCreationTime = Info.CreationTimeUtc.ToFileTimeStruct(),
-				ftLastAccessTime = Info.LastAccessTimeUtc.ToFileTimeStruct(),
-				ftLastWriteTime = Info.LastWriteTimeUtc.ToFileTimeStruct(),
-				sizel = IconSize ?? SIZE.Empty,
-				pointl = ScreenPosition ?? Point.Empty
-			};
 		}
 	}
 }
