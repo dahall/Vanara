@@ -107,6 +107,14 @@ namespace Vanara.Windows.Shell
 		/// <returns>A <see cref="IEnumerator{ShellItem}"/> that can be used to iterate through the collection.</returns>
 		public IEnumerator<ShellItem> GetEnumerator() => GetItems().Select(ShellItem.Open).GetEnumerator();
 
+		/// <summary>Creates an <see cref="System.Runtime.InteropServices.ComTypes.IDataObject"/> from the contents of the array.</summary>
+		/// <returns>An <see cref="System.Runtime.InteropServices.ComTypes.IDataObject"/> from the contents of the array.</returns>
+		public System.Runtime.InteropServices.ComTypes.IDataObject ToDataObject()
+		{
+			var ctx = ShellUtil.CreateBindCtx();
+			return array.BindToHandler<System.Runtime.InteropServices.ComTypes.IDataObject>(ctx, BHID.BHID_DataObject);
+		}
+
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
