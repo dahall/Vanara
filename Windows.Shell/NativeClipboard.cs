@@ -27,7 +27,7 @@ namespace Vanara.Windows.Shell
 	/// <seealso cref="System.IDisposable"/>
 	public class NativeClipboard : IDisposable
 	{
-		private static readonly ListenerWindow listener = new ListenerWindow();
+		private static readonly ListenerWindow listener = new();
 		private static int HdrLen = 0;
 
 		[ThreadStatic]
@@ -268,6 +268,7 @@ namespace Vanara.Windows.Shell
 		public void SetText(string text, string htmlText = null, string rtfText = null)
 		{
 			if (text is null && htmlText is null && rtfText is null) return;
+			SetText(text, TextDataFormat.Text);
 			SetText(text, TextDataFormat.UnicodeText);
 			SetBinaryData(DataFormats.Locale, BitConverter.GetBytes(CultureInfo.CurrentCulture.LCID));
 			if (htmlText != null) SetText(htmlText, TextDataFormat.Html);
@@ -299,7 +300,7 @@ namespace Vanara.Windows.Shell
 		{
 			if (url is null) throw new ArgumentNullException(nameof(url));
 			SetText(url, $"<a href=\"{url}\">{title ?? url}</a>", null);
-			var textUrl = (title is null ? "" : (title + '\n')) + url + '\0';
+			var textUrl = url + (title is null ? "" : ('\n' + title)) + '\0';
 			SetBinaryData(ShellClipboardFormat.CFSTR_INETURLA, Encoding.ASCII.GetBytes(textUrl));
 			SetBinaryData(ShellClipboardFormat.CFSTR_INETURLW, Encoding.Unicode.GetBytes(textUrl));
 		}
@@ -553,7 +554,7 @@ namespace Vanara.Windows.Shell
 			/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
 			/// <returns><see cref="SafeMoveableHGlobalHandle"/> object to an native (unmanaged) structure with a trail array of structures</returns>
 			public static SafeMoveableHGlobalHandle CreateFromList<T>(IEnumerable<T> values, int prefixBytes = 0) =>
-				new SafeMoveableHGlobalHandle(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes, mm.LockMem, mm.UnlockMem), s);
+				new(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes, mm.LockMem, mm.UnlockMem), s);
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
 			/// <param name="values">The list of strings.</param>
@@ -565,19 +566,19 @@ namespace Vanara.Windows.Shell
 			/// name="packing"/> model and the character set defined by <paramref name="charSet"/>.
 			/// </returns>
 			public static SafeMoveableHGlobalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-				new SafeMoveableHGlobalHandle(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes, mm.LockMem, mm.UnlockMem), s);
+				new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes, mm.LockMem, mm.UnlockMem), s);
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 			/// <typeparam name="T">Native type</typeparam>
 			/// <param name="value">The value.</param>
 			/// <returns><see cref="SafeMoveableHGlobalHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
 			public static SafeMoveableHGlobalHandle CreateFromStructure<T>(in T value = default) =>
-				new SafeMoveableHGlobalHandle(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s, 0, mm.LockMem, mm.UnlockMem), s);
+				new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s, 0, mm.LockMem, mm.UnlockMem), s);
 
 			/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeMoveableHGlobalHandle"/> where it owns the reference.</summary>
 			/// <param name="ptr">The <see cref="IntPtr"/>.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator SafeMoveableHGlobalHandle(IntPtr ptr) => new SafeMoveableHGlobalHandle(ptr, 0, true);
+			public static implicit operator SafeMoveableHGlobalHandle(IntPtr ptr) => new(ptr, 0, true);
 
 			protected void CallLocked(Action<IntPtr> action)
 			{
