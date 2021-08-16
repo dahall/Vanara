@@ -48,7 +48,7 @@ namespace Vanara.Windows.Shell
 		private readonly CLSCTX ctx;
 		private readonly REGCLS use;
 		private bool disposedValue = false;
-		private MessageLoop msgLoop = new MessageLoop();
+		private MessageLoop msgLoop = new();
 
 		/// <summary>Initializes a new instance of the <see cref="ComObject"/> class.</summary>
 		protected ComObject() : this(CLSCTX.CLSCTX_LOCAL_SERVER, REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED)

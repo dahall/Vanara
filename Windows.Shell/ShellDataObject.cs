@@ -77,8 +77,7 @@ namespace Vanara.Windows.Shell
 	}
 
 	/// <summary>Shell extended <see cref="DataObject"/>.</summary>
-	// TODO: Finish adding ShellClipboardFormat handling, tests and release
-	internal class ShellDataObject : DataObject
+	public class ShellDataObject : DataObject
 	{
 		/// <summary>Initializes a new instance of the <see cref="ShellDataObject"/> class.</summary>
 		public ShellDataObject() : base()
@@ -417,6 +416,13 @@ namespace Vanara.Windows.Shell
 		public PIDL[] GetShellIdList() => GetComData(ShellClipboardFormat.CFSTR_SHELLIDLIST,
 			p => Array.ConvertAll(p.Offset(sizeof(uint)).ToArray<uint>((int)p.ToStructure<uint>() + 1), u => new PIDL(p.Offset(u), true)), new PIDL[0]);
 
+		/// <summary>Sets the data for the object.</summary>
+		/// <param name="format">
+		/// The format of the specified data. See <see cref="T:System.Windows.Forms.DataFormats"/> for predefined formats.
+		/// </param>
+		/// <param name="data">The data.</param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentException">Data value must be of type DROPDESCRIPTION., nameof(data)</exception>
 		public override void SetData(string format, object data)
 		{
 			if (format == ShellClipboardFormat.CFSTR_DROPDESCRIPTION)

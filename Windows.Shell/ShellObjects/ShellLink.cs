@@ -314,7 +314,7 @@ namespace Vanara.Windows.Shell
 		/// </param>
 		/// <returns>A FileSecurity object that encapsulates the access control rules for the current file.</returns>
 		public FileSecurity GetAccessControl(AccessControlSections includeSections = AccessControlSections.Access | AccessControlSections.Group | AccessControlSections.Owner) =>
-			new FileSecurity(FileSystemPath, includeSections);
+			new(FileSystemPath, includeSections);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>

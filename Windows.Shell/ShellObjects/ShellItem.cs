@@ -348,7 +348,7 @@ namespace Vanara.Windows.Shell
 		private PropertyDescriptionList propDescList;
 		private ShellItemPropertyStore props;
 		private IQueryInfo qi;
-		private static Lazy<Dictionary<Type, BHID>> bhidLookup = new Lazy<Dictionary<Type, BHID>>(() =>
+		private static Lazy<Dictionary<Type, BHID>> bhidLookup = new(() =>
 			new Dictionary<Type, BHID>
 			{
 				{ typeof(IIdentityName), BHID.BHID_SFObject },
@@ -453,7 +453,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the associations defined in the registry for this shell item.</summary>
 		/// <value>The shell associations.</value>
 		public ShellAssociation Association =>
-			new ShellAssociation(GetHandler<IQueryAssociations>(BHID.BHID_AssociationArray), FileInfo?.Extension);
+			new(GetHandler<IQueryAssociations>(BHID.BHID_AssociationArray), FileInfo?.Extension);
 
 		/// <summary>Gets the attributes for the Shell item.</summary>
 		/// <value>The attributes of the Shell item.</value>
@@ -464,7 +464,7 @@ namespace Vanara.Windows.Shell
 		public ShellContextMenu ContextMenu => menu ??= new ShellContextMenu(this);
 
 		/// <summary>Returns a <see cref="System.Windows.Forms.DataObject"/> representing the item. This object is used in drag and drop operations.</summary>
-		public System.Windows.Forms.DataObject DataObject => new System.Windows.Forms.DataObject(GetHandler<IDataObject>(BHID.BHID_SFUIObject));
+		public System.Windows.Forms.DataObject DataObject => new(GetHandler<IDataObject>(BHID.BHID_SFUIObject));
 
 		/// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
 		public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : null;

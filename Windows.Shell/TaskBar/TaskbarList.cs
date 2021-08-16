@@ -36,8 +36,8 @@ namespace Vanara.Windows.Shell
 	/// </summary>
 	public static class TaskbarList
 	{
-		private static readonly TaskbarListStaticFinalizer finalizer = new TaskbarListStaticFinalizer();
-		private static readonly Version Win7Ver = new Version(6, 1);
+		private static readonly TaskbarListStaticFinalizer finalizer = new();
+		private static readonly Version Win7Ver = new(6, 1);
 		private static ITaskbarList2 taskbar2;
 		private static ITaskbarList4 taskbar4;
 

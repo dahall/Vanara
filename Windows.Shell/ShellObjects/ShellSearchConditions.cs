@@ -163,7 +163,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Creates a deep copy of this instance.</summary>
 		/// <returns>A copy of this search condition.</returns>
-		public SearchCondition Clone() => new SearchCondition(condition.Clone());
+		public SearchCondition Clone() => new(condition.Clone());
 
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

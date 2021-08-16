@@ -238,7 +238,7 @@ namespace Vanara.Windows.Shell
 		{
 			public int Count => (int)Wallpaper.GetMonitorDevicePathCount();
 
-			public WallpaperMonitor this[string id] => new WallpaperMonitor { Id = id };
+			public WallpaperMonitor this[string id] => new() { Id = id };
 
 			public WallpaperMonitor this[int index] => this[Wallpaper.GetMonitorDevicePathAt((uint)index, out var id).Succeeded ? id : throw new ArgumentOutOfRangeException(nameof(index))];
 

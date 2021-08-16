@@ -49,7 +49,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="IndirectString"/>.</summary>
 		/// <param name="s">The s.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator IndirectString(string s) => new IndirectString(s);
+		public static implicit operator IndirectString(string s) => new(s);
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>

@@ -159,7 +159,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="filter">A value that determines the folders to get.</param>
 		/// <returns>A <see cref="ShellItemArray"/> containing the child folders.</returns>
 		public ShellLibraryFolders GetFilteredFolders(LibraryFolderFilter filter = LibraryFolderFilter.AllItems) =>
-			new ShellLibraryFolders(lib, lib.GetFolders<IShellItemArray>((LIBRARYFOLDERFILTER)filter));
+			new(lib, lib.GetFolders<IShellItemArray>((LIBRARYFOLDERFILTER)filter));
 
 		/// <summary>Resolves the target location of a library folder, even if the folder has been moved or renamed.</summary>
 		/// <param name="item">A ShellItem object that represents the library folder to locate.</param>

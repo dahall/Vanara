@@ -12,7 +12,7 @@ namespace Vanara.Windows
 	public abstract class ExtenderProviderBase<TExtend> : Component, IExtenderProvider, ISupportInitialize where TExtend : Component
 	{
 		/// <summary>A dictionary that holds a property bag for each extended type.</summary>
-		protected readonly Dictionary<TExtend, Dictionary<string, object>> propHash = new Dictionary<TExtend, Dictionary<string, object>>();
+		protected readonly Dictionary<TExtend, Dictionary<string, object>> propHash = new();
 
 		/// <summary>Initializes a new instance of the <see cref="ExtenderProviderBase{TExtend}"/> class.</summary>
 		protected ExtenderProviderBase() { }

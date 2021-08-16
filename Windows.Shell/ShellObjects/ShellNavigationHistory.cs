@@ -13,7 +13,7 @@ namespace Vanara.Windows.Shell
 	/// <summary>The navigation log is a history of the locations visited by a shell view object.</summary>
 	public class ShellNavigationHistory : IHistory<ShellItem>
 	{
-		private readonly History<PIDL> pidls = new History<PIDL>();
+		private readonly History<PIDL> pidls = new();
 
 		internal ShellNavigationHistory()
 		{
@@ -40,7 +40,7 @@ namespace Vanara.Windows.Shell
 		public int Count => pidls.Count;
 
 		/// <summary>Gets the shell object in the Locations collection pointed to by CurrentLocationIndex.</summary>
-		public ShellItem Current => new ShellItem(pidls.Current);
+		public ShellItem Current => new(pidls.Current);
 
 		/// <summary>
 		/// Adds the specified item as the last history entry and sets the <see cref="P:Vanara.Collections.IHistory`1.Current"/> property to

@@ -15,8 +15,8 @@ namespace Vanara.Windows.Shell
 	{
 		private const string systemCatalog = "SystemIndex";
 		private static readonly ISearchCatalogManager catMgr;
-		private static readonly ISearchManager mgr = new ISearchManager();
-		private static readonly IQueryParserManager queryMgr = new IQueryParserManager();
+		private static readonly ISearchManager mgr = new();
+		private static readonly IQueryParserManager queryMgr = new();
 
 		static ShellSearch() => catMgr = mgr.GetCatalog(systemCatalog);
 

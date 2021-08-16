@@ -189,7 +189,7 @@ namespace Vanara.Windows.Shell
 		public HWND WindowHandle => shellViewWindow;
 
 		/// <summary>Gets the default size of the control.</summary>
-		protected override Size DefaultSize => new Size(250, 200);
+		protected override Size DefaultSize => new(250, 200);
 
 		private IShellBrowser Browser => iBrowser ??= new ShellBrowser(/* this */);
 

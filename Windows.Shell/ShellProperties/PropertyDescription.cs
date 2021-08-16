@@ -214,7 +214,7 @@ namespace Vanara.Windows.Shell
 
 		/// <inheritdoc />
 		public virtual PropertyDescription this[int index] =>
-			new PropertyDescription(iList?.GetAt((uint)index, typeof(IPropertyDescription).GUID));
+			new(iList?.GetAt((uint)index, typeof(IPropertyDescription).GUID));
 
 		/// <summary>Gets the <see cref="PropertyDescription" /> for the specified key.</summary>
 		/// <value>The <see cref="PropertyDescription" />.</value>
@@ -374,7 +374,7 @@ namespace Vanara.Windows.Shell
 		/// <value>The <see cref="PropertyType"/>.</value>
 		/// <param name="index">The index.</param>
 		/// <returns>The <see cref="PropertyType"/> at the specified index.</returns>
-		public virtual PropertyType this[int index] => new PropertyType(iList?.GetAt((uint)index, typeof(IPropertyEnumType).GUID));
+		public virtual PropertyType this[int index] => new(iList?.GetAt((uint)index, typeof(IPropertyEnumType).GUID));
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
