@@ -41,6 +41,12 @@ namespace Vanara.PInvoke
 		/// <summary>Finalizes an instance of the <see cref="BasicMessageWindow"/> class.</summary>
 		~BasicMessageWindow() => Dispose(false);
 
+		/// <summary>Occurs when the window handle has been created.</summary>
+		public event EventHandler HandleCreated;
+
+		/// <summary>Occurs when the window handle has been destroyed.</summary>
+		public event EventHandler HandleDestroyed;
+
 		/// <summary>Gets the handle.</summary>
 		/// <value>The handle.</value>
 		public HWND Handle => hwnd;
@@ -92,6 +98,10 @@ namespace Vanara.PInvoke
 		{
 			if (msg == (uint)WindowMessage.WM_NCCREATE)
 				return (IntPtr)1;
+			if (msg == (uint)WindowMessage.WM_CREATE)
+				HandleCreated?.Invoke(this, EventArgs.Empty);
+			if (msg == (uint)WindowMessage.WM_DESTROY)
+				HandleDestroyed?.Invoke(this, EventArgs.Empty);
 			return !weakSelfRef.IsAlive || weakSelfRef.Target is null || MessageFilter is null || !MessageFilter.Invoke(hwnd, msg, wParam, lParam, out IntPtr lRet)
 				? DefWindowProc(hwnd, msg, wParam, lParam)
 				: lRet;
