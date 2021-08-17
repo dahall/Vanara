@@ -27,13 +27,12 @@ namespace Vanara.Windows.Shell
 	/// <seealso cref="System.IDisposable"/>
 	public class NativeClipboard : IDisposable
 	{
-		private static readonly ListenerWindow listener = new();
+		private readonly bool dontClose = false;
+		private static readonly object objectLock = new();
 		private static int HdrLen = 0;
-
+		private static ListenerWindow listener;
 		[ThreadStatic]
 		private static bool open = false;
-
-		private bool dontClose = false;
 
 		/// <summary>Initializes a new instance of the <see cref="NativeClipboard"/> class.</summary>
 		/// <param name="empty">If set to <see langword="true"/>, <see cref="EmptyClipboard"/> is called to clear the Clipboard.</param>
@@ -56,7 +55,29 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Occurs when whenever the contents of the Clipboard have changed.</summary>
-		public static event EventHandler ClipboardUpdate;
+		public static event EventHandler ClipboardUpdate
+		{
+			add
+			{
+				lock (objectLock)
+				{
+					if (InternalClipboardUpdate.GetInvocationList().Length == 0)
+						listener = new ListenerWindow();
+					InternalClipboardUpdate += value;
+				}
+			}
+			remove
+			{
+				lock (objectLock)
+				{
+					InternalClipboardUpdate -= value;
+					if (InternalClipboardUpdate.GetInvocationList().Length == 0)
+						listener = null;
+				}
+			}
+		}
+
+		private static event EventHandler InternalClipboardUpdate;
 
 		/// <summary>Retrieves the currently supported clipboard formats.</summary>
 		/// <value>A sequence of the currently supported formats.</value>
@@ -455,30 +476,30 @@ namespace Vanara.Windows.Shell
 			public override void UnlockMem(IntPtr hMem) => Kernel32.GlobalUnlock(hMem);
 		}
 
-		private class ListenerWindow : NativeWindow, IDisposable
+		private class ListenerWindow : SystemEventHandler
 		{
-			public ListenerWindow()
+			protected override void Dispose(bool disposing)
 			{
-				var cp = new CreateParams { Style = 0, ExStyle = 0, ClassStyle = 0, Parent = IntPtr.Zero, Caption = GetType().Name };
-				CreateHandle(cp);
-				AddClipboardFormatListener(Handle);
+				if (disposing)
+					Win32Error.ThrowLastErrorIfFalse(RemoveClipboardFormatListener(MessageWindowHandle));
+				base.Dispose(disposing);
 			}
 
-			void IDisposable.Dispose() => base.DestroyHandle();
-
-			protected override void WndProc(ref Message m)
+			protected override bool MessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 			{
-				switch (m.Msg)
+				lReturn = default;
+				if (msg == (uint)ClipboardNotificationMessage.WM_CLIPBOARDUPDATE)
 				{
-					case (int)WindowMessage.WM_DESTROY:
-						RemoveClipboardFormatListener(Handle);
-						break;
-
-					case (int)ClipboardNotificationMessage.WM_CLIPBOARDUPDATE:
-						ClipboardUpdate?.Invoke(this, EventArgs.Empty);
-						break;
+					InternalClipboardUpdate?.Invoke(this, EventArgs.Empty);
+					return true;
 				}
-				base.WndProc(ref m);
+				return false;
+			}
+
+			protected override void OnMessageWindowHandleCreated()
+			{
+				Win32Error.ThrowLastErrorIfFalse(AddClipboardFormatListener(MessageWindowHandle));
+				base.OnMessageWindowHandleCreated();
 			}
 		}
 
