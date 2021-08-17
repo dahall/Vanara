@@ -60,6 +60,9 @@ namespace Vanara.PInvoke
 			Dispose(false);
 		}
 
+		/// <summary>Occurs when the message window handle has been created.</summary>
+		public event EventHandler MessageWindowHandleCreated;
+
 		/// <summary>Gets a value indicating whether this instance is running in a thread.</summary>
 		/// <value><see langword="true"/> if this instance is running in a thread; otherwise, <see langword="false"/>.</value>
 		public bool IsRunningInThread => ThreadRunning is not null;
@@ -191,6 +194,9 @@ namespace Vanara.PInvoke
 		{
 		}
 
+		/// <summary>Called when the message window handle is created.</summary>
+		protected virtual void OnMessageWindowHandleCreated() => MessageWindowHandleCreated?.Invoke(this, EventArgs.Empty);
+
 		/// <summary>Calls the delegate list associated with the key, passing the supplied parameters.</summary>
 		/// <param name="key">The key.</param>
 		/// <param name="args">The arguments.</param>
@@ -256,6 +262,7 @@ namespace Vanara.PInvoke
 		private void Init()
 		{
 			msgWindow = new BasicMessageWindow(MessageFilter);
+			msgWindow.HandleCreated += (s, e) => OnMessageWindowHandleCreated();
 		}
 	}
 
