@@ -53,6 +53,10 @@ namespace Vanara.InteropServices
 		/// <value>The action allowed for the type.</value>
 		public CorrespondingAction Action { get; }
 
+		/// <summary>Gets or sets the optional encoding type associated with the corresponding type.</summary>
+		/// <value>The encoding type.</value>
+		public Type EncodingType { get; set; }
+
 		/// <summary>Gets the type that corresponds to this enumeration value.</summary>
 		/// <value>The type that corresponds to this enumeration value.</value>
 		public Type TypeRef { get; }
