@@ -217,6 +217,10 @@ namespace Vanara.Windows.Shell
 		/// </remarks>
 		public IEnumerable<DataFormats.Format> EnumAvailableFormats() => EnumClipboardFormats().Select(i => DataFormats.GetFormat((int)i));
 
+		/// <summary>Gets a <see cref="ShellDataObject"/> instance from the Windows Clipboard.</summary>
+		/// <returns>A <see cref="ShellDataObject"/> instance from the Windows Clipboard.</returns>
+		public ShellDataObject GetShellDataObject() => new ShellDataObject(Clipboard.GetDataObject());
+
 		/// <summary>Gets the text from the native Clipboard in the specified format.</summary>
 		/// <param name="format">The format.</param>
 		/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
