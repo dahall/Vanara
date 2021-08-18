@@ -40,6 +40,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/com/dropeffect-constants
 		[PInvokeData("OleIdl.h", MSDNShortId = "d8e46899-3fbf-4012-8dd3-67fa627526d5")]
+		[Flags]
 		// public static extern
 		public enum DROPEFFECT : uint
 		{
@@ -383,6 +384,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The type of cache to be updated.</summary>
+		[Flags]
 		public enum UPDFCACHE : uint
 		{
 			/// <summary>Updates caches created by using ADVF_NODATA in the call to IOleCache::Cache.</summary>
