@@ -207,21 +207,91 @@ namespace Vanara.PInvoke
 			PROCESS_CREATE_FLAGS_LARGE_PAGES = 0x00000010,
 		}
 
+		/// <summary>Creates a process. This function is UNDOCUMENTED.</summary>
+		/// <param name="ProcessHandle">The process handle.</param>
+		/// <param name="DesiredAccess">The desired access.</param>
+		/// <param name="ObjectAttributes">The object attributes.</param>
+		/// <param name="ParentProcess">The parent process.</param>
+		/// <param name="InheritObjectTable">if set to <see langword="true"/>, inherits the object table.</param>
+		/// <param name="SectionHandle">The section handle.</param>
+		/// <param name="DebugPort">The debug port.</param>
+		/// <param name="ExceptionPort">The exception port.</param>
+		/// <returns>
+		/// <para>The function returns an NTSTATUS success or error code.</para>
+		/// <para>
+		/// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
+		/// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
+		/// Logging Errors.
+		/// </para>
+		/// </returns>
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		public static extern NTStatus NtCreateProcess(out HPROCESS ProcessHandle, [In] ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes,
 			[In] HPROCESS ParentProcess, [In, MarshalAs(UnmanagedType.U1)] bool InheritObjectTable, [In, Optional] IntPtr SectionHandle,
 			[In, Optional] IntPtr DebugPort, [In, Optional] IntPtr ExceptionPort);
 
+		/// <summary>Creates a process. This function is UNDOCUMENTED.</summary>
+		/// <param name="ProcessHandle">The process handle.</param>
+		/// <param name="DesiredAccess">The desired access.</param>
+		/// <param name="ObjectAttributes">The object attributes.</param>
+		/// <param name="ParentProcess">The parent process.</param>
+		/// <param name="InheritObjectTable">if set to <see langword="true"/>, inherits the object table.</param>
+		/// <param name="SectionHandle">The section handle.</param>
+		/// <param name="DebugPort">The debug port.</param>
+		/// <param name="ExceptionPort">The exception port.</param>
+		/// <returns>
+		/// <para>The function returns an NTSTATUS success or error code.</para>
+		/// <para>
+		/// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
+		/// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
+		/// Logging Errors.
+		/// </para>
+		/// </returns>
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		public static extern NTStatus NtCreateProcess(out HPROCESS ProcessHandle, [In] ACCESS_MASK DesiredAccess, [In, Optional] IntPtr ObjectAttributes,
 			[In] HPROCESS ParentProcess, [In, MarshalAs(UnmanagedType.U1)] bool InheritObjectTable, [In, Optional] IntPtr SectionHandle,
 			[In, Optional] IntPtr DebugPort, [In, Optional] IntPtr ExceptionPort);
 
+		/// <summary>Creates a process. This function is UNDOCUMENTED.</summary>
+		/// <param name="ProcessHandle">The process handle.</param>
+		/// <param name="DesiredAccess">The desired access.</param>
+		/// <param name="ObjectAttributes">The object attributes.</param>
+		/// <param name="ParentProcess">The parent process.</param>
+		/// <param name="Flags">The flags.</param>
+		/// <param name="SectionHandle">The section handle.</param>
+		/// <param name="DebugPort">The debug port.</param>
+		/// <param name="ExceptionPort">The exception port.</param>
+		/// <param name="JobMemberLevel">The job member level.</param>
+		/// <returns>
+		/// <para>The function returns an NTSTATUS success or error code.</para>
+		/// <para>
+		/// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
+		/// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
+		/// Logging Errors.
+		/// </para>
+		/// </returns>
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		public static extern NTStatus NtCreateProcessEx(out HPROCESS ProcessHandle, [In] ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes,
 			[In] HPROCESS ParentProcess, [In] PROCESS_CREATE_FLAGS Flags, [In, Optional] IntPtr SectionHandle,
 			[In, Optional] IntPtr DebugPort, [In, Optional] IntPtr ExceptionPort, uint JobMemberLevel);
 
+		/// <summary>Creates a process. This function is UNDOCUMENTED.</summary>
+		/// <param name="ProcessHandle">The process handle.</param>
+		/// <param name="DesiredAccess">The desired access.</param>
+		/// <param name="ObjectAttributes">The object attributes.</param>
+		/// <param name="ParentProcess">The parent process.</param>
+		/// <param name="Flags">The flags.</param>
+		/// <param name="SectionHandle">The section handle.</param>
+		/// <param name="DebugPort">The debug port.</param>
+		/// <param name="ExceptionPort">The exception port.</param>
+		/// <param name="JobMemberLevel">The job member level.</param>
+		/// <returns>
+		/// <para>The function returns an NTSTATUS success or error code.</para>
+		/// <para>
+		/// The forms and significance of NTSTATUS error codes are listed in the Ntstatus.h header file available in the DDK, and are
+		/// described in the DDK documentation under Kernel-Mode Driver Architecture / Design Guide / Driver Programming Techniques /
+		/// Logging Errors.
+		/// </para>
+		/// </returns>
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		public static extern NTStatus NtCreateProcessEx(out HPROCESS ProcessHandle, [In] ACCESS_MASK DesiredAccess, [In, Optional] IntPtr ObjectAttributes,
 			[In] HPROCESS ParentProcess, [In] PROCESS_CREATE_FLAGS Flags, [In, Optional] IntPtr SectionHandle,

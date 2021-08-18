@@ -766,7 +766,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public const string CFSTR_SHELLIDLISTOFFSET = "Shell Object Offsets";
 
-			/// <summary><note type="note">This format identifier has been deprecated; use <see cref="ShellClipboardFormat.CFSTR_INETURL"/> instead.</note></summary>
+			/// <summary><note type="note">This format identifier has been deprecated; use <see cref="CFSTR_INETURLA"/> instead.</note></summary>
 			public const string CFSTR_SHELLURL = "UniformResourceLocator";
 
 			/// <summary>
