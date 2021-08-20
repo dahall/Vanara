@@ -1683,7 +1683,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "PeekConsoleInputW", CharSet = CharSet.Unicode)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PeekConsoleInput(HFILE hConsoleInput, [Out] INPUT_RECORD[] lpBuffer, uint nLength, out uint lpNumberOfEventsRead);
+		public static extern bool PeekConsoleInput(HFILE hConsoleInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
+			uint nLength, out uint lpNumberOfEventsRead);
 
 		/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
 		/// <param name="hConsoleInput">
@@ -1878,7 +1879,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ReadConsoleInputW", CharSet = CharSet.Unicode)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReadConsoleInput(HFILE hConsoleInput, [Out] INPUT_RECORD[] lpBuffer, uint nLength, out uint lpNumberOfEventsRead);
+		public static extern bool ReadConsoleInput(HFILE hConsoleInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
+			uint nLength, out uint lpNumberOfEventsRead);
 
 		/// <summary>
 		/// Reads character and color attribute data from a rectangular block of character cells in a console screen buffer, and the
@@ -3304,7 +3306,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		// typedef struct _COORD { SHORT X; SHORT Y; } COORD, *PCOORD;
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct COORD
 		{
 			/// <summary>The horizontal coordinate or column value. The units depend on the function call.</summary>
@@ -3599,7 +3601,7 @@ namespace Vanara.PInvoke
 		/// <summary>Describes a mouse input event in a console <c>INPUT_RECORD</c> structure.</summary>
 		// typedef struct _MOUSE_EVENT_RECORD { COORD dwMousePosition; DWORD dwButtonState; DWORD dwControlKeyState; DWORD dwEventFlags; } MOUSE_EVENT_RECORD;
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct MOUSE_EVENT_RECORD
 		{
 			/// <summary>
