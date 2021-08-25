@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -128,8 +129,8 @@ namespace Vanara.PInvoke
 			ENABLE_INSERT_MODE = 0x0020,
 
 			/// <summary>
-			/// This flag enables the user to use the mouse to select and edit text. To enable this mode, use . To disable this mode, use
-			/// ENABLE_EXTENDED_FLAGS without this flag.
+			/// This flag enables the user to use the mouse to select and edit text. To enable this mode, use <c>ENABLE_QUICK_EDIT_MODE |
+			/// ENABLE_EXTENDED_FLAGS</c>. To disable this mode, use ENABLE_EXTENDED_FLAGS without this flag.
 			/// </summary>
 			ENABLE_QUICK_EDIT_MODE = 0x0040,
 
@@ -840,12 +841,10 @@ namespace Vanara.PInvoke
 		[PInvokeData("ConsoleApi3.h", MSDNShortId = "92eefa4e-ffde-4886-afde-5aecf450b425")]
 		public static string[] GetConsoleAliases(string lpExeName)
 		{
-			using (var buf = new SafeHGlobalHandle((int)GetConsoleAliasesLength(lpExeName) + StringHelper.GetCharSize()))
-			{
-				var ret = GetConsoleAliases(buf, (uint)buf.Size, lpExeName);
-				if (!ret) Win32Error.ThrowLastError();
-				return buf.ToStringEnum().ToArray();
-			}
+			using var buf = new SafeHGlobalHandle((int)GetConsoleAliasesLength(lpExeName) + StringHelper.GetCharSize());
+			var ret = GetConsoleAliases(buf, buf.Size, lpExeName);
+			if (!ret) Win32Error.ThrowLastError();
+			return buf.ToStringEnum().ToArray();
 		}
 
 		/// <summary>Retrieves the required size for the buffer used by the <c>GetConsoleAliases</c> function.</summary>
@@ -889,18 +888,16 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static string[] GetConsoleAliasExes()
 		{
-			using (var buf = new SafeHGlobalHandle((int)(GetConsoleAliasExesLength() + StringHelper.GetCharSize())))
+			using var buf = new SafeHGlobalHandle((int)(GetConsoleAliasExesLength() + StringHelper.GetCharSize()));
+			var ret = GetConsoleAliasExes(buf, buf.Size);
+			// There seems to be a bug in GetConsoleAliasExesLength so this while loop ensures the buffer is large enough
+			while (!ret && Win32Error.GetLastError() == Win32Error.ERROR_BUFFER_OVERFLOW)
 			{
-				var ret = GetConsoleAliasExes(buf, (uint)buf.Size);
-				// There seems to be a bug in GetConsoleAliasExesLength so this while loop ensures the buffer is large enough
-				while (!ret && Win32Error.GetLastError() == Win32Error.ERROR_BUFFER_OVERFLOW)
-				{
-					buf.Size += 1024;
-					ret = GetConsoleAliasExes(buf, (uint)buf.Size);
-				}
-				if (!ret) Win32Error.ThrowLastError();
-				return buf.ToStringEnum().ToArray();
+				buf.Size += 1024;
+				ret = GetConsoleAliasExes(buf, buf.Size);
 			}
+			if (!ret) Win32Error.ThrowLastError();
+			return buf.ToStringEnum().ToArray();
 		}
 
 		/// <summary>Retrieves the required size for the buffer used by the <c>GetConsoleAliasExes</c> function.</summary>
@@ -1876,7 +1873,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// BOOL WINAPI ReadConsoleInput( _In_ HANDLE hConsoleInput, _Out_ PINPUT_RECORD lpBuffer, _In_ DWORD nLength, _Out_ LPDWORD
 		// lpNumberOfEventsRead );
-		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ReadConsoleInputW", CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ReadConsoleInput(HFILE hConsoleInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
@@ -1919,10 +1916,11 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// BOOL WINAPI ReadConsoleOutput( _In_ HANDLE hConsoleOutput, _Out_ PCHAR_INFO lpBuffer, _In_ COORD dwBufferSize, _In_ COORD
 		// dwBufferCoord, _Inout_ PSMALL_RECT lpReadRegion );
-		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ReadConsoleOutputW", CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReadConsoleOutput(HFILE hConsoleOutput, [Out] CHAR_INFO[] lpBuffer, COORD dwBufferSize, COORD dwBufferCoord, ref SMALL_RECT lpReadRegion);
+		public static extern bool ReadConsoleOutput(HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray)] CHAR_INFO[] lpBuffer,
+			COORD dwBufferSize, COORD dwBufferCoord, ref SMALL_RECT lpReadRegion);
 
 		/// <summary>
 		/// Copies a specified number of character attributes from consecutive cells of a console screen buffer, beginning at a specified location.
@@ -3119,7 +3117,7 @@ namespace Vanara.PInvoke
 			public string FaceName;
 
 			/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-			public static readonly CONSOLE_FONT_INFOEX Default = new CONSOLE_FONT_INFOEX { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_FONT_INFOEX)) };
+			public static readonly CONSOLE_FONT_INFOEX Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_FONT_INFOEX)) };
 		}
 
 		/// <summary>Contains information about the console history.</summary>
@@ -3142,7 +3140,7 @@ namespace Vanara.PInvoke
 			public uint dwFlags;
 
 			/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-			public static readonly CONSOLE_HISTORY_INFO Default = new CONSOLE_HISTORY_INFO { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_HISTORY_INFO)) };
+			public static readonly CONSOLE_HISTORY_INFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_HISTORY_INFO)) };
 		}
 
 		/// <summary>Contains information for a console read operation.</summary>
@@ -3168,7 +3166,7 @@ namespace Vanara.PInvoke
 			public CONTROL_KEY_STATE dwControlKeyState;
 
 			/// <summary>Gets an empty structure value with the <see cref="nLength"/> field initialized to the correct value.</summary>
-			public static readonly CONSOLE_READCONSOLE_CONTROL Default = new CONSOLE_READCONSOLE_CONTROL { nLength = (uint)Marshal.SizeOf(typeof(CONSOLE_READCONSOLE_CONTROL)) };
+			public static readonly CONSOLE_READCONSOLE_CONTROL Default = new() { nLength = (uint)Marshal.SizeOf(typeof(CONSOLE_READCONSOLE_CONTROL)) };
 		}
 
 		/// <summary>Contains information about a console screen buffer.</summary>
@@ -3250,7 +3248,7 @@ namespace Vanara.PInvoke
 			public COLORREF[] ColorTable;
 
 			/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-			public static readonly CONSOLE_SCREEN_BUFFER_INFOEX Default = new CONSOLE_SCREEN_BUFFER_INFOEX { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_SCREEN_BUFFER_INFOEX)) };
+			public static readonly CONSOLE_SCREEN_BUFFER_INFOEX Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_SCREEN_BUFFER_INFOEX)) };
 		}
 
 		/// <summary>Contains information for a console selection.</summary>
@@ -3306,6 +3304,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		// typedef struct _COORD { SHORT X; SHORT Y; } COORD, *PCOORD;
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[DebuggerDisplay("{X}, {Y}")]
 		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct COORD
 		{
@@ -3329,7 +3328,7 @@ namespace Vanara.PInvoke
 			public override string ToString() => $"X={X},Y={Y}";
 
 			/// <summary>Represents an empty instance of COORD with both X and Y values set to 0.</summary>
-			public static readonly COORD Empty = default(COORD);
+			public static readonly COORD Empty = default;
 		}
 
 		/// <summary>
@@ -3341,22 +3340,21 @@ namespace Vanara.PInvoke
 		public struct FOCUS_EVENT_RECORD
 		{
 			/// <summary>Reserved.</summary>
-			[MarshalAs(UnmanagedType.Bool)]
-			public bool bSetFocus;
+			public BOOL bSetFocus;
 		}
 
 		/// <summary>Provides a handle to a psuedo console.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HPCON : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HPCON"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HPCON(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HPCON"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HPCON NULL => new HPCON(IntPtr.Zero);
+			public static HPCON NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -3369,7 +3367,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPCON"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HPCON(IntPtr h) => new HPCON(h);
+			public static implicit operator HPCON(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -3401,7 +3399,7 @@ namespace Vanara.PInvoke
 		// typedef struct _INPUT_RECORD { WORD EventType; union { KEY_EVENT_RECORD KeyEvent; MOUSE_EVENT_RECORD MouseEvent;
 		// WINDOW_BUFFER_SIZE_RECORD WindowBufferSizeEvent; MENU_EVENT_RECORD MenuEvent; FOCUS_EVENT_RECORD FocusEvent; } Event; } INPUT_RECORD;
 		[PInvokeData("Wincon.h", MSDNShortId = "a46ba7fd-097a-455d-96ac-13aa01e11dc1")]
-		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct INPUT_RECORD
 		{
 			/// <summary>
@@ -3438,15 +3436,15 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			[FieldOffset(0)]
 			public EVENT_TYPE EventType;
 
+			private readonly ushort pad;
+
 			/// <summary>The event information. The format of this member depends on the event type specified by the EventType member.</summary>
-			[FieldOffset(4)]
 			public INPUT_RECORD_EVENT Event;
 
-			/// <summary/>
-			[StructLayout(LayoutKind.Explicit)]
+			/// <summary>The event information. The format of this member depends on the event type specified by the EventType member.</summary>
+			[StructLayout(LayoutKind.Explicit, Size = 16)]
 			public struct INPUT_RECORD_EVENT
 			{
 				/// <summary>The key event</summary>
@@ -3484,7 +3482,7 @@ namespace Vanara.PInvoke
 			/// <returns>A <see cref="INPUT_RECORD"/> value.</returns>
 			public static INPUT_RECORD CreateKeyEventRecord(bool keyDown, ushort virtualKeyCode, ushort virtualScanCode, char unicodeChar,
 				CONTROL_KEY_STATE ctrlKeys = CONTROL_KEY_STATE.NONE, ushort repeatCount = 1) =>
-				new INPUT_RECORD
+				new()
 				{
 					EventType = EVENT_TYPE.KEY_EVENT,
 					Event = new INPUT_RECORD_EVENT
@@ -3506,7 +3504,7 @@ namespace Vanara.PInvoke
 		// typedef struct _KEY_EVENT_RECORD { BOOL bKeyDown; WORD wRepeatCount; WORD wVirtualKeyCode; WORD wVirtualScanCode; union { WCHAR
 		// UnicodeChar; CHAR AsciiChar; } uChar; DWORD dwControlKeyState; } KEY_EVENT_RECORD;
 		[PInvokeData("Wincon.h", MSDNShortId = "b3fed86b-84ef-48e4-97e1-cb3d65f714a7")]
-		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
+		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Auto)]
 		public struct KEY_EVENT_RECORD
 		{
 			/// <summary>If the key is pressed, this member is <c>TRUE</c>. Otherwise, this member is <c>FALSE</c> (the key is released).</summary>
