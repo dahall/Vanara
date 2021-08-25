@@ -338,7 +338,7 @@ namespace Vanara.PInvoke
 		/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
 		public static unsafe IAsyncResult BeginReadFile(HFILE hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object stateObject)
 		{
-			var ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+			OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 			fixed (byte* pIn = buffer)
 			{
 				var ret = ReadFile(hFile, pIn, numberOfBytesToRead, null, ar.Overlapped);
@@ -392,7 +392,7 @@ namespace Vanara.PInvoke
 		/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
 		public static unsafe IAsyncResult BeginWriteFile(HFILE hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object stateObject)
 		{
-			var ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+			OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 			fixed (byte* pIn = buffer)
 			{
 				var ret = WriteFile(hFile, pIn, numberOfBytesToWrite, null, ar.Overlapped);
@@ -1817,8 +1817,8 @@ namespace Vanara.PInvoke
 		public static IEnumerable<WIN32_FIND_DATA> EnumFilesEx(string lpFileName, FINDEX_SEARCH_OPS fSearchOp = FINDEX_SEARCH_OPS.FindExSearchNameMatch, FIND_FIRST dwAdditionalFlags = 0, bool excludeShortName = false)
 		{
 			var minWin7 = Environment.OSVersion.Version >= new Version(6, 1);
-			var lvl = excludeShortName && minWin7 ? FINDEX_INFO_LEVELS.FindExInfoBasic : FINDEX_INFO_LEVELS.FindExInfoStandard;
-			using (var h = FindFirstFileEx(lpFileName, lvl, out var data, fSearchOp, default, dwAdditionalFlags))
+			FINDEX_INFO_LEVELS lvl = excludeShortName && minWin7 ? FINDEX_INFO_LEVELS.FindExInfoBasic : FINDEX_INFO_LEVELS.FindExInfoStandard;
+			using (SafeSearchHandle h = FindFirstFileEx(lpFileName, lvl, out WIN32_FIND_DATA data, fSearchOp, default, dwAdditionalFlags))
 			{
 				if (h.IsInvalid) ThrowIfNotNoMore();
 				yield return data;
@@ -1827,7 +1827,7 @@ namespace Vanara.PInvoke
 				ThrowIfNotNoMore();
 			}
 
-			void ThrowIfNotNoMore() { var e = Win32Error.GetLastError(); if (e.Failed && e != Win32Error.ERROR_NO_MORE_FILES) throw e.GetException(); }
+			static void ThrowIfNotNoMore() { var e = Win32Error.GetLastError(); if (e.Failed && e != Win32Error.ERROR_NO_MORE_FILES) throw e.GetException(); }
 		}
 
 		/// <summary>Retrieves the names of the volumes on a computer using <see cref="FindFirstVolume"/> and <see cref="FindNextVolume"/>.</summary>
@@ -1835,7 +1835,7 @@ namespace Vanara.PInvoke
 		public static IEnumerable<string> EnumVolumes()
 		{
 			var sb = new StringBuilder(MAX_PATH, MAX_PATH);
-			using (var h = FindFirstVolume(sb, (uint)sb.Capacity))
+			using (SafeVolumeSearchHandle h = FindFirstVolume(sb, (uint)sb.Capacity))
 			{
 				if (h.IsInvalid) ThrowIfNotNoMore();
 				yield return sb.ToString();
@@ -1844,7 +1844,7 @@ namespace Vanara.PInvoke
 				ThrowIfNotNoMore();
 			}
 
-			void ThrowIfNotNoMore() { var e = Win32Error.GetLastError(); if (e.Failed && e != Win32Error.ERROR_NO_MORE_FILES) throw e.GetException(); }
+			static void ThrowIfNotNoMore() { var e = Win32Error.GetLastError(); if (e.Failed && e != Win32Error.ERROR_NO_MORE_FILES) throw e.GetException(); }
 		}
 
 		/// <summary>Converts a file time to a local file time.</summary>
@@ -3167,7 +3167,7 @@ namespace Vanara.PInvoke
 		{
 			var sb1 = new StringBuilder(MAX_PATH + 1);
 			var sb2 = new StringBuilder(MAX_PATH + 1);
-			var ret = GetVolumeInformation(rootPathName, sb1, sb1.Capacity, out var sn, out var cl, out var flags, sb2, sb2.Capacity);
+			var ret = GetVolumeInformation(rootPathName, sb1, sb1.Capacity, out var sn, out var cl, out FileSystemFlags flags, sb2, sb2.Capacity);
 			volumeName = sb1.ToString();
 			volumeSerialNumber = sn;
 			maximumComponentLength = cl;
@@ -3721,17 +3721,15 @@ namespace Vanara.PInvoke
 		{
 			deviceName = deviceName?.TrimEnd('\\');
 			var bytes = 16;
-			var retLen = 0U;
-			using (var mem = new SafeHGlobalHandle(0))
+			uint retLen;
+			using var mem = new SafeHGlobalHandle(0);
+			do
 			{
-				do
-				{
-					mem.Size = (bytes *= 4);
-					retLen = QueryDosDevice(deviceName, (IntPtr)mem, mem.Size / Marshal.SystemDefaultCharSize);
-				} while (retLen == 0 && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
-				if (retLen == 0) throw new Win32Exception();
-				return mem.ToStringEnum().ToArray();
-			}
+				mem.Size = bytes *= 4;
+				retLen = QueryDosDevice(deviceName, mem, mem.Size / Marshal.SystemDefaultCharSize);
+			} while (retLen == 0 && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
+			if (retLen == 0) throw new Win32Exception();
+			return mem.ToStringEnum().ToArray();
 		}
 
 		/// <summary>
@@ -4218,8 +4216,8 @@ namespace Vanara.PInvoke
 		public static bool SetFileInformationByHandle<T>([In] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, T lpFileInformation) where T : struct
 		{
 			if (!CorrespondingTypeAttribute.CanSet(FileInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch.");
-			using (var mem = SafeHGlobalHandle.CreateFromStructure(lpFileInformation))
-				return SetFileInformationByHandle(hFile, FileInformationClass, mem, (uint)mem.Size);
+			using var mem = SafeHGlobalHandle.CreateFromStructure(lpFileInformation);
+			return SetFileInformationByHandle(hFile, FileInformationClass, mem, mem.Size);
 		}
 
 		/// <summary>
@@ -5776,7 +5774,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> that releases a created HFILE instance at disposal using CloseHandle.</summary>
-		public class SafeHFILE : SafeKernelHandle
+		public class SafeHFILE : SafeSyncHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="HFILE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -5793,7 +5791,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="Microsoft.Win32.SafeHandles.SafeFileHandle"/> to <see cref="SafeHFILE"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static explicit operator SafeHFILE(Microsoft.Win32.SafeHandles.SafeFileHandle h) => new SafeHFILE(h.DangerousGetHandle(), false);
+			public static explicit operator SafeHFILE(Microsoft.Win32.SafeHandles.SafeFileHandle h) => new(h.DangerousGetHandle(), false);
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHFILE"/> to <see cref="HFILE"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>

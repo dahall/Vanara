@@ -724,7 +724,7 @@ namespace Vanara.PInvoke
 
 	/// <summary>Provides a handle to a file.</summary>
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
-	public struct HFILE : IKernelHandle
+	public struct HFILE : ISyncHandle
 	{
 		/// <summary>Represents an invalid handle.</summary>
 		public static readonly HFILE INVALID_HANDLE_VALUE = new IntPtr(-1);
