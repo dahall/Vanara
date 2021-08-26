@@ -6,7 +6,7 @@
     <version>3.3.12</version>
     <description>The full set of packages associated with the Vanara PInvoke Libraries.</description>
     <tags>pinvoke;vanara;net-extensions;interop</tags>
-    <copyright>Copyright © 2017-2020</copyright>
+    <copyright>Copyright © 2017-2021</copyright>
     <authors>David Hall</authors>
     <owners>David Hall</owners>
     <license type="expression">MIT</license>
@@ -23,6 +23,7 @@
       <dependency id="Vanara.PInvoke.BITS" version="3.3.12" />
       <dependency id="Vanara.PInvoke.Cabinet" version="3.3.12" />
       <dependency id="Vanara.PInvoke.CfgMgr32" version="3.3.12" />
+      <dependency id="Vanara.PInvoke.CimFs" version="3.3.12" />
       <dependency id="Vanara.PInvoke.CldApi" version="3.3.12" />
       <dependency id="Vanara.PInvoke.ComCtl32" version="3.3.12" />
       <dependency id="Vanara.PInvoke.ComDlg32" version="3.3.12" />

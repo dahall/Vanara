@@ -167,7 +167,7 @@ Native Method | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[<PhysicalAddress>e__FixedBuffer](https://www.google.com/search?num=5&q=<PhysicalAddress>e__FixedBuffer+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.MIB_IPNET_ROW2_Unmanaged.<PhysicalAddress>e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=<PhysicalAddress>e__FixedBuffer)  
+[&lt;PhysicalAddress&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<PhysicalAddress>e__FixedBuffer+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.MIB_IPNET_ROW2_Unmanaged.&lt;PhysicalAddress&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;PhysicalAddress&gt;e__FixedBuffer)  
 [FIXED_INFO](https://www.google.com/search?num=5&q=FIXED_INFO+site%3Adocs.microsoft.com) | iptypes.h | [Vanara.PInvoke.IpHlpApi.FIXED_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FIXED_INFO)  
 [IF_COUNTED_STRING](https://www.google.com/search?num=5&q=IF_COUNTED_STRING+site%3Adocs.microsoft.com) | ifdef.h | [Vanara.PInvoke.IpHlpApi.IF_COUNTED_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=IF_COUNTED_STRING)  
 [IF_PHYSICAL_ADDRESS](https://www.google.com/search?num=5&q=IF_PHYSICAL_ADDRESS+site%3Adocs.microsoft.com) | ifdef.h | [Vanara.PInvoke.IpHlpApi.IF_PHYSICAL_ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=IF_PHYSICAL_ADDRESS)  

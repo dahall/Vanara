@@ -1,8 +1,8 @@
-## Vanara.PInvoke.NTDll  
+## Vanara.PInvoke.NtDll  
 PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
-- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NTDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NTDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NTDll)  
+- Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
 ### Methods - 5% API coverage (29 of 571 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
@@ -604,11 +604,11 @@ Native Structure | Header | Managed Structure
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
-NtQueryResult&lt;T&gt; |  | [Vanara.PInvoke.NtDll.NtQueryResult&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=NtQueryResult)  
-SafeEnlistmentHandle |  | [Vanara.PInvoke.NtDll.SafeEnlistmentHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeEnlistmentHandle)  
-SafeNtHandle |  | [Vanara.PInvoke.NtDll.SafeNtHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNtHandle)  
-SafeResourceManagerHandle |  | [Vanara.PInvoke.NtDll.SafeResourceManagerHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeResourceManagerHandle)  
-SafeSectionHandle |  | [Vanara.PInvoke.NtDll.SafeSectionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeSectionHandle)  
-SafeTransactionHandle |  | [Vanara.PInvoke.NtDll.SafeTransactionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeTransactionHandle)  
-SafeTransactionManagerHandle |  | [Vanara.PInvoke.NtDll.SafeTransactionManagerHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeTransactionManagerHandle)  
-SafeUNICODE_STRING |  | [Vanara.PInvoke.NtDll.SafeUNICODE_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=SafeUNICODE_STRING)  
+[NtQueryResult`1](https://www.google.com/search?num=5&q=NtQueryResult`1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.NtQueryResult`1](https://github.com/dahall/Vanara/search?l=C%23&q=NtQueryResult`1)  
+[SafeEnlistmentHandle](https://www.google.com/search?num=5&q=SafeEnlistmentHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeEnlistmentHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeEnlistmentHandle)  
+[SafeNtHandle](https://www.google.com/search?num=5&q=SafeNtHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeNtHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNtHandle)  
+[SafeResourceManagerHandle](https://www.google.com/search?num=5&q=SafeResourceManagerHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeResourceManagerHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeResourceManagerHandle)  
+[SafeSectionHandle](https://www.google.com/search?num=5&q=SafeSectionHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeSectionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeSectionHandle)  
+[SafeTransactionHandle](https://www.google.com/search?num=5&q=SafeTransactionHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeTransactionHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeTransactionHandle)  
+[SafeTransactionManagerHandle](https://www.google.com/search?num=5&q=SafeTransactionManagerHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeTransactionManagerHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeTransactionManagerHandle)  
+[SafeUNICODE_STRING](https://www.google.com/search?num=5&q=SafeUNICODE_STRING+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeUNICODE_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=SafeUNICODE_STRING)  

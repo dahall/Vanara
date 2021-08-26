@@ -228,7 +228,7 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[<_DataDirectory>e__FixedBuffer](https://www.google.com/search?num=5&q=<_DataDirectory>e__FixedBuffer+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.IMAGE_OPTIONAL_HEADER.<_DataDirectory>e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=<_DataDirectory>e__FixedBuffer)  
+[&lt;_DataDirectory&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<_DataDirectory>e__FixedBuffer+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DbgHelp.IMAGE_OPTIONAL_HEADER.&lt;_DataDirectory&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;_DataDirectory&gt;e__FixedBuffer)  
 [ADDRESS](https://www.google.com/search?num=5&q=ADDRESS+site%3Adocs.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRESS)  
 [ADDRESS64](https://www.google.com/search?num=5&q=ADDRESS64+site%3Adocs.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.ADDRESS64](https://github.com/dahall/Vanara/search?l=C%23&q=ADDRESS64)  
 [API_VERSION](https://www.google.com/search?num=5&q=API_VERSION+site%3Adocs.microsoft.com) | dbghelp.h | [Vanara.PInvoke.DbgHelp.API_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=API_VERSION)  
