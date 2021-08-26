@@ -61,8 +61,7 @@ namespace Vanara.Windows.Shell
 			{
 				lock (objectLock)
 				{
-					if (InternalClipboardUpdate.GetInvocationList().Length == 0)
-						listener = new ListenerWindow();
+					listener ??= new ListenerWindow();
 					InternalClipboardUpdate += value;
 				}
 			}
@@ -71,7 +70,7 @@ namespace Vanara.Windows.Shell
 				lock (objectLock)
 				{
 					InternalClipboardUpdate -= value;
-					if (InternalClipboardUpdate.GetInvocationList().Length == 0)
+					if (InternalClipboardUpdate is null || InternalClipboardUpdate.GetInvocationList().Length == 0)
 						listener = null;
 				}
 			}
@@ -482,28 +481,22 @@ namespace Vanara.Windows.Shell
 
 		private class ListenerWindow : SystemEventHandler
 		{
-			protected override void Dispose(bool disposing)
-			{
-				if (disposing)
-					Win32Error.ThrowLastErrorIfFalse(RemoveClipboardFormatListener(MessageWindowHandle));
-				base.Dispose(disposing);
-			}
-
 			protected override bool MessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 			{
 				lReturn = default;
-				if (msg == (uint)ClipboardNotificationMessage.WM_CLIPBOARDUPDATE)
+				switch (msg)
 				{
-					InternalClipboardUpdate?.Invoke(this, EventArgs.Empty);
-					return true;
+					case (uint)WindowMessage.WM_NCCREATE:
+						Win32Error.ThrowLastErrorIfFalse(AddClipboardFormatListener(MessageWindowHandle));
+						break;
+					case (uint)ClipboardNotificationMessage.WM_CLIPBOARDUPDATE:
+						InternalClipboardUpdate?.Invoke(this, EventArgs.Empty);
+						return true;
+					case (uint)WindowMessage.WM_DESTROY:
+						RemoveClipboardFormatListener(MessageWindowHandle);
+						break;
 				}
 				return false;
-			}
-
-			protected override void OnMessageWindowHandleCreated()
-			{
-				Win32Error.ThrowLastErrorIfFalse(AddClipboardFormatListener(MessageWindowHandle));
-				base.OnMessageWindowHandleCreated();
 			}
 		}
 

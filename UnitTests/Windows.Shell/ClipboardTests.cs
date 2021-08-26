@@ -77,5 +77,19 @@ namespace Vanara.Windows.Shell.Tests
 			using var cb = new Clipboard();
 			cb.SetText(txt, html);
 		}
+
+		[Test]
+		public void ChangeEventTest()
+		{
+			var sawChange = false;
+			Clipboard.ClipboardUpdate += OnUpdate;
+			using var cb = new Clipboard();
+			cb.SetText("Hello");
+			System.Threading.Thread.SpinWait(15);
+			Clipboard.ClipboardUpdate -= OnUpdate;
+			Assert.IsTrue(sawChange);
+
+			void OnUpdate(object sender, EventArgs e) => sawChange = true;
+		}
 	}
 }
