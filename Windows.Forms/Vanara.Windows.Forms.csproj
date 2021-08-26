@@ -37,7 +37,7 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <None Remove="Controls\ShellNamespaceTreeControl.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Theraot.Core" Version="3.2.5" Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) " />
+    <PackageReference Include="Theraot.Core" Version="3.2.8" Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) " />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System.Design" />
