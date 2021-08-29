@@ -262,7 +262,7 @@ namespace Vanara.PInvoke
 		private void Init()
 		{
 			msgWindow = new BasicMessageWindow(MessageFilter);
-			msgWindow.HandleCreated += (s, e) => OnMessageWindowHandleCreated();
+			OnMessageWindowHandleCreated();
 		}
 	}
 
