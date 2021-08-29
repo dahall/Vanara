@@ -449,60 +449,66 @@ namespace Vanara.Windows.Shell
 			thread.Join();
 		}
 
-		internal sealed class MoveableHGlobalMethods : MemoryMethodsBase
+		/*private class ListenerWindow : BasicMessageWindow //SystemEventHandler
 		{
-			/// <summary>Gets a static instance of these methods.</summary>
-			public static readonly IMemoryMethods Instance = new MoveableHGlobalMethods();
+			public ListenerWindow() : base(MessageFilterProc)
+			{
+				Win32Error.ThrowLastErrorIfFalse(AddClipboardFormatListener(Handle));
+			}
 
-			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
-			/// <param name="size">The size, in bytes, of memory to allocate.</param>
-			/// <returns>A memory handle.</returns>
-			public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)Kernel32.GlobalAlloc(Kernel32.GMEM.GMEM_MOVEABLE | Kernel32.GMEM.GMEM_ZEROINIT, size));
+			//protected override void OnMessageWindowHandleCreated()
+			//{
+			//	Win32Error.ThrowLastErrorIfFalse(AddClipboardFormatListener(MessageWindowHandle));
+			//	base.OnMessageWindowHandleCreated();
+			//}
 
-			/// <summary>Frees the memory associated with a handle.</summary>
-			/// <param name="hMem">A memory handle.</param>
-			public override void FreeMem(IntPtr hMem) => Kernel32.GlobalFree(hMem);
-
-			/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
-			/// <param name="hMem">A memory handle.</param>
-			/// <returns>A pointer to the locked memory.</returns>
-			public override IntPtr LockMem(IntPtr hMem) => Kernel32.GlobalLock(hMem);
-
-			/// <summary>Gets the reallocation method.</summary>
-			/// <param name="hMem">A memory handle.</param>
-			/// <param name="size">The size, in bytes, of memory to allocate.</param>
-			/// <returns>A memory handle.</returns>
-			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)Kernel32.GlobalReAlloc(hMem, size, Kernel32.GMEM.GMEM_MOVEABLE | Kernel32.GMEM.GMEM_ZEROINIT));
-
-			/// <summary>Unlocks the memory of a specified handle.</summary>
-			/// <param name="hMem">A memory handle.</param>
-			public override void UnlockMem(IntPtr hMem) => Kernel32.GlobalUnlock(hMem);
-		}
-
-		private class ListenerWindow : SystemEventHandler
-		{
-			protected override bool MessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
+			//protected override
+			static bool MessageFilterProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 			{
 				lReturn = default;
 				switch (msg)
 				{
-					case (uint)WindowMessage.WM_NCCREATE:
-						Win32Error.ThrowLastErrorIfFalse(AddClipboardFormatListener(MessageWindowHandle));
-						break;
 					case (uint)ClipboardNotificationMessage.WM_CLIPBOARDUPDATE:
-						InternalClipboardUpdate?.Invoke(this, EventArgs.Empty);
+						InternalClipboardUpdate?.Invoke(null, EventArgs.Empty);
 						return true;
 					case (uint)WindowMessage.WM_DESTROY:
-						RemoveClipboardFormatListener(MessageWindowHandle);
+						RemoveClipboardFormatListener(hwnd);
 						break;
 				}
 				return false;
+			}
+		}*/
+
+		private class ListenerWindow : NativeWindow, IDisposable
+		{
+			public ListenerWindow()
+			{
+				var cp = new CreateParams { Style = 0, ExStyle = 0, ClassStyle = 0, Parent = IntPtr.Zero, Caption = GetType().Name };
+				CreateHandle(cp);
+				AddClipboardFormatListener(Handle);
+			}
+
+			void IDisposable.Dispose() => base.DestroyHandle();
+
+			protected override void WndProc(ref Message m)
+			{
+				switch (m.Msg)
+				{
+					case (int)WindowMessage.WM_DESTROY:
+						RemoveClipboardFormatListener(Handle);
+						break;
+
+					case (int)ClipboardNotificationMessage.WM_CLIPBOARDUPDATE:
+						InternalClipboardUpdate?.Invoke(this, EventArgs.Empty);
+						break;
+				}
+				base.WndProc(ref m);
 			}
 		}
 
 		private class SafeMoveableHGlobalHandle : SafeHandle
 		{
-			private static readonly IMemoryMethods mm = MoveableHGlobalMethods.Instance;
+			private static readonly IMemoryMethods mm = Kernel32.MoveableHGlobalMemoryMethods.Instance;
 			private SizeT sz;
 
 			/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>

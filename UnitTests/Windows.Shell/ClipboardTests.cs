@@ -81,15 +81,16 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void ChangeEventTest()
 		{
-			var sawChange = false;
+			var sawChange = new System.Threading.ManualResetEvent(false);
 			Clipboard.ClipboardUpdate += OnUpdate;
-			using var cb = new Clipboard();
-			cb.SetText("Hello");
-			System.Threading.Thread.SpinWait(15);
+			System.Threading.Thread.SpinWait(1000);
+			WFClipboard.SetText("Hello");
+			//using var cb = new Clipboard();
+			//cb.SetText("Hello");
+			Assert.IsTrue(sawChange.WaitOne(5000));
 			Clipboard.ClipboardUpdate -= OnUpdate;
-			Assert.IsTrue(sawChange);
 
-			void OnUpdate(object sender, EventArgs e) => sawChange = true;
+			void OnUpdate(object sender, EventArgs e) => sawChange.Set();
 		}
 	}
 }
