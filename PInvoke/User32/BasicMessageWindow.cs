@@ -24,8 +24,8 @@ namespace Vanara.PInvoke
 	/// <seealso cref="IHandle"/>
 	public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	{
-		private readonly SafeHWND hwnd;
 		private readonly WeakReference weakSelfRef;
+		private SafeHWND hwnd;
 		private bool isDisposed;
 		private WindowClass wCls;
 
@@ -41,15 +41,9 @@ namespace Vanara.PInvoke
 		/// <summary>Finalizes an instance of the <see cref="BasicMessageWindow"/> class.</summary>
 		~BasicMessageWindow() => Dispose(false);
 
-		/// <summary>Occurs when the window handle has been created.</summary>
-		public event EventHandler HandleCreated;
-
-		/// <summary>Occurs when the window handle has been destroyed.</summary>
-		public event EventHandler HandleDestroyed;
-
 		/// <summary>Gets the handle.</summary>
 		/// <value>The handle.</value>
-		public HWND Handle => hwnd;
+		public HWND Handle => hwnd ?? HWND.NULL;
 
 		/// <summary>Gets or sets the callback method used to filter window messages.</summary>
 		/// <value>The callback method.</value>
@@ -75,9 +69,14 @@ namespace Vanara.PInvoke
 		/// </summary>
 		protected virtual SafeHWND CreateWindow()
 		{
-			HINSTANCE hInst = GetModuleHandle();
-			wCls = new WindowClass($"{GetType().Name}+{Guid.NewGuid()}", hInst, WndProc);
-			return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(0, wCls.Atom, hWndParent: HWND.HWND_MESSAGE, hInstance: hInst));
+			lock (this)
+			{
+				if (!Handle.IsNull)
+					throw new InvalidOperationException("Window handle already exists.");
+				HINSTANCE hInst = GetModuleHandle();
+				wCls = new WindowClass($"{GetType().Name}+{Guid.NewGuid()}", hInst, WndProc);
+				return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(0, wCls.Atom, hWndParent: HWND.HWND_MESSAGE, hInstance: hInst));
+			}
 		}
 
 		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
@@ -91,6 +90,7 @@ namespace Vanara.PInvoke
 			isDisposed = true;
 
 			hwnd?.Dispose(); // Calls DestroyWindow
+			hwnd = null;
 			wCls?.Unregister();
 		}
 
@@ -98,10 +98,6 @@ namespace Vanara.PInvoke
 		{
 			if (msg == (uint)WindowMessage.WM_NCCREATE)
 				return (IntPtr)1;
-			if (msg == (uint)WindowMessage.WM_CREATE)
-				HandleCreated?.Invoke(this, EventArgs.Empty);
-			if (msg == (uint)WindowMessage.WM_DESTROY)
-				HandleDestroyed?.Invoke(this, EventArgs.Empty);
 			return !weakSelfRef.IsAlive || weakSelfRef.Target is null || MessageFilter is null || !MessageFilter.Invoke(hwnd, msg, wParam, lParam, out IntPtr lRet)
 				? DefWindowProc(hwnd, msg, wParam, lParam)
 				: lRet;
