@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -812,6 +813,39 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Unmanaged memory methods for HGLOBAL with GMEM_MOVEABLE.</summary>
+		/// <seealso cref="HGlobalMemoryMethods" />
+		/// <seealso cref="MemoryMethodsBase" />
+		public sealed class MoveableHGlobalMemoryMethods : MemoryMethodsBase
+		{
+			/// <summary>Gets a static instance of these methods.</summary>
+			public static readonly IMemoryMethods Instance = new MoveableHGlobalMemoryMethods();
+
+			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
+			/// <param name="size">The size, in bytes, of memory to allocate.</param>
+			/// <returns>A memory handle.</returns>
+			public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalAlloc(GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT, size));
+
+			/// <summary>Frees the memory associated with a handle.</summary>
+			/// <param name="hMem">A memory handle.</param>
+			public override void FreeMem(IntPtr hMem) => GlobalFree(hMem);
+
+			/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
+			/// <param name="hMem">A memory handle.</param>
+			/// <returns>A pointer to the locked memory.</returns>
+			public override IntPtr LockMem(IntPtr hMem) => GlobalLock(hMem);
+
+			/// <summary>Gets the reallocation method.</summary>
+			/// <param name="hMem">A memory handle.</param>
+			/// <param name="size">The size, in bytes, of memory to allocate.</param>
+			/// <returns>A memory handle.</returns>
+			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalReAlloc(hMem, size, GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT));
+
+			/// <summary>Unlocks the memory of a specified handle.</summary>
+			/// <param name="hMem">A memory handle.</param>
+			public override void UnlockMem(IntPtr hMem) => GlobalUnlock(hMem);
 		}
 	}
 }
