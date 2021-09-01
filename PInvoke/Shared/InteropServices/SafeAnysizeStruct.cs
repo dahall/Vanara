@@ -57,7 +57,7 @@ namespace Vanara.InteropServices
 #if !(NET20 || NET35 || NET40)
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
-		public static implicit operator SafeAnysizeStruct<T>(in T s) => new SafeAnysizeStruct<T>(s);
+		public static implicit operator SafeAnysizeStruct<T>(in T s) => new(s);
 
 		/// <summary>Gets the length of the array from the structure.</summary>
 		/// <param name="local">The local, system marshaled, structure instance extracted from the pointer.</param>
@@ -65,7 +65,7 @@ namespace Vanara.InteropServices
 #if !(NET20 || NET35 || NET40)
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
-		protected override int GetArrayLength(in T local) => fiCount is null ? GetArrLenFromSz() : Convert.ToInt32(fiCount.GetValue(local));
+		protected override int GetArrayLength(in T local) => fiCount is null ? GetArrLenFromSz() : (fiCount.FieldType == typeof(IntPtr) ? ((IntPtr)fiCount.GetValue(local)).ToInt32() : Convert.ToInt32(fiCount.GetValue(local)));
 
 		private int GetArrLenFromSz() => 1 + (Size - baseSz) / Marshal.SizeOf(elemType);
 
@@ -186,7 +186,7 @@ namespace Vanara.InteropServices
 	/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
 	public class SafeAnysizeStructMarshaler<T> : IVanaraMarshaler
 	{
-		private string sizeFieldName;
+		private readonly string sizeFieldName;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStructMarshaler{T}"/> class.</summary>
 		/// <param name="cookie">
@@ -197,7 +197,7 @@ namespace Vanara.InteropServices
 		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(T));
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject) =>
-			managedObject is null ? SafeCoTaskMemHandle.Null : (SafeAllocatedMemoryHandle)new SafeAnysizeStruct<T>((T)managedObject, sizeFieldName);
+			managedObject is null ? SafeCoTaskMemHandle.Null : new SafeAnysizeStruct<T>((T)managedObject, sizeFieldName);
 
 		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
@@ -231,7 +231,7 @@ namespace Vanara.InteropServices
 		private static readonly int baseSz;
 		private readonly FieldInfo fiCount;
 		private static readonly FieldInfo fiArray;
-		private static int strOffset;
+		private static readonly int strOffset;
 		private readonly bool cntIsBytes = false;
 		private readonly bool cntInclNull = true;
 		private readonly bool allMem = false;
