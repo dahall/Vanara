@@ -10,6 +10,12 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary/>
+		public const int HEAP_MAXIMUM_TAG = 0x0FFF;
+
+		/// <summary/>
+		public const int HEAP_TAG_SHIFT = 18;
+
 		/// <summary>The current version to be used by <see cref="HEAP_OPTIMIZE_RESOURCES_INFORMATION.Version"/></summary>
 		public const uint HEAP_OPTIMIZE_RESOURCES_CURRENT_VERSION = 1;
 
@@ -63,7 +69,7 @@ namespace Vanara.PInvoke
 			HEAP_LFH = 2
 		}
 
-		/// <summary>Flags for Head functions</summary>
+		/// <summary>Flags for Heap functions.</summary>
 		[PInvokeData("HeapApi.h")]
 		[Flags]
 		public enum HeapFlags
@@ -103,13 +109,6 @@ namespace Vanara.PInvoke
 			/// </summary>
 			HEAP_REALLOC_IN_PLACE_ONLY = 0x00000010,
 
-			/// <summary>
-			/// All memory blocks that are allocated from this heap allow code execution, if the hardware enforces data execution prevention.
-			/// Use this flag heap in applications that run code from the heap. If HEAP_CREATE_ENABLE_EXECUTE is not specified and an
-			/// application attempts to run code from a protected page, the application receives an exception with the status code STATUS_ACCESS_VIOLATION.
-			/// </summary>
-			HEAP_CREATE_ENABLE_EXECUTE = 0x00040000,
-
 			/// <summary/>
 			HEAP_TAIL_CHECKING_ENABLED = 0x00000020,
 
@@ -120,25 +119,26 @@ namespace Vanara.PInvoke
 			HEAP_DISABLE_COALESCE_ON_FREE = 0x00000080,
 
 			/// <summary/>
-			HEAP_CREATE_ALIGN_16 = 0x00010000,
+			HEAP_CREATE_SEGMENT_HEAP = 0x00000100,
 
 			/// <summary/>
-			HEAP_CREATE_ENABLE_TRACING = 0x00020000,
-
-			/// <summary/>
-			HEAP_MAXIMUM_TAG = 0x0FFF,
+			HEAP_CREATE_HARDENED = 0x00000200,
 
 			/// <summary/>
 			HEAP_PSEUDO_TAG_FLAG = 0x8000,
 
 			/// <summary/>
-			HEAP_TAG_SHIFT = 18,
+			HEAP_CREATE_ALIGN_16 = 0x00010000,
 
 			/// <summary/>
-			HEAP_CREATE_SEGMENT_HEAP = 0x00000100,
+			HEAP_CREATE_ENABLE_TRACING = 0x00020000,
 
-			/// <summary/>
-			HEAP_CREATE_HARDENED = 0x00000200,
+			/// <summary>
+			/// All memory blocks that are allocated from this heap allow code execution, if the hardware enforces data execution prevention.
+			/// Use this flag heap in applications that run code from the heap. If HEAP_CREATE_ENABLE_EXECUTE is not specified and an
+			/// application attempts to run code from a protected page, the application receives an exception with the status code STATUS_ACCESS_VIOLATION.
+			/// </summary>
+			HEAP_CREATE_ENABLE_EXECUTE = 0x00040000,
 		}
 
 		/// <summary>The properties of the heap element.</summary>
@@ -344,7 +344,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapalloc DECLSPEC_ALLOCATOR LPVOID HeapAlloc( HANDLE
 		// hHeap, DWORD dwFlags, SIZE_T dwBytes );
 		[PInvokeData("heapapi.h", MSDNShortId = "9a176312-0312-4cc1-baf5-949b346d983e")]
-		public static SafeHeapBlock HeapAlloc(HHEAP hHeap, HeapFlags dwFlags, SizeT dwBytes) => new SafeHeapBlock(hHeap, dwBytes, dwFlags);
+		public static SafeHeapBlock HeapAlloc(HHEAP hHeap, HeapFlags dwFlags, SizeT dwBytes) => new(hHeap, dwBytes, dwFlags);
 
 		/// <summary>
 		/// Returns the size of the largest committed free block in the specified heap. If the Disable heap coalesce on free global flag is
@@ -1127,21 +1127,21 @@ namespace Vanara.PInvoke
 			public SizeT cbMaxReserve;
 
 			/// <summary>Gets this structure with the size field set appropriately.</summary>
-			public static readonly HEAP_SUMMARY Default = new HEAP_SUMMARY { cb = (uint)Marshal.SizeOf(typeof(HEAP_SUMMARY)) };
+			public static readonly HEAP_SUMMARY Default = new() { cb = (uint)Marshal.SizeOf(typeof(HEAP_SUMMARY)) };
 		}
 
 		/// <summary>Provides a handle to a heap.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HHEAP : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HHEAP"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HHEAP(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HHEAP"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HHEAP NULL => new HHEAP(IntPtr.Zero);
+			public static HHEAP NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -1154,7 +1154,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HHEAP"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HHEAP(IntPtr h) => new HHEAP(h);
+			public static implicit operator HHEAP(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -1169,7 +1169,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HHEAP h1, HHEAP h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HHEAP h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HHEAP h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -1180,7 +1180,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets a block of memory from this private heap.</summary>
 			/// <param name="size">The size of the block.</param>
 			/// <returns>A safe handle for the memory that will call HeapFree on disposal.</returns>
-			public SafeHeapBlock GetBlock(int size) => new SafeHeapBlock(this, size);
+			public SafeHeapBlock GetBlock(int size) => new(this, size);
 
 			/// <summary>
 			/// Retrieves a handle to the default heap of the calling process. This handle can then be used in subsequent calls to the heap functions.
@@ -1504,7 +1504,7 @@ namespace Vanara.PInvoke
 			private SafeHeapBlock() : base(0) { }
 
 			/// <summary>Represents a NULL memory pointer.</summary>
-			public static SafeHeapBlock Null => new SafeHeapBlock(IntPtr.Zero, 0, false);
+			public static SafeHeapBlock Null => new(IntPtr.Zero, 0, false);
 
 			/// <summary>Gets the heap handle associated with this block.</summary>
 			/// <value>The heap handle.</value>
@@ -1523,7 +1523,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
 			/// <returns><see cref="SafeHeapBlock"/> object to an native (unmanaged) structure with a trail array of structures</returns>
-			public static SafeHeapBlock CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new SafeHeapBlock(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes), s);
+			public static SafeHeapBlock CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes), s);
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
 			/// <param name="values">The list of strings.</param>
@@ -1534,18 +1534,18 @@ namespace Vanara.PInvoke
 			/// <see cref="SafeHeapBlock"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/>
 			/// model and the character set defined by <paramref name="charSet"/>.
 			/// </returns>
-			public static SafeHeapBlock CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new SafeHeapBlock(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
+			public static SafeHeapBlock CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 			/// <typeparam name="T">Native type</typeparam>
 			/// <param name="value">The value.</param>
 			/// <returns><see cref="SafeHeapBlock"/> object to an native (unmanaged) memory block the size of T.</returns>
-			public static SafeHeapBlock CreateFromStructure<T>(in T value = default) => new SafeHeapBlock(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
+			public static SafeHeapBlock CreateFromStructure<T>(in T value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
 
 			/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeHeapBlock"/> where it owns the reference.</summary>
 			/// <param name="ptr">The <see cref="IntPtr"/>.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator SafeHeapBlock(IntPtr ptr) => new SafeHeapBlock(ptr, 0, true);
+			public static implicit operator SafeHeapBlock(IntPtr ptr) => new(ptr, 0, true);
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HHEAP"/> that is disposed using <see cref="HeapDestroy"/>.</summary>
@@ -1569,7 +1569,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets a block of memory from this private heap.</summary>
 			/// <param name="size">The size of the block.</param>
 			/// <returns>A safe handle for the memory that will call HeapFree on disposal.</returns>
-			public SafeHeapBlock GetBlock(int size) => new SafeHeapBlock(this, size);
+			public SafeHeapBlock GetBlock(int size) => new(this, size);
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => HeapDestroy(this);
