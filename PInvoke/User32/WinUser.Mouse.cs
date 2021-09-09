@@ -408,7 +408,7 @@ namespace Vanara.PInvoke
 		// DWORD dy, DWORD dwData, ULONG_PTR dwExtraInfo );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "")]
-		public static extern void mouse_event(MOUSEEVENTF dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
+		public static extern void mouse_event(MOUSEEVENTF dwFlags, int dx, int dy, int dwData, IntPtr dwExtraInfo);
 
 		/// <summary>
 		/// Sets the double-click time for the mouse. A double-click is a series of two clicks of a mouse button, the second occurring within
@@ -504,7 +504,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>ULONG_PTR</c></para>
 			/// <para>Additional information associated with this coordinate.</para>
 			/// </summary>
-			public UIntPtr dwExtraInfo;
+			public IntPtr dwExtraInfo;
 		}
 
 		/// <summary>
