@@ -65,7 +65,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="System.Drawing.Color"/> to <see cref="COLORREF"/>.</summary>
 		/// <param name="clr">The <see cref="System.Drawing.Color"/> value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator COLORREF(System.Drawing.Color clr) => new COLORREF(clr);
+		public static implicit operator COLORREF(System.Drawing.Color clr) => new(clr);
+
+		/// <summary>Performs an implicit conversion from <see cref="System.ValueTuple{R, G, B}"/> to <see cref="COLORREF"/>.</summary>
+		/// <param name="clr">The tuple containing the R, G, and B values.</param>
+		/// <returns>The resulting <see cref="COLORREF"/> instance from the conversion.</returns>
+		public static implicit operator COLORREF((byte r, byte g, byte b) clr) => new(clr.r, clr.g, clr.b);
 
 		/// <summary>Performs an implicit conversion from <see cref="COLORREF"/> to <see cref="System.UInt32"/>.</summary>
 		/// <param name="cr">The <see cref="COLORREF"/> value.</param>
@@ -75,13 +80,13 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="COLORREF"/>.</summary>
 		/// <param name="value">The <see cref="uint"/> value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator COLORREF(uint value) => new COLORREF(value);
+		public static implicit operator COLORREF(uint value) => new(value);
 
 		/// <summary>Static reference for CLR_NONE representing no color.</summary>
-		public static COLORREF None = new COLORREF(CLR_NONE);
+		public static COLORREF None = new(CLR_NONE);
 
 		/// <summary>Static reference for CLR_DEFAULT representing the default color.</summary>
-		public static COLORREF Default = new COLORREF(0xFF000000);
+		public static COLORREF Default = new(0xFF000000);
 
 		/// <inheritdoc />
 		public override string ToString() => ((System.Drawing.Color)this).ToString();
