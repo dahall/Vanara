@@ -7568,7 +7568,7 @@ namespace Vanara.PInvoke
 			{
 				var pVal = new PinnedObject(value);
 				values.Add((attr, value, pVal));
-				if (!UpdateProcThreadAttribute(handle, 0, attr, pVal, Marshal.SizeOf(value)))
+				if (!UpdateProcThreadAttribute(handle, 0, attr, pVal, InteropExtensions.SizeOf(value)))
 					Win32Error.ThrowLastError();
 			}
 		}

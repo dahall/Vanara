@@ -452,12 +452,15 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(PROC_THREAD_ATTRIBUTE.PROC_THREAD_ATTRIBUTE_HANDLE_LIST, Is.EqualTo(new UIntPtr(0x20002)));
 			Assert.That(() =>
 			{
+				using var p2 = CreateProcess("cmd.exe");
 				var l = SafeProcThreadAttributeList.Create(new Dictionary<PROC_THREAD_ATTRIBUTE, object>
 				{
 					{PROC_THREAD_ATTRIBUTE.PROC_THREAD_ATTRIBUTE_IDEAL_PROCESSOR, new PROCESSOR_NUMBER(0, 2) },
 					{PROC_THREAD_ATTRIBUTE.PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY, 0x00000001UL },
+					{PROC_THREAD_ATTRIBUTE.PROC_THREAD_ATTRIBUTE_HANDLE_LIST, new HANDLE[] { p2 } },
 				});
 				l.Dispose();
+				p2.Close();
 			}, Throws.Nothing);
 		}
 
