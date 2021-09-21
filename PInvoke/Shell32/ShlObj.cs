@@ -4128,7 +4128,7 @@ namespace Vanara.PInvoke
 		// SHCreateDefaultContextMenu( const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "055ff0a0-9ba7-463d-9684-3fd072b190da")]
-		public static extern HRESULT SHCreateDefaultContextMenu(ref DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHCreateDefaultContextMenu(in DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -4398,7 +4398,7 @@ namespace Vanara.PInvoke
 		// SHCreateShellFolderView( const SFV_CREATE *pcsfv, IShellView **ppsv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "f2948a6d-84a5-456b-b328-ba76dba46e9d")]
-		public static extern HRESULT SHCreateShellFolderView(ref SFV_CREATE pcsfv, out IShellView ppsv);
+		public static extern HRESULT SHCreateShellFolderView(in SFV_CREATE pcsfv, out IShellView ppsv);
 
 		/// <summary>
 		/// <para>
@@ -4435,7 +4435,7 @@ namespace Vanara.PInvoke
 		// SHCreateShellFolderViewEx( CSFV *pcsfv, IShellView **ppsv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "7edd6786-7d74-4065-8cf1-cbb489007a46")]
-		public static extern HRESULT SHCreateShellFolderViewEx(ref CSFV pcsfv, out IShellView ppsv);
+		public static extern HRESULT SHCreateShellFolderViewEx(in CSFV pcsfv, out IShellView ppsv);
 
 		/// <summary>
 		/// <para>Creates an IShellItem object.</para>

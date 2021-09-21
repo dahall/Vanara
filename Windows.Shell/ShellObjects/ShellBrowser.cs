@@ -832,7 +832,7 @@ namespace Vanara.Windows.Shell
 					psfvcb = this,
 				};
 
-				SHCreateShellFolderView(ref sfvCreate, out IShellView shellView).ThrowIfFailed();
+				SHCreateShellFolderView(sfvCreate, out IShellView shellView).ThrowIfFailed();
 
 				ShellView = shellView ??
 					throw new InvalidComObjectException(nameof(ShellView));
