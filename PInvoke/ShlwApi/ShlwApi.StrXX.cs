@@ -1272,10 +1272,8 @@ namespace Vanara.PInvoke
 		public static extern StrPtrAuto StrRChrI(string pszStart, string pszEnd, char wMatch);
 
 		/// <summary>
-		/// <para>
 		/// Accepts a STRRET structure returned by IShellFolder::GetDisplayNameOf that contains or points to a string, and returns that
 		/// string as a BSTR.
-		/// </para>
 		/// </summary>
 		/// <param name="pstr">
 		/// <para>Type: <c>STRRET*</c></para>
@@ -1296,16 +1294,14 @@ namespace Vanara.PInvoke
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		/// <remarks>
-		/// <para>
-		/// If the uType member of the STRRET structure pointed to by pstr is set to <c>STRRET_WSTR</c>, the pOleStr member of that structure
-		/// is freed on return.
-		/// </para>
+		/// If the uType member of the STRRET structure pointed to by pstr is set to <c>STRRET_WSTR</c>, the pOleStr member of that
+		/// structure is freed on return.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strrettobstr LWSTDAPI StrRetToBSTR( STRRET *pstr,
-		// PCUITEMID_CHILD pidl, BSTR *pbstr );
+		// https://docs.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-strrettobstr
+		// LWSTDAPI StrRetToBSTR( STRRET *pstr, PCUITEMID_CHILD pidl, BSTR *pbstr );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("shlwapi.h", MSDNShortId = "2a5a9a2b-74df-4521-a5b2-8fc91c3559eb")]
-		public static extern HRESULT StrRetToBSTR(IntPtr pstr, IntPtr pidl, [MarshalAs(UnmanagedType.BStr)] out string pbstr);
+		[PInvokeData("shlwapi.h", MSDNShortId = "NF:shlwapi.StrRetToBSTR")]
+		public static extern HRESULT StrRetToBSTR([In] IntPtr pstr, [In, Optional] IntPtr pidl, [MarshalAs(UnmanagedType.BStr)] out string pbstr);
 
 		/// <summary>
 		/// <para>Converts an STRRET structure returned by IShellFolder::GetDisplayNameOf to a string, and places the result in a buffer.</para>
@@ -1343,7 +1339,7 @@ namespace Vanara.PInvoke
 		// PCUITEMID_CHILD pidl, LPSTR pszBuf, UINT cchBuf );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "89dab3ee-e9f8-499a-97ec-6fe732315891")]
-		public static extern HRESULT StrRetToBuf(IntPtr pstr, IntPtr pidl, StringBuilder pszBuf, uint cchBuf);
+		public static extern HRESULT StrRetToBuf([In] IntPtr pstr, [In] IntPtr pidl, StringBuilder pszBuf, uint cchBuf);
 
 		/// <summary>
 		/// <para>
@@ -1374,7 +1370,8 @@ namespace Vanara.PInvoke
 		// PCUITEMID_CHILD pidl, LPSTR *ppsz );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "03b0dffb-8ef7-41da-9773-81ed55275802")]
-		public static extern HRESULT StrRetToStr(IntPtr pstr, IntPtr pidl, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppsz);
+		public static extern HRESULT StrRetToStr([In] IntPtr pstr, [In, Optional] IntPtr pidl,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppsz);
 
 		/// <summary>
 		/// <para>Searches for the last occurrence of a specified substring within a string. The comparison is not case-sensitive.</para>
