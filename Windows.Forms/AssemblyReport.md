@@ -132,6 +132,7 @@ Class | Description
 [Vanara.Windows.Forms.ExplorerBrowser.NavigationLogEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=NavigationLogEventArgs) | The event argument for NavigationLogChangedEvent
 [Vanara.Windows.Forms.NetworkConnectionDialog](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkConnectionDialog) | A dialog box that allows the user to browse and connect to network resources.
 [Vanara.Windows.Forms.NetworkDisconnectDialog](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDisconnectDialog) | A dialog box that allows the user to browse and connect to network resources.
+[Vanara.Extensions.NotifyIconExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyIconExtensions) | 
 [Vanara.Drawing.BufferedPaint.PaintAction<T>](https://github.com/dahall/Vanara/search?l=C%23&q=PaintAction<T>) | A method delegate to paint a stateful image.
 [Vanara.Windows.Forms.CredentialsDialog.PasswordValidatorEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=PasswordValidatorEventArgs) | Used by the `Vanara.Windows.Forms.CredentialsDialog.ValidatePassword` event.
 [Vanara.Windows.Forms.Forms.PreventShutdownContext](https://github.com/dahall/Vanara/search?l=C%23&q=PreventShutdownContext) | Used to define a set of operations within which any shutdown request will be met with a reason why this application is blocking it.

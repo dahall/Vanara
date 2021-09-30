@@ -81,10 +81,11 @@ Native Structure | Header | Managed Structure
 [HWLANSESSION](https://www.google.com/search?num=5&q=HWLANSESSION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WlanApi.HWLANSESSION](https://github.com/dahall/Vanara/search?l=C%23&q=HWLANSESSION)  
 [NDIS_OBJECT_HEADER](https://www.google.com/search?num=5&q=NDIS_OBJECT_HEADER+site%3Adocs.microsoft.com) | Ntddndis.h | [Vanara.PInvoke.WlanApi.NDIS_OBJECT_HEADER](https://github.com/dahall/Vanara/search?l=C%23&q=NDIS_OBJECT_HEADER)  
 [ONEX_AUTH_PARAMS](https://www.google.com/search?num=5&q=ONEX_AUTH_PARAMS+site%3Adocs.microsoft.com) | dot1x.h | [Vanara.PInvoke.WlanApi.ONEX_AUTH_PARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=ONEX_AUTH_PARAMS)  
-[ONEX_CONNECTION_PROFILE](https://www.google.com/search?num=5&q=ONEX_CONNECTION_PROFILE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WlanApi.ONEX_CONNECTION_PROFILE](https://github.com/dahall/Vanara/search?l=C%23&q=ONEX_CONNECTION_PROFILE)  
+[ONEX_CONNECTION_PROFILE](https://www.google.com/search?num=5&q=ONEX_CONNECTION_PROFILE+site%3Adocs.microsoft.com) | dot1x.h | [Vanara.PInvoke.WlanApi.ONEX_CONNECTION_PROFILE](https://github.com/dahall/Vanara/search?l=C%23&q=ONEX_CONNECTION_PROFILE)  
 [ONEX_EAP_ERROR](https://www.google.com/search?num=5&q=ONEX_EAP_ERROR+site%3Adocs.microsoft.com) | dot1x.h | [Vanara.PInvoke.WlanApi.ONEX_EAP_ERROR](https://github.com/dahall/Vanara/search?l=C%23&q=ONEX_EAP_ERROR)  
 [ONEX_RESULT_UPDATE_DATA](https://www.google.com/search?num=5&q=ONEX_RESULT_UPDATE_DATA+site%3Adocs.microsoft.com) | dot1x.h | [Vanara.PInvoke.WlanApi.ONEX_RESULT_UPDATE_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=ONEX_RESULT_UPDATE_DATA)  
 [ONEX_STATUS](https://www.google.com/search?num=5&q=ONEX_STATUS+site%3Adocs.microsoft.com) | dot1x.h | [Vanara.PInvoke.WlanApi.ONEX_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=ONEX_STATUS)  
+[ONEX_USER_INFO](https://www.google.com/search?num=5&q=ONEX_USER_INFO+site%3Adocs.microsoft.com) | dot1x.h | [Vanara.PInvoke.WlanApi.ONEX_USER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=ONEX_USER_INFO)  
 [ONEX_VARIABLE_BLOB](https://www.google.com/search?num=5&q=ONEX_VARIABLE_BLOB+site%3Adocs.microsoft.com) | dot1x.h | [Vanara.PInvoke.WlanApi.ONEX_VARIABLE_BLOB](https://github.com/dahall/Vanara/search?l=C%23&q=ONEX_VARIABLE_BLOB)  
 [WLAN_ASSOCIATION_ATTRIBUTES](https://www.google.com/search?num=5&q=WLAN_ASSOCIATION_ATTRIBUTES+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.WLAN_ASSOCIATION_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=WLAN_ASSOCIATION_ATTRIBUTES)  
 [WLAN_AUTH_CIPHER_PAIR_LIST](https://www.google.com/search?num=5&q=WLAN_AUTH_CIPHER_PAIR_LIST+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.WLAN_AUTH_CIPHER_PAIR_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=WLAN_AUTH_CIPHER_PAIR_LIST)  
@@ -125,12 +126,23 @@ Native Structure | Header | Managed Structure
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
+[IDot11AdHocInterface](https://www.google.com/search?num=5&q=IDot11AdHocInterface+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IDot11AdHocInterface](https://github.com/dahall/Vanara/search?l=C%23&q=IDot11AdHocInterface)  
+[IDot11AdHocInterfaceNotificationSink](https://www.google.com/search?num=5&q=IDot11AdHocInterfaceNotificationSink+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IDot11AdHocInterfaceNotificationSink](https://github.com/dahall/Vanara/search?l=C%23&q=IDot11AdHocInterfaceNotificationSink)  
+[IDot11AdHocManager](https://www.google.com/search?num=5&q=IDot11AdHocManager+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IDot11AdHocManager](https://github.com/dahall/Vanara/search?l=C%23&q=IDot11AdHocManager)  
+[IDot11AdHocManagerNotificationSink](https://www.google.com/search?num=5&q=IDot11AdHocManagerNotificationSink+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IDot11AdHocManagerNotificationSink](https://github.com/dahall/Vanara/search?l=C%23&q=IDot11AdHocManagerNotificationSink)  
+[IDot11AdHocNetwork](https://www.google.com/search?num=5&q=IDot11AdHocNetwork+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IDot11AdHocNetwork](https://github.com/dahall/Vanara/search?l=C%23&q=IDot11AdHocNetwork)  
+[IDot11AdHocNetworkNotificationSink](https://www.google.com/search?num=5&q=IDot11AdHocNetworkNotificationSink+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IDot11AdHocNetworkNotificationSink](https://github.com/dahall/Vanara/search?l=C%23&q=IDot11AdHocNetworkNotificationSink)  
+[IDot11AdHocSecuritySettings](https://www.google.com/search?num=5&q=IDot11AdHocSecuritySettings+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IDot11AdHocSecuritySettings](https://github.com/dahall/Vanara/search?l=C%23&q=IDot11AdHocSecuritySettings)  
 [IElevateWlanUi](https://www.google.com/search?num=5&q=IElevateWlanUi+site%3Adocs.microsoft.com) | wlanui.dll |  |   
+[IEnumDot11AdHocInterfaces](https://www.google.com/search?num=5&q=IEnumDot11AdHocInterfaces+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IEnumDot11AdHocInterfaces](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumDot11AdHocInterfaces)  
+[IEnumDot11AdHocNetworks](https://www.google.com/search?num=5&q=IEnumDot11AdHocNetworks+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IEnumDot11AdHocNetworks](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumDot11AdHocNetworks)  
+[IEnumDot11AdHocSecuritySettings](https://www.google.com/search?num=5&q=IEnumDot11AdHocSecuritySettings+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.IEnumDot11AdHocSecuritySettings](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumDot11AdHocSecuritySettings)  
 [ISequentialStream](https://www.google.com/search?num=5&q=ISequentialStream+site%3Adocs.microsoft.com) | wlanui.dll |  |   
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [DOT11_NETWORK_LIST](https://www.google.com/search?num=5&q=DOT11_NETWORK_LIST+site%3Adocs.microsoft.com) | wlanapi.h | [Vanara.PInvoke.WlanApi.DOT11_NETWORK_LIST](https://github.com/dahall/Vanara/search?l=C%23&q=DOT11_NETWORK_LIST)  
+[Dot11AdHocManager](https://www.google.com/search?num=5&q=Dot11AdHocManager+site%3Adocs.microsoft.com) | adhoc.h | [Vanara.PInvoke.WlanApi.Dot11AdHocManager](https://github.com/dahall/Vanara/search?l=C%23&q=Dot11AdHocManager)  
 [SafeHWFDSERVICE](https://www.google.com/search?num=5&q=SafeHWFDSERVICE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WlanApi.SafeHWFDSERVICE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWFDSERVICE)  
 [SafeHWFDSESSION](https://www.google.com/search?num=5&q=SafeHWFDSESSION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WlanApi.SafeHWFDSESSION](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWFDSESSION)  
 [SafeHWLANMEM](https://www.google.com/search?num=5&q=SafeHWLANMEM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WlanApi.SafeHWLANMEM](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHWLANMEM)  

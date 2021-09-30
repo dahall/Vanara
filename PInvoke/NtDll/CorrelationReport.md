@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (29 of 571 functions)  
+### Methods - 5% API coverage (33 of 571 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Adocs.microsoft.com) |  |   
@@ -144,7 +144,7 @@ Native Method | Header | Managed Method
 [RtlAddFunctionTable](https://www.google.com/search?num=5&q=RtlAddFunctionTable+site%3Adocs.microsoft.com) |  |   
 [RtlAddGrowableFunctionTable](https://www.google.com/search?num=5&q=RtlAddGrowableFunctionTable+site%3Adocs.microsoft.com) |  |   
 [RtlAllocateAndInitializeSid](https://www.google.com/search?num=5&q=RtlAllocateAndInitializeSid+site%3Adocs.microsoft.com) |  |   
-[RtlAllocateHeap](https://www.google.com/search?num=5&q=RtlAllocateHeap+site%3Adocs.microsoft.com) |  |   
+[RtlAllocateHeap](https://www.google.com/search?num=5&q=RtlAllocateHeap+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.RtlAllocateHeap](https://github.com/dahall/Vanara/search?l=C%23&q=RtlAllocateHeap)  
 [RtlAnsiStringToUnicodeString](https://www.google.com/search?num=5&q=RtlAnsiStringToUnicodeString+site%3Adocs.microsoft.com) |  |   
 [RtlAppendStringToString](https://www.google.com/search?num=5&q=RtlAppendStringToString+site%3Adocs.microsoft.com) |  |   
 [RtlAppendUnicodeStringToString](https://www.google.com/search?num=5&q=RtlAppendUnicodeStringToString+site%3Adocs.microsoft.com) |  |   
@@ -179,7 +179,7 @@ Native Method | Header | Managed Method
 [RtlCopyString](https://www.google.com/search?num=5&q=RtlCopyString+site%3Adocs.microsoft.com) |  |   
 [RtlCopyUnicodeString](https://www.google.com/search?num=5&q=RtlCopyUnicodeString+site%3Adocs.microsoft.com) |  |   
 [RtlCreateAcl](https://www.google.com/search?num=5&q=RtlCreateAcl+site%3Adocs.microsoft.com) |  |   
-[RtlCreateHeap](https://www.google.com/search?num=5&q=RtlCreateHeap+site%3Adocs.microsoft.com) |  |   
+[RtlCreateHeap](https://www.google.com/search?num=5&q=RtlCreateHeap+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.RtlCreateHeap](https://github.com/dahall/Vanara/search?l=C%23&q=RtlCreateHeap)  
 [RtlCreateProcessParametersWithTemplate](https://www.google.com/search?num=5&q=RtlCreateProcessParametersWithTemplate+site%3Adocs.microsoft.com) |  |   
 [RtlCreateRegistryKey](https://www.google.com/search?num=5&q=RtlCreateRegistryKey+site%3Adocs.microsoft.com) |  |   
 [RtlCreateSecurityDescriptor](https://www.google.com/search?num=5&q=RtlCreateSecurityDescriptor+site%3Adocs.microsoft.com) |  |   
@@ -198,7 +198,7 @@ Native Method | Header | Managed Method
 [RtlDeleteGrowableFunctionTable](https://www.google.com/search?num=5&q=RtlDeleteGrowableFunctionTable+site%3Adocs.microsoft.com) |  |   
 [RtlDeleteNoSplay](https://www.google.com/search?num=5&q=RtlDeleteNoSplay+site%3Adocs.microsoft.com) |  |   
 [RtlDeleteRegistryValue](https://www.google.com/search?num=5&q=RtlDeleteRegistryValue+site%3Adocs.microsoft.com) |  |   
-[RtlDestroyHeap](https://www.google.com/search?num=5&q=RtlDestroyHeap+site%3Adocs.microsoft.com) |  |   
+[RtlDestroyHeap](https://www.google.com/search?num=5&q=RtlDestroyHeap+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.RtlDestroyHeap](https://github.com/dahall/Vanara/search?l=C%23&q=RtlDestroyHeap)  
 [RtlDisownModuleHeapAllocation](https://www.google.com/search?num=5&q=RtlDisownModuleHeapAllocation+site%3Adocs.microsoft.com) |  |   
 [RtlDoesNameContainWildCards](https://www.google.com/search?num=5&q=RtlDoesNameContainWildCards+site%3Adocs.microsoft.com) |  |   
 [RtlDosLongPathNameToNtPathName_U_WithStatus](https://www.google.com/search?num=5&q=RtlDosLongPathNameToNtPathName_U_WithStatus+site%3Adocs.microsoft.com) |  |   
@@ -239,7 +239,7 @@ Native Method | Header | Managed Method
 [RtlFlushNonVolatileMemory](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemory+site%3Adocs.microsoft.com) |  |   
 [RtlFlushNonVolatileMemoryRanges](https://www.google.com/search?num=5&q=RtlFlushNonVolatileMemoryRanges+site%3Adocs.microsoft.com) |  |   
 [RtlFreeAnsiString](https://www.google.com/search?num=5&q=RtlFreeAnsiString+site%3Adocs.microsoft.com) |  |   
-[RtlFreeHeap](https://www.google.com/search?num=5&q=RtlFreeHeap+site%3Adocs.microsoft.com) |  |   
+[RtlFreeHeap](https://www.google.com/search?num=5&q=RtlFreeHeap+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.RtlFreeHeap](https://github.com/dahall/Vanara/search?l=C%23&q=RtlFreeHeap)  
 [RtlFreeNonVolatileToken](https://www.google.com/search?num=5&q=RtlFreeNonVolatileToken+site%3Adocs.microsoft.com) |  |   
 [RtlFreeOemString](https://www.google.com/search?num=5&q=RtlFreeOemString+site%3Adocs.microsoft.com) |  |   
 [RtlFreeUnicodeString](https://www.google.com/search?num=5&q=RtlFreeUnicodeString+site%3Adocs.microsoft.com) |  |   
@@ -592,6 +592,7 @@ Native Structure | Header | Managed Structure
 [PEB_WOW64](https://www.google.com/search?num=5&q=PEB_WOW64+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.PEB_WOW64](https://github.com/dahall/Vanara/search?l=C%23&q=PEB_WOW64)  
 [PROCESS_BASIC_INFORMATION](https://www.google.com/search?num=5&q=PROCESS_BASIC_INFORMATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.PROCESS_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_BASIC_INFORMATION)  
 [PROCESS_BASIC_INFORMATION_WOW64](https://www.google.com/search?num=5&q=PROCESS_BASIC_INFORMATION_WOW64+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.PROCESS_BASIC_INFORMATION_WOW64](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_BASIC_INFORMATION_WOW64)  
+[RTL_HEAP_PARAMETERS](https://www.google.com/search?num=5&q=RTL_HEAP_PARAMETERS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.RTL_HEAP_PARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=RTL_HEAP_PARAMETERS)  
 [RTL_USER_PROCESS_PARAMETERS](https://www.google.com/search?num=5&q=RTL_USER_PROCESS_PARAMETERS+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.RTL_USER_PROCESS_PARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=RTL_USER_PROCESS_PARAMETERS)  
 [RTL_USER_PROCESS_PARAMETERS_WOW64](https://www.google.com/search?num=5&q=RTL_USER_PROCESS_PARAMETERS_WOW64+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.RTL_USER_PROCESS_PARAMETERS_WOW64](https://github.com/dahall/Vanara/search?l=C%23&q=RTL_USER_PROCESS_PARAMETERS_WOW64)  
 [SYSTEM_BASIC_INFORMATION](https://www.google.com/search?num=5&q=SYSTEM_BASIC_INFORMATION+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_BASIC_INFORMATION)  

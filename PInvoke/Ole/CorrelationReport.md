@@ -1149,6 +1149,7 @@ Native Class | Header | Managed Class
 [Shell](https://www.google.com/search?num=5&q=Shell+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.Shell](https://github.com/dahall/Vanara/search?l=C%23&q=Shell)  
 [SNB](https://www.google.com/search?num=5&q=SNB+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ole32.SNB](https://github.com/dahall/Vanara/search?l=C%23&q=SNB)  
 [Software](https://www.google.com/search?num=5&q=Software+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.Software](https://github.com/dahall/Vanara/search?l=C%23&q=Software)  
+[StdComponentCategoriesMgr](https://www.google.com/search?num=5&q=StdComponentCategoriesMgr+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ole32.StdComponentCategoriesMgr](https://github.com/dahall/Vanara/search?l=C%23&q=StdComponentCategoriesMgr)  
 [Sync](https://www.google.com/search?num=5&q=Sync+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.Sync](https://github.com/dahall/Vanara/search?l=C%23&q=Sync)  
 [System](https://www.google.com/search?num=5&q=System+site%3Adocs.microsoft.com) | Propkey.h | [Vanara.PInvoke.Ole32.PROPERTYKEY.System](https://github.com/dahall/Vanara/search?l=C%23&q=System)  
 [Task](https://www.google.com/search?num=5&q=Task+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ole32.PROPERTYKEY.System.Task](https://github.com/dahall/Vanara/search?l=C%23&q=Task)  
