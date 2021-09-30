@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.FhSvcCtl</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\FhSvcCtl\Vanara.PInvoke.FhSvcCtl.csproj" />
+  </ItemGroup>
+</Project>
