@@ -11,7 +11,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
-		/// <summary> To extract the sorting rule, use a bitwise AND operator (&) to combine lParam with SHCIDS_COLUMNMASK (0X0000FFFF).
+		/// <summary> To extract the sorting rule, use a bitwise AND operator (&amp;) to combine lParam with SHCIDS_COLUMNMASK (0X0000FFFF).
 		/// This operation masks off the upper sixteen bits of lParam. </summary>
 		public const SHCIDS SHCIDS_COLUMNMASK = (SHCIDS)0x0000FFFF;
 
