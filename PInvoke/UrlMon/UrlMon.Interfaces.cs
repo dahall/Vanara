@@ -9,6 +9,377 @@ namespace Vanara.PInvoke
 {
 	public static partial class UrlMon
 	{
+		[PInvokeData("Urlmon.h")]
+		public enum AUTHENTICATEF
+		{
+			AUTHENTICATEF_PROXY = 0x00000001,
+			AUTHENTICATEF_BASIC = 0x00000002,
+			AUTHENTICATEF_HTTP = 0x00000004,
+		}
+
+		/// <summary>Provides the URL moniker with information to authenticate the user.</summary>
+		/// <remarks>
+		/// <para>
+		/// Urlmon.dll uses the QueryInterface method on the client application's implementation of <c>IBindStatusCallback</c> to get a
+		/// pointer to the client application's <c>IAuthenticate</c> interface. If the client application is hosting Mshtml.dll, Mshtml.dll
+		/// requests a pointer to the client application's implementation of <c>IAuthenticate</c> interface by calling QueryInterface on the
+		/// client application's <c>IServiceProvider</c> interface.
+		/// </para>
+		/// <para>The IID for this interface is
+		/// <code>IID_IAuthenticate</code>
+		/// .
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775080(v=vs.85)
+		[PInvokeData("Urlmon.h")]
+		[ComImport, Guid("79eac9d0-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IAuthenticate
+		{
+			/// <summary>Supplies authentication support to a URL moniker from a client application.</summary>
+			/// <param name="phwnd">
+			/// [out] The address of a client-provided HWND of the parent window for a default user interface. To prevent a user interface
+			/// from displaying, the client must provide a user name and password in the other parameters, and this handle must be set to zero.
+			/// </param>
+			/// <param name="pszUsername">
+			/// [out] The address of a string value that contains the user name to use for authentication. If the client returns a value
+			/// here, the client should also set phwnd to zero.
+			/// </param>
+			/// <param name="pszPassword">
+			/// [out] The address of a string value that contains the password to use for authentication. If the client returns a value
+			/// here, the client should also set phwnd to zero.
+			/// </param>
+			/// <returns>
+			/// <para>Returns one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>Authentication was successful.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_ACCESSDENIED</term>
+			/// <term>Authentication failed.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One or more parameters are invalid.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Applications that implement the <c>IAuthenticate::Authenticate</c> method must allocate the memory of the pszUsername and
+			/// pszPassword buffers by using CoTaskMemAlloc. Applications that call the <c>IAuthenticate::Authenticate</c> method are
+			/// responsible for freeing the memory with CoTaskMemFree.
+			/// </para>
+			/// <para>
+			/// The default user interface can handle any authentication schemes recognized by the Microsoft Win32 Internet API. Currently,
+			/// the user name and password options handle only the Basic authentication scheme.
+			/// </para>
+			/// <para>
+			/// This method is related to the InternetErrorDlg function in the Win32 Internet API. For more information about the Win32
+			/// Internet API, see Introduction to the Microsoft Win32 Internet Functions.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775079(v=vs.85)
+			// HRESULT Authenticate( [out] HWND *phwnd, [out] LPWSTR *pszUsername, [out] LPWSTR *pszPassword );
+			[PreserveSig]
+			HRESULT Authenticate(out HWND phwnd, [MarshalAs(UnmanagedType.LPWStr)] out string pszUsername, [MarshalAs(UnmanagedType.LPWStr)] out string pszPassword);
+		}
+
+		/// <summary>Provides the URL moniker with information to authenticate the user.</summary>
+		/// <remarks>
+		/// <para>
+		/// Relative to the <c>IAuthenticate</c> interface, the <c>IAuthenticateEx</c> interface provides the additional method
+		/// <c>IAuthenticateEx::AuthenticateEx</c>. This method is an extension of the <c>IAuthenticate::Authenticate</c> method.
+		/// </para>
+		/// <para>The IID for this interface is
+		/// <code>IID_IAuthenticateEx</code>
+		/// .
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/cc709427(v=vs.85)
+		[PInvokeData("Urlmon.h")]
+		[ComImport, Guid("2ad1edaf-d83d-48b5-9adf-03dbe19f53bd"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IAuthenticateEx : IAuthenticate
+		{
+			/// <summary>Supplies authentication support to a URL moniker from a client application.</summary>
+			/// <param name="phwnd">
+			/// [out] The address of a client-provided HWND of the parent window for a default user interface. To prevent a user interface
+			/// from displaying, the client must provide a user name and password in the other parameters, and this handle must be set to zero.
+			/// </param>
+			/// <param name="pszUsername">
+			/// [out] The address of a string value that contains the user name to use for authentication. If the client returns a value
+			/// here, the client should also set phwnd to zero.
+			/// </param>
+			/// <param name="pszPassword">
+			/// [out] The address of a string value that contains the password to use for authentication. If the client returns a value
+			/// here, the client should also set phwnd to zero.
+			/// </param>
+			/// <returns>
+			/// <para>Returns one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>Authentication was successful.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_ACCESSDENIED</term>
+			/// <term>Authentication failed.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One or more parameters are invalid.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Applications that implement the <c>IAuthenticate::Authenticate</c> method must allocate the memory of the pszUsername and
+			/// pszPassword buffers by using CoTaskMemAlloc. Applications that call the <c>IAuthenticate::Authenticate</c> method are
+			/// responsible for freeing the memory with CoTaskMemFree.
+			/// </para>
+			/// <para>
+			/// The default user interface can handle any authentication schemes recognized by the Microsoft Win32 Internet API. Currently,
+			/// the user name and password options handle only the Basic authentication scheme.
+			/// </para>
+			/// <para>
+			/// This method is related to the InternetErrorDlg function in the Win32 Internet API. For more information about the Win32
+			/// Internet API, see Introduction to the Microsoft Win32 Internet Functions.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775079(v=vs.85)
+			// HRESULT Authenticate( [out] HWND *phwnd, [out] LPWSTR *pszUsername, [out] LPWSTR *pszPassword );
+			[PreserveSig]
+			new HRESULT Authenticate(out HWND phwnd, [MarshalAs(UnmanagedType.LPWStr)] out string pszUsername, [MarshalAs(UnmanagedType.LPWStr)] out string pszPassword);
+
+			/// <summary>
+			/// <para>Supplies authentication support to a URL moniker from a client application.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term/>
+			/// </listheader>
+			/// </list>
+			/// </summary>
+			/// <param name="phwnd">
+			/// [out] The address of a client-provided HWND of the parent window for a default user interface. To prevent a user interface
+			/// from displaying, the client must provide a user name and password in the other parameters, and this handle must be set to zero.
+			/// </param>
+			/// <param name="pszUsername">
+			/// [out] The address of a string value that contains the user name to use for authentication. If the client returns a value
+			/// here, the client should also set phwnd to zero.
+			/// </param>
+			/// <param name="pszPassword">
+			/// [out] The address of a string value that contains the password to use for authentication. If the client returns a value
+			/// here, the client should also set phwnd to zero.
+			/// </param>
+			/// <param name="pauthinfo">
+			/// [in] The address of an <c>AUTHENTICATEINFO</c> structure that provides additional flags for the authentication.
+			/// </param>
+			/// <returns>
+			/// <para>Returns one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>Authentication was successful.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_ACCESSDENIED</term>
+			/// <term>Authentication failed.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>One or more parameters are invalid.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// This method exists because the <c>Authenticate</c> method can contain no additional parameters. This method inherits all
+			/// behaviors of <c>Authenticate</c> and adds some of its own. Therefore, the Remarks section of <c>Authenticate</c> applies to
+			/// this method in full.
+			/// </para>
+			/// <para>
+			/// Relative to the <c>Authenticate</c> method, the <c>IAuthenticateEx::AuthenticateEx</c> method provides the additional
+			/// parameter pauthinfo. The data in pauthinfo provides additional flags for the authentication.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/cc709426(v=vs.85)
+			// HRESULT AuthenticateEx( [out] HWND *phwnd, [out] LPWSTR *pszUsername, [out] LPWSTR *pszPassword, [in] AUTHENTICATEINFO
+			// *pauthinfo );
+			[PreserveSig]
+			HRESULT AuthenticateEx(out HWND phwnd, [MarshalAs(UnmanagedType.LPWStr)] out string pszUsername, [MarshalAs(UnmanagedType.LPWStr)] out string pszPassword,
+				in AUTHENTICATEINFO pauthinfo);
+		}
+
+		/// <summary>Provides methods that enable controls to perform asynchronous data transfers through the Microsoft ActiveX container.</summary>
+		/// <remarks>
+		/// The IID for this interface is
+		/// <code>IID_IBindHost</code>
+		/// .
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775076(v=vs.85)
+		[PInvokeData("Urlmon.h")]
+		[ComImport, Guid("fc4801a1-2ba9-11cf-a229-00aa003d7352"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IBindHost
+		{
+			/// <summary>Creates a moniker to bind to a URL.</summary>
+			/// <param name="szName">[in] A pointer to a string that contains the URL to bind to.</param>
+			/// <param name="pBC">
+			/// [in] A pointer to the IBindCtx interface of the optional bind context that is used when the moniker is created. This
+			/// parameter is currently ignored, but might be used later for passing additional information.
+			/// </param>
+			/// <param name="ppmk">[out] A pointer to the IMoniker interface of the moniker that is created.</param>
+			/// <param name="dwReserved">[in] Reserved. Must be set to 0.</param>
+			/// <returns>
+			/// <para>Returns one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>The moniker was successfully obtained, and the caller is responsible for the interface pointer.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>There is insufficient memory to create the moniker.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unknown error occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term>MK_E_SYNTAX</term>
+			/// <term>The bind host was unable to parse the string into a moniker because the information in the name was unrecognizable.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>E_NOTIMPL is disallowed—a bind host is responsible for providing moniker parsing services.</remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775075(v=vs.85)
+			// HRESULT CreateMoniker( [in] LPOLESTR szName, [in] IBindCtx *pBC, [out] IMoniker **ppmk, [in] DWORD dwReserved );
+			[PreserveSig]
+			HRESULT CreateMoniker([MarshalAs(UnmanagedType.LPWStr)] string szName, [In, Optional] IBindCtx pBC, out IMoniker ppmk, uint dwReserved = 0);
+
+			/// <summary>Binds a moniker to storage.</summary>
+			/// <param name="pMk">[in] The address of the IMoniker interface.</param>
+			/// <param name="pBC">[in] The address of the IBindCtx interface.</param>
+			/// <param name="pBSC">[in] The address of the <c>IBindStatusCallback</c> interface.</param>
+			/// <param name="riid">[in] An identifier of the storage interface requested.</param>
+			/// <param name="ppvObj">
+			/// [out] The address of the storage interface. If ppvObj is not <c>NULL</c>, the application must call the AddRef method on the
+			/// interface, and then call Release when it is finished using the interface.
+			/// </param>
+			/// <returns>
+			/// <para>Returns one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>The bind operation completed synchronously and successfully. The result of the bind operation is available in ppvObj.</term>
+			/// </item>
+			/// <item>
+			/// <term>MK_S_ASYNCHRONOUS</term>
+			/// <term>The bind operation completes asynchronously. The behavior matches that of IMoniker::BindToStorage.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>There is insufficient memory to create the moniker.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unknown error occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// This method behaves the same as IMoniker::BindToStorage, except that it provides the control container (implementor of
+			/// <c>IBindHost</c>) enough authority over the bind operation so that the control container can take charge of setting bind
+			/// options and priority, while it delegates all results and callbacks for the bind operation back to the control.
+			/// </para>
+			/// <para>
+			/// A host or control implementing <c>IBindHost</c> should implement <c>IHttpNegotiate</c>. It should also implement
+			/// <c>IServiceProvider</c> to provide a pointer to its <c>IHttpNegotiate</c> interface when <c>IHttpNegotiate</c> is requested
+			/// through <c>QueryService</c>.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775078(v=vs.85)
+			// HRESULT MonikerBindToStorage( [in] IMoniker *pMk, [in] IBindCtx *pBC, [in] IBindStatusCallback *pBSC, [in] REFIID riid, [out]
+			// void **ppvObj );
+			[PreserveSig]
+			HRESULT MonikerBindToStorage(IMoniker pMk, IBindCtx pBC, IBindStatusCallback pBSC, in Guid riid,
+				[MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+
+			/// <summary>Binds a moniker to an object.</summary>
+			/// <param name="pMk">[in] The address of the IMoniker interface of the moniker.</param>
+			/// <param name="pBC">[in] The address of the IBindCtx interface of the bind context.</param>
+			/// <param name="pBSC">[in] The address of the <c>IBindStatusCallback</c> interface.</param>
+			/// <param name="riid">[in] An identifier of the interface that the client application uses to communicate with the object.</param>
+			/// <param name="ppvObj">
+			/// [out] The address of the interface that is identified by riid. If ppvObj is not <c>NULL</c>, the application must call the
+			/// AddRef method on the interface, and then call Release when it is finished using the interface.
+			/// </param>
+			/// <returns>
+			/// <para>Returns one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>The bind operation completed synchronously and successfully. The result of the bind operation is available in ppvObj.</term>
+			/// </item>
+			/// <item>
+			/// <term>MK_S_ASYNCHRONOUS</term>
+			/// <term>The bind operation completes asynchronously. The behavior matches that of IMoniker::BindToObject.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>There is insufficient memory to create the moniker.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unknown error occurred.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// This method behaves the same as IMoniker::BindToObject, except that it provides the control container (implementor of
+			/// <c>IBindHost</c>) enough authority over the bind operation so that the control container can take charge of setting bind
+			/// options and priority, while it delegates all results and callbacks for the bind operation back to the control.
+			/// </para>
+			/// <para>
+			/// A host or control that implements <c>IBindHost</c> should implement <c>IHttpNegotiate</c>. It should also implement
+			/// <c>IServiceProvider</c> to provide a pointer to its <c>IHttpNegotiate</c> interface when <c>IHttpNegotiate</c> is requested
+			/// through <c>QueryService</c>.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775077(v=vs.85)
+			// HRESULT MonikerBindToObject( [in] IMoniker *pMk, [in] IBindCtx *pBC, [in] IBindStatusCallback *pBSC, [in] REFIID riid, [out]
+			// void **ppvObj );
+			[PreserveSig]
+			HRESULT MonikerBindToObject(IMoniker pMk, IBindCtx pBC, IBindStatusCallback pBSC, in Guid riid,
+				[MarshalAs(UnmanagedType.IUnknown)] out object ppvObj);
+		}
+
 		/// <summary>
 		/// Provides methods that enable the client program that is using an asynchronous moniker to control the progress of the bind operation.
 		/// </summary>
@@ -457,6 +828,108 @@ namespace Vanara.PInvoke
 
 			/// <summary>This method is not implemented.</summary>
 			void GetSessionOption(uint dwOption, IntPtr pBuffer, ref uint pdwBufferLength, uint dwReserved);
+		}
+
+		/// <summary>Provides methods that offer more control over the binding of persistent data.</summary>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775042(v=vs.85)
+		[PInvokeData("Urlmon.h")]
+		[ComImport, Guid("79eac9c9-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IPersistMoniker
+		{
+			/// <summary>This method retrieves the class identifier of an object.</summary>
+			/// <param name="pClassID">Address of a variable that receives the CLSID.</param>
+			/// <returns>Returns S_OK if successful or E_FAIL if the CLSID could not be retrieved.</returns>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/embedded/ms928879(v=msdn.10)
+			[PreserveSig]
+			HRESULT GetClassID(out Guid pClassID);
+
+			/// <summary>Checks an object for changes since it was last saved.</summary>
+			/// <returns>Returns S_OK if the object has changed since it was last saved, or S_FALSE otherwise.</returns>
+			/// <remarks>
+			/// This method checks whether an object has changed since it was last saved, so that you can avoid losing information in
+			/// objects that have not yet been saved.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775043(v=vs.85)
+			// HRESULT IsDirty();
+			[PreserveSig]
+			HRESULT IsDirty();
+
+			/// <summary>Loads the object from its persistent state as indicated by a supplied moniker.</summary>
+			/// <param name="fFullyAvailable">
+			/// [in] A Boolean value that indicates if the data referred to by the moniker has been loaded one time. If <c>TRUE</c>, the
+			/// subsequent binding to the moniker is synchronous. If <c>FALSE</c>, an asynchronous bind operation is launched.
+			/// </param>
+			/// <param name="pimkName">
+			/// [in] The address of the IMoniker interface that references the persistent state for the object to be loaded.
+			/// </param>
+			/// <param name="pibc">
+			/// [in] The address of the IBindCtx interface for the bind context to be used for any moniker binding during this method.
+			/// </param>
+			/// <param name="grfMode">
+			/// [in] An unsigned long integer value that contains a combination of values from the STGM Constants enumeration, which
+			/// indicates the access mode to use when binding to the persistent state. The <c>IPersistMoniker::Load</c> method can treat
+			/// this value as a suggestion, adding more restrictive permissions, if necessary. If grfMode is zero, the implementation binds
+			/// to the persistent state using default permissions.
+			/// </param>
+			/// <returns>Returns S_OK if the object was successfully loaded, or E_INVALIDARG if one or more parameters are invalid.</returns>
+			/// <remarks>
+			/// Typically, the object immediately binds to its persistent state through a call to the source moniker's
+			/// IMoniker::BindToStorage method, by requesting either the IStream interface or the IStorage interface.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775044(v=vs.85)
+			// HRESULT Load( [in] BOOL fFullyAvailable, [in] IMoniker *pimkName, [in] LPBC pibc, [in] DWORD grfMode );
+			[PreserveSig]
+			HRESULT Load([MarshalAs(UnmanagedType.Bool)] bool fFullyAvailable, IMoniker pimkName, IBindCtx pibc, STGM grfMode);
+
+			/// <summary>Tells the object to save itself to a specified location.</summary>
+			/// <param name="pimkName">
+			/// [in] The address of the IMoniker interface that references the location where the object stores itself persistently.
+			/// </param>
+			/// <param name="pbc">
+			/// [in] The address of the IBindCtx interface for the bind context to use for any moniker binding during this method.
+			/// </param>
+			/// <param name="fRemember">
+			/// [in] A Boolean value that indicates whether pimkName is used as the reference to the current persistent state after the
+			/// save. If <c>TRUE</c>, pimkName becomes the reference to the current persistent state, and the object clears its "dirty" flag
+			/// after the save. If <c>FALSE</c>, this save operation is a "Save A Copy As ..." operation. In this case, the reference to the
+			/// current persistent state is unchanged, and the object does not clear its "dirty" flag. If pimkName is <c>NULL</c>, the
+			/// implementation ignores the fRemember flag.
+			/// </param>
+			/// <returns>Returns S_OK if the object was successfully saved, or E_INVALIDARG if one or more parameters are invalid.</returns>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775045(v=vs.85)
+			// HRESULT Save( [in] IMoniker *pimkName, [in] LPBC pbc, [in] BOOL fRemember );
+			[PreserveSig]
+			HRESULT Save(IMoniker pimkName, IBindCtx pbc, [MarshalAs(UnmanagedType.Bool)] bool fRemember);
+
+			/// <summary>
+			/// Notifies the client application that its persisted state has been completely saved, and points the client to its new
+			/// persisted state.
+			/// </summary>
+			/// <param name="pimkName">
+			/// [in] The address of the IMoniker interface of the object's new persistent state. This parameter can be <c>NULL</c>, if the
+			/// moniker to the object's new persistent state is the same as the previous moniker to the object's persistent state. This
+			/// optimization is allowed only if there was a prior call to <c>IPersistMoniker::Save</c> with the fRemember parameter set to
+			/// <c>TRUE</c>, in which case the object does not have to rebind to pimkName.
+			/// </param>
+			/// <param name="pibc">[in] The address of the IBindCtx interface to use for any moniker binding during this method.</param>
+			/// <returns>Returns S_OK if successful, or E_INVALIDARG if one or more parameters are invalid.</returns>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775046(v=vs.85)
+			// HRESULT SaveCompleted( [in] IMoniker *pimkName, [in] LPBC pibc );
+			[PreserveSig]
+			HRESULT SaveCompleted([In, Optional] IMoniker pimkName, IBindCtx pibc);
+
+			/// <summary>Gets the moniker that refers to the object's persistent state.</summary>
+			/// <returns>
+			/// Returns S_OK if a valid absolute path was successfully returned, or E_INVALIDARG if the ppimkName parameter is invalid.
+			/// </returns>
+			/// <remarks>
+			/// Typically, this method returns the moniker that was last passed to the object by means of the <c>IPersistMoniker::Load</c>
+			/// method, the <c>IPersistMoniker::Save</c> method, or the <c>IPersistMoniker::SaveCompleted</c> method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775041(v=vs.85)
+			// HRESULT GetCurMoniker( [out] IMoniker **ppimkName );
+			[PreserveSig]
+			HRESULT GetCurMoniker(out IMoniker ppimkName);
 		}
 
 		/// <summary>
@@ -1293,10 +1766,21 @@ namespace Vanara.PInvoke
 			bool HasBeenModified();
 		}
 
+		/// <summary>Contains additional information on the authentication operation.</summary>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/cc709424(v=vs.85) typedef
+		// struct _tagAUTHENTICATEINFO { DWORD dwFlags; DWORD dwReserved; } AUTHENTICATEINFO;
+		[PInvokeData("Urlmon.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct AUTHENTICATEINFO
+		{
+			/// <summary><c>dwFlags</c> One or more <c>AUTHENTICATEF</c> values that specify the authentication operation.</summary>
+			public uint dwFlags;
+
+			/// <summary><c>dwReserved</c></summary>
+			public uint dwReserved;
+		}
+
 		/*
-		IAuthenticate
-		IAuthenticateEx
-		IBindHost
 		IBindProtocol
 		IBindStatusCallbackEx
 		ICatalogFileInfo
@@ -1306,7 +1790,6 @@ namespace Vanara.PInvoke
 		IHttpNegotiate3
 		IHttpSecurity
 		IMonikerProp
-		IPersistMoniker
 		ISoftDistExt
 		IUriBuilderFactory
 		IUriContainer
