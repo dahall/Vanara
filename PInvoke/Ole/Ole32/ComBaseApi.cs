@@ -929,7 +929,7 @@ namespace Vanara.PInvoke
 		// dwClientPid, UINT64 ui64ProxyAddress, PServerInformation pServerInformation );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "C61C68B1-78CA-4052-9E24-629AB4083B86")]
-		public static extern HRESULT CoDecodeProxy(uint dwClientPid, ulong ui64ProxyAddress, IntPtr pServerInformation);
+		public static extern HRESULT CoDecodeProxy(uint dwClientPid, ulong ui64ProxyAddress, out ServerInformation pServerInformation);
 
 		/// <summary>Releases the increment made by a previous call to the CoIncrementMTAUsage function.</summary>
 		/// <param name="Cookie">A <c>PVOID</c> variable that was set by a previous call to the CoIncrementMTAUsage function.</param>
@@ -1592,6 +1592,155 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
 		public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+
+		/// <summary>
+		/// <para>
+		/// Provides a pointer to an interface on a class object associated with a specified CLSID. <c>CoGetClassObject</c> locates, and if
+		/// necessary, dynamically loads the executable code required to do this.
+		/// </para>
+		/// <para>
+		/// Call <c>CoGetClassObject</c> directly to create multiple objects through a class object for which there is a CLSID in the system
+		/// registry. You can also retrieve a class object from a specific remote computer. Most class objects implement the IClassFactory
+		/// interface. You would then call CreateInstance to create an uninitialized object. It is not always necessary to go through this
+		/// process however. To create a single object, call the CoCreateInstanceEx function, which allows you to create an instance on a
+		/// remote machine. This replaces the CoCreateInstance function, which can still be used to create an instance on a local computer.
+		/// Both functions encapsulate connecting to the class object, creating the instance, and releasing the class object. Two other
+		/// functions, CoGetInstanceFromFile and CoGetInstanceFromIStorage, provide both instance creation on a remote system and object
+		/// activation. There are numerous functions and interface methods whose purpose is to create objects of a single type and provide a
+		/// pointer to an interface on that object.
+		/// </para>
+		/// </summary>
+		/// <param name="rclsid">The CLSID associated with the data and code that you will use to create the objects.</param>
+		/// <param name="dwClsContext">
+		/// The context in which the executable code is to be run. To enable a remote activation, include CLSCTX_REMOTE_SERVER. For more
+		/// information on the context values and their use, see the CLSCTX enumeration.
+		/// </param>
+		/// <param name="pvReserved">
+		/// A pointer to computer on which to instantiate the class object. If this parameter is <c>NULL</c>, the class object is
+		/// instantiated on the current computer or at the computer specified under the class's RemoteServerName key, according to the
+		/// interpretation of the dwClsCtx parameter. See COSERVERINFO.
+		/// </param>
+		/// <param name="riid">
+		/// Reference to the identifier of the interface, which will be supplied in ppv on successful return. This interface will be used to
+		/// communicate with the class object. Typically this value is IID_IClassFactory, although other values â€“ such as
+		/// IID_IClassFactory2 which supports a form of licensing â€“ are allowed. All OLE-defined interface IIDs are defined in the OLE
+		/// header files as IID_interfacename, where interfacename is the name of the interface.
+		/// </param>
+		/// <param name="ppv">
+		/// The address of pointer variable that receives the interface pointer requested in riid. Upon successful return, *ppv contains the
+		/// requested interface pointer.
+		/// </param>
+		/// <returns>
+		/// <para>This function can return the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Location and connection to the specified class object was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>REGDB_E_CLASSNOTREG</term>
+		/// <term>
+		/// The CLSID is not properly registered. This error can also indicate that the value you specified in dwClsContext is not in the registry.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_NOINTERFACE</term>
+		/// <term>
+		/// Either the object pointed to by ppv does not support the interface identified by riid, or the QueryInterface operation on the
+		/// class object returned E_NOINTERFACE.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>REGDB_E_READREGDB</term>
+		/// <term>There was an error reading the registration database.</term>
+		/// </item>
+		/// <item>
+		/// <term>CO_E_DLLNOTFOUND</term>
+		/// <term>Either the in-process DLL or handler DLL was not found (depending on the context).</term>
+		/// </item>
+		/// <item>
+		/// <term>CO_E_APPNOTFOUND</term>
+		/// <term>The executable (.exe) was not found (CLSCTX_LOCAL_SERVER only).</term>
+		/// </item>
+		/// <item>
+		/// <term>E_ACCESSDENIED</term>
+		/// <term>There was a general access failure on load.</term>
+		/// </item>
+		/// <item>
+		/// <term>CO_E_ERRORINDLL</term>
+		/// <term>There is an error in the executable image.</term>
+		/// </item>
+		/// <item>
+		/// <term>CO_E_APPDIDNTREG</term>
+		/// <term>The executable was launched, but it did not register the class object (and it may have shut down).</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A class object in OLE is an intermediate object that supports an interface that permits operations common to a group of objects.
+		/// The objects in this group are instances derived from the same object definition represented by a single CLSID. Usually, the
+		/// interface implemented on a class object is IClassFactory, through which you can create object instances of a given definition (class).
+		/// </para>
+		/// <para>
+		/// A call to <c>CoGetClassObject</c> creates, initializes, and gives the caller access (through a pointer to an interface specified
+		/// with the riid parameter) to the class object. The class object is the one associated with the CLSID that you specify in the
+		/// rclsid parameter. The details of how the system locates the associated code and data within a computer are transparent to the
+		/// caller, as is the dynamic loading of any code that is not already loaded.
+		/// </para>
+		/// <para>
+		/// If the class context is CLSCTX_REMOTE_SERVER, indicating remote activation is required, the COSERVERINFO structure provided in
+		/// the pServerInfo parameter allows you to specify the computer on which the server is located. For information on the algorithm
+		/// used to locate a remote server when pServerInfo is <c>NULL</c>, refer to the CLSCTX enumeration.
+		/// </para>
+		/// <para>There are two places to find a CLSID for a class:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// The registry holds an association between CLSIDs and file suffixes, and between CLSIDs and file signatures for determining the
+		/// class of an object.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>When an object is saved to persistent storage, its CLSID is stored with its data.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// To create and initialize embedded or linked OLE document objects, it is not necessary to call <c>CoGetClassObject</c> directly.
+		/// Instead, call the OleCreate or <c>OleCreate</c> XXX function. These functions encapsulate the entire object instantiation and
+		/// initialization process, and call, among other functions, <c>CoGetClassObject</c>.
+		/// </para>
+		/// <para>
+		/// The riid parameter specifies the interface the client will use to communicate with the class object. In most cases, this
+		/// interface is IClassFactory. This provides access to the CreateInstance method, through which the caller can then create an
+		/// uninitialized object of the kind specified in its implementation. All classes registered in the system with a CLSID must
+		/// implement IClassFactory.
+		/// </para>
+		/// <para>
+		/// In rare cases, however, you may want to specify some other interface that defines operations common to a set of objects. For
+		/// example, in the way OLE implements monikers, the interface on the class object is IParseDisplayName, used to transform the
+		/// display name of an object into a moniker.
+		/// </para>
+		/// <para>
+		/// The dwClsContext parameter specifies the execution context, allowing one CLSID to be associated with different pieces of code in
+		/// different execution contexts. The CLSCTX enumeration specifies the available context flags. <c>CoGetClassObject</c> consults (as
+		/// appropriate for the context indicated) both the registry and the class objects that are currently registered by calling the
+		/// CoRegisterClassObject function.
+		/// </para>
+		/// <para>
+		/// To release a class object, use the class object's Release method. The function CoRevokeClassObject is to be used only to remove
+		/// a class object's CLSID from the system registry.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetclassobject HRESULT CoGetClassObject( REFCLSID
+		// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
+		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
+		public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [In, Optional] COSERVERINFO pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
 
 		/// <summary>Returns a pointer to an implementation of IObjContext for the current context.</summary>
 		/// <param name="pToken">A pointer to an implementation of IObjContext for the current context.</param>
@@ -4076,5 +4225,31 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("combaseapi.h", MSDNShortId = "92e59631-0675-4bca-bcd4-a1f83ab6ec8a")]
 		public static extern HRESULT StringFromIID(in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] out string lplpsz);
+
+		/// <summary>Represents the implementation of a Component Object Model (COM) interface in a server process.</summary>
+		/// <remarks>
+		/// The <c>ServerInformation</c> structure is used by the CoDecodeProxy function to enable native debuggers to locate the
+		/// implementation of a COM interface in a server process, given a Windows Runtime interface on a proxy to the Windows Runtime object.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/combaseapi/ns-combaseapi-serverinformation typedef struct tagServerInformation
+		// { DWORD dwServerPid; DWORD dwServerTid; UINT64 ui64ServerAddress; } ServerInformation, *PServerInformation;
+		[PInvokeData("combaseapi.h", MSDNShortId = "NS:combaseapi.tagServerInformation")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ServerInformation
+		{
+			/// <summary>The process ID of the server.</summary>
+			public uint dwServerPid;
+
+			/// <summary>
+			/// The thread ID of the server object if it's in the STA, 0 if it's in the MTA, and <c>0x0000FFFF</c> if it's in the NA.
+			/// </summary>
+			public uint dwServerTid;
+
+			/// <summary>
+			/// ui64ServerAddress is considered a 64-bit value type, rather than a pointer to a 64-bit value, and isn't a pointer to an
+			/// object in the debugger process. Instead, this address is passed to the ReadProcessMemory function.
+			/// </summary>
+			public ulong ui64ServerAddress;
+		}
 	}
 }
