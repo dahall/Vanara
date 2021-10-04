@@ -427,9 +427,9 @@ namespace Vanara.PInvoke
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IStorage OpenStorage([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
-				[In, MarshalAs(UnmanagedType.Interface)] IStorage pstgPriority,
+				[In, Optional, MarshalAs(UnmanagedType.Interface)] IStorage pstgPriority,
 				[In] STGM grfMode,
-				[In] SNB snbExclude,
+				[In, Optional] SNB snbExclude,
 				[In, Optional] uint reserved);
 
 			/// <summary>The CopyTo method copies the entire contents of an open storage object to another storage object.</summary>
@@ -503,7 +503,7 @@ namespace Vanara.PInvoke
 			/// <returns>The interface pointer to the new enumerator object.</returns>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IEnumSTATSTG EnumElements([In] uint reserved1, [In, Optional] IntPtr reserved2, [In, Optional] uint reserved3);
+			IEnumSTATSTG EnumElements([In, Optional] uint reserved1, [In, Optional] IntPtr reserved2, [In, Optional] uint reserved3);
 
 			/// <summary>The DestroyElement method removes the specified storage or stream from this storage object.</summary>
 			/// <param name="pwcsName">A string that contains the name of the storage or stream to be removed.</param>
@@ -536,10 +536,10 @@ namespace Vanara.PInvoke
 			/// to be modified.
 			/// </param>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-			void SetElementTimes([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
-				[In, MarshalAs(UnmanagedType.LPArray, SizeConst = 1)] FILETIME[] pctime,
-				[In, MarshalAs(UnmanagedType.LPArray, SizeConst = 1)] FILETIME[] patime,
-				[In, MarshalAs(UnmanagedType.LPArray, SizeConst = 1)] FILETIME[] pmtime);
+			void SetElementTimes([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
+				[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeConst = 1)] FILETIME[] pctime,
+				[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeConst = 1)] FILETIME[] patime,
+				[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeConst = 1)] FILETIME[] pmtime);
 
 			/// <summary>The SetClass method assigns the specified class identifier (CLSID) to this storage object.</summary>
 			/// <param name="clsid">The CLSID that is to be associated with the storage object.</param>
