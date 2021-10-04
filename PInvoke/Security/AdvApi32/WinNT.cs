@@ -4968,7 +4968,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString() => ConvertSecurityDescriptorToStringSecurityDescriptor(handle, defSecInfo);
+			public override string ToString() => ToString(defSecInfo);
+
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <param name="secInfo">
+			/// Specifies a combination of the SECURITY_INFORMATION bit flags to indicate the components of the security descriptor to include in
+			/// the output string.
+			/// </param>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
+			public string ToString(SECURITY_INFORMATION secInfo) => ConvertSecurityDescriptorToStringSecurityDescriptor(handle, secInfo);
 		}
 	}
 
