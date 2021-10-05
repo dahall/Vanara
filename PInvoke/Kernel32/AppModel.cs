@@ -453,7 +453,8 @@ namespace Vanara.PInvoke
 		// PWSTR applicationUserModelId );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "F48D19C2-6373-41FC-A99D-E3CCB68D6C6C")]
-		public static extern Win32Error FormatApplicationUserModelId(string packageFamilyName, string packageRelativeApplicationId, ref uint applicationUserModelIdLength, StringBuilder applicationUserModelId);
+		public static extern Win32Error FormatApplicationUserModelId(string packageFamilyName, string packageRelativeApplicationId,
+			ref uint applicationUserModelIdLength, [Optional] StringBuilder applicationUserModelId);
 
 		/// <summary>
 		/// <para>Gets the application user model ID for the specified process.</para>
@@ -501,7 +502,8 @@ namespace Vanara.PInvoke
 		// GetApplicationUserModelId( HANDLE hProcess, UINT32 *applicationUserModelIdLength, PWSTR applicationUserModelId );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "FE4E0818-F548-494B-B3BD-FB51DC748451")]
-		public static extern Win32Error GetApplicationUserModelId(HPROCESS hProcess, ref uint applicationUserModelIdLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder applicationUserModelId);
+		public static extern Win32Error GetApplicationUserModelId(HPROCESS hProcess, ref uint applicationUserModelIdLength,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder applicationUserModelId);
 
 		/// <summary>
 		/// <para>Gets the application user model ID for the specified token.</para>
@@ -549,7 +551,8 @@ namespace Vanara.PInvoke
 		// GetApplicationUserModelIdFromToken( HANDLE token, UINT32 *applicationUserModelIdLength, PWSTR applicationUserModelId );
 		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "80036518-927E-4CD0-B499-8EA472AB7E5A")]
-		public static extern Win32Error GetApplicationUserModelIdFromToken(HTOKEN token, ref uint applicationUserModelIdLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder applicationUserModelId);
+		public static extern Win32Error GetApplicationUserModelIdFromToken(HTOKEN token, ref uint applicationUserModelIdLength,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder applicationUserModelId);
 
 		/// <summary>
 		/// <para>Gets the application user model ID for the current process.</para>
@@ -591,7 +594,7 @@ namespace Vanara.PInvoke
 		// GetCurrentApplicationUserModelId( UINT32 *applicationUserModelIdLength, PWSTR applicationUserModelId );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "562BB225-0922-4FE7-92C0-573A2CCE3195")]
-		public static extern Win32Error GetCurrentApplicationUserModelId(ref uint applicationUserModelIdLength, StringBuilder applicationUserModelId);
+		public static extern Win32Error GetCurrentApplicationUserModelId(ref uint applicationUserModelIdLength, [Optional] StringBuilder applicationUserModelId);
 
 		/// <summary>
 		/// <para>Gets the package family name for the calling process.</para>
@@ -636,7 +639,7 @@ namespace Vanara.PInvoke
 		// GetCurrentPackageFamilyName( UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "39DBFBDD-A1CC-45C3-A5DD-5ED9697F9AFE")]
-		public static extern Win32Error GetCurrentPackageFamilyName(ref uint packageFamilyNameLength, StringBuilder packageFamilyName);
+		public static extern Win32Error GetCurrentPackageFamilyName(ref uint packageFamilyNameLength, [Optional] StringBuilder packageFamilyName);
 
 		/// <summary>
 		/// <para>Gets the package full name for the calling process.</para>
@@ -681,7 +684,7 @@ namespace Vanara.PInvoke
 		// GetCurrentPackageFullName( UINT32 *packageFullNameLength, PWSTR packageFullName );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "D5B00C53-1FBF-4245-92D1-FA39713A9EE7")]
-		public static extern Win32Error GetCurrentPackageFullName(ref uint packageFullNameLength, StringBuilder packageFullName);
+		public static extern Win32Error GetCurrentPackageFullName(ref uint packageFullNameLength, [Optional] StringBuilder packageFullName);
 
 		/// <summary>
 		/// <para>Gets the package identifier (ID) for the calling process.</para>
@@ -863,7 +866,7 @@ namespace Vanara.PInvoke
 		// *pathLength, PWSTR path );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "46CE81DF-A9D5-492E-AB5E-4F043DC326E2")]
-		public static extern Win32Error GetCurrentPackagePath(ref uint pathLength, StringBuilder path);
+		public static extern Win32Error GetCurrentPackagePath(ref uint pathLength, [Optional] StringBuilder path);
 
 		/// <summary>
 		/// Gets the package path for the calling process, with the option to specify the type of folder path to retrieve for the package.
@@ -915,7 +918,8 @@ namespace Vanara.PInvoke
 		// LONG GetCurrentPackagePath2( PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("appmodel.h")]
-		public static extern Win32Error GetCurrentPackagePath2(PackagePathType packagePathType, ref uint pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
+		public static extern Win32Error GetCurrentPackagePath2(PackagePathType packagePathType, ref uint pathLength,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
 
 		/// <summary>
 		/// <para>Gets the IDs of apps in the specified package.</para>
@@ -1013,7 +1017,7 @@ namespace Vanara.PInvoke
 		// hProcess, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "AC239898-9924-4193-9072-7A7EEC2D03E9")]
-		public static extern Win32Error GetPackageFamilyName(HPROCESS hProcess, ref uint packageFamilyNameLength, StringBuilder packageFamilyName);
+		public static extern Win32Error GetPackageFamilyName(HPROCESS hProcess, ref uint packageFamilyNameLength, [Optional] StringBuilder packageFamilyName);
 
 		/// <summary>
 		/// <para>Gets the package family name for the specified token.</para>
@@ -1062,7 +1066,61 @@ namespace Vanara.PInvoke
 		// GetPackageFamilyNameFromToken( HANDLE token, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
 		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "C4FAF5DE-DF1F-4AFA-813B-5D80C786031B")]
-		public static extern Win32Error GetPackageFamilyNameFromToken(HTOKEN token, ref uint packageFamilyNameLength, StringBuilder packageFamilyName);
+		public static extern Win32Error GetPackageFamilyNameFromToken(HTOKEN token, ref uint packageFamilyNameLength, [Optional] StringBuilder packageFamilyName);
+
+		/// <summary>Gets the package full name for the specified process.</summary>
+		/// <param name="hProcess">
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>
+		/// A handle to the process that has the <c>PROCESS_QUERY_INFORMATION</c> or <c>PROCESS_QUERY_LIMITED_INFORMATION</c> access right.
+		/// For more information, see Process Security and Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="packageFullNameLength">
+		/// <para>Type: <c>UINT32*</c></para>
+		/// <para>
+		/// On input, the size of the packageFullName buffer, in characters. On output, the size of the package full name returned, in
+		/// characters, including the null terminator.
+		/// </para>
+		/// </param>
+		/// <param name="packageFullName">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>The package full name.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+		/// codes include the following.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>APPMODEL_ERROR_NO_PACKAGE</term>
+		/// <term>The process has no package identity.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+		/// <term>The buffer is not large enough to hold the data. The required size is specified by packageFullNameLength.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>For info about string size limits, see Identity constants.</para>
+		/// <para>Examples</para>
+		/// <para>
+		/// <code>#define _UNICODE 1 #define UNICODE 1 #include &lt;Windows.h&gt; #include &lt;appmodel.h&gt; #include &lt;malloc.h&gt; #include &lt;stdlib.h&gt; #include &lt;stdio.h&gt; int ShowUsage(); void ShowProcessPackageFullName(__in const UINT32 pid, __in HANDLE process); int ShowUsage() { wprintf(L"Usage: GetPackageFullName &lt;pid&gt; [&lt;pid&gt;...]\n"); return 1; } int __cdecl wmain(__in int argc, __in_ecount(argc) WCHAR * argv[]) { if (argc &lt;= 1) return ShowUsage(); for (int i=1; i&lt;argc; ++i) { UINT32 pid = wcstoul(argv[i], NULL, 10); if (pid &gt; 0) { HANDLE process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid); if (process == NULL) wprintf(L"Error %d in OpenProcess (pid=%u)\n", GetLastError(), pid); else { ShowProcessPackageFullName(pid, process); CloseHandle(process); } } } return 0; } void ShowProcessPackageFullName(__in const UINT32 pid, __in HANDLE process) { wprintf(L"Process %u (handle=%p)\n", pid, process); UINT32 length = 0; LONG rc = GetPackageFullName(process, &amp;length, NULL); if (rc != ERROR_INSUFFICIENT_BUFFER) { if (rc == APPMODEL_ERROR_NO_PACKAGE) wprintf(L"Process has no package identity\n"); else wprintf(L"Error %d in GetPackageFullName\n", rc); return; } PWSTR fullName = (PWSTR) malloc(length * sizeof(*fullName)); if (fullName == NULL) { wprintf(L"Error allocating memory\n"); return; } rc = GetPackageFullName(process, &amp;length, fullName); if (rc != ERROR_SUCCESS) wprintf(L"Error %d retrieving PackageFullName\n", rc); else wprintf(L"%s\n", fullName); free(fullName); }</code>
+		/// </para>
+		/// </remarks>
+		// https://webcache.googleusercontent.com/search?q=cache:IqzT6kD4rycJ:https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getpackagefullname+&cd=2&hl=en&ct=clnk&gl=us
+		// LONG GetPackageFullName( HANDLE hProcess, UINT32 *packageFullNameLength, PWSTR packageFullName );
+		[DllImport(Lib_Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("appmodel.h", MSDNShortId = "NF:appmodel.GetPackageFullName")]
+		public static extern Win32Error GetPackageFullName(HPROCESS hProcess, ref uint packageFullNameLength,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder packageFullName);
 
 		/// <summary>
 		/// <para>Gets the package full name for the specified token.</para>
@@ -1105,9 +1163,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagefullnamefromtoken LONG
 		// GetPackageFullNameFromToken( HANDLE token, UINT32 *packageFullNameLength, PWSTR packageFullName );
-		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "7B0D574E-A2F5-4D08-AEFB-9E040BBC729F")]
-		public static extern Win32Error GetPackageFullNameFromToken(HTOKEN token, ref uint packageFullNameLength, StringBuilder packageFullName);
+		public static extern Win32Error GetPackageFullNameFromToken(HTOKEN token, ref uint packageFullNameLength, [Optional] StringBuilder packageFullName);
 
 		/// <summary>
 		/// <para>Gets the package information for the specified package.</para>
@@ -1255,7 +1313,7 @@ namespace Vanara.PInvoke
 		// *packageId, const UINT32 reserved, UINT32 *pathLength, PWSTR path );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "BDA0DD87-A36D-486B-BF89-EA5CC105C742")]
-		public static extern Win32Error GetPackagePath(ref PACKAGE_ID packageId, uint reserved, ref uint pathLength, StringBuilder path);
+		public static extern Win32Error GetPackagePath(in PACKAGE_ID packageId, uint reserved, ref uint pathLength, [Optional] StringBuilder path);
 
 		/// <summary>
 		/// <para>Gets the path of the specified package.</para>
@@ -1299,7 +1357,7 @@ namespace Vanara.PInvoke
 		// PCWSTR packageFullName, UINT32 *pathLength, PWSTR path );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "9C25708C-1464-4C59-9740-E9F105116385")]
-		public static extern Win32Error GetPackagePathByFullName(string packageFullName, ref uint pathLength, StringBuilder path);
+		public static extern Win32Error GetPackagePathByFullName(string packageFullName, ref uint pathLength, [Optional] StringBuilder path);
 
 		/// <summary>Gets the path of the specified package, with the option to specify the type of folder path to retrieve for the package.</summary>
 		/// <param name="packageFullName">
@@ -1352,7 +1410,8 @@ namespace Vanara.PInvoke
 		// LONG GetPackagePathByFullName2( PCWSTR packageFullName, PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("appmodel.h")]
-		public static extern Win32Error GetPackagePathByFullName2([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, PackagePathType packagePathType, ref uint pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
+		public static extern Win32Error GetPackagePathByFullName2([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, PackagePathType packagePathType,
+			ref uint pathLength, [Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
 
 		/// <summary>
 		/// <para>Gets the packages with the specified family name for the current user.</para>
@@ -1492,7 +1551,8 @@ namespace Vanara.PInvoke
 		// GetStagedPackagePathByFullName( PCWSTR packageFullName, UINT32 *pathLength, PWSTR path );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "F0A37D77-6262-44B1-BEC5-083E41BDE139")]
-		public static extern Win32Error GetStagedPackagePathByFullName([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, ref uint pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
+		public static extern Win32Error GetStagedPackagePathByFullName([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, ref uint pathLength,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
 
 		/// <summary>
 		/// Gets the path of the specified staged package, with the option to specify the type of folder path to retrieve for the package.
@@ -1547,7 +1607,8 @@ namespace Vanara.PInvoke
 		// LONG GetStagedPackagePathByFullName2( PCWSTR packageFullName, PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("appmodel.h")]
-		public static extern Win32Error GetStagedPackagePathByFullName2([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, PackagePathType packagePathType, ref uint pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
+		public static extern Win32Error GetStagedPackagePathByFullName2([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, PackagePathType packagePathType,
+			ref uint pathLength, [Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
 
 		/// <summary>
 		/// <para>Opens the package information of the specified package.</para>
@@ -1630,7 +1691,8 @@ namespace Vanara.PInvoke
 		// PackageFamilyNameFromFullName( PCWSTR packageFullName, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "98E95CE5-E970-4A19-BAD3-994DAEC4BEA0")]
-		public static extern Win32Error PackageFamilyNameFromFullName(string packageFullName, ref uint packageFamilyNameLength, StringBuilder packageFamilyName);
+		public static extern Win32Error PackageFamilyNameFromFullName(string packageFullName, ref uint packageFamilyNameLength,
+			[Optional] StringBuilder packageFamilyName);
 
 		/// <summary>
 		/// <para>Gets the package family name for the specified package identifier.</para>
@@ -1675,7 +1737,8 @@ namespace Vanara.PInvoke
 		// const PACKAGE_ID *packageId, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "198DAB6B-21D2-4ACB-87DF-B3F4EFBEE323")]
-		public static extern Win32Error PackageFamilyNameFromId(ref PACKAGE_ID packageId, ref uint packageFamilyNameLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder packageFamilyName);
+		public static extern Win32Error PackageFamilyNameFromId(in PACKAGE_ID packageId, ref uint packageFamilyNameLength,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder packageFamilyName);
 
 		/// <summary>
 		/// <para>Gets the package full name for the specified package identifier (ID).</para>
@@ -1720,7 +1783,8 @@ namespace Vanara.PInvoke
 		// PACKAGE_ID *packageId, UINT32 *packageFullNameLength, PWSTR packageFullName );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "0024AF55-295E-49B1-90C2-9144D336529B")]
-		public static extern Win32Error PackageFullNameFromId(ref PACKAGE_ID packageId, ref uint packageFullNameLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder packageFullName);
+		public static extern Win32Error PackageFullNameFromId(in PACKAGE_ID packageId, ref uint packageFullNameLength,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder packageFullName);
 
 		/// <summary>
 		/// <para>Gets the package identifier (ID) for the specified package full name.</para>
@@ -1871,7 +1935,8 @@ namespace Vanara.PInvoke
 		// *packagePublisherIdLength, PWSTR packagePublisherId );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "4AA5BD75-F865-40D6-9C10-E54C197D47C4")]
-		public static extern Win32Error PackageNameAndPublisherIdFromFamilyName(string packageFamilyName, ref uint packageNameLength, StringBuilder packageName, ref uint packagePublisherIdLength, StringBuilder packagePublisherId);
+		public static extern Win32Error PackageNameAndPublisherIdFromFamilyName(string packageFamilyName, ref uint packageNameLength,
+			[Optional] StringBuilder packageName, ref uint packagePublisherIdLength, [Optional] StringBuilder packagePublisherId);
 
 		/// <summary>
 		/// <para>Deconstructs an application user model ID to its package family name and package relative application ID (PRAID).</para>
@@ -1939,7 +2004,8 @@ namespace Vanara.PInvoke
 		// *packageRelativeApplicationIdLength, PWSTR packageRelativeApplicationId );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "03B29E82-611F-47D1-8CB6-047B9BEB4D9E")]
-		public static extern Win32Error ParseApplicationUserModelId(string applicationUserModelId, ref uint packageFamilyNameLength, StringBuilder packageFamilyName, ref uint packageRelativeApplicationIdLength, StringBuilder packageRelativeApplicationId);
+		public static extern Win32Error ParseApplicationUserModelId(string applicationUserModelId, ref uint packageFamilyNameLength,
+			[Optional] StringBuilder packageFamilyName, ref uint packageRelativeApplicationIdLength, [Optional] StringBuilder packageRelativeApplicationId);
 
 		/// <summary>
 		/// <para>Represents package identification information, such as name, version, and publisher.</para>
