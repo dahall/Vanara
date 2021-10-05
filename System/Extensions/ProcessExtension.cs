@@ -83,6 +83,16 @@ namespace Vanara.Extensions
 		}
 #endif
 
+		/// <summary>Retrieves information about the specified process.</summary>
+		/// <typeparam name="T">The type of information to retrieve.</typeparam>
+		/// <param name="process">
+		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see Process
+		/// Security and Access Rights.
+		/// </param>
+		/// <returns>An object containing the type of information specified by the ProcessInformationClass parameter.</returns>
+		/// <exception cref="ArgumentException">Type mismatch.</exception>
+		public static T GetInformation<T>(this Process process) where T : struct => GetProcessInformation<T>(process);
+
 		/// <summary>
 		/// The function gets the integrity level of the current process. Integrity level is only available on Windows Vista and newer operating systems, thus
 		/// GetProcessIntegrityLevel throws an exception if it is called on systems prior to Windows Vista.
@@ -217,6 +227,46 @@ namespace Vanara.Extensions
 		/// </returns>
 		public static bool IsRunningAsAdmin(this Process proc) => UAC.IsRunningAsAdmin(proc);
 
+		/// <summary>
+		/// Reads data from an area of memory in a specified process. The entire area to be read must be accessible or the operation fails.
+		/// </summary>
+		/// <typeparam name="T">The type of the structure to read.</typeparam>
+		/// <param name="process">
+		/// A handle to the process with memory that is being read. The handle must have PROCESS_VM_READ access to the process.
+		/// </param>
+		/// <param name="baseAddress">
+		/// A pointer to the base address in the specified process from which to read. Before any data transfer occurs, the system verifies
+		/// that all data in the base address and memory of the specified size is accessible for read access, and if it is not accessible
+		/// the function fails.
+		/// </param>
+		/// <returns>A value of <typeparamref name="T"/> with the contents from the address space of the specified process.</returns>
+		public static T ReadMemory<T>(this Process process, IntPtr baseAddress) where T : struct
+		{
+			using var mem = new SafeCoTaskMemStruct<T>();
+			SizeT req = ReadToMem(process, baseAddress, mem);
+			return mem.Value;
+		}
+
+		/// <summary>
+		/// Reads data from an area of memory in a specified process. The entire area to be read must be accessible or the operation fails.
+		/// </summary>
+		/// <param name="process">
+		/// A handle to the process with memory that is being read. The handle must have PROCESS_VM_READ access to the process.
+		/// </param>
+		/// <param name="baseAddress">
+		/// A pointer to the base address in the specified process from which to read. Before any data transfer occurs, the system verifies
+		/// that all data in the base address and memory of the specified size is accessible for read access, and if it is not accessible
+		/// the function fails.
+		/// </param>
+		/// <param name="size">The number of bytes to be read from the specified process.</param>
+		/// <returns>A buffer with the contents from the address space of the specified process.</returns>
+		public static byte[] ReadMemory(this Process process, IntPtr baseAddress, SizeT size)
+		{
+			using var mem = new SafeCoTaskMemHandle(size);
+			SizeT req = ReadToMem(process, baseAddress, mem);
+			return mem.GetBytes(0, req);
+		}
+
 		/// <summary>Removes a specified system privilege from a process.</summary>
 		/// <param name="process">The process from which to remove the privilege.</param>
 		/// <param name="privilege">The privilege to remove.</param>
@@ -232,6 +282,24 @@ namespace Vanara.Extensions
 		{
 			using var hTh = OpenThread((uint)ThreadAccess.THREAD_RESUME, true, (uint)process.Threads[0].Id);
 			ResumeThread(hTh);
+		}
+
+		/// <summary>Sets information for the specified process.</summary>
+		/// <typeparam name="T">Type of the value to set.</typeparam>
+		/// <param name="process">
+		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see
+		/// Process Security and Access Rights.
+		/// </param>
+		/// <param name="value">An object used to set information.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		public static bool SetInformation<T>(this Process process, in T value) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanSet<T, PROCESS_INFORMATION_CLASS>(out var ProcessInformationClass))
+				throw new ArgumentException("The type specified by the type parameter cannot be retrieved for a process.", nameof(T));
+			return SetProcessInformation<T>(process, ProcessInformationClass, value);
 		}
 
 		/// <summary>Extension method to start a process with extra flags.</summary>
@@ -410,6 +478,41 @@ namespace Vanara.Extensions
 			return false;
 		}
 
+		/// <summary>
+		/// Writes data to an area of memory in a specified process. The entire area to be written to must be accessible or the operation fails.
+		/// </summary>
+		/// <param name="process">The process memory to be modified.</param>
+		/// <param name="baseAddress">
+		/// The base address in the specified process to which data is written. Before data transfer occurs, the system verifies that all
+		/// data in the base address and memory of the specified size is accessible for write access, and if it is not accessible, the
+		/// function fails.
+		/// </param>
+		/// <param name="buffer">A pointer to the buffer that contains data to be written in the address space of the specified process.</param>
+		/// <param name="bufferSize">The number of bytes to be written to the specified process.</param>
+		/// <returns>The number of bytes transferred into the specified process.</returns>
+		public static SizeT WriteMemory(this Process process, IntPtr baseAddress, IntPtr buffer, SizeT bufferSize)
+		{
+			Win32Error.ThrowLastErrorIfFalse(WriteProcessMemory(process, baseAddress, buffer, bufferSize, out var written));
+			return written;
+		}
+
+		/// <summary>
+		/// Writes data to an area of memory in a specified process. The entire area to be written to must be accessible or the operation fails.
+		/// </summary>
+		/// <param name="process">The process memory to be modified.</param>
+		/// <param name="baseAddress">
+		/// The base address in the specified process to which data is written. Before data transfer occurs, the system verifies that all
+		/// data in the base address and memory of the specified size is accessible for write access, and if it is not accessible, the
+		/// function fails.
+		/// </param>
+		/// <param name="buffer">A pointer to the buffer that contains data to be written in the address space of the specified process.</param>
+		/// <returns>The number of bytes transferred into the specified process.</returns>
+		public static SizeT WriteMemory(this Process process, IntPtr baseAddress, byte[] buffer)
+		{
+			Win32Error.ThrowLastErrorIfFalse(WriteProcessMemory(process, baseAddress, buffer, buffer.Length, out var written));
+			return written;
+		}
+
 		private static IEnumerable<Process> GetChildProcesses(int pid, Dictionary<int, List<Tuple<int, int>>> allProcs, string machineName, bool allChildren = true)
 		{
 			if (allProcs == null) throw new ArgumentNullException(nameof(allProcs));
@@ -423,6 +526,18 @@ namespace Vanara.Extensions
 				try { retProc = Process.GetProcessById(cpid, machineName); } catch { }
 				if (retProc != null) yield return retProc;
 			}
+		}
+
+		private static SizeT ReadToMem(Process proc, IntPtr baseAddress, SafeMemoryHandle<CoTaskMemoryMethods> mem)
+		{
+			bool ret;
+			if ((ret = ReadProcessMemory(proc, baseAddress, mem, mem.Size, out var req)) == false && req > mem.Size)
+			{
+				mem.Size = req;
+				ret = ReadProcessMemory(proc, baseAddress, mem, mem.Size, out req);
+			}
+			if (!ret) Win32Error.ThrowLastError();
+			return req;
 		}
 	}
 }
