@@ -102,8 +102,9 @@ namespace Vanara.Extensions
 		/// <returns>The path to the executable image.</returns>
 		public static string GetImageFilePath(this Process process)
 		{
-			var sb = new StringBuilder(2048);
-			QueryFullProcessImageName(process, PROCESS_NAME.PROCESS_NAME_WIN32, sb, (uint)sb.Capacity);
+			var sz = 2048U;
+			var sb = new StringBuilder((int)sz);
+			QueryFullProcessImageName(process, PROCESS_NAME.PROCESS_NAME_WIN32, sb, ref sz);
 			return sb.ToString();
 		}
 
@@ -157,7 +158,8 @@ namespace Vanara.Extensions
 		/// <summary>Retrieves timing information for the specified process.</summary>
 		/// <param name="process">The process.</param>
 		/// <returns>A structure containing timing information for the process.</returns>
-		public static KERNEL_USER_TIMES GetTimeInfo(this Process process) => NtDll.NtQueryInformationProcess<KERNEL_USER_PROCESS>(process, NtDll.PROCESSINFOCLASS.ProcessTimes);
+		public static NtDll.KERNEL_USER_TIMES GetTimeInfo(this Process process) =>
+			NtDll.NtQueryInformationProcess<NtDll.KERNEL_USER_TIMES>(process, NtDll.PROCESSINFOCLASS.ProcessTimes);
 
 		/// <summary>Retrieves the fully qualified path of the executable file of the process.</summary>
 		/// <param name="process">The process.</param>
@@ -518,19 +520,19 @@ namespace Vanara.Extensions
 #pragma warning disable CS0618 // Type or member is obsolete
 			if (startInfo.RedirectStandardInput)
 			{
-				var stdIn = new StreamWriter(new FileStream(standardInputWritePipeHandle.DangerousGetHandle(), System.IO.FileAccess.Write, false, 4096), Console.InputEncoding, 4096);
-				stdIn.AutoFlush = true;
+				var stdIn = new StreamWriter(new FileStream(standardInputWritePipeHandle.DangerousGetHandle(), System.IO.FileAccess.Write, false, 4096),
+					Console.InputEncoding, 4096) { AutoFlush = true };
 				process.SetFieldValue("standardInput", stdIn);
 			}
 			if (startInfo.RedirectStandardOutput)
 			{
-				var enc = (startInfo.StandardOutputEncoding != null) ? startInfo.StandardOutputEncoding : Console.OutputEncoding;
+				var enc = startInfo.StandardOutputEncoding ?? Console.OutputEncoding;
 				var stdOut = new StreamReader(new FileStream(standardOutputReadPipeHandle.DangerousGetHandle(), System.IO.FileAccess.Read, false, 4096), enc, true, 4096);
 				process.SetFieldValue("standardOutput", stdOut);
 			}
 			if (startInfo.RedirectStandardError)
 			{
-				var enc = (startInfo.StandardErrorEncoding != null) ? startInfo.StandardErrorEncoding : Console.OutputEncoding;
+				var enc = startInfo.StandardErrorEncoding ?? Console.OutputEncoding;
 				var stdErr = new StreamReader(new FileStream(standardErrorReadPipeHandle.DangerousGetHandle(), System.IO.FileAccess.Read, false, 4096), enc, true, 4096);
 				process.SetFieldValue("standardError", stdErr);
 			}

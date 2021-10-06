@@ -1117,7 +1117,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://webcache.googleusercontent.com/search?q=cache:IqzT6kD4rycJ:https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getpackagefullname+&cd=2&hl=en&ct=clnk&gl=us
 		// LONG GetPackageFullName( HANDLE hProcess, UINT32 *packageFullNameLength, PWSTR packageFullName );
-		[DllImport(Lib_Kernel32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "NF:appmodel.GetPackageFullName")]
 		public static extern Win32Error GetPackageFullName(HPROCESS hProcess, ref uint packageFullNameLength,
 			[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder packageFullName);
