@@ -155,12 +155,6 @@ namespace Vanara.Extensions
 			};
 		}
 
-		/// <summary>Retrieves timing information for the specified process.</summary>
-		/// <param name="process">The process.</param>
-		/// <returns>A structure containing timing information for the process.</returns>
-		public static NtDll.KERNEL_USER_TIMES GetTimeInfo(this Process process) =>
-			NtDll.NtQueryInformationProcess<NtDll.KERNEL_USER_TIMES>(process, NtDll.PROCESSINFOCLASS.ProcessTimes);
-
 		/// <summary>Retrieves the fully qualified path of the executable file of the process.</summary>
 		/// <param name="process">The process.</param>
 		/// <returns>The fully qualified path of the executable file of the process.</returns>
@@ -192,6 +186,12 @@ namespace Vanara.Extensions
 		}
 #endif
 
+		/// <summary>Gets a pointer to a PEB structure.</summary>
+		/// <param name="process">The process.</param>
+		/// <returns>The PEB structure.</returns>
+		public static IntPtr GetPebAddress(this Process process) =>
+			NtDll.NtQueryInformationProcess<NtDll.PROCESS_BASIC_INFORMATION>(process, NtDll.PROCESSINFOCLASS.ProcessBasicInformation).Value.PebBaseAddress;
+
 		/// <summary>Gets the privileges for this process.</summary>
 		/// <param name="process">The process.</param>
 		/// <returns>
@@ -203,6 +203,12 @@ namespace Vanara.Extensions
 			using var hObj = SafeHTOKEN.FromProcess(process, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE);
 			return hObj.GetPrivileges().Select(la => new PrivilegeAndAttributes(la.Luid.GetPrivilege(process.MachineName), la.Attributes));
 		}
+
+		/// <summary>Retrieves timing information for the specified process.</summary>
+		/// <param name="process">The process.</param>
+		/// <returns>A structure containing timing information for the process.</returns>
+		public static NtDll.KERNEL_USER_TIMES GetTimeInfo(this Process process) =>
+			NtDll.NtQueryInformationProcess<NtDll.KERNEL_USER_TIMES>(process, NtDll.PROCESSINFOCLASS.ProcessTimes);
 
 		/// <summary>Determines whether the specified privilege is had by the process.</summary>
 		/// <param name="process">The process.</param>
