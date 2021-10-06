@@ -83,15 +83,44 @@ namespace Vanara.Extensions
 		}
 #endif
 
-		/// <summary>Retrieves information about the specified process.</summary>
+		/// <summary>Retrieves the name of the executable file in device form for the specified process.</summary>
+		/// <param name="process">The process.</param>
+		/// <returns>
+		/// The path in device form, rather than drive letters. For example, the file name C:\Windows\System32\Ctype.nls would look as
+		/// follows in device form:
+		/// <para><c>\Device\Harddisk0\Partition1\Windows\System32\Ctype.nls</c></para>
+		/// </returns>
+		public static string GetImageDevicePath(this Process process)
+		{
+			var sb = new StringBuilder(2048);
+			GetProcessImageFileName(process, sb, (uint)sb.Capacity);
+			return sb.ToString();
+		}
+
+		/// <summary>Retrieves the full name of the executable image for the specified process.</summary>
+		/// <param name="process">The process.</param>
+		/// <returns>The path to the executable image.</returns>
+		public static string GetImageFilePath(this Process process)
+		{
+			var sb = new StringBuilder(2048);
+			QueryFullProcessImageName(process, PROCESS_NAME.PROCESS_NAME_WIN32, sb, (uint)sb.Capacity);
+			return sb.ToString();
+		}
+
+		/// <summary>Retrieves information about the specified process using either NtQueryInformationProcess or GetProcessInformation.</summary>
 		/// <typeparam name="T">The type of information to retrieve.</typeparam>
 		/// <param name="process">
 		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see Process
 		/// Security and Access Rights.
 		/// </param>
-		/// <returns>An object containing the type of information specified by the ProcessInformationClass parameter.</returns>
+		/// <returns>An object containing the requested type of information.</returns>
 		/// <exception cref="ArgumentException">Type mismatch.</exception>
-		public static T GetInformation<T>(this Process process) where T : struct => GetProcessInformation<T>(process);
+		public static T GetInformation<T>(this Process process) where T : struct
+		{
+			if (CorrespondingTypeAttribute.CanGet<T, NtDll.PROCESSINFOCLASS>(out var pic))
+				return NtDll.NtQueryInformationProcess<T>(process, pic);
+			return GetProcessInformation<T>(process);
+		}
 
 		/// <summary>
 		/// The function gets the integrity level of the current process. Integrity level is only available on Windows Vista and newer operating systems, thus
@@ -123,6 +152,21 @@ namespace Vanara.Extensions
 				var iVal when iVal >= 0x3000 => ProcessIntegrityLevel.High,
 				_ => ProcessIntegrityLevel.Undefined,
 			};
+		}
+
+		/// <summary>Retrieves timing information for the specified process.</summary>
+		/// <param name="process">The process.</param>
+		/// <returns>A structure containing timing information for the process.</returns>
+		public static KERNEL_USER_TIMES GetTimeInfo(this Process process) => NtDll.NtQueryInformationProcess<KERNEL_USER_PROCESS>(process, NtDll.PROCESSINFOCLASS.ProcessTimes);
+
+		/// <summary>Retrieves the fully qualified path of the executable file of the process.</summary>
+		/// <param name="process">The process.</param>
+		/// <returns>The fully qualified path of the executable file of the process.</returns>
+		public static string GetModuleName(this Process process)
+		{
+			var sb = new StringBuilder(2048);
+			GetModuleFileNameEx(process, default, sb, (uint)sb.Capacity);
+			return sb.ToString();
 		}
 
 #if (NET20 || NET35 || NET40 || NET45)
@@ -175,6 +219,20 @@ namespace Vanara.Extensions
 			return hObj.HasPrivileges(requireAll, privs);
 		}
 
+		/// <summary>Determines whether the specified process is running under WOW64.</summary>
+		/// <param name="process">
+		/// The process. The handle must have the PROCESS_QUERY_INFORMATION or PROCESS_QUERY_LIMITED_INFORMATION access right.
+		/// </param>
+		/// <returns>
+		/// TRUE if the process is running under WOW64. If the process is running under 32-bit Windows, the value is set to FALSE. If the
+		/// process is a 64-bit application running under 64-bit Windows, the value is also set to FALSE.
+		/// </returns>
+		public static bool Is64Bit(this Process process) =>
+#if !(NET20 || NET35)
+			Environment.Is64BitOperatingSystem && 
+#endif
+			process.IsWow64();
+
 		/// <summary>
 		/// The function gets the elevation information of the current process. It dictates whether the process is elevated or not. Token elevation is only
 		/// available on Windows Vista and newer operating systems, thus IsProcessElevated throws a C++ exception if it is called on systems prior to Windows
@@ -226,6 +284,16 @@ namespace Vanara.Extensions
 		/// if the token does not.
 		/// </returns>
 		public static bool IsRunningAsAdmin(this Process proc) => UAC.IsRunningAsAdmin(proc);
+
+		/// <summary>Determines whether the specified process is running under WOW64.</summary>
+		/// <param name="process">
+		/// The process. The handle must have the PROCESS_QUERY_INFORMATION or PROCESS_QUERY_LIMITED_INFORMATION access right.
+		/// </param>
+		/// <returns>
+		/// TRUE if the process is running under WOW64. If the process is running under 32-bit Windows, the value is set to FALSE. If the
+		/// process is a 64-bit application running under 64-bit Windows, the value is also set to FALSE.
+		/// </returns>
+		public static bool IsWow64(this Process process) => IsWow64Process(process, out var result) && result;
 
 		/// <summary>
 		/// Reads data from an area of memory in a specified process. The entire area to be read must be accessible or the operation fails.
