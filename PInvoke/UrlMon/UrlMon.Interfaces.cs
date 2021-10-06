@@ -9,11 +9,30 @@ namespace Vanara.PInvoke
 {
 	public static partial class UrlMon
 	{
+		/// <summary>Flags used by the <c>IAuthenticateEx::AuthenticateEx</c> method to pass information about the authentication request.</summary>
+		/// <remarks>
+		/// <para>
+		/// These values are used primarily by the Windows RSS Platform to control automatic authentication of feeds. Proxy authentication
+		/// is not allowed, nor is basic authentication over HTTP allowed. However, basic over Secure Hypertext Transfer Protocol (HTTPS) is allowed.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> To allow basic authentication over HTTP, start Group Policy Editor (gpedit.msc), and configure the value for" Turn
+		/// on Basic feed authentication over HTTP" under Administrative Templates, Windows Components, Windows Internet Explorer, RSS Feeds.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/cc709431(v=vs.85)
+		// typedef enum { AUTHENTICATEF_PROXY = 0x00000001, AUTHENTICATEF_BASIC = 0x00000002, AUTHENTICATEF_HTTP = 0x00000004 } AUTHENTICATEF;
 		[PInvokeData("Urlmon.h")]
+		[Flags]
 		public enum AUTHENTICATEF
 		{
+			/// <summary>The authorization is handled by the proxy server.</summary>
 			AUTHENTICATEF_PROXY = 0x00000001,
+
+			/// <summary>The authorization will use basic authentication.</summary>
 			AUTHENTICATEF_BASIC = 0x00000002,
+
+			/// <summary>The authorization will occur over HTTP.</summary>
 			AUTHENTICATEF_HTTP = 0x00000004,
 		}
 
@@ -1774,7 +1793,7 @@ namespace Vanara.PInvoke
 		public struct AUTHENTICATEINFO
 		{
 			/// <summary><c>dwFlags</c> One or more <c>AUTHENTICATEF</c> values that specify the authentication operation.</summary>
-			public uint dwFlags;
+			public AUTHENTICATEF dwFlags;
 
 			/// <summary><c>dwReserved</c></summary>
 			public uint dwReserved;
