@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
+using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
@@ -27,7 +28,10 @@ namespace Vanara.PInvoke
 			ProcessQuotaLimits, // qs: QUOTA_LIMITS, QUOTA_LIMITS_EX
 			ProcessIoCounters, // q: IO_COUNTERS
 			ProcessVmCounters, // q: VM_COUNTERS, VM_COUNTERS_EX, VM_COUNTERS_EX2
+
+			[CorrespondingType(typeof(KERNEL_USER_TIMES), CorrespondingAction.Get)]
 			ProcessTimes, // q: KERNEL_USER_TIMES
+
 			ProcessBasePriority, // s: KPRIORITY
 			ProcessRaisePriority, // s: ULONG
 
@@ -678,6 +682,30 @@ namespace Vanara.PInvoke
 		public static bool NtQueryInformationProcessRequiresWow64Structs(HPROCESS ProcessHandle) => IsWow64(Kernel32.GetCurrentProcess()) && !IsWow64(ProcessHandle);
 
 		internal static bool IsWow64(HPROCESS hProc) => (Environment.OSVersion.Version.Major >= 6 || (Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor >= 1)) && Kernel32.IsWow64Process(hProc, out var b) && b;
+
+		/// <summary>Timing information for a process.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct KERNEL_USER_TIMES
+		{
+			/// <summary>The creation time of the process.</summary>
+			public FILETIME CreateTime;
+
+			/// <summary>The exit time of the process.</summary>
+			public FILETIME ExitTime;
+
+			/// <summary>
+			/// The amount of time that the process has executed in kernel mode. The time that each of the threads of the process has
+			/// executed in kernel mode is determined, and then all of those times are summed together to obtain this value.
+			/// </summary>
+			public FILETIME KernelTime;
+
+			/// <summary>
+			/// The amount of time that the process has executed in user mode. The time that each of the threads of the process has executed
+			/// in user mode is determined, and then all of those times are summed together to obtain this value. Note that this value can
+			/// exceed the amount of real time elapsed (between lpCreationTime and lpExitTime) if the process executes across multiple CPU cores.
+			/// </summary>
+			public FILETIME UserTime;
+		}
 
 		/// <summary>
 		/// <para>[This structure may be altered in future versions of Windows.]</para>
