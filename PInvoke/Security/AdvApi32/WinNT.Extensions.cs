@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using Vanara.Extensions;
 using static Vanara.PInvoke.AdvApi32;
 
@@ -44,7 +46,7 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the Flags for an ACE, if defined.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
 		/// <returns>The Flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		/// <exception cref="ArgumentNullException">pAce</exception>
 		public static AdvApi32.ObjectAceFlags? GetFlags(this PACE pAce)
 		{
 			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
@@ -54,29 +56,64 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the header for an ACE.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
 		/// <returns>The <see cref="ACE_HEADER"/> value.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		/// <exception cref="ArgumentNullException">pAce</exception>
 		public static ACE_HEADER GetHeader(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACE_HEADER>() : throw new ArgumentNullException(nameof(pAce));
 
 		/// <summary>Gets the InheritedObjectType for an ACE, if defined.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
 		/// <returns>The InheritedObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		/// <exception cref="ArgumentNullException">pAce</exception>
 		public static Guid? GetInheritedObjectType(this PACE pAce)
 		{
 			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
 			return !pAce.IsObjectAce() ? null : pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().InheritedObjectType;
 		}
 
+		/// <summary>
+		/// The function gets the integrity level of the token. Integrity level is only available on Windows Vista and newer operating
+		/// systems, thus GetIntegrityLevel throws an exception if it is called on systems prior to Windows Vista.
+		/// </summary>
+		/// <returns>Returns the integrity level of the token.</returns>
+		public static MANDATORY_LEVEL GetIntegrityLevel(this HTOKEN token)
+		{
+			// Marshal the TOKEN_MANDATORY_LABEL struct from native to .NET object. 
+			var tokenIL = GetTokenInformation<TOKEN_MANDATORY_LABEL>(token, TOKEN_INFORMATION_CLASS.TokenIntegrityLevel);
+
+			// Integrity Level SIDs are in the form of S-1-16-0xXXXX. (e.g. S-1-16-0x1000 stands for low integrity level SID). There is one and only one subauthority.
+			return (MANDATORY_LEVEL)GetSidSubAuthority(tokenIL.Label.Sid, 0);
+		}
+
+		/// <summary>
+		/// The function gets the integrity level of the security descriptor. Integrity level is only available on Windows Vista and newer
+		/// operating systems, thus GetIntegrityLevel throws an exception if it is called on systems prior to Windows Vista.
+		/// </summary>
+		/// <returns>Returns the integrity level of the security descriptor.</returns>
+		public static MANDATORY_LEVEL GetIntegrityLevel(this PSECURITY_DESCRIPTOR pSD)
+		{
+			if (GetSecurityDescriptorSacl(pSD, out var present, out var sacl, out _) && present)
+			{
+				// Marshal the TOKEN_MANDATORY_LABEL struct from native to .NET object.
+				var pACE = sacl.EnumerateAces().FirstOrDefault(a => a.GetAceType() == (AceType)0x11 /*SYSTEM_MANDATORY_LABEL_ACE_TYPE*/);
+				if (!pACE.IsNull)
+				{
+					using var psid = pACE.GetSid();
+					// Integrity Level SIDs are in the form of S-1-16-0xXXXX. (e.g. S-1-16-0x1000 stands for low integrity level SID). There is one and only one subauthority.
+					return (MANDATORY_LEVEL)GetSidSubAuthority(psid, 0);
+				}
+			}
+			return MANDATORY_LEVEL.MandatoryLevelUntrusted;
+		}
+
 		/// <summary>Gets the mask for an ACE.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
 		/// <returns>The ACCESS_MASK value.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		/// <exception cref="ArgumentNullException">pAce</exception>
 		public static uint GetMask(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_ACE>().Mask : throw new ArgumentNullException(nameof(pAce));
 
 		/// <summary>Gets the ObjectType for an ACE, if defined.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
 		/// <returns>The ObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		/// <exception cref="ArgumentNullException">pAce</exception>
 		public static Guid? GetObjectType(this PACE pAce)
 		{
 			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
@@ -86,23 +123,25 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the SID for an ACE.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
 		/// <returns>The SID value.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		/// <exception cref="ArgumentNullException">pAce</exception>
 		public static SafePSID GetSid(this PACE pAce)
 		{
 			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
 			var offset = Marshal.SizeOf(typeof(ACE_HEADER)) + sizeof(uint);
 			if (pAce.IsObjectAce()) offset += sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2;
-			unsafe
-			{
-				return SafePSID.CreateFromPtr((IntPtr)((byte*)pAce.DangerousGetHandle() + offset));
-			}
+			return SafePSID.CreateFromPtr(pAce.DangerousGetHandle().Offset(offset));
 		}
+
+		/// <summary>Gets the AceType for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The AceType value.</returns>
+		public static AceType GetAceType(this PACE pAce) => GetHeader(pAce).AceType;
 
 		/// <summary>Determines if a ACE is an object ACE.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
 		/// <returns><see langword="true"/> if is this is an object ACE; otherwise, <see langword="false"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		/// <exception cref="System.ArgumentOutOfRangeException">pAce - Unknown ACE type.</exception>
+		/// <exception cref="ArgumentNullException">pAce</exception>
+		/// <exception cref="ArgumentOutOfRangeException">pAce - Unknown ACE type.</exception>
 		public static bool IsObjectAce(this PACE pAce)
 		{
 			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
@@ -132,14 +171,7 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the size, in bytes, of an ACE.</summary>
 		/// <param name="pAce">The pointer to the ACE structure to query.</param>
 		/// <returns>The size, in bytes, of the ACE.</returns>
-		public static uint Length(this PACE pAce)
-		{
-			unsafe
-			{
-				var p = (ACE_HEADER*)(void*)pAce.DangerousGetHandle();
-				return p == null ? 0U : p->AceSize;
-			}
-		}
+		public static uint Length(this PACE pAce) => GetHeader(pAce).AceSize;
 
 		/// <summary>Gets the size, in bytes, of an ACL. If the ACL is not valid, 0 is returned.</summary>
 		/// <param name="pACL">The pointer to the ACL structure to query.</param>
