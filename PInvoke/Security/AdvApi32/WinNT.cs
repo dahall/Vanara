@@ -3217,10 +3217,55 @@ namespace Vanara.PInvoke
 		/// <summary>The SID_IDENTIFIER_AUTHORITY structure represents the top-level authority of a security identifier (SID).</summary>
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		[PInvokeData("Winnt.h", MSDNShortId = "aa379598")]
-		public struct SID_IDENTIFIER_AUTHORITY
+		public struct SID_IDENTIFIER_AUTHORITY : IEquatable<PSID_IDENTIFIER_AUTHORITY>, IEquatable<SID_IDENTIFIER_AUTHORITY>, IEquatable<byte[]>
 		{
 			/// <summary>An array of 6 bytes specifying a SID's top-level authority.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)] public byte[] Value;
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(SID_IDENTIFIER_AUTHORITY h1, SID_IDENTIFIER_AUTHORITY h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(SID_IDENTIFIER_AUTHORITY h1, SID_IDENTIFIER_AUTHORITY h2) => h1.Equals(h2);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(PSID_IDENTIFIER_AUTHORITY other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other.Value);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(SID_IDENTIFIER_AUTHORITY other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other.Value);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(byte[] other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj switch
+			{
+				PSID_IDENTIFIER_AUTHORITY h => Equals(h),
+				SID_IDENTIFIER_AUTHORITY h => Equals(h),
+				byte[] h => Equals(h),
+				_ => ReferenceEquals(Value, obj),
+			};
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => Value.GetHashCode();
 		}
 
 		/// <summary>
@@ -4453,7 +4498,7 @@ namespace Vanara.PInvoke
 		// _SID_IDENTIFIER_AUTHORITY { BYTE Value[6]; } SID_IDENTIFIER_AUTHORITY, *PSID_IDENTIFIER_AUTHORITY;
 		[PInvokeData("winnt.h", MSDNShortId = "450a6d2d-d2e4-4098-90af-a8024ddcfcb5")]
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public class PSID_IDENTIFIER_AUTHORITY
+		public class PSID_IDENTIFIER_AUTHORITY : IEquatable<PSID_IDENTIFIER_AUTHORITY>, IEquatable<SID_IDENTIFIER_AUTHORITY>, IEquatable<byte[]>
 		{
 			/// <summary>An array of 6 bytes specifying a SID's top-level authority.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
@@ -4527,11 +4572,48 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the operator.</returns>
 			public static bool operator ==(PSID_IDENTIFIER_AUTHORITY h1, PSID_IDENTIFIER_AUTHORITY h2) => h1.Equals(h2);
 
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(PSID_IDENTIFIER_AUTHORITY other) => Equals6Bytes(Value, other.Value);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(SID_IDENTIFIER_AUTHORITY other) => Equals6Bytes(Value, other.Value);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(byte[] other) => Equals6Bytes(Value, other);
+
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is PSID_IDENTIFIER_AUTHORITY h ? h.LongValue == h.LongValue : false;
+			public override bool Equals(object obj) => obj switch
+			{
+				PSID_IDENTIFIER_AUTHORITY h => Equals(h),
+				SID_IDENTIFIER_AUTHORITY h => Equals(h),
+				byte[] h => Equals(h),
+				_ => ReferenceEquals(Value, obj),
+			};
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => LongValue.GetHashCode();
+
+			internal static bool Equals6Bytes(byte[] a, byte[] b)
+			{
+				if (a is null || b is null || a.Length != 6 || b.Length != 6)
+					return false;
+				for (int i = 0; i < 6; i++)
+					if (a[i] != b[i])
+						return false;
+				return true;
+			}
 		}
 
 		/// <summary>A SafeHandle for access control lists. If owned, will call LocalFree on the pointer when disposed.</summary>
