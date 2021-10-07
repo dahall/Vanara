@@ -126,9 +126,8 @@ namespace Vanara.PInvoke
 			/// <returns>A <see cref="SafePSID"/> instance of the user account SID associated with a security token.</returns>
 			public static SafePSID FromToken(HTOKEN hToken)
 			{
-				var hTok = new SafeHTOKEN((IntPtr)hToken, false);
-				using var pUserToken = hTok.GetInfo(TOKEN_INFORMATION_CLASS.TokenUser);
-				return new SafePSID(pUserToken.ToStructure<TOKEN_USER>().User.Sid);
+				using var hTok = new SafeHTOKEN((IntPtr)hToken, false);
+				return hTok.GetInfo<TOKEN_USER>(TOKEN_INFORMATION_CLASS.TokenUser).User.Sid;
 			}
 
 			/// <summary>Performs an explicit conversion from <see cref="SafePSID"/> to <see cref="IntPtr"/>.</summary>
