@@ -214,10 +214,8 @@ namespace Vanara.PInvoke
 		internal static extern IntPtr InternalGetSidIdentifierAuthority(PSID pSid);
 
 		/// <summary>
-		/// <para>
-		/// The <c>GetSidIdentifierAuthority</c> function returns a pointer to the SID_IDENTIFIER_AUTHORITY structure in a specified security
-		/// identifier (SID).
-		/// </para>
+		/// The <c>GetSidIdentifierAuthority</c> function returns a pointer to the SID_IDENTIFIER_AUTHORITY structure in a specified
+		/// security identifier (SID).
 		/// </summary>
 		/// <param name="pSid">
 		/// <para>A pointer to the SID structure for which a pointer to the SID_IDENTIFIER_AUTHORITY structure is returned.</para>
@@ -231,20 +229,17 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is a pointer to the SID_IDENTIFIER_AUTHORITY structure for the specified SID structure.
 		/// </para>
 		/// <para>
-		/// If the function fails, the return value is undefined. The function fails if the SID structure pointed to by the pSid parameter is
-		/// not valid. To get extended error information, call GetLastError.
+		/// If the function fails, the return value is undefined. The function fails if the SID structure pointed to by the pSid parameter
+		/// is not valid. To get extended error information, call GetLastError.
 		/// </para>
 		/// </returns>
 		/// <remarks>
-		/// <para>
 		/// This function uses a 32-bit RID value. For applications that require a larger RID value, use CreateWellKnownSid and related functions.
-		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsididentifierauthority
 		// PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority( PSID pSid );
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "67a06e7b-775f-424c-ab36-0fc9b93b801a")]
-		public static PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority(PSID pSid) =>
-			new PSID_IDENTIFIER_AUTHORITY(InternalGetSidIdentifierAuthority(pSid));
+		public static PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority(PSID pSid) => new(InternalGetSidIdentifierAuthority(pSid));
 
 		/// <summary>
 		/// <para>
