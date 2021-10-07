@@ -302,6 +302,37 @@ namespace Vanara.PInvoke
 			SECURITY_CAPABILITY_REMOVABLE_STORAGE = 0x0000000A,
 		}
 
+		/// <summary>The <c>MANDATORY_LEVEL</c> enumeration lists the possible security levels.
+		/// <note>These values have been adjusted to equal the RID values of the mandatory SID label.</note>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-mandatory_level typedef enum _MANDATORY_LEVEL {
+		// MandatoryLevelUntrusted, MandatoryLevelLow, MandatoryLevelMedium, MandatoryLevelHigh, MandatoryLevelSystem,
+		// MandatoryLevelSecureProcess, MandatoryLevelCount } MANDATORY_LEVEL, *PMANDATORY_LEVEL;
+		[PInvokeData("winnt.h", MSDNShortId = "NE:winnt._MANDATORY_LEVEL")]
+		public enum MANDATORY_LEVEL : uint
+		{
+			/// <summary>Untrusted</summary>
+			MandatoryLevelUntrusted = 0,
+
+			/// <summary>Low</summary>
+			MandatoryLevelLow = 0x1000,
+
+			/// <summary>Medium</summary>
+			MandatoryLevelMedium = 0x2000,
+
+			/// <summary>Medium High</summary>
+			MandatoryLevelMediumHigh = MandatoryLevelMedium + 0x100,
+
+			/// <summary>High</summary>
+			MandatoryLevelHigh = 0x3000,
+
+			/// <summary>System</summary>
+			MandatoryLevelSystem = 0x4000,
+
+			/// <summary>Secure process</summary>
+			MandatoryLevelSecureProcess = 0x5000,
+		}
+
 		/// <summary>
 		/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members are present in an object ACE.
 		/// </summary>
