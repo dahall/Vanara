@@ -20,28 +20,6 @@ using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.Extensions
 {
-	/// <summary>Values which define a processes integrity level.</summary>
-	public enum ProcessIntegrityLevel
-	{
-		/// <summary>Untrusted.</summary>
-		Untrusted,
-
-		/// <summary>Undefined.</summary>
-		Undefined,
-
-		/// <summary>Low.</summary>
-		Low,
-
-		/// <summary>Medium.</summary>
-		Medium,
-
-		/// <summary>High.</summary>
-		High,
-
-		/// <summary>System.</summary>
-		System
-	}
-
 	/// <summary>Extension methods for <see cref="Process"/> for privileges, status, elevation and relationships.</summary>
 	public static partial class ProcessExtension
 	{
@@ -132,27 +110,14 @@ namespace Vanara.Extensions
 		/// When any native Windows API call fails, the function throws a Win32Exception with the last error code.
 		/// </exception>
 		/// <exception cref="System.ArgumentNullException"><paramref name="p"/> must be a valid <see cref="Process"/>.</exception>
-		public static ProcessIntegrityLevel GetIntegrityLevel(this Process p)
+		public static MANDATORY_LEVEL GetIntegrityLevel(this Process p)
 		{
 			if (p == null)
 				throw new ArgumentNullException(nameof(p));
 
 			// Open the access token of the current process with TOKEN_QUERY. 
-			var hObject = SafeHTOKEN.FromProcess(p, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE);
-
-			// Marshal the TOKEN_MANDATORY_LABEL struct from native to .NET object. 
-			var tokenIL = hObject.GetInfo<TOKEN_MANDATORY_LABEL>(TOKEN_INFORMATION_CLASS.TokenIntegrityLevel);
-
-			// Integrity Level SIDs are in the form of S-1-16-0xXXXX. (e.g. S-1-16-0x1000 stands for low integrity level SID). There is one and only one subauthority.
-			return (GetSidSubAuthority(tokenIL.Label.Sid, 0)) switch
-			{
-				0 => ProcessIntegrityLevel.Untrusted,
-				0x1000 => ProcessIntegrityLevel.Low,
-				var iVal when iVal >= 0x2000 && iVal < 0x3000 => ProcessIntegrityLevel.Medium,
-				var iVal when iVal >= 0x4000 => ProcessIntegrityLevel.System,
-				var iVal when iVal >= 0x3000 => ProcessIntegrityLevel.High,
-				_ => ProcessIntegrityLevel.Undefined,
-			};
+			using var hObject = SafeHTOKEN.FromProcess(p, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE);
+			return ((HTOKEN)hObject).GetIntegrityLevel();
 		}
 
 		/// <summary>Retrieves the fully qualified path of the executable file of the process.</summary>
