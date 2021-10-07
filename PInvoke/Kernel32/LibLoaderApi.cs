@@ -1289,7 +1289,7 @@ namespace Vanara.PInvoke
 		// HMODULE WINAPI GetModuleHandle( _In_opt_ LPCTSTR lpModuleName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683199(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683199")]
-		public static extern HINSTANCE GetModuleHandle([Optional] string lpModuleName);
+		public static extern SafeHINSTANCE GetModuleHandle([Optional] string lpModuleName);
 
 		/// <summary>
 		/// Retrieves a module handle for the specified module and increments the module's reference count unless
@@ -1324,7 +1324,42 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683200")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG dwFlags, [Optional] string lpModuleName, out HINSTANCE phModule);
+		public static extern bool GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG dwFlags, [Optional] string lpModuleName, out SafeHINSTANCE phModule);
+
+		/// <summary>
+		/// Retrieves a module handle for the specified module and increments the module's reference count unless
+		/// GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT is specified. The module must have been loaded by the calling process.
+		/// </summary>
+		/// <param name="dwFlags">
+		/// This parameter can be zero or one or more of the following values. If the module's reference count is incremented, the caller
+		/// must use the <c>FreeLibrary</c> function to decrement the reference count when the module handle is no longer needed.
+		/// </param>
+		/// <param name="lpModuleName">
+		/// <para>The name of the loaded module (either a .dll or .exe file), or an address in the module (if dwFlags is GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS).</para>
+		/// <para>
+		/// For a module name, if the file name extension is omitted, the default library extension .dll is appended. The file name string
+		/// can include a trailing point character (.) to indicate that the module name has no extension. The string does not have to specify
+		/// a path. When specifying a path, be sure to use backslashes (\), not forward slashes (/). The name is compared (case
+		/// independently) to the names of modules currently mapped into the address space of the calling process.
+		/// </para>
+		/// <para>If this parameter is NULL, the function returns a handle to the file used to create the calling process (.exe file).</para>
+		/// </param>
+		/// <param name="phModule">
+		/// <para>A handle to the specified module. If the function fails, this parameter is NULL.</para>
+		/// <para>
+		/// The <c>GetModuleHandleEx</c> function does not retrieve handles for modules that were loaded using the
+		/// <c>LOAD_LIBRARY_AS_DATAFILE</c> flag. For more information, see <c>LoadLibraryEx</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, see <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI GetModuleHandleEx( _In_ DWORD dwFlags, _In_opt_ LPCTSTR lpModuleName, _Out_ HMODULE *phModule); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683200(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Winbase.h", MSDNShortId = "ms683200")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG dwFlags, [In] IntPtr lpModuleName, out SafeHINSTANCE phModule);
 
 		/// <summary>Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).</summary>
 		/// <param name="hModule">
