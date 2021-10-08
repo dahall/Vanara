@@ -5200,6 +5200,123 @@ namespace Vanara.PInvoke
 			HRESULT GetPredefinedValue(int dispID, uint dwCookie, out OleAut32.VARIANT pVarOut);
 		}
 
+		/// <summary>Works with IPropertyBag and IErrorlog to define an individual property-based persistence mechanism.</summary>
+		/// <remarks>
+		/// <c>IPersistPropertyBag</c> provides an object with an IPropertyBag interface through which it can save and load individual
+		/// properties. The object that implements <c>IPropertyBag</c> can then save those properties in various ways, such as name/value
+		/// pairs in a text file. Errors encountered in the process (on either side) are recorded in an error log through IErrorlog. This
+		/// error reporting mechanism works on a per-property basis instead of on all properties at once.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nn-ocidl-ipersistpropertybag
+		[PInvokeData("ocidl.h", MSDNShortId = "NN:ocidl.IPersistPropertyBag")]
+		[ComImport, Guid("37D84F60-42CB-11CE-8135-00AA004BB851"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IPersistPropertyBag : IPersist
+		{
+			/// <summary>Retrieves the class identifier (CLSID) of the object.</summary>
+			/// <returns>
+			/// <para>
+			/// A pointer to the location that receives the CLSID on return. The CLSID is a globally unique identifier (GUID) that uniquely
+			/// represents an object class that defines the code that can manipulate the object's data.
+			/// </para>
+			/// <para>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>GetClassID</c> method retrieves the class identifier (CLSID) for an object, used in later operations to load
+			/// object-specific code into the caller's context.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A container application might call this method to retrieve the original CLSID of an object that it is treating as a
+			/// different class. Such a call would be necessary if a user performed an editing operation that required the object to be
+			/// saved. If the container were to save it using the treat-as CLSID, the original application would no longer be able to edit
+			/// the object. Typically, in this case, the container calls the OleSave helper function, which performs all the necessary
+			/// steps. For this reason, most container applications have no need to call this method directly.
+			/// </para>
+			/// <para>
+			/// The exception would be a container that provides an object handler for certain objects. In particular, a container
+			/// application should not get an object's CLSID and then use it to retrieve class specific information from the registry.
+			/// Instead, the container should use IOleObject and IDataObject interfaces to retrieve such class-specific information directly
+			/// from the object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Typically, implementations of this method simply supply a constant CLSID for an object. If, however, the object's
+			/// <c>TreatAs</c> registry key has been set by an application that supports emulation (and so is treating the object as one of
+			/// a different class), a call to <c>GetClassID</c> must supply the CLSID specified in the <c>TreatAs</c> key. For more
+			/// information on emulation, see CoTreatAsClass.
+			/// </para>
+			/// <para>
+			/// When an object is in the running state, the default handler calls an implementation of <c>GetClassID</c> that delegates the
+			/// call to the implementation in the object. When the object is not running, the default handler instead calls the ReadClassStg
+			/// function to read the CLSID that is saved in the object's storage.
+			/// </para>
+			/// <para>
+			/// If you are writing a custom object handler for your object, you might want to simply delegate this method to the default
+			/// handler implementation (see OleCreateDefaultHandler).
+			/// </para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>This method returns CLSID_StdURLMoniker.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersist-getclassid HRESULT GetClassID( CLSID *pClassID );
+			new Guid GetClassID();
+
+			/// <summary>Informs the object that it is being initialized as a newly created object.</summary>
+			/// <remarks>E_NOTIMPL should not be returned. Return S_OK, even if the object does not perform any function in this method.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ipersistpropertybag-initnew HRESULT InitNew();
+			void InitNew();
+
+			/// <summary>
+			/// Instructs the object to initialize itself using the properties available in the property bag, and to notify the provided
+			/// error log object when errors occur.
+			/// </summary>
+			/// <param name="pPropBag">
+			/// The address of the caller's property bag, through which the object can read properties. This cannot be NULL.
+			/// </param>
+			/// <param name="pErrorLog">
+			/// The address of the caller's error log, in which the object stores any errors that occur during initialization. This can be
+			/// NULL; in which case, the caller does not receive errors.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// All property loading must take place in the <c>IPersistPropertyBag::Load</c> function call, because the object cannot hold
+			/// the IPropertyBag pointer.
+			/// </para>
+			/// <para>
+			/// E_NOTIMPL is not a valid return code, because any object that implements this interface must support the entire
+			/// functionality of the interface.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ipersistpropertybag-load HRESULT Load( IPropertyBag
+			// *pPropBag, IErrorLog *pErrorLog );
+			void Load(OleAut32.IPropertyBag pPropBag, [Optional] OleAut32.IErrorLog pErrorLog);
+
+			/// <summary>
+			/// Instructs the object to save its properties to the given property bag, and optionally, to clear the object's dirty flag.
+			/// </summary>
+			/// <param name="pPropBag">
+			/// The address of the caller's property bag, through which the object can write properties. This cannot be NULL.
+			/// </param>
+			/// <param name="fClearDirty">
+			/// A flag indicating whether the object should clear its dirty flag when the "Save" operation is complete. TRUE means clear the
+			/// flag, and FALSE means leave the flag unaffected. FALSE is used when the caller performs a "Save Copy As" operation.
+			/// </param>
+			/// <param name="fSaveAllProperties">
+			/// A flag indicating whether the object should save all its properties (TRUE), or save only those properties that have changed
+			/// from the default value (FALSE).
+			/// </param>
+			/// <remarks>
+			/// <para>The caller can request that the object save all properties, or save only those properties that have changed.</para>
+			/// <para>
+			/// E_NOTIMPL is not a valid return code, because any object that implements this interface must support the entire
+			/// functionality of the interface.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ipersistpropertybag-save HRESULT Save( IPropertyBag
+			// *pPropBag, BOOL fClearDirty, BOOL fSaveAllProperties );
+			void Save(OleAut32.IPropertyBag pPropBag, [MarshalAs(UnmanagedType.Bool)] bool fClearDirty, [MarshalAs(UnmanagedType.Bool)] bool fSaveAllProperties);
+		}
+
 		/// <summary>
 		/// <para>A replacement for IPersistStream that adds an initialization method.</para>
 		/// <para>
