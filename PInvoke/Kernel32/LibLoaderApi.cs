@@ -2063,6 +2063,44 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HINSTANCE(SafeHINSTANCE h) => h.handle;
 
+			/// <summary>Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).</summary>
+			/// <param name="procName">The function or variable name.</param>
+			/// <returns>
+			/// <para>If the function succeeds, the return value is the address of the exported function or variable.</para>
+			/// <para>If the function fails, an exception with the error is thrown.</para>
+			/// </returns>
+			public IntPtr GetProcAddress(string procName) => Win32Error.ThrowLastErrorIfNull(Kernel32.GetProcAddress(handle, procName));
+
+			/// <summary>Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).</summary>
+			/// <param name="ordinal">The function's ordinal value.</param>
+			/// <returns>
+			/// <para>If the function succeeds, the return value is the address of the exported function or variable.</para>
+			/// <para>If the function fails, an exception with the error is thrown.</para>
+			/// </returns>
+			public IntPtr GetProcAddress(int ordinal) => GetProcAddress($"#{ordinal}");
+
+			/// <summary>Retrieves a delegate for an exported function or variable from the specified dynamic-link library (DLL).</summary>
+			/// <typeparam name="T">The delegate type to which to convert that function pointer.</typeparam>
+			/// <param name="procName">The function or variable name.</param>
+			/// <returns>
+			/// <para>If the function succeeds, the return value is the exported function or variable's delegate.</para>
+			/// <para>If the function fails, an exception with the error is thrown.</para>
+			/// </returns>
+			public T GetProcAddress<T>(string procName) where T : Delegate
+			{
+				var ptr = Win32Error.ThrowLastErrorIfNull(Kernel32.GetProcAddress(handle, procName));
+				return (T)Marshal.GetDelegateForFunctionPointer(ptr, typeof(T));
+			}
+
+			/// <summary>Retrieves a delegate for an exported function or variable from the specified dynamic-link library (DLL).</summary>
+			/// <typeparam name="T">The delegate type to which to convert that function pointer.</typeparam>
+			/// <param name="ordinal">The function's ordinal value.</param>
+			/// <returns>
+			/// <para>If the function succeeds, the return value is the exported function or variable's delegate.</para>
+			/// <para>If the function fails, an exception with the error is thrown.</para>
+			/// </returns>
+			public T GetProcAddress<T>(int ordinal) where T : Delegate => GetProcAddress<T>($"#{ordinal}");
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => FreeLibrary(this);
 		}
