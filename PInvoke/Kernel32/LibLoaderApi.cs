@@ -144,7 +144,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool EnumResTypeProc(HINSTANCE hModule, ResourceId lpszType, IntPtr lParam);
 
-		/// <summary>Flags used by <see cref="GetModuleHandleEx"/>.</summary>
+		/// <summary>Flags used by <see cref="GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG, IntPtr, out SafeHINSTANCE)"/>.</summary>
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683200")]
 		[Flags]
 		public enum GET_MODULE_HANDLE_EX_FLAG
