@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System.Text;
 using System.Linq;
 using Vanara.PInvoke.Tests;
+using Vanara.InteropServices;
 
 namespace Vanara.Diagnostics.Tests
 {
@@ -24,6 +25,58 @@ namespace Vanara.Diagnostics.Tests
 			finally
 			{
 				Computer.Local.SharedDevices.Remove(shareName);
+			}
+		}
+
+		[Test]
+		public void EnumLocalGroupsTest()
+		{
+			const string name = "TestUser123";
+			const string newcomment = "new testing user";
+
+			var lg = Computer.Local.LocalGroups.Add(name);
+			try
+			{
+				Assert.That(Computer.Local.LocalGroups.Count, Is.GreaterThanOrEqualTo(1));
+				Assert.That(lg.Name, Is.EqualTo(name));
+				Assert.That(lg.Target, Is.EqualTo(Computer.Local.Target));
+				Assert.That(lg.Comment, Is.Empty);
+				Assert.IsTrue(Computer.Local.LocalGroups.Contains(lg));
+				Assert.That(() => lg.Comment = newcomment, Throws.Nothing);
+				Assert.That(lg.Comment, Is.EqualTo(newcomment));
+			}
+			finally
+			{
+				Computer.Local.LocalGroups.Remove(lg);
+			}
+		}
+
+		[Test]
+		public void EnumUsersTest()
+		{
+			const string user = "TestUser123";
+			const string comment = "testing user";
+			const string newcomment = "new testing user";
+			string hmfld = TestCaseSources.TempDir;
+			var pwd = Guid.NewGuid().ToString("B");
+
+			var acct = Computer.Local.UserAccounts.Add(user, pwd, null, comment, null, PInvoke.NetApi32.UserAcctCtrlFlags.UF_ACCOUNTDISABLE);
+			try
+			{
+				Assert.That(Computer.Local.UserAccounts.Count, Is.GreaterThanOrEqualTo(1));
+				Assert.That(acct.UserName, Is.EqualTo(user));
+				Assert.That(acct.Target, Is.EqualTo(Computer.Local.Target));
+				Assert.That(acct.Comment, Is.EqualTo(comment));
+				Assert.IsTrue(Computer.Local.UserAccounts.Contains(acct));
+				Assert.That(() => acct.Comment = newcomment, Throws.Nothing);
+				Assert.That(acct.Comment, Is.EqualTo(newcomment));
+				Assert.That(acct.HomeFolder, Is.Empty);
+				Assert.That(() => acct.HomeFolder = hmfld, Throws.Nothing);
+				Assert.That(acct.HomeFolder, Is.EqualTo(hmfld));
+			}
+			finally
+			{
+				Computer.Local.UserAccounts.Remove(acct);
 			}
 		}
 

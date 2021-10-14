@@ -74,7 +74,7 @@ namespace Vanara.Diagnostics.Tests
 			{
 				cl.Properties[DEVPKEY_DeviceClass_Exclusive] = false;
 				val = cl.Properties[DEVPKEY_DeviceClass_Exclusive];
-				Assert.IsFalse((BOOLEAN)val);
+				Assert.IsFalse((bool)val);
 			}
 			finally
 			{
