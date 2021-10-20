@@ -99,6 +99,19 @@ namespace Vanara.PInvoke.Tests
         }
 
         [Test]
+        public void EnumDeviceCmds()
+        {
+            var caps = device.Capabilities();
+
+            foreach (var cmd in caps.GetSupportedCommands().Enumerate())
+            {
+                TestContext.WriteLine(GetPI(cmd, "WPD_COMMAND_")?.Name ?? cmd.ToString());
+                foreach (var opt in caps.GetCommandOptions(cmd).Enumerate())
+                    TestContext.WriteLine($"  {(GetPI(opt.Item1, "WPD_OPTION_")?.Name ?? opt.Item1.ToString())} = {opt.Item2.Value}");
+            }
+        }
+
+        [Test]
         public void EnumDeviceEvents()
         {
             var caps = device.Capabilities();
@@ -136,7 +149,7 @@ namespace Vanara.PInvoke.Tests
 
             //  Some device drivers need to impersonate the caller in order to function correctly.  Since our application does not
             //  need to restrict its identity, specify SECURITY_IMPERSONATION so that we work with all devices.
-            clientInformation.SetUnsignedIntegerValue(WPD_CLIENT_SECURITY_QUALITY_OF_SERVICE, 2 << 16 /*SECURITY_IMPERSONATION*/);
+            clientInformation.SetUnsignedIntegerValue(WPD_CLIENT_SECURITY_QUALITY_OF_SERVICE, (uint)FileFlagsAndAttributes.SECURITY_IMPERSONATION);
 
             return clientInformation;
         }
