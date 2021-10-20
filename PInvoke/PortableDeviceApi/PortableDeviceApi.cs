@@ -2,6 +2,8 @@ using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke
@@ -10,6 +12,10 @@ namespace Vanara.PInvoke
     public static partial class PortableDeviceApi
     {
         private const string Lib_PortableDeviceApi = "PortableDeviceApi.dll";
+
+        private delegate HRESULT PDMStrArrGet(string[] arr, ref uint cnt);
+
+        private delegate HRESULT PDMStrGet(string devId, StringBuilder str, ref uint sz);
 
         /// <summary>
         /// The <c>IEnumPortableDeviceObjectIDs</c> interface enumerates the objects on a portable device. Get this interface initially by
@@ -103,10 +109,7 @@ namespace Vanara.PInvoke
             /// <para>The <c>Clone</c> method duplicates the current <c>IEnumPortableDeviceObjectIDs</c> interface.</para>
             /// <para><c>Not implemented in this release.</c></para>
             /// </summary>
-            /// <returns>
-            /// Address of a variable that receives a pointer to an enumeration interface. The caller must release this interface when it is
-            /// finished with the interface.
-            /// </returns>
+            /// <returns>An enumeration interface. The caller must release this interface when it is finished with the interface.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-ienumportabledeviceobjectids-clone
             // HRESULT Clone( [out] IEnumPortableDeviceObjectIDs **ppEnum );
             IEnumPortableDeviceObjectIDs Clone();
@@ -152,8 +155,7 @@ namespace Vanara.PInvoke
         {
             /// <summary>The <c>Open</c> method opens a connection between the application and the device.</summary>
             /// <param name="pszPnPDeviceID">
-            /// A pointer to a null-terminated string that contains the Plug and Play ID string for the device. You can get this string by
-            /// calling IPortableDeviceManager::GetDevices.
+            /// A pointer to a that contains the Plug and Play ID string for the device. You can get this string by calling IPortableDeviceManager::GetDevices.
             /// </param>
             /// <param name="pClientInfo">
             /// <para>
@@ -222,10 +224,9 @@ namespace Vanara.PInvoke
             /// </list>
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceValues interface that indicates the results of the
-            /// command results, including success or failure, and any command values returned by the device. The caller must release this
-            /// interface when it is done with it. The retrieved values vary by command; see the appropriate command documentation in
-            /// Commands to learn what values are returned by each command call.
+            /// An IPortableDeviceValues interface that indicates the results of the command results, including success or failure, and any
+            /// command values returned by the device. The caller must release this interface when it is done with it. The retrieved values
+            /// vary by command; see the appropriate command documentation in Commands to learn what values are returned by each command call.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -294,8 +295,8 @@ namespace Vanara.PInvoke
 
             /// <summary>The <c>Content</c> method retrieves an interface that you can use to access objects on a device.</summary>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceContent interface that is used to access the content on a
-            /// device. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceContent interface that is used to access the content on a device. The caller must release this interface
+            /// when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevice-content HRESULT
             // Content( [out] IPortableDeviceContent **ppContent );
@@ -303,8 +304,8 @@ namespace Vanara.PInvoke
 
             /// <summary>The <c>Capabilities</c> method retrieves an interface used to query the capabilities of a portable device.</summary>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceCapabilities interface that can describe the device's
-            /// capabilities. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceCapabilities interface that can describe the device's capabilities. The caller must release this interface
+            /// when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevice-capabilities
             // HRESULT Capabilities( [out] IPortableDeviceCapabilities **ppCapabilities );
@@ -355,9 +356,7 @@ namespace Vanara.PInvoke
             /// The <c>Unadvise</c> method unregisters a client from receiving callback notifications. You must call this method if you
             /// called Advise previously.
             /// </summary>
-            /// <param name="pszCookie">
-            /// Pointer to a null-terminated string that is a unique context ID. This was retrieved in the initial call to IPortableDevice::Advise.
-            /// </param>
+            /// <param name="pszCookie">A unique context ID. This was retrieved in the initial call to IPortableDevice::Advise.</param>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevice-unadvise HRESULT
             // Unadvise( [in] LPCWSTR pszCookie );
             void Unadvise([In, MarshalAs(UnmanagedType.LPWStr)] string pszCookie);
@@ -365,7 +364,7 @@ namespace Vanara.PInvoke
             /// <summary>
             /// The <c>GetPnPDeviceID</c> method retrieves the Plug and Play (PnP) device identifier that the application used to open the device.
             /// </summary>
-            /// <returns>Pointer to a null-terminated string that contains the Plug and Play ID string for the device.</returns>
+            /// <returns>The Plug and Play ID string for the device.</returns>
             /// <remarks>
             /// <para>
             /// After the application is through using the string returned by this method, it must call the CoTaskMemFree function to free
@@ -390,9 +389,8 @@ namespace Vanara.PInvoke
         {
             /// <summary>The <c>GetSupportedCommands</c> method retrieves a list of all the supported commands for this device.</summary>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceKeyCollection interface that holds all the valid
-            /// commands. For a list of commands that are defined by Windows Portable Devices, see Commands. The caller must release this
-            /// interface when it is done with it.
+            /// An IPortableDeviceKeyCollection interface that holds all the valid commands. For a list of commands that are defined by
+            /// Windows Portable Devices, see Commands. The caller must release this interface when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecapabilities-getsupportedcommands
             // HRESULT GetSupportedCommands( [out] IPortableDeviceKeyCollection **ppCommands );
@@ -404,9 +402,8 @@ namespace Vanara.PInvoke
             /// by Windows Portable Devices, see Commands.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceValues interface that contains the supported options. If
-            /// no options are supported, this will not contain any values. The caller must release this interface when it is done with it.
-            /// For more information, see Remarks.
+            /// An IPortableDeviceValues interface that contains the supported options. If no options are supported, this will not contain
+            /// any values. The caller must release this interface when it is done with it. For more information, see Remarks.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -432,9 +429,9 @@ namespace Vanara.PInvoke
 
             /// <summary>The <c>GetFunctionalCategories</c> method retrieves all functional categories supported by the device.</summary>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDevicePropVariantCollection interface that holds all the
-            /// functional categories for this device. The values will be <c>GUID</c> s of type VT_CLSID in the retrieved <c>PROPVARIANT</c>
-            /// values. The caller must release this interface when it is done with it.
+            /// An IPortableDevicePropVariantCollection interface that holds all the functional categories for this device. The values will
+            /// be <c>GUID</c> s of type VT_CLSID in the retrieved <c>PROPVARIANT</c> values. The caller must release this interface when it
+            /// is done with it.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -453,10 +450,9 @@ namespace Vanara.PInvoke
             /// A <c>REFGUID</c> that specifies the category to search for. This can be WPD_FUNCTIONAL_CATEGORY_ALL to return all functional objects.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDevicePropVariantCollection interface that contains the object
-            /// IDs of the functional objects as strings (type VT_LPWSTR in the retrieved <c>PROPVARIANT</c> items). If no objects of the
-            /// requested type are found, this will be an empty collection (not <c>NULL</c>). The caller must release this interface when it
-            /// is done with it.
+            /// An IPortableDevicePropVariantCollection interface that contains the object IDs of the functional objects as strings (type
+            /// VT_LPWSTR in the retrieved <c>PROPVARIANT</c> items). If no objects of the requested type are found, this will be an empty
+            /// collection (not <c>NULL</c>). The caller must release this interface when it is done with it.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -478,10 +474,10 @@ namespace Vanara.PInvoke
             /// A <c>REFGUID</c> that specifies a functional object category. To get a list of functional categories on the device, call IPortableDeviceCapabilities::GetFunctionalCategories.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDevicePropVariantCollection interface that lists all the
-            /// supported object types for the specified functional object category. These object types will be <c>GUID</c> values of type
-            /// VT_CLSID in the retrieved <c>PROPVARIANT</c> items. See Requirements for Objects for a list of object types defined by
-            /// Windows Portable Devices. The caller must release this interface when it is done with it.
+            /// An IPortableDevicePropVariantCollection interface that lists all the supported object types for the specified functional
+            /// object category. These object types will be <c>GUID</c> values of type VT_CLSID in the retrieved <c>PROPVARIANT</c> items.
+            /// See Requirements for Objects for a list of object types defined by Windows Portable Devices. The caller must release this
+            /// interface when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecapabilities-getsupportedcontenttypes
             // HRESULT GetSupportedContentTypes( [in] REFGUID Category, [out] IPortableDevicePropVariantCollection **ppContentTypes );
@@ -496,10 +492,9 @@ namespace Vanara.PInvoke
             /// by Windows Portable Devices, see Requirements for Objects.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDevicePropVariantCollection interface that lists the supported
-            /// formats for the specified content type. These are GUID values (type VT_CLSID) in the retrieved collection items. For a list
-            /// of formats that are supported by Windows Portable Devices, see Object Formats. The caller must release this interface when
-            /// it is done with it.
+            /// An IPortableDevicePropVariantCollection interface that lists the supported formats for the specified content type. These are
+            /// GUID values (type VT_CLSID) in the retrieved collection items. For a list of formats that are supported by Windows Portable
+            /// Devices, see Object Formats. The caller must release this interface when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecapabilities-getsupportedformats
             // HRESULT GetSupportedFormats( [in] REFGUID ContentType, [out] IPortableDevicePropVariantCollection **ppFormats );
@@ -513,9 +508,9 @@ namespace Vanara.PInvoke
             /// Devices, see Object Formats.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceKeyCollection interface that contains the supported
-            /// properties for the specified format. For a list of properties defined by Windows Portable Devices, see Properties and
-            /// Attributes. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceKeyCollection interface that contains the supported properties for the specified format. For a list of
+            /// properties defined by Windows Portable Devices, see Properties and Attributes. The caller must release this interface when
+            /// it is done with it.
             /// </returns>
             /// <remarks>
             /// <para>You can specify <c>WPD_OBJECT_FORMAT_ALL</c> for the Format parameter to retrieve the complete set of property attributes.</para>
@@ -544,8 +539,8 @@ namespace Vanara.PInvoke
             /// Portable Devices are listed in Properties and Attributes.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceValues interface that holds the attributes and their
-            /// values. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceValues interface that holds the attributes and their values. The caller must release this interface when
+            /// it is done with it.
             /// </returns>
             /// <remarks>
             /// <para>You can specify <c>WPD_OBJECT_FORMAT_ALL</c> for the Format parameter to retrieve the complete set of property attributes.</para>
@@ -569,8 +564,8 @@ namespace Vanara.PInvoke
 
             /// <summary>The <c>GetSupportedEvents</c> method retrieves the supported events for this device.</summary>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDevicePropVariantCollection interface that lists the supported
-            /// events. The caller must release this interface when it is done with it.
+            /// An IPortableDevicePropVariantCollection interface that lists the supported events. The caller must release this interface
+            /// when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecapabilities-getsupportedevents
             // HRESULT GetSupportedEvents( [out] IPortableDevicePropVariantCollection **ppEvents );
@@ -582,8 +577,8 @@ namespace Vanara.PInvoke
             /// Portable Devices, see Events.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceValues interface that contains the supported options. If
-            /// no options are supported, this will not contain any values. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceValues interface that contains the supported options. If no options are supported, this will not contain
+            /// any values. The caller must release this interface when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecapabilities-geteventoptions
             // HRESULT GetEventOptions( [in] REFGUID Event, [out] IPortableDeviceValues **ppOptions );
@@ -605,13 +600,13 @@ namespace Vanara.PInvoke
             /// </summary>
             /// <param name="dwFlags">Currently ignored; specify zero.</param>
             /// <param name="pszParentObjectID">
-            /// Pointer to a null-terminated string that specifies the ID of the parent. This can be an empty string (but not a <c>NULL</c>
+            /// The ID of the parent. This can be an empty string (but not a <c>NULL</c>
             /// pointer) or the defined constant <c>WPD_DEVICE_OBJECT_ID</c> to indicate the device root.
             /// </param>
             /// <param name="pFilter">This parameter is ignored and should be set to <c>NULL</c>.</param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IEnumPortableDeviceObjectIDs interface that is used to enumerate the
-            /// objects that are found. The caller must release this interface when it is done with it.
+            /// An IEnumPortableDeviceObjectIDs interface that is used to enumerate the objects that are found. The caller must release this
+            /// interface when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecontent-enumobjects
             // HRESULT EnumObjects( [in] const DWORD dwFlags, [in] LPCWSTR pszParentObjectID, [in] IPortableDeviceValues *pFilter, [out]
@@ -623,8 +618,8 @@ namespace Vanara.PInvoke
             /// The <c>Properties</c> method retrieves the interface that is required to get or set properties on an object on the device.
             /// </summary>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceProperties interface that is used to get or set object
-            /// properties. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceProperties interface that is used to get or set object properties. The caller must release this interface
+            /// when it is done with it.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -642,8 +637,8 @@ namespace Vanara.PInvoke
             /// The Transfer method retrieves an interface that is used to read from or write to the content data of an existing object resource.
             /// </summary>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceResources interface that is used to modify an object's
-            /// resources. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceResources interface that is used to modify an object's resources. The caller must release this interface
+            /// when it is done with it.
             /// </returns>
             /// <remarks>
             /// <para>This method is typically used to read from an existing object.</para>
@@ -660,9 +655,9 @@ namespace Vanara.PInvoke
             /// for an object, see Requirements for Objects.
             /// </param>
             /// <returns>
-            /// An optional string pointer to receive the name of the new object. Can be <c>NULL</c>, if not needed. Windows Portable
-            /// Devices defines the constant WPD_DEVICE_OBJECT_ID to represent a device. The SDK allocates this memory; the caller must
-            /// release it using <c>CoTaskMemFree</c>.
+            /// An optional string to receive the name of the new object. Can be <c>NULL</c>, if not needed. Windows Portable Devices
+            /// defines the constant WPD_DEVICE_OBJECT_ID to represent a device. The SDK allocates this memory; the caller must release it
+            /// using <c>CoTaskMemFree</c>.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -692,21 +687,20 @@ namespace Vanara.PInvoke
             /// properties for an object, see Requirements for Objects.
             /// </param>
             /// <param name="ppData">
-            /// Address of a variable that receives a pointer to an <c>IStream</c> interface that the application uses to send the object
-            /// data to the device. The object will not be created on the device until the application sends the data by calling ppData-&gt;
-            /// <c>Commit</c>. To abandon a data transfer in progress, you can call ppData -&gt; <c>Revert</c>. The caller must release this
-            /// interface when it is done with it. The underlying object extends both <c>IStream</c> and IPortableDeviceDataStream.
+            /// An <c>IStream</c> interface that the application uses to send the object data to the device. The object will not be created
+            /// on the device until the application sends the data by calling ppData-&gt; <c>Commit</c>. To abandon a data transfer in
+            /// progress, you can call ppData -&gt; <c>Revert</c>. The caller must release this interface when it is done with it. The
+            /// underlying object extends both <c>IStream</c> and IPortableDeviceDataStream.
             /// </param>
             /// <param name="pdwOptimalWriteBufferSize">
             /// An optional <c>DWORD</c> pointer that specifies the optimal buffer size for the application to use when writing the data to
             /// ppData. The application can specify <c>TRUE</c> to ignore this.
             /// </param>
             /// <returns>
-            /// An optional unique, null-terminated string ID that is used to identify this creation request in the application's
-            /// implementation of IPortableDeviceEventCallback (if implemented). When the device finishes creating the object, it will send
-            /// this identifier to the callback function. This identifier allows an application to monitor object creation in a different
-            /// thread from the one that called CreateObjectWithPropertiesOnly. The SDK allocates this memory, and the caller must release
-            /// it using <c>CoTaskMemFree</c>.
+            /// An optional unique, ID that is used to identify this creation request in the application's implementation of
+            /// IPortableDeviceEventCallback (if implemented). When the device finishes creating the object, it will send this identifier to
+            /// the callback function. This identifier allows an application to monitor object creation in a different thread from the one
+            /// that called CreateObjectWithPropertiesOnly. The SDK allocates this memory, and the caller must release it using <c>CoTaskMemFree</c>.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -805,7 +799,7 @@ namespace Vanara.PInvoke
             /// Pointer to an IPortableDevicePropVariantCollection interface that holds one or more null-terminated strings (type VT_LPWSTR)
             /// specifying the object IDs of the objects to be moved.
             /// </param>
-            /// <param name="pszDestinationFolderObjectID">Pointer to a null-terminated string that specifies the ID of the destination.</param>
+            /// <param name="pszDestinationFolderObjectID">The ID of the destination.</param>
             /// <returns>
             /// Optional. On return, this parameter contains a collection of VT_ERROR values indicating the success or failure of the
             /// operation. The first element returned in ppResults corresponds to the first object in the pObjectIDs collection, the second
@@ -859,13 +853,13 @@ namespace Vanara.PInvoke
             /// </summary>
             /// <param name="dwFlags">Currently ignored; specify zero.</param>
             /// <param name="pszParentObjectID">
-            /// Pointer to a null-terminated string that specifies the ID of the parent. This can be an empty string (but not a <c>NULL</c>
+            /// The ID of the parent. This can be an empty string (but not a <c>NULL</c>
             /// pointer) or the defined constant <c>WPD_DEVICE_OBJECT_ID</c> to indicate the device root.
             /// </param>
             /// <param name="pFilter">This parameter is ignored and should be set to <c>NULL</c>.</param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IEnumPortableDeviceObjectIDs interface that is used to enumerate the
-            /// objects that are found. The caller must release this interface when it is done with it.
+            /// An IEnumPortableDeviceObjectIDs interface that is used to enumerate the objects that are found. The caller must release this
+            /// interface when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecontent-enumobjects
             // HRESULT EnumObjects( [in] const DWORD dwFlags, [in] LPCWSTR pszParentObjectID, [in] IPortableDeviceValues *pFilter, [out]
@@ -877,8 +871,8 @@ namespace Vanara.PInvoke
             /// The <c>Properties</c> method retrieves the interface that is required to get or set properties on an object on the device.
             /// </summary>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceProperties interface that is used to get or set object
-            /// properties. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceProperties interface that is used to get or set object properties. The caller must release this interface
+            /// when it is done with it.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -896,8 +890,8 @@ namespace Vanara.PInvoke
             /// The Transfer method retrieves an interface that is used to read from or write to the content data of an existing object resource.
             /// </summary>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceResources interface that is used to modify an object's
-            /// resources. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceResources interface that is used to modify an object's resources. The caller must release this interface
+            /// when it is done with it.
             /// </returns>
             /// <remarks>
             /// <para>This method is typically used to read from an existing object.</para>
@@ -914,9 +908,9 @@ namespace Vanara.PInvoke
             /// for an object, see Requirements for Objects.
             /// </param>
             /// <returns>
-            /// An optional string pointer to receive the name of the new object. Can be <c>NULL</c>, if not needed. Windows Portable
-            /// Devices defines the constant WPD_DEVICE_OBJECT_ID to represent a device. The SDK allocates this memory; the caller must
-            /// release it using <c>CoTaskMemFree</c>.
+            /// An optional string to receive the name of the new object. Can be <c>NULL</c>, if not needed. Windows Portable Devices
+            /// defines the constant WPD_DEVICE_OBJECT_ID to represent a device. The SDK allocates this memory; the caller must release it
+            /// using <c>CoTaskMemFree</c>.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -946,21 +940,20 @@ namespace Vanara.PInvoke
             /// properties for an object, see Requirements for Objects.
             /// </param>
             /// <param name="ppData">
-            /// Address of a variable that receives a pointer to an <c>IStream</c> interface that the application uses to send the object
-            /// data to the device. The object will not be created on the device until the application sends the data by calling ppData-&gt;
-            /// <c>Commit</c>. To abandon a data transfer in progress, you can call ppData -&gt; <c>Revert</c>. The caller must release this
-            /// interface when it is done with it. The underlying object extends both <c>IStream</c> and IPortableDeviceDataStream.
+            /// An <c>IStream</c> interface that the application uses to send the object data to the device. The object will not be created
+            /// on the device until the application sends the data by calling ppData-&gt; <c>Commit</c>. To abandon a data transfer in
+            /// progress, you can call ppData -&gt; <c>Revert</c>. The caller must release this interface when it is done with it. The
+            /// underlying object extends both <c>IStream</c> and IPortableDeviceDataStream.
             /// </param>
             /// <param name="pdwOptimalWriteBufferSize">
             /// An optional <c>DWORD</c> pointer that specifies the optimal buffer size for the application to use when writing the data to
             /// ppData. The application can specify <c>TRUE</c> to ignore this.
             /// </param>
             /// <returns>
-            /// An optional unique, null-terminated string ID that is used to identify this creation request in the application's
-            /// implementation of IPortableDeviceEventCallback (if implemented). When the device finishes creating the object, it will send
-            /// this identifier to the callback function. This identifier allows an application to monitor object creation in a different
-            /// thread from the one that called CreateObjectWithPropertiesOnly. The SDK allocates this memory, and the caller must release
-            /// it using <c>CoTaskMemFree</c>.
+            /// An optional unique, ID that is used to identify this creation request in the application's implementation of
+            /// IPortableDeviceEventCallback (if implemented). When the device finishes creating the object, it will send this identifier to
+            /// the callback function. This identifier allows an application to monitor object creation in a different thread from the one
+            /// that called CreateObjectWithPropertiesOnly. The SDK allocates this memory, and the caller must release it using <c>CoTaskMemFree</c>.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -1059,7 +1052,7 @@ namespace Vanara.PInvoke
             /// Pointer to an IPortableDevicePropVariantCollection interface that holds one or more null-terminated strings (type VT_LPWSTR)
             /// specifying the object IDs of the objects to be moved.
             /// </param>
-            /// <param name="pszDestinationFolderObjectID">Pointer to a null-terminated string that specifies the ID of the destination.</param>
+            /// <param name="pszDestinationFolderObjectID">The ID of the destination.</param>
             /// <returns>
             /// Optional. On return, this parameter contains a collection of VT_ERROR values indicating the success or failure of the
             /// operation. The first element returned in ppResults corresponds to the first object in the pObjectIDs collection, the second
@@ -1280,7 +1273,7 @@ namespace Vanara.PInvoke
         {
             /// <summary>Retrieves a list of portable devices connected to the computer.</summary>
             /// <param name="pPnPDeviceIDs">
-            /// A caller-allocated array of string pointers that holds the Plug and Play names of all of the connected devices. To learn the
+            /// A caller-allocated array of strings that holds the Plug and Play names of all of the connected devices. To learn the
             /// required size for this parameter, first call this method with this parameter set to <c>NULL</c> and pcPnPDeviceIDs set to
             /// zero, and then allocate a buffer according to the value retrieved by pcPnPDeviceIDs. These names can be used by
             /// IPortableDevice::Open to create a connection to a device.
@@ -1306,7 +1299,8 @@ namespace Vanara.PInvoke
             /// </remarks>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicemanager-getdevices
             // HRESULT GetDevices( [in, out] LPWSTR *pPnPDeviceIDs, [in, out] DWORD *pcPnPDeviceIDs );
-            void GetDevices([In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] pPnPDeviceIDs,
+            [PreserveSig]
+            HRESULT GetDevices([In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] pPnPDeviceIDs,
                 ref uint pcPnPDeviceIDs);
 
             /// <summary>The <c>RefreshDeviceList</c> method refreshes the list of devices that are connected to the computer.</summary>
@@ -1329,8 +1323,8 @@ namespace Vanara.PInvoke
 
             /// <summary>Retrieves the user-friendly name for the device.</summary>
             /// <param name="pszPnPDeviceID">
-            /// Pointer to a null-terminated string that contains the device's Plug and Play ID. You can retrieve a list of Plug and Play
-            /// names of all devices that are connected to the computer by calling GetDevices.
+            /// The device's Plug and Play ID. You can retrieve a list of Plug and Play names of all devices that are connected to the
+            /// computer by calling GetDevices.
             /// </param>
             /// <param name="pDeviceFriendlyName">
             /// A caller-allocated buffer that is used to hold the user-friendly name for the device. To learn the required size for this
@@ -1349,16 +1343,14 @@ namespace Vanara.PInvoke
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicemanager-getdevicefriendlyname
             // HRESULT GetDeviceFriendlyName( [in] LPCWSTR pszPnPDeviceID, [in, out] WCHAR *pDeviceFriendlyName, [in, out] DWORD
             // *pcchDeviceFriendlyName );
-            void GetDeviceFriendlyName([In, MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pDeviceFriendlyName,
+            [PreserveSig]
+            HRESULT GetDeviceFriendlyName([In, MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pDeviceFriendlyName,
                 [In, Out] ref uint pcchDeviceFriendlyName);
 
-            /// <summary>
-            /// <para>***BAD FORMATTING - Params***</para>
-            /// Retrieves the description of a device.
-            /// </summary>
+            /// <summary>Retrieves the description of a device.</summary>
             /// <param name="pszPnPDeviceID">
-            /// Pointer to a null-terminated string that contains the device's Plug and Play ID. You can retrieve a list of Plug and Play
-            /// names of devices that are currently connected by calling GetDevices.
+            /// The device's Plug and Play ID. You can retrieve a list of Plug and Play names of devices that are currently connected by
+            /// calling GetDevices.
             /// </param>
             /// <param name="pDeviceDescription">
             /// A caller-allocated buffer to hold the user-description name of the device. The caller must allocate the memory for this
@@ -1373,13 +1365,14 @@ namespace Vanara.PInvoke
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicemanager-getdevicedescription
             // HRESULT GetDeviceDescription( [in] LPCWSTR pszPnPDeviceID, [in, out] WCHAR *pDeviceDescription, [in, out] DWORD
             // *pcchDeviceDescription );
-            void GetDeviceDescription([In, MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pDeviceDescription,
+            [PreserveSig]
+            HRESULT GetDeviceDescription([In, MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pDeviceDescription,
                 [In, Out] ref uint pcchDeviceDescription);
 
             /// <summary>Retrieves the name of the device manufacturer.</summary>
             /// <param name="pszPnPDeviceID">
-            /// Pointer to a null-terminated string that contains the device's Plug and Play ID. You can retrieve a list of Plug and Play
-            /// names of all devices that are connected to the computer by calling GetDevices.
+            /// The device's Plug and Play ID. You can retrieve a list of Plug and Play names of all devices that are connected to the
+            /// computer by calling GetDevices.
             /// </param>
             /// <param name="pDeviceManufacturer">
             /// A caller-allocated buffer that holds the name of the device manufacturer. To learn the required size for this parameter,
@@ -1394,7 +1387,8 @@ namespace Vanara.PInvoke
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicemanager-getdevicemanufacturer
             // HRESULT GetDeviceManufacturer( [in] LPCWSTR pszPnPDeviceID, [in, out] WCHAR *pDeviceManufacturer, [in, out] DWORD
             // *pcchDeviceManufacturer );
-            void GetDeviceManufacturer([In, MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pDeviceManufacturer,
+            [PreserveSig]
+            HRESULT GetDeviceManufacturer([In, MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pDeviceManufacturer,
                 [In, Out] ref uint pcchDeviceManufacturer);
 
             /// <summary>
@@ -1402,12 +1396,11 @@ namespace Vanara.PInvoke
             /// Windows Portable Devices.)
             /// </summary>
             /// <param name="pszPnPDeviceID">
-            /// Pointer to a null-terminated string that contains the device's Plug and Play ID. You can retrieve a list of Plug and Play
-            /// names of all devices that are connected to the computer by calling GetDevices.
+            /// The device's Plug and Play ID. You can retrieve a list of Plug and Play names of all devices that are connected to the
+            /// computer by calling GetDevices.
             /// </param>
             /// <param name="pszDevicePropertyName">
-            /// Pointer to a null-terminated string that contains the name of the property to request. These are custom property names
-            /// defined by a device manufacturer.
+            /// The name of the property to request. These are custom property names defined by a device manufacturer.
             /// </param>
             /// <param name="pData">
             /// A caller-allocated buffer to hold the retrieved data. To get the size required, call this method with this parameter set to
@@ -1433,15 +1426,16 @@ namespace Vanara.PInvoke
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicemanager-getdeviceproperty
             // HRESULT GetDeviceProperty( [in] LPCWSTR pszPnPDeviceID, [in] LPCWSTR pszDevicePropertyName, [in, out] BYTE *pData, [in, out]
             // DWORD *pcbData, [in, out] DWORD *pdwType );
-            void GetDeviceProperty([MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, [MarshalAs(UnmanagedType.LPWStr)] string pszDevicePropertyName,
-                [In, Out] IntPtr pData, ref uint pcbData, ref REG_VALUE_TYPE pdwType);
+            [PreserveSig]
+            HRESULT GetDeviceProperty([MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, [MarshalAs(UnmanagedType.LPWStr)] string pszDevicePropertyName,
+                [In, Out] IntPtr pData, ref uint pcbData, out REG_VALUE_TYPE pdwType);
 
             /// <summary>
             /// The <c>GetPrivateDevices</c> method retrieves a list of private portable devices connected to the computer. These private
             /// devices are only accessible through an application that is designed for these particular devices.
             /// </summary>
             /// <param name="pPnPDeviceIDs">
-            /// A caller-allocated array of string pointers that holds the Plug and Play names of all of the connected devices. To learn the
+            /// A caller-allocated array of strings that holds the Plug and Play names of all of the connected devices. To learn the
             /// required size for this parameter, first call this method with this parameter set to <c>NULL</c> and pcPnPDeviceIDs set to
             /// zero, and then allocate a buffer according to the value retrieved by pcPnPDeviceIDs. These names can be used by
             /// IPortableDevice::Open to create a connection to a device.
@@ -1470,7 +1464,8 @@ namespace Vanara.PInvoke
             /// </remarks>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicemanager-getprivatedevices
             // HRESULT GetPrivateDevices( [in, out] LPWSTR *pPnPDeviceIDs, [in, out] DWORD *pcPnPDeviceIDs );
-            void GetPrivateDevices([In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] pPnPDeviceIDs, ref uint pcPnPDeviceIDs);
+            [PreserveSig]
+            HRESULT GetPrivateDevices([In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] pPnPDeviceIDs, ref uint pcPnPDeviceIDs);
         }
 
         /// <summary>
@@ -1487,13 +1482,10 @@ namespace Vanara.PInvoke
             /// The <c>GetSupportedProperties</c> method retrieves a list of properties that a specified object supports. Note that not all
             /// of these properties may actually have values.
             /// </summary>
-            /// <param name="pszObjectID">
-            /// Pointer to a null-terminated string that contains the object ID of the object to query. To specify the device, use <c>WPD_DEVICE_OBJECT_ID</c>.
-            /// </param>
+            /// <param name="pszObjectID">The object ID of the object to query. To specify the device, use <c>WPD_DEVICE_OBJECT_ID</c>.</param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceKeyCollection interface that contains the supported
-            /// properties. For a list of properties defined by Windows Portable Devices, see Properties and Attributes. The caller must
-            /// release this interface when it is done with it.
+            /// An IPortableDeviceKeyCollection interface that contains the supported properties. For a list of properties defined by
+            /// Windows Portable Devices, see Properties and Attributes. The caller must release this interface when it is done with it.
             /// </returns>
             /// <remarks>To get the values of supported properties, call <c>GetPropertyAttributes</c>.</remarks>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledeviceproperties-getsupportedproperties
@@ -1501,18 +1493,16 @@ namespace Vanara.PInvoke
             IPortableDeviceKeyCollection GetSupportedProperties([MarshalAs(UnmanagedType.LPWStr)] string pszObjectID);
 
             /// <summary>The <c>GetPropertyAttributes</c> method retrieves attributes of a specified object property on a device.</summary>
-            /// <param name="pszObjectID">
-            /// Pointer to a null-terminated string that contains the object ID of the object to query. To specify the device, use <c>WPD_DEVICE_OBJECT_ID</c>.
-            /// </param>
+            /// <param name="pszObjectID">The object ID of the object to query. To specify the device, use <c>WPD_DEVICE_OBJECT_ID</c>.</param>
             /// <param name="Key">
             /// A <c>REFPROPERTYKEY</c> that specifies the property to query for. You can retrieve a list of supported properties by calling
             /// GetSupportedProperties. For a list of properties that are defined by Windows Portable Devices, see Properties and Attributes.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceValues interface that holds the retrieved property
-            /// attributes. These are PROPERTYKEY/value pairs, where the <c>PROPERTYKEY</c> is the property, and the value data type depends
-            /// on the specific property. The caller must release this interface when it is done with it. Attributes defined by Windows
-            /// Portable Devices can be found on the Properties and Attributes page.
+            /// An IPortableDeviceValues interface that holds the retrieved property attributes. These are PROPERTYKEY/value pairs, where
+            /// the <c>PROPERTYKEY</c> is the property, and the value data type depends on the specific property. The caller must release
+            /// this interface when it is done with it. Attributes defined by Windows Portable Devices can be found on the Properties and
+            /// Attributes page.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -1528,35 +1518,30 @@ namespace Vanara.PInvoke
             IPortableDeviceValues GetPropertyAttributes([MarshalAs(UnmanagedType.LPWStr)] string pszObjectID, in PROPERTYKEY Key);
 
             /// <summary>The <c>GetValues</c> method retrieves a list of specified properties from a specified object on a device.</summary>
-            /// <param name="pszObjectID">
-            /// Pointer to a null-terminated string that contains the ID of the object to query. To specify the device, use WPD_DEVICE_OBJECT_ID.
-            /// </param>
+            /// <param name="pszObjectID">The ID of the object to query. To specify the device, use WPD_DEVICE_OBJECT_ID.</param>
             /// <param name="pKeys">
             /// Pointer to an IPortableDeviceKeyCollection interface that contains one or more properties to query for. If this is
             /// <c>NULL</c>, all properties will be retrieved. See Properties and Attributes for a list of properties that are defined by
             /// Windows Portable Devices.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceValues interface that contains the requested property
-            /// values. These will be returned as PROPERTYKEY/value pairs, where the data type of the value depends on the property. If a
-            /// value could not be retrieved for some reason, the returned type will be VT_ERROR, and contain an HRESULT value describing
-            /// the retrieval error. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceValues interface that contains the requested property values. These will be returned as PROPERTYKEY/value
+            /// pairs, where the data type of the value depends on the property. If a value could not be retrieved for some reason, the
+            /// returned type will be VT_ERROR, and contain an HRESULT value describing the retrieval error. The caller must release this
+            /// interface when it is done with it.
             /// </returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledeviceproperties-getvalues
             // HRESULT GetValues( [in] LPCWSTR pszObjectID, [in] IPortableDeviceKeyCollection *pKeys, [out] IPortableDeviceValues **ppValues );
             IPortableDeviceValues GetValues([MarshalAs(UnmanagedType.LPWStr)] string pszObjectID, IPortableDeviceKeyCollection pKeys);
 
             /// <summary>The <c>SetValues</c> method adds or modifies one or more properties on a specified object on a device.</summary>
-            /// <param name="pszObjectID">
-            /// Pointer to a null-terminated string that contains the object ID of the object to modify. To specify the device, use WPD_DEVICE_OBJECT_ID.
-            /// </param>
+            /// <param name="pszObjectID">The object ID of the object to modify. To specify the device, use WPD_DEVICE_OBJECT_ID.</param>
             /// <param name="pValues">
             /// Pointer to an IPortableDeviceValues interface that contains one or more property/value pairs to set. Existing values will be overwritten.
             /// </param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an <c>IPortableDeviceValues</c> interface that contains a collection of
-            /// property/HRESULT values. Each value (type VT_ERROR) describes the success or failure of the property set attempt. The caller
-            /// must release this interface when it is done with it.
+            /// An <c>IPortableDeviceValues</c> interface that contains a collection of property/HRESULT values. Each value (type VT_ERROR)
+            /// describes the success or failure of the property set attempt. The caller must release this interface when it is done with it.
             /// </returns>
             /// <remarks>
             /// <para>
@@ -1571,10 +1556,7 @@ namespace Vanara.PInvoke
             IPortableDeviceValues SetValues([MarshalAs(UnmanagedType.LPWStr)] string pszObjectID, IPortableDeviceValues pValues);
 
             /// <summary>The <c>Delete</c> method deletes specified properties from a specified object on a device.</summary>
-            /// <param name="pszObjectID">
-            /// Pointer to a null-terminated string that specifies the ID of the object whose properties you will delete. To specify the
-            /// device, use <c>WPD_DEVICE_OBJECT_ID</c>.
-            /// </param>
+            /// <param name="pszObjectID">The ID of the object whose properties you will delete. To specify the device, use <c>WPD_DEVICE_OBJECT_ID</c>.</param>
             /// <param name="pKeys">
             /// Pointer to an IPortableDeviceKeyCollection interface that specifies which properties to delete. For a list of properties
             /// defined by Windows Portable Devices, see Properties and Attributes.
@@ -1662,8 +1644,7 @@ namespace Vanara.PInvoke
             /// Pointer to a <c>GUID</c> that specifies the object format. Only objects of this type are queried.
             /// </param>
             /// <param name="pszParentObjectID">
-            /// Pointer to a null-terminated string that contains the object ID of the parent object where the search should begin. To
-            /// search all the objects on a device, specify <c>WPD_DEVICE_OBJECT_ID</c>.
+            /// The object ID of the parent object where the search should begin. To search all the objects on a device, specify <c>WPD_DEVICE_OBJECT_ID</c>.
             /// </param>
             /// <param name="dwDepth">
             /// The maximum depth to search below the parent, where 1 means immediate children only. It is acceptable for this number to be
@@ -1881,11 +1862,11 @@ namespace Vanara.PInvoke
         public interface IPortableDeviceResources
         {
             /// <summary>The <c>GetSupportedResources</c> method retrieves a list of resources that are supported by a specific object.</summary>
-            /// <param name="pszObjectID">Pointer to a null-terminated string that contains the ID of the object.</param>
+            /// <param name="pszObjectID">The ID of the object.</param>
             /// <returns>
-            /// Address of a variable that receives a pointer to an IPortableDeviceKeyCollection interface that holds a collection of
-            /// <c>PROPERTYKEY</c> values specifying resource types supported by this object type. If the object cannot hold resources, this
-            /// will be an empty collection. The caller must release this interface when it is done with it.
+            /// An IPortableDeviceKeyCollection interface that holds a collection of <c>PROPERTYKEY</c> values specifying resource types
+            /// supported by this object type. If the object cannot hold resources, this will be an empty collection. The caller must
+            /// release this interface when it is done with it.
             /// </returns>
             /// <remarks>
             /// The list of resources returned by this method includes all resources that the object can support. This does not mean that
@@ -1896,7 +1877,7 @@ namespace Vanara.PInvoke
             IPortableDeviceKeyCollection GetSupportedResources([MarshalAs(UnmanagedType.LPWStr)] string pszObjectID);
 
             /// <summary>The <c>GetResourceAttributes</c> method retrieves all attributes from a specified resource in an object.</summary>
-            /// <param name="pszObjectID">Pointer to a null-terminated string that contains the object ID of the object hosting the resource.</param>
+            /// <param name="pszObjectID">The object ID of the object hosting the resource.</param>
             /// <param name="Key">A <c>REFPROPERTYKEY</c> that specifies which resource to query.</param>
             /// <returns>
             /// Pointer to an IPortableDeviceValues interface pointer that holds <c>PROPERTYKEY</c>/ <c>PROPVARIANT</c> pairs that describe
@@ -1918,7 +1899,7 @@ namespace Vanara.PInvoke
             /// The <c>GetStream</c> method gets an <c>IStream</c> interface with which to read or write the content data in an object on a
             /// device. The retrieved interface enables you to read from or write to the object data.
             /// </summary>
-            /// <param name="pszObjectID">Pointer to a null-terminated string that contains the object ID of the object.</param>
+            /// <param name="pszObjectID">The object ID of the object.</param>
             /// <param name="Key">
             /// A <c>REFPROPERTYKEY</c> that specifies which resource to read. You can retrieve the keys of all the object's resources by
             /// calling GetSupportedResources.
@@ -1961,7 +1942,7 @@ namespace Vanara.PInvoke
             IStream GetStream([MarshalAs(UnmanagedType.LPWStr)] string pszObjectID, in PROPERTYKEY Key, STGM dwMode, out uint pdwOptimalBufferSize);
 
             /// <summary>The <c>Delete</c> method deletes one or more resources from the object identified by the pszObjectID parameter.</summary>
-            /// <param name="pszObjectID">Pointer to a null-terminated string that contains the object ID of the object.</param>
+            /// <param name="pszObjectID">The object ID of the object.</param>
             /// <param name="pKeys">
             /// Pointer to an IPortableDeviceKeyCollection interface that lists which resources to delete. You can find out what resources
             /// the object has by calling GetSupportedResources.
@@ -2586,17 +2567,126 @@ namespace Vanara.PInvoke
             HRESULT OnComplete(HRESULT hrStatus);
         }
 
+        /// <summary>Retrieves the description of a device.</summary>
+        /// <param name="manager">The <see cref="IPortableDeviceManager"/> instance used to get the name.</param>
+        /// <param name="pszPnPDeviceID">The device's Plug and Play ID.</param>
+        /// <returns>The user-description name of the device.</returns>
+        public static string GetDeviceDescription(this IPortableDeviceManager manager, string pszPnPDeviceID) => PDMGetString(manager.GetDeviceDescription, pszPnPDeviceID);
+
+        /// <summary>Retrieves the user-friendly name for the device.</summary>
+        /// <param name="manager">The <see cref="IPortableDeviceManager"/> instance used to get the name.</param>
+        /// <param name="pszPnPDeviceID">The device's Plug and Play ID.</param>
+        /// <returns>The user-friendly name for the device.</returns>
+        /// <remarks>
+        /// A device is not required to support this method. If this method fails to retrieve a name, try requesting the WPD_OBJECT_NAME
+        /// property of the device object (the object with the ID WPD_DEVICE_OBJECT_ID).
+        /// </remarks>
+        public static string GetDeviceFriendlyName(this IPortableDeviceManager manager, string pszPnPDeviceID) => PDMGetString(manager.GetDeviceFriendlyName, pszPnPDeviceID);
+
+        /// <summary>Retrieves the name of the device manufacturer.</summary>
+        /// <param name="manager">The <see cref="IPortableDeviceManager"/> instance used to get the name.</param>
+        /// <param name="pszPnPDeviceID">The device's Plug and Play ID.</param>
+        /// <returns>The name of the device manufacturer.</returns>
+        public static string GetDeviceManufacturer(this IPortableDeviceManager manager, string pszPnPDeviceID) => PDMGetString(manager.GetDeviceManufacturer, pszPnPDeviceID);
+
+        /// <summary>
+        /// Retrieves a property value stored by the device on the computer. (These are not standard properties that are defined by Windows
+        /// Portable Devices.)
+        /// </summary>
+        /// <typeparam name="T">The type of the value to return.</typeparam>
+        /// <param name="manager">The <see cref="IPortableDeviceManager"/> instance used to get the device property.</param>
+        /// <param name="pszPnPDeviceID">
+        /// The device's Plug and Play ID. You can retrieve a list of Plug and Play names of all devices that are connected to the computer
+        /// by calling GetDevices.
+        /// </param>
+        /// <param name="pszDevicePropertyName">
+        /// The name of the property to request. These are custom property names defined by a device manufacturer.
+        /// </param>
+        /// <returns>The retrieved data. This call will also return an error that can be ignored. See Return Values.</returns>
+        /// <remarks>
+        /// <para>
+        /// These property values are stored on device installation, or stored by a device during operation so that they can be persisted
+        /// across connection sessions. An application must know the exact name of the property, which is specified by the device itself;
+        /// therefore, this method is intended to be used by device developers who are creating their own applications.
+        /// </para>
+        /// <para>
+        /// To get Windows Portable Devices properties from the device object, call IPortableDeviceProperties::GetValues, and specify the
+        /// device object with <c>WPD_DEVICE_OBJECT_ID</c>.
+        /// </para>
+        /// </remarks>
+        // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicemanager-getdeviceproperty
+        // HRESULT GetDeviceProperty( [in] LPCWSTR pszPnPDeviceID, [in] LPCWSTR pszDevicePropertyName, [in, out] BYTE *pData, [in, out]
+        // DWORD *pcbData, [in, out] DWORD *pdwType );
+        public static T GetDeviceProperty<T>(this IPortableDeviceManager manager, string pszPnPDeviceID, string pszDevicePropertyName)
+        {
+            var sz = 0U;
+            manager.GetDeviceProperty(pszPnPDeviceID, pszDevicePropertyName, default, ref sz, out _);
+            if (sz == 0)
+                return default;
+            using var mem = new SafeCoTaskMemHandle(sz);
+            manager.GetDeviceProperty(pszPnPDeviceID, pszDevicePropertyName, mem, ref sz, out var type);
+            return (T)type.GetValue(mem, mem.Size);
+        }
+
+        /// <summary>Retrieves a list of portable devices connected to the computer.</summary>
+        /// <param name="manager">The <see cref="IPortableDeviceManager"/> instance used to get the list of devices.</param>
+        /// <param name="forceRefresh">
+        /// If set to <see langword="true"/>, calls <see cref="IPortableDeviceManager.RefreshDeviceList"/> before retrieving the name;
+        /// otherwise the device names will represent those available then the <see cref="IPortableDeviceManager"/> instance was created.
+        /// </param>
+        /// <returns>
+        /// An array of strings that holds the Plug and Play names of all of the connected devices. These names can be used by
+        /// IPortableDevice::Open to create a connection to a device.
+        /// </returns>
+        public static string[] GetDevices(this IPortableDeviceManager manager, bool forceRefresh = false)
+        {
+            if (forceRefresh)
+                manager.RefreshDeviceList();
+            return PDMGetStrings(manager.GetDevices);
+        }
+
+        /// <summary>
+        /// Retrieves a list of private portable devices connected to the computer. These private devices are only accessible through an
+        /// application that is designed for these particular devices.
+        /// </summary>
+        /// <param name="manager">The <see cref="IPortableDeviceManager"/> instance used to get the list of devices.</param>
+        /// <returns>
+        /// An array of strings that holds the Plug and Play names of all of the connected devices. These names can be used by
+        /// IPortableDevice::Open to create a connection to a device.
+        /// </returns>
+        public static string[] GetPrivateDevices(this IPortableDeviceManager manager) => PDMGetStrings(manager.GetPrivateDevices);
+
+        private static string PDMGetString(PDMStrGet func, string devId)
+        {
+            var cnt = 0U;
+            var hr = func(devId, null, ref cnt);
+            if (cnt == 0)
+                return string.Empty;
+            if (hr.Failed && hr != HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_INSUFFICIENT_BUFFER))
+                throw hr.GetException();
+            var sb = new StringBuilder((int)cnt + 1);
+            if (cnt > 0)
+                func(devId, sb, ref cnt).ThrowIfFailed();
+            return sb.ToString();
+        }
+
+        private static string[] PDMGetStrings(PDMStrArrGet func)
+        {
+            var cnt = 0U;
+            var hr = func(null, ref cnt);
+            if (cnt == 0)
+                return new string[0];
+            if (hr.Failed && hr != HRESULT.HRESULT_FROM_WIN32(Win32Error.ERROR_INSUFFICIENT_BUFFER))
+                throw hr.GetException();
+            var devices = new string[cnt];
+            if (cnt > 0)
+                func(devices, ref cnt).ThrowIfFailed();
+            return devices;
+        }
+
         /// <summary>PortableDevice Class</summary>
         [ComImport, Guid("728a21c5-3d9e-48d7-9810-864848f0f404"), ClassInterface(ClassInterfaceType.None)]
         public class PortableDevice { }
-
-        /// <summary>PortableDeviceManager Class</summary>
-        [ComImport, Guid("0af10cec-2ecd-4b92-9581-34f6ae0637f3"), ClassInterface(ClassInterfaceType.None)]
-        public class PortableDeviceManager { }
-
-        /// <summary>PortableDeviceService Class</summary>
-        [ComImport, Guid("ef5db4c2-9312-422c-9152-411cd9c4dd84"), ClassInterface(ClassInterfaceType.None)]
-        public class PortableDeviceService { }
 
         /// <summary>PortableDeviceDispatchFactory Class</summary>
         [ComImport, Guid("43232233-8338-4658-ae01-0b4ae830b6b0"), ClassInterface(ClassInterfaceType.None)]
@@ -2605,6 +2695,14 @@ namespace Vanara.PInvoke
         /// <summary>PortableDeviceFTM Class</summary>
         [ComImport, Guid("f7c0039a-4762-488a-b4b3-760ef9a1ba9b"), ClassInterface(ClassInterfaceType.None)]
         public class PortableDeviceFTM { }
+
+        /// <summary>PortableDeviceManager Class</summary>
+        [ComImport, Guid("0af10cec-2ecd-4b92-9581-34f6ae0637f3"), ClassInterface(ClassInterfaceType.None)]
+        public class PortableDeviceManager { }
+
+        /// <summary>PortableDeviceService Class</summary>
+        [ComImport, Guid("ef5db4c2-9312-422c-9152-411cd9c4dd84"), ClassInterface(ClassInterfaceType.None)]
+        public class PortableDeviceService { }
 
         /// <summary>PortableDeviceServiceFTM Class</summary>
         [ComImport, Guid("1649b154-c794-497a-9b03-f3f0121302f3"), ClassInterface(ClassInterfaceType.None)]
