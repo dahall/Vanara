@@ -1238,7 +1238,7 @@ namespace Vanara.PInvoke
         public static PROPERTYKEY WPD_CLIENT_WMDRM_APPLICATION_CERTIFICATE => new(new(0x204D9F0C, 0x2292, 0x4080, 0x9F, 0x42, 0x40, 0x66, 0x4E, 0x70, 0xF8, 0x59), 7);
 
         /// <summary>[ VT_UI4 ] Specifies the Security Quality of Service for the connection to the driver. This relates to the Security Quality of Service flags for CreateFile. For example, these allow or disallow a driver to impersonate the client.</summary>
-        [CorrespondingType(typeof(uint))]
+        [CorrespondingType(typeof(FileFlagsAndAttributes))]
         public static PROPERTYKEY WPD_CLIENT_SECURITY_QUALITY_OF_SERVICE => new(new(0x204D9F0C, 0x2292, 0x4080, 0x9F, 0x42, 0x40, 0x66, 0x4E, 0x70, 0xF8, 0x59), 8);
 
         /// <summary>[ VT_UI4 ] Specifies the desired access the client is requesting to this driver. The possible values are the same as for CreateFile (e.g. GENERIC_READ, GENERIC_WRITE etc.).</summary>
