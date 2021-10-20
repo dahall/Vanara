@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.PortableDeviceApi</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\PortableDeviceApi\Vanara.PInvoke.PortableDeviceApi.csproj" />
+  </ItemGroup>
+</Project>

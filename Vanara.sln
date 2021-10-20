@@ -327,9 +327,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.FhSvcCtl", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FhSvcCtl", "UnitTests\PInvoke\FhSvcCtl\FhSvcCtl.csproj", "{089EA815-567E-4430-BEB4-4E18FD0B1473}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.EnhancedStorage", "PInvoke\EnhancedStorage\Vanara.PInvoke.EnhancedStorage.csproj", "{1D842CC7-BECA-4011-A7FB-98773CFF8CD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.EnhancedStorage", "PInvoke\EnhancedStorage\Vanara.PInvoke.EnhancedStorage.csproj", "{1D842CC7-BECA-4011-A7FB-98773CFF8CD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.PortableDeviceApi", "PInvoke\PortableDeviceApi\Vanara.PInvoke.PortableDeviceApi.csproj", "{7DA64CE7-F149-46CD-AC2A-AA8DBA1CDB39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.PortableDeviceApi", "PInvoke\PortableDeviceApi\Vanara.PInvoke.PortableDeviceApi.csproj", "{7DA64CE7-F149-46CD-AC2A-AA8DBA1CDB39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableDeviceApi", "UnitTests\PInvoke\PortableDeviceApi\PortableDeviceApi.csproj", "{0E4D9AB7-1881-49F6-B307-D1681A0703FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedStorage", "UnitTests\PInvoke\EnhancedStorage\EnhancedStorage.csproj", "{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1088,6 +1092,14 @@ Global
 		{7DA64CE7-F149-46CD-AC2A-AA8DBA1CDB39}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{7DA64CE7-F149-46CD-AC2A-AA8DBA1CDB39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DA64CE7-F149-46CD-AC2A-AA8DBA1CDB39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4D9AB7-1881-49F6-B307-D1681A0703FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4D9AB7-1881-49F6-B307-D1681A0703FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4D9AB7-1881-49F6-B307-D1681A0703FD}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4D9AB7-1881-49F6-B307-D1681A0703FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1235,6 +1247,8 @@ Global
 		{089EA815-567E-4430-BEB4-4E18FD0B1473} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{1D842CC7-BECA-4011-A7FB-98773CFF8CD0} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{7DA64CE7-F149-46CD-AC2A-AA8DBA1CDB39} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{0E4D9AB7-1881-49F6-B307-D1681A0703FD} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
+		{A205BA61-E2C4-41C5-B7CE-9EB5940C7076} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
