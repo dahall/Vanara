@@ -10,6 +10,30 @@ namespace Vanara.PInvoke
     public static partial class PortableDeviceApi
     {
         /// <summary>
+        /// The <c>WPD_STREAM_UNITS</c> enumeration specifies the unit types to be used for <c>IPortableDeviceUnitsStream</c> operations.
+        /// </summary>
+        // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/wpd-stream-units typedef enum _WPD_STREAM_UNITS { WPD_STREAM_UNITS_BYTES =
+        // 0, WPD_STREAM_UNITS_FRAMES = 1, WPD_STREAM_UNITS_ROWS = 2, WPD_STREAM_UNITS_MILLISECONDS = 3, WPD_STREAM_UNITS_MICROSECONDS = 4 } WPD_STREAM_UNITS;
+        [PInvokeData("portabldevicetypes.h")]
+        public enum WPD_STREAM_UNITS
+        {
+            /// <summary>The stream units are specified in bytes.</summary>
+            WPD_STREAM_UNITS_BYTES = 0,
+
+            /// <summary>The stream units are specified in frames.</summary>
+            WPD_STREAM_UNITS_FRAMES = 1,
+
+            /// <summary>The stream units are specified in rows.</summary>
+            WPD_STREAM_UNITS_ROWS = 2,
+
+            /// <summary>The stream units are specified in milliseconds.</summary>
+            WPD_STREAM_UNITS_MILLISECONDS = 4,
+
+            /// <summary>The stream units are specified in microseconds.</summary>
+            WPD_STREAM_UNITS_MICROSECONDS = 8,
+        }
+
+        /// <summary>
         /// The <c>IPortableDeviceKeyCollection</c> interface holds a collection of <c>PROPERTYKEY</c> values. This interface can be
         /// retrieved from a method or, if a new object is required, call <c>CoCreate</c> with <c>CLSID_PortableDeviceKeyCollection</c>.
         /// </summary>
@@ -19,14 +43,14 @@ namespace Vanara.PInvoke
         public interface IPortableDeviceKeyCollection
         {
             /// <summary>The <c>GetCount</c> method retrieves the number of keys in this collection.</summary>
-            /// <returns>Pointer to a <c>DWORD</c> that contains the number of keys in the collection.</returns>
+            /// <returns>A <c>DWORD</c> that contains the number of keys in the collection.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicekeycollection-getcount HRESULT GetCount( [in] DWORD
             // *pcElems );
             uint GetCount();
 
             /// <summary>The <c>GetAt</c> method retrieves a <c>PROPERTYKEY</c> from the collection by index.</summary>
             /// <param name="dwIndex"><c>DWORD</c> that contains the index of the key to be retrieved.</param>
-            /// <returns>Pointer to a <c>PROPERTYKEY</c> object.</returns>
+            /// <returns>A <c>PROPERTYKEY</c> object.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicekeycollection-getat HRESULT GetAt( [in] const DWORD
             // dwIndex, [out] PROPERTYKEY *pKey );
             PROPERTYKEY GetAt([In] uint dwIndex);
@@ -75,17 +99,15 @@ namespace Vanara.PInvoke
 
             /// <summary>The <c>GetAt</c> method retrieves an item from the collection by a zero-based index.</summary>
             /// <param name="dwIndex"><c>DWORD</c> that contains the zero-based index of the item to retrieve.</param>
-            /// <param name="pValue">
-            /// Pointer to a <c>PROPVARIANT</c> structure. The caller is responsible for freeing this memory by calling <c>PropVariantClear</c>.
-            /// </param>
+            /// <param name="pValue">A <c>PROPVARIANT</c> structure. The caller is responsible for freeing this memory by calling <c>PropVariantClear</c>.</param>
             // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicepropvariantcollection-getat HRESULT GetAt( [in] const
             // DWORD dwIndex, [out] PROPVARIANT *pValue );
-            void GetAt([In] uint dwIndex, [In, Out] PROPVARIANT pValue);
+            void GetAt([In] uint dwIndex, [Out] PROPVARIANT pValue);
 
             /// <summary>The <c>Add</c> method adds an item to the collection.</summary>
             /// <param name="pValue">
-            /// Pointer to a new <c>PROPVARIANT</c> object to add to the collection. This method copies the <c>PROPVARIANT</c> to the
-            /// collection, so you should release your local copy of the variable by calling <c>PropVariantClear</c> after calling this method.
+            /// A new <c>PROPVARIANT</c> object to add to the collection. This method copies the <c>PROPVARIANT</c> to the collection, so
+            /// you should release your local copy of the variable by calling <c>PropVariantClear</c> after calling this method.
             /// </param>
             /// <remarks>
             /// <para>
@@ -166,7 +188,7 @@ namespace Vanara.PInvoke
         public interface IPortableDeviceValues
         {
             /// <summary>The <c>GetCount</c> method retrieves the number of items in the collection.</summary>
-            /// <returns>Pointer to a <c>DWORD</c> that contains the number of items in the collection.</returns>
+            /// <returns>A <c>DWORD</c> that contains the number of items in the collection.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicevalues-getcount HRESULT GetCount( [in] DWORD *pcelt );
             uint GetCount();
 
@@ -184,7 +206,7 @@ namespace Vanara.PInvoke
             /// </remarks>
             // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicevalues-getat HRESULT GetAt( [in] const DWORD index,
             // [in, out] PROPERTYKEY *pKey, [in, out] PROPVARIANT *pValue );
-            void GetAt([In] uint index, out PROPERTYKEY pKey, PROPVARIANT pValue);
+            void GetAt(uint index, out PROPERTYKEY pKey, [Out] PROPVARIANT pValue);
 
             /// <summary>The <c>SetValue</c> method adds a new <c>PROPVARIANT</c> value or overwrites an existing one.</summary>
             /// <param name="key">A <c>REFPROPERTYKEY</c> that specifies the item to create or overwrite.</param>
@@ -484,8 +506,8 @@ namespace Vanara.PInvoke
             /// </summary>
             /// <param name="key">A <c>REFPROPERTYKEY</c> that specifies the item to create or overwrite.</param>
             /// <param name="pValue">
-            /// Pointer to an <c>IPortableDeviceValues</c> interface that specifies the new value. The SDK copies a reference to the
-            /// submitted interface and calls <c>AddRef</c> on it.
+            /// An <c>IPortableDeviceValues</c> interface that specifies the new value. The SDK copies a reference to the submitted
+            /// interface and calls <c>AddRef</c> on it.
             /// </param>
             /// <remarks>
             /// If an existing value has the same key that is specified by the key parameter, it overwrites the existing value without any
@@ -514,8 +536,8 @@ namespace Vanara.PInvoke
             /// </summary>
             /// <param name="key">A <c>REFPROPERTYKEY</c> that specifies the item to create or overwrite.</param>
             /// <param name="pValue">
-            /// Pointer to an <c>IPortableDevicePropVariantCollection</c> interface that specifies the new value. The SDK copies a reference
-            /// to the submitted interface and calls <c>AddRef</c> on it.
+            /// An <c>IPortableDevicePropVariantCollection</c> interface that specifies the new value. The SDK copies a reference to the
+            /// submitted interface and calls <c>AddRef</c> on it.
             /// </param>
             /// <remarks>
             /// If an existing value has the same key that is specified by the key parameter, it overwrites the existing value without any
@@ -543,8 +565,8 @@ namespace Vanara.PInvoke
             /// <summary>Adds a new <c>SetIPortableDeviceKeyCollectionValue</c> value (type VT_UNKNOWN) or overwrites an existing one.</summary>
             /// <param name="key">[in] A <c>REFPROPERTYKEY</c> that specifies the item to create or overwrite.</param>
             /// <param name="pValue">
-            /// [in] Pointer to an <c>IPortableDeviceKeyCollection</c> interface that specifies the new value. The SDK copies a reference to
-            /// the submitted interface and calls <c>AddRef</c> on it.
+            /// [in] An <c>IPortableDeviceKeyCollection</c> interface that specifies the new value. The SDK copies a reference to the
+            /// submitted interface and calls <c>AddRef</c> on it.
             /// </param>
             /// <remarks>
             /// If an existing value has the same key that is specified by the key parameter, it overwrites the existing value without any
@@ -568,8 +590,8 @@ namespace Vanara.PInvoke
             /// <summary>Adds a new <c>IPortableDeviceValuesCollection</c> value (type VT_UNKNOWN) or overwrites an existing one.</summary>
             /// <param name="key">[in] A <c>REFPROPERTYKEY</c> that specifies the item to create or overwrite.</param>
             /// <param name="pValue">
-            /// [in] Pointer to an <c>IPortableDeviceValuesCollection</c> interface that specifies the new value. The SDK copies a reference
-            /// to the submitted interface and calls <c>AddRef</c> on it.
+            /// [in] An <c>IPortableDeviceValuesCollection</c> interface that specifies the new value. The SDK copies a reference to the
+            /// submitted interface and calls <c>AddRef</c> on it.
             /// </param>
             /// <remarks>
             /// If an existing value has the same key that is specified by the key parameter, it overwrites the existing value without any
@@ -597,7 +619,7 @@ namespace Vanara.PInvoke
             void RemoveValue(in PROPERTYKEY key);
 
             /// <summary>The <c>CopyValuesFromPropertyStore</c> method copies the contents of an <c>IPropertyStore</c> into the collection.</summary>
-            /// <param name="pStore">Pointer to an <c>IPropertyStore</c> to copy into the collection.</param>
+            /// <param name="pStore">An <c>IPropertyStore</c> to copy into the collection.</param>
             /// <remarks>
             /// <para>This method automatically converts all <c>VT_BSTR</c> values to <c>VT_LPWSTR</c> values.</para>
             /// <para>
@@ -613,7 +635,7 @@ namespace Vanara.PInvoke
             /// <summary>
             /// The <c>CopyValuesToPropertyStore</c> method copies all the values from a collection into an <c>IPropertyStore</c> interface.
             /// </summary>
-            /// <param name="pStore">Pointer to a store object.</param>
+            /// <param name="pStore">A store object.</param>
             /// <remarks>
             /// <para>
             /// This method does not convert values of VT_LPWSTR into VT_BSTR. Many external applications or components that communicate
@@ -662,8 +684,8 @@ namespace Vanara.PInvoke
 
             /// <summary>The <c>Add</c> method adds an item to the collection.</summary>
             /// <param name="pValues">
-            /// Pointer to an <c>IPortableDeviceValues</c> interface to add to the collection. The interface is not actually copied, but
-            /// <c>AddRef</c> is called on it.
+            /// An <c>IPortableDeviceValues</c> interface to add to the collection. The interface is not actually copied, but <c>AddRef</c>
+            /// is called on it.
             /// </param>
             // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicevaluescollection-add HRESULT Add( [in]
             // IPortableDeviceValues *pValues );
@@ -716,10 +738,10 @@ namespace Vanara.PInvoke
             /// caller-allocated byte array.
             /// </summary>
             /// <param name="dwOutputBufferLength"><c>DWORD</c> that specifies the size of pBuffer, in bytes.</param>
-            /// <param name="pResults">Pointer to an <c>IPortableDeviceValues</c> interface to serialize.</param>
-            /// <param name="pBuffer">Pointer to a caller-allocated buffer. To learn the size of the required buffer, call <c>GetSerializedSize</c>.</param>
+            /// <param name="pResults">An <c>IPortableDeviceValues</c> interface to serialize.</param>
+            /// <param name="pBuffer">A caller-allocated buffer. To learn the size of the required buffer, call <c>GetSerializedSize</c>.</param>
             /// <param name="pdwBytesWritten">
-            /// Pointer to a <c>DWORD</c> that indicates the number of bytes that was actually written to the caller-allocated buffer.
+            /// A <c>DWORD</c> that indicates the number of bytes that was actually written to the caller-allocated buffer.
             /// </param>
             /// <remarks>
             /// This method copies an <c>IPortableDeviceValues</c> interface into an existing buffer. If you want to allocate a new buffer,
@@ -734,12 +756,12 @@ namespace Vanara.PInvoke
             /// The <c>GetBufferFromIPortableDeviceValues</c> method serializes a submitted <c>IPortableDeviceValues</c> interface to an
             /// allocated byte array. The byte array returned is allocated for the caller and should be freed by the caller using <c>CoTaskMemFree</c>.
             /// </summary>
-            /// <param name="pSource">Pointer to an <c>IPortableDeviceValues</c> interface to serialize.</param>
+            /// <param name="pSource">An <c>IPortableDeviceValues</c> interface to serialize.</param>
             /// <param name="ppBuffer">
-            /// Pointer to a <c>BYTE*</c> that contains the serialized data. Windows Portable Devices allocates this memory; the caller must
-            /// free it by calling <c>CoTaskMemFree</c>.
+            /// A <c>BYTE*</c> that contains the serialized data. Windows Portable Devices allocates this memory; the caller must free it by
+            /// calling <c>CoTaskMemFree</c>.
             /// </param>
-            /// <param name="pdwBufferSize">Pointer to a <c>DWORD</c> that specifies the size of allocated buffer, in bytes.</param>
+            /// <param name="pdwBufferSize">A <c>DWORD</c> that specifies the size of allocated buffer, in bytes.</param>
             // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iwpdserializer-getbufferfromiportabledevicevalues HRESULT
             // GetBufferFromIPortableDeviceValues( [in] IPortableDeviceValues *pSource, [out] BYTE **ppBuffer, [out] DWORD *pdwBufferSize );
             void GetBufferFromIPortableDeviceValues(IPortableDeviceValues pSource, out SafeCoTaskMemHandle ppBuffer, out uint pdwBufferSize);
@@ -748,8 +770,8 @@ namespace Vanara.PInvoke
             /// The <c>GetSerializedSize</c> method calculates the buffer size that is required to hold a serialized
             /// <c>IPortableDeviceValues</c> interface.
             /// </summary>
-            /// <param name="pSource">Pointer to an <c>IPortableDeviceValues</c> interface whose size you want to request.</param>
-            /// <returns>Pointer to a <c>DWORD</c> that indicates the buffer size that is required to serialize pSource, in bytes.</returns>
+            /// <param name="pSource">An <c>IPortableDeviceValues</c> interface whose size you want to request.</param>
+            /// <returns>A <c>DWORD</c> that indicates the buffer size that is required to serialize pSource, in bytes.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iwpdserializer-getserializedsize HRESULT GetSerializedSize( [in]
             // IPortableDeviceValues *pSource, [out] DWORD *pdwSize );
             uint GetSerializedSize(IPortableDeviceValues pSource);
@@ -784,30 +806,6 @@ namespace Vanara.PInvoke
         /// <returns>The PROPERTYKEY.</returns>
         public static PROPERTYKEY GetCommandPKey(this IPortableDeviceValues iValues) =>
             new PROPERTYKEY(iValues.GetGuidValue(WPD_PROPERTY_COMMON_COMMAND_CATEGORY), iValues.GetUnsignedIntegerValue(WPD_PROPERTY_COMMON_COMMAND_ID));
-
-        /// <summary>
-        /// The <c>WPD_STREAM_UNITS</c> enumeration specifies the unit types to be used for <c>IPortableDeviceUnitsStream</c> operations.
-        /// </summary>
-        // https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/wpd-stream-units typedef enum _WPD_STREAM_UNITS { WPD_STREAM_UNITS_BYTES =
-        // 0, WPD_STREAM_UNITS_FRAMES = 1, WPD_STREAM_UNITS_ROWS = 2, WPD_STREAM_UNITS_MILLISECONDS = 3, WPD_STREAM_UNITS_MICROSECONDS = 4 } WPD_STREAM_UNITS;
-        [PInvokeData("portabldevicetypes.h")]
-        public enum WPD_STREAM_UNITS
-        {
-            /// <summary>The stream units are specified in bytes.</summary>
-            WPD_STREAM_UNITS_BYTES = 0,
-
-            /// <summary>The stream units are specified in frames.</summary>
-            WPD_STREAM_UNITS_FRAMES = 1,
-
-            /// <summary>The stream units are specified in rows.</summary>
-            WPD_STREAM_UNITS_ROWS = 2,
-
-            /// <summary>The stream units are specified in milliseconds.</summary>
-            WPD_STREAM_UNITS_MILLISECONDS = 4,
-
-            /// <summary>The stream units are specified in microseconds.</summary>
-            WPD_STREAM_UNITS_MICROSECONDS = 8,
-        }
 
         /// <summary>PortableDeviceKeyCollection Class</summary>
         [PInvokeData("portabldevicetypes.h")]
