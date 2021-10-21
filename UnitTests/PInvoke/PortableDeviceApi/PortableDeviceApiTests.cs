@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using static Vanara.PInvoke.PortableDeviceApi;
 
 namespace Vanara.PInvoke.Tests
@@ -15,6 +16,7 @@ namespace Vanara.PInvoke.Tests
     {
         IPortableDevice device = null;
         IPortableDeviceManager manager;
+        static readonly Ole32.PROPERTYKEY eventNameProp = new(Guid.NewGuid(), 1);
 
         [OneTimeSetUp]
         public void _Setup()
@@ -29,8 +31,32 @@ namespace Vanara.PInvoke.Tests
         [OneTimeTearDown]
         public void _TearDown()
         {
+            device?.Close();
             device = null;
             manager = null;
+        }
+
+        [Test]
+        public void DeviceEventing()
+        {
+            string evtName = nameof(DeviceEventing);
+            EventWaitHandle evt = new(false, EventResetMode.ManualReset, evtName);
+            EventCallback callback = new();
+            IPortableDeviceValues vals = new();
+            vals.SetStringValue(eventNameProp, evtName);
+            device.Advise(0, callback, vals, out var cookie);
+            TestContext.WriteLine($"Fired = {evt.WaitOne(200)}");
+            device.Unadvise(cookie);
+        }
+
+        class EventCallback : IPortableDeviceEventCallback
+        {
+            void IPortableDeviceEventCallback.OnEvent(IPortableDeviceValues pEventParameters)
+            {
+                var evtName = pEventParameters.GetStringValue(eventNameProp);
+                if (EventWaitHandle.TryOpenExisting(evtName, out var evt))
+                    evt.Set();
+            }
         }
 
         [Test]
@@ -70,7 +96,7 @@ namespace Vanara.PInvoke.Tests
             static IEnumerable<string> RecursiveEnumerate(string objId, IPortableDeviceContent content)
             {
                 var enumObjs = content.EnumObjects(0, objId);
-                foreach (var sobj in new Vanara.Collections.IEnumFromCom<string>(enumObjs.Next, enumObjs.Reset))
+                foreach (var sobj in enumObjs.Enumerate())
                 {
                     yield return sobj;
                     foreach (var s in RecursiveEnumerate(sobj, content))
@@ -106,9 +132,44 @@ namespace Vanara.PInvoke.Tests
             foreach (var cmd in caps.GetSupportedCommands().Enumerate())
             {
                 TestContext.WriteLine(GetPI(cmd, "WPD_COMMAND_")?.Name ?? cmd.ToString());
-                foreach (var opt in caps.GetCommandOptions(cmd).Enumerate())
-                    TestContext.WriteLine($"  {(GetPI(opt.Item1, "WPD_OPTION_")?.Name ?? opt.Item1.ToString())} = {opt.Item2.Value}");
+                Write(caps.GetCommandOptions(cmd), "WPD_OPTION_", "  ");
             }
+        }
+
+        [Test]
+        public void EnumDeviceResources()
+        {
+            var content = device.Content();
+            var res = content.Transfer();
+            foreach (var cmd in res.GetSupportedResources(WPD_DEVICE_OBJECT_ID).Enumerate())
+            {
+                Write(res.GetResourceAttributes(WPD_DEVICE_OBJECT_ID, cmd), "WPD_");
+            }
+        }
+
+        private void Write(IPortableDeviceValues vals, string lookupFilter, string prefix = "")
+        {
+            foreach (var val in vals.Enumerate())
+            {
+                var name = GetPI(val.Item1, lookupFilter)?.Name ?? val.Item1.ToString();
+                TestContext.WriteLine($"{prefix}{name} = {val.Item2.Value}");
+            }
+        }
+
+        [Test]
+        public void CallDeviceCmd()
+        {
+            var pkey = WPD_COMMAND_OBJECT_PROPERTIES_GET_SUPPORTED;
+            Assert.IsTrue(device.Capabilities().GetSupportedCommands().Enumerate().Contains(pkey));
+            var objId = device.Content().EnumObjects(0, WPD_DEVICE_OBJECT_ID).Enumerate().First();
+            IPortableDeviceValues vals = new();
+            vals.SetCommandPKey(pkey);
+            vals.SetStringValue(WPD_PROPERTY_OBJECT_PROPERTIES_OBJECT_ID, objId);
+            IPortableDeviceKeyCollection result = new();
+            vals.SetIPortableDeviceKeyCollectionValue(WPD_PROPERTY_OBJECT_PROPERTIES_PROPERTY_KEYS, result);
+            device.SendCommand(0, vals);
+            foreach (var key in result.Enumerate())
+                TestContext.WriteLine(key);
         }
 
         [Test]

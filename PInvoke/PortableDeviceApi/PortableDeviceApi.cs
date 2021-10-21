@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -350,7 +351,7 @@ namespace Vanara.PInvoke
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevice-advise HRESULT
             // Advise( [in] const DWORD dwFlags, [in] IPortableDeviceEventCallback *pCallback, [in] IPortableDeviceValues *pParameters,
             // [out] LPWSTR *ppszCookie );
-            void Advise(uint dwFlags, IPortableDeviceEventCallback pCallback, IPortableDeviceValues pParameters, [MarshalAs(UnmanagedType.LPWStr)] out string ppszCookie);
+            void Advise([Optional] uint dwFlags, IPortableDeviceEventCallback pCallback, [Optional] IPortableDeviceValues pParameters, [MarshalAs(UnmanagedType.LPWStr)] out string ppszCookie);
 
             /// <summary>
             /// The <c>Unadvise</c> method unregisters a client from receiving callback notifications. You must call this method if you
@@ -1252,7 +1253,7 @@ namespace Vanara.PInvoke
             /// </remarks>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledeviceeventcallback-onevent
             // HRESULT OnEvent( [in] IPortableDeviceValues *pEventParameters );
-            void OnEvent(IPortableDeviceValues pEventParameters);
+            void OnEvent([Optional] IPortableDeviceValues pEventParameters);
         }
 
         /// <summary>
@@ -2566,6 +2567,12 @@ namespace Vanara.PInvoke
             [PreserveSig]
             HRESULT OnComplete(HRESULT hrStatus);
         }
+
+        /// <summary>Enumerates the items in the collection.</summary>
+        /// <param name="intf">The <see cref="IEnumPortableDeviceObjectIDs"/> instance.</param>
+        /// <returns>A sequence of <see cref="string"/> values from the collection.</returns>
+        public static IEnumerable<string> Enumerate(this IEnumPortableDeviceObjectIDs intf) =>
+            new Vanara.Collections.IEnumFromCom<string>(intf.Next, intf.Reset);
 
         /// <summary>Retrieves the description of a device.</summary>
         /// <param name="manager">The <see cref="IPortableDeviceManager"/> instance used to get the name.</param>

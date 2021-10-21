@@ -807,6 +807,15 @@ namespace Vanara.PInvoke
         public static PROPERTYKEY GetCommandPKey(this IPortableDeviceValues iValues) =>
             new PROPERTYKEY(iValues.GetGuidValue(WPD_PROPERTY_COMMON_COMMAND_CATEGORY), iValues.GetUnsignedIntegerValue(WPD_PROPERTY_COMMON_COMMAND_ID));
 
+        /// <summary>Sets the values corresponding to a command property key using WPD_PROPERTY_COMMON_COMMAND_CATEGORY and WPD_PROPERTY_COMMON_COMMAND_ID.</summary>
+        /// <param name="iValues">The IPortableDeviceValues instance.</param>
+        /// <param name="commandPropKey">The command property key.</param>
+        public static void SetCommandPKey(this IPortableDeviceValues iValues, in PROPERTYKEY commandPropKey)
+        {
+            iValues.SetGuidValue(WPD_PROPERTY_COMMON_COMMAND_CATEGORY, commandPropKey.Key);
+            iValues.SetUnsignedIntegerValue(WPD_PROPERTY_COMMON_COMMAND_ID, commandPropKey.Id);
+        }
+
         /// <summary>PortableDeviceKeyCollection Class</summary>
         [PInvokeData("portabldevicetypes.h")]
         [ComImport, Guid("de2d022d-2480-43be-97f0-d1fa2cf98f4f"), ClassInterface(ClassInterfaceType.None)]
