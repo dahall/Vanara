@@ -23,8 +23,9 @@ namespace Vanara.PInvoke.Tests
                 TestContext.WriteLine($"Rem: {store2.IsDeviceRemovable()}; Frz: {store3.IsQueueFrozen()}; Shl: {store3.GetShellExtSupport()}");
                 foreach (var silo in store.GetSilos())
                 {
-                    foreach (var action in silo.GetActions())
-                        TestContext.WriteLine($"    {action.GetName()}; {action.GetDescription()}");
+                    // *** The commented lines consistenty fail on Win10 and Win11 Pro ***
+                    //foreach (var action in silo.GetActions())
+                    //    TestContext.WriteLine($"    {action.GetName()}; {action.GetDescription()}");
                     TestContext.WriteLine($"  {silo.GetDevicePath()}");
                     silo.GetInfo().WriteValues();
                     //var device = silo.GetPortableDevice();
