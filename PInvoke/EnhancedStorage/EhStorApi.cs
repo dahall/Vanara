@@ -521,7 +521,7 @@ namespace Vanara.PInvoke
         // UCHAR SpecificationMajor; UCHAR SpecificationMinor; UCHAR ImplementationMajor; UCHAR ImplementationMinor; UCHAR type; UCHAR
         // capabilities; } SILO_INFO;
         [PInvokeData("ehstorapi.h", MSDNShortId = "NS:ehstorapi._SILO_INFO")]
-        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        [StructLayout(LayoutKind.Sequential)]
         public struct SILO_INFO
         {
             /// <summary>Silo Type Identifier for the silo assigned by IEEE 1667 Working Group.</summary>
