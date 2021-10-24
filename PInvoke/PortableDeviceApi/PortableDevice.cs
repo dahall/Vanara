@@ -4686,7 +4686,7 @@ namespace Vanara.PInvoke
         /// <summary>Determines whether a PROPERTYKEY represents a command for WPD.</summary>
         /// <param name="pk">The PROPERTYKEY value to check.</param>
         /// <returns><see langword="true"/> if <paramref name="pk"/> is a WPD command; otherwise, <see langword="false"/>.</returns>
-        public static bool IsCommandInWpdCommandAccessMap(in PROPERTYKEY pk) => GetWPDConst(pk, "WPD_COMMAND_") is not null;
+        public static bool IsCommandInWpdCommandAccessMap(in PROPERTYKEY pk) => pk.TryGetCommandInfo(out _, out _, out _);
 
         /// <summary>Verifies that a IO control code is valid for the parameters exposed by an <see cref="IPortableDeviceValues"/> instance.</summary>
         /// <param name="ControlCode">The control code.</param>
@@ -4707,8 +4707,7 @@ namespace Vanara.PInvoke
             try
             {
                 var WpdCommand = pCommandParams.GetCommandPKey();
-                WPDCommandAttribute value;
-                if ((value = WpdCommand.GetWPDCommandFlags()) is not null)
+                if (WpdCommand.TryGetCommandInfo(out var value, out _, out _))
                 {
                     switch (value.Access)
                     {
@@ -4743,19 +4742,7 @@ namespace Vanara.PInvoke
             return hr.Succeeded && ControlCode != dwExpectedControlCode ? HRESULT.E_INVALIDARG : hr;
         }
 
-        private static WPDCommandAttribute GetWPDCommandFlags(this PROPERTYKEY pk)
-        {
-            var pi = GetWPDConst(pk, "WPD_COMMAND_");
-            return pi?.GetCustomAttributes<WPDCommandAttribute>().FirstOrDefault();
-        }
-
-        private static System.Reflection.MemberInfo GetWPDConst<T>(T pk, string prefix = null) => typeof(PortableDeviceApi).
-            GetProperties(BindStPub).
-            FirstOrDefault(m => m.PropertyType == typeof(T) && (prefix is null || m.Name.StartsWith(prefix)) && pk.Equals(m.GetValue(null, null)));
-
-        private static PROPERTYKEY? GetWPDPKey(string propName) => propName is null ? null : (PROPERTYKEY)typeof(PortableDeviceApi).GetProperty(propName, BindStPub)?.GetValue(null, null);
-
-        private const System.Reflection.BindingFlags BindStPub = System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public;
+        private static PROPERTYKEY? GetWPDPKey(string propName) => propName is null ? null : PortableDeviceExtensions.GetKeyFromName(propName);
 
         [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
         public class WPDCommandAttribute : Attribute
