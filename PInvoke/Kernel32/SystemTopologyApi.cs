@@ -19,6 +19,48 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetNumaHighestNodeNumber(out uint HighestNodeNumber);
 
+		/// <summary>Retrieves the multi-group processor mask of the specified node.</summary>
+		/// <param name="NodeNumber">Supplies the zero-based node number for the node of interest.</param>
+		/// <param name="ProcessorMasks">
+		/// <para>An array of GROUP_AFFINITY structures, which upon successful return describes the processor mask of the specified node.</para>
+		/// <para>
+		/// Each element in the array describes a set of processors that belong to the node within a single processor group. There will be
+		/// one element in the resulting array for each processor group this node has active processors in.
+		/// </para>
+		/// </param>
+		/// <param name="ProcessorMaskCount">Specifies the size of the ProcessorMasks array, in elements.</param>
+		/// <param name="RequiredMaskCount">
+		/// <para>On successful return, specifies the number of affinity structures written to the array.</para>
+		/// <para>
+		/// If the input array was too small, the function fails with <c>ERROR_INSUFFICIENT_BUFFER</c> and sets the RequiredMaskCount
+		/// parameter to the number of elements required.
+		/// </para>
+		/// <para>The number of required elements is always less than or equal to the maximum group count returned by GetMaximumProcessorGroupCount.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero and extended error information can be retrieved by calling GetLastError.</para>
+		/// <para>
+		/// If the array supplied is too small, the error value is <c>ERROR_INSUFFICIENT_BUFFER</c> and the RequiredMaskCount parameter is
+		/// set to the number of elements required.
+		/// </para>
+		/// <para>
+		/// If the NodeNumber supplied is invalid (i.e. greater than the value returned by GetNumaHighestNodeNumber), the error value is <c>ERROR_INVALID_PARAMETER</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// If the node specified does not have any processors associated with it (i.e. it only contains memory or peripherals), then the
+		/// RequiredMaskCount returned will be 0 and no structures will be written to the array.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/systemtopologyapi/nf-systemtopologyapi-getnumanodeprocessormask2
+		// BOOL GetNumaNodeProcessorMask2( USHORT NodeNumber, PGROUP_AFFINITY ProcessorMasks, USHORT ProcessorMaskCount, PUSHORT RequiredMaskCount );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("systemtopologyapi.h", MSDNShortId = "NF:systemtopologyapi.GetNumaNodeProcessorMask2")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetNumaNodeProcessorMask2(ushort NodeNumber,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[] ProcessorMasks, ushort ProcessorMaskCount,
+			out ushort RequiredMaskCount);
+
 		/// <summary>Retrieves the processor mask for a node regardless of the processor group the node belongs to.</summary>
 		/// <param name="Node">The node number.</param>
 		/// <param name="ProcessorMask">

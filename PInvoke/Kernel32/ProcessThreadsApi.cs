@@ -2579,6 +2579,27 @@ namespace Vanara.PInvoke
 		public static extern bool GetExitCodeThread([In] HTHREAD hThread, out uint lpExitCode);
 
 		/// <summary>
+		/// Queries if the specified architecture is supported on the current system, either natively or by any form of compatibility or
+		/// emulation layer.
+		/// </summary>
+		/// <param name="Machine">
+		/// An IMAGE_FILE_MACHINE_* value corresponding to the architecture of code to be tested for supportability. See the list of
+		/// architecture values in Image File Machine Constants.
+		/// </param>
+		/// <param name="MachineTypeAttributes">
+		/// Output parameter receives a pointer to a value from the MACHINE_ATTRIBUTES enumeration indicating if the specified code
+		/// architecture can run in user mode, kernel mode, and/or under WOW64 on the host operating system.
+		/// </param>
+		/// <returns>
+		/// If the function fails, the return value is a nonzero HRESULT value. If the function succeeds, the return value is zero.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getmachinetypeattributes HRESULT
+		// GetMachineTypeAttributes( USHORT Machine, MACHINE_ATTRIBUTES *MachineTypeAttributes );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.GetMachineTypeAttributes")]
+		public static extern HRESULT GetMachineTypeAttributes(IMAGE_FILE_MACHINE Machine, out MACHINE_ATTRIBUTES MachineTypeAttributes);
+
+		/// <summary>
 		/// Retrieves the priority class for the specified process. This value, together with the priority value of each thread of the
 		/// process, determines each thread's base priority level.
 		/// </summary>
@@ -2643,6 +2664,47 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683211")]
 		public static extern CREATE_PROCESS GetPriorityClass([In] HPROCESS hProcess);
+
+		/// <summary>Retrieves the list of CPU Sets in the process default set that was set by SetProcessDefaultCpuSetMasks or SetProcessDefaultCpuSets.</summary>
+		/// <param name="Process">
+		/// Specifies a process handle for the process to query. This handle must have the PROCESS_QUERY_LIMITED_INFORMATION access right.
+		/// The value returned by GetCurrentProcess can also be specified here.
+		/// </param>
+		/// <param name="CpuSetMasks">
+		/// Specifies an optional buffer to retrieve a list of GROUP_AFFINITY structures representing the process default CPU Sets.
+		/// </param>
+		/// <param name="CpuSetMaskCount">Specifies the size of the CpuSetMasks array, in elements.</param>
+		/// <param name="RequiredMaskCount">
+		/// On successful return, specifies the number of affinity structures written to the array. If the CpuSetMasks array is too small,
+		/// the function fails with <c>ERROR_INSUFFICIENT_BUFFER</c> and sets the RequiredMaskCount parameter to the number of elements
+		/// required. The number of required elements is always less than or equal to the maximum group count returned by GetMaximumProcessorGroupCount.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero and extended error information can be retrieved by calling GetLastError.</para>
+		/// <para>
+		/// If the array supplied is too small, the error value is <c>ERROR_INSUFFICIENT_BUFFER</c> and the RequiredMaskCount is set to the
+		/// number of elements required.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If no default CPU Sets are set for a given process, then the RequiredMaskCount parameter is set to 0 and the function succeeds.
+		/// </para>
+		/// <para>
+		/// This function is analogous to GetProcessDefaultCpuSets, except that it uses group affinities as opposed to CPU Set IDs to
+		/// represent a list of CPU sets. This means that the process default CPU Sets are mapped to their home processors, and those
+		/// processors are retrieved in the resulting list of group affinities.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocessdefaultcpusetmasks
+		// BOOL GetProcessDefaultCpuSetMasks( HANDLE Process, PGROUP_AFFINITY CpuSetMasks, USHORT CpuSetMaskCount, PUSHORT RequiredMaskCount );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.GetProcessDefaultCpuSetMasks")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetProcessDefaultCpuSetMasks([In] HPROCESS Process,
+			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[] CpuSetMasks,
+			ushort CpuSetMaskCount, out ushort RequiredMaskCount);
 
 		/// <summary>
 		/// Retrieves the list of CPU Sets in the process default set that was set by <c>SetProcessDefaultCpuSets</c>. If no default CPU Sets
@@ -4245,6 +4307,38 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetProcessDefaultCpuSets([In] HPROCESS Process, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] CpuSetIds, uint CpuSetIdCound);
 
+		/// <summary>Sets the default CPU Sets assignment for threads in the specified process.</summary>
+		/// <param name="Process">
+		/// Specifies the process for which to set the default CPU Sets. This handle must have the PROCESS_SET_LIMITED_INFORMATION access
+		/// right. The value returned by GetCurrentProcess can also be specified here.
+		/// </param>
+		/// <param name="CpuSetMasks">
+		/// Specifies an optional buffer of GROUP_AFFINITY structures representing the CPU Sets to set as the process default CPU set. If
+		/// this is NULL, the <c>SetProcessDefaultCpuSetMasks</c> function clears out any assignment.
+		/// </param>
+		/// <param name="CpuSetMaskCount">
+		/// Specifies the size of the CpuSetMasks array, in elements. If the buffer is NULL, this value must be zero.
+		/// </param>
+		/// <returns>This function cannot fail when passed valid parameters.</returns>
+		/// <remarks>
+		/// <para>
+		/// Threads belonging to this process which don’t have CPU Sets explicitly set using SetThreadSelectedCpuSetMasks or
+		/// SetThreadSelectedCpuSets, will inherit the sets specified by <c>SetProcessDefaultCpuSetMasks</c> automatically.
+		/// </para>
+		/// <para>
+		/// This function is analogous to SetProcessDefaultCpuSets, except that it uses group affinities as opposed to CPU Set IDs to
+		/// represent a list of CPU sets. This means that the resulting process default CPU Set assignment is the set of all CPU sets with a
+		/// home processor in the provided list of group affinities.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessdefaultcpusetmasks BOOL
+		// SetProcessDefaultCpuSetMasks( HANDLE Process, PGROUP_AFFINITY CpuSetMasks, USHORT CpuSetMaskCount );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.SetProcessDefaultCpuSetMasks")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetProcessDefaultCpuSetMasks([In] HPROCESS Process,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[] CpuSetMasks, [Optional] ushort CpuSetMaskCount);
+
 		/// <summary>Sets dynamic exception handling continuation targets for the specified process.</summary>
 		/// <param name="Process">
 		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see
@@ -5049,6 +5143,40 @@ namespace Vanara.PInvoke
 		[PInvokeData("Processthreadapi.h", MSDNShortId = "mt186428")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetThreadSelectedCpuSets([In] HTHREAD Thread, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] CpuSetIds, uint CpuSetIdCount);
+
+		/// <summary>
+		/// Sets the selected CPU Sets assignment for the specified thread. This assignment overrides the process default assignment, if one
+		/// is set.
+		/// </summary>
+		/// <param name="Thread">
+		/// Specifies the thread on which to set the CPU Set assignment. PROCESS_SET_LIMITED_INFORMATION access right. The value returned by
+		/// GetCurrentProcess can also be specified here.
+		/// </param>
+		/// <param name="CpuSetMasks">
+		/// Specifies an optional buffer of GROUP_AFFINITY structures representing the CPU Sets to set as the thread selected CPU set. If
+		/// this is NULL, the <c>SetThreadSelectedCpuSetMasks</c> function clears out any assignment, reverting to process default
+		/// assignment if one is set.
+		/// </param>
+		/// <param name="CpuSetMaskCount">
+		/// Specifies the number of <c>GROUP_AFFINITY</c> structures in the list passed in the GroupCpuSets argument. If the buffer is NULL,
+		/// this value must be zero.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero and extended error information can be retrieved by calling GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function is analogous to SetThreadSelectedCpuSets, except that it uses group affinities as opposed to CPU Set IDs to
+		/// represent a list of CPU sets. This means that the resulting thread selected CPU Set assignment is the set of all CPU sets with a
+		/// home processor in the provided list of group affinities.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setthreadselectedcpusetmasks BOOL
+		// SetThreadSelectedCpuSetMasks( HANDLE Thread, PGROUP_AFFINITY CpuSetMasks, USHORT CpuSetMaskCount );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.SetThreadSelectedCpuSetMasks")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetThreadSelectedCpuSetMasks([In] HTHREAD Thread,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[] CpuSetMasks, [Optional] ushort CpuSetMaskCount);
 
 		/// <summary>
 		/// Sets the minimum size of the stack associated with the calling thread or fiber that will be available during any stack overflow

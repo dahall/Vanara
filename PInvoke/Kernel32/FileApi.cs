@@ -3013,6 +3013,96 @@ namespace Vanara.PInvoke
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364992")]
 		public static extern uint GetTempPath(uint nBufferLength, StringBuilder lpBuffer);
 
+		/// <summary>Retrieves the path of the directory designated for temporary files, based on the privileges of the calling process.</summary>
+		/// <param name="BufferLength">The size of the string buffer identified by lpBuffer, in <c>TCHARs</c>.</param>
+		/// <param name="Buffer">
+		/// A pointer to a string buffer that receives the null-terminated string specifying the temporary file path. The returned string
+		/// ends with a backslash, for example, "C:\TEMP\".
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the length, in <c>TCHARs</c>, of the string copied to lpBuffer, not including the
+		/// terminating null character. If the return value is greater than nBufferLength, the return value is the length, in <c>TCHARs</c>,
+		/// of the buffer required to hold the path.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>The maximum possible return value is <c>MAX_PATH</c>+1 (261).</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When calling this function from a process running as SYSTEM it will return the path C:\Windows\SystemTemp, which is inaccessible
+		/// to non-SYSTEM processes. For non-SYSTEM processes, <c>GetTempPath2</c> will behave the same as GetTempPath.
+		/// </para>
+		/// <para>
+		/// The <c>GetTempPath2</c> function checks for the existence of environment variables in the following order and uses the first
+		/// path found:
+		/// </para>
+		/// <list type="number">
+		/// <item>
+		/// <term>The path specified by the TMP environment variable.</term>
+		/// </item>
+		/// <item>
+		/// <term>The path specified by the TEMP environment variable.</term>
+		/// </item>
+		/// <item>
+		/// <term>The path specified by the USERPROFILE environment variable.</term>
+		/// </item>
+		/// <item>
+		/// <term>The Windows directory.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Note that the function does not verify that the path exists, nor does it test to see if the current process has any kind of
+		/// access rights to the path. The <c>GetTempPath2</c> function returns the properly formatted string that specifies the fully
+		/// qualified path based on the environment variable search order as previously specified. The application should verify the
+		/// existence of the path and adequate access rights to the path prior to any use for file I/O operations.
+		/// </para>
+		/// <para>Symbolic link behavior—If the path points to a symbolic link, the temp path name maintains any symbolic links.</para>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// <para>Examples</para>
+		/// <para>For an example, see Creating and Using a Temporary File.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The fileapi.h header defines GetTempPath2 as an alias which automatically selects the ANSI or Unicode version of this function
+		/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+		/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+		/// Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-gettemppath2w
+		// DWORD GetTempPath2W( [in] DWORD BufferLength, [out] LPWSTR Buffer );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetTempPath2W")]
+		public static extern uint GetTempPath2(uint BufferLength, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder Buffer);
+
 		/// <summary>Retrieves information about the file system and volume associated with the specified root directory.</summary>
 		/// <param name="lpRootPathName">
 		/// A pointer to a string that contains the root directory of the volume to be described.
