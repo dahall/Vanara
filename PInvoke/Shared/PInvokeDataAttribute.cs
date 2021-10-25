@@ -34,7 +34,10 @@ namespace Vanara.PInvoke
 		Windows81 = 0xFF,
 
 		/// <summary>Windows 10</summary>
-		Windows10 = 0x1FF
+		Windows10 = 0x1FF,
+
+		/// <summary>Windows 11</summary>
+		Windows11 = 0x2FF
 	}
 
 	/// <summary>Captures information about P/Invoke calls.</summary>
@@ -100,6 +103,8 @@ namespace Vanara.Extensions
 					return osVer >= new Version(6, 3);
 				case PInvoke.PInvokeClient.Windows10:
 					return osVer.Major >= 10;
+				case PInvoke.PInvokeClient.Windows11:
+					return osVer >= new Version(10, 0, 22000);
 				default:
 					return false;
 			}
