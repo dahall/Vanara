@@ -188,6 +188,31 @@ namespace Vanara.PInvoke
 		[PInvokeData("windns.h", MSDNShortId = "32baa672-2106-4c4a-972a-f7f79996b613")]
 		public static extern void DnsFree(IntPtr pData, DNS_FREE_TYPE FreeType);
 
+		/// <summary>Frees an array of custom servers that was returned from DnsGetApplicationSettings.</summary>
+		/// <param name="pcServers">
+		/// <para>Type: _Inout_ <c>DWORD*</c></para>
+		/// <para>
+		/// A pointer to a <c>DWORD</c> that contains the number of servers present in the array pointed to by ppServers. This will be set
+		/// to 0 after the function call.
+		/// </para>
+		/// </param>
+		/// <param name="ppServers">
+		/// <para>Type: _Inout_ <c>DNS_CUSTOM_SERVER**</c></para>
+		/// <para>
+		/// A pointer to an array of DNS_CUSTOM_SERVER that contains pcServers elements. This will be set to <c>NULL</c> after the function call.
+		/// </para>
+		/// </param>
+		/// <returns>None</returns>
+		/// <remarks>
+		/// To avoid memory leaks, you must call <c>DnsFreeCustomServers</c> on the servers returned by DnsGetApplicationSettings via its
+		/// pSettings parameter.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsfreecustomservers
+		// void DnsFreeCustomServers( DWORD *pcServers, DNS_CUSTOM_SERVER **ppServers );
+		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsFreeCustomServers", MinClient = PInvokeClient.Windows11)]
+		public static extern void DnsFreeCustomServers(ref uint pcServers, ref IntPtr ppServers);
+
 		/// <summary>
 		/// The <c>DnsFreeProxyName</c> function frees memory allocated for the <c>proxyName</c> member of a DNS_PROXY_INFORMATION structure
 		/// obtained using the DnsGetProxyInformation function.
@@ -199,6 +224,61 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "4c69d548-3bb5-4609-9fc5-3a829a285956")]
 		public static extern void DnsFreeProxyName(IntPtr proxyName);
+
+		/// <summary>Retrieves the per-application DNS settings.</summary>
+		/// <param name="pcServers">
+		/// <para>Type: _Out_ <c>DWORD*</c></para>
+		/// <para>
+		/// After the function call, this will point to the number of custom DNS servers that the application has configured. If there are
+		/// no custom servers configured, or if the function fails, then this will be set to 0.
+		/// </para>
+		/// </param>
+		/// <param name="ppDefaultServers">
+		/// <para>Type: _Outptr_result_buffer_(*pcServers) <c>DNS_CUSTOM_SERVER**</c></para>
+		/// <para>
+		/// After the function call, this will point to the array of DNS custom servers that are configured for the application. If the
+		/// application has no servers configured, or if the function fails, then this will be set to <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="pSettings">
+		/// <para>Type: _Out_opt_ <c>DNS_APPLICATION_SETTINGS*</c></para>
+		/// <para>A pointer to a DNS_APPLICATION_SETTINGS object, populated with the application settings.</para>
+		/// </param>
+		/// <returns>A <c>DWORD</c> containing <c>ERROR_SUCCESS</c> on success, or an error code on failure.</returns>
+		/// <remarks>
+		/// To avoid memory leaks, you must call DnsFreeCustomServers on the servers returned by <c>DnsGetApplicationSettings</c> via its
+		/// pSettings parameter.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsgetapplicationsettings
+		// DWORD DnsGetApplicationSettings( DWORD *pcServers, DNS_CUSTOM_SERVER **ppDefaultServers, DNS_APPLICATION_SETTINGS *pSettings );
+		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsGetApplicationSettings", MinClient = PInvokeClient.Windows11)]
+		public static extern Win32Error DnsGetApplicationSettings(out uint pcServers, out IntPtr ppDefaultServers, out DNS_APPLICATION_SETTINGS pSettings);
+
+		/// <summary>Retrieves the per-application DNS settings.</summary>
+		/// <param name="ppDefaultServers">
+		/// After the function call, this will point to the array of DNS custom servers that are configured for the application. If the
+		/// application has no servers configured, or if the function fails, then this will be set to <c>NULL</c>.
+		/// </param>
+		/// <param name="pSettings">A pointer to a DNS_APPLICATION_SETTINGS object, populated with the application settings.</param>
+		/// <returns>A <c>DWORD</c> containing <c>ERROR_SUCCESS</c> on success, or an error code on failure.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsgetapplicationsettings
+		// DWORD DnsGetApplicationSettings( DWORD *pcServers, DNS_CUSTOM_SERVER **ppDefaultServers, DNS_APPLICATION_SETTINGS *pSettings );
+		[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsGetApplicationSettings", MinClient = PInvokeClient.Windows11)]
+		public static Win32Error DnsGetApplicationSettings(out DNS_CUSTOM_SERVER[] ppDefaultServers, out DNS_APPLICATION_SETTINGS pSettings)
+		{
+			var err = DnsGetApplicationSettings(out var c, out var p, out pSettings);
+			if (err.Failed) { ppDefaultServers = null; return err; }
+			try
+			{
+				ppDefaultServers = p.ToArray<DNS_CUSTOM_SERVER>((int)c);
+			}
+			finally
+			{
+				DnsFreeCustomServers(ref c, ref p);
+			}
+			return err;
+		}
 
 		/// <summary>Gets a list of cached domain names in the DNS client.</summary>
 		/// <param name="ppCacheData">The cached data list.</param>
@@ -1121,6 +1201,68 @@ namespace Vanara.PInvoke
 		[PInvokeData("windns.h")]
 		public static extern DNS_STATUS DnsServiceResolveCancel(in DNS_SERVICE_CANCEL pCancelHandle);
 
+		/// <summary>
+		/// Configures per-application DNS settings. This includes the ability to set per-application DNS servers either as fallback to the
+		/// system configured servers, or exclusively.
+		/// </summary>
+		/// <param name="cServers">
+		/// <para>Type: _In_ <c>DWORD</c></para>
+		/// <para>The number of custom DNS servers present in the pServers parameter.</para>
+		/// </param>
+		/// <param name="pServers">
+		/// <para>Type: _In_reads_(cServers) <c>DNS_CUSTOM_SERVER*</c></para>
+		/// <para>An array of DNS_CUSTOM_SERVER that contains cServers elements. If cServers is 0, then this must be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pSettings">
+		/// <para>Type: _In_opt_ <c>DNS_APPLICATION_SETTINGS*</c></para>
+		/// <para>A pointer to a DNS_APPLICATION_SETTINGS object describing additional settings for custom DNS servers.</para>
+		/// <para>
+		/// If this is <c>NULL</c>, then the custom DNS servers passed to the API will be used as fallback to the system-configured ones.
+		/// </para>
+		/// <para>
+		/// If this points to a DNS_APPLICATION_SETTINGS object that has the <c>DNS_APP_SETTINGS_EXCLUSIVE_SERVERS</c> flag set in its Flags
+		/// member, then it means use the custom DNS servers exclusively.
+		/// </para>
+		/// </param>
+		/// <returns>A <c>DWORD</c> containing <c>ERROR_SUCCESS</c> on success, or an error code on failure.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnssetapplicationsettings
+		// DWORD DnsSetApplicationSettings( DWORD cServers, const DNS_CUSTOM_SERVER *pServers, const DNS_APPLICATION_SETTINGS *pSettings );
+		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsSetApplicationSettings", MinClient = PInvokeClient.Windows11)]
+		public static extern Win32Error DnsSetApplicationSettings(uint cServers,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DNS_CUSTOM_SERVER[] pServers, in DNS_APPLICATION_SETTINGS pSettings);
+
+		/// <summary>
+		/// Configures per-application DNS settings. This includes the ability to set per-application DNS servers either as fallback to the
+		/// system configured servers, or exclusively.
+		/// </summary>
+		/// <param name="cServers">
+		/// <para>Type: _In_ <c>DWORD</c></para>
+		/// <para>The number of custom DNS servers present in the pServers parameter.</para>
+		/// </param>
+		/// <param name="pServers">
+		/// <para>Type: _In_reads_(cServers) <c>DNS_CUSTOM_SERVER*</c></para>
+		/// <para>An array of DNS_CUSTOM_SERVER that contains cServers elements. If cServers is 0, then this must be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pSettings">
+		/// <para>Type: _In_opt_ <c>DNS_APPLICATION_SETTINGS*</c></para>
+		/// <para>A pointer to a DNS_APPLICATION_SETTINGS object describing additional settings for custom DNS servers.</para>
+		/// <para>
+		/// If this is <c>NULL</c>, then the custom DNS servers passed to the API will be used as fallback to the system-configured ones.
+		/// </para>
+		/// <para>
+		/// If this points to a DNS_APPLICATION_SETTINGS object that has the <c>DNS_APP_SETTINGS_EXCLUSIVE_SERVERS</c> flag set in its Flags
+		/// member, then it means use the custom DNS servers exclusively.
+		/// </para>
+		/// </param>
+		/// <returns>A <c>DWORD</c> containing <c>ERROR_SUCCESS</c> on success, or an error code on failure.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnssetapplicationsettings
+		// DWORD DnsSetApplicationSettings( DWORD cServers, const DNS_CUSTOM_SERVER *pServers, const DNS_APPLICATION_SETTINGS *pSettings );
+		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true, MinClient = PInvokeClient.Windows11)]
+		[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsSetApplicationSettings")]
+		public static extern Win32Error DnsSetApplicationSettings(uint cServers,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DNS_CUSTOM_SERVER[] pServers, [In, Optional] IntPtr pSettings);
+
 		/// <summary>Used to register a discoverable service on this device.</summary>
 		/// <param name="pQueryRequest">A pointer to an MDNS_QUERY_REQUEST structure that contains information about the query to be performed.</param>
 		/// <param name="pHandle">
@@ -1293,14 +1435,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HDNSCONTEXT : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HDNSCONTEXT"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HDNSCONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HDNSCONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HDNSCONTEXT NULL => new HDNSCONTEXT(IntPtr.Zero);
+			public static HDNSCONTEXT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -1313,7 +1455,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDNSCONTEXT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDNSCONTEXT(IntPtr h) => new HDNSCONTEXT(h);
+			public static implicit operator HDNSCONTEXT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -1328,7 +1470,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HDNSCONTEXT h1, HDNSCONTEXT h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HDNSCONTEXT h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HDNSCONTEXT h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();

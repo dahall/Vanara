@@ -7,6 +7,7 @@ using static Vanara.PInvoke.Ws2_32;
 using DNS_STATUS = Vanara.PInvoke.Win32Error;
 using IP4_ADDRESS = Vanara.PInvoke.Ws2_32.IN_ADDR;
 using IP6_ADDRESS = Vanara.PInvoke.Ws2_32.IN6_ADDR;
+#pragma warning disable IDE1006 // Naming Styles
 
 namespace Vanara.PInvoke
 {
@@ -15,6 +16,9 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Defines the maximum sockaddr length for DNS addresses</summary>
 		public const int DNS_ADDR_MAX_SOCKADDR_LENGTH = 32;
+
+		/// <summary>Version settings.</summary>
+		public const uint DNS_APP_SETTINGS_VERSION1 = 1;
 
 		/// <summary/>
 		public const int DNS_ATMA_MAX_ADDR_LENGTH = 20;
@@ -47,6 +51,15 @@ namespace Vanara.PInvoke
 			/// with arbitrarily placed "." separators. Its length is exactly DNS_ATMA_AESA_ADDR_LENGTH bytes.
 			/// </summary>
 			DNS_ATMA_FORMAT_AESA = 2,
+		}
+
+		/// <summary>Flags for <see cref="DNS_APPLICATION_SETTINGS"/>.</summary>
+		[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_APPLICATION_SETTINGS")]
+		[Flags]
+		public enum DNS_APP_SETTINGSF
+		{
+			/// <summary>Use the custom DNS servers exclusively, and don't try the system-configured ones.</summary>
+			DNS_APP_SETTINGS_EXCLUSIVE_SERVERS = 1,
 		}
 
 		/// <summary>The <c>DNS_CHARSET</c> enumeration specifies the character set used.</summary>
@@ -201,6 +214,26 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			DnsConfigNameServer,
+		}
+
+		/// <summary>A value that contains a bitmap of the following options.</summary>
+		[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_CUSTOM_SERVER")]
+		[Flags]
+		public enum DNS_CUSTOM_SERVER_FLAGS : ulong
+		{
+			/// <summary>Server might fall back to unsecure resolution</summary>
+			DNS_CUSTOM_SERVER_TYPE_UDP = 1,
+		}
+
+		/// <summary>The server type. Must be one of the following.</summary>
+		[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_CUSTOM_SERVER")]
+		public enum DNS_CUSTOM_SERVER_TYPE : uint
+		{
+			/// <summary>Perform unsecure name resolution</summary>
+			DNS_CUSTOM_SERVER_TYPE_UDP = 1,
+
+			/// <summary>Perform DNS-over-HTTPS name resolution</summary>
+			DNS_CUSTOM_SERVER_TYPE_DOH = 2
 		}
 
 		/// <summary>The <c>DNS_FREE_TYPE</c> enumeration specifies the type of data to free.</summary>
@@ -887,7 +920,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an explicit conversion from <see cref="DNS_ADDR"/> to <see cref="System.Net.IPAddress"/>.</summary>
 			/// <param name="dnsAddr">The DNS address.</param>
 			/// <returns>The resulting <see cref="System.Net.IPAddress"/> instance from the conversion.</returns>
-			public static explicit operator System.Net.IPAddress(DNS_ADDR dnsAddr) => new System.Net.IPAddress(dnsAddr.MaxSa);
+			public static explicit operator System.Net.IPAddress(DNS_ADDR dnsAddr) => new(dnsAddr.MaxSa);
 		}
 
 		/// <summary>The <c>DNS_ADDR_ARRAY</c> structure stores an array of IPv4 or IPv6 addresses.</summary>
@@ -945,6 +978,33 @@ namespace Vanara.PInvoke
 			/// <summary>An array of DNS_ADDR structures that each contain an IP address.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public DNS_ADDR[] AddrArray;
+		}
+
+		/// <summary>Represents per-application DNS settings.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_application_settings typedef struct
+		// _DNS_APPLICATION_SETTINGS { ULONG Version; ULONG64 Flags; } DNS_APPLICATION_SETTINGS;
+		[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_APPLICATION_SETTINGS")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct DNS_APPLICATION_SETTINGS
+		{
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>Must be set to <c>DNS_APP_SETTINGS_VERSION1</c>.</para>
+			/// </summary>
+			public uint Version;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>A bitset containing the following options.</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>
+			/// <c>DNS_APP_SETTINGS_EXCLUSIVE_SERVERS</c> (0x1). Use the custom DNS servers exclusively, and don't try the system-configured ones.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public DNS_APP_SETTINGSF Flags;
 		}
 
 		/// <summary>The <c>DNS_ATMA_DATA</c> structure represents a DNS ATM address (ATMA) resource record (RR).</summary>
@@ -1006,6 +1066,82 @@ namespace Vanara.PInvoke
 
 			/// <summary>Undocumented.</summary>
 			public DNS_RECORD_FLAGS dwFlags;
+		}
+
+		/// <summary>
+		/// <para>Represents a DNS custom server. A <c>DNS_CUSTOM_SERVER</c> object is passed to DnsQueryEx via the DNS_QUERY_REQUEST3 structure.</para>
+		/// <para>To use <c>DNS_CUSTOM_SERVER</c> together with ServerAddr, include <code>ws2ipdef.h</code> before <code>windns.h</code>.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_custom_server typedef struct _DNS_CUSTOM_SERVER { DWORD
+		// dwServerType; ULONG64 ullFlags; union { PWSTR pwszTemplate; }; CHAR MaxSa[DNS_ADDR_MAX_SOCKADDR_LENGTH]; } DNS_CUSTOM_SERVER;
+		[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_CUSTOM_SERVER")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct DNS_CUSTOM_SERVER
+		{
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The server type. Must be one of the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term/>
+			/// <term>Value</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>DNS_CUSTOM_SERVER_TYPE_UDP</term>
+			/// <term>0x1</term>
+			/// <term>Perform unsecure name resolution</term>
+			/// </item>
+			/// <item>
+			/// <term>DNS_CUSTOM_SERVER_TYPE_DOH</term>
+			/// <term>0x2</term>
+			/// <term>Perform DNS-over-HTTPS name resolution</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public DNS_CUSTOM_SERVER_TYPE dwServerType;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG64</c></para>
+			/// <para>A value that contains a bitmap of the following options.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term/>
+			/// <term>Value</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>DNS_CUSTOM_SERVER_UDP_FALLBACK</term>
+			/// <term>0x1</term>
+			/// <term>Server might fall back to unsecure resolution</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public DNS_CUSTOM_SERVER_FLAGS ullFlags;
+
+			/// <summary>
+			/// <para>Type: <c>PWSTR</c></para>
+			/// <para>A <c>NULL</c>-terminated wide string representing the <c>DNS-over-HTTPS</c> template.</para>
+			/// <para>If dwServerType is set to <c>DNS_CUSTOM_SERVER_TYPE_UDP</c>, then this field must be <c>NULL</c>.</para>
+			/// <para>
+			/// If dwServerType is set to <c>DNS_CUSTOM_SERVER_TYPE_DOH</c>, then this field must point to a valid <c>NULL</c>-terminated string.
+			/// </para>
+			/// </summary>
+			public string pwszTemplate;
+
+			/// <summary>
+			/// <para>Type: <c>CHAR[DNS_ADDR_MAX_SOCKADDR_LENGTH]</c></para>
+			/// <para>A byte array, which designates storage for a SOCKADDR_INET. MaxSa is a union with ServerAddr.</para>
+			/// <para>
+			/// To use <c>DNS_CUSTOM_SERVER</c> together with ServerAddr, you must include <c>ws2ipdef.h</c> before <c>windns.h</c> .
+			/// </para>
+			/// <para>
+			/// Besides storage for the <c>SOCKADDR_INET</c>, MaxSa avoids compile errors caused by not including <c>ws2ipdef.h</c> . This
+			/// allows you to use any functionality from <c>windns.h</c> except for the <c>DNS_CUSTOM_SERVER</c>.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = DNS_ADDR_MAX_SOCKADDR_LENGTH)]
+			public byte[] MaxSa;
 		}
 
 		/// <summary>
@@ -1913,14 +2049,14 @@ namespace Vanara.PInvoke
 
 			// The next entries are contrived so that the structure works on either 32 or 64 systems. The total size of the variable is 40
 			// bytes on X86 and 56 on X64.
-			private IntPtr _Data;
+			private readonly IntPtr _Data;
 
-			private IntPtr _fillPtr1;
-			private IntPtr _fillPtr2;
-			private IntPtr _fillPtr3;
-			private ulong _fill8byte0;
-			private ulong _fill8byte1;
-			private ulong _fill8byte2;
+			private readonly IntPtr _fillPtr1;
+			private readonly IntPtr _fillPtr2;
+			private readonly IntPtr _fillPtr3;
+			private readonly ulong _fill8byte0;
+			private readonly ulong _fill8byte1;
+			private readonly ulong _fill8byte2;
 
 			/// <summary>Gets the data value based on the value of <see cref="wType"/>.</summary>
 			/// <returns>The value of <see cref="Data"/>.</returns>
@@ -1933,10 +2069,7 @@ namespace Vanara.PInvoke
 					var ptr = DataPtr;
 					return type is null ? ptr : ptr.Convert(wDataLength, type, CharSet.Unicode);
 				}
-				set
-				{
-					wDataLength = (ushort)DataPtr.Write(value, 0, DataSize);
-				}
+				set => wDataLength = (ushort)DataPtr.Write(value, 0, DataSize);
 			}
 
 			private static readonly int DataSize = Marshal.SizeOf(typeof(DNS_RECORD)) - 16 - (IntPtr.Size * 2);
