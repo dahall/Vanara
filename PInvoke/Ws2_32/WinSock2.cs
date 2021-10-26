@@ -735,6 +735,109 @@ namespace Vanara.PInvoke
 			SOCK_SEQPACKET = 5,
 		}
 
+		/// <summary>a bitmask of the notification events for the socket.</summary>
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[Flags]
+		public enum SOCK_NOTIFY_EVENT : ushort
+		{
+			/// <summary>Input is available from the socket without blocking.</summary>
+			SOCK_NOTIFY_EVENT_IN = SOCK_NOTIFY_REGISTER_EVENT.SOCK_NOTIFY_REGISTER_EVENT_IN,
+
+			/// <summary>Output can be provided to the socket without blocking.</summary>
+			SOCK_NOTIFY_EVENT_OUT = SOCK_NOTIFY_REGISTER_EVENT.SOCK_NOTIFY_REGISTER_EVENT_OUT,
+
+			/// <summary>The socket connection has terminated.</summary>
+			SOCK_NOTIFY_EVENT_HANGUP = SOCK_NOTIFY_REGISTER_EVENT.SOCK_NOTIFY_REGISTER_EVENT_HANGUP,
+
+			/// <summary>The socket is in an error state.</summary>
+			SOCK_NOTIFY_EVENT_ERR = 0x40,
+
+			/// <summary>The notification has been deregistered.</summary>
+			SOCK_NOTIFY_EVENT_REMOVE = 0x80,
+
+			/// <summary>All events.</summary>
+			SOCK_NOTIFY_EVENTS_ALL = SOCK_NOTIFY_REGISTER_EVENT.SOCK_NOTIFY_REGISTER_EVENTS_ALL | SOCK_NOTIFY_EVENT_ERR | SOCK_NOTIFY_EVENT_REMOVE,
+		}
+
+		/// <summary>Indicates the operation to perform on a registration. At most one operation may be performed at a time.</summary>
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[Flags]
+		public enum SOCK_NOTIFY_OP : byte
+		{
+			/// <summary>
+			/// No registration operations should take place. Use this if your application calls ProcessSocketNotifications and is only
+			/// interested in receiving notifications.
+			/// </summary>
+			SOCK_NOTIFY_OP_NONE = 0x00,
+
+			/// <summary>
+			/// Enables the registration. Notifications must not be re-enabled until the SOCK_NOTIFY_EVENT_DISABLE notification is received.
+			/// </summary>
+			SOCK_NOTIFY_OP_ENABLE = 0x01,
+
+			/// <summary>
+			/// Disables the registration, but doesn't destroy the underlying data structures. Note that this doesn't remove the
+			/// registration, it merely suppresses queuing of new notifications. Notifications that have already been queued might still be
+			/// delivered until the SOCK_NOTIFY_EVENT_DISABLE event is received.
+			/// </summary>
+			SOCK_NOTIFY_OP_DISABLE = 0x02,
+
+			/// <summary>
+			/// Removes a previously-registered notification. Both enabled and disabled notifications may be removed. The
+			/// SOCK_NOTIFY_EVENT_REMOVE notification is issued, with the guarantee that no more notifications will be issued afterwards for
+			/// that completion key unless it is re-registered.
+			/// </summary>
+			SOCK_NOTIFY_OP_REMOVE = 0x04,
+		}
+
+		/// <summary>A set of flags indicating the notifications being requested.</summary>
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[Flags]
+		public enum SOCK_NOTIFY_REGISTER_EVENT : ushort
+		{
+			/// <summary>Notifications should not be issued.</summary>
+			SOCK_NOTIFY_REGISTER_EVENT_NONE = 0x00,
+
+			/// <summary>A notification should be issued when data can be read without blocking.</summary>
+			SOCK_NOTIFY_REGISTER_EVENT_IN = 0x01,
+
+			/// <summary>A notification should be issued when data can be written without blocking.</summary>
+			SOCK_NOTIFY_REGISTER_EVENT_OUT = 0x02,
+
+			/// <summary>A notification should be issued when a stream-oriented connection was either disconnected or aborted.</summary>
+			SOCK_NOTIFY_REGISTER_EVENT_HANGUP = 0x04,
+
+			/// <summary>All flags.</summary>
+			SOCK_NOTIFY_REGISTER_EVENTS_ALL = SOCK_NOTIFY_REGISTER_EVENT_IN | SOCK_NOTIFY_REGISTER_EVENT_OUT | SOCK_NOTIFY_REGISTER_EVENT_HANGUP
+		}
+
+		/// <summary>A set of flags indicating the trigger behavior.</summary>
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[Flags]
+		public enum SOCK_NOTIFY_TRIGGER : byte
+		{
+			/// <summary>The registration will be disabled (not removed) upon delivery of the next notification.</summary>
+			SOCK_NOTIFY_TRIGGER_ONESHOT = 0x01,
+
+			/// <summary>The registration will remain active until it is explicitly disabled or removed.</summary>
+			SOCK_NOTIFY_TRIGGER_PERSISTENT = 0x02,
+
+			/// <summary>
+			/// The registration is for level-triggered notifications. Not compatible with edge-triggered. One of edge- or level-triggered
+			/// must be supplied.
+			/// </summary>
+			SOCK_NOTIFY_TRIGGER_LEVEL = 0x04,
+
+			/// <summary>
+			/// The registration is for edge-triggered notifications. Not compatible with level-triggered. One of edge- or level-triggered
+			/// must be supplied.
+			/// </summary>
+			SOCK_NOTIFY_TRIGGER_EDGE = 0x08,
+
+			/// <summary>All triggers.</summary>
+			SOCK_NOTIFY_TRIGGER_ALL = SOCK_NOTIFY_TRIGGER_ONESHOT | SOCK_NOTIFY_TRIGGER_PERSISTENT | SOCK_NOTIFY_TRIGGER_LEVEL | SOCK_NOTIFY_TRIGGER_EDGE,
+		}
+
 		/// <summary>
 		/// The Windows Sockets <c>WSAECOMPARATOR</c> enumeration type is used for version-comparison semantics in Windows Sockets 2.
 		/// </summary>
@@ -849,6 +952,203 @@ namespace Vanara.PInvoke
 			/// </summary>
 			XP1_SAN_SUPPORT_SDP = 0x00080000,
 		}
+
+		/// <summary>
+		/// <para>
+		/// Associates a set of sockets with a completion port, and retrieves any notifications that are already pending on that port. Once
+		/// associated, the completion port receives the socket state notifications that were specified. Only Microsoft Winsock provider
+		/// sockets are supported.
+		/// </para>
+		/// <para>
+		/// To reduce system call overhead, you can register for notifications and retrieve them in a single call to
+		/// <c>ProcessSocketNotifications</c>. Alternatively, you can retrieve them explicitly by calling the usual I/O completion port
+		/// functions, such as GetQueuedCompletionStatus. Notifications retrieved using <c>ProcessSocketNotifications</c> are the same as
+		/// those retrieved using GetQueuedCompletionStatusEx, which might include notification packets other than socket state changes.
+		/// </para>
+		/// <para>
+		/// The notification event flags are the integer value of the dwNumberOfBytesTransferred fields of the returned OVERLAPPED_ENTRY
+		/// structures. This is similar to using JOBOBJECT_ASSOCIATE_COMPLETION_PORT, which also uses the dwNumberOfBytesTransferred field
+		/// to send integer messages. Call the SocketNotificationRetrieveEvents function to obtain them.
+		/// </para>
+		/// <para>
+		/// A socket handle can be registered to only one IOCP at a time. Re-registering a previously-registered socket handle overwrites
+		/// the existing registration. Before you close a handle used for registration, you should explicitly remove registration, and wait
+		/// for the <c>SOCK_NOTIFY_EVENT_REMOVE</c> notification (see <c>Remarks</c> in this topic).
+		/// </para>
+		/// <para>For more info, and code examples, see Winsock socket state notifications.</para>
+		/// </summary>
+		/// <param name="completionPort">
+		/// <para>Type: _In_ <c>HANDLE</c></para>
+		/// <para>
+		/// A handle to an I/O completion port created using the CreateIoCompletionPort function. The port will be used in the
+		/// CompletionPort parameter of the PostQueuedCompletionStatus function when messages are sent on behalf of the socket.
+		/// </para>
+		/// </param>
+		/// <param name="registrationCount">
+		/// <para>Type: _In_ <c>UINT32</c></para>
+		/// <para>The number of registrations supplied by registrationInfos.</para>
+		/// </param>
+		/// <param name="registrationInfos">
+		/// <para>Type: _Inout_updates_opt_(registrationCount) <c>SOCK_NOTIFY_REGISTRATION*</c></para>
+		/// <para>
+		/// A pointer to an array of SOCK_NOTIFY_REGISTRATION structures that define the notification registration parameters. These include
+		/// the socket of interest, the notification events of interest, and the operation flags. On success, you must inspect the elements
+		/// for whether the registration was processed successfully. This argument must be <c>NULL</c> if registrationCount is 0.
+		/// </para>
+		/// </param>
+		/// <param name="timeoutMs">
+		/// <para>Type: _In_ <c>UINT32</c></para>
+		/// <para>
+		/// The time in milliseconds that you're willing to wait for a completion packet to appear at the completion port. If a completion
+		/// packet doesn't appear within the specified time, then the function times out and returns <c>ERROR_TIMEOUT</c>.
+		/// </para>
+		/// <para>
+		/// If timeoutMs is <c>INFINITE</c> (0xFFFFFFFF), then the function will never time out. If timeoutMs is 0, and there is no I/O
+		/// operation to dequeue, then the function will time out immediately.
+		/// </para>
+		/// <para>The value of timeoutMs must be 0 if completionCount is 0.</para>
+		/// </param>
+		/// <param name="completionCount">
+		/// <para>Type: _In_ <c>ULONG</c></para>
+		/// <para>
+		/// The maximum number of OVERLAPPED_ENTRY structures to remove. If 0 is specified, then only registration operations will be processed.
+		/// </para>
+		/// </param>
+		/// <param name="completionPortEntries">
+		/// <para>Type: _Out_writes_to_opt_(completionCount, *receivedEntryCount) <c>OVERLAPPED_ENTRY*</c></para>
+		/// <para>
+		/// On input, points to a pre-allocated array of OVERLAPPED_ENTRY structures. The array mustn't overlap with the registrationInfos
+		/// array. The value of completionPortEntries must be <c>NULL</c> if completionCount is 0.
+		/// </para>
+		/// <para>
+		/// On output, receives an array of OVERLAPPED_ENTRY structures that hold the entries. The number of array elements is provided by
+		/// ReceivedEntryCount. The dwNumberOfBytesTransferred fields of the structures are integer masks of received events. The
+		/// lpOverlapped fields are reserved and must not be used as pointers.
+		/// </para>
+		/// </param>
+		/// <param name="receivedEntryCount">
+		/// <para>Type: _Out_opt_ <c>UINT32*</c></para>
+		/// <para>A pointer to a variable that receives the number of entries removed. Must be <c>NULL</c> if completionCount is 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If successful, returns <c>ERROR_SUCCESS</c>. If the function succeeded and you supplied a non-0 completionCount, but no
+		/// completion packets appeared within the specified time, returns <c>WAIT_TIMEOUT</c>. Otherwise, returns an appropriate
+		/// <c>WSAE*</c> error code.
+		/// </para>
+		/// <para>
+		/// If <c>ERROR_SUCCESS</c> or <c>WAIT_TIMEOUT</c> is returned, then you must inspect the individual registration infos'
+		/// registration results. Otherwise, the entire operation failed, and no changes occurred.
+		/// </para>
+		/// </returns>
+		/// <remarks>See SocketNotificationRetrieveEvents for the events that are possible when a notification is received.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-processsocketnotifications DWORD WSAAPI
+		// ProcessSocketNotifications( HANDLE completionPort, UINT32 registrationCount, SOCK_NOTIFY_REGISTRATION *registrationInfos, UINT32
+		// timeoutMs, ULONG completionCount, OVERLAPPED_ENTRY *completionPortEntries, UINT32 *receivedEntryCount );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.ProcessSocketNotifications")]
+		public static extern uint ProcessSocketNotifications(HFILE completionPort, uint registrationCount,
+			[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[] registrationInfos,
+			uint timeoutMs, uint completionCount,
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Kernel32.OVERLAPPED_ENTRY[] completionPortEntries, out uint receivedEntryCount);
+
+		/// <summary>
+		/// <para>
+		/// Associates a set of sockets with a completion port, and retrieves any notifications that are already pending on that port. Once
+		/// associated, the completion port receives the socket state notifications that were specified. Only Microsoft Winsock provider
+		/// sockets are supported.
+		/// </para>
+		/// <para>
+		/// To reduce system call overhead, you can register for notifications and retrieve them in a single call to
+		/// <c>ProcessSocketNotifications</c>. Alternatively, you can retrieve them explicitly by calling the usual I/O completion port
+		/// functions, such as GetQueuedCompletionStatus. Notifications retrieved using <c>ProcessSocketNotifications</c> are the same as
+		/// those retrieved using GetQueuedCompletionStatusEx, which might include notification packets other than socket state changes.
+		/// </para>
+		/// <para>
+		/// The notification event flags are the integer value of the dwNumberOfBytesTransferred fields of the returned OVERLAPPED_ENTRY
+		/// structures. This is similar to using JOBOBJECT_ASSOCIATE_COMPLETION_PORT, which also uses the dwNumberOfBytesTransferred field
+		/// to send integer messages. Call the SocketNotificationRetrieveEvents function to obtain them.
+		/// </para>
+		/// <para>
+		/// A socket handle can be registered to only one IOCP at a time. Re-registering a previously-registered socket handle overwrites
+		/// the existing registration. Before you close a handle used for registration, you should explicitly remove registration, and wait
+		/// for the <c>SOCK_NOTIFY_EVENT_REMOVE</c> notification (see <c>Remarks</c> in this topic).
+		/// </para>
+		/// <para>For more info, and code examples, see Winsock socket state notifications.</para>
+		/// </summary>
+		/// <param name="completionPort">
+		/// <para>Type: _In_ <c>HANDLE</c></para>
+		/// <para>
+		/// A handle to an I/O completion port created using the CreateIoCompletionPort function. The port will be used in the
+		/// CompletionPort parameter of the PostQueuedCompletionStatus function when messages are sent on behalf of the socket.
+		/// </para>
+		/// </param>
+		/// <param name="registrationCount">
+		/// <para>Type: _In_ <c>UINT32</c></para>
+		/// <para>The number of registrations supplied by registrationInfos.</para>
+		/// </param>
+		/// <param name="registrationInfos">
+		/// <para>Type: _Inout_updates_opt_(registrationCount) <c>SOCK_NOTIFY_REGISTRATION*</c></para>
+		/// <para>
+		/// A pointer to an array of SOCK_NOTIFY_REGISTRATION structures that define the notification registration parameters. These include
+		/// the socket of interest, the notification events of interest, and the operation flags. On success, you must inspect the elements
+		/// for whether the registration was processed successfully. This argument must be <c>NULL</c> if registrationCount is 0.
+		/// </para>
+		/// </param>
+		/// <param name="timeoutMs">
+		/// <para>Type: _In_ <c>UINT32</c></para>
+		/// <para>
+		/// The time in milliseconds that you're willing to wait for a completion packet to appear at the completion port. If a completion
+		/// packet doesn't appear within the specified time, then the function times out and returns <c>ERROR_TIMEOUT</c>.
+		/// </para>
+		/// <para>
+		/// If timeoutMs is <c>INFINITE</c> (0xFFFFFFFF), then the function will never time out. If timeoutMs is 0, and there is no I/O
+		/// operation to dequeue, then the function will time out immediately.
+		/// </para>
+		/// <para>The value of timeoutMs must be 0 if completionCount is 0.</para>
+		/// </param>
+		/// <param name="completionCount">
+		/// <para>Type: _In_ <c>ULONG</c></para>
+		/// <para>
+		/// The maximum number of OVERLAPPED_ENTRY structures to remove. If 0 is specified, then only registration operations will be processed.
+		/// </para>
+		/// </param>
+		/// <param name="completionPortEntries">
+		/// <para>Type: _Out_writes_to_opt_(completionCount, *receivedEntryCount) <c>OVERLAPPED_ENTRY*</c></para>
+		/// <para>
+		/// On input, points to a pre-allocated array of OVERLAPPED_ENTRY structures. The array mustn't overlap with the registrationInfos
+		/// array. The value of completionPortEntries must be <c>NULL</c> if completionCount is 0.
+		/// </para>
+		/// <para>
+		/// On output, receives an array of OVERLAPPED_ENTRY structures that hold the entries. The number of array elements is provided by
+		/// ReceivedEntryCount. The dwNumberOfBytesTransferred fields of the structures are integer masks of received events. The
+		/// lpOverlapped fields are reserved and must not be used as pointers.
+		/// </para>
+		/// </param>
+		/// <param name="receivedEntryCount">
+		/// <para>Type: _Out_opt_ <c>UINT32*</c></para>
+		/// <para>A pointer to a variable that receives the number of entries removed. Must be <c>NULL</c> if completionCount is 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If successful, returns <c>ERROR_SUCCESS</c>. If the function succeeded and you supplied a non-0 completionCount, but no
+		/// completion packets appeared within the specified time, returns <c>WAIT_TIMEOUT</c>. Otherwise, returns an appropriate
+		/// <c>WSAE*</c> error code.
+		/// </para>
+		/// <para>
+		/// If <c>ERROR_SUCCESS</c> or <c>WAIT_TIMEOUT</c> is returned, then you must inspect the individual registration infos'
+		/// registration results. Otherwise, the entire operation failed, and no changes occurred.
+		/// </para>
+		/// </returns>
+		/// <remarks>See SocketNotificationRetrieveEvents for the events that are possible when a notification is received.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-processsocketnotifications DWORD WSAAPI
+		// ProcessSocketNotifications( HANDLE completionPort, UINT32 registrationCount, SOCK_NOTIFY_REGISTRATION *registrationInfos, UINT32
+		// timeoutMs, ULONG completionCount, OVERLAPPED_ENTRY *completionPortEntries, UINT32 *receivedEntryCount );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.ProcessSocketNotifications")]
+		public static extern Win32Error ProcessSocketNotifications(HFILE completionPort, uint registrationCount,
+			[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[] registrationInfos,
+			uint timeoutMs, [Optional] uint completionCount, [In, Optional] IntPtr completionPortEntries, [In, Optional] IntPtr receivedEntryCount);
 
 		/// <summary/>
 		/// <param name="b"/>
@@ -1365,6 +1665,114 @@ namespace Vanara.PInvoke
 			/// RSVP SP for a given flow.
 			/// </summary>
 			public WSABUF ProviderSpecific;
+		}
+
+		/// <summary>
+		/// <para>Represents info supplied to the ProcessSocketNotifications function.</para>
+		/// <para>For more info, and code examples, see Winsock socket state notifications.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-sock_notify_registration typedef struct
+		// SOCK_NOTIFY_REGISTRATION { SOCKET socket; PVOID completionKey; UINT16 eventFilter; UINT8 operation; UINT8 triggerFlags; DWORD
+		// registrationResult; } SOCK_NOTIFY_REGISTRATION;
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SOCK_NOTIFY_REGISTRATION
+		{
+			/// <summary>
+			/// <para>Type: <c>SOCKET</c></para>
+			/// <para>
+			/// A handle to a Winsock socket opened by any of the WSASocket, socket, WSAAccept, accept, or WSADuplicateSocket functions.
+			/// Only Microsoft Winsock provider sockets are supported.
+			/// </para>
+			/// </summary>
+			public SOCKET socket;
+
+			/// <summary>
+			/// <para>Type: <c>PVOID</c></para>
+			/// <para>
+			/// The value to use in the dwCompletionKey parameter of the PostQueuedCompletionStatus function when notifications are sent on
+			/// behalf of the socket. This parameter is used upon registration creation. To change the completion key, remove the
+			/// registration and re-register it.
+			/// </para>
+			/// </summary>
+			public IntPtr completionKey;
+
+			/// <summary>
+			/// <para>Type: <c>UINT16</c></para>
+			/// <para>
+			/// A set of flags indicating the notifications being requested. This must be one or more of the following values (defined in
+			/// <code>WinSock2.h</code>
+			/// ).
+			/// </para>
+			/// <para>
+			/// <c>SOCK_NOTIFY_REGISTER_EVENT_NONE</c>. Notifications should not be issued. <c>SOCK_NOTIFY_REGISTER_EVENT_IN</c>. A
+			/// notification should be issued when data can be read without blocking. <c>SOCK_NOTIFY_REGISTER_EVENT_OUT</c>. A notification
+			/// should be issued when data can be written without blocking. <c>SOCK_NOTIFY_REGISTER_EVENT_HANGUP</c>. A notification should
+			/// be issued when a stream-oriented connection was either disconnected or aborted. <c>SOCK_NOTIFY_REGISTER_EVENTS_ALL</c>. Has
+			/// the value
+			/// <code>(SOCK_NOTIFY_REGISTER_EVENT_IN | SOCK_NOTIFY_REGISTER_EVENT_OUT | SOCK_NOTIFY_REGISTER_EVENT_HANGUP)</code>
+			/// .
+			/// </para>
+			/// </summary>
+			public SOCK_NOTIFY_REGISTER_EVENT eventFilter;
+
+			/// <summary>
+			/// <para>Type: <c>UINT8</c></para>
+			/// <para>
+			/// Indicates the operation to perform on a registration. At most one operation may be performed at a time. These values are
+			/// defined in
+			/// <code>WinSock2.h</code>
+			/// .
+			/// </para>
+			/// <para>
+			/// <c>SOCK_NOTIFY_OP_NONE</c>. No registration operations should take place. Use this if your application calls
+			/// ProcessSocketNotifications and is only interested in receiving notifications. <c>SOCK_NOTIFY_OP_ENABLE</c>. Enables the
+			/// registration. Notifications must not be re-enabled until the <c>SOCK_NOTIFY_EVENT_DISABLE</c> notification is received.
+			/// <c>SOCK_NOTIFY_OP_DISABLE</c>. Disables the registration, but doesn't destroy the underlying data structures. Note that this
+			/// doesn't remove the registration, it merely suppresses queuing of new notifications. Notifications that have already been
+			/// queued might still be delivered until the <c>SOCK_NOTIFY_EVENT_DISABLE</c> event is received. <c>SOCK_NOTIFY_OP_REMOVE</c>.
+			/// Removes a previously-registered notification. Both enabled and disabled notifications may be removed. The
+			/// <c>SOCK_NOTIFY_EVENT_REMOVE</c> notification is issued, with the guarantee that no more notifications will be issued
+			/// afterwards for that completion key unless it is re-registered.
+			/// </para>
+			/// </summary>
+			public SOCK_NOTIFY_OP operation;
+
+			/// <summary>
+			/// <para>Type: <c>UINT8</c></para>
+			/// <para>A set of flags indicating the trigger behavior (defined in
+			/// <code>WinSock2.h</code>
+			/// ).
+			/// </para>
+			/// <para>
+			/// <c>SOCK_NOTIFY_TRIGGER_ONESHOT</c>. The registration will be disabled (not removed) upon delivery of the next notification.
+			/// <c>SOCK_NOTIFY_TRIGGER_PERSISTENT</c>. The registration will remain active until it is explicitly disabled or removed.
+			/// <c>SOCK_NOTIFY_TRIGGER_LEVEL</c>. The registration is for level-triggered notifications. Not compatible with edge-triggered.
+			/// One of edge- or level-triggered must be supplied. <c>SOCK_NOTIFY_TRIGGER_EDGE</c>. The registration is for edge-triggered
+			/// notifications. Not compatible with level-triggered. One of edge- or level-triggered must be supplied.
+			/// </para>
+			/// <para>
+			/// Notifications are only supplied when the registration is enabled. Notifications are not queued up while the registration is
+			/// disabled. As notifications are queued up for a given socket, they are coalesced into a single notification. Therefore,
+			/// multiple events may be described by a single event mask for the socket.
+			/// </para>
+			/// <para>Given the registration is enabled, level-triggered notifications are supplied whenever the desired conditions hold.</para>
+			/// <para>
+			/// Given the registration is enabled, edge-triggered notifications are supplied whenever a condition changes from not holding
+			/// to holding. The condition must change while the registration is enabled for a notification to be queued. As such, after
+			/// registering, the socket's receive buffer must be completely drained to ensure a notification is received.
+			/// </para>
+			/// </summary>
+			public SOCK_NOTIFY_TRIGGER triggerFlags;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// After a successful call to ProcessSocketNotifications, registrationResult contains a code indicating the success or failure
+			/// of the registration. A value of <c>ERROR_SUCCESS</c> indicates that registration was successful.
+			/// </para>
+			/// </summary>
+			public Win32Error registrationResult;
 		}
 
 		/// <summary>Provides a handle to a socket.</summary>
@@ -2264,10 +2672,6 @@ namespace Vanara.PInvoke
 			/// <summary>Gets an instance that represents an empty address.</summary>
 			public static SOCKADDR Empty => new SOCKADDR(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
 
-			/// <summary>Provides a copy of <see cref="SOCKADDR"/> as an array of bytes.</summary>
-			/// <value>The array of bytes from this instance.</value>
-			public byte[] GetAddressBytes() => GetBytes(0, Size);
-
 			/// <summary>Gets the data behind this address as a byte array.</summary>
 			/// <value>The address data.</value>
 			public byte[] sa_data => GetBytes(2, 14);
@@ -2294,6 +2698,11 @@ namespace Vanara.PInvoke
 			/// <exception cref="InvalidCastException"></exception>
 			public static explicit operator SOCKADDR_IN6(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET6 ? addr.handle.ToStructure<SOCKADDR_IN6>() : (SOCKADDR_IN6)(SOCKADDR_IN)addr;
 
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
+			public static implicit operator IntPtr(SOCKADDR addr) => addr.DangerousGetHandle();
+
 			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR"/>.</summary>
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
@@ -2304,10 +2713,9 @@ namespace Vanara.PInvoke
 			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR(SOCKADDR_IN6 addr) => new SOCKADDR(addr);
 
-			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="addr">The address.</param>
-			/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
-			public static implicit operator IntPtr(SOCKADDR addr) => addr.DangerousGetHandle();
+			/// <summary>Provides a copy of <see cref="SOCKADDR"/> as an array of bytes.</summary>
+			/// <value>The array of bytes from this instance.</value>
+			public byte[] GetAddressBytes() => GetBytes(0, Size);
 
 			/// <inheritdoc/>
 			public override string ToString() => sa_family == ADDRESS_FAMILY.AF_INET ? ((SOCKADDR_IN)this).ToString() : ((SOCKADDR_IN6)this).ToString();

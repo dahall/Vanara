@@ -91,5 +91,19 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "BA460A5B-5356-43A5-B232-03E6E72D15A2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SystemParametersInfoForDpi(SPI uiAction, uint uiParam, IntPtr pvParam, uint fWinIni, uint dpi);
+
+		/// <summary>Sets the DPI scale for which the cursors being created on this thread are intended. This value is taken into account when scaling the cursor for the specific monitor on which it is being shown.</summary>
+		/// <param name="cursorDpi">
+		/// <para>The 96-based DPI scale of the cursors that the application will be creating. For example, a 96 DPI value corresponds to 100% monitor scale factor, 144 DPI corresponds to 150%, and so on.</para>
+		/// <para>There are two special values:</para>
+		/// <para>CURSOR_CREATION_SCALING_DEFAULT – resets cursor scaling to default system behavior (as if SetThreadCursorCreationScaling was never called on this thread).</para>
+		/// <para>CURSOR_CREATION_SCALING_NONE – disables all cursor scaling (the cursors created after calling SetThreadCursorCreationScaling with this parameter will never be scaled up or down on any monitor).</para>
+		/// </param>
+		/// <returns>The previous value set for the thread before calling this API.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setthreadcursorcreationscaling
+		// UINT SetThreadCursorCreationScaling( UINT cursorDpi );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SetThreadCursorCreationScaling")]
+		public static extern uint SetThreadCursorCreationScaling(uint cursorDpi);
 	}
 }
