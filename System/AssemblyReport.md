@@ -49,9 +49,9 @@ Class | Description
 [Vanara.Diagnostics.JobSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=JobSecurity) | Represents the security access rights of a job object.
 [Vanara.Diagnostics.JobSettings](https://github.com/dahall/Vanara/search?l=C%23&q=JobSettings) | Settings related to job objects.
 [Vanara.Diagnostics.JobStatistics](https://github.com/dahall/Vanara/search?l=C%23&q=JobStatistics) | Gets statistics for a job object.
-[Vanara.LocalGroup](https://github.com/dahall/Vanara/search?l=C%23&q=LocalGroup) | 
-[Vanara.LocalGroupMembers](https://github.com/dahall/Vanara/search?l=C%23&q=LocalGroupMembers) | 
-[Vanara.LocalGroups](https://github.com/dahall/Vanara/search?l=C%23&q=LocalGroups) | 
+[Vanara.LocalGroup](https://github.com/dahall/Vanara/search?l=C%23&q=LocalGroup) | Represents a local group on a server.
+[Vanara.LocalGroupMembers](https://github.com/dahall/Vanara/search?l=C%23&q=LocalGroupMembers) | Represents a colleciton of local group members.
+[Vanara.LocalGroups](https://github.com/dahall/Vanara/search?l=C%23&q=LocalGroups) | Represents the collection of local groups on a server.
 [Vanara.Network.NetworkConnection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkConnection) | Represents a single network connection. Wraps `Vanara.PInvoke.NetListMgr.INetworkConnection`.
 [Vanara.NetworkDeviceConnection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnection) | Information about a remote resource, usually in reference to a connection to that resource.
 [Vanara.NetworkDeviceConnectionCollection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnectionCollection) | Provides access to the local machine's remote connections.
@@ -81,6 +81,6 @@ Class | Description
 [Vanara.SharedDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SharedDevice) | Represents a shared device on a computer.
 [Vanara.SharedDevices](https://github.com/dahall/Vanara/search?l=C%23&q=SharedDevices) | Represents all the shared devices on a computers.
 [Vanara.Diagnostics.SystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=SystemShutdown) | Provides access to system shutdown, restart, lock and notifications.
-[Vanara.UserAccount](https://github.com/dahall/Vanara/search?l=C%23&q=UserAccount) | 
-[Vanara.UserAccounts](https://github.com/dahall/Vanara/search?l=C%23&q=UserAccounts) | 
+[Vanara.UserAccount](https://github.com/dahall/Vanara/search?l=C%23&q=UserAccount) | Represents a user account on a server.
+[Vanara.UserAccounts](https://github.com/dahall/Vanara/search?l=C%23&q=UserAccounts) | Represents the collection of user accounts on a server.
 [Vanara.IO.Wow64Redirect](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64Redirect) | Suspends File System Redirection if found to be in effect. Effectively, this calls <c>IsWow64Process</c> to determine state and then disables redirection using <c>Wow64DisableWow64FsRedirection</c>. It then reverts redirection at disposal using <c>Wow64RevertWow64FsRedirection</c>.
