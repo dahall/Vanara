@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows DbgHelp.dl
 
 - Includes methods from dbghelp.dll, imagehlp.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DbgHelp?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DbgHelp?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DbgHelp)  
-### Methods - 100% API coverage (219 of 219 functions)  
+### Methods - 97% API coverage (219 of 224 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindImageEx](https://www.google.com/search?num=5&q=BindImageEx+site%3Adocs.microsoft.com) | imagehlp.dll | imagehlp.h | [Vanara.PInvoke.ImageHlp.BindImageEx](https://github.com/dahall/Vanara/search?l=C%23&q=BindImageEx)  
@@ -104,6 +104,7 @@ Native Method | Native DLL | Header | Managed Method
 [SymFunctionTableAccess](https://www.google.com/search?num=5&q=SymFunctionTableAccess+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymFunctionTableAccess](https://github.com/dahall/Vanara/search?l=C%23&q=SymFunctionTableAccess)  
 [SymFunctionTableAccess64](https://www.google.com/search?num=5&q=SymFunctionTableAccess64+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymFunctionTableAccess64](https://github.com/dahall/Vanara/search?l=C%23&q=SymFunctionTableAccess64)  
 [SymFunctionTableAccess64AccessRoutines](https://www.google.com/search?num=5&q=SymFunctionTableAccess64AccessRoutines+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymFunctionTableAccess64AccessRoutines](https://github.com/dahall/Vanara/search?l=C%23&q=SymFunctionTableAccess64AccessRoutines)  
+[SymGetDiaSource](https://www.google.com/search?num=5&q=SymGetDiaSource+site%3Adocs.microsoft.com) | imagehlp.dll |  |   
 [SymGetExtendedOption](https://www.google.com/search?num=5&q=SymGetExtendedOption+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetExtendedOption](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetExtendedOption)  
 [SymGetFileLineOffsets64](https://www.google.com/search?num=5&q=SymGetFileLineOffsets64+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetFileLineOffsets64](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetFileLineOffsets64)  
 [SymGetHomeDirectory](https://www.google.com/search?num=5&q=SymGetHomeDirectory+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetHomeDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetHomeDirectory)  
@@ -143,8 +144,10 @@ Native Method | Native DLL | Header | Managed Method
 [SymGetSourceFileChecksumA](https://www.google.com/search?num=5&q=SymGetSourceFileChecksumA+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetSourceFileChecksum](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetSourceFileChecksum)  
 [SymGetSourceFileFromToken](https://www.google.com/search?num=5&q=SymGetSourceFileFromToken+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetSourceFileFromToken](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetSourceFileFromToken)  
 [SymGetSourceFileFromTokenA](https://www.google.com/search?num=5&q=SymGetSourceFileFromTokenA+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetSourceFileFromToken](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetSourceFileFromToken)  
+[SymGetSourceFileFromTokenByTokenName](https://www.google.com/search?num=5&q=SymGetSourceFileFromTokenByTokenName+site%3Adocs.microsoft.com) | imagehlp.dll |  |   
 [SymGetSourceFileToken](https://www.google.com/search?num=5&q=SymGetSourceFileToken+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetSourceFileToken](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetSourceFileToken)  
 [SymGetSourceFileTokenA](https://www.google.com/search?num=5&q=SymGetSourceFileTokenA+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetSourceFileToken](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetSourceFileToken)  
+[SymGetSourceFileTokenByTokenName](https://www.google.com/search?num=5&q=SymGetSourceFileTokenByTokenName+site%3Adocs.microsoft.com) | imagehlp.dll |  |   
 [SymGetSourceVarFromToken](https://www.google.com/search?num=5&q=SymGetSourceVarFromToken+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetSourceVarFromToken](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetSourceVarFromToken)  
 [SymGetSourceVarFromTokenA](https://www.google.com/search?num=5&q=SymGetSourceVarFromTokenA+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetSourceVarFromToken](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetSourceVarFromToken)  
 [SymGetSymbolFile](https://www.google.com/search?num=5&q=SymGetSymbolFile+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymGetSymbolFile](https://github.com/dahall/Vanara/search?l=C%23&q=SymGetSymbolFile)  
@@ -185,6 +188,8 @@ Native Method | Native DLL | Header | Managed Method
 [SymRegisterCallbackW64](https://www.google.com/search?num=5&q=SymRegisterCallbackW64+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymRegisterCallbackW64](https://github.com/dahall/Vanara/search?l=C%23&q=SymRegisterCallbackW64)  
 [SymRegisterFunctionEntryCallback](https://www.google.com/search?num=5&q=SymRegisterFunctionEntryCallback+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymRegisterFunctionEntryCallback](https://github.com/dahall/Vanara/search?l=C%23&q=SymRegisterFunctionEntryCallback)  
 [SymRegisterFunctionEntryCallback64](https://www.google.com/search?num=5&q=SymRegisterFunctionEntryCallback64+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymRegisterFunctionEntryCallback64](https://github.com/dahall/Vanara/search?l=C%23&q=SymRegisterFunctionEntryCallback64)  
+[SymRegisterGetSourcePathPartCallback](https://www.google.com/search?num=5&q=SymRegisterGetSourcePathPartCallback+site%3Adocs.microsoft.com) | imagehlp.dll |  |   
+[SymRegisterSourceFileUrlListCallback](https://www.google.com/search?num=5&q=SymRegisterSourceFileUrlListCallback+site%3Adocs.microsoft.com) | imagehlp.dll |  |   
 [SymSearch](https://www.google.com/search?num=5&q=SymSearch+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymSearch](https://github.com/dahall/Vanara/search?l=C%23&q=SymSearch)  
 [SymSearchA](https://www.google.com/search?num=5&q=SymSearchA+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymSearch](https://github.com/dahall/Vanara/search?l=C%23&q=SymSearch)  
 [SymSetContext](https://www.google.com/search?num=5&q=SymSetContext+site%3Adocs.microsoft.com) | dbghelp.dll | dbghelp.h | [Vanara.PInvoke.DbgHelp.SymSetContext](https://github.com/dahall/Vanara/search?l=C%23&q=SymSetContext)  

@@ -1258,8 +1258,8 @@ namespace Vanara.PInvoke
 		/// <returns>A <c>DWORD</c> containing <c>ERROR_SUCCESS</c> on success, or an error code on failure.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnssetapplicationsettings
 		// DWORD DnsSetApplicationSettings( DWORD cServers, const DNS_CUSTOM_SERVER *pServers, const DNS_APPLICATION_SETTINGS *pSettings );
-		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true, MinClient = PInvokeClient.Windows11)]
-		[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsSetApplicationSettings")]
+		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsSetApplicationSettings", MinClient = PInvokeClient.Windows11)]
 		public static extern Win32Error DnsSetApplicationSettings(uint cServers,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DNS_CUSTOM_SERVER[] pServers, [In, Optional] IntPtr pSettings);
 

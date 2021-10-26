@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Ws2_32.dll
 
 - Includes methods from ws2_32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Ws2_32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Ws2_32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Ws2_32)  
-### Methods - 100% API coverage (133 of 133 functions)  
+### Methods - 100% API coverage (134 of 134 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [__WSAFDIsSet](https://www.google.com/search?num=5&q=__WSAFDIsSet+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.__WSAFDIsSet](https://github.com/dahall/Vanara/search?l=C%23&q=__WSAFDIsSet)  
@@ -39,6 +39,7 @@ Native Method | Header | Managed Method
 [listen](https://www.google.com/search?num=5&q=listen+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.listen](https://github.com/dahall/Vanara/search?l=C%23&q=listen)  
 [ntohl](https://www.google.com/search?num=5&q=ntohl+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.ntohl](https://github.com/dahall/Vanara/search?l=C%23&q=ntohl)  
 [ntohs](https://www.google.com/search?num=5&q=ntohs+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.ntohs](https://github.com/dahall/Vanara/search?l=C%23&q=ntohs)  
+[ProcessSocketNotifications](https://www.google.com/search?num=5&q=ProcessSocketNotifications+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.ProcessSocketNotifications](https://github.com/dahall/Vanara/search?l=C%23&q=ProcessSocketNotifications)  
 [recv](https://www.google.com/search?num=5&q=recv+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.recv](https://github.com/dahall/Vanara/search?l=C%23&q=recv)  
 [recvfrom](https://www.google.com/search?num=5&q=recvfrom+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.recvfrom](https://github.com/dahall/Vanara/search?l=C%23&q=recvfrom)  
 [select](https://www.google.com/search?num=5&q=select+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.select](https://github.com/dahall/Vanara/search?l=C%23&q=select)  
@@ -160,6 +161,7 @@ Native Structure | Header | Managed Structure
 [QOS](https://www.google.com/search?num=5&q=QOS+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.QOS](https://github.com/dahall/Vanara/search?l=C%23&q=QOS)  
 [SCOPE_ID](https://www.google.com/search?num=5&q=SCOPE_ID+site%3Adocs.microsoft.com) | ws2def.h | [Vanara.PInvoke.Ws2_32.SCOPE_ID](https://github.com/dahall/Vanara/search?l=C%23&q=SCOPE_ID)  
 [SERVENT](https://www.google.com/search?num=5&q=SERVENT+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.SERVENT](https://github.com/dahall/Vanara/search?l=C%23&q=SERVENT)  
+[SOCK_NOTIFY_REGISTRATION](https://www.google.com/search?num=5&q=SOCK_NOTIFY_REGISTRATION+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.SOCK_NOTIFY_REGISTRATION](https://github.com/dahall/Vanara/search?l=C%23&q=SOCK_NOTIFY_REGISTRATION)  
 [SOCKADDR_IN](https://www.google.com/search?num=5&q=SOCKADDR_IN+site%3Adocs.microsoft.com) | ws2def.h | [Vanara.PInvoke.Ws2_32.SOCKADDR_IN](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKADDR_IN)  
 [SOCKADDR_IN6](https://www.google.com/search?num=5&q=SOCKADDR_IN6+site%3Adocs.microsoft.com) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.SOCKADDR_IN6](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKADDR_IN6)  
 [SOCKADDR_IN6_PAIR](https://www.google.com/search?num=5&q=SOCKADDR_IN6_PAIR+site%3Adocs.microsoft.com) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.SOCKADDR_IN6_PAIR](https://github.com/dahall/Vanara/search?l=C%23&q=SOCKADDR_IN6_PAIR)  

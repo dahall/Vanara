@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows IpHlpApi.d
 
 - Includes methods from iphlpapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.IpHlpApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.IpHlpApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.IpHlpApi)  
-### Methods - 100% API coverage (158 of 158 functions)  
+### Methods - 100% API coverage (162 of 162 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AddIPAddress](https://www.google.com/search?num=5&q=AddIPAddress+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.AddIPAddress](https://github.com/dahall/Vanara/search?l=C%23&q=AddIPAddress)  
@@ -69,7 +69,9 @@ Native Method | Header | Managed Method
 [GetIfTable](https://www.google.com/search?num=5&q=GetIfTable+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetIfTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetIfTable)  
 [GetIfTable2](https://www.google.com/search?num=5&q=GetIfTable2+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetIfTable2](https://github.com/dahall/Vanara/search?l=C%23&q=GetIfTable2)  
 [GetIfTable2Ex](https://www.google.com/search?num=5&q=GetIfTable2Ex+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetIfTable2Ex](https://github.com/dahall/Vanara/search?l=C%23&q=GetIfTable2Ex)  
+[GetInterfaceActiveTimestampCapabilities](https://www.google.com/search?num=5&q=GetInterfaceActiveTimestampCapabilities+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetInterfaceActiveTimestampCapabilities](https://github.com/dahall/Vanara/search?l=C%23&q=GetInterfaceActiveTimestampCapabilities)  
 [GetInterfaceInfo](https://www.google.com/search?num=5&q=GetInterfaceInfo+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetInterfaceInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetInterfaceInfo)  
+[GetInterfaceSupportedTimestampCapabilities](https://www.google.com/search?num=5&q=GetInterfaceSupportedTimestampCapabilities+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetInterfaceSupportedTimestampCapabilities](https://github.com/dahall/Vanara/search?l=C%23&q=GetInterfaceSupportedTimestampCapabilities)  
 [GetInvertedIfStackTable](https://www.google.com/search?num=5&q=GetInvertedIfStackTable+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.GetInvertedIfStackTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetInvertedIfStackTable)  
 [GetIpAddrTable](https://www.google.com/search?num=5&q=GetIpAddrTable+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetIpAddrTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetIpAddrTable)  
 [GetIpErrorString](https://www.google.com/search?num=5&q=GetIpErrorString+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.GetIpErrorString](https://github.com/dahall/Vanara/search?l=C%23&q=GetIpErrorString)  
@@ -144,6 +146,7 @@ Native Method | Header | Managed Method
 [NotifyTeredoPortChange](https://www.google.com/search?num=5&q=NotifyTeredoPortChange+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.NotifyTeredoPortChange](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyTeredoPortChange)  
 [NotifyUnicastIpAddressChange](https://www.google.com/search?num=5&q=NotifyUnicastIpAddressChange+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.NotifyUnicastIpAddressChange](https://github.com/dahall/Vanara/search?l=C%23&q=NotifyUnicastIpAddressChange)  
 [ParseNetworkString](https://www.google.com/search?num=5&q=ParseNetworkString+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.ParseNetworkString](https://github.com/dahall/Vanara/search?l=C%23&q=ParseNetworkString)  
+[RegisterInterfaceTimestampConfigChange](https://www.google.com/search?num=5&q=RegisterInterfaceTimestampConfigChange+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.RegisterInterfaceTimestampConfigChange](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterInterfaceTimestampConfigChange)  
 [ResolveIpNetEntry2](https://www.google.com/search?num=5&q=ResolveIpNetEntry2+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.ResolveIpNetEntry2](https://github.com/dahall/Vanara/search?l=C%23&q=ResolveIpNetEntry2)  
 [RestoreMediaSense](https://www.google.com/search?num=5&q=RestoreMediaSense+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.RestoreMediaSense](https://github.com/dahall/Vanara/search?l=C%23&q=RestoreMediaSense)  
 [SendARP](https://www.google.com/search?num=5&q=SendARP+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.SendARP](https://github.com/dahall/Vanara/search?l=C%23&q=SendARP)  
@@ -164,13 +167,18 @@ Native Method | Header | Managed Method
 [SetTcpEntry](https://www.google.com/search?num=5&q=SetTcpEntry+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.SetTcpEntry](https://github.com/dahall/Vanara/search?l=C%23&q=SetTcpEntry)  
 [SetUnicastIpAddressEntry](https://www.google.com/search?num=5&q=SetUnicastIpAddressEntry+site%3Adocs.microsoft.com) | netioapi.h | [Vanara.PInvoke.IpHlpApi.SetUnicastIpAddressEntry](https://github.com/dahall/Vanara/search?l=C%23&q=SetUnicastIpAddressEntry)  
 [UnenableRouter](https://www.google.com/search?num=5&q=UnenableRouter+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.UnenableRouter](https://github.com/dahall/Vanara/search?l=C%23&q=UnenableRouter)  
+[UnregisterInterfaceTimestampConfigChange](https://www.google.com/search?num=5&q=UnregisterInterfaceTimestampConfigChange+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.UnregisterInterfaceTimestampConfigChange](https://github.com/dahall/Vanara/search?l=C%23&q=UnregisterInterfaceTimestampConfigChange)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [&lt;PhysicalAddress&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<PhysicalAddress>e__FixedBuffer+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.MIB_IPNET_ROW2_Unmanaged.&lt;PhysicalAddress&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=&lt;PhysicalAddress&gt;e__FixedBuffer)  
 [FIXED_INFO](https://www.google.com/search?num=5&q=FIXED_INFO+site%3Adocs.microsoft.com) | iptypes.h | [Vanara.PInvoke.IpHlpApi.FIXED_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=FIXED_INFO)  
+[HIFTIMESTAMPCHANGE](https://www.google.com/search?num=5&q=HIFTIMESTAMPCHANGE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.IpHlpApi.HIFTIMESTAMPCHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=HIFTIMESTAMPCHANGE)  
 [IF_COUNTED_STRING](https://www.google.com/search?num=5&q=IF_COUNTED_STRING+site%3Adocs.microsoft.com) | ifdef.h | [Vanara.PInvoke.IpHlpApi.IF_COUNTED_STRING](https://github.com/dahall/Vanara/search?l=C%23&q=IF_COUNTED_STRING)  
 [IF_PHYSICAL_ADDRESS](https://www.google.com/search?num=5&q=IF_PHYSICAL_ADDRESS+site%3Adocs.microsoft.com) | ifdef.h | [Vanara.PInvoke.IpHlpApi.IF_PHYSICAL_ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=IF_PHYSICAL_ADDRESS)  
+[INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES](https://www.google.com/search?num=5&q=INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES](https://github.com/dahall/Vanara/search?l=C%23&q=INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES)  
+[INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES](https://www.google.com/search?num=5&q=INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES](https://github.com/dahall/Vanara/search?l=C%23&q=INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES)  
+[INTERFACE_TIMESTAMP_CAPABILITIES](https://www.google.com/search?num=5&q=INTERFACE_TIMESTAMP_CAPABILITIES+site%3Adocs.microsoft.com) | iphlpapi.h | [Vanara.PInvoke.IpHlpApi.INTERFACE_TIMESTAMP_CAPABILITIES](https://github.com/dahall/Vanara/search?l=C%23&q=INTERFACE_TIMESTAMP_CAPABILITIES)  
 [IO_STATUS_BLOCK](https://www.google.com/search?num=5&q=IO_STATUS_BLOCK+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.IpHlpApi.IO_STATUS_BLOCK](https://github.com/dahall/Vanara/search?l=C%23&q=IO_STATUS_BLOCK)  
 [IP_ADAPTER_ADDRESSES](https://www.google.com/search?num=5&q=IP_ADAPTER_ADDRESSES+site%3Adocs.microsoft.com) | iptypes.h | [Vanara.PInvoke.IpHlpApi.IP_ADAPTER_ADDRESSES](https://github.com/dahall/Vanara/search?l=C%23&q=IP_ADAPTER_ADDRESSES)  
 [IP_ADAPTER_ANYCAST_ADDRESS](https://www.google.com/search?num=5&q=IP_ADAPTER_ANYCAST_ADDRESS+site%3Adocs.microsoft.com) | iptypes.h | [Vanara.PInvoke.IpHlpApi.IP_ADAPTER_ANYCAST_ADDRESS](https://github.com/dahall/Vanara/search?l=C%23&q=IP_ADAPTER_ANYCAST_ADDRESS)  

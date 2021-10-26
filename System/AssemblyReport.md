@@ -15,7 +15,6 @@ Enum | Description | Values
 [Vanara.IO.PathEx.PathCharType](https://github.com/dahall/Vanara/search?l=C%23&q=PathCharType) | The type of character retrieved from `Vanara.IO.PathEx.GetCharType(System.Char)`. | Invalid, LongFileName, ShortFileName, Wildcard, Separator
 [Vanara.Diagnostics.PowerCapabilities](https://github.com/dahall/Vanara/search?l=C%23&q=PowerCapabilities) | Specifies the power capabilities of a device. | PowerButtonPresent, SleepButtonPresent, LidPresent, SystemS1, SystemS2, SystemS3, SystemS4, SystemS5, HiberFilePresent, FullWake, VideoDimPresent, ApmPresent, UpsPresent, ThermalControl, ProcessorThrottle, FastSystemS4, Hiberboot, WakeAlarmPresent, AoAc, DiskSpinDown, AoAcConnectivitySupported, SystemBatteriesPresent, BatteriesAreShortTerm
 [Vanara.Diagnostics.PowerSupplyStatus](https://github.com/dahall/Vanara/search?l=C%23&q=PowerSupplyStatus) | Represents the device's power supply status. | NotPresent, Inadequate, Adequate
-[Vanara.Extensions.ProcessIntegrityLevel](https://github.com/dahall/Vanara/search?l=C%23&q=ProcessIntegrityLevel) | Values which define a processes integrity level. | Untrusted, Undefined, Low, Medium, High, System
 [Vanara.Security.AccessControl.ServiceControllerAccessRights](https://github.com/dahall/Vanara/search?l=C%23&q=ServiceControllerAccessRights) | Defines the access rights to use when creating access and audit rules. | QueryConfig, ChangeConfig, QueryStatus, EnumerateDependents, Start, Stop, Continue, Interrogate, UserDefinedControl, Delete, ReadPermissions, Write, Read, Execute, ChangePermissions, TakeOwnership, AccessSystemSecurity, FullControl
 [Vanara.ShareOfflineSettings](https://github.com/dahall/Vanara/search?l=C%23&q=ShareOfflineSettings) | Offline settings for a shared folder. | OnlySpecified, All, AllOptimized, None
 ### Interfaces
@@ -50,6 +49,9 @@ Class | Description
 [Vanara.Diagnostics.JobSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=JobSecurity) | Represents the security access rights of a job object.
 [Vanara.Diagnostics.JobSettings](https://github.com/dahall/Vanara/search?l=C%23&q=JobSettings) | Settings related to job objects.
 [Vanara.Diagnostics.JobStatistics](https://github.com/dahall/Vanara/search?l=C%23&q=JobStatistics) | Gets statistics for a job object.
+[Vanara.LocalGroup](https://github.com/dahall/Vanara/search?l=C%23&q=LocalGroup) | 
+[Vanara.LocalGroupMembers](https://github.com/dahall/Vanara/search?l=C%23&q=LocalGroupMembers) | 
+[Vanara.LocalGroups](https://github.com/dahall/Vanara/search?l=C%23&q=LocalGroups) | 
 [Vanara.Network.NetworkConnection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkConnection) | Represents a single network connection. Wraps `Vanara.PInvoke.NetListMgr.INetworkConnection`.
 [Vanara.NetworkDeviceConnection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnection) | Information about a remote resource, usually in reference to a connection to that resource.
 [Vanara.NetworkDeviceConnectionCollection](https://github.com/dahall/Vanara/search?l=C%23&q=NetworkDeviceConnectionCollection) | Provides access to the local machine's remote connections.
@@ -79,4 +81,6 @@ Class | Description
 [Vanara.SharedDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SharedDevice) | Represents a shared device on a computer.
 [Vanara.SharedDevices](https://github.com/dahall/Vanara/search?l=C%23&q=SharedDevices) | Represents all the shared devices on a computers.
 [Vanara.Diagnostics.SystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=SystemShutdown) | Provides access to system shutdown, restart, lock and notifications.
+[Vanara.UserAccount](https://github.com/dahall/Vanara/search?l=C%23&q=UserAccount) | 
+[Vanara.UserAccounts](https://github.com/dahall/Vanara/search?l=C%23&q=UserAccounts) | 
 [Vanara.IO.Wow64Redirect](https://github.com/dahall/Vanara/search?l=C%23&q=Wow64Redirect) | Suspends File System Redirection if found to be in effect. Effectively, this calls <c>IsWow64Process</c> to determine state and then disables redirection using <c>Wow64DisableWow64FsRedirection</c>. It then reverts redirection at disposal using <c>Wow64RevertWow64FsRedirection</c>.

@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows User32.dll
 
 - Includes methods from user32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.User32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.User32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.User32)  
-### Methods - 100% API coverage (559 of 559 functions)  
+### Methods - 100% API coverage (560 of 560 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -491,6 +491,7 @@ Native Method | Header | Managed Method
 [SetScrollRange](https://www.google.com/search?num=5&q=SetScrollRange+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetScrollRange](https://github.com/dahall/Vanara/search?l=C%23&q=SetScrollRange)  
 [SetSysColors](https://www.google.com/search?num=5&q=SetSysColors+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetSysColors](https://github.com/dahall/Vanara/search?l=C%23&q=SetSysColors)  
 [SetSystemCursor](https://www.google.com/search?num=5&q=SetSystemCursor+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetSystemCursor](https://github.com/dahall/Vanara/search?l=C%23&q=SetSystemCursor)  
+[SetThreadCursorCreationScaling](https://www.google.com/search?num=5&q=SetThreadCursorCreationScaling+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetThreadCursorCreationScaling](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadCursorCreationScaling)  
 [SetThreadDesktop](https://www.google.com/search?num=5&q=SetThreadDesktop+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetThreadDesktop](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadDesktop)  
 [SetThreadDpiAwarenessContext](https://www.google.com/search?num=5&q=SetThreadDpiAwarenessContext+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetThreadDpiAwarenessContext](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadDpiAwarenessContext)  
 [SetThreadDpiHostingBehavior](https://www.google.com/search?num=5&q=SetThreadDpiHostingBehavior+site%3Adocs.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetThreadDpiHostingBehavior](https://github.com/dahall/Vanara/search?l=C%23&q=SetThreadDpiHostingBehavior)  

@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Rpc librar
 
 - Includes methods from rpcrt4.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Rpc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Rpc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Rpc)  
-### Methods - 5% API coverage (26 of 513 functions)  
+### Methods - 5% API coverage (26 of 514 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CreateProxyFromTypeInfo](https://www.google.com/search?num=5&q=CreateProxyFromTypeInfo+site%3Adocs.microsoft.com) |  |   
@@ -378,6 +378,7 @@ Native Method | Header | Managed Method
 [RpcBindingInqAuthClientEx](https://www.google.com/search?num=5&q=RpcBindingInqAuthClientExA+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RpcBindingInqAuthClientEx](https://github.com/dahall/Vanara/search?l=C%23&q=RpcBindingInqAuthClientEx)  
 [RpcBindingInqAuthInfo](https://www.google.com/search?num=5&q=RpcBindingInqAuthInfoA+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RpcBindingInqAuthInfo](https://github.com/dahall/Vanara/search?l=C%23&q=RpcBindingInqAuthInfo)  
 [RpcBindingInqAuthInfoEx](https://www.google.com/search?num=5&q=RpcBindingInqAuthInfoExA+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RpcBindingInqAuthInfoEx](https://github.com/dahall/Vanara/search?l=C%23&q=RpcBindingInqAuthInfoEx)  
+[RpcBindingInqMaxCalls](https://www.google.com/search?num=5&q=RpcBindingInqMaxCalls+site%3Adocs.microsoft.com) |  |   
 [RpcBindingInqObject](https://www.google.com/search?num=5&q=RpcBindingInqObject+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RpcBindingInqObject](https://github.com/dahall/Vanara/search?l=C%23&q=RpcBindingInqObject)  
 [RpcBindingInqOption](https://www.google.com/search?num=5&q=RpcBindingInqOption+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RpcBindingInqOption](https://github.com/dahall/Vanara/search?l=C%23&q=RpcBindingInqOption)  
 [RpcBindingReset](https://www.google.com/search?num=5&q=RpcBindingReset+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RpcBindingReset](https://github.com/dahall/Vanara/search?l=C%23&q=RpcBindingReset)  

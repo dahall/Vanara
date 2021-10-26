@@ -13,7 +13,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-DllMain FhServiceBlockBackup FhServiceClosePipe FhServiceOpenPipe FhServiceReloadConfiguration FhServiceStartBackup FhServiceStopBackup FhServiceUnblockBackup
+FhServiceBlockBackup FhServiceClosePipe FhServiceOpenPipe FhServiceReloadConfiguration FhServiceStartBackup FhServiceStopBackup FhServiceUnblockBackup
 
 Structures
 FH_SERVICE_PIPE_HANDLE

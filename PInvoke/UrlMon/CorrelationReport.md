@@ -58,12 +58,17 @@ Native Method | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[AUTHENTICATEINFO](https://www.google.com/search?num=5&q=AUTHENTICATEINFO+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.AUTHENTICATEINFO](https://github.com/dahall/Vanara/search?l=C%23&q=AUTHENTICATEINFO)  
 [BINDINFO](https://www.google.com/search?num=5&q=BINDINFO+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.BINDINFO](https://github.com/dahall/Vanara/search?l=C%23&q=BINDINFO)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
+[IAuthenticate](https://www.google.com/search?num=5&q=IAuthenticate+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IAuthenticate](https://github.com/dahall/Vanara/search?l=C%23&q=IAuthenticate)  
+[IAuthenticateEx](https://www.google.com/search?num=5&q=IAuthenticateEx+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IAuthenticateEx](https://github.com/dahall/Vanara/search?l=C%23&q=IAuthenticateEx)  
+[IBindHost](https://www.google.com/search?num=5&q=IBindHost+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IBindHost](https://github.com/dahall/Vanara/search?l=C%23&q=IBindHost)  
 [IBinding](https://www.google.com/search?num=5&q=IBinding+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IBinding](https://github.com/dahall/Vanara/search?l=C%23&q=IBinding)  
 [IBindStatusCallback](https://www.google.com/search?num=5&q=IBindStatusCallback+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IBindStatusCallback](https://github.com/dahall/Vanara/search?l=C%23&q=IBindStatusCallback)  
 [IInternetSession](https://www.google.com/search?num=5&q=IInternetSession+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IInternetSession](https://github.com/dahall/Vanara/search?l=C%23&q=IInternetSession)  
+[IPersistMoniker](https://www.google.com/search?num=5&q=IPersistMoniker+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IPersistMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=IPersistMoniker)  
 [IUri](https://www.google.com/search?num=5&q=IUri+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IUri](https://github.com/dahall/Vanara/search?l=C%23&q=IUri)  
 [IUriBuilder](https://www.google.com/search?num=5&q=IUriBuilder+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IUriBuilder](https://github.com/dahall/Vanara/search?l=C%23&q=IUriBuilder)  

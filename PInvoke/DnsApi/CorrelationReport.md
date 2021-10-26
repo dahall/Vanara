@@ -3,14 +3,16 @@ PInvoke API (methods, structures and constants imported from Windows DnsApi.dll.
 
 - Includes methods from dnsapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DnsApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DnsApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DnsApi)  
-### Methods - 100% API coverage (34 of 34 functions)  
+### Methods - 100% API coverage (37 of 37 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DnsAcquireContextHandle_](https://www.google.com/search?num=5&q=DnsAcquireContextHandle_A+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsAcquireContextHandle](https://github.com/dahall/Vanara/search?l=C%23&q=DnsAcquireContextHandle)  
 [DnsCancelQuery](https://www.google.com/search?num=5&q=DnsCancelQuery+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsCancelQuery](https://github.com/dahall/Vanara/search?l=C%23&q=DnsCancelQuery)  
 [DnsExtractRecordsFromMessage_W](https://www.google.com/search?num=5&q=DnsExtractRecordsFromMessage_W+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsExtractRecordsFromMessage](https://github.com/dahall/Vanara/search?l=C%23&q=DnsExtractRecordsFromMessage)  
 [DnsFree](https://www.google.com/search?num=5&q=DnsFree+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsFree](https://github.com/dahall/Vanara/search?l=C%23&q=DnsFree)  
+[DnsFreeCustomServers](https://www.google.com/search?num=5&q=DnsFreeCustomServers+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsFreeCustomServers](https://github.com/dahall/Vanara/search?l=C%23&q=DnsFreeCustomServers)  
 [DnsFreeProxyName](https://www.google.com/search?num=5&q=DnsFreeProxyName+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsFreeProxyName](https://github.com/dahall/Vanara/search?l=C%23&q=DnsFreeProxyName)  
+[DnsGetApplicationSettings](https://www.google.com/search?num=5&q=DnsGetApplicationSettings+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsGetApplicationSettings](https://github.com/dahall/Vanara/search?l=C%23&q=DnsGetApplicationSettings)  
 [DnsGetCacheDataTable](https://www.google.com/search?num=5&q=DnsGetCacheDataTable+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DnsApi.DnsGetCacheDataTable](https://github.com/dahall/Vanara/search?l=C%23&q=DnsGetCacheDataTable)  
 [DnsGetProxyInformation](https://www.google.com/search?num=5&q=DnsGetProxyInformation+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsGetProxyInformation](https://github.com/dahall/Vanara/search?l=C%23&q=DnsGetProxyInformation)  
 [DnsModifyRecordsInSet_](https://www.google.com/search?num=5&q=DnsModifyRecordsInSet_A+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsModifyRecordsInSet](https://github.com/dahall/Vanara/search?l=C%23&q=DnsModifyRecordsInSet)  
@@ -35,6 +37,7 @@ Native Method | Header | Managed Method
 [DnsServiceRegisterCancel](https://www.google.com/search?num=5&q=DnsServiceRegisterCancel+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsServiceRegisterCancel](https://github.com/dahall/Vanara/search?l=C%23&q=DnsServiceRegisterCancel)  
 [DnsServiceResolve](https://www.google.com/search?num=5&q=DnsServiceResolve+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsServiceResolve](https://github.com/dahall/Vanara/search?l=C%23&q=DnsServiceResolve)  
 [DnsServiceResolveCancel](https://www.google.com/search?num=5&q=DnsServiceResolveCancel+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsServiceResolveCancel](https://github.com/dahall/Vanara/search?l=C%23&q=DnsServiceResolveCancel)  
+[DnsSetApplicationSettings](https://www.google.com/search?num=5&q=DnsSetApplicationSettings+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsSetApplicationSettings](https://github.com/dahall/Vanara/search?l=C%23&q=DnsSetApplicationSettings)  
 [DnsStartMulticastQuery](https://www.google.com/search?num=5&q=DnsStartMulticastQuery+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsStartMulticastQuery](https://github.com/dahall/Vanara/search?l=C%23&q=DnsStartMulticastQuery)  
 [DnsStopMulticastQuery](https://www.google.com/search?num=5&q=DnsStopMulticastQuery+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsStopMulticastQuery](https://github.com/dahall/Vanara/search?l=C%23&q=DnsStopMulticastQuery)  
 [DnsValidateName_](https://www.google.com/search?num=5&q=DnsValidateName_A+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsValidateName](https://github.com/dahall/Vanara/search?l=C%23&q=DnsValidateName)  
@@ -47,8 +50,10 @@ Native Structure | Header | Managed Structure
 [DNS_AAAA_DATA](https://www.google.com/search?num=5&q=DNS_AAAA_DATA+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_AAAA_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_AAAA_DATA)  
 [DNS_ADDR](https://www.google.com/search?num=5&q=DNS_ADDR+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_ADDR](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_ADDR)  
 [DNS_ADDR_ARRAY](https://www.google.com/search?num=5&q=DNS_ADDR_ARRAY+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_ADDR_ARRAY](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_ADDR_ARRAY)  
+[DNS_APPLICATION_SETTINGS](https://www.google.com/search?num=5&q=DNS_APPLICATION_SETTINGS+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_APPLICATION_SETTINGS](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_APPLICATION_SETTINGS)  
 [DNS_ATMA_DATA](https://www.google.com/search?num=5&q=DNS_ATMA_DATA+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_ATMA_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_ATMA_DATA)  
 [DNS_CACHE_ENTRY](https://www.google.com/search?num=5&q=DNS_CACHE_ENTRY+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.DnsApi.DNS_CACHE_ENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_CACHE_ENTRY)  
+[DNS_CUSTOM_SERVER](https://www.google.com/search?num=5&q=DNS_CUSTOM_SERVER+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_CUSTOM_SERVER](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_CUSTOM_SERVER)  
 [DNS_DHCID_DATA](https://www.google.com/search?num=5&q=DNS_DHCID_DATA+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_DHCID_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_DHCID_DATA)  
 [DNS_DS_DATA](https://www.google.com/search?num=5&q=DNS_DS_DATA+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_DS_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_DS_DATA)  
 [DNS_HEADER](https://www.google.com/search?num=5&q=DNS_HEADER+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_HEADER](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_HEADER)  

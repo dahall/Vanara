@@ -10,7 +10,15 @@
     <AssemblyName>Vanara.PInvoke.EnhancedStorage</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;EnhancedStorage</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Structures
+ACT_AUTHORIZATION_STATE ENHANCED_STORAGE_PASSWORD_SILO_INFORMATION SILO_INFO
+
+Interfaces
+IEnhancedStorageACT IEnhancedStorageACT2 IEnhancedStorageACT3 IEnhancedStorageSilo IEnhancedStorageSiloAction IEnumEnhancedStorageACT
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

@@ -6,7 +6,6 @@ PInvoke API (methods, structures and constants) imported from Windows FhSvcCtl.d
 ### Methods - 100% API coverage (7 of 7 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[DllMain](https://www.google.com/search?num=5&q=DllMain+site%3Adocs.microsoft.com) |  |   
 [FhServiceBlockBackup](https://www.google.com/search?num=5&q=FhServiceBlockBackup+site%3Adocs.microsoft.com) | fhsvcctl.h | [Vanara.PInvoke.FhSvcCtl.FhServiceBlockBackup](https://github.com/dahall/Vanara/search?l=C%23&q=FhServiceBlockBackup)  
 [FhServiceClosePipe](https://www.google.com/search?num=5&q=FhServiceClosePipe+site%3Adocs.microsoft.com) | fhsvcctl.h | [Vanara.PInvoke.FhSvcCtl.FhServiceClosePipe](https://github.com/dahall/Vanara/search?l=C%23&q=FhServiceClosePipe)  
 [FhServiceOpenPipe](https://www.google.com/search?num=5&q=FhServiceOpenPipe+site%3Adocs.microsoft.com) | fhsvcctl.h | [Vanara.PInvoke.FhSvcCtl.FhServiceOpenPipe](https://github.com/dahall/Vanara/search?l=C%23&q=FhServiceOpenPipe)  
