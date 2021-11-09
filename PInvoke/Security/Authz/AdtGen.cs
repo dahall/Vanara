@@ -137,60 +137,35 @@ namespace Vanara.PInvoke
 		/// compatibility with any future changes to this structure.
 		/// </summary>
 		[PInvokeData("adtgen.h")]
-		[StructLayout(LayoutKind.Explicit, Size = 32, CharSet = CharSet.Unicode)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct AUDIT_PARAM
 		{
 			/// <summary>Type</summary>
-			[FieldOffset(0)]
 			public AUDIT_PARAM_TYPE Type;
 
 			/// <summary>currently unused</summary>
-			[FieldOffset(4)]
 			public uint Length;
 
 			/// <summary>currently unused</summary>
-			[FieldOffset(8)]
 			public uint Flags;
 
 			/// <summary/>
-			[FieldOffset(16)]
 			public IntPtr Data0;
 
 			/// <summary/>
-			[FieldOffset(16)]
-			public StrPtrUni String;
-
-			/// <summary/>
-			[FieldOffset(16)]
-			public IntPtr u;
-
-			/// <summary/>
-			[FieldOffset(16)]
-			public PSID psid;
-
-			/// <summary/>
-			[FieldOffset(16)]
-			public GuidPtr pguid;
-
-			/// <summary/>
-			[FieldOffset(16)]
-			public uint LogonId_LowPart;
-
-			/// <summary/>
-			[FieldOffset(16)]
-			public IntPtr pObjectTypes;
-
-			/// <summary/>
-			[FieldOffset(16)]
-			public IntPtr pIpAddress;
-
-			/// <summary/>
-			[FieldOffset(24)]
 			public IntPtr Data1;
 
-			/// <summary/>
-			[FieldOffset(24)]
-			public int LogonId_HighPart;
+			/// <summary>Initializes a new instance of the <see cref="AUDIT_PARAM"/> struct.</summary>
+			/// <param name="type">The type.</param>
+			/// <param name="data0">The data0.</param>
+			/// <param name="data1">The data1.</param>
+			public AUDIT_PARAM(AUDIT_PARAM_TYPE type, IntPtr data0, IntPtr data1 = default)
+			{
+				Type = type;
+				Length = Flags = 0;
+				Data0 = data0;
+				Data1 = data1;
+			}
 		}
 
 		/// <summary>Audit parameters passed to LsaGenAuditEvent.</summary>

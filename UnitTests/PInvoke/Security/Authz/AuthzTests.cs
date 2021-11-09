@@ -304,9 +304,11 @@ namespace Vanara.PInvoke.Tests
 				try
 				{
 					using SafeCoTaskMemString data = new("Testing");
-					//using SafeCoTaskMemString name = new("MyName");
-					using SafeNativeArray<AUDIT_PARAM> mem = new(new[] { new AUDIT_PARAM { Type = AUDIT_PARAM_TYPE.APT_String, Data0 = data/*, Data1 = name*/ } });
-					AUDIT_PARAMS ap = new() { Count = 1, Parameters = mem };
+					using SafeNativeArray<AUDIT_PARAM> mem = new(new[] {
+						new AUDIT_PARAM(AUDIT_PARAM_TYPE.APT_String, data),
+						new AUDIT_PARAM(AUDIT_PARAM_TYPE.APT_Ulong, new IntPtr(123)),
+					});
+					AUDIT_PARAMS ap = new() { Count = (ushort)mem.Count, Parameters = mem };
 					Assert.That(AuthzReportSecurityEventFromParams(0, hEvtProv, eventId, PSID.NULL, ap), ResultIs.Successful);
 				}
 				finally { Assert.That(() => hEvtProv.Dispose(), Throws.Nothing); }
