@@ -752,7 +752,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVIMakeCompressedStream")]
 		public static extern HRESULT AVIMakeCompressedStream(out IAVIStream ppsCompressed, [In] IAVIStream ppsSource,
-			[In] AVICOMPRESSOPTIONS lpOptions, in Guid pclsidHandler);
+			in AVICOMPRESSOPTIONS lpOptions, in Guid pclsidHandler);
 
 		/// <summary>
 		/// The <c>AVIMakeCompressedStream</c> function creates a compressed stream from an uncompressed stream and a compression filter,
@@ -799,7 +799,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVIMakeCompressedStream")]
 		public static extern HRESULT AVIMakeCompressedStream(out IAVIStream ppsCompressed, [In] IAVIStream ppsSource,
-			[In] AVICOMPRESSOPTIONS lpOptions, [In, Optional] GuidPtr pclsidHandler);
+			in AVICOMPRESSOPTIONS lpOptions, [In, Optional] GuidPtr pclsidHandler);
 
 		/// <summary>The <c>AVIMakeFileFromStreams</c> function constructs an AVIFile interface pointer from separate streams.</summary>
 		/// <param name="ppfile">Pointer to a buffer that receives the new file interface pointer.</param>
@@ -906,7 +906,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Avifil32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVISaveA")]
 		public static extern HRESULT AVISave([MarshalAs(UnmanagedType.LPTStr)] string szFile, in Guid pclsidHandler,
-			AVISAVECALLBACK lpfnCallback, int nStreams, IAVIStream pfile, [In] AVICOMPRESSOPTIONS lpOptions);
+			AVISAVECALLBACK lpfnCallback, int nStreams, IAVIStream pfile, in AVICOMPRESSOPTIONS lpOptions);
 
 		/// <summary>The <c>AVISave</c> function builds a file by combining data streams from other files or from memory.</summary>
 		/// <param name="szFile">Null-terminated string containing the name of the file to save.</param>
@@ -958,7 +958,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_Avifil32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVISaveA")]
 		public static extern HRESULT AVISave([MarshalAs(UnmanagedType.LPTStr)] string szFile, [In, Optional] GuidPtr pclsidHandler,
-			AVISAVECALLBACK lpfnCallback, int nStreams, IAVIStream pfile, [In] AVICOMPRESSOPTIONS lpOptions);
+			AVISAVECALLBACK lpfnCallback, int nStreams, IAVIStream pfile, in AVICOMPRESSOPTIONS lpOptions);
 
 		/// <summary>The <c>AVISaveOptions</c> function retrieves the save options for a file and returns them in a buffer.</summary>
 		/// <param name="hwnd">Handle to the parent window for the Compression Options dialog box.</param>
@@ -1011,7 +1011,60 @@ namespace Vanara.PInvoke
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVISaveOptions")]
 		public static extern IntPtr AVISaveOptions(HWND hwnd, ICMF_CHOOSE uiFlags, int nStreams,
 			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IAVIStream[] ppavi,
-			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] AVICOMPRESSOPTIONS[] plpOptions);
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] plpOptions);
+
+		/// <summary>The <c>AVISaveOptions</c> function retrieves the save options for a file and returns them in a buffer.</summary>
+		/// <param name="hwnd">Handle to the parent window for the Compression Options dialog box.</param>
+		/// <param name="uiFlags">
+		/// <para>Flags for displaying the Compression Options dialog box. The following flags are defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ICMF_CHOOSE_KEYFRAME</term>
+		/// <term>Displays a Key Frame Every dialog box for the video options. This is the same flag used in the ICCompressorChoose function.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMF_CHOOSE_DATARATE</term>
+		/// <term>Displays a Data Rate dialog box for the video options. This is the same flag used in ICCompressorChoose.</term>
+		/// </item>
+		/// <item>
+		/// <term>ICMF_CHOOSE_PREVIEW</term>
+		/// <term>
+		/// Displays a Preview button for the video options. This button previews the compression by using a frame from the stream. This is
+		/// the same flag used in ICCompressorChoose.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="nStreams">Number of streams that have their options set by the dialog box.</param>
+		/// <param name="ppavi">
+		/// Pointer to an array of stream interface pointers. The nStreams parameter indicates the number of pointers in the array.
+		/// </param>
+		/// <param name="plpOptions">
+		/// Pointer to an array of pointers to AVICOMPRESSOPTIONS structures. These structures hold the compression options set by the
+		/// dialog box. The nStreams parameter indicates the number of pointers in the array.
+		/// </param>
+		/// <returns>Returns <c>TRUE</c> if the user pressed OK, <c>FALSE</c> for CANCEL, or an error otherwise.</returns>
+		/// <remarks>
+		/// <para>
+		/// This function presents a standard Compression Options dialog box using hwnd as the parent window handle. When the user is
+		/// finished selecting the compression options for each stream, the options are returned in the AVICOMPRESSOPTIONS structure in the
+		/// array referenced by plpOptions. The calling application must pass the interface pointers for the streams in the array referenced
+		/// by ppavi.
+		/// </para>
+		/// <para>An application must allocate memory for the AVICOMPRESSOPTIONS structures and the array of pointers to these structures.</para>
+		/// <para>The argument ppavi contains the address of a pointer to an IAVIStream interface.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-avisaveoptions INT_PTR AVISaveOptions( HWND hwnd, UINT uiFlags, int
+		// nStreams, IAVIStream *ppavi, LPAVICOMPRESSOPTIONS *plpOptions );
+		[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVISaveOptions")]
+		public static unsafe extern IntPtr AVISaveOptions(HWND hwnd, ICMF_CHOOSE uiFlags, int nStreams,
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IAVIStream[] ppavi,
+			[In, Out] AVICOMPRESSOPTIONS** plpOptions);
 
 		/// <summary>The <c>AVISaveOptionsFree</c> function frees the resources allocated by the AVISaveOptions function.</summary>
 		/// <param name="nStreams">Count of the AVICOMPRESSOPTIONS structures referenced in plpOptions.</param>
@@ -1024,7 +1077,20 @@ namespace Vanara.PInvoke
 		// LPAVICOMPRESSOPTIONS *plpOptions );
 		[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVISaveOptionsFree")]
-		public static extern HRESULT AVISaveOptionsFree(int nStreams, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] AVICOMPRESSOPTIONS[] plpOptions);
+		public static extern HRESULT AVISaveOptionsFree(int nStreams, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] plpOptions);
+
+		/// <summary>The <c>AVISaveOptionsFree</c> function frees the resources allocated by the AVISaveOptions function.</summary>
+		/// <param name="nStreams">Count of the AVICOMPRESSOPTIONS structures referenced in plpOptions.</param>
+		/// <param name="plpOptions">
+		/// Pointer to an array of pointers to AVICOMPRESSOPTIONS structures. These structures hold the compression options set by the
+		/// dialog box. The resources allocated by AVISaveOptions for each of these structures will be freed.
+		/// </param>
+		/// <returns>Returns AVIERR_OK.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-avisaveoptionsfree HRESULT AVISaveOptionsFree( int nStreams,
+		// LPAVICOMPRESSOPTIONS *plpOptions );
+		[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVISaveOptionsFree")]
+		public static unsafe extern HRESULT AVISaveOptionsFree(int nStreams, AVICOMPRESSOPTIONS** plpOptions);
 
 		/// <summary>The <c>AVISaveV</c> function builds a file by combining data streams from other files or from memory.</summary>
 		/// <param name="szFile">Null-terminated string containing the name of the file to save.</param>
@@ -1070,7 +1136,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVISaveVA")]
 		public static extern HRESULT AVISaveV([MarshalAs(UnmanagedType.LPTStr)] string szFile, in Guid pclsidHandler, AVISAVECALLBACK lpfnCallback, int nStreams,
 			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IAVIStream[] ppavi,
-			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] AVICOMPRESSOPTIONS[] plpOptions);
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] plpOptions);
 
 		/// <summary>The <c>AVISaveV</c> function builds a file by combining data streams from other files or from memory.</summary>
 		/// <param name="szFile">Null-terminated string containing the name of the file to save.</param>
@@ -1114,9 +1180,57 @@ namespace Vanara.PInvoke
 		// AVISAVECALLBACK lpfnCallback, int nStreams, IAVIStream *ppavi, LPAVICOMPRESSOPTIONS *plpOptions );
 		[DllImport(Lib_Avifil32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVISaveVA")]
-		public static extern HRESULT AVISaveV([MarshalAs(UnmanagedType.LPTStr)] string szFile, [In, Optional] GuidPtr pclsidHandler, AVISAVECALLBACK lpfnCallback, int nStreams,
+		public static extern HRESULT AVISaveV([MarshalAs(UnmanagedType.LPTStr)] string szFile, [In, Optional] GuidPtr pclsidHandler,
+			AVISAVECALLBACK lpfnCallback, int nStreams,
 			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IAVIStream[] ppavi,
-			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] AVICOMPRESSOPTIONS[] plpOptions);
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] plpOptions);
+
+		/// <summary>The <c>AVISaveV</c> function builds a file by combining data streams from other files or from memory.</summary>
+		/// <param name="szFile">Null-terminated string containing the name of the file to save.</param>
+		/// <param name="pclsidHandler">
+		/// Pointer to the file handler used to write the file. The file is created by calling the AVIFileOpen function using this handler.
+		/// If a handler is not specified, a default is selected from the registry based on the file extension.
+		/// </param>
+		/// <param name="lpfnCallback">
+		/// Pointer to a callback function used to display status information and to let the user cancel the save operation.
+		/// </param>
+		/// <param name="nStreams">Number of streams to save.</param>
+		/// <param name="ppavi">
+		/// Pointer to an array of pointers to the <c>AVISTREAM</c> function structures. The array uses one pointer for each stream.
+		/// </param>
+		/// <param name="plpOptions">
+		/// Pointer to an array of pointers to AVICOMPRESSOPTIONS structures. The array uses one pointer for each stream.
+		/// </param>
+		/// <returns>Returns AVIERR_OK if successful or an error otherwise.</returns>
+		/// <remarks>
+		/// <para>
+		/// This function is equivalent to the AVISave function except the streams are passed in an array instead of as a variable number of arguments.
+		/// </para>
+		/// <para>
+		/// This function creates a file, copies stream data into the file, closes the file, and releases the resources used by the new
+		/// file. The last two parameters of this function are arrays that identify the streams to save in the file and define the
+		/// compression options of those streams.
+		/// </para>
+		/// <para>An application must allocate memory for the AVICOMPRESSOPTIONS structures and the array of pointers to these structures.</para>
+		/// <para>The argument ppavi contains the address of a pointer to an IAVIStream interface.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The vfw.h header defines AVISaveV as an alias which automatically selects the ANSI or Unicode version of this function based on
+		/// the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+		/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+		/// Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-avisaveva HRESULT AVISaveVA( LPCSTR szFile, CLSID *pclsidHandler,
+		// AVISAVECALLBACK lpfnCallback, int nStreams, IAVIStream *ppavi, LPAVICOMPRESSOPTIONS *plpOptions );
+		[DllImport(Lib_Avifil32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVISaveVA")]
+		public static unsafe extern HRESULT AVISaveV([MarshalAs(UnmanagedType.LPTStr)] string szFile, [In, Optional] Guid* pclsidHandler,
+			AVISAVECALLBACK lpfnCallback, int nStreams,
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IAVIStream[] ppavi,
+			[In, Out] AVICOMPRESSOPTIONS** plpOptions);
 
 		/// <summary>The <c>AVIStreamAddRef</c> function increments the reference count of an AVI stream.</summary>
 		/// <param name="pavi">Handle to an open AVI stream.</param>
@@ -2275,7 +2389,7 @@ namespace Vanara.PInvoke
 		// LPVOID lpParms; DWORD cbParms; DWORD dwInterleaveEvery; } AVICOMPRESSOPTIONS, *LPAVICOMPRESSOPTIONS;
 		[PInvokeData("vfw.h", MSDNShortId = "NS:vfw.__unnamed_struct_17")]
 		[StructLayout(LayoutKind.Sequential)]
-		public class AVICOMPRESSOPTIONS
+		public struct AVICOMPRESSOPTIONS
 		{
 			/// <summary>
 			/// <para>
