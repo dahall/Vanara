@@ -217,6 +217,12 @@ namespace Vanara.PInvoke
 			/// </summary>
 			WS_EX_NOPARENTNOTIFY = 0x00000004,
 
+			/// <summary>
+			/// The window does not render to a redirection surface. This is for windows that do not have visible content or that use
+			/// mechanisms other than surfaces to provide their visual.
+			/// </summary>
+			WS_EX_NOREDIRECTIONBITMAP = 0x00200000,
+
 			/// <summary>Specifies an overlapped window.</summary>
 			WS_EX_OVERLAPPEDWINDOW = WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE,
 
@@ -266,7 +272,7 @@ namespace Vanara.PInvoke
 			WS_EX_TRANSPARENT = 0x00000020,
 
 			/// <summary>Specifies a window that has a border with a raised edge.</summary>
-			WS_EX_WINDOWEDGE = 0x00000100
+			WS_EX_WINDOWEDGE = 0x00000100,
 		}
 	}
 }
