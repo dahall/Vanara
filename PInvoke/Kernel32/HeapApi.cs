@@ -453,7 +453,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366599")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
-		public static extern SafeHHEAP HeapCreate(HeapFlags flOptions, SizeT dwInitialSize, SizeT dwMaximumSize);
+		public static extern SafeHHEAP HeapCreate(HeapFlags flOptions, SizeT dwInitialSize = default, SizeT dwMaximumSize = default);
 
 		/// <summary>
 		/// Destroys the specified heap object. It decommits and releases all the pages of a private heap object, and it invalidates the
@@ -1474,7 +1474,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </param>
 			/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-			public SafeHeapBlock(HHEAP hHeap, SizeT size = default, HeapFlags flags = 0) : this(hHeap, IntPtr.Zero, 0)
+			public SafeHeapBlock(HHEAP hHeap, SizeT size = default, HeapFlags flags = 0) : this(hHeap, IntPtr.Zero, size)
 			{
 				if (size < 0)
 					throw new ArgumentOutOfRangeException(nameof(size), "The value of this argument must be non-negative");
@@ -1561,15 +1561,32 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafeHHEAP"/> class.</summary>
 			private SafeHHEAP() : base() { }
 
+			/// <summary>Gets or sets the heap features that are enabled.</summary>
+			HeapCompatibility Compatibility
+			{
+				get => HeapQueryInformation<HeapCompatibility>(this, HEAP_INFORMATION_CLASS.HeapCompatibilityInformation);
+				set => HeapSetInformation<HeapCompatibility>(this, HEAP_INFORMATION_CLASS.HeapCompatibilityInformation, value);
+			}
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeHHEAP"/> to <see cref="HHEAP"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HHEAP(SafeHHEAP h) => h.handle;
 
+			/// <summary>
+			/// Enables the terminate-on-corruption feature. If the heap manager detects an error in any heap used by the process, it calls
+			/// the Windows Error Reporting service and terminates the process.
+			/// <para>After a process enables this feature, it cannot be disabled.</para>
+			/// </summary>
+			public void EnableTerminationOnCorruption() => Win32Error.ThrowLastErrorIfFalse(HeapSetInformation(this, HEAP_INFORMATION_CLASS.HeapEnableTerminationOnCorruption, default, default));
+
 			/// <summary>Gets a block of memory from this private heap.</summary>
 			/// <param name="size">The size of the block.</param>
 			/// <returns>A safe handle for the memory that will call HeapFree on disposal.</returns>
-			public SafeHeapBlock GetBlock(int size) => new(this, size);
+			public SafeHeapBlock GetBlock(SizeT size) => new(this, size);
+
+			/// <summary>Optimizes caches for this heap, and decommits the memory if possible.</summary>
+			public void OptimizeResources() => HeapSetInformation(this, HEAP_INFORMATION_CLASS.HeapOptimizeResources, new HEAP_OPTIMIZE_RESOURCES_INFORMATION(0));
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => HeapDestroy(this);
