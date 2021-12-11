@@ -1603,7 +1603,7 @@ namespace Vanara.PInvoke
 			/// <param name="pNotifyInterface">
 			/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 			/// </param>
-			void SetNotifyInterface([In, MarshalAs(UnmanagedType.IUnknown)] object pNotifyInterface);
+			void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
 
 			/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 			/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -1873,7 +1873,7 @@ namespace Vanara.PInvoke
 			/// <param name="pNotifyInterface">
 			/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 			/// </param>
-			new void SetNotifyInterface([In, MarshalAs(UnmanagedType.IUnknown)] object pNotifyInterface);
+			new void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
 
 			/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 			/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -2233,7 +2233,7 @@ namespace Vanara.PInvoke
 			/// <param name="pNotifyInterface">
 			/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 			/// </param>
-			new void SetNotifyInterface([In, MarshalAs(UnmanagedType.IUnknown)] object pNotifyInterface);
+			new void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
 
 			/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 			/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -2625,7 +2625,7 @@ namespace Vanara.PInvoke
 			/// <param name="pNotifyInterface">
 			/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 			/// </param>
-			new void SetNotifyInterface([In, MarshalAs(UnmanagedType.IUnknown)] object pNotifyInterface);
+			new void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
 
 			/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 			/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -3060,7 +3060,7 @@ namespace Vanara.PInvoke
 			/// <param name="pNotifyInterface">
 			/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
 			/// </param>
-			new void SetNotifyInterface([In, MarshalAs(UnmanagedType.IUnknown)] object pNotifyInterface);
+			new void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
 
 			/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
 			/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
@@ -3344,6 +3344,517 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// <para>Use this interface to query or set several optional behaviors of a job.</para>
+		/// <para>To get this interface, call the <c>IBackgroundCopyJob::QueryInterface</c> method using as the interface identifier.</para>
+		/// </summary>
+		/// <returns></returns>
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/hh446781(v=vs.85).aspx
+		[PInvokeData("Bits5_0.h", MSDNShortId = "hh446781", MinClient = PInvokeClient.Windows10)]
+		[ComImport, Guid("CF6784F7-D677-49FD-9368-CB47AEE9D1AD"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IBackgroundCopyJob6 : IBackgroundCopyJob5
+		{
+			/// <summary>Adds multiple files to a job.</summary>
+			/// <param name="cFileCount">Number of elements in paFileSet.</param>
+			/// <param name="pFileSet">
+			/// Array of BG_FILE_INFO structures that identify the local and remote file names of the files to transfer.
+			/// <para>
+			/// Upload jobs are restricted to a single file.If the array contains more than one element, or the job already contains a file,
+			/// the method returns BG_E_TOO_MANY_FILES.
+			/// </para>
+			/// </param>
+			new void AddFileSet([In] uint cFileCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] BG_FILE_INFO[] pFileSet);
+
+			/// <summary>Adds a single file to the job.</summary>
+			/// <param name="RemoteUrl">
+			/// Null-terminated string that contains the name of the file on the server. For information on specifying the remote name, see
+			/// the RemoteName member and Remarks section of the BG_FILE_INFO structure.
+			/// </param>
+			/// <param name="LocalName">
+			/// Null-terminated string that contains the name of the file on the client. For information on specifying the local name, see
+			/// the LocalName member and Remarks section of the BG_FILE_INFO structure.
+			/// </param>
+			new void AddFile([In, MarshalAs(UnmanagedType.LPWStr)] string RemoteUrl, [In, MarshalAs(UnmanagedType.LPWStr)] string LocalName);
+
+			/// <summary>Retrieves an IEnumBackgroundCopyFiles interface pointer that you use to enumerate the files in a job.</summary>
+			/// <returns>
+			/// IEnumBackgroundCopyFiles interface pointer that you use to enumerate the files in the job. Release ppEnumFiles when done.
+			/// </returns>
+			new IEnumBackgroundCopyFiles EnumFiles();
+
+			/// <summary>
+			/// Suspends a job. New jobs, jobs that are in error, and jobs that have finished transferring files are automatically suspended.
+			/// </summary>
+			new void Suspend();
+
+			/// <summary>Activates a new job or restarts a job that has been suspended.</summary>
+			new void Resume();
+
+			/// <summary>
+			/// Deletes the job from the transfer queue and removes related temporary files from the client (downloads) and server (uploads).
+			/// </summary>
+			new void Cancel();
+
+			/// <summary>Ends the job and saves the transferred files on the client.</summary>
+			new void Complete();
+
+			/// <summary>Retrieves the identifier used to identify the job in the queue.</summary>
+			/// <returns>GUID that identifies the job within the BITS queue.</returns>
+			new Guid GetId();
+
+			/// <summary>Retrieves the type of transfer being performed, such as a file download or upload.</summary>
+			/// <returns>Type of transfer being performed. For a list of transfer types, see the BG_JOB_TYPE enumeration.</returns>
+			new BG_JOB_TYPE GetType();
+
+			/// <summary>Retrieves job-related progress information, such as the number of bytes and files transferred.</summary>
+			/// <returns>
+			/// Contains data that you can use to calculate the percentage of the job that is complete. For more information, see BG_JOB_PROGRESS.
+			/// </returns>
+			new BG_JOB_PROGRESS GetProgress();
+
+			/// <summary>Retrieves job-related time stamps, such as the time that the job was created or last modified.</summary>
+			/// <returns>Contains job-related time stamps. For available time stamps, see the BG_JOB_TIMES structure.</returns>
+			new BG_JOB_TIMES GetTimes();
+
+			/// <summary>Retrieves the state of the job.</summary>
+			/// <returns>
+			/// The state of the job. For example, the state reflects whether the job is in error, transferring data, or suspended. For a
+			/// list of job states, see the BG_JOB_STATE enumeration.
+			/// </returns>
+			new BG_JOB_STATE GetState();
+
+			/// <summary>
+			/// Retrieves the error interface after an error occurs.
+			/// <para>
+			/// BITS generates an error object when the state of the job is BG_JOB_STATE_ERROR or BG_JOB_STATE_TRANSIENT_ERROR.The service
+			/// does not create an error object when a call to an IBackgroundCopyXXXX interface method fails.The error object is available
+			/// until BITS begins transferring data(the state of the job changes to BG_JOB_STATE_TRANSFERRING) for the job or until your
+			/// application exits.
+			/// </para>
+			/// </summary>
+			/// <returns>
+			/// Error interface that provides the error code, a description of the error, and the context in which the error occurred. This
+			/// parameter also identifies the file being transferred at the time the error occurred. Release ppError when done.
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.Interface)]
+			new IBackgroundCopyError GetError();
+
+			/// <summary>Retrieves the identity of the job's owner.</summary>
+			/// <returns>
+			/// Null-terminated string that contains the string version of the SID that identifies the job's owner. Call the CoTaskMemFree
+			/// function to free ppOwner when done.
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			new string GetOwner();
+
+			/// <summary>Specifies a display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
+			/// <param name="pDisplayName">
+			/// Null-terminated string that identifies the job. Must not be NULL. The length of the string is limited to 256 characters, not
+			/// including the null terminator.
+			/// </param>
+			new void SetDisplayName([In, MarshalAs(UnmanagedType.LPWStr)] string pDisplayName);
+
+			/// <summary>Retrieves the display name for the job. Typically, you use the display name to identify the job in a user interface.</summary>
+			/// <returns>
+			/// Null-terminated string that contains the display name that identifies the job. More than one job can have the same display
+			/// name. Call the CoTaskMemFree function to free ppDisplayName when done.
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			new string GetDisplayName();
+
+			/// <summary>Provides a description of the job.</summary>
+			/// <param name="pDescription">
+			/// Null-terminated string that provides additional information about the job. The length of the string is limited to 1,024
+			/// characters, not including the null terminator.
+			/// </param>
+			new void SetDescription([In, MarshalAs(UnmanagedType.LPWStr)] string pDescription);
+
+			/// <summary>Retrieves the description of the job.</summary>
+			/// <returns>
+			/// Null-terminated string that contains a short description of the job. Call the CoTaskMemFree function to free ppDescription
+			/// when done.
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			new string GetDescription();
+
+			/// <summary>
+			/// Specifies the priority level of your job. The priority level determines when your job is processed relative to other jobs in
+			/// the transfer queue.
+			/// </summary>
+			/// <param name="Priority">
+			/// Specifies the priority level of your job relative to other jobs in the transfer queue. The default is BG_JOB_PRIORITY_NORMAL.
+			/// For a list of priority levels, see the BG_JOB_PRIORITY enumeration.
+			/// </param>
+			new void SetPriority(BG_JOB_PRIORITY Priority);
+
+			/// <summary>
+			/// Retrieves the priority level for the job. The priority level determines when the job is processed relative to other jobs in
+			/// the transfer queue.
+			/// </summary>
+			/// <returns>Priority of the job relative to other jobs in the transfer queue.</returns>
+			new BG_JOB_PRIORITY GetPriority();
+
+			/// <summary>Specifies the type of event notification you want to receive, such as job transferred events.</summary>
+			/// <param name="NotifyFlags">Set one or more of the following flags to identify the events that you want to receive.</param>
+			new void SetNotifyFlags([In] BG_NOTIFY NotifyFlags);
+
+			/// <summary>Retrieves the event notification flags for the job.</summary>
+			/// <returns>Identifies the events that your application receives.</returns>
+			new BG_NOTIFY GetNotifyFlags();
+
+			/// <summary>
+			/// Identifies your implementation of the IBackgroundCopyCallback interface to BITS. Use the IBackgroundCopyCallback interface to
+			/// receive notification of job-related events.
+			/// </summary>
+			/// <param name="pNotifyInterface">
+			/// An IBackgroundCopyCallback interface pointer. To remove the current callback interface pointer, set this parameter to NULL.
+			/// </param>
+			new void SetNotifyInterface(IBackgroundCopyCallback pNotifyInterface);
+
+			/// <summary>Retrieves the interface pointer to your implementation of the IBackgroundCopyCallback interface.</summary>
+			/// <returns>Interface pointer to your implementation of the IBackgroundCopyCallback interface. When done, release ppNotifyInterface.</returns>
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			new object GetNotifyInterface();
+
+			/// <summary>
+			/// Sets the minimum length of time that BITS waits after encountering a transient error condition before trying to transfer the file.
+			/// </summary>
+			/// <param name="RetryDelay">
+			/// Minimum length of time, in seconds, that BITS waits after encountering a transient error before trying to transfer the file.
+			/// The default retry delay is 600 seconds (10 minutes). The minimum retry delay that you can specify is 5 seconds. If you
+			/// specify a value less than 5 seconds, BITS changes the value to 5 seconds. If the value exceeds the no-progress-timeout value
+			/// retrieved from the GetNoProgressTimeout method, BITS will not retry the transfer and moves the job to the BG_JOB_STATE_ERROR state.
+			/// </param>
+			new void SetMinimumRetryDelay([In] uint RetryDelay);
+
+			/// <summary>
+			/// Retrieves the minimum length of time that the service waits after encountering a transient error condition before trying to
+			/// transfer the file.
+			/// </summary>
+			/// <returns>
+			/// Length of time, in seconds, that the service waits after encountering a transient error before trying to transfer the file.
+			/// </returns>
+			new uint GetMinimumRetryDelay();
+
+			/// <summary>
+			/// Sets the length of time that BITS tries to transfer the file after a transient error condition occurs. If there is progress,
+			/// the timer is reset.
+			/// </summary>
+			/// <param name="RetryPeriod">
+			/// Length of time, in seconds, that BITS tries to transfer the file after the first transient error occurs. The default retry
+			/// period is 1,209,600 seconds (14 days). Set the retry period to 0 to prevent retries and to force the job into the
+			/// BG_JOB_STATE_ERROR state for all errors. If the retry period value exceeds the JobInactivityTimeout Group Policy value
+			/// (90-day default), BITS cancels the job after the policy value is exceeded.
+			/// </param>
+			new void SetNoProgressTimeout([In] uint RetryPeriod);
+
+			/// <summary>
+			/// Retrieves the length of time that the service tries to transfer the file after a transient error condition occurs. If there
+			/// is progress, the timer is reset.
+			/// </summary>
+			/// <returns>Length of time, in seconds, that the service tries to transfer the file after a transient error occurs.</returns>
+			new uint GetNoProgressTimeout();
+
+			/// <summary>Retrieves the number of times BITS tried to transfer the job and an error occurred.</summary>
+			/// <returns>
+			/// Number of errors that occurred while BITS tried to transfer the job. The count increases when the job moves from the
+			/// BG_JOB_STATE_TRANSFERRING state to the BG_JOB_STATE_TRANSIENT_ERROR or BG_JOB_STATE_ERROR state.
+			/// </returns>
+			new uint GetErrorCount();
+
+			/// <summary>Specifies which proxy to use to transfer files.</summary>
+			/// <param name="ProxyUsage">
+			/// Specifies whether to use the user's proxy settings, not to use a proxy, or to use application-specified proxy settings. The
+			/// default is to use the user's proxy settings, BG_JOB_PROXY_USAGE_PRECONFIG. For a list of proxy options, see the
+			/// BG_JOB_PROXY_USAGE enumeration.
+			/// </param>
+			/// <param name="ProxyList">
+			/// Null-terminated string that contains the proxies to use to transfer files. The list is space-delimited. For details on
+			/// specifying a proxy, see Remarks.
+			/// <para>
+			/// This parameter must be NULL if the value of ProxyUsage is BG_JOB_PROXY_USAGE_PRECONFIG, BG_JOB_PROXY_USAGE_NO_PROXY, or BG_JOB_PROXY_USAGE_AUTODETECT.
+			/// </para>
+			/// <para>The length of the proxy list is limited to 4,000 characters, not including the null terminator.</para>
+			/// </param>
+			/// <param name="ProxyBypassList">
+			/// Null-terminated string that contains an optional list of host names, IP addresses, or both, that can bypass the proxy. The
+			/// list is space-delimited. For details on specifying a bypass proxy, see Remarks.
+			/// <para>
+			/// This parameter must be NULL if the value of ProxyUsage is BG_JOB_PROXY_USAGE_PRECONFIG, BG_JOB_PROXY_USAGE_NO_PROXY, or BG_JOB_PROXY_USAGE_AUTODETECT.
+			/// </para>
+			/// <para>The length of the proxy list is limited to 4,000 characters, not including the null terminator.</para>
+			/// </param>
+			new void SetProxySettings([In] BG_JOB_PROXY_USAGE ProxyUsage, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyList, [In, MarshalAs(UnmanagedType.LPWStr)] string ProxyBypassList);
+
+			/// <summary>Retrieves the proxy information that the job uses to transfer the files.</summary>
+			/// <param name="pProxyUsage">
+			/// Specifies the proxy settings the job uses to transfer the files. For a list of proxy options, see the BG_JOB_PROXY_USAGE enumeration.
+			/// </param>
+			/// <param name="pProxyList">
+			/// Null-terminated string that contains one or more proxies to use to transfer files. The list is space-delimited. For details
+			/// on the format of the string, see the Listing Proxy Servers section of Enabling Internet Functionality. Call the CoTaskMemFree
+			/// function to free ppProxyList when done.
+			/// </param>
+			/// <param name="pProxyBypassList">
+			/// Null-terminated string that contains an optional list of host names or IP addresses, or both, that were not routed through
+			/// the proxy. The list is space-delimited. For details on the format of the string, see the Listing the Proxy Bypass section of
+			/// Enabling Internet Functionality. Call the CoTaskMemFree function to free ppProxyBypassList when done.
+			/// </param>
+			new void GetProxySettings(out BG_JOB_PROXY_USAGE pProxyUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyList, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProxyBypassList);
+
+			/// <summary>Changes ownership of the job to the current user.</summary>
+			new void TakeOwnership();
+
+			/// <summary>
+			/// Specifies a program to execute if the job enters the BG_JOB_STATE_ERROR or BG_JOB_STATE_TRANSFERRED state. BITS executes the
+			/// program in the context of the user who called this method.
+			/// </summary>
+			/// <param name="Program">
+			/// Null-terminated string that contains the program to execute. The pProgram parameter is limited to MAX_PATH characters, not
+			/// including the null terminator. You should specify a full path to the program; the method will not use the search path to
+			/// locate the program.
+			/// <para>
+			/// To remove command line notification, set pProgram and pParameters to NULL. The method fails if pProgram is NULL and
+			/// pParameters is non-NULL.
+			/// </para>
+			/// </param>
+			/// <param name="Parameters">
+			/// Null-terminated string that contains the parameters of the program in pProgram. The first parameter must be the program in
+			/// pProgram (use quotes if the path uses long file names). The pParameters parameter is limited to 4,000 characters, not
+			/// including the null terminator. This parameter can be NULL.
+			/// </param>
+			new void SetNotifyCmdLine([In, MarshalAs(UnmanagedType.LPWStr)] string Program, [In, MarshalAs(UnmanagedType.LPWStr)] string Parameters);
+
+			/// <summary>Retrieves the program to execute when the job enters the error or transferred state.</summary>
+			/// <param name="pProgram">
+			/// Null-terminated string that contains the program to execute when the job enters the error or transferred state. Call the
+			/// CoTaskMemFree function to free pProgram when done.
+			/// </param>
+			/// <param name="pParameters">
+			/// Null-terminated string that contains the arguments of the program in pProgram. Call the CoTaskMemFree function to free
+			/// pParameters when done.
+			/// </param>
+			new void GetNotifyCmdLine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pProgram, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pParameters);
+
+			/// <summary>Retrieves progress information related to the transfer of the reply data from an upload-reply job.</summary>
+			/// <returns>
+			/// Contains information that you use to calculate the percentage of the reply file transfer that is complete. For more
+			/// information, see BG_JOB_REPLY_PROGRESS.
+			/// </returns>
+			new BG_JOB_REPLY_PROGRESS GetReplyProgress();
+
+			/// <summary>
+			/// Retrieves an in-memory copy of the reply data from the server application. Call this method only if the job's type is
+			/// BG_JOB_TYPE_UPLOAD_REPLY and its state is BG_JOB_STATE_TRANSFERRED.
+			/// </summary>
+			/// <param name="ppBuffer">
+			/// Buffer to contain the reply data. The method sets ppBuffer to NULL if the server application did not return a reply. Call the
+			/// CoTaskMemFree function to free ppBuffer when done.
+			/// </param>
+			/// <param name="pLength">Size, in bytes, of the reply data in ppBuffer.</param>
+			new void GetReplyData(out SafeCoTaskMemHandle ppBuffer, out ulong pLength);
+
+			/// <summary>
+			/// Specifies the name of the file to contain the reply data from the server application. Call this method only if the job's type
+			/// is BG_JOB_TYPE_UPLOAD_REPLY.
+			/// </summary>
+			/// <param name="ReplyFileName">
+			/// Null-terminated string that contains the full path to the reply file. BITS generates the file name if ReplyFileNamePathSpec
+			/// is NULL or an empty string. You cannot use wildcards in the path or file name, and directories in the path must exist. The
+			/// path is limited to MAX_PATH, not including the null terminator. The user must have permissions to write to the directory.
+			/// BITS does not support NTFS streams. Instead of using network drives, which are session specific, use UNC paths (for example,
+			/// \\server\share\path\file). Do not include the \\? prefix in the path.
+			/// </param>
+			new void SetReplyFileName([In, MarshalAs(UnmanagedType.LPWStr)] string ReplyFileName);
+
+			/// <summary>
+			/// Retrieves the name of the file that contains the reply data from the server application. Call this method only if the job
+			/// type is BG_JOB_TYPE_UPLOAD_REPLY.
+			/// </summary>
+			/// <returns>
+			/// Null-terminated string that contains the full path to the reply file. Call the CoTaskMemFree function to free pReplyFileName
+			/// when done.
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			new string GetReplyFileName();
+
+			/// <summary>Specifies the credentials to use for a proxy or remote server user authentication request.</summary>
+			/// <param name="Credentials">
+			/// Identifies the target (proxy or server), authentication scheme, and the user's credentials to use for user authentication.
+			/// For details, see the BG_AUTH_CREDENTIALS structure.
+			/// </param>
+			new void SetCredentials(ref BG_AUTH_CREDENTIALS Credentials);
+
+			/// <summary>
+			/// Removes credentials from use. The credentials must match an existing target and scheme pair that you specified using the
+			/// IBackgroundCopyJob2::SetCredentials method. There is no method to retrieve the credentials you have set.
+			/// </summary>
+			/// <param name="Target">Identifies whether to use the credentials for proxy or server authentication.</param>
+			/// <param name="Scheme">
+			/// Identifies the authentication scheme to use (basic or one of several challenge-response schemes). For details, see the
+			/// BG_AUTH_SCHEME enumeration.
+			/// </param>
+			new void RemoveCredentials(BG_AUTH_TARGET Target, BG_AUTH_SCHEME Scheme);
+
+			/// <summary>Replaces the beginning text of all remote names in the download job with the specified string.</summary>
+			/// <param name="OldPrefix">
+			/// Null-terminated string that identifies the text to replace in the remote name. The text must start at the beginning of the
+			/// remote name.
+			/// </param>
+			/// <param name="NewPrefix">Null-terminated string that contains the replacement text.</param>
+			new void ReplaceRemotePrefix([In, MarshalAs(UnmanagedType.LPWStr)] string OldPrefix, [In, MarshalAs(UnmanagedType.LPWStr)] string NewPrefix);
+
+			/// <summary>Adds a file to a download job and specifies the ranges of the file you want to download.</summary>
+			/// <param name="RemoteUrl">
+			/// Null-terminated string that contains the name of the file on the server. For information on specifying the remote name, see
+			/// the RemoteName member and Remarks section of the BG_FILE_INFO structure. Starting with BITS 3.0, the SMB protocol is not
+			/// supported for ranges.
+			/// <para>BITS 2.5 and 2.0: BITS supports the SMB protocol for ranges.</para>
+			/// </param>
+			/// <param name="LocalName">
+			/// Null-terminated string that contains the name of the file on the client. For information on specifying the local name, see
+			/// the LocalName member and Remarks section of the BG_FILE_INFO structure.
+			/// </param>
+			/// <param name="rangeCount">Number of elements in Ranges.</param>
+			/// <param name="ranges">
+			/// Array of one or more BG_FILE_RANGE structures that specify the ranges to download. Do not specify duplicate or overlapping ranges.
+			/// </param>
+			new void AddFileWithRanges([In, MarshalAs(UnmanagedType.LPWStr)] string RemoteUrl, [In, MarshalAs(UnmanagedType.LPWStr)] string LocalName, [In] uint rangeCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] BG_FILE_RANGE[] ranges);
+
+			/// <summary>Specifies the owner and ACL information to maintain when using SMB to download or upload a file.</summary>
+			/// <param name="Flags">
+			/// Flags that identify the owner and ACL information to maintain when transferring a file using SMB. Subsequent calls to this
+			/// method overwrite the previous flags. Specify 0 to remove the flags from the job. You can specify any combination of the
+			/// following flags.
+			/// </param>
+			new void SetFileACLFlags([In] BG_COPY_FILE Flags);
+
+			/// <summary>Retrieves the flags that identify the owner and ACL information to maintain when transferring a file using SMB.</summary>
+			/// <returns>
+			/// Flags that identify the owner and ACL information to maintain when transferring a file using SMB. Flags can contain any
+			/// combination of the following flags. If no flags are set, Flags is zero.
+			/// </returns>
+			new BG_COPY_FILE GetFileACLFlags();
+
+			/// <summary>
+			/// Sets flags that determine if the files of the job can be cached and served to peers and if the job can download content from peers.
+			/// </summary>
+			/// <param name="Flags">
+			/// Flags that determine if the files of the job can be cached and served to peers and if the job can download content from
+			/// peers. The following flags can be set:
+			/// </param>
+			new void SetPeerCachingFlags(BG_JOB_ENABLE_PEERCACHING Flags);
+
+			/// <summary>
+			/// Retrieves flags that determine if the files of the job can be cached and served to peers and if BITS can download content for
+			/// the job from peers.
+			/// </summary>
+			/// <returns>
+			/// Flags that determine if the files of the job can be cached and served to peers and if BITS can download content for the job
+			/// from peers. The following flags can be set:
+			/// </returns>
+			new BG_JOB_ENABLE_PEERCACHING GetPeerCachingFlags();
+
+			/// <summary>Gets the integrity level of the token of the owner that created or took ownership of the job.</summary>
+			/// <returns>Integrity level of the token of the owner that created or took ownership of the job.</returns>
+			new uint GetOwnerIntegrityLevel();
+
+			/// <summary>
+			/// Gets a value that determines if the token of the owner was elevated at the time they created or took ownership of the job.
+			/// </summary>
+			/// <returns>
+			/// Is TRUE if the token of the owner was elevated at the time they created or took ownership of the job; otherwise, FALSE.
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.Bool)]
+			new bool GetOwnerElevationState();
+
+			/// <summary>Sets the maximum time that BITS will spend transferring the files in the job.</summary>
+			/// <param name="Timeout">
+			/// Maximum time, in seconds, that BITS will spend transferring the files in the job. The default is 7,776,000 seconds (90 days).
+			/// </param>
+			new void SetMaximumDownloadTime(uint Timeout);
+
+			/// <summary>Retrieves the maximum time that BITS will spend transferring the files in the job.</summary>
+			/// <returns>Maximum time, in seconds, that BITS will spend transferring the files in the job.</returns>
+			new uint GetMaximumDownloadTime();
+
+			/// <summary>A generic method for setting BITS job properties.</summary>
+			/// <param name="PropertyId">The ID of the property that is being set specified as a BITS_JOB_PROPERTY_ID enum value.</param>
+			/// <param name="PropertyValue">
+			/// The value of the property that is being set. In order to hold a value whose type is appropriate to the property, this value
+			/// is specified via the BITS_JOB_PROPERTY_VALUE union that is composed of all the known property types.
+			/// </param>
+			new void SetProperty(BITS_JOB_PROPERTY_ID PropertyId, BITS_JOB_PROPERTY_VALUE PropertyValue);
+
+			/// <summary>A generic method for getting BITS job properties.</summary>
+			/// <param name="PropertyId">The ID of the property that is being obtained specified as a BITS_JOB_PROPERTY_ID enum value.</param>
+			/// <returns>The property value returned as a BITS_JOB_PROPERTY_VALUE union.</returns>
+			new BITS_JOB_PROPERTY_VALUE GetProperty(BITS_JOB_PROPERTY_ID PropertyId);
+
+			/// <summary>Specifies a position to prioritize downloading missing data from.</summary>
+			/// <param name="offset">Specifies the new position to prioritize downloading missing data from.</param>
+			/// <remarks>
+			/// <para>
+			/// <c>UpdateDownloadPosition</c> can be requested for any download job that also meets the requirements for
+			/// <c>BITS_JOB_PROPERTY_ON_DEMAND_MODE</c> jobs.
+			/// </para>
+			/// <para>
+			/// The requirements for a <c>BITS_JOB_PROPERTY_ON_DEMAND_MODE</c> job is that the transfer must be a <c>DOWNLOAD</c> job. The
+			/// job must not be <c>DYNAMIC</c> and the server must be an HTTP or HTTPS server and the server requirements for range support
+			/// must all be met. For more information, see HTTP Requirements for BITS Downloads.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_1/nf-bits10_1-ibackgroundcopyfile6-updatedownloadposition
+			// HRESULT UpdateDownloadPosition( [in] UINT64 offset );
+			void UpdateDownloadPosition(ulong offset);
+
+			/// <summary>Adds a new set of file ranges to be prioritized for download.</summary>
+			/// <param name="rangeCount">Specifies the size of the <c>Ranges</c> array.</param>
+			/// <param name="ranges">
+			/// An array of file ranges to be downloaded. Requested ranges are allowed to overlap previously downloaded (or pending) ranges.
+			/// Ranges are automatically split into non-overlapping ranges.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// <c>RequestFileRanges</c> can be requested for any download job that also meets the requirements for
+			/// <c>BITS_JOB_PROPERTY_ON_DEMAND_MODE</c> jobs.
+			/// </para>
+			/// <para>
+			/// The requirements for a <c>BITS_JOB_PROPERTY_ON_DEMAND_MODE</c> job is that the transfer must be a <c>DOWNLOAD</c> job. The
+			/// job must not be <c>DYNAMIC</c> and the server must be an HTTP or HTTPS server and the server requirements for range support
+			/// must all be met. For more information, see HTTP Requirements for BITS Downloads.
+			/// </para>
+			/// <para>
+			/// When all of the requested ranges have been downloaded the job state will be set to <c>BG_JOB_STATE_TRANSFERRED</c> if all of
+			/// the bytes of the file have been transferred. Otherwise, the job state will be set to <c>BG_JOB_STATE_SUSPENDED</c>.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_1/nf-bits10_1-ibackgroundcopyfile6-requestfileranges
+			// HRESULT RequestFileRanges( [in] DWORD rangeCount, [in] const BG_FILE_RANGE [] ranges );
+			void RequestFileRanges(uint rangeCount, [In, MarshalAs(UnmanagedType.LPArray)] BG_FILE_RANGE[] ranges);
+
+			/// <summary>Returns the set of file ranges that have been downloaded.</summary>
+			/// <param name="rangeCount">The number of elements in <c>Ranges</c>.</param>
+			/// <param name="ranges">
+			/// Array of <c>BG_FILE_RANGE</c> structures that describes the ranges that have been downloaded. Ranges will be merged together
+			/// as much as possible. The ranges are ordered by offset. When done, call the CoTaskMemFree function to free <c>Ranges</c>.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// <c>GetFilledFileRanges</c> can be requested for any download job that also meets the requirements for
+			/// <c>BITS_JOB_PROPERTY_ON_DEMAND_MODE</c> jobs.
+			/// </para>
+			/// <para>
+			/// The requirements for a <c>BITS_JOB_PROPERTY_ON_DEMAND_MODE</c> job is that the transfer must be a <c>DOWNLOAD</c> job. The
+			/// job must not be <c>DYNAMIC</c> and the server must be an HTTP or HTTPS server and the server requirements for range support
+			/// must all be met. For more information, see HTTP Requirements for BITS Downloads.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_1/nf-bits10_1-ibackgroundcopyfile6-getfilledfileranges
+			// HRESULT GetFilledFileRanges( [out] DWORD *rangeCount, [out] BG_FILE_RANGE **ranges );
+			void GetFilledFileRanges(out uint rangeCount, out SafeCoTaskMemHandle ranges);
+		}
+
+		/// <summary>
 		/// <para>
 		/// Use this interface to specify client certificates for certificate-based client authentication and custom headers for HTTP requests.
 		/// </para>
@@ -3497,6 +4008,454 @@ namespace Vanara.PInvoke
 			/// can be set:
 			/// </returns>
 			BG_HTTP_SECURITY GetSecurityFlags();
+		}
+
+		/// <summary>
+		/// <para>Use this interface to retrieve and/or to override the HTTP method used for a BITS transfer.</para>
+		/// <para>To get this interface, call the <c>IBackgroundCopyJob::QueryInterface</c> method using __uuidof(IBackgroundCopyJobHttpOptions2) for the interface identifier.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/bits10_2/nn-bits10_2-ibackgroundcopyjobhttpoptions2
+		[PInvokeData("bits10_2.h", MSDNShortId = "NN:bits10_2.IBackgroundCopyJobHttpOptions2")]
+		[ComImport, Guid("B591A192-A405-4FC3-8323-4C5C542578FC"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), ComConversionLoss]
+		public interface IBackgroundCopyJobHttpOptions2 : IBackgroundCopyJobHttpOptions
+		{
+			/// <summary>Specifies the identifier of the client certificate to use for client authentication in an HTTPS (SSL) request.</summary>
+			/// <param name="StoreLocation">
+			/// Identifies the location of a system store to use for looking up the certificate. For possible values, see the
+			/// BG_CERT_STORE_LOCATION enumeration.
+			/// </param>
+			/// <param name="StoreName">
+			/// Null-terminated string that contains the name of the certificate store. The string is limited to 256 characters, including
+			/// the null terminator. You can specify one of the following system stores or an application-defined store. The store can be a
+			/// local or remote store.
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CA</term>
+			/// <description>Certification authority certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>MY</term>
+			/// <description>Personal certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>ROOT</term>
+			/// <description>Root certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>SPC</term>
+			/// <description>Software Publisher Certificate</description>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="pCertHashBlob">
+			/// SHA1 hash that identifies the certificate. Use a 20 byte buffer for the hash. For more information, see Remarks.
+			/// </param>
+			new void SetClientCertificateByID(BG_CERT_STORE_LOCATION StoreLocation, [In, MarshalAs(UnmanagedType.LPWStr)] string StoreName, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 20)] byte[] pCertHashBlob);
+
+			/// <summary>Specifies the subject name of the client certificate to use for client authentication in an HTTPS (SSL) request.</summary>
+			/// <param name="StoreLocation">
+			/// Identifies the location of a system store to use for looking up the certificate. For possible values, see the
+			/// BG_CERT_STORE_LOCATION enumeration.
+			/// </param>
+			/// <param name="StoreName">
+			/// Null-terminated string that contains the name of the certificate store. The string is limited to 256 characters, including
+			/// the null terminator. You can specify one of the following system stores or an application-defined store. The store can be a
+			/// local or remote store.
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CA</term>
+			/// <description>Certification authority certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>MY</term>
+			/// <description>Personal certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>ROOT</term>
+			/// <description>Root certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>SPC</term>
+			/// <description>Software Publisher Certificate</description>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="SubjectName">
+			/// Null-terminated string that contains the simple subject name of the certificate. If the subject name contains multiple
+			/// relative distinguished names (RDNs), you can specify one or more adjacent RDNs. If you specify more than one RDN, the list is
+			/// comma-delimited. The string is limited to 256 characters, including the null terminator. You cannot specify an empty subject name.
+			/// <para>
+			/// Do not include the object identifier in the name.You must specify the RDNs in the reverse order from what the certificate
+			/// displays. For example, if the subject name in the certificate is "CN=name1, OU=name2, O=name3", specify the subject name as
+			/// "name3, name2, name1".
+			/// </para>
+			/// </param>
+			new void SetClientCertificateByName(BG_CERT_STORE_LOCATION StoreLocation, [In, MarshalAs(UnmanagedType.LPWStr)] string StoreName, [In, MarshalAs(UnmanagedType.LPWStr)] string SubjectName);
+
+			/// <summary>Removes the client certificate from the job.</summary>
+			new void RemoveClientCertificate();
+
+			/// <summary>Retrieves the client certificate from the job.</summary>
+			/// <param name="pStoreLocation">
+			/// Identifies the location of a system store to use for looking up the certificate. For possible values, see the
+			/// BG_CERT_STORE_LOCATION enumeration.
+			/// </param>
+			/// <param name="pStoreName">
+			/// Null-terminated string that contains the name of the certificate store. To free the string when done, call the CoTaskMemFree function.
+			/// </param>
+			/// <param name="ppCertHashBlob">
+			/// SHA1 hash that identifies the certificate. To free the blob when done, call the CoTaskMemFree function.
+			/// </param>
+			/// <param name="pSubjectName">
+			/// Null-terminated string that contains the simple subject name of the certificate. The RDNs in the subject name are in the
+			/// reverse order from what the certificate displays. Subject name can be empty if the certificate does not contain a subject
+			/// name. To free the string when done, call the CoTaskMemFree function.
+			/// </param>
+			new void GetClientCertificate(out BG_CERT_STORE_LOCATION pStoreLocation, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pStoreName, out SafeCoTaskMemHandle ppCertHashBlob, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pSubjectName);
+
+			/// <summary>Specifies one or more custom HTTP headers to include in HTTP requests.</summary>
+			/// <param name="RequestHeaders">
+			/// Null-terminated string that contains the custom headers to append to the HTTP request. Each header must be terminated by a
+			/// carriage return and line feed (CR/LF) character. The string is limited to 16,384 characters, including the null terminator.
+			/// <para>To remove the custom headers from the job, set the RequestHeaders parameter to NULL.</para>
+			/// </param>
+			new void SetCustomHeaders([In, MarshalAs(UnmanagedType.LPWStr)] string RequestHeaders);
+
+			/// <summary>
+			/// Retrieves the custom headers set by an earlier call to IBackgroundCopyJobHttpOptions::SetCustomHeaders (that is, headers
+			/// which BITS will be sending to the remote, not headers which BITS receives from the remote).
+			/// </summary>
+			/// <returns>
+			/// Null-terminated string that contains the custom headers. Each header is terminated by a carriage return and line feed (CR/LF)
+			/// character. To free the string when finished, call the CoTaskMemFree function.
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			new string GetCustomHeaders();
+
+			/// <summary>
+			/// Sets flags for HTTP that determine whether the certificate revocation list is checked and certain certificate errors are
+			/// ignored, and the policy to use when a server redirects the HTTP request.
+			/// </summary>
+			/// <param name="Flags">
+			/// HTTP security flags that indicate which errors to ignore when connecting to the server. You can set one or more of the
+			/// following flags:
+			/// </param>
+			new void SetSecurityFlags([In] BG_HTTP_SECURITY Flags);
+
+			/// <summary>
+			/// Retrieves the flags for HTTP that determine whether the certificate revocation list is checked and certain certificate errors
+			/// are ignored, and the policy to use when a server redirects the HTTP request.
+			/// </summary>
+			/// <returns>
+			/// HTTP security flags that indicate which errors to ignore when connecting to the server. One or more of the following flags
+			/// can be set:
+			/// </returns>
+			new BG_HTTP_SECURITY GetSecurityFlags();
+
+			/// <summary>Overrides the default HTTP method used for a BITS transfer.</summary>
+			/// <param name="method">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a constant null-terminated string of wide characters containing the HTTP method name.</para>
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// BITS allows you, as the developer, to choose an HTTP method other than the default method. This increases BITS' ability to
+			/// interact with servers that don't adhere to the normal BITS requirements for HTTP servers. Bear the following in mind when
+			/// you choose a different HTTP method from the default one.
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>BITS automatically changes the job priority to BG_JOB_PRIORITY_FOREGROUND, and prevents that priority from being changed.</term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// An error that would ordinarily be resumable (such as loss of connectivity) transitions the job to an ERROR state. You, as
+			/// the developer, can restart the job by calling IBackgroundCopyJob::Resume, and the job will be restarted from the beginning.
+			/// See Life Cycle of a BITS Job for more information on BITS job states.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>BITS doesn’t allow DYNAMIC_CONTENT nor ON_DEMAND_MODE jobs with <c>SetHttpMethod</c>.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// <c>SetHttpMethod</c> does nothing if the method name that you pass matches the default HTTP method for the transfer type.
+			/// For example, if you set a download job method to "GET" (the default), then the job priority won't be changed. The HTTP
+			/// method must be set before the first call to IBackgroundCopyJob::Resume that starts the job.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_2/nf-bits10_2-ibackgroundcopyjobhttpoptions2-sethttpmethod
+			// HRESULT SetHttpMethod( [in] LPCWSTR method );
+			void SetHttpMethod([MarshalAs(UnmanagedType.LPWStr)] string method);
+
+			/// <summary>
+			/// Retrieves a wide string containing the HTTP method name for the BITS transfer. By default, download jobs will be "GET", and
+			/// upload and upload-reply jobs will be "BITS_POST".
+			/// </summary>
+			/// <returns>A string containing the HTTP method name.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_2/nf-bits10_2-ibackgroundcopyjobhttpoptions2-gethttpmethod
+			// HRESULT GetHttpMethod( [out] LPWSTR *method );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string GetHttpMethod();
+		}
+
+		/// <summary>Use this interface to set HTTP customer headers to write-only, or to set a server certificate validation callback method that you've implemented. This interface extends IBackgroundCopyJobHttpOptions2.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/bits10_3/nn-bits10_3-ibackgroundcopyjobhttpoptions3
+		[PInvokeData("bits10_3.h", MSDNShortId = "NN:bits10_3.IBackgroundCopyJobHttpOptions3")]
+		[ComImport, Guid("8A9263D3-FD4C-4EDA-9B28-30132A4D4E3C"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), ComConversionLoss]
+		public interface IBackgroundCopyJobHttpOptions3 : IBackgroundCopyJobHttpOptions2
+		{
+			/// <summary>Specifies the identifier of the client certificate to use for client authentication in an HTTPS (SSL) request.</summary>
+			/// <param name="StoreLocation">
+			/// Identifies the location of a system store to use for looking up the certificate. For possible values, see the
+			/// BG_CERT_STORE_LOCATION enumeration.
+			/// </param>
+			/// <param name="StoreName">
+			/// Null-terminated string that contains the name of the certificate store. The string is limited to 256 characters, including
+			/// the null terminator. You can specify one of the following system stores or an application-defined store. The store can be a
+			/// local or remote store.
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CA</term>
+			/// <description>Certification authority certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>MY</term>
+			/// <description>Personal certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>ROOT</term>
+			/// <description>Root certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>SPC</term>
+			/// <description>Software Publisher Certificate</description>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="pCertHashBlob">
+			/// SHA1 hash that identifies the certificate. Use a 20 byte buffer for the hash. For more information, see Remarks.
+			/// </param>
+			new void SetClientCertificateByID(BG_CERT_STORE_LOCATION StoreLocation, [In, MarshalAs(UnmanagedType.LPWStr)] string StoreName, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 20)] byte[] pCertHashBlob);
+
+			/// <summary>Specifies the subject name of the client certificate to use for client authentication in an HTTPS (SSL) request.</summary>
+			/// <param name="StoreLocation">
+			/// Identifies the location of a system store to use for looking up the certificate. For possible values, see the
+			/// BG_CERT_STORE_LOCATION enumeration.
+			/// </param>
+			/// <param name="StoreName">
+			/// Null-terminated string that contains the name of the certificate store. The string is limited to 256 characters, including
+			/// the null terminator. You can specify one of the following system stores or an application-defined store. The store can be a
+			/// local or remote store.
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CA</term>
+			/// <description>Certification authority certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>MY</term>
+			/// <description>Personal certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>ROOT</term>
+			/// <description>Root certificates</description>
+			/// </item>
+			/// <item>
+			/// <term>SPC</term>
+			/// <description>Software Publisher Certificate</description>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="SubjectName">
+			/// Null-terminated string that contains the simple subject name of the certificate. If the subject name contains multiple
+			/// relative distinguished names (RDNs), you can specify one or more adjacent RDNs. If you specify more than one RDN, the list is
+			/// comma-delimited. The string is limited to 256 characters, including the null terminator. You cannot specify an empty subject name.
+			/// <para>
+			/// Do not include the object identifier in the name.You must specify the RDNs in the reverse order from what the certificate
+			/// displays. For example, if the subject name in the certificate is "CN=name1, OU=name2, O=name3", specify the subject name as
+			/// "name3, name2, name1".
+			/// </para>
+			/// </param>
+			new void SetClientCertificateByName(BG_CERT_STORE_LOCATION StoreLocation, [In, MarshalAs(UnmanagedType.LPWStr)] string StoreName, [In, MarshalAs(UnmanagedType.LPWStr)] string SubjectName);
+
+			/// <summary>Removes the client certificate from the job.</summary>
+			new void RemoveClientCertificate();
+
+			/// <summary>Retrieves the client certificate from the job.</summary>
+			/// <param name="pStoreLocation">
+			/// Identifies the location of a system store to use for looking up the certificate. For possible values, see the
+			/// BG_CERT_STORE_LOCATION enumeration.
+			/// </param>
+			/// <param name="pStoreName">
+			/// Null-terminated string that contains the name of the certificate store. To free the string when done, call the CoTaskMemFree function.
+			/// </param>
+			/// <param name="ppCertHashBlob">
+			/// SHA1 hash that identifies the certificate. To free the blob when done, call the CoTaskMemFree function.
+			/// </param>
+			/// <param name="pSubjectName">
+			/// Null-terminated string that contains the simple subject name of the certificate. The RDNs in the subject name are in the
+			/// reverse order from what the certificate displays. Subject name can be empty if the certificate does not contain a subject
+			/// name. To free the string when done, call the CoTaskMemFree function.
+			/// </param>
+			new void GetClientCertificate(out BG_CERT_STORE_LOCATION pStoreLocation, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pStoreName, out SafeCoTaskMemHandle ppCertHashBlob, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pSubjectName);
+
+			/// <summary>Specifies one or more custom HTTP headers to include in HTTP requests.</summary>
+			/// <param name="RequestHeaders">
+			/// Null-terminated string that contains the custom headers to append to the HTTP request. Each header must be terminated by a
+			/// carriage return and line feed (CR/LF) character. The string is limited to 16,384 characters, including the null terminator.
+			/// <para>To remove the custom headers from the job, set the RequestHeaders parameter to NULL.</para>
+			/// </param>
+			new void SetCustomHeaders([In, MarshalAs(UnmanagedType.LPWStr)] string RequestHeaders);
+
+			/// <summary>
+			/// Retrieves the custom headers set by an earlier call to IBackgroundCopyJobHttpOptions::SetCustomHeaders (that is, headers
+			/// which BITS will be sending to the remote, not headers which BITS receives from the remote).
+			/// </summary>
+			/// <returns>
+			/// Null-terminated string that contains the custom headers. Each header is terminated by a carriage return and line feed (CR/LF)
+			/// character. To free the string when finished, call the CoTaskMemFree function.
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			new string GetCustomHeaders();
+
+			/// <summary>
+			/// Sets flags for HTTP that determine whether the certificate revocation list is checked and certain certificate errors are
+			/// ignored, and the policy to use when a server redirects the HTTP request.
+			/// </summary>
+			/// <param name="Flags">
+			/// HTTP security flags that indicate which errors to ignore when connecting to the server. You can set one or more of the
+			/// following flags:
+			/// </param>
+			new void SetSecurityFlags([In] BG_HTTP_SECURITY Flags);
+
+			/// <summary>
+			/// Retrieves the flags for HTTP that determine whether the certificate revocation list is checked and certain certificate errors
+			/// are ignored, and the policy to use when a server redirects the HTTP request.
+			/// </summary>
+			/// <returns>
+			/// HTTP security flags that indicate which errors to ignore when connecting to the server. One or more of the following flags
+			/// can be set:
+			/// </returns>
+			new BG_HTTP_SECURITY GetSecurityFlags();
+
+			/// <summary>Overrides the default HTTP method used for a BITS transfer.</summary>
+			/// <param name="method">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a constant null-terminated string of wide characters containing the HTTP method name.</para>
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// BITS allows you, as the developer, to choose an HTTP method other than the default method. This increases BITS' ability to
+			/// interact with servers that don't adhere to the normal BITS requirements for HTTP servers. Bear the following in mind when
+			/// you choose a different HTTP method from the default one.
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>BITS automatically changes the job priority to BG_JOB_PRIORITY_FOREGROUND, and prevents that priority from being changed.</term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// An error that would ordinarily be resumable (such as loss of connectivity) transitions the job to an ERROR state. You, as
+			/// the developer, can restart the job by calling IBackgroundCopyJob::Resume, and the job will be restarted from the beginning.
+			/// See Life Cycle of a BITS Job for more information on BITS job states.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>BITS doesn’t allow DYNAMIC_CONTENT nor ON_DEMAND_MODE jobs with <c>SetHttpMethod</c>.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// <c>SetHttpMethod</c> does nothing if the method name that you pass matches the default HTTP method for the transfer type.
+			/// For example, if you set a download job method to "GET" (the default), then the job priority won't be changed. The HTTP
+			/// method must be set before the first call to IBackgroundCopyJob::Resume that starts the job.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_2/nf-bits10_2-ibackgroundcopyjobhttpoptions2-sethttpmethod
+			// HRESULT SetHttpMethod( [in] LPCWSTR method );
+			new void SetHttpMethod([MarshalAs(UnmanagedType.LPWStr)] string method);
+
+			/// <summary>
+			/// Retrieves a wide string containing the HTTP method name for the BITS transfer. By default, download jobs will be "GET", and
+			/// upload and upload-reply jobs will be "BITS_POST".
+			/// </summary>
+			/// <returns>A string containing the HTTP method name.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_2/nf-bits10_2-ibackgroundcopyjobhttpoptions2-gethttpmethod
+			// HRESULT GetHttpMethod( [out] LPWSTR *method );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			new string GetHttpMethod();
+
+			/// <summary>
+			/// Server certificates are sent when an HTTPS connection is opened. Use this method to set a callback to be called to validate
+			/// those server certificates.
+			/// </summary>
+			/// <param name="certValidationCallback">
+			/// <para>Type: <c>IUnknown*</c></para>
+			/// <para>
+			/// A pointer to an object that implements IBackgroundCopyServerCertificateValidationCallback. To remove the current callback
+			/// interface pointer, set this parameter to <c>nullptr</c>.
+			/// </para>
+			/// </param>
+			/// <remarks>
+			/// <para>Use this method when you want to perform your own checks on the server certificate.</para>
+			/// <para>Call this method only if you implement the IBackgroundCopyServerCertificateValidationCallback interface.</para>
+			/// <para>
+			/// The validation interface becomes invalid when your application terminates; BITS does not maintain a record of the validation
+			/// interface. As a result, your application's initialization process should call <c>SetServerCertificateValidationInterface</c>
+			/// on those existing jobs for which you want to receive certificate validation requests.
+			/// </para>
+			/// <para>
+			/// If more than one application calls <c>SetServerCertificateValidationInterface</c> to set the notification interface for the
+			/// job, the last application to call it is the one that will receive notifications. The other applications will not receive notifications.
+			/// </para>
+			/// <para>
+			/// If any certificate errors are found during the OS validation of the certificate, then the connection is aborted, and the
+			/// custom callback is never called. You can customize the OS validation logic with a call to
+			/// IBackgroundCopyJobHttpOptions::SetSecurityFlags. For example, you can ignore expected certificate validation errors.
+			/// </para>
+			/// <para>
+			/// If OS validation passes, then the IBackgroundCopyServerCertificateValidationCallback::ValidateServerCertificate method is
+			/// called before completing the TLS handshake and before the HTTP request is sent.
+			/// </para>
+			/// <para>
+			/// If your validation method declines the certificate, the job will transition to <c>BG_JOB_STATE_TRANSIENT_ERROR</c> with a
+			/// job error context of <c>BG_ERROR_CONTEXT_SERVER_CERTIFICATE_CALLBACK</c> and the error <c>HRESULT</c> from your callback. If
+			/// your callback couldn't be called (for example, because BITS needed to validate a server certificate after your program
+			/// exited), then the job error code will be <c>BG_E_SERVER_CERT_VALIDATION_INTERFACE_REQUIRED</c>. When your application is
+			/// next run, it can fix this error by setting the validation callback again and resuming the job.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_3/nf-bits10_3-ibackgroundcopyjobhttpoptions3-setservercertificatevalidationinterface
+			// HRESULT SetServerCertificateValidationInterface( IUnknown *certValidationCallback );
+			void SetServerCertificateValidationInterface(IBackgroundCopyServerCertificateValidationCallback certValidationCallback);
+
+			/// <summary>
+			/// Sets the HTTP custom headers for this job to be write-only. Write-only headers cannot be read by BITS methods such as the
+			/// IBackgroundCopyJobHttpOptions::GetCustomHeaders method.
+			/// </summary>
+			/// <remarks>
+			/// Use this API when your BITS custom headers must include security information (such as an API token) that you don't want to
+			/// be readable by other programs running on the same computer. The BITS process, of course, can still read these headers, and
+			/// send them over the HTTP connection. Once the headers are set to write-only, that cannot be unset.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_3/nf-bits10_3-ibackgroundcopyjobhttpoptions3-makecustomheaderswriteonly
+			// HRESULT MakeCustomHeadersWriteOnly();
+			void MakeCustomHeadersWriteOnly();
 		}
 
 		/// <summary>
@@ -3735,6 +4694,149 @@ namespace Vanara.PInvoke
 			/// CoTaskMemFree function to free ppRanges.
 			/// </param>
 			void GetFileRanges(out uint pRangeCount, out SafeCoTaskMemHandle ppRanges);
+		}
+
+		/// <summary>
+		/// Server certificates are sent when an HTTPS connection is opened. Use this method to implement a callback to be called to
+		/// validate those server certificates. This interface extends IUnknown.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/bits10_3/nn-bits10_3-ibackgroundcopyservercertificatevalidationcallback
+		[PInvokeData("bits10_3.h", MSDNShortId = "NN:bits10_3.IBackgroundCopyServerCertificateValidationCallback")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("4CEC0D02-DEF7-4158-813A-C32A46945FF7")]
+		public interface IBackgroundCopyServerCertificateValidationCallback
+		{
+			/// <summary>
+			/// A callback method that you implement that will be called so that you can validate the server certificates sent when an HTTPS
+			/// connection is opened.
+			/// </summary>
+			/// <param name="job">
+			/// <para>Type: <c>IBackgroundCopyJob*</c></para>
+			/// <para>The job.</para>
+			/// </param>
+			/// <param name="file">
+			/// <para>Type: <c>IBackgroundCopyFile*</c></para>
+			/// <para>The file being transferred.</para>
+			/// </param>
+			/// <param name="certLength">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The length in bytes of the certificate data.</para>
+			/// </param>
+			/// <param name="certData">
+			/// <para>Type: <c>const BYTE []</c></para>
+			/// <para>An array of bytes containing the certificate data. The number of bytes must match certLength.</para>
+			/// </param>
+			/// <param name="certEncodingType">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The certificate encoding type.</para>
+			/// </param>
+			/// <param name="certStoreLength">
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The length in bytes of the certificate store data.</para>
+			/// </param>
+			/// <param name="certStoreData">
+			/// <para>Type: <c>const BYTE []</c></para>
+			/// <para>An array of bytes containing the certificate store data. The number of bytes must match certStoreLength.</para>
+			/// </param>
+			/// <returns>
+			/// Return <c>S_OK</c> to indicate that the certificate is acceptable. Otherwise, return any <c>HRESULT</c> error code to
+			/// indicate that the certificate is not acceptable.
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Certificate validation is performed in two phases. The first phase is the operating system (OS) phase where the OS performs
+			/// a standard set of validation checks on the certificate. After that, if the OS phase passes the certificate, your callback
+			/// will be called to perform additional validation.
+			/// </para>
+			/// <para>
+			/// Implement this validation method when you want to perform your own checks on the server certificate. Your own checks are in
+			/// addition to the normal OS certificate validation checks.
+			/// </para>
+			/// <para>
+			/// If your validation method declines the certificate, the job will transition to <c>BG_JOB_STATE_TRANSIENT_ERROR</c> with a
+			/// job error context of <c>BG_ERROR_CONTEXT_SERVER_CERTIFICATE_CALLBACK</c> and the error <c>HRESULT</c> from your callback. If
+			/// your callback couldn't be called (for example, because BITS needed to validate a server certificate after your program
+			/// exited), then the job error code will be <c>BG_E_SERVER_CERT_VALIDATION_INTERFACE_REQUIRED</c>. When your application is
+			/// next run, it can fix this error by setting the validation callback again and resuming the job.
+			/// </para>
+			/// <para>
+			/// BITS calls this callback method only if you implement the IBackgroundCopyServerCertificateValidationCallback interface and
+			/// pass it into IBackgroundCopyJobHttpOptions3::SetServerCertificateValidationInterface.
+			/// </para>
+			/// <para>
+			/// The validation interface becomes invalid when your application terminates; BITS does not maintain a record of the validation
+			/// interface. As a result, your application's initialization process should call SetServerCertificateValidationInterface on
+			/// those existing jobs for which you want to receive certificate validation requests.
+			/// </para>
+			/// <para>
+			/// If more than one application calls <c>SetServerCertificateValidationInterface</c> to set the notification interface for the
+			/// job, the last application to call it is the one that will receive notifications. The other applications will not receive notifications.
+			/// </para>
+			/// <para>
+			/// Here are the general steps to validate a certificate. Be aware that these steps are just an example. The actual validation
+			/// is under your control. Also, steps 5-7 are largely the same as what the OS does during the OS validation step.
+			/// </para>
+			/// <list type="number">
+			/// <item>
+			/// Call CertCreateCertificateContext with certEncodingType, certData, and certLength to retrieve a CERT_CONTEXT.
+			/// </item>
+			/// <item>
+			/// Declare and initialize a CRYPT_DATA_BLOB structure (defined in wincrypt.h) with the serialized memory blob passed via certStoreLength and certStoreData.
+			/// <code language="cpp"><![CDATA[DATA_BLOB storeData{};
+			/// storeData.cbData = certStoreLength;
+			/// storeData.pbData = const_cast<PBYTE>(certStoreData);]]></code>
+			/// </item>
+			/// <item>
+			/// Obtain a handle to the certificate chain by calling CertOpenStore with <c>CERT_STORE_PROV_SERIALIZED</c>, 0, nullptr, flags,
+			/// and a pointer to the <c>CRYPT_DATA_BLOB</c> from step 2.
+			/// </item>
+			/// <item>
+			/// Obtain a pointer to a certificate chain context by calling CertGetCertificateChain with nullptr, certContext, nullptr, the handle from step 3, chain parameters, flags, and nullptr.
+			/// </item>
+			/// <item>
+			/// Create the certificate validation policy.
+			/// <code language="cpp"><![CDATA[CERT_CHAIN_POLICY_PARA policyParams{};
+			/// policyParams.cbSize = sizeof(policyParams);
+			/// policyParams.dwFlags =
+			///     CERT_CHAIN_POLICY_IGNORE_NOT_TIME_VALID_FLAG |
+			///     CERT_CHAIN_POLICY_IGNORE_WRONG_USAGE_FLAG |
+			///     CERT_CHAIN_POLICY_IGNORE_INVALID_NAME_FLAG |
+			///     CERT_CHAIN_POLICY_ALLOW_UNKNOWN_CA_FLAG;]]></code>
+			/// </item>
+			/// <item>
+			/// Call CertVerifyCertificateChainPolicy with policy type, chain context, policy parameters, and policy status.
+			/// </item>
+			/// <item>
+			/// Convert the Win32 error (policyStatus.dwError) to an HRESULT and return that.
+			/// </item>
+			/// </list>
+			/// <para>
+			/// A description of the BITS validation caching behaviors follows. BITS maintains a per-job cache of certificates that have
+			/// passed custom validation. This is to avoid redundant and potentially expensive re-validation over the lifetime of the job.
+			/// The cache consists of &lt;server endpoint, cert hash&gt; tuples, where endpoint is defined as server name:port. If a job has
+			/// already allowed a specific certificate from a specific endpoint, then the callback will not be called again.
+			/// </para>
+			/// <para>
+			/// Of course, the certificate will have to pass through the OS validation logic on every connection attempt (you can customize
+			/// the OS validation logic with a call to IBackgroundCopyJobHttpOptions::SetSecurityFlags), which addresses time-sensitive
+			/// corner cases such as when the certificate was valid very recently (in terms of seconds), but it has expired now.
+			/// </para>
+			/// <para>
+			/// BITS does not cache certificates that are deemed invalid by the app-provided validation callback. It's important that you're
+			/// aware of all unsuccessful connection attempts, so that you can detect malicious deployments at the app level. For example, a
+			/// one-off bad certificate is much less concerning than thousands of bad certificates from the same server.
+			/// </para>
+			/// <para>
+			/// A job's certificate cache is cleared on every call to <c>SetServerCertificateValidationInterface</c>, since it indicates
+			/// that the app's server certificate validation logic has changed.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits10_3/nf-bits10_3-ibackgroundcopyservercertificatevalidationcallback-validateservercertificate
+			// HRESULT ValidateServerCertificate( IBackgroundCopyJob *job, IBackgroundCopyFile *file, DWORD certLength, const BYTE []
+			// certData, DWORD certEncodingType, DWORD certStoreLength, const BYTE [] certStoreData );
+			[PreserveSig]
+			HRESULT ValidateServerCertificate(IBackgroundCopyJob job, IBackgroundCopyFile file, uint certLength,
+				[In, MarshalAs(UnmanagedType.LPArray)] byte[] certData, uint certEncodingType, uint certStoreLength,
+				[In, MarshalAs(UnmanagedType.LPArray)] byte[] certStoreData);
 		}
 
 		/// <summary>
