@@ -45,7 +45,7 @@ namespace Vanara.IO
 			get
 			{
 				var job = BackgroundCopyManager.GetJob(jobId);
-				return job != null ? new BackgroundCopyJob(job) : throw new KeyNotFoundException();
+				return job is not null ? new BackgroundCopyJob(job) : throw new KeyNotFoundException();
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace Vanara.IO
 			try
 			{
 				var ijob = BackgroundCopyManager.GetJob(jobId);
-				return ijob != null;
+				return ijob is not null;
 			}
 			catch
 			{
@@ -107,7 +107,7 @@ namespace Vanara.IO
 		/// cref="ICollection{T}" />. </returns> <exception cref="ArgumentNullException">item</exception>
 		public bool Remove(BackgroundCopyJob item)
 		{
-			if (item == null) throw new ArgumentNullException(nameof(item));
+			if (item is null) throw new ArgumentNullException(nameof(item));
 			// TODO: Look at what needs to be done to really remove a job and all it's actions
 			try { item.Cancel(); return true; } catch { return false; }
 		}
@@ -160,7 +160,7 @@ namespace Vanara.IO
 			/// <summary>
 			/// Gets the <see cref="BackgroundCopyJob"/> object in the <see cref="BackgroundCopyJobCollection"/> collection to which the enumerator is pointing.
 			/// </summary>
-			public BackgroundCopyJob Current => icurrentjob != null ? new BackgroundCopyJob(icurrentjob) : throw new InvalidOperationException();
+			public BackgroundCopyJob Current => icurrentjob is not null ? new BackgroundCopyJob(icurrentjob) : throw new InvalidOperationException();
 
 			/// <summary>
 			/// Gets the <see cref="BackgroundCopyJob"/> object in the <see cref="BackgroundCopyJobCollection"/> collection to which the enumerator is pointing.
@@ -181,7 +181,7 @@ namespace Vanara.IO
 				try
 				{
 					icurrentjob = ienum.Next(1)?.FirstOrDefault();
-					return icurrentjob != null;
+					return icurrentjob is not null;
 				}
 				catch { return false; }
 			}

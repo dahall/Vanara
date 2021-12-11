@@ -46,7 +46,7 @@ namespace Vanara.IO
 		/// <summary>Performs an implicit conversion from <see cref="BG_JOB_PROGRESS"/> to <see cref="BackgroundCopyJobProgress"/>.</summary>
 		/// <param name="p">The BG_JOB_PROGRESS instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BackgroundCopyJobProgress(BG_JOB_PROGRESS p) => new BackgroundCopyJobProgress(p);
+		public static implicit operator BackgroundCopyJobProgress(BG_JOB_PROGRESS p) => new(p);
 	}
 
 	/// <summary>Provides progress information related to the reply portion of an upload-reply job.</summary>
@@ -66,7 +66,7 @@ namespace Vanara.IO
 		/// <summary>Performs an implicit conversion from <see cref="BG_JOB_REPLY_PROGRESS"/> to <see cref="BackgroundCopyJobReplyProgress"/>.</summary>
 		/// <param name="p">The BG_JOB_REPLY_PROGRESS instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BackgroundCopyJobReplyProgress(BG_JOB_REPLY_PROGRESS p) => new BackgroundCopyJobReplyProgress(p);
+		public static implicit operator BackgroundCopyJobReplyProgress(BG_JOB_REPLY_PROGRESS p) => new(p);
 	}
 
 	/// <summary>Used by <see cref="BackgroundCopyJob.FileRangesTransferred"/> events.</summary>
@@ -118,6 +118,8 @@ namespace Vanara.IO
 		internal static readonly TimeSpan DEFAULT_RETRY_DELAY = TimeSpan.FromSeconds(600); //10 minutes (600 seconds)
 		internal static readonly TimeSpan DEFAULT_RETRY_PERIOD = TimeSpan.FromSeconds(1209600); //20160 minutes (1209600 seconds)
 		internal static readonly TimeSpan DEFAULT_TIMEOUT = TimeSpan.FromSeconds(7776000); // 7776000 seconds
+		internal static readonly Version CopyCallback2 = new(3, 0);
+		internal static readonly Version CopyCallback3 = new(10, 1);
 
 		private IBackgroundCopyJob m_ijob;
 		private Notifier m_notifier;
@@ -127,7 +129,13 @@ namespace Vanara.IO
 			m_ijob = ijob ?? throw new ArgumentNullException(nameof(ijob));
 			m_notifier = new Notifier(this);
 			m_ijob.SetNotifyInterface(m_notifier);
-			NotifyFlags = BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_JOB_ERROR | BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION | BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED;
+			var bitsVer = BackgroundCopyManager.Version;
+			NotifyFlags = bitsVer switch
+			{
+				var v when v >= CopyCallback3 => BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_JOB_ERROR | BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION | BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED,
+				var v when v >= CopyCallback2 => BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_JOB_ERROR | BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION | BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED,
+				_ => BG_NOTIFY.BG_NOTIFY_JOB_ERROR | BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION | BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED,
+			};
 			Files = new BackgroundCopyFileCollection(m_ijob);
 			Credentials = new BackgroundCopyJobCredentials(IJob2);
 		}
@@ -164,25 +172,13 @@ namespace Vanara.IO
 			{
 				IHttpOp.GetClientCertificate(out var loc, out var mstore, out var blob, out var subj);
 				if (blob.IsInvalid) return null;
-				var store = mstore;
-				switch (store)
+				var store = mstore switch
 				{
-					case "MY":
-						store = "My";
-						break;
-
-					case "ROOT":
-						store = "Root";
-						break;
-
-					case "SPC":
-						store = "TrustedPublisher";
-						break;
-
-					case "CA":
-					default:
-						break;
-				}
+					"MY" => "My",
+					"ROOT" => "Root",
+					"SPC" => "TrustedPublisher",
+					_ => mstore,
+				};
 				var xstore = new X509Store(store, (StoreLocation)(loc + 1));
 				xstore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
 				return xstore.Certificates.Find(X509FindType.FindBySubjectName, subj, false).OfType<X509Certificate2>().FirstOrDefault() ??
@@ -200,7 +196,7 @@ namespace Vanara.IO
 			{
 				var hdr = new System.Net.WebHeaderCollection();
 				var str = RunAction(() => IHttpOp.GetCustomHeaders().ToString(), null);
-				if (str != null)
+				if (str is not null)
 				{
 					foreach (var s in str.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries))
 						hdr.Add(s);
@@ -288,6 +284,36 @@ namespace Vanara.IO
 			set => SetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_HIGH_PERFORMANCE, value);
 		}
 
+		/// <summary>Gets or sets the default HTTP method used for a BITS transfer.</summary>
+		/// <value>The HTTP method name.</value>
+		/// <remarks>
+		/// <para>
+		/// BITS allows you, as the developer, to choose an HTTP method other than the default method. This increases BITS' ability to
+		/// interact with servers that don't adhere to the normal BITS requirements for HTTP servers. Bear the following in mind when you
+		/// choose a different HTTP method from the default one.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>BITS automatically changes the job priority to BG_JOB_PRIORITY_FOREGROUND, and prevents that priority from being changed.</item>
+		/// <item>
+		/// An error that would ordinarily be resumable (such as loss of connectivity) transitions the job to an ERROR state. You, as the
+		/// developer, can restart the job by calling IBackgroundCopyJob::Resume, and the job will be restarted from the beginning. See Life
+		/// Cycle of a BITS Job for more information on BITS job states.
+		/// </item>
+		/// <item>BITS doesn’t allow DYNAMIC_CONTENT nor ON_DEMAND_MODE jobs with <c>SetHttpMethod</c>.</item>
+		/// </list>
+		/// <para>
+		/// <c>SetHttpMethod</c> does nothing if the method name that you pass matches the default HTTP method for the transfer type. For
+		/// example, if you set a download job method to "GET" (the default), then the job priority won't be changed. The HTTP method must
+		/// be set before the first call to IBackgroundCopyJob::Resume that starts the job.
+		/// </para>
+		/// </remarks>
+		[DefaultValue(null)]
+		public string HttpMethod
+		{
+			get => RunAction(() => IHttpOp2.GetHttpMethod());
+			set => RunAction(() => IHttpOp2.SetHttpMethod(value));
+		}
+
 		/// <summary>Gets the job identifier.</summary>
 		public Guid ID => RunAction(() => m_ijob.GetId(), Guid.Empty);
 
@@ -303,7 +329,7 @@ namespace Vanara.IO
 				if (state != BackgroundCopyJobState.Error && state != BackgroundCopyJobState.TransientError)
 					return null;
 				var err = RunAction(() => m_ijob.GetError());
-				return err == null ? null : new BackgroundCopyException(err);
+				return err is null ? null : new BackgroundCopyException(err);
 			}
 		}
 
@@ -402,7 +428,7 @@ namespace Vanara.IO
 				}
 				if (string.IsNullOrEmpty(a))
 				{
-					if (p == null)
+					if (p is null)
 						return string.Empty;
 					else
 						return p;
@@ -501,13 +527,13 @@ namespace Vanara.IO
 			});
 			set => RunAction(() =>
 			{
-				if (value == null)
+				if (value is null)
 					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_PRECONFIG, null, null);
 				else if (string.IsNullOrEmpty(value.Address.AbsoluteUri))
 					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_NO_PROXY, null, null);
 				else
 					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_OVERRIDE, value.Address.AbsoluteUri, string.Join(" ", value.BypassList));
-				if (value.Credentials != null)
+				if (value.Credentials is not null)
 					throw new ArgumentException("The set Proxy property does not support proxy credentials. Please use the SetCredentials method.");
 			});
 		}
@@ -581,6 +607,10 @@ namespace Vanara.IO
 
 		private IBackgroundCopyJobHttpOptions IHttpOp => GetDerived<IBackgroundCopyJobHttpOptions>();
 
+		private IBackgroundCopyJobHttpOptions2 IHttpOp2 => GetDerived<IBackgroundCopyJobHttpOptions2>();
+
+		private IBackgroundCopyJobHttpOptions3 IHttpOp3 => GetDerived<IBackgroundCopyJobHttpOptions3>();
+
 		private IBackgroundCopyJob2 IJob2 => GetDerived<IBackgroundCopyJob2>();
 
 		private IBackgroundCopyJob3 IJob3 => GetDerived<IBackgroundCopyJob3>();
@@ -626,6 +656,17 @@ namespace Vanara.IO
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => ID.GetHashCode();
+
+		/// <summary>
+		/// Sets the HTTP custom headers for this job to be write-only. Write-only headers cannot be read by BITS methods such as the <see
+		/// cref="CustomHeaders"/> property.
+		/// </summary>
+		/// <remarks>
+		/// Use this API when your BITS custom headers must include security information (such as an API token) that you don't want to be
+		/// readable by other programs running on the same computer. The BITS process, of course, can still read these headers, and send
+		/// them over the HTTP connection. Once the headers are set to write-only, that cannot be unset.
+		/// </remarks>
+		public void MakeCustomHeadersWriteOnly() => RunAction(() => IHttpOp3.MakeCustomHeadersWriteOnly());
 
 		/// <summary>
 		/// Use the ReplaceRemotePrefix method to replace the beginning text of all remote names in the download job with the given string.
@@ -685,6 +726,46 @@ namespace Vanara.IO
 			}
 			RunAction(() => IJob2.SetCredentials(ref ac));
 		}
+
+		/// <summary>
+		/// Server certificates are sent when an HTTPS connection is opened. Use this method to set a callback to be called to validate
+		/// those server certificates.
+		/// </summary>
+		/// <param name="callback">
+		/// An object that implements <see cref="IBackgroundCopyServerCertificateValidationCallback"/>. To remove the current callback
+		/// interface pointer, set this parameter to <see langword="null"/>.
+		/// </param>
+		/// <remarks>
+		/// <para>Use this method when you want to perform your own checks on the server certificate.</para>
+		/// <para>Call this method only if you implement the <see cref="IBackgroundCopyServerCertificateValidationCallback"/> interface.</para>
+		/// <para>
+		/// The validation interface becomes invalid when your application terminates; BITS does not maintain a record of the validation
+		/// interface. As a result, your application's initialization process should call <c>SetServerCertificateValidationInterface</c> on
+		/// those existing jobs for which you want to receive certificate validation requests.
+		/// </para>
+		/// <para>
+		/// If more than one application calls <c>SetServerCertificateValidationInterface</c> to set the notification interface for the job,
+		/// the last application to call it is the one that will receive notifications. The other applications will not receive notifications.
+		/// </para>
+		/// <para>
+		/// If any certificate errors are found during the OS validation of the certificate, then the connection is aborted, and the custom
+		/// callback is never called. You can customize the OS validation logic with a call to
+		/// IBackgroundCopyJobHttpOptions::SetSecurityFlags. For example, you can ignore expected certificate validation errors.
+		/// </para>
+		/// <para>
+		/// If OS validation passes, then the <see cref="IBackgroundCopyServerCertificateValidationCallback.ValidateServerCertificate"/>
+		/// method is called before completing the TLS handshake and before the HTTP request is sent.
+		/// </para>
+		/// <para>
+		/// If your validation method declines the certificate, the job will transition to <c>BG_JOB_STATE_TRANSIENT_ERROR</c> with a job
+		/// error context of <c>BG_ERROR_CONTEXT_SERVER_CERTIFICATE_CALLBACK</c> and the error <c>HRESULT</c> from your callback. If your
+		/// callback couldn't be called (for example, because BITS needed to validate a server certificate after your program exited), then
+		/// the job error code will be <c>BG_E_SERVER_CERT_VALIDATION_INTERFACE_REQUIRED</c>. When your application is next run, it can fix
+		/// this error by setting the validation callback again and resuming the job.
+		/// </para>
+		/// </remarks>
+		public void SetServerCertificateValidationInterface(IBackgroundCopyServerCertificateValidationCallback callback) =>
+			RunAction(() => IHttpOp3.SetServerCertificateValidationInterface(callback));
 
 		/// <summary>
 		/// Use the Suspend method to suspend a job. New jobs, jobs that are in error, and jobs that have finished transferring files are
@@ -748,29 +829,15 @@ namespace Vanara.IO
 		private object GetProperty(BITS_JOB_PROPERTY_ID id)
 		{
 			var value = RunAction(() => IJob5.GetProperty(id));
-			switch (id)
+			return id switch
 			{
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_MAX_DOWNLOAD_SIZE:
-					return value.Uint64;
-
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS:
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_MINIMUM_NOTIFICATION_INTERVAL_MS:
-					return value.Dword;
-
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_NOTIFICATION_CLSID:
-					return value.ClsID;
-
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_DYNAMIC_CONTENT:
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_HIGH_PERFORMANCE:
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ON_DEMAND_MODE:
-					return value.Enable;
-
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_USE_STORED_CREDENTIALS:
-					return value.Target;
-
-				default:
-					throw new ArgumentOutOfRangeException(nameof(id));
-			}
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_MAX_DOWNLOAD_SIZE => value.Uint64,
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS or BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_MINIMUM_NOTIFICATION_INTERVAL_MS => value.Dword,
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_NOTIFICATION_CLSID => value.ClsID,
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_DYNAMIC_CONTENT or BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_HIGH_PERFORMANCE or BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ON_DEMAND_MODE => value.Enable,
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_USE_STORED_CREDENTIALS => value.Target,
+				_ => throw new ArgumentOutOfRangeException(nameof(id)),
+			};
 		}
 
 		private void HandleCOMException(COMException cex)

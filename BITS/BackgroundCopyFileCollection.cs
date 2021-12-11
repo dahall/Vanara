@@ -124,7 +124,7 @@ namespace Vanara.IO
 		/// <param name="length">Number of bytes in the range.</param>
 		public void Add(string remoteFilePath, string localFilePath, long initialOffset, long length = -1)
 		{
-			IBackgroundCopyJob3 ijob3 = null;
+			IBackgroundCopyJob3 ijob3;
 			try { ijob3 = (IBackgroundCopyJob3)m_ijob; }
 			catch { throw new NotSupportedException(); }
 			var rng = new[] { new BG_FILE_RANGE { InitialOffset = (ulong)initialOffset, Length = length == -1 ? ulong.MaxValue : (ulong)length } };
@@ -274,8 +274,8 @@ namespace Vanara.IO
 			private static bool TryGetNext(IEnumBackgroundCopyFiles e, out BackgroundCopyFileInfo i)
 			{
 				var ifi = e.Next(1)?.FirstOrDefault();
-				i = ifi != null ? new BackgroundCopyFileInfo(ifi) : null;
-				return i != null;
+				i = ifi is not null ? new BackgroundCopyFileInfo(ifi) : null;
+				return i is not null;
 			}
 		}
 	}

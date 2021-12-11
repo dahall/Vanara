@@ -26,14 +26,16 @@ namespace Vanara.IO
 		{
 			get
 			{
-				try { return ver ?? (ver = GetVer()); }
+				try { return ver ??= GetVer(); }
 				catch { return new Version(); }
 
 				static Version GetVer()
 				{
-					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(Environment.ExpandEnvironmentVariables(@"%WinDir%\Sysnative\qmgr.dll"));
+					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "qmgr.dll"));
 					return $"{fi.FileMajorPart}.{fi.FileMinorPart}" switch
 					{
+						"7.8" when fi.FileBuildPart >= 18362 => new Version(10, 3),
+						"7.8" when fi.FileBuildPart >= 17763 => new Version(10, 2),
 						"7.8" => new Version(10, 1),
 						"7.7" => new Version(5, 0),
 						"7.5" => new Version(4, 0),

@@ -10,7 +10,7 @@ namespace Vanara.IO
 	{
 		internal BG_FILE_INFO fi;
 
-		private IBackgroundCopyFile iFile;
+		private readonly IBackgroundCopyFile iFile;
 
 		internal BackgroundCopyFileInfo(IBackgroundCopyFile ibgfile)
 		{
@@ -58,10 +58,10 @@ namespace Vanara.IO
 		/// <summary>Retrieves the local name of the file.</summary>
 		public string LocalFilePath
 		{
-			get => iFile == null ? fi.LocalName : iFile.GetLocalName();
+			get => iFile is null ? fi.LocalName : iFile.GetLocalName();
 			set
 			{
-				if (iFile != null)
+				if (iFile is not null)
 					throw new InvalidOperationException("You cannot change the LocalFilePath property on CurrentFileSet results.");
 				fi.LocalName = value;
 			}
@@ -86,7 +86,7 @@ namespace Vanara.IO
 		/// <summary>Retrieves the remote name of the file.</summary>
 		public string RemoteFilePath
 		{
-			get => iFile == null ? fi.RemoteName : iFile.GetRemoteName();
+			get => iFile is null ? fi.RemoteName : iFile.GetRemoteName();
 			set
 			{
 				fi.RemoteName = value;
@@ -159,11 +159,7 @@ namespace Vanara.IO
 		/// <param name="offset">Specifies the new position to prioritize downloading missing data from.</param>
 		public void UpdateDownloadPosition(ulong offset) => IFile6.UpdateDownloadPosition(offset);
 
-		private T GetDerived<T>() where T : class
-		{
-			T ret = iFile as T;
-			return ret ?? throw new PlatformNotSupportedException();
-		}
+		private T GetDerived<T>() where T : class => iFile as T ?? throw new PlatformNotSupportedException();
 	}
 
 	/// <summary>Identifies a range of bytes to download from a file.</summary>
@@ -183,6 +179,6 @@ namespace Vanara.IO
 		/// <summary>Performs an implicit conversion from <see cref="BG_FILE_RANGE"/> to <see cref="BackgroundCopyFileRange"/>.</summary>
 		/// <param name="p">The BG_FILE_RANGE instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BackgroundCopyFileRange(BG_FILE_RANGE p) => new BackgroundCopyFileRange { fr = p };
+		public static implicit operator BackgroundCopyFileRange(BG_FILE_RANGE p) => new() { fr = p };
 	}
 }

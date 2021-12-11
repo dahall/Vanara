@@ -9,10 +9,10 @@ namespace Vanara.IO
 	/// <summary>Exceptions specific to BITS</summary>
 	public class BackgroundCopyException : Exception
 	{
-		private HRESULT code;
-		private BG_ERROR_CONTEXT ctx;
-		private string ctxDesc, errDesc, protocol;
-		private IBackgroundCopyFile iVal;
+		private readonly HRESULT code;
+		private readonly BG_ERROR_CONTEXT ctx;
+		private readonly string ctxDesc, errDesc, protocol;
+		private readonly IBackgroundCopyFile iVal;
 
 		internal BackgroundCopyException(IBackgroundCopyError err)
 		{
@@ -31,7 +31,7 @@ namespace Vanara.IO
 		{
 			code = cex.ErrorCode;
 			errDesc = BackgroundCopyManager.GetErrorMessage(code);
-			if (errDesc == null)
+			if (errDesc is null)
 				code.ThrowIfFailed();
 		}
 
@@ -48,7 +48,7 @@ namespace Vanara.IO
 		/// <summary>If error was related to a file, returns information about the file and its progress. Otherwise, returns NULL.</summary>
 		public BackgroundCopyFileInfo File
 		{
-			get { if (iVal == null) return null; return new BackgroundCopyFileInfo(iVal); }
+			get { if (iVal is null) return null; return new BackgroundCopyFileInfo(iVal); }
 		}
 
 		/// <summary>The error text associated with the error.</summary>
