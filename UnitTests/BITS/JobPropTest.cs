@@ -50,6 +50,9 @@ namespace Vanara.IO.Tests
 			Assert.That(() => job.HighPerformance = true, Throws.Nothing);
 			Assert.That(job.HighPerformance, Is.EqualTo(true));
 
+			Assert.That(job.HttpMethod, Is.EqualTo(job.GetDefVal<string>(nameof(job.HttpMethod))));
+			Assert.That(() => job.MakeCustomHeadersWriteOnly(), Throws.Nothing);
+
 			Assert.That(job.ID, Is.Not.EqualTo(Guid.Empty));
 			
 			Assert.That(job.JobType, Is.EqualTo(BackgroundCopyJobType.Download));
@@ -89,7 +92,6 @@ namespace Vanara.IO.Tests
 			Assert.That(job.OnDemand, Is.EqualTo(job.GetDefVal<bool>(nameof(job.OnDemand))));
 			Assert.That(() => job.OnDemand = true, Throws.Nothing);
 			Assert.That(job.OnDemand, Is.EqualTo(true));
-
 
 			using var identity = WindowsIdentity.GetCurrent();
 			Assert.That(job.Owner, Is.EqualTo(identity.User));

@@ -307,7 +307,7 @@ namespace Vanara.IO
 		/// be set before the first call to IBackgroundCopyJob::Resume that starts the job.
 		/// </para>
 		/// </remarks>
-		[DefaultValue(null)]
+		[DefaultValue("GET")]
 		public string HttpMethod
 		{
 			get => RunAction(() => IHttpOp2.GetHttpMethod());

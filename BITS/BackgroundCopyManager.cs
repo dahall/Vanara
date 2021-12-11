@@ -31,7 +31,7 @@ namespace Vanara.IO
 
 				static Version GetVer()
 				{
-					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "qmgr.dll"));
+					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(Environment.ExpandEnvironmentVariables(@"%WinDir%\sysnative\qmgr.dll"));
 					return $"{fi.FileMajorPart}.{fi.FileMinorPart}" switch
 					{
 						"7.8" when fi.FileBuildPart >= 18362 => new Version(10, 3),
