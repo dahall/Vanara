@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>.NET classes to access Background Intelligent Transfer Service (BITS) functionality. Intelligently uses most recent library functions and gracefully fails when new features are not available on older OS versions.</Description>
+    <Description>Complete .NET coverage of Windows BITS (Background Intelligent Transfer Service) functionality. Provides access to all library functions through Windows 11 and gracefully fails when new features are not available on older OS versions.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.BITS</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <PackageTags>pinvoke;vanara;net-extensions;interop;bits;background copy;download</PackageTags>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;windows;bits;background copy;download</PackageTags>
     <PackageReleaseNotes>Currently implements:
 
 Classes
