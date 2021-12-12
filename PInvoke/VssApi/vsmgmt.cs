@@ -713,11 +713,6 @@ namespace Vanara.PInvoke.VssApi
 	/// The <c>IVssEnumMgmtObject</c> interface contains methods to iterate over and perform other operations on a list of enumerated objects.
 	/// </para>
 	/// <para>
-	/// The calling application is responsible for calling IUnknown::Release to release the resources held by the returned
-	/// <c>IVssEnumMgmtObject</c> when it is no longer needed. It may also need to call <c>IUnknown::Release</c> to release temporary
-	/// objects (such as strings) returned during enumeration.
-	/// </para>
-	/// <para>
 	/// The IVssDifferentialSoftwareSnapshotMgmt::QueryDiffAreasForSnapshot, IVssDifferentialSoftwareSnapshotMgmt::QueryDiffAreasForVolume,
 	/// IVssDifferentialSoftwareSnapshotMgmt::QueryDiffAreasOnVolume, and
 	/// IVssDifferentialSoftwareSnapshotMgmt::QueryVolumesSupportedForDiffAreas methods return an <c>IVssEnumMgmtObject</c> object.

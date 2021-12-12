@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -719,8 +718,8 @@ namespace Vanara.PInvoke.VssApi
 
 	/// <summary>
 	/// <para>
-	/// The <c>IVssComponent</c> interface is a C++ (not COM) interface containing methods for examining and modifying information about
-	/// components contained in a requester's Backup Components Document.
+	/// The <c>IVssComponent</c> interface contains methods for examining and modifying information about components contained in a
+	/// requester's Backup Components Document.
 	/// </para>
 	/// <para>
 	/// <c>IVssComponent</c> objects can be obtained only for those components that have been explicitly added to the Backup Components
@@ -1732,7 +1731,7 @@ namespace Vanara.PInvoke.VssApi
 		// wszFilespec, [in] bool bRecursive, [in] LPCWSTR wszAlternateLocation, [in] DWORD dwBackupTypeMask );
 		void AddFilesToFileGroup([MarshalAs(UnmanagedType.LPWStr)] string wszLogicalPath, [MarshalAs(UnmanagedType.LPWStr)] string wszGroupName,
 			[MarshalAs(UnmanagedType.LPWStr)] string wszPath, [MarshalAs(UnmanagedType.LPWStr)] string wszFilespec, bool bRecursive,
-			[MarshalAs(UnmanagedType.LPWStr)] string wszAlternateLocation, 
+			[MarshalAs(UnmanagedType.LPWStr)] string wszAlternateLocation,
 			VSS_FILE_SPEC_BACKUP_TYPE dwBackupTypeMask = VSS_FILE_SPEC_BACKUP_TYPE.VSS_FSBT_ALL_BACKUP_REQUIRED | VSS_FILE_SPEC_BACKUP_TYPE.VSS_FSBT_ALL_SNAPSHOT_REQUIRED);
 
 		/// <summary>Specifies how an express writer's data is to be restored.</summary>
@@ -1853,8 +1852,8 @@ namespace Vanara.PInvoke.VssApi
 
 	/// <summary>
 	/// <para>
-	/// The <c>IVssCreateWriterMetadata</c> interface is a C++ (not COM) interface containing methods to construct the Writer Metadata
-	/// Document in response to an Identify event. It is used only in the CVssWriter::OnIdentify method.
+	/// The <c>IVssCreateWriterMetadata</c> interface contains methods to construct the Writer Metadata Document in response to an Identify
+	/// event. It is used only in the CVssWriter::OnIdentify method.
 	/// </para>
 	/// <para>The addition and specification of components by a writer is managed through this interface.</para>
 	/// <para>
@@ -2515,8 +2514,8 @@ namespace Vanara.PInvoke.VssApi
 
 	/// <summary>
 	/// <para>
-	/// The <c>IVssCreateWriterMetadataEx</c> interface is a C++ (not COM) interface that defines a method to report any file sets that will
-	/// be explicitly excluded when a shadow copy is created. This interface is used only in the CVssWriterEx::OnIdentifyEx method.
+	/// The <c>IVssCreateWriterMetadataEx</c> interface defines a method to report any file sets that will be explicitly excluded when a
+	/// shadow copy is created. This interface is used only in the CVssWriterEx::OnIdentifyEx method.
 	/// </para>
 	/// <para>The <c>IVssCreateWriterMetadataEx</c> interface inherits from the IVssCreateWriterMetadata interface and IUnknown.</para>
 	/// </summary>
@@ -2567,9 +2566,6 @@ namespace Vanara.PInvoke.VssApi
 		/// <para>
 		/// This method is not a substitute for the IVssCreateWriterMetadata::AddExcludeFiles method. Writers should continue to use the
 		/// <c>AddExcludeFiles</c> method to report which file sets are excluded from backup.
-		/// </para>
-		/// <para>
-		/// The caller is responsible for calling the IUnknown::Release method to release the resources of the returned IVssWMFiledesc object.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nf-vswriter-ivsscreatewritermetadataex-addexcludefilesfromsnapshot
@@ -2652,9 +2648,9 @@ namespace Vanara.PInvoke.VssApi
 
 	/// <summary>
 	/// <para>
-	/// The <c>IVssWMDependency</c> is a C++ (not COM) interface returned by the IVssWMComponent interface and used by applications when
-	/// backing up or restoring a component that has an explicit writer-component dependency on a component managed by another writer.
-	/// (Dependencies must be between writers, not within writers.)
+	/// The <c>IVssWMDependency</c> is returned by the IVssWMComponent interface and used by applications when backing up or restoring a
+	/// component that has an explicit writer-component dependency on a component managed by another writer. (Dependencies must be between
+	/// writers, not within writers.)
 	/// </para>
 	/// <para>
 	/// <c>IVssWMDependency</c> is used to determine the writer ID, logical path, and component name of components that must be restored or
@@ -2663,10 +2659,6 @@ namespace Vanara.PInvoke.VssApi
 	/// <para>
 	/// Dependencies are created by writers while handling Identify events (CVssWriter::OnIdentify) using the
 	/// IVssCreateWriterMetadata::AddComponentDependency method.
-	/// </para>
-	/// <para>
-	/// Calling applications are responsible for calling IUnknown::Release to release resources held by a returned <c>IVssWMDependency</c>
-	/// object when it is no longer needed.
 	/// </para>
 	/// <para>The IVssWMComponent::GetDependency method returns an <c>IVssWMDependency</c> interface.</para>
 	/// <para>
@@ -2759,12 +2751,8 @@ namespace Vanara.PInvoke.VssApi
 
 	/// <summary>
 	/// <para>
-	/// The <c>IVssWMFiledesc</c> interface is a C++ (not COM) interface returned to a calling application by a number of query methods. It
-	/// provides detailed information about a file or set of files (a file set).
-	/// </para>
-	/// <para>
-	/// The calling application is responsible for calling IUnknown::Release to release the resources held by the returned
-	/// <c>IVssWMFiledesc</c> interface when it is no longer needed.
+	/// The <c>IVssWMFiledesc</c> interface is returned to a calling application by a number of query methods. It provides detailed
+	/// information about a file or set of files (a file set).
 	/// </para>
 	/// <para>The following methods return an <c>IVssWMFiledesc</c> interface:</para>
 	/// <list type="bullet">
@@ -2921,8 +2909,8 @@ namespace Vanara.PInvoke.VssApi
 
 	/// <summary>
 	/// <para>
-	/// The <c>IVssWriterComponents</c> interface is a C++ (not COM) interface that contains methods used to obtain and modify component
-	/// information (in the form of IVssComponent objects) associated with a given writer but stored in a requester's Backup Components Document.
+	/// The <c>IVssWriterComponents</c> interface contains methods used to obtain and modify component information (in the form of
+	/// IVssComponent objects) associated with a given writer but stored in a requester's Backup Components Document.
 	/// </para>
 	/// <para>
 	/// The CVssWriter base class is responsible for passing an instance of the <c>IVssWriterComponents</c> interface to the following event handlers:
@@ -3265,9 +3253,6 @@ namespace Vanara.PInvoke.VssApi
 	/// <remarks>The caller should free the memory held by the pbstrLogicalPath and pbstrComponentName parameters by calling SysFreeString.</remarks>
 	public struct VssRestoreSubcomponent
 	{
-		/// <summary>Reserved for future use.</summary>
-		public bool Repair;
-
 		/// <summary>Pointer to a string containing the name of the subcomponent. The string cannot be empty.</summary>
 		public string ComponentName;
 
@@ -3275,5 +3260,8 @@ namespace Vanara.PInvoke.VssApi
 		/// Pointer to a string containing the logical path of the subcomponent. The logical path cannot be empty when working with subcomponents.
 		/// </summary>
 		public string LogicalPath;
+
+		/// <summary>Reserved for future use.</summary>
+		public bool Repair;
 	}
 }

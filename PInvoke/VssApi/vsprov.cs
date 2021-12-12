@@ -927,10 +927,8 @@ namespace Vanara.PInvoke.VssApi
 		/// </para>
 		/// <para>
 		/// In the case of persistent shadow copies, the requester deletes the shadow copy when it is no longer needed. In the case of
-		/// nonpersistent auto-release shadow copies, the VSS service deletes the shadow copy when the requester calls IUnknown::Release on
-		/// the IVssBackupComponents object. In the case of nonpersistent non-auto-release shadow copies, the VSS service deletes the shadow
-		/// copy when the computer is restarted. In all cases, the VSS service calls the provider's <c>OnLunEmpty</c> method as needed for
-		/// each shadow copy LUN.
+		/// nonpersistent non-auto-release shadow copies, the VSS service deletes the shadow copy when the computer is restarted. In all
+		/// cases, the VSS service calls the provider's <c>OnLunEmpty</c> method as needed for each shadow copy LUN.
 		/// </para>
 		/// <para>
 		/// Note that <c>OnLunEmpty</c> is called on a best effort basis. VSS invokes the method only when the LUN is guaranteed to be
@@ -1072,8 +1070,7 @@ namespace Vanara.PInvoke.VssApi
 		/// </param>
 		/// <param name="ppAsync">
 		/// A pointer to a location that will receive an IVssAsync interface pointer that can be used to retrieve the status of the
-		/// resynchronization operation. When the operation is complete, the caller must release the interface pointer by calling the
-		/// IUnknown::Release method.
+		/// resynchronization operation.
 		/// </param>
 		/// <returns>
 		/// <para>This method can return one of these values.</para>
@@ -2149,7 +2146,7 @@ namespace Vanara.PInvoke.VssApi
 		/// </param>
 		/// <param name="ppAsync">
 		/// Pointer to a location that will receive an IVssAsync interface pointer that can be used to retrieve the status of the revert
-		/// operation. When the operation is complete, the caller must release the interface pointer by calling the IUnknown::Release method.
+		/// operation.
 		/// </param>
 		/// <returns>
 		/// <para>The following are the valid return codes for this method.</para>

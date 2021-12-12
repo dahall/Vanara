@@ -1583,10 +1583,6 @@ namespace Vanara.PInvoke.VssApi
 	/// The <c>IVssAsync</c> interface permits an application to monitor and control an asynchronous operation by waiting on its completion,
 	/// querying its status, or canceling it.
 	/// </para>
-	/// <para>
-	/// The calling application is responsible for calling IUnknown::Release to release the resources held by the returned <c>IVssAsync</c>
-	/// interface when it is no longer needed.
-	/// </para>
 	/// <para>The following methods return an <c>IVssAsync</c> interface:</para>
 	/// <list type="bullet">
 	/// <item>
@@ -1783,11 +1779,6 @@ namespace Vanara.PInvoke.VssApi
 	/// <para>
 	/// The <c>IVssEnumObject</c> interface contains methods to iterate over and perform other operations on a list of enumerated objects.
 	/// </para>
-	/// <para>
-	/// The calling application is responsible for calling IUnknown::Release to release the resources held by the returned
-	/// <c>IVssEnumObject</c> when it is no longer needed. It may also need to call <c>IUnknown::Release</c> to release temporary objects
-	/// (such as strings) returned during enumeration.
-	/// </para>
 	/// <para>The IVssBackupComponents::Query method returns an <c>IVssEnumObject</c> object.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vss/nn-vss-ivssenumobject
@@ -1889,7 +1880,7 @@ namespace Vanara.PInvoke.VssApi
 		/// enumerator object.
 		/// </summary>
 		/// <returns>
-		/// Doubly indirect pointer to an IVssEnumObject enumerator object. Set the value of this parameter to <c>NULL</c> before calling
+		/// An IVssEnumObject enumerator object. Set the value of this parameter to <c>NULL</c> before calling
 		/// this method.
 		/// </returns>
 		/// <remarks>
