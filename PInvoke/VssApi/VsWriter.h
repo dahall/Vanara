@@ -347,15 +347,53 @@ namespace Vanara { namespace PInvoke { namespace VssApi {
         }
     };
 
+    /// <summary>
+    /// <para>
+    /// The <c>CVssWriter</c> class is an abstract base class that defines the interface by which a writer synchronizes its state with VSS
+    /// and other writers.
+    /// </para>
+    /// <para>Every writer must instantiate an object derived from <c>CVssWriter</c>.</para>
+    /// <para>Objects derived from <c>CVssWriter</c> must supply implementations for all of the <c>CVssWriter</c>'s pure virtual methods.</para>
+    /// <para>A writer can override one or all of <c>CVssWriter</c>'s virtual methods.</para>
+    /// <para>To participate in VSS, a writer must first call CVssWriter::Initialize and then call CVssWriter::Subscribe.</para>
+    /// <para>A writer terminates its participation by calling CVssWriter::Unsubscribe.</para>
+    /// <para>
+    /// The <c>CVssWriter</c> base class is responsible for the life cycle of interfaces passed to event handlers. This includes the following:
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <term>The instance of the IVssWriterComponents interface passed to: CVssWriter::OnPrepareBackup
+    /// <para>CVssWriter::OnBackupComplete</para>
+    /// <para>CVssWriter::OnPreRestore</para>
+    /// <para>CVssWriter::OnPostRestore</para>
+    /// <para>CVssWriter::OnPostSnapshot</para>
+    /// </term>
+    /// </item>
+    /// <item>
+    /// <term>The instance of the IVssCreateWriterMetadata interface passed to CVssWriter::OnIdentify.</term>
+    /// </item>
+    /// </list>
+    /// </summary>
+    // https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nl-vswriter-cvsswriter
+    [PInvokeData("vswriter.h", MSDNShortId = "NL:vswriter.CVssWriter")]
     public ref class CVssWriter : public IVssWriter
     {
     private:
         CVssWriterImpl* pNative;
 
     protected:
-        // Constructors & Destructors
+        /// <summary><c>CVssWriter</c> is the constructor of the CVssWriter class object.</summary>
+        /// <returns>None</returns>
+        // https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nf-vswriter-cvsswriter-cvsswriter
         STDMETHODCALLTYPE CVssWriter() : pNative(new CVssWriterImpl(this)) {}
 
+        /// <summary>
+        /// <para><c>~CVssWriter</c> is the destructor of the CVssWriter class object.</para>
+        /// <para>This destructor is virtual and may be overridden by derived objects.</para>
+        /// </summary>
+        /// <returns>None</returns>
+        // https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nf-vswriter-cvsswriter--cvsswriter
+        // void ~CVssWriter();
         virtual STDMETHODCALLTYPE ~CVssWriter()
         {
             if (pNative != NULL)

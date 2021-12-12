@@ -8,7 +8,8 @@ using namespace Runtime::InteropServices;
 
 namespace Vanara { namespace PInvoke { namespace VssApi {
 
-	public ref class VssFactory sealed
+	/// <summary>Contains methods that create VSS objects.</summary>
+	public ref class VssFactory abstract sealed
 	{
 	public:
 		/// <summary>The <c>CreateVssExamineWriterMetadata</c> function creates an IVssExamineWriterMetadata object.</summary>

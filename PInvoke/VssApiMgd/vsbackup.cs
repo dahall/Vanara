@@ -2447,8 +2447,8 @@ namespace Vanara.PInvoke.VssApi
 		public VSS_WRITER_STATE pnStatus;
 	}
 
-	/// <summary>VSS functions.</summary>
-	public static partial class Methods
+	/// <summary>VSS information methods.</summary>
+	public static class VssInfo
 	{
 		private const string Lib_VssApi = "vssapi.dll";
 
