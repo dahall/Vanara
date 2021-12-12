@@ -85,63 +85,63 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "UnitTests\Core\Core.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "UnitTests\Security\Security.csproj", "{31F68B09-2933-45A1-B86B-9F6D647ED2D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security", "UnitTests\Security\Security.csproj", "{31F68B09-2933-45A1-B86B-9F6D647ED2D9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System", "UnitTests\System\System.csproj", "{9AEC2C7E-09D3-41C7-BDA7-4A7BAAA3441E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows.Forms", "UnitTests\Windows.Forms\Windows.Forms.csproj", "{C1FFE607-1D85-49F8-9421-6B21AB778816}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows.Forms", "UnitTests\Windows.Forms\Windows.Forms.csproj", "{C1FFE607-1D85-49F8-9421-6B21AB778816}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows.Shell", "UnitTests\Windows.Shell\Windows.Shell.csproj", "{2616C074-DF6C-47D4-BE82-6768885ACAC9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PInvoke", "PInvoke", "{385CAD2D-0A5E-4F80-927B-D5499D126B90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AclUI", "UnitTests\PInvoke\AclUI\AclUI.csproj", "{81A79BCD-C322-4742-842E-F70344FAD01D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AclUI", "UnitTests\PInvoke\AclUI\AclUI.csproj", "{81A79BCD-C322-4742-842E-F70344FAD01D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComCtl32", "UnitTests\PInvoke\ComCtl32\ComCtl32.csproj", "{FC54780C-E523-450E-BC74-1F900A652A2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComCtl32", "UnitTests\PInvoke\ComCtl32\ComCtl32.csproj", "{FC54780C-E523-450E-BC74-1F900A652A2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CredUI", "UnitTests\PInvoke\CredUI\CredUI.csproj", "{D26F23F2-35E8-4253-BCEF-56F113C93B02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CredUI", "UnitTests\PInvoke\CredUI\CredUI.csproj", "{D26F23F2-35E8-4253-BCEF-56F113C93B02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptography", "UnitTests\PInvoke\Cryptography\Cryptography.csproj", "{D2F143F6-25E8-4B00-A260-B3E3AA46960F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryptography", "UnitTests\PInvoke\Cryptography\Cryptography.csproj", "{D2F143F6-25E8-4B00-A260-B3E3AA46960F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DwmApi", "UnitTests\PInvoke\DwmApi\DwmApi.csproj", "{495E0181-1513-423C-8056-A5EE400FA066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DwmApi", "UnitTests\PInvoke\DwmApi\DwmApi.csproj", "{495E0181-1513-423C-8056-A5EE400FA066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gdi32", "UnitTests\PInvoke\Gdi32\Gdi32.csproj", "{A1A941E2-CF51-4582-B8B3-5CBC8905CA8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gdi32", "UnitTests\PInvoke\Gdi32\Gdi32.csproj", "{A1A941E2-CF51-4582-B8B3-5CBC8905CA8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpHlpApi", "UnitTests\PInvoke\IpHlpApi\IpHlpApi.csproj", "{FB4E72CC-FF45-4A75-84FB-D220E0C06698}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IpHlpApi", "UnitTests\PInvoke\IpHlpApi\IpHlpApi.csproj", "{FB4E72CC-FF45-4A75-84FB-D220E0C06698}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kernel32", "UnitTests\PInvoke\Kernel32\Kernel32.csproj", "{EF6CA228-59F6-495B-8F59-372690E68650}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mpr", "UnitTests\PInvoke\Mpr\Mpr.csproj", "{A300ACD4-2E77-4649-B773-2DD55CDB9573}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mpr", "UnitTests\PInvoke\Mpr\Mpr.csproj", "{A300ACD4-2E77-4649-B773-2DD55CDB9573}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetApi32", "UnitTests\PInvoke\NetApi32\NetApi32.csproj", "{2043D4AA-5286-491F-A334-A3CC7A08DB56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetApi32", "UnitTests\PInvoke\NetApi32\NetApi32.csproj", "{2043D4AA-5286-491F-A334-A3CC7A08DB56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetListMgr", "UnitTests\PInvoke\NetListMgr\NetListMgr.csproj", "{969234E4-6C92-4DAD-9AB9-25E618906643}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetListMgr", "UnitTests\PInvoke\NetListMgr\NetListMgr.csproj", "{969234E4-6C92-4DAD-9AB9-25E618906643}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NtDll", "UnitTests\PInvoke\NtDll\NtDll.csproj", "{6DD8BB87-AFBB-4E20-87CA-82967D01EF2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NtDll", "UnitTests\PInvoke\NtDll\NtDll.csproj", "{6DD8BB87-AFBB-4E20-87CA-82967D01EF2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTDSApi", "UnitTests\PInvoke\NTDSApi\NTDSApi.csproj", "{D7E06BE2-1BAC-4016-8228-FAA091ED4831}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTDSApi", "UnitTests\PInvoke\NTDSApi\NTDSApi.csproj", "{D7E06BE2-1BAC-4016-8228-FAA091ED4831}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ole", "UnitTests\PInvoke\Ole\Ole.csproj", "{BB78D331-8903-40CE-90C4-B0E77D7B20FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowrProf", "UnitTests\PInvoke\PowrProf\PowrProf.csproj", "{BAD9E08F-4001-4294-804D-7421012DAA3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowrProf", "UnitTests\PInvoke\PowrProf\PowrProf.csproj", "{BAD9E08F-4001-4294-804D-7421012DAA3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "UnitTests\PInvoke\Security\Security.csproj", "{C580868E-D913-454C-BF9B-CAFE3BD28DF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security", "UnitTests\PInvoke\Security\Security.csproj", "{C580868E-D913-454C-BF9B-CAFE3BD28DF0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "UnitTests\PInvoke\Shared\Shared.csproj", "{6F668E05-8141-48B8-9031-326C79745AF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell32", "UnitTests\PInvoke\Shell32\Shell32.csproj", "{40E5CA4E-527F-4F79-875D-2342D1136FDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskSchd", "UnitTests\PInvoke\TaskSchd\TaskSchd.csproj", "{85157400-A6FF-41E7-B650-4952ECBC28AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskSchd", "UnitTests\PInvoke\TaskSchd\TaskSchd.csproj", "{85157400-A6FF-41E7-B650-4952ECBC28AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User32", "UnitTests\PInvoke\User32\User32.csproj", "{60A80A72-67BD-4CC2-95DA-0F6D3553A221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User32", "UnitTests\PInvoke\User32\User32.csproj", "{60A80A72-67BD-4CC2-95DA-0F6D3553A221}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UxTheme", "UnitTests\PInvoke\UxTheme\UxTheme.csproj", "{EFAFBD16-A9FB-4656-896D-AD434B778EF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UxTheme", "UnitTests\PInvoke\UxTheme\UxTheme.csproj", "{EFAFBD16-A9FB-4656-896D-AD434B778EF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtDisk", "UnitTests\PInvoke\VirtDisk\VirtDisk.csproj", "{6947F255-E176-409C-9788-9C02A68C9D3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtDisk", "UnitTests\PInvoke\VirtDisk\VirtDisk.csproj", "{6947F255-E176-409C-9788-9C02A68C9D3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinINet", "UnitTests\PInvoke\WinINet\WinINet.csproj", "{A4BF5AA2-4D73-4BE7-ABB4-3DC089CFA77A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinINet", "UnitTests\PInvoke\WinINet\WinINet.csproj", "{A4BF5AA2-4D73-4BE7-ABB4-3DC089CFA77A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ws2_32", "UnitTests\PInvoke\Ws2_32\Ws2_32.csproj", "{15DC485D-B379-4087-97A7-981ADB4D48F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ws2_32", "UnitTests\PInvoke\Ws2_32\Ws2_32.csproj", "{15DC485D-B379-4087-97A7-981ADB4D48F9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Accessibility", "PInvoke\Accessibility\Vanara.PInvoke.Accessibility.csproj", "{D5BD6ECE-B285-4CE8-ABFC-964AB1DEA464}"
 EndProject
@@ -155,27 +155,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Wer", "PInvo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.KtmW32", "PInvoke\KtmW32\Vanara.PInvoke.KtmW32.csproj", "{C325C0A4-B8CF-442B-B393-C65FC9174045}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KtmW32", "UnitTests\PInvoke\KtmW32\KtmW32.csproj", "{8BC51B6B-77FA-4571-8E1C-EA75ED4DCD56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KtmW32", "UnitTests\PInvoke\KtmW32\KtmW32.csproj", "{8BC51B6B-77FA-4571-8E1C-EA75ED4DCD56}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Pdh", "PInvoke\Pdh\Vanara.PInvoke.Pdh.csproj", "{C1D9429F-A8BD-4094-ABE3-32581FC4614F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pdh", "UnitTests\PInvoke\Pdh\Pdh.csproj", "{15189584-3BD8-47DB-8B65-F58482063585}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pdh", "UnitTests\PInvoke\Pdh\Pdh.csproj", "{15189584-3BD8-47DB-8B65-F58482063585}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.BITS", "BITS\Vanara.BITS.csproj", "{C7ACE187-CB36-4CEA-AE0C-651669237427}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.VirtualDisk", "VirtualDisk\Vanara.VirtualDisk.csproj", "{D4E36942-7492-46B9-985B-F99D8F5A35AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BITS", "UnitTests\BITS\BITS.csproj", "{5558B8E3-FF1C-401F-978E-E91D1E78B898}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BITS", "UnitTests\BITS\BITS.csproj", "{5558B8E3-FF1C-401F-978E-E91D1E78B898}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualDisk", "UnitTests\VirtualDisk\VirtualDisk.csproj", "{687F9162-8CA0-4277-B868-4E7F2EC614F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDisk", "UnitTests\VirtualDisk\VirtualDisk.csproj", "{687F9162-8CA0-4277-B868-4E7F2EC614F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerBrowserDemo", "UnitTests\ExplorerBrowser\ExplorerBrowserDemo.csproj", "{2AACFF7E-F4B1-44F6-92C6-20ACBB647A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerBrowserDemo", "UnitTests\ExplorerBrowser\ExplorerBrowserDemo.csproj", "{2AACFF7E-F4B1-44F6-92C6-20ACBB647A4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows.Forms.App", "UnitTests\Windows.Forms.App\Windows.Forms.App.csproj", "{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Windows.Forms.App", "UnitTests\Windows.Forms.App\Windows.Forms.App.csproj", "{9520EC8B-9C63-47E6-A7BD-1CCF9BBB5BFA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Printing", "PInvoke\Printing\Vanara.PInvoke.Printing.csproj", "{D3E1F2B8-D475-4922-B334-919795B858CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printing", "UnitTests\PInvoke\Printing\Printing.csproj", "{D2A4FD48-FCED-4E45-BBA0-C2D5CC536428}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Printing", "UnitTests\PInvoke\Printing\Printing.csproj", "{D2A4FD48-FCED-4E45-BBA0-C2D5CC536428}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.UrlMon", "PInvoke\UrlMon\Vanara.PInvoke.UrlMon.csproj", "{1A232558-F25A-4D9B-99DE-76F1B4E41F22}"
 EndProject
@@ -183,7 +183,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Opc", "PInvo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.UserEnv", "PInvoke\UserEnv\Vanara.PInvoke.UserEnv.csproj", "{2F4AF0C8-483B-4F0E-89F7-EB9AC32385B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserEnv", "UnitTests\PInvoke\UserEnv\UserEnv.csproj", "{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserEnv", "UnitTests\PInvoke\UserEnv\UserEnv.csproj", "{FFF69906-9EEC-4D01-879F-CE96DE2FFC6A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{067384DF-120D-485D-B2BF-D6D6089937B8}"
 	ProjectSection(SolutionItems) = preProject
@@ -195,45 +195,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Vanara.Library.nuspec = Vanara.Library.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opc", "UnitTests\PInvoke\Opc\Opc.csproj", "{9783BAFF-8388-44FA-882B-A92142CC20F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc", "UnitTests\PInvoke\Opc\Opc.csproj", "{9783BAFF-8388-44FA-882B-A92142CC20F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlMon", "UnitTests\PInvoke\UrlMon\UrlMon.csproj", "{2D9E5288-94AA-486A-B89D-0569AE2284F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlMon", "UnitTests\PInvoke\UrlMon\UrlMon.csproj", "{2D9E5288-94AA-486A-B89D-0569AE2284F1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WcmApi", "PInvoke\WcmApi\Vanara.PInvoke.WcmApi.csproj", "{7508C4E0-D14B-45DF-B644-9236B0B83607}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WlanApi", "PInvoke\WlanApi\Vanara.PInvoke.WlanApi.csproj", "{141B6B19-6F07-4644-B72D-B189E49030BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WlanApi", "UnitTests\PInvoke\WlanApi\WlanApi.csproj", "{F8E02C7E-99E9-4C99-B63D-E678BC43C734}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WlanApi", "UnitTests\PInvoke\WlanApi\WlanApi.csproj", "{F8E02C7E-99E9-4C99-B63D-E678BC43C734}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcmApi", "UnitTests\PInvoke\WcmApi\WcmApi.csproj", "{35B95D64-CC7E-48B4-B104-4886411531AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WcmApi", "UnitTests\PInvoke\WcmApi\WcmApi.csproj", "{35B95D64-CC7E-48B4-B104-4886411531AC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.DnsApi", "PInvoke\DnsApi\Vanara.PInvoke.DnsApi.csproj", "{15023E19-86A7-40C7-838E-21EEB15A63AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnsApi", "UnitTests\PInvoke\DnsApi\DnsApi.csproj", "{5B4ADAFE-DCCC-40BC-9A9E-8086E57E8B49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnsApi", "UnitTests\PInvoke\DnsApi\DnsApi.csproj", "{5B4ADAFE-DCCC-40BC-9A9E-8086E57E8B49}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.CldApi", "PInvoke\CldApi\Vanara.PInvoke.CldApi.csproj", "{DDFCBC19-B6CE-4DD4-A1BB-96EE86C54D93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CldApi", "UnitTests\PInvoke\CldApi\CldApi.csproj", "{CCEE0CAA-27BF-43B3-8609-2279BEDA3F61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CldApi", "UnitTests\PInvoke\CldApi\CldApi.csproj", "{CCEE0CAA-27BF-43B3-8609-2279BEDA3F61}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.ProjectedFSLib", "PInvoke\ProjectedFSLib\Vanara.PInvoke.ProjectedFSLib.csproj", "{30F2727D-0B8E-4364-8F0E-9EEB4CD9CB0E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Graphics", "PInvoke\Graphics\Vanara.PInvoke.Graphics.csproj", "{FAF09C42-66CA-4765-910A-2A9A2EF399D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphics", "UnitTests\PInvoke\Graphics\Graphics.csproj", "{AD003766-998F-4969-8632-A9CD0E3A21F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphics", "UnitTests\PInvoke\Graphics\Graphics.csproj", "{AD003766-998F-4969-8632-A9CD0E3A21F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreConsoleApp", "UnitTests\CoreConsoleApp\CoreConsoleApp.csproj", "{3E14800D-4E2D-43A0-8C15-B64C6F4469CA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Magnification", "PInvoke\Magnification\Vanara.PInvoke.Magnification.csproj", "{93EFCE73-4A4D-40A3-882E-6A4A20C40816}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magnification", "UnitTests\PInvoke\Magnification\Magnification.csproj", "{E753F3A4-2A0B-49E2-9611-4F35534B5F72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magnification", "UnitTests\PInvoke\Magnification\Magnification.csproj", "{E753F3A4-2A0B-49E2-9611-4F35534B5F72}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.DbgHelp", "PInvoke\DbgHelp\Vanara.PInvoke.DbgHelp.csproj", "{69604ECE-B123-4328-BEC3-996CCF22DB90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbgHelp", "UnitTests\PInvoke\DbgHelp\DbgHelp.csproj", "{F2C94926-224F-43AB-B351-C20C9B2D8656}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbgHelp", "UnitTests\PInvoke\DbgHelp\DbgHelp.csproj", "{F2C94926-224F-43AB-B351-C20C9B2D8656}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.P2P", "PInvoke\P2P\Vanara.PInvoke.P2P.csproj", "{200D7E57-452A-4A43-A96D-386F7C49E7BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2P", "UnitTests\PInvoke\P2P\P2P.csproj", "{BBA10B94-658F-4BD7-A3DD-AA39CDF9A68D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2P", "UnitTests\PInvoke\P2P\P2P.csproj", "{BBA10B94-658F-4BD7-A3DD-AA39CDF9A68D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.PeerDist", "PInvoke\PeerDist\Vanara.PInvoke.PeerDist.csproj", "{3108565B-2F79-447B-9386-42203CD949A5}"
 EndProject
@@ -241,13 +241,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Drt", "PInvo
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Vanara.PInvoke.FirewallApi", "PInvoke\FirewallApi\Vanara.PInvoke.FirewallApi.vbproj", "{E74C1A09-1051-4616-8693-B69A6A95AD03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirewallApi", "UnitTests\PInvoke\FirewallApi\FirewallApi.csproj", "{6A9599A6-89D5-4072-8DA1-A13E37023613}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirewallApi", "UnitTests\PInvoke\FirewallApi\FirewallApi.csproj", "{6A9599A6-89D5-4072-8DA1-A13E37023613}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BITS", "UnitTests\PInvoke\BITS\BITS.csproj", "{95E98514-A4D0-4ACD-8BE0-35D7BD185C71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BITS", "UnitTests\PInvoke\BITS\BITS.csproj", "{95E98514-A4D0-4ACD-8BE0-35D7BD185C71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cabinet", "UnitTests\PInvoke\Cabinet\Cabinet.csproj", "{CD8A5176-6EEC-4739-9748-A45D3FDECFA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cabinet", "UnitTests\PInvoke\Cabinet\Cabinet.csproj", "{CD8A5176-6EEC-4739-9748-A45D3FDECFA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShlwApi", "UnitTests\PInvoke\ShlwApi\ShlwApi.csproj", "{80E10D65-5B7C-4BC8-8000-2B5BC9A21874}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShlwApi", "UnitTests\PInvoke\ShlwApi\ShlwApi.csproj", "{80E10D65-5B7C-4BC8-8000-2B5BC9A21874}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Files", "Build Files", "{27FA62A4-C1EE-461D-9F5B-287C0A848B88}"
 	ProjectSection(SolutionItems) = preProject
@@ -255,23 +255,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Files", "Build Files"
 		UnitTests\Directory.Build.targets = UnitTests\Directory.Build.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Dhcp", "PInvoke\Dhcp\Vanara.PInvoke.Dhcp.csproj", "{CB2EAE48-7503-459F-BD63-69FAE9740A20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Dhcp", "PInvoke\Dhcp\Vanara.PInvoke.Dhcp.csproj", "{CB2EAE48-7503-459F-BD63-69FAE9740A20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dhcp", "UnitTests\PInvoke\Dhcp\Dhcp.csproj", "{94D2C3ED-2101-439C-AAAA-452883A493B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dhcp", "UnitTests\PInvoke\Dhcp\Dhcp.csproj", "{94D2C3ED-2101-439C-AAAA-452883A493B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Rpc", "PInvoke\Rpc\Vanara.PInvoke.Rpc.csproj", "{4108A2DD-AD00-44D0-B926-405D65E630A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WTSApi32", "PInvoke\WTSApi32\Vanara.PInvoke.WTSApi32.csproj", "{CEBC8DBE-0A4F-4A71-BEB5-8A5B28F89352}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WTSApi32", "PInvoke\WTSApi32\Vanara.PInvoke.WTSApi32.csproj", "{CEBC8DBE-0A4F-4A71-BEB5-8A5B28F89352}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WTSApi32", "UnitTests\PInvoke\WTSApi32\WTSApi32.csproj", "{A231F6BB-C9C0-4CB2-A9CB-892AD4F9D836}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WTSApi32", "UnitTests\PInvoke\WTSApi32\WTSApi32.csproj", "{A231F6BB-C9C0-4CB2-A9CB-892AD4F9D836}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.OleDlg", "PInvoke\OleDlg\Vanara.PInvoke.OleDlg.csproj", "{52DB113A-CE55-437C-B6DF-6A4CA1B3F965}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.OleDlg", "PInvoke\OleDlg\Vanara.PInvoke.OleDlg.csproj", "{52DB113A-CE55-437C-B6DF-6A4CA1B3F965}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.ComDlg32", "PInvoke\ComDlg32\Vanara.PInvoke.ComDlg32.csproj", "{8452C9E4-39CB-431F-BBD6-EF3E64675BB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OleDlg", "UnitTests\PInvoke\OleDlg\OleDlg.csproj", "{76740A8B-28F1-41C8-A724-F2E3F56AA75A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OleDlg", "UnitTests\PInvoke\OleDlg\OleDlg.csproj", "{76740A8B-28F1-41C8-A724-F2E3F56AA75A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComDlg32", "UnitTests\PInvoke\ComDlg32\ComDlg32.csproj", "{1E29742F-1DAB-4186-B058-262BD7BC7FEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComDlg32", "UnitTests\PInvoke\ComDlg32\ComDlg32.csproj", "{1E29742F-1DAB-4186-B058-262BD7BC7FEC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.NewDev", "PInvoke\NewDev\Vanara.PInvoke.NewDev.csproj", "{1D581A26-F2BF-4E12-8C32-C1C838044ECE}"
 EndProject
@@ -279,41 +279,41 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.SetupAPI", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SetupAPI", "UnitTests\PInvoke\SetupAPI\SetupAPI.csproj", "{B1F98DFA-7FC7-4728-B4C2-A2B3E163EF79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Msi", "PInvoke\Msi\Vanara.PInvoke.Msi.csproj", "{CC8EB859-0940-4D91-B165-3B028A1B7B5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Msi", "PInvoke\Msi\Vanara.PInvoke.Msi.csproj", "{CC8EB859-0940-4D91-B165-3B028A1B7B5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msi", "UnitTests\PInvoke\Msi\Msi.csproj", "{E7242839-78DE-4AFE-8AF7-E9DDCE06E18C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Msi", "UnitTests\PInvoke\Msi\Msi.csproj", "{E7242839-78DE-4AFE-8AF7-E9DDCE06E18C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.SHCore", "PInvoke\SHCore\Vanara.PInvoke.SHCore.csproj", "{F1417ADE-A8D3-432F-8F43-EF626DF4A3C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.SHCore", "PInvoke\SHCore\Vanara.PInvoke.SHCore.csproj", "{F1417ADE-A8D3-432F-8F43-EF626DF4A3C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WsmSvc", "PInvoke\WsmSvc\Vanara.PInvoke.WsmSvc.csproj", "{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WsmSvc", "PInvoke\WsmSvc\Vanara.PInvoke.WsmSvc.csproj", "{1D1A06C8-57E8-4754-8383-BBFB3C98F49F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WsmSvc", "UnitTests\PInvoke\WsmSvc\WsmSvc.csproj", "{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WsmSvc", "UnitTests\PInvoke\WsmSvc\WsmSvc.csproj", "{28175EF4-C5CA-48EB-AD8D-1B0608AD4389}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.IScsiDsc", "PInvoke\IScsiDsc\Vanara.PInvoke.IScsiDsc.csproj", "{C407D019-7D53-4C6A-B27A-5468F2430F10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.IScsiDsc", "PInvoke\IScsiDsc\Vanara.PInvoke.IScsiDsc.csproj", "{C407D019-7D53-4C6A-B27A-5468F2430F10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Version", "PInvoke\Version\Vanara.PInvoke.Version.csproj", "{460964A8-894C-45A1-AFA5-EF2DA3FC436D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Version", "PInvoke\Version\Vanara.PInvoke.Version.csproj", "{460964A8-894C-45A1-AFA5-EF2DA3FC436D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Version", "UnitTests\PInvoke\Version\Version.csproj", "{6C2D8577-ECEF-4E07-B4D7-CBFFD7BB6F53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Version", "UnitTests\PInvoke\Version\Version.csproj", "{6C2D8577-ECEF-4E07-B4D7-CBFFD7BB6F53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.RstrtMgr", "PInvoke\RstrtMgr\Vanara.PInvoke.RstrtMgr.csproj", "{6FFDB484-24E0-4338-B816-D9975AF35853}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.RstrtMgr", "PInvoke\RstrtMgr\Vanara.PInvoke.RstrtMgr.csproj", "{6FFDB484-24E0-4338-B816-D9975AF35853}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.FunDisc", "PInvoke\FunDisc\Vanara.PInvoke.FunDisc.csproj", "{D0CD8393-BE38-4B9D-911F-C372293EF62D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.FunDisc", "PInvoke\FunDisc\Vanara.PInvoke.FunDisc.csproj", "{D0CD8393-BE38-4B9D-911F-C372293EF62D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WcnApi", "PInvoke\WcnApi\Vanara.PInvoke.WcnApi.csproj", "{55952C51-B68B-432E-A168-4ADD569B9274}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WcnApi", "PInvoke\WcnApi\Vanara.PInvoke.WcnApi.csproj", "{55952C51-B68B-432E-A168-4ADD569B9274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.IMAPI", "PInvoke\IMAPI\Vanara.PInvoke.IMAPI.csproj", "{17EFDD95-3E52-44C1-80D9-48031E3F6B3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.IMAPI", "PInvoke\IMAPI\Vanara.PInvoke.IMAPI.csproj", "{17EFDD95-3E52-44C1-80D9-48031E3F6B3F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.CfgMgr32", "PInvoke\CfgMgr32\Vanara.PInvoke.CfgMgr32.csproj", "{2ECB955C-F05D-4FD7-BCC7-449A494CA66B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.TextServicesFramework", "PInvoke\TextServicesFramework\Vanara.PInvoke.TextServicesFramework.csproj", "{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.TextServicesFramework", "PInvoke\TextServicesFramework\Vanara.PInvoke.TextServicesFramework.csproj", "{17DE6265-EE0F-42E5-AE1A-7ACCDD8A45E8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CfgMgr32", "UnitTests\PInvoke\CfgMgr32\CfgMgr32.csproj", "{6F4649D2-CB4E-463A-A5DE-CCC3B0DBD07A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Lz32", "PInvoke\Lz32\Vanara.PInvoke.Lz32.csproj", "{553081F3-A380-44B4-94ED-E8CE510F3E96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Lz32", "PInvoke\Lz32\Vanara.PInvoke.Lz32.csproj", "{553081F3-A380-44B4-94ED-E8CE510F3E96}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Multimedia", "PInvoke\Multimedia\Vanara.PInvoke.Multimedia.csproj", "{A7936B0B-A16B-42A5-A6DA-5D00FA98EEDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multimedia", "UnitTests\PInvoke\Multimedia\Multimedia.csproj", "{A9F11EBE-C1CE-40C3-A611-B444652215A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multimedia", "UnitTests\PInvoke\Multimedia\Multimedia.csproj", "{A9F11EBE-C1CE-40C3-A611-B444652215A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WinBio", "PInvoke\WinBio\Vanara.PInvoke.WinBio.csproj", "{C786E4D5-B2DD-453A-82E7-5DD8374A0A2A}"
 EndProject
@@ -323,19 +323,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.CimFs", "PIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CimFs", "UnitTests\PInvoke\CimFs\CimFs.csproj", "{5DBC32A2-1FF0-41F6-9D6B-CE701F599BE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.FhSvcCtl", "PInvoke\FhSvcCtl\Vanara.PInvoke.FhSvcCtl.csproj", "{B419C1F3-AB66-40B9-9693-817CD061F7EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.FhSvcCtl", "PInvoke\FhSvcCtl\Vanara.PInvoke.FhSvcCtl.csproj", "{B419C1F3-AB66-40B9-9693-817CD061F7EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FhSvcCtl", "UnitTests\PInvoke\FhSvcCtl\FhSvcCtl.csproj", "{089EA815-567E-4430-BEB4-4E18FD0B1473}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FhSvcCtl", "UnitTests\PInvoke\FhSvcCtl\FhSvcCtl.csproj", "{089EA815-567E-4430-BEB4-4E18FD0B1473}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.EnhancedStorage", "PInvoke\EnhancedStorage\Vanara.PInvoke.EnhancedStorage.csproj", "{1D842CC7-BECA-4011-A7FB-98773CFF8CD0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.PortableDeviceApi", "PInvoke\PortableDeviceApi\Vanara.PInvoke.PortableDeviceApi.csproj", "{7DA64CE7-F149-46CD-AC2A-AA8DBA1CDB39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableDeviceApi", "UnitTests\PInvoke\PortableDeviceApi\PortableDeviceApi.csproj", "{0E4D9AB7-1881-49F6-B307-D1681A0703FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortableDeviceApi", "UnitTests\PInvoke\PortableDeviceApi\PortableDeviceApi.csproj", "{0E4D9AB7-1881-49F6-B307-D1681A0703FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedStorage", "UnitTests\PInvoke\EnhancedStorage\EnhancedStorage.csproj", "{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnhancedStorage", "UnitTests\PInvoke\EnhancedStorage\EnhancedStorage.csproj", "{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.VssApi", "PInvoke\VssApi\Vanara.PInvoke.VssApi.csproj", "{A29388B1-0F2F-4551-BDB8-272E0865D96C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.VssApiMgd", "PInvoke\VssApiMgd\Vanara.PInvoke.VssApiMgd.csproj", "{39AEDD51-C627-41B9-96D3-44F481ED4E7C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vanara.PInvoke.VssApi", "PInvoke\VssApi\VssApi.vcxproj", "{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2038,24 +2040,40 @@ Global
 		{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}.Release|x64.ActiveCfg = Release|Any CPU
 		{A205BA61-E2C4-41C5-B7CE-9EB5940C7076}.Release|x86.ActiveCfg = Release|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Debug|x64.Build.0 = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Debug|x86.Build.0 = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.DebugNoTests|x64.ActiveCfg = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.DebugNoTests|x64.Build.0 = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.DebugNoTests|x86.ActiveCfg = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.DebugNoTests|x86.Build.0 = Debug|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Release|x64.ActiveCfg = Release|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Release|x64.Build.0 = Release|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Release|x86.ActiveCfg = Release|Any CPU
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C}.Release|x86.Build.0 = Release|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Debug|x64.Build.0 = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Debug|x86.Build.0 = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.DebugNoTests|x64.ActiveCfg = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.DebugNoTests|x64.Build.0 = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.DebugNoTests|x86.ActiveCfg = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.DebugNoTests|x86.Build.0 = Debug|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Release|x64.ActiveCfg = Release|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Release|x64.Build.0 = Release|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Release|x86.ActiveCfg = Release|Any CPU
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C}.Release|x86.Build.0 = Release|Any CPU
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Debug|x64.ActiveCfg = Debug|x64
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Debug|x64.Build.0 = Debug|x64
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Debug|x86.ActiveCfg = Debug|Win32
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Debug|x86.Build.0 = Debug|Win32
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.DebugNoTests|Any CPU.ActiveCfg = Debug|Win32
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.DebugNoTests|Any CPU.Build.0 = Debug|Win32
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.DebugNoTests|x64.ActiveCfg = Debug|x64
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.DebugNoTests|x64.Build.0 = Debug|x64
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.DebugNoTests|x86.ActiveCfg = Debug|Win32
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.DebugNoTests|x86.Build.0 = Debug|Win32
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Release|Any CPU.ActiveCfg = Release|Win32
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Release|x64.ActiveCfg = Release|x64
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Release|x64.Build.0 = Release|x64
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Release|x86.ActiveCfg = Release|Win32
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2205,7 +2223,8 @@ Global
 		{7DA64CE7-F149-46CD-AC2A-AA8DBA1CDB39} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{0E4D9AB7-1881-49F6-B307-D1681A0703FD} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{A205BA61-E2C4-41C5-B7CE-9EB5940C7076} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
-		{A29388B1-0F2F-4551-BDB8-272E0865D96C} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{39AEDD51-C627-41B9-96D3-44F481ED4E7C} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
