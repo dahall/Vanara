@@ -103,7 +103,7 @@ VssRestoreSubcomponent CVssComponent::GetRestoreSubcomponentsItem(int i)
     SafeBSTR path, n;
     bool repair;
     Utils::ThrowIfFailed(pNative->GetRestoreSubcomponent(i, &path, &n, &repair));
-    VssRestoreSubcomponent e = { repair, n, path };
+    VssRestoreSubcomponent e = { n, path, repair };
     return e;
 }
 

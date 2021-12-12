@@ -100,7 +100,7 @@ namespace Vanara { namespace PInvoke { namespace VssApi {
         ::HRESULT hr, hrApp;
         SafeComPtr<::IVssBackupComponentsEx3*> p = pNative;
         Utils::ThrowIfFailed(p->GetWriterStatusEx(i, &id, &wri, &swri, &stat, &hr, &hrApp, &msg));
-        VssWriterStatus ret{ Utils::FromGUID(id), Utils::FromGUID(wri), swri, static_cast<VSS_WRITER_STATE>(stat), (HRESULT)hr, (HRESULT)hrApp, msg };
+        VssWriterStatus ret { msg, swri, (HRESULT)hrApp, (HRESULT)hr, Utils::FromGUID(id), Utils::FromGUID(wri), static_cast<VSS_WRITER_STATE>(stat) };
         return ret;
     }
 

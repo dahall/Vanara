@@ -75,7 +75,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <TargetName>Vanara.PInvoke.VssApi</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -83,9 +83,12 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalUsingDirectories>$(SolutionDir)PInvoke\VssApiMgd\bin\$(ConfigurationName)\$(TargetFramework);%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
+      <AddModuleNamesToAssembly>
+      </AddModuleNamesToAssembly>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,29 +149,6 @@
     <ClCompile Include="VssApi.cpp" />
     <ClCompile Include="VssFactory.cpp" />
     <ClCompile Include="VsWriter.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="app.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="app.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Vanara.Core">
-      <HintPath>..\..\..\..\GitHubRepos\Vanara\PInvoke\VssApi\bin\Debug\net5.0\Vanara.Core.dll</HintPath>
-      <Private>false</Private>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-    </Reference>
-    <Reference Include="Vanara.PInvoke.Shared">
-      <HintPath>..\..\..\..\GitHubRepos\Vanara\PInvoke\VssApi\bin\Debug\net5.0\Vanara.PInvoke.Shared.dll</HintPath>
-      <Private>false</Private>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-    </Reference>
-    <Reference Include="Vanara.PInvoke.VssApi">
-      <HintPath>..\..\..\..\GitHubRepos\Vanara\PInvoke\VssApi\bin\Debug\net5.0\Vanara.PInvoke.VssApi.dll</HintPath>
-      <Private>false</Private>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-    </Reference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
