@@ -39,6 +39,7 @@ Interface | Description
 Class | Description
 ---- | ----
 [Vanara.InteropServices.AlignedMemory<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AlignedMemory<T>) | A memory block aligned on a specific byte boundary.
+[Vanara.PInvoke.BeginEndEventContext](https://github.com/dahall/Vanara/search?l=C%23&q=BeginEndEventContext) | 
 [Vanara.Extensions.BitHelper](https://github.com/dahall/Vanara/search?l=C%23&q=BitHelper) | Static methods to help with bit manipulation.
 [Vanara.ByteSizeFormatter](https://github.com/dahall/Vanara/search?l=C%23&q=ByteSizeFormatter) | A custom formatter for byte sizes (things like files, network bandwidth, etc.) that will automatically determine the best abbreviation.
 [Vanara.InteropServices.ComConnectionPoint](https://github.com/dahall/Vanara/search?l=C%23&q=ComConnectionPoint) | Helper class to create an advised COM sink. When this class is constructed, the source is queried for an `System.Runtime.InteropServices.ComTypes.IConnectionPointContainer` reference.
