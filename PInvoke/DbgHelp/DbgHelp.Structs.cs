@@ -1164,7 +1164,7 @@ namespace Vanara.PInvoke
 			public SYM_TYPE SymType;
 
 			/// <summary>The module name.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 			public string ModuleName;
 
 			/// <summary>The image name. The name may or may not contain a full path.</summary>
