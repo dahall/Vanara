@@ -49,7 +49,7 @@ namespace Vanara.Collections
 	/// if a class doesn't support <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/> like some COM objects.
 	/// </summary>
 	/// <typeparam name="TItem">The type of the item.</typeparam>
-	public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
+	public class IEnumFromCom<TItem> : IEnumFromNext<TItem> where TItem : new()
 	{
 		private readonly ComTryGetNext cnext;
 
@@ -90,7 +90,7 @@ namespace Vanara.Collections
 
 		private bool TryGet(out TItem item)
 		{
-			var res = new TItem[1];
+			var res = new TItem[] { new TItem() };
 			item = default;
 			if (cnext(1, res, out var ret) != HRESULT.S_OK)
 				return false;
