@@ -14,6 +14,9 @@ namespace Vanara.PInvoke
 	/// <summary>Interfaces, functions, enumerated types and structures for Shell32.dll.</summary>
 	public static partial class Shell32
 	{
+		/// <summary/>
+		public const int NINF_KEY = 0x1;
+		
 		/// <summary>Values used in APPBARDATA.</summary>
 		[PInvokeData("shellapi.h", MSDNShortId = "cf86fe15-4beb-49b7-b73e-2ad61cedc3f8")]
 		public enum ABE
@@ -311,6 +314,48 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			NIM_SETVERSION = 0x00000004,
+		}
+
+		/// <summary>Shell notification messages delivered as a result of calling <see cref="Shell_NotifyIcon"/>.</summary>
+		[PInvokeData("shellapi.h")]
+		public enum NIN
+		{
+			/// <summary>Sent when a user selects a notify icon with the mouse and activates it with the ENTER key</summary>
+			NIN_SELECT = User32.WindowMessage.WM_USER + 0,
+
+			/// <summary>
+			/// Sent when a user selects a notify icon with the keyboard and activates it with the SPACEBAR or ENTER key, the version 5.0
+			/// Shell sends the associated application an NIN_KEYSELECT notification. Earlier versions send WM_RBUTTONDOWN and WM_RBUTTONUP messages.
+			/// </summary>
+			NIN_KEYSELECT = NIN_SELECT | NINF_KEY,
+
+			/// <summary>Sent when the balloon is shown (balloons are queued).</summary>
+			NIN_BALLOONSHOW = User32.WindowMessage.WM_USER + 2,
+
+			/// <summary>
+			/// Sent when the balloon disappears. For example, when the icon is deleted. This message is not sent if the balloon is
+			/// dismissed because of a timeout or if the user clicks the mouse.
+			/// <para>
+			/// As of Windows 7, NIN_BALLOONHIDE is also sent when a notification with the NIIF_RESPECT_QUIET_TIME flag set attempts to
+			/// display during quiet time (a user's first hour on a new computer). In that case, the balloon is never displayed at all.
+			/// </para>
+			/// </summary>
+			NIN_BALLOONHIDE = User32.WindowMessage.WM_USER + 3,
+
+			/// <summary>Sent when the balloon is dismissed because of a timeout.</summary>
+			NIN_BALLOONTIMEOUT = User32.WindowMessage.WM_USER + 4,
+
+			/// <summary>Sent when the balloon is dismissed because the user clicked the mouse.</summary>
+			NIN_BALLOONUSERCLICK = User32.WindowMessage.WM_USER + 5,
+
+			/// <summary>
+			/// Sent when the user hovers the cursor over an icon to indicate that the richer pop-up UI should be used in place of a
+			/// standard textual tooltip.
+			/// </summary>
+			NIN_POPUPOPEN = User32.WindowMessage.WM_USER + 6,
+
+			/// <summary>Sent when a cursor no longer hovers over an icon to indicate that the rich pop-up UI should be closed.</summary>
+			NIN_POPUPCLOSE = User32.WindowMessage.WM_USER + 7,
 		}
 
 		/// <summary>State flags for NOTIFYICONDATA.</summary>
