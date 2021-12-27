@@ -58,7 +58,7 @@ namespace Vanara.Windows.Shell
 			return true;
 		}
 
-#if !(NETCOREAPP3_0 || NETCOREAPP3_1 || NET5_0)
+#if !(NETCOREAPP3_0 || NETCOREAPP3_1 || NET5_0_OR_GREATER)
 
 		/// <summary>Registers the specified type as a COM Local Server.</summary>
 		/// <typeparam name="TComObject">The type of the COM object.</typeparam>

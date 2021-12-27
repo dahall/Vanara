@@ -1,4 +1,8 @@
-﻿// Credit due to Gong-Shell from which this was largely taken.
+﻿#if !(NET5_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER)
+#define HASMENU
+#endif
+
+// Credit due to Gong-Shell from which this was largely taken.
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -313,7 +317,7 @@ namespace Vanara.Windows.Shell
 			return ComInterface.GetCommandString((IntPtr)command, stringType, default, mStr, (uint)mStr.Capacity).Succeeded ? mStr : null;
 		}
 
-#if !NET5_0 && !NETCOREAPP3_1
+#if HASMENU
 		/// <summary>Populates a <see cref="Menu"/> with the context menu items for a shell item.</summary>
 		/// <param name="menu">The menu to populate.</param>
 		/// <param name="menuOptions">The flags to pass to <see cref="IContextMenu.QueryContextMenu"/>.</param>
