@@ -63,7 +63,52 @@ namespace Vanara.PInvoke
             /// </para>
             /// <para>Examples</para>
             /// <para>
-            /// <code> // This number controls how many object identifiers are requested during each call // to IEnumPortableDeviceObjectIDs::Next() #define NUM_OBJECTS_TO_REQUEST 10 // Recursively called function which enumerates using the specified // object identifier as the parent. void RecursiveEnumerate(LPCWSTR wszParentObjectID, IPortableDeviceContent* pContent) { HRESULT hr = S_OK; IEnumPortableDeviceObjectIDs* pEnumObjectIDs = NULL; if ((wszParentObjectID == NULL) || (pContent == NULL)) { return; } // wszParentObjectID is the object identifier of the parent being used for enumeration // Get an IEnumPortableDeviceObjectIDs interface by calling EnumObjects with the // specified parent object identifier. hr = pContent-&gt;EnumObjects(0, wszParentObjectID, NULL, &amp;pEnumObjectIDs); if (FAILED(hr)) { // Failed to get IEnumPortableDeviceObjectIDs from IPortableDeviceContent } // Loop calling Next() while S_OK is being returned. while(hr == S_OK) { DWORD cFetched = 0; LPWSTR szObjectIDArray[NUM_OBJECTS_TO_REQUEST] = {0}; hr = pEnumObjectIDs-&gt;Next(NUM_OBJECTS_TO_REQUEST, // Number of objects to request on each NEXT call szObjectIDArray, // Array of LPWSTR array which will be populated on each NEXT call &amp;cFetched); // Number of objects written to the LPWSTR array if (SUCCEEDED(hr)) { // Traverse the results of the Next() operation and recursively enumerate // Remember to free all returned object identifiers using CoTaskMemFree() for (DWORD dwIndex = 0; dwIndex &lt; cFetched; dwIndex++) { RecursiveEnumerate(szObjectIDArray[dwIndex],pContent); // Free allocated LPWSTRs after the recursive enumeration call has completed. CoTaskMemFree(szObjectIDArray[dwIndex]); szObjectIDArray[dwIndex] = NULL; } } } // Release the IEnumPortableDeviceObjectIDs when finished if (pEnumObjectIDs != NULL) { pEnumObjectIDs-&gt;Release(); pEnumObjectIDs = NULL; } }</code>
+            /// <code><![CDATA[ // This number controls how many object identifiers are requested during each call
+            /// // to IEnumPortableDeviceObjectIDs::Next()
+            /// #define NUM_OBJECTS_TO_REQUEST 10
+            /// 
+            /// // Recursively called function which enumerates using the specified
+            /// // object identifier as the parent.
+            /// void RecursiveEnumerate(LPCWSTR wszParentObjectID, IPortableDeviceContent* pContent)
+            /// {
+            ///    HRESULT hr = S_OK;
+            ///    IEnumPortableDeviceObjectIDs* pEnumObjectIDs = NULL;
+            ///    if ((wszParentObjectID == NULL) || (pContent == NULL)) { return; }
+            ///    
+            ///    // wszParentObjectID is the object identifier of the parent being used for enumeration
+            ///    // Get an IEnumPortableDeviceObjectIDs interface by calling EnumObjects with the
+            ///    // specified parent object identifier.
+            ///    hr = pContent-&gt;EnumObjects(0, wszParentObjectID, NULL, &amp;pEnumObjectIDs);
+            ///    if (FAILED(hr)) {
+            ///      // Failed to get IEnumPortableDeviceObjectIDs from IPortableDeviceContent
+            ///    }
+            ///    
+            ///    // Loop calling Next() while S_OK is being returned.
+            ///    while(hr == S_OK) {
+            ///      DWORD cFetched = 0;
+            ///      LPWSTR szObjectIDArray[NUM_OBJECTS_TO_REQUEST] = {0};
+            ///      hr = pEnumObjectIDs-&gt;Next(
+            ///        NUM_OBJECTS_TO_REQUEST, // Number of objects to request on each NEXT call
+            ///        szObjectIDArray, // Array of LPWSTR array which will be populated on each NEXT call
+            ///        &amp;cFetched); // Number of objects written to the LPWSTR array
+            ///        
+            ///      if (SUCCEEDED(hr)) {
+            ///        // Traverse the results of the Next() operation and recursively enumerate
+            ///        // Remember to free all returned object identifiers using CoTaskMemFree()
+            ///        for (DWORD dwIndex = 0; dwIndex &lt; cFetched; dwIndex++) {
+            ///          RecursiveEnumerate(szObjectIDArray[dwIndex],pContent);
+            ///          // Free allocated LPWSTRs after the recursive enumeration call has completed.
+            ///          CoTaskMemFree(szObjectIDArray[dwIndex]);
+            ///          szObjectIDArray[dwIndex] = NULL;
+            ///        }
+            ///      }
+            ///    }
+            ///    // Release the IEnumPortableDeviceObjectIDs when finished
+            ///    if (pEnumObjectIDs != NULL) {
+            ///      pEnumObjectIDs-&gt;Release();
+            ///      pEnumObjectIDs = NULL;
+            ///    } 
+            /// }]]></code>
             /// </para>
             /// </remarks>
             // https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-ienumportabledeviceobjectids-next
