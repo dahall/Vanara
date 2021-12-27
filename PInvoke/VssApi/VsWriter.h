@@ -376,7 +376,7 @@ namespace Vanara { namespace PInvoke { namespace VssApi {
     /// </summary>
     // https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nl-vswriter-cvsswriter
     [PInvokeData("vswriter.h", MSDNShortId = "NL:vswriter.CVssWriter")]
-    public ref class CVssWriter : public IVssWriter
+    public ref class CVssWriter abstract : public IVssWriter
     {
     private:
         CVssWriterImpl* pNative;
@@ -385,7 +385,7 @@ namespace Vanara { namespace PInvoke { namespace VssApi {
         /// <summary><c>CVssWriter</c> is the constructor of the CVssWriter class object.</summary>
         /// <returns>None</returns>
         // https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nf-vswriter-cvsswriter-cvsswriter
-        STDMETHODCALLTYPE CVssWriter() : pNative(new CVssWriterImpl(this)) {}
+        CVssWriter() : pNative(new CVssWriterImpl(this)) {}
 
         /// <summary>
         /// <para><c>~CVssWriter</c> is the destructor of the CVssWriter class object.</para>
@@ -394,7 +394,7 @@ namespace Vanara { namespace PInvoke { namespace VssApi {
         /// <returns>None</returns>
         // https://docs.microsoft.com/en-us/windows/win32/api/vswriter/nf-vswriter-cvsswriter--cvsswriter
         // void ~CVssWriter();
-        virtual STDMETHODCALLTYPE ~CVssWriter()
+        virtual ~CVssWriter()
         {
             if (pNative != NULL)
             {

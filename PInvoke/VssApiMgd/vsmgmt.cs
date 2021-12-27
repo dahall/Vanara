@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Collections;
 
@@ -726,7 +727,7 @@ namespace Vanara.PInvoke.VssApi
 		/// <summary>The <c>Next</c> method returns the specified number of objects from the specified list of enumerated objects.</summary>
 		/// <param name="celt">The number of elements to be read from the list of enumerated objects into the rgelt buffer.</param>
 		/// <param name="rgelt">
-		/// The address of a caller-allocated buffer that receives celtVSS_MGMT_OBJECT_PROP structures that contain the returned objects.
+		/// The address of a caller-allocated buffer that receives celt VSS_MGMT_OBJECT_PROP structures that contain the returned objects.
 		/// This parameter is required and cannot be <c>NULL</c>.
 		/// </param>
 		/// <param name="pceltFetched">The number of elements that were returned in the rgelt buffer.</param>
@@ -929,7 +930,7 @@ namespace Vanara.PInvoke.VssApi
 	// VSS_MGMT_OBJECT_TYPE Type; VSS_MGMT_OBJECT_UNION Obj; } VSS_MGMT_OBJECT_PROP, *PVSS_MGMT_OBJECT_PROP;
 	[PInvokeData("vsmgmt.h", MSDNShortId = "NS:vsmgmt._VSS_MGMT_OBJECT_PROP")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct VSS_MGMT_OBJECT_PROP
+	public class VSS_MGMT_OBJECT_PROP : IDisposable
 	{
 		/// <summary>Object type. For more information, see VSS_MGMT_OBJECT_TYPE.</summary>
 		public VSS_MGMT_OBJECT_TYPE Type;
@@ -945,26 +946,41 @@ namespace Vanara.PInvoke.VssApi
 		/// </para>
 		/// </summary>
 		public VSS_MGMT_OBJECT_UNION Obj;
+
+		/// <summary>Frees the allocated memory for the strings in this structure.</summary>
+		public void Dispose()
+		{
+			Marshal.FreeCoTaskMem((IntPtr)Obj.szOne);
+			Marshal.FreeCoTaskMem((IntPtr)Obj.szTwo);
+			Obj.szOne = Obj.szTwo = IntPtr.Zero;
+		}
 	}
 
 	/// <summary>
 	/// The VSS_MGMT_OBJECT_UNION specifies the union of object types that can be defined by the VSS_MGMT_OBJECT_PROP structure (section 2.2.3.6).
 	/// </summary>
 	[PInvokeData("vsmgmt.h", MSDNShortId = "NS:vsmgmt._VSS_MGMT_OBJECT_PROP")]
-	[StructLayout(LayoutKind.Explicit)]
+	[StructLayout(LayoutKind.Sequential)]
 	public struct VSS_MGMT_OBJECT_UNION
 	{
+		internal InteropServices.StrPtrUni szOne;
+
+		internal InteropServices.StrPtrUni szTwo;
+
+		internal long lOne;
+
+		internal long lTwo;
+
+		internal long lThree;
+
 		/// <summary>The structure specifies an original volume object as a VSS_VOLUME_PROP structure (section 2.2.3.7).</summary>
-		[FieldOffset(0)]
-		public VSS_VOLUME_PROP Vol;
+		public VSS_VOLUME_PROP Vol =>  new() { m_pwszVolumeName = szOne, m_pwszVolumeDisplayName = szTwo };
 
 		/// <summary>The structure specifies a shadow copy storage volume as a VSS_DIFF_VOLUME_PROP structure.</summary>
-		[FieldOffset(0)]
-		public VSS_DIFF_VOLUME_PROP DiffVol;
+		public VSS_DIFF_VOLUME_PROP DiffVol => new() { m_pwszVolumeName = szOne, m_pwszVolumeDisplayName = szTwo, m_llVolumeFreeSpace = lOne, m_llVolumeTotalSpace = lTwo };
 
 		/// <summary>The structure specifies a shadow copy storage object as a VSS_DIFF_AREA_PROP.</summary>
-		[FieldOffset(0)]
-		public VSS_DIFF_AREA_PROP DiffArea;
+		public VSS_DIFF_AREA_PROP DiffArea => new() { m_pwszVolumeName = szOne, m_pwszDiffAreaVolumeName = szTwo, m_llMaximumDiffSpace = lOne, m_llAllocatedDiffSpace = lTwo, m_llUsedDiffSpace = lThree };
 	}
 
 	/// <summary>The <c>VSS_VOLUME_PROP</c> structure contains the properties of a shadow copy source volume.</summary>
@@ -1023,7 +1039,8 @@ namespace Vanara.PInvoke.VssApi
 		/// <summary>Enumerates the <see cref="VSS_MGMT_OBJECT_PROP"/> instances provided by an <see cref="IVssEnumMgmtObject"/>.</summary>
 		/// <param name="emo">The <see cref="IVssEnumMgmtObject"/> instance.</param>
 		/// <returns>A sequence of <see cref="VSS_MGMT_OBJECT_PROP"/> structures.</returns>
-		public static IEnumerable<VSS_MGMT_OBJECT_PROP> Enumerate(this IVssEnumMgmtObject emo) => new IEnumFromCom<VSS_MGMT_OBJECT_PROP>(emo.Next, emo.Reset);
+		public static IEnumerable<VSS_MGMT_OBJECT_PROP> Enumerate(this IVssEnumMgmtObject emo) =>
+			new IEnumFromCom<VSS_MGMT_OBJECT_PROP>(emo.Next, emo.Reset, () => new VSS_MGMT_OBJECT_PROP());
 
 		/// <summary>The <c>GetProviderMgmtInterface</c> method returns an interface to further configure the system provider.</summary>
 		/// <param name="sm">The <see cref="IVssSnapshotMgmt"/> instance.</param>
