@@ -16,7 +16,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-GetProviderMgmtInterface IsVolumeSnapshotted IsVolumeSnapshottedInternal long __cdecl CreateVssBackupComponents(class IVssBackupComponents * __ptr64 * __ptr64) long __cdecl CreateVssExamineWriterMetadata(unsigned short * __ptr64,class IVssExamineWriterMetadata * __ptr64 * __ptr64) ShouldBlockRevert ShouldBlockRevertInternal VssFreeSnapshotProperties
+IsVolumeSnapshotted ShouldBlockRevert
 
 Structures
 VDS_INTERCONNECT VDS_LUN_INFORMATION VDS_STORAGE_DEVICE_ID_DESCRIPTOR VDS_STORAGE_IDENTIFIER VssDifferencedFile VssDirectedTarget VssPartialFile VssRestoreSubcomponent VssWriterStatus VSS_COMPONENTINFO VSS_DIFF_AREA_PROP VSS_DIFF_VOLUME_PROP VSS_MGMT_OBJECT_PROP VSS_MGMT_OBJECT_UNION VSS_OBJECT_PROP VSS_OBJECT_UNION VSS_PROVIDER_PROP VSS_SNAPSHOT_PROP VSS_VOLUME_PROP VSS_VOLUME_PROTECTION_INFO
