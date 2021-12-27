@@ -49,18 +49,21 @@ namespace Vanara.Collections
 	/// if a class doesn't support <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/> like some COM objects.
 	/// </summary>
 	/// <typeparam name="TItem">The type of the item.</typeparam>
-	public class IEnumFromCom<TItem> : IEnumFromNext<TItem> where TItem : new()
+	public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 	{
 		private readonly ComTryGetNext cnext;
+		private readonly Func<TItem> make;
 
 		/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
 		/// <param name="next">The method used to try to get the next item in the enumeration.</param>
 		/// <param name="reset">The method used to reset the enumeration to the first element.</param>
-		public IEnumFromCom(ComTryGetNext next, Action reset) : base()
+		/// <param name="makeNew">The method used to create the default value placed in the array for <paramref name="next"/>.</param>
+		public IEnumFromCom(ComTryGetNext next, Action reset, Func<TItem> makeNew = null) : base()
 		{
 			if (next is null || reset is null)
 				throw new ArgumentNullException();
 			cnext = next;
+			make = makeNew ?? DefaultMaker;
 			base.next = TryGet;
 			base.reset = reset;
 		}
@@ -88,9 +91,11 @@ namespace Vanara.Collections
 			return new IEnumFromCom<TItem>(cew.ComObjTryGetNext, cew.ComObjReset);
 		}
 
+		private static TItem DefaultMaker() => default;
+
 		private bool TryGet(out TItem item)
 		{
-			var res = new TItem[] { new TItem() };
+			var res = new TItem[] { make() };
 			item = default;
 			if (cnext(1, res, out var ret) != HRESULT.S_OK)
 				return false;
