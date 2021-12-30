@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
-using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
 {
