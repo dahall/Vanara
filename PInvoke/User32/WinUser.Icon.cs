@@ -1242,7 +1242,7 @@ namespace Vanara.PInvoke
 		/// <returns>A managed bitmap instance.</returns>
 		public static Bitmap ToBitmap(this HICON hIcon) => hIcon.IsNull ? null : (Bitmap)Bitmap.FromHicon((IntPtr)hIcon).Clone();
 
-#if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
+#if WPF && !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
 		/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HICON"/>.</summary>
 		/// <param name="hIcon">The HICON value.</param>
 		/// <returns>The BitmapSource instance. If <paramref name="hIcon"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
@@ -1381,7 +1381,7 @@ namespace Vanara.PInvoke
 			/// <returns>A managed bitmap instance.</returns>
 			public Bitmap ToBitmap() => ((HICON)this).ToBitmap();
 
-#if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
+#if WPF && !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
 			/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="SafeHICON"/>.</summary>
 			/// <returns>The BitmapSource instance. If this is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
 			public System.Windows.Media.Imaging.BitmapSource ToBitmapSource() => ((HICON)this).ToBitmapSource();

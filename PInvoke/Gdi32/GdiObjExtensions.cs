@@ -114,7 +114,7 @@ namespace Vanara.PInvoke
 
 		//}
 
-#if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
+#if WPF && !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
 		/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HBITMAP"/> preserving transparency, if possible.</summary>
 		/// <param name="hbmp">The HBITMAP value.</param>
 		/// <returns>The BitmapSource instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
