@@ -3,7 +3,7 @@
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
     <Authors>David Hall</Authors>
     <Company>GitHub Community</Company>
-    <Copyright>Copyright © 2017-2021</Copyright>
+    <Copyright>Copyright © 2017-2022</Copyright>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <IncludeSource>true</IncludeSource>
@@ -37,7 +37,7 @@
     <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);NETSDK1105;NETSDK1138</MSBuildWarningsAsMessages>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Condition="!$(MSBuildProjectDirectory.Contains('UnitTests'))" Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Condition="!$(MSBuildProjectDirectory.Contains('UnitTests'))" Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
   </ItemGroup>
   <!-- END: Source Link configuration. -->

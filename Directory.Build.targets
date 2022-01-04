@@ -17,12 +17,10 @@
   <ItemGroup>
     <Compile Remove="**\~*.cs" />
     <None Include="**\~*.cs" />
-    <SupportedPlatform Include="windows" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="**\~*.vb" />
     <None Include="**\~*.vb" />
-    <SupportedPlatform Include="windows" />
   </ItemGroup>
     
   <!-- Define Net5OrAbove variable -->
@@ -47,6 +45,7 @@
 
   <!-- Explicit FrameworkReference in .NET 5 or above -->
   <ItemGroup Condition=" $(Net5OrAbove) ">
+    <SupportedPlatform Include="windows" />
     <FrameworkReference Include="Microsoft.NETCore.App" PrivateAssets="all" />
     <FrameworkReference Include="Microsoft.WindowsDesktop.App" PrivateAssets="all" />
   </ItemGroup>
