@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Text;
+using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.User32;
@@ -213,11 +214,12 @@ namespace Vanara.PInvoke
 			public static HRESULT LoadIconFromSystemImageList(int iIdx, ref uint imgSz, out SafeHICON hico)
 			{
 				HRESULT hr;
-				if ((hr = SHGetImageList(PixelsToSHIL((int)imgSz), typeof(ComCtl32.IImageList).GUID, out var il)).Succeeded)
+				if ((hr = SHGetImageList(PixelsToSHIL((int)imgSz), typeof(IImageList).GUID, out var obj)).Succeeded)
 				{
 					try
 					{
-						hico = il.GetIcon(iIdx, ComCtl32.IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
+						var il = (IImageList)obj;
+						hico = il.GetIcon(iIdx, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
 						using var icoInfo = new ICONINFO();
 						if (GetIconInfo(hico, icoInfo))
 							imgSz = (uint)GetObject<BITMAP>(icoInfo.hbmColor).bmWidth;
@@ -225,11 +227,11 @@ namespace Vanara.PInvoke
 					catch (COMException e)
 					{
 						hico = null;
-						return (HRESULT)e.ErrorCode;
+						return e.ErrorCode;
 					}
 					finally
 					{
-						Marshal.ReleaseComObject(il);
+						Marshal.ReleaseComObject(obj);
 					}
 				}
 				else
@@ -360,7 +362,7 @@ namespace Vanara.PInvoke
 			[ComVisible(true)]
 			private class IntFileSysBindData : IFileSystemBindData2
 			{
-				private static readonly Guid CLSID_UnknownJunction = new Guid("{fc0a77e6-9d70-4258-9783-6dab1d0fe31e}");
+				private static readonly Guid CLSID_UnknownJunction = new("{fc0a77e6-9d70-4258-9783-6dab1d0fe31e}");
 				private Guid clsidJunction;
 				private WIN32_FIND_DATA fd;
 				private long fileId;

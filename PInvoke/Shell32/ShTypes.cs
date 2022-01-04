@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.ComCtl32;
 
 namespace Vanara.PInvoke
 {
@@ -104,7 +105,7 @@ namespace Vanara.PInvoke
 		public struct SHELLDETAILS
 		{
 			/// <summary>The alignment of the column heading and the subitem text in the column.</summary>
-			public ComCtl32.ListViewColumnFormat fmt;
+			public ListViewColumnFormat fmt;
 
 			/// <summary>he number of average-sized characters in the header.</summary>
 			public int cxChar;

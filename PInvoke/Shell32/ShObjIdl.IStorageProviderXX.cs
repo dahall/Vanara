@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
 {
@@ -136,7 +137,7 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			HRESULT CopyCallback([Optional] HWND hwnd, ShellFileOperation operation, FILEOP_FLAGS flags, [MarshalAs(UnmanagedType.LPWStr)] string srcFile,
 				FileFlagsAndAttributes srcAttribs, [Optional, MarshalAs(UnmanagedType.LPWStr)] string destFile, FileFlagsAndAttributes destAttribs,
-				out User32.MB_RESULT result);
+				out MB_RESULT result);
 		}
 
 		/// <summary>CLSID_StorageProviderBanners</summary>

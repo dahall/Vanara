@@ -5360,7 +5360,7 @@ namespace Vanara.PInvoke
 		/// <param name="ppv">When this method returns, contains the interface pointer requested in riid. This is typically IImageList.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
-		public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, out IImageList ppv);
+		public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>

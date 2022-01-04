@@ -318,10 +318,10 @@ namespace Vanara.PInvoke
 
 		/// <summary>Shell notification messages delivered as a result of calling <see cref="Shell_NotifyIcon"/>.</summary>
 		[PInvokeData("shellapi.h")]
-		public enum NIN
+		public enum NIN : uint
 		{
 			/// <summary>Sent when a user selects a notify icon with the mouse and activates it with the ENTER key</summary>
-			NIN_SELECT = User32.WindowMessage.WM_USER + 0,
+			NIN_SELECT = WM_USER + 0,
 
 			/// <summary>
 			/// Sent when a user selects a notify icon with the keyboard and activates it with the SPACEBAR or ENTER key, the version 5.0
@@ -330,7 +330,7 @@ namespace Vanara.PInvoke
 			NIN_KEYSELECT = NIN_SELECT | NINF_KEY,
 
 			/// <summary>Sent when the balloon is shown (balloons are queued).</summary>
-			NIN_BALLOONSHOW = User32.WindowMessage.WM_USER + 2,
+			NIN_BALLOONSHOW = WM_USER + 2,
 
 			/// <summary>
 			/// Sent when the balloon disappears. For example, when the icon is deleted. This message is not sent if the balloon is
@@ -340,22 +340,22 @@ namespace Vanara.PInvoke
 			/// display during quiet time (a user's first hour on a new computer). In that case, the balloon is never displayed at all.
 			/// </para>
 			/// </summary>
-			NIN_BALLOONHIDE = User32.WindowMessage.WM_USER + 3,
+			NIN_BALLOONHIDE = WM_USER + 3,
 
 			/// <summary>Sent when the balloon is dismissed because of a timeout.</summary>
-			NIN_BALLOONTIMEOUT = User32.WindowMessage.WM_USER + 4,
+			NIN_BALLOONTIMEOUT = WM_USER + 4,
 
 			/// <summary>Sent when the balloon is dismissed because the user clicked the mouse.</summary>
-			NIN_BALLOONUSERCLICK = User32.WindowMessage.WM_USER + 5,
+			NIN_BALLOONUSERCLICK = WM_USER + 5,
 
 			/// <summary>
 			/// Sent when the user hovers the cursor over an icon to indicate that the richer pop-up UI should be used in place of a
 			/// standard textual tooltip.
 			/// </summary>
-			NIN_POPUPOPEN = User32.WindowMessage.WM_USER + 6,
+			NIN_POPUPOPEN = WM_USER + 6,
 
 			/// <summary>Sent when a cursor no longer hovers over an icon to indicate that the rich pop-up UI should be closed.</summary>
-			NIN_POPUPCLOSE = User32.WindowMessage.WM_USER + 7,
+			NIN_POPUPCLOSE = WM_USER + 7,
 		}
 
 		/// <summary>State flags for NOTIFYICONDATA.</summary>
@@ -1177,7 +1177,8 @@ namespace Vanara.PInvoke
 		// const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
-		public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses, uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses,
+			uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>Retrieves an object that implements an IQueryAssociations interface.</summary>
 		/// <typeparam name="TIntf">Reference to the desired IID type, normally IQueryAssociations.</typeparam>
@@ -1294,7 +1295,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-commandlinetoargvw
 		// LPWSTR * CommandLineToArgvW( LPCWSTR lpCmdLine, int *pNumArgs );
 		[PInvokeData("shellapi.h", MSDNShortId = "9889a016-b7a5-402b-8305-6f7c199d41b3")]
-		public static string[] CommandLineToArgvW(string lpCmdLine) =>
+		public static string[] CommandLineToArgvW(string lpCmdLine = "") =>
 			CommandLineToArgvW(lpCmdLine, out var pNumArgs).ToStringEnum(pNumArgs, CharSet.Unicode).ToArray();
 
 		/// <summary>
@@ -1389,7 +1390,7 @@ namespace Vanara.PInvoke
 		// iFile, LPSTR lpszFile, UINT cch );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "93fab381-9035-46c4-ba9d-efb2d0801d84")]
-		public static extern uint DragQueryFile(HDROP hDrop, uint iFile, string lpszFile, uint cch);
+		public static extern uint DragQueryFile(HDROP hDrop, uint iFile, [Optional] string lpszFile, uint cch);
 
 		/// <summary>
 		/// <para>Retrieves the position of the mouse pointer at the time a file was dropped during a drag-and-drop operation.</para>
@@ -1425,11 +1426,14 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HICON</c></para>
 		/// <para>If successful, the function returns the handle to the new icon that was created; otherwise, <c>NULL</c>.</para>
 		/// </returns>
-		/// <remarks>When it is no longer needed, the caller is responsible for freeing the icon handle returned by <c>DuplicateIcon</c> by calling the DestroyIcon function.</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-duplicateicon
-		// HICON DuplicateIcon( HINSTANCE hInst, HICON hIcon );
+		/// <remarks>
+		/// When it is no longer needed, the caller is responsible for freeing the icon handle returned by <c>DuplicateIcon</c> by calling
+		/// the DestroyIcon function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-duplicateicon HICON DuplicateIcon( [in] HINSTANCE hInst,
+		// [in] HICON hIcon );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("shellapi.h", MSDNShortId = "488a24e1-f6f0-4bbd-9487-2b4c650f4879")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.DuplicateIcon")]
 		public static extern SafeHICON DuplicateIcon([Optional] HINSTANCE hInst, HICON hIcon);
 
 		/// <summary>Gets a handle to an icon stored as a resource in a file or an icon stored in a file's associated executable file.</summary>
@@ -1445,8 +1449,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// When this function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
-		/// lpIconPath or an associated executable file) the function stores the full path and file name of that executable in the buffer
-		/// pointed to by this parameter.
+		/// <c>lpIconPath</c> or an associated executable file) the function stores the full path and file name of that executable in the
+		/// buffer pointed to by this parameter.
 		/// </para>
 		/// </param>
 		/// <param name="piIcon">
@@ -1454,15 +1458,15 @@ namespace Vanara.PInvoke
 		/// <para>Pointer to a <c>WORD</c> value that, on entry, specifies the index of the icon whose handle is to be obtained.</para>
 		/// <para>
 		/// When the function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
-		/// lpIconPath or an associated executable file), this value points to the icon's index in that file.
+		/// <c>lpIconPath</c> or an associated executable file), this value points to the icon's index in that file.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HICON</c></para>
 		/// <para>
 		/// If the function succeeds, the return value is an icon handle. If the icon is extracted from an associated executable file, the
-		/// function stores the full path and file name of the executable file in the string pointed to by lpIconPath, and stores the icon's
-		/// identifier in the <c>WORD</c> pointed to by lpiIcon.
+		/// function stores the full path and file name of the executable file in the string pointed to by <c>lpIconPath</c>, and stores the
+		/// icon's identifier in the <c>WORD</c> pointed to by <c>lpiIcon</c>.
 		/// </para>
 		/// <para>If the function fails, the return value is <c>NULL</c>.</para>
 		/// </returns>
@@ -1472,18 +1476,32 @@ namespace Vanara.PInvoke
 		/// calling the DestroyIcon function.
 		/// </para>
 		/// <para>
-		/// The <c>ExtractAssociatedIcon</c> function first looks for the indexed icon in the file specified by lpIconPath. If the function
-		/// cannot obtain the icon handle from that file, and the file has an associated executable file, it looks in that executable file
-		/// for an icon. Associations with executable files are based on file name extensions and are stored in the per-user part of the registry.
+		/// The <c>ExtractAssociatedIcon</c> function first looks for the indexed icon in the file specified by <c>lpIconPath</c>. If the
+		/// function cannot obtain the icon handle from that file, and the file has an associated executable file, it looks in that
+		/// executable file for an icon. Associations with executable files are based on file name extensions and are stored in the per-user
+		/// part of the registry.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines ExtractAssociatedIcon as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extractassociatedicona
-		// HICON ExtractAssociatedIconA( HINSTANCE hInst, LPSTR pszIconPath, WORD *piIcon );
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extractassociatedicona HICON ExtractAssociatedIconA( [in]
+		// HINSTANCE hInst, [in, out] LPSTR pszIconPath, [in, out] WORD *piIcon );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "157ce603-9988-4cae-a2cd-51db290268c3")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractAssociatedIconA")]
 		public static extern SafeHICON ExtractAssociatedIcon(HINSTANCE hInst, StringBuilder pszIconPath, ref ushort piIcon);
 
 		/// <summary>
+		/// <para>
+		/// [ <c>ExtractAssociatedIconEx</c> is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
+		/// </para>
 		/// <para>
 		/// Gets a handle to an icon stored as a resource in a file or an icon stored in a file's associated executable file. It extends the
 		/// ExtractAssociatedIcon function by retrieving the icon's ID when that icon is extracted from an executable file.
@@ -1494,13 +1512,32 @@ namespace Vanara.PInvoke
 		/// <para>The handle of the module from which to extract the icon.</para>
 		/// </param>
 		/// <param name="pszIconPath">
-		/// <para>TBD</para>
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>
+		/// Pointer to a string that, on entry, specifies the full path and file name of the file that contains the icon. The function
+		/// extracts the icon handle from that file, or from an executable file associated with that file.
+		/// </para>
+		/// <para>
+		/// When this function returns, if the icon handle was obtained from an executable file (either an executable file directly pointed
+		/// to by this parameter or an associated executable file) the function stores the full path and file name of that executable in the
+		/// buffer pointed to by this parameter.
+		/// </para>
 		/// </param>
 		/// <param name="piIconIndex">
-		/// <para>TBD</para>
+		/// <para>Type: <c>LPWORD</c></para>
+		/// <para>Pointer to a <c>WORD</c> value that, on entry, specifies the index of the icon whose handle is to be obtained.</para>
+		/// <para>
+		/// When the function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
+		/// <c>lpIconPath</c> or an associated executable file), this value points to the icon's index in that file.
+		/// </para>
 		/// </param>
 		/// <param name="piIconId">
-		/// <para>TBD</para>
+		/// <para>Type: <c>LPWORD</c></para>
+		/// <para>Pointer to a <c>WORD</c> value that, on entry, specifies the ID of the icon whose handle is to be obtained.</para>
+		/// <para>
+		/// When the function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
+		/// <c>lpIconPath</c> or an associated executable file), this value points to the icon's ID within that file.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HICON</c></para>
@@ -1508,11 +1545,20 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>The icon handle returned by this function must be released by calling DestroyIcon when it is no longer needed.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines ExtractAssociatedIconEx as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extractassociatediconexa HICON ExtractAssociatedIconExA(
-		// HINSTANCE hInst, LPSTR pszIconPath, WORD *piIconIndex, WORD *piIconId );
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extractassociatediconexa HICON ExtractAssociatedIconExA(
+		// [in] HINSTANCE hInst, [in, out] LPSTR pszIconPath, [in, out] WORD *piIconIndex, [in, out] WORD *piIconId );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "f32260b0-917b-4406-aeee-34f71a7c7309")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractAssociatedIconExA")]
 		public static extern SafeHICON ExtractAssociatedIconEx(HINSTANCE hInst, StringBuilder pszIconPath, ref ushort piIconIndex, ref ushort piIconId);
 
 		/// <summary>
@@ -1529,39 +1575,87 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="nIconIndex">
 		/// <para>Type: <c>UINT</c></para>
-		/// <para>Specifies the zero-based index of the icon to retrieve. For example, if this value is 0, the function returns a handle to the first icon in the specified file.</para>
-		/// <para>If this value is -1, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ICO file, the return value is 1.</para>
-		/// <para>If this value is a negative number not equal to –1, the function returns a handle to the icon in the specified file whose resource identifier is equal to the absolute value of nIconIndex. For example, you should use –3 to extract the icon whose resource identifier is 3. To extract the icon whose resource identifier is 1, use the ExtractIconEx function.</para>
+		/// <para>
+		/// Specifies the zero-based index of the icon to retrieve. For example, if this value is 0, the function returns a handle to the
+		/// first icon in the specified file.
+		/// </para>
+		/// <para>
+		/// If this value is -1, the function returns the total number of icons in the specified file. If the file is an executable file or
+		/// DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ICO file, the return value is 1.
+		/// </para>
+		/// <para>
+		/// If this value is a negative number not equal to –1, the function returns a handle to the icon in the specified file whose
+		/// resource identifier is equal to the absolute value of <c>nIconIndex</c>. For example, you should use –3 to extract the icon whose
+		/// resource identifier is 3. To extract the icon whose resource identifier is 1, use the ExtractIconEx function.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HICON</c></para>
-		/// <para>The return value is a handle to an icon. If the file specified was not an executable file, DLL, or icon file, the return is 1. If no icons were found in the file, the return value is <c>NULL</c>.</para>
+		/// <para>
+		/// The return value is a handle to an icon. If the file specified was not an executable file, DLL, or icon file, the return is 1. If
+		/// no icons were found in the file, the return value is <c>NULL</c>.
+		/// </para>
 		/// </returns>
-		/// <remarks>When it is no longer needed, you must destroy the icon handle returned by <c>ExtractIcon</c> by calling the DestroyIcon function.</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extracticona
-		// HICON ExtractIconA( HINSTANCE hInst, LPCSTR pszExeFileName, UINT nIconIndex );
+		/// <remarks>
+		/// <para>
+		/// When it is no longer needed, you must destroy the icon handle returned by <c>ExtractIcon</c> by calling the DestroyIcon function.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines ExtractIcon as an alias which automatically selects the ANSI or Unicode version of this function
+		/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+		/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+		/// Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extracticona HICON ExtractIconA( [in] HINSTANCE hInst,
+		// [in] LPCSTR pszExeFileName, UINT nIconIndex );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "a0314423-79d6-416e-8be0-be946477da3e")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractIconA")]
 		public static extern SafeHICON ExtractIcon(HINSTANCE hInst, string pszExeFileName, int nIconIndex);
 
-		/// <summary>The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.</summary>
+		/// <summary>
+		/// The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable
+		/// file, DLL, or icon file.
+		/// </summary>
 		/// <param name="lpszFile">
 		/// <para>Type: <c>LPCTSTR</c></para>
-		/// <para>Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.</para>
+		/// <para>
+		/// Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.
+		/// </para>
 		/// </param>
 		/// <param name="nIconIndex">
 		/// <para>Type: <c>int</c></para>
-		/// <para>Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first icon in the specified file.</para>
-		/// <para>If this value is –1 and phiconLarge and phiconSmall are both <c>NULL</c>, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ico file, the return value is 1.</para>
-		/// <para>If this value is a negative number and either phiconLarge or phiconSmall is not <c>NULL</c>, the function begins by extracting the icon whose resource identifier is equal to the absolute value of nIconIndex. For example, use -3 to extract the icon whose resource identifier is 3.</para>
+		/// <para>
+		/// Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first
+		/// icon in the specified file.
+		/// </para>
+		/// <para>
+		/// If this value is –1 and <c>phiconLarge</c> and <c>phiconSmall</c> are both <c>NULL</c>, the function returns the total number of
+		/// icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources.
+		/// If the file is an .ico file, the return value is 1.
+		/// </para>
+		/// <para>
+		/// If this value is a negative number and either <c>phiconLarge</c> or <c>phiconSmall</c> is not <c>NULL</c>, the function begins by
+		/// extracting the icon whose resource identifier is equal to the absolute value of <c>nIconIndex</c>. For example, use -3 to extract
+		/// the icon whose resource identifier is 3.
+		/// </para>
 		/// </param>
 		/// <param name="phiconLarge">
 		/// <para>Type: <c>HICON*</c></para>
-		/// <para>Pointer to an array of icon handles that receives handles to the large icons extracted from the file. If this parameter is <c>NULL</c>, no large icons are extracted from the file.</para>
+		/// <para>
+		/// Pointer to an array of icon handles that receives handles to the large icons extracted from the file. If this parameter is
+		/// <c>NULL</c>, no large icons are extracted from the file.
+		/// </para>
 		/// </param>
 		/// <param name="phiconSmall">
 		/// <para>Type: <c>HICON*</c></para>
-		/// <para>Pointer to an array of icon handles that receives handles to the small icons extracted from the file. If this parameter is <c>NULL</c>, no small icons are extracted from the file.</para>
+		/// <para>
+		/// Pointer to an array of icon handles that receives handles to the small icons extracted from the file. If this parameter is
+		/// <c>NULL</c>, no small icons are extracted from the file.
+		/// </para>
 		/// </param>
 		/// <param name="nIcons">
 		/// <para>Type: <c>UINT</c></para>
@@ -1569,20 +1663,49 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>UINT</c></para>
-		/// <para>If the nIconIndex parameter is -1, the phiconLarge parameter is <c>NULL</c>, and the phiconSmall parameter is <c>NULL</c>, then the return value is the number of icons contained in the specified file. Otherwise, the return value is the number of icons successfully extracted from the file.</para>
+		/// <para>
+		/// If the nIconIndex parameter is -1 and both the phiconLarge and phiconSmall parameters are <c>NULL</c>, then the return value is
+		/// the number of icons contained in the specified file.
+		/// </para>
+		/// <para>
+		/// If the nIconIndex parameter is any value other than -1 and either phiconLarge or phiconSmall is not <c>NULL</c>, the return value
+		/// is the number of icons successfully extracted from the file.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// If the function encounters an error, it returns <c>UINT_MAX</c>. In this case, you can call GetLastError to retrieve the error
+		/// code. For example, this function returns <c>UINT_MAX</c> if the file specified by lpszFile cannot be found while the nIconIndex
+		/// parameter is any value other than -1 and either phiconLarge or phiconSmall is not <c>NULL</c>. In this case, <c>GetLastError</c>
+		/// returns <c>ERROR_FILE_NOT_FOUND</c> (2).
+		/// </para>
+		/// </para>
 		/// </returns>
 		/// <remarks>
-		/// <para>When they are no longer needed, you must destroy all icons extracted by <c>ExtractIconEx</c> by calling the DestroyIcon function.</para>
-		/// <para>To retrieve the dimensions of the large and small icons, use this function with the SM_CXICON, SM_CYICON, SM_CXSMICON, and SM_CYSMICON flags.</para>
+		/// <para>
+		/// When they are no longer needed, you must destroy all icons extracted by <c>ExtractIconEx</c> by calling the DestroyIcon function.
+		/// </para>
+		/// <para>
+		/// To retrieve the dimensions of the large and small icons, use this function with the SM_CXICON, SM_CYICON, SM_CXSMICON, and
+		/// SM_CYSMICON flags.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines ExtractIconEx as an alias which automatically selects the ANSI or Unicode version of this function
+		/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+		/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+		/// Function Prototypes.
+		/// </para>
+		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extracticonexa
-		// UINT ExtractIconExA( LPCSTR lpszFile, int nIconIndex, HICON *phiconLarge, HICON *phiconSmall, UINT nIcons );
-		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "1c4d760a-79b5-4646-9cf2-6cd32c5d05ee")]
-		//  public static extern uint ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string lpszFile, int nIconIndex, ref HICON phiconLarge, ref HICON phiconSmall, uint nIcons);
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extracticonexa UINT ExtractIconExA( [in] LPCSTR lpszFile,
+		// [in] int nIconIndex, [out] HICON *phiconLarge, [out] HICON *phiconSmall, UINT nIcons );
+		[DllImport(Lib.Shell32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractIconExA")]
 		public static extern uint ExtractIconEx(string lpszFile, int nIconIndex,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconLarge,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconSmall, uint nIcons);
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconLarge,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconSmall, uint nIcons);
 
 		/// <summary>The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.</summary>
 		/// <param name="lpszFile">
@@ -1831,7 +1954,7 @@ namespace Vanara.PInvoke
 		// SHAddFromPropSheetExtArray( HPSXA hpsxa, LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "e0570cd6-dda2-43e4-8540-58baef37bf18")]
-		public static extern uint SHAddFromPropSheetExtArray(IntPtr hpsxa, AddPropSheetPageProc lpfnAddPage, IntPtr lParam);
+		public static extern uint SHAddFromPropSheetExtArray(IntPtr hpsxa, AddPropSheetPageProc lpfnAddPage, [Optional] IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -2130,7 +2253,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "0919e356-84e8-475e-8628-23097b19c50d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShellAbout(HWND hWnd, string szApp, string szOtherStuff, HICON hIcon);
+		public static extern bool ShellAbout([Optional] HWND hWnd, string szApp, [Optional] string szOtherStuff, [Optional] HICON hIcon);
 
 		/// <summary>
 		/// <para>Performs an operation on a specified file.</para>
@@ -2338,7 +2461,8 @@ namespace Vanara.PInvoke
 		// lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "8b1f3978-a0ee-4684-8a37-98e270b63897")]
-		public static extern IntPtr ShellExecute(HWND hwnd, string lpOperation, string lpFile, string lpParameters, string lpDirectory, ShowWindowCommand nShowCmd);
+		public static extern IntPtr ShellExecute([Optional] HWND hwnd, [Optional] string lpOperation, string lpFile, [Optional] string lpParameters,
+			[Optional] string lpDirectory, ShowWindowCommand nShowCmd);
 
 		/// <summary>Performs an operation on a specified file.</summary>
 		/// <param name="lpExecInfo">
@@ -2386,7 +2510,7 @@ namespace Vanara.PInvoke
 		// hwnd, LPCSTR pszRootPath, DWORD dwFlags );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "c3995be7-bc8b-4e1f-8ef6-fdf4c0a75720")]
-		public static extern HRESULT SHEmptyRecycleBin(HWND hwnd, string pszRootPath, SHERB dwFlags);
+		public static extern HRESULT SHEmptyRecycleBin([Optional] HWND hwnd, [Optional] string pszRootPath, SHERB dwFlags);
 
 		/// <summary>
 		/// <para>Enumerates the user accounts that have unread email.</para>
@@ -3044,41 +3168,44 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>The type of printer operation to perform. One of the following values:</para>
 		/// <para>PRINTACTION_OPEN (0)</para>
-		/// <para>0x0. Open the printer specified by . The parameter is ignored.</para>
+		/// <para>0x0. Open the printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// <para>PRINTACTION_PROPERTIES (1)</para>
 		/// <para>
-		/// 0x1. Display the property pages for the printer specified by . The parameter can be <c>NULL</c> or can name a specific property
-		/// sheet to display, either by name or number. If the high <c>WORD</c> of is nonzero, it is assumed that this parameter is a pointer
-		/// to a buffer that contains the name of the sheet to open. Otherwise, is seen as the zero-based index of the property sheet to open.
+		/// 0x1. Display the property pages for the printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter can be <c>NULL</c> or can
+		/// name a specific property sheet to display, either by name or number. If the high <c>WORD</c> of <c>lpBuf2</c> is nonzero, it is
+		/// assumed that this parameter is a pointer to a buffer that contains the name of the sheet to open. Otherwise, <c>lpBuf2</c> is
+		/// seen as the zero-based index of the property sheet to open.
 		/// </para>
 		/// <para>PRINTACTION_NETINSTALL (2)</para>
-		/// <para>0x2. Install the network printer specified by . The parameter is ignored.</para>
+		/// <para>0x2. Install the network printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// <para>PRINTACTION_NETINSTALLLINK (3)</para>
 		/// <para>
-		/// 0x3. Create a shortcut to the network printer specified by . The parameter specifies the drive and path of the folder in which to
-		/// create the shortcut. The network printer must already have been installed on the local computer.
+		/// 0x3. Create a shortcut to the network printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter specifies the drive and
+		/// path of the folder in which to create the shortcut. The network printer must already have been installed on the local computer.
 		/// </para>
 		/// <para>PRINTACTION_TESTPAGE (4)</para>
-		/// <para>0x4. Print a test page on the printer specified by . The parameter is ignored.</para>
+		/// <para>0x4. Print a test page on the printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// <para>PRINTACTION_OPENNETPRN (5)</para>
-		/// <para>0x5. Open the network printer specified by . The parameter is ignored.</para>
+		/// <para>0x5. Open the network printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// <para>PRINTACTION_DOCUMENTDEFAULTS (6)</para>
-		/// <para>0x6. Display the default document properties for the printer specified by . The parameter is ignored.</para>
+		/// <para>
+		/// 0x6. Display the default document properties for the printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.
+		/// </para>
 		/// <para>PRINTACTION_SERVERPROPERTIES (7)</para>
-		/// <para>0x7. Display the properties for the printer server specified by . The parameter is ignored.</para>
+		/// <para>0x7. Display the properties for the printer server specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// </param>
 		/// <param name="lpBuf1">
 		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>
 		/// Pointer to a null-terminated string that contains additional information for the printer command. The information contained in
-		/// this parameter depends upon the value of .
+		/// this parameter depends upon the value of <c>uAction</c>.
 		/// </para>
 		/// </param>
 		/// <param name="lpBuf2">
 		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>
 		/// Pointer to a null-terminated string that contains additional information for the printer command. The information contained in
-		/// this parameter depends upon the value of .
+		/// this parameter depends upon the value of <c>uAction</c>.
 		/// </para>
 		/// </param>
 		/// <param name="fModal">
@@ -3094,26 +3221,33 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// When a printer name is specified by , the name can either be the name of a local printer or the server and share name of a
-		/// network printer. When specifying a network printer name, the name must be specified in this format:
+		/// When a printer name is specified by <c>lpBuf1</c>, the name can either be the name of a local printer or the server and share
+		/// name of a network printer. When specifying a network printer name, the name must be specified in this format:
 		/// </para>
-		/// <para>This function is implemented in</para>
-		/// <para>Shell versions 4.71</para>
 		/// <para>
-		/// and later. In order to maintain backward compatibility with previous Shell versions, this function should not be used explicitly.
-		/// Instead, the
+		/// <code>"\\&lt;server&gt;&lt;shared printer name&gt;"</code>
 		/// </para>
-		/// <para>LoadLibrary</para>
-		/// <para>and</para>
-		/// <para>GetProcAddress</para>
-		/// <para>functions should be used to obtain the function address.</para>
+		/// <para>
+		/// This function is implemented in Shell versions 4.71 and later. In order to maintain backward compatibility with previous Shell
+		/// versions, this function should not be used explicitly. Instead, the LoadLibrary and GetProcAddress functions should be used to
+		/// obtain the function address.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines SHInvokePrinterCommand as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shinvokeprintercommanda BOOL SHInvokePrinterCommandA(
-		// HWND hwnd, UINT uAction, LPCSTR lpBuf1, LPCSTR lpBuf2, BOOL fModal );
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shinvokeprintercommanda BOOL SHInvokePrinterCommandA( [in,
+		// optional] HWND hwnd, UINT uAction, [in] LPCSTR lpBuf1, [in, optional] LPCSTR lpBuf2, BOOL fModal );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "32a5802f-cef7-4dbd-affd-82285fe97a8c")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.SHInvokePrinterCommandA")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHInvokePrinterCommand(HWND hwnd, PRINTACTION uAction, string lpBuf1, string lpBuf2, [MarshalAs(UnmanagedType.Bool)] bool fModal);
+		public static extern bool SHInvokePrinterCommand(HWND hwnd, PRINTACTION uAction, string lpBuf1, [Optional] string lpBuf2, [MarshalAs(UnmanagedType.Bool)] bool fModal);
 
 		/// <summary>
 		/// <para>
@@ -3404,7 +3538,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "ac2d591a-f431-4da7-aa9f-0476634ec9cf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHTestTokenMembership(HTOKEN hToken, uint ulRID);
+		public static extern bool SHTestTokenMembership([Optional] HTOKEN hToken, uint ulRID);
 
 		/// <summary>
 		/// UNDOCUMENTED: Use at your own risk.
@@ -4140,7 +4274,7 @@ namespace Vanara.PInvoke
 			public string szPath;
 
 			/// <summary>The default empty instance of SHSTOCKICONINFO with cbSize set appropriately.</summary>
-			public static readonly SHSTOCKICONINFO Default = new SHSTOCKICONINFO { cbSize = (uint)Marshal.SizeOf(typeof(SHSTOCKICONINFO)) };
+			public static readonly SHSTOCKICONINFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(SHSTOCKICONINFO)) };
 		}
 	}
 }
