@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.Runtime.InteropServices;
+#pragma warning disable IDE1006 // Naming Styles
 
 namespace Vanara.PInvoke
 {
@@ -57,7 +58,7 @@ namespace Vanara.PInvoke
 			get => left;
 			set
 			{
-				right -= (left - value);
+				right -= left - value;
 				left = value;
 			}
 		}
@@ -69,7 +70,7 @@ namespace Vanara.PInvoke
 			get => top;
 			set
 			{
-				bottom -= (top - value);
+				bottom -= top - value;
 				top = value;
 			}
 		}
@@ -94,7 +95,7 @@ namespace Vanara.PInvoke
 		/// <value>A Point that represents the upper-left corner of this <see cref="RECT"/> structure.</value>
 		public Point Location
 		{
-			get => new Point(left, top);
+			get => new(left, top);
 			set
 			{
 				X = value.X;
@@ -106,7 +107,7 @@ namespace Vanara.PInvoke
 		/// <value>A Size that represents the width and height of this <see cref="RECT"/> structure.</value>
 		public Size Size
 		{
-			get => new Size(Width, Height);
+			get => new(Width, Height);
 			set
 			{
 				Width = value.Width;
@@ -121,16 +122,16 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="RECT"/> to <see cref="Rectangle"/>.</summary>
 		/// <param name="r">The <see cref="RECT"/> structure.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator Rectangle(RECT r) => new Rectangle(r.left, r.top, r.Width, r.Height);
+		public static implicit operator Rectangle(RECT r) => new(r.left, r.top, r.Width, r.Height);
 
 		/// <summary>Performs an implicit conversion from <see cref="Rectangle"/> to <see cref="RECT"/>.</summary>
 		/// <param name="r">The Rectangle structure.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator RECT(Rectangle r) => new RECT(r);
+		public static implicit operator RECT(Rectangle r) => new(r);
 
 		/// <summary>Tests whether two <see cref="RECT"/> structures have equal values.</summary>
-		/// <param name="r1">The r1.</param>
-		/// <param name="r2">The r2.</param>
+		/// <param name="r1">The first <see cref="RECT"/> structure.</param>
+		/// <param name="r2">The second <see cref="RECT"/> structure.</param>
 		/// <returns>The result of the operator.</returns>
 		public static bool operator ==(RECT r1, RECT r2) => r1.Equals(r2);
 
@@ -148,7 +149,7 @@ namespace Vanara.PInvoke
 		/// <summary>Determines whether the specified <see cref="PRECT"/>, is equal to this instance.</summary>
 		/// <param name="r">The <see cref="PRECT"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="PRECT"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public bool Equals(PRECT r) => (object)r != null && Equals(r.rect);
+		public bool Equals(PRECT r) => r is not null && Equals(r.rect);
 
 		/// <summary>Determines whether the specified <see cref="Rectangle"/>, is equal to this instance.</summary>
 		/// <param name="r">The <see cref="Rectangle"/> to compare with this instance.</param>
@@ -158,26 +159,14 @@ namespace Vanara.PInvoke
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj)
+		public override bool Equals(object obj) => obj switch
 		{
-			switch (obj)
-			{
-				case null:
-					return false;
-
-				case RECT r:
-					return Equals(r);
-
-				case PRECT r:
-					return Equals(r);
-
-				case Rectangle r:
-					return Equals(r);
-
-				default:
-					return false;
-			}
-		}
+			null => false,
+			RECT r => Equals(r),
+			PRECT r => Equals(r),
+			Rectangle r => Equals(r),
+			_ => false,
+		};
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -188,7 +177,7 @@ namespace Vanara.PInvoke
 		public override string ToString() => $"{{left={left},top={top},right={right},bottom={bottom}}}";
 
 		/// <summary>Represents an empty instance where all values are set to 0.</summary>
-		public static readonly RECT Empty = new RECT();
+		public static readonly RECT Empty = new();
 	}
 
 	/// <summary>Defines the coordinates of the upper-left and lower-right corners of a rectangle.</summary>
@@ -305,41 +294,41 @@ namespace Vanara.PInvoke
 		public bool IsEmpty => rect.IsEmpty;
 
 		/// <summary>Performs an implicit conversion from <see cref="PRECT"/> to <see cref="Rectangle"/>.</summary>
-		/// <param name="r">The r.</param>
+		/// <param name="r">The <see cref="PRECT"/> to convert.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator Rectangle(PRECT r) => r.rect;
 
 		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{Rectangle}"/> to <see cref="PRECT"/>.</summary>
-		/// <param name="r">The r.</param>
+		/// <param name="r">The <see cref="Rectangle"/> to convert.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator PRECT(Rectangle? r) => r.HasValue ? new PRECT(r.Value) : null;
 
 		/// <summary>Performs an implicit conversion from <see cref="Rectangle"/> to <see cref="PRECT"/>.</summary>
-		/// <param name="r">The r.</param>
+		/// <param name="r">The <see cref="Rectangle"/> to convert.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PRECT(Rectangle r) => new PRECT(r);
+		public static implicit operator PRECT(Rectangle r) => new(r);
 
 		/// <summary>Performs an implicit conversion from <see cref="RECT"/> to <see cref="PRECT"/>.</summary>
-		/// <param name="r">The r.</param>
+		/// <param name="r">The <see cref="RECT"/> to convert.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PRECT(RECT r) => new PRECT(r);
+		public static implicit operator PRECT(RECT r) => new(r);
 
 		/// <summary>Implements the operator ==.</summary>
-		/// <param name="r1">The r1.</param>
-		/// <param name="r2">The r2.</param>
+		/// <param name="r1">The first <see cref="PRECT"/> structure.</param>
+		/// <param name="r2">The second <see cref="PRECT"/> structure.</param>
 		/// <returns>The result of the operator.</returns>
 		public static bool operator ==(PRECT r1, PRECT r2)
 		{
 			if (ReferenceEquals(r1, r2))
 				return true;
-			if ((object)r1 == null || (object)r2 == null)
+			if (r1 is null || r2 is null)
 				return false;
 			return r1.Equals(r2);
 		}
 
 		/// <summary>Implements the operator !=.</summary>
-		/// <param name="r1">The r1.</param>
-		/// <param name="r2">The r2.</param>
+		/// <param name="r1">The first <see cref="PRECT"/> structure.</param>
+		/// <param name="r2">The second <see cref="PRECT"/> structure.</param>
 		/// <returns>The result of the operator.</returns>
 		public static bool operator !=(PRECT r1, PRECT r2) => !(r1 == r2);
 
@@ -377,26 +366,22 @@ namespace Vanara.PInvoke
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			var b = base.ConvertFrom(context, culture, value);
-			if (b is RECT r)
-				return new PRECT(r);
-			return b;
+			return b is RECT r ? new PRECT(r) : b;
 		}
 
 		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
-			var prect = value as PRECT;
-			if (destinationType == typeof(InstanceDescriptor) && prect != null)
+			if (value is PRECT prect && destinationType == typeof(InstanceDescriptor))
 			{
 				var ctor = typeof(PRECT).GetConstructor(new[] { typeof(int), typeof(int), typeof(int), typeof(int) });
 				return new InstanceDescriptor(ctor, new object[] { prect.left, prect.top, prect.right, prect.bottom });
 			}
-
-			return base.ConvertTo(context, culture, prect != null ? prect.rect : value, destinationType);
+			return base.ConvertTo(context, culture, value, destinationType);
 		}
 
 		public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
 		{
-			if (propertyValues == null)
+			if (propertyValues is null)
 				throw new ArgumentNullException(nameof(propertyValues));
 
 			var left = propertyValues["left"] ?? 0;
@@ -404,10 +389,8 @@ namespace Vanara.PInvoke
 			var right = propertyValues["right"] ?? 0;
 			var bottom = propertyValues["bottom"] ?? 0;
 
-			if (!(left is int) || !(top is int) || !(right is int) || !(bottom is int))
+			return left is int l && top is int t && right is int r && bottom is int b ? new PRECT(l, t, r, b) :
 				throw new ArgumentException(@"Invalid property value.");
-
-			return new PRECT((int)left, (int)top, (int)right, (int)bottom);
 		}
 
 		public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
@@ -427,34 +410,33 @@ namespace Vanara.PInvoke
 
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
-			if (!(value is string strValue))
-				return base.ConvertFrom(context, culture, value);
+			if (value is string strValue)
+			{
+				var text = strValue.Trim();
+				if (text.Length == 0)
+					return null;
 
-			var text = strValue.Trim();
-			if (text.Length == 0)
-				return null;
-
-			var tokens = text.Split(culture.TextInfo.ListSeparator[0]);
-			var values = new int[tokens.Length];
-			var intConverter = TypeDescriptor.GetConverter(typeof(int));
-			for (var i = 0; i < values.Length; i++)
-				values[i] = (int)intConverter.ConvertFromString(context, culture, tokens[i]);
-			if (values.Length == 4)
-				return new RECT(values[0], values[1], values[2], values[3]);
-
+				culture ??= CultureInfo.CurrentCulture;
+				var tokens = text.Split(culture.TextInfo.ListSeparator[0]);
+				if (tokens.Length == 4)
+				{
+					var intConverter = TypeDescriptor.GetConverter(typeof(int));
+					var values = Array.ConvertAll(tokens, i => (int)intConverter.ConvertFromString(context, culture, i));
+					return new RECT(values[0], values[1], values[2], values[3]);
+				}
+			}
 			return base.ConvertFrom(context, culture, value);
 		}
 
 		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
-			if (destinationType == null)
+			if (destinationType is null)
 				throw new ArgumentNullException(nameof(destinationType));
 
-			if (!(value is RECT rect))
+			if (value is not RECT rect)
 				return base.ConvertTo(context, culture, value, destinationType);
 
-			if (culture == null)
-				culture = CultureInfo.CurrentCulture;
+			culture ??= CultureInfo.CurrentCulture;
 
 			if (destinationType == typeof(string))
 				return IntConvertToString(context, culture, rect);
@@ -462,7 +444,7 @@ namespace Vanara.PInvoke
 			if (destinationType == typeof(InstanceDescriptor))
 			{
 				var ctor = typeof(RECT).GetConstructor(new[] { typeof(int), typeof(int), typeof(int), typeof(int) });
-				return new InstanceDescriptor(ctor, new object[] { rect.left, rect.top, rect.right, rect.bottom });
+				return new InstanceDescriptor(ctor, new[] { rect.left, rect.top, rect.right, rect.bottom });
 			}
 
 			return base.ConvertTo(context, culture, value, destinationType);
@@ -470,18 +452,16 @@ namespace Vanara.PInvoke
 
 		public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
 		{
-			if (propertyValues == null)
+			if (propertyValues is null)
 				throw new ArgumentNullException(nameof(propertyValues));
 
-			var left = propertyValues["left"] ?? 0;
-			var top = propertyValues["top"] ?? 0;
-			var right = propertyValues["right"] ?? 0;
-			var bottom = propertyValues["bottom"] ?? 0;
+			var left = propertyValues["left"];
+			var top = propertyValues["top"];
+			var right = propertyValues["right"];
+			var bottom = propertyValues["bottom"];
 
-			if (!(left is int) || !(top is int) || !(right is int) || !(bottom is int))
+			return left is int l && top is int t && right is int r && bottom is int b ? new RECT(l, t, r, b) :
 				throw new ArgumentException(@"Invalid property value.");
-
-			return new RECT((int)left, (int)top, (int)right, (int)bottom);
 		}
 
 		public override bool GetCreateInstanceSupported(ITypeDescriptorContext context) => true;
