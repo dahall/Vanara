@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
@@ -9,6 +7,52 @@ using IDropTarget = Vanara.PInvoke.Ole32.IDropTarget;
 
 namespace Vanara.Windows.Shell
 {
+	/// <summary>
+	/// Provides data for the <see cref="ShellDropTarget.DragDrop"/>, <see cref="ShellDropTarget.DragEnter"/>, or <see
+	/// cref="ShellDropTarget.DragOver"/> event.
+	/// </summary>
+	/// <remarks>
+	/// A DragEventArgs object specifies any data associated with drag/drop events; the current state of the SHIFT, CTRL, and ALT keys; the
+	/// location of the mouse pointer; and the drag-and-drop effects allowed by the source and target of the drag event.
+	/// </remarks>
+	public class DragEventArgs : EventArgs
+	{
+		/// <summary>Initializes a new instance of the <see cref="DragEventArgs"/> class.</summary>
+		/// <param name="data">The data associated with this event.</param>
+		/// <param name="keyState">The current state of the SHIFT, CTRL, and ALT keys.</param>
+		/// <param name="x">The x-coordinate of the mouse cursor in pixels.</param>
+		/// <param name="y">The y-coordinate of the mouse cursor in pixels.</param>
+		/// <param name="allowedEffect">One of the DROPEFFECT values.</param>
+		/// <param name="lastEffect">One of the DROPEFFECT values.</param>
+		public DragEventArgs(IDataObject data, MouseButtonState keyState, int x, int y, DROPEFFECT allowedEffect, DROPEFFECT lastEffect)
+		{
+			Data = data;
+			KeyState = keyState;
+			X = x;
+			Y = y;
+			AllowedEffect = allowedEffect;
+			Effect = lastEffect;
+		}
+
+		/// <summary>Gets which drag-and-drop operations are allowed by the originator (or source) of the drag event.</summary>
+		public DROPEFFECT AllowedEffect { get; }
+
+		/// <summary>Gets the IDataObject that contains the data associated with this event.</summary>
+		public IDataObject Data { get; }
+
+		/// <summary>Gets or sets the target drop effect in a drag-and-drop operation.</summary>
+		public DROPEFFECT Effect { get; set; }
+
+		/// <summary>Gets the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.</summary>
+		public MouseButtonState KeyState { get; }
+
+		/// <summary>Gets the x-coordinate of the mouse pointer, in screen coordinates.</summary>
+		public int X { get; }
+
+		/// <summary>Gets the y-coordinate of the mouse pointer, in screen coordinates.</summary>
+		public int Y { get; }
+	}
+
 	/// <summary>
 	/// COM object that implements IDropTarget. Solves race problem on drop and simplifies interface calls. All IDropTarget methods call
 	/// their equivalent On[MethodName] equivalents. To specialize their handling, simply override the On[MethodName] method or hook an event
@@ -101,7 +145,7 @@ namespace Vanara.Windows.Shell
 	/// <seealso cref="Vanara.PInvoke.Ole32.IDropTarget"/>
 	public abstract class ShellDropTarget : ShellCommand, IDropTarget, IInitializeCommand
 	{
-		private DataObject lastDataObject;
+		private IDataObject lastDataObject;
 		private DROPEFFECT lastEffect = DROPEFFECT.DROPEFFECT_NONE;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellDropTarget"/> class.</summary>
@@ -113,10 +157,10 @@ namespace Vanara.Windows.Shell
 		protected ShellDropTarget(CLSCTX classContext, REGCLS classUse) : base(classContext, classUse) { }
 
 		/// <summary>Occurs when a drag-and-drop operation is started. All calls from this event must be non-blocking.</summary>
-		public event DragEventHandler DragDrop;
+		public event EventHandler<DragEventArgs> DragDrop;
 
 		/// <summary>Occurs to request whether a drop can be accepted, and, if so, the effect of the drop.</summary>
-		public event DragEventHandler DragEnter;
+		public event EventHandler<DragEventArgs> DragEnter;
 
 		/// <summary>Occurs when the object is told to remove target feedback and releases the data object.</summary>
 		public event EventHandler DragLeave;
@@ -125,15 +169,15 @@ namespace Vanara.Windows.Shell
 		/// Occurs so target can provide feedback to the user and communicate the drop's effect to the DoDragDrop function so it can
 		/// communicate the effect of the drop back to the source.
 		/// </summary>
-		public event DragEventHandler DragOver;
+		public event EventHandler<DragEventArgs> DragOver;
 
 		/// <inheritdoc/>
-		HRESULT IDropTarget.DragEnter(IDataObject pDataObj, MouseButtonState grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
+		HRESULT IDropTarget.DragEnter(IDataObject pDataObj, MouseButtonState grfKeyState, POINT pt, ref DROPEFFECT pdwEffect)
 		{
 			System.Diagnostics.Debug.WriteLine($"IDropTarget.DragEnter: effect={pdwEffect}");
 			var drgevent = CreateDragEventArgs(pDataObj, grfKeyState, pt, pdwEffect);
 			DragEnter?.Invoke(this, drgevent);
-			lastEffect = pdwEffect = (DROPEFFECT)drgevent.Effect;
+			lastEffect = pdwEffect = drgevent.Effect;
 			return HRESULT.S_OK;
 		}
 
@@ -147,30 +191,30 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <inheritdoc/>
-		HRESULT IDropTarget.DragOver(MouseButtonState grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
+		HRESULT IDropTarget.DragOver(MouseButtonState grfKeyState, POINT pt, ref DROPEFFECT pdwEffect)
 		{
 			System.Diagnostics.Debug.WriteLine($"IDropTarget.DragOver: effect={pdwEffect}");
 			var drgevent = CreateDragEventArgs(null, grfKeyState, pt, pdwEffect);
 			DragOver?.Invoke(this, drgevent);
-			lastEffect = pdwEffect = (DROPEFFECT)drgevent.Effect;
+			lastEffect = pdwEffect = drgevent.Effect;
 			return HRESULT.S_OK;
 		}
 
 		/// <inheritdoc/>
-		HRESULT IDropTarget.Drop(IDataObject pDataObj, MouseButtonState grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
+		HRESULT IDropTarget.Drop(IDataObject pDataObj, MouseButtonState grfKeyState, POINT pt, ref DROPEFFECT pdwEffect)
 		{
 			System.Diagnostics.Debug.WriteLine($"IDropTarget.Drop: effect={pdwEffect}");
 			var drgevent = CreateDragEventArgs(pDataObj, grfKeyState, pt, pdwEffect);
 			DragDrop?.Invoke(this, drgevent);
-			pdwEffect = (DROPEFFECT)drgevent.Effect;
+			pdwEffect = drgevent.Effect;
 			CancelTimeout();
 			return HRESULT.S_OK;
 		}
 
-		private DragEventArgs CreateDragEventArgs(IDataObject pDataObj, MouseButtonState grfKeyState, Point pt, DROPEFFECT pdwEffect)
+		private DragEventArgs CreateDragEventArgs(IDataObject pDataObj, MouseButtonState grfKeyState, POINT pt, DROPEFFECT pdwEffect)
 		{
-			var data = pDataObj == null ? lastDataObject : new DataObject(pDataObj);
-			var drgevent = new DragEventArgs(data, (int)grfKeyState, pt.X, pt.Y, (DragDropEffects)pdwEffect, (DragDropEffects)lastEffect);
+			var data = pDataObj ?? lastDataObject;
+			var drgevent = new DragEventArgs(data, grfKeyState, pt.X, pt.Y, pdwEffect, lastEffect);
 			lastDataObject = data;
 			return drgevent;
 		}
