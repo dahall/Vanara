@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Windows.Forms;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
@@ -73,7 +72,7 @@ namespace Vanara.Windows.Shell
 	public class FileInUseHandler : IFileIsInUse, IDisposable
 	{
 		private bool disposedValue;
-		private string filePath;
+		private string appName, filePath;
 		private IMoniker moniker;
 		private uint regId;
 
@@ -81,11 +80,12 @@ namespace Vanara.Windows.Shell
 		/// <param name="filePath">The file path.</param>
 		/// <param name="parent">The parent.</param>
 		/// <param name="usageType">Type of the usage.</param>
-		public FileInUseHandler(string filePath, IWin32Window parent = null, FileUsageType usageType = FileUsageType.Generic)
+		public FileInUseHandler(string filePath, HWND parent = default, FileUsageType usageType = FileUsageType.Generic)
 		{
 			ActivationWindow = parent;
 			FileUsageType = usageType;
 			FilePath = filePath;
+			appName = DefAppName;
 		}
 
 		/// <summary>Finalizes an instance of the <see cref="FileInUseHandler"/> class.</summary>
@@ -109,7 +109,14 @@ namespace Vanara.Windows.Shell
 		/// value is <see langword="null"/>, then the calling application will be told that it cannot activate the file's owning application.
 		/// </summary>
 		/// <value>The activation window.</value>
-		public IWin32Window ActivationWindow { get; set; }
+		public HWND ActivationWindow { get; set; }
+
+		/// <summary>Gets or sets the name of the application using the file.</summary>
+		/// <value>
+		/// The name of the application that can be passed to the user in a dialog box so that the user knows the source of the conflict and
+		/// can act accordingly. For instance "File.txt is in use by Litware.".
+		/// </value>
+		public string AppName { get => appName; set => appName = value; }
 
 		/// <summary>
 		/// Gets or sets the full path to the file that is in use by this application. Setting this value will revoke any prior file's
@@ -165,7 +172,7 @@ namespace Vanara.Windows.Shell
 
 		HRESULT IFileIsInUse.GetAppName(out string ppszName)
 		{
-			ppszName = System.Windows.Forms.Application.ProductName;
+			ppszName = appName;
 			return HRESULT.S_OK;
 		}
 
@@ -173,13 +180,13 @@ namespace Vanara.Windows.Shell
 		{
 			var cancelArgs = new CancelEventArgs(false);
 			CloseRequested?.Invoke(this, cancelArgs);
-			pdwCapFlags = (!cancelArgs.Cancel ? OF_CAP.OF_CAP_CANCLOSE : 0) | (ActivationWindow is null ? 0 : OF_CAP.OF_CAP_CANSWITCHTO);
+			pdwCapFlags = (!cancelArgs.Cancel ? OF_CAP.OF_CAP_CANCLOSE : 0) | (ActivationWindow.IsNull ? 0 : OF_CAP.OF_CAP_CANSWITCHTO);
 			return HRESULT.S_OK;
 		}
 
 		HRESULT IFileIsInUse.GetSwitchToHWND(out HWND phwnd)
 		{
-			phwnd = ActivationWindow is null ? default : ActivationWindow.Handle;
+			phwnd = ActivationWindow;
 			return HRESULT.S_OK;
 		}
 
@@ -203,6 +210,22 @@ namespace Vanara.Windows.Shell
 				}
 
 				disposedValue = true;
+			}
+		}
+
+		private string DefAppName
+		{
+			get
+			{
+				var asm = System.Reflection.Assembly.GetEntryAssembly();
+				if (asm is not null)
+				{
+					object[] attrs = asm.GetCustomAttributes(typeof(System.Reflection.AssemblyProductAttribute), false);
+					if (attrs != null && attrs.Length > 0)
+						return ((System.Reflection.AssemblyProductAttribute)attrs[0]).Product;
+					return System.IO.Path.GetFileNameWithoutExtension(asm.Location);
+				}
+				return "Unknown";
 			}
 		}
 

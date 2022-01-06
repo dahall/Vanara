@@ -463,8 +463,8 @@ namespace Vanara.Windows.Shell
 		/// <value>The context menu.</value>
 		public ShellContextMenu ContextMenu => menu ??= new ShellContextMenu(this);
 
-		/// <summary>Returns a <see cref="System.Windows.Forms.DataObject"/> representing the item. This object is used in drag and drop operations.</summary>
-		public System.Windows.Forms.DataObject DataObject => new(GetHandler<IDataObject>(BHID.BHID_SFUIObject));
+		/// <summary>Returns a <see cref="IDataObject"/> representing the item. This object is used in drag and drop operations.</summary>
+		public IDataObject DataObject => GetHandler<IDataObject>(BHID.BHID_SFUIObject);
 
 		/// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
 		public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : null;
@@ -734,7 +734,7 @@ namespace Vanara.Windows.Shell
 			if (qi is null)
 				try
 				{
-					qi = (Parent ?? ShellFolder.Desktop).GetChildrenUIObjects<IQueryInfo>(null, this);
+					qi = (Parent ?? ShellFolder.Desktop).GetChildrenUIObjects<IQueryInfo>(default, this);
 				}
 				catch { }
 			if (qi is null) return "";

@@ -29,8 +29,8 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the CLSID for the specified type.</summary>
 		/// <param name="type">The type.</param>
-		/// <returns>The CLSID value for the type. Calls <see cref="Marshal.GenerateGuidForType"/> to get the value.</returns>
-		public static Guid CLSID(this Type type) => Marshal.GenerateGuidForType(type);
+		/// <returns>The CLSID value for the type. Calls <see cref="Type.GUID"/> to get the value.</returns>
+		public static Guid CLSID(this Type type) => type.GUID;
 
 		/// <summary>Determines if the specified type is registered as a COM Local Server.</summary>
 		/// <typeparam name="TComObject">The type of the COM object.</typeparam>
@@ -58,7 +58,7 @@ namespace Vanara.Windows.Shell
 			return true;
 		}
 
-#if !(NETCOREAPP3_0 || NETCOREAPP3_1 || NET5_0_OR_GREATER)
+#if NETFRAMEWORK
 
 		/// <summary>Registers the specified type as a COM Local Server.</summary>
 		/// <typeparam name="TComObject">The type of the COM object.</typeparam>

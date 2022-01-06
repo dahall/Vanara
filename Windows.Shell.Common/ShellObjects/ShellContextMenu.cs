@@ -1,13 +1,7 @@
-﻿#if !(NET5_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER)
-#define HASMENU
-#endif
-
-// Credit due to Gong-Shell from which this was largely taken.
+﻿// Credit due to Gong-Shell from which this was largely taken.
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -24,17 +18,15 @@ namespace Vanara.Windows.Shell
 	/// be shown.
 	/// </para>
 	/// <para>
-	/// To display a shell context menu in a Form's main menu, call the <c>Populate</c> or <see cref="GetItems"/> methods to populate the
-	/// menu. In addition, you must intercept a number of special messages that will be sent to the menu's parent form. To do this, you
-	/// must override <see cref="Form.WndProc"/> like so:
+	/// To display a shell context menu in a Form's main menu, call the <see cref="GetItems"/> methods to populate the menu. In addition,
+	/// you must intercept a number of special messages that will be sent to the menu's parent form by hooking its message loop as in the
+	/// following WinForms example:
 	/// </para>
-	/// <code>
-	///protected override void WndProc(ref Message m) {
-	///if ((m_ContextMenu == null) || (!m_ContextMenu.HandleMenuMessage(ref m))) {
-	///base.WndProc(ref m);
-	///}
-	///}
-	/// </code>
+	/// <code>protected override void WndProc(ref Message m) {
+	///   if ((m_ContextMenu == null) || (!m_ContextMenu.HandleMenuMessage(ref m))) {
+	///      base.WndProc(ref m);
+	///   }
+	/// }</code>
 	/// <para>Where m_ContextMenu is the <see cref="ShellContextMenu"/> being shown.</para>
 	/// Standard menu commands can also be invoked from this class, for example <see cref="InvokeDelete"/> and <see cref="InvokeRename"/>.
 	/// </remarks>
@@ -317,7 +309,7 @@ namespace Vanara.Windows.Shell
 			return ComInterface.GetCommandString((IntPtr)command, stringType, default, mStr, (uint)mStr.Capacity).Succeeded ? mStr : null;
 		}
 
-#if HASMENU
+#if WINFORMS && HASMENU
 		/// <summary>Populates a <see cref="Menu"/> with the context menu items for a shell item.</summary>
 		/// <param name="menu">The menu to populate.</param>
 		/// <param name="menuOptions">The flags to pass to <see cref="IContextMenu.QueryContextMenu"/>.</param>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
@@ -184,9 +183,9 @@ namespace Vanara.Windows.Shell
 		/// <param name="allowUnindexableLocations">
 		/// if set to <c>true</c> do not display a warning dialog to the user in collisions that concern network locations that cannot be indexed.
 		/// </param>
-		public void ShowLibraryManagementDialog(IWin32Window parentWindow = null, string title = null, string instruction = null, bool allowUnindexableLocations = false)
+		public void ShowLibraryManagementDialog(HWND parentWindow = default, string title = null, string instruction = null, bool allowUnindexableLocations = false)
 		{
-			SHShowManageLibraryUI(iShellItem, parentWindow?.Handle ?? IntPtr.Zero, title, instruction,
+			SHShowManageLibraryUI(iShellItem, parentWindow, title, instruction,
 				allowUnindexableLocations ? LIBRARYMANAGEDIALOGOPTIONS.LMD_ALLOWUNINDEXABLENETWORKLOCATIONS : LIBRARYMANAGEDIALOGOPTIONS.LMD_DEFAULT).ThrowIfFailed();
 		}
 

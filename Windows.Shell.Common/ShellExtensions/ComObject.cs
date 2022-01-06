@@ -40,7 +40,6 @@ namespace Vanara.Windows.Shell
 	/// need to implement your own interfaces. The IClassFactory implementation can get any derived interfaces through casting for calls to
 	/// its QueryInterface method. If you want more control, override the QueryInterface method in this class.
 	/// </summary>
-	/// <remarks>See <see cref="ShellDropTarget"/> for an example of how to use this class to create a local COM server.</remarks>
 	/// <seealso cref="IDisposable"/>
 	/// <seealso cref="IObjectWithSite"/>
 	public abstract class ComObject : IComObject, IDisposable, IObjectWithSite

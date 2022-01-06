@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows.Forms;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell
@@ -287,11 +287,10 @@ namespace Vanara.Windows.Shell
 		/// <param name="owner">
 		/// A value that represents the window of the owner window for the common dialog box. This value can be <see langword="null"/>.
 		/// </param>
-		public void Start(IWin32Window owner)
+		public void Start(HWND owner = default)
 		{
-			if (owner is null) owner = Form.ActiveForm;
 			iProgressDialog = new IOperationsProgressDialog();
-			iProgressDialog.StartProgressDialog(owner?.Handle ?? default, DialogFlags);
+			iProgressDialog.StartProgressDialog(owner, DialogFlags);
 			iProgressDialog.SetOperation((SPACTION)operation);
 			iProgressDialog.SetMode((PDMODE)mode);
 			UpdateLocations();

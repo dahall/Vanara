@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using Vanara.Collections;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -22,16 +21,16 @@ namespace Vanara.Windows.Shell
 		private bool disposedValue = false;
 		private IFileOperation op;
 		private OperationFlags opFlags = defaultOptions;
-		private IWin32Window owner;
+		private HWND owner;
 		private IFileOperationProgressSink sink;
 		private uint sinkCookie;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellFileOperations"/> class.</summary>
 		/// <param name="owner">The window that owns the modal dialog. This value can be <see langword="null"/>.</param>
-		public ShellFileOperations(IWin32Window owner = null)
+		public ShellFileOperations(HWND owner = default)
 		{
 			op = new IFileOperation();
-			if (owner != null) op.SetOwnerWindow(owner.Handle);
+			if (owner != default) op.SetOwnerWindow(owner);
 			sink = new OpSink(this);
 			sinkCookie = op.Advise(sink);
 		}
@@ -105,10 +104,10 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets or sets the parent or owner window for progress and dialog windows.</summary>
 		/// <value>The owner window of the operation. This window will receive error messages.</value>
-		public IWin32Window OwnerWindow
+		public HWND OwnerWindow
 		{
 			get => owner;
-			set => op.SetOwnerWindow((owner = value)?.Handle ?? default);
+			set => op.SetOwnerWindow(owner = value);
 		}
 
 		/// <summary>Gets the number of queued operations.</summary>

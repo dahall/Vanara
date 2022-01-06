@@ -309,11 +309,11 @@ namespace Vanara.Windows.Shell
 
 				if (items.Length == 1)
 				{
-					ComInterface.Invoke(new ShellDataObject(items)).ThrowIfFailed();
+					ComInterface.Invoke(items[0].DataObject).ThrowIfFailed();
 				}
 				else
 				{
-					ComInterface.CreateInvoker(new ShellDataObject(items), out var invoker).ThrowIfFailed();
+					ComInterface.CreateInvoker(CreateDataObj(items), out var invoker).ThrowIfFailed();
 					using var pInvoker = ComReleaserFactory.Create(invoker);
 					var hr = invoker.SupportsSelection();
 					if (hr == HRESULT.S_FALSE)
@@ -328,6 +328,16 @@ namespace Vanara.Windows.Shell
 			/// <para>A string that contains the display name of the application.</para>
 			/// </param>
 			public void MakeDefault(string description) => ComInterface.MakeDefault(description).ThrowIfFailed();
+
+			private static System.Runtime.InteropServices.ComTypes.IDataObject CreateDataObj(IEnumerable<ShellItem> items)
+			{
+				if ((items?.Count() ?? 0) == 0)
+					throw new ArgumentNullException(nameof(items));
+
+				if (items is not ShellItemArray litems)
+					litems = new ShellItemArray(items);
+				return litems.ToDataObject();
+			}
 		}
 	}
 }

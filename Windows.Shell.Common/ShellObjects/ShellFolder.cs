@@ -180,9 +180,9 @@ namespace Vanara.Windows.Shell
 		/// <param name="filter">A filter for the types of children to enumerate.</param>
 		/// <param name="parentWindow">The parent window.</param>
 		/// <returns>An enumerated list of children matching the filter.</returns>
-		public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter /*= FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden */, System.Windows.Forms.IWin32Window parentWindow = null)
+		public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter /*= FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden */, HWND parentWindow = default)
 		{
-			if (iShellFolder.EnumObjects(IWin2Ptr(parentWindow, false), (SHCONTF)filter, out var eo).Failed)
+			if (iShellFolder.EnumObjects(parentWindow, (SHCONTF)filter, out var eo).Failed)
 				Debug.WriteLine($"Unable to enum children in folder.");
 			foreach (var p in eo.Enumerate(20))
 			{
@@ -198,10 +198,10 @@ namespace Vanara.Windows.Shell
 		/// <param name="parentWindow">The owner window that the client should specify if it displays a dialog box or message box..</param>
 		/// <param name="children">The file objects or subfolders relative to the parent folder for which to get the interface.</param>
 		/// <returns>The interface pointer requested.</returns>
-		public TInterface GetChildrenUIObjects<TInterface>(System.Windows.Forms.IWin32Window parentWindow, params ShellItem[] children) where TInterface : class
+		public TInterface GetChildrenUIObjects<TInterface>(HWND parentWindow, params ShellItem[] children) where TInterface : class
 		{
 			if (children is null || children.Length == 0 || children.Any(i => i is null || !IsChild(i))) throw new ArgumentException("At least one child ShellItem instances is null or is not a child of this folder.");
-			return iShellFolder.GetUIObjectOf<TInterface>(IWin2Ptr(parentWindow), Array.ConvertAll(children, i => (IntPtr)i.PIDL.LastId));
+			return iShellFolder.GetUIObjectOf<TInterface>(parentWindow, Array.ConvertAll(children, i => (IntPtr)i.PIDL.LastId));
 		}
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -212,8 +212,8 @@ namespace Vanara.Windows.Shell
 		/// <typeparam name="TInterface">The interface to retrieve, typically IShellView.</typeparam>
 		/// <param name="parentWindow">The owner window.</param>
 		/// <returns>The interface pointer requested.</returns>
-		public TInterface GetViewObject<TInterface>(System.Windows.Forms.IWin32Window parentWindow) where TInterface : class =>
-			iShellFolder.CreateViewObject<TInterface>(IWin2Ptr(parentWindow));
+		public TInterface GetViewObject<TInterface>(HWND parentWindow) where TInterface : class =>
+			iShellFolder.CreateViewObject<TInterface>(parentWindow);
 
 		/// <summary>Determines if the supplied <see cref="ShellItem"/> is an immediate descendant of this folder.</summary>
 		/// <param name="item">The child item to test.</param>
@@ -226,17 +226,15 @@ namespace Vanara.Windows.Shell
 		/// <param name="displayType">The display type.</param>
 		/// <param name="parentWindow">The parent window to use if any messages need to be shown the user.</param>
 		/// <returns>A reference to the newly named item.</returns>
-		public ShellItem RenameChild(PIDL relativeChildPidl, string newName, ShellItemDisplayString displayType, System.Windows.Forms.IWin32Window parentWindow)
+		public ShellItem RenameChild(PIDL relativeChildPidl, string newName, ShellItemDisplayString displayType, HWND parentWindow)
 		{
-			iShellFolder.SetNameOf(IWin2Ptr(parentWindow), relativeChildPidl, newName, (SHGDNF)displayType, out PIDL newPidl);
+			iShellFolder.SetNameOf(parentWindow, relativeChildPidl, newName, (SHGDNF)displayType, out PIDL newPidl);
 			return this[newPidl];
 		}
 
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-		internal static HWND IWin2Ptr(System.Windows.Forms.IWin32Window wnd, bool desktopIfNull = true) => wnd?.Handle ?? (desktopIfNull ? User32.FindWindow("Progman", null) : default);
 
 		private IShellFolder GetInstance() => iShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
 	}

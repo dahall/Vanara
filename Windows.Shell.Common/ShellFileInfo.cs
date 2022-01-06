@@ -141,7 +141,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the shell item attributes.</summary>
 		/// <value>The shell item attributes.</value>
-		public ShellItemAttribute ShellAttributes { get; private set; }
+		public SFGAO ShellAttributes { get; private set; }
 
 		/// <summary>Gets the small icon for the file.</summary>
 		public Icon SmallIcon => GetIcon(ShellIconType.Small);
@@ -178,7 +178,7 @@ namespace Vanara.Windows.Shell
 			var ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_DISPLAYNAME | SHGFI.SHGFI_TYPENAME | SHGFI.SHGFI_ATTRIBUTES);
 			if (ret != IntPtr.Zero)
 			{
-				ShellAttributes = (ShellItemAttribute)shfi.dwAttributes;
+				ShellAttributes = (SFGAO)shfi.dwAttributes;
 				TypeName = shfi.szTypeName.Clone().ToString();
 				DisplayName = shfi.szDisplayName.Clone().ToString();
 			}

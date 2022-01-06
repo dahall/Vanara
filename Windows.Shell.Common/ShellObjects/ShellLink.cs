@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.AccessControl;
 using System.Security.Permissions;
-using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -101,8 +98,8 @@ namespace Vanara.Windows.Shell
 		/// <param name="resolveFlags">The resolve flags.</param>
 		/// <param name="timeOut">The time out.</param>
 		/// <exception cref="System.ArgumentNullException">linkFile</exception>
-		public ShellLink(string linkFile, LinkResolution resolveFlags = LinkResolution.NoUI, IWin32Window window = null, TimeSpan timeOut = default) : base(linkFile) =>
-			LoadAndResolve(linkFile, (SLR_FLAGS)resolveFlags, ShellFolder.IWin2Ptr(window), (ushort)timeOut.TotalMilliseconds);
+		public ShellLink(string linkFile, LinkResolution resolveFlags = LinkResolution.NoUI, HWND window = default, TimeSpan timeOut = default) : base(linkFile) =>
+			LoadAndResolve(linkFile, (SLR_FLAGS)resolveFlags, window, (ushort)timeOut.TotalMilliseconds);
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ShellLink"/> class and sets many properties. This link is not saved as a file.
@@ -147,10 +144,38 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Gets/sets the HotKey to start the shortcut (if any).</summary>
-		public Keys HotKey
+		/// <value>
+		/// <para>
+		/// The keyboard shortcut. The virtual key code is in the low-order byte, and the modifier flags are in the high-order byte. The
+		/// modifier flags can be a combination of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term><c>HOTKEYF_ALT</c> 0x04</term>
+		/// <term>ALT key</term>
+		/// </item>
+		/// <item>
+		/// <term><c>HOTKEYF_CONTROL</c> 0x02</term>
+		/// <term>CTRL key</term>
+		/// </item>
+		/// <item>
+		/// <term><c>HOTKEYF_EXT</c> 0x08</term>
+		/// <term>Extended key</term>
+		/// </item>
+		/// <item>
+		/// <term><c>HOTKEYF_SHIFT</c> 0x01</term>
+		/// <term>SHIFT key</term>
+		/// </item>
+		/// </list>
+		/// </value>
+		public ushort HotKey
 		{
-			get { var hk = link.GetHotKey(); return (Keys)MAKELONG(LOBYTE(hk), HIBYTE(hk)); }
-			set { link.SetHotKey(MAKEWORD((byte)LOWORD((uint)value), (byte)HIWORD((uint)value))); Save(); }
+			get => link.GetHotKey();
+			set { link.SetHotKey(value); Save(); }
 		}
 
 		/// <summary>Gets the index of this icon within the icon path's resources.</summary>
@@ -202,10 +227,10 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets or sets the show command for a Shell link object.</summary>
 		/// <value>The show command for a Shell link object.</value>
-		public FormWindowState ShowState
+		public ShowWindowCommand ShowState
 		{
-			get => (FormWindowState)link.GetShowCmd() - 1;
-			set { link.SetShowCmd((ShowWindowCommand)value + 1); Save(); }
+			get => link.GetShowCmd() - 1;
+			set { link.SetShowCmd(value + 1); Save(); }
 		}
 
 		/// <summary>Gets or sets the target with a <see cref="ShellItem"/> instance.</summary>
@@ -360,8 +385,9 @@ namespace Vanara.Windows.Shell
 
 			if (resolveFlags.IsFlagSet(SLR_FLAGS.SLR_NO_UI) && timeOut != 0)
 				resolveFlags = (SLR_FLAGS)MAKELONG((ushort)resolveFlags, timeOut);
-
+#if !NETSTANDARD
 			new FileIOPermission(FileIOPermissionAccess.Read, fullPath).Demand();
+#endif
 			((IPersistFile)link).Load(fullPath, (int)STGM.STGM_DIRECT);
 			link.Resolve(hWin, resolveFlags);
 
