@@ -412,9 +412,35 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the keyboard shortcut (hot key) for a Shell link object.</summary>
 			/// <returns>
+			/// <para>
 			/// The address of the keyboard shortcut. The virtual key code is in the low-order byte, and the modifier flags are in the
-			/// high-order byte.
+			/// high-order byte. The modifier flags can be a combination of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>HOTKEYF_ALT</c> 0x04</term>
+			/// <term>ALT key</term>
+			/// </item>
+			/// <item>
+			/// <term><c>HOTKEYF_CONTROL</c> 0x02</term>
+			/// <term>CTRL key</term>
+			/// </item>
+			/// <item>
+			/// <term><c>HOTKEYF_EXT</c> 0x08</term>
+			/// <term>Extended key</term>
+			/// </item>
+			/// <item>
+			/// <term><c>HOTKEYF_SHIFT</c> 0x01</term>
+			/// <term>SHIFT key</term>
+			/// </item>
+			/// </list>
 			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishelllinkw-gethotkey
+			// HRESULT GetHotkey( WORD *pwHotkey );
 			ushort GetHotKey();
 
 			/// <summary>Sets a keyboard shortcut (hot key) for a Shell link object.</summary>
