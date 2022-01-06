@@ -748,7 +748,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-dragenter HRESULT DragEnter( IDataObject
 			// *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect );
 			[PreserveSig]
-			HRESULT DragEnter([In] IDataObject pDataObj, [In] MouseButtonState grfKeyState, [In] Point pt, [In, Out] ref DROPEFFECT pdwEffect);
+			HRESULT DragEnter([In] IDataObject pDataObj, [In] MouseButtonState grfKeyState, [In] POINT pt, [In, Out] ref DROPEFFECT pdwEffect);
 
 			/// <summary>
 			/// Provides target feedback to the user and communicates the drop's effect to the DoDragDrop function so it can communicate the
@@ -854,7 +854,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-dragover HRESULT DragOver( DWORD
 			// grfKeyState, POINTL pt, DWORD *pdwEffect );
 			[PreserveSig]
-			HRESULT DragOver([In] MouseButtonState grfKeyState, [In] Point pt, [In, Out] ref DROPEFFECT pdwEffect);
+			HRESULT DragOver([In] MouseButtonState grfKeyState, [In] POINT pt, [In, Out] ref DROPEFFECT pdwEffect);
 
 			/// <summary>Removes target feedback and releases the data object.</summary>
 			/// <returns>
@@ -957,7 +957,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-drop HRESULT Drop( IDataObject *pDataObj,
 			// DWORD grfKeyState, POINTL pt, DWORD *pdwEffect );
 			[PreserveSig]
-			HRESULT Drop([In] IDataObject pDataObj, [In] MouseButtonState grfKeyState, [In] Point pt, [In, Out] ref DROPEFFECT pdwEffect);
+			HRESULT Drop([In] IDataObject pDataObj, [In] MouseButtonState grfKeyState, [In] POINT pt, [In, Out] ref DROPEFFECT pdwEffect);
 		}
 
 		/// <summary>
