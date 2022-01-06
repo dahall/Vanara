@@ -249,7 +249,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-settypeflags HRESULT SetTypeFlags(UINT uTypeFlags);
 			[PreserveSig]
-			HRESULT SetTypeFlags([MarshalAs(UnmanagedType.U4)] System.Runtime.InteropServices.ComTypes.TYPEFLAGS uTypeFlags);
+			HRESULT SetTypeFlags(uint uTypeFlags);
 
 			/// <summary>Sets the documentation string displayed by type browsers.</summary>
 			/// <param name="pStrDoc">A brief description of the type description.</param>
@@ -1197,7 +1197,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-settypeflags HRESULT SetTypeFlags(UINT uTypeFlags);
 			[PreserveSig]
-			new HRESULT SetTypeFlags([MarshalAs(UnmanagedType.U4)] System.Runtime.InteropServices.ComTypes.TYPEFLAGS uTypeFlags);
+			new HRESULT SetTypeFlags(uint uTypeFlags);
 
 			/// <summary>Sets the documentation string displayed by type browsers.</summary>
 			/// <param name="pStrDoc">A brief description of the type description.</param>
