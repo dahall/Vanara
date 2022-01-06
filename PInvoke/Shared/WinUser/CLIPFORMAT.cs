@@ -47,14 +47,14 @@ namespace Vanara.PInvoke
 		/// </returns>
 		public int CompareTo(object obj)
 		{
-			if (!(obj is IConvertible c)) throw new ArgumentException(@"Object cannot be converted to a UInt16 value for comparison.", nameof(obj));
+			if (obj is not IConvertible c) throw new ArgumentException(@"Object cannot be converted to a UInt16 value for comparison.", nameof(obj));
 			return _value.CompareTo(c.ToUInt16(null));
 		}
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => obj is IConvertible c ? _value.Equals(c.ToUInt16(null)) : false;
+		public override bool Equals(object obj) => obj is IConvertible c && _value.Equals(c.ToUInt16(null));
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -75,7 +75,7 @@ namespace Vanara.PInvoke
 					return $"{fi.Name} ({HexStr(this)})";
 			return HexStr(this);
 
-			string HexStr(in CLIPFORMAT cf) => string.Format(CultureInfo.InvariantCulture, "0x{0:X4}", cf._value);
+			static string HexStr(in CLIPFORMAT cf) => string.Format(CultureInfo.InvariantCulture, "0x{0:X4}", cf._value);
 		}
 
 		/// <summary>Implements the operator ==.</summary>
@@ -105,22 +105,22 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="ushort"/> to <see cref="CLIPFORMAT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator CLIPFORMAT(ushort value) => new CLIPFORMAT(value);
+		public static implicit operator CLIPFORMAT(ushort value) => new(value);
 
 		/// <summary>Performs an implicit conversion from <see cref="short"/> to <see cref="CLIPFORMAT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator CLIPFORMAT(short value) => new CLIPFORMAT(unchecked((ushort)value));
+		public static implicit operator CLIPFORMAT(short value) => new(unchecked((ushort)value));
 
 		/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="CLIPFORMAT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator CLIPFORMAT(uint value) => new CLIPFORMAT((ushort)value);
+		public static implicit operator CLIPFORMAT(uint value) => new((ushort)value);
 
 		/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="CLIPFORMAT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator CLIPFORMAT(int value) => new CLIPFORMAT((ushort)value);
+		public static implicit operator CLIPFORMAT(int value) => new((ushort)value);
 
 		/// <summary>Performs an explicit conversion from <see cref="CLIPFORMAT"/> to <see cref="System.UInt16"/>.</summary>
 		/// <param name="value">The value.</param>
