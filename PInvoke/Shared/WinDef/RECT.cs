@@ -93,7 +93,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets or sets the coordinates of the upper-left corner of this <see cref="RECT"/> structure.</summary>
 		/// <value>A Point that represents the upper-left corner of this <see cref="RECT"/> structure.</value>
-		public Point Location
+		public POINT Location
 		{
 			get => new(left, top);
 			set
@@ -275,7 +275,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets or sets the coordinates of the upper-left corner of this <see cref="PRECT"/> structure.</summary>
 		/// <value>A Point that represents the upper-left corner of this <see cref="PRECT"/> structure.</value>
-		public Point Location
+		public POINT Location
 		{
 			get => rect.Location;
 			set => rect.Location = value;
