@@ -47,7 +47,6 @@ namespace Vanara.Windows.Shell
 	public class NativeClipboard : IDisposable
 	{
 		private static readonly object objectLock = new();
-		private static int HdrLen = 0;
 		private static Dictionary<uint, string> knownIds;
 		private static ListenerWindow listener;
 
@@ -146,7 +145,7 @@ namespace Vanara.Windows.Shell
 		/// clipboard is empty, the return value is 0. If the clipboard contains data, but not in any of the specified formats, the return
 		/// value is –1.
 		/// </returns>
-		public static int GetFirstFormatAvailable(params int[] idList) => GetPriorityClipboardFormat(Array.ConvertAll(idList, i => (uint)i), idList.Length);
+		public static int GetFirstFormatAvailable(params uint[] idList) => GetPriorityClipboardFormat(idList, idList.Length);
 
 		/// <summary>Retrieves from the clipboard the name of the specified registered format.</summary>
 		/// <param name="formatId">The type of format to be retrieved.</param>
@@ -285,7 +284,7 @@ namespace Vanara.Windows.Shell
 			TextDataFormat.Text => StringHelper.GetString(GetClipboardData(CLIPFORMAT.CF_TEXT), CharSet.Ansi),
 			TextDataFormat.UnicodeText => StringHelper.GetString(GetClipboardData(CLIPFORMAT.CF_UNICODETEXT), CharSet.Unicode),
 			TextDataFormat.Rtf => StringHelper.GetString(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_RTF)), CharSet.Ansi),
-			TextDataFormat.Html => GetHtml(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
+			TextDataFormat.Html => Utils.GetHtml(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
 			TextDataFormat.CommaSeparatedValue => StringHelper.GetString(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_CSV)), CharSet.Ansi),
 			_ => null,
 		};
@@ -357,7 +356,7 @@ namespace Vanara.Windows.Shell
 				TextDataFormat.Text => (Encoding.ASCII.GetBytes(value + '\0'), (uint)CLIPFORMAT.CF_TEXT),
 				TextDataFormat.UnicodeText => (Encoding.Unicode.GetBytes(value + '\0'), (uint)CLIPFORMAT.CF_UNICODETEXT),
 				TextDataFormat.Rtf => (Encoding.ASCII.GetBytes(value + '\0'), RegisterFormat(ShellClipboardFormat.CF_RTF)),
-				TextDataFormat.Html => (MakeClipHtml(value), RegisterFormat(ShellClipboardFormat.CF_HTML)),
+				TextDataFormat.Html => (Utils.MakeClipHtml(value), RegisterFormat(ShellClipboardFormat.CF_HTML)),
 				TextDataFormat.CommaSeparatedValue => (Encoding.ASCII.GetBytes(value + '\0'), RegisterFormat(ShellClipboardFormat.CF_CSV)),
 				_ => default,
 			};
@@ -377,129 +376,12 @@ namespace Vanara.Windows.Shell
 			SetBinaryData(RegisterFormat(ShellClipboardFormat.CFSTR_INETURLW), Encoding.Unicode.GetBytes(textUrl));
 		}
 
-		internal static string GetHtml(IntPtr ptr)
-		{
-			const string HdrRegEx = @"Version:\d\.\d\s+StartHTML:(\d+)\s+EndHTML:(\d+)\s+StartFragment:(\d+)\s+EndFragment:(\d+)\s+(?:StartSelection:(\d+)\s+EndSelection:(\d+)\s+)?";
-
-			if (ptr == IntPtr.Zero) return null;
-
-			// Find length of data by looking for a '\0' byte.
-			var byteCount = 0;
-			unsafe
-			{
-				for (byte* bp = (byte*)ptr.ToPointer(); byteCount < 4 * 1024 * 1024 && *bp != 0; byteCount++, bp++) ;
-			}
-			var bytes = ptr.ToArray<byte>(byteCount);
-			// Get UTF8 encoded string
-			var utf8String = Encoding.UTF8.GetString(bytes);
-			// Find markers
-			var match = Regex.Match(utf8String, HdrRegEx);
-			if (!match.Success) throw new InvalidOperationException("HTML format header cannot be processed.");
-			var startHtml = int.Parse(match.Groups[1].Value.TrimStart('0'));
-			var endHtml = int.Parse(match.Groups[2].Value.TrimStart('0'));
-			var startFrag = int.Parse(match.Groups[3].Value.TrimStart('0'));
-			var endFrag = int.Parse(match.Groups[4].Value.TrimStart('0'));
-			var startSel = int.Parse(match.Groups[5].Value.TrimStart('0'));
-			var endSel = int.Parse(match.Groups[6].Value.TrimStart('0'));
-
-			return Encoding.UTF8.GetString(bytes, startFrag, endFrag - startFrag);
-		}
-
-		internal static StringCollection ToSC(IEnumerable<string> e)
-		{
-			var sc = new StringCollection();
-			if (e != null)
-				sc.AddRange(e.ToArray());
-			return sc;
-		}
-
 		private static void EnsureKnownIds()
 		{
 			if (knownIds is not null)
 				return;
 			var type = typeof(CLIPFORMAT);
-			knownIds = type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(f => f.FieldType == type && f.IsInitOnly).ToDictionary(f => (uint)f.GetValue(null), f => f.Name);
-		}
-
-		private static T GetComData<T>(IComDataObject cdo, uint fmt, Func<IntPtr, T> convert, T defValue = default)
-		{
-			T ret = defValue;
-			var fc = new FORMATETC { cfFormat = (short)fmt, dwAspect = DVASPECT.DVASPECT_CONTENT, lindex = -1, tymed = TYMED.TYMED_HGLOBAL };
-			try
-			{
-				cdo.GetData(ref fc, out var medium);
-				if (medium.unionmember != default)
-					ret = convert(medium.unionmember);
-				ReleaseStgMedium(medium);
-			}
-			catch { }
-			return ret;
-		}
-
-		private static byte[] MakeClipHtml(string value)
-		{
-			const string Header = "Version:0.9\r\nStartHTML:{0:0000000000}\r\nEndHTML:{1:0000000000}\r\nStartFragment:{2:0000000000}\r\nEndFragment:{3:0000000000}\r\nStartSelection:{4:0000000000}\r\nEndSelection:{5:0000000000}\r\n";
-			const string htmlDocType = "<!DOCTYPE html>";
-			const string htmlBodyStart = "<HTML><HEAD><meta charset=\"UTF-8\"><TITLE>Snippet</TITLE></HEAD><BODY>";
-			const string htmlBodyEnd = "</BODY></HTML>";
-			const string fragmentStart = "<!--StartFragment-->";
-			const string fragmentEnd = "<!--EndFragment-->";
-
-			var sb = new StringBuilder();
-			if (value.IndexOf("<!DOCTYPE", StringComparison.OrdinalIgnoreCase) < 0)
-				sb.Append(htmlDocType);
-			if (value.IndexOf("<HTML>", StringComparison.OrdinalIgnoreCase) < 0)
-				sb.Append(htmlBodyStart);
-
-			var fragStartIdx = value.IndexOf(fragmentStart, StringComparison.OrdinalIgnoreCase);
-			if (fragStartIdx < 0)
-				sb.Append(fragmentStart);
-			else
-			{
-				sb.Append(value.Substring(0, fragStartIdx + fragmentStart.Length));
-				value = value.Remove(0, fragStartIdx + fragmentStart.Length);
-			}
-			fragStartIdx = Encoding.UTF8.GetByteCount(sb.ToString());
-
-			var fragEndIdx = value.IndexOf(fragmentEnd, StringComparison.OrdinalIgnoreCase);
-			if (fragEndIdx < 0)
-			{
-				sb.Append(value);
-				fragEndIdx = Encoding.UTF8.GetByteCount(sb.ToString());
-				sb.Append(fragmentEnd);
-			}
-			else
-			{
-				var preFrag = value.Substring(0, fragEndIdx);
-				value = value.Remove(0, fragEndIdx);
-				sb.Append(preFrag);
-				fragEndIdx = Encoding.UTF8.GetByteCount(sb.ToString());
-				sb.Append(value);
-			}
-			if (value.IndexOf("</HTML>", StringComparison.OrdinalIgnoreCase) < 0)
-				sb.Append(htmlBodyEnd);
-
-			if (HdrLen == 0)
-				HdrLen = string.Format(Header, 0, 0, 0, 0, 0, 0).Length;
-
-			var startHtml = HdrLen;
-			var endHtml = HdrLen + Encoding.UTF8.GetByteCount(sb.ToString());
-			var startFrag = HdrLen + fragStartIdx;
-			var endFrag = HdrLen + fragEndIdx;
-			var startSel = startFrag;
-			var endSel = endFrag;
-			sb.Insert(0, string.Format(Header, startHtml, endHtml, startFrag, endFrag, startSel, endSel));
-			sb.Append('\0');
-
-			return Encoding.UTF8.GetBytes(sb.ToString());
-		}
-
-		private static void RunAsSTAThread(ThreadStart threadStart)
-		{
-			var thread = new Thread(threadStart);
-			thread.SetApartmentState(ApartmentState.STA);
-			thread.Start();
-			thread.Join();
+			knownIds = type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(f => f.FieldType == type && f.IsInitOnly).ToDictionary(f => (uint)(CLIPFORMAT)f.GetValue(null), f => f.Name);
 		}
 
 		private class ListenerWindow : SystemEventHandler

@@ -351,7 +351,7 @@ namespace Vanara.Windows.Shell
 
 				// Clone the PIDL, to have our own object copy on the heap!
 				if (!wFlags.HasFlag(SBSP.SBSP_WRITENOHISTORY))
-					History.Add(new PIDL(viewHandler.ShellFolder.PIDL));
+					History.Add(new ShellItem(new PIDL(viewHandler.ShellFolder.PIDL)));
 
 				ShellBrowserViewHandler oldViewHandler = ViewHandler;
 				ViewHandler = viewHandler;

@@ -129,13 +129,13 @@ namespace Vanara.Windows.Shell.Tests
 		{
 			using var f = new ShellFolder(testFld);
 			using var i = new ShellItem(testFile);
-			var qi = f.GetChildrenUIObjects<IQueryInfo>(null, i);
+			var qi = f.GetChildrenUIObjects<IQueryInfo>(default, i);
 			Assert.That(qi, Is.Not.Null.And.InstanceOf<IQueryInfo>());
 			System.Runtime.InteropServices.Marshal.ReleaseComObject(qi);
-			var sv = f.GetViewObject<IShellView>(null);
+			var sv = f.GetViewObject<IShellView>(default);
 			Assert.That(sv, Is.Not.Null.And.InstanceOf<IShellView>());
-			Assert.That(() => f.GetChildrenUIObjects<IShellLibrary>(null, i), Throws.TypeOf<NotImplementedException>());
-			Assert.That(() => f.GetViewObject<IShellLibrary>(null), Throws.TypeOf<InvalidCastException>());
+			Assert.That(() => f.GetChildrenUIObjects<IShellLibrary>(default, i), Throws.TypeOf<NotImplementedException>());
+			Assert.That(() => f.GetViewObject<IShellLibrary>(default), Throws.TypeOf<InvalidCastException>());
 		}
 	}
 }

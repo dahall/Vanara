@@ -67,7 +67,7 @@ namespace Vanara.Windows.Shell
 		{
 			base.BeginInit();
 			if (Container is Form f && f.ShowInTaskbar)
-				TaskbarList.ActivateTaskbarItem(f);
+				TaskbarList.ActivateTaskbarItem(f.Handle);
 		}
 
 		/// <summary>Gets the application identifier.</summary>
@@ -232,23 +232,23 @@ namespace Vanara.Windows.Shell
 					break;
 
 				case "TaskbarButtonTooltip":
-					TaskbarList.SetThumbnailTooltip(form, (string)value);
+					TaskbarList.SetThumbnailTooltip(form.Handle, (string)value);
 					break;
 
 				case "TaskbarButtonOverlay":
-					TaskbarList.SetOverlayIcon(form, (Icon)value, GetTaskbarButtonOverlayTooltip(form));
+					TaskbarList.SetOverlayIcon(form.Handle, ((Icon)value).Handle, GetTaskbarButtonOverlayTooltip(form));
 					break;
 
 				case "TaskbarButtonOverlayTooltip":
-					TaskbarList.SetOverlayIcon(form, GetTaskbarButtonOverlay(form), (string)value);
+					TaskbarList.SetOverlayIcon(form.Handle, GetTaskbarButtonOverlay(form)?.Handle ?? default, (string)value);
 					break;
 
 				case "TaskbarButtonProgressState":
-					TaskbarList.SetProgressState(form, (TaskbarButtonProgressState)value);
+					TaskbarList.SetProgressState(form.Handle, (TaskbarButtonProgressState)value);
 					break;
 
 				case "TaskbarButtonProgressValue":
-					TaskbarList.SetProgressValue(form, (ulong)(100000 * (float)value), 100000);
+					TaskbarList.SetProgressValue(form.Handle, (ulong)(100000 * (float)value), 100000);
 					break;
 
 				case "TaskbarButtonThumbnails":

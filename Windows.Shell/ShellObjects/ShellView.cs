@@ -240,7 +240,7 @@ namespace Vanara.Windows.Shell
 			try
 			{
 				RecreateShellView();
-				History.Add(folder.PIDL);
+				History.Add(new ShellItem(folder.PIDL));
 				OnNavigated();
 			}
 			catch (Exception)
@@ -347,7 +347,7 @@ namespace Vanara.Windows.Shell
 		{
 			base.OnCreateControl();
 			CreateShellView();
-			History.Add(CurrentFolder.PIDL);
+			History.Add(new ShellItem(CurrentFolder.PIDL));
 			OnNavigated();
 		}
 
@@ -379,7 +379,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		private static IShellView CreateViewObject(ShellFolder folder, HWND owner) =>
-			folder?.iShellFolder.CreateViewObject<IShellView>(owner);
+			folder?.IShellFolder.CreateViewObject<IShellView>(owner);
 
 		private static PIDL GetFolderForView(IShellView iView)
 		{

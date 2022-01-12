@@ -45,7 +45,7 @@ namespace Vanara.PInvoke.Tests
 			using (var ico2 = ExtractIcon(HINSTANCE.NULL, "notepad.exe", -2))
 				Assert.That(ico2.IsInvalid, Is.False);
 			using var icoCnt = ExtractIcon(HINSTANCE.NULL, "notepad.exe", -1);
-			Assert.That(icoCnt.DangerousGetHandle().ToInt32(), Is.EqualTo(1));
+			Assert.That(icoCnt.DangerousGetHandle().ToInt32(), Is.GreaterThanOrEqualTo(1));
 		}
 
 		[Test]
@@ -60,7 +60,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(ico2, Is.EqualTo(2));
 			Free();
 			var icoCnt = ExtractIconEx("notepad.exe", -1, null, null, 0);
-			Assert.That(icoCnt, Is.EqualTo(1));
+			Assert.That(icoCnt, Is.GreaterThanOrEqualTo(1));
 
 			void Free()
 			{
@@ -78,7 +78,7 @@ namespace Vanara.PInvoke.Tests
 			var ico2 = ExtractIconEx("notepad.exe", -2, 1, out _, out _);
 			Assert.That(ico2, Is.EqualTo(2));
 			var icoCnt = ExtractIconEx("notepad.exe", -1, 0, out lgIco, out _);
-			Assert.That(icoCnt, Is.EqualTo(1));
+			Assert.That(icoCnt, Is.GreaterThanOrEqualTo(1));
 			Assert.That(lgIco, Is.Null);
 		}
 

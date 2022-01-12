@@ -10,6 +10,9 @@
     <RootNamespace>Vanara.Windows.Shell</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" Condition=" $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) " />
     <PackageReference Include="System.Security.Permissions" Version="4.4.0" Condition=" $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) " />

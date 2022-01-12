@@ -37,23 +37,23 @@ namespace Vanara.Windows.Shell
 		internal void ResetToolbar()
 		{
 			if (Toolbar?.ImageList != null)
-				TaskbarList.ThumbBarSetImageList(parent, Toolbar.ImageList);
+				TaskbarList.ThumbBarSetImageList(parent.Handle, Toolbar.ImageList.Handle);
 			if (Toolbar?.Buttons?.Count > 0)
 			{
 				if (!hasAddedButtons)
 				{
-					TaskbarList.ThumbBarAddButtons(parent, Toolbar.Buttons.ToArray());
+					TaskbarList.ThumbBarAddButtons(parent.Handle, Toolbar.Buttons.ToArray());
 					hasAddedButtons = true;
 				}
 				else
-					TaskbarList.ThumbBarUpdateButtons(parent, Toolbar.Buttons.ToArray());
+					TaskbarList.ThumbBarUpdateButtons(parent.Handle, Toolbar.Buttons.ToArray());
 			}
 		}
 
 		private void ActivateThumbnail(TaskbarButtonThumbnail thumbnail)
 		{
 			if (parent != null)
-				TaskbarList.SetTabActive(parent, thumbnail?.ChildWindow ?? throw new ArgumentNullException(nameof(thumbnail), "The TaskbarItemTab.ChildWindow property must be set in order to be activated."));
+				TaskbarList.SetTabActive(parent.Handle, thumbnail?.ChildWindow.Handle ?? throw new ArgumentNullException(nameof(thumbnail), "The TaskbarItemTab.ChildWindow property must be set in order to be activated."));
 		}
 
 		private void LocalCollectionChanged(object _, NotifyCollectionChangedEventArgs e)
@@ -84,7 +84,7 @@ namespace Vanara.Windows.Shell
 		private void RefreshThumbnail(TaskbarButtonThumbnail thumbnail)
 		{
 			if (parent != null && thumbnail.ChildWindow != null)
-				TaskbarList.SetTabProperties(thumbnail.ChildWindow, thumbnail.flag);
+				TaskbarList.SetTabProperties(thumbnail.ChildWindow.Handle, thumbnail.flag);
 		}
 
 		private void RegisterThumbnail(TaskbarButtonThumbnail thumbnail)
@@ -94,16 +94,16 @@ namespace Vanara.Windows.Shell
 
 			if (parent != null && thumbnail.ChildWindow != null)
 			{
-				TaskbarList.RegisterTab(parent, thumbnail.ChildWindow);
-				TaskbarList.SetTabOrder(thumbnail.ChildWindow, nxt?.ChildWindow);
-				TaskbarList.SetTabProperties(thumbnail.ChildWindow, thumbnail.flag);
+				TaskbarList.RegisterTab(parent.Handle, thumbnail.ChildWindow.Handle);
+				TaskbarList.SetTabOrder(thumbnail.ChildWindow.Handle, nxt?.ChildWindow.Handle ?? default);
+				TaskbarList.SetTabProperties(thumbnail.ChildWindow.Handle, thumbnail.flag);
 			}
 		}
 
 		private void UnregisterThumbnail(TaskbarButtonThumbnail thumbnail)
 		{
 			if (thumbnail.ChildWindow != null)
-				TaskbarList.UnregisterTab(thumbnail.ChildWindow);
+				TaskbarList.UnregisterTab(thumbnail.ChildWindow.Handle);
 		}
 	}
 }

@@ -243,7 +243,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets or sets the path of the shell item to watch.</summary>
 		/// <value>The path of the shell item to monitor. The default is <see langword="null"/>.</value>
-		[DefaultValue(null), Category("Data"), Description("The shell item to watch.")]//, Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
+		[DefaultValue(null), Category("Data"), Description("The shell item to watch."), Editor("System.Windows.Forms.Design.FileNameEditor, System.Design", "System.Drawing.Design.UITypeEditor, System.Drawing")]
 		public string Path
 		{
 			get => item is null ? null : (item.IsFileSystem ? item.FileSystemPath : item.GetDisplayName(ShellItemDisplayString.DesktopAbsoluteParsing));

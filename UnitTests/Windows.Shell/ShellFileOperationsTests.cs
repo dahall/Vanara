@@ -203,7 +203,7 @@ namespace Vanara.Windows.Shell.Tests
 			dlg.Operation = ShellFileOperationDialog.OperationType.CopyMoving;
 			dlg.ShowPauseButton = true;
 			dlg.Source = new ShellFolder(Path.GetDirectoryName(TestCaseSources.LargeFile));
-			dlg.Start(null);
+			dlg.Start();
 			dlg.ProgressDialogSizeMaxValue = new FileInfo(TestCaseSources.LargeFile).Length;
 			dlg.ProgressDialogItemsMaxValue = 1;
 			for (var i = 0; i < 100; i += 5)

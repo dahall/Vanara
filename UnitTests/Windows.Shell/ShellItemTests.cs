@@ -107,11 +107,11 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(bmp, Is.Not.Null);
 				Assert.That(bmp.Size, Is.EqualTo(sz));
 			}
-			using (var i = new ShellItem(PInvoke.Tests.TestCaseSources.ImageFile))
+			using (var i = new ShellItem(PInvoke.Tests.TestCaseSources.LargeFile))
 			{
 				var sz = new Size(1024, 1024);
 				Image bmp = i.GetImage(sz, ShellItemGetImageOptions.ThumbnailOnly | ShellItemGetImageOptions.ScaleUp);
-				Assert.That(bmp.Size, Is.EqualTo(sz));
+				Assert.That(bmp.Size, Has.Property("Width").EqualTo(sz.Width).Or.Property("Height").EqualTo(sz.Height));
 			}
 		}
 

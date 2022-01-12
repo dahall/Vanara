@@ -118,7 +118,7 @@ namespace Vanara.PInvoke
 				//}
 
 				var hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out var unk);
-				if (hr == (HRESULT)Win32Error.ERROR_FILE_NOT_FOUND)
+				if (hr == (HRESULT)(Win32Error)Win32Error.ERROR_FILE_NOT_FOUND)
 				{
 					using var ibc = InteropServices.ComReleaserFactory.Create(CreateBindCtx());
 					var bd = new IntFileSysBindData();

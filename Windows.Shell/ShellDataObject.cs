@@ -277,10 +277,10 @@ namespace Vanara.Windows.Shell
 					return fileContents;
 
 				case ShellClipboardFormat.CFSTR_INETURLW:
-					return base.GetText(TextDataFormat.UnicodeText);
+					return base.GetText(System.Windows.Forms.TextDataFormat.UnicodeText);
 
 				case ShellClipboardFormat.CFSTR_INETURLA:
-					return base.GetText(TextDataFormat.Text);
+					return base.GetText(System.Windows.Forms.TextDataFormat.Text);
 			}
 			// if (format == DataFormats.FileDrop && (int)base.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP) != 0 && obj is StringCollection s)
 			//{
@@ -508,7 +508,7 @@ namespace Vanara.Windows.Shell
 				else if (format == DataFormats.UnicodeText)
 					return StringHelper.GetString(ptr, CharSet.Unicode);
 				else if (format == DataFormats.Html)
-					return NativeClipboard.GetHtml(ptr);
+					return Utils.GetHtml(ptr);
 				else if (format == ShellClipboardFormat.CFSTR_FILENAMEA)
 					return new[] { StringHelper.GetString(ptr, CharSet.Ansi) };
 				else if (format == ShellClipboardFormat.CFSTR_FILENAMEW)
