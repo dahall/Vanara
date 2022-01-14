@@ -1446,7 +1446,7 @@ namespace Vanara.PInvoke
 		/// <remarks>The scroll position affects the image in both preview and overlay modes.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-capsetscrollpos void capSetScrollPos( hwnd, lpP );
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capSetScrollPos")]
-		public static bool capSetScrollPos(HWND hwnd, System.Drawing.Point lpP) => AVICapSM(hwnd, capMessage.WM_CAP_SET_SCROLL, 0, lpP) != 0;
+		public static bool capSetScrollPos(HWND hwnd, POINT lpP) => AVICapSM(hwnd, capMessage.WM_CAP_SET_SCROLL, 0, lpP) != 0;
 
 		/// <summary>
 		/// The <c>capSetUserData</c> macro associates a <c>LONG_PTR</c> data value with a capture window. You can use this macro or
@@ -1633,7 +1633,7 @@ namespace Vanara.PInvoke
 			public bool fScale;
 
 			/// <summary>The x- and y-offset of the pixel displayed in the upper left corner of the client area of the window.</summary>
-			public System.Drawing.Point ptScroll;
+			public POINT ptScroll;
 
 			/// <summary>Default palette flag. The value of this member is <c>TRUE</c> if the capture driver is using its default palette.</summary>
 			[MarshalAs(UnmanagedType.Bool)]

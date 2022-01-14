@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -4859,7 +4858,7 @@ namespace Vanara.PInvoke
 			public uint gmBlackBoxY;
 
 			/// <summary>The x- and y-coordinates of the upper left corner of the smallest rectangle that completely encloses the glyph.</summary>
-			public Point gmptGlyphOrigin;
+			public POINT gmptGlyphOrigin;
 
 			/// <summary>The horizontal distance from the origin of the current character cell to the origin of the next character cell.</summary>
 			public short gmCellIncX;
@@ -5300,22 +5299,22 @@ namespace Vanara.PInvoke
 			public uint otmusMinimumPPEM;
 
 			/// <summary>The recommended horizontal and vertical size for subscripts in this font.</summary>
-			public Point otmptSubscriptSize;
+			public POINT otmptSubscriptSize;
 
 			/// <summary>
 			/// The recommended horizontal and vertical offset for subscripts in this font. The subscript offset is measured from the
 			/// character origin to the origin of the subscript character.
 			/// </summary>
-			public Point otmptSubscriptOffset;
+			public POINT otmptSubscriptOffset;
 
 			/// <summary>The recommended horizontal and vertical size for superscripts in this font.</summary>
-			public Point otmptSuperscriptSize;
+			public POINT otmptSuperscriptSize;
 
 			/// <summary>
 			/// The recommended horizontal and vertical offset for superscripts in this font. The superscript offset is measured from the
 			/// character base line to the base line of the superscript character.
 			/// </summary>
-			public Point otmptSuperscriptOffset;
+			public POINT otmptSuperscriptOffset;
 
 			/// <summary>The width of the strikeout stroke for this font. Typically, this is the width of the em dash for the font.</summary>
 			public uint otmsStrikeoutSize;

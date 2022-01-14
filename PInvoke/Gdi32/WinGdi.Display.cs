@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
@@ -496,7 +495,7 @@ namespace Vanara.PInvoke
 		public struct DISPLAYCONFIG_DESKTOP_IMAGE_INFO
 		{
 			/// <summary>A POINTL structure that specifies the size of the VidPn source surface that is being displayed on the monitor.</summary>
-			public Point PathSourceSize;
+			public POINT PathSourceSize;
 
 			/// <summary>
 			/// A RECTL structure that defines where the desktop image will be positioned within path source. Region must be completely
@@ -958,7 +957,7 @@ namespace Vanara.PInvoke
 			/// A POINTL structure that specifies the position in the desktop coordinate space of the upper-left corner of this source
 			/// surface. The source surface that is located at (0, 0) is always the primary source surface.
 			/// </summary>
-			public Point position;
+			public POINT position;
 		}
 
 		/// <summary>

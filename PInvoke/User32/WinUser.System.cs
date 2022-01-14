@@ -4575,7 +4575,7 @@ namespace Vanara.PInvoke
 			/// The POINT structure that contains the screen coordinates of the mouse cursor. This is useful for providing Help based on the
 			/// position of the mouse cursor.
 			/// </summary>
-			public System.Drawing.Point MousePos;
+			public POINT MousePos;
 		}
 
 		/// <summary>

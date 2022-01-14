@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
@@ -239,7 +238,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idroptargethelper-dragenter HRESULT
 			// DragEnter( HWND hwndTarget, IDataObject *pDataObject, POINT *ppt, DWORD dwEffect );
-			void DragEnter([In] HWND hwndTarget, [In] IDataObject pDataObject, in Point ppt, [In] Ole32.DROPEFFECT dwEffect);
+			void DragEnter([In] HWND hwndTarget, [In] IDataObject pDataObject, in POINT ppt, [In] Ole32.DROPEFFECT dwEffect);
 
 			/// <summary>Notifies the drag-image manager that the drop target's IDropTarget::DragLeave method has been called.</summary>
 			/// <remarks>
@@ -264,7 +263,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idroptargethelper-dragover HRESULT
 			// DragOver( POINT *ppt, DWORD dwEffect );
-			void DragOver(in Point ppt, [In] Ole32.DROPEFFECT dwEffect);
+			void DragOver(in POINT ppt, [In] Ole32.DROPEFFECT dwEffect);
 
 			/// <summary>Notifies the drag-image manager that the drop target's IDropTarget::Drop method has been called.</summary>
 			/// <param name="pDataObject">
@@ -285,7 +284,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idroptargethelper-drop HRESULT Drop(
 			// IDataObject *pDataObject, POINT *ppt, DWORD dwEffect );
-			void Drop([In] IDataObject pDataObject, in Point ppt, Ole32.DROPEFFECT dwEffect);
+			void Drop([In] IDataObject pDataObject, in POINT ppt, Ole32.DROPEFFECT dwEffect);
 
 			/// <summary>Notifies the drag-image manager to show or hide the drag image.</summary>
 			/// <param name="fShow">

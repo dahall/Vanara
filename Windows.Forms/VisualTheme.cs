@@ -633,7 +633,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The hit test code that indicates whether the point in <paramref name="pt"/> is in the background area bounded by <paramref name="bounds"/>.</returns>
 		public System.Windows.Forms.VisualStyles.HitTestCode BackgroundHitTest(IDeviceContext dc, int partId, int stateId, Rectangle bounds, Point pt, System.Windows.Forms.VisualStyles.HitTestOptions options = 0)
 		{
-			using (var hdc = new SafeHDC(dc))
+			using (var hdc = new SafeTempHDC(dc))
 				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, bounds, HRGN.NULL, pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 		}
 
@@ -650,7 +650,7 @@ namespace Vanara.Windows.Forms
 		/// </returns>
 		public System.Windows.Forms.VisualStyles.HitTestCode BackgroundHitTest(Graphics graphics, int partId, int stateId, Rectangle bounds, Region region, Point pt, System.Windows.Forms.VisualStyles.HitTestOptions options = 0)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, bounds, new HRGN(region.GetHrgn(graphics)), pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 		}
 
@@ -669,7 +669,7 @@ namespace Vanara.Windows.Forms
 		public void DrawBackground(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, Rectangle? clipRect, bool rightToLeft = false, bool omitBorder = false, bool omitContent = false)
 		{
 			var o = new DTBGOPTS(clipRect) {HasMirroredDC = rightToLeft, OmitBorder = omitBorder, OmitContent = omitContent};
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 				DrawThemeBackgroundEx(Handle, hdc, partId, stateId, bounds, o);
 		}
 
@@ -684,7 +684,7 @@ namespace Vanara.Windows.Forms
 		/// </param>
 		public void DrawEdge(IDeviceContext graphics, int partId, int stateId, ref Rectangle bounds, BorderStyles3D edges = BorderStyles3D.BDR_SUNKEN, BorderFlags borderType = BorderFlags.BF_RECT | BorderFlags.BF_ADJUST)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 			{
 				DrawThemeEdge(Handle, hdc, partId, stateId, bounds, edges, borderType, out var r);
 				if (borderType.IsFlagSet(BorderFlags.BF_ADJUST))
@@ -701,7 +701,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="bounds">The bounding rectangle, in logical coordinates.</param>
 		public void DrawIcon(IDeviceContext graphics, int partId, int stateId, ImageList imageList, int imageIndex, Rectangle bounds)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 				DrawThemeIcon(Handle, hdc, partId, stateId, bounds, imageList.Handle, imageIndex);
 		}
 
@@ -714,7 +714,7 @@ namespace Vanara.Windows.Forms
 		/// </param>
 		public void DrawParentBackground(IWin32Window childWindow, IDeviceContext graphics, Rectangle? bounds = null)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 				DrawThemeParentBackground(childWindow.Handle, hdc, bounds);
 		}
 
@@ -730,9 +730,9 @@ namespace Vanara.Windows.Forms
 		public void DrawText(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, string text, TextFormatFlags fmt = TextFormatFlags.Default, bool disabled = false, Font font = null)
 		{
 			RECT b = bounds;
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 			using (var hfont = new SafeHFONT(font?.ToHfont() ?? IntPtr.Zero))
-			using (hdc.SelectObject(hfont))
+			using (new GdiObjectContext(hdc, hfont))
 				DrawThemeText(Handle, hdc, partId, stateId, text, text.Length, (DrawTextFlags)fmt, disabled ? 1 : 0, b);
 		}
 
@@ -749,9 +749,9 @@ namespace Vanara.Windows.Forms
 		{
 			RECT b = bounds;
 			var dt = options ?? DTTOPTS.Default;
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 			using (var hfont = new SafeHFONT(font?.ToHfont() ?? IntPtr.Zero))
-			using (hdc.SelectObject(hfont))
+			using (new GdiObjectContext(hdc, hfont))
 				DrawThemeTextEx(Handle, hdc, partId, stateId, text, text.Length, (DrawTextFlags)fmt, ref b, dt);
 		}
 
@@ -763,7 +763,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The content area background rectangle, in logical coordinates. This rectangle is calculated to fit the content area.</returns>
 		public Rectangle? GetBackgroundContentRect([Optional] IDeviceContext graphics, int partId, int stateId, Rectangle bounds)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 				return GetThemeBackgroundContentRect(Handle, hdc, partId, stateId, bounds, out var rc).Succeeded ? (Rectangle?)rc : null;
 		}
 
@@ -775,7 +775,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The background rectangle, in logical coordinates. This rectangle is based on <paramref name="bounds"/>.</returns>
 		public Rectangle? GetBackgroundExtent([Optional] IDeviceContext graphics, int partId, int stateId, Rectangle bounds)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 				return GetThemeBackgroundExtent(Handle, hdc, partId, stateId, bounds, out var rc).Succeeded ? (Rectangle?)rc : null;
 		}
 
@@ -854,7 +854,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The requested font value, if successful; otherwise <c>null</c>.</returns>
 		public Font GetFont(IDeviceContext graphics, int partId, int stateId, FontProperty propId)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 			{
 				if (GetThemeFont(Handle, hdc, partId, stateId, (int)propId, out var f).Succeeded)
 					return Font.FromLogFont(f);
@@ -889,7 +889,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The requested margins, if successful; otherwise <c>null</c>.</returns>
 		public Padding? GetMargins(IDeviceContext graphics, int partId, int stateId, MarginsProperty propId)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 				return GetThemeMargins(Handle, hdc, partId, stateId, (int)propId, null, out var m).Succeeded ? (Padding?)new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight) : null;
 		}
 
@@ -901,7 +901,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The requested metric value, if successful; otherwise <c>null</c>.</returns>
 		public int? GetMetric(IDeviceContext graphics, int partId, int stateId, MetricProperty propId)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 				return GetThemeMetric(Handle, hdc, partId, stateId, (int)propId, out var i).Succeeded ? (int?)i : null;
 		}
 
@@ -989,7 +989,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The dimensions of the specified part.</returns>
 		public Size? GetPartSize(IDeviceContext graphics, int partId, int stateId, Rectangle? destRect = null, PartSize size = PartSize.Default)
 		{
-			using (var hdc = new SafeHDC(graphics))
+			using (var hdc = new SafeTempHDC(graphics))
 				return GetThemePartSize(Handle, hdc, partId, stateId, destRect, (THEMESIZE)size, out var sz).Succeeded ? (Size?)sz : null;
 		}
 
@@ -1089,7 +1089,7 @@ namespace Vanara.Windows.Forms
 		/// </returns>
 		public Rectangle? GetTextExtent(IDeviceContext dc, int partId, int stateId, string text, DrawTextFlags flags, Rectangle? bounds)
 		{
-			using (var hdc = new SafeHDC(dc))
+			using (var hdc = new SafeTempHDC(dc))
 				return GetThemeTextExtent(Handle, hdc, partId, stateId, text, -1, flags, bounds, out var ext).Succeeded ? (Rectangle?)ext : null;
 		}
 
@@ -1108,7 +1108,7 @@ namespace Vanara.Windows.Forms
 		/// </returns>
 		public TEXTMETRIC? GetTextMetrics(IDeviceContext dc, int partId, int stateId)
 		{
-			using (var hdc = new SafeHDC(dc))
+			using (var hdc = new SafeTempHDC(dc))
 				return GetThemeTextMetrics(Handle, hdc, partId, stateId, out var m).Succeeded ? (TEXTMETRIC?)m : null;
 		}
 

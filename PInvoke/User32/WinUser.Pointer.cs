@@ -2008,7 +2008,7 @@ namespace Vanara.PInvoke
 			/// the non-predicted value (see <c>ptPixelLocationRaw</c>).
 			/// </para>
 			/// </summary>
-			public System.Drawing.Point ptPixelLocation;
+			public POINT ptPixelLocation;
 
 			/// <summary>
 			/// <para>Type: <c>POINT</c></para>
@@ -2020,19 +2020,19 @@ namespace Vanara.PInvoke
 			/// the non-predicted value (see <c>ptHimetricLocationRaw</c>).
 			/// </para>
 			/// </summary>
-			public System.Drawing.Point ptHimetricLocation;
+			public POINT ptHimetricLocation;
 
 			/// <summary>
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The screen coordinates of the pointer, in pixels. For adjusted screen coordinates, see <c>ptPixelLocation</c>.</para>
 			/// </summary>
-			public System.Drawing.Point ptPixelLocationRaw;
+			public POINT ptPixelLocationRaw;
 
 			/// <summary>
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The screen coordinates of the pointer, in HIMETRIC units. For adjusted screen coordinates, see <c>ptHimetricLocation</c>.</para>
 			/// </summary>
-			public System.Drawing.Point ptHimetricLocationRaw;
+			public POINT ptHimetricLocationRaw;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>

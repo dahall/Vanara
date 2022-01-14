@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
@@ -2217,7 +2216,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-iolecontrolsite-transformcoords HRESULT TransformCoords(
 			// POINTL *pPtlHimetric, POINTF *pPtfContainer, DWORD dwFlags );
 			[PreserveSig]
-			HRESULT TransformCoords(ref Point pPtlHimetric, ref PointF pPtfContainer, XFORMCOORDS dwFlags);
+			HRESULT TransformCoords(ref POINT pPtlHimetric, ref POINTF pPtfContainer, XFORMCOORDS dwFlags);
 
 			/// <summary>Passes a keystroke to the control site for processing.</summary>
 			/// <param name="pMsg">A pointer to the MSG structure describing the keystroke to be processed.</param>
@@ -8711,7 +8710,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-iviewobjectex-queryhitpoint HRESULT QueryHitPoint( DWORD
 			// dwAspect, LPCRECT pRectBounds, POINT ptlLoc, LONG lCloseHint, DWORD *pHitResult );
 			[PreserveSig]
-			HRESULT QueryHitPoint(DVASPECT2 dwAspect, in RECT pRectBounds, Point ptlLoc, int lCloseHint, out HITRESULT pHitResult);
+			HRESULT QueryHitPoint(DVASPECT2 dwAspect, in RECT pRectBounds, POINT ptlLoc, int lCloseHint, out HITRESULT pHitResult);
 
 			/// <summary>Indicates whether any point in a rectangle is within a given drawing aspect of an object.</summary>
 			/// <param name="dwAspect">The requested drawing aspect.</param>
@@ -9085,6 +9084,23 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.Bool)]
 			public bool fLicVerified;
+		}
+
+		/// <summary>
+		/// Contains information that is used to convert between container units, expressed in floating point, and control units, expressed
+		/// in <c>HIMETRIC</c>. The <c>POINTF</c> structure specifically holds the floating point container units. Controls do not attempt to
+		/// interpret either value in the structure.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/ns-ocidl-pointf typedef struct tagPOINTF { FLOAT x; FLOAT y; } POINTF, *LPPOINTF;
+		[PInvokeData("ocidl.h", MSDNShortId = "NS:ocidl.tagPOINTF")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POINTF
+		{
+			/// <summary>The x coordinates of the point in units that the container finds convenient.</summary>
+			public float x;
+
+			/// <summary>The y coordinates of the point in units that the container finds convenient.</summary>
+			public float y;
 		}
 
 		/// <summary>

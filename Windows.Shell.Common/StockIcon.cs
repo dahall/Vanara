@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Drawing;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
 
@@ -35,12 +35,6 @@ namespace Vanara.Windows.Shell
 		{
 			Dispose(false);
 		}
-
-		/// <summary>Gets the icon image in <see cref="System.Drawing.Bitmap"/> format.</summary>
-		public Bitmap Bitmap { get { Refresh(); return hIcon.IsNull ? null : Bitmap.FromHicon((IntPtr)hIcon); } }
-
-		/// <summary>Gets the icon image in <see cref="System.Drawing.Icon"/> format.</summary>
-		public Icon Icon { get { Refresh(); return hIcon.IsNull ? null : Icon.FromHandle((IntPtr)hIcon); } }
 
 		/// <summary>Gets the icon handle.</summary>
 		/// <value>The icon handle.</value>

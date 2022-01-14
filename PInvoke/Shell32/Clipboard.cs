@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -193,7 +192,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The drop point. The coordinates depend on <c>fNC</c>.</para>
 			/// </summary>
-			public System.Drawing.Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -284,7 +283,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINTL</c></para>
 			/// <para>The screen coordinates of the file object.</para>
 			/// </summary>
-			public Point pointl;
+			public POINT pointl;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -440,7 +439,7 @@ namespace Vanara.PInvoke
 			/// from the upper-left corner of the drag image to the location of the cursor.
 			/// </para>
 			/// </summary>
-			public System.Drawing.Point ptOffset;
+			public POINT ptOffset;
 
 			/// <summary>
 			/// <para>Type: <c>HBITMAP</c></para>

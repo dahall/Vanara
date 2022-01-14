@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -1393,10 +1392,10 @@ namespace Vanara.PInvoke
 		public struct DRAWPATRECT
 		{
 			/// <summary>The upper-left corner of the rectangle, in logical units.</summary>
-			public Point ptPosition;
+			public POINT ptPosition;
 
 			/// <summary>The lower-right corner of the rectangle, in logical units.</summary>
-			public Point ptSize;
+			public POINT ptSize;
 
 			/// <summary>
 			/// <para>The style of the rectangle. It can be one of the following.</para>

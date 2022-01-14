@@ -597,7 +597,7 @@ namespace Vanara.PInvoke
 		// DWORD dwFlags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "c46281bf-7e45-4628-be92-736850225a9e")]
-		public static extern HMONITOR MonitorFromPoint(System.Drawing.Point pt, MonitorFlags dwFlags);
+		public static extern HMONITOR MonitorFromPoint(POINT pt, MonitorFlags dwFlags);
 
 		/// <summary>
 		/// <para>

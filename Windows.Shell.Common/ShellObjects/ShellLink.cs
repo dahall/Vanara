@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.AccessControl;
@@ -11,6 +10,7 @@ using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Shell
 {
@@ -348,7 +348,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the icon for this link file.</summary>
 		/// <param name="large">if set to <c>true</c> retrieve the large icon; other retrieve the small icon.</param>
 		/// <returns>The icon.</returns>
-		public Icon GetIcon(bool large)
+		public SafeHICON GetIcon(bool large)
 		{
 			var loc = IconLocation;
 			if (loc.IsValid) return loc.Icon;

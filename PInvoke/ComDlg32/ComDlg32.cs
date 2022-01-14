@@ -2568,7 +2568,7 @@ namespace Vanara.PInvoke
 			/// <c>PSD_INHUNDREDTHSOFMILLIMETERS</c> flag indicates the units of measurement.
 			/// </para>
 			/// </summary>
-			public System.Drawing.Point ptPaperSize;
+			public POINT ptPaperSize;
 
 			/// <summary>
 			/// <para>Type: <c>RECT</c></para>

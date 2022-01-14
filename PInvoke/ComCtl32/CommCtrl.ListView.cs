@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Drawing;
-using System.Linq;
+//using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using Vanara.Extensions;
@@ -1186,11 +1185,11 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-listview_getitemindexrect
 		[PInvokeData("commctrl.h", MSDNShortId = "listview_getitemindexrect")]
-		public static bool ListView_GetItemIndexRect(HWND hwnd, in LVITEMINDEX plvii, int iSubItem, ListViewItemRect code, out Rectangle prc)
+		public static bool ListView_GetItemIndexRect(HWND hwnd, in LVITEMINDEX plvii, int iSubItem, ListViewItemRect code, out RECT prc)
 		{
 			var rc = new RECT((int)code, iSubItem, 0, 0);
 			var lr = SendMessage(hwnd, ListViewMessage.LVM_GETITEMINDEXRECT, in plvii, ref rc);
-			prc = lr == IntPtr.Zero ? Rectangle.Empty : (Rectangle)rc;
+			prc = lr == IntPtr.Zero ? RECT.Empty : rc;
 			return lr != IntPtr.Zero;
 		}
 
@@ -1371,7 +1370,7 @@ namespace Vanara.PInvoke
 			public IntPtr lParam;
 
 			/// <summary>POINT structure with the initial search position. It is valid only if LVFI_NEARESTXY is set in the flags member.</summary>
-			public Point pt;
+			public POINT pt;
 
 			/// <summary>Virtual key code that specifies the direction to search.</summary>
 			public ConsoleKey vkDirection;
@@ -1401,7 +1400,7 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="LVFINDINFO"/> struct.</summary>
 			/// <param name="point">The initial search position.</param>
 			/// <param name="searchDirection">The search direction.</param>
-			public LVFINDINFO(Point point, ConsoleKey searchDirection) : this()
+			public LVFINDINFO(POINT point, ConsoleKey searchDirection) : this()
 			{
 				flags = ListViewFindInfoFlag.LVFI_NEARESTXY;
 				pt = point;
@@ -1494,7 +1493,7 @@ namespace Vanara.PInvoke
 		public struct LVHITTESTINFO
 		{
 			/// <summary>The position to hit test, in client coordinates.</summary>
-			public Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// The variable that receives information about the results of a hit test. This member can be one or more of the following values:
@@ -1526,7 +1525,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="LVHITTESTINFO"/> class.</summary>
 			/// <param name="pt">The pt.</param>
-			public LVHITTESTINFO(Point pt) : this() => this.pt = pt;
+			public LVHITTESTINFO(POINT pt) : this() => this.pt = pt;
 		}
 
 		/// <summary>Used to describe insertion points.</summary>
@@ -1633,7 +1632,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the size of an individual tile.</summary>
 			/// <value>The size of an individual tile.</value>
-			public Size TileSize
+			public SIZE TileSize
 			{
 				get => sizeTile;
 				set { sizeTile = value; dwMask |= ListViewTileViewMask.LVTVIM_TILESIZE; dwFlags |= ListViewTileViewFlag.LVTVIF_FIXEDSIZE; }
@@ -1711,7 +1710,7 @@ namespace Vanara.PInvoke
 			/// POINT structure that indicates the location at which the event occurred. This member is undefined for notification messages
 			/// that do not use it.
 			/// </summary>
-			public Point ptAction;
+			public POINT ptAction;
 
 			/// <summary>Application-defined value of the item. This member is undefined for notification messages that do not use it.</summary>
 			public IntPtr lParam;
@@ -1766,31 +1765,31 @@ namespace Vanara.PInvoke
 			public int yOffset;
 
 			/// <summary>Initializes a new instance of the <see cref="LVBKIMAGE"/> class.</summary>
-			/// <param name="bmp">The BMP.</param>
-			/// <param name="isWatermark">if set to <c>true</c> [is watermark].</param>
-			/// <param name="isWatermarkAlphaBlended">if set to <c>true</c> [is watermark alpha blended].</param>
-			public LVBKIMAGE(Bitmap bmp, bool isWatermark, bool isWatermarkAlphaBlended)
+			/// <param name="bmp">The handle of the background bitmap.</param>
+			/// <param name="isWatermark">if set to <c>true</c> a watermark bitmap is applied.</param>
+			/// <param name="isWatermarkAlphaBlended">if set to <c>true</c> the watermark is alpha blended.</param>
+			public LVBKIMAGE(HBITMAP bmp, bool isWatermark, bool isWatermarkAlphaBlended)
 			{
-				Bitmap = bmp;
+				hBmp = bmp;
 				ulFlags = isWatermark ? ListViewBkImageFlag.LVBKIF_TYPE_WATERMARK : ListViewBkImageFlag.LVBKIF_SOURCE_HBITMAP;
 				if (isWatermark && isWatermarkAlphaBlended)
 					ulFlags |= ListViewBkImageFlag.LVBKIF_FLAG_ALPHABLEND;
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="LVBKIMAGE"/> class.</summary>
-			/// <param name="bmp">The BMP.</param>
-			/// <param name="isTiled">if set to <c>true</c> [is tiled].</param>
-			public LVBKIMAGE(Bitmap bmp, bool isTiled)
+			/// <param name="bmp">The handle of the background bitmap.</param>
+			/// <param name="isTiled">if set to <c>true</c>, the bitmap image is tiled.</param>
+			public LVBKIMAGE(HBITMAP bmp, bool isTiled)
 			{
-				Bitmap = bmp;
+				hBmp = bmp;
 				ulFlags = ListViewBkImageFlag.LVBKIF_SOURCE_HBITMAP;
 				if (isTiled)
 					ulFlags |= ListViewBkImageFlag.LVBKIF_STYLE_TILE;
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="LVBKIMAGE"/> class.</summary>
-			/// <param name="url">The URL.</param>
-			/// <param name="isTiled">if set to <c>true</c> [is tiled].</param>
+			/// <param name="url">The URL of the background image.</param>
+			/// <param name="isTiled">if set to <c>true</c>, the bitmap image is tiled.</param>
 			public LVBKIMAGE(string url, bool isTiled)
 			{
 				Url = url;
@@ -1811,14 +1810,6 @@ namespace Vanara.PInvoke
 				ulFlags = flags;
 				if (ulFlags.IsFlagSet(ListViewBkImageFlag.LVBKIF_SOURCE_URL))
 					pszImage = new StrPtrAuto(cchImageMax = 1024);
-			}
-
-			/// <summary>Gets or sets the bitmap.</summary>
-			/// <value>The bitmap.</value>
-			public Bitmap Bitmap
-			{
-				get => hBmp.IsNull ? null : System.Drawing.Image.FromHbitmap((IntPtr)hBmp);
-				set => hBmp = value?.GetHbitmap() ?? IntPtr.Zero;
 			}
 
 			/// <summary>Gets or sets the URL.</summary>

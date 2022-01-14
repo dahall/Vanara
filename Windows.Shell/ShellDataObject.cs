@@ -51,7 +51,7 @@ namespace Vanara.Windows.Shell
 		public bool IsShortcut { get; set; }
 
 		/// <summary>The screen coordinates of the file object.</summary>
-		public Point? ScreenPosition { get; set; }
+		public POINT? ScreenPosition { get; set; }
 
 		/// <summary>progress indicator is shown with drag-and-drop operations.</summary>
 		public bool ShowProgressUI { get; set; }
@@ -72,7 +72,7 @@ namespace Vanara.Windows.Shell
 			ftLastAccessTime = Info.LastAccessTimeUtc.ToFileTimeStruct(),
 			ftLastWriteTime = Info.LastWriteTimeUtc.ToFileTimeStruct(),
 			sizel = IconSize ?? SIZE.Empty,
-			pointl = ScreenPosition ?? Point.Empty
+			pointl = ScreenPosition ?? POINT.Empty
 		};
 	}
 

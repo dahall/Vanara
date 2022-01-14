@@ -1375,7 +1375,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>POINT</c></c></para>
 			/// <para>A <c>POINT</c> structure that contains the client coordinates of the mouse when the click occurred.</para>
 			/// </summary>
-			public System.Drawing.Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// <para>Type: <c><c>LPARAM</c></c></para>

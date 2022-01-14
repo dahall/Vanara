@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
@@ -103,8 +102,8 @@ namespace Vanara.Windows.Shell
 		/// Applications can use this information to present any UI. This is particularly useful in a multi-monitor situation. The default
 		/// position is the center of the default monitor.
 		/// </summary>
-		/// <value>Returns a <see cref="Point"/> value.</value>
-		public Point Position { get; private set; }
+		/// <value>Returns a <see cref="POINT"/> value.</value>
+		public POINT Position { get; private set; }
 
 		/// <summary>Gets or sets the selected shell items.</summary>
 		/// <value>The selected shell items.</value>
@@ -170,7 +169,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <inheritdoc/>
-		HRESULT IExecuteCommand.SetPosition(Point pt)
+		HRESULT IExecuteCommand.SetPosition(POINT pt)
 		{
 			Position = pt;
 			return HRESULT.S_OK;

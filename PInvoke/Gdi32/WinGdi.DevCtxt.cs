@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
@@ -758,7 +757,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "795c6a69-7146-4d1a-abf9-ce1d740ca946")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetDCOrgEx(HDC hdc, out Point lppt);
+		public static extern bool GetDCOrgEx(HDC hdc, out POINT lppt);
 
 		/// <summary>The <c>GetDCPenColor</c> function retrieves the current pen color for the specified device context (DC).</summary>
 		/// <param name="hdc">A handle to the DC whose brush color is to be returned.</param>

@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -702,7 +701,7 @@ namespace Vanara.PInvoke
 			/// POINT structure that contains the client coordinates of the mouse at the time the event occurred that caused the notification
 			/// message to be sent.
 			/// </summary>
-			public Point ptDrag;
+			public POINT ptDrag;
 		}
 
 		/// <summary>
@@ -880,7 +879,7 @@ namespace Vanara.PInvoke
 		public struct TVHITTESTINFO
 		{
 			/// <summary>Client coordinates of the point to test.</summary>
-			public Point pt;
+			public POINT pt;
 
 			/// <summary>Variable that receives information about the results of a hit test.</summary>
 			public TreeViewHitTestFlags flags;
@@ -1462,7 +1461,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the bounds.</summary>
 			/// <value>The bounds.</value>
-			public Rectangle Bounds => prc.ToStructure<RECT>();
+			public RECT Bounds => prc.ToStructure<RECT>();
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			void IDisposable.Dispose() => Marshal.FreeCoTaskMem(prc);

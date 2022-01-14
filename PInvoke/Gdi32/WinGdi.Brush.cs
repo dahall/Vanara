@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -344,7 +343,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "0b938237-cb06-4776-86f8-14478abcee00")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetBrushOrgEx(HDC hdc, out Point lppt);
+		public static extern bool GetBrushOrgEx(HDC hdc, out POINT lppt);
 
 		/// <summary>
 		/// <para>
@@ -481,7 +480,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "dcc7575a-49fd-4306-8baa-57e9e0d5ed1f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetBrushOrgEx(HDC hdc, int x, int y, in Point lppt);
+		public static extern bool SetBrushOrgEx(HDC hdc, int x, int y, in POINT lppt);
 
 		/// <summary>
 		/// <c>SetDCBrushColor</c> function sets the current device context (DC) brush color to the specified color value. If the device

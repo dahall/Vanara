@@ -224,7 +224,7 @@ namespace Vanara.PInvoke
 			public bool fScale;
 
 			/// <summary>The x- and y-offset of the pixel displayed in the upper left corner of the client area of the window.</summary>
-			public System.Drawing.Point ptScroll;
+			public POINT ptScroll;
 
 			/// <summary>Default palette flag. The value of this member is <c>TRUE</c> if the capture driver is using its default palette.</summary>
 			[MarshalAs(UnmanagedType.Bool)]

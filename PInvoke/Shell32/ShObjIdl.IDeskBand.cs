@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -801,7 +800,7 @@ namespace Vanara.PInvoke
 			/// structure's <c>x</c> member and the minimum height is given in the <c>y</c> member.
 			/// </para>
 			/// </summary>
-			public Size ptMinSize;
+			public SIZE ptMinSize;
 
 			/// <summary>
 			/// <para>Type: <c>POINTL</c></para>
@@ -811,7 +810,7 @@ namespace Vanara.PInvoke
 			/// should be used.
 			/// </para>
 			/// </summary>
-			public Size ptMaxSize;
+			public SIZE ptMaxSize;
 
 			/// <summary>
 			/// <para>Type: <c>POINTL</c></para>
@@ -821,7 +820,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>The <c>dwModeFlags</c> member must contain the DBIMF_VARIABLEHEIGHT flag; otherwise, <c>ptIntegral</c> is ignored.</para>
 			/// </summary>
-			public Size ptIntegral;
+			public SIZE ptIntegral;
 
 			/// <summary>
 			/// <para>Type: <c>POINTL</c></para>
@@ -831,7 +830,7 @@ namespace Vanara.PInvoke
 			/// band is not guaranteed to be this size.
 			/// </para>
 			/// </summary>
-			public Size ptActual;
+			public SIZE ptActual;
 
 			/// <summary>
 			/// <para>Type: <c>WCHAR[256]</c></para>

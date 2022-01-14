@@ -195,7 +195,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontextview-getrangefrompoint HRESULT GetRangeFromPoint(
 			// TfEditCookie ec, const POINT *ppt, DWORD dwFlags, ITfRange **ppRange );
-			ITfRange GetRangeFromPoint([In] TfEditCookie ec, in System.Drawing.Point ppt, GXFPF dwFlags);
+			ITfRange GetRangeFromPoint([In] TfEditCookie ec, in POINT ppt, GXFPF dwFlags);
 
 			/// <summary>
 			/// The <c>ITfContextView::GetTextExt</c> method returns the bounding box, in screen coordinates, of a range of text.

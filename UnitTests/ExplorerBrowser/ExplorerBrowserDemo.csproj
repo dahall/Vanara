@@ -66,6 +66,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
     <ProjectReference Include="..\..\Windows.Forms\Vanara.Windows.Forms.csproj" />
+    <ProjectReference Include="..\..\Windows.Shell.Common\Vanara.Windows.Shell.Common.csproj" />
     <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj" />
   </ItemGroup>
 </Project>

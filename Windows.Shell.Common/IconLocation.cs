@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
-using System.Drawing;
 using System.Globalization;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
@@ -23,13 +22,13 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the icon referred to by this instance.</summary>
 		/// <value>The icon.</value>
 		[Browsable(false)]
-		public Icon Icon
+		public SafeHICON Icon
 		{
 			get
 			{
 				if (!IsValid) return null;
 				using var lib = LoadLibraryEx(ModuleFileName, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
-				return new SafeHICON(LoadImage(lib, ResourceId, LoadImageType.IMAGE_ICON, 0, 0, 0)).ToIcon();
+				return new SafeHICON(LoadImage(lib, ResourceId, LoadImageType.IMAGE_ICON, 0, 0, 0));
 				//var hIconEx = new[] { IntPtr.Zero };
 				//if (large)
 				//	ExtractIconEx(loc.ModuleFileName, loc.ResourceId, hIconEx, null, 1);

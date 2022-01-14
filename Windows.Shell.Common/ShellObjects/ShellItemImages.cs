@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Threading.Tasks;
 using Vanara.Extensions;
 using Vanara.PInvoke;
@@ -28,7 +27,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="forcePreVista">If set to <see langword="true"/>, ignore the use post vista interfaces like <see cref="IShellItemImageFactory"/>.</param>
 		/// <returns>The resulting image.</returns>
 		/// <exception cref="PlatformNotSupportedException"></exception>
-		public async Task<SafeHBITMAP> GetImageAsync(Size size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() =>
+		public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() =>
 		{
 			SafeHBITMAP hbmp = null;
 			HRESULT hr = HRESULT.E_FAIL;

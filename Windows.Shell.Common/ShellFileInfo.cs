@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.IO;
 using System.Security;
 using System.Text;
@@ -123,7 +122,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Gets the large icon for the file.</summary>
-		public Icon LargeIcon => GetIcon();
+		public SafeHICON LargeIcon => GetIcon();
 
 		/// <summary>Gets the size, in bytes, of the current link file.</summary>
 		/// <value>The length in bytes of the file.</value>
@@ -144,11 +143,11 @@ namespace Vanara.Windows.Shell
 		public SFGAO ShellAttributes { get; private set; }
 
 		/// <summary>Gets the small icon for the file.</summary>
-		public Icon SmallIcon => GetIcon(ShellIconType.Small);
+		public SafeHICON SmallIcon => GetIcon(ShellIconType.Small);
 
 		/// <summary>Gets the icon for this shell item from the system.</summary>
 		/// <value>The system icon on success; <c>null</c> on failure.</value>
-		public Icon SystemIcon => ShellImageList.GetSystemIcon(FullPath);
+		public SafeHICON SystemIcon => ShellImageList.GetSystemIcon(FullPath);
 
 		/// <summary>Gets the type name for the file.</summary>
 		public string TypeName { get; private set; }
@@ -158,8 +157,8 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the icon defined by the set of flags provided.</summary>
 		/// <param name="iconType">Flags to specify type of the icon.</param>
-		/// <returns><see cref="Icon"/> if successful; <c>null</c> otherwise.</returns>
-		public Icon GetIcon(ShellIconType iconType = ShellIconType.Large) => ShellImageList.GetFileIcon(FullPath, iconType);
+		/// <returns><see cref="SafeHICON"/> if successful; <c>null</c> otherwise.</returns>
+		public SafeHICON GetIcon(ShellIconType iconType = ShellIconType.Large) => ShellImageList.GetFileIcon(FullPath, iconType);
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>

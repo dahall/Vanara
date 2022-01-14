@@ -492,7 +492,10 @@ namespace Vanara.PInvoke.Tests
 				using (var htheme = OpenThemeData(f.Handle, "Window"))
 				{
 					Assert.That(htheme, Is.Not.EqualTo(IntPtr.Zero));
-					var hr = HitTestThemeBackground(htheme, new SafeHDC(f.CreateGraphics()), 1, 1, HitTestOptions.HTTB_CAPTION, f.ClientRectangle, HRGN.NULL, new Point(1, 1), out var code);
+					var g = f.CreateGraphics();
+					IntPtr hdc = g.GetHdc();
+					var hr = HitTestThemeBackground(htheme, hdc, 1, 1, HitTestOptions.HTTB_CAPTION, f.ClientRectangle, HRGN.NULL, new POINT(1, 1), out var code);
+					g.ReleaseHdc(hdc);
 					Assert.That(hr.Succeeded);
 				}
 				f.Close();

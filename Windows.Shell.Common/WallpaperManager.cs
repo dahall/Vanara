@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using Vanara.Extensions;
@@ -47,7 +46,7 @@ namespace Vanara.Windows.Shell
 		/// color is also used as a border when the desktop wallpaper does not fill the entire screen.
 		/// </summary>
 		/// <value>A value that specifies the background RGB color value.</value>
-		public static Color BackgroundColor
+		public static COLORREF BackgroundColor
 		{
 			get => Wallpaper.GetBackgroundColor();
 			set => Wallpaper.SetBackgroundColor(value);
@@ -126,7 +125,7 @@ namespace Vanara.Windows.Shell
 		/// If specified, the color of the background. Specifying <see langword="null"/> will ignore setting this value and any previous
 		/// setting will stay in place.
 		/// </param>
-		public static void SetSolidBackground(Color? color = null)
+		public static void SetSolidBackground(COLORREF? color = null)
 		{
 			Enabled = false;
 			Wallpaper.SetWallpaper(null, "");
@@ -140,7 +139,7 @@ namespace Vanara.Windows.Shell
 		{
 			/// <summary>Retrieves the display rectangle of the monitor.</summary>
 			/// <value>The display rectangle.</value>
-			public Rectangle DisplayRectangle => Wallpaper.GetMonitorRECT(Id, out var r) == HRESULT.S_OK ? (Rectangle)r : Rectangle.Empty;
+			public RECT DisplayRectangle => Wallpaper.GetMonitorRECT(Id, out var r) == HRESULT.S_OK ? r : RECT.Empty;
 
 			/// <summary>Gets the identifier of the monitor.</summary>
 			/// <value>The monitor identifier.</value>

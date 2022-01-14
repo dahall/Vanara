@@ -1,150 +1,67 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
 using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
 {
 	/// <summary>Extension methods to convert GdiObj handle variants to their .NET equivalents.</summary>
-	public static class GdiObjExtensions
+	public static class GdiObjExtensions2
 	{
-		/// <summary>Converts the generic GDI object handle to a specific handle.</summary>
-		/// <typeparam name="T">The handle type to which to convert.</typeparam>
-		/// <param name="hObj">The generic GDI object handle.</param>
-		/// <returns>The converted handle of type <typeparamref name="T"/>.</returns>
-		/// <exception cref="ArgumentException">The conversion type specified is not valid for the supplied GDI object.</exception>
-		public static T ConvertTo<T>(this IGraphicsObjectHandle hObj) where T : IGraphicsObjectHandle
-		{
-			var ot = GetObjectType(hObj.DangerousGetHandle());
-			if (ot == 0) Win32Error.ThrowLastError();
-			if (!CorrespondingTypeAttribute.CanGet(ot, typeof(T)))
-				throw new ArgumentException($"The conversion type specified is not valid for the supplied GDI object.");
-			return (T)(object)hObj.DangerousGetHandle();
-		}
-
-		/// <summary>Draws on a device context (<see cref="Graphics"/>) via a DIB section. This is useful when you need to draw on a transparent background.</summary>
-		/// <param name="dc">The device context.</param>
-		/// <param name="bounds">The bounds of the device context to paint.</param>
-		/// <param name="drawMethod">The draw method.</param>
-		public static void DrawViaDIB(this IDeviceContext dc, in Rectangle bounds, Action<SafeHDC, Rectangle> drawMethod)
-		{
-			using var sdc = new SafeHDC(dc);
-			DrawViaDIB(sdc, bounds, drawMethod);
-		}
-
-		/// <summary>Draws on a device context (<see cref="SafeHDC"/>) via a DIB section. This is useful when you need to draw on a transparent background.</summary>
+		/// <summary>
+		/// Draws on a device context ( <see cref="SafeHDC"/>) via a DIB section. This is useful when you need to draw on a transparent background.
+		/// </summary>
 		/// <param name="hdc">The device context.</param>
 		/// <param name="bounds">The bounds of the device context to paint.</param>
 		/// <param name="drawMethod">The draw method.</param>
-		public static void DrawViaDIB(this SafeHDC hdc, in Rectangle bounds, Action<SafeHDC, Rectangle> drawMethod)
+		public static void DrawViaDIB(this IDeviceContext hdc, in RECT bounds, Action<SafeHDC, RECT> drawMethod)
 		{
-			// Create a memory DC so we can work off screen
-			using var memoryHdc = hdc.GetCompatibleDCHandle();
-			// Create a device-independent bitmap and select it into our DC
-			var info = new BITMAPINFO(bounds.Width, -bounds.Height);
-			using (memoryHdc.SelectObject(CreateDIBSection(hdc, info, DIBColorMode.DIB_RGB_COLORS, out var pBits)))
+			IntPtr h = hdc.GetHdc();
+			try { GdiObjExtensions.DrawViaDIB(h, bounds, drawMethod); }
+			finally { hdc.ReleaseHdc(); }
+		}
+
+		/// <summary>Gets the copy of the device handle in an IDeviceContext supporting GDI+.</summary>
+		/// <param name="dc">The <see cref="IDeviceContext"/> instance.</param>
+		/// <returns>A <see cref="SafeHDC"/> instance that contains a copy of the context.</returns>
+		public static SafeHDC GetCompatibleSafeHDC(this IDeviceContext dc)
+		{
+			if (dc is null)
 			{
-				// Call method
-				drawMethod(memoryHdc, bounds);
-
-				// Copy to foreground
-				BitBlt(hdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, RasterOperationMode.SRCCOPY);
+				return new(default, false);
 			}
+
+			SafeHDC hdc = CreateCompatibleDC(dc.GetHdc());
+			dc.ReleaseHdc();
+			return hdc;
 		}
 
-		/// <summary>Determines whether the bitmap is a bottom-up DIB.</summary>
-		/// <param name="hbmp">The handle of the bitmap to assess.</param>
-		/// <returns><see langword="true"/> if the specified bitmap is a bottom-up DIB; otherwise, <see langword="false"/>.</returns>
-		public static bool IsBottomUpDIB(this in HBITMAP hbmp)
-		{
-			var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
-			using var mem = GetObject(hbmp, dibSz);
-			return mem.Size == dibSz && mem.ToStructure<DIBSECTION>().dsBmih.biHeight > 0;
-		}
-
-		/// <summary>Determines whether the bitmap is a bottom-up DIB.</summary>
-		/// <param name="hbmp">The handle of the bitmap to assess.</param>
-		/// <returns><see langword="true"/> if the specified bitmap is a bottom-up DIB; otherwise, <see langword="false"/>.</returns>
-		public static bool IsDIB(this in HBITMAP hbmp)
-		{
-			var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
-			using var mem = GetObject(hbmp, dibSz);
-			return mem.Size == dibSz;
-		}
+		/// <summary>Creates a <see cref="Bitmap"/> from an <see cref="SafeHBITMAP"/> preserving transparency, if possible.</summary>
+		/// <param name="hbmp">The SafeHBITMAP value.</param>
+		/// <returns>The Bitmap instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
+		public static Bitmap ToBitmap(this SafeHBITMAP hbmp) => ToBitmap((HBITMAP)hbmp);
 
 		/// <summary>Creates a <see cref="Bitmap"/> from an <see cref="HBITMAP"/> preserving transparency, if possible.</summary>
 		/// <param name="hbmp">The HBITMAP value.</param>
 		/// <returns>The Bitmap instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
 		public static Bitmap ToBitmap(this in HBITMAP hbmp) => Image.FromHbitmap((IntPtr)hbmp);
-		// TODO: Fix code below to process different bpp bitmaps w/o flipping
-		//{
-		//	const System.Drawing.Imaging.PixelFormat fmt = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
 
-		//	// If hbmp is NULL handle, return null
-		//	if (hbmp.IsNull) return null;
+		/// <summary>Creates a managed <see cref="Bitmap"/> from a HICON instance.</summary>
+		/// <returns>A managed bitmap instance.</returns>
+		public static Bitmap ToBitmap(this in HICON hIcon) => hIcon.IsNull ? null : (Bitmap)Bitmap.FromHicon((IntPtr)hIcon).Clone();
 
-		//	// Get detail and bail if not 32bit, empty or an old style BMP
-		//	var (bpp, width, height, scanBytes, bits, isdib) = GetInfo(hbmp);
-		//	if (bpp != Image.GetPixelFormatSize(fmt) || height == 0 || !isdib)
-		//		return Image.FromHbitmap((IntPtr)hbmp);
+		/// <summary>Creates a managed <see cref="Bitmap"/> from a SafeHICON instance.</summary>
+		/// <returns>A managed bitmap instance.</returns>
+		public static Bitmap ToBitmap(this SafeHICON hIcon) => ToBitmap((HICON)hIcon);
 
-		//	// Create bitmap from detail and flip if upside-down
-		//	var bmp = new Bitmap(width, height, scanBytes, fmt, bits);
-		//	if (height < 0) bmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
-		//	return bmp;
-
-		//	static (ushort bpp, int width, int height, int scanBytes, IntPtr bits, bool isdib) GetInfo(in HBITMAP hbmp)
-		//	{
-		//		var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
-		//		using var mem = GetObject(hbmp, dibSz);
-		//		if (mem.Size == dibSz)
-		//		{
-		//			var dib = mem.ToStructure<DIBSECTION>();
-		//			return (dib.dsBm.bmBitsPixel, dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes, dib.dsBm.bmBits, true);
-		//		}
-		//		else
-		//		{
-		//			var bmp = mem.ToStructure<BITMAP>();
-		//			return (bmp.bmBitsPixel, bmp.bmWidth, bmp.bmHeight, bmp.bmWidthBytes, bmp.bmBits, false);
-		//		}
-		//	}
-
-		//}
-
-#if WPF && !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
-		/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HBITMAP"/> preserving transparency, if possible.</summary>
-		/// <param name="hbmp">The HBITMAP value.</param>
-		/// <returns>The BitmapSource instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
-		public static System.Windows.Media.Imaging.BitmapSource ToBitmapSource(this in HBITMAP hbmp)
-		{
-			// If hbmp is NULL handle, return null
-			if (hbmp.IsNull) return null;
-			try
-			{
-				return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap((IntPtr)hbmp, IntPtr.Zero,
-					System.Windows.Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-			}
-			catch (System.ComponentModel.Win32Exception)
-			{
-				return null;
-			}
-		}
-
-		/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="SafeHBITMAP"/> preserving transparency, if possible.</summary>
-		/// <param name="hbmp">The SafeHBITMAP value.</param>
-		/// <returns>The BitmapSource instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
-		public static System.Windows.Media.Imaging.BitmapSource ToBitmapSource(this SafeHBITMAP hbmp) => ((HBITMAP)hbmp).ToBitmapSource();
-#endif
-
-		/// <summary>Creates a managed <see cref="System.Drawing.Brush"/> from this HBRUSH instance.</summary>
+		/// <summary>Creates a managed <see cref="Brush"/> from this HBRUSH instance.</summary>
 		/// <param name="hbr">The HBRUSH value.</param>
 		/// <returns>A managed brush instance.</returns>
 		public static Brush ToBrush(this in HBRUSH hbr) => hbr.IsNull ? null : new NativeBrush(hbr);
 
-		/// <summary>Creates a managed <see cref="System.Drawing.Brush"/> from this HBRUSH instance.</summary>
+		/// <summary>Creates a managed <see cref="Brush"/> from this HBRUSH instance.</summary>
 		/// <param name="hbr">The HBRUSH value.</param>
 		/// <returns>A managed brush instance.</returns>
 		public static Brush ToBrush(this SafeHBRUSH hbr) => ((HBRUSH)hbr).ToBrush();
@@ -159,30 +76,38 @@ namespace Vanara.PInvoke
 		/// <returns>The Font instance.</returns>
 		public static Font ToFont(this SafeHFONT hf) => ((HFONT)hf).ToFont();
 
+		/// <summary>Creates a managed <see cref="Icon"/> from an HICON instance.</summary>
+		/// <returns>A managed icon instance.</returns>
+		public static Icon ToIcon(this in HICON hIcon) => hIcon.IsNull ? null : (Icon)Icon.FromHandle((IntPtr)hIcon).Clone();
+
+		/// <summary>Creates a managed <see cref="Icon"/> from a SafeHICON instance.</summary>
+		/// <returns>A managed icon instance.</returns>
+		public static Icon ToIcon(this SafeHICON hIcon) => ToIcon((HICON)hIcon);
+
 		/// <summary>Creates a <see cref="Pen"/> from an <see cref="HPEN"/>.</summary>
 		/// <param name="hpen">The HPEN value.</param>
 		/// <returns>The Pen instance.</returns>
 		public static Pen ToPen(this in HPEN hpen)
 		{
-			using var ptr = GetObject(hpen);
-			var lpen = ptr.ToStructure<EXTLOGPEN>();
+			using InteropServices.ISafeMemoryHandle ptr = GetObject(hpen);
+			EXTLOGPEN lpen = ptr.ToStructure<EXTLOGPEN>();
 			Pen pen = null;
 			switch (lpen.elpBrushStyle)
 			{
 				case BrushStyle.BS_DIBPATTERN:
 				case BrushStyle.BS_DIBPATTERNPT:
-					var lw = (DIBColorMode)(uint)lpen.elpColor;
-					var hb = CreateDIBPatternBrushPt(lpen.elpHatch, lw);
+					DIBColorMode lw = (DIBColorMode)(uint)lpen.elpColor;
+					SafeHBRUSH hb = CreateDIBPatternBrushPt(lpen.elpHatch, lw);
 					pen = new Pen(((HBRUSH)hb).ToBrush());
 					break;
 
 				case BrushStyle.BS_HATCHED:
-					var hbr = new HatchBrush((System.Drawing.Drawing2D.HatchStyle)lpen.elpHatch.ToInt32(), lpen.elpColor);
+					HatchBrush hbr = new HatchBrush((System.Drawing.Drawing2D.HatchStyle)lpen.elpHatch.ToInt32(), lpen.elpColor);
 					pen = new Pen(hbr);
 					break;
 
 				case BrushStyle.BS_PATTERN:
-					var pbr = new TextureBrush(Image.FromHbitmap(lpen.elpHatch));
+					TextureBrush pbr = new TextureBrush(Image.FromHbitmap(lpen.elpHatch));
 					pen = new Pen(pbr);
 					break;
 
@@ -192,7 +117,7 @@ namespace Vanara.PInvoke
 					pen = new Pen(lpen.elpColor) { DashStyle = (DashStyle)lpen.Style };
 					if (pen.DashStyle == DashStyle.Custom && lpen.elpNumEntries > 0)
 					{
-						var styleArray = lpen.elpStyleEntry.ToArray<uint>((int)lpen.elpNumEntries);
+						uint[] styleArray = lpen.elpStyleEntry.ToArray<uint>((int)lpen.elpNumEntries);
 						pen.DashPattern = Array.ConvertAll(styleArray, i => (float)i);
 					}
 					break;
@@ -225,17 +150,97 @@ namespace Vanara.PInvoke
 		/// <returns>The Region instance.</returns>
 		public static Region ToRegion(this SafeHRGN hrgn) => ((HRGN)hrgn).ToRegion();
 
+		// TODO: Fix code below to process different bpp bitmaps w/o flipping
+		//{
+		//	const Imaging.PixelFormat fmt = Imaging.PixelFormat.Format32bppArgb;
+
+		// // If hbmp is NULL handle, return null if (hbmp.IsNull) return null;
+
+		// // Get detail and bail if not 32bit, empty or an old style BMP var (bpp, width, height, scanBytes, bits, isdib) = GetInfo(hbmp);
+		// if (bpp != Image.GetPixelFormatSize(fmt) || height == 0 || !isdib) return Image.FromHbitmap((IntPtr)hbmp);
+
+		// // Create bitmap from detail and flip if upside-down var bmp = new Bitmap(width, height, scanBytes, fmt, bits); if (height < 0)
+		// bmp.RotateFlip(RotateFlipType.Rotate180FlipNone); return bmp;
+
+		// static (ushort bpp, int width, int height, int scanBytes, IntPtr bits, bool isdib) GetInfo(in HBITMAP hbmp) { var dibSz =
+		// Marshal.SizeOf(typeof(DIBSECTION)); using var mem = GetObject(hbmp, dibSz); if (mem.Size == dibSz) { var dib =
+		// mem.ToStructure<DIBSECTION>(); return (dib.dsBm.bmBitsPixel, dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes,
+		// dib.dsBm.bmBits, true); } else { var bmp = mem.ToStructure<BITMAP>(); return (bmp.bmBitsPixel, bmp.bmWidth, bmp.bmHeight,
+		// bmp.bmWidthBytes, bmp.bmBits, false); } }
+
+		//}
+
+#if WPF && !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
+		/// <summary>
+		/// Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HBITMAP"/> preserving transparency, if possible.
+		/// </summary>
+		/// <param name="hbmp">The HBITMAP value.</param>
+		/// <returns>The BitmapSource instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
+		public static System.Windows.Media.Imaging.BitmapSource ToBitmapSource(this in HBITMAP hbmp)
+		{
+			// If hbmp is NULL handle, return null
+			if (hbmp.IsNull) return null;
+			try
+			{
+				return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap((IntPtr)hbmp, IntPtr.Zero,
+					System.Windows.Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+			}
+			catch (System.ComponentModel.Win32Exception)
+			{
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="SafeHBITMAP"/> preserving transparency, if possible.
+		/// </summary>
+		/// <param name="hbmp">The SafeHBITMAP value.</param>
+		/// <returns>The BitmapSource instance. If <paramref name="hbmp"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
+		public static System.Windows.Media.Imaging.BitmapSource ToBitmapSource(this SafeHBITMAP hbmp) => ((HBITMAP)hbmp).ToBitmapSource();
+#endif
+
 		private class NativeBrush : Brush
 		{
 			public NativeBrush(HBRUSH hBrush)
 			{
-				var lb = GetObject<LOGBRUSH>(hBrush);
-				using var b2 = CreateBrushIndirect(lb);
+				LOGBRUSH lb = GetObject<LOGBRUSH>(hBrush);
+				using SafeHBRUSH b2 = CreateBrushIndirect(lb);
 				SetNativeBrush(b2.DangerousGetHandle());
 				b2.SetHandleAsInvalid();
 			}
 
 			public override object Clone() => this;
 		}
+	}
+
+	/// <summary>A self-releasing pattern for IDeviceContext.GetHdc and ReleaseHdc.</summary>
+	/// <seealso cref="System.IDisposable"/>
+	public class SafeTempHDC : IDisposable, IGraphicsObjectHandle
+	{
+		private readonly IDeviceContext dc;
+		private readonly IntPtr hdc;
+
+		/// <summary>Initializes a new instance of the <see cref="SafeTempHDC"/> class with an <see cref="IDeviceContext"/>.</summary>
+		/// <param name="dc">The <see cref="IDeviceContext"/> instance.</param>
+		public SafeTempHDC(IDeviceContext dc)
+		{
+			this.dc = dc;
+			hdc = dc?.GetHdc() ?? default;
+		}
+
+		/// <summary>Gets a value indicating whether this instance has a NULL handle.</summary>
+		/// <value><see langword="true"/> if this has a NULL handle; otherwise, <see langword="false"/>.</value>
+		public bool IsNull => hdc == default;
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeTempHDC"/> to <see cref="HDC"/>.</summary>
+		/// <param name="o">The <see cref="SafeTempHDC"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HDC(SafeTempHDC o) => o.hdc;
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => hdc;
+
+		/// <summary>Releases claimed HDC.</summary>
+		public void Dispose() => dc?.ReleaseHdc();
 	}
 }

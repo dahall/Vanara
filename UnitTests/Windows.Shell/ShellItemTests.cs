@@ -102,16 +102,20 @@ namespace Vanara.Windows.Shell.Tests
 		{
 			using (var i = new ShellItem(testDoc))
 			{
-				var sz = new Size(32, 32);
-				Image bmp = i.GetImage(sz, ShellItemGetImageOptions.IconOnly);
-				Assert.That(bmp, Is.Not.Null);
-				Assert.That(bmp.Size, Is.EqualTo(sz));
+				var sz = new SIZE(32, 32);
+				SafeHBITMAP bmp = i.GetImage(sz, ShellItemGetImageOptions.IconOnly);
+				Assert.That(bmp.IsInvalid, Is.False);
+				var bmi = GetObject<BITMAP>(bmp);
+				Assert.That(new SIZE(bmi.bmWidth, bmi.bmHeight), Is.EqualTo(sz));
 			}
 			using (var i = new ShellItem(PInvoke.Tests.TestCaseSources.LargeFile))
 			{
 				var sz = new Size(1024, 1024);
-				Image bmp = i.GetImage(sz, ShellItemGetImageOptions.ThumbnailOnly | ShellItemGetImageOptions.ScaleUp);
-				Assert.That(bmp.Size, Has.Property("Width").EqualTo(sz.Width).Or.Property("Height").EqualTo(sz.Height));
+				SafeHBITMAP bmp = i.GetImage(sz, ShellItemGetImageOptions.ThumbnailOnly | ShellItemGetImageOptions.ScaleUp);
+				Assert.That(bmp.IsInvalid, Is.False);
+				var bmi = GetObject<BITMAP>(bmp);
+				SIZE newSz = new(bmi.bmWidth, bmi.bmHeight);
+				Assert.That(newSz, Has.Property("Width").EqualTo(sz.Width).Or.Property("Height").EqualTo(sz.Height));
 			}
 		}
 

@@ -20,8 +20,10 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(err.Succeeded);
 			Thread.Sleep(1000);
 			using (var g = wnd.CreateGraphics())
+			using (var hrgn = Gdi32.CreateRectRgnIndirect(new RECT(0, 0, 20, 20)))
 			{
-				bb.SetRegion(g, new Region(new Rectangle(0, 0, 20, 20)));
+				bb.hRgnBlur = hrgn;
+				bb.dwFlags |= DWM_BLURBEHIND_Mask.DWM_BB_BLURREGION;
 				err = DwmEnableBlurBehindWindow(wnd.Handle, bb);
 				Assert.That(err.Succeeded);
 				Thread.Sleep(1000);

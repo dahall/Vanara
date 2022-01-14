@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -126,7 +125,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCaretPos(out Point lpPoint);
+		public static extern bool GetCaretPos(out POINT lpPoint);
 
 		/// <summary>
 		/// Removes the caret from the screen. Hiding a caret does not destroy its current shape or invalidate the insertion point.

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -697,7 +696,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="flags">One or more of the option flags.</param>
 		/// <returns>The resulting image.</returns>
 		/// <exception cref="PlatformNotSupportedException"></exception>
-		public Image GetImage(Size size, ShellItemGetImageOptions flags) => Images.GetImageAsync(size, flags).Result.ToBitmap();
+		public SafeHBITMAP GetImage(SIZE size, ShellItemGetImageOptions flags) => Images.GetImageAsync(size, flags).Result;
 
 		/// <summary>Gets a property description list object given a reference to a property key.</summary>
 		/// <param name="keyType">

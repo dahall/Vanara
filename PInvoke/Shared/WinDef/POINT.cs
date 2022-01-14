@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Drawing;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -69,15 +70,15 @@ namespace Vanara.PInvoke
 		/// <returns>The <see cref="SIZE"/> that results from the conversion.</returns>
 		public static explicit operator SIZE(POINT p) => new(p.X, p.Y);
 
-		/// <summary>Performs an implicit conversion from <see cref="POINT"/> to <see cref="System.Drawing.Point"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="POINT"/> to <see cref="Point"/>.</summary>
 		/// <param name="p">The <see cref="POINT"/>.</param>
-		/// <returns>The <see cref="System.Drawing.Point"/> result of the conversion.</returns>
-		public static implicit operator System.Drawing.Point(POINT p) => new(p.X, p.Y);
+		/// <returns>The <see cref="Point"/> result of the conversion.</returns>
+		public static implicit operator Point(POINT p) => new(p.X, p.Y);
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Drawing.Point"/> to <see cref="POINT"/>.</summary>
-		/// <param name="p">The <see cref="System.Drawing.Point"/>.</param>
+		/// <summary>Performs an implicit conversion from <see cref="Point"/> to <see cref="POINT"/>.</summary>
+		/// <param name="p">The <see cref="Point"/>.</param>
 		/// <returns>The <see cref="POINT"/> result of the conversion.</returns>
-		public static implicit operator POINT(System.Drawing.Point p) => new(p.X, p.Y);
+		public static implicit operator POINT(Point p) => new(p.X, p.Y);
 
 		/// <summary>Translates a <see cref="POINT"/> by the negative of a given <see cref="SIZE"/>.</summary>
 		/// <param name="pt">The <see cref="POINT"/> to translate.</param>
@@ -130,7 +131,7 @@ namespace Vanara.PInvoke
 		public override bool Equals(object obj) => obj switch
 		{
 			POINT p => Equals(p),
-			System.Drawing.Point p => Equals((POINT)p),
+			Point p => Equals((POINT)p),
 			_ => false
 		};
 

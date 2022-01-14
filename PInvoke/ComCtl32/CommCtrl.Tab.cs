@@ -1,7 +1,5 @@
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -648,7 +646,7 @@ namespace Vanara.PInvoke
 		public struct TCHITTESTINFO
 		{
 			/// <summary>Position to hit test, in client coordinates.</summary>
-			public Point pt;
+			public POINT pt;
 
 			/// <summary>Variable that receives the results of a hit test. The tab control sets this member to one of the following values:</summary>
 			public TabControlHitTestFlags flags;

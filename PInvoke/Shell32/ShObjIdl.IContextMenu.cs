@@ -765,7 +765,7 @@ namespace Vanara.PInvoke
 			/// The point where the command is invoked. If the fMask member does not specify CMIC_MASK_PTINVOKE, this member is ignored. This
 			/// member is not valid prior to Internet Explorer 4.0.
 			/// </summary>
-			public System.Drawing.Point ptInvoke;
+			public POINT ptInvoke;
 
 			/// <summary>
 			/// Initializes a new instance of the <see cref="CMINVOKECOMMANDINFOEX"/> struct with a menu-identifier offset of the command to

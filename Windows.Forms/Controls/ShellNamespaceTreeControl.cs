@@ -14,6 +14,7 @@ using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
+using DragEventArgs = System.Windows.Forms.DragEventArgs;
 using IMessageFilter = System.Windows.Forms.IMessageFilter;
 
 namespace Vanara.Windows.Forms

@@ -1620,7 +1620,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "2a56c71b-2e96-418b-8625-a808d76e0c85")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PlgBlt(HDC hdcDest, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 3)] System.Drawing.Point[] lpPoint,
+		public static extern bool PlgBlt(HDC hdcDest, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 3)] POINT[] lpPoint,
 			HDC hdcSrc, int xSrc, int ySrc, int width, int height, HBITMAP hbmMask, int xMask, int yMask);
 
 		/// <summary>

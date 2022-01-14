@@ -48,7 +48,7 @@ namespace Vanara.Extensions
 				throw new ArgumentOutOfRangeException(nameof(index));
 			if (overlayImageIndex < 0 || overlayImageIndex > imageList.GetOverlayCount())
 				throw new ArgumentOutOfRangeException(nameof(overlayImageIndex));
-			using (var hg = new SafeHDC(g))
+			using (var hg = new SafeTempHDC(g))
 			{
 				var p = new IMAGELISTDRAWPARAMS(hg, bounds, index, bgColor, style | (IMAGELISTDRAWFLAGS)INDEXTOOVERLAYMASK(overlayImageIndex)) { rgbFg = fgColor };
 				imageList.GetIImageList().Draw(p);

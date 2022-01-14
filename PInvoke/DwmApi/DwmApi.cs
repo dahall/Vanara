@@ -645,7 +645,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmRenderGesture(GESTURE_TYPE gt, uint cContacts, ref uint pdwPointerID, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] System.Drawing.Point[] pPoints);
+		public static extern HRESULT DwmRenderGesture(GESTURE_TYPE gt, uint cContacts, ref uint pdwPointerID, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINT[] pPoints);
 
 		/// <summary>
 		/// Sets a static, iconic bitmap to display a live preview (also known as a Peek preview) of a window or tab. The taskbar can use
@@ -661,7 +661,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmSetIconicLivePreviewBitmap(HWND hwnd, HBITMAP hbmp, in System.Drawing.Point pptClient, DWM_SETICONICPREVIEW_Flags dwSITFlags);
+		public static extern HRESULT DwmSetIconicLivePreviewBitmap(HWND hwnd, HBITMAP hbmp, in POINT pptClient, DWM_SETICONICPREVIEW_Flags dwSITFlags);
 
 		/// <summary>
 		/// Sets a static, iconic bitmap to display a live preview (also known as a Peek preview) of a window or tab. The taskbar can use
@@ -747,7 +747,7 @@ namespace Vanara.PInvoke
 		/// <param name="ptTether">The tether.</param>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmTetherContact(uint dwPointerID, [MarshalAs(UnmanagedType.Bool)] bool fEnable, System.Drawing.Point ptTether);
+		public static extern HRESULT DwmTetherContact(uint dwPointerID, [MarshalAs(UnmanagedType.Bool)] bool fEnable, POINT ptTether);
 
 		/// <summary>Coordinates the animations of tool windows with the Desktop Window Manager (DWM).</summary>
 		/// <param name="hwnd">Handle to the window.</param>
@@ -828,10 +828,6 @@ namespace Vanara.PInvoke
 				dwFlags = DWM_BLURBEHIND_Mask.DWM_BB_ENABLE;
 			}
 
-			/// <summary>Gets the region.</summary>
-			/// <value>The region.</value>
-			public System.Drawing.Region Region => System.Drawing.Region.FromHrgn((IntPtr)hRgnBlur);
-
 			/// <summary>Gets or sets a value indicating whether the window's colorization should transition to match the maximized windows.</summary>
 			/// <value><c>true</c> if the window's colorization should transition to match the maximized windows; otherwise, <c>false</c>.</value>
 			public bool TransitionOnMaximized
@@ -844,14 +840,16 @@ namespace Vanara.PInvoke
 				}
 			}
 
+#if SYSDRAW
 			/// <summary>Sets the region.</summary>
 			/// <param name="graphics">The graphics.</param>
 			/// <param name="region">The region.</param>
-			public void SetRegion(System.Drawing.Graphics graphics, System.Drawing.Region region)
+			public void SetRegion(Graphics graphics, Region region)
 			{
 				hRgnBlur = region.GetHrgn(graphics);
 				dwFlags |= DWM_BLURBEHIND_Mask.DWM_BB_BLURREGION;
 			}
+#endif
 		}
 
 		/// <summary>Structure to get colorization information using the <see cref="DwmpGetColorizationParameters"/> function.</summary>

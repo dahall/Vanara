@@ -6,9 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <!--<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>-->
     <TargetFrameworks>net20;net35;net40;net45;net5.0;net6.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Gdi32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -27,8 +24,5 @@ ABC ABCFLOAT AXESLIST AXISINFO BITMAP BITMAPCOREHEADER BITMAPCOREINFO BITMAPFILE
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) ">
-      <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
   </ItemGroup>
 </Project>

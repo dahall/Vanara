@@ -3407,7 +3407,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontextowner-getacpfrompoint HRESULT GetACPFromPoint(
 			// const POINT *ptScreen, DWORD dwFlags, LONG *pacp );
 			[PreserveSig]
-			HRESULT GetACPFromPoint(in System.Drawing.Point ptScreen, GXFPF dwFlags, out int pacp);
+			HRESULT GetACPFromPoint(in POINT ptScreen, GXFPF dwFlags, out int pacp);
 
 			/// <summary>
 			/// The <c>ITfContextOwner::GetTextExt</c> method returns the bounding box, in screen coordinates, of the text at a specified

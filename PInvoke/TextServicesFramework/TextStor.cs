@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Vanara.InteropServices;
-using POINT = System.Drawing.Point;
 using TS_ATTRID = System.Guid;
 using TsViewCookie = System.UInt32;
 

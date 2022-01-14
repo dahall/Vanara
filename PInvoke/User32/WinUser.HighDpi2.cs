@@ -469,7 +469,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "C9ABDC73-1E96-42F1-B34D-3A649DDF02A6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LogicalToPhysicalPointForPerMonitorDPI(HWND hWnd, ref System.Drawing.Point lpPoint);
+		public static extern bool LogicalToPhysicalPointForPerMonitorDPI(HWND hWnd, ref POINT lpPoint);
 
 		/// <summary>
 		/// Converts a point in a window from logical coordinates into physical coordinates, regardless of the dots per inch (dpi) awareness
@@ -515,7 +515,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "DC744BFC-4410-4878-BEA7-382550DDF9E3")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PhysicalToLogicalPointForPerMonitorDPI(HWND hWnd, ref System.Drawing.Point lpPoint);
+		public static extern bool PhysicalToLogicalPointForPerMonitorDPI(HWND hWnd, ref POINT lpPoint);
 
 		/// <summary>Overrides the default per-monitor DPI scaling behavior of a child window in a dialog.</summary>
 		/// <param name="hWnd">A handle for the window whose behavior will be modified.</param>

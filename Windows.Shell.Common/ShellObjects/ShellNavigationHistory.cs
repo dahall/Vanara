@@ -15,6 +15,7 @@ namespace Vanara.Windows.Shell
 	{
 		private readonly History<PIDL> pidls = new();
 
+		/// <summary>Initializes a new instance of the <see cref="ShellNavigationHistory"/> class.</summary>
 		public ShellNavigationHistory()
 		{
 			pidls.CollectionChanged += (s, e) => CollectionChanged?.Invoke(this, e);

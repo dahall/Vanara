@@ -2446,7 +2446,7 @@ namespace Vanara.PInvoke
 					/// eye in the camera frame. If the iris-recognition system is monitoring both eyes, and both eyes are in the camera
 					/// frame, this position is probably of the center of the pupil of the right eye of the individual.
 					/// </summary>
-					public System.Drawing.Point PupilCenter_1;
+					public POINT PupilCenter_1;
 
 					/// <summary>
 					/// The position of the center of one of the pupils of the individual to enroll. If the iris-recognition system is only
@@ -2454,7 +2454,7 @@ namespace Vanara.PInvoke
 					/// is monitoring both eyes, and both eyes are in the camera frame, this position is probably of the center of the pupil
 					/// of the left eye of the individual.
 					/// </summary>
-					public System.Drawing.Point PupilCenter_2;
+					public POINT PupilCenter_2;
 
 					/// <summary>
 					/// The distance between the actual location of the iris and the ideal focal distance for the iris. This value ranges
@@ -2566,7 +2566,7 @@ namespace Vanara.PInvoke
 					/// The offset of the camera frame for the face from the video camera, in pixels. A value of (0, 0) indicates that the
 					/// camera frame for the face and the video camera completely overlap.
 					/// </summary>
-					public System.Drawing.Point FrameOffset;
+					public POINT FrameOffset;
 
 					/// <summary>The preferred orientation for the camera.</summary>
 					public WINBIO_ORIENTATION MandatoryOrientation;
@@ -2663,7 +2663,7 @@ namespace Vanara.PInvoke
 					/// The offset of the camera frame for the face from the video camera, in pixels. A value of (0, 0) indicates that the
 					/// camera frame for the face and the video camera completely overlap.
 					/// </summary>
-					public System.Drawing.Point FrameOffset;
+					public POINT FrameOffset;
 
 					/// <summary>The preferred orientation for the camera.</summary>
 					public WINBIO_ORIENTATION MandatoryOrientation;
@@ -3234,7 +3234,7 @@ namespace Vanara.PInvoke
 				/// the camera frame. If the iris-recognition system is monitoring both eyes, and both eyes are in the camera frame, this
 				/// position is probably of the center of the pupil of the right eye of the individual.
 				/// </summary>
-				public System.Drawing.Point PupilCenter_1;
+				public POINT PupilCenter_1;
 
 				/// <summary>
 				/// The position of the center of one of the pupils of the individual to enroll. If the iris-recognition system is only
@@ -3242,7 +3242,7 @@ namespace Vanara.PInvoke
 				/// monitoring both eyes, and both eyes are in the camera frame, this position is probably of the center of the pupil of the
 				/// left eye of the individual.
 				/// </summary>
-				public System.Drawing.Point PupilCenter_2;
+				public POINT PupilCenter_2;
 
 				/// <summary>
 				/// The distance between the actual location of the iris and the ideal focal distance for the iris. This value ranges from

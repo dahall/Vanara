@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.PInvoke;
 
 namespace Vanara.Extensions
 {
@@ -69,26 +70,6 @@ namespace Vanara.Extensions
 					gp.AddLine(r.X, r.Y + r.Height, r.X, r.Y + r.Height);
 			}
 			gp.CloseFigure();
-		}
-
-		/// <summary>A method to darken a color by a percentage of the difference between the color and Black.</summary>
-		/// <param name="colorIn">The original color.</param>
-		/// <param name="percent">The percentage by which to darken the original color.</param>
-		/// <returns>
-		/// The return color's Alpha value will be unchanged, but the RGB content will have been increased by the specified percentage. If
-		/// percent is 100 then the returned Color will be Black with original Alpha.
-		/// </returns>
-		public static Color Darken(this Color colorIn, float percent)
-		{
-			if (percent < 0 || percent > 1.0)
-				throw new ArgumentOutOfRangeException(nameof(percent));
-
-			int a = colorIn.A;
-			var r = colorIn.R - (int)(colorIn.R * percent);
-			var g = colorIn.G - (int)(colorIn.G * percent);
-			var b = colorIn.B - (int)(colorIn.B * percent);
-
-			return Color.FromArgb(a, r, g, b);
 		}
 
 		/// <summary>Draws image with specified parameters.</summary>
@@ -219,26 +200,6 @@ namespace Vanara.Extensions
 			static double CalcOrigColor(byte w, byte b) => 255.0 * b / (255.0 - w + b);
 		}
 
-		/// <summary>A method to lighten a color by a percentage of the difference between the color and Black.</summary>
-		/// <param name="colorIn">The original color.</param>
-		/// <param name="percent">The percentage by which to lighten the original color.</param>
-		/// <returns>
-		/// The return color's Alpha value will be unchanged, but the RGB content will have been decreased by the specified percentage. If
-		/// percent is 100 then the returned Color will be White with original Alpha.
-		/// </returns>
-		public static Color Lighten(this Color colorIn, float percent)
-		{
-			if (percent < 0 || percent > 1.0)
-				throw new ArgumentOutOfRangeException(nameof(percent));
-
-			int a = colorIn.A;
-			var r = colorIn.R + (int)((255f - colorIn.R) * percent);
-			var g = colorIn.G + (int)((255f - colorIn.G) * percent);
-			var b = colorIn.B + (int)((255f - colorIn.B) * percent);
-
-			return Color.FromArgb(a, r, g, b);
-		}
-
 		/// <summary>Resize the image to the specified width and height.</summary>
 		/// <param name="image">The image to resize.</param>
 		/// <param name="width">The width to resize to.</param>
@@ -279,7 +240,7 @@ namespace Vanara.Extensions
 				if (bitmap == null) throw new ArgumentNullException(nameof(bitmap));
 				if (Image.GetPixelFormatSize(bitmap.PixelFormat) != 32) throw new ArgumentException(@"Bitmap pixels must be 32bpp.", nameof(bitmap));
 				bmp = bitmap;
-				bd = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size), ImageLockMode.ReadWrite, bmp.PixelFormat);
+				bd = bmp.LockBits(new Rectangle(POINT.Empty, bmp.Size), ImageLockMode.ReadWrite, bmp.PixelFormat);
 			}
 
 			/// <summary>Finalizes an instance of the <see cref="SmartBitmapLock"/> class.</summary>

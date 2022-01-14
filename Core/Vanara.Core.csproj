@@ -26,9 +26,6 @@ CorrespondingAction, FileAttributeConstant, FileOpConstant, FilePermissionConsta
 
 </PackageReleaseNotes>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
-    <Reference Include="System.Drawing" />
-  </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
     <Reference Include="WindowsBase" />
   </ItemGroup>

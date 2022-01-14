@@ -7162,7 +7162,7 @@ namespace Vanara.PInvoke
 			/// new process calls <c>CreateWindow</c> to create an overlapped window if the x or y parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
 			/// </para>
 			/// </summary>
-			public System.Drawing.Point WindowPosition { get => new System.Drawing.Point((int)dwX, (int)dwY); set { dwX = (uint)value.X; dwY = (uint)value.Y; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEPOSITION, value != System.Drawing.Point.Empty); } }
+			public POINT WindowPosition { get => new POINT((int)dwX, (int)dwY); set { dwX = (uint)value.X; dwY = (uint)value.Y; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEPOSITION, value != POINT.Empty); } }
 
 			/// <summary>
 			/// <para>The height of the window if a new window is created, in pixels.</para>

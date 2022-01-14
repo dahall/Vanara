@@ -18,7 +18,7 @@ namespace Vanara.Extensions
 		/// <returns>The margins defined for the property.</returns>
 		public static Padding GetMargins2(this VisualStyleRenderer rnd, IDeviceContext dc = null, MarginProperty prop = MarginProperty.ContentMargins)
 		{
-			using (var hdc = new SafeHDC(dc))
+			using (var hdc = new SafeTempHDC(dc))
 			{
 				GetThemeMargins(rnd.GetSafeHandle(), hdc, rnd.Part, rnd.State, (int)prop, null, out MARGINS m);
 				return new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight);

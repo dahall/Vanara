@@ -26,10 +26,10 @@ namespace Vanara.PInvoke
 		/// <summary>The y-coordinate of the upper-left corner of the rectangle.</summary>
 		public int top;
 
-		/// <summary>he x-coordinate of the lower-right corner of the rectangle.</summary>
+		/// <summary>The x-coordinate of the lower-right corner of the rectangle.</summary>
 		public int right;
 
-		/// <summary>he y-coordinate of the lower-right corner of the rectangle.</summary>
+		/// <summary>The y-coordinate of the lower-right corner of the rectangle.</summary>
 		public int bottom;
 
 		/// <summary>Initializes a new instance of the <see cref="RECT"/> struct.</summary>
@@ -50,6 +50,18 @@ namespace Vanara.PInvoke
 		public RECT(Rectangle r) : this(r.Left, r.Top, r.Right, r.Bottom)
 		{
 		}
+
+		/// <summary>The x-coordinate of the upper-left corner of the rectangle.</summary>
+		public int Left { get => left; set => left = value; }
+
+		/// <summary>The x-coordinate of the lower-right corner of the rectangle.</summary>
+		public int Right { get => right; set => right = value; }
+
+		/// <summary>The y-coordinate of the upper-left corner of the rectangle.</summary>
+		public int Top { get => top; set => top = value; }
+
+		/// <summary>The y-coordinate of the lower-right corner of the rectangle.</summary>
+		public int Bottom { get => bottom; set => bottom = value; }
 
 		/// <summary>Gets or sets the x-coordinate of the upper-left corner of this <see cref="RECT"/> structure.</summary>
 		/// <value>The x-coordinate of the upper-left corner of this <see cref="RECT"/> structure. The default is 0.</value>

@@ -17,7 +17,7 @@ namespace Vanara.Extensions
 		/// <param name="pt">The pt.</param>
 		/// <param name="newWin">The new win.</param>
 		/// <returns></returns>
-		public static Point MapPoint(this IWin32Window ctrl, Point pt, IWin32Window newWin = null)
+		public static POINT MapPoint(this IWin32Window ctrl, POINT pt, IWin32Window newWin = null)
 		{
 			MapWindowPoints(GetHandle(ctrl), GetHandle(newWin), ref pt, 1);
 			return pt;
@@ -31,11 +31,11 @@ namespace Vanara.Extensions
 		/// <param name="points">The points.</param>
 		/// <param name="newWin">The new win.</param>
 		/// <exception cref="System.ArgumentNullException">points</exception>
-		public static void MapPoints(this IWin32Window ctrl, Point[] points, IWin32Window newWin = null)
+		public static void MapPoints(this IWin32Window ctrl, POINT[] points, IWin32Window newWin = null)
 		{
 			if (points == null) throw new ArgumentNullException(nameof(points));
 			MapWindowPoints(GetHandle(ctrl), GetHandle(newWin), points, points.Length);
-			/*Point[] pts = new Point[points.Length];
+			/*POINT[] pts = new POINT[points.Length];
 			points.CopyTo(pts, 0);
 			for (int i = 0; i < pts.Length; i++)
 				MapWindowPoints(GetHandleRef(ctrl), GetHandleRef(newWin), ref pts[i], 1);
@@ -46,7 +46,7 @@ namespace Vanara.Extensions
 		/// <param name="ctrl">The control.</param>
 		/// <param name="pt">The pt.</param>
 		/// <returns></returns>
-		public static Point MapPointToClient(this IWin32Window ctrl, Point pt) => MapPoint(null, pt, ctrl);
+		public static POINT MapPointToClient(this IWin32Window ctrl, POINT pt) => MapPoint(null, pt, ctrl);
 
 		/// <summary>
 		/// The MapPoint method converts (maps) a rectangle from a coordinate space relative to one window to a coordinate space relative to

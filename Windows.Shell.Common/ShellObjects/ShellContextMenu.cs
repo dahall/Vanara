@@ -1,6 +1,5 @@
 ﻿// Credit due to Gong-Shell from which this was largely taken.
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -195,7 +194,7 @@ namespace Vanara.Windows.Shell
 		/// </param>
 		/// <param name="parameters">Optional parameters.</param>
 		public void InvokeCommand(ResourceId verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default,
-			Point? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
+			POINT? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
 			bool logUsage = false, bool noZoneChecks = false, string parameters = null)
 		{
 			var invoke = new CMINVOKECOMMANDINFOEX
@@ -275,7 +274,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Shows a context menu for a shell item.</summary>
 		/// <param name="pos">The position on the screen that the menu should be displayed at.</param>
 		/// <param name="menuOptions">The options that determine which items are requested from <see cref="IContextMenu"/>.</param>
-		public void ShowContextMenu(Point pos, CMF menuOptions = CMF.CMF_EXTENDEDVERBS)
+		public void ShowContextMenu(POINT pos, CMF menuOptions = CMF.CMF_EXTENDEDVERBS)
 		{
 			using var hmenu = CreatePopupMenu();
 			ComInterface.QueryContextMenu(hmenu, 0, m_CmdFirst, int.MaxValue, menuOptions).ThrowIfFailed();

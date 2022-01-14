@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -132,7 +131,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "0106867c-e8c5-4826-8cba-60c29e1d021a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DPtoLP(HDC hdc, [In, Out] Point[] lppt, int c);
+		public static extern bool DPtoLP(HDC hdc, [In, Out] POINT[] lppt, int c);
 
 		/// <summary>The <c>GetCurrentPositionEx</c> function retrieves the current position in logical coordinates.</summary>
 		/// <param name="hdc">A handle to the device context.</param>
@@ -146,7 +145,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "23a5ac58-2b88-42d3-ab02-8edb8ef187cc")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCurrentPositionEx(HDC hdc, out Point lppt);
+		public static extern bool GetCurrentPositionEx(HDC hdc, out POINT lppt);
 
 		/// <summary>The <c>GetGraphicsMode</c> function retrieves the current graphics mode for the specified device context.</summary>
 		/// <param name="hdc">A handle to the device context.</param>
@@ -274,7 +273,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "6e6c7090-edf4-46a3-8bcd-10a00c0cf847")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetViewportOrgEx(HDC hdc, out Point lppoint);
+		public static extern bool GetViewportOrgEx(HDC hdc, out POINT lppoint);
 
 		/// <summary>This function retrieves the x-extent and y-extent of the window for the specified device context.</summary>
 		/// <param name="hdc">A handle to the device context.</param>
@@ -304,7 +303,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "9579ed10-6d4c-4724-af8b-22cab5b6ff5e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetWindowOrgEx(HDC hdc, out Point lppoint);
+		public static extern bool GetWindowOrgEx(HDC hdc, out POINT lppoint);
 
 		/// <summary>The <c>GetWorldTransform</c> function retrieves the current world-space to page-space transformation.</summary>
 		/// <param name="hdc">A handle to the device context.</param>
@@ -331,7 +330,7 @@ namespace Vanara.PInvoke
 		/// <returns>The height in pixels.</returns>
 		public static int LogicalHeightToDeviceWidth(int height, HDC hdc = default)
 		{
-			var pts = new[] { new Point(0, height) };
+			var pts = new[] { new POINT(0, height) };
 			LPtoDP(hdc.IsNull ? SafeHDC.ScreenCompatibleDCHandle : hdc, pts, 1);
 			return pts[0].Y;
 		}
@@ -342,7 +341,7 @@ namespace Vanara.PInvoke
 		/// <returns>The width in pixels.</returns>
 		public static int LogicalWidthToDeviceWidth(int width, HDC hdc = default)
 		{
-			var pts = new[] { new Point(width, 0) };
+			var pts = new[] { new POINT(width, 0) };
 			LPtoDP(hdc.IsNull ? SafeHDC.ScreenCompatibleDCHandle : hdc, pts, 1);
 			return pts[0].X;
 		}
@@ -385,7 +384,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "670a16fb-842e-4250-9ad7-dc08e849c2ba")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LPtoDP(HDC hdc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Point[] lppt, int c);
+		public static extern bool LPtoDP(HDC hdc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] lppt, int c);
 
 		/// <summary>
 		/// The <c>ModifyWorldTransform</c> function changes the world transformation for a device context using the specified mode.
@@ -462,7 +461,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "54311cbe-1c54-4193-8991-891dbd0856bf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OffsetViewportOrgEx(HDC hdc, int x, int y, out Point lppt);
+		public static extern bool OffsetViewportOrgEx(HDC hdc, int x, int y, out POINT lppt);
 
 		/// <summary>
 		/// The <c>OffsetWindowOrgEx</c> function modifies the window origin for a device context using the specified horizontal and vertical offsets.
@@ -483,7 +482,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "085f40ac-d91f-4853-8ad1-1fc5da08b981")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OffsetWindowOrgEx(HDC hdc, int x, int y, out Point lppt);
+		public static extern bool OffsetWindowOrgEx(HDC hdc, int x, int y, out POINT lppt);
 
 		/// <summary>
 		/// The <c>ScaleViewportExtEx</c> function modifies the viewport for a device context using the ratios formed by the specified
@@ -766,7 +765,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "d3b6326e-9fec-42a1-8d2e-d1ad4fcc79a4")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetViewportOrgEx(HDC hdc, int x, int y, out Point lppt);
+		public static extern bool SetViewportOrgEx(HDC hdc, int x, int y, out POINT lppt);
 
 		/// <summary>
 		/// The <c>SetWindowExtEx</c> function sets the horizontal and vertical extents of the window for a device context by using the
@@ -854,7 +853,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "75409b5a-c003-49f2-aceb-a28330b92b0a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWindowOrgEx(HDC hdc, int x, int y, out Point lppt);
+		public static extern bool SetWindowOrgEx(HDC hdc, int x, int y, out POINT lppt);
 
 		/// <summary>
 		/// The <c>SetWorldTransform</c> function sets a two-dimensional linear transformation between world space and page space for the

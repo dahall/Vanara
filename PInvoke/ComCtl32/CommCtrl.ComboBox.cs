@@ -144,11 +144,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the item rectangle.</summary>
 			/// <value>The item rectangle.</value>
-			public System.Drawing.Rectangle ItemRectangle => rcItem;
+			public RECT ItemRectangle => rcItem;
 
 			/// <summary>Gets the button rectangle.</summary>
 			/// <value>The button rectangle.</value>
-			public System.Drawing.Rectangle ButtonRectangle => rcButton;
+			public RECT ButtonRectangle => rcButton;
 		}
 
 		/// <summary>Contains information used with the CBEN_DRAGBEGIN notification code.</summary>

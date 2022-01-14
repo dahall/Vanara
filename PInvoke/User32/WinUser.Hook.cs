@@ -1268,7 +1268,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The x- and y-coordinates of the cursor, in screen coordinates.</para>
 			/// </summary>
-			public System.Drawing.Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
@@ -1305,7 +1305,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The x- and y-coordinates of the cursor, in screen coordinates.</para>
 			/// </summary>
-			public System.Drawing.Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
@@ -1368,7 +1368,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The x- and y-coordinates of the cursor, in per-monitor-aware screen coordinates.</para>
 			/// </summary>
-			public System.Drawing.Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>

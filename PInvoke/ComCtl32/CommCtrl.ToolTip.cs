@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
@@ -935,7 +934,7 @@ namespace Vanara.PInvoke
 			public HWND hwnd;
 
 			/// <summary>Client coordinates of the point to test.</summary>
-			public Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// TOOLINFO structure. If the point specified by pt is in the tool specified by hwnd, this structure receives information about

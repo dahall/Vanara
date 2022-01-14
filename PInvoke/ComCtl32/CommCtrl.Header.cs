@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -950,7 +949,7 @@ namespace Vanara.PInvoke
 		public sealed class HDHITTESTINFO
 		{
 			/// <summary>A POINT structure that contains the point to be hit test, in client coordinates.</summary>
-			public Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// The variable that receives information about the results of a hit test. Two of these values can be combined, such as when the
@@ -1034,13 +1033,6 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="HDITEM"/> class.</summary>
 			/// <param name="text">The text.</param>
 			public HDITEM(string text = null) => Text = text;
-
-			/// <summary>Gets or sets the bitmap. Aligned to the <see cref="hbm"/> field.</summary>
-			public Bitmap Bitmap
-			{
-				get => hbm.IsNull ? null : Image.FromHbitmap((IntPtr)hbm);
-				set { hbm = value?.GetHbitmap() ?? IntPtr.Zero; EnumExtensions.SetFlags(ref mask, HeaderItemMask.HDI_BITMAP); }
-			}
 
 			/// <summary>Gets or sets a value indicating whether this <see cref="HDITEM"/> is checked.</summary>
 			/// <value><c>true</c> if checked; otherwise, <c>false</c>.</value>

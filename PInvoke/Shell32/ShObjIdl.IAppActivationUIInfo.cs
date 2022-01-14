@@ -15,7 +15,7 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			[PreserveSig]
-			HRESULT GetInvokePoint(out System.Drawing.Point value);
+			HRESULT GetInvokePoint(out POINT value);
 
 			/// <summary/>
 			[PreserveSig]

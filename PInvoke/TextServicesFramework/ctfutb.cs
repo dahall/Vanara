@@ -646,7 +646,7 @@ namespace Vanara.PInvoke
 			/// <summary>Not currently used.</summary>
 			/// <param name="click">Contains one of the TfLBIClick values that indicate which mouse button was used to click the balloon.</param>
 			/// <param name="pt">
-			/// Pointer to a System.Drawing.Point structure that contains the position of the mouse cursor, in screen coordinates, at the
+			/// Pointer to a Point structure that contains the position of the mouse cursor, in screen coordinates, at the
 			/// time of the click event.
 			/// </param>
 			/// <param name="prcArea">Pointer to a RECT structure that contains the bounding rectangle, in screen coordinates, of the balloon.</param>
@@ -668,10 +668,10 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/ctfutb/nf-ctfutb-itflangbaritemballoon-onclick HRESULT OnClick( TfLBIClick
-			// click, System.Drawing.Point pt, const RECT *prcArea );
+			// click, Point pt, const RECT *prcArea );
 			[Obsolete("Not currently used.")]
 			[PreserveSig]
-			HRESULT OnClick([In] TfLBIClick click, [In] System.Drawing.Point pt, in RECT prcArea);
+			HRESULT OnClick([In] TfLBIClick click, [In] POINT pt, in RECT prcArea);
 
 			/// <summary>Obtains the preferred size,in pixels, of the balloon.</summary>
 			/// <param name="pszDefault">Pointer to a SIZE structure that contains the default size, in pixels, of the balloon.</param>
@@ -875,7 +875,7 @@ namespace Vanara.PInvoke
 			/// <summary>Not currently used.</summary>
 			/// <param name="click">Contains one of the TfLBIClick values that indicate which mouse button was used to click the bitmap.</param>
 			/// <param name="pt">
-			/// Pointer to a System.Drawing.Point structure that contains the position of the mouse cursor, in screen coordinates, at the
+			/// Pointer to a Point structure that contains the position of the mouse cursor, in screen coordinates, at the
 			/// time of the click event.
 			/// </param>
 			/// <param name="prcArea">Pointer to a RECT structure that contains the bounding rectangle, in screen coordinates, of the bitmap.</param>
@@ -897,10 +897,10 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/ctfutb/nf-ctfutb-itflangbaritembitmap-onclick HRESULT OnClick( TfLBIClick
-			// click, System.Drawing.Point pt, const RECT *prcArea );
+			// click, Point pt, const RECT *prcArea );
 			[Obsolete("Not currently used.")]
 			[PreserveSig]
-			HRESULT OnClick([In] TfLBIClick click, [In] System.Drawing.Point pt, in RECT prcArea);
+			HRESULT OnClick([In] TfLBIClick click, [In] POINT pt, in RECT prcArea);
 
 			/// <summary>Obtains the preferred size, in pixels, of the bitmap.</summary>
 			/// <param name="pszDefault">Pointer to a SIZE structure that contains the default size, in pixels, of the bitmap.</param>
@@ -1116,7 +1116,7 @@ namespace Vanara.PInvoke
 			/// <summary>This method is not used if the button item does not have the TF_LBI_STYLE_BTN_BUTTON style.</summary>
 			/// <param name="click">Contains a TfLBIClick value that indicates which mouse button was used to click the button.</param>
 			/// <param name="pt">
-			/// Pointer to a System.Drawing.Point structure that contains the position, in screen coordinates, of the mouse cursor at the
+			/// Pointer to a Point structure that contains the position, in screen coordinates, of the mouse cursor at the
 			/// time of the click event.
 			/// </param>
 			/// <param name="prcArea">Pointer to a RECT structure that contains the bounding rectangle, in screen coordinates, of the button.</param>
@@ -1138,9 +1138,9 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/ctfutb/nf-ctfutb-itflangbaritembitmapbutton-onclick HRESULT OnClick(
-			// TfLBIClick click, System.Drawing.Point pt, const RECT *prcArea );
+			// TfLBIClick click, Point pt, const RECT *prcArea );
 			[PreserveSig]
-			HRESULT OnClick([In] TfLBIClick click, [In] System.Drawing.Point pt, in RECT prcArea);
+			HRESULT OnClick([In] TfLBIClick click, [In] POINT pt, in RECT prcArea);
 
 			/// <summary>This method is not used if the button item does not have the TF_LBI_STYLE_BTN_MENU style.</summary>
 			/// <param name="pMenu">
@@ -1454,7 +1454,7 @@ namespace Vanara.PInvoke
 			/// <summary>This method is not used if the button item does not have the TF_LBI_STYLE_BTN_BUTTON style.</summary>
 			/// <param name="click">Contains one of the TfLBIClick values that indicate which mouse button was used to click the button.</param>
 			/// <param name="pt">
-			/// Pointer to a System.Drawing.Point structure that contains the position of the mouse cursor, in screen coordinates, at the
+			/// Pointer to a Point structure that contains the position of the mouse cursor, in screen coordinates, at the
 			/// time of the click event.
 			/// </param>
 			/// <param name="prcArea">Pointer to a RECT structure that contains the bounding rectangle, in screen coordinates, of the button.</param>
@@ -1476,9 +1476,9 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/win32/api/ctfutb/nf-ctfutb-itflangbaritembutton-onclick HRESULT OnClick( TfLBIClick
-			// click, System.Drawing.Point pt, const RECT *prcArea );
+			// click, Point pt, const RECT *prcArea );
 			[PreserveSig]
-			HRESULT OnClick([In] TfLBIClick click, [In] System.Drawing.Point pt, in RECT prcArea);
+			HRESULT OnClick([In] TfLBIClick click, [In] POINT pt, in RECT prcArea);
 
 			/// <summary>This method is not used if the button item does not have the TF_LBI_STYLE_BTN_MENU style.</summary>
 			/// <param name="pMenu">

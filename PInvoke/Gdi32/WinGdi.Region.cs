@@ -34,6 +34,17 @@ namespace Vanara.PInvoke
 			RGN_COPY = 5,
 		}
 
+		/// <summary>The fill mode used to determine which pixels are in the region.</summary>
+		[PInvokeData("wingdi.h", MSDNShortId = "ef9fc4f3-737e-4c10-a80b-8ae2097c17d1")]
+		public enum RGN_FILLMODE
+		{
+			/// <summary>Selects alternate mode (fills area between odd-numbered and even-numbered polygon sides on each scan line).</summary>
+			ALTERNATE,
+
+			/// <summary>Selects winding mode (fills any region with a nonzero winding value).</summary>
+			WINDING
+		}
+
 		/// <summary>The type of the resulting region.</summary>
 		[PInvokeData("wingdi.h", MSDNShortId = "ef9fc4f3-737e-4c10-a80b-8ae2097c17d1")]
 		public enum RGN_TYPE
@@ -209,7 +220,7 @@ namespace Vanara.PInvoke
 		// int cPoint, int iMode );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "dd7ad6de-c5f2-46e4-8d28-24caaa48ba3a")]
-		public static extern SafeHRGN CreatePolygonRgn(System.Drawing.Point pptl, int cPoint, System.Drawing.Drawing2D.FillMode iMode);
+		public static extern SafeHRGN CreatePolygonRgn(POINT pptl, int cPoint, RGN_FILLMODE iMode);
 
 		/// <summary>The <c>CreatePolyPolygonRgn</c> function creates a region consisting of a series of polygons. The polygons can overlap.</summary>
 		/// <param name="pptl">
@@ -250,7 +261,7 @@ namespace Vanara.PInvoke
 		// *pptl, const INT *pc, int cPoly, int iMode );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "1113d3dc-8e3f-436c-a5a8-191785bc7fcc")]
-		public static extern SafeHRGN CreatePolyPolygonRgn([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] System.Drawing.Point[] pptl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] pc, int cPoly, System.Drawing.Drawing2D.FillMode iMode);
+		public static extern SafeHRGN CreatePolyPolygonRgn([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] pptl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] pc, int cPoly, RGN_FILLMODE iMode);
 
 		/// <summary>The <c>CreateRectRgn</c> function creates a rectangular region.</summary>
 		/// <param name="x1">Specifies the x-coordinate of the upper-left corner of the region in logical units.</param>
@@ -414,7 +425,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-getpolyfillmode int GetPolyFillMode( HDC hdc );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "febf96fb-bf2e-4eb2-ab5f-89741a1decad")]
-		public static extern System.Drawing.Drawing2D.FillMode GetPolyFillMode(HDC hdc);
+		public static extern RGN_FILLMODE GetPolyFillMode(HDC hdc);
 
 		/// <summary>
 		/// The <c>GetRegionData</c> function fills the specified buffer with data describing a region. This data includes the dimensions of
@@ -611,7 +622,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-setpolyfillmode int SetPolyFillMode( HDC hdc, int mode );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "233926c4-2658-405d-89b6-05ece844623d")]
-		public static extern System.Drawing.Drawing2D.FillMode SetPolyFillMode(HDC hdc, System.Drawing.Drawing2D.FillMode mode);
+		public static extern RGN_FILLMODE SetPolyFillMode(HDC hdc, RGN_FILLMODE mode);
 
 		/// <summary>The <c>SetRectRgn</c> function converts a region into a rectangular region with the specified coordinates.</summary>
 		/// <param name="hrgn">Handle to the region.</param>

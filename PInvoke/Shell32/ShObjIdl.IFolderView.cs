@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
@@ -317,20 +316,20 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the position of an item in the folder's view.</summary>
 			/// <param name="pidl">A pointer to an ITEMIDLIST interface.</param>
 			/// <returns>The position of the item's upper-left corner.</returns>
-			Point GetItemPosition([In] PIDL pidl);
+			POINT GetItemPosition([In] PIDL pidl);
 
 			/// <summary>
 			/// Gets a POINT structure containing the width (x) and height (y) dimensions, including the surrounding white space, of an item.
 			/// </summary>
 			/// <returns>The current sizing dimensions of the items in the folder's view.</returns>
-			Point GetSpacing();
+			POINT GetSpacing();
 
 			/// <summary>
 			/// Gets a pointer to a POINT structure containing the default width (x) and height (y) measurements of an item, including the
 			/// surrounding white space.
 			/// </summary>
 			/// <returns>The default sizing dimensions of the items in the folder's view.</returns>
-			Point GetDefaultSpacing();
+			POINT GetDefaultSpacing();
 
 			/// <summary>Gets the current state of the folder's Auto Arrange mode.</summary>
 			/// <returns>Returns S_OK if the folder is in Auto Arrange mode; S_FALSE if it is not.</returns>
@@ -350,7 +349,7 @@ namespace Vanara.PInvoke
 			/// name="apidl"/> should be positioned.
 			/// </param>
 			/// <param name="dwFlags">One of the _SVSIF constants that specifies the type of selection to apply.</param>
-			void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, [In] SVSIF dwFlags);
+			void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] POINT[] apt, [In] SVSIF dwFlags);
 		}
 
 		/// <summary>
@@ -412,20 +411,20 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the position of an item in the folder's view.</summary>
 			/// <param name="pidl">A pointer to an ITEMIDLIST interface.</param>
 			/// <returns>The position of the item's upper-left corner.</returns>
-			new Point GetItemPosition([In] PIDL pidl);
+			new POINT GetItemPosition([In] PIDL pidl);
 
 			/// <summary>
 			/// Gets a POINT structure containing the width (x) and height (y) dimensions, including the surrounding white space, of an item.
 			/// </summary>
 			/// <returns>The current sizing dimensions of the items in the folder's view.</returns>
-			new Point GetSpacing();
+			new POINT GetSpacing();
 
 			/// <summary>
 			/// Gets a pointer to a POINT structure containing the default width (x) and height (y) measurements of an item, including the
 			/// surrounding white space.
 			/// </summary>
 			/// <returns>The default sizing dimensions of the items in the folder's view.</returns>
-			new Point GetDefaultSpacing();
+			new POINT GetDefaultSpacing();
 
 			/// <summary>Gets the current state of the folder's Auto Arrange mode.</summary>
 			/// <returns>Returns S_OK if the folder is in Auto Arrange mode; S_FALSE if it is not.</returns>
@@ -445,7 +444,7 @@ namespace Vanara.PInvoke
 			/// name="apidl"/> should be positioned.
 			/// </param>
 			/// <param name="dwFlags">One of the _SVSIF constants that specifies the type of selection to apply.</param>
-			new void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, [In] SVSIF dwFlags);
+			new void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] POINT[] apt, [In] SVSIF dwFlags);
 
 			/// <summary>Groups the view by the given property key and direction.</summary>
 			/// <param name="key">

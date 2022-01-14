@@ -1414,7 +1414,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "87794ab0-a075-4a1f-869f-5998bdc57a1d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DragQueryPoint(HDROP hDrop, ref System.Drawing.Point ppt);
+		public static extern bool DragQueryPoint(HDROP hDrop, ref POINT ppt);
 
 		/// <summary>Creates a duplicate of a specified icon.</summary>
 		/// <param name="hInst">Type: <c>HINSTANCE</c></param>
