@@ -100,6 +100,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_ida typedef struct _IDA { UINT cidl; UINT
 		// aoffset[1]; } CIDA, *LPIDA;
 		[PInvokeData("shlobj_core.h", MSDNShortId = "30caf91d-8f3c-48ea-ad64-47f919f33f1d")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<CIDA>), nameof(cidl))]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CIDA
 		{
@@ -118,29 +119,18 @@ namespace Vanara.PInvoke
 			/// transferred. All of these PIDLs are relative to the PIDL of the parent folder.
 			/// </para>
 			/// </summary>
-			public IntPtr aoffset;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public uint[] aoffset;
 
-			/// <summary>
-			/// <para>Type: <c>UINT[]</c></para>
-			/// <para>
-			/// An array of offsets, relative to the beginning of this structure. The array contains <c>cidl</c>+1 elements. The first
-			/// element of <c>aoffset</c> contains an offset to the fully qualified PIDL of a parent folder. If this PIDL is empty, the
-			/// parent folder is the desktop. Each of the remaining elements of the array contains an offset to one of the PIDLs to be
-			/// transferred. All of these PIDLs are relative to the PIDL of the parent folder.
-			/// </para>
-			/// </summary>
-			/// <value>Returns a <see cref="uint"/>[] value.</value>
-			public uint[] offsets => aoffset.ToArray<uint>((int)cidl + 1);
-
-			/// <summary>Gets the folder PIDL from <see cref="offsets"/>.</summary>
+			/// <summary>Gets the folder PIDL from <see cref="aoffset"/>.</summary>
 			/// <returns>A PIDL.</returns>
 			public PIDL GetFolderPIDL()
 			{
 				using var pinned = new PinnedObject(this);
-				return new PIDL(((IntPtr)pinned).Offset(offsets[0]), true);
+				return new PIDL(((IntPtr)pinned).Offset(aoffset[0]), true);
 			}
 
-			/// <summary>Gets the item relative PIDL from <see cref="offsets"/> at the specified index.</summary>
+			/// <summary>Gets the item relative PIDL from <see cref="aoffset"/> at the specified index.</summary>
 			/// <param name="childIndex">Index of the child PIDL.</param>
 			/// <returns>A PIDL.</returns>
 			/// <exception cref="ArgumentOutOfRangeException">childIndex</exception>
@@ -148,7 +138,7 @@ namespace Vanara.PInvoke
 			{
 				if (childIndex >= cidl) throw new ArgumentOutOfRangeException(nameof(childIndex));
 				using var pinned = new PinnedObject(this);
-				return new PIDL(((IntPtr)pinned).Offset(offsets[childIndex + 1]), true);
+				return new PIDL(((IntPtr)pinned).Offset(aoffset[childIndex + 1]), true);
 			}
 		}
 
