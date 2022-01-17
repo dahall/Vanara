@@ -723,14 +723,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HGLOBAL : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HGLOBAL"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HGLOBAL(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HGLOBAL"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HGLOBAL NULL => new HGLOBAL(IntPtr.Zero);
+			public static HGLOBAL NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -743,7 +743,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HGLOBAL"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HGLOBAL(IntPtr h) => new HGLOBAL(h);
+			public static implicit operator HGLOBAL(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -758,7 +758,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HGLOBAL h1, HGLOBAL h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HGLOBAL h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HGLOBAL h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -771,14 +771,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HLOCAL : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HLOCAL"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HLOCAL(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HLOCAL"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HLOCAL NULL => new HLOCAL(IntPtr.Zero);
+			public static HLOCAL NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -791,7 +791,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HLOCAL"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HLOCAL(IntPtr h) => new HLOCAL(h);
+			public static implicit operator HLOCAL(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -806,7 +806,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HLOCAL h1, HLOCAL h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HLOCAL h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HLOCAL h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -820,6 +820,10 @@ namespace Vanara.PInvoke
 		/// <seealso cref="MemoryMethodsBase" />
 		public sealed class MoveableHGlobalMemoryMethods : MemoryMethodsBase
 		{
+			/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+			/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+			public override bool Lockable => true;
+
 			/// <summary>Gets a static instance of these methods.</summary>
 			public static readonly IMemoryMethods Instance = new MoveableHGlobalMemoryMethods();
 
@@ -843,9 +847,12 @@ namespace Vanara.PInvoke
 			/// <returns>A memory handle.</returns>
 			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalReAlloc(hMem, size, GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT));
 
-			/// <summary>Unlocks the memory of a specified handle.</summary>
+			/// <summary>
+			/// Unlocks the memory of a specified handle.
+			/// </summary>
 			/// <param name="hMem">A memory handle.</param>
-			public override void UnlockMem(IntPtr hMem) => GlobalUnlock(hMem);
+			/// <returns></returns>
+			public override bool UnlockMem(IntPtr hMem) => GlobalUnlock(hMem);
 		}
 	}
 }

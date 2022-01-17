@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.Ole32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
@@ -78,6 +81,91 @@ namespace Vanara.PInvoke
 
 			/// <summary><c>Windows Vista and later</c>. The descriptor is Unicode.</summary>
 			FD_UNICODE = 0x80000000,
+		}
+
+		private static object GetData(this IDataObject dataObj, uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
+		{
+			TYMED tymed = 0;
+			switch (formatId)
+			{
+				default:
+					throw new NotImplementedException();
+			}
+			FORMATETC formatetc = new()
+			{
+				cfFormat = unchecked((short)(ushort)formatId),
+				dwAspect = aspect,
+				lindex = index,
+				tymed = tymed
+			};
+			dataObj.GetData(ref formatetc, out var medium);
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Transfer a data stream to an object that contains a data source.</summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <param name="obj">The object to add.</param>
+		/// <param name="aspect">
+		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration
+		/// values. A single clipboard format can support multiple aspects or views of the object. Most data and presentation transfer
+		/// and caching methods pass aspect information. For example, a caller might request an object's iconic picture, using the
+		/// metafile clipboard format to retrieve it. Note that only one DVASPECT value can be used in dwAspect. That is, dwAspect cannot
+		/// be the result of a Boolean OR operation on several DVASPECT values.
+		/// </param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of
+		/// the data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		public static void SetData(this IDataObject dataObj, uint formatId, object obj, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
+		{
+			TYMED tymed = 0;
+			IntPtr mbr = default;
+			switch (obj)
+			{
+				case null:
+					tymed = TYMED.TYMED_NULL;
+					break;
+				case byte[] bytes:
+					tymed = TYMED.TYMED_HGLOBAL;
+					var hgmb = new SafeMoveableHGlobalHandle(bytes);
+					mbr = hgmb.TakeOwnership();
+					break;
+				case IStream str:
+					tymed = TYMED.TYMED_ISTREAM;
+					mbr = Marshal.GetIUnknownForObject(str);
+					break;
+				case IStorage store:
+					tymed = TYMED.TYMED_ISTORAGE;
+					mbr = Marshal.GetIUnknownForObject(store);
+					break;
+				case SafeAllocatedMemoryHandle h:
+					tymed = TYMED.TYMED_HGLOBAL;
+					var hgm = new SafeMoveableHGlobalHandle(h);
+					mbr = hgm.TakeOwnership();
+					break;
+				case HBITMAP hbmp:
+					tymed = TYMED.TYMED_GDI;
+					mbr = (IntPtr)hbmp;
+					break;
+				case HMETAFILE hmeta:
+					tymed = TYMED.TYMED_MFPICT;
+					mbr = (IntPtr)hmeta;
+					break;
+				case HENHMETAFILE henh:
+					tymed = TYMED.TYMED_ENHMF;
+					mbr = (IntPtr)henh;
+					break;
+			}
+			FORMATETC formatetc = new()
+			{
+				cfFormat = unchecked((short)(ushort)formatId),
+				dwAspect = aspect,
+				lindex = index,
+				tymed = tymed
+			};
+			STGMEDIUM medium = new() { tymed = tymed, unionmember = mbr };
+			dataObj.SetData(ref formatetc, ref medium, true);
 		}
 
 		/// <summary>
@@ -203,6 +291,18 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.Bool)]
 			public bool fWide;
+
+			/// <summary>
+			/// Gets the file name array appended to this struture. It consists of a series of strings, each containing one file's fully
+			/// qualified path. This method should only be called when the <see cref="DROPFILES"/> instance is a reference value pulled
+			/// from the clipboard's HGLOBAL allocation.
+			/// </summary>
+			/// <returns>The file list.</returns>
+			public string[] DangerousGetFileList()
+			{
+				using var pinned = new PinnedObject(this);
+				return ((IntPtr)pinned).ToStringEnum(fWide ? CharSet.Unicode : CharSet.Ansi, (int)pFiles).ToArray();
+			}
 		}
 
 		/// <summary>

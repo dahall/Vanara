@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using Vanara.PInvoke;
@@ -119,7 +120,7 @@ namespace Vanara.InteropServices.Tests
 
 			Assert.That(SafeHGlobalHandle.Null.ToEnumerable<RECT>(0), Is.Empty);
 			Assert.That(SafeHGlobalHandle.Null.ToEnumerable<Exception>(0), Is.Empty.And.EquivalentTo(new Exception[0]));
-			Assert.That(() => new SafeHGlobalHandle(5).ToEnumerable<Exception>(0), Throws.ArgumentException);
+			Assert.That(() => new SafeHGlobalHandle(5).ToEnumerable<Exception>(0).ToArray(), Throws.Exception);
 
 			Assert.That(SafeHGlobalHandle.Null.ToStructure<RECT>(), Is.EqualTo(default(RECT)));
 

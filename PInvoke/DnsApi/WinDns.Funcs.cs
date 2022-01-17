@@ -1588,6 +1588,10 @@ namespace Vanara.PInvoke
 		{
 			private bool self = false;
 
+			/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+			/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+			bool ISimpleMemoryMethods.Lockable => false;
+
 			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
 			/// <param name="size">The size, in bytes, of memory to allocate.</param>
 			/// <returns>A memory handle.</returns>
@@ -1604,7 +1608,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Unlocks the memory of a specified handle.</summary>
 			/// <param name="hMem">A memory handle.</param>
-			public void UnlockMem(IntPtr hMem) { }
+			public bool UnlockMem(IntPtr hMem) => false;
 		}
 	}
 }

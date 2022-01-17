@@ -154,6 +154,10 @@ namespace Vanara.InteropServices
 	/// <summary>Interface to capture unmanaged simple (alloc/free) memory methods.</summary>
 	public interface ISimpleMemoryMethods
 	{
+		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+		bool Lockable { get; }
+
 		/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
 		/// <param name="size">The size, in bytes, of memory to allocate.</param>
 		/// <returns>A memory handle.</returns>
@@ -170,13 +174,18 @@ namespace Vanara.InteropServices
 
 		/// <summary>Unlocks the memory of a specified handle.</summary>
 		/// <param name="hMem">A memory handle.</param>
-		void UnlockMem(IntPtr hMem);
+		/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
+		bool UnlockMem(IntPtr hMem);
 	}
 
 	/// <summary>Implementation of <see cref="IMemoryMethods"/> using just the methods from <see cref="ISimpleMemoryMethods"/>.</summary>
 	/// <seealso cref="Vanara.InteropServices.IMemoryMethods"/>
 	public abstract class MemoryMethodsBase : IMemoryMethods
 	{
+		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+		public virtual bool Lockable => false;
+
 		/// <summary>
 		/// Gets a handle to a memory allocation of the specified size.
 		/// </summary>
@@ -238,7 +247,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Unlocks the memory of a specified handle.</summary>
 		/// <param name="hMem">A memory handle.</param>
-		public virtual void UnlockMem(IntPtr hMem) { }
+		public virtual bool UnlockMem(IntPtr hMem) => false;
 	}
 
 	/// <summary>
@@ -257,6 +266,10 @@ namespace Vanara.InteropServices
 		[ExcludeFromCodeCoverage]
 		public string Dump => Size == 0 ? "" : string.Join(" ", GetBytes(0, Size).Select(b => b.ToString("X2")).ToArray());
 #endif
+
+		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+		public virtual bool Lockable => false;
 
 		/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 		/// <value>The size in bytes of the allocated memory block.</value>
@@ -291,10 +304,20 @@ namespace Vanara.InteropServices
 		public virtual Span<byte> AsBytes() => AsSpan<byte>(Size);
 #endif
 
+		/// <summary>Locks this instance.</summary>
+		public virtual void Lock()
+		{
+		}
+
+		/// <summary>Decrements the lock count.</summary>
+		/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
+		public virtual bool Unlock() => false;
+
 		/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
 		/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
 		public virtual IntPtr TakeOwnership()
 		{
+			while (Unlock()) ;
 			var h = handle;
 			SetHandleAsInvalid();
 			handle = IntPtr.Zero;
@@ -308,10 +331,34 @@ namespace Vanara.InteropServices
 		/// <returns>A byte array with the copied bytes.</returns>
 		public byte[] GetBytes(int startIndex, int count)
 		{
-			if (startIndex < 0 || startIndex + count > Size) throw new ArgumentOutOfRangeException();
+			if (startIndex < 0 || startIndex + count > Size) throw new ArgumentOutOfRangeException(nameof(startIndex));
 			var ret = new byte[count];
-			Marshal.Copy(handle.Offset(startIndex), ret, 0, count);
+			CallLocked(p => Marshal.Copy(p.Offset(startIndex), ret, 0, count));
 			return ret;
+		}
+
+		/// <summary>Runs a delegate method while locking the memory.</summary>
+		/// <param name="action">The action to perform while memory is locked.</param>
+		protected void CallLocked(Action<IntPtr> action)
+		{
+			if (!Lockable)
+				action.Invoke(handle);
+			else
+			{
+				try { Lock(); action.Invoke(handle); }
+				finally { Unlock(); }
+			}
+		}
+
+		/// <summary>Runs a delegate method while locking the memory.</summary>
+		/// <param name="action">The action to perform while memory is locked.</param>
+		protected TOut CallLocked<TOut>(Func<IntPtr, TOut> action)
+		{
+			if (!Lockable)
+				return action.Invoke(handle);
+
+			try { Lock(); return action.Invoke(handle); }
+			finally { Unlock(); }
 		}
 
 		private class SafeBufferImpl : SafeBuffer
@@ -341,7 +388,7 @@ namespace Vanara.InteropServices
 		public virtual void Fill(byte value, int length)
 		{
 			if (length > Size) throw new ArgumentOutOfRangeException(nameof(length));
-			handle.FillMemory(value, length);
+			CallLocked(p => p.FillMemory(value, length));
 		}
 
 		/// <summary>Zero out all allocated memory.</summary>
@@ -353,10 +400,12 @@ namespace Vanara.InteropServices
 	public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where TMem : IMemoryMethods, new()
 	{
 		/// <summary>The <see cref="IMemoryMethods"/> implementation instance.</summary>
-		protected static readonly TMem mm = new TMem();
+		protected static readonly TMem mm = new();
 
 		/// <summary>The number of bytes currently allocated.</summary>
 		protected SizeT sz;
+
+		private IntPtr unlockedHandle;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
@@ -384,7 +433,7 @@ namespace Vanara.InteropServices
 		{
 			if ((bytes?.Length ?? 0) == 0) return;
 			InitFromSize(bytes.Length);
-			Marshal.Copy(bytes, 0, handle, bytes.Length);
+			CallLocked(p => Marshal.Copy(bytes, 0, p, bytes.Length));
 		}
 
 		/// <summary>
@@ -396,7 +445,7 @@ namespace Vanara.InteropServices
 		{
 			if (source is null) return;
 			InitFromSize(source.Size);
-			((IntPtr)source).CopyTo(handle, source.Size);
+			CallLocked(p => ((IntPtr)source).CopyTo(p, source.Size));
 		}
 
 		/// <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
@@ -424,6 +473,38 @@ namespace Vanara.InteropServices
 			}
 		}
 
+		/// <summary>Locks this instance.</summary>
+		public override void Lock()
+		{
+			if (!Lockable) return;
+			if (unlockedHandle == default)
+			{
+				var hlocked = mm.LockMem(handle);
+				if (hlocked != handle)
+				{
+					unlockedHandle = handle;
+					SetHandle(hlocked);
+				}
+			}
+			else
+				mm.LockMem(unlockedHandle);
+		}
+
+		/// <summary>Decrements the lock count.</summary>
+		/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
+		public override bool Unlock()
+		{
+			if (!Lockable || unlockedHandle == default)
+				return false;
+			var stillLocked = mm.UnlockMem(unlockedHandle);
+			if (!stillLocked)
+			{
+				SetHandle(unlockedHandle);
+				unlockedHandle = default;
+			}
+			return stillLocked;
+		}
+
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
 		/// <returns>
 		/// true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it
@@ -431,6 +512,7 @@ namespace Vanara.InteropServices
 		/// </returns>
 		protected override bool ReleaseHandle()
 		{
+			while (Unlock()) ;
 			mm.FreeMem(handle);
 			sz = 0;
 			handle = IntPtr.Zero;
@@ -479,7 +561,7 @@ namespace Vanara.InteropServices
 		/// </summary>
 		/// <param name="values">Array of unmanaged pointers</param>
 		/// <returns>SafeMemoryHandleExt object to an native (unmanaged) array of pointers</returns>
-		protected SafeMemoryHandleExt(IntPtr[] values) : this(IntPtr.Size * values.Length) => Marshal.Copy(values, 0, handle, values.Length);
+		protected SafeMemoryHandleExt(IntPtr[] values) : this(IntPtr.Size * values.Length) => CallLocked(p => Marshal.Copy(values, 0, p, values.Length));
 
 		/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
 		/// <param name="s">The string value.</param>
@@ -492,6 +574,13 @@ namespace Vanara.InteropServices
 		}
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="SafeMemoryHandleExt{TMem}"/> class from a <see cref="SafeAllocatedMemoryHandle"/>
+		/// instance, copying all the memory.
+		/// </summary>
+		/// <param name="source">The source memory block.</param>
+		protected SafeMemoryHandleExt(SafeAllocatedMemoryHandle source) : base(source) { }
+
+		/// <summary>
 		/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
 		/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
 		/// pointers to other objects
@@ -499,8 +588,7 @@ namespace Vanara.InteropServices
 		/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
 		public void AddSubReference(IEnumerable<ISafeMemoryHandle> children)
 		{
-			if (references == null)
-				references = new List<ISafeMemoryHandle>();
+			references ??= new List<ISafeMemoryHandle>();
 			references.AddRange(children);
 		}
 
@@ -518,8 +606,8 @@ namespace Vanara.InteropServices
 			//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
 			//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 			//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
-			Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
-			return handle.ToArray<T>(count, prefixBytes, sz);
+			//Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
+			return CallLocked(p => p.ToArray<T>(count, prefixBytes, sz));
 		}
 
 		/// <summary>
@@ -532,12 +620,21 @@ namespace Vanara.InteropServices
 		/// <returns>An enumeration of structures of <typeparamref name="T"/>.</returns>
 		public IEnumerable<T> ToEnumerable<T>(int count, int prefixBytes = 0)
 		{
-			if (IsInvalid) return new T[0];
+			if (IsInvalid) yield break;
 			//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
 			//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 			//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
-			Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
-			return handle.ToIEnum<T>(count, prefixBytes, sz);
+			//Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
+			try
+			{
+				Lock();
+				foreach (var i in handle.ToIEnum<T>(count, prefixBytes, sz))
+					yield return i;
+			}
+			finally
+			{
+				Unlock();
+			}
 		}
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
@@ -553,7 +650,7 @@ namespace Vanara.InteropServices
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public string ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode)
 		{
-			var str = StringHelper.GetString(handle.Offset(prefixBytes), charSet, sz == 0 ? long.MaxValue : sz - prefixBytes);
+			var str = CallLocked(p => StringHelper.GetString(p.Offset(prefixBytes), charSet, sz == 0 ? long.MaxValue : sz - prefixBytes));
 			return len == -1 ? str : str.Substring(0, Math.Min(len, str.Length));
 		}
 
@@ -565,7 +662,8 @@ namespace Vanara.InteropServices
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 		/// <returns>Enumeration of strings.</returns>
-		public IEnumerable<string> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : handle.ToStringEnum(count, charSet, prefixBytes, sz);
+		public IEnumerable<string> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
+			IsInvalid ? new string[0] : CallLocked(p => p.ToStringEnum(count, charSet, prefixBytes, sz));
 
 		/// <summary>
 		/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
@@ -574,7 +672,8 @@ namespace Vanara.InteropServices
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 		/// <returns>An enumerated list of strings.</returns>
-		public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0) => IsInvalid ? new string[0] : handle.ToStringEnum(charSet, prefixBytes, sz);
+		public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
+			IsInvalid ? new string[0] : CallLocked(p => p.ToStringEnum(charSet, prefixBytes, sz));
 
 		/// <summary>
 		/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
@@ -585,7 +684,7 @@ namespace Vanara.InteropServices
 		public T ToStructure<T>(int prefixBytes = 0)
 		{
 			if (IsInvalid) return default;
-			return handle.ToStructure<T>(sz, prefixBytes);
+			return CallLocked(p => p.ToStructure<T>(sz, prefixBytes));
 		}
 
 		/// <summary>Marshals data from a managed list of specified type to an offset within this allocated memory.</summary>
@@ -610,7 +709,7 @@ namespace Vanara.InteropServices
 				if (sz < reqSz)
 					Size = reqSz;
 			}
-			handle.Write(items, offset, sz);
+			CallLocked(p => p.Write(items, offset, sz));
 		}
 
 		/// <summary>Writes the specified value to an offset within this allocated memory.</summary>
@@ -630,7 +729,8 @@ namespace Vanara.InteropServices
 				if (sz < reqSz)
 					Size = reqSz;
 			}
-			handle.Write(value, offset, sz);
+			try { Lock(); handle.Write(value, offset, sz); }
+			finally { Unlock(); }
 		}
 
 		/// <summary>Writes the specified value to an offset within this allocated memory.</summary>
@@ -650,7 +750,7 @@ namespace Vanara.InteropServices
 				if (sz < reqSz)
 					Size = reqSz;
 			}
-			handle.Write(value, offset, sz);
+			CallLocked(p => p.Write(value, offset, sz));
 		}
 
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>

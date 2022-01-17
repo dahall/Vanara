@@ -26,7 +26,7 @@ namespace Vanara.PInvoke
 			{
 				SHIL_COUNT = Enum.GetValues(typeof(SHIL)).Length;
 				g_rgshil = new Dictionary<SHIL, ushort>(SHIL_COUNT); // new ushort[SHIL_COUNT];
-				var sysCxIco = GetSystemMetrics(SystemMetric.SM_CXICON);
+				int sysCxIco = GetSystemMetrics(SystemMetric.SM_CXICON);
 				g_rgshil[SHIL.SHIL_LARGE] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Icon Size", sysCxIco);
 				g_rgshil[SHIL.SHIL_SMALL] = (ushort)(int)Microsoft.Win32.Registry.CurrentUser.GetValue($"{REGSTR_PATH_METRICS}\\Shell Small Icon Size", sysCxIco / 2);
 				g_rgshil[SHIL.SHIL_EXTRALARGE] = (ushort)(3 * sysCxIco / 2);
@@ -44,10 +44,10 @@ namespace Vanara.PInvoke
 			/// <param name="bindFlags">Flags that control aspects of moniker binding operations.</param>
 			public static IBindCtx CreateBindCtx(STGM openMode = STGM.STGM_READWRITE, TimeSpan timeout = default, BIND_FLAGS bindFlags = 0)
 			{
-				Ole32.CreateBindCtx(0, out var ctx).ThrowIfFailed();
+				Ole32.CreateBindCtx(0, out IBindCtx ctx).ThrowIfFailed();
 				if (openMode != STGM.STGM_READWRITE || timeout != TimeSpan.Zero || bindFlags != 0)
 				{
-					var opts = new BIND_OPTS { cbStruct = Marshal.SizeOf(typeof(BIND_OPTS)), grfMode = (int)openMode, dwTickCountDeadline = (int)timeout.TotalMilliseconds, grfFlags = (int)bindFlags };
+					BIND_OPTS opts = new() { cbStruct = Marshal.SizeOf(typeof(BIND_OPTS)), grfMode = (int)openMode, dwTickCountDeadline = (int)timeout.TotalMilliseconds, grfFlags = (int)bindFlags };
 					ctx.SetBindOptions(ref opts);
 				}
 				return ctx;
@@ -65,8 +65,11 @@ namespace Vanara.PInvoke
 			public static KNOWNFOLDERID GetKnownFolderFromPath(string path)
 			{
 				if (Environment.OSVersion.Version.Major < 6)
+				{
 					return Enum.GetValues(typeof(KNOWNFOLDERID)).Cast<KNOWNFOLDERID>().Single(k => string.Equals(k.FullPath(), path, StringComparison.InvariantCultureIgnoreCase));
-				var ikfm = new IKnownFolderManager();
+				}
+
+				IKnownFolderManager ikfm = new();
 				return GetKnownFolderFromGuid(ikfm.FindFolderFromPath(path, FFFP_MODE.FFFP_EXACTMATCH).GetId());
 			}
 
@@ -82,11 +85,16 @@ namespace Vanara.PInvoke
 			public static string GetPathForKnownFolder(Guid knownFolder)
 			{
 				if (knownFolder == default)
+				{
 					return null;
+				}
 
-				var pathBuilder = new StringBuilder(260);
+				StringBuilder pathBuilder = new(260);
 				if (SHGetFolderPathEx(knownFolder, 0, HTOKEN.NULL, pathBuilder, (uint)pathBuilder.Capacity).Failed)
+				{
 					return null;
+				}
+
 				return pathBuilder.ToString();
 			}
 
@@ -103,7 +111,9 @@ namespace Vanara.PInvoke
 			public static IShellItem GetShellItemForPath(string path)
 			{
 				if (string.IsNullOrEmpty(path))
+				{
 					return null;
+				}
 
 				// Handle case of a 'shell' URI and convert GUID to known folder
 				//if (path.StartsWith("shell:::", StringComparison.InvariantCultureIgnoreCase))
@@ -117,11 +127,11 @@ namespace Vanara.PInvoke
 				//	path = fullPath;
 				//}
 
-				var hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out var unk);
+				HRESULT hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out object unk);
 				if (hr == (HRESULT)(Win32Error)Win32Error.ERROR_FILE_NOT_FOUND)
 				{
-					using var ibc = InteropServices.ComReleaserFactory.Create(CreateBindCtx());
-					var bd = new IntFileSysBindData();
+					using InteropServices.ComReleaser<IBindCtx> ibc = InteropServices.ComReleaserFactory.Create(CreateBindCtx());
+					IntFileSysBindData bd = new();
 					ibc.Item.RegisterObjectParam(STR_FILE_SYS_BIND_DATA, bd);
 					return SHCreateItemFromParsingName<IShellItem>(path, ibc.Item);
 				}
@@ -138,7 +148,7 @@ namespace Vanara.PInvoke
 			public static HRESULT LoadIconFromExtractIcon(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHICON hico)
 			{
 				hico = default;
-				HRESULT hr = psf.GetUIObjectOf<IExtractIconW>((IntPtr)pidl, out var ieiw);
+				HRESULT hr = psf.GetUIObjectOf((IntPtr)pidl, out IExtractIconW ieiw);
 				if (hr.Succeeded)
 				{
 					try
@@ -150,7 +160,7 @@ namespace Vanara.PInvoke
 						Marshal.ReleaseComObject(ieiw);
 					}
 				}
-				else if ((hr = psf.GetUIObjectOf<IExtractIconA>((IntPtr)pidl, out var iei)).Succeeded)
+				else if ((hr = psf.GetUIObjectOf((IntPtr)pidl, out IExtractIconA iei)).Succeeded)
 				{
 					try
 					{
@@ -171,17 +181,24 @@ namespace Vanara.PInvoke
 			/// <returns>The result of function.</returns>
 			public static HRESULT LoadIconFromExtractIcon(IExtractIconW iei, ref uint imgSz, out SafeHICON hico)
 			{
-				var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
-				var hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out var iIdx, out _);
+				StringBuilder szIconFile = new(Kernel32.MAX_PATH);
+				HRESULT hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out int iIdx, out _);
 				if (hr.Succeeded)
 				{
 					if (szIconFile.ToString() != "*")
+					{
 						hr = iei.Extract(szIconFile.ToString(), (uint)iIdx, (ushort)imgSz, out hico);
+					}
 					else
+					{
 						hr = LoadIconFromSystemImageList(iIdx, ref imgSz, out hico);
+					}
 				}
 				else
+				{
 					hico = null;
+				}
+
 				return hr;
 			}
 
@@ -192,17 +209,24 @@ namespace Vanara.PInvoke
 			/// <returns>The result of function.</returns>
 			public static HRESULT LoadIconFromExtractIcon(IExtractIconA iei, ref uint imgSz, out SafeHICON hico)
 			{
-				var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
-				var hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out var iIdx, out _);
+				StringBuilder szIconFile = new(Kernel32.MAX_PATH);
+				HRESULT hr = iei.GetIconLocation(GetIconLocationFlags.GIL_FORSHELL, szIconFile, szIconFile.Capacity, out int iIdx, out _);
 				if (hr.Succeeded)
 				{
 					if (szIconFile.ToString() != "*")
+					{
 						hr = iei.Extract(szIconFile.ToString(), (uint)iIdx, (ushort)imgSz, out hico);
+					}
 					else
+					{
 						hr = LoadIconFromSystemImageList(iIdx, ref imgSz, out hico);
+					}
 				}
 				else
+				{
 					hico = null;
+				}
+
 				return hr;
 			}
 
@@ -214,15 +238,17 @@ namespace Vanara.PInvoke
 			public static HRESULT LoadIconFromSystemImageList(int iIdx, ref uint imgSz, out SafeHICON hico)
 			{
 				HRESULT hr;
-				if ((hr = SHGetImageList(PixelsToSHIL((int)imgSz), typeof(IImageList).GUID, out var obj)).Succeeded)
+				if ((hr = SHGetImageList(PixelsToSHIL((int)imgSz), typeof(IImageList).GUID, out object obj)).Succeeded)
 				{
 					try
 					{
-						var il = (IImageList)obj;
+						IImageList il = (IImageList)obj;
 						hico = il.GetIcon(iIdx, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
-						using var icoInfo = new ICONINFO();
+						using ICONINFO icoInfo = new();
 						if (GetIconInfo(hico, icoInfo))
+						{
 							imgSz = (uint)GetObject<BITMAP>(icoInfo.hbmColor).bmWidth;
+						}
 					}
 					catch (COMException e)
 					{
@@ -235,7 +261,10 @@ namespace Vanara.PInvoke
 					}
 				}
 				else
+				{
 					hico = default;
+				}
+
 				return hr;
 			}
 
@@ -247,19 +276,22 @@ namespace Vanara.PInvoke
 			/// <returns>The result of function.</returns>
 			public static HRESULT LoadImageFromExtractImage(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHBITMAP hbmp)
 			{
-				HRESULT hr = psf.GetUIObjectOf<IExtractImage>((IntPtr)pidl, out var iei);
+				HRESULT hr = psf.GetUIObjectOf((IntPtr)pidl, out IExtractImage iei);
 				hbmp = default;
 				if (hr.Succeeded)
 				{
 					try
 					{
-						var szIconFile = new StringBuilder(Kernel32.MAX_PATH);
-						var sz = new SIZE((int)imgSz, (int)imgSz);
+						StringBuilder szIconFile = new(Kernel32.MAX_PATH);
+						SIZE sz = new((int)imgSz, (int)imgSz);
 						IEIFLAG flags = 0;
 						if ((hr = iei.GetLocation(szIconFile, (uint)szIconFile.Capacity, default, ref sz, 0, ref flags)).Succeeded &&
 							szIconFile.Length > 0 &&
 							(hr = iei.Extract(out hbmp)).Succeeded)
+						{
 							imgSz = (uint)sz.cx;
+						}
+
 						return hr;
 					}
 					finally
@@ -279,7 +311,7 @@ namespace Vanara.PInvoke
 			{
 				try
 				{
-					var itp = psi.BindToHandler<IThumbnailProvider>(null, BHID.BHID_ThumbnailHandler);
+					IThumbnailProvider itp = psi.BindToHandler<IThumbnailProvider>(null, BHID.BHID_ThumbnailHandler);
 					return LoadImageFromThumbnailProvider(itp, ref imgSz, out hbmp);
 				}
 				catch (COMException e)
@@ -297,11 +329,16 @@ namespace Vanara.PInvoke
 			/// <returns>The result of function.</returns>
 			public static HRESULT LoadImageFromThumbnailProvider(IShellFolder psf, PIDL pidl, ref uint imgSz, out SafeHBITMAP hbmp)
 			{
-				HRESULT hr = psf.GetUIObjectOf<IThumbnailProvider>((IntPtr)pidl, out var itp);
+				HRESULT hr = psf.GetUIObjectOf((IntPtr)pidl, out IThumbnailProvider itp);
 				if (hr.Succeeded)
+				{
 					hr = LoadImageFromThumbnailProvider(itp, ref imgSz, out hbmp);
+				}
 				else
+				{
 					hbmp = null;
+				}
+
 				return hr;
 			}
 
@@ -314,9 +351,12 @@ namespace Vanara.PInvoke
 			{
 				try
 				{
-					var hr = itp.GetThumbnail(imgSz, out hbmp, out _);
+					HRESULT hr = itp.GetThumbnail(imgSz, out hbmp, out _);
 					if (hr.Succeeded)
+					{
 						imgSz = (uint)GetObject<BITMAP>(hbmp).bmWidth;
+					}
+
 					return hr;
 				}
 				finally
@@ -336,9 +376,15 @@ namespace Vanara.PInvoke
 			/// <returns>The returned interface.</returns>
 			public static object QueryInterface(in object iUnk, in Guid riid)
 			{
-				QueryInterface(iUnk, riid, out var ppv).ThrowIfFailed();
+				QueryInterface(iUnk, riid, out object ppv).ThrowIfFailed();
 				return ppv;
 			}
+
+			/// <summary>Requests a specified interface from a COM object.</summary>
+			/// <typeparam name="T">The interface type for which to query and return.</typeparam>
+			/// <param name="iUnk">The interface to be queried.</param>
+			/// <returns>The returned interface.</returns>
+			public static T QueryInterface<T>(in object iUnk) where T : class => (T)QueryInterface(iUnk, typeof(T).GUID);
 
 			/// <summary>Requests a specified interface from a COM object.</summary>
 			/// <param name="iUnk">The interface to be queried.</param>
@@ -347,8 +393,8 @@ namespace Vanara.PInvoke
 			/// <returns>An HRESULT that indicates the success or failure of the call.</returns>
 			public static HRESULT QueryInterface(in object iUnk, in Guid riid, out object ppv)
 			{
-				var tmp = riid;
-				HRESULT hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref tmp, out var ippv);
+				Guid tmp = riid;
+				HRESULT hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref tmp, out IntPtr ippv);
 				ppv = hr.Succeeded ? Marshal.GetObjectForIUnknown(ippv) : null;
 				System.Diagnostics.Debug.WriteLine($"Successful QI:\t{riid}");
 				return hr;
@@ -416,7 +462,7 @@ namespace Vanara.PInvoke
 				public ManualParentAndItem(IShellItem psi)
 				{
 					psf = psi.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject);
-					SHGetIDListFromObject(psi, out var pItem).ThrowIfFailed();
+					SHGetIDListFromObject(psi, out PIDL pItem).ThrowIfFailed();
 					pChild = pItem.LastId;
 					pItem.Dispose();
 				}
