@@ -13,6 +13,7 @@ using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
@@ -406,119 +407,6 @@ namespace Vanara.Windows.Shell
 			{
 				base.OnMessageWindowHandleCreated();
 				AddClipboardFormatListener(MessageWindowHandle);
-			}
-		}
-
-		private class SafeMoveableHGlobalHandle : SafeHandle
-		{
-			private static readonly IMemoryMethods mm = Kernel32.MoveableHGlobalMemoryMethods.Instance;
-			private SizeT sz;
-
-			/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
-			/// <param name="handle">The handle.</param>
-			/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
-			/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-			public SafeMoveableHGlobalHandle(IntPtr handle, SizeT size, bool ownsHandle = true) : base(IntPtr.Zero, ownsHandle)
-			{
-				SetHandle(handle);
-				sz = size;
-			}
-
-			/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
-			/// <param name="size">The size of memory to allocate, in bytes.</param>
-			/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-			public SafeMoveableHGlobalHandle(SizeT size) : base(IntPtr.Zero, true)
-			{
-				if (size == 0) return;
-				RuntimeHelpers.PrepareConstrainedRegions();
-				SetHandle(mm.AllocMem(sz = size));
-			}
-
-			/// <summary>
-			/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
-			/// array equivalent.
-			/// </summary>
-			/// <param name="bytes">Array of unmanaged pointers</param>
-			/// <returns>SafeMoveableHGlobalHandle object to an native (unmanaged) array of pointers</returns>
-			public SafeMoveableHGlobalHandle(byte[] bytes) : this(bytes?.Length ?? 0)
-			{
-				if (sz == 0) return;
-				CallLocked(p => Marshal.Copy(bytes, 0, p, sz));
-			}
-
-			/// <summary>Represents a NULL memory pointer.</summary>
-			public static SafeMoveableHGlobalHandle Null { get; } = new SafeMoveableHGlobalHandle(IntPtr.Zero, 0, false);
-
-			public override bool IsInvalid => handle == IntPtr.Zero;
-
-			/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
-			/// <value>The size in bytes of the allocated memory block.</value>
-			public SizeT Size
-			{
-				get => sz;
-				set
-				{
-					if (value == 0)
-					{
-						ReleaseHandle();
-					}
-					else
-					{
-						RuntimeHelpers.PrepareConstrainedRegions();
-						handle = IsInvalid ? mm.AllocMem(value) : mm.ReAllocMem(handle, value);
-						sz = value;
-					}
-				}
-			}
-
-			/// <summary>
-			/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
-			/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY
-			/// structures with attribute StructLayout of LayoutKind.Sequential are supported.
-			/// </summary>
-			/// <typeparam name="T">Type of the trailing array of structures</typeparam>
-			/// <param name="values">Collection of structure objects</param>
-			/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
-			/// <returns><see cref="SafeMoveableHGlobalHandle"/> object to an native (unmanaged) structure with a trail array of structures</returns>
-			public static SafeMoveableHGlobalHandle CreateFromList<T>(IEnumerable<T> values, int prefixBytes = 0) =>
-				new(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes, mm.LockMem, mm.UnlockMem), s);
-
-			/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
-			/// <param name="values">The list of strings.</param>
-			/// <param name="packing">The packing type for the strings.</param>
-			/// <param name="charSet">The character set to use for the strings.</param>
-			/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
-			/// <returns>
-			/// <see cref="SafeMoveableHGlobalHandle"/> object to an native (unmanaged) array of strings stored using the <paramref
-			/// name="packing"/> model and the character set defined by <paramref name="charSet"/>.
-			/// </returns>
-			public static SafeMoveableHGlobalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-				new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes, mm.LockMem, mm.UnlockMem), s);
-
-			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
-			/// <typeparam name="T">Native type</typeparam>
-			/// <param name="value">The value.</param>
-			/// <returns><see cref="SafeMoveableHGlobalHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-			public static SafeMoveableHGlobalHandle CreateFromStructure<T>(in T value = default) =>
-				new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s, 0, mm.LockMem, mm.UnlockMem), s);
-
-			/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeMoveableHGlobalHandle"/> where it owns the reference.</summary>
-			/// <param name="ptr">The <see cref="IntPtr"/>.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator SafeMoveableHGlobalHandle(IntPtr ptr) => new(ptr, 0, true);
-
-			protected void CallLocked(Action<IntPtr> action)
-			{
-				try { action.Invoke(mm.LockMem(handle)); }
-				finally { mm.UnlockMem(handle); }
-			}
-
-			protected override bool ReleaseHandle()
-			{
-				mm.FreeMem(handle);
-				sz = 0;
-				handle = IntPtr.Zero;
-				return true;
 			}
 		}
 	}
