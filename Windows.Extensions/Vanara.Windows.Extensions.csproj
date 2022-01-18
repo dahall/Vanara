@@ -9,7 +9,15 @@
     <AssemblyName>Vanara.Windows.Extensions</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;extensions;winforms;windows forms</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+GdiExtension, GdiObjExtensions2, SafeTempHDC, SmartBitmapLock
+
+Enumerations
+Corners
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />

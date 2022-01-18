@@ -890,6 +890,7 @@ Native Structure | Header | Managed Structure
 [PARAMDATA](https://www.google.com/search?num=5&q=PARAMDATA+site%3Adocs.microsoft.com) | oleauto.h | [Vanara.PInvoke.OleAut32.PARAMDATA](https://github.com/dahall/Vanara/search?l=C%23&q=PARAMDATA)  
 [PICTDEC_UNION](https://www.google.com/search?num=5&q=PICTDEC_UNION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.OleAut32.PICTDESC.PICTDEC_UNION](https://github.com/dahall/Vanara/search?l=C%23&q=PICTDEC_UNION)  
 [PICTDESC](https://www.google.com/search?num=5&q=PICTDESC+site%3Adocs.microsoft.com) | olectl.h | [Vanara.PInvoke.OleAut32.PICTDESC](https://github.com/dahall/Vanara/search?l=C%23&q=PICTDESC)  
+[POINTF](https://www.google.com/search?num=5&q=POINTF+site%3Adocs.microsoft.com) | ocidl.h | [Vanara.PInvoke.Ole32.POINTF](https://github.com/dahall/Vanara/search?l=C%23&q=POINTF)  
 [PROPBAG2](https://www.google.com/search?num=5&q=PROPBAG2+site%3Adocs.microsoft.com) | Ocidl.h | [Vanara.PInvoke.OleAut32.PROPBAG2](https://github.com/dahall/Vanara/search?l=C%23&q=PROPBAG2)  
 [PROPERTYKEY](https://www.google.com/search?num=5&q=PROPERTYKEY+site%3Adocs.microsoft.com) | wtypes.h | [Vanara.PInvoke.Ole32.PROPERTYKEY](https://github.com/dahall/Vanara/search?l=C%23&q=PROPERTYKEY)  
 [PROPPAGEINFO](https://www.google.com/search?num=5&q=PROPPAGEINFO+site%3Adocs.microsoft.com) | ocidl.h | [Vanara.PInvoke.Ole32.PROPPAGEINFO](https://github.com/dahall/Vanara/search?l=C%23&q=PROPPAGEINFO)  

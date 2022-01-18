@@ -98,6 +98,7 @@
       <dependency id="Vanara.VirtualDisk" version="3.4.0" />
       <dependency id="Vanara.Windows.Forms" version="3.4.0" />
       <dependency id="Vanara.Windows.Shell" version="3.4.0" />
+      <dependency id="Vanara.Windows.Shell.Common" version="3.4.0" />
     </dependencies>
   </metadata>
   <files />

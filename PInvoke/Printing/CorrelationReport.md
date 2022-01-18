@@ -179,6 +179,9 @@ Native Structure | Header | Managed Structure
 [XPS_GLYPH_MAPPING](https://www.google.com/search?num=5&q=XPS_GLYPH_MAPPING+site%3Adocs.microsoft.com) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_GLYPH_MAPPING](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_GLYPH_MAPPING)  
 [XPS_JOB_STATUS](https://www.google.com/search?num=5&q=XPS_JOB_STATUS+site%3Adocs.microsoft.com) | xpsprint.h | [Vanara.PInvoke.XpsPrint.XPS_JOB_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_JOB_STATUS)  
 [XPS_MATRIX](https://www.google.com/search?num=5&q=XPS_MATRIX+site%3Adocs.microsoft.com) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_MATRIX](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_MATRIX)  
+[XPS_POINT](https://www.google.com/search?num=5&q=XPS_POINT+site%3Adocs.microsoft.com) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_POINT](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_POINT)  
+[XPS_RECT](https://www.google.com/search?num=5&q=XPS_RECT+site%3Adocs.microsoft.com) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_RECT](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_RECT)  
+[XPS_SIZE](https://www.google.com/search?num=5&q=XPS_SIZE+site%3Adocs.microsoft.com) | xpsobjectmodel.h | [Vanara.PInvoke.XpsObjectModel.XPS_SIZE](https://github.com/dahall/Vanara/search?l=C%23&q=XPS_SIZE)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

@@ -9,13 +9,18 @@
     <AssemblyName>Vanara.WinUI.Extensions</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;winui;uwp;windows platform</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+SystemFoundationExtensions
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Runtime.WindowsRuntime" Version ="4.7.0" />
+    <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
   </ItemGroup>
 </Project>
