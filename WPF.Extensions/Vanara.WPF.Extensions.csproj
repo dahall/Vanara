@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Extension methods and conversions from Vanara P/Invoke types and methods to WPF types and methods.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <TargetFrameworks>net35;net40;net45;net5.0-windows;net6.0-windows;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);WPF</DefineConstants>
+    <AssemblyName>Vanara.WPF.Extensions</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;extensions;wpf</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+GdiExtension, GdiObjExtensions2, SafeTempHDC, SmartBitmapLock
+
+Enumerations
+Corners
+
+</PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
+    <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netcore2')) Or $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+  </ItemGroup>
+</Project>
