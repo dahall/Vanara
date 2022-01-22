@@ -160,7 +160,7 @@ namespace Vanara.Windows.Shell
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ShellItem[] SelectedItems
 		{
-			get => Array.ConvertAll(GetItems(IShellView, SVGIO.SVGIO_SELECTION), i => new ShellItem(i));
+			get => GetItems(IShellView, SVGIO.SVGIO_SELECTION);
 			set
 			{
 				// Deselect all
@@ -381,20 +381,15 @@ namespace Vanara.Windows.Shell
 		private static IShellView CreateViewObject(ShellFolder folder, HWND owner) =>
 			folder?.IShellFolder.CreateViewObject<IShellView>(owner);
 
-		private static PIDL GetFolderForView(IShellView iView)
-		{
-			PIDL pidl = GetItems(iView, SVGIO.SVGIO_ALLVIEW).FirstOrDefault();
-			pidl?.RemoveLastId();
-			return pidl;
-		}
+		private static ShellFolder GetFolderForView(IShellView iView) => GetItems(iView, SVGIO.SVGIO_ALLVIEW).FirstOrDefault()?.Parent;
 
 		private static IShellItemArray GetItemArray(IShellView iView, SVGIO uItem) => ((IFolderView)iView).Items<IShellItemArray>(uItem);
 
-		private static PIDL[] GetItems(IShellView iView, SVGIO uItem)
+		private static ShellItem[] GetItems(IShellView iView, SVGIO uItem)
 		{
 			using ComReleaser<IDataObject> ido = ComReleaserFactory.Create(iView.GetItemObject<IDataObject>(uItem));
 			var shdo = new ShellDataObject(ido.Item);
-			return shdo.GetShellIdList();
+			return shdo.GetShellIdList().ToArray();
 		}
 
 		private void CreateShellView()
