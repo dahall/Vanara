@@ -326,6 +326,10 @@ namespace Vanara.InteropServices
 		}
 
 		/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
+		/// <returns>A byte array with the copied bytes.</returns>
+		public byte[] GetBytes() => GetBytes(0, Size);
+
+		/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
 		/// <param name="startIndex">The start index.</param>
 		/// <param name="count">The number of bytes to retrieve.</param>
 		/// <returns>A byte array with the copied bytes.</returns>
@@ -450,6 +454,10 @@ namespace Vanara.InteropServices
 
 		/// <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
 		public override bool IsInvalid => handle == IntPtr.Zero;
+
+		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+		public override bool Lockable => mm.Lockable;
 
 		/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 		/// <value>The size in bytes of the allocated memory block.</value>
