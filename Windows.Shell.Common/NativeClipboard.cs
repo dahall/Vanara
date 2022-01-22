@@ -139,6 +139,34 @@ namespace Vanara.Windows.Shell
 		/// </remarks>
 		public static HWND GetClipboardOwner() => User32.GetClipboardOwner();
 
+		/// <summary>Obtains data from the clipboard.</summary>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <param name="aspect">
+		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration values.
+		/// A single clipboard format can support multiple aspects or views of the object. Most data and presentation transfer and caching
+		/// methods pass aspect information. For example, a caller might request an object's iconic picture, using the metafile clipboard
+		/// format to retrieve it. Note that only one DVASPECT value can be used in dwAspect. That is, dwAspect cannot be the result of a
+		/// Boolean OR operation on several DVASPECT values.
+		/// </param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
+		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
+		public static object GetData(uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
+			DataObject.GetData(formatId, aspect, index);
+
+		/// <summary>Obtains data from the clipboard.</summary>
+		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
+		public static T GetData<T>(uint formatId, int index = -1) => DataObject.GetData<T>(formatId, index);
+
 		/// <summary>Retrieves the first available clipboard format in the specified list.</summary>
 		/// <param name="idList">The clipboard formats, in priority order.</param>
 		/// <returns>
@@ -220,6 +248,17 @@ namespace Vanara.Windows.Shell
 			return id;
 		}
 
+		/// <summary>Obtains data from a source data object.</summary>
+		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <param name="obj">The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <returns><see langword="true"/> if data is available and retrieved; otherwise <see langword="false"/>.</returns>
+		public static bool TryGetData<T>(uint formatId, out T obj, int index = -1) => DataObject.TryGetData(formatId, out obj, index);
+
 		/// <summary>
 		/// Retrieves data from the clipboard in a specified format. The clipboard must have been opened previously and this pointer cannot
 		/// be used once <see cref="NativeClipboard"/> goes out of scope.
@@ -284,10 +323,10 @@ namespace Vanara.Windows.Shell
 		{
 			TextDataFormat.Text => StringHelper.GetString(GetClipboardData(CLIPFORMAT.CF_TEXT), CharSet.Ansi),
 			TextDataFormat.UnicodeText => StringHelper.GetString(GetClipboardData(CLIPFORMAT.CF_UNICODETEXT), CharSet.Unicode),
-			TextDataFormat.Rtf => StringHelper.GetString(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_RTF)), CharSet.Ansi),
-			TextDataFormat.Html => Utils.GetHtml(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
-			TextDataFormat.CommaSeparatedValue => StringHelper.GetString(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_CSV)), CharSet.Ansi),
-			_ => null,
+			TextDataFormat.Rtf => StringHelper.GetString(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_RTF)), CharSet.Ansi),
+			TextDataFormat.Html => Utils.GetHtml(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
+			TextDataFormat.CommaSeparatedValue => StringHelper.GetString(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_CSV)), CharSet.Ansi),
+			_ => throw new ArgumentOutOfRangeException(nameof(formatId)),
 		};
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
@@ -298,7 +337,7 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = new SafeMoveableHGlobalHandle(data);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData((uint)formatId, pMem.DangerousGetHandle()));
+			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
@@ -308,7 +347,7 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = SafeMoveableHGlobalHandle.CreateFromStructure(data);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData((uint)formatId, pMem.DangerousGetHandle()));
+			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
@@ -318,7 +357,7 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = SafeMoveableHGlobalHandle.CreateFromList(values);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData((uint)formatId, pMem.DangerousGetHandle()));
+			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
@@ -330,7 +369,7 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = SafeMoveableHGlobalHandle.CreateFromStringList(values, packing, charSet);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData((uint)formatId, pMem.DangerousGetHandle()));
+			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
 		/// <summary>Sets multiple text types to the Clipboard.</summary>
@@ -357,9 +396,9 @@ namespace Vanara.Windows.Shell
 				TextDataFormat.Text => (Encoding.ASCII.GetBytes(value + '\0'), (uint)CLIPFORMAT.CF_TEXT),
 				TextDataFormat.UnicodeText => (Encoding.Unicode.GetBytes(value + '\0'), (uint)CLIPFORMAT.CF_UNICODETEXT),
 				TextDataFormat.Rtf => (Encoding.ASCII.GetBytes(value + '\0'), RegisterFormat(ShellClipboardFormat.CF_RTF)),
-				TextDataFormat.Html => (Utils.MakeClipHtml(value), RegisterFormat(ShellClipboardFormat.CF_HTML)),
+				TextDataFormat.Html => (FormatHtmlForClipboard(value), RegisterFormat(ShellClipboardFormat.CF_HTML)),
 				TextDataFormat.CommaSeparatedValue => (Encoding.ASCII.GetBytes(value + '\0'), RegisterFormat(ShellClipboardFormat.CF_CSV)),
-				_ => default,
+				_ => throw new ArgumentOutOfRangeException(nameof(format)),
 			};
 			SetBinaryData(fmt, bytes);
 		}
