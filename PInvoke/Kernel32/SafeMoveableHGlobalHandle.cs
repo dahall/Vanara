@@ -16,9 +16,8 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>
-			/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 			/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-			public SafeMoveableHGlobalHandle(IntPtr handle, SizeT size, bool ownsHandle = true) : base(handle, size, ownsHandle) { }
+			public SafeMoveableHGlobalHandle(IntPtr handle, bool ownsHandle = true) : base(handle, handle == default ? 0 : GlobalSize(handle), ownsHandle) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
 			/// <param name="size">The size of memory to allocate, in bytes.</param>
@@ -49,7 +48,7 @@ namespace Vanara.PInvoke
 			internal SafeMoveableHGlobalHandle() : base(0) { }
 
 			/// <summary>Represents a NULL memory pointer.</summary>
-			public static SafeMoveableHGlobalHandle Null { get; } = new SafeMoveableHGlobalHandle(IntPtr.Zero, 0, false);
+			public static SafeMoveableHGlobalHandle Null { get; } = new SafeMoveableHGlobalHandle(IntPtr.Zero, false);
 
 			/// <summary>
 			/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
@@ -61,7 +60,7 @@ namespace Vanara.PInvoke
 			/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
 			/// <returns><see cref="SafeMoveableHGlobalHandle"/> object to an native (unmanaged) structure with a trail array of structures</returns>
 			public static SafeMoveableHGlobalHandle CreateFromList<T>(IEnumerable<T> values, int prefixBytes = 0) =>
-				new(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes, mm.LockMem, mm.UnlockMem), s);
+				new(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out _, prefixBytes, mm.LockMem, mm.UnlockMem), true);
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
 			/// <param name="values">The list of strings.</param>
@@ -73,19 +72,19 @@ namespace Vanara.PInvoke
 			/// name="packing"/> model and the character set defined by <paramref name="charSet"/>.
 			/// </returns>
 			public static SafeMoveableHGlobalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated,
-				CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes, mm.LockMem, mm.UnlockMem), s);
+				CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out _, charSet, prefixBytes, mm.LockMem, mm.UnlockMem), true);
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 			/// <typeparam name="T">Native type</typeparam>
 			/// <param name="value">The value.</param>
 			/// <returns><see cref="SafeMoveableHGlobalHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
 			public static SafeMoveableHGlobalHandle CreateFromStructure<T>(in T value = default) =>
-				new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s, 0, mm.LockMem, mm.UnlockMem), s);
+				new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out _, 0, mm.LockMem, mm.UnlockMem), true);
 
 			/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeMoveableHGlobalHandle"/> where it owns the reference.</summary>
 			/// <param name="ptr">The <see cref="IntPtr"/>.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator SafeMoveableHGlobalHandle(IntPtr ptr) => new(ptr, 0, true);
+			public static implicit operator SafeMoveableHGlobalHandle(IntPtr ptr) => new(ptr, true);
 		}
 	}
 }
