@@ -53,7 +53,7 @@ Enum | Description | Values
 [Vanara.PInvoke.MouseButtonState](https://github.com/dahall/Vanara/search?l=C%23&q=MouseButtonState) | The state of the other mouse buttons plus the SHIFT and CTRL keys. | MK_LBUTTON, MK_RBUTTON, MK_SHIFT, MK_CONTROL, MK_MBUTTON, MK_XBUTTON1, MK_XBUTTON2
 [Vanara.PInvoke.NTDDI](https://github.com/dahall/Vanara/search?l=C%23&q=NTDDI) | NTDDI version constants | NTDDI_WIN2K, NTDDI_WIN2KSP1, NTDDI_WIN2KSP2, NTDDI_WIN2KSP3, NTDDI_WIN2KSP4, NTDDI_WINXP, NTDDI_WINXPSP1, NTDDI_WINXPSP2, NTDDI_WINXPSP3, NTDDI_WINXPSP4, NTDDI_WS03, NTDDI_WS03SP1, NTDDI_WS03SP2, NTDDI_WS03SP3, NTDDI_WS03SP4, NTDDI_VISTA, NTDDI_LONGHORN, NTDDI_WIN6, NTDDI_VISTASP1, NTDDI_WS08, NTDDI_WIN6SP1, NTDDI_WIN6SP2, NTDDI_VISTASP2, NTDDI_WS08SP2, NTDDI_WS08SP3, NTDDI_VISTASP3, NTDDI_WIN6SP3, NTDDI_VISTASP4, NTDDI_WIN6SP4, NTDDI_WS08SP4, NTDDI_WIN7, NTDDI_WIN8, NTDDI_WINBLUE, NTDDI_WINTHRESHOLD, NTDDI_WIN10, NTDDI_WIN10_TH2, NTDDI_WIN10_RS1, NTDDI_WIN10_RS2, NTDDI_WIN10_RS3, NTDDI_WIN10_RS4, NTDDI_WIN10_RS5, NTDDI_WIN10_19H1
 [Vanara.PInvoke.ObjectTypeListLevel](https://github.com/dahall/Vanara/search?l=C%23&q=ObjectTypeListLevel) | Valid values for the `Vanara.PInvoke.OBJECT_TYPE_LIST.level` field. | ACCESS_OBJECT_GUID, ACCESS_PROPERTY_SET_GUID, ACCESS_PROPERTY_GUID, ACCESS_MAX_LEVEL
-[Vanara.PInvoke.PC](https://github.com/dahall/Vanara/search?l=C%23&q=PC) |  | PC_RESERVED, PC_EXPLICIT, PC_NOCOLLAPSE
+[Vanara.PInvoke.PC](https://github.com/dahall/Vanara/search?l=C%23&q=PC) | The alpha intensity value for the palette entry. | PC_RESERVED, PC_EXPLICIT, PC_NOCOLLAPSE
 [Vanara.PInvoke.PDCAP](https://github.com/dahall/Vanara/search?l=C%23&q=PDCAP) | The device's power capabilities. | PDCAP_D0_SUPPORTED, PDCAP_D1_SUPPORTED, PDCAP_D2_SUPPORTED, PDCAP_D3_SUPPORTED, PDCAP_WAKE_FROM_D0_SUPPORTED, PDCAP_WAKE_FROM_D1_SUPPORTED, PDCAP_WAKE_FROM_D2_SUPPORTED, PDCAP_WAKE_FROM_D3_SUPPORTED, PDCAP_WARM_EJECT_SUPPORTED, PDCAP_S0_SUPPORTED, PDCAP_S1_SUPPORTED, PDCAP_S2_SUPPORTED, PDCAP_S3_SUPPORTED, PDCAP_WAKE_FROM_S0_SUPPORTED, PDCAP_WAKE_FROM_S1_SUPPORTED, PDCAP_WAKE_FROM_S2_SUPPORTED, PDCAP_WAKE_FROM_S3_SUPPORTED, PDCAP_S4_SUPPORTED, PDCAP_S5_SUPPORTED
 [Vanara.PInvoke.PInvokeClient](https://github.com/dahall/Vanara/search?l=C%23&q=PInvokeClient) | Flags that determine the minimum supported client(s) for a P/Invoke function. | None, Windows2000, WindowsXP, WindowsXP_SP2, WindowsVista, WindowsVista_SP2, Windows7, Windows8, Windows81, Windows10, Windows11
 [Vanara.PInvoke.ProcessorArchitecture](https://github.com/dahall/Vanara/search?l=C%23&q=ProcessorArchitecture) | Processor architecture | PROCESSOR_ARCHITECTURE_INTEL, PROCESSOR_ARCHITECTURE_MIPS, PROCESSOR_ARCHITECTURE_ALPHA, PROCESSOR_ARCHITECTURE_PPC, PROCESSOR_ARCHITECTURE_SHX, PROCESSOR_ARCHITECTURE_ARM, PROCESSOR_ARCHITECTURE_IA64, PROCESSOR_ARCHITECTURE_ALPHA64, PROCESSOR_ARCHITECTURE_MSIL, PROCESSOR_ARCHITECTURE_AMD64, PROCESSOR_ARCHITECTURE_IA32_ON_WIN64, PROCESSOR_ARCHITECTURE_NEUTRAL, PROCESSOR_ARCHITECTURE_ARM64, PROCESSOR_ARCHITECTURE_ARM32_ON_WIN64, PROCESSOR_ARCHITECTURE_UNKNOWN
@@ -138,7 +138,7 @@ Struct | Description
 [Vanara.PInvoke.LANGID](https://github.com/dahall/Vanara/search?l=C%23&q=LANGID) | Managed instance of the 16 bit LANGID type. <para> A language identifier is a standard international numeric abbreviation for the language in a country or geographical region. Each language has a unique language identifier (data type LANGID), a 16-bit value that consists of a primary language identifier and a sublanguage identifier. </para>
 [Vanara.PInvoke.LCID](https://github.com/dahall/Vanara/search?l=C%23&q=LCID) | An LCID is a 4-byte value. The value supplied in an LCID is a standard numeric substitution for the international [RFC5646] string.
 [Vanara.PInvoke.LOGFONT](https://github.com/dahall/Vanara/search?l=C%23&q=LOGFONT) | The LOGFONT structure defines the attributes of a font.
-[Vanara.PInvoke.LOGPALETTE](https://github.com/dahall/Vanara/search?l=C%23&q=LOGPALETTE) | 
+[Vanara.PInvoke.LOGPALETTE](https://github.com/dahall/Vanara/search?l=C%23&q=LOGPALETTE) | The <c>LOGPALETTE</c> structure defines a logical palette.
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Memory40](https://github.com/dahall/Vanara/search?l=C%23&q=Memory40) | 
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Memory48](https://github.com/dahall/Vanara/search?l=C%23&q=Memory48) | 
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Memory64](https://github.com/dahall/Vanara/search?l=C%23&q=Memory64) | 
@@ -149,8 +149,8 @@ Struct | Description
 [Vanara.PInvoke.OFSTRUCT](https://github.com/dahall/Vanara/search?l=C%23&q=OFSTRUCT) | Contains information about a file that the <c>OpenFile</c> function opened or attempted to open.
 [Vanara.PInvoke.PACE](https://github.com/dahall/Vanara/search?l=C%23&q=PACE) | Provides a pointer to an access control entry.
 [Vanara.PInvoke.PACL](https://github.com/dahall/Vanara/search?l=C%23&q=PACL) | Provides a pointer to an access control list.
-[Vanara.PInvoke.PALETTEENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=PALETTEENTRY) | 
-[Vanara.PInvoke.POINT](https://github.com/dahall/Vanara/search?l=C%23&q=POINT) | 
+[Vanara.PInvoke.PALETTEENTRY](https://github.com/dahall/Vanara/search?l=C%23&q=PALETTEENTRY) | Specifies the color and usage of an entry in a logical palette.
+[Vanara.PInvoke.POINT](https://github.com/dahall/Vanara/search?l=C%23&q=POINT) | The POINT structure defines the x- and y-coordinates of a point.
 [Vanara.PInvoke.POINTS](https://github.com/dahall/Vanara/search?l=C%23&q=POINTS) | The POINTS structure defines the coordinates of a point.
 [Vanara.PInvoke.PRECT](https://github.com/dahall/Vanara/search?l=C%23&q=PRECT) | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
 [Vanara.PInvoke.PSECURITY_DESCRIPTOR](https://github.com/dahall/Vanara/search?l=C%23&q=PSECURITY_DESCRIPTOR) | Provides a pointer to a security descriptor.
@@ -162,13 +162,14 @@ Struct | Description
 [Vanara.PInvoke.SIZE](https://github.com/dahall/Vanara/search?l=C%23&q=SIZE) | The <c>SIZE</c> structure specifies the width and height of a rectangle.
 [Vanara.PInvoke.SYSTEMTIME](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEMTIME) | Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.
 [Vanara.PInvoke.tagSECURITY_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=tagSECURITY_ATTRIBUTES) | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
-[Vanara.PInvoke.TEXTMETRIC](https://github.com/dahall/Vanara/search?l=C%23&q=TEXTMETRIC) | 
+[Vanara.PInvoke.TEXTMETRIC](https://github.com/dahall/Vanara/search?l=C%23&q=TEXTMETRIC) | The <c>TEXTMETRIC</c> structure contains basic information about a physical font. All sizes are specified in logical units; that is, they depend on the current mapping mode of the display context.
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.union](https://github.com/dahall/Vanara/search?l=C%23&q=union) | The union
 [Vanara.PInvoke.WIN32_FIND_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WIN32_FIND_DATA) | Contains information about the file that is found by the FindFirstFile, FindFirstFileEx, or FindNextFile function.
 [Vanara.PInvoke.Win32Error](https://github.com/dahall/Vanara/search?l=C%23&q=Win32Error) | Represents a Win32 Error Code. This can be used in place of a return value.
 ### Interfaces
 Interface | Description
 ---- | ----
+[Vanara.PInvoke.IClipboardFormatter](https://github.com/dahall/Vanara/search?l=C%23&q=IClipboardFormatter) | 
 [Vanara.Collections.ICOMEnum<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ICOMEnum<T>) | A generic interface to identify matching COM enumerator interfaces
 [Vanara.PInvoke.IErrorProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IErrorProvider) | Common properties and methods for errors.
 [Vanara.PInvoke.IGraphicsObjectHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IGraphicsObjectHandle) | Signals that a structure or class holds a handle to a synchronization object.
@@ -184,6 +185,7 @@ Class | Description
 [Vanara.InteropServices.AnySizeStringMarshaler<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AnySizeStringMarshaler<T>) | A marshaler implementation of `Vanara.InteropServices.IVanaraMarshaler` to marshal structures whose last field is a character array of length (1) and that uses a field to determine the length of the full string. <para> Use the cookie paramter of `Vanara.InteropServices.AnySizeStringMarshaler`1` to specify the name of the field in <typeparamref name="T" /> that specifies the length of the string in the last field of <typeparamref name="T" /> along with use indicators. </para> <para> If the field specifies byte, rather than character length, follow the field name with a colon (:) followed by 'b' (for bytes) or 'c' (for characters). </para> <para> If the field specifies a length that does NOT include the NULL terminator, follow the field name, colon (:), and type specifier by 'r' (for raw) or 'n' (for null-terminated). </para> <para>If the field name is "*", then the string length will be determined by the amount of allocated memory.</para>
 [Vanara.PInvoke.AssociateAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=AssociateAttribute) | Associates a Guid with an element.
 [Vanara.PInvoke.AssociateStringAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=AssociateStringAttribute) | Associates a string with an element.
+[Vanara.PInvoke.ClipCorrespondingTypeAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=ClipCorrespondingTypeAttribute) | 
 [Vanara.Collections.IEnumFromCom<T>.ComTryGetNext](https://github.com/dahall/Vanara/search?l=C%23&q=ComTryGetNext) | Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
 [Vanara.InteropServices.CoTaskMemStringMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=CoTaskMemStringMarshaler) | Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.
 [Vanara.PInvoke.FunctionHelper](https://github.com/dahall/Vanara/search?l=C%23&q=FunctionHelper) | Generic functions to help with standard function patterns like getting a string from a method.
@@ -194,7 +196,7 @@ Class | Description
 [Vanara.Collections.IEnumFromIndexer<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumFromIndexer<T>) | Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support `System.Collections.IEnumerable` or `System.Collections.Generic.IEnumerable`1` like some COM objects.
 [Vanara.Collections.IEnumFromNext<T>](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumFromNext<T>) | Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support `System.Collections.IEnumerable` or `System.Collections.Generic.IEnumerable`1` like some COM objects.
 [Vanara.PInvoke.Lib](https://github.com/dahall/Vanara/search?l=C%23&q=Lib) | Holds string values for all used external API libraries.
-[Vanara.PInvoke.LOGPALETTE](https://github.com/dahall/Vanara/search?l=C%23&q=LOGPALETTE) | 
+[Vanara.PInvoke.LOGPALETTE](https://github.com/dahall/Vanara/search?l=C%23&q=LOGPALETTE) | The <c>LOGPALETTE</c> structure defines a logical palette.
 [Vanara.PInvoke.Macros](https://github.com/dahall/Vanara/search?l=C%23&q=Macros) | Platform invokable enumerated types, constants and functions from windows.h
 [Vanara.InteropServices.NullTermStringArrayMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=NullTermStringArrayMarshaler) | Marshals an array of strings to a concatenated list of strings with an extra NULL terminator.
 [Vanara.PInvoke.OverlappedAsync](https://github.com/dahall/Vanara/search?l=C%23&q=OverlappedAsync) | Helper methods to work with asynchronous methods using `System.Threading.NativeOverlapped`.

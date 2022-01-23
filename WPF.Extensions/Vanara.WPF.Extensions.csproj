@@ -13,10 +13,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-GdiExtension, GdiObjExtensions2, SafeTempHDC, SmartBitmapLock
-
-Enumerations
-Corners
+GdiObjExtensions2, SystemWindowsExtensions
 
 </PackageReleaseNotes>
   </PropertyGroup>

@@ -3,4 +3,4 @@ Extension methods and conversions from Vanara P/Invoke types and methods to UWP 
 ### Classes
 Class | Description
 ---- | ----
-[Vanara.PInvoke.SystemFoundationExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=SystemFoundationExtensions) | 
+[Vanara.PInvoke.SystemFoundationExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=SystemFoundationExtensions) | Conversion extension methods for WinUI/UWP and Vanara types.
