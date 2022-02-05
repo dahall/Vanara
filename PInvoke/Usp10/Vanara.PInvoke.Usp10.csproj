@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>usp10.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Usp10.dll.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <TargetFrameworks>net20;net35;net40;net45;net5.0;net6.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.Usp10</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;usp10;uniscribe;font;truetype</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+ScriptApplyDigitSubstitution ScriptApplyLogicalWidth ScriptBreak ScriptCacheGetHeight ScriptCPtoX ScriptFreeCache ScriptGetCMap ScriptGetFontAlternateGlyphs ScriptGetFontFeatureTags ScriptGetFontLanguageTags ScriptGetFontProperties ScriptGetFontScriptTags ScriptGetGlyphABCWidth ScriptGetLogicalWidths ScriptGetProperties ScriptIsComplex ScriptItemize ScriptItemizeOpenType ScriptJustify ScriptLayout ScriptPlace ScriptPlaceOpenType ScriptPositionSingleGlyph ScriptRecordDigitSubstitution ScriptShape ScriptShapeOpenType ScriptStringAnalyse ScriptStringCPtoX ScriptStringFree ScriptStringGetLogicalWidths ScriptStringGetOrder ScriptStringOut ScriptStringValidate ScriptStringXtoCP ScriptString_pcOutChars ScriptString_pLogAttr ScriptString_pSize ScriptSubstituteSingleGlyph ScriptTextOut ScriptXtoCP
+
+Structures
+GOFFSET OPENTYPE_FEATURE_RECORD OPENTYPE_TAG SafeSCRIPT_CACHE SCRIPT_ANALYSIS SCRIPT_CHARPROP SCRIPT_CONTROL SCRIPT_DIGITSUBSTITUTE SCRIPT_FONTPROPERTIES SCRIPT_GLYPHPROP SCRIPT_ITEM SCRIPT_LOGATTR SCRIPT_PROPERTIES SCRIPT_STATE SCRIPT_TABDEF SCRIPT_VISATTR TEXTRANGE_PROPERTIES
+
+</PackageReleaseNotes>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>

@@ -41,6 +41,7 @@
       <dependency id="Vanara.PInvoke.Gdi32" version="3.4.0" />
       <dependency id="Vanara.PInvoke.Graphics" version="3.4.0" />
       <dependency id="Vanara.PInvoke.IMAPI" version="3.4.0" />
+      <dependency id="Vanara.PInvoke.Imm32" version="3.4.0" />
       <dependency id="Vanara.PInvoke.IpHlpApi" version="3.4.0" />
       <dependency id="Vanara.PInvoke.IScsiDsc" version="3.4.0" />
       <dependency id="Vanara.PInvoke.Kernel32" version="3.4.0" />
@@ -79,6 +80,7 @@
       <dependency id="Vanara.PInvoke.UrlMon" version="3.4.0" />
       <dependency id="Vanara.PInvoke.User32" version="3.4.0" />
       <dependency id="Vanara.PInvoke.UserEnv" version="3.4.0" />
+      <dependency id="Vanara.PInvoke.Usp10" version="3.4.0" />
       <dependency id="Vanara.PInvoke.UxTheme" version="3.4.0" />
       <dependency id="Vanara.PInvoke.Version" version="3.4.0" />
       <dependency id="Vanara.PInvoke.VirtDisk" version="3.4.0" />

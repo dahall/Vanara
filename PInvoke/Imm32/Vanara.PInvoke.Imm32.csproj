@@ -10,7 +10,18 @@
     <AssemblyName>Vanara.PInvoke.Imm32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;Imm32</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+ImmAssociateContext ImmAssociateContextEx ImmConfigureIME ImmCreateContext ImmDestroyContext ImmDisableIME ImmDisableLegacyIME ImmDisableTextFrameService ImmEnumInputContext ImmEnumRegisterWord ImmEscape ImmGetCandidateList ImmGetCandidateListCount ImmGetCandidateWindow ImmGetCompositionFont ImmGetCompositionString ImmGetCompositionWindow ImmGetContext ImmGetConversionList ImmGetConversionStatus ImmGetDefaultIMEWnd ImmGetDescription ImmGetGuideLine ImmGetIMEFileName ImmGetImeMenuItems ImmGetOpenStatus ImmGetProperty ImmGetRegisterWordStyle ImmGetStatusWindowPos ImmGetVirtualKey ImmInstallIME ImmIsIME ImmIsUIMessage ImmNotifyIME ImmRegisterWord ImmReleaseContext ImmSetCandidateWindow ImmSetCompositionFont ImmSetCompositionString ImmSetCompositionWindow ImmSetConversionStatus ImmSetHotKey ImmSetOpenStatus ImmSetStatusWindowPos ImmSimulateHotKey ImmUnregisterWord
+
+Structures
+CANDIDATEFORM CANDIDATELIST CANDIDATELIST_MGD COMPOSITIONFORM HIMC IMECHARPOSITION IMEDLG IMEDP IMEMENUITEMINFO IMESHF IMEWRD MORRSLT POSTBL RECONVERTSTRING REGISTERWORD STYLEBUF
+
+Interfaces
+IFECommon IFEDictionary IFELanguage IImePlugInDictDictionaryList
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
