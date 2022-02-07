@@ -663,11 +663,7 @@ namespace Vanara.IO
 					return err;
 				}
 			);
-#if (NET20 || NET35)
-			if (!b) throw new OperationCanceledExceptionEx(cancellationToken);
-#else
 			if (!b) throw new OperationCanceledException(cancellationToken);
-#endif
 			return new VirtualDisk(new SafeVIRTUAL_DISK_HANDLE(h), (OPEN_VIRTUAL_DISK_VERSION)param.Version);
 		}
 
@@ -698,11 +694,7 @@ namespace Vanara.IO
 						break;
 				}
 				if (prog.CurrentValue == prog.CompletionValue) return true;
-#if NET40
-				await TaskEx.Delay(250, cancellationToken);
-#else
 				await Task.Delay(250, cancellationToken);
-#endif
 			}
 		}
 

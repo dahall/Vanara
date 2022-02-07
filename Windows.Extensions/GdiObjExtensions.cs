@@ -170,7 +170,7 @@ namespace Vanara.PInvoke
 
 		//}
 
-#if WPF && !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
+#if WPF && !NETSTANDARD2_0
 		/// <summary>
 		/// Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HBITMAP"/> preserving transparency, if possible.
 		/// </summary>

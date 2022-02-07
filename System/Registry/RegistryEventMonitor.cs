@@ -311,7 +311,7 @@ namespace Vanara.Registry
 				case "HKEY_CURRENT_CONFIG":
 					hive = RegistryHive.CurrentConfig;
 					break;
-#if (NET20 || NET35 || NET40 || NET45)
+#if NET20_OR_GREATER
 				case "HKEY_DYN_DATA":
 					hive = RegistryHive.DynData;
 					break;

@@ -14,13 +14,7 @@ namespace Vanara.PInvoke
 
 		private static readonly uint AutoChSz = (uint)StringHelper.GetCharSize();
 
-		private static readonly uint PageSize =
-#if NET20 || NET35
-			new Func<uint>(() => { GetSystemInfo(out var si); return si.dwPageSize; })();
-
-#else
-			(uint)System.Environment.SystemPageSize;
-#endif
+		private static readonly uint PageSize = (uint)System.Environment.SystemPageSize;
 
 		/// <summary>Retrieves an integer associated with a key in the specified section of an initialization file.</summary>
 		/// <param name="lpAppName">The name of the section in the initialization file.</param>

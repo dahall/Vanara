@@ -34,9 +34,7 @@ namespace Vanara.PInvoke
 		/// Properties defined with this can only be safely used when the structure has been marshaled via a dynamic memory block and not
 		/// when marshaled directly.
 		/// </remarks>
-#if !(NET20 || NET35 || NET40)
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
 		public unsafe static T[] FieldToArray<T>(ref T fieldReference, int count, int offset = 0) where T : unmanaged
 		{
 			if (count == 0) return new T[0];

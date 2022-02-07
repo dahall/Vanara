@@ -1622,9 +1622,7 @@ namespace Vanara.PInvoke
 		// dwFlags, LPBITMAPINFOHEADER lpbiSrc, LPVOID lpSrc, int xSrc, int ySrc, int dxSrc, int dySrc, LPBITMAPINFOHEADER lpbiDst, LPVOID
 		// lpDst, int xDst, int yDst, int dxDst, int dyDst );
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressEx")]
-#if !(NET20 || NET35 || NET40)
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
 		public static ICERR ICDecompressEx([In] HIC hic, ICDECOMPRESSF dwFlags, in BITMAPINFOHEADER lpbiSrc, [In] IntPtr lpSrc, int xSrc, int ySrc,
 			int dxSrc, int dySrc, in BITMAPINFOHEADER lpbiDst, [Out] IntPtr lpDst, int xDst, int yDst, int dxDst, int dyDst)
 		{
@@ -1706,9 +1704,7 @@ namespace Vanara.PInvoke
 		// hic, DWORD dwFlags, LPBITMAPINFOHEADER lpbiSrc, LPVOID lpSrc, int xSrc, int ySrc, int dxSrc, int dySrc, LPBITMAPINFOHEADER
 		// lpbiDst, LPVOID lpDst, int xDst, int yDst, int dxDst, int dyDst );
 		[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICDecompressExBegin")]
-#if !(NET20 || NET35 || NET40)
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
 		public static ICERR ICDecompressExBegin([In] HIC hic, ICDECOMPRESSF dwFlags, in BITMAPINFOHEADER lpbiSrc, [In] IntPtr lpSrc, int xSrc, int ySrc,
 			int dxSrc, int dySrc, in BITMAPINFOHEADER lpbiDst, [Out] IntPtr lpDst, int xDst, int yDst, int dxDst, int dyDst)
 		{

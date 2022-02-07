@@ -46,11 +46,9 @@ namespace Vanara.PInvoke
 				return unchecked((uint)we.NativeErrorCode);
 			if (exception.InnerException is Win32Exception iwe)
 				return unchecked((uint)iwe.NativeErrorCode);
-#if !(NET20 || NET35 || NET40)
 			var hr = new HRESULT(exception.HResult);
 			if (hr.Facility == HRESULT.FacilityCode.FACILITY_WIN32)
 				return unchecked((uint)hr.Code);
-#endif
 			return ERROR_UNIDENTIFIED_ERROR;
 		}
 

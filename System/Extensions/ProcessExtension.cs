@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if (NET20 || NET35 || NET40 || NET45)
+#if NET20_OR_GREATER
 using System.Management;
 #endif
 using System.Runtime.InteropServices;
@@ -41,7 +41,7 @@ namespace Vanara.Extensions
 			hObj.AdjustPrivilege(privilege, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
 		}
 
-#if (NET35 || NET40 || NET45)
+#if NET35_OR_GREATER
 		/// <summary>Gets the child processes.</summary>
 		/// <param name="p">The process.</param>
 		/// <param name="includeDescendants">if set to <c>true</c> include descendants of child processes as well.</param>
@@ -130,7 +130,7 @@ namespace Vanara.Extensions
 			return sb.ToString();
 		}
 
-#if (NET20 || NET35 || NET40 || NET45)
+#if NET20_OR_GREATER
 		/// <summary>
 		/// Gets the parent process.
 		/// </summary>
@@ -200,11 +200,7 @@ namespace Vanara.Extensions
 		/// TRUE if the process is running under WOW64. If the process is running under 32-bit Windows, the value is set to FALSE. If the
 		/// process is a 64-bit application running under 64-bit Windows, the value is also set to FALSE.
 		/// </returns>
-		public static bool Is64Bit(this Process process) =>
-#if !(NET20 || NET35)
-			Environment.Is64BitOperatingSystem && 
-#endif
-			process.IsWow64();
+		public static bool Is64Bit(this Process process) => Environment.Is64BitOperatingSystem && process.IsWow64();
 
 		/// <summary>
 		/// The function gets the elevation information of the current process. It dictates whether the process is elevated or not. Token elevation is only

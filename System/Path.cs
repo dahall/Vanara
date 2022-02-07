@@ -63,7 +63,7 @@ namespace Vanara.IO
 		/// <returns>The altered, compacted path string.</returns>
 		public static string Compact(string path, int maxChars) => SBAllocCallRet((s, sz) => PathCompactPathEx(s, path, (uint)maxChars + 1));
 
-#if (NET20 || NET35 || NET40 || NET45)
+#if NET20_OR_GREATER
 		/// <summary>
 		/// Truncates a file path to fit within a given pixel width by replacing path components with ellipses.
 		/// </summary>

@@ -54,17 +54,13 @@ namespace Vanara.InteropServices
 		/// <summary>Performs an implicit conversion from <typeparamref name="T"/> to <see cref="SafeAnysizeStructBase{T}"/>.</summary>
 		/// <param name="s">The <typeparamref name="T"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-#if !(NET20 || NET35 || NET40)
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-#endif
 		public static implicit operator SafeAnysizeStruct<T>(in T s) => new(s);
 
 		/// <summary>Gets the length of the array from the structure.</summary>
 		/// <param name="local">The local, system marshaled, structure instance extracted from the pointer.</param>
 		/// <returns>The element length of the 'anysize' array.</returns>
-#if !(NET20 || NET35 || NET40)
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-#endif
 		protected override int GetArrayLength(in T local) => fiCount is null ? GetArrLenFromSz() : (fiCount.FieldType == typeof(IntPtr) ? ((IntPtr)fiCount.GetValue(local)).ToInt32() : Convert.ToInt32(fiCount.GetValue(local)));
 
 		private int GetArrLenFromSz() => 1 + (Size - baseSz) / Marshal.SizeOf(elemType);

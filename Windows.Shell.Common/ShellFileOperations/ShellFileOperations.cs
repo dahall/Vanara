@@ -644,11 +644,7 @@ namespace Vanara.Windows.Shell
 				catch (Win32Exception w32ex) { return new Win32Error(unchecked((uint)w32ex.NativeErrorCode)).ToHRESULT(); }
 				catch (Exception e)
 				{
-#if !(NET20 || NET35 || NET40)
 					return e.HResult;
-#else
-					throw e;
-#endif
 				}
 				return HRESULT.S_OK;
 			}

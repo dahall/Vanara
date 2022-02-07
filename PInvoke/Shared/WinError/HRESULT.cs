@@ -509,12 +509,10 @@ namespace Vanara.PInvoke
 				return new Win32Error(unchecked((uint)we.NativeErrorCode)).ToHRESULT();
 			if (exception.InnerException is Win32Exception iwe)
 				return new Win32Error(unchecked((uint)iwe.NativeErrorCode)).ToHRESULT();
-#if !(NET20 || NET35 || NET40)
 			if (exception.HResult != 0)
 				return new HRESULT(exception.HResult);
 			else if (exception.InnerException != null && exception.InnerException.HResult != 0)
 				return new HRESULT(exception.InnerException.HResult);
-#endif
 			return E_FAIL;
 		}
 

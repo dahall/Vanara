@@ -1,4 +1,3 @@
-#if !(NET20 || NET35)
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -347,4 +346,3 @@ namespace Vanara.PInvoke
 		}
 	}
 }
-#endif
