@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Classes for user interface related items derived from the Vanara PInvoke libraries. Includes extensions for almost all common controls to give post Vista capabilities, WinForms controls (panel, commandlink, enhanced combo boxes, IPAddress, split button, trackbar and themed controls), shutdown/restart/lock control, buffered painting, resource files, access control editor, simplifed designer framework for Windows.Forms.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0-windows;net6.0-windows;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net462;net48;net5.0-windows;net6.0-windows;netcoreapp3.1</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Vanara.Windows.Forms</AssemblyName>
@@ -35,10 +35,7 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <None Remove="Controls\ExplorerBrowser.bmp" />
     <None Remove="Controls\ShellNamespaceTreeControl.bmp" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Theraot.Core" Version="3.2.11" Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) " />
-  </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />

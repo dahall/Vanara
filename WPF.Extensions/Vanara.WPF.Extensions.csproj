@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Extension methods and conversions from Vanara P/Invoke types and methods to WPF types and methods.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net35;net40;net45;net5.0-windows;net6.0-windows;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net462;net48;net5.0-windows;net6.0-windows;netcoreapp3.1</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWPF>true</UseWPF>
     <DefineConstants>$(DefineConstants);WPF</DefineConstants>
@@ -21,7 +21,7 @@ GdiObjExtensions2, SystemWindowsExtensions
     <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netcore2')) Or $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
   </ItemGroup>

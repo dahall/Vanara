@@ -6,10 +6,10 @@
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);$(PlatformTarget)</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or '$(TargetFramework)' == 'net45' Or $(TargetFramework.StartsWith('net5')) ">
+  <PropertyGroup>
     <DefineConstants>$(DefineConstants);ALLOWSPAN</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
     

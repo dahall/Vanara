@@ -6,7 +6,7 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) for Windows Accessibility Features.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;net6.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net462;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Accessibility</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
@@ -21,7 +21,7 @@ AccessibleChildren AccessibleObjectFromEvent AccessibleObjectFromPoint Accessibl
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <NoWarn>0618</NoWarn>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="Accessibility" />
   </ItemGroup>
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) ">
