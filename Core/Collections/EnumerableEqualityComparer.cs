@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Vanara.Collections
 {
 	/// <summary>
-	/// Checks the linear equality of two enumerated lists. For lists to be equal, they must have the same number of elements and each index must hold the same value in
-	/// each list.
+	/// Checks the linear equality of two enumerated lists. For lists to be equal, they must have the same number of elements and each index
+	/// must hold the same value in each list.
 	/// </summary>
 	/// <typeparam name="T">The element type in the list.</typeparam>
 	public sealed class EnumerableEqualityComparer<T> : IEqualityComparer<IEnumerable<T>>
@@ -14,17 +15,17 @@ namespace Vanara.Collections
 		/// <summary>Determines whether the specified lists are equal.</summary>
 		/// <param name="first">The first list of type T to compare.</param>
 		/// <param name="second">The second list of type T to compare.</param>
-		/// <returns></returns>
+		/// <returns><see langword="true"/> if the two lists are equal; <see langword="false"/> otherwise.</returns>
 		public bool Equals(IEnumerable<T> first, IEnumerable<T> second)
 		{
 			if (ReferenceEquals(first, second))
 				return true;
-			if (first == null || second == null)
+			if (first is null || second is null)
 				return false;
 			var e1 = first.GetEnumerator();
 			var e2 = second.GetEnumerator();
-			bool move1 = false, move2 = false;
-			while ((move1 = e1.MoveNext()) && (move2 = e1.MoveNext()))
+			bool move1, move2 = false;
+			while ((move1 = e1.MoveNext()) && (move2 = e2.MoveNext()))
 			{
 				if (!elementComparer.Equals(e1.Current, e2.Current))
 					return false;
@@ -39,12 +40,7 @@ namespace Vanara.Collections
 		{
 			unchecked
 			{
-				if (list == null)
-					return 0;
-				var hash = 17;
-				foreach (T element in list)
-					hash = hash * 31 + elementComparer.GetHashCode(element);
-				return hash;
+				return list is null ? 0 : list.Aggregate(17, (s, e) => s * 31 + elementComparer.GetHashCode(e));
 			}
 		}
 	}
