@@ -1,30 +1,34 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Vanara.Extensions
 {
-	/// <summary>Structure to use in place of a enumerated type with the <see cref="FlagsAttribute"/> set. Allows for indexer access to flags and simplifies boolean logic.</summary>
+	/// <summary>
+	/// Structure to use in place of a enumerated type with the <see cref="FlagsAttribute"/> set. Allows for indexer access to flags and
+	/// simplifies boolean logic.
+	/// </summary>
 	/// <typeparam name="TEnum">An enumerated type.</typeparam>
 	/// <example>
-	///   <para>Use this structure by replacing an enumerated type field for simpler access. See old and new way examples below:</para>
-	///   <code title="Old way">var fileInfo = new FileInfo(@"C:\MyFile.txt");
-	/// FileAttributes fileAttr = fileInfo.Attributes;
-	/// if ((fileAttr &amp; FileAttributes.Hidden) != FileAttributes.Hidden)
-	/// {
-	///    Console.WriteLine("The file is hidden. Trying to unhide now.");
-	///    fileInfo.Attributes = (fileAttr &amp; ~FileAttributes.Hidden);
-	/// }</code>
-	///   <code title="New way">var fileInfo = new FileInfo(@"C:\MyFile.txt");
-	/// EnumFlagIndexer&lt;FileAttributes&gt; fileAttr = fileInfo.Attributes;
-	/// if (fileAttr[FileAttributes.Hidden])
-	/// {
-	///    Console.WriteLine("The file is hidden. Trying to unhide now.");
-	///    fileAttr[FileAttributes.Hidden] = false;
-	///    fileInfo.Attributes = fileAttr;
-	/// }</code>
+	/// <para>Use this structure by replacing an enumerated type field for simpler access. See old and new way examples below:</para>
+	/// <code title="Old way">var fileInfo = new FileInfo(@"C:\MyFile.txt");
+	///FileAttributes fileAttr = fileInfo.Attributes;
+	///if ((fileAttr &amp; FileAttributes.Hidden) != FileAttributes.Hidden)
+	///{
+	///  Console.WriteLine("The file is hidden. Trying to unhide now.");
+	///  fileInfo.Attributes = (fileAttr &amp; ~FileAttributes.Hidden);
+	///}</code>
+	/// <code title="New way">var fileInfo = new FileInfo(@"C:\MyFile.txt");
+	///EnumFlagIndexer&lt;FileAttributes&gt; fileAttr = fileInfo.Attributes;
+	///if (fileAttr[FileAttributes.Hidden])
+	///{
+	///  Console.WriteLine("The file is hidden. Trying to unhide now.");
+	///  fileAttr[FileAttributes.Hidden] = false;
+	///  fileInfo.Attributes = fileAttr;
+	///}</code>
 	/// </example>
-	public struct EnumFlagIndexer<TEnum> : IEquatable<TEnum>, IEquatable<EnumFlagIndexer<TEnum>>, IEnumerable<TEnum> where TEnum : System.Enum
+	public struct EnumFlagIndexer<TEnum> : IEquatable<TEnum>, IEquatable<EnumFlagIndexer<TEnum>>, IEnumerable<TEnum> where TEnum : struct, System.Enum
 	{
 		private TEnum flags;
 
@@ -33,9 +37,15 @@ namespace Vanara.Extensions
 		public EnumFlagIndexer(TEnum initialValue)
 		{
 			if (!typeof(TEnum).IsEnum)
+			{
 				throw new ArgumentException($"Type '{typeof(TEnum).FullName}' is not an enum");
+			}
+
 			if (!Attribute.IsDefined(typeof(TEnum), typeof(FlagsAttribute)))
+			{
 				throw new ArgumentException($"Type '{typeof(TEnum).FullName}' doesn't have the 'Flags' attribute");
+			}
+
 			flags = initialValue;
 		}
 
@@ -48,12 +58,17 @@ namespace Vanara.Extensions
 			get => (Convert.ToInt64(flags) & Convert.ToInt64(flag)) != 0;
 			set
 			{
-				var flagsValue = Convert.ToInt64(flags);
-				var flagValue = Convert.ToInt64(flag);
+				long flagsValue = Convert.ToInt64(flags);
+				long flagValue = Convert.ToInt64(flag);
 				if (value)
+				{
 					flagsValue |= flagValue;
+				}
 				else
+				{
 					flagsValue &= ~flagValue;
+				}
+
 				flags = (TEnum)Enum.ToObject(typeof(TEnum), flagsValue);
 			}
 		}
@@ -93,10 +108,7 @@ namespace Vanara.Extensions
 		public static implicit operator EnumFlagIndexer<TEnum>(TEnum e) => new EnumFlagIndexer<TEnum>(e);
 
 		/// <summary>Clears and sets to <c>default(E)</c>.</summary>
-		public void Clear()
-		{
-			flags = default;
-		}
+		public void Clear() => flags = default;
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -111,7 +123,7 @@ namespace Vanara.Extensions
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => Equals(obj, flags);
+		public override bool Equals(object obj) => obj is TEnum e ? Equals(e) : (obj is EnumFlagIndexer<TEnum> i ? Equals(i) : Equals(obj, flags));
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -127,10 +139,20 @@ namespace Vanara.Extensions
 		{
 			long t = 0;
 			foreach (TEnum e in Enum.GetValues(typeof(TEnum)))
+			{
 				if (this[e]) { t |= Convert.ToInt64(e); yield return e; }
-			var rem = Convert.ToInt64(flags) ^ t;
-			if (rem != 0) yield return (TEnum)Enum.ToObject(typeof(TEnum), rem);
+			}
+
+			long rem = Convert.ToInt64(flags) ^ t;
+			if (rem != 0)
+			{
+				yield return (TEnum)Enum.ToObject(typeof(TEnum), rem);
+			}
 		}
+
+		/// <summary>Sets the flags to the intersection of the current flags and the specified flags.</summary>
+		/// <param name="enumValues">The flags with which to intersect.</param>
+		public void Intersect(IEnumerable<TEnum> enumValues) => flags = Enumerable.Intersect(this, enumValues).CombineFlags();
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -138,16 +160,16 @@ namespace Vanara.Extensions
 
 		/// <summary>Unions the specified flags.</summary>
 		/// <param name="enumVal">The flags.</param>
-		public void Union(TEnum enumVal)
-		{
-			this[enumVal] = true;
-		}
+		public void Union(TEnum enumVal) => this[enumVal] = true;
 
 		/// <summary>Unions the specified flags.</summary>
 		/// <param name="enumValues">The flags.</param>
 		public void Union(IEnumerable<TEnum> enumValues)
 		{
-			foreach (var e in enumValues) this[e] = true;
+			foreach (TEnum e in enumValues)
+			{
+				this[e] = true;
+			}
 		}
 	}
 }
