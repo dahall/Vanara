@@ -26,6 +26,7 @@ BatteryStatus, EnergySaverStatus, JobLimit, NetworkInterfaceAccessType, NetworkI
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) " />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PInvoke\AMSI\Vanara.PInvoke.AMSI.csproj" />
     <ProjectReference Include="..\PInvoke\IpHlpApi\Vanara.PInvoke.IpHlpApi.csproj" />
     <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\PInvoke\Mpr\Vanara.PInvoke.Mpr.csproj" />
