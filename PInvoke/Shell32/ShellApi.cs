@@ -3557,6 +3557,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/ns-shellapi-_appbardata typedef struct _AppBarData { DWORD cbSize;
 		// HWND hWnd; UINT uCallbackMessage; UINT uEdge; RECT rc; LPARAM lParam; } APPBARDATA, *PAPPBARDATA;
 		[PInvokeData("shellapi.h", MSDNShortId = "cf86fe15-4beb-49b7-b73e-2ad61cedc3f8")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct APPBARDATA
 		{
 			/// <summary>
@@ -3573,31 +3574,6 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public HWND hWnd;
-
-			/// <summary>
-			/// <para>Type: <c>LPARAM</c></para>
-			/// <para>A message-dependent value. This member is used with these messages:</para>
-			/// <para>ABM_SETAUTOHIDEBAR</para>
-			/// <para>ABM_SETAUTOHIDEBAREX</para>
-			/// <para>ABM_SETSTATE</para>
-			/// <para>See the individual message pages for details.</para>
-			/// </summary>
-			public IntPtr lParam;
-
-			/// <summary>
-			/// <para>Type: <c>RECT</c></para>
-			/// <para>A RECT structure whose use varies depending on the message:</para>
-			/// <list type="bullet">
-			/// <item>
-			/// ABM_GETTASKBARPOS, ABM_QUERYPOS, ABM_SETPOS: The bounding rectangle, in screen coordinates, of an appbar or the Windows taskbar.
-			/// </item>
-			/// <item>
-			/// ABM_GETAUTOHIDEBAREX, ABM_SETAUTOHIDEBAREX: The monitor on which the operation is being performed. This information can be
-			/// retrieved through the GetMonitorInfo function.
-			/// </item>
-			/// </list>
-			/// </summary>
-			public RECT rc;
 
 			/// <summary>
 			/// <para>Type: <c>UINT</c></para>
@@ -3628,6 +3604,31 @@ namespace Vanara.PInvoke
 			/// <para>Top edge.</para>
 			/// </summary>
 			public ABE uEdge;
+
+			/// <summary>
+			/// <para>Type: <c>RECT</c></para>
+			/// <para>A RECT structure whose use varies depending on the message:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// ABM_GETTASKBARPOS, ABM_QUERYPOS, ABM_SETPOS: The bounding rectangle, in screen coordinates, of an appbar or the Windows taskbar.
+			/// </item>
+			/// <item>
+			/// ABM_GETAUTOHIDEBAREX, ABM_SETAUTOHIDEBAREX: The monitor on which the operation is being performed. This information can be
+			/// retrieved through the GetMonitorInfo function.
+			/// </item>
+			/// </list>
+			/// </summary>
+			public RECT rc;
+
+			/// <summary>
+			/// <para>Type: <c>LPARAM</c></para>
+			/// <para>A message-dependent value. This member is used with these messages:</para>
+			/// <para>ABM_SETAUTOHIDEBAR</para>
+			/// <para>ABM_SETAUTOHIDEBAREX</para>
+			/// <para>ABM_SETSTATE</para>
+			/// <para>See the individual message pages for details.</para>
+			/// </summary>
+			public IntPtr lParam;
 		}
 
 		/// <summary>Defines information used by AssocCreateForClasses to retrieve an IQueryAssociations interface for a given file association.</summary>
