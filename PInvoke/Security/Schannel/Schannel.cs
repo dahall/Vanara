@@ -648,7 +648,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// <para>
 		/// The <c>SecPkgContext_IssuerListInfoEx</c> structure holds a list of trusted certification authorities (CAs). This structure is
-		/// used by the Schannel security package InitializeSecurityContext (Schannel) function.
+		/// used by the Schannel security package <c>InitializeSecurityContext</c> (Schannel) function.
 		/// </para>
 		/// <para>This attribute is supported only by the Schannel security support provider (SSP).</para>
 		/// <para>
@@ -659,17 +659,20 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/schannel/ns-schannel-_secpkgcontext_issuerlistinfoex typedef struct
 		// _SecPkgContext_IssuerListInfoEx { PCERT_NAME_BLOB aIssuers; DWORD cIssuers; } SecPkgContext_IssuerListInfoEx, *PSecPkgContext_IssuerListInfoEx;
 		[PInvokeData("schannel.h", MSDNShortId = "cf1ccd40-36bf-4597-b34f-d26cef63d800")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct SecPkgContext_IssuerListInfoEx
 		{
 			/// <summary>
 			/// <para>A pointer to an array of CERT_NAME_BLOB structures that contains a list of the names of CAs that the server trusts.</para>
-			/// <para>When you have finished using the data in this array, free it by calling the FreeContextBuffer function.</para>
+			/// <para>When you have finished using the data in this array, free it by calling the <c>FreeContextBuffer</c> function.</para>
 			/// </summary>
 			public IntPtr aIssuers;
 
 			/// <summary>The number of names in <c>aIssuers</c>.</summary>
 			public uint cIssuers;
+
+			/// <summary>An array of CERT_NAME_BLOB structures that contains a list of the names of CAs that the server trusts.</summary>
+			public CRYPTOAPI_BLOB[] Issuers => aIssuers.ToArray<CRYPTOAPI_BLOB>((int)cIssuers);
 		}
 
 		/// <summary>The <c>SecPkgContext_KeyingMaterial</c> structure specifies the exportable keying material for the security context.</summary>
