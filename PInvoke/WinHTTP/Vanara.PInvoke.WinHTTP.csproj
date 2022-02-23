@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>winhttp.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows WinHTTP.dll.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <TargetFrameworks>net462;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.WinHTTP</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;WinHTTP</PackageTags>
+    <PackageReleaseNotes />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
+    <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
+  </ItemGroup>
+</Project>
