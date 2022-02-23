@@ -1054,6 +1054,26 @@ namespace Vanara.PInvoke
 			public byte MaxSynRetransmissions;
 		}
 
+		/// <summary>Argument structure for SIO_KEEPALIVE_VALS</summary>
+		[PInvokeData("mstcpip.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct tcp_keepalive
+		{
+			/// <summary>
+			/// Determines if TCP keep-alive is enabled or disabled. If the onoff member is set to a nonzero value, TCP keep-alive is enabled
+			/// and the other members in the structure are used.
+			/// </summary>
+			public BOOL onoff;
+
+			/// <summary>Specifies the timeout, in milliseconds, with no activity until the first keep-alive packet is sent.</summary>
+			public uint keepalivetime;
+
+			/// <summary>
+			/// Specifies the interval, in milliseconds, between when successive keep-alive packets are sent if no acknowledgement is received.
+			/// </summary>
+			public uint keepaliveinterval;
+		}
+
 		/// <summary>
 		/// Describes the input structure used by the SIO_TIMESTAMPING configuration IOCTL to configure timestamp reception for a datagram socket.
 		/// </summary>
