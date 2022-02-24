@@ -2955,7 +2955,7 @@ namespace Vanara.PInvoke
 			public uint IncomingCompressedBytes;
 
 			/// <summary/>
-			public uint OutgoingCompressedBy;
+			public uint OutgoingCompressedBytes;
 
 			/// <summary>A null-terminated string that contains the name of the WinStation for the session.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = WINSTATIONNAME_LENGTH)]
@@ -2966,7 +2966,7 @@ namespace Vanara.PInvoke
 			public string Domain;
 
 			/// <summary>A null-terminated string that contains the name of the user who owns the session.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = USERNAME_LENGTH + 1)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = USERNAME_LENGTH + 2)]
 			public string UserName;
 
 			/// <summary>The most recent client connection time.</summary>
