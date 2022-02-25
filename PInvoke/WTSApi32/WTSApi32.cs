@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
@@ -1103,7 +1102,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves the child session identifier, if present.</summary>
 		/// <param name="pSessionId">
-		/// The address of a <c>ULONG</c> variable that receives the child session identifier. This will be ( <c>ULONG</c>)–1 if there is no
+		/// The address of a <c>ULONG</c> variable that receives the child session identifier. This will be ( <c>ULONG</c>)â€“1 if there is no
 		/// child session for the current session.
 		/// </param>
 		/// <returns>Returns nonzero if the function succeeds or zero otherwise.</returns>
@@ -1684,7 +1683,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// If <c>FALSE</c>, the function returns immediately and the pResponse parameter returns <c>IDASYNC</c>. Use this method for simple
-		/// information messages (such as print job–notification messages) that do not need to return the user's response to the calling program.
+		/// information messages (such as print jobâ€“notification messages) that do not need to return the user's response to the calling program.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -2970,19 +2969,34 @@ namespace Vanara.PInvoke
 			public string UserName;
 
 			/// <summary>The most recent client connection time.</summary>
-			public FILETIME ConnectTime;
+			public long ConnectTimeUTC;
+			
+			/// <summary>The most recent client connection time.</summary>
+			public DateTime ConnectTime => DateTime.FromFileTimeUtc(ConnectTimeUTC);
 
 			/// <summary>The last client disconnection time.</summary>
-			public FILETIME DisconnectTime;
+			public long DisconnectTimeUTC;
+			
+			/// <summary>The last client disconnection time.</summary>
+			public DateTime DisconnectTime => DateTime.FromFileTimeUtc(DisconnectTimeUTC);
 
 			/// <summary>The time of the last user input in the session.</summary>
-			public FILETIME LastInputTime;
+			public long LastInputTimeUTC;
+			
+			/// <summary>The time of the last user input in the session.</summary>
+			public DateTime LastInputTime => DateTime.FromFileTimeUtc(LogonTimeUTC);
 
 			/// <summary>The time that the user logged on to the session.</summary>
-			public FILETIME LogonTime;
+			public long LogonTimeUTC;
+			
+			/// <summary>The time that the user logged on to the session.</summary>
+			public DateTime LogonTime => DateTime.FromFileTimeUtc(LogonTimeUTC);
 
 			/// <summary>The time that the <c>WTSINFO</c> data structure was called.</summary>
-			public FILETIME CurrentTime;
+			public long CurrentTimeUTC;
+			
+			/// <summary>The time that the <c>WTSINFO</c> data structure was called.</summary>
+			public DateTime CurrentTime => DateTime.FromFileTimeUtc(CurrentTimeUTC);
 		}
 
 		/// <summary>
@@ -3066,31 +3080,61 @@ namespace Vanara.PInvoke
 			/// The time that the user logged on to the session. This value is stored as a large integer that represents the number of
 			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time (Greenwich Mean Time).
 			/// </summary>
-			public FILETIME LogonTime;
+			public long LogonTimeUTC;
+			
+			/// <summary>
+			/// The time that the user logged on to the session. This value is stored as a large integer that represents the number of
+			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time (Greenwich Mean Time).
+			/// </summary>
+			public DateTime LogonTime => DateTime.FromFileTimeUtc(LogonTimeUTC);
 
 			/// <summary>
 			/// The time of the most recent client connection to the session. This value is stored as a large integer that represents the
 			/// number of 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
 			/// </summary>
-			public FILETIME ConnectTime;
+			public long ConnectTimeUTC;
+			
+			/// <summary>
+			/// The time of the most recent client connection to the session. This value is stored as a large integer that represents the
+			/// number of 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
+			/// </summary>
+			public DateTime ConnectTime => DateTime.FromFileTimeUtc(ConnectTimeUTC);
 
 			/// <summary>
 			/// The time of the most recent client disconnection to the session. This value is stored as a large integer that represents the
 			/// number of 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
 			/// </summary>
-			public FILETIME DisconnectTime;
+			public long DisconnectTimeUTC;
+
+			/// <summary>
+			/// The time of the most recent client disconnection to the session. This value is stored as a large integer that represents the
+			/// number of 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
+			/// </summary>
+			public DateTime DisconnectTime => DateTime.FromFileTimeUtc(DisconnectTimeUTC);			
 
 			/// <summary>
 			/// The time of the last user input in the session. This value is stored as a large integer that represents the number of
 			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
 			/// </summary>
-			public FILETIME LastInputTime;
+			public long LastInputTimeUTC;
+			
+			/// <summary>
+			/// The time of the last user input in the session. This value is stored as a large integer that represents the number of
+			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
+			/// </summary>
+			public DateTime LastInputTime => DateTime.FromFileTimeUtc(LastInputTimeUTC);			
 
 			/// <summary>
 			/// The time that this structure was filled. This value is stored as a large integer that represents the number of
 			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
 			/// </summary>
-			public FILETIME CurrentTime;
+			public long CurrentTimeUTC;
+			
+			/// <summary>
+			/// The time that this structure was filled. This value is stored as a large integer that represents the number of
+			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
+			/// </summary>
+			public DateTime CurrentTime => DateTime.FromFileTimeUtc(CurrentTimeUTC);			
 
 			/// <summary>
 			/// The number of bytes of uncompressed Remote Desktop Protocol (RDP) data sent from the client to the server since the client connected.
