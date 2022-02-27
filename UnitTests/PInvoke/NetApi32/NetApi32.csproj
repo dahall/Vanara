@@ -3,9 +3,6 @@
     <AssemblyName>UnitTest.PInvoke.NetApi32</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\NetApi32\Vanara.PInvoke.NetApi32.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
