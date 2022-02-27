@@ -536,25 +536,32 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// If TRUE, indicates that the Internet Explorer proxy configuration for the current user specifies "automatically detect settings".
 			/// </summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool fAutoDetect;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fAutoDetect;
 
 			/// <summary>
 			/// Pointer to a null-terminated Unicode string that contains the auto-configuration URL if the Internet Explorer proxy
 			/// configuration for the current user specifies "Use automatic proxy configuration".
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string lpszAutoConfigUrl;
+			public StrPtrUni lpszAutoConfigUrl;
 
 			/// <summary>
 			/// Pointer to a null-terminated Unicode string that contains the proxy URL if the Internet Explorer proxy configuration for the
 			/// current user specifies "use a proxy server".
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string lpszProxy;
+			public StrPtrUni lpszProxy;
 
 			/// <summary>Pointer to a null-terminated Unicode string that contains the optional proxy by-pass server list.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
-			public string lpszProxyBypass;
+			public StrPtrUni lpszProxyBypass;
+
+			/// <summary>Frees the memory tied to the strings in this structure.</summary>
+			public void FreeMemory()
+			{
+				Marshal.FreeHGlobal((IntPtr)lpszAutoConfigUrl);
+				Marshal.FreeHGlobal((IntPtr)lpszProxy);
+				Marshal.FreeHGlobal((IntPtr)lpszProxyBypass);
+				lpszAutoConfigUrl = lpszProxy = lpszProxyBypass = default;
+			}
 		}
 
 		/// <summary>Represents an HTTP request header as a name/value string pair.</summary>
