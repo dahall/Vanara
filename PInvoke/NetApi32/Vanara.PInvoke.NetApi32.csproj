@@ -21,9 +21,6 @@ ADMIN_OTHER_INFO AT_ENUM AT_INFO CONNECTION_INFO_0 CONNECTION_INFO_1 DAV_CALLBAC
 
 </PackageReleaseNotes>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) Or '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
