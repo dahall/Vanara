@@ -1268,7 +1268,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/nf-winhttp-winhttpsetoption BOOL WinHttpSetOption( [in] HINTERNET
 		// hInternet, [in] DWORD dwOption, [in] LPVOID lpBuffer, [in] DWORD dwBufferLength );
 		[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpSetOption")]
-		public static bool WinHttpSetOption<T>(HINTERNET hInternet, WINHTTP_OPTION dwOption, T value) where T : struct
+		public static bool WinHttpSetOption<T>(HINTERNET hInternet, WINHTTP_OPTION dwOption, in T value) where T : struct
 		{
 			using var mem = SafeHGlobalHandle.CreateFromStructure(value);
 			return WinHttpSetOption(hInternet, dwOption, mem, mem.Size);

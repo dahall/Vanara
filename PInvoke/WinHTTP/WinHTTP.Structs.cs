@@ -736,6 +736,65 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary>The <c>WINHTTP_PROXY_INFO</c> structure contains the session or default proxy configuration.</summary>
+		/// <remarks>
+		/// <para>
+		/// This structure is used with WinHttpSetOption and WinHttpQueryOption to get or set the proxy configuration for the current session
+		/// by specifying the WINHTTP_OPTION_PROXY flag.
+		/// </para>
+		/// <para>
+		/// This structure is used with WinHttpSetDefaultProxyConfiguration and WinHttpGetDefaultProxyConfiguration to get or set the default
+		/// proxy configuration in the registry.
+		/// </para>
+		/// <para>The proxy server list contains one or more of the following strings separated by semicolons or whitespace.</para>
+		/// <para>
+		/// <code>([&lt;scheme&gt;=][&lt;scheme&gt;"://"]&lt;server&gt;[":"&lt;port&gt;])</code>
+		/// </para>
+		/// <para>
+		/// The proxy bypass list contains one or more server names separated by semicolons or whitespace. The proxy bypass list can also
+		/// contain the string "&lt;local&gt;" to indicate that all local intranet sites are bypassed. Local intranet sites are considered to
+		/// be all servers that do not contain a period in their name.
+		/// </para>
+		/// <para><c>Note</c> For Windows XP and Windows 2000, see the Run-Time Requirements section of the WinHttp start page.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_proxy_info typedef struct _WINHTTP_PROXY_INFO {
+		// DWORD dwAccessType; LPWSTR lpszProxy; LPWSTR lpszProxyBypass; } WINHTTP_PROXY_INFO, *LPWINHTTP_PROXY_INFO, *PWINHTTP_PROXY_INFO;
+		[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp._WINHTTP_PROXY_INFO")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct WINHTTP_PROXY_INFO_IN
+		{
+			/// <summary>
+			/// <para>Unsigned long integer value that contains the access type. This can be one of the following values:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>WINHTTP_ACCESS_TYPE_NO_PROXY</c></term>
+			/// <term>Internet accessed through a direct connection.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>WINHTTP_ACCESS_TYPE_DEFAULT_PROXY</c></term>
+			/// <term>Applies only when setting proxy information.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>WINHTTP_ACCESS_TYPE_NAMED_PROXY</c></term>
+			/// <term>Internet accessed using a proxy.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public WINHTTP_ACCESS_TYPE dwAccessType;
+
+			/// <summary>Pointer to a string value that contains the proxy server list.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string lpszProxy;
+
+			/// <summary>Pointer to a string value that contains the proxy bypass list.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string lpszProxyBypass;
+		}
+
 		/// <summary>The <c>WINHTTP_PROXY_RESULT</c> structure contains collection of proxy result entries provided by WinHttpGetProxyResult.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_proxy_result typedef struct _WINHTTP_PROXY_RESULT {
 		// DWORD cEntries; WINHTTP_PROXY_RESULT_ENTRY *pEntries; } WINHTTP_PROXY_RESULT;

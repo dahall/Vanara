@@ -1416,7 +1416,8 @@ namespace Vanara.PInvoke
 			/// structure (if they are non-NULL) using the GlobalFree function. An application can query for the global proxy data (the
 			/// default proxy) by passing a NULL handle.
 			/// </summary>
-			[CorrespondingType(typeof(WINHTTP_PROXY_INFO))]
+			[CorrespondingType(typeof(WINHTTP_PROXY_INFO), CorrespondingAction.Get)]
+			[CorrespondingType(typeof(WINHTTP_PROXY_INFO_IN), CorrespondingAction.Set)]
 			WINHTTP_OPTION_PROXY = 38,
 
 			/// <summary>Undocumented.</summary>
@@ -1432,7 +1433,7 @@ namespace Vanara.PInvoke
 			WINHTTP_OPTION_PROXY_PASSWORD = 0x1003,
 
 			/// <summary>Undocumented.</summary>
-			[CorrespondingType(typeof(uint), CorrespondingAction.Set)]
+			[CorrespondingType(typeof(WINHTTP_PROXY_RESULT_ENTRY), CorrespondingAction.Set)]
 			WINHTTP_OPTION_PROXY_RESULT_ENTRY = 39,
 
 			/// <summary>
