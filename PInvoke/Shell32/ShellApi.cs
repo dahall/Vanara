@@ -40,53 +40,248 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// Registers a new appbar and specifies the message identifier that the system should use to send notification messages to the appbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that contains the new appbar's window handle and message identifier. You must specify
+			/// the cbSize, hWnd, and uCallbackMessage members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Returns TRUE if successful, or FALSE if an error occurs or if the appbar is already registered.</para>
 			/// </summary>
 			ABM_NEW = 0x00000000,
 
-			/// <summary>Unregisters an appbar, removing the bar from the system's internal list.</summary>
+			/// <summary>
+			/// Unregisters an appbar, removing the bar from the system's internal list.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that contains the handle to the appbar to unregister. You must specify the cbSize and
+			/// hWnd members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
+			/// <remarks>This message causes the system to send the ABN_POSCHANGED notification message to all appbars.</remarks>
 			ABM_REMOVE = 0x00000001,
 
-			/// <summary>Requests a size and screen position for an appbar.</summary>
+			/// <summary>
+			/// Requests a size and screen position for an appbar. When the request is made, the message proposes a screen edge and a
+			/// bounding rectangle for the appbar. The system adjusts the bounding rectangle so that the appbar does not interfere with the
+			/// Windows taskbar or any other appbars.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. The uEdge member specifies a screen edge, and the rc member contains the proposed
+			/// bounding rectangle. When the SHAppBarMessage function returns, rc contains the approved bounding rectangle. You must specify
+			/// the cbSize, hWnd, uEdge, and rc members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
+			/// <remarks>An appbar should send this message before sending the ABM_SETPOS message.</remarks>
 			ABM_QUERYPOS = 0x00000002,
 
-			/// <summary>Sets the size and screen position of an appbar.</summary>
+			/// <summary>
+			/// Sets the size and screen position of an appbar. The message specifies a screen edge and the bounding rectangle for the
+			/// appbar. The system may adjust the bounding rectangle so that the appbar does not interfere with the Windows taskbar or any
+			/// other appbars.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. The uEdge member specifies a screen edge, and the rc member contains the bounding
+			/// rectangle. When the SHAppBarMessage function returns, rc contains the approved bounding rectangle. You must specify the
+			/// cbSize, hWnd, uEdge, and rc members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
+			/// <remarks>This message causes the system to send the ABN_POSCHANGED notification message to all appbars.</remarks>
 			ABM_SETPOS = 0x00000003,
 
-			/// <summary>Retrieves the autohide and always-on-top states of the Windows taskbar.</summary>
+			/// <summary>
+			/// Retrieves the autohide and always-on-top states of the Windows taskbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// Pointer to an APPBARDATA structure. You must specify the cbSize member when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns zero if the taskbar is neither in the autohide nor always-on-top state. Otherwise, the return value is one or both of
+			/// the following:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ABS_ALWAYSONTOP</term>
+			/// <description>
+			/// The taskbar is in the always-on-top state. <note type="note">As of Windows 7, ABS_ALWAYSONTOP is no longer returned because
+			/// the taskbar is always in that state. Older code should be updated to ignore the absence of this value in not assume that
+			/// return value to mean that the taskbar is not in the always-on-top state.</note>
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <term>ABS_AUTOHIDE</term>
+			/// <description>The taskbar is in the autohide state.</description>
+			/// </item>
+			/// </list>
+			/// </summary>
+			/// <remarks>This message causes the system to send the ABN_POSCHANGED notification message to all appbars.</remarks>
 			ABM_GETSTATE = 0x00000004,
 
 			/// <summary>
+			/// <para>
 			/// Retrieves the bounding rectangle of the Windows taskbar. Note that this applies only to the system taskbar. Other objects,
 			/// particularly toolbars supplied with third-party software, also can be present. As a result, some of the screen area not
 			/// covered by the Windows taskbar might not be visible to the user. To retrieve the area of the screen not covered by both the
 			/// taskbar and other app bars—the working area available to your application—, use the GetMonitorInfo function.
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure whose rc member receives the bounding rectangle, in screen coordinates, of the taskbar.
+			/// You must specify the cbSize when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Returns TRUE if successful; otherwise, FALSE.</para>
 			/// </summary>
+			/// <remarks>
+			/// Note that this applies only to the system taskbar. Other objects, particularly toolbars supplied with third-party software,
+			/// also can be present. As a result, some of the screen area not covered by the Windows taskbar might not be visible to the
+			/// user. To retrieve the area of the screen not covered by both the taskbar and other app bars the working area available to
+			/// your application , use the GetMonitorInfo function.
+			/// </remarks>
 			ABM_GETTASKBARPOS = 0x00000005,
 
 			/// <summary>
-			/// Notifies the system to activate or deactivate an appbar. The lParam member of the APPBARDATA pointed to by pData is set to
-			/// TRUE to activate or FALSE to deactivate.
+			/// Notifies the system that an appbar has been activated. An appbar should call this message in response to the WM_ACTIVATE message.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that identifies the appbar to activate. You must specify the cbSize and hWnd members
+			/// when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
 			/// </summary>
+			/// <remarks>
+			/// This message is ignored if the hWnd member of the structure pointed to by pabd identifies an autohide appbar. The system
+			/// automatically sets the z-order for autohide appbars.
+			/// </remarks>
 			ABM_ACTIVATE = 0x00000006,
 
-			/// <summary>Retrieves the handle to the autohide appbar associated with a particular edge of the screen.</summary>
+			/// <summary>
+			/// Retrieves the handle to the autohide appbar associated with an edge of the screen. If the system has multiple monitors, the
+			/// monitor that contains the primary taskbar is used. <note type="note">To query for an autohide appbar on a specific monitor,
+			/// use ABM_GETAUTOHIDEBAREX.</note>
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that specifies the screen edge. You must specify the cbSize and uEdge members when
+			/// sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns the handle to the autohide appbar. The return value is NULL if an error occurs or if no autohide appbar is associated
+			/// with the given edge.
+			/// </para>
+			/// </summary>
 			ABM_GETAUTOHIDEBAR = 0x00000007,
 
-			/// <summary>Registers or unregisters an autohide appbar for an edge of the screen.</summary>
+			/// <summary>
+			/// Registers or unregisters an autohide appbar for a given edge of the screen. If the system has multiple monitors, the monitor
+			/// that contains the primary taskbar is used. <note type="note">To register or unregister an autohide appbar on a specific
+			/// monitor, use ABM_SETAUTOHIDEBAREX.</note>
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. Set the lParam member to TRUE to register the appbar or FALSE to unregister it. You
+			/// must specify the cbSize, hWnd, uEdge, and lParam members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns TRUE if successful, or FALSE if an error occurs or if an autohide appbar is already registered for the given edge.
+			/// </para>
+			/// </summary>
+			/// <remarks>
+			/// The system allows only one autohide appbar for each edge of the screen. This is determined when the member uEdge of the
+			/// APPBARDATA structure is set.
+			/// </remarks>
 			ABM_SETAUTOHIDEBAR = 0x00000008,
 
-			/// <summary>Notifies the system when an appbar's position has changed.</summary>
+			/// <summary>
+			/// Notifies the system when an appbar's position has changed. An appbar should call this message in response to the
+			/// WM_WINDOWPOSCHANGED message.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that identifies the appbar to activate. You must specify the cbSize and hWnd members
+			/// when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
+			/// <remarks>This message is ignored if the hWnd member of the structure pointed to by pabd identifies an autohide appbar.</remarks>
 			ABM_WINDOWPOSCHANGED = 0x00000009,
 
-			/// <summary>Windows XP and later: Sets the state of the appbar's autohide and always-on-top attributes.</summary>
+			/// <summary>
+			/// Sets the autohide and always-on-top states of the Windows taskbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. You must specify the cbSize and hWnd members when sending this message. Data for the
+			/// desired state is sent in the lParam member using one of the following values.
+			/// </para>
+			/// <list type="definition">
+			/// <item>
+			/// <term>0</term>
+			/// <description>Autohide and always-on-top both off</description>
+			/// </item>
+			/// <item>
+			/// <term>ABS_ALWAYSONTOP</term>
+			/// <description>Always-on-top on, autohide off</description>
+			/// </item>
+			/// <item>
+			/// <term>ABS_AUTOHIDE</term>
+			/// <description>Autohide on, always-on-top off</description>
+			/// </item>
+			/// <item>
+			/// <term>ABS_AUTOHIDE | ABS_ALWAYSONTOP</term>
+			/// <description>Autohide and always-on-top both on</description>
+			/// </item>
+			/// </list>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
 			ABM_SETSTATE = 0x0000000A,
 
 			/// <summary>
-			/// Windows XP and later: Retrieves the handle to the autohide appbar associated with a particular edge of a particular monitor.
+			/// Retrieves the handle to the autohide appbar associated with an edge of the screen. This message extends ABM_GETAUTOHIDEBAR by
+			/// enabling you to specify a particular monitor, for use in multiple monitor situations.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that specifies the screen edge and monitor. You must specify the cbSize, uEdge, and rc
+			/// members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns the handle to the autohide appbar. The return value is NULL if an error occurs or if no autohide appbar is associated
+			/// with the given edge of the given monitor.
+			/// </para>
 			/// </summary>
 			ABM_GETAUTOHIDEBAREX = 0x0000000B,
 
-			/// <summary>Windows XP and later: Registers or unregisters an autohide appbar for an edge of a particular monitor.</summary>
+			/// <summary>
+			/// Registers or unregisters an autohide appbar for a given edge of the screen. This message extends ABM_SETAUTOHIDEBAR by
+			/// enabling you to specify a particular monitor, for use in multiple monitor situations.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. Set the lParam member is to TRUE to register the appbar or FALSE to unregister it. You
+			/// must specify the cbSize, hWnd, uEdge, rc, and lParam members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns TRUE if successful, or FALSE if an error occurs or if an autohide appbar is already registered for the given edge on
+			/// the given monitor.
+			/// </para>
+			/// </summary>
+			/// <remarks>
+			/// The system allows only one autohide appbar for each edge of each monitor. The monitor is determined by the rc member and the
+			/// edge is determined by the uEdge member of the APPBARDATA structure.
+			/// </remarks>
 			ABM_SETAUTOHIDEBAREX = 0x0000000C,
 		}
 
@@ -2042,7 +2237,7 @@ namespace Vanara.PInvoke
 		// dwMessage, PAPPBARDATA pData );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "173d6eff-b33b-4d7d-bedd-5ebfb1e45954")]
-		public static extern UIntPtr SHAppBarMessage(ABM dwMessage, ref APPBARDATA pData);
+		public static extern IntPtr SHAppBarMessage(ABM dwMessage, ref APPBARDATA pData);
 
 		/// <summary>
 		/// <para>Sends a message to the taskbar's status area.</para>
