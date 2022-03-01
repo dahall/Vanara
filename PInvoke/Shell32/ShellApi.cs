@@ -285,6 +285,87 @@ namespace Vanara.PInvoke
 			ABM_SETAUTOHIDEBAREX = 0x0000000C,
 		}
 
+		/// <summary>Windows Shell notifications.</summary>
+		[PInvokeData("shellapi.h")]
+		public enum ABN : int
+		{
+			/// <summary>
+			/// Notifies an appbar that the taskbar's autohide or always-on-top state has changed that is, the user has selected or cleared
+			/// the "Always on top" or "Auto hide" check box on the taskbar's property sheet.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>This message has no parameters.</para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>An appbar can use this notification message to set its state to conform to that of the taskbar, if desired.</remarks>
+			ABN_STATECHANGE = 0,
+
+			/// <summary>
+			/// Notifies an appbar when an event has occurred that may affect the appbar's size and position. Events include changes in the
+			/// taskbar's size, position, and visibility state, as well as the addition, removal, or resizing of another appbar on the same
+			/// side of the screen.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>This message has no parameters.</para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>
+			/// An appbar should respond to this notification message by sending the ABM_QUERYPOS and ABM_SETPOS messages. If its position
+			/// has changed, the appbar should call the MoveWindow function to move itself to the new position.
+			/// </remarks>
+			ABN_POSCHANGED,
+
+			/// <summary>
+			/// Notifies an appbar when a full-screen application is opening or closing. This notification is sent in the form of an
+			/// application-defined message that is set by the ABM_NEW message.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// <em>lParam:</em> A flag specifying whether a full-screen application is opening or closing. This parameter is TRUE if the
+			/// application is opening or FALSE if it is closing.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>
+			/// When a full-screen application is opening, an appbar must drop to the bottom of the z-order. When it is closing, the appbar
+			/// should restore its z-order position.
+			/// </remarks>
+			ABN_FULLSCREENAPP,
+
+			/// <summary>
+			/// Notifies an appbar that the user has selected the Cascade, Tile Horizontally, or Tile Vertically command from the taskbar's
+			/// shortcut menu.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// <em>lParam:</em> A flag specifying whether the cascade or tile operation is beginning. This parameter is TRUE if the
+			/// operation is beginning and the windows have not yet been moved. It is FALSE if the operation has completed.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>
+			/// The system sends this notification message twice first with lParam set to TRUE and then with lParam set to FALSE. The first
+			/// notification is sent before the windows are cascaded or tiled, and the second is sent after the cascade or tile operation has occurred.
+			/// </remarks>
+			ABN_WINDOWARRANGE
+		}
+
+		/// <summary>Data for the desired state of the Windows taskbar.</summary>
+		[PInvokeData("shellapi.h")]
+		[Flags]
+		public enum ABS : int
+		{
+			/// <summary>Autohide on, always-on-top off.</summary>
+			ABS_AUTOHIDE = 1,
+
+			/// <summary>
+			/// Always-on-top on, autohide off. As of Windows 7, ABS_ALWAYSONTOP is no longer returned because the taskbar is always in that
+			/// state. Older code should be updated to ignore the absence of this value in not assume that return value to mean that the
+			/// taskbar is not in the always-on-top state.
+			/// </summary>
+			ABS_ALWAYSONTOP = 2,
+		}
+
 		/// <summary>Where to obtain association data and the form the data is stored in.</summary>
 		[PInvokeData("shellapi.h", MSDNShortId = "1d1a963f-7ebb-4ba6-9a97-795c8ef11ae4")]
 		public enum ASSOCCLASS
@@ -3824,6 +3905,22 @@ namespace Vanara.PInvoke
 			/// <para>See the individual message pages for details.</para>
 			/// </summary>
 			public IntPtr lParam;
+
+			/// <summary>Initializes a new instance of the <see cref="APPBARDATA"/> struct.</summary>
+			/// <param name="hWnd">The handle to the appbar window.</param>
+			/// <param name="callbackMessage">An application-defined message identifier.</param>
+			/// <param name="edge">A value that specifies an edge of the screen.</param>
+			/// <param name="rect">A RECT structure whose use varies depending on the message.</param>
+			/// <param name="lParam">A message-dependent value.</param>
+			public APPBARDATA(HWND hWnd = default, uint callbackMessage = 0, ABE edge = 0, RECT rect = default, int lParam = default)
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(APPBARDATA));
+				this.hWnd = hWnd;
+				uCallbackMessage = callbackMessage;
+				uEdge = edge;
+				rc = rect;
+				this.lParam = new(lParam);
+			}
 		}
 
 		/// <summary>Defines information used by AssocCreateForClasses to retrieve an IQueryAssociations interface for a given file association.</summary>
