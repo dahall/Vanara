@@ -78,6 +78,95 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate void WinEventProc(HWINEVENTHOOK hWinEventHook, uint winEvent, HWND hwnd, int idObject, int idChild, uint idEventThread, uint dwmsEventTime);
 
+		/// <summary>Hook codes used in the <c>nCode</c> paramter of <see cref="HookProc"/>.</summary>
+		[PInvokeData("WinUser.h")]
+		public enum HC : int
+		{
+			/// <summary>The hook procedure must process the message.</summary>
+			HC_ACTION = 0,
+
+			/// <summary>
+			/// The hook procedure must copy the current mouse or keyboard message to the EVENTMSG structure pointed to by the lParam parameter.
+			/// </summary>
+			HC_GETNEXT = 1,
+
+			/// <summary>
+			/// The hook procedure must prepare to copy the next mouse or keyboard message to the EVENTMSG structure pointed to by lParam.
+			/// Upon receiving the HC_GETNEXT code, the hook procedure must copy the message to the structure.
+			/// </summary>
+			HC_SKIP = 2,
+
+			/// <summary>
+			/// The wParam and lParam parameters contain information about a message, and the message has not been removed from the message
+			/// queue. (An application called the PeekMessage function, specifying the PM_NOREMOVE flag.)
+			/// </summary>
+			HC_NOREMOVE = 3,
+
+			/// <summary>HC_NOREMOVE</summary>
+			HC_NOREM = HC_NOREMOVE,
+
+			/// <summary>
+			/// A system-modal dialog box is being displayed. Until the dialog box is destroyed, the hook procedure must stop playing back messages.
+			/// </summary>
+			HC_SYSMODALON = 4,
+
+			/// <summary>A system-modal dialog box has been destroyed. The hook procedure must resume playing back the messages.</summary>
+			HC_SYSMODALOFF = 5,
+		}
+
+		/// <summary>Hook codes used in the <c>nCode</c> paramter of <see cref="HookProc"/>.</summary>
+		[PInvokeData("WinUser.h")]
+		public enum HCBT : int
+		{
+			/// <summary>The system is about to activate a window.</summary>
+			HCBT_ACTIVATE = 5,
+
+			/// <summary>
+			/// The system has removed a mouse message from the system message queue. Upon receiving this hook code, a CBT application must
+			/// install a WH_JOURNALPLAYBACK hook procedure in response to the mouse message.
+			/// </summary>
+			HCBT_CLICKSKIPPED = 6,
+
+			/// <summary>
+			/// A window is about to be created. The system calls the hook procedure before sending the WM_CREATE or WM_NCCREATE message to
+			/// the window. If the hook procedure returns a nonzero value, the system destroys the window; the CreateWindow function returns
+			/// NULL, but the WM_DESTROY message is not sent to the window. If the hook procedure returns zero, the window is created normally.
+			/// <para>
+			/// At the time of the HCBT_CREATEWND notification, the window has been created, but its final size and position may not have
+			/// been determined and its parent window may not have been established. It is possible to send messages to the newly created
+			/// window, although it has not yet received WM_NCCREATE or WM_CREATE messages. It is also possible to change the position in the
+			/// z-order of the newly created window by modifying the hwndInsertAfter member of the CBT_CREATEWND structure.
+			/// </para>
+			/// </summary>
+			HCBT_CREATEWND = 3,
+
+			/// <summary>A window is about to be destroyed.</summary>
+			HCBT_DESTROYWND = 4,
+
+			/// <summary>
+			/// The system has removed a keyboard message from the system message queue. Upon receiving this hook code, a CBT application
+			/// must install a WH_JOURNALPLAYBACK hook procedure in response to the keyboard message.
+			/// </summary>
+			HCBT_KEYSKIPPED = 7,
+
+			/// <summary>A window is about to be minimized or maximized.</summary>
+			HCBT_MINMAX = 1,
+
+			/// <summary>A window is about to be moved or sized.</summary>
+			HCBT_MOVESIZE = 0,
+
+			/// <summary>The system has retrieved a WM_QUEUESYNC message from the system message queue.</summary>
+			HCBT_QS = 2,
+
+			/// <summary>A window is about to receive the keyboard focus.</summary>
+			HCBT_SETFOCUS = 9,
+
+			/// <summary>
+			/// A system command is about to be carried out. This allows a CBT application to prevent task switching by means of hot keys.
+			/// </summary>
+			HCBT_SYSCOMMAND = 8,
+		}
+
 		/// <summary>The type of hook procedure to be installed.</summary>
 		[PInvokeData("WinUser.h", MSDNShortId = "ms644990")]
 		public enum HookType
@@ -614,7 +703,7 @@ namespace Vanara.PInvoke
 		// HOOKPROC lpfn, HINSTANCE hmod, DWORD dwThreadId );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "setwindowshookex")]
-		public static extern SafeHHOOK SetWindowsHookEx(HookType idHook, HookProc lpfn, HINSTANCE hmod, int dwThreadId);
+		public static extern SafeHHOOK SetWindowsHookEx(HookType idHook, HookProc lpfn, [In, Optional] HINSTANCE hmod, [Optional] int dwThreadId);
 
 		/// <summary>Sets an event hook function for a range of events.</summary>
 		/// <param name="eventMin">
