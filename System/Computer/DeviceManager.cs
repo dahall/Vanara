@@ -920,6 +920,10 @@ namespace Vanara.Diagnostics
 		public string MachineName { get; }
 
 		/// <summary>Gets the devices associated with this machine.</summary>
+		/// <param name="filter">
+		/// Specifies control options that filter the device information elements that are added to the device information set. This
+		/// property can be a bitwise OR of one or more of the <see cref="DIGCF"/> flags.
+		/// </param>
 		/// <returns>A sequence of <see cref="Device"/> instances on this machine.</returns>
 		public IEnumerable<Device> GetDevices(DIGCF filter = DIGCF.DIGCF_PRESENT) => new DeviceCollection(null, null, MachineName, filter);
 
