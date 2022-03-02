@@ -3044,6 +3044,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>The window position. This member can be one or more of the following values.</summary>
 			public SetWindowPosFlags flags;
+
+			/// <summary>Creates a <see cref="WINDOWPOS"/> structure from an LPARAM value.</summary>
+			/// <param name="lParam">The LPARAM value.</param>
+			/// <returns>A <see cref="WINDOWPOS"/> structure.</returns>
+			public static WINDOWPOS FromLParam(IntPtr lParam) => (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS));
+
+			/// <summary>Updates the <see cref="WINDOWPOS"/> value pointed to by an LPARAM value from this instance.</summary>
+			/// <param name="lParam">The LPARAM value to update.</param>
+			public void UpdateLParam(IntPtr lParam) => Marshal.StructureToPtr(this, lParam, false);
 		}
 
 		/// <summary>Special window handles</summary>
