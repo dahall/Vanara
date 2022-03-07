@@ -228,8 +228,6 @@ namespace Vanara.PInvoke
 			HDIS_FOCUSED = 1
 		}
 
-#pragma warning disable CS1572 // XML comment has a param tag, but there is no parameter by that name
-
 		/// <summary>Header Control Messages</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/bumper-header-control-reference-messages
 		[PInvokeData("Commctrl.h", MSDNShortId = "bumper-header-control-reference-messages")]
@@ -238,36 +236,53 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Clears the filter for a given header control. You can send this message explicitly or use the <c>Header_ClearFilter</c> macro.
 			/// </summary>
-			/// <param name="wParam">A column value indicating which filter to clear.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns an integer. The <c>LRESULT</c> is cast to an integer that indicates <c>TRUE</c>(1) or <c>FALSE</c>(0).</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>A column value indicating which filter to clear.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns an integer. The <c>LRESULT</c> is cast to an integer that indicates <c>TRUE</c>(1) or <c>FALSE</c>(0).</para>
 			/// <remarks>
 			/// If the column value is specified as -1, all the filters are cleared, and the HDN_FILTERCHANGE notification is sent only once.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-clearfilter
 			HDM_CLEARFILTER = HDM_FIRST + 24, // int, 0
 
 			/// <summary>
 			/// Creates a semi-transparent version of an item's image for use as a dragging image. You can send this message explicitly or
 			/// use the <c>Header_CreateDragImage</c> macro.
 			/// </summary>
-			/// <param name="wParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// The zero-based index of the item within the header control. The image assigned to this item is the basis for the transparent image.
-			/// </param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns a handle to an image list that contains the new image as its only element.</returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a handle to an image list that contains the new image as its only element.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-createdragimage
 			HDM_CREATEDRAGIMAGE = HDM_FIRST + 16, // int, 0
 
 			/// <summary>
 			/// Deletes an item from a header control. You can send this message explicitly or use the <c>Header_DeleteItem</c> macro.
 			/// </summary>
-			/// <param name="wParam">An index of the item to delete.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>An index of the item to delete.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-deleteitem
 			HDM_DELETEITEM = HDM_FIRST + 2, // int, 0
 
 			/// <summary>Moves the input focus to the edit box when a filter button has the focus.</summary>
-			/// <param name="wParam">A value specifying the column to edit.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>A value specifying the column to edit.</para>
+			/// <para><em>lParam</em></para>
 			/// <para>
 			/// A flag that specifies how to handle the user's editing changes. Use this flag to specify what to do if the user is in the
 			/// process of editing the filter when the message is sent.
@@ -278,44 +293,56 @@ namespace Vanara.PInvoke
 			/// <term>Meaning</term>
 			/// </listheader>
 			/// <item>
-			/// <term>TRUE</term>
+			/// <term><c>TRUE</c></term>
 			/// <term>Discard the changes made by the user.</term>
 			/// </item>
 			/// <item>
-			/// <term>FALSE</term>
+			/// <term><c>FALSE</c></term>
 			/// <term>Accept the changes made by the user.</term>
 			/// </item>
 			/// </list>
-			/// </param>
-			/// <returns>Returns an integer. The <c>LRESULT</c> is cast to an integer that indicates <c>TRUE</c>(1) or <c>FALSE</c>(0).</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns an integer. The <c>LRESULT</c> is cast to an integer that indicates <c>TRUE</c>(1) or <c>FALSE</c>(0).</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-editfilter
 			HDM_EDITFILTER = HDM_FIRST + 23, // int, bool
 
 			/// <summary>
 			/// Gets the width of the bitmap margin for a header control. You can send this message explicitly or use the
 			/// <c>Header_GetBitmapMargin</c> macro.
 			/// </summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the width of the bitmap margin in pixels. If the bitmap margin was not previously specified, the default value of 3*
 			/// <c>GetSystemMetrics</c> (SM_CXEDGE) is returned.
-			/// </returns>
+			/// </para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getbitmapmargin
 			HDM_GETBITMAPMARGIN = HDM_FIRST + 21, // 0,0
 
 			/// <summary>
 			/// Gets the item in a header control that has the focus. Send this message explicitly or by using the
 			/// <c>Header_GetFocusedItem</c> macro.
 			/// </summary>
-			/// <param name="wParam">Not used. Must be zero.</param>
-			/// <param name="lParam">Not used. Must be zero.</param>
-			/// <returns>Returns the index of the item in focus.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Not used. Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Not used. Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the item in focus.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getfocuseditem
 			HDM_GETFOCUSEDITEM = HDM_FIRST + 27, // 0,0
 
 			/// <summary>
 			/// Gets the handle to the image list that has been set for an existing header control. You can send this message explicitly or
 			/// use the <c>Header_GetImageList</c> or <c>Header_GetStateImageList</c> macro.
 			/// </summary>
-			/// <param name="*wParam*">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>*wParam*</em></para>
 			/// <para>One of the following values:</para>
 			/// <list type="table">
 			/// <listheader>
@@ -323,149 +350,200 @@ namespace Vanara.PInvoke
 			/// <term>Meaning</term>
 			/// </listheader>
 			/// <item>
-			/// <term>HDSIL_NORMAL</term>
+			/// <term><c>HDSIL_NORMAL</c></term>
 			/// <term>Indicates that this is a normal image list.</term>
 			/// </item>
 			/// <item>
-			/// <term>HDSIL_STATE</term>
+			/// <term><c>HDSIL_STATE</c></term>
 			/// <term>Indicates that this is a state image list.</term>
 			/// </item>
 			/// </list>
-			/// </param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns a handle to the image list set for the header control.</returns>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a handle to the image list set for the header control.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getimagelist
 			HDM_GETIMAGELIST = HDM_FIRST + 9, // 0, 0
 
 			/// <summary>
 			/// Gets information about an item in a header control. You can send this message explicitly or use the <c>Header_GetItem</c> macro.
 			/// </summary>
-			/// <param name="wParam">The index of the item for which information is to be retrieved.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The index of the item for which information is to be retrieved.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>HDITEM</c> structure. When the message is sent, the <c>mask</c> member indicates the type of information
 			/// being requested. When the message returns, the other members receive the requested information. If the <c>mask</c> member
 			/// specifies zero, the message returns <c>TRUE</c> but copies no information to the structure.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 			/// <remarks>
 			/// If the HDI_TEXT flag is set in the <c>mask</c> member of the <c>HDITEM</c> structure, the control may change the
 			/// <c>pszText</c> member of the structure to point to the new text instead of filling the buffer with the requested text.
 			/// Applications should not assume that the text will always be placed in the requested buffer.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitem
 			HDM_GETITEM = HDM_FIRST + 11, // int, HDITEM
 
 			/// <summary>
 			/// Gets a count of the items in a header control. You can send this message explicitly or use the <c>Header_GetItemCount</c> macro.
 			/// </summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the number of items if successful, or -1 otherwise.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the number of items if successful, or -1 otherwise.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitemcount
 			HDM_GETITEMCOUNT = HDM_FIRST + 0, // 0, 0
 
 			/// <summary>
 			/// Gets the bounding rectangle of the split button for a header item with style <c>HDF_SPLITBUTTON</c>. Send this message
 			/// explicitly or by using the <c>Header_GetItemDropDownRect</c> macro.
 			/// </summary>
-			/// <param name="wParam">The zero-based index of the header control item for which to retrieve the bounding rectangle.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The zero-based index of the header control item for which to retrieve the bounding rectangle.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to a <c>RECT</c> structure that receives the bounding rectangle information. The message sender is responsible for
 			/// allocating this structure. The coordinates returned in the RECT structure are expressed relative to the header control parent.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 			/// <remarks>The header item must have style <c>HDF_SPLITBUTTON</c>.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitemdropdownrect
 			HDM_GETITEMDROPDOWNRECT = HDM_FIRST + 25, // int, RECT
 
 			/// <summary>
 			/// Gets the bounding rectangle for a given item in a header control. You can send this message explicitly or use the
 			/// <c>Header_GetItemRect</c> macro.
 			/// </summary>
-			/// <param name="wParam">The zero-based index of the header control item for which to retrieve the bounding rectangle.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The zero-based index of the header control item for which to retrieve the bounding rectangle.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to a <c>RECT</c> structure that receives the bounding rectangle information. The message sender is responsible for
 			/// allocating this structure. The coordinates returned in the RECT structure are expressed relative to the header control parent.
-			/// </param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitemrect
 			HDM_GETITEMRECT = HDM_FIRST + 7, // int, RECT*
 
 			/// <summary>
 			/// Gets the current left-to-right order of items in a header control. You can send this message explicitly or use the
 			/// <c>Header_GetOrderArray</c> macro.
 			/// </summary>
-			/// <param name="wParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// The number of integer elements that lParam can hold. This value must be equal to the number of items in the control (see <c>HDM_GETITEMCOUNT</c>).
-			/// </param>
-			/// <param name="lParam">A pointer to an array of integers that receive the index values for items in the header.</param>
-			/// <returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an array of integers that receive the index values for items in the header.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns nonzero if successful, and the buffer at lParam receives the item number for each item in the header control in the
 			/// order in which they appear from left to right. Otherwise, the message returns zero.
-			/// </returns>
+			/// </para>
 			/// <remarks>
 			/// <para>
-			/// The number of elements in lParam is specified in wParam and must be equal to the number of items in the control. For
-			/// example, the following code fragment will reserve enough memory to hold the index values.
+			/// The number of elements in lParam is specified in wParam and must be equal to the number of items in the control. For example,
+			/// the following code fragment will reserve enough memory to hold the index values.
 			/// </para>
 			/// <para>
 			/// <code>int iItems, *lpiArray; // Get memory for buffer. (iItems = SendMessage(hwndHD, HDM_GETITEMCOUNT, 0,0))!=-1) if(!(lpiArray = calloc(iItems,sizeof(int)))) MessageBox(hwnd, "Out of memory.","Error", MB_OK);</code>
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getorderarray
 			HDM_GETORDERARRAY = HDM_FIRST + 17, // iCount, lpArray
 
 			/// <summary>
 			/// Gets the bounding rectangle of the overflow button when the <c>HDS_OVERFLOW</c> style is set on the header control and the
 			/// overflow button is visible. Send this message explicitly or by using the <c>Header_GetOverflowRect</c> macro.
 			/// </summary>
-			/// <param name="wParam">Not used. Must be zero.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Not used. Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to a <c>RECT</c> structure to receive the bounding rectangle information. The message sender is responsible for
 			/// allocating this structure. The coordinates returned in the <c>RECT</c> structure are expressed as screen coordinates.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
 			/// <remarks>The header control must have style <c>HDF_SPLITBUTTON</c>.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getoverflowrect
 			HDM_GETOVERFLOWRECT = HDM_FIRST + 26, // 0, RECT*
 
 			/// <summary>
 			/// Gets the Unicode character format flag for the control. You can send this message explicitly or use the
 			/// <c>Header_GetUnicodeFormat</c> macro.
 			/// </summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
 			/// value is zero, the control is using ANSI characters.
-			/// </returns>
+			/// </para>
 			/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getunicodeformat
 			HDM_GETUNICODEFORMAT = 0X2006,        // CCM_GETUNICODEFORMAT,
 
 			/// <summary>Tests a point to determine which header item, if any, is at the specified point.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>HDHITTESTINFO</c> structure that contains the position to test and receives information about the results
 			/// of the test.
-			/// </param>
-			/// <returns>Returns the index of the item at the specified position, if any, or 1 otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the item at the specified position, if any, or 1 otherwise.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-hittest
 			HDM_HITTEST = HDM_FIRST + 6, // 0, HDHITTEST
 
 			/// <summary>
 			/// Inserts a new item into a header control. You can send this message explicitly or use the <c>Header_InsertItem</c> macro.
 			/// </summary>
-			/// <param name="wParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// The index of the item after which the new item is to be inserted. The new item is inserted at the end of the header control
 			/// if wParam is greater than or equal to the number of items in the control. If wParam is zero, the new item is inserted at the
 			/// beginning of the header control.
-			/// </param>
-			/// <param name="lParam">A pointer to an <c>HDITEM</c> structure that contains information about the new item.</param>
-			/// <returns>Returns the index of the new item if successful, or -1 otherwise.</returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>HDITEM</c> structure that contains information about the new item.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the new item if successful, or -1 otherwise.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-insertitem
 			HDM_INSERTITEM = HDM_FIRST + 10, // int, HDITEM
 
 			/// <summary>
 			/// Retrieves information used to set the size and position of the header control within the target rectangle of the parent
 			/// window. You can send this message explicitly or use the <c>Header_Layout</c> macro.
 			/// </summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>HDLAYOUT</c> structure. The <c>prc</c> member specifies the coordinates of a rectangle, and the
 			/// <c>pwpos</c> member receives the size and position for the header control within the rectangle.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 			/// <remarks>
 			/// <para>
 			/// The <c>pwpos</c> member of the lParam structure receives size and position values appropriate for positioning the control
@@ -478,55 +556,77 @@ namespace Vanara.PInvoke
 			/// <c>SetWindowPos</c> function to set the new size, position, and visibility state.
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-layout
 			HDM_LAYOUT = HDM_FIRST + 5, // 0, HDLAYOUT
 
 			/// <summary>
 			/// Retrieves an index value for an item based on its order in the header control. You can send this message explicitly or use
 			/// the <c>Header_OrderToIndex</c> macro.
 			/// </summary>
-			/// <param name="wParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// The order in which the item appears within the header control, from left to right. For example, the index value of the item
 			/// in the far left column would be 0. The value for the next item to the right would be 1, and so on.
-			/// </param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns INT that indicates the item index. If wParam is invalid (negative or too large), the return equals wParam.</returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns INT that indicates the item index. If wParam is invalid (negative or too large), the return equals wParam.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-ordertoindex
 			HDM_ORDERTOINDEX = HDM_FIRST + 15, // int, 0
 
 			/// <summary>
 			/// Sets the width of the margin, specified in pixels, of a bitmap in an existing header control. You can send this message
 			/// explicitly or use the <c>Header_SetBitmapMargin</c> macro.
 			/// </summary>
-			/// <param name="wParam">The width, specified in pixels, of the margin that surrounds a bitmap within an existing header control.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
-			/// Returns the width of the bitmap margin, in pixels. If the bitmap margin was not previously specified, the default value of
-			/// 3* <c>GetSystemMetrics</c> (SM_CXEDGE) is returned.
-			/// </returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The width, specified in pixels, of the margin that surrounds a bitmap within an existing header control.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
+			/// Returns the width of the bitmap margin, in pixels. If the bitmap margin was not previously specified, the default value of 3*
+			/// <c>GetSystemMetrics</c> (SM_CXEDGE) is returned.
+			/// </para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setbitmapmargin
 			HDM_SETBITMAPMARGIN = HDM_FIRST + 20,// iWidth, 0
 
 			/// <summary>
 			/// Sets the timeout interval between the time a change takes place in the filter attributes and the posting of an
 			/// HDN_FILTERCHANGE notification. You can send this message explicitly or use the <c>Header_SetFilterChangeTimeout</c> macro.
 			/// </summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">The timeout value, in milliseconds.</param>
-			/// <returns>Returns the index of the filter control being modified.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>The timeout value, in milliseconds.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the filter control being modified.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setfilterchangetimeout
 			HDM_SETFILTERCHANGETIMEOUT = HDM_FIRST + 22, // 0, int
 
 			/// <summary>
 			/// Sets the focus to a specified item in a header control. Send this message explicitly or by using the
 			/// <c>Header_SetFocusedItem</c> macro.
 			/// </summary>
-			/// <param name="wParam">Not used. Must be zero.</param>
-			/// <param name="lParam">The index of item.</param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Not used. Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>The index of item.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setfocuseditem
 			HDM_SETFOCUSEDITEM = HDM_FIRST + 28, // 0, int
 
 			/// <summary>
 			/// Changes the color of a divider between header items to indicate the destination of an external drag-and-drop operation. You
 			/// can send this message explicitly or use the <c>Header_SetHotDivider</c> macro.
 			/// </summary>
-			/// <param name="wParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
 			/// <para>The type of value represented by lParam. This value can be one of the following:</para>
 			/// <list type="table">
 			/// <listheader>
@@ -534,36 +634,37 @@ namespace Vanara.PInvoke
 			/// <term>Meaning</term>
 			/// </listheader>
 			/// <item>
-			/// <term>TRUE</term>
-			/// <term>Indicates that lParam holds the client coordinates of the pointer.</term>
+			/// <term><c><c>TRUE</c></c></term>
+			/// <term>Indicates that <c>lParam</c> holds the client coordinates of the pointer.</term>
 			/// </item>
 			/// <item>
-			/// <term>FALSE</term>
-			/// <term>Indicates that lParam holds a divider index value.</term>
+			/// <term><c><c>FALSE</c></c></term>
+			/// <term>Indicates that <c>lParam</c> holds a divider index value.</term>
 			/// </item>
 			/// </list>
-			/// </param>
-			/// <param name="lParam">
+			/// <para><em>lParam</em></para>
 			/// <para>A value held in lParam is interpreted depending on the value of wParam.</para>
 			/// <para>
-			/// If wParam is <c>TRUE</c>, lParam represents the x- and y-coordinates of the pointer. The x-coordinate is in the low word,
-			/// and the y-coordinate is in the high word. When the header control receives the message, it highlights the appropriate
-			/// divider based on the lParam coordinates.
+			/// If wParam is <c>TRUE</c>, lParam represents the x- and y-coordinates of the pointer. The x-coordinate is in the low word, and
+			/// the y-coordinate is in the high word. When the header control receives the message, it highlights the appropriate divider
+			/// based on the lParam coordinates.
 			/// </para>
 			/// <para>If wParam is <c>FALSE</c>, lParam represents the integer index of the divider to be highlighted.</para>
-			/// </param>
-			/// <returns>Returns a value equal to the index of the divider that the control highlighted.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a value equal to the index of the divider that the control highlighted.</para>
 			/// <remarks>
 			/// This message creates an effect that a header control automatically produces when it has the <c>HDS_DRAGDROP</c> style. The
 			/// <c>HDM_SETHOTDIVIDER</c> message is intended to be used when the owner of the control handles drag-and-drop operations manually.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-sethotdivider
 			HDM_SETHOTDIVIDER = HDM_FIRST + 19, // bool, int
 
 			/// <summary>
 			/// Assigns an image list to an existing header control. You can send this message explicitly or use the
 			/// <c>Header_SetImageList</c> or <c>Header_SetStateImageList</c> macro.
 			/// </summary>
-			/// <param name="*wParam*">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>*wParam*</em></para>
 			/// <para>One of the following values:</para>
 			/// <list type="table">
 			/// <listheader>
@@ -571,47 +672,59 @@ namespace Vanara.PInvoke
 			/// <term>Meaning</term>
 			/// </listheader>
 			/// <item>
-			/// <term>HDSIL_NORMAL</term>
+			/// <term><c>HDSIL_NORMAL</c></term>
 			/// <term>Indicates that this is a normal image list.</term>
 			/// </item>
 			/// <item>
-			/// <term>HDSIL_STATE</term>
+			/// <term><c>HDSIL_STATE</c></term>
 			/// <term>Indicates that this is a state image list.</term>
 			/// </item>
 			/// </list>
-			/// </param>
-			/// <param name="lParam">A handle to an image list.</param>
-			/// <returns>
+			/// <para><em>lParam</em></para>
+			/// <para>A handle to an image list.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the handle to the image list previously associated with the control. Returns <c>NULL</c> upon failure or if no image
 			/// list was set previously.
-			/// </returns>
+			/// </para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setimagelist
 			HDM_SETIMAGELIST = HDM_FIRST + 8, // HDSIL_, hImageList
 
 			/// <summary>
 			/// Sets the attributes of the specified item in a header control. You can send this message explicitly or use the
 			/// <c>Header_SetItem</c> macro.
 			/// </summary>
-			/// <param name="wParam">The current index of the item whose attributes are to be changed.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The current index of the item whose attributes are to be changed.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>HDITEM</c> structure that contains item information. When this message is sent, the <c>mask</c> member of
 			/// the structure must be set to indicate which attributes are being set.
-			/// </param>
-			/// <returns>Returns nonzero upon success, or zero otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero upon success, or zero otherwise.</para>
 			/// <remarks>
 			/// The <c>HDITEM</c> structure that supports this message supports item order and image list information. By using these
 			/// members, you can control the order in which items are displayed and specify images to appear with items.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setitem
 			HDM_SETITEM = HDM_FIRST + 12, // int, HDITEM
 
 			/// <summary>
 			/// Sets the left-to-right order of header items. You can send this message explicitly or use the <c>Header_SetOrderArray</c> macro.
 			/// </summary>
-			/// <param name="wParam">The size of the buffer at lParam, in elements. This value must equal the value returned by <c>HDM_GETITEMCOUNT</c>.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The size of the buffer at lParam, in elements. This value must equal the value returned by <c>HDM_GETITEMCOUNT</c>.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an array that specifies the order in which items should be displayed, from left to right. For example, if the
 			/// contents of the array are {2,0,1}, the control displays item 2, item 0, and item 1, from left to right.
-			/// </param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setorderarray
 			HDM_SETORDERARRAY = HDM_FIRST + 18, // iCount, lpArray
 
 			/// <summary>
@@ -619,13 +732,18 @@ namespace Vanara.PInvoke
 			/// control at run time rather than having to re-create the control. You can send this message explicitly or use the
 			/// <c>Header_SetUnicodeFormat</c> macro.
 			/// </summary>
-			/// <param name="wParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// The character set that is used by the control. If this value is nonzero, the control will use Unicode characters. If this
 			/// value is zero, the control will use ANSI characters.
-			/// </param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the previous Unicode format flag for the control.</returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the previous Unicode format flag for the control.</para>
 			/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setunicodeformat
 			HDM_SETUNICODEFORMAT = 0X2005,        // CCM_SETUNICODEFORMAT,
 		}
 
@@ -634,193 +752,363 @@ namespace Vanara.PInvoke
 		public enum HeaderNotification
 		{
 			/// <summary>
+			/// <para>
 			/// Sent by a header control when a drag operation has begun on one of its items. This notification code is sent only by header
 			/// controls that are set to the <c>HDS_DRAGDROP</c> style. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_BEGINDRAG pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
-			/// A pointer to an <c>NMHEADER</c> structure containing information about the header item that is being dragged.
-			/// </param>
-			/// <returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHEADER</c> structure containing information about the header item that is being dragged.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// To allow the header control to automatically manage drag-and-drop operations, return <c>FALSE</c>. If the owner of the
 			/// control is manually performing drag-and-drop reordering, return <c>TRUE</c>.
-			/// </returns>
+			/// </para>
+			/// <remarks>
+			/// A header control defaults to automatically managing drag-and-drop reordering. Returning <c>TRUE</c> to indicate external
+			/// (manual) drag-and-drop management allows the owner of the control to provide custom services as part of the drag-and-drop process.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-begindrag
 			HDN_BEGINDRAG = HDN_FIRST - 10,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that a filter edit has begun. This notification code is sent in the form of a
 			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_BEGINFILTEREDIT pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
-			/// A pointer to an <c>NMHEADER</c> structure that contains additional information about the filter that is being edited.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHEADER</c> structure that contains additional information about the filter that is being edited.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-beginfilteredit
 			HDN_BEGINFILTEREDIT = HDN_FIRST - 14,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that the user has begun dragging a divider in the control (that is, the user has
 			/// pressed the left mouse button while the mouse cursor is on a divider in the header control). This notification code is sent
 			/// in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_BEGINTRACK pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the item whose divider is to
 			/// be dragged.
-			/// </param>
-			/// <returns>Returns <c>FALSE</c> to allow tracking of the divider, or <c>TRUE</c> to prevent tracking.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>FALSE</c> to allow tracking of the divider, or <c>TRUE</c> to prevent tracking.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-begintrack
 			HDN_BEGINTRACK = HDN_FIRST - 26,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that the user double-clicked the divider area of the control. This notification
 			/// code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_DIVIDERDBLCLICK pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the item whose divider was double-clicked.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-dividerdblclick
 			HDN_DIVIDERDBLCLICK = HDN_FIRST - 25,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a header control to its parent when the drop-down arrow on the header control is clicked. This notification code is
 			/// sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_DROPDOWN pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure that contains information on the header control.</param>
-			/// <returns>No return value.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHEADER</c> structure that contains information on the header control.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// <remarks>
+			/// <para>
+			/// The example in the Syntax section shows how the notification receiver casts <c>LPARAM</c> to retrieve the <c>NMHEADER</c>
+			/// structure. <c>WPARAM</c> contains the ID of the control that sends this message.
+			/// </para>
+			/// <para>This message is sent only if style HDF_SPLITBUTTON is set on the header item.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-dropdown
 			HDN_DROPDOWN = HDN_FIRST - 18,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a header control when a drag operation has ended on one of its items. This notification code is sent as a
 			/// <c>WM_NOTIFY</c> message. Only header controls that are set to the <c>HDS_DRAGDROP</c> style send this notification code.
+			/// </para>
+			/// <para>
+			/// <code>HDN_ENDDRAG pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
-			/// A pointer to an <c>NMHEADER</c> structure containing information about the header item that was being dragged.
-			/// </param>
-			/// <returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHEADER</c> structure containing information about the header item that was being dragged.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// To allow the control to automatically place and reorder the item, return <c>FALSE</c>. To prevent the item from being placed,
 			/// return <c>TRUE</c>.
-			/// </returns>
+			/// </para>
+			/// <remarks>
+			/// If the owner is performing external (manual) drag-and-drop management, it must return <c>FALSE</c>. The owner then must
+			/// reorder header items manually by sending <c>HDM_SETITEM</c> or <c>HDM_SETORDERARRAY</c>.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-enddrag
 			HDN_ENDDRAG = HDN_FIRST - 11,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that a filter edit has ended. This notification code is sent in the form of a
 			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_ENDFILTEREDIT pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
-			/// A pointer to an <c>NMHEADER</c> structure that contains additional information about the filter that is being edited.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHEADER</c> structure that contains additional information about the filter that is being edited.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-endfilteredit
 			HDN_ENDFILTEREDIT = HDN_FIRST - 15,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that the user has finished dragging a divider. This notification code sent in the
 			/// form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_ENDTRACK pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the item whose divider was dragged.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-endtrack
 			HDN_ENDTRACK = HDN_FIRST - 27,
 
 			/// <summary>
+			/// <para>
 			/// Notifies the header control's parent window when the filter button is clicked or in response to an <c>HDM_SETITEM</c>
 			/// message. This notification code sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_FILTERBTNCLICK pNMHDFilterBtnClk = (LPNMHDFILTERBTNCLICK) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHDFILTERBTNCLICK</c> structure that contains information about the header control and the header filter button.
-			/// </param>
-			/// <returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// If you return <c>TRUE</c>, an HDN_FILTERCHANGE notification code will be sent to the header control's parent window. This
 			/// notification code gives the parent window an opportunity to synchronize its user interface elements. Return <c>FALSE</c> if
 			/// you do not want the notification sent.
-			/// </returns>
+			/// </para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-filterbtnclick
 			HDN_FILTERBTNCLICK = HDN_FIRST - 13,
 
 			/// <summary>
+			/// <para>
 			/// Notifies the header control's parent window that the attributes of a header control filter are being changed or edited. This
 			/// notification code sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_FILTERCHANGE pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the header item, including
 			/// the attributes that are about to change.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-filterchange
 			HDN_FILTERCHANGE = HDN_FIRST - 12,
 
 			/// <summary>
+			/// <para>
 			/// Sent to the owner of a header control when the control needs information about a callback header item. This notification code
 			/// is sent as a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_GETDISPINFO pNMHDDispInfo = (LPNMHDDISPINFO) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHDDISPINFO</c> structure. On input, the fields of the structure specify what information is required and
 			/// the item of interest.
-			/// </param>
-			/// <returns>Returns an LRESULT.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns an LRESULT.</para>
+			/// <remarks>
+			/// Fill the appropriate members of the structure to return the requested information to the header control. If your message
+			/// handler sets the <c>mask</c> member of the <c>NMHDDISPINFO</c> structure to HDI_DI_SETITEM, the header control stores the
+			/// information and will not request it again.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-getdispinfo
 			HDN_GETDISPINFO = HDN_FIRST - 29,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that the attributes of a header item have changed. This notification code is sent
 			/// in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_ITEMCHANGED pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control, including the attributes that
 			/// have changed.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemchanged
 			HDN_ITEMCHANGED = HDN_FIRST - 21,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that the attributes of a header item are about to change. This notification code is
 			/// sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_ITEMCHANGING pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the header item, including
 			/// the attributes that are about to change.
-			/// </param>
-			/// <returns>Returns <c>FALSE</c> to allow the changes, or <c>TRUE</c> to prevent them.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>FALSE</c> to allow the changes, or <c>TRUE</c> to prevent them.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemchanging
 			HDN_ITEMCHANGING = HDN_FIRST - 20,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that the user clicked the control. This notification code is sent in the form of a
 			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_ITEMCLICK pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHEADER</c> structure that identifies the header control and specifies the index of the header item that
 			/// was clicked and the mouse button used to click the item. The <c>pItem</c> member is set to <c>NULL</c>.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// <remarks>A header control sends this notification code after the user releases the left mouse button.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemclick
 			HDN_ITEMCLICK = HDN_FIRST - 22,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that the user double-clicked the control. This notification code is sent in the
 			/// form of a <c>WM_NOTIFY</c> message. Only header controls that are set to the <c>HDS_BUTTONS</c> style send this notification code.
+			/// </para>
+			/// <para>
+			/// <code>HDN_ITEMDBLCLICK pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure that contains information about this notification code.</param>
-			/// <returns>No return value.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHEADER</c> structure that contains information about this notification code.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemdblclick
 			HDN_ITEMDBLCLICK = HDN_FIRST - 23,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that a key has been pressed with an item selected. This notification code is sent
 			/// in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_ITEMKEYDOWN pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
-			/// A pointer to an <c>NMHEADER</c> structure that contains additional information about the key that is being pressed.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHEADER</c> structure that contains additional information about the key that is being pressed.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemkeydown
 			HDN_ITEMKEYDOWN = HDN_FIRST - 17,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that the user clicked an item's state icon. This notification code is sent in the
 			/// form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_ITEMSTATEICONCLICK pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHEADER</c> structure that contains additional information about the state icon that was clicked on.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemstateiconclick
 			HDN_ITEMSTATEICONCLICK = HDN_FIRST - 16,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a header control to its parent when the header's overflow button is clicked. This notification code is sent in the
 			/// form of an <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_OVERFLOWCLICK pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
 			/// <para>
 			/// A pointer to a <c>NMHEADER</c> structure that describes the notification code. The calling process is responsible for
 			/// allocating this structure, including the contained <c>NMHDR</c> structure. Set the members of the <c>NMHDR</c> structure,
@@ -830,23 +1118,38 @@ namespace Vanara.PInvoke
 			/// Set the <c>iItem</c> member of the <c>NMHEADER</c> structure to the index of the first header item that is not visible and
 			/// thus should be displayed on an overflow.
 			/// </para>
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// <remarks>
+			/// <para>
+			/// The notification receiver casts <c>LPARAM</c> to retrieve the <c>NMHEADER</c> structure. <c>WPARAM</c> contains the ID of the
+			/// control that sends the notification.
+			/// </para>
+			/// <para>This message is sent only when style <c>HDS_OVERFLOW</c> is set on the header control.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-overflowclick
 			HDN_OVERFLOWCLICK = HDN_FIRST - 19,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a header control's parent window that the user is dragging a divider in the header control. This notification code
 			/// is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>HDN_TRACK pNMHeader = (LPNMHEADER) lParam;</code>
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the item whose divider is
 			/// being dragged.
-			/// </param>
-			/// <returns>Returns <c>FALSE</c> to continue tracking the divider, or <c>TRUE</c> to end tracking.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>FALSE</c> to continue tracking the divider, or <c>TRUE</c> to end tracking.</para>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-track
 			HDN_TRACK = HDN_FIRST - 28,
 		}
-
-#pragma warning restore CS1572 // XML comment has a param tag, but there is no parameter by that name
 
 		/// <summary>
 		/// Header controls have a number of styles, described in this section, that determine the control's appearance and behavior. You set
