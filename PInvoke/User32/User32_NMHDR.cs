@@ -31,7 +31,7 @@ namespace Vanara.PInvoke
 			/// <summary>Creates a reference to an <see cref="NMHDR"/> structure from an LPARAM value.</summary>
 			/// <param name="lParam">The LPARAM value.</param>
 			/// <returns>A <see cref="NMHDR"/> structure reference.</returns>
-			public static ref NMHDR LParamAsRef(IntPtr lParam) => ref lParam.AsRef<NMHDR>()
+			public static ref NMHDR LParamAsRef(IntPtr lParam) => ref lParam.AsRef<NMHDR>();
 #endif
 
 			/// <summary>Updates the <see cref="NMHDR"/> value pointed to by an LPARAM value from this instance.</summary>
