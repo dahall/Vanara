@@ -92,7 +92,7 @@ namespace Vanara.IO
 			get => GetInformation<Guid>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_IDENTIFIER);
 			set
 			{
-				var si = new SET_VIRTUAL_DISK_INFO { Version = SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_IDENTIFIER, UniqueIdentifier = value };
+				SET_VIRTUAL_DISK_INFO si = new(SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_IDENTIFIER) { UniqueIdentifier = value };
 				SetVirtualDiskInformation(Handle, si).ThrowIfFailed();
 			}
 		}
@@ -184,7 +184,7 @@ namespace Vanara.IO
 			get => GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PHYSICAL_DISK, 4);
 			set
 			{
-				var si = new SET_VIRTUAL_DISK_INFO { Version = SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PHYSICAL_SECTOR_SIZE, VhdPhysicalSectorSize = value };
+				SET_VIRTUAL_DISK_INFO si = new(SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PHYSICAL_SECTOR_SIZE) { VhdPhysicalSectorSize = value };
 				SetVirtualDiskInformation(Handle, si).ThrowIfFailed();
 			}
 		}
@@ -201,7 +201,7 @@ namespace Vanara.IO
 			get => GetInformation<bool>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE);
 			set
 			{
-				var si = new SET_VIRTUAL_DISK_INFO { Version = SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE, ChangeTrackingEnabled = value };
+				SET_VIRTUAL_DISK_INFO si = new(SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE) { ChangeTrackingEnabled = value };
 				SetVirtualDiskInformation(Handle, si).ThrowIfFailed();
 			}
 		}
@@ -226,7 +226,7 @@ namespace Vanara.IO
 			get => GetInformation<Guid>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_VIRTUAL_DISK_ID);
 			set
 			{
-				var si = new SET_VIRTUAL_DISK_INFO { Version = SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_VIRTUAL_DISK_ID, VirtualDiskId = value };
+				SET_VIRTUAL_DISK_INFO si = new(SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_VIRTUAL_DISK_ID) { VirtualDiskId = value };
 				SetVirtualDiskInformation(Handle, si).ThrowIfFailed();
 			}
 		}
@@ -606,6 +606,26 @@ namespace Vanara.IO
 					return ResizeVirtualDisk(Handle, RESIZE_VIRTUAL_DISK_FLAG.RESIZE_VIRTUAL_DISK_FLAG_NONE, param, vhdOverlap);
 				}
 			);
+
+		/// <summary>Sets the path to virtal hard disk's parent.</summary>
+		/// <param name="path">The full path to the parent disk.</param>
+		public void SetParentPath(string path)
+		{
+			using var pStr = new SafeCoTaskMemString(path);
+			SET_VIRTUAL_DISK_INFO si = new(SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PARENT_PATH) { ParentFilePath = (IntPtr)pStr };
+			SetVirtualDiskInformation(Handle, si).ThrowIfFailed();
+		}
+
+		/// <summary>Sets the path to virtal hard disk's parent and the child depth.</summary>
+		/// <param name="path">The full path to the parent disk.</param>
+		/// <param name="childDepth">Specifies the depth to the child from the leaf. The leaf itself is at depth 1.</param>
+		public void SetParentPathAndDepth(string path, uint childDepth)
+		{
+			using var pStr = new SafeCoTaskMemString(path);
+			SET_VIRTUAL_DISK_INFO si = new(SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PARENT_PATH_WITH_DEPTH)
+			{ ParentPathWithDepthInfo = new() { ParentFilePath = (IntPtr)pStr, ChildDepth = childDepth } };
+			SetVirtualDiskInformation(Handle, si).ThrowIfFailed();
+		}
 
 		/// <summary>
 		/// Resizes a virtual disk without checking the virtual disk's partition table to ensure that this truncation is safe. <note

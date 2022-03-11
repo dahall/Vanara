@@ -2363,8 +2363,14 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary>Contains virtual hard disk (VHD) information for set request.</summary>
-		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323686", MinClient = PInvokeClient.Windows7)]
+		/// <summary>
+		/// Contains virtual hard disk (VHD) information to use when you call the SetVirtualDiskInformation function to set VHD properties.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/virtdisk/ns-virtdisk-set_virtual_disk_info typedef struct
+		// _SET_VIRTUAL_DISK_INFO { SET_VIRTUAL_DISK_INFO_VERSION Version; union { PCWSTR ParentFilePath; GUID UniqueIdentifier; struct {
+		// ULONG ChildDepth; PCWSTR ParentFilePath; } ParentPathWithDepthInfo; ULONG VhdPhysicalSectorSize; GUID VirtualDiskId; BOOL
+		// ChangeTrackingEnabled; struct { GUID LinkageId; PCWSTR ParentFilePath; } ParentLocator; }; } SET_VIRTUAL_DISK_INFO, *PSET_VIRTUAL_DISK_INFO;
+		[PInvokeData("virtdisk.h", MSDNShortId = "NS:virtdisk._SET_VIRTUAL_DISK_INFO")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode,
 #if X64
 			Pack = 8
@@ -2381,6 +2387,14 @@ namespace Vanara.PInvoke
 			public SET_VIRTUAL_DISK_INFO_VERSION Version;
 
 			private UNION union;
+
+			/// <summary>Initializes a new instance of the <see cref="SET_VIRTUAL_DISK_INFO"/> struct.</summary>
+			/// <param name="version">The version that determines the type of information set..</param>
+			public SET_VIRTUAL_DISK_INFO(SET_VIRTUAL_DISK_INFO_VERSION version)
+			{
+				Version = version;
+				union = default;
+			}
 
 			/// <summary>Path to the parent backing store.</summary>
 			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
