@@ -18,7 +18,7 @@
     <RootNamespace>Vanara.PInvoke</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <Version>3.4.0</Version>
-    <NoWarn>$(NoWarn);NETSDK1138;SYSLIB0003;SYSLIB0004;SYSLIB0011</NoWarn>
+    <NoWarn>$(NoWarn);NETSDK1138;SYSLIB0003;SYSLIB0004;SYSLIB0011;IL2026</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
