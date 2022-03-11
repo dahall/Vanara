@@ -1980,6 +1980,12 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public static HWND HWND_BOTTOM = new IntPtr(1);
 
+		/// <summary>
+		/// Used by <c>SendMessage</c> and <c>PostMessage</c> to send a message to all top-level windows in the system, including disabled or
+		/// invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.
+		/// </summary>
+		public static HWND HWND_BROADCAST = new IntPtr(0xffff);
+
 		/// <summary>Use as parent in CreateWindow or CreateWindowEx call to indicate a message-only window.</summary>
 		public static HWND HWND_MESSAGE = new IntPtr(-3);
 
