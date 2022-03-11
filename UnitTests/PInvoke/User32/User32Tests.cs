@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
@@ -29,7 +30,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var timer = System.Diagnostics.Stopwatch.StartNew();
 			var gotMsg = false;
-			using (var win = new Vanara.PInvoke.BasicMessageWindow(meth))
+			using (var win = new BasicMessageWindow(meth))
 			{
 				for (int i = 0; i < 100; i++)
 					System.Threading.Thread.Sleep(20);
@@ -318,25 +319,34 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SystemParametersInfoGetTest()
 		{
-			// Try get bool value
-			var ptr = new SafeHGlobalHandle(4);
-			Assert.That(SystemParametersInfo(SPI.SPI_GETCLIENTAREAANIMATION, 0, (IntPtr)ptr, 0));
-			var bval1 = ptr.ToStructure<uint>() > 0;
-			Assert.That(bval1, Is.True);
-
-			// Try get generic bool value
-			Assert.That(SystemParametersInfo(SPI.SPI_GETCLIENTAREAANIMATION, out bool bval2));
-			Assert.That(bval2, Is.True);
-
 			// Try get integral value
-			ptr = new SafeHGlobalHandle(4);
+			var ptr = new SafeHGlobalHandle(4);
 			Assert.That(SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, 0, (IntPtr)ptr, 0));
 			var uval1 = ptr.ToStructure<uint>();
 			Assert.That(uval1, Is.Not.Zero);
 
 			// Try get generic integral value
-			Assert.That(SystemParametersInfo<uint>(SPI.SPI_GETFOCUSBORDERHEIGHT, out var uval2));
+			Assert.That(SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, out uint uval2));
 			Assert.That(uval2, Is.EqualTo(uval1));
+
+			// Try get bool value
+			ptr = new SafeHGlobalHandle(4);
+			Assert.That(SystemParametersInfo(SPI.SPI_GETCLIENTAREAANIMATION, 0, (IntPtr)ptr, 0));
+			bool bval1 = ptr.ToStructure<BOOL>();
+
+			// Try get generic bool value
+			Assert.That(SystemParametersInfo(SPI.SPI_GETCLIENTAREAANIMATION, out bool bval2));
+			Assert.That(bval2, Is.EqualTo(bval1));
+
+			// Try get enum value
+			ptr = new SafeHGlobalHandle(4);
+			Assert.That(SystemParametersInfo(SPI.SPI_GETCONTACTVISUALIZATION, 0, (IntPtr)ptr, 0));
+			var eval1 = ptr.ToStructure<ContactVisualization>();
+			Assert.That(eval1, Is.Not.Zero);
+
+			// Try get generic enum value
+			Assert.That(SystemParametersInfo(SPI.SPI_GETCONTACTVISUALIZATION, out ContactVisualization eval2));
+			Assert.That(eval2, Is.EqualTo(eval1));
 
 			// Try get struct value
 			ptr = SafeHGlobalHandle.CreateFromStructure<RECT>();
@@ -349,38 +359,96 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(rval2, Is.EqualTo(rval1));
 
 			// Try get string value
-			var sb = new System.Text.StringBuilder(Kernel32.MAX_PATH, Kernel32.MAX_PATH);
+			var sb = new StringBuilder(Kernel32.MAX_PATH, Kernel32.MAX_PATH);
 			Assert.That(SystemParametersInfo(SPI.SPI_GETDESKWALLPAPER, (uint)sb.Capacity, sb, 0));
-			Assert.That(sb, Has.Length.GreaterThan(0));
+		}
+
+		[Test]
+		public void SystemParametersInfoEnumTest()
+		{
+			var mi = typeof(User32).GetMember("SystemParametersInfo*", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod).
+				Cast<MethodInfo>().First(m => m.ContainsGenericParameters && m.GetParameters().Length == 2);
+			var smi = typeof(User32).GetMember("SystemParametersInfo*", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod).
+				Cast<MethodInfo>().First(m => m.ContainsGenericParameters && m.GetParameters().Length == 4);
+			foreach (SPI e in Enum.GetValues(typeof(SPI)))
+			{
+				var gmi = X(e, mi, CorrespondingAction.Get);
+				if (gmi is null)
+					continue;
+				var param = new object[] { e, null };
+				TestContext.Write($"{e}: ");
+				if ((bool)gmi.Invoke(null, param))
+					TestContext.WriteLine($"{param[1]}");
+				else
+					TestContext.Write($"ERROR: {Win32Error.GetLastError()}");
+
+				if (!Enum.TryParse(Enum.GetName(typeof(SPI), e).Replace("SPI_GET", "SPI_SET"), out SPI se) || se == SPI.SPI_SETSHOWSOUNDS)
+					continue;
+				gmi = X(se, smi, CorrespondingAction.Set);
+				if (gmi is null)
+					continue;
+				var sparam = new object[] { se, param[1], false, false };
+				TestContext.Write($"{se}: ");
+				if ((bool)gmi.Invoke(null, sparam))
+					TestContext.WriteLine("Pass");
+				else
+					TestContext.Write($"Fail: {Win32Error.GetLastError()}");
+			}
+
+			static MethodInfo X(SPI e, MethodInfo mi, CorrespondingAction a)
+			{
+				if (!e.GetType().GetField(e.ToString()).GetCustomAttributes<ObsoleteAttribute>().Any())
+				{
+					var typeAttrs = CorrespondingTypeAttribute.GetAttrForEnum(e).ToArray();
+					if (typeAttrs.Length > 0 && typeAttrs[0].Action == a)
+					{
+						var genType = typeAttrs[0].TypeRef;
+						if (genType.IsValueType)
+							return mi.MakeGenericMethod(genType);
+					}
+				}
+				return null;
+			}
 		}
 
 		[Test]
 		public void SystemParametersInfoSetTest()
 		{
 			// Try set bool value
-			Assert.That(SystemParametersInfo(SPI.SPI_SETCLIENTAREAANIMATION, 0, IntPtr.Zero, SPIF.SPIF_SENDCHANGE));
+			SystemParametersInfo(SPI.SPI_GETBLOCKSENDINPUTRESETS, out bool bval);
+			Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval ? 1u : 0u, IntPtr.Zero, 0));
 
 			// Try set generic bool value
-			Assert.That(SystemParametersInfo(SPI.SPI_SETCLIENTAREAANIMATION, true));
+			Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval));
 
 			// Try set integral value
-			Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, 0, (IntPtr)3, SPIF.SPIF_SENDCHANGE));
+			SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, out uint ival);
+			Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, 0, (IntPtr)(int)ival, SPIF.SPIF_SENDCHANGE));
 
 			// Try set generic integral value
-			Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, 1u));
+			Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, ival));
+
+			// Try set enum value
+			SystemParametersInfo(SPI.SPI_GETCONTACTVISUALIZATION, out ContactVisualization cv);
+			uint cvu = (uint)cv;
+			using (var pi = new PinnedObject(cvu))
+				Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, 0, pi, SPIF.SPIF_SENDCHANGE));
+
+			// Try set generic enum value
+			Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, cv));
 
 			// Try set struct value
 			Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, out RECT area));
 			area.right /= 2;
-			var ptr = SafeHGlobalHandle.CreateFromStructure(area);
-			Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(RECT)), (IntPtr)ptr, SPIF.SPIF_SENDCHANGE));
+			using (var ptr = new PinnedObject(area))
+				Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, (uint)Marshal.SizeOf(typeof(RECT)), (IntPtr)ptr, SPIF.SPIF_SENDCHANGE));
 
 			// Try set generic struct value
 			area.right *= 2;
 			Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, area));
 
 			// Try set string value
-			var sb = new System.Text.StringBuilder(Kernel32.MAX_PATH, Kernel32.MAX_PATH);
+			var sb = new StringBuilder(Kernel32.MAX_PATH, Kernel32.MAX_PATH);
 			Assert.That(SystemParametersInfo(SPI.SPI_GETDESKWALLPAPER, (uint)sb.Capacity, sb, 0));
 			var wp = TestCaseSources.ImageFile;
 			Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)wp.Length, wp, SPIF.SPIF_SENDCHANGE));
