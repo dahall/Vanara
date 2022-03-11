@@ -1,7 +1,5 @@
 ﻿using System;
-//using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.User32;
@@ -593,7 +591,6 @@ namespace Vanara.PInvoke
 			/// Sets the UNICODE character format flag for the control. This message allows you to change the character set used by the
 			/// control at run time rather than having to re-create the control. You can send this message explicitly or use the
 			/// <c>ListView_SetUnicodeFormat</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -604,6 +601,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous Unicode format flag for the control.</para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setunicodeformat
 			LVM_SETUNICODEFORMAT = 0X2005,        // CCM_SETUNICODEFORMAT,
@@ -611,7 +609,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the UNICODE character format flag for the control. You can send this message explicitly or use the
 			/// <c>ListView_GetUnicodeFormat</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -622,6 +619,7 @@ namespace Vanara.PInvoke
 			/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
 			/// value is zero, the control is using ANSI characters.
 			/// </para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getunicodeformat
 			LVM_GETUNICODEFORMAT = 0X2006,        // CCM_GETUNICODEFORMAT,
@@ -629,7 +627,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the background color of a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetBkColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -637,13 +634,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the background color of the list-view control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getbkcolor
 			LVM_GETBKCOLOR = LVM_FIRST + 0,
 
 			/// <summary>
 			/// Sets the background color of a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_SetBkColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -654,13 +651,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setbkcolor
 			LVM_SETBKCOLOR = LVM_FIRST + 1,
 
 			/// <summary>
 			/// Retrieves the handle to an image list used for drawing list-view items. You can send this message explicitly or by using the
 			/// <c>ListView_GetImageList</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Image list to retrieve. This parameter can be one of the following values:</para>
@@ -690,13 +687,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the specified image list if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getimagelist
 			LVM_GETIMAGELIST = LVM_FIRST + 2,
 
 			/// <summary>
 			/// Assigns an image list to a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_SetImageList</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Type of image list. This parameter can be one of the following values:</para>
@@ -726,6 +723,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the image list to assign.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the image list previously associated with the control if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// The current image list will be destroyed when the list-view control is destroyed unless the <c>LVS_SHAREIMAGELISTS</c> style
 			/// is set. If you use this message to replace one image list with another, your application must explicitly destroy all image
@@ -737,7 +735,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the number of items in a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetItemCount</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -745,13 +742,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the number of items.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemcount
 			LVM_GETITEMCOUNT = LVM_FIRST + 4,
 
 			/// <summary>
 			/// Retrieves some or all of a list-view item's attributes. You can send this message explicitly or by using the
 			/// <c>ListView_GetItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -761,6 +758,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When the <c>LVM_GETITEM</c> message is sent, the <c>iItem</c> and <c>iSubItem</c> members identify the item or subitem to
@@ -784,7 +782,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets some or all of a list-view item's attributes. You can also send LVM_SETITEM to set the text of a subitem. You can send
 			/// this message explicitly or by using the <c>ListView_SetItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -798,6 +795,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// To set the attributes of a list-view item, set the <c>iItem</c> member of the <c>LVITEM</c> structure to the index of the
@@ -817,7 +815,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Inserts a new item in a list-view control. You can send this message explicitly or by using the <c>ListView_InsertItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -830,6 +827,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the new item if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// You cannot use <c>ListView_InsertItem</c> or <c>LVM_INSERTITEM</c> to insert subitems. The <c>iSubItem</c> member of the
@@ -870,7 +868,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Removes an item from a list-view control. You can send this message explicitly or by using the <c>ListView_DeleteItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the list-view item to delete.</para>
@@ -878,13 +875,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-deleteitem
 			LVM_DELETEITEM = LVM_FIRST + 8,
 
 			/// <summary>
 			/// Removes all items from a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_DeleteAllItems</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -892,6 +889,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// When a list-view control receives the <c>LVM_DELETEALLITEMS</c> message, it sends the <c>LVN_DELETEALLITEMS</c> notification
 			/// code to its parent window.
@@ -902,7 +900,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the callback mask for a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetCallbackMask</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -910,13 +907,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the callback mask.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcallbackmask
 			LVM_GETCALLBACKMASK = LVM_FIRST + 10,
 
 			/// <summary>
 			/// Changes the callback mask for a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_SetCallbackMask</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -957,6 +954,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The callback mask of a list-view control is a set of bit flags that specify the item states for which the application, rather
@@ -975,7 +973,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Searches for a list-view item that has the specified properties and bears the specified relationship to a specified item. You
 			/// can send this message explicitly or by using the <c>ListView_GetNextItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -1081,6 +1078,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the next item if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// Note that the following flags, for use only with Windows Vista, are mutually exclusive of any other flags in use:
 			/// LVNI_VISIBLEONLY, LVNI_SAMEGROUPONLY, LVNI_VISIBLEORDER, LVNI_DIRECTIONMASK, and LVNI_STATEMASK.
@@ -1091,7 +1089,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Searches for a list-view item with the specified characteristics. You can send this message explicitly or by using the
 			/// <c>ListView_FindItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -1102,13 +1099,13 @@ namespace Vanara.PInvoke
 			/// <para>A pointer to an <c>LVFINDINFO</c> structure that contains information about what to search for.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the item if successful, or -1 otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-finditem
 			LVM_FINDITEM = LVM_FIRST + 83,
 
 			/// <summary>
 			/// Retrieves the bounding rectangle for all or part of an item in the current view. You can send this message explicitly or by
 			/// using the <c>ListView_GetItemRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the list-view item.</para>
@@ -1142,13 +1139,13 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemrect
 			LVM_GETITEMRECT = LVM_FIRST + 14,
 
 			/// <summary>
 			/// Moves an item to a specified position in a list-view control (must be in icon or small icon view). You can send this message
 			/// explicitly or by using the <c>ListView_SetItemPosition</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the list-view item.</para>
@@ -1159,6 +1156,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// If the list-view control has the <c>LVS_AUTOARRANGE</c> style, the items in the list-view control are arranged after the
@@ -1175,7 +1173,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the position of a list-view item. You can send this message explicitly or by using the
 			/// <c>ListView_GetItemPosition</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the list-view item.</para>
@@ -1183,13 +1180,13 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a <c>POINT</c> structure that receives the position of the item's upper-left corner, in view coordinates.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemposition
 			LVM_GETITEMPOSITION = LVM_FIRST + 16,
 
 			/// <summary>
 			/// Determines the width of a specified string using the specified list-view control's current font. You can send this message
 			/// explicitly or by using the <c>ListView_GetStringWidth</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1197,6 +1194,7 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a null-terminated string.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the string width if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// The LVM_GETSTRINGWIDTH message returns the exact width, in pixels, of the specified string. If you use the returned string
 			/// width as the column width in the <c>LVM_SETCOLUMNWIDTH</c> message, the string will be truncated. To retrieve the column
@@ -1208,7 +1206,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Determines which list-view item, if any, is at a specified position. You can send this message explicitly or by using the
 			/// <c>ListView_HitTest</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -1221,13 +1218,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the item at the specified position, if any, or -1 otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-hittest
 			LVM_HITTEST = LVM_FIRST + 18,
 
 			/// <summary>
 			/// Ensures that a list-view item is either entirely or partially visible, scrolling the list-view control if necessary. You can
 			/// send this message explicitly or by using the <c>ListView_EnsureVisible</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the list-view item.</para>
@@ -1238,13 +1235,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>The message fails if the window style includes <c>LVS_NOSCROLL</c>.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-ensurevisible
 			LVM_ENSUREVISIBLE = LVM_FIRST + 19,
 
 			/// <summary>
 			/// Scrolls the content of a list-view control. You can send this message explicitly or by using the <c>ListView_Scroll</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -1259,6 +1256,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// When the list-view control is in report view, the control can only be scrolled vertically in whole line increments.
 			/// Therefore, the lParam parameter will be rounded to the nearest number of pixels that form a whole line increment. For
@@ -1271,7 +1269,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Forces a list-view control to redraw a range of items. You can send this message explicitly or by using the
 			/// <c>ListView_RedrawItems</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the first item to redraw.</para>
@@ -1279,6 +1276,7 @@ namespace Vanara.PInvoke
 			/// <para>Index of the last item to redraw.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// The specified items are not actually redrawn until the list-view window receives a <c>WM_PAINT</c> message to repaint. To
 			/// repaint immediately, call the <c>UpdateWindow</c> function after using this macro.
@@ -1286,7 +1284,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-redrawitems
 			LVM_REDRAWITEMS = LVM_FIRST + 21,
 
-			/// <summary>Arranges items in icon view. You can send this message explicitly or by using the <c>ListView_Arrange</c> macro.</summary>
+			/// <summary>
+			/// Arranges items in icon view. You can send this message explicitly or by using the <c>ListView_Arrange</c> macro.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>One of the following values that specifies alignment:</para>
@@ -1316,13 +1315,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-arrange
 			LVM_ARRANGE = LVM_FIRST + 22,
 
 			/// <summary>
 			/// Begins in-place editing of the specified list-view item's text. The message implicitly selects and focuses the specified
 			/// item. You can send this message explicitly or by using the <c>ListView_EditLabel</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the list-view item. To cancel editing, set the index to -1.</para>
@@ -1330,6 +1329,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the edit control that is used to edit the item text if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When the user completes or cancels editing, the edit control is destroyed and the handle is no longer valid. You can subclass
@@ -1346,7 +1346,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the handle to the edit control being used to edit a list-view item's text. You can send this message explicitly or by
 			/// using the <c>ListView_GetEditControl</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1354,6 +1353,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the edit control if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view
@@ -1379,7 +1379,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the attributes of a list-view control's column. You can send this message explicitly or by using the
 			/// <c>ListView_GetColumn</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the column.</para>
@@ -1392,12 +1391,12 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcolumn
 			LVM_GETCOLUMN = LVM_FIRST + 95,
 
 			/// <summary>
 			/// Sets the attributes of a list-view column. You can send this message explicitly or by using the <c>ListView_SetColumn</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the column.</para>
@@ -1409,13 +1408,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setcolumn
 			LVM_SETCOLUMN = LVM_FIRST + 96,
 
 			/// <summary>
 			/// Inserts a new column in a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_InsertColumn</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the new column.</para>
@@ -1423,13 +1422,13 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to an <c>LVCOLUMN</c> structure that contains the attributes of the new column.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the new column if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>Columns are visible only in report (details) view.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-insertcolumn
 			LVM_INSERTCOLUMN = LVM_FIRST + 97,
 
 			/// <summary>
 			/// Removes a column from a list-view control. You can send this message explicitly or by using the <c>ListView_DeleteColumn</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the column to delete.</para>
@@ -1437,6 +1436,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// Deleting column zero of a list-view control is supported only in ComCtl32.dll version 6 and later. Version 5 also supports
 			/// deleting column zero, but only after you use <c>CCM_SETVERSION</c> to set the version to 5 or later. In versions prior to
@@ -1448,7 +1448,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the width of a column in report or list view. You can send this message explicitly or by using the
 			/// <c>ListView_GetColumnWidth</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the column. This parameter is ignored in list view.</para>
@@ -1459,13 +1458,13 @@ namespace Vanara.PInvoke
 			/// Returns the column width if successful, or zero otherwise. If this message is sent to a list-view control with the
 			/// <c>LVS_REPORT</c> style and the specified column does not exist, the return value is undefined.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcolumnwidth
 			LVM_GETCOLUMNWIDTH = LVM_FIRST + 29,
 
 			/// <summary>
 			/// Changes the width of a column in report-view mode or the width of all columns in list-view mode. You can send this message
 			/// explicitly or use the <c>ListView_SetColumnWidth</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Zero-based index of a valid column. For list-view mode, this parameter must be set to zero.</para>
@@ -1490,6 +1489,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// Assume that you have a 2-column list-view control with a width of 500 pixels. If the width of column zero is set to 200
 			/// pixels, and you send this message with wParam = 1 and lParam = LVSCW_AUTOSIZE_USEHEADER, the second (and last) column will be
@@ -1501,7 +1501,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the handle to the header control used by the list-view control. You can send this message explicitly or use the
 			/// <c>ListView_GetHeader</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1509,13 +1508,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the header control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getheader
 			LVM_GETHEADER = LVM_FIRST + 31,
 
 			/// <summary>
 			/// Creates a drag image list for the specified item. You can send this message explicitly or by using the
 			/// <c>ListView_CreateDragImage</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the item.</para>
@@ -1525,6 +1524,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the drag image list if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>Your application is responsible for destroying the image list when it is no longer needed.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-createdragimage
 			LVM_CREATEDRAGIMAGE = LVM_FIRST + 33,
@@ -1532,7 +1532,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the bounding rectangle of all items in the list-view control. The list view must be in icon or small icon view. You
 			/// can send this message explicitly or by using the <c>ListView_GetViewRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1543,13 +1542,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getviewrect
 			LVM_GETVIEWRECT = LVM_FIRST + 34,
 
 			/// <summary>
 			/// Retrieves the text color of a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetTextColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1557,12 +1556,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the text color.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettextcolor
 			LVM_GETTEXTCOLOR = LVM_FIRST + 35,
 
 			/// <summary>
 			/// Sets the text color of a list-view control. You can send this message explicitly or by using the <c>ListView_SetTextColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1570,13 +1569,13 @@ namespace Vanara.PInvoke
 			/// <para>A <c>COLORREF</c> that specifies the new text color.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settextcolor
 			LVM_SETTEXTCOLOR = LVM_FIRST + 36,
 
 			/// <summary>
 			/// Retrieves the text background color of a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetTextBkColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1584,13 +1583,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the background color of the text.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettextbkcolor
 			LVM_GETTEXTBKCOLOR = LVM_FIRST + 37,
 
 			/// <summary>
 			/// Sets the background color of text in a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_SetTextBkColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1598,13 +1597,13 @@ namespace Vanara.PInvoke
 			/// <para>New text background color. This can be CLR_NONE for no background color.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settextbkcolor
 			LVM_SETTEXTBKCOLOR = LVM_FIRST + 38,
 
 			/// <summary>
 			/// Retrieves the index of the topmost visible item when in list or report view. You can send this message explicitly or by using
 			/// the <c>ListView_GetTopIndex</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1615,6 +1614,7 @@ namespace Vanara.PInvoke
 			/// Returns the index of the item if successful. Returns zero if the list-view control is in icon or small icon view, or if the
 			/// list-view control is in details view with groups enabled.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettopindex
 			LVM_GETTOPINDEX = LVM_FIRST + 39,
 
@@ -1622,7 +1622,6 @@ namespace Vanara.PInvoke
 			/// Calculates the number of items that can fit vertically in the visible area of a list-view control when in list or report
 			/// view. Only fully visible items are counted. You can send this message explicitly or by using the
 			/// <c>ListView_GetCountPerPage</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1633,13 +1632,13 @@ namespace Vanara.PInvoke
 			/// Returns the number of fully visible items if successful. If the current view is icon or small icon view, the return value is
 			/// the total number of items in the list-view control.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcountperpage
 			LVM_GETCOUNTPERPAGE = LVM_FIRST + 40,
 
 			/// <summary>
 			/// Retrieves the current view origin for a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetOrigin</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1647,13 +1646,13 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a <c>POINT</c> structure that receives the view origin.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> if the current view is list or report view.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getorigin
 			LVM_GETORIGIN = LVM_FIRST + 41,
 
 			/// <summary>
 			/// Updates a list-view item. If the list-view control has the <c>LVS_AUTOARRANGE</c> style, this macro causes the list-view
 			/// control to be arranged. You can send this message explicitly or by using the <c>ListView_Update</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the item to update.</para>
@@ -1661,13 +1660,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-update
 			LVM_UPDATE = LVM_FIRST + 42,
 
 			/// <summary>
 			/// Changes the state of an item in a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_SetItemState</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the list-view item. If this parameter is -1, then the state change is applied to all items.</para>
@@ -1678,6 +1677,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>If you send this message explicitly, it returns <c>TRUE</c> if successful or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// An item's state value includes a set of bit flags that indicate the item's state. The state value can also include image list
 			/// indexes that indicate the item's state image and overlay image.
@@ -1687,7 +1687,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Retrieves the state of a list-view item. You can send this message explicitly or by using the <c>ListView_GetItemState</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the list-view item.</para>
@@ -1734,6 +1733,7 @@ namespace Vanara.PInvoke
 			/// Returns the current state for the specified item. The only valid bits in the return value are those that correspond to the
 			/// bits set in the lParam parameter.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// An item's state information includes a set of bit flags as well as image list indexes that indicate the item's state image
 			/// and overlay image.
@@ -1744,7 +1744,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the text of a list-view item or subitem. You can send this message explicitly or by using the
 			/// <c>ListView_GetItemText</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the list-view item.</para>
@@ -1758,6 +1757,7 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// If you send this message explicitly, it returns the number of characters in the <c>pszText</c> member of the <c>LVITEM</c> structure.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// You can also send this message by calling the <c>ListView_GetItemText</c> macro. However, this macro does not return the
@@ -1771,7 +1771,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Changes the text of a list-view item or subitem. You can send this message explicitly or by using the
 			/// <c>ListView_SetItemText</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Zero-based index of the list-view item.</para>
@@ -1785,13 +1784,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>If you send this message explicitly, it returns <c>TRUE</c> if successful or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitemtext
 			LVM_SETITEMTEXT = LVM_FIRST + 116,
 
 			/// <summary>
 			/// Causes the list-view control to allocate memory for the specified number of items or sets the virtual number of items in a
 			/// virtual list-view control.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Number of items that the list-view control will ultimately contain.</para>
@@ -1816,6 +1815,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// How the memory is allocated depends on how the list-view control was created. You can send this message explicitly or use the
@@ -1845,7 +1845,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Uses an application-defined comparison function to sort the items of a list-view control. The index of each item changes to
 			/// reflect the new sequence. You can send this message explicitly or by using the <c>ListView_SortItems</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Application-defined value that is passed to the comparison function.</para>
@@ -1856,6 +1855,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>The comparison function has the following form:</para>
 			/// <para>
@@ -1886,7 +1886,6 @@ namespace Vanara.PInvoke
 			/// Moves an item to a specified position in a list-view control (must be in icon or small icon view). This message differs from
 			/// the <c>LVM_SETITEMPOSITION</c> message in that it uses 32-bit coordinates. You can send this message explicitly or by using
 			/// the <c>ListView_SetItemPosition32</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the list-view item for which to set the position.</para>
@@ -1894,13 +1893,13 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a <c>POINT</c> structure that contains the new position of the item, in list-view coordinates.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitemposition32
 			LVM_SETITEMPOSITION32 = LVM_FIRST + 49,
 
 			/// <summary>
 			/// Determines the number of selected items in a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetSelectedCount</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1908,13 +1907,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the number of selected items.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getselectedcount
 			LVM_GETSELECTEDCOUNT = LVM_FIRST + 50,
 
 			/// <summary>
 			/// Determines the spacing between items in a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetItemSpacing</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -1927,13 +1926,13 @@ namespace Vanara.PInvoke
 			/// Returns the amount of spacing between items. The horizontal spacing is contained in the <c>LOWORD</c> and the vertical
 			/// spacing is contained in the <c>HIWORD</c>.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemspacing
 			LVM_GETITEMSPACING = LVM_FIRST + 51,
 
 			/// <summary>
 			/// Retrieves the incremental search string of a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetISearchString</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1946,6 +1945,7 @@ namespace Vanara.PInvoke
 			/// Returns the number of characters in the incremental search string, not including the terminating NULL character, or zero if
 			/// the list-view control is not in incremental search mode.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// <c>Security Warning:</c> Using this message incorrectly might compromise the security of your program. This message does not
@@ -1973,7 +1973,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the spacing between icons in list-view controls that have the <c>LVS_ICON</c> style. You can send this message
 			/// explicitly or by using the <c>ListView_SetIconSpacing</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1987,6 +1986,7 @@ namespace Vanara.PInvoke
 			/// Returns a <c>DWORD</c> value that contains the previous x-axis distance in the low word, and the previous y-axis distance in
 			/// the high word.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// Values for lParam are relative to the upper-left corner of an icon bitmap. Therefore, to set spacing between icons that do
@@ -2004,7 +2004,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets extended styles in list-view controls. You can send this message explicitly or use the
 			/// <c>ListView_SetExtendedListViewStyle</c> or <c>ListView_SetExtendedListViewStyleEx</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -2019,6 +2018,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>DWORD</c> value that contains the previous extended list-view control styles.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The wParam parameter allows you to modify one or more extended styles without having to retrieve the existing styles first.
@@ -2041,7 +2041,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the extended styles that are currently in use for a given list-view control. You can send this message explicitly or use
 			/// the <c>ListView_GetExtendedListViewStyle</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2052,6 +2051,7 @@ namespace Vanara.PInvoke
 			/// Returns a <c>DWORD</c> that represents the styles currently in use for a given list-view control. This value can be a
 			/// combination of Extended List-View Styles.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getextendedlistviewstyle
 			LVM_GETEXTENDEDLISTVIEWSTYLE = LVM_FIRST + 55,
 
@@ -2059,7 +2059,6 @@ namespace Vanara.PInvoke
 			/// Retrieves information about the bounding rectangle for a subitem in a list-view control. You can send this message explicitly
 			/// or by using the <c>ListView_GetSubItemRect</c> macro (recommended). This message is intended to be used only with list-view
 			/// controls that use the <c>LVS_REPORT</c> style.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the subitem's parent item.</para>
@@ -2084,6 +2083,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Following are the flag values that may be set.</para>
 			/// <list type="table">
@@ -2115,7 +2115,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Determines which list-view item or subitem is at a given position. You can send this message explicitly or by using the
 			/// <c>ListView_SubItemHitTest</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be 0. **Windows Vista.** Should be -1 if the **iGroup** member of *lParam* is to be retrieved.</para>
@@ -2129,13 +2128,13 @@ namespace Vanara.PInvoke
 			/// Returns the index of the item or subitem tested, if any, or -1 otherwise. If an item or subitem is at the given coordinates,
 			/// the fields of the <c>LVHITTESTINFO</c> structure will be filled with the applicable hit information.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-subitemhittest
 			LVM_SUBITEMHITTEST = LVM_FIRST + 57,
 
 			/// <summary>
 			/// Sets the left-to-right order of columns in a list-view control. You can send this message explicitly or use the
 			/// <c>ListView_SetColumnOrderArray</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Size, in elements, of the buffer at lParam.</para>
@@ -2146,13 +2145,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setcolumnorderarray
 			LVM_SETCOLUMNORDERARRAY = LVM_FIRST + 58,
 
 			/// <summary>
 			/// Gets the current left-to-right order of columns in a list-view control. You can send this message explicitly or use the
 			/// <c>ListView_GetColumnOrderArray</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The number of columns in the list-view control.</para>
@@ -2166,12 +2165,12 @@ namespace Vanara.PInvoke
 			/// If successful, returns nonzero, and the buffer at lParam receives the column index of each column in the control in the order
 			/// they appear from left to right. Otherwise, the return value is zero.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getcolumnorderarray
 			LVM_GETCOLUMNORDERARRAY = LVM_FIRST + 59,
 
 			/// <summary>
 			/// Sets the hot item for a list-view control. You can send this message explicitly or use the <c>ListView_SetHotItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Zero-based index of the item to be set as the hot item.</para>
@@ -2179,12 +2178,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the item that was previously hot.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-sethotitem
 			LVM_SETHOTITEM = LVM_FIRST + 60,
 
 			/// <summary>
 			/// Retrieves the index of the hot item. You can send this message explicitly or use the <c>ListView_GetHotItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2192,6 +2191,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the item that is hot.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gethotitem
 			LVM_GETHOTITEM = LVM_FIRST + 61,
 
@@ -2199,7 +2199,6 @@ namespace Vanara.PInvoke
 			/// Sets the HCURSOR value that the list-view control uses when the pointer is over an item while hot tracking is enabled. You
 			/// can send this message explicitly or use the <c>ListView_SetHotCursor</c> macro. To check whether hot tracking is enabled,
 			/// call <c>SystemParametersInfo</c>.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2207,6 +2206,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the cursor to be set.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns an HCURSOR value that is the previous hot cursor.</para>
+			/// </summary>
 			/// <remarks>A list-view control uses hot tracking and hover selection when the <c>LVS_EX_TRACKSELECT</c> style is set.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-sethotcursor
 			LVM_SETHOTCURSOR = LVM_FIRST + 62,
@@ -2214,7 +2214,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the HCURSOR value used when the pointer is over an item while hot tracking is enabled. You can send this message
 			/// explicitly or use the <c>ListView_GetHotCursor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2222,6 +2221,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns an HCURSOR value that is the handle to the cursor that the list-view control uses when hot tracking is enabled.</para>
+			/// </summary>
 			/// <remarks>A list-view control uses hot tracking and hover selection when the <c>LVS_EX_TRACKSELECT</c> style is set.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gethotcursor
 			LVM_GETHOTCURSOR = LVM_FIRST + 63,
@@ -2229,7 +2229,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Calculates the approximate width and height required to display a given number of items. You can send this message explicitly
 			/// or use the <c>ListView_ApproximateViewRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -2250,6 +2249,7 @@ namespace Vanara.PInvoke
 			/// Returns a <c>DWORD</c> value that holds the approximate width (in the <c>LOWORD</c>) and height (in the <c>HIWORD</c>) needed
 			/// to display the items, in pixels.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// Setting the size of the list-view control based on the dimensions provided by this message can optimize redraw and reduce flicker.
 			/// </remarks>
@@ -2259,7 +2259,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the working areas within a list-view control. You can send this message explicitly or use the
 			/// <c>ListView_SetWorkAreas</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -2273,13 +2272,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setworkareas
 			LVM_SETWORKAREAS = LVM_FIRST + 65,
 
 			/// <summary>
 			/// Retrieves the working areas from a list-view control. You can send this message explicitly or use the
 			/// <c>ListView_GetWorkAreas</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The number of <c>RECT</c> structures in the array at lParam.</para>
@@ -2290,13 +2289,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getworkareas
 			LVM_GETWORKAREAS = LVM_FIRST + 70,
 
 			/// <summary>
 			/// Retrieves the number of working areas in a list-view control. You can send this message explicitly or use the
 			/// <c>ListView_GetNumberOfWorkAreas</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2307,13 +2306,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getnumberofworkareas
 			LVM_GETNUMBEROFWORKAREAS = LVM_FIRST + 73,
 
 			/// <summary>
 			/// Retrieves the selection mark from a list-view control. You can send this message explicitly or use the
 			/// <c>ListView_GetSelectionMark</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2321,6 +2320,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the zero-based selection mark, or -1 if there is no selection mark.</para>
+			/// </summary>
 			/// <remarks>The selection mark is the item index from which a multiple selection starts.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getselectionmark
 			LVM_GETSELECTIONMARK = LVM_FIRST + 66,
@@ -2328,7 +2328,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the selection mark in a list-view control. You can send this message explicitly or use the
 			/// <c>ListView_SetSelectionMark</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2336,6 +2335,7 @@ namespace Vanara.PInvoke
 			/// <para>Zero-based index of the new selection mark. If set to -1, the selection mark is removed.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous selection mark, or -1 if there is no previous selection mark.</para>
+			/// </summary>
 			/// <remarks>
 			/// The selection mark is the item index from which a multiple selection starts. This message does not affect the selection state
 			/// of the item.
@@ -2346,7 +2346,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the amount of time which the mouse cursor must hover over an item before it is selected. You can send this message
 			/// explicitly or use the <c>ListView_SetHoverTime</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2357,6 +2356,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous hover time.</para>
+			/// </summary>
 			/// <remarks>
 			/// The hover time only affects list-view controls that have the <c>LVS_EX_TRACKSELECT</c>, <c>LVS_EX_ONECLICKACTIVATE</c>, or
 			/// <c>LVS_EX_TWOCLICKACTIVATE</c> extended list-view style.
@@ -2367,7 +2367,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the amount of time that the mouse cursor must hover over an item before it is selected. You can send this message
 			/// explicitly or use the <c>ListView_GetHoverTime</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2378,6 +2377,7 @@ namespace Vanara.PInvoke
 			/// Returns the amount of time, in milliseconds, that the mouse cursor must hover over an item before it is selected. If the
 			/// return value is ( <c>DWORD</c>)-1, then the hover time is the default hover time.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// The hover time only affects list-view controls that have the <c>LVS_EX_TRACKSELECT</c>, <c>LVS_EX_ONECLICKACTIVATE</c>, or
 			/// <c>LVS_EX_TWOCLICKACTIVATE</c> extended list-view style.
@@ -2388,7 +2388,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the tooltip control that the list-view control will use to display tooltips. You can send this message explicitly or use
 			/// the <c>ListView_SetToolTips</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Handle to the tooltip control to be set.</para>
@@ -2396,13 +2395,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the previous tooltip control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settooltips
 			LVM_SETTOOLTIPS = LVM_FIRST + 74,
 
 			/// <summary>
 			/// Retrieves the tooltip control that the list-view control uses to display tooltips. You can send this message explicitly or
 			/// use the <c>ListView_GetToolTips</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2410,13 +2409,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle of the tooltip control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettooltips
 			LVM_GETTOOLTIPS = LVM_FIRST + 78,
 
 			/// <summary>
 			/// Uses an application-defined comparison function to sort the items of a list-view control. The index of each item changes to
 			/// reflect the new sequence. You can send this message explicitly or by using the <c>ListView_SortItemsEx</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Application-defined value that is passed to the comparison function.</para>
@@ -2427,6 +2426,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>The comparison function has the following form:</para>
 			/// <para>
@@ -2455,7 +2455,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the background image in a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_SetBkImage</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2466,6 +2465,7 @@ namespace Vanara.PInvoke
 			/// Returns nonzero if successful, or zero otherwise. Returns zero if the <c>ulFlags</c> member of the <c>LVBKIMAGE</c> structure
 			/// is <c>LVBKIF_SOURCE_NONE</c>.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// Because the list-view control uses OLE COM to manipulate the background images, the calling application must call
 			/// <c>CoInitialize</c> or <c>OleInitialize</c> before sending this message. It is best to call one of these functions when the
@@ -2477,7 +2477,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the background image in a list-view control. You can send this message explicitly or by using the
 			/// <c>ListView_GetBkImage</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2485,10 +2484,12 @@ namespace Vanara.PInvoke
 			/// <para>A pointer to an <c>LVBKIMAGE</c> structure that will receive the background image information.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getbkimage
 			LVM_GETBKIMAGE = LVM_FIRST + 139,
 
-			/// <summary>Sets the index of the selected column.</summary>
+			/// <summary>
+			/// Sets the index of the selected column.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Value of type **int** that specifies the column index.</para>
@@ -2496,6 +2497,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>The column indices are stored in an <c>int</c> array. See the <c>puColumns</c> member of <c>LVITEM</c>.</para>
 			/// <para>
@@ -2509,7 +2511,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setselectedcolumn
 			LVM_SETSELECTEDCOLUMN = LVM_FIRST + 140,
 
-			/// <summary>Sets the view of a list-view control.</summary>
+			/// <summary>
+			/// Sets the view of a list-view control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>**DWORD** that specifies the view.</para>
@@ -2517,6 +2520,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns 1 if successful, or -1 otherwise. For example, -1 is returned if the view is invalid.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Following are the values for views.</para>
 			/// <list type="bullet">
@@ -2547,7 +2551,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setview
 			LVM_SETVIEW = LVM_FIRST + 142,
 
-			/// <summary>Retrieves the current view of a list-view control.</summary>
+			/// <summary>
+			/// Retrieves the current view of a list-view control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2555,6 +2560,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>DWORD</c> that specifies the current view.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Following are the values for views.</para>
 			/// <list type="bullet">
@@ -2585,7 +2591,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getview
 			LVM_GETVIEW = LVM_FIRST + 143,
 
-			/// <summary>Inserts a group into a list-view control.</summary>
+			/// <summary>
+			/// Inserts a group into a list-view control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index where the group is to be added. If this is -1, the group is added at the end of the list.</para>
@@ -2595,6 +2602,7 @@ namespace Vanara.PInvoke
 			/// <para>structure that contains the group to add.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the item that the group was added to, or -1 if the operation failed.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>To turn on group mode, call <c>LVM_ENABLEGROUPVIEW</c> or <c>ListView_EnableGroupView</c>.</para>
 			/// <para>A group cannot be inserted into an empty list-view control.</para>
@@ -2613,7 +2621,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-insertgroup
 			LVM_INSERTGROUP = LVM_FIRST + 145,
 
-			/// <summary>Sets group information. Send this message explicitly or by using the <c>ListView_SetGroupInfo</c> macro.</summary>
+			/// <summary>
+			/// Sets group information. Send this message explicitly or by using the <c>ListView_SetGroupInfo</c> macro.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>ID that specifies the group whose information is to be set.</para>
@@ -2623,6 +2632,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the ID of the group if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// To change a group ID of an existing group add <c>LVGF_GROUPID</c> to <c>LVGROUP.mask</c> and set <c>LVGROUP.iGroupId</c> to
@@ -2643,7 +2653,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setgroupinfo
 			LVM_SETGROUPINFO = LVM_FIRST + 147,
 
-			/// <summary>Gets group information.</summary>
+			/// <summary>
+			/// Gets group information.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>An ID that specifies the group whose information is retrieved.</para>
@@ -2653,6 +2664,7 @@ namespace Vanara.PInvoke
 			/// <para>structure that receives the retrieved information. Set the **cbSize** member of this structure to sizeof(LVGROUP).</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the ID of the group if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Before attempting to retrieve the header for a group, first ensure that the group does not have the LBGS_NOHEADER style.</para>
 			/// <para>
@@ -2666,7 +2678,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupinfo
 			LVM_GETGROUPINFO = LVM_FIRST + 149,
 
-			/// <summary>Removes a group from a list-view control.</summary>
+			/// <summary>
+			/// Removes a group from a list-view control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>ID that specifies the group to remove.</para>
@@ -2674,6 +2687,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be <c>NULL</c>.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the group if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -2688,7 +2702,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-movegroup
 			LVM_MOVEGROUP = LVM_FIRST + 151,
 
-			/// <summary>Gets the number of groups.</summary>
+			/// <summary>
+			/// Gets the number of groups.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Not used. Should be 0.</para>
@@ -2696,12 +2711,12 @@ namespace Vanara.PInvoke
 			/// <para>Not used. Should be 0.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the number of groups.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupcount
 			LVM_GETGROUPCOUNT = LVM_FIRST + 152,
 
 			/// <summary>
 			/// Gets information on a specified group. Send this message explicitly or by using the <c>ListView_GetGroupInfoByIndex</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the group.</para>
@@ -2715,6 +2730,7 @@ namespace Vanara.PInvoke
 			/// <para>The message receiver is responsible for setting the structure members with information for the group specified by wParam.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupinfobyindex
 			LVM_GETGROUPINFOBYINDEX = LVM_FIRST + 153,
 
@@ -2724,7 +2740,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Gets the rectangle for a specified group. Send this message explicitly or by using the <c>ListView_GetGroupRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Specifies the group by <c>iGroupId</c> (see <c>LVGROUP</c> structure).</para>
@@ -2766,10 +2781,12 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgrouprect
 			LVM_GETGROUPRECT = LVM_FIRST + 98,
 
-			/// <summary>Sets information about the display of groups.</summary>
+			/// <summary>
+			/// Sets information about the display of groups.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be **NULL**.</para>
@@ -2779,6 +2796,7 @@ namespace Vanara.PInvoke
 			/// <para>structure that contains the metrics to set.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -2789,7 +2807,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setgroupmetrics
 			LVM_SETGROUPMETRICS = LVM_FIRST + 155,
 
-			/// <summary>Gets information about the display of groups.</summary>
+			/// <summary>
+			/// Gets information about the display of groups.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be **NULL**.</para>
@@ -2799,6 +2818,7 @@ namespace Vanara.PInvoke
 			/// <para>structure that receives the retrieved metrics.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -2809,7 +2829,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupmetrics
 			LVM_GETGROUPMETRICS = LVM_FIRST + 156,
 
-			/// <summary>Enables or disables whether the items in a list-view control display as a group.</summary>
+			/// <summary>
+			/// Enables or disables whether the items in a list-view control display as a group.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -2838,6 +2859,7 @@ namespace Vanara.PInvoke
 			/// <term>The operation failed.</term>
 			/// </item>
 			/// </list>
+			/// </summary>
 			/// <remarks>
 			/// <para><c>LVM_ENABLEGROUPVIEW</c> is not supported under the <c>LVS_OWNERDATA</c> style.</para>
 			/// <para>
@@ -2851,7 +2873,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-enablegroupview
 			LVM_ENABLEGROUPVIEW = LVM_FIRST + 157,
 
-			/// <summary>Uses an application-defined comparison function to sort groups by ID within a list-view control.</summary>
+			/// <summary>
+			/// Uses an application-defined comparison function to sort groups by ID within a list-view control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Pointer to an application-defined comparison function,</para>
@@ -2861,6 +2884,7 @@ namespace Vanara.PInvoke
 			/// <para>Void pointer to the application-defined information.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns 1 if successful, or 0 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -2871,7 +2895,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-sortgroups
 			LVM_SORTGROUPS = LVM_FIRST + 158,
 
-			/// <summary>Inserts a group into an ordered list of groups.</summary>
+			/// <summary>
+			/// Inserts a group into an ordered list of groups.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Pointer to an</para>
@@ -2881,6 +2906,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be **NULL**.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The ordering of the list is based on the ID of the group. The order is defined by the application-defined ordering function,
@@ -2897,7 +2923,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-insertgroupsorted
 			LVM_INSERTGROUPSORTED = LVM_FIRST + 159,
 
-			/// <summary>Removes all groups from a list-view control.</summary>
+			/// <summary>
+			/// Removes all groups from a list-view control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be **NULL**.</para>
@@ -2905,6 +2932,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be **NULL**.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -2915,7 +2943,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-removeallgroups
 			LVM_REMOVEALLGROUPS = LVM_FIRST + 160,
 
-			/// <summary>Determines whether the list-view control has a specified group.</summary>
+			/// <summary>
+			/// Determines whether the list-view control has a specified group.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>ID of the group.</para>
@@ -2923,6 +2952,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be **NULL**.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if the list-view control has the specified group, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -2935,7 +2965,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Gets the state for a specified group. Send this message explicitly or by using the <c>ListView_GetGroupState</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Specifies the group by <c>iGroupId</c> (see <c>LVGROUP</c> structure).</para>
@@ -2946,12 +2975,12 @@ namespace Vanara.PInvoke
 			/// Returns the combination of state values that are set. For example, if lParam is LVGS_COLLAPSED and the value returned is
 			/// zero, the LVGS_COLLAPSED state is not set. Zero is returned if the group is not found.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getgroupstate
 			LVM_GETGROUPSTATE = LVM_FIRST + 92,
 
 			/// <summary>
 			/// Gets the group that has the focus. Send this message explicitly or by using the <c>ListView_GetFocusedGroup</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2959,10 +2988,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the group with state of LVGS_FOCUSED, or -1 if there is no group with state of LVGS_FOCUSED.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfocusedgroup
 			LVM_GETFOCUSEDGROUP = LVM_FIRST + 93,
 
-			/// <summary>Sets information that a list-view control uses in tile view.</summary>
+			/// <summary>
+			/// Sets information that a list-view control uses in tile view.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2972,6 +3003,7 @@ namespace Vanara.PInvoke
 			/// <para>structure that contains the information to set.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// To use this message, you must provide a manifest specifying Comclt32.dll version 6.0. For more information on manifests, see
 			/// Enabling Visual Styles.
@@ -2979,7 +3011,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settileviewinfo
 			LVM_SETTILEVIEWINFO = LVM_FIRST + 162,
 
-			/// <summary>Retrieves information about a list-view control in tile view.</summary>
+			/// <summary>
+			/// Retrieves information about a list-view control in tile view.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -2989,6 +3022,7 @@ namespace Vanara.PInvoke
 			/// <para>structure that receives the retrieved information.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return value not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -2999,7 +3033,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettileviewinfo
 			LVM_GETTILEVIEWINFO = LVM_FIRST + 163,
 
-			/// <summary>Sets information for an existing tile of a list-view control.</summary>
+			/// <summary>
+			/// Sets information for an existing tile of a list-view control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3009,6 +3044,7 @@ namespace Vanara.PInvoke
 			/// <para>structure that contains the information to set.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para><c>LVM_SETTILEINFO</c> is not supported under the <c>LVS_OWNERDATA</c> style.</para>
 			/// <para>
@@ -3022,7 +3058,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-settileinfo
 			LVM_SETTILEINFO = LVM_FIRST + 164,
 
-			/// <summary>Retrieves information about a tile in a list-view control.</summary>
+			/// <summary>
+			/// Retrieves information about a tile in a list-view control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3032,6 +3069,7 @@ namespace Vanara.PInvoke
 			/// <para>structure that receives the retrieved information.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return value not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// Tile view is a new way of arranging and displaying items in a list-view control. The other views are icon, small icon,
@@ -3048,7 +3086,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-gettileinfo
 			LVM_GETTILEINFO = LVM_FIRST + 165,
 
-			/// <summary>Sets the insertion point to the defined position.</summary>
+			/// <summary>
+			/// Sets the insertion point to the defined position.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3062,6 +3101,7 @@ namespace Vanara.PInvoke
 			/// member of the <c>LVINSERTMARK</c> structure does not equal the actual size of the structure, or when an insertion point does
 			/// not apply in the current view.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// An insertion point can only appear if the list-view control is in icon view, small icon view, or tile view, and is not in
@@ -3078,7 +3118,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setinsertmark
 			LVM_SETINSERTMARK = LVM_FIRST + 166,
 
-			/// <summary>Retrieves the position of the insertion point.</summary>
+			/// <summary>
+			/// Retrieves the position of the insertion point.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3091,6 +3132,7 @@ namespace Vanara.PInvoke
 			/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. <c>FALSE</c> is returned if the size in the <c>cbSize</c>
 			/// member of the <c>LVINSERTMARK</c> structure does not equal the actual size of the structure.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// An insertion point can appear only if the list-view control is in icon view, small icon view, or tile view, and is not in
@@ -3107,7 +3149,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getinsertmark
 			LVM_GETINSERTMARK = LVM_FIRST + 167,
 
-			/// <summary>Retrieves the insertion point closest to a specified point.</summary>
+			/// <summary>
+			/// Retrieves the insertion point closest to a specified point.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Pointer to a **POINT** structure that contains the hit test coordinates.</para>
@@ -3121,6 +3164,7 @@ namespace Vanara.PInvoke
 			/// member of the <c>LVINSERTMARK</c> structure does not equal the actual size of the structure, or when an insertion point does
 			/// not apply in the current view.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// An insertion point can only appear if the list-view control is in icon view, small icon view, or tile view and is not in
@@ -3140,7 +3184,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-insertmarkhittest
 			LVM_INSERTMARKHITTEST = LVM_FIRST + 168,
 
-			/// <summary>Retrieves the rectangle that bounds the insertion point.</summary>
+			/// <summary>
+			/// Retrieves the rectangle that bounds the insertion point.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Not used; must be zero.</para>
@@ -3164,6 +3209,7 @@ namespace Vanara.PInvoke
 			/// <term>Insertion point found.</term>
 			/// </item>
 			/// </list>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -3174,7 +3220,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getinsertmarkrect
 			LVM_GETINSERTMARKRECT = LVM_FIRST + 169,
 
-			/// <summary>Sets the color of the insertion point.</summary>
+			/// <summary>
+			/// Sets the color of the insertion point.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3182,6 +3229,7 @@ namespace Vanara.PInvoke
 			/// <para>**COLORREF** structure that specifies the color to set the insertion point.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>COLORREF</c> structure set to the previous color.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -3192,7 +3240,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setinsertmarkcolor
 			LVM_SETINSERTMARKCOLOR = LVM_FIRST + 170,
 
-			/// <summary>Retrieves the color of the insertion point.</summary>
+			/// <summary>
+			/// Retrieves the color of the insertion point.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3200,6 +3249,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>COLORREF</c> structure that contains the color of the insertion point.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -3210,7 +3260,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getinsertmarkcolor
 			LVM_GETINSERTMARKCOLOR = LVM_FIRST + 171,
 
-			/// <summary>Retrieves an integer that specifies the selected column.</summary>
+			/// <summary>
+			/// Retrieves an integer that specifies the selected column.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3218,6 +3269,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns an <c>UINT</c> that specifies the selected column.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -3228,7 +3280,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getselectedcolumn
 			LVM_GETSELECTEDCOLUMN = LVM_FIRST + 174,
 
-			/// <summary>Checks whether the list-view control has group view enabled.</summary>
+			/// <summary>
+			/// Checks whether the list-view control has group view enabled.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3236,6 +3289,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if group view is enabled, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -3248,7 +3302,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Retrieves the color of the border of a list-view control if the <c>LVS_EX_BORDERSELECT</c> extended window style is set.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3256,6 +3309,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>COLORREF</c> structure that contains the color of the border of a list-view control.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -3268,7 +3322,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Sets the color of the border of a list-view control if the <c>LVS_EX_BORDERSELECT</c> extended window style is set.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -3276,6 +3329,7 @@ namespace Vanara.PInvoke
 			/// <para>**COLORREF** structure that specifies the color to set the border.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>COLORREF</c> structure that contains the outline color.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -3286,12 +3340,14 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setoutlinecolor
 			LVM_SETOUTLINECOLOR = LVM_FIRST + 177,
 
-			/// <summary>Cancels an item text editing operation.</summary>
+			/// <summary>
+			/// Cancels an item text editing operation.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
 			/// <para><em>lParam</em></para>
 			/// <para>Must be zero.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// <para>Note</para>
@@ -3305,7 +3361,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-canceleditlabel
 			LVM_CANCELEDITLABEL = LVM_FIRST + 179,
 
-			/// <summary>Maps the index of an item to a unique ID.</summary>
+			/// <summary>
+			/// Maps the index of an item to a unique ID.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of an item.</para>
@@ -3313,6 +3370,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a unique ID.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// List-view controls internally track items by index. This can present problems because indexes can change during the control's lifetime.
@@ -3343,7 +3401,8 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-mapindextoid
 			LVM_MAPINDEXTOID = LVM_FIRST + 180,
 
-			/// <summary>Maps the ID of an item to an index.</summary>
+			/// <summary>
+			/// Maps the ID of an item to an index.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The unique ID of an item.</para>
@@ -3351,6 +3410,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the most current index.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// List-view controls internally track items by index. This can present problems because indexes can change during the control's lifetime.
@@ -3389,7 +3449,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Indicates if an item in the list-view control is visible. Send this message explicitly or by using the
 			/// <c>ListView_IsItemVisible</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>An index of the item in the list-view control.</para>
@@ -3397,6 +3456,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if visible, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-isitemvisible
 			LVM_ISITEMVISIBLE = LVM_FIRST + 182,
 
@@ -3406,7 +3466,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the text meant for display when the list-view control appears empty. Send this message explicitly or by using the
 			/// <c>ListView_GetEmptyText</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The size of the buffer pointed to by lParam, including the terminating <c>NULL</c>.</para>
@@ -3417,13 +3476,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getemptytext
 			LVM_GETEMPTYTEXT = LVM_FIRST + 204,
 
 			/// <summary>
 			/// Retrieves the coordinates of the footer for a list-view control. Send this message explicitly or by using the
 			/// <c>ListView_GetFooterRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Not used. Must be 0.</para>
@@ -3434,13 +3493,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfooterrect
 			LVM_GETFOOTERRECT = LVM_FIRST + 205,
 
 			/// <summary>
 			/// Gets information about the footer of a list-view control. Send this message explicitly or by using the
 			/// <c>ListView_GetFooterInfo</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Not used. Must be 0.</para>
@@ -3451,13 +3510,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c>.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfooterinfo
 			LVM_GETFOOTERINFO = LVM_FIRST + 206,
 
 			/// <summary>
 			/// Gets the coordinates of a footer for a specified item in a list-view control. Send this message explicitly or by using the
 			/// <c>ListView_GetFooterItemRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the item in the list-view control.</para>
@@ -3468,13 +3527,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfooteritemrect
 			LVM_GETFOOTERITEMRECT = LVM_FIRST + 207,
 
 			/// <summary>
 			/// Gets information on a footer item in a list-view control. Send this message explicitly or by using the
 			/// <c>ListView_GetFooterItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the item.</para>
@@ -3486,13 +3545,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getfooteritem
 			LVM_GETFOOTERITEM = LVM_FIRST + 208,
 
 			/// <summary>
 			/// Retrieves the bounding rectangle for all or part of a subitem in the current view of a list-view control. Send this message
 			/// explicitly or by using the <c>ListView_GetItemIndexRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -3525,12 +3584,12 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getitemindexrect
 			LVM_GETITEMINDEXRECT = LVM_FIRST + 209,
 
 			/// <summary>
 			/// Sets the state of a list-view item. Send this message explicitly or by using the <c>ListView_SetItemIndexState</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -3564,13 +3623,13 @@ namespace Vanara.PInvoke
 			/// <term>The operation was successful.</term>
 			/// </item>
 			/// </list>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-setitemindexstate
 			LVM_SETITEMINDEXSTATE = LVM_FIRST + 210,
 
 			/// <summary>
 			/// Retrieves the index of an item in a specified list-view control that matches the specified properties and relationship to
 			/// another item. Send this message explicitly or by using the <c>ListView_GetNextItemIndex</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -3678,6 +3737,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// Note that the following flags, for use only with Windows Vista, are mutually exclusive of any other flags in use:
 			/// LVNI_PREVIOUS, LVNI_VISIBLEONLY, LVNI_SAMEGROUPONLY, LVNI_VISIBLEORDER, LVNI_DIRECTIONMASK, and LVNI_STATEMASK.
@@ -3761,7 +3821,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_BEGINDRAG pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -3770,6 +3829,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-begindrag
 			LVN_BEGINDRAG = LVN_FIRST - 9,
 
@@ -3781,7 +3841,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_BEGINLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -3792,6 +3851,7 @@ namespace Vanara.PInvoke
 			/// <para><strong>Returns</strong></para>
 			/// <para>To allow the user to edit the label, return <c>FALSE</c>.</para>
 			/// <para>To prevent the user from editing the label, return <c>TRUE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view
@@ -3815,7 +3875,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_BEGINLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -3826,6 +3885,7 @@ namespace Vanara.PInvoke
 			/// <para><strong>Returns</strong></para>
 			/// <para>To allow the user to edit the label, return <c>FALSE</c>.</para>
 			/// <para>To prevent the user from editing the label, return <c>TRUE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view
@@ -3849,7 +3909,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_BEGINLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -3860,6 +3919,7 @@ namespace Vanara.PInvoke
 			/// <para><strong>Returns</strong></para>
 			/// <para>To allow the user to edit the label, return <c>FALSE</c>.</para>
 			/// <para>To prevent the user from editing the label, return <c>TRUE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When label editing begins, an edit control is created, positioned, and initialized. Before it is displayed, the list-view
@@ -3883,7 +3943,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_BEGINRDRAG pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -3892,6 +3951,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-beginrdrag
 			LVN_BEGINRDRAG = LVN_FIRST - 11,
 
@@ -3903,7 +3963,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_BEGINSCROLL pnmLVScroll = (LPNMLVSCROLL) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -3911,6 +3970,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return value not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -3929,7 +3989,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_COLUMNCLICK pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -3938,6 +3997,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// Using header control formats such as HDF_CHECKBOX to modify the format of column headers in a list-view control causes the
 			/// control to send the HDN_ITEMSTATEICONCLICK notification code instead of LVN_COLUMNCLICK when a header item is clicked.
@@ -3953,7 +4013,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_COLUMNDROPDOWN pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -3968,6 +4027,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The notification receiver casts lParam to retrieve the <c>NMLISTVIEW</c> structure. The wParam parameter contains the ID of
@@ -3989,7 +4049,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_COLUMNOVERFLOWCLICK pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4004,6 +4063,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The notification receiver casts lParam to retrieve the <c>NMLISTVIEW</c> structure. The wParam parameter contains the ID of
@@ -4025,13 +4085,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_DELETEALLITEMS pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLISTVIEW</c> structure. The <c>iItem</c> member is -1, and the other members are zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>To suppress subsequent LVN_DELETEITEM notification codes, return <c>TRUE</c>.</para>
 			/// <para>To receive subsequent LVN_DELETEITEM notification codes, return <c>FALSE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// A list-view control sends the <c>LVM_DELETEALLITEMS</c> notification code when it is destroyed or when it receives the
@@ -4054,7 +4114,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_DELETEITEM pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4064,6 +4123,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>Do not add, delete, or rearrange items in the list view while processing this notification code.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-deleteitem
 			LVN_DELETEITEM = LVN_FIRST - 3,
@@ -4076,7 +4136,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ENDLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4092,6 +4151,7 @@ namespace Vanara.PInvoke
 			/// to the edited text. Return <c>FALSE</c> to reject the edited text and revert to the original label.
 			/// </para>
 			/// <para>If the <c>pszText</c> member of the <c>LVITEM</c> structure is <c>NULL</c>, the return value is ignored.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The return value of the dialog procedure is whether the message was handled. The second return value must be set by calling
@@ -4114,7 +4174,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ENDLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4130,6 +4189,7 @@ namespace Vanara.PInvoke
 			/// to the edited text. Return <c>FALSE</c> to reject the edited text and revert to the original label.
 			/// </para>
 			/// <para>If the <c>pszText</c> member of the <c>LVITEM</c> structure is <c>NULL</c>, the return value is ignored.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The return value of the dialog procedure is whether the message was handled. The second return value must be set by calling
@@ -4152,7 +4212,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ENDLABELEDIT pdi = (LPNMLVDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4168,6 +4227,7 @@ namespace Vanara.PInvoke
 			/// to the edited text. Return <c>FALSE</c> to reject the edited text and revert to the original label.
 			/// </para>
 			/// <para>If the <c>pszText</c> member of the <c>LVITEM</c> structure is <c>NULL</c>, the return value is ignored.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The return value of the dialog procedure is whether the message was handled. The second return value must be set by calling
@@ -4190,7 +4250,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ENDSCROLL pnmLVScroll = (LPNMLVSCROLL) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4198,6 +4257,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return value not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -4216,7 +4276,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_GETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4227,6 +4286,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the
@@ -4250,7 +4310,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_GETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4261,6 +4320,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the
@@ -4284,7 +4344,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_GETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4295,6 +4354,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the
@@ -4318,7 +4378,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_GETEMPTYMARKUP pnmMarkup = (NMLVEMPTYMARKUP*) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4326,6 +4385,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return <c>TRUE</c> to set the markup text in the list-view control, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVEMPTYMARKUP</c> structure. The wParam parameter contains the ID
 			/// of the control that sends this message.
@@ -4342,12 +4402,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_GETINFOTIP pGetInfoTip = (LPNMLVGETINFOTIP) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLVGETINFOTIP</c> structure that contains information about this notification code.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this notification is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// This notification code is only sent by list-view controls that have the <c>LVS_EX_INFOTIP</c> extended style. The
 			/// LVN_GETINFOTIP notification code is sent only for subitem 0.
@@ -4364,12 +4424,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_GETINFOTIP pGetInfoTip = (LPNMLVGETINFOTIP) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLVGETINFOTIP</c> structure that contains information about this notification code.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this notification is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// This notification code is only sent by list-view controls that have the <c>LVS_EX_INFOTIP</c> extended style. The
 			/// LVN_GETINFOTIP notification code is sent only for subitem 0.
@@ -4386,12 +4446,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_GETINFOTIP pGetInfoTip = (LPNMLVGETINFOTIP) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLVGETINFOTIP</c> structure that contains information about this notification code.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this notification is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// This notification code is only sent by list-view controls that have the <c>LVS_EX_INFOTIP</c> extended style. The
 			/// LVN_GETINFOTIP notification code is sent only for subitem 0.
@@ -4407,7 +4467,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_HOTTRACK lpnmlv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4420,6 +4479,7 @@ namespace Vanara.PInvoke
 			/// Return zero to allow the list view to perform its normal track select processing. If the application returns nonzero, the
 			/// item will not be selected.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-hottrack
 			LVN_HOTTRACK = LVN_FIRST - 21,
 
@@ -4431,7 +4491,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_INCREMENTALSEARCH pnmv = (LPNMLVFINDITEM) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4441,6 +4500,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVFINDITEM</c> structure. The wParam parameter contains the ID of
@@ -4466,7 +4526,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_INCREMENTALSEARCH pnmv = (LPNMLVFINDITEM) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4476,6 +4535,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVFINDITEM</c> structure. The wParam parameter contains the ID of
@@ -4501,7 +4561,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_INCREMENTALSEARCH pnmv = (LPNMLVFINDITEM) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4511,6 +4570,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVFINDITEM</c> structure. The wParam parameter contains the ID of
@@ -4536,7 +4596,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_INSERTITEM pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4544,6 +4603,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-insertitem
 			LVN_INSERTITEM = LVN_FIRST - 2,
 
@@ -4554,13 +4614,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ITEMACTIVATE #if (_WIN32_IE &gt;= 0x0400) lpnmia = (LPNMITEMACTIVATE)lParam; #else lpnm = (LPNMHDR)lParam; #endif</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Version 4.71. Pointer to an <c>NMITEMACTIVATE</c> structure that contains information about this notification code.</para>
 			/// <para>Version 4.70 and earlier. Pointer to an <c>NMHDR</c> structure that contains information about this notification code.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The application receiving this notification code must return zero.</para>
+			/// </summary>
 			/// <remarks>
 			/// To obtain the items being activated, the receiving application should use the <c>LVM_GETSELECTEDCOUNT</c> message to retrieve
 			/// the number of items that are selected and then send the <c>LVM_GETNEXTITEM</c> message with <c>LVNI_SELECTED</c> until all of
@@ -4577,7 +4637,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ITEMCHANGED pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4586,6 +4645,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// If a list-view control has the <c>LVS_OWNERDATA</c> style, and the user selects a range of items by holding down the SHIFT
 			/// key and clicking the mouse, LVN_ITEMCHANGED notification codes are not sent for each selected or deselected item. Instead,
@@ -4602,12 +4662,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ITEMCHANGING pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLISTVIEW</c> structure that identifies the item and specifies which of its attributes are changing.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> to prevent the change, or <c>FALSE</c> to allow the change.</para>
+			/// </summary>
 			/// <remarks>If the list-view control has the <c>LVS_OWNERDATA</c> style, LVN_ITEMCHANGING notification codes are not sent.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-itemchanging
 			LVN_ITEMCHANGING = LVN_FIRST - 0,
@@ -4620,12 +4680,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_KEYDOWN pnkd = (LPNMLVKEYDOWN) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLVKEYDOWN</c> structure.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-keydown
 			LVN_KEYDOWN = LVN_FIRST - 55,
 
@@ -4637,7 +4697,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_LINKCLICK pLinkInfo = (NMLVLINK*) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4645,6 +4704,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The following example shows how an application might respond to this notification code in its <c>WM_NOTIFY</c> message
@@ -4665,12 +4725,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_MARQUEEBEGIN pnmv = (LPNMLISTVIEW) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMHDR</c> structure.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>To accept the notification code, return zero. To quit the bounding box selection, return nonzero.</para>
+			/// </summary>
 			/// <remarks>
 			/// A bounding box selection is the process of clicking the list-view window's client area and dragging to select multiple items simultaneously.
 			/// </remarks>
@@ -4686,12 +4746,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ODCACHEHINT pCachehint = (NMLVCACHEHINT *) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLVCACHEHINT</c> structure containing information about the range of items to be cached.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The application receiving this notification code must return zero.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// Handling this message allows the application to update the item information held in cache so that it is readily available
@@ -4715,12 +4775,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ODFINDITEM pFindInfo = (PNMLVFINDITEM) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLVFINDITEM</c> structure that includes information to be used for the search.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return the index of the item found, or -1 if no item is found.</para>
+			/// </summary>
 			/// <remarks>
 			/// Search information is sent in the form of an <c>LVFINDINFO</c> structure, which is a member of the <c>NMLVFINDITEM</c> structure.
 			/// </remarks>
@@ -4736,12 +4796,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ODFINDITEM pFindInfo = (PNMLVFINDITEM) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLVFINDITEM</c> structure that includes information to be used for the search.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return the index of the item found, or -1 if no item is found.</para>
+			/// </summary>
 			/// <remarks>
 			/// Search information is sent in the form of an <c>LVFINDINFO</c> structure, which is a member of the <c>NMLVFINDITEM</c> structure.
 			/// </remarks>
@@ -4757,12 +4817,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ODFINDITEM pFindInfo = (PNMLVFINDITEM) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLVFINDITEM</c> structure that includes information to be used for the search.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return the index of the item found, or -1 if no item is found.</para>
+			/// </summary>
 			/// <remarks>
 			/// Search information is sent in the form of an <c>LVFINDINFO</c> structure, which is a member of the <c>NMLVFINDITEM</c> structure.
 			/// </remarks>
@@ -4777,12 +4837,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_ODSTATECHANGED lpStateChange = (LPNMLVODSTATECHANGE) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMLVODSTATECHANGE</c> structure that contains information about the item or items that have changed.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The application receiving this notification code must return zero.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/lvn-odstatechanged
 			LVN_ODSTATECHANGED = LVN_FIRST - 15,
 
@@ -4794,7 +4854,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_SETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4804,6 +4863,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the
 			/// message code.
@@ -4819,7 +4879,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_SETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4829,6 +4888,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the
 			/// message code.
@@ -4844,7 +4904,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>LVN_SETDISPINFO pdi = (NMLVDISPINFO*) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -4854,6 +4913,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// The notification receiver casts lParam to retrieve the <c>NMLVDISPINFO</c> structure. The wParam parameter contains the
 			/// message code.

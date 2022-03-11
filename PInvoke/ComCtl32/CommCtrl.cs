@@ -12,10 +12,17 @@ namespace Vanara.PInvoke
 		/// <summary>No color.</summary>
 		public const uint CLR_NONE = 0xFFFFFFFF;
 
-		/// <summary/>
+		/// <summary>
+		/// By specifying the I_IMAGECALLBACK value instead of the index of an image, you can delay specifying the selected or nonselected
+		/// image until the item is about to be redrawn. I_IMAGECALLBACK directs the control to query the application for the index by
+		/// sending a control specific notification message.
+		/// </summary>
 		public const int I_IMAGECALLBACK = -1;
 
-		/// <summary/>
+		/// <summary>
+		/// Set LPARAM to I_IMAGENONE to indicate that the button does not have an image. The button layout will not include any
+		/// space for a bitmap, only text.
+		/// </summary>
 		public const int I_IMAGENONE = -2;
 
 		/// <summary/>
