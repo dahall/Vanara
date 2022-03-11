@@ -318,14 +318,16 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>SendMessage( (HWND) hWnd, WM_SETREDRAW, (WPARAM) wParam, (LPARAM) lParam );</code>
 			/// </para>
-			/// </summary>
-			/// <param name="wParam">
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// The redraw state. If this parameter is <c>TRUE</c>, then the content can be redrawn after a change. If this parameter is
 			/// <c>FALSE</c>, then the content can't be redrawn after a change.
-			/// </param>
-			/// <param name="lParam">This parameter isn't used.</param>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>This parameter isn't used.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Your application should return 0 if it processes this message.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// This message can be useful if your application must add several items to a list box. Your application can call this message
