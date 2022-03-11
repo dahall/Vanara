@@ -22,27 +22,21 @@ namespace Vanara.InteropServices
 		/// <param name="s">The string value.</param>
 		/// <param name="capacity">The capacity of the buffer, in characters.</param>
 		/// <param name="charSet">The character set.</param>
-		protected SafeMemString(string s, int capacity, CharSet charSet = CharSet.Unicode) : this(capacity, charSet)
-		{
-			StringHelper.Write(s, handle, out _, true, charSet, Size);
-		}
+		protected SafeMemString(string s, int capacity, CharSet charSet = CharSet.Unicode) : this(capacity, charSet) => StringHelper.Write(s, handle, out _, true, charSet, Size);
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemString{TMem}"/> class.</summary>
 		/// <param name="s">The string value.</param>
 		/// <param name="charSet">The character set.</param>
 		protected SafeMemString(SecureString s, CharSet charSet = CharSet.Unicode) : this(IntPtr.Zero, charSet)
 		{
-			SetHandle(StringHelper.AllocSecureString(s, charSet, mm.AllocMem, out var sz));
+			SetHandle(StringHelper.AllocSecureString(s, charSet, mm.AllocMem, out int sz));
 			base.sz = sz;
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemString{TMem}"/> class.</summary>
 		/// <param name="charLen">The size of the buffer in characters, including the null character terminator.</param>
 		/// <param name="charSet">The character set.</param>
-		protected SafeMemString(int charLen, CharSet charSet = CharSet.Unicode) : base(charLen * StringHelper.GetCharSize(charSet))
-		{
-			CharSet = charSet;
-		}
+		protected SafeMemString(int charLen, CharSet charSet = CharSet.Unicode) : base(charLen * StringHelper.GetCharSize(charSet)) => CharSet = charSet;
 
 		/// <summary>Prevents a default instance of the <see cref="SafeMemString{TMem}"/> class from being created.</summary>
 		[ExcludeFromCodeCoverage]
@@ -54,9 +48,28 @@ namespace Vanara.InteropServices
 		/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 		/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 		[ExcludeFromCodeCoverage]
-		protected SafeMemString(IntPtr ptr, CharSet charSet = CharSet.Unicode, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) : base(ptr, allocatedBytes, ownsHandle)
+		protected SafeMemString(IntPtr ptr, CharSet charSet = CharSet.Unicode, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) : base(ptr, allocatedBytes, ownsHandle) => CharSet = charSet;
+
+		/// <summary>Gets or sets the <see cref="System.Char"/> at the specified index.</summary>
+		/// <value>The <see cref="System.Char"/>.</value>
+		/// <param name="index">The index of the character in the in-memory string.</param>
+		/// <returns>The character.</returns>
+		/// <exception cref="System.IndexOutOfRangeException"></exception>
+		public char this[int index]
 		{
-			CharSet = charSet;
+			get
+			{
+				var cs = StringHelper.GetCharSize(CharSet);
+				if (index * cs >= Capacity || index < 0) throw new IndexOutOfRangeException();
+				return CharSet == CharSet.Ansi ? System.Text.Encoding.ASCII.GetChars(GetBytes(index * cs, cs))[0] : System.Text.Encoding.Unicode.GetChars(GetBytes(index * cs, cs))[0];
+			}
+			set
+			{
+				var cs = StringHelper.GetCharSize(CharSet);
+				if (index * cs >= Capacity || index < 0) throw new IndexOutOfRangeException();
+				var bytes = CharSet == CharSet.Ansi ? System.Text.Encoding.ASCII.GetBytes(new[] { value }) : System.Text.Encoding.Unicode.GetBytes(new[] { value });
+				handle.Write(bytes, index * cs, Size);
+			}
 		}
 
 		/// <summary>Gets the number of allocated characters or 0 if the size is unknown (for example if it is holding a <see cref="SecureString"/>.</summary>
@@ -74,7 +87,7 @@ namespace Vanara.InteropServices
 		/// <summary>Gets the number of characters in the current <see cref="SafeMemString{TMem}"/> object.</summary>
 		public int Length => ToString().Length;
 
-		/// <summary>Performs an explicit conversion from <see cref="SafeMemString{TMem}"/> to <see cref="System.Char"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="SafeMemString{TMem}"/> to <see cref="char"/>.</summary>
 		/// <param name="s">The <see cref="SafeMemString{TMem}"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		/// <exception cref="InvalidCastException">Cannot convert an ANSI string to a Char pointer.</exception>
@@ -91,7 +104,7 @@ namespace Vanara.InteropServices
 		/// <summary>Returns the string value held by a <see cref="SafeMemString{TMem}"/>.</summary>
 		/// <param name="s">The <see cref="SafeMemString{TMem}"/> instance.</param>
 		/// <returns>
-		/// A <see cref="System.String"/> value held by the <see cref="SafeMemString{TMem}"/> or <c>null</c> if the handle or value is invalid.
+		/// A <see cref="string"/> value held by the <see cref="SafeMemString{TMem}"/> or <c>null</c> if the handle or value is invalid.
 		/// </returns>
 		public static implicit operator string(SafeMemString<TMem> s) => s?.ToString();
 
@@ -147,31 +160,17 @@ namespace Vanara.InteropServices
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		public bool Equals(string other) => string.Equals(this, other);
 
-		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj)
+		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj) => ReferenceEquals(this, obj) || obj switch
 		{
-			if (ReferenceEquals(this, obj))
-				return true;
-			switch (obj)
-			{
-				case null:
-					return false;
-
-				case SafeMemString<TMem> ms:
-					return Equals(ms);
-
-				case string s:
-					return Equals(s);
-
-				case SafeAllocatedMemoryHandle m:
-					return m == handle;
-
-				default:
-					return false;
-			}
-		}
+			null => false,
+			SafeMemString<TMem> ms => Equals(ms),
+			string s => Equals(s),
+			SafeAllocatedMemoryHandle m => m == handle,
+			_ => false,
+		};
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -179,13 +178,10 @@ namespace Vanara.InteropServices
 
 		/// <summary>Assigns a new string to this memory.</summary>
 		/// <param name="value">The string value. This value can be <see langword="null"/>, but its length cannot be greater than the current <see cref="Capacity"/>.</param>
-		public virtual void Set(string value)
-		{
-			StringHelper.Write(value, handle, out _, true, CharSet, Size);
-		}
+		public virtual void Set(string value) => StringHelper.Write(value, handle, out _, true, CharSet, Size);
 
 		/// <summary>Returns the string value held by this instance.</summary>
-		/// <returns>A <see cref="System.String"/> value held by this instance or <c>null</c> if the handle is invalid.</returns>
+		/// <returns>A <see cref="string"/> value held by this instance or <c>null</c> if the handle is invalid.</returns>
 		public override string ToString() => IsInvalid ? null : StringHelper.GetString(handle, CharSet, Size == 0 ? long.MaxValue : (long)Size);
 	}
 }
