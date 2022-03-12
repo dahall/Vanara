@@ -337,7 +337,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Removes an item and all its children from a tree-view control. You can send this message explicitly or by using the
 			/// <c>TreeView_DeleteItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -348,6 +347,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>It is not safe to delete items in response to a notification such as TVN_SELCHANGING.</para>
 			/// <para>Once an item is deleted, its handle is invalid and cannot be used.</para>
@@ -367,7 +367,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// The <c>TVM_EXPAND</c> message expands or collapses the list of child items associated with the specified parent item, if any.
 			/// You can send this message explicitly or by using the <c>TreeView_Expand</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Action flag. This parameter can be one or more of the following values:</para>
@@ -407,6 +406,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the parent item to expand or collapse.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if the operation was successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// Expanding a node that is already expanded is considered a successful operation and <c>SendMessage</c> returns a nonzero
@@ -430,7 +430,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the bounding rectangle for a tree-view item and indicates whether the item is visible. You can send this message
 			/// explicitly or by using the <c>TreeView_GetItemRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -450,6 +449,7 @@ namespace Vanara.PInvoke
 			/// If the item is visible and the bounding rectangle was successfully retrieved, the return value is <c>TRUE</c>. Otherwise, the
 			/// message returns <c>FALSE</c> and does not retrieve the bounding rectangle.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When sending this message, the lParam parameter contains the handle of the item that the rectangle is being retrieved for.
@@ -465,7 +465,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves a count of the items in a tree-view control. You can send this message explicitly or by using the
 			/// <c>TreeView_GetCount</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -473,6 +472,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the count of items.</para>
+			/// </summary>
 			/// <remarks>
 			/// The node count returned by <c>TreeView_GetCount</c> is limited to integer values. If you add a node beyond 32767 the macro
 			/// returns a negative value. After adding 65536 nodes the count returns to zero. When this occurs, the tree-view control appears
@@ -484,7 +484,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the amount, in pixels, that child items are indented relative to their parent items. You can send this message
 			/// explicitly or by using the <c>TreeView_GetIndent</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -492,13 +491,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the amount of indentation.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getindent
 			TVM_GETINDENT = TV_FIRST + 6,
 
 			/// <summary>
 			/// Sets the width of indentation for a tree-view control and redraws the control to reflect the new width. You can send this
 			/// message explicitly or by using the <c>TreeView_SetIndent</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -509,6 +508,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// The system-defined minimum indent value is typically five pixels, but it is not fixed. To retrieve the exact value of the
 			/// minimum indent on a particular system, send a <c>TVM_SETINDENT</c> message with wParam set to zero. Then send a
@@ -520,7 +520,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the handle to the normal or state image list associated with a tree-view control. You can send this message
 			/// explicitly or by using the <c>TreeView_GetImageList</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Type of image list to retrieve. This parameter can be one of the following values:</para>
@@ -547,13 +546,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns an HIMAGELIST handle to the specified image list.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getimagelist
 			TVM_GETIMAGELIST = TV_FIRST + 8,
 
 			/// <summary>
 			/// Sets the normal or state image list for a tree-view control and redraws the control using the new images. You can send this
 			/// message explicitly or by using the <c>TreeView_SetImageList</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Type of image list to set. This parameter can be one of the following values:</para>
@@ -582,6 +581,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the previous image list, if any, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// The tree-view control will not destroy the image list specified with this message. Your application must destroy the image
 			/// list when it is no longer needed.
@@ -592,7 +592,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the tree-view item that bears the specified relationship to a specified item. You can send this message explicitly,
 			/// by using the <c>TreeView_GetNextItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Flag specifying the item to retrieve. This parameter can be one of the following values:</para>
@@ -682,6 +681,7 @@ namespace Vanara.PInvoke
 			/// Returns the handle to the item if successful. For most cases, the message returns a <c>NULL</c> value to indicate an error.
 			/// See the Remarks section for details.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// This message will return <c>NULL</c> if the item being retrieved is the root node of the tree. For example, if you use this
@@ -734,7 +734,6 @@ namespace Vanara.PInvoke
 			/// Selects the specified tree-view item, scrolls the item into view, or redraws the item in the style used to indicate the
 			/// target of a drag-and-drop operation. You can send this message explicitly or by using the <c>TreeView_Select</c>,
 			/// <c>TreeView_SelectItem</c>, or <c>TreeView_SelectDropTarget</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Action flag. This parameter can be one of the following values:</para>
@@ -774,6 +773,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to an item. If lParam is <c>NULL</c>, the control is set to have no selected item.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// If the specified item is the child of a collapsed parent item, the parent's list of child items is expanded to reveal the
@@ -792,7 +792,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the handle to the edit control being used to edit a tree-view item's text. You can send this message explicitly or
 			/// by using the <c>TreeView_GetEditControl</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -800,6 +799,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the edit control if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When label editing begins, an edit control is created, but not positioned or displayed. Before it is displayed, the tree-view
@@ -817,7 +817,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Obtains the number of items that can be fully visible in the client window of a tree-view control. You can send this message
 			/// explicitly or by using the <c>TreeView_GetVisibleCount</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -825,6 +824,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the number of items that can be fully visible in the client window of the tree-view control.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The number of items that can be fully visible may be greater than the number of items in the control. The control calculates
@@ -841,7 +841,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Determines the location of the specified point relative to the client area of a tree-view control. You can send this message
 			/// explicitly or by using the <c>TreeView_HitTest</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -856,6 +855,7 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// Returns the handle to the tree-view item that occupies the specified point, or <c>NULL</c> if no item occupies the point.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-hittest
 			TVM_HITTEST = TV_FIRST + 17,
 
@@ -863,7 +863,6 @@ namespace Vanara.PInvoke
 			/// Creates a dragging bitmap for the specified item in a tree-view control. The message also creates an image list for the
 			/// bitmap and adds the bitmap to the image list. An application can display the image when dragging the item by using the image
 			/// list functions. You can send this message explicitly or by using the <c>TreeView_CreateDragImage</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -871,6 +870,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the item that receives the new dragging bitmap.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the image list to which the dragging bitmap was added if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// If you create a tree-view control without an associated image list, you cannot use the <c>TVM_CREATEDRAGIMAGE</c> message to
@@ -884,7 +884,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sorts the child items of the specified parent item in a tree-view control. You can send this message explicitly or by using
 			/// the <c>TreeView_SortChildren</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -895,6 +894,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the parent item whose child items are to be sorted.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message alphabetizes the tree items using <c>lstrcmpi</c> on the item name. You can use the <c>TVM_SORTCHILDRENCB</c>
 			/// message to customize the ordering behavior.
@@ -905,7 +905,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Ensures that a tree-view item is visible, expanding the parent item or scrolling the tree-view control, if necessary. You can
 			/// send this message explicitly or by using the <c>TreeView_EnsureVisible</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -916,6 +915,7 @@ namespace Vanara.PInvoke
 			/// Returns nonzero if the system scrolled the items in the tree-view control and no items were expanded. Otherwise, the message
 			/// returns zero.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// If the TVM_ENSUREVISIBLE message expands the parent item, the parent window receives the TVN_ITEMEXPANDING and
 			/// TVN_ITEMEXPANDED notification codes.
@@ -926,7 +926,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sorts tree-view items using an application-defined callback function that compares the items. You can send this message
 			/// explicitly or by using the <c>TreeView_SortChildrenCB</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Reserved. Must be zero.</para>
@@ -938,13 +937,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-sortchildrencb
 			TVM_SORTCHILDRENCB = TV_FIRST + 21,
 
 			/// <summary>
 			/// Ends the editing of a tree-view item's label. You can send this message explicitly or by using the
 			/// <c>TreeView_EndEditLabelNow</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -955,6 +954,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>This message causes the TVN_ENDLABELEDIT notification code to be sent to the parent window of the tree-view control.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-endeditlabelnow
 			TVM_ENDEDITLABELNOW = TV_FIRST + 22,
@@ -962,7 +962,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets a tree-view control's child tooltip control. You can send this message explicitly or by using the
 			/// <c>TreeView_SetToolTips</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Handle to a tooltip control.</para>
@@ -973,6 +972,7 @@ namespace Vanara.PInvoke
 			/// Returns the handle to tooltip control previously set for the tree-view control, or <c>NULL</c> if tooltips were not
 			/// previously used.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// When created, tree-view controls automatically create a child tooltip control. To prevent a tree-view control from using
 			/// tooltips, create the control with the <c>TVS_NOTOOLTIPS</c> style.
@@ -983,7 +983,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the handle to the child tooltip control used by a tree-view control. You can send this message explicitly or by
 			/// using the <c>TreeView_GetToolTips</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -991,6 +990,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the child tooltip control, or <c>NULL</c> if the control is not using tooltips.</para>
+			/// </summary>
 			/// <remarks>
 			/// When created, tree-view controls automatically create a child tooltip control. To cause a tree-view control not to use
 			/// tooltips, create the control with the <c>TVS_NOTOOLTIPS</c> style.
@@ -1001,7 +1001,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the insertion mark in a tree-view control. You can send this message explicitly or by using the
 			/// <c>TreeView_SetInsertMark</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -1016,6 +1015,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// In some circumstances, the insert mark can appear in two places after a node is expanded. If you are using insertion marks,
 			/// it is recommended that you force a refresh of the control after expanding a node.
@@ -1027,7 +1027,6 @@ namespace Vanara.PInvoke
 			/// Sets the Unicode character format flag for the control. This message allows you to change the character set used by the
 			/// control at run time rather than having to re-create the control. You can send this message explicitly or use the
 			/// <c>TreeView_SetUnicodeFormat</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -1038,6 +1037,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous Unicode format flag for the control.</para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setunicodeformat
 			TVM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
@@ -1045,7 +1045,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the Unicode character format flag for the control. You can send this message explicitly or use the
 			/// <c>TreeView_GetUnicodeFormat</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1056,13 +1055,13 @@ namespace Vanara.PInvoke
 			/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
 			/// value is zero, the control is using ANSI characters.
 			/// </para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getunicodeformat
 			TVM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT,
 
 			/// <summary>
 			/// Sets the height of the tree-view items. You can send this message explicitly or by using the <c>TreeView_SetItemHeight</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -1074,6 +1073,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous height of the items, in pixels.</para>
+			/// </summary>
 			/// <remarks>
 			/// The tree-view control uses this value for the height of all items. To modify the height of individual items, see the
 			/// description of the <c>iIntegral</c> member of the <c>TVITEMEX</c> structure.
@@ -1084,7 +1084,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the current height of the each tree-view item. You can send this message explicitly or by using the
 			/// <c>TreeView_GetItemHeight</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1092,12 +1091,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the height of each item, in pixels.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getitemheight
 			TVM_GETITEMHEIGHT = TV_FIRST + 28,
 
 			/// <summary>
 			/// Sets the background color of the control. You can send this message explicitly or by using the <c>TreeView_SetBkColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1111,12 +1110,12 @@ namespace Vanara.PInvoke
 			/// Returns a <c>COLORREF</c> value that represents the previous background color. If this value is -1, the control was using the
 			/// system color for the background color.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setbkcolor
 			TVM_SETBKCOLOR = TV_FIRST + 29,
 
 			/// <summary>
 			/// Sets the text color of the control. You can send this message explicitly or by using the <c>TreeView_SetTextColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1130,13 +1129,13 @@ namespace Vanara.PInvoke
 			/// Returns a <c>COLORREF</c> value that represents the previous text color. If this value is -1, the control was using the
 			/// system color for the text color.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-settextcolor
 			TVM_SETTEXTCOLOR = TV_FIRST + 30,
 
 			/// <summary>
 			/// Retrieves the current background color of the control. You can send this message explicitly or by using the
 			/// <c>TreeView_GetBkColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1147,13 +1146,13 @@ namespace Vanara.PInvoke
 			/// Returns a <c>COLORREF</c> value that represents the current background color. If this value is -1, the control is using the
 			/// system color for the background color.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getbkcolor
 			TVM_GETBKCOLOR = TV_FIRST + 31,
 
 			/// <summary>
 			/// Retrieves the current text color of the control. You can send this message explicitly or by using the
 			/// <c>TreeView_GetTextColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1164,13 +1163,13 @@ namespace Vanara.PInvoke
 			/// Returns a <c>COLORREF</c> value that represents the current text color. If this value is -1, the control is using the system
 			/// color for the text color.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-gettextcolor
 			TVM_GETTEXTCOLOR = TV_FIRST + 32,
 
 			/// <summary>
 			/// Sets the maximum scroll time for the tree-view control. You can send this message explicitly or by using the
 			/// <c>TreeView_SetScrollTime</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>New maximum scroll time, in milliseconds.</para>
@@ -1178,6 +1177,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous maximum scroll time, in milliseconds.</para>
+			/// </summary>
 			/// <remarks>
 			/// The maximum scroll time is the longest amount of time that a scroll operation can take. Scrolling will be adjusted so that
 			/// the scroll will take place within the maximum scroll time. A scroll operation may take less time than the maximum.
@@ -1188,7 +1188,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the maximum scroll time for the tree-view control. You can send this message explicitly or by using the
 			/// <c>TreeView_GetScrollTime</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1196,6 +1195,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the maximum scroll time, in milliseconds.</para>
+			/// </summary>
 			/// <remarks>
 			/// The maximum scroll time is the longest amount of time that a scroll operation can take. The scrolling will be adjusted so
 			/// that the scroll will take place within the maximum scroll time. A scroll operation may take less time than the maximum.
@@ -1206,7 +1206,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the color used to draw the insertion mark for the tree view. You can send this message explicitly or by using the
 			/// <c>TreeView_SetInsertMarkColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1214,13 +1213,13 @@ namespace Vanara.PInvoke
 			/// <para><c>COLORREF</c> value that contains the new insertion mark color.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>COLORREF</c> value that contains the previous insertion mark color.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setinsertmarkcolor
 			TVM_SETINSERTMARKCOLOR = TV_FIRST + 37,
 
 			/// <summary>
 			/// Retrieves the color used to draw the insertion mark for the tree view. You can send this message explicitly or by using the
 			/// <c>TreeView_GetInsertMarkColor</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1228,6 +1227,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>COLORREF</c> value that contains the current insertion mark color.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getinsertmarkcolor
 			TVM_GETINSERTMARKCOLOR = TV_FIRST + 38,
 
@@ -1237,7 +1237,6 @@ namespace Vanara.PInvoke
 			/// Sets the size of the border for the items in a tree-view control. You can send the message explicitly or by using the
 			/// <c>TreeView_SetBorder</c> macro.
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Action flags. This parameter can be one or more of the following values:</para>
@@ -1265,6 +1264,7 @@ namespace Vanara.PInvoke
 			/// Returns a <c>LONG</c> value that contains the previous border size, in pixels. The <c>LOWORD</c> contains the previous size
 			/// of the horizontal border, and the <c>HIWORD</c> contains the previous size of the vertical border.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para><c>Security Warning:</c> Using this message might compromise the security of your program.</para>
 			/// <para>The item border is set just for spacing purposes. A successful setting triggers a recalculation of the scroll bars.</para>
@@ -1282,7 +1282,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves some or all of a tree-view item's state attributes. You can send this message explicitly or by using the
 			/// <c>TreeView_GetItemState</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Handle to the item.</para>
@@ -1293,10 +1292,11 @@ namespace Vanara.PInvoke
 			/// Returns a <c>UINT</c> value with the appropriate state bits set to <c>TRUE</c>. Only those bits that are specified by lParam
 			/// and that are <c>TRUE</c> will be set. This value is equivalent to the <c>state</c> member of <c>TVITEMEX</c>.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getitemstate
 			TVM_GETITEMSTATE = TV_FIRST + 39,
 
-			/// <summary>The <c>TVM_SETLINECOLOR</c> message sets the current line color.</summary>
+			/// <summary>The <c>TVM_SETLINECOLOR</c> message sets the current line color.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1304,6 +1304,7 @@ namespace Vanara.PInvoke
 			/// <para>New line color. Use the CLR_DEFAULT value to restore the system default colors.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous line color.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message only changes line colors. To change the colors of the '+' and '-' inside the buttons, use the
 			/// <c>TVM_SETTEXTCOLOR</c> message.
@@ -1311,7 +1312,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-setlinecolor
 			TVM_SETLINECOLOR = TV_FIRST + 40,
 
-			/// <summary>The <c>TVM_GETLINECOLOR</c> message gets the current line color.</summary>
+			/// <summary>The <c>TVM_GETLINECOLOR</c> message gets the current line color.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1319,6 +1320,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the current line color, or the CLR_DEFAULT value if none has been specified.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message only retrieves line colors. To retrieve the colors of the '+' and '-' inside the buttons, use the
 			/// <c>TVM_GETTEXTCOLOR</c> message.
@@ -1326,7 +1328,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-getlinecolor
 			TVM_GETLINECOLOR = TV_FIRST + 41,
 
-			/// <summary>Maps an accessibility ID to an <c>HTREEITEM</c>.</summary>
+			/// <summary>Maps an accessibility ID to an <c>HTREEITEM</c>.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>**UINT** that contains the accessibility ID to map to an **HTREEITEM**.</para>
@@ -1334,6 +1336,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the <c>HTREEITEM</c> that the specified accessibility ID is mapped to.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>When you add an item to a tree-view control an <c>HTREEITEM</c> returns, which uniquely identifies the item.</para>
 			/// <para>
@@ -1347,7 +1350,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-mapaccidtohtreeitem
 			TVM_MAPACCIDTOHTREEITEM = TV_FIRST + 42,
 
-			/// <summary>Maps an <c>HTREEITEM</c> to an accessibility ID.</summary>
+			/// <summary>Maps an <c>HTREEITEM</c> to an accessibility ID.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>**HTREEITEM** that is mapped to an accessibility ID.</para>
@@ -1355,6 +1358,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns an accessibility ID.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>When you add an item to a tree-view control an <c>HTREEITEM</c> handle is returned that uniquely identifies the item.</para>
 			/// <para>
@@ -1368,7 +1372,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-maphtreeitemtoaccid
 			TVM_MAPHTREEITEMTOACCID = TV_FIRST + 43,
 
-			/// <summary>Informs the tree-view control to set extended styles. Send this message or use the macro <c>TreeView_SetExtendedStyle</c>.</summary>
+			/// <summary>Informs the tree-view control to set extended styles. Send this message or use the macro <c>TreeView_SetExtendedStyle</c>.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Mask used to select the styles to be set.</para>
@@ -1376,6 +1380,7 @@ namespace Vanara.PInvoke
 			/// <para>Value that indicates the extended style. For more information on styles, see Tree-View Control Extended Styles.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>If this message succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </summary>
 			/// <remarks>
 			/// The extended styles for a tree-view control have nothing to do with the extended styles used with function
 			/// <c>CreateWindowEx</c> or function <c>SetWindowLong</c>.
@@ -1386,7 +1391,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the extended style for a tree-view control. Send this message explicitly or by using the
 			/// <c>TreeView_GetExtendedStyle</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1394,6 +1398,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the value of extended style.For more information on styles, see Tree-View Control Extended Styles.</para>
+			/// </summary>
 			/// <remarks>
 			/// The extended styles for a tree-view control have nothing to do with the extended styles used with function
 			/// <c>CreateWindowEx</c> or function <c>SetWindowLong</c>.
@@ -1403,7 +1408,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Inserts a new item in a tree-view control. You can send this message explicitly or by using the <c>TreeView_InsertItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1411,13 +1415,13 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a <c>TVINSERTSTRUCT</c> structure that specifies the attributes of the tree-view item.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the <c>HTREEITEM</c> handle to the new item if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvm-insertitem
 			TVM_INSERTITEM = TV_FIRST + 50,
 
 			/// <summary>
 			/// Sets information used to determine auto-scroll characteristics. You can send this message explicitly or by using the
 			/// <c>TreeView_SetAutoScrollInfo</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Specifies pixels per second. The offset to scroll is divided by the wParam to determine the total duration of the auto-scroll.</para>
@@ -1428,6 +1432,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// Autoscroll information is used to scroll a nonvisible item into view. The control must have the <c>TVS_EX_AUTOHSCROLL</c>
 			/// extended style. For information on extended styles, see Tree-View Control Extended Styles.
@@ -1442,7 +1447,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// Sets the hot item for a tree-view control. You can send this message explicitly or by using the <c>TreeView_SetHot</c> macro.
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1450,6 +1454,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the new hot item. If this value is <c>NULL</c>, the tree-view control will be set to have no hot item.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The hot item is the item that the mouse is hovering over. This message makes an item look like it is the hot item even if the
@@ -1465,7 +1470,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves some or all of a tree-view item's attributes. You can send this message explicitly or by using the
 			/// <c>TreeView_GetItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1476,6 +1480,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When the message is sent, the <c>hItem</c> member of the <c>TVITEM</c> or <c>TVITEMEX</c> structure identifies the item to
@@ -1492,7 +1497,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// The <c>TVM_SETITEM</c> message sets some or all of a tree-view item's attributes. You can send this message explicitly or by
 			/// using the <c>TreeView_SetItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1503,6 +1507,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// The <c>hItem</c> member of the <c>TVITEM</c> or <c>TVITEMEX</c> structure identifies the item, and the <c>mask</c> member
 			/// specifies which attributes to set.
@@ -1514,7 +1519,6 @@ namespace Vanara.PInvoke
 			/// Retrieves the incremental search string for a tree-view control. The tree-view control uses the incremental search string to
 			/// select an item based on characters typed by the user. You can send this message explicitly or by using the
 			/// <c>TreeView_GetISearchString</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1522,6 +1526,7 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to the buffer that receives the incremental search string.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the number of characters in the incremental search string.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// <c>Security Warning:</c> Using this message incorrectly might compromise the security of your program. You must allocate a
@@ -1538,7 +1543,6 @@ namespace Vanara.PInvoke
 			/// Begins in-place editing of the specified item's text, replacing the text of the item with a single-line edit control
 			/// containing the text. This message implicitly selects and focuses the specified item. You can send this message explicitly or
 			/// by using the <c>TreeView_EditLabel</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1546,6 +1550,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the item to edit.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the edit control used to edit the item text if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>This message sends a TVN_BEGINLABELEDIT notification code to the parent of the tree-view control.</para>
 			/// <para>
@@ -1566,7 +1571,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Shows the infotip for a specified item in a tree-view control. You can send this message explicitly or by using the
 			/// <c>TreeView_ShowInfoTip</c> macro..
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -1574,6 +1578,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the item.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns zero.</para>
+			/// </summary>
 			/// <remarks>
 			/// Most applications do not use this message. Infotips are shown automatically. For more information, see Using Tree-view
 			/// Infotips in the About Tree-View Controls overview.
@@ -1598,12 +1603,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_ASYNCDRAW pnmTVAsynchDraw = (NMTVASYNCDRAW *) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMTVASYNCDRAW</c> structure. The <c>NMTVASYNCDRAW</c> structure contains the reason the draw failed.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The tree-view control must have the <c>TVS_EX_DRAWIMAGEASYNC</c> extended style. Note that this is equivalent to list-view's
@@ -1650,7 +1655,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_BEGINDRAG pnmtv = (LPNMTREEVIEW) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1660,6 +1664,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored.</para>
+			/// </summary>
 			/// <remarks>A tree-view control that has the <c>TVS_DISABLEDRAGDROP</c> style does not send this notification code.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-begindrag
 			TVN_BEGINDRAG = TVN_FIRST - 56,
@@ -1672,7 +1677,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_BEGINLABELEDIT ptvdi = (LPNMTVDISPINFO) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1681,6 +1685,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> to cancel label editing.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// When label editing begins, an edit control is created but not positioned or displayed. Before it is displayed, the tree-view
@@ -1704,7 +1709,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_BEGINRDRAG pnmtv = (LPNMTREEVIEW) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1714,6 +1718,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-beginrdrag
 			TVN_BEGINRDRAG = TVN_FIRST - 57,
 
@@ -1725,7 +1730,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_DELETEITEM pnmtv = (LPNMTREEVIEW) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1734,6 +1738,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored.</para>
+			/// </summary>
 			/// <remarks>
 			/// If the <c>lParam</c> member of the <c>TVITEM</c> structure points to memory allocated by your application, you can free it
 			/// when you receive the TVN_DELETEITEM notification code.
@@ -1749,7 +1754,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_ENDLABELEDIT ptvdi = (LPNMTVDISPINFO) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1763,6 +1767,7 @@ namespace Vanara.PInvoke
 			/// If the <c>pszText</c> member is non- <c>NULL</c>, return <c>TRUE</c> to set the item's label to the edited text. Return
 			/// <c>FALSE</c> to reject the edited text and revert to the original label.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>If the <c>pszText</c> member is <c>NULL</c>, the return value is ignored.</para>
 			/// <para>
@@ -1781,7 +1786,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_GETDISPINFO lptvdi = (LPNMTVDISPINFO) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1791,6 +1795,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>This notification code is sent under the following circumstances:</para>
 			/// <list type="bullet">
@@ -1829,12 +1834,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_GETINFOTIP lpGetInfoTip = (LPNMTVGETINFOTIP)lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMTVGETINFOTIP</c> structure that contains information about this notification code.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The control ignores the return value for this notification code.</para>
+			/// </summary>
 			/// <remarks>This notification code is only sent by tree-view controls that have the <c>TVS_INFOTIP</c> style.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-getinfotip
 			TVN_GETINFOTIP = TVN_FIRST - 14,
@@ -1847,7 +1852,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_ITEMCHANGED pnm = (NMTVITEMCHANGE *) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1855,6 +1859,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>FALSE</c> to accept the change, or <c>TRUE</c> to prevent the change.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-itemchanged
 			TVN_ITEMCHANGED = TVN_FIRST - 19,
 
@@ -1866,7 +1871,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_ITEMCHANGING pnm = (NMTVITEMCHANGE *) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1874,6 +1878,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>FALSE</c> to accept the change, or <c>TRUE</c> to prevent the change.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-itemchanging
 			TVN_ITEMCHANGING = TVN_FIRST - 17,
 
@@ -1885,7 +1890,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_ITEMEXPANDED pnmtv = (LPNMTREEVIEW) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1895,6 +1899,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-itemexpanded
 			TVN_ITEMEXPANDED = TVN_FIRST - 55,
 
@@ -1906,7 +1911,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_ITEMEXPANDING pnmtv = (LPNMTREEVIEW) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1917,6 +1921,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> to prevent the list from expanding or collapsing.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-itemexpanding
 			TVN_ITEMEXPANDING = TVN_FIRST - 54,
 
@@ -1928,7 +1933,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_KEYDOWN ptvkd = (LPNMTVKEYDOWN) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMTVKEYDOWN</c> structure. The <c>wVKey</c> member specifies the virtual key code.</para>
@@ -1938,6 +1942,7 @@ namespace Vanara.PInvoke
 			/// Return nonzero to exclude the character from the incremental search, or zero to include the character in the search. For all
 			/// other keys, the return value is ignored.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-keydown
 			TVN_KEYDOWN = TVN_FIRST - 12,
 
@@ -1949,7 +1954,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_SELCHANGED pnmtv = (LPNMTREEVIEW) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1980,6 +1984,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tvn-selchanged
 			TVN_SELCHANGED = TVN_FIRST - 51,
 
@@ -1991,7 +1996,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_SELCHANGING pnmtv = (LPNMTREEVIEW) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -2001,6 +2005,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> to prevent the selection from changing.</para>
+			/// </summary>
 			/// <remarks>
 			/// When responding to this notification code, applications should not delete the items that are gaining or losing the selection.
 			/// </remarks>
@@ -2015,7 +2020,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_SETDISPINFO lptvdi = (LPNMTVDISPINFO) lParam</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -2025,6 +2029,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// If the <c>pszText</c> member of the item's <c>TVITEM</c> structure is the LPSTR_TEXTCALLBACK value, the control sends this
@@ -2047,7 +2052,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TVN_SINGLEEXPAND lpnmtv = (LPNMTREEVIEW)lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMTREEVIEW</c> structure that contains information about this notification code.</para>
@@ -2067,6 +2071,7 @@ namespace Vanara.PInvoke
 			/// <term>Skip default processing of the item being selected.</term>
 			/// </item>
 			/// </list>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// To skip default processing of selected and unselected items, return both TVNRET_SKIPOLD and TVNRET_SKIPNEW by combining them

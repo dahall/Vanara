@@ -91,7 +91,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760542")]
 		public enum ToolTipMessage
 		{
-			/// <summary>Activates or deactivates a tooltip control.</summary>
+			/// <summary>Activates or deactivates a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -102,10 +102,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-activate
 			TTM_ACTIVATE = WindowMessage.WM_USER + 1,
 
-			/// <summary>Sets the initial, pop-up, and reshow durations for a tooltip control.</summary>
+			/// <summary>Sets the initial, pop-up, and reshow durations for a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Flag that specifies which time value to set. This parameter can be one of the following values</para>
@@ -148,6 +149,7 @@ namespace Vanara.PInvoke
 			/// <para>The <c>LOWORD</c> specifies the delay time, in milliseconds. The <c>HIWORD</c> must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The default delay times are based on the double-click time. For the default double-click time of 500 ms, the initial,
@@ -161,7 +163,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-setdelaytime
 			TTM_SETDELAYTIME = WindowMessage.WM_USER + 3,
 
-			/// <summary>Registers a tool with a tooltip control.</summary>
+			/// <summary>Registers a tool with a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -172,10 +174,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-addtool
 			TTM_ADDTOOL = WindowMessage.WM_USER + 50,
 
-			/// <summary>Removes a tool from a tooltip control.</summary>
+			/// <summary>Removes a tool from a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -186,10 +189,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-deltool
 			TTM_DELTOOL = WindowMessage.WM_USER + 51,
 
-			/// <summary>Sets a new bounding rectangle for a tool.</summary>
+			/// <summary>Sets a new bounding rectangle for a tool.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -200,10 +204,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-newtoolrect
 			TTM_NEWTOOLRECT = WindowMessage.WM_USER + 52,
 
-			/// <summary>Passes a mouse message to a tooltip control for processing.</summary>
+			/// <summary>Passes a mouse message to a tooltip control for processing.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -215,6 +220,7 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to an <c>MSG</c> structure that contains the message to relay.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>A tooltip control processes only the following messages passed to it by the <c>TTM_RELAYEVENT</c> message:</para>
 			/// <list type="bullet">
@@ -248,7 +254,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-relayevent
 			TTM_RELAYEVENT = WindowMessage.WM_USER + 7, // Win7: wParam = GetMessageExtraInfo() when relaying WM_MOUSEMOVE
 
-			/// <summary>Retrieves the information that a tooltip control maintains about a tool.</summary>
+			/// <summary>Retrieves the information that a tooltip control maintains about a tool.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -260,11 +266,12 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>If the tooltip control includes the tool, the <c>TOOLINFO</c> structure receives information about the tool.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-gettoolinfo
 			TTM_GETTOOLINFO = WindowMessage.WM_USER + 53,
 
-			/// <summary>Sets the information that a tooltip control maintains for a tool.</summary>
+			/// <summary>Sets the information that a tooltip control maintains for a tool.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -275,6 +282,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// Some internal properties of a tool are established when the tool is created, and are not recomputed when a
@@ -294,7 +302,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Tests a point to determine whether it is within the bounding rectangle of the specified tool and, if it is, retrieves
 			/// information about the tool.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -307,6 +314,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if the tool occupies the specified point, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message must be sent when the tool has the TTF_TRACK flag set. For more information on this flag, see <c>TOOLINFO</c>.
 			/// TTM_HITTEST will fail if TTF_TRACK is not set, regardless if the hit point is in the tools rectangle or not.
@@ -314,7 +322,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-hittest
 			TTM_HITTEST = WindowMessage.WM_USER + 55,
 
-			/// <summary>Retrieves the information a tooltip control maintains about a tool.</summary>
+			/// <summary>Retrieves the information a tooltip control maintains about a tool.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The number of **TCHARs**, including the terminating **NULL**, to copy to the buffer pointed to by **lpszText**.</para>
@@ -327,10 +335,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-gettext
 			TTM_GETTEXT = WindowMessage.WM_USER + 56,
 
-			/// <summary>Sets the tooltip text for a tool.</summary>
+			/// <summary>Sets the tooltip text for a tool.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -342,10 +351,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-updatetiptext
 			TTM_UPDATETIPTEXT = WindowMessage.WM_USER + 57,
 
-			/// <summary>Retrieves a count of the tools maintained by a tooltip control.</summary>
+			/// <summary>Retrieves a count of the tools maintained by a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -353,13 +363,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a count of tools.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-gettoolcount
 			TTM_GETTOOLCOUNT = WindowMessage.WM_USER + 13,
 
 			/// <summary>
 			/// Retrieves the information that a tooltip control maintains about the current tool that is, the tool for which the tooltip is
 			/// currently displaying text.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Zero-based index of the tool for which to retrieve information.</para>
@@ -373,6 +383,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>FALSE</c> whether or not a tool was enumerated.</para>
+			/// </summary>
 			/// <remarks>
 			/// <c>Security Warning:</c> Using this message might compromise the security of your program. This message does not provide a
 			/// way for the message receiver to know the size of the buffer or to specify the size of the buffer. You should review the
@@ -381,7 +392,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-enumtools
 			TTM_ENUMTOOLS = WindowMessage.WM_USER + 58,
 
-			/// <summary>Retrieves the information for the current tool in a tooltip control.</summary>
+			/// <summary>Retrieves the information for the current tool in a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -395,12 +406,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// Returns nonzero if successful, or zero otherwise. If lParam is <c>NULL</c>, returns nonzero if a current tool exists, or zero otherwise.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-getcurrenttool
 			TTM_GETCURRENTTOOL = WindowMessage.WM_USER + 59,
 
 			/// <summary>
 			/// Allows a subclass procedure to cause a tooltip to display text for a window other than the one beneath the mouse cursor.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -410,6 +421,7 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// The return value is the handle to the window that contains the point, or <c>NULL</c> if no window exists at the specified point.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// This message is intended to be processed by an application that subclasses a tooltip. It is not intended to be sent by an
 			/// application. A tooltip sends this message to itself before displaying the text for a window. By changing the coordinates of
@@ -419,7 +431,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-windowfrompoint
 			TTM_WINDOWFROMPOINT = WindowMessage.WM_USER + 16,
 
-			/// <summary>Activates or deactivates a tracking tooltip.</summary>
+			/// <summary>Activates or deactivates a tracking tooltip.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Value specifying whether tracking is being activated or deactivated. This value can be one of the following:</para>
@@ -444,10 +456,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-trackactivate
 			TTM_TRACKACTIVATE = WindowMessage.WM_USER + 17, // wParam = TRUE/FALSE start end  lparam = LPTOOLINFO
 
-			/// <summary>Sets the position of a tracking tooltip.</summary>
+			/// <summary>Sets the position of a tracking tooltip.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -459,6 +472,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// The tooltip control chooses where to display the tooltip window based on the coordinates you provide with this message. This
 			/// causes the tooltip window to appear beside the tool to which it corresponds. To have tooltip windows displayed at specific
@@ -467,7 +481,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-trackposition
 			TTM_TRACKPOSITION = WindowMessage.WM_USER + 18, // lParam = dwPos
 
-			/// <summary>Sets the background color in a tooltip window.</summary>
+			/// <summary>Sets the background color in a tooltip window.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>New background color.</para>
@@ -475,11 +489,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			/// <remarks>When visual styles are enabled, this message has no effect.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-settipbkcolor
 			TTM_SETTIPBKCOLOR = WindowMessage.WM_USER + 19,
 
-			/// <summary>Sets the text color in a tooltip window.</summary>
+			/// <summary>Sets the text color in a tooltip window.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>New text color.</para>
@@ -487,11 +502,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			/// <remarks>When visual styles are enabled, this message has no effect.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-settiptextcolor
 			TTM_SETTIPTEXTCOLOR = WindowMessage.WM_USER + 20,
 
-			/// <summary>Retrieves the initial, pop-up, and reshow durations currently set for a tooltip control.</summary>
+			/// <summary>Retrieves the initial, pop-up, and reshow durations currently set for a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Flag that specifies which duration value will be retrieved. This parameter can have one of the following values:</para>
@@ -523,10 +539,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns and INT value with the specified duration in milliseconds.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-getdelaytime
 			TTM_GETDELAYTIME = WindowMessage.WM_USER + 21,
 
-			/// <summary>Retrieves the background color in a tooltip window.</summary>
+			/// <summary>Retrieves the background color in a tooltip window.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -534,10 +551,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>COLORREF</c> value that represents the background color.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-gettipbkcolor
 			TTM_GETTIPBKCOLOR = WindowMessage.WM_USER + 22,
 
-			/// <summary>Retrieves the text color in a tooltip window.</summary>
+			/// <summary>Retrieves the text color in a tooltip window.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -545,10 +563,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>COLORREF</c> value that represents the text color.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-gettiptextcolor
 			TTM_GETTIPTEXTCOLOR = WindowMessage.WM_USER + 23,
 
-			/// <summary>Sets the maximum width for a tooltip window.</summary>
+			/// <summary>Sets the maximum width for a tooltip window.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -556,6 +575,7 @@ namespace Vanara.PInvoke
 			/// <para>Maximum tooltip window width, or -1 to allow any width.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous maximum tooltip width.</para>
+			/// </summary>
 			/// <remarks>
 			/// The maximum width value does not indicate a tooltip window's actual width. Rather, if a tooltip string exceeds the maximum
 			/// width, the control breaks the text into multiple lines, using spaces to determine line breaks. If the text cannot be
@@ -564,7 +584,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-setmaxtipwidth
 			TTM_SETMAXTIPWIDTH = WindowMessage.WM_USER + 24,
 
-			/// <summary>Retrieves the maximum width for a tooltip window.</summary>
+			/// <summary>Retrieves the maximum width for a tooltip window.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -575,6 +595,7 @@ namespace Vanara.PInvoke
 			/// Returns an <c>INT</c> value that represents the maximum tooltip width, in pixels. If no maximum width was set previously, the
 			/// message returns -1.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// The maximum tooltip width value does not indicate a tooltip window's actual width. Rather, if a tooltip string exceeds the
 			/// maximum width, the control breaks the text into multiple lines, using spaces to determine line breaks. If the text cannot be
@@ -586,7 +607,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the top, left, bottom, and right margins for a tooltip window. A margin is the distance, in pixels, between the tooltip
 			/// window border and the text contained within the tooltip window.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -619,6 +639,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message has no effect when the application runs on Windows Vista and visual styles are enabled for the tooltip. You can
 			/// disable visual styles for the tooltip by using <c>SetWindowTheme</c>.
@@ -629,7 +650,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the top, left, bottom, and right margins set for a tooltip window. A margin is the distance, in pixels, between the
 			/// tooltip window border and the text contained within the tooltip window.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -662,11 +682,12 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			/// <remarks>All four margins default to zero when you create the tooltip control.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-getmargin
 			TTM_GETMARGIN = WindowMessage.WM_USER + 27, // lParam = lprc
 
-			/// <summary>Removes a displayed tooltip window from view.</summary>
+			/// <summary>Removes a displayed tooltip window from view.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -674,10 +695,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-pop
 			TTM_POP = WindowMessage.WM_USER + 28,
 
-			/// <summary>Forces the current tooltip to be redrawn.</summary>
+			/// <summary>Forces the current tooltip to be redrawn.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -685,10 +707,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-update
 			TTM_UPDATE = WindowMessage.WM_USER + 29,
 
-			/// <summary>Returns the width and height of a tooltip control.</summary>
+			/// <summary>Returns the width and height of a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -698,6 +721,7 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// Returns the width of the tooltip in the low word and the height in the high word if successful. Otherwise, it returns <c>FALSE</c>.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// If the TTF_TRACK and TTF_ABSOLUTE flags are set in the <c>uFlags</c> member of the tooltip <c>TOOLINFO</c> structure, this
 			/// message can be used to help position the tooltip accurately.
@@ -708,7 +732,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Calculates a tooltip control's text display rectangle from its window rectangle, or the tooltip window rectangle needed to
 			/// display a specified text display rectangle.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -720,6 +743,7 @@ namespace Vanara.PInvoke
 			/// <para><c>RECT</c> structure to hold either a tooltip window rectangle or a text display rectangle.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a nonzero value if the rectangle is successfully adjusted, and returns zero if an error occurs.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// This message is particularly useful when you want to use a tooltip control to display the full text of a string that is
@@ -753,7 +777,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-adjustrect
 			TTM_ADJUSTRECT = WindowMessage.WM_USER + 31,
 
-			/// <summary>Adds a standard icon and title string to a tooltip.</summary>
+			/// <summary>Adds a standard icon and title string to a tooltip.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -798,6 +822,7 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to the title string. You must assign a value to lParam.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, <c>FALSE</c> if not.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The title of a tooltip appears above the text, in a different font. It is not sufficient to have a title; the tooltip must
@@ -812,7 +837,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-settitle
 			TTM_SETTITLE = WindowMessage.WM_USER + 33, // wParam = TTI_*, lParam = wchar* szTitle
 
-			/// <summary>Causes the tooltip to display at the coordinates of the last mouse message.</summary>
+			/// <summary>Causes the tooltip to display at the coordinates of the last mouse message.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -820,6 +845,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -830,7 +856,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-popup
 			TTM_POPUP = WindowMessage.WM_USER + 34,
 
-			/// <summary>Retrieve information concerning the title of a tooltip control.</summary>
+			/// <summary>Retrieve information concerning the title of a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -838,6 +864,7 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a <c>TTGETTITLE</c> structure that contains information about a tooltip title.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -848,7 +875,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-gettitle
 			TTM_GETTITLE = WindowMessage.WM_USER + 35, // wParam = 0, lParam = TTGETTITLE*
 
-			/// <summary>Sets the visual style of a tooltip control.</summary>
+			/// <summary>Sets the visual style of a tooltip control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -856,6 +883,7 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a Unicode string that contains the tooltip visual style to set.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -879,12 +907,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TTN_GETDISPINFO lpnmtdi = (LPNMTTDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMTTDISPINFO</c> structure that identifies the tool that needs text and receives the requested information.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this notification is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// Fill the structure's appropriate members to return the requested information to the tooltip control. If your message handler
 			/// sets the <c>uFlags</c> member of the <c>NMTTDISPINFO</c> structure to TTF_DI_SETITEM, the tooltip control stores the
@@ -901,7 +929,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TTN_SHOW pnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMHDR</c> structure.</para>
@@ -914,6 +941,7 @@ namespace Vanara.PInvoke
 			/// <para>Note</para>
 			/// <para>For versions earlier than 4.70, there is no return value.</para>
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// A tooltip window rectangle is somewhat larger than its text display rectangle, and its origin is offset up and to the left.
 			/// If you need to accurately position the text display rectangle of a tooltip, the <c>TTM_ADJUSTRECT</c> message converts a text
@@ -930,12 +958,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TTN_POP pnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMHDR</c> structure.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ttn-pop
 			TTN_POP = TTN_FIRST - 2,
 
@@ -946,9 +974,9 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TTN_LINKCLICK</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return value not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// Following is an example of when this notification is sent. Assume that your balloon tooltip contains the following text,
@@ -973,12 +1001,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TTN_NEEDTEXT lpnmtdi = (LPNMTTDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMTTDISPINFO</c> structure that identifies the tool that needs text and receives the requested information.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this notification is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// Fill the structure's appropriate members to return the requested information to the tooltip control. If your message handler
 			/// sets the <c>uFlags</c> member of the <c>NMTTDISPINFO</c> structure to TTF_DI_SETITEM, the tooltip control stores the

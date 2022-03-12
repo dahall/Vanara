@@ -149,12 +149,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_OUTOFMEMORY lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-outofmemory
 			NM_OUTOFMEMORY = NM_FIRST - 1,
 
@@ -166,7 +166,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_CLICK lpnmitem = (LPNMITEMACTIVATE) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -175,6 +174,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this notification is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// The <c>iItem</c> member of lParam is only valid if the icon or first-column label has been clicked. To determine which item
 			/// is selected when a click takes place elsewhere in a row, send an <c>LVM_SUBITEMHITTEST</c> message.
@@ -190,7 +190,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_DBLCLK lpnmitem = (LPNMITEMACTIVATE) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -199,6 +198,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this notification is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// The <c>iItem</c> member of lParam is only valid if the icon or first-column label has been clicked. To determine which item
 			/// is selected when a click takes place elsewhere in a row, send an <c>LVM_SUBITEMHITTEST</c> message.
@@ -214,12 +214,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_RETURN lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-return
 			NM_RETURN = NM_FIRST - 4,
 
@@ -231,12 +231,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_RCLICK lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return nonzero to prevent the default processing, or zero to allow the default processing.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-rclick-tree-view
 			NM_RCLICK = NM_FIRST - 5,
 
@@ -248,12 +248,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_RDBLCLK lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return nonzero to prevent the default processing, or zero to allow the default processing.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-rdblclk-tree-view
 			NM_RDBLCLK = NM_FIRST - 6,
 
@@ -265,12 +265,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_SETFOCUS lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-setfocus
 			NM_SETFOCUS = NM_FIRST - 7,
 
@@ -282,12 +282,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_KILLFOCUS lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-killfocus
 			NM_KILLFOCUS = NM_FIRST - 8,
 
@@ -299,7 +299,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_CUSTOMDRAW #ifdef LIST_VIEW_CUSTOM_DRAW lpNMCustomDraw = (LPNMLVCUSTOMDRAW) lParam; #elif TOOL_TIPS_CUSTOM_DRAW lpNMCustomDraw = (LPNMTTCUSTOMDRAW) lParam; #elif TREE_VIEW_CUSTOM_DRAW lpNMCustomDraw = (LPNMTVCUSTOMDRAW) lParam; #elif TOOL_BAR_CUSTOM_DRAW lpNMCustomDraw = (LPNMTBCUSTOMDRAW) lParam; #else lpNMCustomDraw = (LPNMCUSTOMDRAW) lParam; #endif</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -397,6 +396,7 @@ namespace Vanara.PInvoke
 			/// <term>The control will not draw the focus rectangle around an item.</term>
 			/// </item>
 			/// </list>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// Currently, the following controls support custom draw functionality: header, list view, rebar, toolbar, tooltip, trackbar,
@@ -418,7 +418,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_HOVER lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
@@ -427,6 +426,7 @@ namespace Vanara.PInvoke
 			/// Unless otherwise specified, return zero to allow the control to process the hover normally, or nonzero to prevent the hover
 			/// from being processed.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-hover
 			NM_HOVER = NM_FIRST - 13,
 
@@ -438,7 +438,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_NCHITTEST lpnmmouse = (LPNMMOUSE) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -450,6 +449,7 @@ namespace Vanara.PInvoke
 			/// Unless otherwise specified, return zero to allow the control to perform default processing of the hit test message, or return
 			/// one of the HT* values documented under <c>WM_NCHITTEST</c> to override the default hit test processing.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-nchittest
 			NM_NCHITTEST = NM_FIRST - 14,
 
@@ -461,7 +461,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_KEYDOWN lpnmk = (LPNMKEY) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -469,6 +468,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return nonzero to prevent the control from processing the key, or zero otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-keydown
 			NM_KEYDOWN = NM_FIRST - 15,
 
@@ -480,12 +480,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_RELEASEDCAPTURE lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Unless otherwise specified, the control ignores the return value from this notification code.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-releasedcapture
 			NM_RELEASEDCAPTURE = NM_FIRST - 16,
 
@@ -497,12 +497,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_SETCURSOR lpnmm = (LPNMMOUSE) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMMOUSE</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return zero to enable the control to set the cursor or nonzero to prevent the control from setting the cursor.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-setcursor
 			NM_SETCURSOR = NM_FIRST - 17,
 
@@ -514,7 +514,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_CHAR lpnmc = (LPNMCHAR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -522,6 +521,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by most controls. For more information, see the documentation for the individual controls.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-char
 			NM_CHAR = NM_FIRST - 18,
 
@@ -533,12 +533,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_TOOLTIPSCREATED lpnmttc = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMTOOLTIPSCREATED</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Unless otherwise specified, the control ignores the return value from this notification code.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-tooltipscreated
 			NM_TOOLTIPSCREATED = NM_FIRST - 19,
 
@@ -550,12 +550,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_LDOWN lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-ldown
 			NM_LDOWN = NM_FIRST - 20,
 
@@ -570,12 +570,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_THEMECHANGED lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-themechanged
 			NM_THEMECHANGED = NM_FIRST - 22,
 
@@ -587,12 +587,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_FONTCHANGED lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-fontchanged
 			NM_FONTCHANGED = NM_FIRST - 23,
 
@@ -604,12 +604,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_CUSTOMTEXT lpnmct = (NMCUSTOMTEXT) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMCUSTOMTEXT</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-customtext
 			NM_CUSTOMTEXT = NM_FIRST - 24,
 
@@ -621,12 +621,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>NM_TVSTATEIMAGECHANGING lpnmtsic = (LPNMTVSTATEIMAGECHANGING) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMTVSTATEIMAGECHANGING</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-tvstateimagechanging
 			NM_TVSTATEIMAGECHANGING = NM_FIRST - 24,
 		}

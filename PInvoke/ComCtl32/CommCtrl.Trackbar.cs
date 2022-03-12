@@ -28,7 +28,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the current logical position of the slider in a trackbar. The logical positions are the integer values in the
 			/// trackbar's range of minimum to maximum slider positions.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -36,10 +35,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a 32-bit value that specifies the current logical position of the trackbar's slider.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getpos
 			TBM_GETPOS = WindowMessage.WM_USER,
 
-			/// <summary>Retrieves the minimum position for the slider in a trackbar.</summary>
+			/// <summary>Retrieves the minimum position for the slider in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -47,10 +47,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a 32-bit value that specifies the minimum position in the trackbar's range of minimum to maximum slider positions.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getrangemin
 			TBM_GETRANGEMIN = WindowMessage.WM_USER + 1,
 
-			/// <summary>Retrieves the maximum position for the slider in a trackbar.</summary>
+			/// <summary>Retrieves the maximum position for the slider in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -58,13 +59,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a 32-bit value that specifies the maximum position in the trackbar's range of minimum to maximum slider positions.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getrangemax
 			TBM_GETRANGEMAX = WindowMessage.WM_USER + 2,
 
 			/// <summary>
 			/// Retrieves the logical position of a tick mark in a trackbar. The logical position can be any of the integer values in the
 			/// trackbar's range of minimum to maximum slider positions.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -75,10 +76,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the logical position of the specified tick mark, or -1 if wParam does not specify a valid index.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-gettic
 			TBM_GETTIC = WindowMessage.WM_USER + 3,
 
-			/// <summary>Sets a tick mark in a trackbar at the specified logical position.</summary>
+			/// <summary>Sets a tick mark in a trackbar at the specified logical position.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -89,13 +91,14 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if the tick mark is set, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// A trackbar creates its own first and last tick marks. Do not use this message to set the first and last tick marks.
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-settic
 			TBM_SETTIC = WindowMessage.WM_USER + 4,
 
-			/// <summary>Sets the current logical position of the slider in a trackbar.</summary>
+			/// <summary>Sets the current logical position of the slider in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -111,10 +114,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setpos
 			TBM_SETPOS = WindowMessage.WM_USER + 5,
 
-			/// <summary>Sets the range of minimum and maximum logical positions for the slider in a trackbar.</summary>
+			/// <summary>Sets the range of minimum and maximum logical positions for the slider in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -125,6 +129,7 @@ namespace Vanara.PInvoke
 			/// <para>The <c>LOWORD</c> specifies the minimum position for the slider, and the <c>HIWORD</c> specifies the maximum position.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// If the current slider position is outside the new range, the <c>TBM_SETRANGE</c> message sets the slider position to the new
@@ -138,7 +143,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setrange
 			TBM_SETRANGE = WindowMessage.WM_USER + 6,
 
-			/// <summary>Sets the minimum logical position for the slider in a trackbar.</summary>
+			/// <summary>Sets the minimum logical position for the slider in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -149,6 +154,7 @@ namespace Vanara.PInvoke
 			/// <para>Minimum position for the slider.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// If the current slider position is less than the new minimum, the <c>TBM_SETRANGEMIN</c> message sets the slider position to
 			/// the new minimum value.
@@ -156,7 +162,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setrangemin
 			TBM_SETRANGEMIN = WindowMessage.WM_USER + 7,
 
-			/// <summary>Sets the maximum logical position for the slider in a trackbar.</summary>
+			/// <summary>Sets the maximum logical position for the slider in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -167,6 +173,7 @@ namespace Vanara.PInvoke
 			/// <para>Maximum position for the slider.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// If the current slider position is greater than the new maximum, the <c>TBM_SETRANGEMAX</c> message sets the slider position
 			/// to the new maximum value.
@@ -177,7 +184,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Removes the current tick marks from a trackbar. This message does not remove the first and last tick marks, which are created
 			/// automatically by the trackbar.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -188,10 +194,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-cleartics
 			TBM_CLEARTICS = WindowMessage.WM_USER + 9,
 
-			/// <summary>Sets the starting and ending positions for the available selection range in a trackbar.</summary>
+			/// <summary>Sets the starting and ending positions for the available selection range in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -205,6 +212,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>This message is ignored if the trackbar does not have the <c>TBS_ENABLESELRANGE</c> style.</para>
 			/// <para><c>TBM_SETSEL</c> allows you to restrict the pointer to only a portion of the range available to the progress bar.</para>
@@ -215,7 +223,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the starting logical position of the current selection range in a trackbar. This message is ignored if the trackbar does
 			/// not have the <c>TBS_ENABLESELRANGE</c> style.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -226,13 +233,13 @@ namespace Vanara.PInvoke
 			/// <para>Starting position of the selection range.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setselstart
 			TBM_SETSELSTART = WindowMessage.WM_USER + 11,
 
 			/// <summary>
 			/// Sets the ending logical position of the current selection range in a trackbar. This message is ignored if the trackbar does
 			/// not have the <c>TBS_ENABLESELRANGE</c> style.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -243,10 +250,11 @@ namespace Vanara.PInvoke
 			/// <para>Ending logical position of the selection range.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setselend
 			TBM_SETSELEND = WindowMessage.WM_USER + 12,
 
-			/// <summary>Retrieves the address of an array that contains the positions of the tick marks for a trackbar.</summary>
+			/// <summary>Retrieves the address of an array that contains the positions of the tick marks for a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -258,6 +266,7 @@ namespace Vanara.PInvoke
 			/// trackbar's tick marks, not including the first and last tick marks created by the trackbar. The logical positions can be any
 			/// of the integer values in the trackbar's range of minimum to maximum slider positions.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// The number of elements in the array is two less than the tick count returned by the <c>TBM_GETNUMTICS</c> message. Note that
 			/// the values in the array may include duplicate positions and may not be in sequential order. The returned pointer is valid
@@ -266,7 +275,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getptics
 			TBM_GETPTICS = WindowMessage.WM_USER + 14,
 
-			/// <summary>Retrieves the current physical position of a tick mark in a trackbar.</summary>
+			/// <summary>Retrieves the current physical position of a tick mark in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -280,6 +289,7 @@ namespace Vanara.PInvoke
 			/// The return value is the x-coordinate of the tick mark for a horizontal trackbar or the y-coordinate for a vertical trackbar.
 			/// If wParam is not a valid index, the return value is -1.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// Because the first and last tick marks are not available through this message, valid indexes are offset from their tick
@@ -297,7 +307,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getticpos
 			TBM_GETTICPOS = WindowMessage.WM_USER + 15,
 
-			/// <summary>Retrieves the number of tick marks in a trackbar.</summary>
+			/// <summary>Retrieves the number of tick marks in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -308,13 +318,14 @@ namespace Vanara.PInvoke
 			/// If no tick flag is set, it returns 2 for the beginning and ending ticks. If <c>TBS_NOTICKS</c> is set, it returns zero.
 			/// Otherwise, it takes the difference between the range minimum and maximum, divides by the tick frequency, and adds 2.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// The <c>TBM_GETNUMTICS</c> message counts all of the tick marks, including the first and last tick marks created by the trackbar.
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getnumtics
 			TBM_GETNUMTICS = WindowMessage.WM_USER + 16,
 
-			/// <summary>Retrieves the starting position of the current selection range in a trackbar.</summary>
+			/// <summary>Retrieves the starting position of the current selection range in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -322,13 +333,14 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a 32-bit value that specifies the starting position of the current selection range.</para>
+			/// </summary>
 			/// <remarks>
 			/// A trackbar can have a selection range only if you specified the <c>TBS_ENABLESELRANGE</c> style when you created it.
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getselstart
 			TBM_GETSELSTART = WindowMessage.WM_USER + 17,
 
-			/// <summary>Retrieves the ending position of the current selection range in a trackbar.</summary>
+			/// <summary>Retrieves the ending position of the current selection range in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -336,13 +348,14 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a 32-bit value that specifies the ending position of the current selection range.</para>
+			/// </summary>
 			/// <remarks>
 			/// A trackbar can have a selection range only if you specified the <c>TBS_ENABLESELRANGE</c> style when you created it.
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getselend
 			TBM_GETSELEND = WindowMessage.WM_USER + 18,
 
-			/// <summary>Clears the current selection range in a trackbar.</summary>
+			/// <summary>Clears the current selection range in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Redraw flag. If this parameter is <c>TRUE</c>, the trackbar is redrawn after the selection is cleared.</para>
@@ -350,6 +363,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// A trackbar can have a selection range only if you specified the <c>TBS_ENABLESELRANGE</c> style when you created it.
 			/// </remarks>
@@ -360,7 +374,6 @@ namespace Vanara.PInvoke
 			/// Sets the interval frequency for tick marks in a trackbar. For example, if the frequency is set to two, a tick mark is
 			/// displayed for every other increment in the trackbar's range. The default setting for the frequency is one; that is, every
 			/// increment in the range is associated with a tick mark.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Frequency of the tick marks.</para>
@@ -368,6 +381,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>The trackbar must have the <c>TBS_AUTOTICKS</c> style to use this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setticfreq
 			TBM_SETTICFREQ = WindowMessage.WM_USER + 20,
@@ -376,7 +390,6 @@ namespace Vanara.PInvoke
 			/// Sets the number of logical positions the trackbar's slider moves in response to keyboard input, such as the or keys, or mouse
 			/// input, such as clicks in the trackbar's channel. The logical positions are the integer increments in the trackbar's range of
 			/// minimum to maximum slider positions.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -384,6 +397,7 @@ namespace Vanara.PInvoke
 			/// <para>New page size.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a 32-bit value that specifies the previous page size.</para>
+			/// </summary>
 			/// <remarks>
 			/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_PAGEUP and TB_PAGEDOWN notification
 			/// codes to its parent window when it receives keyboard or mouse input that scrolls the page.
@@ -395,7 +409,6 @@ namespace Vanara.PInvoke
 			/// Retrieves the number of logical positions the trackbar's slider moves in response to keyboard input, such as the or keys, or
 			/// mouse input, such as clicks in the trackbar's channel. The logical positions are the integer increments in the trackbar's
 			/// range of minimum to maximum slider positions.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -403,6 +416,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a 32-bit value that specifies the page size for the trackbar.</para>
+			/// </summary>
 			/// <remarks>
 			/// The trackbar also sends a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message with the TB_PAGEUP and TB_PAGEDOWN notification
 			/// codes to its parent window when it receives keyboard or mouse input that scrolls the page.
@@ -413,7 +427,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such as
 			/// the or keys. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -421,6 +434,7 @@ namespace Vanara.PInvoke
 			/// <para>New line size.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a 32-bit value that specifies the previous line size.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>The default setting for the line size is 1.</para>
 			/// <para>
@@ -434,7 +448,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such
 			/// as the or keys. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -442,6 +455,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a 32-bit value that specifies the line size for the trackbar.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>The default setting for the line size is 1.</para>
 			/// <para>
@@ -452,7 +466,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getlinesize
 			TBM_GETLINESIZE = WindowMessage.WM_USER + 24,
 
-			/// <summary>Retrieves the size and position of the bounding rectangle for the slider in a trackbar.</summary>
+			/// <summary>Retrieves the size and position of the bounding rectangle for the slider in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -463,13 +477,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getthumbrect
 			TBM_GETTHUMBRECT = WindowMessage.WM_USER + 25,
 
 			/// <summary>
 			/// Retrieves the size and position of the bounding rectangle for a trackbar's channel. (The channel is the area over which the
 			/// slider moves. It contains the highlight when a range is selected.)
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -480,12 +494,12 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getchannelrect
 			TBM_GETCHANNELRECT = WindowMessage.WM_USER + 26,
 
 			/// <summary>
 			/// Sets the length of the slider in a trackbar. This message is ignored if the trackbar does not have the <c>TBS_FIXEDLENGTH</c> style.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Length, in pixels, of the slider.</para>
@@ -493,10 +507,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setthumblength
 			TBM_SETTHUMBLENGTH = WindowMessage.WM_USER + 27,
 
-			/// <summary>Retrieves the length of the slider in a trackbar.</summary>
+			/// <summary>Retrieves the length of the slider in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -504,10 +519,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the length, in pixels, of the slider.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getthumblength
 			TBM_GETTHUMBLENGTH = WindowMessage.WM_USER + 28,
 
-			/// <summary>Assigns a tooltip control to a trackbar control.</summary>
+			/// <summary>Assigns a tooltip control to a trackbar control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Handle to an existing tooltip control.</para>
@@ -515,6 +531,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// When a trackbar control is created with the <c>TBS_TOOLTIPS</c> style, it creates a default tooltip control that appears next
 			/// to the slider, displaying the slider's current position.
@@ -522,7 +539,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-settooltips
 			TBM_SETTOOLTIPS = WindowMessage.WM_USER + 29,
 
-			/// <summary>Retrieves the handle to the tooltip control assigned to the trackbar, if any.</summary>
+			/// <summary>Retrieves the handle to the tooltip control assigned to the trackbar, if any.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -533,12 +550,12 @@ namespace Vanara.PInvoke
 			/// Returns the handle to the tooltip control assigned to the trackbar, or <c>NULL</c> if tooltips are not in use. If the
 			/// trackbar control does not use the <c>TBS_TOOLTIPS</c> style, the return value is <c>NULL</c>.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-gettooltips
 			TBM_GETTOOLTIPS = WindowMessage.WM_USER + 30,
 
 			/// <summary>
 			/// Positions a tooltip control used by a trackbar control. Trackbar controls that use the <c>TBS_TOOLTIPS</c> style display tooltips.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Value representing the location at which to display the tooltip control. This value can be one of the following:</para>
@@ -571,13 +588,13 @@ namespace Vanara.PInvoke
 			/// Returns a value that represents the tooltip control's previous location. The return value equals one of the possible values
 			/// for wParam.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-settipside
 			TBM_SETTIPSIDE = WindowMessage.WM_USER + 31,
 
 			/// <summary>
 			/// Assigns a window as the buddy window for a trackbar control. Trackbar buddy windows are automatically displayed in a location
 			/// relative to the control's orientation (horizontal or vertical).
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Value specifying the location at which to display the buddy window. This value can be one of the following:</para>
@@ -605,6 +622,7 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the window that will be set as the trackbar control's buddy.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the window that was previously assigned to the control at that location.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -617,7 +635,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the handle to a trackbar control buddy window at a given location. The specified location is relative to the
 			/// control's orientation (horizontal or vertical).
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Value indicating which buddy window handle will be retrieved, by relative location. This value can be one of the following:</para>
@@ -647,10 +664,11 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// Returns the handle to the buddy window at the location specified by wParam, or <c>NULL</c> if no buddy window exists at that location.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getbuddy
 			TBM_GETBUDDY = WindowMessage.WM_USER + 33,
 
-			/// <summary>Sets the current logical position of the slider in a trackbar.</summary>
+			/// <summary>Sets the current logical position of the slider in a trackbar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>wParam is unused.</para>
@@ -662,6 +680,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// Calling <c>TBM_SETPOSNOTIFY</c> will set the trackbar slider location like <c>TBM_SETPOS</c> would, but it will also cause
 			/// the trackbar to notify its parent of a move via a <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> message.
@@ -672,7 +691,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the Unicode character format flag for the control. This message allows you to change the character set used by the
 			/// control at run time rather than having to re-create the control.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -683,11 +701,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous Unicode format flag for the control.</para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-setunicodeformat
 			TBM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
 
-			/// <summary>Retrieves the Unicode character format flag for the control.</summary>
+			/// <summary>Retrieves the Unicode character format flag for the control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -698,6 +717,7 @@ namespace Vanara.PInvoke
 			/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
 			/// value is zero, the control is using ANSI characters.
 			/// </para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getunicodeformat
 			TBM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT
@@ -714,7 +734,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TRBN_THUMBPOSCHANGING lpNMTrbThumbPosChanging = (NMTRBTHUMBPOSCHANGING*) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -723,6 +742,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Return <c>TRUE</c> to prevent the thumb from moving to the specified position.</para>
+			/// </summary>
 			/// <remarks>Send this notification to clients that do not listen for <c>WM_HSCROLL</c> or <c>WM_VSCROLL</c> messages.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/trbn-thumbposchanging
 			TRBN_THUMBPOSCHANGING = TRBN_FIRST

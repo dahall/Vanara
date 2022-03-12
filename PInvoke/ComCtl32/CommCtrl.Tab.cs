@@ -88,7 +88,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the image list associated with a tab control. You can send this message explicitly or by using the
 			/// <c>TabCtrl_GetImageList</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -96,12 +95,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the image list if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getimagelist
 			TCM_GETIMAGELIST = TCM_FIRST + 2,
 
 			/// <summary>
 			/// Assigns an image list to a tab control. You can send this message explicitly or by using the <c>TabCtrl_SetImageList</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -109,13 +108,13 @@ namespace Vanara.PInvoke
 			/// <para>Handle to the image list to assign to the tab control.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the previous image list, or <c>NULL</c> if there is no previous image list.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setimagelist
 			TCM_SETIMAGELIST = TCM_FIRST + 3,
 
 			/// <summary>
 			/// Retrieves the number of tabs in the tab control. You can send this message explicitly or by using the
 			/// <c>TabCtrl_GetItemCount</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -123,13 +122,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the number of items if successful, or zero otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getitemcount
 			TCM_GETITEMCOUNT = TCM_FIRST + 4,
 
 			/// <summary>
 			/// Retrieves information about a tab in a tab control. You can send this message explicitly or by using the
 			/// <c>TabCtrl_GetItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the tab.</para>
@@ -142,6 +141,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// If the TCIF_TEXT flag is set in the <c>mask</c> member of the <c>TCITEM</c> structure, the control may change the
 			/// <c>pszText</c> member of the structure to point to the new text instead of filling the buffer with the requested text. The
@@ -152,7 +152,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Sets some or all of a tab's attributes. You can send this message explicitly or by using the <c>TabCtrl_SetItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the item.</para>
@@ -164,12 +163,12 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setitem
 			TCM_SETITEM = TCM_FIRST + 61,
 
 			/// <summary>
 			/// Inserts a new tab in a tab control. You can send this message explicitly or by using the <c>TabCtrl_InsertItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the new tab.</para>
@@ -180,12 +179,12 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the new tab if successful, or -1 otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-insertitem
 			TCM_INSERTITEM = TCM_FIRST + 62,
 
 			/// <summary>
 			/// Removes an item from a tab control. You can send this message explicitly or by using the <c>TabCtrl_DeleteItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the item to delete.</para>
@@ -193,12 +192,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-deleteitem
 			TCM_DELETEITEM = TCM_FIRST + 8,
 
 			/// <summary>
 			/// Removes all items from a tab control. You can send this message explicitly or by using the <c>TabCtrl_DeleteAllItems</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -206,13 +205,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-deleteallitems
 			TCM_DELETEALLITEMS = TCM_FIRST + 9,
 
 			/// <summary>
 			/// Retrieves the bounding rectangle for a tab in a tab control. You can send this message explicitly or by using the
 			/// <c>TabCtrl_GetItemRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the tab.</para>
@@ -220,13 +219,13 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a <c>RECT</c> structure that receives the bounding rectangle of the tab, in viewport coordinates.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getitemrect
 			TCM_GETITEMRECT = TCM_FIRST + 10,
 
 			/// <summary>
 			/// Determines the currently selected tab in a tab control. You can send this message explicitly or by using the
 			/// <c>TabCtrl_GetCurSel</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -234,12 +233,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the selected tab if successful, or -1 if no tab is selected.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getcursel
 			TCM_GETCURSEL = TCM_FIRST + 11,
 
 			/// <summary>
 			/// Selects a tab in a tab control. You can send this message explicitly or by using the <c>TabCtrl_SetCurSel</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the tab to select.</para>
@@ -247,6 +246,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the previously selected tab if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// A tab control does not send a TCN_SELCHANGING or TCN_SELCHANGE notification code when a tab is selected using this message.
 			/// </remarks>
@@ -256,7 +256,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Determines which tab, if any, is at a specified screen position. You can send this message explicitly or by using the
 			/// <c>TabCtrl_HitTest</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -264,13 +263,13 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a <c>TCHITTESTINFO</c> structure that specifies the screen position to test.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the tab, or -1 if no tab is at the specified position.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-hittest
 			TCM_HITTEST = TCM_FIRST + 13,
 
 			/// <summary>
 			/// Sets the number of bytes per tab reserved for application-defined data in a tab control. You can send this message explicitly
 			/// or by using the <c>TabCtrl_SetItemExtra</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Number of extra bytes.</para>
@@ -278,6 +277,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// By default, the number of extra bytes is four. An application that changes the number of extra bytes cannot use the
@@ -292,7 +292,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Calculates a tab control's display area given a window rectangle, or calculates the window rectangle that would correspond to
 			/// a specified display area. You can send this message explicitly or by using the <c>TabCtrl_AdjustRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -304,6 +303,7 @@ namespace Vanara.PInvoke
 			/// <para>Pointer to a <c>RECT</c> structure that specifies the given rectangle and receives the calculated rectangle.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message applies only to tab controls that are at the top. It does not apply to tab controls that are on the sides or bottom.
 			/// </remarks>
@@ -313,7 +313,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the width and height of tabs in a fixed-width or owner-drawn tab control. You can send this message explicitly or by
 			/// using the <c>TabCtrl_SetItemSize</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -324,6 +323,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the old width and height. The width is in the <c>LOWORD</c> of the return value, and the height is in the <c>HIWORD</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// If the width is set to a value less than the image width set by <c>ImageList_Create</c>, the width of the tab is set to the
 			/// lowest value that is greater than the image width.
@@ -334,7 +334,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Removes an image from a tab control's image list. You can send this message explicitly or by using the
 			/// <c>TabCtrl_RemoveImage</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the image to remove.</para>
@@ -342,6 +341,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// The tab control updates each tab's image index, so each tab remains associated with the same image as before. If a tab is
 			/// using the image being removed, the tab will be set to have no image.
@@ -352,7 +352,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the amount of space (padding) around each tab's icon and label in a tab control. You can send this message explicitly or
 			/// by using the <c>TabCtrl_SetPadding</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -361,13 +360,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setpadding
 			TCM_SETPADDING = TCM_FIRST + 43,
 
 			/// <summary>
 			/// Retrieves the current number of rows of tabs in a tab control. You can send this message explicitly or by using the
 			/// <c>TabCtrl_GetRowCount</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -375,6 +374,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the number of rows of tabs.</para>
+			/// </summary>
 			/// <remarks>Only tab controls that have the <c>TCS_MULTILINE</c> style can have multiple rows of tabs.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getrowcount
 			TCM_GETROWCOUNT = TCM_FIRST + 44,
@@ -382,7 +382,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the handle to the tooltip control associated with a tab control. You can send this message explicitly or by using
 			/// the <c>TabCtrl_GetToolTips</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -390,6 +389,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the handle to the tooltip control if successful, or <c>NULL</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// A tab control creates a tooltip control if it has the <c>TCS_TOOLTIPS</c> style. You can also assign a tooltip control to a
 			/// tab control by using the <c>TCM_SETTOOLTIPS</c> message.
@@ -399,7 +399,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Assigns a tooltip control to a tab control. You can send this message explicitly or by using the <c>TabCtrl_SetToolTips</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Handle to the tooltip control.</para>
@@ -407,6 +406,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>You can retrieve the tooltip control associated with a tab control by using the <c>TCM_GETTOOLTIPS</c> message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-settooltips
 			TCM_SETTOOLTIPS = TCM_FIRST + 46,
@@ -414,7 +414,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Returns the index of the item that has the focus in a tab control. You can send this message explicitly or by using the
 			/// <c>TabCtrl_GetCurFocus</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -422,6 +421,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the tab item that has the focus.</para>
+			/// </summary>
 			/// <remarks>The item that has the focus may be different than the selected item.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getcurfocus
 			TCM_GETCURFOCUS = TCM_FIRST + 47,
@@ -429,7 +429,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the focus to a specified tab in a tab control. You can send this message explicitly or by using the
 			/// <c>TabCtrl_SetCurFocus</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Index of the tab that gets the focus.</para>
@@ -437,6 +436,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// If the tab control has the <c>TCS_BUTTONS</c> style (button mode), the tab with the focus may be different from the selected
@@ -455,7 +455,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the minimum width of items in a tab control. You can send this message explicitly or by using the
 			/// <c>TabCtrl_SetMinTabWidth</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -465,13 +464,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns an INT value that represents the previous minimum tab width.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setmintabwidth
 			TCM_SETMINTABWIDTH = TCM_FIRST + 49,
 
 			/// <summary>
 			/// Resets items in a tab control, clearing any that were set to the <c>TCIS_BUTTONPRESSED</c> state. You can send this message
 			/// explicitly or by using the <c>TabCtrl_DeselectAll</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -482,13 +481,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value for this message is not used.</para>
+			/// </summary>
 			/// <remarks>This message is only meaningful if the <c>TCS_BUTTONS</c> style flag has been set.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-deselectall
 			TCM_DESELECTALL = TCM_FIRST + 50,
 
 			/// <summary>
 			/// Sets the highlight state of a tab item. You can send this message explicitly or by using the <c>TabCtrl_HighlightItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>An <c>INT</c> value that specifies the zero-based index of a tab control item.</para>
@@ -499,6 +498,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>In Comctl32.dll version 6.0, this message has no visible effect when a theme is active.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-highlightitem
 			TCM_HIGHLIGHTITEM = TCM_FIRST + 51,
@@ -506,7 +506,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Sets the extended styles that the tab control will use. You can send this message explicitly or by using the
 			/// <c>TabCtrl_SetExtendedStyle</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -517,6 +516,7 @@ namespace Vanara.PInvoke
 			/// <para>Value specifying the extended tab control styles. This value is a combination of tab control extended styles.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>DWORD</c> value that contains the previous tab control extended styles.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The wParam parameter allows you to modify one or more extended styles without having to retrieve the existing styles first.
@@ -531,7 +531,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the extended styles that are currently in use for the tab control. You can send this message explicitly or by using
 			/// the <c>TabCtrl_GetExtendedStyle</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -542,6 +541,7 @@ namespace Vanara.PInvoke
 			/// Returns a <c>DWORD</c> value that represents the extended styles currently in use for the tab control. This value is a
 			/// combination of tab control extended styles.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getextendedstyle
 			TCM_GETEXTENDEDSTYLE = TCM_FIRST + 53,
 
@@ -549,7 +549,6 @@ namespace Vanara.PInvoke
 			/// Sets the Unicode character format flag for the control. This message allows you to change the character set used by the
 			/// control at run time rather than having to re-create the control. You can send this message explicitly or use the
 			/// <c>TabCtrl_SetUnicodeFormat</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -560,6 +559,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous Unicode format flag for the control.</para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-setunicodeformat
 			TCM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
@@ -567,7 +567,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the Unicode character format flag for the control. You can send this message explicitly or use the
 			/// <c>TabCtrl_GetUnicodeFormat</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -578,6 +577,7 @@ namespace Vanara.PInvoke
 			/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
 			/// value is zero, the control is using ANSI characters.
 			/// </para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcm-getunicodeformat
 			TCM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT
@@ -595,12 +595,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TCN_KEYDOWN pnm = (NMTCKEYDOWN*) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMTCKEYDOWN</c> structure.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-keydown
 			TCN_KEYDOWN = TCN_FIRST - 0,
 
@@ -612,12 +612,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TCN_SELCHANGE lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>To determine the currently selected tab, use the <c>TabCtrl_GetCurSel</c> macro.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-selchange
 			TCN_SELCHANGE = TCN_FIRST - 1,
@@ -630,12 +630,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TCN_SELCHANGING lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> to prevent the selection from changing, or <c>FALSE</c> to allow the selection to change.</para>
+			/// </summary>
 			/// <remarks>To determine the currently selected tab, use the <c>TabCtrl_GetCurSel</c> macro.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-selchanging
 			TCN_SELCHANGING = TCN_FIRST - 2,
@@ -648,7 +648,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TCN_GETOBJECT lpnmon = (LPNMOBJECTNOTIFY) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -657,6 +656,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The application processing this notification code must return zero.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-getobject
 			TCN_GETOBJECT = TCN_FIRST - 3,
 
@@ -668,12 +668,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TCN_FOCUSCHANGE lpnmh = (LPNMHDR) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/tcn-focuschange
 			TCN_FOCUSCHANGE = TCN_FIRST - 4,
 		}

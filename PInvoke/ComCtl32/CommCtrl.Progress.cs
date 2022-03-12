@@ -11,7 +11,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Commctrl.h")]
 		public enum ProgressMessage
 		{
-			/// <summary>Sets the minimum and maximum values for a progress bar and redraws the bar to reflect the new range.</summary>
+			/// <summary>Sets the minimum and maximum values for a progress bar and redraws the bar to reflect the new range.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -26,6 +26,7 @@ namespace Vanara.PInvoke
 			/// Returns the previous range values if successful, or zero otherwise. The <c>LOWORD</c> specifies the previous minimum value,
 			/// and the <c>HIWORD</c> specifies the previous maximum value.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// If you do not set the range values, the system sets the minimum value to 0 and the maximum value to 100. Because this message
@@ -37,7 +38,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setrange
 			PBM_SETRANGE = WindowMessage.WM_USER + 1,
 
-			/// <summary>Sets the current position for a progress bar and redraws the bar to reflect the new position.</summary>
+			/// <summary>Sets the current position for a progress bar and redraws the bar to reflect the new position.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Signed integer that becomes the new position.</para>
@@ -45,6 +46,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous position.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>If wParam is outside the range of the control, the position is set to the closest boundary.</para>
 			/// <para>Do not send this message to a control that has the <c>PBS_MARQUEE</c> style.</para>
@@ -54,7 +56,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Advances the current position of a progress bar by a specified increment and redraws the bar to reflect the new position.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Amount to advance the position.</para>
@@ -62,6 +63,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous position.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>If the increment results in a value outside the range of the control, the position is set to the nearest boundary.</para>
 			/// <para>The behavior of this message is undefined if it is sent to a control that has the <c>PBS_MARQUEE</c> style.</para>
@@ -72,7 +74,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Specifies the step increment for a progress bar. The step increment is the amount by which the progress bar increases its
 			/// current position whenever it receives a <c>PBM_STEPIT</c> message. By default, the step increment is set to 10.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>New step increment.</para>
@@ -80,13 +81,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous step increment.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setstep
 			PBM_SETSTEP = WindowMessage.WM_USER + 4,
 
 			/// <summary>
 			/// Advances the current position for a progress bar by the step increment and redraws the bar to reflect the new position. An
 			/// application sets the step increment by sending the <c>PBM_SETSTEP</c> message.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -94,6 +95,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous position.</para>
+			/// </summary>
 			/// <remarks>
 			/// When the position exceeds the maximum range value, this message resets the current position so that the progress indicator
 			/// starts over again from the beginning.
@@ -103,7 +105,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Sets the minimum and maximum values for a progress bar to 32-bit values, and redraws the bar to reflect the new range.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Minimum range value. By default, the minimum value is zero.</para>
@@ -115,11 +116,12 @@ namespace Vanara.PInvoke
 			/// in its <c>HIWORD</c>. If the previous ranges were 32-bit values, the return value consists of the <c>LOWORD</c> s of both
 			/// 32-bit limits.
 			/// </para>
+			/// </summary>
 			/// <remarks>To retrieve the entire high and low 32-bit values, use the <c>PBM_GETRANGE</c> message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setrange32
 			PBM_SETRANGE32 = WindowMessage.WM_USER + 6,  // lParam = high, wParam = low
 
-			/// <summary>Retrieves information about the current high and low limits of a given progress bar control.</summary>
+			/// <summary>Retrieves information about the current high and low limits of a given progress bar control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -150,10 +152,11 @@ namespace Vanara.PInvoke
 			/// Returns an INT that represents the limit value specified by wParam. If lParam is not <c>NULL</c>, lParam must point to a
 			/// <c>PBRANGE</c> structure that is to be filled with both limit values.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getrange
 			PBM_GETRANGE = WindowMessage.WM_USER + 7,  // wParam = return (TRUE ? low : high). lParam = PPBRANGE or NULL
 
-			/// <summary>Retrieves the current position of the progress bar.</summary>
+			/// <summary>Retrieves the current position of the progress bar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -161,10 +164,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a <c>UINT</c> value that represents the current position of the progress bar.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getpos
 			PBM_GETPOS = WindowMessage.WM_USER + 8,
 
-			/// <summary>Sets the color of the progress indicator bar in the progress bar control.</summary>
+			/// <summary>Sets the color of the progress indicator bar in the progress bar control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -177,11 +181,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// Returns the previous progress indicator bar color, or CLR_DEFAULT if the progress indicator bar color is the default color.
 			/// </para>
+			/// </summary>
 			/// <remarks>When visual styles are enabled, this message has no effect.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setbarcolor
 			PBM_SETBARCOLOR = WindowMessage.WM_USER + 9,  // lParam = bar color
 
-			/// <summary>Sets the background color in the progress bar.</summary>
+			/// <summary>Sets the background color in the progress bar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -192,11 +197,12 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous background color, or CLR_DEFAULT if the background color is the default color.</para>
+			/// </summary>
 			/// <remarks>When visual styles are enabled, this message has no effect.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setbkcolor
 			PBM_SETBKCOLOR = CommonControlMessage.CCM_SETBKCOLOR,  // lParam = bkColor
 
-			/// <summary>Sets the progress bar to marquee mode. This causes the progress bar to move like a marquee.</summary>
+			/// <summary>Sets the progress bar to marquee mode. This causes the progress bar to move like a marquee.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Indicates whether to turn the marquee mode on or off.</para>
@@ -207,6 +213,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Always returns <c>TRUE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// Use this message when you do not know the amount of progress toward completion but wish to indicate that progress is being made.
@@ -227,7 +234,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves the step increment from a progress bar. The step increment is the amount by which the progress bar increases its
 			/// current position whenever it receives a <c>PBM_STEPIT</c> message. By default, the step increment is set to 10.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -235,10 +241,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the current step increment.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getstep
 			PBM_GETSTEP = WindowMessage.WM_USER + 13,
 
-			/// <summary>Gets the background color of the progress bar.</summary>
+			/// <summary>Gets the background color of the progress bar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -246,6 +253,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the background color of the progress bar.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>This is the color set by the <c>PBM_SETBKCOLOR</c> message. The default value is CLR_DEFAULT, which is defined in commctrl.h.</para>
 			/// <para>This function only affects the classic mode, not any visual style.</para>
@@ -253,7 +261,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getbkcolor
 			PBM_GETBKCOLOR = WindowMessage.WM_USER + 14,
 
-			/// <summary>Gets the color of the progress bar.</summary>
+			/// <summary>Gets the color of the progress bar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -261,6 +269,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the color of the progress bar.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// This is the color set by the <c>PBM_SETBARCOLOR</c> message. The default value is CLR_DEFAULT, which is defined in commctrl.h.
@@ -270,7 +279,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getbarcolor
 			PBM_GETBARCOLOR = WindowMessage.WM_USER + 15,
 
-			/// <summary>Sets the state of the progress bar.</summary>
+			/// <summary>Sets the state of the progress bar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>State of the progress bar that is being set. One of the following values.</para>
@@ -296,10 +305,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous state.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-setstate
 			PBM_SETSTATE = WindowMessage.WM_USER + 16, // wParam = PBST_[State] (NORMAL, ERROR, PAUSED)
 
-			/// <summary>Gets the state of the progress bar.</summary>
+			/// <summary>Gets the state of the progress bar.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -325,6 +335,7 @@ namespace Vanara.PInvoke
 			/// <term>Paused.</term>
 			/// </item>
 			/// </list>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/pbm-getstate
 			PBM_GETSTATE = WindowMessage.WM_USER + 17,
 		}

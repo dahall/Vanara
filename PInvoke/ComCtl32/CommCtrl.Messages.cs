@@ -24,7 +24,6 @@
 			/// <summary>
 			/// Sets the Unicode character format flag for the control. This message enables you to change the character set used by the
 			/// control at run time rather than having to re-create the control.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -35,10 +34,11 @@
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous Unicode format flag for the control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-setunicodeformat
 			CCM_SETUNICODEFORMAT = CCM_FIRST + 5,
 
-			/// <summary>Gets the Unicode character format flag for the control.</summary>
+			/// <summary>Gets the Unicode character format flag for the control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -49,10 +49,11 @@
 			/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
 			/// value is zero, the control is using ANSI characters.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-getunicodeformat
 			CCM_GETUNICODEFORMAT = CCM_FIRST + 6,
 
-			/// <summary>This message is used to inform the control that you are expecting a behavior associated with a particular version.</summary>
+			/// <summary>This message is used to inform the control that you are expecting a behavior associated with a particular version.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The version number.</para>
@@ -63,6 +64,7 @@
 			/// Returns the version specified in the previous <c>CCM_SETVERSION</c> message. If wParam is set to a value greater than the
 			/// current DLL version, it returns -1.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// In a few cases, a control may behave differently, depending on the version. This primarily applies to bugs that were fixed in
@@ -82,7 +84,7 @@
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-setversion
 			CCM_SETVERSION = CCM_FIRST + 0x7,
 
-			/// <summary>Gets the version number for a control set by the most recent <c>CCM_SETVERSION</c> message.</summary>
+			/// <summary>Gets the version number for a control set by the most recent <c>CCM_SETVERSION</c> message.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -92,6 +94,7 @@
 			/// <para>
 			/// Returns the version number set by the most recent <c>CCM_SETVERSION</c> message. If no such message has been sent, it returns zero.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// This message does not return the DLL version. See Shell Versions for a discussion of how to use <c>DllGetVersion</c> to
@@ -108,7 +111,7 @@
 			/// <summary/>
 			CCM_SETNOTIFYWINDOW = CCM_FIRST + 0x9, // wParam == hwndParent.
 
-			/// <summary>Sets the visual style of a control.</summary>
+			/// <summary>Sets the visual style of a control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -116,6 +119,7 @@
 			/// <para>A pointer to a Unicode string that contains the control visual style to set.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Note</para>
 			/// <para>
@@ -129,7 +133,6 @@
 			/// <summary>
 			/// Enables automatic high dots per inch (dpi) scaling in Tree-View controls, List-View controls, ComboBoxEx controls, Header
 			/// controls, Buttons, Toolbar controls, Animation controls, and Image Lists.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Set to <c>TRUE</c>.</para>
@@ -137,6 +140,7 @@
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Quick Launch and Taskbar should not specify a dpi scaling, because the images are already scaled.</para>
 			/// <para>Any control that uses an image list created with the SmallIcon metric should not scale its icons.</para>

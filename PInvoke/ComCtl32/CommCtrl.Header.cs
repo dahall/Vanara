@@ -235,7 +235,6 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// Clears the filter for a given header control. You can send this message explicitly or use the <c>Header_ClearFilter</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>A column value indicating which filter to clear.</para>
@@ -243,6 +242,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns an integer. The <c>LRESULT</c> is cast to an integer that indicates <c>TRUE</c>(1) or <c>FALSE</c>(0).</para>
+			/// </summary>
 			/// <remarks>
 			/// If the column value is specified as -1, all the filters are cleared, and the HDN_FILTERCHANGE notification is sent only once.
 			/// </remarks>
@@ -252,7 +252,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Creates a semi-transparent version of an item's image for use as a dragging image. You can send this message explicitly or
 			/// use the <c>Header_CreateDragImage</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -262,12 +261,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a handle to an image list that contains the new image as its only element.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-createdragimage
 			HDM_CREATEDRAGIMAGE = HDM_FIRST + 16, // int, 0
 
 			/// <summary>
 			/// Deletes an item from a header control. You can send this message explicitly or use the <c>Header_DeleteItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>An index of the item to delete.</para>
@@ -275,10 +274,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-deleteitem
 			HDM_DELETEITEM = HDM_FIRST + 2, // int, 0
 
-			/// <summary>Moves the input focus to the edit box when a filter button has the focus.</summary>
+			/// <summary>Moves the input focus to the edit box when a filter button has the focus.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>A value specifying the column to edit.</para>
@@ -303,13 +303,13 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns an integer. The <c>LRESULT</c> is cast to an integer that indicates <c>TRUE</c>(1) or <c>FALSE</c>(0).</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-editfilter
 			HDM_EDITFILTER = HDM_FIRST + 23, // int, bool
 
 			/// <summary>
 			/// Gets the width of the bitmap margin for a header control. You can send this message explicitly or use the
 			/// <c>Header_GetBitmapMargin</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -320,13 +320,13 @@ namespace Vanara.PInvoke
 			/// Returns the width of the bitmap margin in pixels. If the bitmap margin was not previously specified, the default value of 3*
 			/// <c>GetSystemMetrics</c> (SM_CXEDGE) is returned.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getbitmapmargin
 			HDM_GETBITMAPMARGIN = HDM_FIRST + 21, // 0,0
 
 			/// <summary>
 			/// Gets the item in a header control that has the focus. Send this message explicitly or by using the
 			/// <c>Header_GetFocusedItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Not used. Must be zero.</para>
@@ -334,13 +334,13 @@ namespace Vanara.PInvoke
 			/// <para>Not used. Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the item in focus.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getfocuseditem
 			HDM_GETFOCUSEDITEM = HDM_FIRST + 27, // 0,0
 
 			/// <summary>
 			/// Gets the handle to the image list that has been set for an existing header control. You can send this message explicitly or
 			/// use the <c>Header_GetImageList</c> or <c>Header_GetStateImageList</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>*wParam*</em></para>
 			/// <para>One of the following values:</para>
@@ -362,12 +362,12 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a handle to the image list set for the header control.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getimagelist
 			HDM_GETIMAGELIST = HDM_FIRST + 9, // 0, 0
 
 			/// <summary>
 			/// Gets information about an item in a header control. You can send this message explicitly or use the <c>Header_GetItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The index of the item for which information is to be retrieved.</para>
@@ -379,6 +379,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// If the HDI_TEXT flag is set in the <c>mask</c> member of the <c>HDITEM</c> structure, the control may change the
 			/// <c>pszText</c> member of the structure to point to the new text instead of filling the buffer with the requested text.
@@ -389,7 +390,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Gets a count of the items in a header control. You can send this message explicitly or use the <c>Header_GetItemCount</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -397,13 +397,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the number of items if successful, or -1 otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitemcount
 			HDM_GETITEMCOUNT = HDM_FIRST + 0, // 0, 0
 
 			/// <summary>
 			/// Gets the bounding rectangle of the split button for a header item with style <c>HDF_SPLITBUTTON</c>. Send this message
 			/// explicitly or by using the <c>Header_GetItemDropDownRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The zero-based index of the header control item for which to retrieve the bounding rectangle.</para>
@@ -414,6 +414,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>The header item must have style <c>HDF_SPLITBUTTON</c>.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitemdropdownrect
 			HDM_GETITEMDROPDOWNRECT = HDM_FIRST + 25, // int, RECT
@@ -421,7 +422,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the bounding rectangle for a given item in a header control. You can send this message explicitly or use the
 			/// <c>Header_GetItemRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The zero-based index of the header control item for which to retrieve the bounding rectangle.</para>
@@ -432,13 +432,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getitemrect
 			HDM_GETITEMRECT = HDM_FIRST + 7, // int, RECT*
 
 			/// <summary>
 			/// Gets the current left-to-right order of items in a header control. You can send this message explicitly or use the
 			/// <c>Header_GetOrderArray</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -451,6 +451,7 @@ namespace Vanara.PInvoke
 			/// Returns nonzero if successful, and the buffer at lParam receives the item number for each item in the header control in the
 			/// order in which they appear from left to right. Otherwise, the message returns zero.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The number of elements in lParam is specified in wParam and must be equal to the number of items in the control. For example,
@@ -466,7 +467,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the bounding rectangle of the overflow button when the <c>HDS_OVERFLOW</c> style is set on the header control and the
 			/// overflow button is visible. Send this message explicitly or by using the <c>Header_GetOverflowRect</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Not used. Must be zero.</para>
@@ -477,6 +477,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
+			/// </summary>
 			/// <remarks>The header control must have style <c>HDF_SPLITBUTTON</c>.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getoverflowrect
 			HDM_GETOVERFLOWRECT = HDM_FIRST + 26, // 0, RECT*
@@ -484,7 +485,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Gets the Unicode character format flag for the control. You can send this message explicitly or use the
 			/// <c>Header_GetUnicodeFormat</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -495,11 +495,12 @@ namespace Vanara.PInvoke
 			/// Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this
 			/// value is zero, the control is using ANSI characters.
 			/// </para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-getunicodeformat
 			HDM_GETUNICODEFORMAT = 0X2006,        // CCM_GETUNICODEFORMAT,
 
-			/// <summary>Tests a point to determine which header item, if any, is at the specified point.</summary>
+			/// <summary>Tests a point to determine which header item, if any, is at the specified point.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -510,12 +511,12 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the item at the specified position, if any, or 1 otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-hittest
 			HDM_HITTEST = HDM_FIRST + 6, // 0, HDHITTEST
 
 			/// <summary>
 			/// Inserts a new item into a header control. You can send this message explicitly or use the <c>Header_InsertItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -527,13 +528,13 @@ namespace Vanara.PInvoke
 			/// <para>A pointer to an <c>HDITEM</c> structure that contains information about the new item.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the new item if successful, or -1 otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-insertitem
 			HDM_INSERTITEM = HDM_FIRST + 10, // int, HDITEM
 
 			/// <summary>
 			/// Retrieves information used to set the size and position of the header control within the target rectangle of the parent
 			/// window. You can send this message explicitly or use the <c>Header_Layout</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -544,6 +545,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The <c>pwpos</c> member of the lParam structure receives size and position values appropriate for positioning the control
@@ -562,7 +564,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Retrieves an index value for an item based on its order in the header control. You can send this message explicitly or use
 			/// the <c>Header_OrderToIndex</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -573,13 +574,13 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns INT that indicates the item index. If wParam is invalid (negative or too large), the return equals wParam.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-ordertoindex
 			HDM_ORDERTOINDEX = HDM_FIRST + 15, // int, 0
 
 			/// <summary>
 			/// Sets the width of the margin, specified in pixels, of a bitmap in an existing header control. You can send this message
 			/// explicitly or use the <c>Header_SetBitmapMargin</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The width, specified in pixels, of the margin that surrounds a bitmap within an existing header control.</para>
@@ -590,13 +591,13 @@ namespace Vanara.PInvoke
 			/// Returns the width of the bitmap margin, in pixels. If the bitmap margin was not previously specified, the default value of 3*
 			/// <c>GetSystemMetrics</c> (SM_CXEDGE) is returned.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setbitmapmargin
 			HDM_SETBITMAPMARGIN = HDM_FIRST + 20,// iWidth, 0
 
 			/// <summary>
 			/// Sets the timeout interval between the time a change takes place in the filter attributes and the posting of an
 			/// HDN_FILTERCHANGE notification. You can send this message explicitly or use the <c>Header_SetFilterChangeTimeout</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -604,13 +605,13 @@ namespace Vanara.PInvoke
 			/// <para>The timeout value, in milliseconds.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the index of the filter control being modified.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setfilterchangetimeout
 			HDM_SETFILTERCHANGETIMEOUT = HDM_FIRST + 22, // 0, int
 
 			/// <summary>
 			/// Sets the focus to a specified item in a header control. Send this message explicitly or by using the
 			/// <c>Header_SetFocusedItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Not used. Must be zero.</para>
@@ -618,13 +619,13 @@ namespace Vanara.PInvoke
 			/// <para>The index of item.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setfocuseditem
 			HDM_SETFOCUSEDITEM = HDM_FIRST + 28, // 0, int
 
 			/// <summary>
 			/// Changes the color of a divider between header items to indicate the destination of an external drag-and-drop operation. You
 			/// can send this message explicitly or use the <c>Header_SetHotDivider</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The type of value represented by lParam. This value can be one of the following:</para>
@@ -652,6 +653,7 @@ namespace Vanara.PInvoke
 			/// <para>If wParam is <c>FALSE</c>, lParam represents the integer index of the divider to be highlighted.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns a value equal to the index of the divider that the control highlighted.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message creates an effect that a header control automatically produces when it has the <c>HDS_DRAGDROP</c> style. The
 			/// <c>HDM_SETHOTDIVIDER</c> message is intended to be used when the owner of the control handles drag-and-drop operations manually.
@@ -662,7 +664,6 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Assigns an image list to an existing header control. You can send this message explicitly or use the
 			/// <c>Header_SetImageList</c> or <c>Header_SetStateImageList</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>*wParam*</em></para>
 			/// <para>One of the following values:</para>
@@ -687,13 +688,13 @@ namespace Vanara.PInvoke
 			/// Returns the handle to the image list previously associated with the control. Returns <c>NULL</c> upon failure or if no image
 			/// list was set previously.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setimagelist
 			HDM_SETIMAGELIST = HDM_FIRST + 8, // HDSIL_, hImageList
 
 			/// <summary>
 			/// Sets the attributes of the specified item in a header control. You can send this message explicitly or use the
 			/// <c>Header_SetItem</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The current index of the item whose attributes are to be changed.</para>
@@ -704,6 +705,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero upon success, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// The <c>HDITEM</c> structure that supports this message supports item order and image list information. By using these
 			/// members, you can control the order in which items are displayed and specify images to appear with items.
@@ -713,7 +715,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Sets the left-to-right order of header items. You can send this message explicitly or use the <c>Header_SetOrderArray</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>The size of the buffer at lParam, in elements. This value must equal the value returned by <c>HDM_GETITEMCOUNT</c>.</para>
@@ -724,6 +725,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setorderarray
 			HDM_SETORDERARRAY = HDM_FIRST + 18, // iCount, lpArray
 
@@ -731,7 +733,6 @@ namespace Vanara.PInvoke
 			/// Sets the UNICODE character format flag for the control. This message allows you to change the character set used by the
 			/// control at run time rather than having to re-create the control. You can send this message explicitly or use the
 			/// <c>Header_SetUnicodeFormat</c> macro.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -742,6 +743,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the previous Unicode format flag for the control.</para>
+			/// </summary>
 			/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdm-setunicodeformat
 			HDM_SETUNICODEFORMAT = 0X2005,        // CCM_SETUNICODEFORMAT,
@@ -759,7 +761,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_BEGINDRAG pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHEADER</c> structure containing information about the header item that is being dragged.</para>
@@ -768,6 +769,7 @@ namespace Vanara.PInvoke
 			/// To allow the header control to automatically manage drag-and-drop operations, return <c>FALSE</c>. If the owner of the
 			/// control is manually performing drag-and-drop reordering, return <c>TRUE</c>.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// A header control defaults to automatically managing drag-and-drop reordering. Returning <c>TRUE</c> to indicate external
 			/// (manual) drag-and-drop management allows the owner of the control to provide custom services as part of the drag-and-drop process.
@@ -783,12 +785,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_BEGINFILTEREDIT pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHEADER</c> structure that contains additional information about the filter that is being edited.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-beginfilteredit
 			HDN_BEGINFILTEREDIT = HDN_FIRST - 14,
 
@@ -801,7 +803,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_BEGINTRACK pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -810,6 +811,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>FALSE</c> to allow tracking of the divider, or <c>TRUE</c> to prevent tracking.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-begintrack
 			HDN_BEGINTRACK = HDN_FIRST - 26,
 
@@ -821,7 +823,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_DIVIDERDBLCLICK pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -829,6 +830,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-dividerdblclick
 			HDN_DIVIDERDBLCLICK = HDN_FIRST - 25,
 
@@ -840,12 +842,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_DROPDOWN pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHEADER</c> structure that contains information on the header control.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The example in the Syntax section shows how the notification receiver casts <c>LPARAM</c> to retrieve the <c>NMHEADER</c>
@@ -864,7 +866,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_ENDDRAG pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHEADER</c> structure containing information about the header item that was being dragged.</para>
@@ -873,6 +874,7 @@ namespace Vanara.PInvoke
 			/// To allow the control to automatically place and reorder the item, return <c>FALSE</c>. To prevent the item from being placed,
 			/// return <c>TRUE</c>.
 			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// If the owner is performing external (manual) drag-and-drop management, it must return <c>FALSE</c>. The owner then must
 			/// reorder header items manually by sending <c>HDM_SETITEM</c> or <c>HDM_SETORDERARRAY</c>.
@@ -888,12 +890,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_ENDFILTEREDIT pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHEADER</c> structure that contains additional information about the filter that is being edited.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-endfilteredit
 			HDN_ENDFILTEREDIT = HDN_FIRST - 15,
 
@@ -905,7 +907,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_ENDTRACK pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -913,6 +914,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-endtrack
 			HDN_ENDTRACK = HDN_FIRST - 27,
 
@@ -924,7 +926,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_FILTERBTNCLICK pNMHDFilterBtnClk = (LPNMHDFILTERBTNCLICK) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -936,6 +937,7 @@ namespace Vanara.PInvoke
 			/// notification code gives the parent window an opportunity to synchronize its user interface elements. Return <c>FALSE</c> if
 			/// you do not want the notification sent.
 			/// </para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-filterbtnclick
 			HDN_FILTERBTNCLICK = HDN_FIRST - 13,
 
@@ -947,7 +949,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_FILTERCHANGE pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -956,6 +957,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-filterchange
 			HDN_FILTERCHANGE = HDN_FIRST - 12,
 
@@ -967,7 +969,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_GETDISPINFO pNMHDDispInfo = (LPNMHDDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -976,6 +977,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns an LRESULT.</para>
+			/// </summary>
 			/// <remarks>
 			/// Fill the appropriate members of the structure to return the requested information to the header control. If your message
 			/// handler sets the <c>mask</c> member of the <c>NMHDDISPINFO</c> structure to HDI_DI_SETITEM, the header control stores the
@@ -992,7 +994,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_ITEMCHANGED pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1001,6 +1002,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemchanged
 			HDN_ITEMCHANGED = HDN_FIRST - 21,
 
@@ -1012,7 +1014,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_ITEMCHANGING pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1021,6 +1022,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>FALSE</c> to allow the changes, or <c>TRUE</c> to prevent them.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemchanging
 			HDN_ITEMCHANGING = HDN_FIRST - 20,
 
@@ -1032,7 +1034,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_ITEMCLICK pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1041,6 +1042,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>A header control sends this notification code after the user releases the left mouse button.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemclick
 			HDN_ITEMCLICK = HDN_FIRST - 22,
@@ -1053,12 +1055,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_ITEMDBLCLICK pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHEADER</c> structure that contains information about this notification code.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemdblclick
 			HDN_ITEMDBLCLICK = HDN_FIRST - 23,
 
@@ -1070,12 +1072,12 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_ITEMKEYDOWN pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>A pointer to an <c>NMHEADER</c> structure that contains additional information about the key that is being pressed.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemkeydown
 			HDN_ITEMKEYDOWN = HDN_FIRST - 17,
 
@@ -1087,7 +1089,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_ITEMSTATEICONCLICK pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1095,6 +1096,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-itemstateiconclick
 			HDN_ITEMSTATEICONCLICK = HDN_FIRST - 16,
 
@@ -1106,7 +1108,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_OVERFLOWCLICK pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1120,6 +1121,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// The notification receiver casts <c>LPARAM</c> to retrieve the <c>NMHEADER</c> structure. <c>WPARAM</c> contains the ID of the
@@ -1138,7 +1140,6 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>HDN_TRACK pNMHeader = (LPNMHEADER) lParam;</code>
 			/// </para>
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>lParam</em></para>
 			/// <para>
@@ -1147,6 +1148,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns <c>FALSE</c> to continue tracking the divider, or <c>TRUE</c> to end tracking.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/hdn-track
 			HDN_TRACK = HDN_FIRST - 28,
 		}

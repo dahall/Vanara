@@ -19,7 +19,7 @@ namespace Vanara.PInvoke
 		/// <summary>IP Address Messages</summary>
 		public enum IPAddressMessage
 		{
-			/// <summary>Clears the contents of the IP address control.</summary>
+			/// <summary>Clears the contents of the IP address control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -27,10 +27,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-clearaddress
 			IPM_CLEARADDRESS = WindowMessage.WM_USER + 100,
 
-			/// <summary>Sets the address values for all four fields in the IP address control.</summary>
+			/// <summary>Sets the address values for all four fields in the IP address control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -42,11 +43,12 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>This message does not generate an <c>IPN_FIELDCHANGED</c> notification.</remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-setaddress
 			IPM_SETADDRESS = WindowMessage.WM_USER + 101,
 
-			/// <summary>Gets the address values for all four fields in the IP address control.</summary>
+			/// <summary>Gets the address values for all four fields in the IP address control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -60,10 +62,11 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns the number of nonblank fields.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-getaddress
 			IPM_GETADDRESS = WindowMessage.WM_USER + 102,
 
-			/// <summary>Sets the valid range for the specified field in the IP address control.</summary>
+			/// <summary>Sets the valid range for the specified field in the IP address control.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>A zero-based field index to which the range will be applied.</para>
@@ -74,6 +77,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// If the user enters a value in the field that is outside of this range, the control will send the IPN_FIELDCHANGED
 			/// notification with the entered value. If the value is still outside of the range after sending the notification, the control
@@ -84,7 +88,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Sets the keyboard focus to the specified field in the IP address control. All of the text in that field will be selected.
-			/// </summary>
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>
@@ -95,10 +98,11 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>The return value is not used.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-setfocus
 			IPM_SETFOCUS = WindowMessage.WM_USER + 104,
 
-			/// <summary>Determines if all fields in the IP address control are blank.</summary>
+			/// <summary>Determines if all fields in the IP address control are blank.
 			/// <para><strong>Parameters</strong></para>
 			/// <para><em>wParam</em></para>
 			/// <para>Must be zero.</para>
@@ -106,6 +110,7 @@ namespace Vanara.PInvoke
 			/// <para>Must be zero.</para>
 			/// <para><strong>Returns</strong></para>
 			/// <para>Returns nonzero if all fields are blank, or zero otherwise.</para>
+			/// </summary>
 			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-isblank
 			IPM_ISBLANK = WindowMessage.WM_USER + 105,
 		}
@@ -114,15 +119,19 @@ namespace Vanara.PInvoke
 		public enum IPAddressNotification
 		{
 			/// <summary>
-			/// Sent when the user changes a field in the control or moves from one field to another. This notification code is sent in the
-			/// form of a WM_NOTIFY message.
-			/// </summary>
-			/// <param name="lParam">
-			/// A pointer to an NMIPADDRESS structure that contains information about the changed address. The iValue member of this
-			/// structure will contain the entered value, even if it is out of the range of the field. You can modify this member to any
-			/// value that is within the range for the field in response to this notification code.
-			/// </param>
-			/// <returns>The return value is ignored.</returns>
+			/// <para>Sent when the user changes a field in the control or moves from one field to another. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.</para>
+			/// <para><code>IPN_FIELDCHANGED lpnmipa = (LPNMIPADDRESS) lParam; </code></para>
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMIPADDRESS</c> structure that contains information about the changed address. The <c>iValue</c> member of this structure will contain the entered value, even if it is out of the range of the field. You can modify this member to any value that is within the range for the field in response to this notification code.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value is ignored.</para></summary>
+			/// <remarks>This notification code is not sent in response to a <c>IPM_SETADDRESS</c> message.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/ipn-fieldchanged
 			IPN_FIELDCHANGED = IPN_FIRST - 0
 		}
 
