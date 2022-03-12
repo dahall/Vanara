@@ -30,7 +30,7 @@ CorrespondingAction, FileAttributeConstant, FileOpConstant, FilePermissionConsta
     <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) Or $(TargetFramework.StartsWith('netstandard')) ">
-    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="InteropServices\SafeIDispatch.cs" />
