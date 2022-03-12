@@ -69,7 +69,25 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void GetStorageDependencyInformationTest()
 		{
-			throw new NotImplementedException();
+			try
+			{
+				using var handle = Kernel32.CreateFile(@"\\.\PhysicalDrive2", Kernel32.FileAccess.GENERIC_READ, System.IO.FileShare.ReadWrite, default, System.IO.FileMode.Open, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL | FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
+				Assert.That(handle, ResultIs.ValidHandle);
+				using var mem = new SafeCoTaskMemStruct<STORAGE_DEPENDENCY_INFO>(new STORAGE_DEPENDENCY_INFO { Version = STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_2 });
+				var flags = GET_STORAGE_DEPENDENCY_FLAG.GET_STORAGE_DEPENDENCY_FLAG_HOST_VOLUMES | GET_STORAGE_DEPENDENCY_FLAG.GET_STORAGE_DEPENDENCY_FLAG_DISK_HANDLE;
+				var err = GetStorageDependencyInformation(handle.DangerousGetHandle(), flags, mem.Size, mem, out var sz);
+				if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+				{
+					mem.Size = sz;
+					err = GetStorageDependencyInformation(handle.DangerousGetHandle(), flags, mem.Size, mem, out sz);
+				}
+				err.ThrowIfFailed();
+				mem.AsRef().Entries.WriteValues();
+			}
+			finally
+			{
+				//System.IO.File.Delete(tmpfn);
+			}
 		}
 
 		[Test()]

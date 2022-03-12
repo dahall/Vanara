@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
@@ -1277,7 +1278,9 @@ namespace Vanara.PInvoke
 		/// <param name="StorageDependencyInfoSize">
 		/// Size, in bytes, of the STORAGE_DEPENDENCY_INFO structure that the StorageDependencyInfo parameter refers to.
 		/// </param>
-		/// <param name="StorageDependencyInfo">A pointer to a valid STORAGE_DEPENDENCY_INFO structure, which is a variable-length structure.</param>
+		/// <param name="StorageDependencyInfo">
+		/// A pointer to a valid <see cref="STORAGE_DEPENDENCY_INFO"/> structure, which is a variable-length structure.
+		/// </param>
 		/// <param name="SizeUsed">An optional pointer to a ULONG that receives the size used.</param>
 		/// <returns>
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual
@@ -1285,8 +1288,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error GetStorageDependencyInformation([In] VIRTUAL_DISK_HANDLE ObjectHandle, GET_STORAGE_DEPENDENCY_FLAG Flags,
-			int StorageDependencyInfoSize, [In, Out] IntPtr StorageDependencyInfo, ref int SizeUsed);
+		public static extern Win32Error GetStorageDependencyInformation([In] IntPtr ObjectHandle, GET_STORAGE_DEPENDENCY_FLAG Flags,
+			int StorageDependencyInfoSize, [In, Out] IntPtr StorageDependencyInfo, out int SizeUsed);
 
 		/// <summary>Retrieves information about a virtual hard disk (VHD).</summary>
 		/// <param name="VirtualDiskHandle">
@@ -2491,7 +2494,43 @@ namespace Vanara.PInvoke
 			public int NumberEntries;
 
 			/// <summary>Variable-length array containing STORAGE_DEPENDENCY_INFO_TYPE_1 or STORAGE_DEPENDENCY_INFO_TYPE_2 structures.</summary>
-			public IntPtr Entries;
+			public Array Entries
+			{
+				get
+				{
+					unsafe
+					{
+						fixed (void* first = &DependencyTypeFlags)
+						{
+							if (Version == STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_1)
+							{
+								return NumberEntries == 0 ? new STORAGE_DEPENDENCY_INFO_TYPE_1[0] : ((IntPtr)first).ToArray<STORAGE_DEPENDENCY_INFO_TYPE_1>(NumberEntries);
+							}
+							else if (Version == STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_2)
+							{
+								return NumberEntries == 0 ? new STORAGE_DEPENDENCY_INFO_TYPE_2[0] : ((IntPtr)first).ToArray<STORAGE_DEPENDENCY_INFO_TYPE_2>(NumberEntries);
+							}
+						}
+						throw new NotSupportedException();
+					}
+				}
+			}
+
+			DEPENDENT_DISK_FLAG DependencyTypeFlags;
+
+			uint ProviderSpecificFlags;
+
+			VIRTUAL_STORAGE_TYPE VirtualStorageType;
+
+			uint AncestorLevel;
+
+			IntPtr DependencyDeviceName;
+
+			IntPtr HostVolumeName;
+
+			IntPtr DependentVolumeName;
+
+			IntPtr DependentVolumeRelativePath;
 		}
 
 		/// <summary>Contains storage dependency information for type 1.</summary>
@@ -2527,15 +2566,19 @@ namespace Vanara.PInvoke
 			public uint AncestorLevel;
 
 			/// <summary>The device name of the dependent device.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string DependencyDeviceName;
 
 			/// <summary>The host disk volume name.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string HostVolumeName;
 
 			/// <summary>The name of the dependent volume, if any.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string DependentVolumeName;
 
 			/// <summary>The relative path to the dependent volume.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string DependentVolumeRelativePath;
 		}
 
