@@ -462,7 +462,7 @@ namespace Vanara.IO
 		/// <remarks>CD and DVD image files (ISO) are not supported before Windows 8 and Windows Server 2012.</remarks>
 		public static STORAGE_DEPENDENCY_INFO_TYPE_2[] GetStorageDependencyInformation(IntPtr handle, GET_STORAGE_DEPENDENCY_FLAG flags)
 		{
-			using SafeCoTaskMemStruct<STORAGE_DEPENDENCY_INFO> mem = new(new STORAGE_DEPENDENCY_INFO { Version = STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_2 });
+			using var mem = SafeCoTaskMemHandle.CreateFromStructure(new STORAGE_DEPENDENCY_INFO { Version = STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_2 });
 			Win32Error err = VirtDisk.GetStorageDependencyInformation(handle, flags, mem.Size, mem, out int sz);
 			if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			{
@@ -470,7 +470,8 @@ namespace Vanara.IO
 				err = VirtDisk.GetStorageDependencyInformation(handle, flags, mem.Size, mem, out sz);
 			}
 			err.ThrowIfFailed();
-			return mem.AsRef().Entries.ToTypedArray<STORAGE_DEPENDENCY_INFO_TYPE_2>();
+			// Get array at offset 8 from count at offset 4
+			return mem.ToArray<STORAGE_DEPENDENCY_INFO_TYPE_2>(mem.ToStructure<int>(sizeof(int)), sizeof(uint) * 2);
 		}
 
 		/// <summary>Creates an instance of a Virtual Disk from a file.</summary>
