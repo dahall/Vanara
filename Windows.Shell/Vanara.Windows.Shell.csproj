@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net462;net48;net5.0;net6.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net45;net48;net5.0;net6.0;netcoreapp3.1</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>

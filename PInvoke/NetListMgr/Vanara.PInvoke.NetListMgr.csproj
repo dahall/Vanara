@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (interfaces, structures and constants) for Windows NetListMgr COM object.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net462;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.NetListMgr</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>

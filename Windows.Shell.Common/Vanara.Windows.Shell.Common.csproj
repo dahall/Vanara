@@ -3,7 +3,6 @@
   <PropertyGroup>
     <Description>Common classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net462;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.Windows.Shell.Common</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
@@ -29,5 +28,8 @@ ChangeFilters, DialogStatus, ExecutableType, FileUsageType, FolderItemFilter, Li
     <ProjectReference Include="..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj" />
     <ProjectReference Include="..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
     <ProjectReference Include="..\PInvoke\SearchApi\Vanara.PInvoke.SearchApi.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="~AppBar.cs" />
   </ItemGroup>
 </Project>

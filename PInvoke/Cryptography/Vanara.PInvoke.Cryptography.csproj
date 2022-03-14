@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptnet.dll, cryptdlg.dll and cryptui.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net462;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Cryptography</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;cryptography</PackageTags>

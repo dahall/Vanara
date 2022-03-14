@@ -8,7 +8,6 @@
 * Safe pinning of objects in memory
 * Memory stream based on marshaled memory</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net462;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.Core</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>vanara;net-extensions;interop</PackageTags>
@@ -26,7 +25,7 @@ CorrespondingAction, FileAttributeConstant, FileOpConstant, FilePermissionConsta
 
 </PackageReleaseNotes>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' Or '$(TargetFramework)' == 'netstandard2.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) Or $(TargetFramework.StartsWith('netstandard')) ">

@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows Multimedia (avicap32.dll, avifil32.dll, msacm32.dll, msvfw32.dll, winmm.dll).</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net462;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Multimedia</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;winmm;windows multimedia;wav;waveform;audio;msacm32;avifil32</PackageTags>

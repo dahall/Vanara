@@ -17,6 +17,7 @@
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <RootNamespace>Vanara.PInvoke</RootNamespace>
     <SignAssembly>true</SignAssembly>
+    <TargetFrameworks>net45;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <Version>3.4.0</Version>
     <NoWarn>$(NoWarn);NETSDK1138;SYSLIB0003;SYSLIB0004;SYSLIB0011;IL2026</NoWarn>
   </PropertyGroup>

@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (interfaces and constants) imported from Windows Image Mastering API.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net462;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.IMAPI</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;IMAPI;Image Mastering</PackageTags>

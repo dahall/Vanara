@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, interfaces, structures and constants) imported from Windows Graphics APIs. Currently supports Windows Imaging Component (WIC), DirectWrite (full), Direct2D (partial), and Direct3D (DXGI only).</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net462;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Graphics</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;DirectX;DirectWrite;DXGI;Direct2D;Windows Imaging Component;WIC;windowscodecs</PackageTags>
