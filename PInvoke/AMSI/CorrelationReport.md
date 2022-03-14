@@ -3,13 +3,13 @@ PInvoke API (methods, structures and constants) imported from Windows Antimalwar
 
 - Includes methods from amsi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.AMSI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.AMSI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.AMSI)  
-### Methods - 70% API coverage (7 of 7 functions)  
+### Methods - 100% API coverage (7 of 7 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AmsiCloseSession](https://www.google.com/search?num=5&q=AmsiCloseSession+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiCloseSession](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiCloseSession)  
 [AmsiInitialize](https://www.google.com/search?num=5&q=AmsiInitialize+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiInitialize](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiInitialize)  
 [AmsiNotifyOperation](https://www.google.com/search?num=5&q=AmsiNotifyOperation+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiNotifyOperation](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiNotifyOperation)  
-[AmsiOpenSession](https://www.google.com/search?num=5&q=AmsiOpenSession+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiOpenSessionInternal](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiOpenSessionInternal)  
+[AmsiOpenSession](https://www.google.com/search?num=5&q=AmsiOpenSession+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.AMSI.AmsiOpenSessionInternal](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiOpenSessionInternal)  
 [AmsiScanBuffer](https://www.google.com/search?num=5&q=AmsiScanBuffer+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiScanBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiScanBuffer)  
 [AmsiScanString](https://www.google.com/search?num=5&q=AmsiScanString+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiScanString](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiScanString)  
 [AmsiUninitialize](https://www.google.com/search?num=5&q=AmsiUninitialize+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiUninitialize](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiUninitialize)  

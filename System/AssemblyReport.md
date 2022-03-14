@@ -15,6 +15,7 @@ Enum | Description | Values
 [Vanara.IO.PathEx.PathCharType](https://github.com/dahall/Vanara/search?l=C%23&q=PathCharType) | The type of character retrieved from `Vanara.IO.PathEx.GetCharType(System.Char)`. | Invalid, LongFileName, ShortFileName, Wildcard, Separator
 [Vanara.Diagnostics.PowerCapabilities](https://github.com/dahall/Vanara/search?l=C%23&q=PowerCapabilities) | Specifies the power capabilities of a device. | PowerButtonPresent, SleepButtonPresent, LidPresent, SystemS1, SystemS2, SystemS3, SystemS4, SystemS5, HiberFilePresent, FullWake, VideoDimPresent, ApmPresent, UpsPresent, ThermalControl, ProcessorThrottle, FastSystemS4, Hiberboot, WakeAlarmPresent, AoAc, DiskSpinDown, AoAcConnectivitySupported, SystemBatteriesPresent, BatteriesAreShortTerm
 [Vanara.Diagnostics.PowerSupplyStatus](https://github.com/dahall/Vanara/search?l=C%23&q=PowerSupplyStatus) | Represents the device's power supply status. | NotPresent, Inadequate, Adequate
+[Vanara.PInvoke.Diagnostics.ScanResult](https://github.com/dahall/Vanara/search?l=C%23&q=ScanResult) |  | Clean, NotDetected, PotentialDetected, Detected
 [Vanara.Security.AccessControl.ServiceControllerAccessRights](https://github.com/dahall/Vanara/search?l=C%23&q=ServiceControllerAccessRights) | Defines the access rights to use when creating access and audit rules. | QueryConfig, ChangeConfig, QueryStatus, EnumerateDependents, Start, Stop, Continue, Interrogate, UserDefinedControl, Delete, ReadPermissions, Write, Read, Execute, ChangePermissions, TakeOwnership, AccessSystemSecurity, FullControl
 [Vanara.ShareOfflineSettings](https://github.com/dahall/Vanara/search?l=C%23&q=ShareOfflineSettings) | Offline settings for a shared folder. | OnlySpecified, All, AllOptimized, None
 ### Interfaces
@@ -26,6 +27,7 @@ Interface | Description
 ### Classes
 Class | Description
 ---- | ----
+[Vanara.PInvoke.Diagnostics.AntimalwareScan](https://github.com/dahall/Vanara/search?l=C%23&q=AntimalwareScan) | 
 [Vanara.Computer](https://github.com/dahall/Vanara/search?l=C%23&q=Computer) | Represents a single connected (authenticated) computer.
 [Vanara.Diagnostics.Device](https://github.com/dahall/Vanara/search?l=C%23&q=Device) | A class that represents a device on a machine.
 [Vanara.Diagnostics.DeviceClass](https://github.com/dahall/Vanara/search?l=C%23&q=DeviceClass) | A class that provides detail about a device setup class available on a machine.

@@ -12,7 +12,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-AmsiCloseSession AmsiInitialize AmsiNotifyOperation AmsiOpenSession AmsiScanBuffer AmsiScanString AmsiUacInitialize AmsiUacScan AmsiUacUninitialize AmsiUninitialize
+AmsiCloseSession AmsiInitialize AmsiNotifyOperation AmsiOpenSession AmsiScanBuffer AmsiScanString AmsiUninitialize
 
 Structures
 HAMSICONTEXT HAMSISESSION
