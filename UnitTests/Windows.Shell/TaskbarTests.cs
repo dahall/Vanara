@@ -16,5 +16,18 @@ namespace Vanara.Windows.Shell.Tests
 
 			TestContext.Write($"{TaskBar.Taskbar.Bounds}; {TaskBar.Taskbar.AutoHide}; {TaskBar.Taskbar.Edge}");
 		}
+
+		[Test]
+		public void TrayTest()
+		{
+			Assert.That(TaskBar.Taskbar.TrayIcons, Is.Not.Empty);
+			TaskBar.Taskbar.TrayIcons.WriteValues();
+		}
+
+		[Test]
+		public void StructTest()
+		{
+			TestHelper.GetNestedStructSizes(typeof(ComCtl32), "TB", "NMTB", "TOOLBAR").WriteValues();
+		}
 	}
 }
