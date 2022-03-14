@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows AdvApi32.d
 
 - Includes methods from advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Security?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Security?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Security)  
-### Methods - 99% API coverage (558 of 561 functions)  
+### Methods - 100% API coverage (558 of 558 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](https://www.google.com/search?num=5&q=AbortSystemShutdownA+site%3Adocs.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.AbortSystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=AbortSystemShutdown)  
@@ -323,7 +323,6 @@ Native Method | Native DLL | Header | Managed Method
 [LsaGetAppliedCAPIDs](https://www.google.com/search?num=5&q=LsaGetAppliedCAPIDs+site%3Adocs.microsoft.com) | advapi32.dll | ntlsa.h | [Vanara.PInvoke.AdvApi32.LsaGetAppliedCAPIDs](https://github.com/dahall/Vanara/search?l=C%23&q=LsaGetAppliedCAPIDs)  
 [LsaGetLogonSessionData](https://www.google.com/search?num=5&q=LsaGetLogonSessionData+site%3Adocs.microsoft.com) | sspicli.dll | ntsecapi.h | [Vanara.PInvoke.Secur32.LsaGetLogonSessionData](https://github.com/dahall/Vanara/search?l=C%23&q=LsaGetLogonSessionData)  
 [LsaGetSystemAccessAccount](https://www.google.com/search?num=5&q=LsaGetSystemAccessAccount+site%3Adocs.microsoft.com) | advapi32.dll | ntlsa.h | [Vanara.PInvoke.AdvApi32.LsaGetSystemAccessAccount](https://github.com/dahall/Vanara/search?l=C%23&q=LsaGetSystemAccessAccount)  
-[LsaInvokeTrustScanner](https://www.google.com/search?num=5&q=LsaInvokeTrustScanner+site%3Adocs.microsoft.com) | advapi32.dll |  |   
 [LsaLogonUser](https://www.google.com/search?num=5&q=LsaLogonUser+site%3Adocs.microsoft.com) | secur32.dll | ntsecapi.h | [Vanara.PInvoke.Secur32.LsaLogonUser](https://github.com/dahall/Vanara/search?l=C%23&q=LsaLogonUser)  
 [LsaLookupAuthenticationPackage](https://www.google.com/search?num=5&q=LsaLookupAuthenticationPackage+site%3Adocs.microsoft.com) | secur32.dll | Ntsecapi.h | [Vanara.PInvoke.Secur32.LsaLookupAuthenticationPackage](https://github.com/dahall/Vanara/search?l=C%23&q=LsaLookupAuthenticationPackage)  
 [LsaLookupNames](https://www.google.com/search?num=5&q=LsaLookupNames+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaLookupNames](https://github.com/dahall/Vanara/search?l=C%23&q=LsaLookupNames)  
@@ -338,7 +337,6 @@ Native Method | Native DLL | Header | Managed Method
 [LsaQueryCAPs](https://www.google.com/search?num=5&q=LsaQueryCAPs+site%3Adocs.microsoft.com) | advapi32.dll | ntlsa.h | [Vanara.PInvoke.AdvApi32.LsaQueryCAPs](https://github.com/dahall/Vanara/search?l=C%23&q=LsaQueryCAPs)  
 [LsaQueryDomainInformationPolicy](https://www.google.com/search?num=5&q=LsaQueryDomainInformationPolicy+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaQueryDomainInformationPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=LsaQueryDomainInformationPolicy)  
 [LsaQueryForestTrustInformation](https://www.google.com/search?num=5&q=LsaQueryForestTrustInformation+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaQueryForestTrustInformation](https://github.com/dahall/Vanara/search?l=C%23&q=LsaQueryForestTrustInformation)  
-[LsaQueryForestTrustInformation2](https://www.google.com/search?num=5&q=LsaQueryForestTrustInformation2+site%3Adocs.microsoft.com) | advapi32.dll |  |   
 [LsaQueryInformationPolicy](https://www.google.com/search?num=5&q=LsaQueryInformationPolicy+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaQueryInformationPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=LsaQueryInformationPolicy)  
 [LsaQueryTrustedDomainInfo](https://www.google.com/search?num=5&q=LsaQueryTrustedDomainInfo+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaQueryTrustedDomainInfo](https://github.com/dahall/Vanara/search?l=C%23&q=LsaQueryTrustedDomainInfo)  
 [LsaQueryTrustedDomainInfoByName](https://www.google.com/search?num=5&q=LsaQueryTrustedDomainInfoByName+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaQueryTrustedDomainInfoByName](https://github.com/dahall/Vanara/search?l=C%23&q=LsaQueryTrustedDomainInfoByName)  
@@ -348,7 +346,6 @@ Native Method | Native DLL | Header | Managed Method
 [LsaRetrievePrivateData](https://www.google.com/search?num=5&q=LsaRetrievePrivateData+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaRetrievePrivateData](https://github.com/dahall/Vanara/search?l=C%23&q=LsaRetrievePrivateData)  
 [LsaSetDomainInformationPolicy](https://www.google.com/search?num=5&q=LsaSetDomainInformationPolicy+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaSetDomainInformationPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=LsaSetDomainInformationPolicy)  
 [LsaSetForestTrustInformation](https://www.google.com/search?num=5&q=LsaSetForestTrustInformation+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaSetForestTrustInformation](https://github.com/dahall/Vanara/search?l=C%23&q=LsaSetForestTrustInformation)  
-[LsaSetForestTrustInformation2](https://www.google.com/search?num=5&q=LsaSetForestTrustInformation2+site%3Adocs.microsoft.com) | advapi32.dll |  |   
 [LsaSetInformationPolicy](https://www.google.com/search?num=5&q=LsaSetInformationPolicy+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaSetInformationPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=LsaSetInformationPolicy)  
 [LsaSetSystemAccessAccount](https://www.google.com/search?num=5&q=LsaSetSystemAccessAccount+site%3Adocs.microsoft.com) | advapi32.dll | ntlsa.h | [Vanara.PInvoke.AdvApi32.LsaSetSystemAccessAccount](https://github.com/dahall/Vanara/search?l=C%23&q=LsaSetSystemAccessAccount)  
 [LsaSetTrustedDomainInfoByName](https://www.google.com/search?num=5&q=LsaSetTrustedDomainInfoByName+site%3Adocs.microsoft.com) | advapi32.dll | ntsecapi.h | [Vanara.PInvoke.AdvApi32.LsaSetTrustedDomainInfoByName](https://github.com/dahall/Vanara/search?l=C%23&q=LsaSetTrustedDomainInfoByName)  
