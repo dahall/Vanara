@@ -4,7 +4,7 @@
 
 This project contains various .NET assemblies that contain P/Invoke functions, interfaces, enums and structures from Windows libraries. Each assembly is associated with one or a few tightly related libraries. For example, Shlwapi.dll has all the exported functions from shlwapi.lib; Kernel32.dll has all for both kernel32.lib and kernelbase.lib.
 
-All assemblies are available via NuGet and provide builds against .NET 4.5, 4.8, 5.0, 6.0, .NET Standard 2.0, Core 3.1 and support [SourceLink](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink). Extensions are available for WinForms, WFP, and UWP projects. If you need support for other .NET versions, look to versions 3.3.15 and earlier.
+All assemblies are available via NuGet and provide builds against .NET 4.5, 4.8, 5.0, 6.0, .NET Standard 2.0, Core 3.1 and support [SourceLink](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink). Extensions are available for WinForms, WPF, and UWP projects. If you need support for other .NET versions, look to versions 3.3.15 and earlier.
 
 This project releases new versions every few weeks after sufficient testing. New releases are cataloged, along with release notes, in the [Releases](https://github.com/dahall/Vanara/releases) section and all NuGet packages are published to [nuget.org](https://www.nuget.org/packages?q=dahall+Vanara). Each GitHub push triggers an [AppVeyor](https://ci.appveyor.com/project/dahall/vanara) build. The owners thank them for the free Open-Source account! The status of that build is in the header of this page. The NuGet packages from those builds are available for test purposes on AppVeyor's project NuGet source at https://ci.appveyor.com/nuget/vanara-prerelease.
 
