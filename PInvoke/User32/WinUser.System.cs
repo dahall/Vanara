@@ -738,7 +738,7 @@ namespace Vanara.PInvoke
 			/// To set this value, set uiParam to the new value and set pvParam to null. You cannot set this value to less than SM_CXICON. To
 			/// retrieve this value, pvParam must point to an integer that receives the current value.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, true)] // TODO: Both set and get???
+			[SPCorrespondingType(typeof(int), CorrespondingAction.GetSet, UiParamAndNull)]
 			SPI_ICONHORIZONTALSPACING = 0x000D,
 
 			/// <summary>
@@ -784,7 +784,7 @@ namespace Vanara.PInvoke
 			/// set pvParam to point to a null-terminated string containing the name of a bitmap file. Setting pvParam to "" removes the
 			/// wallpaper. Setting pvParam to SETWALLPAPER_DEFAULT or null reverts to the default wallpaper.
 			/// </summary>
-			[SPCorrespondingType(typeof(string), CorrespondingAction.Set, Direct)]
+			[SPCorrespondingType(typeof(string), CorrespondingAction.Set, Direct)] // TODO: Check if this is correct
 			SPI_SETDESKWALLPAPER = 0x0014,
 
 			/// <summary>Sets the current desktop pattern by causing Windows to read the Pattern= setting from the WIN.INI file.</summary>
@@ -813,7 +813,7 @@ namespace Vanara.PInvoke
 			/// null. You cannot set this value to less than SM_CYICON. To retrieve this value, pvParam must point to an integer that
 			/// receives the current value.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrespondingAction.Set, true)] // TODO: Both set and get???
+			[SPCorrespondingType(typeof(int), CorrespondingAction.GetSet, UiParamAndNull)]
 			SPI_ICONVERTICALSPACING = 0x0018,
 
 			/// <summary>
@@ -882,7 +882,7 @@ namespace Vanara.PInvoke
 			/// Sets the font that is used for icon titles. The uiParam parameter specifies the size of a LOGFONT structure, and the pvParam
 			/// parameter must point to a LOGFONT structure.
 			/// </summary>
-			[SPCorrespondingType(typeof(LOGFONT), CorrespondingAction.Set, UiParamAndSize)]
+			[SPCorrespondingType(typeof(LOGFONT), CorrespondingAction.Set)]
 			SPI_SETICONTITLELOGFONT = 0x0022,
 
 			/// <summary>
@@ -1454,7 +1454,7 @@ namespace Vanara.PInvoke
 			/// Sets the current mouse speed. The pvParam parameter is an integer between 1 (slowest) and 20 (fastest). A value of 10 is the
 			/// default. This value is typically set using the mouse control panel application. Windows NT, Windows 95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, Direct)]
 			SPI_SETMOUSESPEED = 0x0071,
 
 			/// <summary>
@@ -2019,7 +2019,7 @@ namespace Vanara.PInvoke
 			/// Set pvParam to TRUE to enable ToolTip animation or FALSE to disable it. If enabled, you can use SPI_SETTOOLTIPFADE to specify
 			/// fade or slide animation. Windows NT, Windows Me/98/95: This value is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, Direct)]
 			SPI_SETTOOLTIPANIMATION = 0x1017,
 
 			/// <summary>
@@ -2356,12 +2356,12 @@ namespace Vanara.PInvoke
 			SPI_GETFONTSMOOTHINGTYPE = 0x200A,
 
 			/// <summary>
-			/// Sets the font smoothing type. The pvParam parameter points to a UINT that contains either FE_FONTSMOOTHINGSTANDARD, if
-			/// standard anti-aliasing is used, or FE_FONTSMOOTHINGCLEARTYPE, if ClearType is used. The default is FE_FONTSMOOTHINGSTANDARD.
-			/// When using this option, the fWinIni parameter must be set to SPIF_SENDWININICHANGE | SPIF_UPDATEINIFILE; otherwise,
-			/// SystemParametersInfo fails.
+			/// Sets the font smoothing type. The pvParam parameter is either FE_FONTSMOOTHINGSTANDARD, if standard anti-aliasing is used,
+			/// or FE_FONTSMOOTHINGCLEARTYPE, if ClearType is used. The default is FE_FONTSMOOTHINGSTANDARD.
+			/// SPI_SETFONTSMOOTHING must also be set.
+			/// Windows 2000:  This parameter is not supported.
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Set, Direct)]
 			SPI_SETFONTSMOOTHINGTYPE = 0x200B,
 
 			/// <summary>
