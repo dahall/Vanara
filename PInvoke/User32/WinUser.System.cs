@@ -5081,8 +5081,7 @@ namespace Vanara.PInvoke
 			{
 				Standard,
 				Direct,
-				UiParamAndNull,
-				UiParamAndSize,
+				UiParamAndNull
 			}
 			public SPCorrespondingTypeAttribute(Type typeRef, CorrespondingAction action, SetMethod type = Standard) : base(typeRef, action) =>this.Type = type;
 			public SetMethod Type { get; set; }
