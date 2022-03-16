@@ -4443,12 +4443,26 @@ namespace Vanara.PInvoke
 		{
 			if (!CorrespondingTypeAttribute.CanSet(uiAction, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(setValue));
 			var spif = (updateUserProfile ? SPIF.SPIF_UPDATEINIFILE : 0) | (broadcastChange ? SPIF.SPIF_SENDCHANGE : 0);
-			if (SPCorrespondingTypeAttribute.UseUI(uiAction))
-				return SystemParametersInfo(uiAction, (uint)Convert.ChangeType(setValue, typeof(uint)), IntPtr.Zero, spif);
-			else
+
+			var setMethod = SPCorrespondingTypeAttribute.SetMethodIs(uiAction);
+			if (setMethod is Pointer or Direct)
 			{
-				using var ptr = SPCorrespondingTypeAttribute.DirectSet(uiAction) ? new SafeHGlobalHandle(new IntPtr((int)Convert.ChangeType(setValue, typeof(int))), 0, false) : SafeHGlobalHandle.CreateFromStructure(setValue);
-				return SystemParametersInfo(uiAction, ptr.Size > sizeof(uint) ? ptr.Size : 0U, (IntPtr)ptr, spif);
+				SafeHGlobalHandle ptr;
+				if (setMethod == Pointer)
+				{
+					ptr = SafeHGlobalHandle.CreateFromStructure(setValue);
+				}
+				else // setMethod == Direct
+				{
+					var directValue = (int) Convert.ChangeType(setValue, typeof(int));
+					ptr = new SafeHGlobalHandle(new IntPtr(directValue), 0, false);
+				}
+				return SystemParametersInfo(uiAction, ptr.Size > sizeof(uint) ? ptr.Size : 0U, (IntPtr) ptr, spif);
+			}
+			else // setMethod == UiParam
+			{
+				var uiParam = (uint) Convert.ChangeType(setValue, typeof(uint));
+				return SystemParametersInfo(uiAction, uiParam, IntPtr.Zero,	spif);
 			}
 		}
 
