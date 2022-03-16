@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.User32.SPCorrespondingTypeAttribute.SetMethod;
 
 namespace Vanara.PInvoke
 {
@@ -5076,15 +5077,23 @@ namespace Vanara.PInvoke
 
 		internal class SPCorrespondingTypeAttribute : CorrespondingTypeAttribute
 		{
-			public SPCorrespondingTypeAttribute(Type typeRef, CorrespondingAction action, bool useUiParam = false) : base(typeRef, action) => UseUiParam = useUiParam;
+			internal enum SetMethod
+			{
+				Standard,
+				Direct,
+				UiParamAndNull,
+				UiParamAndSize,
+			}
+			public SPCorrespondingTypeAttribute(Type typeRef, CorrespondingAction action, SetMethod type = Standard) : base(typeRef, action) =>this.Type = type;
+			public SetMethod Type { get; set; }
 
-			public bool DirectSetParam { get; set; } = false;
+			// public bool DirectSetParam { get; set; } = false;
+			//
+			// public bool UseUiParam { get; }
 
-			public bool UseUiParam { get; }
-
-			public static bool DirectSet(object value) => GetAttrForObj(value).OfType<SPCorrespondingTypeAttribute>().Any(a => a.DirectSetParam);
-
-			public static bool UseUI(object value) => GetAttrForObj(value).OfType<SPCorrespondingTypeAttribute>().Any(a => a.UseUiParam);
+			// public static bool DirectSet(object value) => GetAttrForObj(value).OfType<SPCorrespondingTypeAttribute>().Any(a => a.DirectSetParam);
+			//
+			// public static bool UseUI(object value) => GetAttrForObj(value).OfType<SPCorrespondingTypeAttribute>().Any(a => a.UseUiParam);
 		}
 	}
 }
