@@ -679,7 +679,7 @@ namespace Vanara.PInvoke
 			/// Determines whether the warning beeper is on. The pvParam parameter must point to a BOOL variable that receives TRUE if the
 			/// beeper is on, or FALSE if it is off.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get, false)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETBEEP = 0x0001,
 
 			/// <summary>Turns the warning beeper on or off. The uiParam parameter specifies TRUE for on, or FALSE for off.</summary>
@@ -690,7 +690,7 @@ namespace Vanara.PInvoke
 			/// Retrieves the two mouse threshold values and the mouse acceleration. The pvParam parameter must point to an array of three
 			/// integers that receives these values. See mouse_event for further information.
 			/// </summary>
-			[SPCorrespondingType(typeof(int[]), CorrespondingAction.Get, false)]
+			[SPCorrespondingType(typeof(int[]), CorrespondingAction.Get)]
 			SPI_GETMOUSE = 0x0003,
 
 			/// <summary>
@@ -704,7 +704,7 @@ namespace Vanara.PInvoke
 			/// Retrieves the border multiplier factor that determines the width of a window's sizing border. The pvParam parameter must
 			/// point to an integer variable that receives this value.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrespondingAction.Get, false)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Get)]
 			SPI_GETBORDER = 0x0005,
 
 			/// <summary>
@@ -719,7 +719,7 @@ namespace Vanara.PInvoke
 			/// through 31 (approximately 30 repetitions per second). The actual repeat rates are hardware-dependent and may vary from a
 			/// linear scale by as much as 20%. The pvParam parameter must point to a DWORD variable that receives the setting
 			/// </summary>
-			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get, false)]
+			[SPCorrespondingType(typeof(uint), CorrespondingAction.Get)]
 			SPI_GETKEYBOARDSPEED = 0x000A,
 
 			/// <summary>
@@ -745,7 +745,7 @@ namespace Vanara.PInvoke
 			/// Retrieves the screen saver time-out value, in seconds. The pvParam parameter must point to an integer variable that receives
 			/// the value.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrespondingAction.Get, false)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Get)]
 			SPI_GETSCREENSAVETIMEOUT = 0x000E,
 
 			/// <summary>
@@ -759,7 +759,7 @@ namespace Vanara.PInvoke
 			/// Determines whether screen saving is enabled. The pvParam parameter must point to a bool variable that receives TRUE if screen
 			/// saving is enabled, or FALSE otherwise.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get, false)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
 			SPI_GETSCREENSAVEACTIVE = 0x0010,
 
 			/// <summary>
@@ -772,7 +772,7 @@ namespace Vanara.PInvoke
 			/// Retrieves the current granularity value of the desktop sizing grid. The pvParam parameter must point to an integer variable
 			/// that receives the granularity.
 			/// </summary>
-			[Obsolete, SPCorrespondingType(typeof(int), CorrespondingAction.Get, true)]
+			[Obsolete, SPCorrespondingType(typeof(int), CorrespondingAction.Get)]
 			SPI_GETGRIDGRANULARITY = 0x0012,
 
 			/// <summary>Sets the granularity of the desktop sizing grid to the value of the uiParam parameter.</summary>
@@ -796,7 +796,7 @@ namespace Vanara.PInvoke
 			/// (approximately 1 second delay). The actual delay associated with each value may vary depending on the hardware. The pvParam
 			/// parameter must point to an integer variable that receives the setting.
 			/// </summary>
-			[SPCorrespondingType(typeof(int), CorrespondingAction.Get, false)]
+			[SPCorrespondingType(typeof(int), CorrespondingAction.Get)]
 			SPI_GETKEYBOARDDELAY = 0x0016,
 
 			/// <summary>
