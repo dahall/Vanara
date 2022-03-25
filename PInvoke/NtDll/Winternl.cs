@@ -11,6 +11,22 @@ namespace Vanara.PInvoke
 	{
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
+		/// <summary></summary>
+		[Flags]
+		public enum PROCESS_CREATE_FLAGS : uint
+		{
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_BREAKAWAY = 0x00000001,
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_NO_DEBUG_INHERIT = 0x00000002,
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_INHERIT_HANDLES = 0x00000004,
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_OVERRIDE_ADDRESS_SPACE = 0x00000008,
+			/// <summary></summary>
+			PROCESS_CREATE_FLAGS_LARGE_PAGES = 0x00000010,
+		}
+
 		/// <summary>The type of process information to be retrieved.</summary>
 		[PInvokeData("winternl.h", MSDNShortId = "0eae7899-c40b-4a5f-9e9c-adae021885e7")]
 		// Undocumented values pulled from ProcessHacker source.
@@ -194,23 +210,6 @@ namespace Vanara.PInvoke
 			/// <summary>Reserved.</summary>
 			MaxSubsystemInformationType,
 		}
-
-		/// <summary></summary>
-		[Flags]
-		public enum PROCESS_CREATE_FLAGS : uint
-		{
-			/// <summary></summary>
-			PROCESS_CREATE_FLAGS_BREAKAWAY = 0x00000001,
-			/// <summary></summary>
-			PROCESS_CREATE_FLAGS_NO_DEBUG_INHERIT = 0x00000002,
-			/// <summary></summary>
-			PROCESS_CREATE_FLAGS_INHERIT_HANDLES = 0x00000004,
-			/// <summary></summary>
-			PROCESS_CREATE_FLAGS_OVERRIDE_ADDRESS_SPACE = 0x00000008,
-			/// <summary></summary>
-			PROCESS_CREATE_FLAGS_LARGE_PAGES = 0x00000010,
-		}
-
 		/// <summary>Creates a process. This function is UNDOCUMENTED.</summary>
 		/// <param name="ProcessHandle">The process handle.</param>
 		/// <param name="DesiredAccess">The desired access.</param>
@@ -441,6 +440,111 @@ namespace Vanara.PInvoke
 		public static extern NTStatus NtQueryInformationProcess([In] HPROCESS ProcessHandle, PROCESSINFOCLASS ProcessInformationClass, [Out] IntPtr ProcessInformation, uint ProcessInformationLength, out uint ReturnLength);
 
 		/// <summary>
+		/// <para>Retrieves information about the specified process.</para>
+		/// </summary>
+		/// <typeparam name="T">The type of the structure to retrieve.</typeparam>
+		/// <param name="ProcessHandle">A handle to the process for which information is to be retrieved.</param>
+		/// <param name="ProcessInformationClass">
+		/// <para>
+		/// The type of process information to be retrieved. This parameter can be one of the following values from the
+		/// <c>PROCESSINFOCLASS</c> enumeration.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ProcessBasicInformation <br/> 0</term>
+		/// <term>
+		/// Retrieves a pointer to a PEB structure that can be used to determine whether the specified process is being debugged, and a
+		/// unique value used by the system to identify the specified process. Use the CheckRemoteDebuggerPresent and GetProcessId functions
+		/// to obtain this information.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ProcessDebugPort <br/> 7</term>
+		/// <term>
+		/// Retrieves a DWORD_PTR value that is the port number of the debugger for the process. A nonzero value indicates that the process
+		/// is being run under the control of a ring 3 debugger. Use the CheckRemoteDebuggerPresent or IsDebuggerPresent function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ProcessWow64Information <br/> 26</term>
+		/// <term>
+		/// Determines whether the process is running in the WOW64 environment (WOW64 is the x86 emulator that allows Win32-based
+		/// applications to run on 64-bit Windows). Use the IsWow64Process2 function to obtain this information.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ProcessImageFileName <br/> 27</term>
+		/// <term>
+		/// Retrieves a UNICODE_STRING value containing the name of the image file for the process. Use the QueryFullProcessImageName or
+		/// GetProcessImageFileName function to obtain this information.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ProcessBreakOnTermination <br/> 29</term>
+		/// <term>Retrieves a ULONG value indicating whether the process is considered critical.</term>
+		/// </item>
+		/// <item>
+		/// <term>ProcessSubsystemInformation <br/> 75</term>
+		/// <term>
+		/// Retrieves a SUBSYSTEM_INFORMATION_TYPE value indicating the subsystem type of the process. The buffer pointed to by the
+		/// ProcessInformation parameter should be large enough to hold a single SUBSYSTEM_INFORMATION_TYPE enumeration.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>The structure and associated memory for any allocated sub-types.</returns>
+		/// <exception cref="System.ArgumentException">Mismatch between requested type and class.</exception>
+		public static NtQueryResult<T> NtQueryInformationProcess<T>([In] HPROCESS ProcessHandle, PROCESSINFOCLASS ProcessInformationClass) where T : struct
+		{
+			var validTypes = CorrespondingTypeAttribute.GetCorrespondingTypes(ProcessInformationClass, CorrespondingAction.Get).ToArray();
+			if (validTypes.Length > 0 && Array.IndexOf(validTypes, typeof(T)) == -1)
+				throw new ArgumentException("Mismatch between requested type and class.");
+#if x64
+			// Check if the target is a 32 bit process running in WoW64 mode.
+			if (IsWow64(ProcessHandle))
+			{
+				// We are 64 bit. Target process is 32 bit running in WoW64 mode.
+				throw new PlatformNotSupportedException("Unable to query a 32-bit process from a 64-bit process.");
+			}
+#else
+			if (NtQueryInformationProcessRequiresWow64Structs(ProcessHandle))
+			{
+				if (validTypes.Length > 1 && !TypeIsWow()) throw new ArgumentException("Type name must end in WOW64 to indicate it was configured exclusively for 64-bit use.");
+				var mem = new NtQueryResult<T>();
+				var status = NtWow64QueryInformationProcess64(ProcessHandle, ProcessInformationClass, ((IntPtr)mem).ToInt32(), mem.Size, out var sz);
+				if (status.Succeeded) return mem;
+				if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH || sz == 0) throw status.GetException();
+				mem.Size = sz;
+				NtWow64QueryInformationProcess64(ProcessHandle, ProcessInformationClass, ((IntPtr)mem).ToInt32(), mem.Size, out _).ThrowIfFailed();
+				return mem;
+			}
+#endif
+			// Target process is of the same bitness as us.
+			else
+			{
+				if (validTypes.Length > 1 && TypeIsWow()) throw new ArgumentException("Type name must not end in WOW64 should be configured for 32 or 64-bit use.");
+				var mem = new NtQueryResult<T>();
+				var status = NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out var sz);
+				if (status.Succeeded) return mem;
+				if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH || sz == 0) throw status.GetException();
+				mem.Size = sz;
+				NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out _).ThrowIfFailed();
+				return mem;
+			}
+
+			bool TypeIsWow() => typeof(T).Name.EndsWith("WOW64");
+		}
+
+		/// <summary>A call to <c>NtQueryInformationProcess</c> for the supplied process requires WOW64 structs.</summary>
+		/// <param name="ProcessHandle">The process handle.</param>
+		/// <returns><see langword="true"/> if structures returned from <c>NtQueryInformationProcess</c> must be configured exclusively for 64-bit use.</returns>
+		public static bool NtQueryInformationProcessRequiresWow64Structs(HPROCESS ProcessHandle) => IsWow64(Kernel32.GetCurrentProcess()) && !IsWow64(ProcessHandle);
+
+		/// <summary>
 		/// <para>
 		/// [ <c>NtQueryInformationProcess</c> may be altered or unavailable in future versions of Windows. Applications should use the
 		/// alternate functions listed in this topic.]
@@ -575,111 +679,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winternl.h")]
 		public static extern NTStatus NtWow64QueryInformationProcess64([In] HPROCESS ProcessHandle, PROCESSINFOCLASS ProcessInformationClass, [Out] int ProcessInformation, [In] ulong ProcessInformationLength, out ulong ReturnLength);
-
-		/// <summary>
-		/// <para>Retrieves information about the specified process.</para>
-		/// </summary>
-		/// <typeparam name="T">The type of the structure to retrieve.</typeparam>
-		/// <param name="ProcessHandle">A handle to the process for which information is to be retrieved.</param>
-		/// <param name="ProcessInformationClass">
-		/// <para>
-		/// The type of process information to be retrieved. This parameter can be one of the following values from the
-		/// <c>PROCESSINFOCLASS</c> enumeration.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>ProcessBasicInformation <br/> 0</term>
-		/// <term>
-		/// Retrieves a pointer to a PEB structure that can be used to determine whether the specified process is being debugged, and a
-		/// unique value used by the system to identify the specified process. Use the CheckRemoteDebuggerPresent and GetProcessId functions
-		/// to obtain this information.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessDebugPort <br/> 7</term>
-		/// <term>
-		/// Retrieves a DWORD_PTR value that is the port number of the debugger for the process. A nonzero value indicates that the process
-		/// is being run under the control of a ring 3 debugger. Use the CheckRemoteDebuggerPresent or IsDebuggerPresent function.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessWow64Information <br/> 26</term>
-		/// <term>
-		/// Determines whether the process is running in the WOW64 environment (WOW64 is the x86 emulator that allows Win32-based
-		/// applications to run on 64-bit Windows). Use the IsWow64Process2 function to obtain this information.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessImageFileName <br/> 27</term>
-		/// <term>
-		/// Retrieves a UNICODE_STRING value containing the name of the image file for the process. Use the QueryFullProcessImageName or
-		/// GetProcessImageFileName function to obtain this information.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessBreakOnTermination <br/> 29</term>
-		/// <term>Retrieves a ULONG value indicating whether the process is considered critical.</term>
-		/// </item>
-		/// <item>
-		/// <term>ProcessSubsystemInformation <br/> 75</term>
-		/// <term>
-		/// Retrieves a SUBSYSTEM_INFORMATION_TYPE value indicating the subsystem type of the process. The buffer pointed to by the
-		/// ProcessInformation parameter should be large enough to hold a single SUBSYSTEM_INFORMATION_TYPE enumeration.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <returns>The structure and associated memory for any allocated sub-types.</returns>
-		/// <exception cref="System.ArgumentException">Mismatch between requested type and class.</exception>
-		public static NtQueryResult<T> NtQueryInformationProcess<T>([In] HPROCESS ProcessHandle, PROCESSINFOCLASS ProcessInformationClass) where T : struct
-		{
-			var validTypes = CorrespondingTypeAttribute.GetCorrespondingTypes(ProcessInformationClass, CorrespondingAction.Get).ToArray();
-			if (validTypes.Length > 0 && Array.IndexOf(validTypes, typeof(T)) == -1)
-				throw new ArgumentException("Mismatch between requested type and class.");
-#if x64
-			// Check if the target is a 32 bit process running in WoW64 mode.
-			if (IsWow64(ProcessHandle))
-			{
-				// We are 64 bit. Target process is 32 bit running in WoW64 mode.
-				throw new PlatformNotSupportedException("Unable to query a 32-bit process from a 64-bit process.");
-			}
-#else
-			if (NtQueryInformationProcessRequiresWow64Structs(ProcessHandle))
-			{
-				if (validTypes.Length > 1 && !TypeIsWow()) throw new ArgumentException("Type name must end in WOW64 to indicate it was configured exclusively for 64-bit use.");
-				var mem = new NtQueryResult<T>();
-				var status = NtWow64QueryInformationProcess64(ProcessHandle, ProcessInformationClass, ((IntPtr)mem).ToInt32(), mem.Size, out var sz);
-				if (status.Succeeded) return mem;
-				if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH || sz == 0) throw status.GetException();
-				mem.Size = sz;
-				NtWow64QueryInformationProcess64(ProcessHandle, ProcessInformationClass, ((IntPtr)mem).ToInt32(), mem.Size, out _).ThrowIfFailed();
-				return mem;
-			}
-#endif
-			// Target process is of the same bitness as us.
-			else
-			{
-				if (validTypes.Length > 1 && TypeIsWow()) throw new ArgumentException("Type name must not end in WOW64 should be configured for 32 or 64-bit use.");
-				var mem = new NtQueryResult<T>();
-				var status = NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out var sz);
-				if (status.Succeeded) return mem;
-				if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH || sz == 0) throw status.GetException();
-				mem.Size = sz;
-				NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out _).ThrowIfFailed();
-				return mem;
-			}
-
-			bool TypeIsWow() => typeof(T).Name.EndsWith("WOW64");
-		}
-
-		/// <summary>A call to <c>NtQueryInformationProcess</c> for the supplied process requires WOW64 structs.</summary>
-		/// <param name="ProcessHandle">The process handle.</param>
-		/// <returns><see langword="true"/> if structures returned from <c>NtQueryInformationProcess</c> must be configured exclusively for 64-bit use.</returns>
-		public static bool NtQueryInformationProcessRequiresWow64Structs(HPROCESS ProcessHandle) => IsWow64(Kernel32.GetCurrentProcess()) && !IsWow64(ProcessHandle);
 
 		internal static bool IsWow64(HPROCESS hProc) => (Environment.OSVersion.Version.Major >= 6 || (Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor >= 1)) && Kernel32.IsWow64Process(hProc, out var b) && b;
 
@@ -969,6 +968,229 @@ namespace Vanara.PInvoke
 			public UNICODE_STRING_WOW64 CommandLine;
 		}
 
+		/// <summary>Returns the number of processors in the system.</summary>
+		[PInvokeData("winternl.h", MSDNShortId = "553ec7b9-c5eb-4955-8dc0-f1c06f59fe31")]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+		public struct SYSTEM_BASIC_INFORMATION
+		{
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_1;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_2;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_3;
+
+			/// <summary>Reserved.</summary>
+			public IntPtr Reserved2_1;
+
+			/// <summary>Reserved.</summary>
+			public IntPtr Reserved2_2;
+
+			/// <summary>Reserved.</summary>
+			public IntPtr Reserved2_3;
+
+			/// <summary>Reserved.</summary>
+			public IntPtr Reserved2_4;
+
+			/// <summary>The number of processors present in the system.</summary>
+			public byte NumberOfProcessors;
+		}
+
+		/// <summary>Process information.</summary>
+		[PInvokeData("winternl.h", MSDNShortId = "553ec7b9-c5eb-4955-8dc0-f1c06f59fe31")]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+		public struct SYSTEM_PROCESS_INFORMATION
+		{
+			/// <summary>
+			/// The start of the next item in the array is the address of the previous item plus the value in the NextEntryOffset member.
+			/// For the last item in the array, NextEntryOffset is 0.
+			/// </summary>
+			public uint NextEntryOffset;
+
+			/// <summary>The number of threads in the process.</summary>
+			public uint NumberOfThreads;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_1;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_2;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_3;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_4;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_5;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_6;
+
+			/// <summary>The process's image name.</summary>
+			public UNICODE_STRING ImageName;
+
+			/// <summary>The base priority of the process, which is the starting priority for threads created within the associated process.</summary>
+			public int BasePriority;
+
+			/// <summary>The process's unique process identifier.</summary>
+			public IntPtr UniqueProcessId;
+
+			/// <summary>Reserved.</summary>
+			public IntPtr Reserved2;
+
+			/// <summary>
+			/// The total number of handles being used by the process in question; use GetProcessHandleCount to retrieve this information instead.
+			/// </summary>
+			public uint HandleCount;
+
+			/// <summary>The session identifier of the process session.</summary>
+			public uint SessionId;
+
+			/// <summary>Reserved.</summary>
+			public IntPtr Reserved3;
+
+			/// <summary>The peak size, in bytes, of the virtual memory used by the process.</summary>
+			public SizeT PeakVirtualSize;
+
+			/// <summary>The current size, in bytes, of virtual memory used by the process.</summary>
+			public SizeT VirtualSize;
+
+			/// <summary>Reserved.</summary>
+			public uint Reserved4;
+
+			/// <summary>The peak size, in kilobytes, of the working set of the process.</summary>
+			public SizeT PeakWorkingSetSize;
+
+			/// <summary>The current quota charged to the process for paged pool usage.</summary>
+			public SizeT WorkingSetSize;
+
+			/// <summary>Reserved.</summary>
+			public IntPtr Reserved5;
+
+			/// <summary>The current quota charged to the process for paged pool usage.</summary>
+			public SizeT QuotaPagedPoolUsage;
+
+			/// <summary>Reserved.</summary>
+			public IntPtr Reserved6;
+
+			/// <summary>The current quota charged to the process for nonpaged pool usage.</summary>
+			public SizeT QuotaNonPagedPoolUsage;
+
+			/// <summary>The number of bytes of page file storage in use by the process.</summary>
+			public SizeT PagefileUsage;
+
+			/// <summary>The maximum number of bytes of page-file storage used by the process.</summary>
+			public SizeT PeakPagefileUsage;
+
+			/// <summary>The number of memory pages allocated for the use of this process.</summary>
+			public SizeT PrivatePageCount;
+
+			/// <summary>Reserved.</summary>
+			public long Reserved7_1;
+
+			/// <summary>Reserved.</summary>
+			public long Reserved7_2;
+
+			/// <summary>Reserved.</summary>
+			public long Reserved7_3;
+
+			/// <summary>Reserved.</summary>
+			public long Reserved7_4;
+
+			/// <summary>Reserved.</summary>
+			public long Reserved7_5;
+
+			/// <summary>Reserved.</summary>
+			public long Reserved7_6;
+		}
+
+		/// <summary>Processor performance.</summary>
+		[PInvokeData("winternl.h", MSDNShortId = "553ec7b9-c5eb-4955-8dc0-f1c06f59fe31")]
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
+		public struct SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION
+		{
+			/// <summary>The amount of time that the system has been idle, in 100-nanosecond intervals.</summary>
+			public long IdleTime;
+
+			/// <summary>
+			/// The amount of time that the system has spent executing in Kernel mode (including all threads in all processes, on all
+			/// processors), in 100-nanosecond intervals..
+			/// </summary>
+			public long KernelTime;
+
+			/// <summary>
+			/// The amount of time that the system has spent executing in User mode (including all threads in all processes, on all
+			/// processors), in 100-nanosecond intervals.
+			/// </summary>
+			public long UserTime;
+
+			/// <summary>Undocumented.</summary>
+			public long DpcTime;
+
+			/// <summary>Undocumented.</summary>
+			public long InterruptTime;
+
+			/// <summary>Reserved.</summary>
+			public uint Reserved2;
+		}
+
+		/// <summary>Registry quota information.</summary>
+		[PInvokeData("winternl.h", MSDNShortId = "553ec7b9-c5eb-4955-8dc0-f1c06f59fe31")]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+		public struct SYSTEM_REGISTRY_QUOTA_INFORMATION
+		{
+			/// <summary>The maximum size, in bytes, that the Registry can attain on this system.</summary>
+			public uint RegistryQuotaAllowed;
+
+			/// <summary>The current size of the Registry, in bytes.</summary>
+			public uint RegistryQuotaUsed;
+
+			/// <summary>Reserved.</summary>
+			public IntPtr Reserved1;
+		}
+
+		/// <summary>Thread information.</summary>
+		[PInvokeData("winternl.h", MSDNShortId = "553ec7b9-c5eb-4955-8dc0-f1c06f59fe31")]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+		public struct SYSTEM_THREAD_INFORMATION
+		{
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_1;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_2;
+
+			/// <summary>Reserved.</summary>
+			public ulong Reserved1_3;
+
+			/// <summary>Reserved.</summary>
+			public uint Reserved2;
+
+			/// <summary>The start address of the thread.</summary>
+			public IntPtr StartAddress;
+
+			/// <summary>The ID of the thread and the process owning the thread.</summary>
+			public CLIENT_ID ClientId;
+
+			/// <summary>The dynamic thread priority.</summary>
+			public int Priority;
+
+			/// <summary>The base thread priority.</summary>
+			public int BasePriority;
+
+			/// <summary>Reserved.</summary>
+			public uint Reserved3;
+
+			/// <summary>The current thread state.</summary>
+			public uint ThreadState;
+
+			/// <summary>The reason the thread is waiting.</summary>
+			public uint WaitReason;
+		}
 		/// <summary>
 		/// Represents the structure and associated memory returned by <c>NtQueryXX</c> functions. The memory associate with this structure
 		/// will be disposed when this variable goes out of scope or is disposed.
