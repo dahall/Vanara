@@ -166,7 +166,7 @@ namespace Vanara.PInvoke
 		/// <c>true</c> if the components of the security descriptor are valid. If any of the components of the security descriptor are not
 		/// valid, the return value is <c>false</c>.
 		/// </returns>
-		public static bool IsValidSecurityDescriptor(this PSECURITY_DESCRIPTOR pSD) => IsValidSecurityDescriptor(pSD);
+		public static bool IsValidSecurityDescriptor(this PSECURITY_DESCRIPTOR pSD) => AdvApi32.IsValidSecurityDescriptor(pSD);
 
 		/// <summary>Gets the size, in bytes, of an ACE.</summary>
 		/// <param name="pAce">The pointer to the ACE structure to query.</param>
