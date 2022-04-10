@@ -368,6 +368,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WinHTTP", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinHTTP", "UnitTests\PInvoke\WinHTTP\WinHTTP.csproj", "{20FB9D67-52BB-4C82-A5FE-BCA09B69CAC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.Management", "Management\Vanara.Management.csproj", "{15BD3A93-7852-48D4-BF65-9F9550DF92D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -2327,6 +2329,24 @@ Global
 		{20FB9D67-52BB-4C82-A5FE-BCA09B69CAC5}.Release|x64.Build.0 = Release|Any CPU
 		{20FB9D67-52BB-4C82-A5FE-BCA09B69CAC5}.Release|x86.ActiveCfg = Release|Any CPU
 		{20FB9D67-52BB-4C82-A5FE-BCA09B69CAC5}.Release|x86.Build.0 = Release|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Debug|x64.Build.0 = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Debug|x86.Build.0 = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.DebugNoTests|x64.ActiveCfg = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.DebugNoTests|x64.Build.0 = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.DebugNoTests|x86.ActiveCfg = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.DebugNoTests|x86.Build.0 = Debug|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Release|x64.ActiveCfg = Release|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Release|x64.Build.0 = Release|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Release|x86.ActiveCfg = Release|Any CPU
+		{15BD3A93-7852-48D4-BF65-9F9550DF92D8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

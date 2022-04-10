@@ -20,6 +20,10 @@ DeviceType, Subtype
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Management" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Management\Vanara.Management.csproj" />
     <ProjectReference Include="..\PInvoke\Security\Vanara.PInvoke.Security.csproj" />
     <ProjectReference Include="..\PInvoke\VirtDisk\Vanara.PInvoke.VirtDisk.csproj" />
   </ItemGroup>

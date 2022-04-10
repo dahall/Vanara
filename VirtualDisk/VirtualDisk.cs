@@ -21,13 +21,14 @@ namespace Vanara.IO
 	/// Class that represents a virtual disk and allows for performing actions on it. This wraps most of the methods found in virtdisk.h.
 	/// </summary>
 	/// <seealso cref="System.IDisposable"/>
-	public class VirtualDisk : IDisposable, IHandle
+	[DebuggerDisplay("[{ImageFile} - Attached={Attached}]")]
+	public partial class VirtualDisk : IDisposable, IHandle
 	{
 		private static readonly bool IsPreWin8 = Environment.OSVersion.Version < new Version(6, 2);
 		private readonly OPEN_VIRTUAL_DISK_VERSION ver;
 		private VirtualDiskMetadata metadata;
 
-		private VirtualDisk(SafeVIRTUAL_DISK_HANDLE handle, OPEN_VIRTUAL_DISK_VERSION version)
+		private VirtualDisk(SafeVIRTUAL_DISK_HANDLE handle, OPEN_VIRTUAL_DISK_VERSION version, string imgPath)
 		{
 			if (handle == null || handle.IsInvalid)
 			{
@@ -35,6 +36,7 @@ namespace Vanara.IO
 			}
 
 			Handle = handle;
+			ImagePath = imgPath;
 			ver = version;
 		}
 
@@ -79,7 +81,7 @@ namespace Vanara.IO
 		}
 
 		/// <summary>Indicates whether this virtual disk is currently attached.</summary>
-		public bool Attached { get; private set; }
+		public bool Attached => IsAttached(ImagePath);
 
 		/// <summary>Block size of the VHD, in bytes.</summary>
 		public uint BlockSize => GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_SIZE, 16);
@@ -88,7 +90,7 @@ namespace Vanara.IO
 		public DeviceType DiskType => (DeviceType)GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_VIRTUAL_STORAGE_TYPE);
 
 		/// <summary>The fragmentation level of the virtual disk.</summary>
-		public uint FragmentationPercentage => GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_FRAGMENTATION);
+		public uint? FragmentationPercentage => IsChild ? null : GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_FRAGMENTATION);
 
 		/// <summary>Unique identifier of the VHD.</summary>
 		public Guid Identifier
@@ -100,6 +102,10 @@ namespace Vanara.IO
 				SetVirtualDiskInformation(Handle, si).ThrowIfFailed();
 			}
 		}
+
+		/// <summary>Gets the path of the image file provided when opening or creating this instance.</summary>
+		/// <value>The image path.</value>
+		public string ImagePath { get; private set; }
 
 		/// <summary>Indicates whether the virtual disk is 4 KB aligned.</summary>
 		public bool Is4kAligned => GetInformation<bool>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_IS_4K_ALIGNED);
@@ -139,12 +145,12 @@ namespace Vanara.IO
 		/// <summary>The path of the parent backing store, if it can be resolved.</summary>
 		public string ParentBackingStore => IsChild ? GetInformation<string>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4) : null;
 
-		/// <summary>Unique identifier of the parent disk backing store.</summary>
-		public Guid ParentIdentifier => GetInformation<Guid>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_IDENTIFIER);
+		/// <summary>Unique identifier of the parent disk backing store. If unattached, <see langword="null"/> is returned.</summary>
+		public Guid? ParentIdentifier => IsChild ? GetInformation<Guid>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_IDENTIFIER) : null;
 
 		/// <summary>
 		/// If this is a child, contains the path of the parent backing store. If is a parent disk, contains all of the parent paths present
-		/// in the search list.
+		/// in the search list. If unattached, <see langword="null"/> is returned.
 		/// </summary>
 		public string[] ParentPaths
 		{
@@ -152,30 +158,39 @@ namespace Vanara.IO
 			{
 				if (IsChild)
 				{
-					string pPath = GetInformation<string>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4);
+					var pPath = GetInformation<string>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4);
 					return !string.IsNullOrEmpty(pPath) ? new[] { pPath } : null;
 				}
-				return GetInformation<string[]>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4);
+				if (Attached)
+				{
+					return GetInformation<string[]>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION, 4);
+				}
+				return null;
 			}
 		}
 
-		/// <summary>Internal time stamp of the parent disk backing store.</summary>
-		public uint ParentTimeStamp => GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_TIMESTAMP);
+		/// <summary>Internal time stamp of the parent disk backing store. If unattached, <see langword="null"/> is returned.</summary>
+		public uint? ParentTimeStamp => IsChild ? GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_TIMESTAMP) : null;
 
 		/// <summary>
-		/// Retrieves the path to the physical device object that contains a virtual hard disk (VHD) or CD or DVD image file (ISO).
+		/// Retrieves the path to the physical device object that contains a virtual hard disk (VHD) or CD or DVD image file (ISO). If
+		/// unattached, <see langword="null"/> is returned.
 		/// </summary>
 		public string PhysicalPath
 		{
 			get
 			{
-				int sz = 64;
-				StringBuilder sb;
+				if (!Attached)
+					return null;
+
+				var sz = 64;
+				StringBuilder sb = new(sz);
 				Win32Error err;
 				do
 				{
-					sb = new StringBuilder(sz *= 4);
 					err = GetVirtualDiskPhysicalPath(Handle, ref sz, sb);
+					if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+						sb.Capacity *= 4;
 				} while (err == Win32Error.ERROR_INSUFFICIENT_BUFFER);
 				err.ThrowIfFailed();
 				return sb.ToString();
@@ -213,8 +228,8 @@ namespace Vanara.IO
 		/// <summary>Sector size of the VHD, in bytes.</summary>
 		public uint SectorSize => GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_SIZE, 20);
 
-		/// <summary>The smallest safe minimum size of the virtual disk.</summary>
-		public ulong SmallestSafeVirtualSize => GetInformation<ulong>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_SMALLEST_SAFE_VIRTUAL_SIZE);
+		/// <summary>The smallest safe minimum size of the virtual disk. If unattached, <see langword="null"/> is returned.</summary>
+		public ulong? SmallestSafeVirtualSize => Attached ? GetInformation<ulong>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_SMALLEST_SAFE_VIRTUAL_SIZE) : null;
 
 		/// <summary>Vendor-unique identifier.</summary>
 		public Guid VendorId => GetInformation<Guid>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_VIRTUAL_STORAGE_TYPE, 4);
@@ -260,7 +275,7 @@ namespace Vanara.IO
 
 			VIRTUAL_STORAGE_TYPE stType = new();
 			CreateVirtualDisk(stType, path, mask, securityDescriptor, flags, 0, param, IntPtr.Zero, out SafeVIRTUAL_DISK_HANDLE handle).ThrowIfFailed();
-			return new VirtualDisk(handle, (OPEN_VIRTUAL_DISK_VERSION)param.Version);
+			return new VirtualDisk(handle, (OPEN_VIRTUAL_DISK_VERSION)param.Version, path);
 		}
 
 		/// <summary>
@@ -387,19 +402,64 @@ namespace Vanara.IO
 				throw new ArgumentNullException(nameof(sourcePath));
 			}
 
-			CREATE_VIRTUAL_DISK_PARAMETERS param = new(0, IsPreWin8 ? 1U : 2U);
 			VIRTUAL_DISK_ACCESS_MASK mask = IsPreWin8 ? VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE : VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
 			using SafeCoTaskMemString sp = new(sourcePath);
+			CREATE_VIRTUAL_DISK_PARAMETERS param = new(0, IsPreWin8 ? 1U : 2U);
 			if (IsPreWin8)
-			{
 				param.Version1.SourcePath = (IntPtr)sp;
-			}
 			else
-			{
 				param.Version2.SourcePath = (IntPtr)sp;
-			}
 
 			return Create(path, ref param, CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE, mask);
+		}
+
+		/// <summary>
+		/// Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.
+		/// </summary>
+		/// <param name="path">A valid file path that represents the path to the new virtual disk image file.</param>
+		/// <param name="sourcePath">
+		/// A fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path may refer to
+		/// a virtual disk or a physical disk.
+		/// </param>
+		/// <param name="cancellationToken">
+		/// A cancellation token that can be used to cancel the operation. This value can be <c>null</c> to disable cancellation.
+		/// </param>
+		/// <param name="progress">
+		/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to
+		/// disable progress reporting.
+		/// </param>
+		/// <returns>If successful, returns a valid <see cref="VirtualDisk"/> instance for the newly created virtual disk.</returns>
+		public static async Task<VirtualDisk> CreateFromSourceAsync(string path, string sourcePath, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+		{
+			if (string.IsNullOrEmpty(path))
+			{
+				throw new ArgumentNullException(nameof(path));
+			}
+
+			if (string.IsNullOrEmpty(sourcePath))
+			{
+				throw new ArgumentNullException(nameof(sourcePath));
+			}
+
+			ManualResetEvent vhdOverlapEvent = new(false);
+			NativeOverlapped vhdOverlap = new() { EventHandle = vhdOverlapEvent.SafeWaitHandle.DangerousGetHandle() };
+			using SafeCoTaskMemString sp = new(sourcePath);
+			VIRTUAL_STORAGE_TYPE stType = new();
+			VIRTUAL_DISK_ACCESS_MASK mask = IsPreWin8 ? VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE : VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
+
+			CREATE_VIRTUAL_DISK_PARAMETERS param = new(0, IsPreWin8 ? 1U : 2U);
+			if (IsPreWin8)
+				param.Version1.SourcePath = (IntPtr)sp;
+			else
+				param.Version2.SourcePath = (IntPtr)sp;
+
+			CREATE_VIRTUAL_DISK_FLAG flags = CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE;
+			CreateVirtualDisk(stType, path, mask, PSECURITY_DESCRIPTOR.NULL, flags, 0, param, vhdOverlap, out SafeVIRTUAL_DISK_HANDLE hVhd).ThrowUnless(Win32Error.ERROR_IO_PENDING);
+
+			if (!await GetProgressAsync(hVhd, vhdOverlap, cancellationToken, progress))
+				throw new OperationCanceledException(cancellationToken);
+
+			return new VirtualDisk(hVhd, (OPEN_VIRTUAL_DISK_VERSION)param.Version, path);
 		}
 
 		/// <summary>
@@ -463,7 +523,7 @@ namespace Vanara.IO
 		public static STORAGE_DEPENDENCY_INFO_TYPE_2[] GetStorageDependencyInformation(IntPtr handle, GET_STORAGE_DEPENDENCY_FLAG flags)
 		{
 			using var mem = SafeCoTaskMemHandle.CreateFromStructure(new STORAGE_DEPENDENCY_INFO { Version = STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_2 });
-			Win32Error err = VirtDisk.GetStorageDependencyInformation(handle, flags, mem.Size, mem, out int sz);
+			Win32Error err = VirtDisk.GetStorageDependencyInformation(handle, flags, mem.Size, mem, out var sz);
 			if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			{
 				mem.Size = sz;
@@ -473,6 +533,11 @@ namespace Vanara.IO
 			// Get array at offset 8 from count at offset 4
 			return mem.ToArray<STORAGE_DEPENDENCY_INFO_TYPE_2>(mem.ToStructure<int>(sizeof(int)), sizeof(uint) * 2);
 		}
+
+		/// <summary>Determines whether the specified virtual disk indicated by <paramref name="path"/> is currently attached.</summary>
+		/// <param name="path">The path to the virtual disk image file.</param>
+		/// <returns><see langword="true"/> if the specified path is attached; otherwise, <see langword="false"/>.</returns>
+		public static bool IsAttached(string path) => GetAllAttachedVirtualDiskPaths().Any(s => s.Equals(path, StringComparison.InvariantCultureIgnoreCase));
 
 		/// <summary>Creates an instance of a Virtual Disk from a file.</summary>
 		/// <param name="path">A valid path to the virtual disk image to open.</param>
@@ -488,7 +553,7 @@ namespace Vanara.IO
 
 			Debug.WriteLine($"OpenVD: mask={mask}; flags={flags}; param={param}");
 			OpenVirtualDisk(new VIRTUAL_STORAGE_TYPE(), path, mask, flags, param, out SafeVIRTUAL_DISK_HANDLE hVhd).ThrowIfFailed();
-			return new VirtualDisk(hVhd, param?.Version ?? (IsPreWin8 ? OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_1 : OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2));
+			return new VirtualDisk(hVhd, param?.Version ?? (IsPreWin8 ? OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_1 : OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2), path);
 		}
 
 		/// <summary>Creates an instance of a Virtual Disk from a file.</summary>
@@ -514,7 +579,7 @@ namespace Vanara.IO
 			}
 
 			OPEN_VIRTUAL_DISK_PARAMETERS param;
-			bool isIso = Path.GetExtension(path).Equals(".iso", StringComparison.InvariantCultureIgnoreCase);
+			var isIso = Path.GetExtension(path).Equals(".iso", StringComparison.InvariantCultureIgnoreCase);
 			if (isIso && (!readOnly || noParents))
 			{
 				throw new NotSupportedException();
@@ -557,18 +622,17 @@ namespace Vanara.IO
 		/// want to empty the Recycle Bin for this drive?
 		/// </para>
 		/// </param>
-		public void Attach(ATTACH_VIRTUAL_DISK_FLAG flags, ref ATTACH_VIRTUAL_DISK_PARAMETERS param, PSECURITY_DESCRIPTOR securityDescriptor = default)
+		public void Attach(ATTACH_VIRTUAL_DISK_FLAG flags, ATTACH_VIRTUAL_DISK_PARAMETERS? param = null, PSECURITY_DESCRIPTOR securityDescriptor = default)
 		{
 			if (!securityDescriptor.IsNull && !securityDescriptor.IsValidSecurityDescriptor())
 			{
 				throw new ArgumentException("Invalid security descriptor.");
 			}
 
-			AttachVirtualDisk(Handle, securityDescriptor, flags, 0, param, IntPtr.Zero).ThrowIfFailed();
-			if (!flags.IsFlagSet(ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME))
-			{
-				Attached = true;
-			}
+			if (param.HasValue)
+				AttachVirtualDisk(Handle, securityDescriptor, flags, 0, param.Value, IntPtr.Zero).ThrowIfFailed();
+			else
+				AttachVirtualDisk(Handle, securityDescriptor, flags, 0, IntPtr.Zero, IntPtr.Zero).ThrowIfFailed();
 		}
 
 		/// <summary>
@@ -581,16 +645,16 @@ namespace Vanara.IO
 		/// </param>
 		/// <param name="noDriveLetter">No drive letters are assigned to the disk's volumes.</param>
 		/// <param name="access">
-		/// An optional pointer to a FileSecurity instance to apply to the attached virtual disk. If this parameter is NULL, the security
-		/// descriptor of the virtual disk image file is used. Ensure that the security descriptor that AttachVirtualDisk applies to the
-		/// attached virtual disk grants the write attributes permission for the user, or that the security descriptor of the virtual disk
-		/// image file grants the write attributes permission for the user if you specify NULL for this parameter.If the security descriptor
-		/// does not grant write attributes permission for a user, Shell displays the following error when the user accesses the attached
-		/// virtual disk: The Recycle Bin is corrupted.Do you want to empty the Recycle Bin for this drive?
+		/// An optional pointer to a FileSecurity instance to apply to the attached virtual disk. If this parameter is <see
+		/// langword="null"/>, the security descriptor of the virtual disk image file is used. Ensure that the security descriptor that
+		/// AttachVirtualDisk applies to the attached virtual disk grants the write attributes permission for the user, or that the security
+		/// descriptor of the virtual disk image file grants the write attributes permission for the user if you specify <see
+		/// langword="null"/> for this parameter. If the security descriptor does not grant write attributes permission for a user, Shell
+		/// displays the following error when the user accesses the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty
+		/// the Recycle Bin for this drive?
 		/// </param>
 		public void Attach(bool readOnly = false, bool autoDetach = true, bool noDriveLetter = false, FileSecurity access = null)
 		{
-			//if (access == null) access = GetWorldFullFileSecurity();
 			ATTACH_VIRTUAL_DISK_FLAG flags = readOnly ? ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY : 0;
 			if (!autoDetach)
 			{
@@ -602,9 +666,14 @@ namespace Vanara.IO
 				flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_DRIVE_LETTER;
 			}
 
+			if (access is null)
+			{
+				flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_SECURITY_DESCRIPTOR;
+			}
+
 			ATTACH_VIRTUAL_DISK_PARAMETERS param = ATTACH_VIRTUAL_DISK_PARAMETERS.Default;
-			SafePSECURITY_DESCRIPTOR sd = FileSecToSd(access);
-			Attach(flags, ref param, sd);
+			using SafePSECURITY_DESCRIPTOR sd = FileSecToSd(access);
+			Attach(flags, param, sd);
 		}
 
 		/// <summary>Closes the instance of the virtual disk.</summary>
@@ -622,7 +691,7 @@ namespace Vanara.IO
 		/// disable progress reporting.
 		/// </param>
 		/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
-		public async Task<bool> Compact(CancellationToken cancellationToken, IProgress<int> progress) =>
+		public async Task<bool> CompactAsync(CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
 			await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
 				CompactVirtualDisk(Handle, COMPACT_VIRTUAL_DISK_FLAG.COMPACT_VIRTUAL_DISK_FLAG_NONE, COMPACT_VIRTUAL_DISK_PARAMETERS.Default, vhdOverlap));
 
@@ -642,19 +711,10 @@ namespace Vanara.IO
 			}
 
 			DetachVirtualDisk(Handle, DETACH_VIRTUAL_DISK_FLAG.DETACH_VIRTUAL_DISK_FLAG_NONE, 0).ThrowIfFailed();
-			Attached = false;
 		}
 
 		/// <inheritdoc/>
-		public virtual void Dispose()
-		{
-			if (Attached)
-			{
-				Detach();
-			}
-
-			Handle.Dispose();
-		}
+		public virtual void Dispose() => Handle.Dispose();
 
 		/// <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
 		/// <param name="newSize">New size, in bytes, for the expansion request.</param>
@@ -678,7 +738,7 @@ namespace Vanara.IO
 		/// disable progress reporting.
 		/// </param>
 		/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
-		public async Task<bool> Expand(ulong newSize, CancellationToken cancellationToken, IProgress<int> progress) =>
+		public async Task<bool> ExpandAsync(ulong newSize, CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
 			await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
 				{
 					if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
@@ -734,7 +794,7 @@ namespace Vanara.IO
 		/// disable progress reporting.
 		/// </param>
 		/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
-		public async Task<bool> Resize(ulong newSize, CancellationToken cancellationToken, IProgress<int> progress) =>
+		public async Task<bool> ResizeAsync(ulong newSize, CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
 			await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
 				{
 					if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
@@ -784,74 +844,11 @@ namespace Vanara.IO
 			ResizeVirtualDisk(Handle, flags, param, IntPtr.Zero).ThrowIfFailed();
 		}
 
-		/// <summary>
-		/// Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.
-		/// </summary>
-		/// <param name="path">A valid file path that represents the path to the new virtual disk image file.</param>
-		/// <param name="sourcePath">
-		/// A fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path may refer to
-		/// a virtual disk or a physical disk.
-		/// </param>
-		/// <param name="cancellationToken">
-		/// A cancellation token that can be used to cancel the operation. This value can be <c>null</c> to disable cancellation.
-		/// </param>
-		/// <param name="progress">
-		/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to
-		/// disable progress reporting.
-		/// </param>
-		/// <returns>If successful, returns a valid <see cref="VirtualDisk"/> instance for the newly created virtual disk.</returns>
-		// TODO: Get async CreateFromSource working. Problem: passing new handle back to calling thread causes exceptions.
-		private static async Task<VirtualDisk> CreateFromSource(string path, string sourcePath, CancellationToken cancellationToken, IProgress<int> progress)
-		{
-			if (string.IsNullOrEmpty(path))
-			{
-				throw new ArgumentNullException(nameof(path));
-			}
-
-			if (string.IsNullOrEmpty(sourcePath))
-			{
-				throw new ArgumentNullException(nameof(sourcePath));
-			}
-
-			CREATE_VIRTUAL_DISK_PARAMETERS param = new(0, IsPreWin8 ? 1U : 2U);
-			IntPtr h = IntPtr.Zero;
-			bool b = await RunAsync(cancellationToken, progress, VIRTUAL_DISK_HANDLE.NULL, (in NativeOverlapped vhdOverlap) =>
-				{
-					SafeCoTaskMemString sp = new(sourcePath);
-					VIRTUAL_STORAGE_TYPE stType = new();
-					VIRTUAL_DISK_ACCESS_MASK mask = IsPreWin8 ? VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE : VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
-					if (IsPreWin8)
-					{
-						param.Version1.SourcePath = (IntPtr)sp;
-					}
-					else
-					{
-						param.Version2.SourcePath = (IntPtr)sp;
-					}
-
-					CREATE_VIRTUAL_DISK_FLAG flags = CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE;
-					Win32Error err = CreateVirtualDisk(stType, path, mask, PSECURITY_DESCRIPTOR.NULL, flags, 0, param, vhdOverlap, out SafeVIRTUAL_DISK_HANDLE hVhd);
-					if (err.Succeeded)
-					{
-						h = hVhd.DangerousGetHandle();
-						hVhd.SetHandleAsInvalid();
-					}
-					return err;
-				}
-			);
-			if (!b)
-			{
-				throw new OperationCanceledException(cancellationToken);
-			}
-
-			return new VirtualDisk(new SafeVIRTUAL_DISK_HANDLE(h), (OPEN_VIRTUAL_DISK_VERSION)param.Version);
-		}
-
 		private static SafePSECURITY_DESCRIPTOR FileSecToSd(FileSecurity sec) => sec == null
 				? SafePSECURITY_DESCRIPTOR.Null
 				: ConvertStringSecurityDescriptorToSecurityDescriptor(sec.GetSecurityDescriptorSddlForm(AccessControlSections.All));
 
-		private static async Task<bool> GetProgress(VIRTUAL_DISK_HANDLE phVhd, NativeOverlapped reset, CancellationToken cancellationToken, IProgress<int> progress)
+		private static async Task<bool> GetProgressAsync(VIRTUAL_DISK_HANDLE phVhd, NativeOverlapped reset, CancellationToken cancellationToken = default, IProgress<int> progress = default)
 		{
 			progress?.Report(0);
 			while (true)
@@ -896,10 +893,10 @@ namespace Vanara.IO
 				err.ThrowIfFailed();
 			}
 
-			return await GetProgress(hVhd, vhdOverlap, cancellationToken, progress);
+			return await GetProgressAsync(hVhd, vhdOverlap, cancellationToken, progress);
 		}
 
-		/*private static async Task CompactVHD(string loc, CancellationToken cancellationToken, IProgress<Tuple<int, string>> progress)
+		/*private static async Task CompactVHDAsync(string loc, CancellationToken cancellationToken, IProgress<Tuple<int, string>> progress)
 		{
 			var vhdOverlapEvent = new ManualResetEvent(false);
 			var vhdOverlap = new NativeOverlapped { EventHandle = vhdOverlapEvent.SafeWaitHandle.DangerousGetHandle() };
@@ -986,7 +983,7 @@ namespace Vanara.IO
 		{
 			SafeCoTaskMemStruct<GET_VIRTUAL_DISK_INFO> mem = new(new GET_VIRTUAL_DISK_INFO { Version = info });
 			uint sz = mem.Size;
-			Win32Error err = GetVirtualDiskInformation(Handle, ref sz, mem, out uint req);
+			Win32Error err = GetVirtualDiskInformation(Handle, ref sz, mem, out var req);
 			if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			{
 				mem.Size = sz;
@@ -1023,7 +1020,7 @@ namespace Vanara.IO
 			{
 				get
 				{
-					Guid[] ret = new Guid[0];
+					var ret = new Guid[0];
 					if (supported)
 					{
 						if (parent.Handle.IsClosed)
