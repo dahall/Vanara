@@ -18,6 +18,7 @@
     <dependencies>
       <dependency id="Vanara.BITS" version="3.4.1" />
       <dependency id="Vanara.Core" version="3.4.1" />
+      <dependency id="Vanara.Management" version="3.4.1" />
       <dependency id="Vanara.PInvoke.Accessibility" version="3.4.1" />
       <dependency id="Vanara.PInvoke.AclUI" version="3.4.1" />
       <dependency id="Vanara.PInvoke.AMSI" version="3.4.1" />
