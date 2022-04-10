@@ -81,6 +81,21 @@ namespace Vanara.PInvoke
 
 			/// <summary>Do not assign a custom security descriptor to the disk; use the system default.</summary>
 			ATTACH_VIRTUAL_DISK_FLAG_NO_SECURITY_DESCRIPTOR = 0x00000010,
+
+			/// <summary>Default volume encryption policies should not be applied to the disk when attached to the local system.</summary>
+			ATTACH_VIRTUAL_DISK_FLAG_BYPASS_DEFAULT_ENCRYPTION_POLICY = 0x00000020,
+
+			/// <summary>Attach the disk as a non-PnP device.</summary>
+			ATTACH_VIRTUAL_DISK_FLAG_NON_PNP = 0x00000040,
+
+			/// <summary>Restrict the disk's view to the specified offset and length.</summary>
+			ATTACH_VIRTUAL_DISK_FLAG_RESTRICTED_RANGE = 0x00000080,
+
+			/// <summary>Restrict the disk's view to the unique data partition.</summary>
+			ATTACH_VIRTUAL_DISK_FLAG_SINGLE_PARTITION = 0x00000100,
+
+			/// <summary>Register the non-PnP disk as a volume with mount manager.</summary>
+			ATTACH_VIRTUAL_DISK_FLAG_REGISTER_VOLUME = 0x00000200,
 		}
 
 		/// <summary>
@@ -93,7 +108,10 @@ namespace Vanara.PInvoke
 			ATTACH_VIRTUAL_DISK_VERSION_UNSPECIFIED = 0,
 
 			/// <summary>Version 1.</summary>
-			ATTACH_VIRTUAL_DISK_VERSION_1 = 1
+			ATTACH_VIRTUAL_DISK_VERSION_1 = 1,
+
+			/// <summary>Version 2.</summary>
+			ATTACH_VIRTUAL_DISK_VERSION_2 = 2
 		}
 
 		/// <summary>Contains virtual disk compact request flags.</summary>
@@ -179,6 +197,19 @@ namespace Vanara.PInvoke
 			/// sparse VDLs.
 			/// </summary>
 			CREATE_VIRTUAL_DISK_FLAG_SPARSE_FILE = 0x80,
+
+			/// <summary>Creates a VHD suitable as the backing store for a virtual persistent memory device.</summary>
+			CREATE_VIRTUAL_DISK_FLAG_PMEM_COMPATIBLE = 0x100,
+
+			/// <summary>Allow a VHD to be created on a compressed volume.</summary>
+			CREATE_VIRTUAL_DISK_FLAG_SUPPORT_COMPRESSED_VOLUMES = 0x200,
+
+			/// <summary>
+			/// Allow a VHD to be created when it may be marked as a sparse file. This flag is a companion to
+			/// CREATE_VIRTUAL_DISK_FLAG_SPARSE_FILE, and overrides the behavior that only allows sparse files on file systems that support
+			/// sparse VDLs.
+			/// </summary>
+			CREATE_VIRTUAL_DISK_FLAG_SUPPORT_SPARSE_FILES_ANY_FS = 0x400,
 		}
 
 		/// <summary>
@@ -190,14 +221,17 @@ namespace Vanara.PInvoke
 			/// <summary>Unsupported</summary>
 			CREATE_VIRTUAL_DISK_VERSION_UNSPECIFIED = 0,
 
-			/// <summary></summary>
+			/// <summary>Version 1</summary>
 			CREATE_VIRTUAL_DISK_VERSION_1 = 1,
 
-			/// <summary></summary>
+			/// <summary>Version 2</summary>
 			CREATE_VIRTUAL_DISK_VERSION_2 = 2,
 
-			/// <summary></summary>
+			/// <summary>Version 3</summary>
 			CREATE_VIRTUAL_DISK_VERSION_3 = 3,
+
+			/// <summary>Version 4</summary>
+			CREATE_VIRTUAL_DISK_VERSION_4 = 4,
 		}
 
 		/// <summary>Contains flags affecting the behavior of the DeleteSnapshotVhdSet function.</summary>
@@ -264,7 +298,18 @@ namespace Vanara.PInvoke
 			DEPENDENT_DISK_FLAG_NO_HOST_DISK = 0x00000200,
 
 			/// <summary>The lifetime of the virtual disk is not tied to any application or process.</summary>
-			DEPENDENT_DISK_FLAG_PERMANENT_LIFETIME = 0x00000400
+			DEPENDENT_DISK_FLAG_PERMANENT_LIFETIME = 0x00000400,
+
+			/// <summary>Volume backing the virtual storage device file can be a compressed volume.</summary>
+			DEPENDENT_DISK_FLAG_SUPPORT_COMPRESSED_VOLUMES = 0x00000800,
+
+			/// <summary>
+			/// Allow the file to be mounted, even if it is sparse and the volume on which it sits does not support a sparse VDL.
+			/// </summary>
+			DEPENDENT_DISK_FLAG_ALWAYS_ALLOW_SPARSE = 0x00001000,
+
+			/// <summary>Allow the file to be mounted, even if it is encrypted.</summary>
+			DEPENDENT_DISK_FLAG_SUPPORT_ENCRYPTED_FILES = 0x00002000,
 		}
 
 		/// <summary>Contains virtual disk detach request flags.</summary>
@@ -282,7 +327,10 @@ namespace Vanara.PInvoke
 		public enum EXPAND_VIRTUAL_DISK_FLAG
 		{
 			/// <summary>No flags. Use system defaults.</summary>
-			EXPAND_VIRTUAL_DISK_FLAG_NONE = 0x00000000
+			EXPAND_VIRTUAL_DISK_FLAG_NONE = 0x00000000,
+
+			/// <summary/>
+			EXPAND_VIRTUAL_DISK_FLAG_NOTIFY_CHANGE = 0x00000001,
 		}
 
 		/// <summary>
@@ -450,6 +498,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>Create the mirror using an existing file.</summary>
 			MIRROR_VIRTUAL_DISK_FLAG_EXISTING_FILE = 0x00000001,
+
+			/// <summary/>
+			MIRROR_VIRTUAL_DISK_FLAG_SKIP_MIRROR_ACTIVATION = 0x00000002,
+
+			/// <summary/>
+			MIRROR_VIRTUAL_DISK_FLAG_ENABLE_SMB_COMPRESSION = 0x00000004,
+
+			/// <summary/>
+			MIRROR_VIRTUAL_DISK_FLAG_IS_LIVE_MIGRATION = 0x00000008
 		}
 
 		/// <summary>
@@ -471,7 +528,10 @@ namespace Vanara.PInvoke
 		public enum MODIFY_VHDSET_FLAG
 		{
 			/// <summary>No flag specified.</summary>
-			MODIFY_VHDSET_FLAG_NONE = 0x00000000
+			MODIFY_VHDSET_FLAG_NONE = 0x00000000,
+
+			/// <summary/>
+			MODIFY_VHDSET_FLAG_WRITEABLE_SNAPSHOT = 0x00000001,
 		}
 
 		/// <summary>Contains the version of the MODIFY_VHDSET_PARAMETERS structure to use in calls to virtual disk functions.</summary>
@@ -538,6 +598,15 @@ namespace Vanara.PInvoke
 			/// Disable flushing and FUA (both for payload data and for metadata) for backing files associated with this virtual disk.
 			/// </summary>
 			OPEN_VIRTUAL_DISK_FLAG_NO_WRITE_HARDENING = 0x00000100,
+
+			/// <summary>Open the backing store even if it is a compressed file.</summary>
+			OPEN_VIRTUAL_DISK_FLAG_SUPPORT_COMPRESSED_VOLUMES = 0x00000200,
+
+			/// <summary>Open the backing store even if it is a sparse file, on any file system.</summary>
+			OPEN_VIRTUAL_DISK_FLAG_SUPPORT_SPARSE_FILES_ANY_FS = 0x00000400,
+
+			/// <summary>Open the backing store even if it is an encrypted file.</summary>
+			OPEN_VIRTUAL_DISK_FLAG_SUPPORT_ENCRYPTED_FILES = 0x00000800,
 		}
 
 		/// <summary>
@@ -678,7 +747,10 @@ namespace Vanara.PInvoke
 		public enum TAKE_SNAPSHOT_VHDSET_FLAG
 		{
 			/// <summary>No flag specified.</summary>
-			TAKE_SNAPSHOT_VHDSET_FLAG_NONE = 0x00000000
+			TAKE_SNAPSHOT_VHDSET_FLAG_NONE = 0x00000000,
+
+			/// <summary/>
+			TAKE_SNAPSHOT_VHDSET_FLAG_WRITEABLE = 0x00000001,
 		}
 
 		/// <summary>Enumerates the possible versions for parameters for the TakeSnapshotVhdSet function.</summary>
