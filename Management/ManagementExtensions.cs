@@ -81,7 +81,12 @@ namespace Vanara.Management
 							var xml = new XmlDocument();
 							xml.LoadXml(errOut.GetProp<string>("Error"));
 							var errMsg = xml.DocumentElement.SelectSingleNode(@"//PROPERTY[@NAME='Message']/VALUE")?.InnerText;
-							throw new InvalidOperationException(errMsg);
+							var ex = new InvalidOperationException(errMsg);
+#if DEBUG
+							foreach (var p in job.Properties.Cast<PropertyData>())
+								ex.Data.Add(p.Name, p.Value);
+#endif
+							throw ex;
 						case JobState.Completed:
 						case JobState.CompletedWithWarnings:
 							outputParameters.SetPropertyValue("ReturnValue", 0);
@@ -111,8 +116,10 @@ namespace Vanara.Management
 			using var settingsClass = new ManagementClass(path);
 			using ManagementObject settingsInstance = settingsClass.CreateInstance();
 
-			foreach (PropertyInfo pi in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public))
+			foreach (PropertyInfo pi in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
 			{
+				if (pi.GetCustomAttributes<IgnoreDataMemberAttribute>().Any() || !pi.CanRead)
+					continue;
 				DataMemberAttribute mattr = pi.GetCustomAttributes<DataMemberAttribute>(false).FirstOrDefault() ?? new DataMemberAttribute() { Name = pi.Name };
 				var val = pi.PropertyType.IsEnum ? Convert.ChangeType(pi.GetValue(instance), pi.PropertyType.GetEnumUnderlyingType()) : pi.GetValue(instance);
 				settingsInstance.SetPropertyValue(mattr.Name, val);
@@ -182,33 +189,81 @@ namespace Vanara.Management
 			}
 
 			var output = new T();
-			foreach (PropertyInfo pi in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public))
+			foreach (PropertyInfo pi in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
 			{
+				if (pi.GetCustomAttributes<IgnoreDataMemberAttribute>().Any() || !pi.CanWrite)
+					continue;
 				DataMemberAttribute attr = pi.GetCustomAttributes<DataMemberAttribute>(false).FirstOrDefault() ?? new DataMemberAttribute() { Name = pi.Name };
 
-				nodelist = doc.SelectNodes($@"//PROPERTY[@NAME = '{attr.Name}']/VALUE/child::text()");
-				if (attr.IsRequired && nodelist.Count != 1)
-					throw new FormatException();
-				if (nodelist.Count == 0)
-					continue;
-
-				if (pi.PropertyType.IsEnum)
+				if (pi.PropertyType.IsArray)
 				{
-					TypeConverter cv = TypeDescriptor.GetConverter(pi.PropertyType.GetEnumUnderlyingType());
-					var val = cv.ConvertFromInvariantString(nodelist[0].Value);
-					if (!Enum.IsDefined(pi.PropertyType, val))
+					if (doc.SelectSingleNode($@"//PROPERTY.ARRAY[@NAME = '{attr.Name}']") is not null)
+					{
+						var array = doc.SelectNodes($@"//PROPERTY.ARRAY[@NAME = '{attr.Name}']/VALUE.ARRAY/VALUE").Cast<XmlNode>().Select(n => n.InnerText).ToArray();
+						var ret = Array.CreateInstance(pi.PropertyType.GetElementType(), array.Length);
+						for (int i = 0; i < array.Length; i++)
+							ret.SetValue(GetVal(pi.PropertyType.GetElementType(), array[i]), i);
+						pi.SetValue(output, ret);
+					}
+					else if (attr.IsRequired)
 						throw new FormatException();
-					pi.SetValue(output, Enum.ToObject(pi.PropertyType, val));
 				}
 				else
 				{
-					TypeConverter cv = TypeDescriptor.GetConverter(pi.PropertyType);
-					var val = cv.ConvertFromInvariantString(nodelist[0].Value);
-					pi.SetValue(output, val);
+					nodelist = doc.SelectNodes($@"//PROPERTY[@NAME = '{attr.Name}']/VALUE/child::text()");
+					if (attr.IsRequired && nodelist.Count != 1)
+						throw new FormatException();
+					if (nodelist.Count == 0)
+						continue;
+					pi.SetValue(output, GetVal(pi.PropertyType, nodelist[0].Value));
 				}
 			}
 			return output;
+
+			static object GetVal(Type type, string value)
+			{
+				if (type == typeof(string))
+					return value;
+				else if (type.IsEnum)
+				{
+					TypeConverter cv = TypeDescriptor.GetConverter(type.GetEnumUnderlyingType());
+					var val = cv.ConvertFromInvariantString(value);
+					if (!Enum.IsDefined(type, val))
+						throw new FormatException();
+					return Enum.ToObject(type, val);
+				}
+				else
+				{
+					TypeConverter cv = TypeDescriptor.GetConverter(type);
+					return cv.ConvertFromInvariantString(value);
+				}
+			}
 		}
+
+		/// <summary>Converts a string in CIM_DATETIME format to a <see cref="DateTime"/>.</summary>
+		/// <param name="cimdate">The CIM_DATETIME string in 'yyyymmddHHMMSS.mmmmmmsUUU' format.</param>
+		/// <returns>A <see cref="DateTime"/> value in GMT equivalent to <paramref name="cimdate"/> or <see langword="null"/> if unable to process.</returns>
+		public static DateTime? CimToDateTime(string cimdate)
+		{
+			if (cimdate is null || !(cimdate.Length is 14 or 21 or 25))
+				return null;
+			var dts = cimdate;
+			if (dts.Length == 14)
+				dts += ".000000";
+			if (dts.Length == 21)
+				dts += "+000";
+			if (!short.TryParse(dts.Substring(21, 4), out var utcOffset))
+				return null;
+			dts = $"{dts.Substring(0, 21)}{(utcOffset < 0 ? '-' : '+')}{Math.Abs(utcOffset) / 60:D2}:{Math.Abs(utcOffset) % 60:D2}";
+			if (!DateTime.TryParseExact(dts, "yyyyMMddHHmmss.FFFFFFFzzz", null, System.Globalization.DateTimeStyles.None, out var dt))
+				return null;
+			return dt;
+		}
+
+		/// <summary>Converts a <see cref="DateTime"/> value to CIM_DATETIME format.</summary>
+		/// <param name="dt">The <see cref="DateTime"/> value.</param>
+		/// <returns>A CIM_DATETIME string in 'yyyymmddHHMMSS.mmmmmmsUUU' format.</returns>
+		public static string DateTimeToCim(this DateTime dt) => $"{dt.ToUniversalTime():yyyyMMddHHmmss.FFFFFFF}+000";
 
 		/// <summary>Verifies whether a job is completed.</summary>
 		/// <param name="jobStateObj">An object that represents the JobState of the job.</param>
