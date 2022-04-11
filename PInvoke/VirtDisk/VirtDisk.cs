@@ -889,7 +889,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			VIRTUAL_STORAGE_TYPE_DEVICE_VHDX = 3,
 
-			/// <summary></summary>
+			/// <summary>
+			/// VHD Set files (.vhds file) are a new shared Virtual Disk model for guest clusters in Windows Server 2016. VHD Set files
+			/// support online resizing of shared virtual disks, support Hyper-V Replica, and can be included in application-consistent checkpoints.
+			/// </summary>
 			VIRTUAL_STORAGE_TYPE_DEVICE_VHDSET = 4
 		}
 
@@ -1809,6 +1812,30 @@ namespace Vanara.PInvoke
 				Version1.SectorSizeInBytes = logicalSectorSize;
 			}
 
+			/// <summary>Initializes a CREATE_VIRTUAL_DISK_PARAMETERS with a maximum size.</summary>
+			/// <param name="pParentPath">
+			/// Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this
+			/// parameter is not NULL, SourcePath must be NULL.
+			/// </param>
+			/// <param name="pSourcePath">
+			/// Fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path may refer
+			/// to a virtual disk or a physical disk. If this parameter is not NULL, SourcePath must be NULL.
+			/// </param>
+			public CREATE_VIRTUAL_DISK_PARAMETERS(IntPtr pParentPath, IntPtr pSourcePath) : this()
+			{
+				Version = Environment.OSVersion.Version < new Version(6, 2) ? CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_1 : CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_2;
+				if (Version == CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_1)
+				{
+					Version1.ParentPath = pParentPath;
+					Version1.SourcePath = pSourcePath;
+				}
+				else
+				{
+					Version2.ParentPath = pParentPath;
+					Version2.SourcePath = pSourcePath;
+				}
+			}
+
 			/// <summary>
 			/// Contains virtual hard disk (VHD) creation parameters, providing control over, and information about, the newly created
 			/// virtual disk.
@@ -2377,6 +2404,38 @@ namespace Vanara.PInvoke
 				/// <summary>Caller-supplied CDB data. (The CDB structure is declared in scsi.h.)</summary>
 				public IntPtr Cdb;
 			}
+
+			/// <summary>Initializes a new instance of the <see cref="RAW_SCSI_VIRTUAL_DISK_PARAMETERS"/> struct.</summary>
+			/// <param name="read">
+			/// If <see langword="true"/>, indicates the SCSI command will read data from the DataBuffer. If <see langword="false"/>,
+			/// indicates data may be written.
+			/// </param>
+			/// <param name="srbFlags">
+			/// Caller-supplied SRB_FLAGS-prefixed bit flag specifying the requested operation. Flags are defined in srb.h.
+			/// </param>
+			/// <param name="scsiData">The SCSI data buffer.</param>
+			/// <param name="senseInfo">A buffer to receive SCSI sense info after completion of the command.</param>
+			/// <param name="cbdData">Caller-supplied CDB data. (The CDB structure is declared in scsi.h.)</param>
+			/// <param name="useRSVD">
+			/// If <see langword="true"/>, indicates the operation will be transported to the virtual disk using the RSVD protocol.
+			/// </param>
+			public RAW_SCSI_VIRTUAL_DISK_PARAMETERS(bool read, byte srbFlags, SafeAllocatedMemoryHandleBase scsiData,
+				SafeAllocatedMemoryHandleBase senseInfo, SafeAllocatedMemoryHandleBase cbdData, bool useRSVD = false)
+			{
+				Version = RAW_SCSI_VIRTUAL_DISK_VERSION.RAW_SCSI_VIRTUAL_DISK_VERSION_1;
+				Version1 = new()
+				{
+					RSVDHandle = useRSVD,
+					DataIn = read,
+					CdbLength = (byte)(uint)cbdData.Size,
+					SenseInfoLength = (byte)(uint)senseInfo.Size,
+					SrbFlags = srbFlags,
+					DataTransferLength = scsiData.Size,
+					DataBuffer = scsiData,
+					SenseInfo = senseInfo,
+					Cdb = cbdData
+				};
+			}
 		}
 
 		/// <summary>Contains raw SCSI virtual disk response parameters.</summary>
@@ -2401,7 +2460,7 @@ namespace Vanara.PInvoke
 				/// <summary>A SRB_STATUS-prefixed status value (defined in srb.h).</summary>
 				public byte ScsiStatus;
 
-				/// <summary>Length, in bytes, of the sense buffer.</summary>
+				/// <summary>A SRB_STATUS-prefixed status value (defined in srb.h).</summary>
 				public byte SenseInfoLength;
 
 				/// <summary>Length, in bytes, of the buffer to be transferred.</summary>
@@ -2832,25 +2891,27 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Initializes a new instance of the <see cref="OPEN_VIRTUAL_DISK_PARAMETERS"/> struct setting Version to OPEN_VIRTUAL_DISK_VERSION_2.
-			/// <para>
-			/// <c>Windows 7 and Windows Server 2008 R2:</c> This constructor is not supported until Windows 8 and Windows Server 2012.
-			/// </para>
+			/// <note type="note">Only supported on Windows 8 and later.</note>
 			/// </summary>
 			/// <param name="readOnly">If TRUE, indicates the file backing store is to be opened as read-only.</param>
 			/// <param name="getInfoOnly">If TRUE, indicates the handle is only to be used to get information on the virtual disk.</param>
 			/// <param name="resiliencyGuid">Resiliency GUID to specify when opening files.</param>
-			public OPEN_VIRTUAL_DISK_PARAMETERS(bool readOnly, bool getInfoOnly = false, Guid resiliencyGuid = default)
+			/// <param name="snapshotId">The snapshot identifier. <note type="note">Only supported on Windows 10 and later.</note></param>
+			public OPEN_VIRTUAL_DISK_PARAMETERS(bool readOnly, bool getInfoOnly = false, Guid resiliencyGuid = default, Guid snapshotId = default)
 			{
-				if (Environment.OSVersion.Version < new Version(6, 2))
-					throw new InvalidOperationException();
-				Version = OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2;
+				if (!PInvokeClient.Windows8.IsPlatformSupported())
+					throw new NotSupportedException();
+				if (snapshotId != Guid.Empty && !PInvokeClient.Windows10.IsPlatformSupported())
+					throw new NotSupportedException("Snapshots are only supported on Windows 10 and later.");
+				Version = PInvokeClient.Windows10.IsPlatformSupported() ? OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_3 : OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2;
 				Version2.GetInfoOnly = getInfoOnly;
 				Version2.ReadOnly = readOnly;
 				Version2.ResiliencyGuid = resiliencyGuid;
+				Version3.SnapshotId = snapshotId;
 			}
 
-			/// <summary>Gets the default value for this structure. This is currently the only valid value for <see cref="ATTACH_VIRTUAL_DISK_PARAMETERS"/>.</summary>
-			public static OPEN_VIRTUAL_DISK_PARAMETERS DefaultV2 => new(false);
+			/// <summary>Gets the default value for this structure based on current OS version.</summary>
+			public static OPEN_VIRTUAL_DISK_PARAMETERS Default => PInvokeClient.Windows8.IsPlatformSupported() ? new(false) : new(0);
 
 			/// <inheritdoc/>
 			public override string ToString()
