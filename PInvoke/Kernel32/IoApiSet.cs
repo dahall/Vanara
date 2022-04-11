@@ -648,10 +648,14 @@ namespace Vanara.PInvoke
 		{
 			using var ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>();
 			var ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out var bRet, IntPtr.Zero);
-			if (!ret && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			var err = Win32Error.GetLastError();
+			if (!ret && err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			{
-				ptrOut.Size = bRet;
+				ptrOut.Size = bRet == 0 ? ptrOut.Size * 16 : bRet;
 				ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out bRet, IntPtr.Zero);
+#if DEBUG
+				err = Win32Error.GetLastError();
+#endif
 			}
 			outVal = ret ? ptrOut.ToStructure<TOut>() : default;
 			return ret;
