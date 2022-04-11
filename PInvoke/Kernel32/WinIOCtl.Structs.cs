@@ -698,7 +698,7 @@ namespace Vanara.PInvoke
 		// DRIVE_LAYOUT_INFORMATION_GPT Gpt; } DUMMYUNIONNAME; PARTITION_INFORMATION_EX PartitionEntry[1]; } DRIVE_LAYOUT_INFORMATION_EX, *PDRIVE_LAYOUT_INFORMATION_EX;
 		[PInvokeData("winioctl.h", MSDNShortId = "381c87a8-fe40-4251-a4df-dddc9e2a126d")]
 		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<DRIVE_LAYOUT_INFORMATION_EX>), nameof(PartitionCount))]
-		[StructLayout(LayoutKind.Explicit)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct DRIVE_LAYOUT_INFORMATION_EX
 		{
 			/// <summary>
@@ -722,7 +722,6 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(0)]
 			public uint PartitionStyle;
 
 			/// <summary>
@@ -731,25 +730,33 @@ namespace Vanara.PInvoke
 			/// <c>PartitionType</c> member of the PARTITION_INFORMATION_MBR structure of the <c>Mbr</c> member of the
 			/// PARTITION_INFORMATION_EX structure of the <c>PartitionEntry</c> member of this structure.
 			/// </summary>
-			[FieldOffset(4)]
 			public uint PartitionCount;
+
+			private DUMMYUNIONNAME union;
+
+			/// <summary>A variable-sized array of PARTITION_INFORMATION_EX structures, one structure for each partition on the drive.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public PARTITION_INFORMATION_EX[] PartitionEntry;
 
 			/// <summary>
 			/// A DRIVE_LAYOUT_INFORMATION_MBR structure containing information about the master boot record type partitioning on the drive.
 			/// </summary>
-			[FieldOffset(8)]
-			public DRIVE_LAYOUT_INFORMATION_MBR Mbr;
+			public DRIVE_LAYOUT_INFORMATION_MBR Mbr => union.Mbr;
 
 			/// <summary>
 			/// A DRIVE_LAYOUT_INFORMATION_GPT structure containing information about the GUID disk partition type partitioning on the drive.
 			/// </summary>
-			[FieldOffset(8)]
-			public DRIVE_LAYOUT_INFORMATION_GPT Gpt;
+			public DRIVE_LAYOUT_INFORMATION_GPT Gpt => union.Gpt;
 
-			/// <summary>A variable-sized array of PARTITION_INFORMATION_EX structures, one structure for each partition on the drive.</summary>
-			[FieldOffset(48)]
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-			public PARTITION_INFORMATION_EX[] PartitionEntry;
+			[StructLayout(LayoutKind.Explicit, Size = 40)]
+			private struct DUMMYUNIONNAME
+			{
+				[FieldOffset(0)]
+				public DRIVE_LAYOUT_INFORMATION_MBR Mbr;
+
+				[FieldOffset(0)]
+				public DRIVE_LAYOUT_INFORMATION_GPT Gpt;
+			}
 		}
 
 		/// <summary>Contains information about a drive's GUID partition table (GPT) partitions.</summary>
