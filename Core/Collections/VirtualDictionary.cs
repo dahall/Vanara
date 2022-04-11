@@ -123,6 +123,11 @@ namespace Vanara.Collections
 			set => SetValue(key, value);
 		}
 
+		/// <summary>Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2"/>.</summary>
+		/// <param name="key">The object to use as the key of the element to add.</param>
+		/// <param name="value">The object to use as the value of the element to add.</param>
+		public virtual void Add(TKey key, TValue value) => SetValue(key, value);
+
 		/// <summary>Removes all items from the <see cref="IDictionary{TKey, TValue}"/>.</summary>
 		public virtual void Clear()
 		{
@@ -174,11 +179,6 @@ namespace Vanara.Collections
 		/// <see langword="true"/> if the <see cref="IDictionary{TKey, TValue}"/> contains an element with the key; otherwise, <see langword="false"/>.
 		/// </returns>
 		public abstract bool TryGetValue(TKey key, out TValue value);
-
-		/// <summary>Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2"/>.</summary>
-		/// <param name="key">The object to use as the key of the element to add.</param>
-		/// <param name="value">The object to use as the value of the element to add.</param>
-		void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => SetValue(key, value);
 
 		/// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
 		/// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
