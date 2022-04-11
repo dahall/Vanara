@@ -1,10 +1,13 @@
 ﻿using NUnit.Framework;
 using System;
+using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Threading;
 using System.Threading.Tasks;
 using Vanara.InteropServices;
+using Vanara.PInvoke.Tests;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.VirtDisk;
 
 namespace Vanara.IO.Tests
@@ -12,10 +15,10 @@ namespace Vanara.IO.Tests
 	[TestFixture]
 	public class VirtualDiskTests
 	{
-		private static readonly string badfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestInvalid.vhdx";
-		private static readonly string fn = Vanara.PInvoke.Tests.TestCaseSources.VirtualDisk;
-		private static readonly string tmpcfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD - Diff.vhd";
-		private static readonly string tmpfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD.vhd";
+		private static readonly string badfn = TestCaseSources.TempDirWhack + "TestInvalid.vhdx";
+		private static readonly string fn = TestCaseSources.VirtualDisk;
+		private static readonly string tmpcfn = TestCaseSources.TempDirWhack + "TestVHD - Diff.vhd";
+		private static readonly string tmpfn = TestCaseSources.TempDirWhack + "TestVHD.vhd";
 
 		[Test]
 		public async Task CompactAsync1Test()
@@ -34,7 +37,7 @@ namespace Vanara.IO.Tests
 			using var vhd = VirtualDisk.Open(fn, false);
 			var rpt = new Reporter();
 			rpt.NewVal += (o, e) => TestContext.WriteLine($"{DateTime.Now:o} NewVal={e}");
-			await vhd.CompactAsync(VirtualDisk.CompactionMode.Quick, default, rpt);
+			await vhd.CompactAsync(VirtualDisk.CompactionMode.Full, default, rpt);
 			Assert.That(rpt.lastVal, Is.EqualTo(100));
 		}
 
@@ -58,9 +61,9 @@ namespace Vanara.IO.Tests
 			finally
 			{
 				var fn2 = fn.TrimEnd('x');
-				while (System.IO.File.Exists(fn2))
+				while (File.Exists(fn2))
 				{
-					try { System.IO.File.Delete(fn2); } catch { Thread.Sleep(500); }
+					try { File.Delete(fn2); } catch { Thread.Sleep(500); }
 				}
 			}
 		}
@@ -73,9 +76,9 @@ namespace Vanara.IO.Tests
 			{
 				using var vhdp = VirtualDisk.Create(tmpfn, sz);
 				using var vhd = VirtualDisk.CreateDifferencing(tmpcfn, tmpfn);
-				Assert.That(System.IO.File.Exists(tmpcfn));
-				Assert.That(System.IO.File.Exists(tmpfn));
-				Assert.That(System.IO.File.Exists(tmpfn));
+				Assert.That(File.Exists(tmpcfn));
+				Assert.That(File.Exists(tmpfn));
+				Assert.That(File.Exists(tmpfn));
 				Assert.That(vhd.Attached, Is.False);
 				Assert.That(vhd.BlockSize, Is.EqualTo(0x200000));
 				Assert.That(vhd.DiskType, Is.EqualTo(VirtualDisk.DeviceType.Vhd));
@@ -107,8 +110,8 @@ namespace Vanara.IO.Tests
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpcfn);
-				System.IO.File.Delete(tmpfn);
+				File.Delete(tmpcfn);
+				File.Delete(tmpfn);
 			}
 		}
 
@@ -120,7 +123,7 @@ namespace Vanara.IO.Tests
 			{
 				using var vhd = VirtualDisk.Create(tmpfn, sz);
 				//vhd.Attach(true);
-				Assert.That(System.IO.File.Exists(tmpfn));
+				Assert.That(File.Exists(tmpfn));
 				Assert.That(vhd.Attached, Is.False);
 				Assert.That(vhd.BlockSize, Is.GreaterThan(0));
 				Assert.That(vhd.DiskType, Is.EqualTo(VirtualDisk.DeviceType.Vhd));
@@ -151,7 +154,7 @@ namespace Vanara.IO.Tests
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpfn);
+				File.Delete(tmpfn);
 			}
 		}
 
@@ -162,29 +165,14 @@ namespace Vanara.IO.Tests
 			try
 			{
 				using var vhd = VirtualDisk.Create(tmpfn, sz, false, null);
-				Assert.That(System.IO.File.Exists(tmpfn));
+				Assert.That(File.Exists(tmpfn));
 				Assert.That(vhd.PhysicalSize, Is.GreaterThanOrEqualTo(sz));
 				Assert.That(vhd.ProviderSubtype, Is.EqualTo(VirtualDisk.Subtype.Fixed));
 				Assert.That(vhd.VirtualSize, Is.EqualTo(sz));
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpfn);
-			}
-		}
-
-		[Test]
-		public void CreateFromSourceTest()
-		{
-			try
-			{
-				using var vhd = VirtualDisk.CreateFromSource(tmpfn, fn);
-				Assert.That(System.IO.File.Exists(tmpfn));
-				vhd.Close();
-			}
-			finally
-			{
-				System.IO.File.Delete(tmpfn);
+				File.Delete(tmpfn);
 			}
 		}
 
@@ -198,35 +186,28 @@ namespace Vanara.IO.Tests
 				rpt.NewVal += (o, e) => TestContext.WriteLine($"{DateTime.Now:o} NewVal={e}");
 				vd = await VirtualDisk.CreateFromSourceAsync(tmpfn, fn, default, rpt);
 				Assert.That(rpt.lastVal, Is.EqualTo(100));
-				Assert.That(System.IO.File.Exists(tmpfn));
-				TestContext.WriteLine($"New file sz: {new System.IO.FileInfo(tmpfn).Length}");
+				Assert.That(File.Exists(tmpfn));
+				TestContext.WriteLine($"New file sz: {new FileInfo(tmpfn).Length}");
 			}
 			finally
 			{
 				vd?.Close();
-				try { System.IO.File.Delete(tmpfn); } catch { }
+				try { File.Delete(tmpfn); } catch { }
 			}
 		}
 
 		[Test]
-		public void DetachTest()
+		public void CreateFromSourceTest()
 		{
-			const int sz = 0x03010400;
 			try
 			{
-				using (var vhd = VirtualDisk.Create(tmpfn, sz))
-				{
-					Assert.That(vhd.Attached, Is.False);
-					vhd.Attach(true, false, true, null);
-					Assert.That(vhd.Attached, Is.True);
-				}
-				Assert.That(VirtualDisk.IsAttached(tmpfn), Is.True);
-				Assert.That(() => VirtualDisk.Detach(tmpfn), Throws.Nothing);
-				Assert.That(VirtualDisk.IsAttached(tmpfn), Is.False);
+				using var vhd = VirtualDisk.CreateFromSource(tmpfn, fn);
+				Assert.That(File.Exists(tmpfn));
+				vhd.Close();
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpfn);
+				File.Delete(tmpfn);
 			}
 		}
 
@@ -237,14 +218,14 @@ namespace Vanara.IO.Tests
 			try
 			{
 				using var vhd = VirtualDisk.Create(tmpfn, sz, true, null);
-				Assert.That(System.IO.File.Exists(tmpfn));
+				Assert.That(File.Exists(tmpfn));
 				Assert.That(vhd.VirtualSize, Is.EqualTo(sz));
 				vhd.Expand(sz * 2);
 				Assert.That(vhd.VirtualSize, Is.EqualTo(sz * 2));
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpfn);
+				File.Delete(tmpfn);
 			}
 		}
 
@@ -291,7 +272,7 @@ namespace Vanara.IO.Tests
 			}
 			finally
 			{
-				System.IO.File.Delete(lfn);
+				File.Delete(lfn);
 			}
 		}
 
@@ -309,7 +290,44 @@ namespace Vanara.IO.Tests
 			}
 			finally
 			{
-				System.IO.File.Delete(lfn);
+				File.Delete(lfn);
+			}
+		}
+
+		[Test]
+		public async Task GetVHDSetInformationTestAsync()
+		{
+			var newfn = tmpfn + "s";
+			try
+			{
+				using VirtualDisk vhd = await MakeSet();
+				VirtualDiskSetInformation si = default;
+				Assert.That(() => si = vhd.GetVHDSetInformation(), Throws.Nothing);
+				Assert.That(si?.Path, Is.Not.Null);
+				vhd.Close();
+				foreach (FileInfo a in si.AllPaths.Select(s => new FileInfo(Path.Combine(Path.GetDirectoryName(newfn), s))).OrderByDescending(f => f.CreationTime))
+					//await VirtualDisk.MergeAsync(a.FullName, newfn);
+					File.Delete(a.FullName);
+			}
+			finally
+			{
+				File.Delete(newfn);
+			}
+		}
+
+		private async Task<VirtualDisk> MakeSet()
+		{
+			var newfn = tmpfn + "x";
+			File.Copy(fn, newfn);
+			try
+			{
+				await VirtualDisk.ConvertToVHDSetAsync(newfn);
+				Assert.That(File.Exists(tmpfn + "s"));
+				return VirtualDisk.Open(tmpfn + "s", false);
+			}
+			finally
+			{
+				File.Delete(newfn);
 			}
 		}
 
@@ -320,15 +338,15 @@ namespace Vanara.IO.Tests
 			try
 			{
 				using (var vhdp = VirtualDisk.Create(tmpfn, sz))
-					Assert.That(System.IO.File.Exists(tmpfn));
+					Assert.That(File.Exists(tmpfn));
 				using var vhd = VirtualDisk.CreateDifferencing(tmpcfn, tmpfn);
-				Assert.That(System.IO.File.Exists(tmpcfn));
+				Assert.That(File.Exists(tmpcfn));
 				vhd.Merge(1, 2);
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpcfn);
-				System.IO.File.Delete(tmpfn);
+				File.Delete(tmpcfn);
+				File.Delete(tmpfn);
 			}
 		}
 
@@ -339,16 +357,30 @@ namespace Vanara.IO.Tests
 			try
 			{
 				using (var vhdp = VirtualDisk.Create(tmpfn, sz))
-					Assert.That(System.IO.File.Exists(tmpfn));
+					Assert.That(File.Exists(tmpfn));
 				using var vhd = VirtualDisk.CreateDifferencing(tmpcfn, tmpfn);
-				Assert.That(System.IO.File.Exists(tmpcfn));
+				Assert.That(File.Exists(tmpcfn));
 				vhd.MergeWithParent();
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpcfn);
-				System.IO.File.Delete(tmpfn);
+				File.Delete(tmpcfn);
+				File.Delete(tmpfn);
 			}
+		}
+
+		[Test]
+		public void MirrorTestAsync()
+		{
+			var mvhd = TestCaseSources.TempDirWhack + "mirror.vhdx";
+			using (var vhd = VirtualDisk.Open(fn, true))
+			{
+				vhd.MirrorAsync(mvhd).Wait();
+				Assert.That(File.Exists(mvhd));
+				vhd.BreakMirror();
+			}
+			Task.Delay(500);
+			File.Delete(mvhd);
 		}
 
 		[Test]
@@ -373,23 +405,56 @@ namespace Vanara.IO.Tests
 		[Test]
 		public void OpenAttachTest()
 		{
+			using var vhd = VirtualDisk.Open(fn, true);
+			Assert.That(vhd.Attached, Is.False);
+			var beforeDrives = GetLogicalDrives();
+			vhd.Attach("T:\\", true, true, GetWorldFullFileSecurity());
+			Assert.That(vhd.Attached, Is.True);
+			Assert.That(beforeDrives, Is.Not.EqualTo(GetLogicalDrives()));
+			TestContext.WriteLine(vhd.PhysicalPath);
+			TestContext.WriteLine(vhd.VolumeGuidPath);
+			TestContext.WriteLine(vhd.VolumeMountPoint);
+			Assert.That(vhd.PhysicalPath, Is.Not.Null); // must be attached
+			vhd.Detach();
+			Assert.That(vhd.Attached, Is.False);
+			vhd.Attach(true, true, true);
+			Assert.That(vhd.Attached, Is.True);
+			Assert.That(beforeDrives, Is.EqualTo(GetLogicalDrives()));
+			vhd.Close();
+			Assert.That(vhd.Attached, Is.False);
+		}
+
+		/*[Test]
+		public void SetSnapshotInformationAsyncTest()
+		{
+			var vhd = MakeSet().Result;
+			var newfn = vhd.ImagePath;
+			vhd.Dispose();
 			try
 			{
-				using var vhd = VirtualDisk.Open(fn, true);
-				Assert.That(vhd.Attached, Is.False);
-				vhd.Attach(true, true, false, GetWorldFullFileSecurity());
-				Assert.That(vhd.Attached, Is.True);
-				TestContext.WriteLine(vhd.PhysicalPath);
-				Assert.That(vhd.PhysicalPath, Is.Not.Null); // must be attached
-				vhd.Detach();
-				Assert.That(vhd.Attached, Is.False);
-				vhd.Attach();
-				Assert.That(vhd.Attached, Is.True);
-				vhd.Close();
-				Assert.That(vhd.Attached, Is.False);
+				VirtualDisk.SetSnapshotInformationAsync(new VirtualDiskSnapshotInformation(newfn, Guid.NewGuid())).Wait();
 			}
 			finally
 			{
+				File.Delete(newfn);
+			}
+		}*/
+
+		// [Test] Don't know how to create a file that shows query changes
+		public void QueryChangesTest()
+		{
+			using var vhd = MakeSet().Result;
+			var newfn = vhd.ImagePath;
+			try
+			{
+				vhd.ResilientChangeTrackingEnabled = true;
+				vhd.TakeSnapshot(Guid.NewGuid(), true);
+				QUERY_CHANGES_VIRTUAL_DISK_RANGE[] chgs = vhd.QueryChanges("rctX:e59e6991:208a:44d9:ae6a:2f14351d792f:00000000");
+			}
+			finally
+			{
+				vhd.Dispose();
+				File.Delete(newfn);
 			}
 		}
 
@@ -411,16 +476,55 @@ namespace Vanara.IO.Tests
 			try
 			{
 				using var vhd = VirtualDisk.Create(tmpfn, sz, true, null);
-				Assert.That(System.IO.File.Exists(tmpfn));
+				Assert.That(File.Exists(tmpfn));
 				Assert.That(vhd.VirtualSize, Is.EqualTo(sz));
 				vhd.Resize(sz * 2);
 				Assert.That(vhd.VirtualSize, Is.EqualTo(sz * 2));
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpfn);
+				File.Delete(tmpfn);
 			}
 		}
+
+		[Test]
+		public async Task SnapshotTest()
+		{
+			VirtualDisk vhd = await MakeSet();
+			var newfn = vhd.ImagePath;
+			try
+			{
+				var id = Guid.NewGuid();
+				vhd.TakeSnapshot(id);
+				vhd.DeleteSnapshot(id);
+			}
+			finally
+			{
+				vhd?.Dispose();
+				File.Delete(newfn);
+			}
+		}
+
+		/*[Test]
+		public void GetSnapshotInformationTest()
+		{
+			var vhd = MakeSet().Result;
+			var newfn = vhd.ImagePath;
+			try
+			{
+				var id = Guid.NewGuid();
+				vhd.TakeSnapshot(id);
+				vhd.Dispose();
+				vhd = null;
+				var si = VirtualDisk.GetSnapshotInformation(newfn, id);
+				Assert.That(si.FilePath, Is.Not.Null);
+			}
+			finally
+			{
+				vhd?.Dispose();
+				File.Delete(newfn);
+			}
+		}*/
 
 		[Test]
 		public void UnsafeResizeTest()
@@ -429,13 +533,13 @@ namespace Vanara.IO.Tests
 			try
 			{
 				using var vhd = VirtualDisk.Create(tmpfn, sz * 2, true, null);
-				Assert.That(System.IO.File.Exists(tmpfn));
+				Assert.That(File.Exists(tmpfn));
 				Assert.That(vhd.VirtualSize, Is.EqualTo(sz * 2));
 				Assert.That(() => vhd.UnsafeResize(sz), Throws.Exception);
 			}
 			finally
 			{
-				System.IO.File.Delete(tmpfn);
+				File.Delete(tmpfn);
 			}
 		}
 
@@ -450,6 +554,12 @@ namespace Vanara.IO.Tests
 
 			res = await VirtualDisk.ValidateAsync(badfn, CancellationToken.None, rpt);
 			Assert.That(!res);
+		}
+
+		[Test]
+		public void ValidatePersistentReservationSupportTest()
+		{
+			Assert.That(VirtualDisk.ValidatePersistentReservationSupport(fn), Is.False);
 		}
 
 		private static FileSecurity GetFileSecurity(string sddl)
