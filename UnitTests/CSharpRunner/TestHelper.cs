@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -15,8 +14,9 @@ namespace Vanara.PInvoke.Tests
 	{
 		private const string testApp = @"C:\Users\dahall\Documents\Visual Studio 2017\Projects\TestSysConsumption\bin\Debug\netcoreapp3.0\TestSysConsumption.exe";
 
-		private static Lazy<JsonSerializerSettings> jsonSet = new Lazy<JsonSerializerSettings>(() =>
-			new JsonSerializerSettings() {
+		private static readonly Lazy<JsonSerializerSettings> jsonSet = new(() =>
+			new JsonSerializerSettings()
+			{
 				Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter() },
 				ReferenceLoopHandling = ReferenceLoopHandling.Serialize
 			});
@@ -25,19 +25,18 @@ namespace Vanara.PInvoke.Tests
 
 		public static void SetThrottle(string type, bool on)
 		{
-			using (var evt = new EventWaitHandle(false, EventResetMode.AutoReset, (on ? "" : "End") + type))
-				evt.Set();
+			using var evt = new EventWaitHandle(false, EventResetMode.AutoReset, (on ? "" : "End") + type);
+			evt.Set();
 		}
 
-		public static IList<string> GetNestedStructSizes(this Type type, params string[] filters)
+		public static IList<string> GetNestedStructSizes(this Type type, params string[] filters) =>
+			type.GetNestedTypes(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).GetStructSizes(false, filters);
+
+		public static IList<string> GetStructSizes(this Type[] types, bool fullName = false, params string[] filters)
 		{
-			var output = new List<string>();
-			var attr = System.Reflection.TypeAttributes.SequentialLayout | System.Reflection.TypeAttributes.ExplicitLayout;
-			foreach (var t in type.GetNestedTypes(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).
-				Where(t => t.IsValueType && !t.IsEnum && (t.Attributes & attr) != 0 && ((filters?.Length ?? 0) == 0 || filters.Any(s => t.Name.Contains(s)))))
-				output.Add($"{t.Name} = {Marshal.SizeOf(t)}");
-			output.Sort();
-			return output;
+			System.Reflection.TypeAttributes attr = System.Reflection.TypeAttributes.SequentialLayout | System.Reflection.TypeAttributes.ExplicitLayout;
+			return types.Where(t => t.IsValueType && !t.IsEnum && !t.IsGenericType && (t.Attributes & attr) != 0 && ((filters?.Length ?? 0) == 0 || filters.Any(s => t.Name.Contains(s)))).
+				OrderBy(t => (fullName ? t.FullName : t.Name)).Select(t => $"{(fullName ? t.FullName : t.Name)} = {InteropExtensions.SizeOf(t)}").ToList();
 		}
 
 		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, object, object[]> action = null, Action<Exception> error = null) where TEnum : Enum =>
@@ -45,17 +44,17 @@ namespace Vanara.PInvoke.Tests
 
 		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, Exception> error = null, Action<TEnum, object, object[]> action = null, CorrespondingAction? filter = null) where TEnum : Enum
 		{
-			var mi = lib.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Where(m => m.IsGenericMethod && m.Name == name).First();
+			System.Reflection.MethodInfo mi = lib.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Where(m => m.IsGenericMethod && m.Name == name).First();
 			if (mi is null) throw new ArgumentException("Unable to find method.");
-			foreach (var e in Enum.GetValues(typeof(TEnum)).Cast<TEnum>())
+			foreach (TEnum e in Enum.GetValues(typeof(TEnum)).Cast<TEnum>())
 			{
-				var type = (filter.HasValue ? CorrespondingTypeAttribute.GetCorrespondingTypes(e, filter.Value) : CorrespondingTypeAttribute.GetCorrespondingTypes(e)).FirstOrDefault();
+				Type type = (filter.HasValue ? CorrespondingTypeAttribute.GetCorrespondingTypes(e, filter.Value) : CorrespondingTypeAttribute.GetCorrespondingTypes(e)).FirstOrDefault();
 				if (type is null)
 				{
 					TestContext.WriteLine($"No corresponding type found for {e}.");
 					continue;
 				}
-				var gmi = mi.MakeGenericMethod(type);
+				System.Reflection.MethodInfo gmi = mi.MakeGenericMethod(type);
 				var param = makeParam(e);
 				try
 				{
@@ -85,9 +84,9 @@ namespace Vanara.PInvoke.Tests
 					goto Simple;
 
 				case DateTime:
-				case Decimal:
+				case decimal:
 				case var v when v.GetType().IsPrimitive || v.GetType().IsEnum:
-					Simple:
+Simple:
 					return $"{value.GetType().Name} : [{value}]";
 
 				case string s:
