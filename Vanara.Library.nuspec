@@ -72,6 +72,7 @@
       <dependency id="Vanara.PInvoke.RstrtMgr" version="3.4.1" />
       <dependency id="Vanara.PInvoke.SearchApi" version="3.4.1" />
       <dependency id="Vanara.PInvoke.Security" version="3.4.1" />
+      <dependency id="Vanara.PInvoke.SensorsApi" version="3.4.1" />
       <dependency id="Vanara.PInvoke.SetupAPI" version="3.4.1" />
       <dependency id="Vanara.PInvoke.Shared" version="3.4.1" />
       <dependency id="Vanara.PInvoke.SHCore" version="3.4.1" />
