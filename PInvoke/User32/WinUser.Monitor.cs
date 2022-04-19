@@ -799,7 +799,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public MonitorFlags dwFlags;
+			public MonitorInfoFlags dwFlags;
 
 			/// <summary>
 			/// <para>
