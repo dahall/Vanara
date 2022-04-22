@@ -8,7 +8,7 @@ namespace Vanara.PInvoke
 	// typedef DWORD COLORREF;typedef DWORD* LPCOLORREF; https://msdn.microsoft.com/en-us/library/windows/desktop/dd183449(v=vs.85).aspx
 	[PInvokeData("Windef.h", MSDNShortId = "dd183449")]
 	[StructLayout(LayoutKind.Explicit, Size = 4)]
-	public struct COLORREF
+	public struct COLORREF : IEquatable<COLORREF>
 	{
 		/// <summary>The DWORD value</summary>
 		[FieldOffset(0)]
@@ -80,6 +80,17 @@ namespace Vanara.PInvoke
 
 			byte Conv(byte c) => (byte)(c - (int)(c * percent));
 		}
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is COLORREF q && Equals(q);
+
+		/// <summary>Determines whether the specified object is equal to the current object.</summary>
+		/// <param name="c">The object to compare with the current object.</param>
+		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
+		public bool Equals(COLORREF c) => c.A == A && c.B == B && c.G == G && c.R == R;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => ToArgb();
 
 		/// <summary>A method to lighten a color by a percentage of the difference between the color and Black.</summary>
 		/// <param name="percent">The percentage by which to lighten the original color.</param>
