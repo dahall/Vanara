@@ -267,6 +267,19 @@ public partial class VirtualDisk : IDisposable, IHandle
 		}
 	}
 
+	/// <summary>Gets the volume GUID paths for an attached virtual disk.</summary>
+	public string[] VolumeGuidPaths
+	{
+		get
+		{
+			if (!Attached)
+				return null;
+
+			var diskNo = GetDiskNumberFromDevicePath(PhysicalPath);
+			return diskNo.HasValue ? GetVolumeGuidsFromDiskNumber(diskNo.Value).ToArray() : null;
+		}
+	}
+
 	/// <summary>Gets the volume mount point for an attached virtual disk.</summary>
 	public string VolumeMountPoint
 	{
@@ -274,6 +287,16 @@ public partial class VirtualDisk : IDisposable, IHandle
 		{
 			var volPath = VolumeGuidPath;
 			return volPath is null ? null : GetVolumeMountPoints(volPath).FirstOrDefault();
+		}
+	}
+
+	/// <summary>Gets the volume mount points for an attached virtual disk.</summary>
+	public string[] VolumeMountPoints
+	{
+		get
+		{
+			var volPath = VolumeGuidPath;
+			return volPath is null ? null : GetVolumeMountPoints(volPath);
 		}
 	}
 
@@ -717,23 +740,51 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// security descriptor does not grant write attributes permission for a user, Shell displays the following error when the user accesses
 	/// the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
 	/// </param>
-	public void Attach(string mountPoint, bool readOnly = false, bool autoDetach = true, FileSecurity access = null)
+	public void Attach(string mountPoint, bool readOnly = false, bool autoDetach = true, FileSecurity access = null) =>
+		Attach(mountPoint is null ? null : new[] { mountPoint }, readOnly, autoDetach, access);
+
+	/// <summary>
+	/// Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.
+	/// </summary>
+	/// <param name="mountPoints">
+	/// The user-mode paths to be associated with the volume. These may be a drive letter (for example, "X:\") or a directory on another
+	/// volume (for example, "Y:\MountX\"). The string must end with a trailing backslash ('\'). Use "*" as the first and only entry to have
+	/// the system assign a drive letter or <see langword="null"/> to leave the drive letter unassigned.
+	/// </param>
+	/// <param name="readOnly">Attach the virtual disk as read-only.</param>
+	/// <param name="autoDetach">
+	/// If <c>false</c>, decouple the virtual disk lifetime from that of the VirtualDisk. The virtual disk will be attached until the Detach
+	/// function is called, even if all open instances of the virtual disk are disposed.
+	/// </param>
+	/// <param name="access">
+	/// An optional pointer to a FileSecurity instance to apply to the attached virtual disk. If this parameter is <see langword="null"/>,
+	/// the security descriptor of the virtual disk image file is used. Ensure that the security descriptor that AttachVirtualDisk applies to
+	/// the attached virtual disk grants the write attributes permission for the user, or that the security descriptor of the virtual disk
+	/// image file grants the write attributes permission for the user if you specify <see langword="null"/> for this parameter. If the
+	/// security descriptor does not grant write attributes permission for a user, Shell displays the following error when the user accesses
+	/// the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
+	/// </param>
+	public void Attach(string[] mountPoints, bool readOnly = false, bool autoDetach = true, FileSecurity access = null)
 	{
+		var vgp = VolumeGuidPaths;
+		if (mountPoints.Length == 0 || mountPoints.Length > vgp.Length || (mountPoints[0] != "*" && mountPoints.Any(p => p == "*")))
+			throw new ArgumentException();
+
 		ATTACH_VIRTUAL_DISK_FLAG flags = readOnly ? ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY : 0;
 		if (!autoDetach)
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME;
-
-		if (mountPoint != "*")
+		if (mountPoints.Length == 1 && mountPoints[0] != "*")
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_DRIVE_LETTER;
-
 		if (access is null)
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_SECURITY_DESCRIPTOR;
 
 		ATTACH_VIRTUAL_DISK_PARAMETERS param = ATTACH_VIRTUAL_DISK_PARAMETERS.Default;
 		using SafePSECURITY_DESCRIPTOR sd = FileSecToSd(access);
 		Attach(flags, param, sd);
-		if (mountPoint is not null and not "*")
-			Win32Error.ThrowLastErrorIfFalse(SetVolumeMountPoint(mountPoint, VolumeGuidPath));
+
+		if (mountPoints is null || mountPoints[0] is "*") return;
+		for (var i = 0; i < mountPoints.Length; i++)
+			Win32Error.ThrowLastErrorIfFalse(SetVolumeMountPoint(mountPoints[i], vgp[i]));
 	}
 
 	/// <summary>
@@ -1214,13 +1265,15 @@ public partial class VirtualDisk : IDisposable, IHandle
 		}
 	}
 
-	private static string GetVolumeGuidFromDiskNumber(uint diskNo) => EnumVolumes().FirstOrDefault(v =>
-		{
-			using var hfile = OpenDrive(v.TrimEnd('\\'));
-			return !hfile.IsInvalid &&
-				DeviceIoControl(hfile, IOControlCode.IOCTL_STORAGE_GET_DEVICE_NUMBER, out STORAGE_DEVICE_NUMBER output) &&
-				output.DeviceNumber == diskNo;
-		});
+	private static string GetVolumeGuidFromDiskNumber(uint diskNo) => GetVolumeGuidsFromDiskNumber(diskNo).FirstOrDefault();
+
+	private static IEnumerable<string> GetVolumeGuidsFromDiskNumber(uint diskNo) => EnumVolumes().Where(v =>
+	{
+		using var hfile = OpenDrive(v.TrimEnd('\\'));
+		return !hfile.IsInvalid &&
+			DeviceIoControl(hfile, IOControlCode.IOCTL_STORAGE_GET_DEVICE_NUMBER, out STORAGE_DEVICE_NUMBER output) &&
+			output.DeviceNumber == diskNo;
+	}).ToArray();
 
 	/// <summary>Retrieves a list of drive letters and mounted folder paths for the specified volume.</summary>
 	/// <param name="volumeName">A volume GUID path for the volume. A volume GUID path is of the form "\\?\Volume{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}\".</param>
