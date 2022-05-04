@@ -390,7 +390,6 @@ Native Structure | Header | Managed Structure
 [PSFEATURE_OUTPUT](https://www.google.com/search?num=5&q=PSFEATURE_OUTPUT+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.PSFEATURE_OUTPUT](https://github.com/dahall/Vanara/search?l=C%23&q=PSFEATURE_OUTPUT)  
 [PSINJECTDATA](https://www.google.com/search?num=5&q=PSINJECTDATA+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.PSINJECTDATA](https://github.com/dahall/Vanara/search?l=C%23&q=PSINJECTDATA)  
 [RASTERIZER_STATUS](https://www.google.com/search?num=5&q=RASTERIZER_STATUS+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.RASTERIZER_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=RASTERIZER_STATUS)  
-[RGBQUAD](https://www.google.com/search?num=5&q=RGBQUAD+site%3Adocs.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.RGBQUAD](https://github.com/dahall/Vanara/search?l=C%23&q=RGBQUAD)  
 [RGBTRIPLE](https://www.google.com/search?num=5&q=RGBTRIPLE+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.RGBTRIPLE](https://github.com/dahall/Vanara/search?l=C%23&q=RGBTRIPLE)  
 [RGNDATA](https://www.google.com/search?num=5&q=RGNDATA+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.RGNDATA](https://github.com/dahall/Vanara/search?l=C%23&q=RGNDATA)  
 [RGNDATAHEADER](https://www.google.com/search?num=5&q=RGNDATAHEADER+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.RGNDATAHEADER](https://github.com/dahall/Vanara/search?l=C%23&q=RGNDATAHEADER)  

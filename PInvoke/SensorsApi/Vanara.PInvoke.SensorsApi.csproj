@@ -9,12 +9,17 @@
     <AssemblyName>Vanara.PInvoke.SensorsApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;sensor;api</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Interfaces
+ILocationPermissions ISensor ISensorCollection ISensorDataReport ISensorEvents ISensorManager ISensorManagerEvents
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-      <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-      <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
-      <ProjectReference Include="..\PortableDeviceApi\Vanara.PInvoke.PortableDeviceApi.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
+    <ProjectReference Include="..\PortableDeviceApi\Vanara.PInvoke.PortableDeviceApi.csproj" />
   </ItemGroup>
 </Project>

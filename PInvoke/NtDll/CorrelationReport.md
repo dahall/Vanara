@@ -36,7 +36,7 @@ Native Method | Header | Managed Method
 [NtCommitComplete](https://www.google.com/search?num=5&q=NtCommitComplete+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.NtCommitComplete](https://github.com/dahall/Vanara/search?l=C%23&q=NtCommitComplete)  
 [NtCommitEnlistment](https://www.google.com/search?num=5&q=NtCommitEnlistment+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.NtCommitEnlistment](https://github.com/dahall/Vanara/search?l=C%23&q=NtCommitEnlistment)  
 [NtCommitTransaction](https://www.google.com/search?num=5&q=NtCommitTransaction+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.NtCommitTransaction](https://github.com/dahall/Vanara/search?l=C%23&q=NtCommitTransaction)  
-[NtCompareTokens](https://www.google.com/search?num=5&q=NtCompareTokens+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.NtCompareTokens](https://github.com/dahall/Vanara/search?l=C%23&q=NtCompareTokens)  
+[NtCompareTokens](https://www.google.com/search?num=5&q=NtCompareTokens+site%3Adocs.microsoft.com) | Ntseapi.h | [Vanara.PInvoke.NtDll.NtCompareTokens](https://github.com/dahall/Vanara/search?l=C%23&q=NtCompareTokens)  
 [NtContinueEx](https://www.google.com/search?num=5&q=NtContinueEx+site%3Adocs.microsoft.com) |  |   
 [NtCreateCrossVmEvent](https://www.google.com/search?num=5&q=NtCreateCrossVmEvent+site%3Adocs.microsoft.com) |  |   
 [NtCreateCrossVmMutant](https://www.google.com/search?num=5&q=NtCreateCrossVmMutant+site%3Adocs.microsoft.com) |  |   

@@ -158,6 +158,7 @@ Struct | Description
 [Vanara.PInvoke.RECT](https://github.com/dahall/Vanara/search?l=C%23&q=RECT) | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
 [Vanara.PInvoke.ResourceId](https://github.com/dahall/Vanara/search?l=C%23&q=ResourceId) | Helper structure to use for a pointer that can morph into a string, pointer or integer.
 [Vanara.PInvoke.ResourceIdOrHandle<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ResourceIdOrHandle<T>) | Helper structure to use for a pointer that can morph into a string, handle or integer.
+[Vanara.PInvoke.RGBQUAD](https://github.com/dahall/Vanara/search?l=C%23&q=RGBQUAD) | The RGBQUAD structure describes a color consisting of relative intensities of red, green, and blue.
 [Vanara.PInvoke.SECURITY_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=SECURITY_ATTRIBUTES) | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
 [Vanara.PInvoke.SIZE](https://github.com/dahall/Vanara/search?l=C%23&q=SIZE) | The <c>SIZE</c> structure specifies the width and height of a rectangle.
 [Vanara.PInvoke.SYSTEMTIME](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEMTIME) | Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.
@@ -169,7 +170,7 @@ Struct | Description
 ### Interfaces
 Interface | Description
 ---- | ----
-[Vanara.PInvoke.IClipboardFormatter](https://github.com/dahall/Vanara/search?l=C%23&q=IClipboardFormatter) | 
+[Vanara.PInvoke.IClipboardFormatter](https://github.com/dahall/Vanara/search?l=C%23&q=IClipboardFormatter) | A formatter used to get and set objects on the clipboard. When implemented, use the `Vanara.PInvoke.ClipCorrespondingTypeAttribute.Formatter` property to
 [Vanara.Collections.ICOMEnum<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ICOMEnum<T>) | A generic interface to identify matching COM enumerator interfaces
 [Vanara.PInvoke.IErrorProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IErrorProvider) | Common properties and methods for errors.
 [Vanara.PInvoke.IGraphicsObjectHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IGraphicsObjectHandle) | Signals that a structure or class holds a handle to a synchronization object.
@@ -185,7 +186,7 @@ Class | Description
 [Vanara.InteropServices.AnySizeStringMarshaler<T>](https://github.com/dahall/Vanara/search?l=C%23&q=AnySizeStringMarshaler<T>) | A marshaler implementation of `Vanara.InteropServices.IVanaraMarshaler` to marshal structures whose last field is a character array of length (1) and that uses a field to determine the length of the full string. <para> Use the cookie paramter of `Vanara.InteropServices.AnySizeStringMarshaler`1` to specify the name of the field in <typeparamref name="T" /> that specifies the length of the string in the last field of <typeparamref name="T" /> along with use indicators. </para> <para> If the field specifies byte, rather than character length, follow the field name with a colon (:) followed by 'b' (for bytes) or 'c' (for characters). </para> <para> If the field specifies a length that does NOT include the NULL terminator, follow the field name, colon (:), and type specifier by 'r' (for raw) or 'n' (for null-terminated). </para> <para>If the field name is "*", then the string length will be determined by the amount of allocated memory.</para>
 [Vanara.PInvoke.AssociateAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=AssociateAttribute) | Associates a Guid with an element.
 [Vanara.PInvoke.AssociateStringAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=AssociateStringAttribute) | Associates a string with an element.
-[Vanara.PInvoke.ClipCorrespondingTypeAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=ClipCorrespondingTypeAttribute) | 
+[Vanara.PInvoke.ClipCorrespondingTypeAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=ClipCorrespondingTypeAttribute) | Indicates the type, medium and method for getting and setting the payload associated with known clipboard formats.
 [Vanara.Collections.IEnumFromCom<T>.ComTryGetNext](https://github.com/dahall/Vanara/search?l=C%23&q=ComTryGetNext) | Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
 [Vanara.InteropServices.CoTaskMemStringMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=CoTaskMemStringMarshaler) | Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.
 [Vanara.PInvoke.FunctionHelper](https://github.com/dahall/Vanara/search?l=C%23&q=FunctionHelper) | Generic functions to help with standard function patterns like getting a string from a method.

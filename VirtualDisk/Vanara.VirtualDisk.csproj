@@ -9,10 +9,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-VirtualDisk, VirtualDiskMetadata
+VirtualDisk, VirtualDiskMetadata, VirtualDiskSetInformation, VirtualDiskSettingData, VirtualDiskSnapshotInformation
 
 Enumerations
-DeviceType, Subtype
+CompactionMode, DeviceType, Subtype
 
 </PackageReleaseNotes>
   </PropertyGroup>

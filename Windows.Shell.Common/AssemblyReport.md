@@ -103,7 +103,9 @@ Class | Description
 [Vanara.Windows.Shell.ShellSearch](https://github.com/dahall/Vanara/search?l=C%23&q=ShellSearch) | Represents functionality of the Windows Search Service.
 [Vanara.Windows.Shell.ShellSearchViewSettings](https://github.com/dahall/Vanara/search?l=C%23&q=ShellSearchViewSettings) | Settings that change the folder view of a search.
 [Vanara.Windows.Shell.StockIcon](https://github.com/dahall/Vanara/search?l=C%23&q=StockIcon) | Represents a standard system icon.
+[Vanara.Windows.Shell.TaskBar.Taskbar](https://github.com/dahall/Vanara/search?l=C%23&q=Taskbar) | Provides information about and some control of the system taskbar.
 [Vanara.Windows.Shell.TaskbarList](https://github.com/dahall/Vanara/search?l=C%23&q=TaskbarList) | Methods that control the Windows taskbar. It allows you to dynamically add, remove, and activate items on the taskbar. This wraps all of the ITaskbarListX interfaces.
+[Vanara.Windows.Shell.TaskBar.TrayIcon](https://github.com/dahall/Vanara/search?l=C%23&q=TrayIcon) | 
 [Vanara.Windows.Shell.Utils](https://github.com/dahall/Vanara/search?l=C%23&q=Utils) | Utility methods for shell functions.
 [Vanara.Windows.Shell.WallpaperManager](https://github.com/dahall/Vanara/search?l=C%23&q=WallpaperManager) | Provides methods for managing the desktop wallpaper.
 [Vanara.Windows.Shell.WallpaperManager.WallpaperMonitor](https://github.com/dahall/Vanara/search?l=C%23&q=WallpaperMonitor) | Represents the wallpaper settings on a single monitor.
