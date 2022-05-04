@@ -210,7 +210,7 @@ namespace Vanara.PInvoke
 		// _MIB_UDP6ROW_OWNER_PID { UCHAR ucLocalAddr[16]; DWORD dwLocalScopeId; DWORD dwLocalPort; DWORD dwOwningPid; }
 		// MIB_UDP6ROW_OWNER_PID, *PMIB_UDP6ROW_OWNER_PID;
 		[PInvokeData("udpmib.h", MSDNShortId = "d3d02485-381b-4058-b4b9-0a2c9c365f43")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Size = 28, Pack = 4)]
 		public struct MIB_UDP6ROW_OWNER_PID
 		{
 			/// <summary>
@@ -697,14 +697,10 @@ namespace Vanara.PInvoke
 			{
 			}
 
-			/// <summary>
-			/// <para>The number of MIB_UDP6ROW_OWNER_PID elements in <c>table</c>.</para>
-			/// </summary>
+			/// <summary>The number of MIB_UDP6ROW_OWNER_PID elements in <c>table</c>.</summary>
 			public uint dwNumEntries => Count;
 
-			/// <summary>
-			/// <para>An array of MIB_UDP6ROW_OWNER_PID structures returned by a call to GetExtendedUdpTable.</para>
-			/// </summary>
+			/// <summary>An array of MIB_UDP6ROW_OWNER_PID structures returned by a call to GetExtendedUdpTable.</summary>
 			public MIB_UDP6ROW_OWNER_PID[] table { get => Elements; set => Elements = value; }
 
 			/// <summary>Performs an implicit conversion from <see cref="MIB_UDP6TABLE_OWNER_PID"/> to <see cref="IntPtr"/>.</summary>

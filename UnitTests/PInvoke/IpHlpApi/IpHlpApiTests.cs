@@ -277,8 +277,10 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(t5.dwNumEntries, Is.GreaterThan(0));
 				var t10 = GetExtendedUdpTable<MIB_UDPTABLE_OWNER_PID>(UDP_TABLE_CLASS.UDP_TABLE_OWNER_PID);
 				Assert.That(t10.dwNumEntries, Is.GreaterThan(0));
+				TestContext.WriteLine("UDP PID: " + string.Join(",", t10.Select(t => t.dwOwningPid)));
 				var t11 = GetExtendedUdpTable<MIB_UDP6TABLE_OWNER_PID>(UDP_TABLE_CLASS.UDP_TABLE_OWNER_PID, ADDRESS_FAMILY.AF_INET6);
 				Assert.That(t11.dwNumEntries, Is.GreaterThan(0));
+				TestContext.WriteLine("UDP6 PID: " + string.Join(",", t11.Select(t => t.dwOwningPid)));
 			}, Throws.Nothing);
 			Assert.That(() => GetExtendedUdpTable<MIB_UDPTABLE>(UDP_TABLE_CLASS.UDP_TABLE_OWNER_MODULE), Throws.InvalidOperationException);
 			Assert.That(() => GetExtendedUdpTable<MIB_UDP6TABLE_OWNER_MODULE>(UDP_TABLE_CLASS.UDP_TABLE_OWNER_MODULE), Throws.InvalidOperationException);
