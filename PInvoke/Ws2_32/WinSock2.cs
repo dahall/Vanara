@@ -1405,11 +1405,11 @@ namespace Vanara.PInvoke
 			private ulong lower;
 			private ulong upper;
 
-			/// <summary>The IPv6 standard loopback address.</summary>
-			public static readonly IN6_ADDR Loopback = new IN6_ADDR { lower = 0xff_01_00_00_00_00_00_00, upper = 0x00_00_00_00_00_00_00_01 };
+			/// <summary>The IPv6 standard loopback address (<c>IN6ADDR_LOOPBACK_INIT</c>).</summary>
+			public static readonly IN6_ADDR Loopback = new(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
 
-			/// <summary>The IPv6 standard unspecified address.</summary>
-			public static readonly IN6_ADDR Unspecified = new IN6_ADDR { lower = 0, upper = 0 };
+			/// <summary>The IPv6 standard unspecified address (<c>IN6ADDR_ANY_INIT</c>).</summary>
+			public static readonly IN6_ADDR Unspecified = new();
 
 			/// <summary>Initializes a new instance of the <see cref="IN6_ADDR"/> struct.</summary>
 			/// <param name="v6addr">The IPv6 address as an array of bytes.</param>

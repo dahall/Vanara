@@ -21,6 +21,13 @@ namespace Vanara.PInvoke.Tests
 		public static IPAddress localIP4 => Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
 
 		[Test]
+		public void ConstTest()
+		{
+			Assert.That(new IPAddress(IN6_ADDR.Unspecified).ToString(), Is.EqualTo("::"));
+			Assert.That(new IPAddress(IN6_ADDR.Loopback).ToString(), Is.EqualTo("::1"));
+		}
+
+		[Test]
 		public void gai_strerrorTest()
 		{
 			Assert.That(gai_strerror((int)Win32Error.WSAEINVAL), Is.Not.Null);
