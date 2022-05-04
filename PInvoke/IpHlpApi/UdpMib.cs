@@ -41,7 +41,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udp6row typedef struct _MIB_UDP6ROW {
 		// IN6_ADDR dwLocalAddr; DWORD dwLocalScopeId; DWORD dwLocalPort; } MIB_UDP6ROW, *PMIB_UDP6ROW;
 		[PInvokeData("udpmib.h", MSDNShortId = "c2cc4f77-8557-4206-9e46-aadf065eb8df")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Size = 24, Pack = 4)]
 		public struct MIB_UDP6ROW
 		{
 			/// <summary>
@@ -280,7 +280,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udprow typedef struct _MIB_UDPROW {
 		// DWORD dwLocalAddr; DWORD dwLocalPort; } MIB_UDPROW, *PMIB_UDPROW;
 		[PInvokeData("udpmib.h", MSDNShortId = "db366802-962f-4e83-838e-1e2f51beab92")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct MIB_UDPROW
 		{
 			/// <summary>
@@ -425,7 +425,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udprow_owner_pid typedef struct
 		// _MIB_UDPROW_OWNER_PID { DWORD dwLocalAddr; DWORD dwLocalPort; DWORD dwOwningPid; } MIB_UDPROW_OWNER_PID, *PMIB_UDPROW_OWNER_PID;
 		[PInvokeData("udpmib.h", MSDNShortId = "b914b6eb-adf9-4a61-ae8f-05d3ff90ce90")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct MIB_UDPROW_OWNER_PID
 		{
 			/// <summary>

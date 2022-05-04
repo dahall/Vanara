@@ -1447,7 +1447,12 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-socket_address typedef struct _SOCKET_ADDRESS { LPSOCKADDR
 		// lpSockaddr; INT iSockaddrLength; } SOCKET_ADDRESS, *PSOCKET_ADDRESS, *LPSOCKET_ADDRESS;
 		[PInvokeData("ws2def.h", MSDNShortId = "37fbcb96-a859-4eca-8928-8051f95407b9")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential,
+#if x64
+		Size = 16)]
+#else
+		Size = 8)]
+#endif
 		public struct SOCKET_ADDRESS
 		{
 			/// <summary>A pointer to a socket address represented as a SOCKADDR structure.</summary>

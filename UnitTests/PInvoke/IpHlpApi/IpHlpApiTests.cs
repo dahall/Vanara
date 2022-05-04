@@ -40,6 +40,13 @@ namespace Vanara.PInvoke.Tests
 		private static SOCKADDR_IN6 LocalAddrV6 => localv6.sin6_family == 0 ? (localv6 = primaryAdapter.UnicastAddresses.Select(r => r.Address.GetSOCKADDR()).First(a => a.si_family == ADDRESS_FAMILY.AF_INET6).Ipv6) : localv6;
 
 		[Test]
+		public void _StructSizeTest()
+		{
+			foreach (var s in typeof(Vanara.PInvoke.IpHlpApi).GetNestedStructSizes())
+				TestContext.WriteLine(s);
+		}
+
+		[Test]
 		public void AddDeleteIPAddressTest()
 		{
 			var newIp = new IN_ADDR(192, 168, 0, 252);

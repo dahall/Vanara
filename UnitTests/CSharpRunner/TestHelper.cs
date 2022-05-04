@@ -36,7 +36,9 @@ namespace Vanara.PInvoke.Tests
 		{
 			System.Reflection.TypeAttributes attr = System.Reflection.TypeAttributes.SequentialLayout | System.Reflection.TypeAttributes.ExplicitLayout;
 			return types.Where(t => t.IsValueType && !t.IsEnum && !t.IsGenericType && (t.Attributes & attr) != 0 && ((filters?.Length ?? 0) == 0 || filters.Any(s => t.Name.Contains(s)))).
-				OrderBy(t => (fullName ? t.FullName : t.Name)).Select(t => $"{(fullName ? t.FullName : t.Name)} = {InteropExtensions.SizeOf(t)}").ToList();
+				OrderBy(t => fullName ? t.FullName : t.Name).Select(t => $"{(fullName ? t.FullName : t.Name)} = {GetTypeSize(t)}").ToList();
+
+			static long GetTypeSize(Type t) { try { return (long)InteropExtensions.SizeOf(t); } catch { return -1; } }
 		}
 
 		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, object, object[]> action = null, Action<Exception> error = null) where TEnum : Enum =>
