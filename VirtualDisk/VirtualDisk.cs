@@ -767,14 +767,16 @@ public partial class VirtualDisk : IDisposable, IHandle
 	public void Attach(string[] mountPoints, bool readOnly = false, bool autoDetach = true, FileSecurity access = null)
 	{
 		var vgp = VolumeGuidPaths;
-		if (mountPoints.Length == 0 || mountPoints.Length > vgp.Length || (mountPoints[0] != "*" && mountPoints.Any(p => p == "*")))
-			throw new ArgumentException();
+		if (mountPoints is not null && (mountPoints.Length == 0 || mountPoints.Length > vgp.Length || (mountPoints[0] != "*" && mountPoints.Any(p => p == "*"))))
+			throw new ArgumentException(null, nameof(mountPoints));
 
-		ATTACH_VIRTUAL_DISK_FLAG flags = readOnly ? ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY : 0;
+		ATTACH_VIRTUAL_DISK_FLAG flags = 0;
+		if (mountPoints is null)
+			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_DRIVE_LETTER;
+		if (readOnly)
+			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY;
 		if (!autoDetach)
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME;
-		if (mountPoints.Length == 1 && mountPoints[0] != "*")
-			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_DRIVE_LETTER;
 		if (access is null)
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_SECURITY_DESCRIPTOR;
 
