@@ -604,7 +604,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_DEFERRED_SYMBOL_LOAD64)</code>
+			/// <c>sizeof(IMAGEHLP_DEFERRED_SYMBOL_LOAD64)</c>
 			/// .
 			/// </summary>
 			public uint SizeOfStruct;
@@ -655,7 +655,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_DEFERRED_SYMBOL_LOAD64)</code>
+			/// <c>sizeof(IMAGEHLP_DEFERRED_SYMBOL_LOAD64)</c>
 			/// .
 			/// </summary>
 			public uint SizeOfStruct;
@@ -713,7 +713,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_DEFERRED_SYMBOL_LOAD64)</code>
+			/// <c>sizeof(IMAGEHLP_DEFERRED_SYMBOL_LOAD64)</c>
 			/// .
 			/// </summary>
 			public uint SizeOfStruct;
@@ -771,7 +771,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_DUPLICATE_SYMBOL64)</code>
+			/// <c>sizeof(IMAGEHLP_DUPLICATE_SYMBOL64)</c>
 			/// .
 			/// </summary>
 			public uint SizeOfStruct;
@@ -908,7 +908,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_LINE64)</code>
+			/// <c>sizeof(IMAGEHLP_LINE64)</c>
 			/// .
 			/// </summary>
 			public uint SizeOfStruct;
@@ -944,7 +944,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_LINE64)</code>
+			/// <c>sizeof(IMAGEHLP_LINE64)</c>
 			/// .
 			/// </summary>
 			public uint SizeOfStruct;
@@ -981,7 +981,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_MODULE64)</code>
+			/// <c>sizeof(IMAGEHLP_MODULE64)</c>
 			/// .
 			/// </summary>
 			public uint SizeOfStruct;
@@ -1089,7 +1089,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// The size of the structure, in bytes. The caller must set this member to
-			/// <code>sizeof(IMAGEHLP_MODULE64)</code>
+			/// <c>sizeof(IMAGEHLP_MODULE64)</c>
 			/// .
 			/// </summary>
 			public uint SizeOfStruct;
@@ -1402,7 +1402,6 @@ namespace Vanara.PInvoke
 				return value;
 			}
 		}
-
 
 		/// <summary>Contains symbol information.</summary>
 		/// <remarks>
@@ -2089,7 +2088,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Set to
-			/// <code>sizeof(STACKFRAME_EX)</code>
+			/// <c>sizeof(STACKFRAME_EX)</c>
 			/// .
 			/// </summary>
 			public uint StackFrameSize;
@@ -2177,15 +2176,14 @@ namespace Vanara.PInvoke
 		// SizeOfStruct; ULONG TypeIndex; ULONG64 Reserved[2]; ULONG Index; ULONG Size; ULONG64 ModBase; ULONG Flags; ULONG64 Value; ULONG64
 		// Address; ULONG Register; ULONG Scope; ULONG Tag; ULONG NameLen; ULONG MaxNameLen; CHAR Name[1]; } SYMBOL_INFO, *PSYMBOL_INFO;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._SYMBOL_INFO")]
+		[VanaraMarshaler(typeof(SafeAnysizeStringMarshaler<SYMBOL_INFO>), "Auto")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct SYMBOL_INFO
 		{
 			/// <summary>
-			/// The size of the structure, in bytes. This member must be set to
-			/// <code>sizeof(SYMBOL_INFO)</code>
-			/// . Note that the total size of the data is the
-			/// <code>SizeOfStruct + (MaxNameLen - 1) * sizeof(TCHAR)</code>
-			/// . The reason to subtract one is that the first character in the name is accounted for in the size of the structure.
+			/// The size of the structure, in bytes. This member must be set to <c>sizeof(SYMBOL_INFO)</c> . Note that the total size of the
+			/// data is the <c>SizeOfStruct + (MaxNameLen - 1) * sizeof(TCHAR)</c> . The reason to subtract one is that the first character
+			/// in the name is accounted for in the size of the structure.
 			/// </summary>
 			public uint SizeOfStruct;
 
@@ -2310,11 +2308,8 @@ namespace Vanara.PInvoke
 			public uint Register;
 
 			/// <summary>
-			/// <para>
 			/// The DIA scope. For more information, see the Debug Interface Access SDK in the Visual Studio documentation. (This resource
-			/// may not be available in some languages
-			/// </para>
-			/// <para>and countries.)</para>
+			/// may not be available in some languages and countries.)
 			/// </summary>
 			public uint Scope;
 
@@ -2343,11 +2338,8 @@ namespace Vanara.PInvoke
 		public struct SYMSRV_INDEX_INFO
 		{
 			/// <summary>
-			/// The size of the structure, in bytes. This member must be set to
-			/// <code>sizeof(SYMSRV_INDEX_INFO)</code>
-			/// or
-			/// <code>sizeof(SYMSRV_INDEX_INFOW)</code>
-			/// .
+			/// The size of the structure, in bytes. This member must be set to <c>sizeof(SYMSRV_INDEX_INFO)</c> or
+			/// <c>sizeof(SYMSRV_INDEX_INFOW)</c> .
 			/// </summary>
 			public uint sizeofstruct;
 

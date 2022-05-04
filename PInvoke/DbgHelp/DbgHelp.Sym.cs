@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -88,7 +89,7 @@ namespace Vanara.PInvoke
 		// SymbolSize, PVOID UserContext ) {...}
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 		[PInvokeData("dbghelp.h", MSDNShortId = "NC:dbghelp.PSYM_ENUMERATESYMBOLS_CALLBACK")]
-		public delegate bool PSYM_ENUMERATESYMBOLS_CALLBACK(in SYMBOL_INFO pSymInfo, uint SymbolSize, [In, Optional] IntPtr UserContext);
+		public delegate bool PSYM_ENUMERATESYMBOLS_CALLBACK([In] IntPtr pSymInfo, uint SymbolSize, [In, Optional] IntPtr UserContext);
 
 		/// <summary>
 		/// <para>An application-defined callback function used with the SymEnumLines and SymEnumSourceLines functions.</para>
@@ -1826,8 +1827,104 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymEnumSymbols")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SymEnumSymbols(HPROCESS hProcess, ulong BaseOfDll, [Optional, MarshalAs(UnmanagedType.LPTStr)] string Mask,
+		public static extern bool SymEnumSymbols(HPROCESS hProcess, [Optional] ulong BaseOfDll, [Optional, MarshalAs(UnmanagedType.LPTStr)] string Mask,
 			PSYM_ENUMERATESYMBOLS_CALLBACK EnumSymbolsCallback, [In, Optional] IntPtr UserContext);
+
+		/// <summary>Enumerates all symbols in a process.</summary>
+		/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
+		/// <param name="BaseOfDll">
+		/// The base address of the module. If this value is zero and Mask contains an exclamation point (!), the function looks across
+		/// modules. If this value is zero and Mask does not contain an exclamation point, the function uses the scope established by the
+		/// SymSetContext function.
+		/// </param>
+		/// <param name="Mask">
+		/// <para>
+		/// A wildcard string that indicates the names of the symbols to be enumerated. The text can optionally contain the wildcards, "*"
+		/// and "?".
+		/// </para>
+		/// <para>
+		/// To specify a specific module or set of modules, begin the text with a wildcard string specifying the module, followed by an
+		/// exclamation point. When specifying a module, BaseOfDll is ignored.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>foo</term>
+		/// <term>
+		/// If BaseOfDll is not zero, then SymEnumSymbols will look for a global symbol named "foo". If BaseOfDll is zero, then
+		/// SymEnumSymbols will look for a local symbol named "foo" within the scope established by the most recent call to the SymSetContext function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>foo?</term>
+		/// <term>
+		/// If BaseOfDll is not zero, then SymEnumSymbols will look for a global symbol that starts with "foo" and contains one extra
+		/// character afterwards, such as "fool" and "foot". If BaseOfDll is zero, then SymEnumSymbols will look for a symbol that starts
+		/// with "foo" and contains one extra character afterwards, such as "fool" and "foot". The search would be within the scope
+		/// established by the most recent call to the SymSetContext function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>foo*!bar</term>
+		/// <term>
+		/// SymEnumSymbols will look in every loaded module that starts with the text "foo" for a symbol called "bar". It could find matches
+		/// such as these, "foot!bar", "footlocker!bar", and "fool!bar".
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>*!*</term>
+		/// <term>SymEnumSymbols will enumerate every symbol in every loaded module.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="Options">
+		/// <para>Indicates possible options.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SYMENUM_OPTIONS_DEFAULT 1</term>
+		/// <term>Use the default options.</term>
+		/// </item>
+		/// <item>
+		/// <term>SYMENUM_OPTIONS_INLINE 2</term>
+		/// <term>Enumerate inline symbols.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="UserContext">
+		/// A user-defined value that is passed to the callback function, or <c>NULL</c>. This parameter is typically used by an application
+		/// to pass a pointer to a data structure that provides context for the callback function.
+		/// </param>
+		/// <returns>A list of <see cref="SYMBOL_INFO"/> structures.</returns>
+		/// <remarks>
+		/// <para>
+		/// All DbgHelp functions, such as this one, are single threaded. Therefore, calls from more than one thread to this function will
+		/// likely result in unexpected behavior or memory corruption. To avoid this, you must synchronize all concurrent calls from more
+		/// than one thread to this function.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Enumerating Symbols.</para>
+		/// </remarks>
+		public static IList<SYMBOL_INFO> SymEnumSymbolsEx(HPROCESS hProcess, [Optional] ulong BaseOfDll, [Optional, MarshalAs(UnmanagedType.LPTStr)] string Mask,
+			SYMENUM Options = SYMENUM.SYMENUM_OPTIONS_DEFAULT, [In] IntPtr UserContext = default)
+		{
+			List<SYMBOL_INFO> list = new();
+			Win32Error.ThrowLastErrorIfFalse(SymEnumSymbolsEx(hProcess, BaseOfDll, Mask, EnumProc, UserContext, Options));
+			return list;
+
+			bool EnumProc(IntPtr pSymInfo, uint SymbolSize, IntPtr UserContext)
+			{
+				try { list.Add(pSymInfo.ToStructure<SYMBOL_INFO>(SymbolSize)); return true; }
+				catch { }
+				return false;
+			}
+		}
 
 		/// <summary>Enumerates all symbols in a process.</summary>
 		/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
@@ -1911,7 +2008,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymEnumSymbolsEx")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SymEnumSymbolsEx(HPROCESS hProcess, ulong BaseOfDll, [Optional, MarshalAs(UnmanagedType.LPTStr)] string Mask,
+		public static extern bool SymEnumSymbolsEx(HPROCESS hProcess, [Optional] ulong BaseOfDll, [Optional, MarshalAs(UnmanagedType.LPTStr)] string Mask,
 			PSYM_ENUMERATESYMBOLS_CALLBACK EnumSymbolsCallback, [In, Optional] IntPtr UserContext, SYMENUM Options);
 
 		/// <summary>Enumerates the symbols for the specified address.</summary>
@@ -4480,7 +4577,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymLoadModuleEx")]
 		public static extern ulong SymLoadModuleEx(HPROCESS hProcess, [Optional] HFILE hFile, [Optional, MarshalAs(UnmanagedType.LPTStr)] string ImageName,
-			[Optional, MarshalAs(UnmanagedType.LPTStr)] string ModuleName, ulong BaseOfDll, uint DllSize, in MODLOAD_DATA Data, SLMFLAG Flags);
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] string ModuleName, ulong BaseOfDll, uint DllSize, in MODLOAD_DATA Data, [Optional] SLMFLAG Flags);
 
 		/// <summary>Loads the symbol table for the specified module.</summary>
 		/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -4566,7 +4663,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymLoadModuleEx")]
 		public static extern ulong SymLoadModuleEx(HPROCESS hProcess, [Optional] HFILE hFile, [Optional, MarshalAs(UnmanagedType.LPTStr)] string ImageName,
-			[Optional, MarshalAs(UnmanagedType.LPTStr)] string ModuleName, ulong BaseOfDll, uint DllSize, [In, Optional] IntPtr Data, SLMFLAG Flags);
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] string ModuleName, [Optional] ulong BaseOfDll, [Optional] uint DllSize, [In, Optional] IntPtr Data,
+			[Optional] SLMFLAG Flags);
 
 		/// <summary>Compares a string to a file name and path.</summary>
 		/// <param name="FileName">The file name to be compared to the Match parameter.</param>
