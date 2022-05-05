@@ -6,7 +6,7 @@
     <version>3.4.1</version>
     <description>The full set of packages associated with the Vanara PInvoke Libraries.</description>
     <tags>pinvoke;vanara;net-extensions;interop</tags>
-    <copyright>Copyright © 2017-2021</copyright>
+    <copyright>Copyright © 2017-2022</copyright>
     <authors>David Hall</authors>
     <owners>David Hall</owners>
     <license type="expression">MIT</license>
