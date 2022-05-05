@@ -2255,7 +2255,7 @@ namespace Vanara.PInvoke
 			/// <c>Starting with Windows 8:</c> Determines whether the active input settings have Local (per-thread, TRUE) or Global
 			/// (session, FALSE) scope. The pvParam parameter must point to a BOOL variable, casted by PVOID.
 			/// </summary>
-			[SPCorrespondingType(typeof(bool), CorrespondingAction.Get)]
+			[SPCorrespondingType(typeof(bool), CorrespondingAction.Set, Direct)]
 			SPI_SETTHREADLOCALINPUTSETTINGS = 0x104F,
 
 			/// <summary>
