@@ -408,12 +408,12 @@ namespace Vanara.IO.Tests
 			using var vhd = VirtualDisk.Open(fn, true);
 			Assert.That(vhd.Attached, Is.False);
 			var beforeDrives = GetLogicalDrives();
-			vhd.Attach("T:\\", true, true, GetWorldFullFileSecurity());
+			vhd.Attach(new[] { "T:\\" }, true, true, GetWorldFullFileSecurity());
 			Assert.That(vhd.Attached, Is.True);
 			Assert.That(beforeDrives, Is.Not.EqualTo(GetLogicalDrives()));
 			TestContext.WriteLine(vhd.PhysicalPath);
-			TestContext.WriteLine(vhd.VolumeGuidPath);
-			TestContext.WriteLine(vhd.VolumeMountPoint);
+			TestContext.WriteLine(string.Join(";", vhd.VolumeGuidPaths));
+			TestContext.WriteLine(string.Join(";", vhd.VolumeMountPoints));
 			Assert.That(vhd.PhysicalPath, Is.Not.Null); // must be attached
 			vhd.Detach();
 			Assert.That(vhd.Attached, Is.False);

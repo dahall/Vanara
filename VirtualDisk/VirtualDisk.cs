@@ -254,19 +254,6 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// <summary>Virtual size of the VHD, in bytes.</summary>
 	public ulong VirtualSize => GetInformation<ulong>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_SIZE);
 
-	/// <summary>Gets the volume GUID path for an attached virtual disk.</summary>
-	public string VolumeGuidPath
-	{
-		get
-		{
-			if (!Attached)
-				return null;
-
-			var diskNo = GetDiskNumberFromDevicePath(PhysicalPath);
-			return diskNo.HasValue ? GetVolumeGuidFromDiskNumber(diskNo.Value) : null;
-		}
-	}
-
 	/// <summary>Gets the volume GUID paths for an attached virtual disk.</summary>
 	public string[] VolumeGuidPaths
 	{
@@ -280,22 +267,12 @@ public partial class VirtualDisk : IDisposable, IHandle
 		}
 	}
 
-	/// <summary>Gets the volume mount point for an attached virtual disk.</summary>
-	public string VolumeMountPoint
-	{
-		get
-		{
-			var volPath = VolumeGuidPath;
-			return volPath is null ? null : GetVolumeMountPoints(volPath).FirstOrDefault();
-		}
-	}
-
 	/// <summary>Gets the volume mount points for an attached virtual disk.</summary>
 	public string[] VolumeMountPoints
 	{
 		get
 		{
-			var volPath = VolumeGuidPath;
+			var volPath = VolumeGuidPaths?.FirstOrDefault();
 			return volPath is null ? null : GetVolumeMountPoints(volPath);
 		}
 	}
@@ -717,31 +694,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
 	/// </param>
 	public void Attach(bool readOnly = false, bool autoDetach = true, bool noDriveLetter = false, FileSecurity access = null) =>
-		Attach(noDriveLetter ? null : "*", readOnly, autoDetach, access);
-
-	/// <summary>
-	/// Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.
-	/// </summary>
-	/// <param name="mountPoint">
-	/// The user-mode path to be associated with the volume. This may be a drive letter (for example, "X:\") or a directory on another volume
-	/// (for example, "Y:\MountX\"). The string must end with a trailing backslash ('\'). Use "*" to have the system assign a drive letter or
-	/// <see langword="null"/> to leave the drive letter unassigned.
-	/// </param>
-	/// <param name="readOnly">Attach the virtual disk as read-only.</param>
-	/// <param name="autoDetach">
-	/// If <c>false</c>, decouple the virtual disk lifetime from that of the VirtualDisk. The virtual disk will be attached until the Detach
-	/// function is called, even if all open instances of the virtual disk are disposed.
-	/// </param>
-	/// <param name="access">
-	/// An optional pointer to a FileSecurity instance to apply to the attached virtual disk. If this parameter is <see langword="null"/>,
-	/// the security descriptor of the virtual disk image file is used. Ensure that the security descriptor that AttachVirtualDisk applies to
-	/// the attached virtual disk grants the write attributes permission for the user, or that the security descriptor of the virtual disk
-	/// image file grants the write attributes permission for the user if you specify <see langword="null"/> for this parameter. If the
-	/// security descriptor does not grant write attributes permission for a user, Shell displays the following error when the user accesses
-	/// the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
-	/// </param>
-	public void Attach(string mountPoint, bool readOnly = false, bool autoDetach = true, FileSecurity access = null) =>
-		Attach(mountPoint is null ? null : new[] { mountPoint }, readOnly, autoDetach, access);
+		Attach(noDriveLetter ? null : new[] { "*" }, readOnly, autoDetach, access);
 
 	/// <summary>
 	/// Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.
@@ -766,12 +719,13 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// </param>
 	public void Attach(string[] mountPoints, bool readOnly = false, bool autoDetach = true, FileSecurity access = null)
 	{
-		var vgp = VolumeGuidPaths;
-		if (mountPoints is not null && (mountPoints.Length == 0 || mountPoints.Length > vgp.Length || (mountPoints[0] != "*" && mountPoints.Any(p => p == "*"))))
-			throw new ArgumentException(null, nameof(mountPoints));
+		if (mountPoints is not null && mountPoints.Length == 0)
+			throw new ArgumentException("Mount points list cannot be empty.", nameof(mountPoints));
+		if (mountPoints is not null && mountPoints[0] != "*" && mountPoints.Any(p => p == "*"))
+			throw new ArgumentException("Mount points may only contain the '*' value as the first and only value.", nameof(mountPoints));
 
 		ATTACH_VIRTUAL_DISK_FLAG flags = 0;
-		if (mountPoints is null)
+		if (mountPoints is null || (mountPoints.Length > 0 && mountPoints[0] != "*"))
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_DRIVE_LETTER;
 		if (readOnly)
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY;
@@ -780,11 +734,18 @@ public partial class VirtualDisk : IDisposable, IHandle
 		if (access is null)
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_SECURITY_DESCRIPTOR;
 
-		ATTACH_VIRTUAL_DISK_PARAMETERS param = ATTACH_VIRTUAL_DISK_PARAMETERS.Default;
 		using SafePSECURITY_DESCRIPTOR sd = FileSecToSd(access);
-		Attach(flags, param, sd);
+		Attach(flags, ATTACH_VIRTUAL_DISK_PARAMETERS.Default, sd);
 
-		if (mountPoints is null || mountPoints[0] is "*") return;
+		if (mountPoints is null || mountPoints[0] is "*")
+			return;
+
+		var vgp = VolumeGuidPaths;
+		if (mountPoints.Length > vgp.Length)
+		{
+			Detach();
+			throw new ArgumentException("The number of mount points cannot be larger than the number of associated volumes.", nameof(mountPoints));
+		}
 		for (var i = 0; i < mountPoints.Length; i++)
 			Win32Error.ThrowLastErrorIfFalse(SetVolumeMountPoint(mountPoints[i], vgp[i]));
 	}
@@ -848,12 +809,12 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// </param>
 	public async Task AttachAsync(bool readOnly = false, bool autoDetach = true, bool noDriveLetter = false, FileSecurity access = null,
 		CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
-		await AttachAsync(noDriveLetter ? null : "*", readOnly, autoDetach, access, cancellationToken, progress);
+		await AttachAsync(noDriveLetter ? null : new[] { "*" }, readOnly, autoDetach, access, cancellationToken, progress);
 
 	/// <summary>
 	/// Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.
 	/// </summary>
-	/// <param name="mountPoint">
+	/// <param name="mountPoints">
 	/// The user-mode path to be associated with the volume. This may be a drive letter (for example, "X:\") or a directory on another volume
 	/// (for example, "Y:\MountX\"). The string must end with a trailing backslash ('\'). Use "*" to have the system assign a drive letter or
 	/// <see langword="null"/> to leave the drive letter unassigned.
@@ -878,24 +839,38 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// A class that implements <see cref="IProgress{T}"/> that can be used to report on progress. This value can be <c>null</c> to disable
 	/// progress reporting.
 	/// </param>
-	public async Task AttachAsync(string mountPoint, bool readOnly = false, bool autoDetach = true, FileSecurity access = null,
+	public async Task AttachAsync(string[] mountPoints, bool readOnly = false, bool autoDetach = true, FileSecurity access = null,
 		CancellationToken cancellationToken = default, IProgress<int> progress = default)
 	{
-		ATTACH_VIRTUAL_DISK_FLAG flags = readOnly ? ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY : 0;
+		if (mountPoints is not null && mountPoints.Length == 0)
+			throw new ArgumentException("Mount points list cannot be empty.", nameof(mountPoints));
+		if (mountPoints is not null && mountPoints[0] != "*" && mountPoints.Any(p => p == "*"))
+			throw new ArgumentException("Mount points may only contain the '*' value as the first and only value.", nameof(mountPoints));
+
+		ATTACH_VIRTUAL_DISK_FLAG flags = 0;
+		if (mountPoints is null || (mountPoints.Length > 0 && mountPoints[0] != "*"))
+			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_DRIVE_LETTER;
+		if (readOnly)
+			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY;
 		if (!autoDetach)
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME;
-
-		if (mountPoint != "*")
-			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_DRIVE_LETTER;
-
 		if (access is null)
 			flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_SECURITY_DESCRIPTOR;
 
-		ATTACH_VIRTUAL_DISK_PARAMETERS param = ATTACH_VIRTUAL_DISK_PARAMETERS.Default;
 		using SafePSECURITY_DESCRIPTOR sd = FileSecToSd(access);
-		await AttachAsync(flags, param, sd, cancellationToken, progress);
-		if (mountPoint is not null and not "*")
-			Win32Error.ThrowLastErrorIfFalse(Kernel32.SetVolumeMountPoint(mountPoint, PhysicalPath));
+		await AttachAsync(flags, ATTACH_VIRTUAL_DISK_PARAMETERS.Default, sd, cancellationToken, progress);
+
+		if (mountPoints is null || mountPoints[0] is "*")
+			return;
+
+		var vgp = VolumeGuidPaths;
+		if (mountPoints.Length > vgp.Length)
+		{
+			Detach();
+			throw new ArgumentException("The number of mount points cannot be larger than the number of associated volumes.", nameof(mountPoints));
+		}
+		for (var i = 0; i < mountPoints.Length; i++)
+			Win32Error.ThrowLastErrorIfFalse(SetVolumeMountPoint(mountPoints[i], vgp[i]));
 	}
 
 	/// <summary>Breaks a previously initiated mirror operation and sets the mirror to be the active virtual disk.</summary>
