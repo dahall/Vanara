@@ -18,6 +18,7 @@ Enumerations
 BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj" />

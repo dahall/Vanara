@@ -19,6 +19,7 @@ GOFFSET OPENTYPE_FEATURE_RECORD OPENTYPE_TAG SafeSCRIPT_CACHE SCRIPT_ANALYSIS SC
 
 </PackageReleaseNotes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

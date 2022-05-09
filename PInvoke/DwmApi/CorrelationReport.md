@@ -32,6 +32,20 @@ Native Method | Header | Managed Method
 [DwmTransitionOwnedWindow](https://www.google.com/search?num=5&q=DwmTransitionOwnedWindow+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmTransitionOwnedWindow](https://github.com/dahall/Vanara/search?l=C%23&q=DwmTransitionOwnedWindow)  
 [DwmUnregisterThumbnail](https://www.google.com/search?num=5&q=DwmUnregisterThumbnail+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmUnregisterThumbnail](https://github.com/dahall/Vanara/search?l=C%23&q=DwmUnregisterThumbnail)  
 [DwmUpdateThumbnailProperties](https://www.google.com/search?num=5&q=DwmUpdateThumbnailProperties+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DwmUpdateThumbnailProperties](https://github.com/dahall/Vanara/search?l=C%23&q=DwmUpdateThumbnailProperties)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[DWM_BLURBEHIND_Mask](https://www.google.com/search?num=5&q=DWM_BLURBEHIND_Mask+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWM_BLURBEHIND_Mask](https://github.com/dahall/Vanara/search?l=C%23&q=DWM_BLURBEHIND_Mask)  
+[DWM_CLOAKED](https://www.google.com/search?num=5&q=DWM_CLOAKED+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWM_CLOAKED](https://github.com/dahall/Vanara/search?l=C%23&q=DWM_CLOAKED)  
+[DWM_SETICONICPREVIEW_Flags](https://www.google.com/search?num=5&q=DWM_SETICONICPREVIEW_Flags+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWM_SETICONICPREVIEW_Flags](https://github.com/dahall/Vanara/search?l=C%23&q=DWM_SETICONICPREVIEW_Flags)  
+[DWM_SHOWCONTACT](https://www.google.com/search?num=5&q=DWM_SHOWCONTACT+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWM_SHOWCONTACT](https://github.com/dahall/Vanara/search?l=C%23&q=DWM_SHOWCONTACT)  
+[DWM_TAB_WINDOW_REQUIREMENTS](https://www.google.com/search?num=5&q=DWM_TAB_WINDOW_REQUIREMENTS+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWM_TAB_WINDOW_REQUIREMENTS](https://github.com/dahall/Vanara/search?l=C%23&q=DWM_TAB_WINDOW_REQUIREMENTS)  
+[DWM_TNP](https://www.google.com/search?num=5&q=DWM_TNP+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWM_TNP](https://github.com/dahall/Vanara/search?l=C%23&q=DWM_TNP)  
+[DWMFLIP3DWINDOWPOLICY](https://www.google.com/search?num=5&q=DWMFLIP3DWINDOWPOLICY+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWMFLIP3DWINDOWPOLICY](https://github.com/dahall/Vanara/search?l=C%23&q=DWMFLIP3DWINDOWPOLICY)  
+[DWMNCRENDERINGPOLICY](https://www.google.com/search?num=5&q=DWMNCRENDERINGPOLICY+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWMNCRENDERINGPOLICY](https://github.com/dahall/Vanara/search?l=C%23&q=DWMNCRENDERINGPOLICY)  
+[DWMTRANSITION_OWNEDWINDOW_TARGET](https://www.google.com/search?num=5&q=DWMTRANSITION_OWNEDWINDOW_TARGET+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWMTRANSITION_OWNEDWINDOW_TARGET](https://github.com/dahall/Vanara/search?l=C%23&q=DWMTRANSITION_OWNEDWINDOW_TARGET)  
+[DWMWINDOWATTRIBUTE](https://www.google.com/search?num=5&q=DWMWINDOWATTRIBUTE+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.DWMWINDOWATTRIBUTE](https://github.com/dahall/Vanara/search?l=C%23&q=DWMWINDOWATTRIBUTE)  
+[GESTURE_TYPE](https://www.google.com/search?num=5&q=GESTURE_TYPE+site%3Adocs.microsoft.com) | dwmapi.h | [Vanara.PInvoke.DwmApi.GESTURE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=GESTURE_TYPE)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

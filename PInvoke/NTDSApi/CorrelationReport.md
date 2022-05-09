@@ -58,6 +58,34 @@ Native Method | Header | Managed Method
 [DsUnBind](https://www.google.com/search?num=5&q=DsUnBindA+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsUnBind](https://github.com/dahall/Vanara/search?l=C%23&q=DsUnBind)  
 [DsUnquoteRdnValue](https://www.google.com/search?num=5&q=DsUnquoteRdnValueA+site%3Adocs.microsoft.com) | dsparse.h | [Vanara.PInvoke.NTDSApi.DsUnquoteRdnValue](https://github.com/dahall/Vanara/search?l=C%23&q=DsUnquoteRdnValue)  
 [DsWriteAccountSpn](https://www.google.com/search?num=5&q=DsWriteAccountSpnA+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsWriteAccountSpn](https://github.com/dahall/Vanara/search?l=C%23&q=DsWriteAccountSpn)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[DS_KCC_TASKID](https://www.google.com/search?num=5&q=DS_KCC_TASKID+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DS_KCC_TASKID](https://github.com/dahall/Vanara/search?l=C%23&q=DS_KCC_TASKID)  
+[DS_MANGLE_FOR](https://www.google.com/search?num=5&q=DS_MANGLE_FOR+site%3Adocs.microsoft.com) | dsparse.h | [Vanara.PInvoke.NTDSApi.DS_MANGLE_FOR](https://github.com/dahall/Vanara/search?l=C%23&q=DS_MANGLE_FOR)  
+[DS_NAME_ERROR](https://www.google.com/search?num=5&q=DS_NAME_ERROR+site%3Adocs.microsoft.com) | NTDSApi.h | [Vanara.PInvoke.NTDSApi.DS_NAME_ERROR](https://github.com/dahall/Vanara/search?l=C%23&q=DS_NAME_ERROR)  
+[DS_NAME_FLAGS](https://www.google.com/search?num=5&q=DS_NAME_FLAGS+site%3Adocs.microsoft.com) | NTDSApi.h | [Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=DS_NAME_FLAGS)  
+[DS_NAME_FORMAT](https://www.google.com/search?num=5&q=DS_NAME_FORMAT+site%3Adocs.microsoft.com) | NTDSApi.h | [Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT](https://github.com/dahall/Vanara/search?l=C%23&q=DS_NAME_FORMAT)  
+[DS_REPL_INFO_TYPE](https://www.google.com/search?num=5&q=DS_REPL_INFO_TYPE+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DS_REPL_INFO_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DS_REPL_INFO_TYPE)  
+[DS_REPL_OP_TYPE](https://www.google.com/search?num=5&q=DS_REPL_OP_TYPE+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DS_REPL_OP_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DS_REPL_OP_TYPE)  
+[DS_REPSYNCALL_ERROR](https://www.google.com/search?num=5&q=DS_REPSYNCALL_ERROR+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DS_REPSYNCALL_ERROR](https://github.com/dahall/Vanara/search?l=C%23&q=DS_REPSYNCALL_ERROR)  
+[DS_REPSYNCALL_EVENT](https://www.google.com/search?num=5&q=DS_REPSYNCALL_EVENT+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DS_REPSYNCALL_EVENT](https://github.com/dahall/Vanara/search?l=C%23&q=DS_REPSYNCALL_EVENT)  
+[DS_SPN_NAME_TYPE](https://www.google.com/search?num=5&q=DS_SPN_NAME_TYPE+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DS_SPN_NAME_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DS_SPN_NAME_TYPE)  
+[DS_SPN_WRITE_OP](https://www.google.com/search?num=5&q=DS_SPN_WRITE_OP+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DS_SPN_WRITE_OP](https://github.com/dahall/Vanara/search?l=C%23&q=DS_SPN_WRITE_OP)  
+[DsBindFlags](https://www.google.com/search?num=5&q=DsBindFlags+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsBindFlags](https://github.com/dahall/Vanara/search?l=C%23&q=DsBindFlags)  
+[DsKCCFlags](https://www.google.com/search?num=5&q=DsKCCFlags+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsKCCFlags](https://github.com/dahall/Vanara/search?l=C%23&q=DsKCCFlags)  
+[DsReplicaAddOptions](https://www.google.com/search?num=5&q=DsReplicaAddOptions+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplicaAddOptions](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplicaAddOptions)  
+[DsReplicaDelOptions](https://www.google.com/search?num=5&q=DsReplicaDelOptions+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplicaDelOptions](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplicaDelOptions)  
+[DsReplInfoFlags](https://www.google.com/search?num=5&q=DsReplInfoFlags+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplInfoFlags](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplInfoFlags)  
+[DsReplModFieldFlags](https://www.google.com/search?num=5&q=DsReplModFieldFlags+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplModFieldFlags](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplModFieldFlags)  
+[DsReplModOptions](https://www.google.com/search?num=5&q=DsReplModOptions+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplModOptions](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplModOptions)  
+[DsReplNeighborFlags](https://www.google.com/search?num=5&q=DsReplNeighborFlags+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplNeighborFlags](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplNeighborFlags)  
+[DsReplSyncAllFlags](https://www.google.com/search?num=5&q=DsReplSyncAllFlags+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplSyncAllFlags](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplSyncAllFlags)  
+[DsReplSyncOptions](https://www.google.com/search?num=5&q=DsReplSyncOptions+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplSyncOptions](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplSyncOptions)  
+[DsReplUpdateOptions](https://www.google.com/search?num=5&q=DsReplUpdateOptions+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplUpdateOptions](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplUpdateOptions)  
+[DsReplVerifyOptions](https://www.google.com/search?num=5&q=DsReplVerifyOptions+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsReplVerifyOptions](https://github.com/dahall/Vanara/search?l=C%23&q=DsReplVerifyOptions)  
+[DsSchemaGuidType](https://www.google.com/search?num=5&q=DsSchemaGuidType+site%3Adocs.microsoft.com) | ntdsapi.h | [Vanara.PInvoke.NTDSApi.DsSchemaGuidType](https://github.com/dahall/Vanara/search?l=C%23&q=DsSchemaGuidType)  
+[ScheduleType](https://www.google.com/search?num=5&q=ScheduleType+site%3Adocs.microsoft.com) | schedule.h | [Vanara.PInvoke.NTDSApi.ScheduleType](https://github.com/dahall/Vanara/search?l=C%23&q=ScheduleType)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

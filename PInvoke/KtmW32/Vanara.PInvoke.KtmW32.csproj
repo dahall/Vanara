@@ -19,6 +19,7 @@ Structures
 HENLISTMENT HRESMGR HTRXNMGR TRANSACTION_NOTIFICATION TRANSACTION_NOTIFICATION_RECOVERY_ARGUMENT
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

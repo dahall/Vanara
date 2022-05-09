@@ -17,6 +17,15 @@ Native Method | Header | Managed Method
 [RmRestart](https://www.google.com/search?num=5&q=RmRestart+site%3Adocs.microsoft.com) | restartmanager.h | [Vanara.PInvoke.RstrtMgr.RmRestart](https://github.com/dahall/Vanara/search?l=C%23&q=RmRestart)  
 [RmShutdown](https://www.google.com/search?num=5&q=RmShutdown+site%3Adocs.microsoft.com) | restartmanager.h | [Vanara.PInvoke.RstrtMgr.RmShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=RmShutdown)  
 [RmStartSession](https://www.google.com/search?num=5&q=RmStartSession+site%3Adocs.microsoft.com) | restartmanager.h | [Vanara.PInvoke.RstrtMgr.RmStartSession](https://github.com/dahall/Vanara/search?l=C%23&q=RmStartSession)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[RM_APP_STATUS](https://www.google.com/search?num=5&q=RM_APP_STATUS+site%3Adocs.microsoft.com) | restartmanager.h | [Vanara.PInvoke.RstrtMgr.RM_APP_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=RM_APP_STATUS)  
+[RM_APP_TYPE](https://www.google.com/search?num=5&q=RM_APP_TYPE+site%3Adocs.microsoft.com) | restartmanager.h | [Vanara.PInvoke.RstrtMgr.RM_APP_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=RM_APP_TYPE)  
+[RM_FILTER_ACTION](https://www.google.com/search?num=5&q=RM_FILTER_ACTION+site%3Adocs.microsoft.com) | restartmanager.h | [Vanara.PInvoke.RstrtMgr.RM_FILTER_ACTION](https://github.com/dahall/Vanara/search?l=C%23&q=RM_FILTER_ACTION)  
+[RM_FILTER_TRIGGER](https://www.google.com/search?num=5&q=RM_FILTER_TRIGGER+site%3Adocs.microsoft.com) | restartmanager.h | [Vanara.PInvoke.RstrtMgr.RM_FILTER_TRIGGER](https://github.com/dahall/Vanara/search?l=C%23&q=RM_FILTER_TRIGGER)  
+[RM_REBOOT_REASON](https://www.google.com/search?num=5&q=RM_REBOOT_REASON+site%3Adocs.microsoft.com) | restartmanager.h | [Vanara.PInvoke.RstrtMgr.RM_REBOOT_REASON](https://github.com/dahall/Vanara/search?l=C%23&q=RM_REBOOT_REASON)  
+[RM_SHUTDOWN_TYPE](https://www.google.com/search?num=5&q=RM_SHUTDOWN_TYPE+site%3Adocs.microsoft.com) | restartmanager.h | [Vanara.PInvoke.RstrtMgr.RM_SHUTDOWN_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=RM_SHUTDOWN_TYPE)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

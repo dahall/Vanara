@@ -25,6 +25,11 @@ Native Method | Header | Managed Method
 [MagSetWindowTransform](https://www.google.com/search?num=5&q=MagSetWindowTransform+site%3Adocs.microsoft.com) | magnification.h | [Vanara.PInvoke.Magnification.MagSetWindowTransform](https://github.com/dahall/Vanara/search?l=C%23&q=MagSetWindowTransform)  
 [MagShowSystemCursor](https://www.google.com/search?num=5&q=MagShowSystemCursor+site%3Adocs.microsoft.com) | magnification.h | [Vanara.PInvoke.Magnification.MagShowSystemCursor](https://github.com/dahall/Vanara/search?l=C%23&q=MagShowSystemCursor)  
 [MagUninitialize](https://www.google.com/search?num=5&q=MagUninitialize+site%3Adocs.microsoft.com) | magnification.h | [Vanara.PInvoke.Magnification.MagUninitialize](https://github.com/dahall/Vanara/search?l=C%23&q=MagUninitialize)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[MagnifierStyles](https://www.google.com/search?num=5&q=MagnifierStyles+site%3Adocs.microsoft.com) | magnification.h | [Vanara.PInvoke.Magnification.MagnifierStyles](https://github.com/dahall/Vanara/search?l=C%23&q=MagnifierStyles)  
+[MW_FILTERMODE](https://www.google.com/search?num=5&q=MW_FILTERMODE+site%3Adocs.microsoft.com) | magnification.h | [Vanara.PInvoke.Magnification.MW_FILTERMODE](https://github.com/dahall/Vanara/search?l=C%23&q=MW_FILTERMODE)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

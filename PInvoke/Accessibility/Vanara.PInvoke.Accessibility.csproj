@@ -16,6 +16,7 @@ Functions
 AccessibleChildren AccessibleObjectFromEvent AccessibleObjectFromPoint AccessibleObjectFromWindow AccNotifyTouchInteraction AccSetRunningUtilityState CreateStdAccessibleObject CreateStdAccessibleProxy GetOleaccVersionInfo GetProcessHandleFromHwnd GetRoleText GetStateText LresultFromObject ObjectFromLresult WindowFromAccessibleObject
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <NoWarn>0618</NoWarn>

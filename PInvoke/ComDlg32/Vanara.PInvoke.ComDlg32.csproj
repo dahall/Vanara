@@ -21,6 +21,7 @@ Interfaces
 IPrintDialogCallback IPrintDialogServices
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

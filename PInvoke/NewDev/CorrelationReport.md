@@ -14,3 +14,11 @@ Native Method | Header | Managed Method
 [DiUninstallDevice](https://www.google.com/search?num=5&q=DiUninstallDevice+site%3Adocs.microsoft.com) | newdev.h | [Vanara.PInvoke.NewDev.DiUninstallDevice](https://github.com/dahall/Vanara/search?l=C%23&q=DiUninstallDevice)  
 [DiUninstallDriver](https://www.google.com/search?num=5&q=DiUninstallDriverA+site%3Adocs.microsoft.com) | newdev.h | [Vanara.PInvoke.NewDev.DiUninstallDriver](https://github.com/dahall/Vanara/search?l=C%23&q=DiUninstallDriver)  
 [UpdateDriverForPlugAndPlayDevices](https://www.google.com/search?num=5&q=UpdateDriverForPlugAndPlayDevicesA+site%3Adocs.microsoft.com) | newdev.h | [Vanara.PInvoke.NewDev.UpdateDriverForPlugAndPlayDevices](https://github.com/dahall/Vanara/search?l=C%23&q=UpdateDriverForPlugAndPlayDevices)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[DIID_FLAG](https://www.google.com/search?num=5&q=DIID_FLAG+site%3Adocs.microsoft.com) | newdev.h | [Vanara.PInvoke.NewDev.DIID_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=DIID_FLAG)  
+[DIIRFLAG](https://www.google.com/search?num=5&q=DIIRFLAG+site%3Adocs.microsoft.com) | newdev.h | [Vanara.PInvoke.NewDev.DIIRFLAG](https://github.com/dahall/Vanara/search?l=C%23&q=DIIRFLAG)  
+[DIURFLAG](https://www.google.com/search?num=5&q=DIURFLAG+site%3Adocs.microsoft.com) | newdev.h | [Vanara.PInvoke.NewDev.DIURFLAG](https://github.com/dahall/Vanara/search?l=C%23&q=DIURFLAG)  
+[INSTALLFLAG](https://www.google.com/search?num=5&q=INSTALLFLAG+site%3Adocs.microsoft.com) | newdev.h | [Vanara.PInvoke.NewDev.INSTALLFLAG](https://github.com/dahall/Vanara/search?l=C%23&q=INSTALLFLAG)  
+[ROLLBACK_FLAG](https://www.google.com/search?num=5&q=ROLLBACK_FLAG+site%3Adocs.microsoft.com) | newdev.h | [Vanara.PInvoke.NewDev.ROLLBACK_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=ROLLBACK_FLAG)  

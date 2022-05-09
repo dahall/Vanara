@@ -19,6 +19,7 @@ Structures
 DWM_BLURBEHIND DWM_COLORIZATION_PARAMS DWM_THUMBNAIL_PROPERTIES DWM_TIMING_INFO MARGINS UNSIGNED_RATIO
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

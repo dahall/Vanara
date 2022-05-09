@@ -15,6 +15,7 @@ Interfaces
 IFunctionDiscovery IFunctionDiscoveryNotification IFunctionInstance IFunctionInstanceCollection IFunctionInstanceCollectionQuery IFunctionInstanceQuery
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

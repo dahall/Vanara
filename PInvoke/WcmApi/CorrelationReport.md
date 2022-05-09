@@ -11,6 +11,13 @@ Native Method | Header | Managed Method
 [WcmQueryProperty](https://www.google.com/search?num=5&q=WcmQueryProperty+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WcmQueryProperty](https://github.com/dahall/Vanara/search?l=C%23&q=WcmQueryProperty)  
 [WcmSetProfileList](https://www.google.com/search?num=5&q=WcmSetProfileList+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WcmSetProfileList](https://github.com/dahall/Vanara/search?l=C%23&q=WcmSetProfileList)  
 [WcmSetProperty](https://www.google.com/search?num=5&q=WcmSetProperty+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WcmSetProperty](https://github.com/dahall/Vanara/search?l=C%23&q=WcmSetProperty)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[WCM_CONNECTION_COST](https://www.google.com/search?num=5&q=WCM_CONNECTION_COST+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WCM_CONNECTION_COST](https://github.com/dahall/Vanara/search?l=C%23&q=WCM_CONNECTION_COST)  
+[WCM_CONNECTION_COST_SOURCE](https://www.google.com/search?num=5&q=WCM_CONNECTION_COST_SOURCE+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WCM_CONNECTION_COST_SOURCE](https://github.com/dahall/Vanara/search?l=C%23&q=WCM_CONNECTION_COST_SOURCE)  
+[WCM_MEDIA_TYPE](https://www.google.com/search?num=5&q=WCM_MEDIA_TYPE+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WCM_MEDIA_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=WCM_MEDIA_TYPE)  
+[WCM_PROPERTY](https://www.google.com/search?num=5&q=WCM_PROPERTY+site%3Adocs.microsoft.com) | wcmapi.h | [Vanara.PInvoke.WcmApi.WCM_PROPERTY](https://github.com/dahall/Vanara/search?l=C%23&q=WCM_PROPERTY)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

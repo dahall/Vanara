@@ -25,6 +25,19 @@ Native Method | Header | Managed Method
 [PrjWriteFileData](https://www.google.com/search?num=5&q=PrjWriteFileData+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjWriteFileData](https://github.com/dahall/Vanara/search?l=C%23&q=PrjWriteFileData)  
 [PrjWritePlaceholderInfo](https://www.google.com/search?num=5&q=PrjWritePlaceholderInfo+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjWritePlaceholderInfo](https://github.com/dahall/Vanara/search?l=C%23&q=PrjWritePlaceholderInfo)  
 [PrjWritePlaceholderInfo2](https://www.google.com/search?num=5&q=PrjWritePlaceholderInfo2+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PrjWritePlaceholderInfo2](https://github.com/dahall/Vanara/search?l=C%23&q=PrjWritePlaceholderInfo2)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[PRJ_CALLBACK_DATA_FLAGS](https://www.google.com/search?num=5&q=PRJ_CALLBACK_DATA_FLAGS+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_CALLBACK_DATA_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_CALLBACK_DATA_FLAGS)  
+[PRJ_COMPLETE_COMMAND_TYPE](https://www.google.com/search?num=5&q=PRJ_COMPLETE_COMMAND_TYPE+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_COMPLETE_COMMAND_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_COMPLETE_COMMAND_TYPE)  
+[PRJ_EXT_INFO_TYPE](https://www.google.com/search?num=5&q=PRJ_EXT_INFO_TYPE+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_EXT_INFO_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_EXT_INFO_TYPE)  
+[PRJ_FILE_STATE](https://www.google.com/search?num=5&q=PRJ_FILE_STATE+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_FILE_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_FILE_STATE)  
+[PRJ_NOTIFICATION](https://www.google.com/search?num=5&q=PRJ_NOTIFICATION+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_NOTIFICATION](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_NOTIFICATION)  
+[PRJ_NOTIFY_TYPES](https://www.google.com/search?num=5&q=PRJ_NOTIFY_TYPES+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_NOTIFY_TYPES](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_NOTIFY_TYPES)  
+[PRJ_PLACEHOLDER_ID](https://www.google.com/search?num=5&q=PRJ_PLACEHOLDER_ID+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_PLACEHOLDER_ID](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_PLACEHOLDER_ID)  
+[PRJ_STARTVIRTUALIZING_FLAGS](https://www.google.com/search?num=5&q=PRJ_STARTVIRTUALIZING_FLAGS+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_STARTVIRTUALIZING_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_STARTVIRTUALIZING_FLAGS)  
+[PRJ_UPDATE_FAILURE_CAUSES](https://www.google.com/search?num=5&q=PRJ_UPDATE_FAILURE_CAUSES+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_UPDATE_FAILURE_CAUSES](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_UPDATE_FAILURE_CAUSES)  
+[PRJ_UPDATE_TYPES](https://www.google.com/search?num=5&q=PRJ_UPDATE_TYPES+site%3Adocs.microsoft.com) | projectedfslib.h | [Vanara.PInvoke.ProjectedFSLib.PRJ_UPDATE_TYPES](https://github.com/dahall/Vanara/search?l=C%23&q=PRJ_UPDATE_TYPES)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

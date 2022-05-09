@@ -16,6 +16,7 @@ Classes
 GdiObjExtensions2, SystemWindowsExtensions
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />

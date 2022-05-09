@@ -19,6 +19,7 @@ Structures
 CONNECTDLGSTRUCT DISCDLGSTRUCT NETCONNECTINFOSTRUCT NETINFOSTRUCT NETRESOURCE REMOTE_NAME_INFO UNIVERSAL_NAME_INFO
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

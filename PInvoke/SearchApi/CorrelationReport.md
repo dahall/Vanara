@@ -3,6 +3,35 @@ PInvoke API (methods, structures and constants imported from Windows Search.
 
 - Includes methods from Vanara.PInvoke.SearchApi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.SearchApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.SearchApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.SearchApi)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[AUTH_TYPE](https://www.google.com/search?num=5&q=AUTH_TYPE+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.AUTH_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=AUTH_TYPE)  
+[CatalogPausedReason](https://www.google.com/search?num=5&q=CatalogPausedReason+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.CatalogPausedReason](https://github.com/dahall/Vanara/search?l=C%23&q=CatalogPausedReason)  
+[CatalogStatus](https://www.google.com/search?num=5&q=CatalogStatus+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.CatalogStatus](https://github.com/dahall/Vanara/search?l=C%23&q=CatalogStatus)  
+[CHUNK_BREAKTYPE](https://www.google.com/search?num=5&q=CHUNK_BREAKTYPE+site%3Adocs.microsoft.com) | Filter.h | [Vanara.PInvoke.SearchApi.CHUNK_BREAKTYPE](https://github.com/dahall/Vanara/search?l=C%23&q=CHUNK_BREAKTYPE)  
+[CHUNKSTATE](https://www.google.com/search?num=5&q=CHUNKSTATE+site%3Adocs.microsoft.com) | Filter.h | [Vanara.PInvoke.SearchApi.CHUNKSTATE](https://github.com/dahall/Vanara/search?l=C%23&q=CHUNKSTATE)  
+[CLUSION_REASON](https://www.google.com/search?num=5&q=CLUSION_REASON+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.CLUSION_REASON](https://github.com/dahall/Vanara/search?l=C%23&q=CLUSION_REASON)  
+[CONDITION_CREATION_OPTIONS](https://www.google.com/search?num=5&q=CONDITION_CREATION_OPTIONS+site%3Adocs.microsoft.com) | structuredquery.h | [Vanara.PInvoke.SearchApi.CONDITION_CREATION_OPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=CONDITION_CREATION_OPTIONS)  
+[CONDITION_OPERATION](https://www.google.com/search?num=5&q=CONDITION_OPERATION+site%3Adocs.microsoft.com) | structuredquerycondition.h | [Vanara.PInvoke.SearchApi.CONDITION_OPERATION](https://github.com/dahall/Vanara/search?l=C%23&q=CONDITION_OPERATION)  
+[CONDITION_TYPE](https://www.google.com/search?num=5&q=CONDITION_TYPE+site%3Adocs.microsoft.com) | structuredquerycondition.h | [Vanara.PInvoke.SearchApi.CONDITION_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=CONDITION_TYPE)  
+[FOLLOW_FLAGS](https://www.google.com/search?num=5&q=FOLLOW_FLAGS+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.FOLLOW_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=FOLLOW_FLAGS)  
+[IFILTER_FLAGS](https://www.google.com/search?num=5&q=IFILTER_FLAGS+site%3Adocs.microsoft.com) | Filter.h | [Vanara.PInvoke.SearchApi.IFILTER_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=IFILTER_FLAGS)  
+[IFILTER_INIT](https://www.google.com/search?num=5&q=IFILTER_INIT+site%3Adocs.microsoft.com) | Filter.h | [Vanara.PInvoke.SearchApi.IFILTER_INIT](https://github.com/dahall/Vanara/search?l=C%23&q=IFILTER_INIT)  
+[PRIORITIZE_FLAGS](https://www.google.com/search?num=5&q=PRIORITIZE_FLAGS+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.PRIORITIZE_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=PRIORITIZE_FLAGS)  
+[PRIORITY_LEVEL](https://www.google.com/search?num=5&q=PRIORITY_LEVEL+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.PRIORITY_LEVEL](https://github.com/dahall/Vanara/search?l=C%23&q=PRIORITY_LEVEL)  
+[PROXY_ACCESS](https://www.google.com/search?num=5&q=PROXY_ACCESS+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.PROXY_ACCESS](https://github.com/dahall/Vanara/search?l=C%23&q=PROXY_ACCESS)  
+[QUERY_PARSER_MANAGER_OPTION](https://www.google.com/search?num=5&q=QUERY_PARSER_MANAGER_OPTION+site%3Adocs.microsoft.com) | structuredquery.h | [Vanara.PInvoke.SearchApi.QUERY_PARSER_MANAGER_OPTION](https://github.com/dahall/Vanara/search?l=C%23&q=QUERY_PARSER_MANAGER_OPTION)  
+[ROWSETEVENT_ITEMSTATE](https://www.google.com/search?num=5&q=ROWSETEVENT_ITEMSTATE+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.ROWSETEVENT_ITEMSTATE](https://github.com/dahall/Vanara/search?l=C%23&q=ROWSETEVENT_ITEMSTATE)  
+[ROWSETEVENT_TYPE](https://www.google.com/search?num=5&q=ROWSETEVENT_TYPE+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.ROWSETEVENT_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=ROWSETEVENT_TYPE)  
+[SEARCH_INDEXING_PHASE](https://www.google.com/search?num=5&q=SEARCH_INDEXING_PHASE+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.SEARCH_INDEXING_PHASE](https://github.com/dahall/Vanara/search?l=C%23&q=SEARCH_INDEXING_PHASE)  
+[SEARCH_KIND_OF_CHANGE](https://www.google.com/search?num=5&q=SEARCH_KIND_OF_CHANGE+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.SEARCH_KIND_OF_CHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=SEARCH_KIND_OF_CHANGE)  
+[SEARCH_NOTIFICATION_PRIORITY](https://www.google.com/search?num=5&q=SEARCH_NOTIFICATION_PRIORITY+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.SEARCH_NOTIFICATION_PRIORITY](https://github.com/dahall/Vanara/search?l=C%23&q=SEARCH_NOTIFICATION_PRIORITY)  
+[SEARCH_QUERY_SYNTAX](https://www.google.com/search?num=5&q=SEARCH_QUERY_SYNTAX+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.SEARCH_QUERY_SYNTAX](https://github.com/dahall/Vanara/search?l=C%23&q=SEARCH_QUERY_SYNTAX)  
+[SEARCH_TERM_EXPANSION](https://www.google.com/search?num=5&q=SEARCH_TERM_EXPANSION+site%3Adocs.microsoft.com) | searchapi.h | [Vanara.PInvoke.SearchApi.SEARCH_TERM_EXPANSION](https://github.com/dahall/Vanara/search?l=C%23&q=SEARCH_TERM_EXPANSION)  
+[STRUCTURED_QUERY_MULTIOPTION](https://www.google.com/search?num=5&q=STRUCTURED_QUERY_MULTIOPTION+site%3Adocs.microsoft.com) | structuredquery.h | [Vanara.PInvoke.SearchApi.STRUCTURED_QUERY_MULTIOPTION](https://github.com/dahall/Vanara/search?l=C%23&q=STRUCTURED_QUERY_MULTIOPTION)  
+[STRUCTURED_QUERY_RESOLVE_OPTION](https://www.google.com/search?num=5&q=STRUCTURED_QUERY_RESOLVE_OPTION+site%3Adocs.microsoft.com) | structuredquery.h | [Vanara.PInvoke.SearchApi.STRUCTURED_QUERY_RESOLVE_OPTION](https://github.com/dahall/Vanara/search?l=C%23&q=STRUCTURED_QUERY_RESOLVE_OPTION)  
+[STRUCTURED_QUERY_SINGLE_OPTION](https://www.google.com/search?num=5&q=STRUCTURED_QUERY_SINGLE_OPTION+site%3Adocs.microsoft.com) | structuredquery.h | [Vanara.PInvoke.SearchApi.STRUCTURED_QUERY_SINGLE_OPTION](https://github.com/dahall/Vanara/search?l=C%23&q=STRUCTURED_QUERY_SINGLE_OPTION)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

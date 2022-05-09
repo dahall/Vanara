@@ -18,6 +18,19 @@ Native Method | Header | Managed Method
 [OleUIPasteSpecial](https://www.google.com/search?num=5&q=OleUIPasteSpecialA+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.OleUIPasteSpecial](https://github.com/dahall/Vanara/search?l=C%23&q=OleUIPasteSpecial)  
 [OleUIPromptUser](https://www.google.com/search?num=5&q=OleUIPromptUserA+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.OleUIPromptUser](https://github.com/dahall/Vanara/search?l=C%23&q=OleUIPromptUser)  
 [OleUIUpdateLinks](https://www.google.com/search?num=5&q=OleUIUpdateLinksA+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.OleUIUpdateLinks](https://github.com/dahall/Vanara/search?l=C%23&q=OleUIUpdateLinks)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[BZ](https://www.google.com/search?num=5&q=BZ+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.BZ](https://github.com/dahall/Vanara/search?l=C%23&q=BZ)  
+[CF](https://www.google.com/search?num=5&q=CF+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.CF](https://github.com/dahall/Vanara/search?l=C%23&q=CF)  
+[CIF](https://www.google.com/search?num=5&q=CIF+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.CIF](https://github.com/dahall/Vanara/search?l=C%23&q=CIF)  
+[CSF](https://www.google.com/search?num=5&q=CSF+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.CSF](https://github.com/dahall/Vanara/search?l=C%23&q=CSF)  
+[ELF](https://www.google.com/search?num=5&q=ELF+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.ELF](https://github.com/dahall/Vanara/search?l=C%23&q=ELF)  
+[IOF](https://www.google.com/search?num=5&q=IOF+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.IOF](https://github.com/dahall/Vanara/search?l=C%23&q=IOF)  
+[OLEUIPASTEFLAG](https://www.google.com/search?num=5&q=OLEUIPASTEFLAG+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.OLEUIPASTEFLAG](https://github.com/dahall/Vanara/search?l=C%23&q=OLEUIPASTEFLAG)  
+[OPF](https://www.google.com/search?num=5&q=OPF+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.OPF](https://github.com/dahall/Vanara/search?l=C%23&q=OPF)  
+[PSF](https://www.google.com/search?num=5&q=PSF+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.PSF](https://github.com/dahall/Vanara/search?l=C%23&q=PSF)  
+[VPF](https://www.google.com/search?num=5&q=VPF+site%3Adocs.microsoft.com) | oledlg.h | [Vanara.PInvoke.OleDlg.VPF](https://github.com/dahall/Vanara/search?l=C%23&q=VPF)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

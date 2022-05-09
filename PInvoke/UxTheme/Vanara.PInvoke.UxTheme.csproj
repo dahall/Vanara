@@ -19,6 +19,7 @@ Structures
 BP_ANIMATIONPARAMS BP_PAINTPARAMS DTBGOPTS DTTOPTS HANIMATIONBUFFER HPAINTBUFFER INTLIST MARGINS TA_TIMINGFUNCTION TA_TRANSFORM WTA_OPTIONS
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

@@ -13,6 +13,17 @@ Native Method | Header | Managed Method
 [FhServiceStartBackup](https://www.google.com/search?num=5&q=FhServiceStartBackup+site%3Adocs.microsoft.com) | fhsvcctl.h | [Vanara.PInvoke.FhSvcCtl.FhServiceStartBackup](https://github.com/dahall/Vanara/search?l=C%23&q=FhServiceStartBackup)  
 [FhServiceStopBackup](https://www.google.com/search?num=5&q=FhServiceStopBackup+site%3Adocs.microsoft.com) | fhsvcctl.h | [Vanara.PInvoke.FhSvcCtl.FhServiceStopBackup](https://github.com/dahall/Vanara/search?l=C%23&q=FhServiceStopBackup)  
 [FhServiceUnblockBackup](https://www.google.com/search?num=5&q=FhServiceUnblockBackup+site%3Adocs.microsoft.com) | fhsvcctl.h | [Vanara.PInvoke.FhSvcCtl.FhServiceUnblockBackup](https://github.com/dahall/Vanara/search?l=C%23&q=FhServiceUnblockBackup)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[FH_BACKUP_STATUS](https://www.google.com/search?num=5&q=FH_BACKUP_STATUS+site%3Adocs.microsoft.com) | fhcfg.h | [Vanara.PInvoke.FhSvcCtl.FH_BACKUP_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=FH_BACKUP_STATUS)  
+[FH_DEVICE_VALIDATION_RESULT](https://www.google.com/search?num=5&q=FH_DEVICE_VALIDATION_RESULT+site%3Adocs.microsoft.com) | fhcfg.h | [Vanara.PInvoke.FhSvcCtl.FH_DEVICE_VALIDATION_RESULT](https://github.com/dahall/Vanara/search?l=C%23&q=FH_DEVICE_VALIDATION_RESULT)  
+[FH_LOCAL_POLICY_TYPE](https://www.google.com/search?num=5&q=FH_LOCAL_POLICY_TYPE+site%3Adocs.microsoft.com) | fhcfg.h | [Vanara.PInvoke.FhSvcCtl.FH_LOCAL_POLICY_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=FH_LOCAL_POLICY_TYPE)  
+[FH_PROTECTED_ITEM_CATEGORY](https://www.google.com/search?num=5&q=FH_PROTECTED_ITEM_CATEGORY+site%3Adocs.microsoft.com) | fhcfg.h | [Vanara.PInvoke.FhSvcCtl.FH_PROTECTED_ITEM_CATEGORY](https://github.com/dahall/Vanara/search?l=C%23&q=FH_PROTECTED_ITEM_CATEGORY)  
+[FH_RETENTION_TYPES](https://www.google.com/search?num=5&q=FH_RETENTION_TYPES+site%3Adocs.microsoft.com) | fhcfg.h | [Vanara.PInvoke.FhSvcCtl.FH_RETENTION_TYPES](https://github.com/dahall/Vanara/search?l=C%23&q=FH_RETENTION_TYPES)  
+[FH_STATE](https://www.google.com/search?num=5&q=FH_STATE+site%3Adocs.microsoft.com) | fhstatus.h | [Vanara.PInvoke.FhSvcCtl.FH_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=FH_STATE)  
+[FH_TARGET_DRIVE_TYPES](https://www.google.com/search?num=5&q=FH_TARGET_DRIVE_TYPES+site%3Adocs.microsoft.com) | fhcfg.h | [Vanara.PInvoke.FhSvcCtl.FH_TARGET_DRIVE_TYPES](https://github.com/dahall/Vanara/search?l=C%23&q=FH_TARGET_DRIVE_TYPES)  
+[FH_TARGET_PROPERTY_TYPE](https://www.google.com/search?num=5&q=FH_TARGET_PROPERTY_TYPE+site%3Adocs.microsoft.com) | fhcfg.h | [Vanara.PInvoke.FhSvcCtl.FH_TARGET_PROPERTY_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=FH_TARGET_PROPERTY_TYPE)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

@@ -19,6 +19,7 @@ Interfaces
 ICondition ICondition2 IConditionFactory IConditionFactory2 IEntity IEnumSearchRoots IEnumSearchScopeRules IFilter ILoadFilter INamedEntity IOpenSearchSource IOpLockStatus IProtocolHandlerSite IQueryParser IQueryParserManager IQuerySolution IRelationship IRichChunk IRowsetEvents IRowsetPrioritization ISchemaLocalizerSupport ISchemaProvider ISearchCatalogManager ISearchCatalogManager2 ISearchCrawlScopeManager ISearchCrawlScopeManager2 ISearchFolderItemFactory ISearchItemsChangedSink ISearchLanguageSupport ISearchManager ISearchManager2 ISearchNotifyInlineSite ISearchPersistentItemsChangedSink ISearchProtocol ISearchProtocol2 ISearchProtocolThreadContext ISearchQueryHelper ISearchRoot ISearchScopeRule ISearchViewChangedSink ITokenCollection IUrlAccessor IUrlAccessor2 IUrlAccessor3 IUrlAccessor4
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

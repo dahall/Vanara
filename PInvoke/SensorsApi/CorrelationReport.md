@@ -3,6 +3,15 @@ PInvoke API (methods, structures and constants) imported from Windows SensorsApi
 
 - Includes methods from sensorsapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.SensorsApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.SensorsApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.SensorsApi)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[LOCATION_DESIRED_ACCURACY](https://www.google.com/search?num=5&q=LOCATION_DESIRED_ACCURACY+site%3Adocs.microsoft.com) | sensorsapi.h | [Vanara.PInvoke.SensorsApi.LOCATION_DESIRED_ACCURACY](https://github.com/dahall/Vanara/search?l=C%23&q=LOCATION_DESIRED_ACCURACY)  
+[LOCATION_POSITION_SOURCE](https://www.google.com/search?num=5&q=LOCATION_POSITION_SOURCE+site%3Adocs.microsoft.com) | sensorsapi.h | [Vanara.PInvoke.SensorsApi.LOCATION_POSITION_SOURCE](https://github.com/dahall/Vanara/search?l=C%23&q=LOCATION_POSITION_SOURCE)  
+[MagnetometerAccuracy](https://www.google.com/search?num=5&q=MagnetometerAccuracy+site%3Adocs.microsoft.com) | sensorsapi.h | [Vanara.PInvoke.SensorsApi.MagnetometerAccuracy](https://github.com/dahall/Vanara/search?l=C%23&q=MagnetometerAccuracy)  
+[SensorConnectionType](https://www.google.com/search?num=5&q=SensorConnectionType+site%3Adocs.microsoft.com) | sensorsapi.h | [Vanara.PInvoke.SensorsApi.SensorConnectionType](https://github.com/dahall/Vanara/search?l=C%23&q=SensorConnectionType)  
+[SensorState](https://www.google.com/search?num=5&q=SensorState+site%3Adocs.microsoft.com) | sensorsapi.h | [Vanara.PInvoke.SensorsApi.SensorState](https://github.com/dahall/Vanara/search?l=C%23&q=SensorState)  
+[SimpleDeviceOrientation](https://www.google.com/search?num=5&q=SimpleDeviceOrientation+site%3Adocs.microsoft.com) | sensorsapi.h | [Vanara.PInvoke.SensorsApi.SimpleDeviceOrientation](https://github.com/dahall/Vanara/search?l=C%23&q=SimpleDeviceOrientation)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

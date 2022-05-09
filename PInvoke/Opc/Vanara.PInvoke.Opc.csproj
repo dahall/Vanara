@@ -16,6 +16,7 @@ Interfaces
 IOpcCertificateEnumerator IOpcCertificateSet IOpcDigitalSignature IOpcDigitalSignatureEnumerator IOpcDigitalSignatureManager IOpcFactory IOpcPackage IOpcPart IOpcPartEnumerator IOpcPartSet IOpcPartUri IOpcRelationship IOpcRelationshipEnumerator IOpcRelationshipSelector IOpcRelationshipSelectorEnumerator IOpcRelationshipSelectorSet IOpcRelationshipSet IOpcSignatureCustomObject IOpcSignatureCustomObjectEnumerator IOpcSignatureCustomObjectSet IOpcSignaturePartReference IOpcSignaturePartReferenceEnumerator IOpcSignaturePartReferenceSet IOpcSignatureReference IOpcSignatureReferenceEnumerator IOpcSignatureReferenceSet IOpcSignatureRelationshipReference IOpcSignatureRelationshipReferenceEnumerator IOpcSignatureRelationshipReferenceSet IOpcSigningOptions IOpcUri
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

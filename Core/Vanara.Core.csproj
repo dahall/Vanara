@@ -15,7 +15,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-IArrayStruct&lt;T&gt;, IHistory&lt;T&gt;, IMemoryMethods, ISafeMemoryHandle, ISimpleMemoryMethods, IVanaraMarshaler, AlignedMemory&lt;T&gt;, BeginEndEventContext, BitHelper, ByteSizeFormatter, ComConnectionPoint, ComReleaser&lt;T&gt;, ComReleaserFactory, ComStream, ComTypeExtensions, ConstantConversionExtensions, CorrespondingTypeAttribute, CoTaskMemoryMethods, EnumerableEqualityComparer&lt;T&gt;, EnumExtensions, EventedList&lt;T&gt;, FileTimeExtensions, Formatter, FormatterComposer, GenericSafeHandle, GenericVirtualReadOnlyDictionary&lt;T&gt;, HexDempHelpers, HGlobalMemoryMethods, History&lt;T&gt;, IArrayStructExtensions, IArrayStructMarshaler&lt;T&gt;, InteropExtensions, IntPtrConverter, IOExtensions, LibHelper, ListChangedEventArgs&lt;T&gt;, MarshalingStream, MemoryMethodsBase, NativeMemoryEnumerator&lt;T&gt;, NativeMemoryStream, PinnedObject, ReflectionExtensions, ReflectionExtensions, SafeAllocatedMemoryHandle, SafeAllocatedMemoryHandleBase, SafeByteArray, SafeCoTaskMemHandle, SafeCoTaskMemString, SafeCoTaskMemStruct&lt;T&gt;, SafeGuidPtr, SafeHGlobalHandle, SafeHGlobalStruct&lt;T&gt;, SafeMemoryHandle&lt;T&gt;, SafeMemoryHandleExt&lt;T&gt;, SafeMemString&lt;T&gt;, SafeMemStruct&lt;T&gt;, SparseArray&lt;T&gt;, StringHelper, TryGetValueDelegate, UntypedNativeMemoryEnumerator, VanaraCustomMarshaler&lt;T&gt;, VanaraMarshaler, VanaraMarshalerAttribute, VirtualDictionary&lt;T&gt;, VirtualReadOnlyDictionary&lt;T&gt;
+AlignedMemory&lt;T&gt;, BeginEndEventContext, BitHelper, ByteSizeFormatter, ComConnectionPoint, ComReleaser&lt;T&gt;, ComReleaserFactory, ComStream, ComTypeExtensions, ConstantConversionExtensions, CorrespondingTypeAttribute, CoTaskMemoryMethods, EnumerableEqualityComparer&lt;T&gt;, EnumExtensions, EventedList&lt;T&gt;, FileTimeExtensions, Formatter, FormatterComposer, GenericSafeHandle, GenericVirtualReadOnlyDictionary&lt;T&gt;, HexDempHelpers, HGlobalMemoryMethods, History&lt;T&gt;, IArrayStructExtensions, IArrayStructMarshaler&lt;T&gt;, InteropExtensions, IntPtrConverter, IOExtensions, LibHelper, ListChangedEventArgs&lt;T&gt;, MarshalingStream, MemoryMethodsBase, NativeMemoryEnumerator&lt;T&gt;, NativeMemoryStream, PinnedObject, ReflectionExtensions, ReflectionExtensions, SafeAllocatedMemoryHandle, SafeAllocatedMemoryHandleBase, SafeByteArray, SafeCoTaskMemHandle, SafeCoTaskMemString, SafeCoTaskMemStruct&lt;T&gt;, SafeGuidPtr, SafeHGlobalHandle, SafeHGlobalStruct&lt;T&gt;, SafeMemoryHandle&lt;T&gt;, SafeMemoryHandleExt&lt;T&gt;, SafeMemString&lt;T&gt;, SafeMemStruct&lt;T&gt;, SparseArray&lt;T&gt;, StringHelper, TryGetValueDelegate, UntypedNativeMemoryEnumerator, VanaraCustomMarshaler&lt;T&gt;, VanaraMarshaler, VanaraMarshalerAttribute, VirtualDictionary&lt;T&gt;, VirtualReadOnlyDictionary&lt;T&gt;
 
 Structures
 BOOL, BOOLEAN, EnumFlagIndexer&lt;T&gt;, GuidPtr, RefEnumerator&lt;T&gt;, SizeT, StrPtrAnsi, StrPtrAuto, StrPtrUni, time_t
@@ -24,6 +24,7 @@ Enumerations
 CorrespondingAction, FileAttributeConstant, FileOpConstant, FilePermissionConstant, StringListPackMethod
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.ValueTuple" Version="4.3.0" />

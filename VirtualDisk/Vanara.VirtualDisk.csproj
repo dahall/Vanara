@@ -15,6 +15,7 @@ Enumerations
 CompactionMode, DeviceType, Subtype
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) ">
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />

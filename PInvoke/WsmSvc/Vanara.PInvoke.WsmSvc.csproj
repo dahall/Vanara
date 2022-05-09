@@ -21,6 +21,7 @@ Interfaces
 IWSMan IWSManConnectionOptions IWSManConnectionOptionsEx IWSManConnectionOptionsEx2 IWSManEnumerator IWSManEx IWSManEx2 IWSManEx3 IWSManResourceLocator IWSManSession
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

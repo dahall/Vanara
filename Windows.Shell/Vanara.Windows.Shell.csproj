@@ -21,6 +21,7 @@ NavigationLogDirection, SFVMUD, ShellBrowserViewMode, TaskbarItemTabThumbnailOpt
 </PackageReleaseNotes>
     <RootNamespace>Vanara.Windows.Shell</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System.Design" />

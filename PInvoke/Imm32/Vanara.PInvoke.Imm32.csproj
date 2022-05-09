@@ -21,6 +21,7 @@ Interfaces
 IFECommon IFEDictionary IFELanguage IImePlugInDictDictionaryList
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

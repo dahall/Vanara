@@ -51,6 +51,19 @@ Native Method | Header | Managed Method
 [SetIScsiTunnelModeOuterAddress](https://www.google.com/search?num=5&q=SetIScsiTunnelModeOuterAddressA+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetIScsiTunnelModeOuterAddress](https://github.com/dahall/Vanara/search?l=C%23&q=SetIScsiTunnelModeOuterAddress)  
 [SetupPersistentIScsiDevices](https://www.google.com/search?num=5&q=SetupPersistentIScsiDevices+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetupPersistentIScsiDevices](https://github.com/dahall/Vanara/search?l=C%23&q=SetupPersistentIScsiDevices)  
 [SetupPersistentIScsiVolumes](https://www.google.com/search?num=5&q=SetupPersistentIScsiVolumes+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.SetupPersistentIScsiVolumes](https://github.com/dahall/Vanara/search?l=C%23&q=SetupPersistentIScsiVolumes)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[IKE_AUTHENTICATION_METHOD](https://www.google.com/search?num=5&q=IKE_AUTHENTICATION_METHOD+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.IKE_AUTHENTICATION_METHOD](https://github.com/dahall/Vanara/search?l=C%23&q=IKE_AUTHENTICATION_METHOD)  
+[IKE_IDENTIFICATION_PAYLOAD_TYPE](https://www.google.com/search?num=5&q=IKE_IDENTIFICATION_PAYLOAD_TYPE+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.IKE_IDENTIFICATION_PAYLOAD_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=IKE_IDENTIFICATION_PAYLOAD_TYPE)  
+[ISCSI_AUTH_TYPES](https://www.google.com/search?num=5&q=ISCSI_AUTH_TYPES+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_AUTH_TYPES](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_AUTH_TYPES)  
+[ISCSI_DIGEST_TYPES](https://www.google.com/search?num=5&q=ISCSI_DIGEST_TYPES+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_DIGEST_TYPES](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_DIGEST_TYPES)  
+[ISCSI_LOGIN_FLAGS](https://www.google.com/search?num=5&q=ISCSI_LOGIN_FLAGS+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_LOGIN_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_LOGIN_FLAGS)  
+[ISCSI_LOGIN_OPTIONS_INFO_SPECIFIED](https://www.google.com/search?num=5&q=ISCSI_LOGIN_OPTIONS_INFO_SPECIFIED+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_LOGIN_OPTIONS_INFO_SPECIFIED](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_LOGIN_OPTIONS_INFO_SPECIFIED)  
+[ISCSI_SECURITY_FLAGS](https://www.google.com/search?num=5&q=ISCSI_SECURITY_FLAGS+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.ISCSI_SECURITY_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_SECURITY_FLAGS)  
+[ISCSI_TARGET_FLAGS](https://www.google.com/search?num=5&q=ISCSI_TARGET_FLAGS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.IScsiDsc.ISCSI_TARGET_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=ISCSI_TARGET_FLAGS)  
+[TARGET_INFORMATION_CLASS](https://www.google.com/search?num=5&q=TARGET_INFORMATION_CLASS+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.TARGET_INFORMATION_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=TARGET_INFORMATION_CLASS)  
+[TARGETPROTOCOLTYPE](https://www.google.com/search?num=5&q=TARGETPROTOCOLTYPE+site%3Adocs.microsoft.com) | iscsidsc.h | [Vanara.PInvoke.IScsiDsc.TARGETPROTOCOLTYPE](https://github.com/dahall/Vanara/search?l=C%23&q=TARGETPROTOCOLTYPE)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

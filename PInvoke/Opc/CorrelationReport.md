@@ -3,6 +3,20 @@ PInvoke API (methods, structures and constants) imported from opcservices.dll.
 
 - Includes methods from opcservices.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Opc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Opc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Opc)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[OPC_CANONICALIZATION_METHOD](https://www.google.com/search?num=5&q=OPC_CANONICALIZATION_METHOD+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_CANONICALIZATION_METHOD](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_CANONICALIZATION_METHOD)  
+[OPC_CERTIFICATE_EMBEDDING_OPTION](https://www.google.com/search?num=5&q=OPC_CERTIFICATE_EMBEDDING_OPTION+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_CERTIFICATE_EMBEDDING_OPTION](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_CERTIFICATE_EMBEDDING_OPTION)  
+[OPC_COMPRESSION_OPTIONS](https://www.google.com/search?num=5&q=OPC_COMPRESSION_OPTIONS+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_COMPRESSION_OPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_COMPRESSION_OPTIONS)  
+[OPC_READ_FLAGS](https://www.google.com/search?num=5&q=OPC_READ_FLAGS+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_READ_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_READ_FLAGS)  
+[OPC_RELATIONSHIP_SELECTOR](https://www.google.com/search?num=5&q=OPC_RELATIONSHIP_SELECTOR+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_RELATIONSHIP_SELECTOR](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_RELATIONSHIP_SELECTOR)  
+[OPC_RELATIONSHIPS_SIGNING_OPTION](https://www.google.com/search?num=5&q=OPC_RELATIONSHIPS_SIGNING_OPTION+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_RELATIONSHIPS_SIGNING_OPTION](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_RELATIONSHIPS_SIGNING_OPTION)  
+[OPC_SIGNATURE_TIME_FORMAT](https://www.google.com/search?num=5&q=OPC_SIGNATURE_TIME_FORMAT+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_SIGNATURE_TIME_FORMAT](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_SIGNATURE_TIME_FORMAT)  
+[OPC_SIGNATURE_VALIDATION_RESULT](https://www.google.com/search?num=5&q=OPC_SIGNATURE_VALIDATION_RESULT+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_SIGNATURE_VALIDATION_RESULT](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_SIGNATURE_VALIDATION_RESULT)  
+[OPC_STREAM_IO_MODE](https://www.google.com/search?num=5&q=OPC_STREAM_IO_MODE+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_STREAM_IO_MODE](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_STREAM_IO_MODE)  
+[OPC_URI_TARGET_MODE](https://www.google.com/search?num=5&q=OPC_URI_TARGET_MODE+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_URI_TARGET_MODE](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_URI_TARGET_MODE)  
+[OPC_WRITE_FLAGS](https://www.google.com/search?num=5&q=OPC_WRITE_FLAGS+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OPC_WRITE_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=OPC_WRITE_FLAGS)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
@@ -41,5 +55,5 @@ Native Interface | Header | Managed Interface
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [Opc](https://www.google.com/search?num=5&q=Opc+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Opc](https://github.com/dahall/Vanara/search?l=C%23&q=Opc)  
-[OpcEnumerator`2](https://www.google.com/search?num=5&q=OpcEnumerator`2+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Opc.OpcEnumerator`2](https://github.com/dahall/Vanara/search?l=C%23&q=OpcEnumerator`2)  
+[OpcEnumerator](https://www.google.com/search?num=5&q=OpcEnumerator+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Opc.OpcEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=OpcEnumerator)  
 [OpcFactory](https://www.google.com/search?num=5&q=OpcFactory+site%3Adocs.microsoft.com) | msopc.h | [Vanara.PInvoke.Opc.OpcFactory](https://github.com/dahall/Vanara/search?l=C%23&q=OpcFactory)  

@@ -19,6 +19,7 @@ Interfaces
 IBackgroundCopyCallback IBackgroundCopyCallback2 IBackgroundCopyCallback3 IBackgroundCopyError IBackgroundCopyFile IBackgroundCopyFile2 IBackgroundCopyFile3 IBackgroundCopyFile4 IBackgroundCopyFile5 IBackgroundCopyFile6 IBackgroundCopyJob IBackgroundCopyJob2 IBackgroundCopyJob3 IBackgroundCopyJob4 IBackgroundCopyJob5 IBackgroundCopyJobHttpOptions IBackgroundCopyJobHttpOptions2 IBackgroundCopyJobHttpOptions3 IBackgroundCopyManager IBackgroundCopyServerCertificateValidationCallback IBitsPeer IBitsPeerCacheAdministration IBitsPeerCacheRecord IBitsTokenOptions IEnumBackgroundCopyFiles IEnumBackgroundCopyJobs IEnumBitsPeerCacheRecords IEnumBitsPeers
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

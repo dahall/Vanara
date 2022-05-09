@@ -20,6 +20,13 @@ Native Method | Header | Managed Method
 [SspiPromptForCredentials](https://www.google.com/search?num=5&q=SspiPromptForCredentialsA+site%3Adocs.microsoft.com) | Sspi.h | [Vanara.PInvoke.CredUI.SspiPromptForCredentials](https://github.com/dahall/Vanara/search?l=C%23&q=SspiPromptForCredentials)  
 [SspiUnmarshalCredUIContext](https://www.google.com/search?num=5&q=SspiUnmarshalCredUIContext+site%3Adocs.microsoft.com) | Sspi.h | [Vanara.PInvoke.CredUI.SspiUnmarshalCredUIContext](https://github.com/dahall/Vanara/search?l=C%23&q=SspiUnmarshalCredUIContext)  
 [SspiUpdateCredentials](https://www.google.com/search?num=5&q=SspiUpdateCredentials+site%3Adocs.microsoft.com) | Sspi.h | [Vanara.PInvoke.CredUI.SspiUpdateCredentials](https://github.com/dahall/Vanara/search?l=C%23&q=SspiUpdateCredentials)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[CredentialsDialogOptions](https://www.google.com/search?num=5&q=CredentialsDialogOptions+site%3Adocs.microsoft.com) | wincred.h | [Vanara.PInvoke.CredUI.CredentialsDialogOptions](https://github.com/dahall/Vanara/search?l=C%23&q=CredentialsDialogOptions)  
+[CredPackFlags](https://www.google.com/search?num=5&q=CredPackFlags+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CredUI.CredPackFlags](https://github.com/dahall/Vanara/search?l=C%23&q=CredPackFlags)  
+[SSPIPFC](https://www.google.com/search?num=5&q=SSPIPFC+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.CredUI.SSPIPFC](https://github.com/dahall/Vanara/search?l=C%23&q=SSPIPFC)  
+[WindowsCredentialsDialogOptions](https://www.google.com/search?num=5&q=WindowsCredentialsDialogOptions+site%3Adocs.microsoft.com) | wincred.h | [Vanara.PInvoke.CredUI.WindowsCredentialsDialogOptions](https://github.com/dahall/Vanara/search?l=C%23&q=WindowsCredentialsDialogOptions)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

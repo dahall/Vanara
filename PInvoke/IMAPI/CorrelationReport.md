@@ -3,6 +3,28 @@ PInvoke API (interfaces and constants) imported from Windows Image Mastering API
 
 - Includes methods from imapi2.dll, imapi2fs.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.IMAPI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.IMAPI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.IMAPI)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[EmulationType](https://www.google.com/search?num=5&q=EmulationType+site%3Adocs.microsoft.com) | imapi2fs.h | [Vanara.PInvoke.IMAPI.EmulationType](https://github.com/dahall/Vanara/search?l=C%23&q=EmulationType)  
+[FsiFileSystems](https://www.google.com/search?num=5&q=FsiFileSystems+site%3Adocs.microsoft.com) | imapi2fs.h | [Vanara.PInvoke.IMAPI.FsiFileSystems](https://github.com/dahall/Vanara/search?l=C%23&q=FsiFileSystems)  
+[FsiItemType](https://www.google.com/search?num=5&q=FsiItemType+site%3Adocs.microsoft.com) | imapi2fs.h | [Vanara.PInvoke.IMAPI.FsiItemType](https://github.com/dahall/Vanara/search?l=C%23&q=FsiItemType)  
+[IMAPI_BURN_VERIFICATION_LEVEL](https://www.google.com/search?num=5&q=IMAPI_BURN_VERIFICATION_LEVEL+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_BURN_VERIFICATION_LEVEL](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_BURN_VERIFICATION_LEVEL)  
+[IMAPI_CD_SECTOR_TYPE](https://www.google.com/search?num=5&q=IMAPI_CD_SECTOR_TYPE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_CD_SECTOR_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_CD_SECTOR_TYPE)  
+[IMAPI_CD_TRACK_DIGITAL_COPY_SETTING](https://www.google.com/search?num=5&q=IMAPI_CD_TRACK_DIGITAL_COPY_SETTING+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_CD_TRACK_DIGITAL_COPY_SETTING](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_CD_TRACK_DIGITAL_COPY_SETTING)  
+[IMAPI_FEATURE_PAGE_TYPE](https://www.google.com/search?num=5&q=IMAPI_FEATURE_PAGE_TYPE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_FEATURE_PAGE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_FEATURE_PAGE_TYPE)  
+[IMAPI_FORMAT2_DATA_MEDIA_STATE](https://www.google.com/search?num=5&q=IMAPI_FORMAT2_DATA_MEDIA_STATE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_FORMAT2_DATA_MEDIA_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_FORMAT2_DATA_MEDIA_STATE)  
+[IMAPI_FORMAT2_DATA_WRITE_ACTION](https://www.google.com/search?num=5&q=IMAPI_FORMAT2_DATA_WRITE_ACTION+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_FORMAT2_DATA_WRITE_ACTION](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_FORMAT2_DATA_WRITE_ACTION)  
+[IMAPI_FORMAT2_RAW_CD_DATA_SECTOR_TYPE](https://www.google.com/search?num=5&q=IMAPI_FORMAT2_RAW_CD_DATA_SECTOR_TYPE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_FORMAT2_RAW_CD_DATA_SECTOR_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_FORMAT2_RAW_CD_DATA_SECTOR_TYPE)  
+[IMAPI_FORMAT2_RAW_CD_WRITE_ACTION](https://www.google.com/search?num=5&q=IMAPI_FORMAT2_RAW_CD_WRITE_ACTION+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_FORMAT2_RAW_CD_WRITE_ACTION](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_FORMAT2_RAW_CD_WRITE_ACTION)  
+[IMAPI_FORMAT2_TAO_WRITE_ACTION](https://www.google.com/search?num=5&q=IMAPI_FORMAT2_TAO_WRITE_ACTION+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_FORMAT2_TAO_WRITE_ACTION](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_FORMAT2_TAO_WRITE_ACTION)  
+[IMAPI_MEDIA_PHYSICAL_TYPE](https://www.google.com/search?num=5&q=IMAPI_MEDIA_PHYSICAL_TYPE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_MEDIA_PHYSICAL_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_MEDIA_PHYSICAL_TYPE)  
+[IMAPI_MEDIA_WRITE_PROTECT_STATE](https://www.google.com/search?num=5&q=IMAPI_MEDIA_WRITE_PROTECT_STATE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_MEDIA_WRITE_PROTECT_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_MEDIA_WRITE_PROTECT_STATE)  
+[IMAPI_MODE_PAGE_REQUEST_TYPE](https://www.google.com/search?num=5&q=IMAPI_MODE_PAGE_REQUEST_TYPE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_MODE_PAGE_REQUEST_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_MODE_PAGE_REQUEST_TYPE)  
+[IMAPI_MODE_PAGE_TYPE](https://www.google.com/search?num=5&q=IMAPI_MODE_PAGE_TYPE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_MODE_PAGE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_MODE_PAGE_TYPE)  
+[IMAPI_PROFILE_TYPE](https://www.google.com/search?num=5&q=IMAPI_PROFILE_TYPE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_PROFILE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_PROFILE_TYPE)  
+[IMAPI_READ_TRACK_ADDRESS_TYPE](https://www.google.com/search?num=5&q=IMAPI_READ_TRACK_ADDRESS_TYPE+site%3Adocs.microsoft.com) | imapi2.h | [Vanara.PInvoke.IMAPI.IMAPI_READ_TRACK_ADDRESS_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=IMAPI_READ_TRACK_ADDRESS_TYPE)  
+[PlatformId](https://www.google.com/search?num=5&q=PlatformId+site%3Adocs.microsoft.com) | imapi2fs.h | [Vanara.PInvoke.IMAPI.PlatformId](https://github.com/dahall/Vanara/search?l=C%23&q=PlatformId)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

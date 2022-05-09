@@ -9,6 +9,14 @@ Native Method | Header | Managed Method
 [CreateSecurityPage](https://www.google.com/search?num=5&q=CreateSecurityPage+site%3Adocs.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.CreateSecurityPage](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSecurityPage)  
 [EditSecurity](https://www.google.com/search?num=5&q=EditSecurity+site%3Adocs.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.EditSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=EditSecurity)  
 [EditSecurityAdvanced](https://www.google.com/search?num=5&q=EditSecurityAdvanced+site%3Adocs.microsoft.com) | aclui.h | [Vanara.PInvoke.AclUI.EditSecurityAdvanced](https://github.com/dahall/Vanara/search?l=C%23&q=EditSecurityAdvanced)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[PropertySheetCallbackMessage](https://www.google.com/search?num=5&q=PropertySheetCallbackMessage+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.AclUI.PropertySheetCallbackMessage](https://github.com/dahall/Vanara/search?l=C%23&q=PropertySheetCallbackMessage)  
+[SECURITY_OBJECT_ID](https://www.google.com/search?num=5&q=SECURITY_OBJECT_ID+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.AclUI.SECURITY_OBJECT_ID](https://github.com/dahall/Vanara/search?l=C%23&q=SECURITY_OBJECT_ID)  
+[SI_OBJECT_INFO_Flags](https://www.google.com/search?num=5&q=SI_OBJECT_INFO_Flags+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.AclUI.SI_OBJECT_INFO_Flags](https://github.com/dahall/Vanara/search?l=C%23&q=SI_OBJECT_INFO_Flags)  
+[SI_PAGE_ACTIVATED](https://www.google.com/search?num=5&q=SI_PAGE_ACTIVATED+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.AclUI.SI_PAGE_ACTIVATED](https://github.com/dahall/Vanara/search?l=C%23&q=SI_PAGE_ACTIVATED)  
+[SI_PAGE_TYPE](https://www.google.com/search?num=5&q=SI_PAGE_TYPE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.AclUI.SI_PAGE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=SI_PAGE_TYPE)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

@@ -617,6 +617,17 @@ Native Method | Header | Managed Method
 [ZwUnmapViewOfSectionEx](https://www.google.com/search?num=5&q=ZwUnmapViewOfSectionEx+site%3Adocs.microsoft.com) |  |   
 [ZwWaitForSingleObject](https://www.google.com/search?num=5&q=ZwWaitForSingleObject+site%3Adocs.microsoft.com) |  |   
 [ZwWriteFile](https://www.google.com/search?num=5&q=ZwWriteFile+site%3Adocs.microsoft.com) |  |   
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[KEY_INFORMATION_CLASS](https://www.google.com/search?num=5&q=KEY_INFORMATION_CLASS+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.KEY_INFORMATION_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_INFORMATION_CLASS)  
+[NOTIFICATION_MASK](https://www.google.com/search?num=5&q=NOTIFICATION_MASK+site%3Adocs.microsoft.com) | ktmtypes.h | [Vanara.PInvoke.NtDll.NOTIFICATION_MASK](https://github.com/dahall/Vanara/search?l=C%23&q=NOTIFICATION_MASK)  
+[NtFileCreateOptions](https://www.google.com/search?num=5&q=NtFileCreateOptions+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.NtFileCreateOptions](https://github.com/dahall/Vanara/search?l=C%23&q=NtFileCreateOptions)  
+[NtFileMode](https://www.google.com/search?num=5&q=NtFileMode+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.NtFileMode](https://github.com/dahall/Vanara/search?l=C%23&q=NtFileMode)  
+[PROCESS_CREATE_FLAGS](https://www.google.com/search?num=5&q=PROCESS_CREATE_FLAGS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.PROCESS_CREATE_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_CREATE_FLAGS)  
+[PROCESSINFOCLASS](https://www.google.com/search?num=5&q=PROCESSINFOCLASS+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.PROCESSINFOCLASS](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESSINFOCLASS)  
+[SUBSYSTEM_INFORMATION_TYPE](https://www.google.com/search?num=5&q=SUBSYSTEM_INFORMATION_TYPE+site%3Adocs.microsoft.com) | ntddk.h | [Vanara.PInvoke.NtDll.SUBSYSTEM_INFORMATION_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=SUBSYSTEM_INFORMATION_TYPE)  
+[SYSTEM_INFORMATION_CLASS](https://www.google.com/search?num=5&q=SYSTEM_INFORMATION_CLASS+site%3Adocs.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.SYSTEM_INFORMATION_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_INFORMATION_CLASS)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -646,7 +657,7 @@ Native Structure | Header | Managed Structure
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
-[NtQueryResult`1](https://www.google.com/search?num=5&q=NtQueryResult`1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.NtQueryResult`1](https://github.com/dahall/Vanara/search?l=C%23&q=NtQueryResult`1)  
+[NtQueryResult](https://www.google.com/search?num=5&q=NtQueryResult+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.NtQueryResult](https://github.com/dahall/Vanara/search?l=C%23&q=NtQueryResult)  
 [SafeEnlistmentHandle](https://www.google.com/search?num=5&q=SafeEnlistmentHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeEnlistmentHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeEnlistmentHandle)  
 [SafeNtHandle](https://www.google.com/search?num=5&q=SafeNtHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeNtHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNtHandle)  
 [SafeResourceManagerHandle](https://www.google.com/search?num=5&q=SafeResourceManagerHandle+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.NtDll.SafeResourceManagerHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeResourceManagerHandle)  

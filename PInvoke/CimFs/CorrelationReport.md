@@ -17,6 +17,10 @@ Native Method | Header | Managed Method
 [CimDismountImage](https://www.google.com/search?num=5&q=CimDismountImage+site%3Adocs.microsoft.com) | cimfs.h | [Vanara.PInvoke.CimFs.CimDismountImage](https://github.com/dahall/Vanara/search?l=C%23&q=CimDismountImage)  
 [CimMountImage](https://www.google.com/search?num=5&q=CimMountImage+site%3Adocs.microsoft.com) | cimfs.h | [Vanara.PInvoke.CimFs.CimMountImage](https://github.com/dahall/Vanara/search?l=C%23&q=CimMountImage)  
 [CimWriteStream](https://www.google.com/search?num=5&q=CimWriteStream+site%3Adocs.microsoft.com) | cimfs.h | [Vanara.PInvoke.CimFs.CimWriteStream](https://github.com/dahall/Vanara/search?l=C%23&q=CimWriteStream)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[CIM_MOUNT_IMAGE_FLAGS](https://www.google.com/search?num=5&q=CIM_MOUNT_IMAGE_FLAGS+site%3Adocs.microsoft.com) | cimfs.h | [Vanara.PInvoke.CimFs.CIM_MOUNT_IMAGE_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=CIM_MOUNT_IMAGE_FLAGS)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

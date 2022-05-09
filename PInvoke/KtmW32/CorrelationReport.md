@@ -45,6 +45,19 @@ Native Method | Header | Managed Method
 [SetResourceManagerCompletionPort](https://www.google.com/search?num=5&q=SetResourceManagerCompletionPort+site%3Adocs.microsoft.com) | ktmw32.h | [Vanara.PInvoke.KtmW32.SetResourceManagerCompletionPort](https://github.com/dahall/Vanara/search?l=C%23&q=SetResourceManagerCompletionPort)  
 [SetTransactionInformation](https://www.google.com/search?num=5&q=SetTransactionInformation+site%3Adocs.microsoft.com) | ktmw32.h | [Vanara.PInvoke.KtmW32.SetTransactionInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetTransactionInformation)  
 [SinglePhaseReject](https://www.google.com/search?num=5&q=SinglePhaseReject+site%3Adocs.microsoft.com) | ktmw32.h | [Vanara.PInvoke.KtmW32.SinglePhaseReject](https://github.com/dahall/Vanara/search?l=C%23&q=SinglePhaseReject)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[CreateEnlistmentOptions](https://www.google.com/search?num=5&q=CreateEnlistmentOptions+site%3Adocs.microsoft.com) | ktmw32.h | [Vanara.PInvoke.KtmW32.CreateEnlistmentOptions](https://github.com/dahall/Vanara/search?l=C%23&q=CreateEnlistmentOptions)  
+[CreateRMOptions](https://www.google.com/search?num=5&q=CreateRMOptions+site%3Adocs.microsoft.com) | ktmw32.h | [Vanara.PInvoke.KtmW32.CreateRMOptions](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRMOptions)  
+[CreateTrxnMgrOptions](https://www.google.com/search?num=5&q=CreateTrxnMgrOptions+site%3Adocs.microsoft.com) | ktmw32.h | [Vanara.PInvoke.KtmW32.CreateTrxnMgrOptions](https://github.com/dahall/Vanara/search?l=C%23&q=CreateTrxnMgrOptions)  
+[CreateTrxnOptions](https://www.google.com/search?num=5&q=CreateTrxnOptions+site%3Adocs.microsoft.com) | ktmw32.h | [Vanara.PInvoke.KtmW32.CreateTrxnOptions](https://github.com/dahall/Vanara/search?l=C%23&q=CreateTrxnOptions)  
+[EnlistmentAccess](https://www.google.com/search?num=5&q=EnlistmentAccess+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.KtmW32.EnlistmentAccess](https://github.com/dahall/Vanara/search?l=C%23&q=EnlistmentAccess)  
+[NOTIFICATION_MASK](https://www.google.com/search?num=5&q=NOTIFICATION_MASK+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.KtmW32.NOTIFICATION_MASK](https://github.com/dahall/Vanara/search?l=C%23&q=NOTIFICATION_MASK)  
+[ResourceManagerAccess](https://www.google.com/search?num=5&q=ResourceManagerAccess+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.KtmW32.ResourceManagerAccess](https://github.com/dahall/Vanara/search?l=C%23&q=ResourceManagerAccess)  
+[TRANSACTION_OUTCOME](https://www.google.com/search?num=5&q=TRANSACTION_OUTCOME+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.KtmW32.TRANSACTION_OUTCOME](https://github.com/dahall/Vanara/search?l=C%23&q=TRANSACTION_OUTCOME)  
+[TransactionAccess](https://www.google.com/search?num=5&q=TransactionAccess+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.KtmW32.TransactionAccess](https://github.com/dahall/Vanara/search?l=C%23&q=TransactionAccess)  
+[TransactionMgrAccess](https://www.google.com/search?num=5&q=TransactionMgrAccess+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.KtmW32.TransactionMgrAccess](https://github.com/dahall/Vanara/search?l=C%23&q=TransactionMgrAccess)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

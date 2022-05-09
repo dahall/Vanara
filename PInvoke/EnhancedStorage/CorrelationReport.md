@@ -3,6 +3,16 @@ PInvoke API (methods, structures and constants) imported from Windows EnhancedSt
 
 - Includes methods from ehstorapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.EnhancedStorage?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.EnhancedStorage?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.EnhancedStorage)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[ACT_AUTHORIZATION_STATE_VALUE](https://www.google.com/search?num=5&q=ACT_AUTHORIZATION_STATE_VALUE+site%3Adocs.microsoft.com) | ehstorapi.h | [Vanara.PInvoke.EnhancedStorage.ACT_AUTHORIZATION_STATE_VALUE](https://github.com/dahall/Vanara/search?l=C%23&q=ACT_AUTHORIZATION_STATE_VALUE)  
+[ACT_AUTHORIZE](https://www.google.com/search?num=5&q=ACT_AUTHORIZE+site%3Adocs.microsoft.com) | ehstorapi.h | [Vanara.PInvoke.EnhancedStorage.ACT_AUTHORIZE](https://github.com/dahall/Vanara/search?l=C%23&q=ACT_AUTHORIZE)  
+[ACT_UNAUTHORIZE](https://www.google.com/search?num=5&q=ACT_UNAUTHORIZE+site%3Adocs.microsoft.com) | ehstorapi.h | [Vanara.PInvoke.EnhancedStorage.ACT_UNAUTHORIZE](https://github.com/dahall/Vanara/search?l=C%23&q=ACT_UNAUTHORIZE)  
+[CERT_CAPABILITY](https://www.google.com/search?num=5&q=CERT_CAPABILITY+site%3Adocs.microsoft.com) | ehstorapi.h | [Vanara.PInvoke.EnhancedStorage.CERT_CAPABILITY](https://github.com/dahall/Vanara/search?l=C%23&q=CERT_CAPABILITY)  
+[CERT_TYPE](https://www.google.com/search?num=5&q=CERT_TYPE+site%3Adocs.microsoft.com) | ehstorapi.h | [Vanara.PInvoke.EnhancedStorage.CERT_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=CERT_TYPE)  
+[CERT_VALIDATION_POLICY](https://www.google.com/search?num=5&q=CERT_VALIDATION_POLICY+site%3Adocs.microsoft.com) | ehstorapi.h | [Vanara.PInvoke.EnhancedStorage.CERT_VALIDATION_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=CERT_VALIDATION_POLICY)  
+[ENHANCED_STORAGE_AUTHN_STATE](https://www.google.com/search?num=5&q=ENHANCED_STORAGE_AUTHN_STATE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.EnhancedStorage.ENHANCED_STORAGE_AUTHN_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=ENHANCED_STORAGE_AUTHN_STATE)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

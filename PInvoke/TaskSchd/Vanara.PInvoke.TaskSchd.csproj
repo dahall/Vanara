@@ -22,6 +22,7 @@ Interfaces
 IAction IActionCollection IBootTrigger IComHandlerAction IDailyTrigger IEmailAction IEventTrigger IExecAction IIdleSettings IIdleTrigger ILogonTrigger IMaintenanceSettings IMonthlyDOWTrigger IMonthlyTrigger INetworkSettings IPrincipal IPrincipal2 IRegisteredTask IRegisteredTaskCollection IRegistrationInfo IRegistrationTrigger IRepetitionPattern IRunningTask IRunningTaskCollection ISessionStateChangeTrigger IShowMessageAction ITask ITaskDefinition ITaskFolder ITaskFolderCollection ITaskHandler ITaskHandlerStatus ITaskNamedValueCollection ITaskNamedValuePair ITaskScheduler ITaskService ITaskSettings ITaskSettings2 ITaskSettings3 ITaskVariables ITimeTrigger ITrigger ITriggerCollection IWeeklyTrigger
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <NoWarn>0618</NoWarn>

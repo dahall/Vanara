@@ -13,6 +13,11 @@ Native Method | Header | Managed Method
 [LZOpenFile](https://www.google.com/search?num=5&q=LZOpenFileA+site%3Adocs.microsoft.com) | lzexpand.h | [Vanara.PInvoke.Lz32.LZOpenFile](https://github.com/dahall/Vanara/search?l=C%23&q=LZOpenFile)  
 [LZRead](https://www.google.com/search?num=5&q=LZRead+site%3Adocs.microsoft.com) | lzexpand.h | [Vanara.PInvoke.Lz32.LZRead](https://github.com/dahall/Vanara/search?l=C%23&q=LZRead)  
 [LZSeek](https://www.google.com/search?num=5&q=LZSeek+site%3Adocs.microsoft.com) | lzexpand.h | [Vanara.PInvoke.Lz32.LZSeek](https://github.com/dahall/Vanara/search?l=C%23&q=LZSeek)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[LZ_OF](https://www.google.com/search?num=5&q=LZ_OF+site%3Adocs.microsoft.com) | WinBase.h | [Vanara.PInvoke.Lz32.LZ_OF](https://github.com/dahall/Vanara/search?l=C%23&q=LZ_OF)  
+[LZERROR](https://www.google.com/search?num=5&q=LZERROR+site%3Adocs.microsoft.com) | lzexpand.h | [Vanara.PInvoke.Lz32.LZERROR](https://github.com/dahall/Vanara/search?l=C%23&q=LZERROR)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

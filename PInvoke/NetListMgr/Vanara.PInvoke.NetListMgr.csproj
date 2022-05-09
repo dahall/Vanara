@@ -19,6 +19,7 @@ Interfaces
 IEnumNetworkConnections IEnumNetworks INetwork INetworkConnection INetworkConnectionCost INetworkConnectionCostEvents INetworkConnectionEvents INetworkCostManager INetworkCostManagerEvents INetworkEvents INetworkListManager INetworkListManagerEvents
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="CustomMarshalers" />

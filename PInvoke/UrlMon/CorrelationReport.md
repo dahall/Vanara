@@ -55,6 +55,26 @@ Native Method | Header | Managed Method
 [URLOpenBlockingStream](https://www.google.com/search?num=5&q=URLOpenBlockingStreamA+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URLOpenBlockingStream](https://github.com/dahall/Vanara/search?l=C%23&q=URLOpenBlockingStream)  
 [URLOpenPullStream](https://www.google.com/search?num=5&q=URLOpenPullStreamA+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URLOpenPullStream](https://github.com/dahall/Vanara/search?l=C%23&q=URLOpenPullStream)  
 [URLOpenStream](https://www.google.com/search?num=5&q=URLOpenStreamA+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URLOpenStream](https://github.com/dahall/Vanara/search?l=C%23&q=URLOpenStream)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[AUTHENTICATEF](https://www.google.com/search?num=5&q=AUTHENTICATEF+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.AUTHENTICATEF](https://github.com/dahall/Vanara/search?l=C%23&q=AUTHENTICATEF)  
+[BINDF](https://www.google.com/search?num=5&q=BINDF+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.BINDF](https://github.com/dahall/Vanara/search?l=C%23&q=BINDF)  
+[BINDSTATUS](https://www.google.com/search?num=5&q=BINDSTATUS+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.BINDSTATUS](https://github.com/dahall/Vanara/search?l=C%23&q=BINDSTATUS)  
+[BSCF](https://www.google.com/search?num=5&q=BSCF+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.BSCF](https://github.com/dahall/Vanara/search?l=C%23&q=BSCF)  
+[COMPAT](https://www.google.com/search?num=5&q=COMPAT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.UrlMon.COMPAT](https://github.com/dahall/Vanara/search?l=C%23&q=COMPAT)  
+[FIEF_FLAG](https://www.google.com/search?num=5&q=FIEF_FLAG+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.FIEF_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=FIEF_FLAG)  
+[FMFD](https://www.google.com/search?num=5&q=FMFD+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.FMFD](https://github.com/dahall/Vanara/search?l=C%23&q=FMFD)  
+[PARSEACTION](https://www.google.com/search?num=5&q=PARSEACTION+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.PARSEACTION](https://github.com/dahall/Vanara/search?l=C%23&q=PARSEACTION)  
+[QUERYOPTION](https://www.google.com/search?num=5&q=QUERYOPTION+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.QUERYOPTION](https://github.com/dahall/Vanara/search?l=C%23&q=QUERYOPTION)  
+[Uri_CREATE](https://www.google.com/search?num=5&q=Uri_CREATE+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_CREATE](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_CREATE)  
+[Uri_DISPLAY](https://www.google.com/search?num=5&q=Uri_DISPLAY+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_DISPLAY](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_DISPLAY)  
+[Uri_ENCODING](https://www.google.com/search?num=5&q=Uri_ENCODING+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_ENCODING](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_ENCODING)  
+[Uri_HAS](https://www.google.com/search?num=5&q=Uri_HAS+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_HAS](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_HAS)  
+[Uri_HOST_TYPE](https://www.google.com/search?num=5&q=Uri_HOST_TYPE+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_HOST_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_HOST_TYPE)  
+[Uri_PROPERTY](https://www.google.com/search?num=5&q=Uri_PROPERTY+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_PROPERTY](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_PROPERTY)  
+[URL_MK](https://www.google.com/search?num=5&q=URL_MK+site%3Adocs.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URL_MK](https://github.com/dahall/Vanara/search?l=C%23&q=URL_MK)  
+[URL_SCHEME](https://www.google.com/search?num=5&q=URL_SCHEME+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.UrlMon.URL_SCHEME](https://github.com/dahall/Vanara/search?l=C%23&q=URL_SCHEME)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

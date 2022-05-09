@@ -28,6 +28,20 @@ Native Method | Header | Managed Method
 [WNetOpenEnum](https://www.google.com/search?num=5&q=WNetOpenEnumA+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetOpenEnum](https://github.com/dahall/Vanara/search?l=C%23&q=WNetOpenEnum)  
 [WNetSetLastError](https://www.google.com/search?num=5&q=WNetSetLastErrorA+site%3Adocs.microsoft.com) | npapi.h | [Vanara.PInvoke.Mpr.WNetSetLastError](https://github.com/dahall/Vanara/search?l=C%23&q=WNetSetLastError)  
 [WNetUseConnection](https://www.google.com/search?num=5&q=WNetUseConnectionA+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNetUseConnection](https://github.com/dahall/Vanara/search?l=C%23&q=WNetUseConnection)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[CONN_DLG](https://www.google.com/search?num=5&q=CONN_DLG+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.CONN_DLG](https://github.com/dahall/Vanara/search?l=C%23&q=CONN_DLG)  
+[CONNECT](https://www.google.com/search?num=5&q=CONNECT+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.CONNECT](https://github.com/dahall/Vanara/search?l=C%23&q=CONNECT)  
+[DISC](https://www.google.com/search?num=5&q=DISC+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.DISC](https://github.com/dahall/Vanara/search?l=C%23&q=DISC)  
+[INFO_LEVEL](https://www.google.com/search?num=5&q=INFO_LEVEL+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.INFO_LEVEL](https://github.com/dahall/Vanara/search?l=C%23&q=INFO_LEVEL)  
+[NETINFO](https://www.google.com/search?num=5&q=NETINFO+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.NETINFO](https://github.com/dahall/Vanara/search?l=C%23&q=NETINFO)  
+[NETRESOURCEDisplayType](https://www.google.com/search?num=5&q=NETRESOURCEDisplayType+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Mpr.NETRESOURCEDisplayType](https://github.com/dahall/Vanara/search?l=C%23&q=NETRESOURCEDisplayType)  
+[NETRESOURCEScope](https://www.google.com/search?num=5&q=NETRESOURCEScope+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Mpr.NETRESOURCEScope](https://github.com/dahall/Vanara/search?l=C%23&q=NETRESOURCEScope)  
+[NETRESOURCEType](https://www.google.com/search?num=5&q=NETRESOURCEType+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Mpr.NETRESOURCEType](https://github.com/dahall/Vanara/search?l=C%23&q=NETRESOURCEType)  
+[NETRESOURCEUsage](https://www.google.com/search?num=5&q=NETRESOURCEUsage+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Mpr.NETRESOURCEUsage](https://github.com/dahall/Vanara/search?l=C%23&q=NETRESOURCEUsage)  
+[WNCON](https://www.google.com/search?num=5&q=WNCON+site%3Adocs.microsoft.com) | Winnetwk.h | [Vanara.PInvoke.Mpr.WNCON](https://github.com/dahall/Vanara/search?l=C%23&q=WNCON)  
+[WNNC_NET](https://www.google.com/search?num=5&q=WNNC_NET+site%3Adocs.microsoft.com) | wnnc.h | [Vanara.PInvoke.Mpr.WNNC_NET](https://github.com/dahall/Vanara/search?l=C%23&q=WNNC_NET)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

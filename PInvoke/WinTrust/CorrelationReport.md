@@ -65,6 +65,24 @@ Native Method | Header | Managed Method
 [WTHelperGetProvPrivateDataFromChain](https://www.google.com/search?num=5&q=WTHelperGetProvPrivateDataFromChain+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperGetProvPrivateDataFromChain](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperGetProvPrivateDataFromChain)  
 [WTHelperGetProvSignerFromChain](https://www.google.com/search?num=5&q=WTHelperGetProvSignerFromChain+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperGetProvSignerFromChain](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperGetProvSignerFromChain)  
 [WTHelperProvDataFromStateData](https://www.google.com/search?num=5&q=WTHelperProvDataFromStateData+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTHelperProvDataFromStateData](https://github.com/dahall/Vanara/search?l=C%23&q=WTHelperProvDataFromStateData)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[CertConfidence](https://www.google.com/search?num=5&q=CertConfidence+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.CertConfidence](https://github.com/dahall/Vanara/search?l=C%23&q=CertConfidence)  
+[CRYPTCAT_ATTR](https://www.google.com/search?num=5&q=CRYPTCAT_ATTR+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_ATTR](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_ATTR)  
+[CRYPTCAT_E](https://www.google.com/search?num=5&q=CRYPTCAT_E+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_E](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_E)  
+[CRYPTCAT_OPEN](https://www.google.com/search?num=5&q=CRYPTCAT_OPEN+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_OPEN](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_OPEN)  
+[CRYPTCAT_VERSION](https://www.google.com/search?num=5&q=CRYPTCAT_VERSION+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_VERSION)  
+[DWACTION](https://www.google.com/search?num=5&q=DWACTION+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.DWACTION](https://github.com/dahall/Vanara/search?l=C%23&q=DWACTION)  
+[WIN_CERT_TYPE](https://www.google.com/search?num=5&q=WIN_CERT_TYPE+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WIN_CERT_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=WIN_CERT_TYPE)  
+[WT_TRUSTDBDIALOG](https://www.google.com/search?num=5&q=WT_TRUSTDBDIALOG+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WT_TRUSTDBDIALOG](https://github.com/dahall/Vanara/search?l=C%23&q=WT_TRUSTDBDIALOG)  
+[WTD_CHOICE](https://www.google.com/search?num=5&q=WTD_CHOICE+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTD_CHOICE](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_CHOICE)  
+[WTD_REVOKE](https://www.google.com/search?num=5&q=WTD_REVOKE+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTD_REVOKE](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_REVOKE)  
+[WTD_STATEACTION](https://www.google.com/search?num=5&q=WTD_STATEACTION+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTD_STATEACTION](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_STATEACTION)  
+[WTD_TRUST](https://www.google.com/search?num=5&q=WTD_TRUST+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTD_TRUST](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_TRUST)  
+[WTD_UI](https://www.google.com/search?num=5&q=WTD_UI+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTD_UI](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_UI)  
+[WTD_UICONTEXT](https://www.google.com/search?num=5&q=WTD_UICONTEXT+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTD_UICONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_UICONTEXT)  
+[WTPF](https://www.google.com/search?num=5&q=WTPF+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.WTPF](https://github.com/dahall/Vanara/search?l=C%23&q=WTPF)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

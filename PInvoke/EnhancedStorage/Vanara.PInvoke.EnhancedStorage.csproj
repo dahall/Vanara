@@ -18,6 +18,7 @@ Interfaces
 IEnhancedStorageACT IEnhancedStorageACT2 IEnhancedStorageACT3 IEnhancedStorageSilo IEnhancedStorageSiloAction IEnumEnhancedStorageACT
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

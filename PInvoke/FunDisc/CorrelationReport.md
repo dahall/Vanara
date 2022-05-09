@@ -3,6 +3,14 @@ PInvoke API (methods, structures and constants) imported from Windows Functional
 
 - Includes methods from fundisc.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.FunDisc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.FunDisc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.FunDisc)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[FD_EVENTID](https://www.google.com/search?num=5&q=FD_EVENTID+site%3Adocs.microsoft.com) | functiondiscoveryapi.h | [Vanara.PInvoke.FunDisc.FD_EVENTID](https://github.com/dahall/Vanara/search?l=C%23&q=FD_EVENTID)  
+[PropertyConstraint](https://www.google.com/search?num=5&q=PropertyConstraint+site%3Adocs.microsoft.com) | functiondiscoveryconstraints.h | [Vanara.PInvoke.FunDisc.PropertyConstraint](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyConstraint)  
+[QueryCategoryType](https://www.google.com/search?num=5&q=QueryCategoryType+site%3Adocs.microsoft.com) | functiondiscoveryapi.h | [Vanara.PInvoke.FunDisc.QueryCategoryType](https://github.com/dahall/Vanara/search?l=C%23&q=QueryCategoryType)  
+[QueryUpdateAction](https://www.google.com/search?num=5&q=QueryUpdateAction+site%3Adocs.microsoft.com) | functiondiscoveryapi.h | [Vanara.PInvoke.FunDisc.QueryUpdateAction](https://github.com/dahall/Vanara/search?l=C%23&q=QueryUpdateAction)  
+[SystemVisibilityFlags](https://www.google.com/search?num=5&q=SystemVisibilityFlags+site%3Adocs.microsoft.com) | functiondiscoveryapi.h | [Vanara.PInvoke.FunDisc.SystemVisibilityFlags](https://github.com/dahall/Vanara/search?l=C%23&q=SystemVisibilityFlags)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

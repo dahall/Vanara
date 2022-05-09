@@ -50,6 +50,22 @@ Native Method | Header | Managed Method
 [WTSVirtualChannelRead](https://www.google.com/search?num=5&q=WTSVirtualChannelRead+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSVirtualChannelRead](https://github.com/dahall/Vanara/search?l=C%23&q=WTSVirtualChannelRead)  
 [WTSVirtualChannelWrite](https://www.google.com/search?num=5&q=WTSVirtualChannelWrite+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSVirtualChannelWrite](https://github.com/dahall/Vanara/search?l=C%23&q=WTSVirtualChannelWrite)  
 [WTSWaitSystemEvent](https://www.google.com/search?num=5&q=WTSWaitSystemEvent+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSWaitSystemEvent](https://github.com/dahall/Vanara/search?l=C%23&q=WTSWaitSystemEvent)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[REMOTECONTROL_HOTKEY](https://www.google.com/search?num=5&q=REMOTECONTROL_HOTKEY+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.REMOTECONTROL_HOTKEY](https://github.com/dahall/Vanara/search?l=C%23&q=REMOTECONTROL_HOTKEY)  
+[RENDER_HINT](https://www.google.com/search?num=5&q=RENDER_HINT+site%3Adocs.microsoft.com) | wtshintapi.h | [Vanara.PInvoke.WTSApi32.RENDER_HINT](https://github.com/dahall/Vanara/search?l=C%23&q=RENDER_HINT)  
+[WTS_CHANNEL_OPTION](https://www.google.com/search?num=5&q=WTS_CHANNEL_OPTION+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_CHANNEL_OPTION](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_CHANNEL_OPTION)  
+[WTS_CONFIG_CLASS](https://www.google.com/search?num=5&q=WTS_CONFIG_CLASS+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_CONFIG_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_CONFIG_CLASS)  
+[WTS_CONFIG_SOURCE](https://www.google.com/search?num=5&q=WTS_CONFIG_SOURCE+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_CONFIG_SOURCE](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_CONFIG_SOURCE)  
+[WTS_CONNECTSTATE_CLASS](https://www.google.com/search?num=5&q=WTS_CONNECTSTATE_CLASS+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_CONNECTSTATE_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_CONNECTSTATE_CLASS)  
+[WTS_EVENT](https://www.google.com/search?num=5&q=WTS_EVENT+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_EVENT](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_EVENT)  
+[WTS_INFO_CLASS](https://www.google.com/search?num=5&q=WTS_INFO_CLASS+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_INFO_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_INFO_CLASS)  
+[WTS_LISTENER](https://www.google.com/search?num=5&q=WTS_LISTENER+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_LISTENER](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_LISTENER)  
+[WTS_SESSIONSTATE](https://www.google.com/search?num=5&q=WTS_SESSIONSTATE+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_SESSIONSTATE](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_SESSIONSTATE)  
+[WTS_TYPE_CLASS](https://www.google.com/search?num=5&q=WTS_TYPE_CLASS+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_TYPE_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_TYPE_CLASS)  
+[WTS_VIRTUAL_CLASS](https://www.google.com/search?num=5&q=WTS_VIRTUAL_CLASS+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_VIRTUAL_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_VIRTUAL_CLASS)  
+[WTS_WSD](https://www.google.com/search?num=5&q=WTS_WSD+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_WSD](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_WSD)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

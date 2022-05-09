@@ -24,6 +24,7 @@ Interfaces
 IVssAdmin IVssAdminEx IVssAsync IVssCreateExpressWriterMetadata IVssDifferentialSoftwareSnapshotMgmt IVssDifferentialSoftwareSnapshotMgmt2 IVssDifferentialSoftwareSnapshotMgmt3 IVssEnumMgmtObject IVssEnumObject IVssFileShareSnapshotProvider IVssHardwareSnapshotProvider IVssHardwareSnapshotProviderEx IVssProviderCreateSnapshotSet IVssProviderNotifications IVssSnapshotMgmt IVssSnapshotMgmt2 IVssSoftwareSnapshotProvider
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

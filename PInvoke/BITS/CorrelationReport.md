@@ -3,6 +3,27 @@ PInvoke API (interfaces, structures and constants) imported for Windows BITS (Ba
 
 - Includes methods from qmgr.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.BITS?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.BITS?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.BITS)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[BG_AUTH_SCHEME](https://www.google.com/search?num=5&q=BG_AUTH_SCHEME+site%3Adocs.microsoft.com) | Bits1_5.h | [Vanara.PInvoke.BITS.BG_AUTH_SCHEME](https://github.com/dahall/Vanara/search?l=C%23&q=BG_AUTH_SCHEME)  
+[BG_AUTH_TARGET](https://www.google.com/search?num=5&q=BG_AUTH_TARGET+site%3Adocs.microsoft.com) | Bits1_5.h | [Vanara.PInvoke.BITS.BG_AUTH_TARGET](https://github.com/dahall/Vanara/search?l=C%23&q=BG_AUTH_TARGET)  
+[BG_CERT_STORE_LOCATION](https://www.google.com/search?num=5&q=BG_CERT_STORE_LOCATION+site%3Adocs.microsoft.com) | Bits2_5.h | [Vanara.PInvoke.BITS.BG_CERT_STORE_LOCATION](https://github.com/dahall/Vanara/search?l=C%23&q=BG_CERT_STORE_LOCATION)  
+[BG_COPY_FILE](https://www.google.com/search?num=5&q=BG_COPY_FILE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.BITS.BG_COPY_FILE](https://github.com/dahall/Vanara/search?l=C%23&q=BG_COPY_FILE)  
+[BG_ENABLE_PEERCACHING](https://www.google.com/search?num=5&q=BG_ENABLE_PEERCACHING+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.BITS.BG_ENABLE_PEERCACHING](https://github.com/dahall/Vanara/search?l=C%23&q=BG_ENABLE_PEERCACHING)  
+[BG_ERROR_CONTEXT](https://www.google.com/search?num=5&q=BG_ERROR_CONTEXT+site%3Adocs.microsoft.com) | Bits.h | [Vanara.PInvoke.BITS.BG_ERROR_CONTEXT](https://github.com/dahall/Vanara/search?l=C%23&q=BG_ERROR_CONTEXT)  
+[BG_HTTP_SECURITY](https://www.google.com/search?num=5&q=BG_HTTP_SECURITY+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.BITS.BG_HTTP_SECURITY](https://github.com/dahall/Vanara/search?l=C%23&q=BG_HTTP_SECURITY)  
+[BG_JOB_ENABLE_PEERCACHING](https://www.google.com/search?num=5&q=BG_JOB_ENABLE_PEERCACHING+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.BITS.BG_JOB_ENABLE_PEERCACHING](https://github.com/dahall/Vanara/search?l=C%23&q=BG_JOB_ENABLE_PEERCACHING)  
+[BG_JOB_ENUM](https://www.google.com/search?num=5&q=BG_JOB_ENUM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.BITS.BG_JOB_ENUM](https://github.com/dahall/Vanara/search?l=C%23&q=BG_JOB_ENUM)  
+[BG_JOB_PRIORITY](https://www.google.com/search?num=5&q=BG_JOB_PRIORITY+site%3Adocs.microsoft.com) | Bits.h | [Vanara.PInvoke.BITS.BG_JOB_PRIORITY](https://github.com/dahall/Vanara/search?l=C%23&q=BG_JOB_PRIORITY)  
+[BG_JOB_PROXY_USAGE](https://www.google.com/search?num=5&q=BG_JOB_PROXY_USAGE+site%3Adocs.microsoft.com) | Bits.h | [Vanara.PInvoke.BITS.BG_JOB_PROXY_USAGE](https://github.com/dahall/Vanara/search?l=C%23&q=BG_JOB_PROXY_USAGE)  
+[BG_JOB_STATE](https://www.google.com/search?num=5&q=BG_JOB_STATE+site%3Adocs.microsoft.com) | Bits.h | [Vanara.PInvoke.BITS.BG_JOB_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=BG_JOB_STATE)  
+[BG_JOB_TYPE](https://www.google.com/search?num=5&q=BG_JOB_TYPE+site%3Adocs.microsoft.com) | Bits.h | [Vanara.PInvoke.BITS.BG_JOB_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=BG_JOB_TYPE)  
+[BG_NOTIFY](https://www.google.com/search?num=5&q=BG_NOTIFY+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.BITS.BG_NOTIFY](https://github.com/dahall/Vanara/search?l=C%23&q=BG_NOTIFY)  
+[BG_TOKEN](https://www.google.com/search?num=5&q=BG_TOKEN+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.BITS.BG_TOKEN](https://github.com/dahall/Vanara/search?l=C%23&q=BG_TOKEN)  
+[BITS_COST_STATE](https://www.google.com/search?num=5&q=BITS_COST_STATE+site%3Adocs.microsoft.com) | Bits5_0.h | [Vanara.PInvoke.BITS.BITS_COST_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=BITS_COST_STATE)  
+[BITS_FILE_PROPERTY_ID](https://www.google.com/search?num=5&q=BITS_FILE_PROPERTY_ID+site%3Adocs.microsoft.com) | Bits5_0.h | [Vanara.PInvoke.BITS.BITS_FILE_PROPERTY_ID](https://github.com/dahall/Vanara/search?l=C%23&q=BITS_FILE_PROPERTY_ID)  
+[BITS_JOB_PROPERTY_ID](https://www.google.com/search?num=5&q=BITS_JOB_PROPERTY_ID+site%3Adocs.microsoft.com) | Bits5_0.h | [Vanara.PInvoke.BITS.BITS_JOB_PROPERTY_ID](https://github.com/dahall/Vanara/search?l=C%23&q=BITS_JOB_PROPERTY_ID)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

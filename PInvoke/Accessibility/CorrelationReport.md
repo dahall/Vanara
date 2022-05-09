@@ -21,6 +21,12 @@ Native Method | Header | Managed Method
 [LresultFromObject](https://www.google.com/search?num=5&q=LresultFromObject+site%3Adocs.microsoft.com) | oleacc.h | [Vanara.PInvoke.Oleacc.LresultFromObject](https://github.com/dahall/Vanara/search?l=C%23&q=LresultFromObject)  
 [ObjectFromLresult](https://www.google.com/search?num=5&q=ObjectFromLresult+site%3Adocs.microsoft.com) | oleacc.h | [Vanara.PInvoke.Oleacc.ObjectFromLresult](https://github.com/dahall/Vanara/search?l=C%23&q=ObjectFromLresult)  
 [WindowFromAccessibleObject](https://www.google.com/search?num=5&q=WindowFromAccessibleObject+site%3Adocs.microsoft.com) | oleacc.h | [Vanara.PInvoke.Oleacc.WindowFromAccessibleObject](https://github.com/dahall/Vanara/search?l=C%23&q=WindowFromAccessibleObject)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[AccessibilityRole](https://www.google.com/search?num=5&q=AccessibilityRole+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Oleacc.AccessibilityRole](https://github.com/dahall/Vanara/search?l=C%23&q=AccessibilityRole)  
+[AccessibilityState](https://www.google.com/search?num=5&q=AccessibilityState+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Oleacc.AccessibilityState](https://github.com/dahall/Vanara/search?l=C%23&q=AccessibilityState)  
+[ANRUS](https://www.google.com/search?num=5&q=ANRUS+site%3Adocs.microsoft.com) | oleacc.h | [Vanara.PInvoke.Oleacc.ANRUS](https://github.com/dahall/Vanara/search?l=C%23&q=ANRUS)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  

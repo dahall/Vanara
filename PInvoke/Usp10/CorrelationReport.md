@@ -46,6 +46,14 @@ Native Method | Header | Managed Method
 [ScriptSubstituteSingleGlyph](https://www.google.com/search?num=5&q=ScriptSubstituteSingleGlyph+site%3Adocs.microsoft.com) | usp10.h | [Vanara.PInvoke.Usp10.ScriptSubstituteSingleGlyph](https://github.com/dahall/Vanara/search?l=C%23&q=ScriptSubstituteSingleGlyph)  
 [ScriptTextOut](https://www.google.com/search?num=5&q=ScriptTextOut+site%3Adocs.microsoft.com) | usp10.h | [Vanara.PInvoke.Usp10.ScriptTextOut](https://github.com/dahall/Vanara/search?l=C%23&q=ScriptTextOut)  
 [ScriptXtoCP](https://www.google.com/search?num=5&q=ScriptXtoCP+site%3Adocs.microsoft.com) | usp10.h | [Vanara.PInvoke.Usp10.ScriptXtoCP](https://github.com/dahall/Vanara/search?l=C%23&q=ScriptXtoCP)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[SCRIPT_DIGITSUB](https://www.google.com/search?num=5&q=SCRIPT_DIGITSUB+site%3Adocs.microsoft.com) | usp10.h | [Vanara.PInvoke.Usp10.SCRIPT_DIGITSUB](https://github.com/dahall/Vanara/search?l=C%23&q=SCRIPT_DIGITSUB)  
+[SCRIPT_JUSTIFY](https://www.google.com/search?num=5&q=SCRIPT_JUSTIFY+site%3Adocs.microsoft.com) | usp10.h | [Vanara.PInvoke.Usp10.SCRIPT_JUSTIFY](https://github.com/dahall/Vanara/search?l=C%23&q=SCRIPT_JUSTIFY)  
+[SGCM](https://www.google.com/search?num=5&q=SGCM+site%3Adocs.microsoft.com) | usp10.h | [Vanara.PInvoke.Usp10.SGCM](https://github.com/dahall/Vanara/search?l=C%23&q=SGCM)  
+[SIC](https://www.google.com/search?num=5&q=SIC+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Usp10.SIC](https://github.com/dahall/Vanara/search?l=C%23&q=SIC)  
+[SSA](https://www.google.com/search?num=5&q=SSA+site%3Adocs.microsoft.com) | usp10.h | [Vanara.PInvoke.Usp10.SSA](https://github.com/dahall/Vanara/search?l=C%23&q=SSA)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

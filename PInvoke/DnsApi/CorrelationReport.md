@@ -43,6 +43,29 @@ Native Method | Header | Managed Method
 [DnsValidateName_](https://www.google.com/search?num=5&q=DnsValidateName_A+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsValidateName](https://github.com/dahall/Vanara/search?l=C%23&q=DnsValidateName)  
 [DnsValidateServerStatus](https://www.google.com/search?num=5&q=DnsValidateServerStatus+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsValidateServerStatus](https://github.com/dahall/Vanara/search?l=C%23&q=DnsValidateServerStatus)  
 [DnsWriteQuestionToBuffer_W](https://www.google.com/search?num=5&q=DnsWriteQuestionToBuffer_W+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsWriteQuestionToBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=DnsWriteQuestionToBuffer)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[ATMA](https://www.google.com/search?num=5&q=ATMA+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.ATMA](https://github.com/dahall/Vanara/search?l=C%23&q=ATMA)  
+[DNS_APP_SETTINGSF](https://www.google.com/search?num=5&q=DNS_APP_SETTINGSF+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_APP_SETTINGSF](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_APP_SETTINGSF)  
+[DNS_CHARSET](https://www.google.com/search?num=5&q=DNS_CHARSET+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_CHARSET](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_CHARSET)  
+[DNS_CLASS](https://www.google.com/search?num=5&q=DNS_CLASS+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_CLASS)  
+[DNS_CONFIG_FLAG](https://www.google.com/search?num=5&q=DNS_CONFIG_FLAG+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_CONFIG_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_CONFIG_FLAG)  
+[DNS_CONFIG_TYPE](https://www.google.com/search?num=5&q=DNS_CONFIG_TYPE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_CONFIG_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_CONFIG_TYPE)  
+[DNS_CUSTOM_SERVER_FLAGS](https://www.google.com/search?num=5&q=DNS_CUSTOM_SERVER_FLAGS+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_CUSTOM_SERVER_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_CUSTOM_SERVER_FLAGS)  
+[DNS_CUSTOM_SERVER_TYPE](https://www.google.com/search?num=5&q=DNS_CUSTOM_SERVER_TYPE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_CUSTOM_SERVER_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_CUSTOM_SERVER_TYPE)  
+[DNS_FREE_TYPE](https://www.google.com/search?num=5&q=DNS_FREE_TYPE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_FREE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_FREE_TYPE)  
+[DNS_NAME_FORMAT](https://www.google.com/search?num=5&q=DNS_NAME_FORMAT+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_NAME_FORMAT](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_NAME_FORMAT)  
+[DNS_OPCODE](https://www.google.com/search?num=5&q=DNS_OPCODE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_OPCODE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_OPCODE)  
+[DNS_PROXY_INFORMATION_TYPE](https://www.google.com/search?num=5&q=DNS_PROXY_INFORMATION_TYPE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_PROXY_INFORMATION_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_PROXY_INFORMATION_TYPE)  
+[DNS_QUERY_OPTIONS](https://www.google.com/search?num=5&q=DNS_QUERY_OPTIONS+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_QUERY_OPTIONS](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_QUERY_OPTIONS)  
+[DNS_RCODE](https://www.google.com/search?num=5&q=DNS_RCODE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_RCODE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_RCODE)  
+[DNS_SECTION](https://www.google.com/search?num=5&q=DNS_SECTION+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_SECTION](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_SECTION)  
+[DNS_TKEY_MODE](https://www.google.com/search?num=5&q=DNS_TKEY_MODE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_TKEY_MODE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_TKEY_MODE)  
+[DNS_TYPE](https://www.google.com/search?num=5&q=DNS_TYPE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_TYPE)  
+[DNS_UPDATE](https://www.google.com/search?num=5&q=DNS_UPDATE+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_UPDATE](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_UPDATE)  
+[DNS_WINS_FLAG](https://www.google.com/search?num=5&q=DNS_WINS_FLAG+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_WINS_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_WINS_FLAG)  
+[DnsServerStatus](https://www.google.com/search?num=5&q=DnsServerStatus+site%3Adocs.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsServerStatus](https://github.com/dahall/Vanara/search?l=C%23&q=DnsServerStatus)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

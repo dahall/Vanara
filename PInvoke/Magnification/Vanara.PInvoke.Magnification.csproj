@@ -19,6 +19,7 @@ Structures
 MAGCOLOREFFECT MAGIMAGEHEADER MAGTRANSFORM
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

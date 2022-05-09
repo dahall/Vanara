@@ -13,6 +13,11 @@ Native Method | Header | Managed Method
 [AmsiScanBuffer](https://www.google.com/search?num=5&q=AmsiScanBuffer+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiScanBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiScanBuffer)  
 [AmsiScanString](https://www.google.com/search?num=5&q=AmsiScanString+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiScanString](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiScanString)  
 [AmsiUninitialize](https://www.google.com/search?num=5&q=AmsiUninitialize+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AmsiUninitialize](https://github.com/dahall/Vanara/search?l=C%23&q=AmsiUninitialize)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[AMSI_ATTRIBUTE](https://www.google.com/search?num=5&q=AMSI_ATTRIBUTE+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AMSI_ATTRIBUTE](https://github.com/dahall/Vanara/search?l=C%23&q=AMSI_ATTRIBUTE)  
+[AMSI_RESULT](https://www.google.com/search?num=5&q=AMSI_RESULT+site%3Adocs.microsoft.com) | amsi.h | [Vanara.PInvoke.AMSI.AMSI_RESULT](https://github.com/dahall/Vanara/search?l=C%23&q=AMSI_RESULT)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

@@ -64,6 +64,18 @@ Native Method | Header | Managed Method
 [PdhValidatePath](https://www.google.com/search?num=5&q=PdhValidatePathA+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PdhValidatePath](https://github.com/dahall/Vanara/search?l=C%23&q=PdhValidatePath)  
 [PdhValidatePathExWA](https://www.google.com/search?num=5&q=PdhValidatePathExWA+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PdhValidatePathExW](https://github.com/dahall/Vanara/search?l=C%23&q=PdhValidatePathExW)  
 [PdhValidatePathExWW](https://www.google.com/search?num=5&q=PdhValidatePathExWW+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PdhValidatePathExW](https://github.com/dahall/Vanara/search?l=C%23&q=PdhValidatePathExW)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[BrowseFlag](https://www.google.com/search?num=5&q=BrowseFlag+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.BrowseFlag](https://github.com/dahall/Vanara/search?l=C%23&q=BrowseFlag)  
+[CounterType](https://www.google.com/search?num=5&q=CounterType+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Pdh.CounterType](https://github.com/dahall/Vanara/search?l=C%23&q=CounterType)  
+[PDH_FMT](https://www.google.com/search?num=5&q=PDH_FMT+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PDH_FMT](https://github.com/dahall/Vanara/search?l=C%23&q=PDH_FMT)  
+[PDH_LOG_TYPE](https://www.google.com/search?num=5&q=PDH_LOG_TYPE+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PDH_LOG_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=PDH_LOG_TYPE)  
+[PDH_PATH](https://www.google.com/search?num=5&q=PDH_PATH+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PDH_PATH](https://github.com/dahall/Vanara/search?l=C%23&q=PDH_PATH)  
+[PdhExpandFlags](https://www.google.com/search?num=5&q=PdhExpandFlags+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PdhExpandFlags](https://github.com/dahall/Vanara/search?l=C%23&q=PdhExpandFlags)  
+[PdhLogAccess](https://www.google.com/search?num=5&q=PdhLogAccess+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PdhLogAccess](https://github.com/dahall/Vanara/search?l=C%23&q=PdhLogAccess)  
+[PdhSelectDataSourceFlags](https://www.google.com/search?num=5&q=PdhSelectDataSourceFlags+site%3Adocs.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PdhSelectDataSourceFlags](https://github.com/dahall/Vanara/search?l=C%23&q=PdhSelectDataSourceFlags)  
+[PERF_DETAIL](https://www.google.com/search?num=5&q=PERF_DETAIL+site%3Adocs.microsoft.com) | winperf.h | [Vanara.PInvoke.Pdh.PERF_DETAIL](https://github.com/dahall/Vanara/search?l=C%23&q=PERF_DETAIL)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

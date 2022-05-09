@@ -37,6 +37,22 @@ Native Method | Header | Managed Method
 [WSManSendShellInput](https://www.google.com/search?num=5&q=WSManSendShellInput+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManSendShellInput](https://github.com/dahall/Vanara/search?l=C%23&q=WSManSendShellInput)  
 [WSManSetSessionOption](https://www.google.com/search?num=5&q=WSManSetSessionOption+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManSetSessionOption](https://github.com/dahall/Vanara/search?l=C%23&q=WSManSetSessionOption)  
 [WSManSignalShell](https://www.google.com/search?num=5&q=WSManSignalShell+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManSignalShell](https://github.com/dahall/Vanara/search?l=C%23&q=WSManSignalShell)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[WSMAN_FLAG_REQUESTED_API_VERSION](https://www.google.com/search?num=5&q=WSMAN_FLAG_REQUESTED_API_VERSION+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_FLAG_REQUESTED_API_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_FLAG_REQUESTED_API_VERSION)  
+[WSMAN_FLAG_SERVER_BUFFERING_MODE](https://www.google.com/search?num=5&q=WSMAN_FLAG_SERVER_BUFFERING_MODE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WsmSvc.WSMAN_FLAG_SERVER_BUFFERING_MODE](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_FLAG_SERVER_BUFFERING_MODE)  
+[WSMAN_PLUGIN_PARAMS_OP](https://www.google.com/search?num=5&q=WSMAN_PLUGIN_PARAMS_OP+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_PLUGIN_PARAMS_OP](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_PLUGIN_PARAMS_OP)  
+[WSMAN_SHUTDOWN](https://www.google.com/search?num=5&q=WSMAN_SHUTDOWN+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSMAN_SHUTDOWN](https://github.com/dahall/Vanara/search?l=C%23&q=WSMAN_SHUTDOWN)  
+[WSManAuthenticationFlags](https://www.google.com/search?num=5&q=WSManAuthenticationFlags+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManAuthenticationFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WSManAuthenticationFlags)  
+[WSManCallbackFlags](https://www.google.com/search?num=5&q=WSManCallbackFlags+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManCallbackFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WSManCallbackFlags)  
+[WSManDataType](https://www.google.com/search?num=5&q=WSManDataType+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManDataType](https://github.com/dahall/Vanara/search?l=C%23&q=WSManDataType)  
+[WSManEnumFlags](https://www.google.com/search?num=5&q=WSManEnumFlags+site%3Adocs.microsoft.com) | wsmandisp.h | [Vanara.PInvoke.WsmSvc.WSManEnumFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WSManEnumFlags)  
+[WSManProxyAccessType](https://www.google.com/search?num=5&q=WSManProxyAccessType+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManProxyAccessType](https://github.com/dahall/Vanara/search?l=C%23&q=WSManProxyAccessType)  
+[WSManProxyAccessTypeFlags](https://www.google.com/search?num=5&q=WSManProxyAccessTypeFlags+site%3Adocs.microsoft.com) | wsmandisp.h | [Vanara.PInvoke.WsmSvc.WSManProxyAccessTypeFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WSManProxyAccessTypeFlags)  
+[WSManProxyAuthenticationFlags](https://www.google.com/search?num=5&q=WSManProxyAuthenticationFlags+site%3Adocs.microsoft.com) | wsmandisp.h | [Vanara.PInvoke.WsmSvc.WSManProxyAuthenticationFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WSManProxyAuthenticationFlags)  
+[WSManSessionFlags](https://www.google.com/search?num=5&q=WSManSessionFlags+site%3Adocs.microsoft.com) | wsmandisp.h | [Vanara.PInvoke.WsmSvc.WSManSessionFlags](https://github.com/dahall/Vanara/search?l=C%23&q=WSManSessionFlags)  
+[WSManSessionOption](https://www.google.com/search?num=5&q=WSManSessionOption+site%3Adocs.microsoft.com) | wsman.h | [Vanara.PInvoke.WsmSvc.WSManSessionOption](https://github.com/dahall/Vanara/search?l=C%23&q=WSManSessionOption)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

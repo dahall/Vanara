@@ -16,3 +16,11 @@ Native Method | Header | Managed Method
 [RevokeScaleChangeNotifications](https://www.google.com/search?num=5&q=RevokeScaleChangeNotifications+site%3Adocs.microsoft.com) | shellscalingapi.h | [Vanara.PInvoke.SHCore.RevokeScaleChangeNotifications](https://github.com/dahall/Vanara/search?l=C%23&q=RevokeScaleChangeNotifications)  
 [SetProcessDpiAwareness](https://www.google.com/search?num=5&q=SetProcessDpiAwareness+site%3Adocs.microsoft.com) | shellscalingapi.h | [Vanara.PInvoke.SHCore.SetProcessDpiAwareness](https://github.com/dahall/Vanara/search?l=C%23&q=SetProcessDpiAwareness)  
 [UnregisterScaleChangeEvent](https://www.google.com/search?num=5&q=UnregisterScaleChangeEvent+site%3Adocs.microsoft.com) | shellscalingapi.h | [Vanara.PInvoke.SHCore.UnregisterScaleChangeEvent](https://github.com/dahall/Vanara/search?l=C%23&q=UnregisterScaleChangeEvent)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[DISPLAY_DEVICE_TYPE](https://www.google.com/search?num=5&q=DISPLAY_DEVICE_TYPE+site%3Adocs.microsoft.com) | shellscalingapi.h | [Vanara.PInvoke.SHCore.DISPLAY_DEVICE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DISPLAY_DEVICE_TYPE)  
+[MONITOR_DPI_TYPE](https://www.google.com/search?num=5&q=MONITOR_DPI_TYPE+site%3Adocs.microsoft.com) | shellscalingapi.h | [Vanara.PInvoke.SHCore.MONITOR_DPI_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=MONITOR_DPI_TYPE)  
+[PROCESS_DPI_AWARENESS](https://www.google.com/search?num=5&q=PROCESS_DPI_AWARENESS+site%3Adocs.microsoft.com) | shellscalingapi.h | [Vanara.PInvoke.SHCore.PROCESS_DPI_AWARENESS](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESS_DPI_AWARENESS)  
+[SCALE_CHANGE_FLAGS](https://www.google.com/search?num=5&q=SCALE_CHANGE_FLAGS+site%3Adocs.microsoft.com) | shellscalingapi.h | [Vanara.PInvoke.SHCore.SCALE_CHANGE_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=SCALE_CHANGE_FLAGS)  
+[SHELL_UI_COMPONENT](https://www.google.com/search?num=5&q=SHELL_UI_COMPONENT+site%3Adocs.microsoft.com) | shellscalingapi.h | [Vanara.PInvoke.SHCore.SHELL_UI_COMPONENT](https://github.com/dahall/Vanara/search?l=C%23&q=SHELL_UI_COMPONENT)  

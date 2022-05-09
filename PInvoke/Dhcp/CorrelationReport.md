@@ -27,6 +27,13 @@ Native Method | Native DLL | Header | Managed Method
 [McastReleaseAddress](https://www.google.com/search?num=5&q=McastReleaseAddress+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastReleaseAddress](https://github.com/dahall/Vanara/search?l=C%23&q=McastReleaseAddress)  
 [McastRenewAddress](https://www.google.com/search?num=5&q=McastRenewAddress+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastRenewAddress](https://github.com/dahall/Vanara/search?l=C%23&q=McastRenewAddress)  
 [McastRequestAddress](https://www.google.com/search?num=5&q=McastRequestAddress+site%3Adocs.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastRequestAddress](https://github.com/dahall/Vanara/search?l=C%23&q=McastRequestAddress)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[DHCP_OPTION_ID](https://www.google.com/search?num=5&q=DHCP_OPTION_ID+site%3Adocs.microsoft.com) | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DHCP_OPTION_ID](https://github.com/dahall/Vanara/search?l=C%23&q=DHCP_OPTION_ID)  
+[DHCPCAPI_REQUEST](https://www.google.com/search?num=5&q=DHCPCAPI_REQUEST+site%3Adocs.microsoft.com) | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DHCPCAPI_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=DHCPCAPI_REQUEST)  
+[DHCPV6_OPTION_ID](https://www.google.com/search?num=5&q=DHCPV6_OPTION_ID+site%3Adocs.microsoft.com) | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DHCPV6_OPTION_ID](https://github.com/dahall/Vanara/search?l=C%23&q=DHCPV6_OPTION_ID)  
+[StatusCode](https://www.google.com/search?num=5&q=StatusCode+site%3Adocs.microsoft.com) | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.StatusCode](https://github.com/dahall/Vanara/search?l=C%23&q=StatusCode)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

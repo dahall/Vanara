@@ -28,6 +28,18 @@ Native Method | Header | Managed Method
 [ResetDecompressor](https://www.google.com/search?num=5&q=ResetDecompressor+site%3Adocs.microsoft.com) | compressapi.h | [Vanara.PInvoke.Cabinet.ResetDecompressor](https://github.com/dahall/Vanara/search?l=C%23&q=ResetDecompressor)  
 [SetCompressorInformation](https://www.google.com/search?num=5&q=SetCompressorInformation+site%3Adocs.microsoft.com) | compressapi.h | [Vanara.PInvoke.Cabinet.SetCompressorInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetCompressorInformation)  
 [SetDecompressorInformation](https://www.google.com/search?num=5&q=SetDecompressorInformation+site%3Adocs.microsoft.com) | compressapi.h | [Vanara.PInvoke.Cabinet.SetDecompressorInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetDecompressorInformation)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[CabinetFileStatus](https://www.google.com/search?num=5&q=CabinetFileStatus+site%3Adocs.microsoft.com) | fci.h | [Vanara.PInvoke.Cabinet.CabinetFileStatus](https://github.com/dahall/Vanara/search?l=C%23&q=CabinetFileStatus)  
+[COMPRESS_ALGORITHM](https://www.google.com/search?num=5&q=COMPRESS_ALGORITHM+site%3Adocs.microsoft.com) | compressapi.h | [Vanara.PInvoke.Cabinet.COMPRESS_ALGORITHM](https://github.com/dahall/Vanara/search?l=C%23&q=COMPRESS_ALGORITHM)  
+[COMPRESS_INFORMATION_CLASS](https://www.google.com/search?num=5&q=COMPRESS_INFORMATION_CLASS+site%3Adocs.microsoft.com) | compressapi.h | [Vanara.PInvoke.Cabinet.COMPRESS_INFORMATION_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=COMPRESS_INFORMATION_CLASS)  
+[FCIERROR](https://www.google.com/search?num=5&q=FCIERROR+site%3Adocs.microsoft.com) | fci.h | [Vanara.PInvoke.Cabinet.FCIERROR](https://github.com/dahall/Vanara/search?l=C%23&q=FCIERROR)  
+[FDICPU](https://www.google.com/search?num=5&q=FDICPU+site%3Adocs.microsoft.com) | fdi.h | [Vanara.PInvoke.Cabinet.FDICPU](https://github.com/dahall/Vanara/search?l=C%23&q=FDICPU)  
+[FDIDECRYPTTYPE](https://www.google.com/search?num=5&q=FDIDECRYPTTYPE+site%3Adocs.microsoft.com) | fdi.h | [Vanara.PInvoke.Cabinet.FDIDECRYPTTYPE](https://github.com/dahall/Vanara/search?l=C%23&q=FDIDECRYPTTYPE)  
+[FDIERROR](https://www.google.com/search?num=5&q=FDIERROR+site%3Adocs.microsoft.com) | fdi.h | [Vanara.PInvoke.Cabinet.FDIERROR](https://github.com/dahall/Vanara/search?l=C%23&q=FDIERROR)  
+[FDINOTIFICATIONTYPE](https://www.google.com/search?num=5&q=FDINOTIFICATIONTYPE+site%3Adocs.microsoft.com) | fdi.h | [Vanara.PInvoke.Cabinet.FDINOTIFICATIONTYPE](https://github.com/dahall/Vanara/search?l=C%23&q=FDINOTIFICATIONTYPE)  
+[TCOMP](https://www.google.com/search?num=5&q=TCOMP+site%3Adocs.microsoft.com) | fci.h | [Vanara.PInvoke.Cabinet.TCOMP](https://github.com/dahall/Vanara/search?l=C%23&q=TCOMP)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

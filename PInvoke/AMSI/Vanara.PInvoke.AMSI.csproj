@@ -21,6 +21,7 @@ Interfaces
 IAmsiStream IAntimalware IAntimalware2 IAntimalwareProvider IAntimalwareProvider2
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

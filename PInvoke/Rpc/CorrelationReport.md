@@ -520,6 +520,27 @@ Native Method | Header | Managed Method
 [UuidHash](https://www.google.com/search?num=5&q=UuidHash+site%3Adocs.microsoft.com) |  |   
 [UuidIsNil](https://www.google.com/search?num=5&q=UuidIsNil+site%3Adocs.microsoft.com) |  |   
 [UuidToString](https://www.google.com/search?num=5&q=UuidToStringA+site%3Adocs.microsoft.com) |  |   
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[RCP_C_BINDING_TIMEOUT](https://www.google.com/search?num=5&q=RCP_C_BINDING_TIMEOUT+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RCP_C_BINDING_TIMEOUT](https://github.com/dahall/Vanara/search?l=C%23&q=RCP_C_BINDING_TIMEOUT)  
+[RPC_BHO](https://www.google.com/search?num=5&q=RPC_BHO+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_BHO](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_BHO)  
+[RPC_C_AUTHN](https://www.google.com/search?num=5&q=RPC_C_AUTHN+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_AUTHN](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_AUTHN)  
+[RPC_C_AUTHN_INFO_TYPE](https://www.google.com/search?num=5&q=RPC_C_AUTHN_INFO_TYPE+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_AUTHN_INFO_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_AUTHN_INFO_TYPE)  
+[RPC_C_AUTHN_LEVEL](https://www.google.com/search?num=5&q=RPC_C_AUTHN_LEVEL+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_AUTHN_LEVEL](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_AUTHN_LEVEL)  
+[RPC_C_AUTHZ](https://www.google.com/search?num=5&q=RPC_C_AUTHZ+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_AUTHZ](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_AUTHZ)  
+[RPC_C_HTTP_AUTHN_SCHEME](https://www.google.com/search?num=5&q=RPC_C_HTTP_AUTHN_SCHEME+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_HTTP_AUTHN_SCHEME](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_HTTP_AUTHN_SCHEME)  
+[RPC_C_HTTP_AUTHN_TARGET](https://www.google.com/search?num=5&q=RPC_C_HTTP_AUTHN_TARGET+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_HTTP_AUTHN_TARGET](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_HTTP_AUTHN_TARGET)  
+[RPC_C_HTTP_FLAG](https://www.google.com/search?num=5&q=RPC_C_HTTP_FLAG+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_HTTP_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_HTTP_FLAG)  
+[RPC_C_IMP_LEVEL](https://www.google.com/search?num=5&q=RPC_C_IMP_LEVEL+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_IMP_LEVEL](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_IMP_LEVEL)  
+[RPC_C_MGMT](https://www.google.com/search?num=5&q=RPC_C_MGMT+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_MGMT](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_MGMT)  
+[RPC_C_OPT](https://www.google.com/search?num=5&q=RPC_C_OPT+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_OPT](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_OPT)  
+[RPC_C_POL_ENDPT](https://www.google.com/search?num=5&q=RPC_C_POL_ENDPT+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_POL_ENDPT](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_POL_ENDPT)  
+[RPC_C_POL_NIC](https://www.google.com/search?num=5&q=RPC_C_POL_NIC+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_POL_NIC](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_POL_NIC)  
+[RPC_C_QOS_CAPABILITIES](https://www.google.com/search?num=5&q=RPC_C_QOS_CAPABILITIES+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_QOS_CAPABILITIES](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_QOS_CAPABILITIES)  
+[RPC_C_QOS_IDENTITY](https://www.google.com/search?num=5&q=RPC_C_QOS_IDENTITY+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_C_QOS_IDENTITY](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_C_QOS_IDENTITY)  
+[RPC_IF](https://www.google.com/search?num=5&q=RPC_IF+site%3Adocs.microsoft.com) | rpcdce.h | [Vanara.PInvoke.Rpc.RPC_IF](https://github.com/dahall/Vanara/search?l=C%23&q=RPC_IF)  
+[SEC_WINNT_AUTH_IDENTITY_CHARSET](https://www.google.com/search?num=5&q=SEC_WINNT_AUTH_IDENTITY_CHARSET+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Rpc.SEC_WINNT_AUTH_IDENTITY_CHARSET](https://github.com/dahall/Vanara/search?l=C%23&q=SEC_WINNT_AUTH_IDENTITY_CHARSET)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

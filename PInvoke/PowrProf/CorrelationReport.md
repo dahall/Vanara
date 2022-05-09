@@ -86,6 +86,25 @@ Native Method | Header | Managed Method
 [WriteGlobalPwrPolicy](https://www.google.com/search?num=5&q=WriteGlobalPwrPolicy+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.WriteGlobalPwrPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=WriteGlobalPwrPolicy)  
 [WriteProcessorPwrScheme](https://www.google.com/search?num=5&q=WriteProcessorPwrScheme+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.WriteProcessorPwrScheme](https://github.com/dahall/Vanara/search?l=C%23&q=WriteProcessorPwrScheme)  
 [WritePwrScheme](https://www.google.com/search?num=5&q=WritePwrScheme+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.WritePwrScheme](https://github.com/dahall/Vanara/search?l=C%23&q=WritePwrScheme)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[DEVICE_NOTIFY](https://www.google.com/search?num=5&q=DEVICE_NOTIFY+site%3Adocs.microsoft.com) | powersetting.h | [Vanara.PInvoke.PowrProf.DEVICE_NOTIFY](https://github.com/dahall/Vanara/search?l=C%23&q=DEVICE_NOTIFY)  
+[EFFECTIVE_POWER_MODE](https://www.google.com/search?num=5&q=EFFECTIVE_POWER_MODE+site%3Adocs.microsoft.com) | powersetting.h | [Vanara.PInvoke.PowrProf.EFFECTIVE_POWER_MODE](https://github.com/dahall/Vanara/search?l=C%23&q=EFFECTIVE_POWER_MODE)  
+[EventCode](https://www.google.com/search?num=5&q=EventCode+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.PowrProf.EventCode](https://github.com/dahall/Vanara/search?l=C%23&q=EventCode)  
+[GlobalFlags](https://www.google.com/search?num=5&q=GlobalFlags+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.GlobalFlags](https://github.com/dahall/Vanara/search?l=C%23&q=GlobalFlags)  
+[PDQUERY](https://www.google.com/search?num=5&q=PDQUERY+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.PDQUERY](https://github.com/dahall/Vanara/search?l=C%23&q=PDQUERY)  
+[PDSET](https://www.google.com/search?num=5&q=PDSET+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.PDSET](https://github.com/dahall/Vanara/search?l=C%23&q=PDSET)  
+[POWER_ACTION](https://www.google.com/search?num=5&q=POWER_ACTION+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.PowrProf.POWER_ACTION](https://github.com/dahall/Vanara/search?l=C%23&q=POWER_ACTION)  
+[POWER_ATTR](https://www.google.com/search?num=5&q=POWER_ATTR+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.POWER_ATTR](https://github.com/dahall/Vanara/search?l=C%23&q=POWER_ATTR)  
+[POWER_DATA_ACCESSOR](https://www.google.com/search?num=5&q=POWER_DATA_ACCESSOR+site%3Adocs.microsoft.com) | powrprof.h | [Vanara.PInvoke.PowrProf.POWER_DATA_ACCESSOR](https://github.com/dahall/Vanara/search?l=C%23&q=POWER_DATA_ACCESSOR)  
+[POWER_INFORMATION_LEVEL](https://www.google.com/search?num=5&q=POWER_INFORMATION_LEVEL+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.PowrProf.POWER_INFORMATION_LEVEL](https://github.com/dahall/Vanara/search?l=C%23&q=POWER_INFORMATION_LEVEL)  
+[POWER_PLATFORM_ROLE](https://www.google.com/search?num=5&q=POWER_PLATFORM_ROLE+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.PowrProf.POWER_PLATFORM_ROLE](https://github.com/dahall/Vanara/search?l=C%23&q=POWER_PLATFORM_ROLE)  
+[PowerActionFlags](https://www.google.com/search?num=5&q=PowerActionFlags+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.PowrProf.PowerActionFlags](https://github.com/dahall/Vanara/search?l=C%23&q=PowerActionFlags)  
+[PowerPlatformRoleVersion](https://www.google.com/search?num=5&q=PowerPlatformRoleVersion+site%3Adocs.microsoft.com) | powerbase.h | [Vanara.PInvoke.PowrProf.PowerPlatformRoleVersion](https://github.com/dahall/Vanara/search?l=C%23&q=PowerPlatformRoleVersion)  
+[PROCESSOR_POWER_POLICY_INFO_Options](https://www.google.com/search?num=5&q=PROCESSOR_POWER_POLICY_INFO_Options+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.PowrProf.PROCESSOR_POWER_POLICY_INFO_Options](https://github.com/dahall/Vanara/search?l=C%23&q=PROCESSOR_POWER_POLICY_INFO_Options)  
+[RegisterSuspendResumeNotificationFlags](https://www.google.com/search?num=5&q=RegisterSuspendResumeNotificationFlags+site%3Adocs.microsoft.com) | powerbase.h | [Vanara.PInvoke.PowrProf.RegisterSuspendResumeNotificationFlags](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterSuspendResumeNotificationFlags)  
+[SYSTEM_POWER_CONDITION](https://www.google.com/search?num=5&q=SYSTEM_POWER_CONDITION+site%3Adocs.microsoft.com) | winnt.h | [Vanara.PInvoke.PowrProf.SYSTEM_POWER_CONDITION](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_POWER_CONDITION)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

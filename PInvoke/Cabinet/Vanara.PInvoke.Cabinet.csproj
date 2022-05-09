@@ -19,6 +19,7 @@ Structures
 CCAB COMPRESSOR_HANDLE COMPRESS_ALLOCATION_ROUTINES DECOMPRESSOR_HANDLE DECRYPT ERF FDICABINETINFO FDIDECRYPT FDINOTIFICATION HFCI HFDI NEW_CABINET NEW_FOLDER Union
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <NoWarn>1701;1702;1591</NoWarn>

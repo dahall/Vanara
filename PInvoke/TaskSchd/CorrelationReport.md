@@ -8,6 +8,29 @@ Native Method | Native DLL | Header | Managed Method
 --- | --- | --- | ---  
 [GetNetScheduleAccountInformation](https://www.google.com/search?num=5&q=GetNetScheduleAccountInformation+site%3Adocs.microsoft.com) | mstask.dll | AtAcct.h | [Vanara.PInvoke.MSTask.GetNetScheduleAccountInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetNetScheduleAccountInformation)  
 [SetNetScheduleAccountInformation](https://www.google.com/search?num=5&q=SetNetScheduleAccountInformation+site%3Adocs.microsoft.com) | mstask.dll | AtAcct.h | [Vanara.PInvoke.MSTask.SetNetScheduleAccountInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetNetScheduleAccountInformation)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[TASK_ACTION_TYPE](https://www.google.com/search?num=5&q=TASK_ACTION_TYPE+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_ACTION_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_ACTION_TYPE)  
+[TASK_COMPATIBILITY](https://www.google.com/search?num=5&q=TASK_COMPATIBILITY+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_COMPATIBILITY](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_COMPATIBILITY)  
+[TASK_CREATION](https://www.google.com/search?num=5&q=TASK_CREATION+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_CREATION](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_CREATION)  
+[TASK_ENUM_FLAGS](https://www.google.com/search?num=5&q=TASK_ENUM_FLAGS+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_ENUM_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_ENUM_FLAGS)  
+[TASK_INSTANCES_POLICY](https://www.google.com/search?num=5&q=TASK_INSTANCES_POLICY+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_INSTANCES_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_INSTANCES_POLICY)  
+[TASK_LOGON_TYPE](https://www.google.com/search?num=5&q=TASK_LOGON_TYPE+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_LOGON_TYPE)  
+[TASK_PROCESSTOKENSID_TYPE](https://www.google.com/search?num=5&q=TASK_PROCESSTOKENSID_TYPE+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_PROCESSTOKENSID_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_PROCESSTOKENSID_TYPE)  
+[TASK_RUN_FLAGS](https://www.google.com/search?num=5&q=TASK_RUN_FLAGS+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_RUN_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_RUN_FLAGS)  
+[TASK_RUNLEVEL_TYPE](https://www.google.com/search?num=5&q=TASK_RUNLEVEL_TYPE+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_RUNLEVEL_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_RUNLEVEL_TYPE)  
+[TASK_SESSION_STATE_CHANGE_TYPE](https://www.google.com/search?num=5&q=TASK_SESSION_STATE_CHANGE_TYPE+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_SESSION_STATE_CHANGE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_SESSION_STATE_CHANGE_TYPE)  
+[TASK_STATE](https://www.google.com/search?num=5&q=TASK_STATE+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_STATE)  
+[TASK_TRIGGER_TYPE](https://www.google.com/search?num=5&q=TASK_TRIGGER_TYPE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_TRIGGER_TYPE)  
+[TASK_TRIGGER_TYPE2](https://www.google.com/search?num=5&q=TASK_TRIGGER_TYPE2+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2](https://github.com/dahall/Vanara/search?l=C%23&q=TASK_TRIGGER_TYPE2)  
+[TaskDaysOfTheWeek](https://www.google.com/search?num=5&q=TaskDaysOfTheWeek+site%3Adocs.microsoft.com) | mstask.h | [Vanara.PInvoke.MSTask.TaskDaysOfTheWeek](https://github.com/dahall/Vanara/search?l=C%23&q=TaskDaysOfTheWeek)  
+[TaskFlags](https://www.google.com/search?num=5&q=TaskFlags+site%3Adocs.microsoft.com) | mstask.h | [Vanara.PInvoke.MSTask.TaskFlags](https://github.com/dahall/Vanara/search?l=C%23&q=TaskFlags)  
+[TaskMonths](https://www.google.com/search?num=5&q=TaskMonths+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MSTask.TaskMonths](https://github.com/dahall/Vanara/search?l=C%23&q=TaskMonths)  
+[TaskStatus](https://www.google.com/search?num=5&q=TaskStatus+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MSTask.TaskStatus](https://github.com/dahall/Vanara/search?l=C%23&q=TaskStatus)  
+[TaskTriggerFlags](https://www.google.com/search?num=5&q=TaskTriggerFlags+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MSTask.TaskTriggerFlags](https://github.com/dahall/Vanara/search?l=C%23&q=TaskTriggerFlags)  
+[TaskWeeksOfMonth](https://www.google.com/search?num=5&q=TaskWeeksOfMonth+site%3Adocs.microsoft.com) | taskschd.h | [Vanara.PInvoke.TaskSchd.TaskWeeksOfMonth](https://github.com/dahall/Vanara/search?l=C%23&q=TaskWeeksOfMonth)  
+[TaskWhichWeek](https://www.google.com/search?num=5&q=TaskWhichWeek+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.MSTask.TaskWhichWeek](https://github.com/dahall/Vanara/search?l=C%23&q=TaskWhichWeek)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

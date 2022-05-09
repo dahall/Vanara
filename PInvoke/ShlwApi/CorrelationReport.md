@@ -217,6 +217,35 @@ Native Method | Header | Managed Method
 [UrlIsOpaque](https://www.google.com/search?num=5&q=UrlIsOpaqueA+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlIsOpaque](https://github.com/dahall/Vanara/search?l=C%23&q=UrlIsOpaque)  
 [UrlUnescape](https://www.google.com/search?num=5&q=UrlUnescapeA+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.UrlUnescape](https://github.com/dahall/Vanara/search?l=C%23&q=UrlUnescape)  
 [WhichPlatform](https://www.google.com/search?num=5&q=WhichPlatform+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.WhichPlatform](https://github.com/dahall/Vanara/search?l=C%23&q=WhichPlatform)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[ASSOCDATA](https://www.google.com/search?num=5&q=ASSOCDATA+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.ASSOCDATA](https://github.com/dahall/Vanara/search?l=C%23&q=ASSOCDATA)  
+[ASSOCENUM](https://www.google.com/search?num=5&q=ASSOCENUM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ShlwApi.ASSOCENUM](https://github.com/dahall/Vanara/search?l=C%23&q=ASSOCENUM)  
+[ASSOCF](https://www.google.com/search?num=5&q=ASSOCF+site%3Adocs.microsoft.com) | Shlwapi.h | [Vanara.PInvoke.ShlwApi.ASSOCF](https://github.com/dahall/Vanara/search?l=C%23&q=ASSOCF)  
+[ASSOCKEY](https://www.google.com/search?num=5&q=ASSOCKEY+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.ASSOCKEY](https://github.com/dahall/Vanara/search?l=C%23&q=ASSOCKEY)  
+[ASSOCSTR](https://www.google.com/search?num=5&q=ASSOCSTR+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.ASSOCSTR](https://github.com/dahall/Vanara/search?l=C%23&q=ASSOCSTR)  
+[FDTF](https://www.google.com/search?num=5&q=FDTF+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.FDTF](https://github.com/dahall/Vanara/search?l=C%23&q=FDTF)  
+[FILETYPEATTRIBUTEFLAGS](https://www.google.com/search?num=5&q=FILETYPEATTRIBUTEFLAGS+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.FILETYPEATTRIBUTEFLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=FILETYPEATTRIBUTEFLAGS)  
+[GCT](https://www.google.com/search?num=5&q=GCT+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.GCT](https://github.com/dahall/Vanara/search?l=C%23&q=GCT)  
+[OS](https://www.google.com/search?num=5&q=OS+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.OS](https://github.com/dahall/Vanara/search?l=C%23&q=OS)  
+[PERCEIVED](https://www.google.com/search?num=5&q=PERCEIVED+site%3Adocs.microsoft.com) | shtypes.h | [Vanara.PInvoke.ShlwApi.PERCEIVED](https://github.com/dahall/Vanara/search?l=C%23&q=PERCEIVED)  
+[PERCEIVEDFLAG](https://www.google.com/search?num=5&q=PERCEIVEDFLAG+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PERCEIVEDFLAG](https://github.com/dahall/Vanara/search?l=C%23&q=PERCEIVEDFLAG)  
+[PMSF](https://www.google.com/search?num=5&q=PMSF+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.PMSF](https://github.com/dahall/Vanara/search?l=C%23&q=PMSF)  
+[SFBS_FLAGS](https://www.google.com/search?num=5&q=SFBS_FLAGS+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SFBS_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=SFBS_FLAGS)  
+[SHACF](https://www.google.com/search?num=5&q=SHACF+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHACF](https://github.com/dahall/Vanara/search?l=C%23&q=SHACF)  
+[SHCT_FLAGS](https://www.google.com/search?num=5&q=SHCT_FLAGS+site%3Adocs.microsoft.com) | Shlwapi.h | [Vanara.PInvoke.ShlwApi.SHCT_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=SHCT_FLAGS)  
+[SHELLPLATFORM](https://www.google.com/search?num=5&q=SHELLPLATFORM+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHELLPLATFORM](https://github.com/dahall/Vanara/search?l=C%23&q=SHELLPLATFORM)  
+[SHGVSPB](https://www.google.com/search?num=5&q=SHGVSPB+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHGVSPB](https://github.com/dahall/Vanara/search?l=C%23&q=SHGVSPB)  
+[SHREGDEL_FLAGS](https://www.google.com/search?num=5&q=SHREGDEL_FLAGS+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHREGDEL_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=SHREGDEL_FLAGS)  
+[SHREGENUM_FLAGS](https://www.google.com/search?num=5&q=SHREGENUM_FLAGS+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHREGENUM_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=SHREGENUM_FLAGS)  
+[SHREGSET](https://www.google.com/search?num=5&q=SHREGSET+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.SHREGSET](https://github.com/dahall/Vanara/search?l=C%23&q=SHREGSET)  
+[SRRF](https://www.google.com/search?num=5&q=SRRF+site%3Adocs.microsoft.com) | Shlwapi.h | [Vanara.PInvoke.ShlwApi.SRRF](https://github.com/dahall/Vanara/search?l=C%23&q=SRRF)  
+[STIF_FLAGS](https://www.google.com/search?num=5&q=STIF_FLAGS+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.STIF_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=STIF_FLAGS)  
+[URL_APPLY](https://www.google.com/search?num=5&q=URL_APPLY+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URL_APPLY](https://github.com/dahall/Vanara/search?l=C%23&q=URL_APPLY)  
+[URL_SCHEME](https://www.google.com/search?num=5&q=URL_SCHEME+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URL_SCHEME](https://github.com/dahall/Vanara/search?l=C%23&q=URL_SCHEME)  
+[URLFLAGS](https://www.google.com/search?num=5&q=URLFLAGS+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URLFLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=URLFLAGS)  
+[URLIS](https://www.google.com/search?num=5&q=URLIS+site%3Adocs.microsoft.com) | shlwapi.h | [Vanara.PInvoke.ShlwApi.URLIS](https://github.com/dahall/Vanara/search?l=C%23&q=URLIS)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

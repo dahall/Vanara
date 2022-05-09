@@ -22,6 +22,7 @@ Interfaces
 IEffectivePermission IEffectivePermission2 ISecurityInformation ISecurityInformation2 ISecurityInformation3 ISecurityInformation4 ISecurityObjectTypeInfo
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

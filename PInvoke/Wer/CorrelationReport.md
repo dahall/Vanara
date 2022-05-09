@@ -21,6 +21,19 @@ Native Method | Header | Managed Method
 [WerStoreGetNextReportKey](https://www.google.com/search?num=5&q=WerStoreGetNextReportKey+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerStoreGetNextReportKey](https://github.com/dahall/Vanara/search?l=C%23&q=WerStoreGetNextReportKey)  
 [WerStoreOpen](https://www.google.com/search?num=5&q=WerStoreOpen+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerStoreOpen](https://github.com/dahall/Vanara/search?l=C%23&q=WerStoreOpen)  
 [WerStoreQueryReportMetadataV2](https://www.google.com/search?num=5&q=WerStoreQueryReportMetadataV2+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerStoreQueryReportMetadataV2](https://github.com/dahall/Vanara/search?l=C%23&q=WerStoreQueryReportMetadataV2)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[MINIDUMP_TYPE](https://www.google.com/search?num=5&q=MINIDUMP_TYPE+site%3Adocs.microsoft.com) | minidumpapiset.h | [Vanara.PInvoke.DbgHelp.MINIDUMP_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=MINIDUMP_TYPE)  
+[MODULE_WRITE_FLAGS](https://www.google.com/search?num=5&q=MODULE_WRITE_FLAGS+site%3Adocs.microsoft.com) | minidumpapiset.h | [Vanara.PInvoke.DbgHelp.MODULE_WRITE_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=MODULE_WRITE_FLAGS)  
+[REPORT_STORE_TYPES](https://www.google.com/search?num=5&q=REPORT_STORE_TYPES+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.REPORT_STORE_TYPES](https://github.com/dahall/Vanara/search?l=C%23&q=REPORT_STORE_TYPES)  
+[THREAD_WRITE_FLAGS](https://www.google.com/search?num=5&q=THREAD_WRITE_FLAGS+site%3Adocs.microsoft.com) | minidumpapiset.h | [Vanara.PInvoke.DbgHelp.THREAD_WRITE_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=THREAD_WRITE_FLAGS)  
+[WER_CONSENT](https://www.google.com/search?num=5&q=WER_CONSENT+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WER_CONSENT](https://github.com/dahall/Vanara/search?l=C%23&q=WER_CONSENT)  
+[WER_DUMP](https://www.google.com/search?num=5&q=WER_DUMP+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WER_DUMP](https://github.com/dahall/Vanara/search?l=C%23&q=WER_DUMP)  
+[WER_DUMP_MASK](https://www.google.com/search?num=5&q=WER_DUMP_MASK+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WER_DUMP_MASK](https://github.com/dahall/Vanara/search?l=C%23&q=WER_DUMP_MASK)  
+[WER_DUMP_TYPE](https://www.google.com/search?num=5&q=WER_DUMP_TYPE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Wer.WER_DUMP_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=WER_DUMP_TYPE)  
+[WER_P](https://www.google.com/search?num=5&q=WER_P+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WER_P](https://github.com/dahall/Vanara/search?l=C%23&q=WER_P)  
+[WER_SUBMIT](https://www.google.com/search?num=5&q=WER_SUBMIT+site%3Adocs.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WER_SUBMIT](https://github.com/dahall/Vanara/search?l=C%23&q=WER_SUBMIT)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

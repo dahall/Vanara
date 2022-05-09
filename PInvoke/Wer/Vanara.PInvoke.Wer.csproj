@@ -19,6 +19,7 @@ Structures
 HREPORT HREPORTSTORE WER_DUMP_CUSTOM_OPTIONS WER_EXCEPTION_INFORMATION WER_REPORT_INFORMATION WER_REPORT_METADATA_V2 WER_REPORT_PARAMETER WER_REPORT_SIGNATURE
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

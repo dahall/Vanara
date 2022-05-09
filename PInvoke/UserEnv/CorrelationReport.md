@@ -35,6 +35,14 @@ Native Method | Header | Managed Method
 [RegisterGPNotification](https://www.google.com/search?num=5&q=RegisterGPNotification+site%3Adocs.microsoft.com) | userenv.h | [Vanara.PInvoke.UserEnv.RegisterGPNotification](https://github.com/dahall/Vanara/search?l=C%23&q=RegisterGPNotification)  
 [UnloadUserProfile](https://www.google.com/search?num=5&q=UnloadUserProfile+site%3Adocs.microsoft.com) | userenv.h | [Vanara.PInvoke.UserEnv.UnloadUserProfile](https://github.com/dahall/Vanara/search?l=C%23&q=UnloadUserProfile)  
 [UnregisterGPNotification](https://www.google.com/search?num=5&q=UnregisterGPNotification+site%3Adocs.microsoft.com) | userenv.h | [Vanara.PInvoke.UserEnv.UnregisterGPNotification](https://github.com/dahall/Vanara/search?l=C%23&q=UnregisterGPNotification)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[GPO_LINK](https://www.google.com/search?num=5&q=GPO_LINK+site%3Adocs.microsoft.com) | userenv.h | [Vanara.PInvoke.UserEnv.GPO_LINK](https://github.com/dahall/Vanara/search?l=C%23&q=GPO_LINK)  
+[GPO_LIST_FLAG](https://www.google.com/search?num=5&q=GPO_LIST_FLAG+site%3Adocs.microsoft.com) | userenv.h | [Vanara.PInvoke.UserEnv.GPO_LIST_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=GPO_LIST_FLAG)  
+[ProfileInfoFlags](https://www.google.com/search?num=5&q=ProfileInfoFlags+site%3Adocs.microsoft.com) | profinfo.h | [Vanara.PInvoke.UserEnv.ProfileInfoFlags](https://github.com/dahall/Vanara/search?l=C%23&q=ProfileInfoFlags)  
+[ProfileType](https://www.google.com/search?num=5&q=ProfileType+site%3Adocs.microsoft.com) | userenv.h | [Vanara.PInvoke.UserEnv.ProfileType](https://github.com/dahall/Vanara/search?l=C%23&q=ProfileType)  
+[RefreshPolicyOption](https://www.google.com/search?num=5&q=RefreshPolicyOption+site%3Adocs.microsoft.com) | userenv.h | [Vanara.PInvoke.UserEnv.RefreshPolicyOption](https://github.com/dahall/Vanara/search?l=C%23&q=RefreshPolicyOption)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

@@ -17,6 +17,19 @@ Native Method | Header | Managed Method
 [PrintDlg](https://www.google.com/search?num=5&q=PrintDlgA+site%3Adocs.microsoft.com) | Commdlg.h | [Vanara.PInvoke.ComDlg32.PrintDlg](https://github.com/dahall/Vanara/search?l=C%23&q=PrintDlg)  
 [PrintDlgEx](https://www.google.com/search?num=5&q=PrintDlgExA+site%3Adocs.microsoft.com) | Commdlg.h | [Vanara.PInvoke.ComDlg32.PrintDlgEx](https://github.com/dahall/Vanara/search?l=C%23&q=PrintDlgEx)  
 [ReplaceText](https://www.google.com/search?num=5&q=ReplaceTextA+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.ReplaceText](https://github.com/dahall/Vanara/search?l=C%23&q=ReplaceText)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[CC](https://www.google.com/search?num=5&q=CC+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.CC](https://github.com/dahall/Vanara/search?l=C%23&q=CC)  
+[CF](https://www.google.com/search?num=5&q=CF+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.CF](https://github.com/dahall/Vanara/search?l=C%23&q=CF)  
+[DN](https://www.google.com/search?num=5&q=DN+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.DN](https://github.com/dahall/Vanara/search?l=C%23&q=DN)  
+[FR](https://www.google.com/search?num=5&q=FR+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.FR](https://github.com/dahall/Vanara/search?l=C%23&q=FR)  
+[OFN](https://www.google.com/search?num=5&q=OFN+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.OFN](https://github.com/dahall/Vanara/search?l=C%23&q=OFN)  
+[OFN_EX](https://www.google.com/search?num=5&q=OFN_EX+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.OFN_EX](https://github.com/dahall/Vanara/search?l=C%23&q=OFN_EX)  
+[PD](https://www.google.com/search?num=5&q=PD+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.PD](https://github.com/dahall/Vanara/search?l=C%23&q=PD)  
+[PD_EXCL](https://www.google.com/search?num=5&q=PD_EXCL+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.PD_EXCL](https://github.com/dahall/Vanara/search?l=C%23&q=PD_EXCL)  
+[PD_RESULT](https://www.google.com/search?num=5&q=PD_RESULT+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.PD_RESULT](https://github.com/dahall/Vanara/search?l=C%23&q=PD_RESULT)  
+[PSD](https://www.google.com/search?num=5&q=PSD+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.PSD](https://github.com/dahall/Vanara/search?l=C%23&q=PSD)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

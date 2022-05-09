@@ -33,6 +33,17 @@ Native Method | Header | Managed Method
 [DrtStartSearch](https://www.google.com/search?num=5&q=DrtStartSearch+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtStartSearch](https://github.com/dahall/Vanara/search?l=C%23&q=DrtStartSearch)  
 [DrtUnregisterKey](https://www.google.com/search?num=5&q=DrtUnregisterKey+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtUnregisterKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtUnregisterKey)  
 [DrtUpdateKey](https://www.google.com/search?num=5&q=DrtUpdateKey+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DrtUpdateKey](https://github.com/dahall/Vanara/search?l=C%23&q=DrtUpdateKey)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[DRT_ADDRESS_FLAGS](https://www.google.com/search?num=5&q=DRT_ADDRESS_FLAGS+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DRT_ADDRESS_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=DRT_ADDRESS_FLAGS)  
+[DRT_EVENT_TYPE](https://www.google.com/search?num=5&q=DRT_EVENT_TYPE+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DRT_EVENT_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DRT_EVENT_TYPE)  
+[DRT_LEAFSET_KEY_CHANGE_TYPE](https://www.google.com/search?num=5&q=DRT_LEAFSET_KEY_CHANGE_TYPE+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DRT_LEAFSET_KEY_CHANGE_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DRT_LEAFSET_KEY_CHANGE_TYPE)  
+[DRT_MATCH_TYPE](https://www.google.com/search?num=5&q=DRT_MATCH_TYPE+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DRT_MATCH_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DRT_MATCH_TYPE)  
+[DRT_REGISTRATION_STATE](https://www.google.com/search?num=5&q=DRT_REGISTRATION_STATE+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DRT_REGISTRATION_STATE](https://github.com/dahall/Vanara/search?l=C%23&q=DRT_REGISTRATION_STATE)  
+[DRT_SCOPE](https://www.google.com/search?num=5&q=DRT_SCOPE+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DRT_SCOPE](https://github.com/dahall/Vanara/search?l=C%23&q=DRT_SCOPE)  
+[DRT_SECURITY_MODE](https://www.google.com/search?num=5&q=DRT_SECURITY_MODE+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DRT_SECURITY_MODE](https://github.com/dahall/Vanara/search?l=C%23&q=DRT_SECURITY_MODE)  
+[DRT_STATUS](https://www.google.com/search?num=5&q=DRT_STATUS+site%3Adocs.microsoft.com) | drt.h | [Vanara.PInvoke.Drt.DRT_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=DRT_STATUS)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

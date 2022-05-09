@@ -15,6 +15,7 @@ Interfaces
 ILocationPermissions ISensor ISensorCollection ISensorDataReport ISensorEvents ISensorManager ISensorManagerEvents
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

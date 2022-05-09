@@ -34,6 +34,11 @@ Native Method | Header | Managed Method
 [PeerDistShutdown](https://www.google.com/search?num=5&q=PeerDistShutdown+site%3Adocs.microsoft.com) | peerdist.h | [Vanara.PInvoke.PeerDist.PeerDistShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=PeerDistShutdown)  
 [PeerDistStartup](https://www.google.com/search?num=5&q=PeerDistStartup+site%3Adocs.microsoft.com) | peerdist.h | [Vanara.PInvoke.PeerDist.PeerDistStartup](https://github.com/dahall/Vanara/search?l=C%23&q=PeerDistStartup)  
 [PeerDistUnregisterForStatusChangeNotification](https://www.google.com/search?num=5&q=PeerDistUnregisterForStatusChangeNotification+site%3Adocs.microsoft.com) | peerdist.h | [Vanara.PInvoke.PeerDist.PeerDistUnregisterForStatusChangeNotification](https://github.com/dahall/Vanara/search?l=C%23&q=PeerDistUnregisterForStatusChangeNotification)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[PEERDIST_CLIENT_INFO_BY_HANDLE_CLASS](https://www.google.com/search?num=5&q=PEERDIST_CLIENT_INFO_BY_HANDLE_CLASS+site%3Adocs.microsoft.com) | peerdist.h | [Vanara.PInvoke.PeerDist.PEERDIST_CLIENT_INFO_BY_HANDLE_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=PEERDIST_CLIENT_INFO_BY_HANDLE_CLASS)  
+[PEERDIST_STATUS](https://www.google.com/search?num=5&q=PEERDIST_STATUS+site%3Adocs.microsoft.com) | peerdist.h | [Vanara.PInvoke.PeerDist.PEERDIST_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=PEERDIST_STATUS)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

@@ -21,6 +21,7 @@ Interfaces
 IFhConfigMgr IFhReassociation IFhScopeIterator IFhTarget
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

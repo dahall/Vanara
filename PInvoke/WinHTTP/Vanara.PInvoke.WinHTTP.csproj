@@ -19,6 +19,7 @@ HINTERNET HTTP_VERSION_INFO WINHTTP_ASYNC_RESULT WINHTTP_AUTOPROXY_OPTIONS WINHT
 
 </PackageReleaseNotes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

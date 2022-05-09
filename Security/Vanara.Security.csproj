@@ -15,6 +15,7 @@ Enumerations
 AccountLogonRights, DesiredAccess, SystemPrivilege
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <Choose>
     <When Condition=" $(TargetFramework.StartsWith('net4')) ">

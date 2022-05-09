@@ -19,6 +19,7 @@ CABINET_INFO DEVPROPCOMPKEY DEVPROPERTY DEVPROPKEY FILEPATHS FILEPATHS_SIGNERINF
 
 </PackageReleaseNotes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

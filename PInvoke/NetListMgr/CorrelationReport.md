@@ -3,6 +3,18 @@ PInvoke API (interfaces, structures and constants) for Windows NetListMgr COM ob
 
 - Includes methods from netprofm.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NetListMgr?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NetListMgr?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NetListMgr)  
+### Enumerations  
+Native Enum | Header | Managed Enum  
+--- | --- | ---  
+[NLM_CONNECTION_COST](https://www.google.com/search?num=5&q=NLM_CONNECTION_COST+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_CONNECTION_COST](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_CONNECTION_COST)  
+[NLM_CONNECTION_PROPERTY_CHANGE](https://www.google.com/search?num=5&q=NLM_CONNECTION_PROPERTY_CHANGE+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_CONNECTION_PROPERTY_CHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_CONNECTION_PROPERTY_CHANGE)  
+[NLM_CONNECTIVITY](https://www.google.com/search?num=5&q=NLM_CONNECTIVITY+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_CONNECTIVITY](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_CONNECTIVITY)  
+[NLM_DOMAIN_TYPE](https://www.google.com/search?num=5&q=NLM_DOMAIN_TYPE+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_DOMAIN_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_DOMAIN_TYPE)  
+[NLM_ENUM_NETWORK](https://www.google.com/search?num=5&q=NLM_ENUM_NETWORK+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_ENUM_NETWORK](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_ENUM_NETWORK)  
+[NLM_INTERNET_CONNECTIVITY](https://www.google.com/search?num=5&q=NLM_INTERNET_CONNECTIVITY+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_INTERNET_CONNECTIVITY](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_INTERNET_CONNECTIVITY)  
+[NLM_NETWORK_CATEGORY](https://www.google.com/search?num=5&q=NLM_NETWORK_CATEGORY+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_NETWORK_CATEGORY](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_NETWORK_CATEGORY)  
+[NLM_NETWORK_CLASS](https://www.google.com/search?num=5&q=NLM_NETWORK_CLASS+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_NETWORK_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_NETWORK_CLASS)  
+[NLM_NETWORK_PROPERTY_CHANGE](https://www.google.com/search?num=5&q=NLM_NETWORK_PROPERTY_CHANGE+site%3Adocs.microsoft.com) | Netlistmgr.h | [Vanara.PInvoke.NetListMgr.NLM_NETWORK_PROPERTY_CHANGE](https://github.com/dahall/Vanara/search?l=C%23&q=NLM_NETWORK_PROPERTY_CHANGE)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
