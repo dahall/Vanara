@@ -9,6 +9,9 @@
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);ALLOWSPAN</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(APPVEYOR)' == 'true' Or '$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="System" />
   </ItemGroup>
@@ -22,7 +25,12 @@
     <Compile Remove="**\~*.vb" />
     <None Include="**\~*.vb" />
   </ItemGroup>
-    
+
+  <!-- Establish include pattern for package readme files -->
+  <ItemGroup>
+    <None Include="**\pkgreadme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
   <!-- Define Net5OrAbove variable -->
   <PropertyGroup>
     <Net5OrAbove>false</Net5OrAbove>
