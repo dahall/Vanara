@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.InteropServices;
+using TYPEDESC = System.Runtime.InteropServices.ComTypes.TYPEDESC;
 
 namespace Vanara.PInvoke
 {
@@ -421,6 +423,25 @@ namespace Vanara.PInvoke
 		[PInvokeData("oaidl.h", MSDNShortId = "c4539285-20c2-4eda-acbc-1f1a80cad07b")]
 		public static unsafe extern byte* VARIANT_UserUnmarshal64(uint* arg1, byte* arg2, VARIANT* arg3);
 
+		/// <summary>Describes an array, its element type, and its dimension.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/ns-oaidl-arraydesc
+		// typedef struct tagARRAYDESC { TYPEDESC tdescElem; USHORT cDims; SAFEARRAYBOUND rgbounds[1]; } ARRAYDESC;
+		[PInvokeData("oaidl.h", MSDNShortId = "NS:oaidl.tagARRAYDESC")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<ARRAYDESC>), nameof(cDims))]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ARRAYDESC
+		{
+			/// <summary>The element type.</summary>
+			public TYPEDESC tdescElem;
+
+			/// <summary>The dimension count.</summary>
+			public ushort cDims;
+
+			/// <summary>A variable-length array containing one element for each dimension.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public SAFEARRAYBOUND[] rgbounds;
+		}
+
 		/// <summary>Represents custom data.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/ns-oaidl-custdata typedef struct tagCUSTDATA { DWORD cCustData;
 		// LPCUSTDATAITEM prgCustData; } CUSTDATA, *LPCUSTDATA;
@@ -450,6 +471,20 @@ namespace Vanara.PInvoke
 
 			/// <summary>The value of the data item.</summary>
 			public VARIANT varValue;
+		}
+
+		/// <summary>Contains information about the default value of a parameter.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/ns-oaidl-paramdescex
+		// typedef struct tagPARAMDESCEX { ULONG cBytes; VARIANTARG varDefaultValue; } PARAMDESCEX, *LPPARAMDESCEX;
+		[PInvokeData("oaidl.h", MSDNShortId = "NS:oaidl.tagPARAMDESCEX")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PARAMDESCEX
+		{
+			/// <summary>The size of the structure.</summary>
+			public uint cBytes;
+
+			/// <summary>The default value of the parameter.</summary>
+			public VARIANT varDefaultValue;
 		}
 
 		/// <summary>Contains or receives property information.</summary>
