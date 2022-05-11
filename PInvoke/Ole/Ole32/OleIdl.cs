@@ -140,6 +140,22 @@ namespace Vanara.PInvoke
 			OLEGETMONIKER_TEMPFORUSER,
 		}
 
+		/// <summary>Controls binding operations to a link source.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/ne-oleidl-olelinkbind
+		// typedef enum tagOLELINKBIND { OLELINKBIND_EVENIFCLASSDIFF = 1 } OLELINKBIND;
+		[PInvokeData("oleidl.h", MSDNShortId = "NE:oleidl.tagOLELINKBIND")]
+		public enum OLELINKBIND
+		{
+			/// <summary>
+			/// <para>Value: 1</para>
+			/// <para>
+			/// The binding operation should proceed even if the current class of the link source is different from the last time the link
+			/// was bound. For example, the link source could be a Lotus spreadsheet that was converted to an Excel spreadsheet.
+			/// </para>
+			/// </summary>
+			OLELINKBIND_EVENIFCLASSDIFF = 1,
+		}
+
 		/// <summary>
 		/// Describes miscellaneous characteristics of an object or class of objects. A container can call the IOleObject::GetMiscStatus
 		/// method to determine the <c>OLEMISC</c> bits set for an object. The values specified in an object server's CLSID\MiscStatus entry
@@ -333,6 +349,33 @@ namespace Vanara.PInvoke
 			/// OleCreateFromData and OleCreateLinkFromData.
 			/// </summary>
 			OLERENDER_ASIS,
+		}
+
+		/// <summary>
+		/// Indicates whether the linked object updates the cached data for the linked object automatically or only when the container calls
+		/// either the IOleObject::Update or IOleLink::Update methods. The constants are used in the IOleLink interface.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/ne-oleidl-oleupdate typedef enum tagOLEUPDATE { OLEUPDATE_ALWAYS = 1,
+		// OLEUPDATE_ONCALL = 3 } OLEUPDATE;
+		[PInvokeData("oleidl.h", MSDNShortId = "NE:oleidl.tagOLEUPDATE")]
+		public enum OLEUPDATE
+		{
+			/// <summary>
+			/// <para>Value: 1</para>
+			/// <para>
+			/// Update the link object whenever possible, this option corresponds to the Automatic update option in the Links dialog box.
+			/// </para>
+			/// </summary>
+			OLEUPDATE_ALWAYS = 1,
+
+			/// <summary>
+			/// <para>Value: 3</para>
+			/// <para>
+			/// Update the link object only when IOleObject::Update or IOleLink::Update is called, this option corresponds to the Manual
+			/// update option in the Links dialog box.
+			/// </para>
+			/// </summary>
+			OLEUPDATE_ONCALL = 3,
 		}
 
 		/// <summary>Describes the attributes of a specified verb for an object.</summary>
@@ -3972,6 +4015,514 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ioleinplaceuiwindow-setactiveobject HRESULT
 			// SetActiveObject( IOleInPlaceActiveObject *pActiveObject, LPCOLESTR pszObjName );
 			void SetActiveObject([In] IOleInPlaceActiveObject pActiveObject, [MarshalAs(UnmanagedType.LPWStr)] string pszObjName);
+		}
+
+		/// <summary>
+		/// <para>
+		/// Enables a linked object to provide its container with functions pertaining to linking. The most important of these functions is
+		/// binding to the link source, that is, activating the connection to the document that stores the linked object's native data.
+		/// <c>IOleLink</c> also defines functions for managing information about the linked object, such as the location of the link source
+		/// and the cached presentation data for the linked object.
+		/// </para>
+		/// <para>
+		/// A container application can distinguish between embedded objects and linked objects by querying for <c>IOleLink</c>; only linked
+		/// objects implement <c>IOleLink</c>.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nn-oleidl-iolelink
+		[PInvokeData("oleidl.h", MSDNShortId = "NN:oleidl.IOleLink")]
+		[ComImport, Guid("0000011d-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IOleLink
+		{
+			/// <summary>Specifies how often a linked object should update its cached data.</summary>
+			/// <param name="dwUpdateOpt">
+			/// Specifies how often a linked object should update its cached data. The possible values for <c>dwUpdateOpt</c> are taken from
+			/// the enumeration OLEUPDATE.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>E_INVALIDARG</c></term>
+			/// <term>The supplied value is invalid.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Your container application should call <c>IOleLink::SetUpdateOptions</c> when the end user changes the update option for a
+			/// linked object.
+			/// </para>
+			/// <para>
+			/// The end user selects the update option for a linked object using the <c>Links</c> dialog box. If you use the OleUIEditLinks
+			/// function to display this dialog box, you must implement the IOleUILinkContainer interface. The dialog box calls your
+			/// IOleUILinkContainer::SetLinkUpdateOptions method to specify the update option chosen by the end user. Your implementation of
+			/// this method should call the <c>IOleLink::SetUpdateOptions</c> method to pass the selected option to the linked object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The default update option is OLEUDPATE_ALWAYS. The linked object's implementation of IPersistStorage::Save saves the current
+			/// update option.
+			/// </para>
+			/// <para>
+			/// If OLEUDPATE_ALWAYS is specified as the update option, the linked object updates the link's caches in the following situations:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>When the update option is changed from manual to automatic, if the link source is running.</term>
+			/// </item>
+			/// <item>
+			/// <term>Whenever the linked object binds to the link source.</term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// Whenever the link source is running and the linked object's IOleObject::Close, IPersistStorage::Save, or IAdviseSink::OnSave
+			/// implementations are called.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// For both manual and automatic links, the linked object updates the cache whenever the container application calls
+			/// IOleObject::Update or IOleLink::Update.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-setupdateoptions HRESULT SetUpdateOptions( [in]
+			// DWORD dwUpdateOpt );
+			[PreserveSig]
+			HRESULT SetUpdateOptions(OLEUPDATE dwUpdateOpt);
+
+			/// <summary>Retrieves a value indicating how often the linked object updates its cached data.</summary>
+			/// <param name="pdwUpdateOpt">
+			/// A pointer to a variable that receives the current value for the linked object's update option, indicating how often the
+			/// linked object updates the cached data for the linked object. The possible values for <c>pdwUpdateOpt</c> are taken from the
+			/// enumeration OLEUPDATE.
+			/// </param>
+			/// <returns>This method returns S_OK on success.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-getupdateoptions HRESULT GetUpdateOptions( [out]
+			// DWORD *pdwUpdateOpt );
+			[PreserveSig]
+			HRESULT GetUpdateOptions(out OLEUPDATE pdwUpdateOpt);
+
+			/// <summary>Sets the moniker for the link source.</summary>
+			/// <param name="pmk">
+			/// A pointer to the IMoniker interface on a moniker that identifies the new link source of the linked object. A value of
+			/// <c>NULL</c> breaks the link.
+			/// </param>
+			/// <param name="rclsid">
+			/// The CLSID of the link source that the linked object should use to access information about the linked object when it is not bound.
+			/// </param>
+			/// <returns>This method returns S_OK on success.</returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Your container application can call <c>IOleLink::SetSourceMoniker</c> when the end user changes the source of a link or
+			/// breaks a link. Note that this requires your container to use the MkParseDisplayName function to create a moniker out of the
+			/// display name that the end user enters. If you'd rather have the linked object perform the parsing, your container can call
+			/// IOleLink::SetSourceDisplayName instead of <c>IOleLink::SetSourceMoniker</c>.
+			/// </para>
+			/// <para>
+			/// The end user changes the source of a link or breaks a link using the <c>Links</c> dialog box. If you use the OleUIEditLinks
+			/// function to display the <c>Links</c> dialog box, you must implement the IOleUILinkContainer interface. The dialog box calls
+			/// your implementations of IOleUILinkContainer::SetLinkSource and IOleUILinkContainer::CancelLink; your implementation of these
+			/// methods can call <c>IOleLink::SetSourceMoniker</c>.
+			/// </para>
+			/// <para>
+			/// If the linked object is currently bound to its link source, the linked object's implementation of
+			/// <c>IOleLink::SetSourceMoniker</c> closes the link before changing the moniker.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The IOleLink contract does not specify how the linked object stores or uses the link source moniker. The provided
+			/// implementation stores the absolute moniker specified when the link is created or when the moniker is changed; it then
+			/// computes and stores a relative moniker. Future implementations might manage monikers differently to provide better moniker
+			/// tracking. The absolute moniker provides the complete path to the link source. The linked object uses this absolute moniker
+			/// and the moniker of the compound document to compute a relative moniker that identifies the link source relative to the
+			/// compound document that contains the link.
+			/// </para>
+			/// <para>pmkCompoundDoc-&gt;RelativePathTo(pmkAbsolute, ppmkRelative)</para>
+			/// <para>
+			/// When binding to the link source, the linked object first tries to bind using the relative moniker. If that fails, it tries to
+			/// bind the absolute moniker.
+			/// </para>
+			/// <para>
+			/// When the linked object successfully binds using either the relative or the absolute moniker, it automatically updates the
+			/// other moniker. The linked object also updates both monikers when it is bound to the link source and it receives a rename
+			/// notification through the IAdviseSink::OnRename method. A container application can also use the
+			/// IOleLink::SetSourceDisplayName method to change a link's moniker.
+			/// </para>
+			/// <para>The linked object's implementation of IPersistStorage::Save saves both the relative and the absolute moniker.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-setsourcemoniker HRESULT SetSourceMoniker( [in]
+			// IMoniker *pmk, [in] REFCLSID rclsid );
+			[PreserveSig]
+			HRESULT SetSourceMoniker([In, Optional] IMoniker pmk, in Guid rclsid);
+
+			/// <summary>Retrieves the moniker identifying the link source of a linked object.</summary>
+			/// <param name="ppmk">
+			/// Address of an IMoniker pointer variable that receives the interface pointer to an absolute moniker that identifies the link
+			/// source. When successful, the implementation must call AddRef on <c>ppmk</c>; it is the caller's responsibility to call
+			/// Release. If an error occurs the implementation must set <c>ppmk</c> to <c>NULL</c>.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>MK_E_UNAVAILABLE</c></term>
+			/// <term>No moniker is available.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Your container application can call <c>IOleLink::GetSourceMoniker</c> to display the current source of a link in the
+			/// <c>Links</c> dialog box. Note that this requires your container to use the IMoniker::GetDisplayName method to get the display
+			/// name of the moniker. If you would rather get the display name directly, your container can call
+			/// IOleLink::GetSourceDisplayName instead of <c>IOleLink::GetSourceMoniker</c>.
+			/// </para>
+			/// <para>
+			/// If you use the OleUIEditLinks function to display the <c>Links</c> dialog box, you must implement the IOleUILinkContainer
+			/// interface. The dialog box calls your implementations of IOleUILinkContainer::GetLinkSource to get the string it should
+			/// display. Your implementation of that method can call <c>IOleLink::GetSourceMoniker</c>.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The linked object stores both an absolute and a relative moniker for the link source. If the relative moniker is non-
+			/// <c>NULL</c> and a moniker is available for the compound document, <c>IOleLink::GetSourceMoniker</c> returns the moniker
+			/// created by composing the relative moniker onto the end of the compound document's moniker. Otherwise, it returns the absolute
+			/// moniker or, if an error occurs, <c>NULL</c>.
+			/// </para>
+			/// <para>
+			/// The container specifies the absolute moniker when it calls one of the OleCreateLink functions to create a link. The
+			/// application can call <c>IOleLink::GetSourceMoniker</c> or IOleLink::GetSourceDisplayName to change the absolute moniker. In
+			/// addition, the linked object automatically updates the monikers whenever it successfully binds to the link source, or when it
+			/// is bound to the link source and it receives a rename notification through the IAdviseSink::OnRename method.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-getsourcemoniker HRESULT GetSourceMoniker( [out]
+			// IMoniker **ppmk );
+			[PreserveSig]
+			HRESULT GetSourceMoniker(out IMoniker ppmk);
+
+			/// <summary>Sets the display name for the link source.</summary>
+			/// <param name="pszStatusText">A pointer to the display name of the new link source. This parameter cannot be <c>NULL</c>.</param>
+			/// <returns>
+			/// <para>This method returns S_OK on success.</para>
+			/// <para>Values from MkParseDisplayName may also be returned here.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Your container application can call <c>IOleLink::SetSourceDisplayName</c> when the end user changes the source of a link or
+			/// breaks a link. Note that this requires the linked object to create a moniker out of the display name. If you'd rather parse
+			/// the display name into a moniker yourself, your container can call IOleLink::SetSourceMoniker instead of <c>IOleLink::SetSourceDisplayName</c>.
+			/// </para>
+			/// <para>
+			/// If you use the OleUIEditLinks function to display the <c>Links</c> dialog box, you must implement the IOleUILinkContainer
+			/// interface. The dialog box calls your implementations of IOleUILinkContainer::SetLinkSource and
+			/// IOleUILinkContainer::CancelLink. Your implementation of these methods can call <c>IOleLink::SetSourceDisplayName</c>.
+			/// </para>
+			/// <para>
+			/// If your container application is immediately going to bind to a newly specified link source, you should call
+			/// MkParseDisplayName and IOleLink::SetSourceMoniker instead, and then call IOleLink::BindToSource using the bind context from
+			/// the parsing operation. By reusing the bind context, you can avoid redundant loading of objects that might otherwise occur.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The contract for <c>IOleLink::SetSourceDisplayName</c> does not specify when the linked object will parse the display name
+			/// into a moniker. The parsing can occur before <c>IOleLink::SetSourceDisplayName</c> returns, or the linked object can store
+			/// the display name and parse it only when it needs to bind to the link source. Note that parsing the display name is
+			/// potentially an expensive operation because it might require binding to the link source. The provided implementation of
+			/// <c>IOleLink::SetSourceDisplayName</c> parses the display name and then releases the bind context used in the parse operation.
+			/// This can result in running and then stopping the link source server.
+			/// </para>
+			/// <para>
+			/// If the linked object is bound to the current link source, the implementation of <c>IOleLink::SetSourceDisplayName</c> breaks
+			/// the connection.
+			/// </para>
+			/// <para>For more information on how the linked object stores and uses the moniker to the link source, see IOleLink::SetSourceMoniker.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-setsourcedisplayname HRESULT
+			// SetSourceDisplayName( [in] LPCOLESTR pszStatusText );
+			[PreserveSig]
+			HRESULT SetSourceDisplayName([MarshalAs(UnmanagedType.LPWStr)] string pszStatusText);
+
+			/// <summary>Retrieves the display name of the link source of the linked object.</summary>
+			/// <param name="ppszDisplayName">
+			/// Address of a pointer variable that receives a pointer to the display name of the link source. If an error occurs,
+			/// <c>ppszDisplayName</c> is set to <c>NULL</c>; otherwise, the implementation must use IMalloc::Alloc to allocate the string
+			/// returned in <c>ppszDisplayName</c>, and the caller is responsible for calling IMalloc::Free to free it. Both caller and
+			/// called use the allocator returned by CoGetMalloc.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>E_FAIL</c></term>
+			/// <term>The operation failed.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// Retrieving the display name requires calling these functions; therefore, this method may return errors generated by
+			/// CreateBindCtx and IMoniker::GetDisplayName.
+			/// </para>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>Your container application can call <c>IOleLink::GetSourceDisplayName</c> to display the current source of a link.</para>
+			/// <para>
+			/// The current source of a link is displayed in the <c>Links</c> dialog box. If you use the OleUIEditLinks function to display
+			/// the <c>Links</c> dialog box, you must implement the IOleUILinkContainer interface. The dialog box calls your implementations
+			/// of IOleUILinkContainer::GetLinkSource to get the string it should display. Your implementation of that method can call <c>IOleLink::GetSourceDisplayName</c>.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The linked object's implementation of <c>IOleLink::GetSourceDisplayName</c> calls IOleLink::GetSourceMoniker to get the link
+			/// source moniker, and then calls IMoniker::GetDisplayName to get that moniker's display name. This operation is potentially
+			/// expensive because it might require binding the moniker. All of the system-provided monikers can return a display name without
+			/// binding, but there is no guarantee that other moniker implementations can. Instead of making repeated calls to
+			/// <c>IOleLink::GetSourceDisplayName</c>, your container application can cache the name and update it whenever the link source
+			/// is bound.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-getsourcedisplayname HRESULT
+			// GetSourceDisplayName( [out] LPOLESTR *ppszDisplayName );
+			[PreserveSig]
+			HRESULT GetSourceDisplayName(out IntPtr ppszDisplayName);
+
+			/// <summary>Activates the connection to the link source by binding the moniker stored within the linked object.</summary>
+			/// <param name="bindflags">
+			/// Specifies how to proceed if the link source has a different CLSID from the last time it was bound. If this parameter is zero
+			/// and the CLSIDs are different, the method fails and returns OLE_E_CLASSDIFF. If the OLELINKBIND_EVENIFCLASSDIFF value from the
+			/// OLELINKBIND enumeration is specified and the CLSIDs are different, the method binds successfully and updates the CLSID stored
+			/// in the linked object.
+			/// </param>
+			/// <param name="pbc">
+			/// A pointer to the IBindCtx interface on the bind context to be used in this binding operation. This parameter can be
+			/// <c>NULL</c>. The bind context caches objects bound during the binding process, contains parameters that apply to all
+			/// operations using the bind context, and provides the means by which the binding implementation should retrieve information
+			/// about its environment. For more information, see <c>IBindCtx</c>.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>OLE_E_CLASSDIFF</c></term>
+			/// <term>
+			/// The link source was not bound because its CLSID has changed. This error is returned only if the OLELINKBIND_EVENIFCLASSDIFF
+			/// flag is not specified in the <c>bindflags</c> parameter.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>MK_E_NOOBJECT</c></term>
+			/// <term>
+			/// The link source could not be found or (if the link source's moniker is a composite) some intermediate object identified in
+			/// the composite could not be found.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_UNSPEC</c></term>
+			/// <term>The link's moniker is <c>NULL</c>.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// Binding the moniker might require calling the CreateBindCtx function; therefore, this method may return errors generated by <c>CreateBindCtx</c>.
+			/// </para>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Typically, your container application does not need to call the <c>IOleLink::BindToSource</c> method directly. When it's
+			/// necessary to activate the connection to the link source, your container typically calls IOleObject::DoVerb,
+			/// IOleObject::Update, or IOleLink::Update. The linked object's implementation of these methods calls
+			/// <c>IOleLink::BindToSource</c>. Your container can also call the OleRun function, which calls <c>IOleLink::BindToSource</c>
+			/// when called on a linked object.
+			/// </para>
+			/// <para>
+			/// In each of the examples listed previously, in which <c>IOleLink::BindToSource</c> is called indirectly, the bindflags
+			/// parameter is set to zero. Consequently, these calls can fail with the OLE_E_CLASSDIFF error if the class of the link source
+			/// is different from what it was the last time the linked object was bound. This could happen, for example, if the original link
+			/// source was an embedded Lotus spreadsheet that an end user had subsequently converted (using the Change Type dialog box) to an
+			/// Excel spreadsheet.
+			/// </para>
+			/// <para>
+			/// If you want your container to bind even though the link source now has a different CLSID, you can call
+			/// <c>IOleLink::BindToSource</c> directly and specify OLELINKBIND_EVENIFCLASSDIFF for the bindflags parameter. This call binds
+			/// to the link source and updates the link object's CLSID. Alternatively, your container can delete the existing link and use
+			/// the OleCreateLink function to create a new linked object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>The linked object caches the interface pointer to the link source acquired during binding.</para>
+			/// <para>
+			/// The linked object's <c>IOleLink::BindToSource</c> implementation first tries to bind using a moniker consisting of the
+			/// compound document's moniker composed with the link source's relative moniker. If successful, it updates the link's absolute
+			/// moniker. Otherwise, it tries to bind using the absolute moniker, updating the relative moniker if successful.
+			/// </para>
+			/// <para>
+			/// If <c>IOleLink::BindToSource</c> binds to the link source, it calls the compound document's IOleContainer::LockContainer
+			/// implementation to keep the containing compound document alive while the link source is running. <c>IOleLink::BindToSource</c>
+			/// also calls the IOleObject::Advise and IDataObject::DAdvise implementations of the link source to set up advisory connections.
+			/// The IOleLink::UnbindSource implementation unlocks the container and deletes the advisory connections.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-bindtosource HRESULT BindToSource( [in] DWORD
+			// bindflags, [in] IBindCtx *pbc );
+			[PreserveSig]
+			HRESULT BindToSource(OLELINKBIND bindflags, [In, Optional] IBindCtx pbc);
+
+			/// <summary>Activates the connection between the linked object and the link source if the link source is already running.</summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>S_FALSE</c></term>
+			/// <term>The link source is not running.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// Binding the moniker might require calling CreateBindCtx, IMoniker::IsRunning, or IOleLink::BindToSource; therefore, errors
+			/// generated by these functions can also be returned.
+			/// </para>
+			/// </returns>
+			/// <remarks>
+			/// <para>You typically do not need to call <c>IOleLink::BindIfRunning</c>. This method is primarily called by the linked object.</para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The linked object's implementation of <c>IOleLink::BindIfRunning</c> checks the running object table (ROT) to determine
+			/// whether the link source is already running. It checks both the relative and absolute monikers. If the link source is running,
+			/// <c>IOleLink::BindIfRunning</c> calls IOleLink::BindToSource to connect the linked object to the link source.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-bindifrunning HRESULT BindIfRunning();
+			[PreserveSig]
+			HRESULT BindIfRunning();
+
+			/// <summary>Retrieves a pointer to the link source if the connection is active.</summary>
+			/// <param name="ppunk">
+			/// Address of IDataObject pointer variable that receives the interface pointer to the link source. When successful, the
+			/// implementation must call IUnknown::AddRef on <c>ppunk</c>; it is the caller's responsibility to call IUnknown::Release. If an
+			/// error occurs, the implementation sets <c>ppunk</c> to <c>NULL</c>.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>E_FAIL</c></term>
+			/// <term>The operation failed.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>You typically do not need to call <c>IOleLink::GetBoundSource</c>.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-getboundsource HRESULT GetBoundSource( [out]
+			// IUnknown **ppunk );
+			[PreserveSig]
+			HRESULT GetBoundSource(out IDataObject ppunk);
+
+			/// <summary>Breaks the connection between a linked object and its link source.</summary>
+			/// <returns>This method returns S_OK on success.</returns>
+			/// <remarks>
+			/// <para>
+			/// You typically do not call <c>UnbindSource</c> directly. When it's necessary to deactivate the connection to the link source,
+			/// your container typically calls IOleObject::Close or IUnknown::Release; the linked object's implementation of these methods
+			/// calls <c>UnbindSource</c>. The linked object's IAdviseSink::OnClose implementation also calls <c>UnbindSource</c>.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The linked object's implementation of <c>UnbindSource</c> does nothing if the link source is not currently bound. If the link
+			/// source is bound, <c>UnbindSource</c> calls the link source's IOleObject::Unadvise and IDataObject::DUnadvise implementations
+			/// to delete the advisory connections to the link source. The <c>UnbindSource</c> method also calls the compound document's
+			/// IOleContainer::LockContainer implementation to unlock the containing compound document. This undoes the lock on the container
+			/// and the advisory connections that were established in IOleLink::BindToSource. <c>UnbindSource</c> releases all the linked
+			/// object's interface pointers to the link source.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-unbindsource HRESULT UnbindSource();
+			[PreserveSig]
+			HRESULT UnbindSource();
+
+			/// <summary>
+			/// Updates the compound document's cached data for a linked object. This involves binding to the link source, if it is not
+			/// already bound.
+			/// </summary>
+			/// <param name="pbc">
+			/// A pointer to the IBindCtx interface on the bind context to be used in binding the link source. This parameter can be
+			/// <c>NULL</c>. The bind context caches objects bound during the binding process, contains parameters that apply to all
+			/// operations using the bind context, and provides the means by which the binding implementation should retrieve information
+			/// about its environment. For more information, see <c>IBindCtx</c>.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible return values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>CACHE_E_NOCACHE_UPDATE</c></term>
+			/// <term>The bind operation worked but no caches were updated.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>CACHE_S_SOMECACHES_NOTUPDATED</c></term>
+			/// <term>The bind operation worked but not all caches were updated.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_E_CANT_BINDTOSOURCE</c></term>
+			/// <term>Unable to bind to the link source.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>Notes to Callers</para>
+			/// <para>Your container application should call <c>Update</c> if the end user updates the cached data for a linked object.</para>
+			/// <para>
+			/// The end user can update the cached data for a linked object by choosing the <c>Update Now</c> button in the <c>Links</c>
+			/// dialog box. If you use the OleUIEditLinks function to display the <c>Links</c> dialog box, you must implement the
+			/// IOleUILinkContainer interface. The dialog box calls your implementations of IOleUILinkContainer::UpdateLink when the end user
+			/// chooses the <c>Update Now</c> button. Your implementation of that method can call <c>Update</c>.
+			/// </para>
+			/// <para>
+			/// Your container application can also call <c>Update</c> to update a linked object, because that method calls <c>Update</c>
+			/// when it is called on a linked object.
+			/// </para>
+			/// <para>
+			/// This method updates both automatic links and manual links. For manual links, calling <c>Update</c> or <c>Update</c> is the
+			/// only way to update the caches. For more information on automatic and manual links, see IOleLink::SetUpdateOptions.
+			/// </para>
+			/// <para>Notes on Implementation</para>
+			/// <para>
+			/// If <c>pbc</c> is non- <c>NULL</c>, the linked object's implementation of <c>Update</c> calls IBindCtx::RegisterObjectBound to
+			/// register the bound link source. This ensures that the link source remains running until the bind context is released.
+			/// </para>
+			/// <para>The current caches are left intact if the link source cannot be bound.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iolelink-update HRESULT Update( [in] IBindCtx *pbc );
+			[PreserveSig]
+			HRESULT Update([In, Optional] IBindCtx pbc);
 		}
 
 		/// <summary>
