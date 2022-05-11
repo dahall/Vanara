@@ -2558,6 +2558,7 @@ namespace Vanara.PInvoke
 			/// In Windows XP and later: The pwcsTemplateFile member is only valid if version 2 or later is specified in the usVersion member.
 			/// </para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pwcsTemplateFile;
 		}
 
@@ -2618,6 +2619,7 @@ namespace Vanara.PInvoke
 			public uint dwReserved1;
 
 			/// <summary>The name of the computer.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pwszName;
 
 			/// <summary>
