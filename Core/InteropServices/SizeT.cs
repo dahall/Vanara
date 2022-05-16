@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 
@@ -8,6 +9,7 @@ namespace Vanara.PInvoke
 	/// <summary>Managed instance of the SIZE_T type.</summary>
 	[StructLayout(LayoutKind.Sequential), Serializable]
 	[TypeConverter(typeof(SizeTTypeConverter))]
+	[DebuggerDisplay("{Value}")]
 	public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComparable
 	{
 		/// <summary>Represents the smallest possible value of <see cref="SizeT"/>. This field is constant.</summary>
@@ -43,7 +45,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="SizeT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SizeT(uint value) => new SizeT(value);
+		public static implicit operator SizeT(uint value) => new(value);
 
 		/// <summary>Performs an implicit conversion from <see cref="System.Int64"/> to <see cref="SizeT"/>.</summary>
 		/// <param name="value">The value.</param>
@@ -53,7 +55,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="System.UInt64"/> to <see cref="SizeT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SizeT(ulong value) => new SizeT(value);
+		public static implicit operator SizeT(ulong value) => new(value);
 
 		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.Int32"/>.</summary>
 		/// <param name="value">The value.</param>
@@ -89,7 +91,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <see langword="true"/> if the value of <paramref name="s1"/> is less than the value of <paramref name="s2"/>; otherwise, <see langword="false"/>.
 		/// </returns>
-		public static bool operator <(SizeT s1, SizeT s2) => (s1.CompareTo(s2) < 0) ? true : false;
+		public static bool operator <(SizeT s1, SizeT s2) => s1.CompareTo(s2) < 0;
 
 		/// <summary>Indicates whether a specified <see cref="SizeT"/> is less than or equal to another specified <see cref="SizeT"/>.</summary>
 		/// <param name="s1">The first integral size to compare.</param>
@@ -98,7 +100,7 @@ namespace Vanara.PInvoke
 		/// <see langword="true"/> if the value of <paramref name="s1"/> is less than or equal to the value of <paramref name="s2"/>;
 		/// otherwise, <see langword="false"/>.
 		/// </returns>
-		public static bool operator <=(SizeT s1, SizeT s2) => (s1.CompareTo(s2) <= 0) ? true : false;
+		public static bool operator <=(SizeT s1, SizeT s2) => s1.CompareTo(s2) <= 0;
 
 		/// <summary>Indicates whether two <see cref="SizeT"/> instances are equal.</summary>
 		/// <param name="s1">The first integral size to compare.</param>
@@ -114,7 +116,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <see langword="true"/> if the value of <paramref name="s1"/> is greater than the value of <paramref name="s2"/>; otherwise, <see langword="false"/>.
 		/// </returns>
-		public static bool operator >(SizeT s1, SizeT s2) => (s1.CompareTo(s2) > 0) ? true : false;
+		public static bool operator >(SizeT s1, SizeT s2) => s1.CompareTo(s2) > 0;
 
 		/// <summary>Indicates whether a specified <see cref="SizeT"/> is greater than or equal to another specified <see cref="SizeT"/>.</summary>
 		/// <param name="s1">The first integral size to compare.</param>
@@ -123,7 +125,47 @@ namespace Vanara.PInvoke
 		/// <see langword="true"/> if the value of <paramref name="s1"/> is greater than or equal to the value of <paramref name="s2"/>;
 		/// otherwise, <see langword="false"/>.
 		/// </returns>
-		public static bool operator >=(SizeT s1, SizeT s2) => (s1.CompareTo(s2) >= 0) ? true : false;
+		public static bool operator >=(SizeT s1, SizeT s2) => s1.CompareTo(s2) >= 0;
+
+		/// <summary>Adds two specified <see cref="SizeT"/> values.</summary>
+		/// <param name="s1">The first value to add.</param>
+		/// <param name="s2">The second value to add.</param>
+		/// <returns>The result of adding <paramref name="s1"/> and <paramref name="s2"/>.</returns>
+		public static SizeT operator +(SizeT s1, SizeT s2) => s1.Value + s2.Value;
+
+		/// <summary>Divides two specified <see cref="SizeT"/> values.</summary>
+		/// <param name="s1">The divident.</param>
+		/// <param name="s2">The divisor.</param>
+		/// <returns>The result of dividing <paramref name="s1"/> by <paramref name="s2"/>.</returns>
+		public static SizeT operator /(SizeT s1, SizeT s2) => s1.Value / s2.Value;
+
+		/// <summary>Returns the remainder resulting from dividing two specified <see cref="SizeT"/> values.</summary>
+		/// <param name="s1">The divident.</param>
+		/// <param name="s2">The divisor.</param>
+		/// <returns>The remainder resulting from dividing <paramref name="s1"/> by <paramref name="s2"/>.</returns>
+		public static SizeT operator %(SizeT s1, SizeT s2) => s1.Value % s2.Value;
+
+		/// <summary>Multiplies two specified <see cref="SizeT"/> values.</summary>
+		/// <param name="s1">The first value to multiply.</param>
+		/// <param name="s2">The second value to multiply.</param>
+		/// <returns>The result of multiplying <paramref name="s1"/> by <paramref name="s2"/>.</returns>
+		public static SizeT operator *(SizeT s1, SizeT s2) => s1.Value * s2.Value;
+
+		/// <summary>Subtracts two specified <see cref="SizeT"/> values.</summary>
+		/// <param name="s1">The minuend.</param>
+		/// <param name="s2">The subtrahend.</param>
+		/// <returns>The result of subtracting <paramref name="s2"/> from <paramref name="s1"/>.</returns>
+		public static SizeT operator -(SizeT s1, SizeT s2) => s1.Value - s2.Value;
+
+		/// <summary>Increments the <see cref="SizeT"/> by 1.</summary>
+		/// <param name="s1">The value to increment.</param>
+		/// <returns>The value of <paramref name="s1"/> incremented by 1.</returns>
+		public static SizeT operator ++(SizeT s1) => s1.Value += 1;
+
+		/// <summary>Decrements the <see cref="SizeT"/> by 1.</summary>
+		/// <param name="s1">The value to decrement.</param>
+		/// <returns>The value of <paramref name="s1"/> decremented by 1.</returns>
+		public static SizeT operator --(SizeT s1) => s1.Value += 1;
 
 		/// <inheritdoc/>
 		public int CompareTo(SizeT other) => Value.CompareTo(other.Value);
@@ -158,7 +200,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < (ulong)byte.MaxValue)
 				return (byte)ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return byte.MaxValue;
 			throw new OverflowException();
 		}
@@ -175,7 +217,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < decimal.MaxValue)
 				return (decimal)ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return decimal.MaxValue;
 			throw new OverflowException();
 		}
@@ -186,7 +228,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < double.MaxValue)
 				return ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return double.MaxValue;
 			throw new OverflowException();
 		}
@@ -197,7 +239,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < (ulong)short.MaxValue)
 				return (short)ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return short.MaxValue;
 			throw new OverflowException();
 		}
@@ -208,7 +250,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < int.MaxValue)
 				return (int)ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return int.MaxValue;
 			throw new OverflowException();
 		}
@@ -219,7 +261,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < long.MaxValue)
 				return (long)ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return long.MaxValue;
 			throw new OverflowException();
 		}
@@ -230,7 +272,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < (ulong)sbyte.MaxValue)
 				return (sbyte)ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return sbyte.MaxValue;
 			throw new OverflowException();
 		}
@@ -241,7 +283,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < float.MaxValue)
 				return ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return float.MaxValue;
 			throw new OverflowException();
 		}
@@ -255,7 +297,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < (ulong)ushort.MaxValue)
 				return (ushort)ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return ushort.MaxValue;
 			throw new OverflowException();
 		}
@@ -266,7 +308,7 @@ namespace Vanara.PInvoke
 			var ul = Value;
 			if (ul < uint.MaxValue)
 				return (uint)ul;
-			if (ul == uint.MaxValue || ul == ulong.MaxValue)
+			if (ul is uint.MaxValue or ulong.MaxValue)
 				return uint.MaxValue;
 			throw new OverflowException();
 		}
@@ -278,7 +320,7 @@ namespace Vanara.PInvoke
 		{
 			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 			{
-				if (!(value is SizeT sz)) throw new ArgumentException();
+				if (value is not SizeT sz) throw new ArgumentException();
 				return base.ConvertTo(context, culture, sz.Value, destinationType);
 			}
 
