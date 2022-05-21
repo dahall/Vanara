@@ -79,7 +79,7 @@ namespace Vanara.IO
 		/// BackgroundCopyManager.CopyAsync(src, dest, cts.Token, prog);
 		/// </code>
 		/// </example>
-		public static async Task CopyAsync(string sourceFileName, string destFileName, CancellationToken cancellationToken, IProgress<Tuple<BackgroundCopyJobState, byte>> progress)
+		public static async Task CopyAsync(string sourceFileName, string destFileName, [Optional] CancellationToken cancellationToken, [Optional] IProgress<Tuple<BackgroundCopyJobState, byte>> progress)
 		{
 #if NET40
 			await TaskEx.Run(() => CopyTemplate(destFileName, cancellationToken, (s, p) => progress?.Report(new Tuple<BackgroundCopyJobState, byte>(s,p)), f => f.Add(sourceFileName, destFileName)), cancellationToken);
@@ -93,7 +93,7 @@ namespace Vanara.IO
 		{
 			try
 			{
-				IMgr.CreateJob(displayName, jobType, out var newJobID, out var newJob);
+				IMgr.CreateJob(displayName, jobType, out Guid newJobID, out IBackgroundCopyJob newJob);
 				return newJob;
 			}
 			catch (COMException cex)
@@ -143,17 +143,15 @@ namespace Vanara.IO
 			return wp.IsInRole(WindowsBuiltInRole.Administrator);
 		}
 
-
 		private static void CopyTemplate(string destFileName, CancellationToken ct, Action<BackgroundCopyJobState, byte> report, Action<BackgroundCopyFileCollection> add)
 		{
-			var type = (Uri.TryCreate(destFileName, UriKind.Absolute, out var uri) && !uri.IsFile) ? BackgroundCopyJobType.Upload : BackgroundCopyJobType.Download;
+			BackgroundCopyJobType type = (Uri.TryCreate(destFileName, UriKind.Absolute, out Uri uri) && !uri.IsFile) ? BackgroundCopyJobType.Upload : BackgroundCopyJobType.Download;
 
-			using var mainJob = Jobs.Add("Temp" + Guid.NewGuid().ToString(), string.Empty, type);
+			using BackgroundCopyJob mainJob = Jobs.Add("Temp" + Guid.NewGuid().ToString(), string.Empty, type);
 
 			using var manualReset = new ManualResetEventSlim(false);
 
 			BackgroundCopyException err = null;
-
 
 			// Set event handlers for job, these are weak references.
 			mainJob.Completed += OnCompleted;
@@ -167,7 +165,6 @@ namespace Vanara.IO
 
 			manualReset.Wait(ct);
 
-
 			var raiseException = false;
 
 			if (ct.IsCancellationRequested)
@@ -176,13 +173,11 @@ namespace Vanara.IO
 				raiseException = true;
 			}
 
-
 			// Remove weak references to prevent memory leak.
 			mainJob.FileRangesTransferred -= OnFileRangesTransferred;
 			mainJob.FileTransferred -= OnFileTransferred;
 			mainJob.Completed -= OnCompleted;
 			mainJob.Error -= OnError;
-
 
 			if (raiseException)
 				throw new OperationCanceledException();
@@ -190,11 +185,7 @@ namespace Vanara.IO
 			if (null != err)
 				throw err;
 
-
-
-
 			// Better performance when event methods are defined seperately, preferably static.
-
 
 			void OnCompleted(object s, BackgroundCopyJobEventArgs e)
 			{
@@ -208,7 +199,6 @@ namespace Vanara.IO
 				}
 			}
 
-
 			void OnError(object s, BackgroundCopyJobEventArgs e)
 			{
 				if (s is BackgroundCopyJob job)
@@ -221,13 +211,11 @@ namespace Vanara.IO
 				}
 			}
 
-
 			void OnFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
 			{
 				if (s is BackgroundCopyJob job)
 					ReportProgress(job, job.State);
 			}
-
 
 			void OnFileRangesTransferred(object s, BackgroundCopyFileRangesTransferredEventArgs e)
 			{
@@ -235,11 +223,7 @@ namespace Vanara.IO
 					ReportProgress(job, job.State);
 			}
 
-
-			void ReportProgress(BackgroundCopyJob job, BackgroundCopyJobState state)
-			{
-				report?.Invoke(state, job.Progress.PercentComplete);
-			}
+			void ReportProgress(BackgroundCopyJob job, BackgroundCopyJobState state) => report?.Invoke(state, job.Progress.PercentComplete);
 		}
 	}
 }
