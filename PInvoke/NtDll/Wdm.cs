@@ -90,7 +90,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("wdm.h", MSDNShortId = "deeac910-2cc3-4a54-bf3b-aeb56d0004dc")]
 		public static extern void DbgBreakPoint();
 
-
 		/// <summary>
 		/// <para>The <c>DbgPrint</c> routine sends a message to the kernel debugger. </para>
 		/// <para>
@@ -148,7 +147,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("wdm.h", MSDNShortId = "nf-wdm-dbgprint")]
 		public static extern NTStatus DbgPrint([MarshalAs(UnmanagedType.LPTStr)] string Format, IntPtr arguments);
 
-		
 		/// <summary>
 		/// <para>The <c>DbgPrintEx</c> routine sends a string to the kernel debugger if the conditions you specify are met. </para>
 		/// </summary>
@@ -207,7 +205,6 @@ namespace Vanara.PInvoke
 		// DbgPrintEx([in] ULONG ComponentId, [in] ULONG Level,[in] PCSTR Format,...);
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wdm.h", MSDNShortId = "nf-wdm-dbgprintex")]
-
 		public static extern NTStatus DbgPrintEx(uint ComponentId, uint Level, [MarshalAs(UnmanagedType.LPTStr)] string Format, IntPtr arguments);
 
 		/// <summary>
