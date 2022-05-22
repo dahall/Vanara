@@ -90,6 +90,64 @@ namespace Vanara.PInvoke
 		[PInvokeData("wdm.h", MSDNShortId = "deeac910-2cc3-4a54-bf3b-aeb56d0004dc")]
 		public static extern void DbgBreakPoint();
 
+
+		/// <summary>
+		/// <para>The <c>DbgPrint</c> routine sends a message to the kernel debugger. </para>
+		/// <para>
+		/// In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only when the conditions that you specify
+		/// apply (see the <a href="#remarks">Remarks</a> section for information).
+		/// </para>
+		/// </summary>
+		/// <param name="Format">
+		/// <para>
+		/// Specifies a pointer to the format string to print. The Format string supports most of the printf-style format specification fields.
+		/// However, the Unicode format codes (%C, %S, %lc, %ls, %wc, %ws, and %wZ) can only be used with IRQL = PASSIVE_LEVEL.
+		/// The DbgPrint routine does not support any of the floating point types (%f, %e, %E, %g, %G, %a, or %A).
+		/// </para>
+		/// </param>
+		/// <param name="arguments">
+		/// <para>Specifies arguments for the format string, as in <c>printf</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If successful, <c>DbgPrint</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise it returns the appropriate error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes (%wc and %ws) can be used only
+		/// at IRQL=PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with other processors,
+		/// calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.
+		/// </para>
+		/// <para> Only kernel-mode drivers can call the <c>DbgPrint</c> routine. </para>
+		/// <para>
+		/// In Microsoft Windows Server 2003 and earlier versions of Windows, the <c>DbgPrint</c> routine sends a message to the kernel debugger.
+		/// In Windows Vista and later versions of Windows, <c>DbgPrint</c> sends a message only if certain conditions apply.
+		/// Specifically, it behaves like the DbgPrintEx routine with the DEFAULT component and a message importance level of DPFLTR_INFO_LEVEL.
+		/// <code>
+		/// DbgPrint ( Format, arguments ),
+		/// DbgPrintEx ( DPFLTR_DEFAULT_ID, DPFLTR_INFO_LEVEL, Format, arguments )
+		/// </code>
+		/// </para>
+		/// <para> For more information about message filtering, components, and message importance level, see Reading and Filtering Debugging Messages. </para>
+		/// <para>
+		/// Regardless of which version of Windows you are using, it is recommended that you use <c>DbgPrintEx</c> instead of <c>DbgPrint</c>,
+		/// since this allows you to control the conditions under which the message is sent.
+		/// </para>
+		/// <para>
+		/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to <c>DbgPrint</c>.
+		/// If you do use a string that you did not create, you must verify that this is a valid format string, and that the format codes
+		/// match the argument list in type and quantity. The best coding practice is for all Format strings to be static and defined at compile time.
+		/// </para>
+		/// <para>
+		/// There is no upper limit to the size of the Format string or the number of arguments. However, any single call to <c>DbgPrint</c>
+		/// will only transmit 512 bytes of information. There is also a limit to the size of the <c>DbgPrint</c> buffer.
+		/// See DbgPrint Buffer and the Debugger for details.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprint ULONG DbgPrint([in] PCSTR Format,...);
+		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wdm.h", MSDNShortId = "475e8ab8-c62a-91f3-831a-f0cfc46315a5")]
+		public static extern NTStatus DbgPrint([MarshalAs(UnmanagedType.LPTStr)] string Format, IntPtr arguments);
+
 		/// <summary>
 		/// <para>
 		/// The <c>ZwCommitComplete</c> routine notifies KTM that the calling resource manager has finished committing a transaction's data.
