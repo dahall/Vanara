@@ -206,11 +206,8 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprintex NTSYSAPI ULONG
 		// DbgPrintEx([in] ULONG ComponentId, [in] ULONG Level,[in] PCSTR Format,...);
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-<<<<<<< HEAD
-		[PInvokeData("wdm.h", MSDNShortId = "b0b0a9f8-fb06-9c46-2a2a-4691ef225e81")]
-=======
 		[PInvokeData("wdm.h", MSDNShortId = "nf-wdm-dbgprintex")]
->>>>>>> c7c2020e (Adding DbgPrintEx Function to NtDll.Wdm.cs)
+
 		public static extern NTStatus DbgPrintEx(uint ComponentId, uint Level, [MarshalAs(UnmanagedType.LPTStr)] string Format, IntPtr arguments);
 
 		/// <summary>
