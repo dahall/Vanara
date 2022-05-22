@@ -102,7 +102,7 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Specifies a pointer to the format string to print. The Format string supports most of the printf-style format specification fields.
 		/// However, the Unicode format codes (%C, %S, %lc, %ls, %wc, %ws, and %wZ) can only be used with IRQL = PASSIVE_LEVEL.
-		/// The DbgPrint routine does not support any of the floating point types (%f, %e, %E, %g, %G, %a, or %A).
+		/// The <c>DbgPrint</c> routine does not support any of the floating point types (%f, %e, %E, %g, %G, %a, or %A).
 		/// </para>
 		/// </param>
 		/// <param name="arguments">
@@ -147,6 +147,67 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wdm.h", MSDNShortId = "475e8ab8-c62a-91f3-831a-f0cfc46315a5")]
 		public static extern NTStatus DbgPrint([MarshalAs(UnmanagedType.LPTStr)] string Format, IntPtr arguments);
+
+		
+		/// <summary>
+		/// <para>The <c>DbgPrintEx</c> routine sends a string to the kernel debugger if the conditions you specify are met. </para>
+		/// </summary>
+		/// <param name="ComponentId">
+		/// <para>Specifies the component calling this routine. This must be one of the component name filter IDs defined in the Dpfilter.h header file.
+		/// To avoid mixing your driver's output with the output of Windows components, you should use only the following values for <i>ComponentId</i>:</para>
+		/// <ul><li>DPFLTR_IHVVIDEO_ID</li>
+		/// <li>DPFLTR_IHVAUDIO_ID</li>
+		/// <li>DPFLTR_IHVNETWORK_ID</li>
+		/// <li>DPFLTR_IHVSTREAMING_ID</li>
+		/// <li>DPFLTR_IHVBUS_ID</li>
+		/// <li>DPFLTR_IHVDRIVER_ID</li></ul>
+		/// </param>
+		/// <param name="Level">
+		/// <para>Specifies the severity of the message being sent. This can be any 32-bit integer. Values between 0 and 31 (inclusive)
+		/// are treated differently than values between 32 and 0xFFFFFFFF.
+		/// For details, see Reading and Filtering Debugging Messages.</para>
+		/// </param>
+		/// <param name="Format">
+		/// <para>
+		/// Specifies a pointer to the format string to print. The Format string supports most of the printf-style format specification fields.
+		/// However, the Unicode format codes (%C, %S, %lc, %ls, %wc, %ws, and %wZ) can only be used with IRQL = PASSIVE_LEVEL.
+		/// The <c>DbgPrintEx</c> routine does not support any of the floating point types (%f, %e, %E, %g, %G, %a, or %A).
+		/// </para>
+		/// </param>
+		/// <param name="arguments">
+		/// <para>Specifies arguments for the format string, as in <c>printf</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If successful, <c>DbgPrintEx</c> returns the NTSTATUS code STATUS_SUCCESS; otherwise it returns the appropriate error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Only kernel-mode drivers can call the  <c>DbgPrintEx</c> routine.
+		/// </para>
+		/// <para>
+		/// <c>DbgPrint</c> and <c>DbgPrintEx</c> can be called at IRQL&lt;=DIRQL. However, Unicode format codes (%wc and %ws) can be used only
+		/// at IRQL=PASSIVE_LEVEL. Also, because the debugger uses interprocess interrupts (IPIs) to communicate with other processors,
+		/// calling <c>DbgPrint</c> at IRQL&gt;DIRQL can cause deadlocks.</para>
+		/// <para>
+		/// <c>DbgPrintEx</c> either passes the specified string to the kernel debugger or does nothing at all, depending on the values of
+		/// ComponentId, Level, and the corresponding component filter masks. For details, see Reading and Filtering Debugging Messages.
+		/// </para>
+		/// <para>
+		/// Unless it is absolutely necessary, you should not obtain a string from user input or another process and pass it to <c>DbgPrintEx</c>.
+		/// If you do use a string that you did not create, you must verify that this is a valid format string, and that the format codes
+		/// match the argument list in type and quantity. The best coding practice is for all Format strings to be static and defined at compile time.
+		/// </para>
+		/// <para>
+		/// There is no upper limit to the size of the Format string or the number of arguments. However, any single call to <c>DbgPrintEx</c>
+		/// will only transmit 512 bytes of information. There is also a limit to the size of the <c>DbgPrint</c> buffer.
+		/// See DbgPrint Buffer and the Debugger for details.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprintex NTSYSAPI ULONG
+		// DbgPrintEx([in] ULONG ComponentId, [in] ULONG Level,[in] PCSTR Format,...);
+		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wdm.h", MSDNShortId = "b0b0a9f8-fb06-9c46-2a2a-4691ef225e81")]
+		public static extern NTStatus DbgPrintEx(uint ComponentId, uint Level, [MarshalAs(UnmanagedType.LPTStr)] string Format, IntPtr arguments);
 
 		/// <summary>
 		/// <para>
