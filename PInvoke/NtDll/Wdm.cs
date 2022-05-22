@@ -145,7 +145,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprint ULONG DbgPrint([in] PCSTR Format,...);
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wdm.h", MSDNShortId = "475e8ab8-c62a-91f3-831a-f0cfc46315a5")]
+		[PInvokeData("wdm.h", MSDNShortId = "nf-wdm-dbgprint")]
 		public static extern NTStatus DbgPrint([MarshalAs(UnmanagedType.LPTStr)] string Format, IntPtr arguments);
 
 		
@@ -206,7 +206,11 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprintex NTSYSAPI ULONG
 		// DbgPrintEx([in] ULONG ComponentId, [in] ULONG Level,[in] PCSTR Format,...);
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+<<<<<<< HEAD
 		[PInvokeData("wdm.h", MSDNShortId = "b0b0a9f8-fb06-9c46-2a2a-4691ef225e81")]
+=======
+		[PInvokeData("wdm.h", MSDNShortId = "nf-wdm-dbgprintex")]
+>>>>>>> c7c2020e (Adding DbgPrintEx Function to NtDll.Wdm.cs)
 		public static extern NTStatus DbgPrintEx(uint ComponentId, uint Level, [MarshalAs(UnmanagedType.LPTStr)] string Format, IntPtr arguments);
 
 		/// <summary>
