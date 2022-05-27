@@ -145,7 +145,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-dbgprint ULONG DbgPrint([in] PCSTR Format,...);
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrint")]
-		public static extern NTStatus DbgPrint([MarshalAs(UnmanagedType.LPTStr)] string Format, [In] IntPtr arguments);
+		public static extern NTStatus DbgPrint([MarshalAs(UnmanagedType.LPStr)] string Format, [In] IntPtr arguments);
 
 		/// <summary>
 		/// <para>The <c>DbgPrint</c> routine sends a message to the kernel debugger.</para>
@@ -274,7 +274,7 @@ namespace Vanara.PInvoke
 		// DbgPrintEx([in] ULONG ComponentId, [in] ULONG Level,[in] PCSTR Format,...);
 		[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wdm.h", MSDNShortId = "NF:wdm.DbgPrintEx")]
-		public static extern NTStatus DbgPrintEx(DPFLTR_TYPE ComponentId, uint Level, [MarshalAs(UnmanagedType.LPTStr)] string Format, [In] IntPtr arguments);
+		public static extern NTStatus DbgPrintEx(DPFLTR_TYPE ComponentId, uint Level, [MarshalAs(UnmanagedType.LPStr)] string Format, [In] IntPtr arguments);
 
 		/// <summary>The <c>DbgPrintEx</c> routine sends a string to the kernel debugger if the conditions you specify are met.</summary>
 		/// <param name="ComponentId">
