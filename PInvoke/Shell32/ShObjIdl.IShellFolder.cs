@@ -478,6 +478,16 @@ namespace Vanara.PInvoke
 			HRESULT CreateCategory(in Guid pguid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
 		}
 
+		/// <summary>Creates a category object.</summary>
+		/// <param name="prov">The <see cref="ICategoryProvider"/> instance.</param>
+		/// <param name="pguid">The <c>GUID</c> for the category object.</param>
+		/// <returns>The category object.</returns>
+		public static ICategorizer CreateCategory(this ICategoryProvider prov, in Guid pguid)
+		{
+			prov.CreateCategory(pguid, typeof(ICategorizer).GUID, out var ppv).ThrowIfFailed();
+			return (ICategorizer)ppv;
+		}
+
 		/// <summary>A standard OLE enumerator used by a client to determine the available search objects for a folder.</summary>
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0E700BE1-9DB6-11d1-A1CE-00C04FD75D13")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb761992")]
