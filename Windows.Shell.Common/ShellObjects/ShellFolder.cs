@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.Collections;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
@@ -173,6 +174,10 @@ namespace Vanara.Windows.Shell
 			iShellFolder = null;
 			base.Dispose();
 		}
+
+		/// <summary>Gets the registered categorizers.</summary>
+		/// <value>The categorizers.</value>
+		public ShellFolderCategorizer Categories => new(IShellFolder);
 
 		/// <summary>
 		/// Enumerates all children of this item. If this item is not a folder/container, this method will return an empty enumeration.
