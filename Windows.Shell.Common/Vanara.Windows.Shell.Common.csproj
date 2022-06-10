@@ -19,9 +19,13 @@ ChangeFilters, DialogStatus, ExecutableType, FileUsageType, FolderItemFilter, Li
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" Condition=" $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('netstandard')) " />
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" Condition=" $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) " />
-    <PackageReference Include="System.Security.Permissions" Version="5.0.0" Condition=" $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) " />
+    <PackageReference Include="System.Security.Permissions" Version="6.0.0" Condition=" $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) " />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Vanara.Core.csproj" />
@@ -32,5 +36,10 @@ ChangeFilters, DialogStatus, ExecutableType, FileUsageType, FolderItemFilter, Li
   </ItemGroup>
   <ItemGroup>
     <None Remove="~AppBar.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="MRUManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
