@@ -137,5 +137,15 @@ namespace Vanara.Windows.Shell.Tests
 			Assert.That(() => f.GetChildrenUIObjects<IShellLibrary>(default, i), Throws.TypeOf<NotImplementedException>());
 			Assert.That(() => f.GetViewObject<IShellLibrary>(default), Throws.TypeOf<InvalidCastException>());
 		}
+
+		[Test]
+		public void CategoryTest()
+		{
+			using var ie = new ShellFolder(KNOWNFOLDERID.FOLDERID_Documents);
+			Assert.That(ie.Categories, Is.Not.Empty);
+			Assert.That(ie.Categories.DefaultCategory?.Name, Is.Not.Null);
+			foreach (var c in ie.Categories)
+				TestContext.WriteLine($"{c.Name}");
+		}
 	}
 }

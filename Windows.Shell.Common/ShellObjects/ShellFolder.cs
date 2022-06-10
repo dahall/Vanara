@@ -56,6 +56,7 @@ namespace Vanara.Windows.Shell
 	public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	{
 		internal IShellFolder iShellFolder;
+		private ShellFolderCategorizer categories;
 		private static ShellFolder desktop;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
@@ -177,7 +178,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the registered categorizers.</summary>
 		/// <value>The categorizers.</value>
-		public ShellFolderCategorizer Categories => new(IShellFolder);
+		public ShellFolderCategorizer Categories => categories ??= new(IShellFolder);
 
 		/// <summary>
 		/// Enumerates all children of this item. If this item is not a folder/container, this method will return an empty enumeration.

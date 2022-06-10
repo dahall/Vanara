@@ -21,8 +21,12 @@ public class ShellFolderCategorizer : IEnumerable<ShellFolderCategory>
 	{
 		get
 		{
-			ICategoryProvider.GetDefaultCategory(out var guid, out _).ThrowIfFailed();
-			return GetCat(guid);
+			var hr = ICategoryProvider.GetDefaultCategory(out var guid, out _);
+			if (hr == HRESULT.S_OK)
+				return GetCat(guid);
+			if (hr == HRESULT.S_FALSE)
+				return null;
+			throw hr.GetException();
 		}
 	}
 
@@ -43,8 +47,9 @@ public class ShellFolderCategorizer : IEnumerable<ShellFolderCategory>
 	/// <inheritdoc/>
 	public IEnumerator<ShellFolderCategory> GetEnumerator()
 	{
-		ICategoryProvider.EnumCategories(out IEnumGUID penum).ThrowIfFailed();
-		return new IEnumFromCom<Guid>(penum.Next, penum.Reset).Select(g => GetCat(g)).GetEnumerator();
+		if (ICategoryProvider.EnumCategories(out IEnumGUID penum) == HRESULT.S_OK)
+			return new IEnumFromCom<Guid>(penum.Next, penum.Reset).Select(g => GetCat(g)).GetEnumerator();
+		return Enumerable.Empty<ShellFolderCategory>().GetEnumerator();
 	}
 
 	/// <inheritdoc/>
