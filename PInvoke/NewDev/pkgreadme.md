@@ -1,21 +1,21 @@
-﻿![Vanara](https://github.com/dahall/Vanara/raw/master/docs/icons/VanaraHeading.png)
-### Vanara.PInvoke.NewDev NuGet Package
+﻿![Vanara](https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/VanaraHeading.png)
+### **Vanara.PInvoke.NewDev NuGet Package**
 [![Version](https://img.shields.io/nuget/v/Vanara.PInvoke.NewDev?label=NuGet&style=flat-square)](https://github.com/dahall/Vanara/releases)
 [![Build status](https://img.shields.io/appveyor/build/dahall/vanara?label=AppVeyor%20build&style=flat-square)](https://ci.appveyor.com/project/dahall/vanara)
 
 PInvoke API (methods, structures and constants) imported from Windows NewDev.dll.
 
-### What is Vanara?
+### **What is Vanara?**
 
 [Vanara](https://github.com/dahall/Vanara) is a community project that contains various .NET assemblies which have P/Invoke functions, interfaces, enums and structures from Windows libraries. Each assembly is associated with one or a few tightly related libraries.
 
-### Issues?
+### **Issues?**
 
 First check if it's already fixed by trying the [AppVeyor build](https://ci.appveyor.com/nuget/vanara-prerelease).
 If you're still running into problems, file an [issue](https://github.com/dahall/Vanara/issues).
 
-### Included in Vanara.PInvoke.NewDev
+### **Included in Vanara.PInvoke.NewDev**
 
 Functions | Enumerations
 --- | ---
-DiInstallDevice<br>DiInstallDriver<br>DiRollbackDriver<br>DiShowUpdateDevice<br>DiShowUpdateDriver<br>DiUninstallDevice<br>DiUninstallDriver<br>UpdateDriverForPlugAndPlayDevices<br> | DIID_FLAG<br>DIIRFLAG<br>DIURFLAG<br>INSTALLFLAG<br>ROLLBACK_FLAG<br><br><br><br>
+DiInstallDevice DiInstallDriver DiRollbackDriver DiShowUpdateDevice DiShowUpdateDriver DiUninstallDevice DiUninstallDriver UpdateDriverForPlugAndPlayDevices  | DIID_FLAG DIIRFLAG DIURFLAG INSTALLFLAG ROLLBACK_FLAG    
