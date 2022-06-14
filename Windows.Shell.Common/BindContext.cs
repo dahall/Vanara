@@ -7,11 +7,12 @@ using Vanara.Extensions;
 using Vanara.Extensions.Reflection;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell
 {
 	/// <summary>Wraps the <see cref="IBindCtx"/> COM type.</summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	[ComVisible(true)]
 	public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	{
@@ -38,6 +39,18 @@ namespace Vanara.Windows.Shell
 				grfFlags = bindFlags,
 			};
 			iBindCtx.SetBindOptions(opts);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BindContext"/> class with system file information to enable "simple parsing" which
+		/// avoids having to access the file. This avoids the expense of getting the information from the file and allows for parsing items
+		/// that may not necessarily exist.
+		/// </summary>
+		/// <param name="findData">The system file information as a <see cref="WIN32_FIND_DATA"/> structure.</param>
+		public BindContext(in WIN32_FIND_DATA findData) : this(STGM.STGM_CREATE)
+		{
+			var pfsbd = new CFileSysBindData(findData);
+			RegisterObjectParam(STR_FILE_SYS_BIND_DATA, pfsbd);
 		}
 
 		/// <summary>Flags that control aspects of moniker binding operations.</summary>
@@ -111,9 +124,9 @@ namespace Vanara.Windows.Shell
 		/// </para>
 		/// <para>COM's file moniker implementation uses the shell link mechanism to reestablish links and passes these flags to IShellLink::Resolve.</para>
 		/// </summary>
-		public Shell32.SLR_FLAGS TrackFlags
+		public SLR_FLAGS TrackFlags
 		{
-			get => (Shell32.SLR_FLAGS)GetOptionValue<uint>(nameof(BIND_OPTS2.dwTrackFlags));
+			get => (SLR_FLAGS)GetOptionValue<uint>(nameof(BIND_OPTS2.dwTrackFlags));
 			set => SetOptionValue(nameof(BIND_OPTS2.dwTrackFlags), (uint)value);
 		}
 
@@ -661,7 +674,8 @@ namespace Vanara.Windows.Shell
 		/// </item>
 		/// </list>
 		/// </remarks>
-		HRESULT IBindCtxV.RegisterObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [In, MarshalAs(UnmanagedType.Interface)] object punk) => iBindCtx.RegisterObjectParam(pszKey, punk);
+		HRESULT IBindCtxV.RegisterObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [In, MarshalAs(UnmanagedType.Interface)] object punk) =>
+			iBindCtx.RegisterObjectParam(pszKey, punk ?? new CDummyUnknown(Guid.Empty));
 
 		/// <summary>Releases all pointers to all objects that were previously registered by calls to RegisterObjectBound.</summary>
 		/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
@@ -876,6 +890,51 @@ namespace Vanara.Windows.Shell
 			var bo = GetBindOps();
 			bo.SetFieldValue(fieldName, value);
 			((IBindCtxV)this).SetBindOptions(bo).ThrowIfFailed();
+		}
+
+		[ComVisible(true)]
+		private class CDummyUnknown : IPersist
+		{
+			private Guid _clsid;
+
+			public CDummyUnknown(in Guid clsid) => _clsid = clsid;
+
+			public Guid GetClassID() => _clsid;
+		}
+
+		[ComVisible(true)]
+		private class CFileSysBindData : IFileSystemBindData, IFileSystemBindData2
+		{
+			// file system bind data is a parameter passed to IShellFolder::ParseDisplayName() to provide the item information to the file system
+			// data source. this will enable parsing of items that do not exist and avoiding accessing the disk in the parse operation {fc0a77e6-9d70-4258-9783-6dab1d0fe31e}
+			private static readonly Guid CLSID_UnknownJunction = new(0xfc0a77e6, 0x9d70, 0x4258, 0x97, 0x83, 0x6d, 0xab, 0x1d, 0x0f, 0xe3, 0x1e);
+
+			private Guid _clsidJunction = CLSID_UnknownJunction;
+			private WIN32_FIND_DATA _fd;
+			private long _liFileID;
+
+			public CFileSysBindData(in WIN32_FIND_DATA pfd) => SetFindData(pfd);
+
+			public HRESULT GetFileID(out long pliFileID) { pliFileID = _liFileID; return HRESULT.S_OK; }
+
+			public HRESULT GetFindData(out WIN32_FIND_DATA pfd) { pfd = _fd; return HRESULT.S_OK; }
+
+			public HRESULT GetJunctionCLSID(out Guid pclsid)
+			{
+				if (_clsidJunction != CLSID_UnknownJunction)
+				{
+					pclsid = _clsidJunction;
+					return HRESULT.S_OK;
+				}
+				pclsid = Guid.Empty;
+				return HRESULT.E_FAIL;
+			}
+
+			public HRESULT SetFileID(long liFileID) { _liFileID = liFileID; return HRESULT.S_OK; }
+
+			public HRESULT SetFindData(in WIN32_FIND_DATA pfd) { _fd = pfd; return HRESULT.S_OK; }
+
+			public HRESULT SetJunctionCLSID(in Guid clsid) { _clsidJunction = clsid; return HRESULT.S_OK; }
 		}
 	}
 }
