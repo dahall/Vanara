@@ -41,7 +41,7 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(HRESULTTypeConverter))]
 	[PInvokeData("winerr.h")]
-	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IEquatable<int>, IEquatable<uint>, IConvertible, IErrorProvider
+	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IEquatable<int>, IEquatable<uint>, IEquatable<IErrorProvider>, IConvertible, IErrorProvider
 	{
 		internal readonly int _value;
 
@@ -535,12 +535,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="HRESULT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRESULT(int value) => new HRESULT(value);
+		public static implicit operator HRESULT(int value) => new(value);
 
 		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="HRESULT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
-		public static implicit operator HRESULT(uint value) => new HRESULT(value);
+		public static implicit operator HRESULT(uint value) => new(value);
 
 		/// <summary>Maps an NT Status value to an HRESULT value.</summary>
 		/// <param name="err">The NT Status value.</param>
@@ -565,7 +565,7 @@ namespace Vanara.PInvoke
 		/// <param name="code">The code.</param>
 		/// <returns>The resulting <see cref="HRESULT"/>.</returns>
 		public static HRESULT Make(bool severe, uint facility, uint code) =>
-			new HRESULT(unchecked((int)((severe ? severityMask : 0) | (facility << facilityShift) | code)));
+			new(unchecked((int)((severe ? severityMask : 0) | (facility << facilityShift) | code)));
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
@@ -587,6 +587,12 @@ namespace Vanara.PInvoke
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="IErrorProvider"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HRESULT hrLeft, IErrorProvider hrRight) => !hrLeft.Equals(hrRight.ToHRESULT());
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
 		/// <param name="hrRight">The second <see cref="HRESULT"/>.</param>
 		/// <returns>The result of the operator.</returns>
 		public static bool operator ==(HRESULT hrLeft, HRESULT hrRight) => hrLeft.Equals(hrRight);
@@ -602,6 +608,21 @@ namespace Vanara.PInvoke
 		/// <param name="hrRight">The second <see cref="uint"/>.</param>
 		/// <returns>The result of the operator.</returns>
 		public static bool operator ==(HRESULT hrLeft, uint hrRight) => hrLeft.Equals(hrRight);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="hrLeft">The first <see cref="HRESULT"/>.</param>
+		/// <param name="hrRight">The second <see cref="IErrorProvider"/>.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HRESULT hrLeft, IErrorProvider hrRight) => hrLeft.Equals(hrRight.ToHRESULT());
+
+		/// <summary>
+		/// If the supplied raw HRESULT value represents a failure, throw the associated <see cref="Exception"/> with the optionally
+		/// supplied message.
+		/// </summary>
+		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
+		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
+		[System.Diagnostics.DebuggerStepThrough]
+		public static void ThrowIfFailed(HRESULT hresult, string message = null) => hresult.ThrowIfFailed(message);
 
 		/// <summary>
 		/// If the supplied raw HRESULT value represents a failure, throw the associated <see cref="Exception"/> with the optionally
@@ -649,6 +670,11 @@ namespace Vanara.PInvoke
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		public bool Equals(uint other) => unchecked((int)other) == _value;
 
+		/// <summary>Indicates whether the current object is equal to an <see cref="uint"/>.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(IErrorProvider other) => Equals(other.ToHRESULT());
+
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
@@ -658,6 +684,7 @@ namespace Vanara.PInvoke
 			HRESULT h => Equals(h),
 			int i => Equals(i),
 			uint u => Equals(u),
+			IErrorProvider e => Equals(e),
 			_ => Equals(_value, ValueFromObj(obj)),
 		};
 
@@ -715,9 +742,8 @@ namespace Vanara.PInvoke
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString()
 		{
-			string err = null;
 			// Check for defined HRESULT value
-			if (!StaticFieldValueHash.TryGetFieldName<HRESULT, int>(_value, out err) && Facility == FacilityCode.FACILITY_WIN32)
+			if (!StaticFieldValueHash.TryGetFieldName<HRESULT, int>(_value, out var err) && Facility == FacilityCode.FACILITY_WIN32)
 			{
 				foreach (var info2 in typeof(Win32Error).GetFields(BindingFlags.Public | BindingFlags.Static).Where(fi => fi.FieldType == typeof(uint)))
 				{
@@ -819,7 +845,7 @@ namespace Vanara.PInvoke
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
-			if (sourceType == typeof(Win32Error) || sourceType.IsPrimitive && sourceType != typeof(char))
+			if (sourceType is IErrorProvider || sourceType.IsPrimitive && sourceType != typeof(char))
 				return true;
 			return base.CanConvertFrom(context, sourceType);
 		}
@@ -833,13 +859,13 @@ namespace Vanara.PInvoke
 
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
-			if (value is Win32Error e)
+			if (value is IErrorProvider e)
 				return e.ToHRESULT();
 			if (value != null && value.GetType().IsPrimitive)
 			{
 				if (value is bool b)
 					return b ? HRESULT.S_OK : HRESULT.S_FALSE;
-				if (!(value is char))
+				if (value is not char)
 					return new HRESULT((int)Convert.ChangeType(value, TypeCode.Int32));
 			}
 			return base.ConvertFrom(context, culture, value);
@@ -848,7 +874,7 @@ namespace Vanara.PInvoke
 		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
 			Type destinationType)
 		{
-			if (!(value is HRESULT hr)) throw new NotSupportedException();
+			if (value is not HRESULT hr) throw new NotSupportedException();
 			if (destinationType.IsPrimitive && destinationType != typeof(char))
 				return Convert.ChangeType(hr, destinationType);
 			if (destinationType == typeof(string))
