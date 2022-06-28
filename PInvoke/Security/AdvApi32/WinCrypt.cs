@@ -180,7 +180,7 @@ namespace Vanara.PInvoke
 			CRYPT_OAEP = 0x00000040,
 		}
 
-		/// <summary>Flags for <see cref="CryptExportKey"/>.</summary>
+		/// <summary>Flags for <see cref="CryptExportKey(HCRYPTKEY, HCRYPTKEY, BlobType, CryptExportKeyFlags, IntPtr, ref uint)"/>.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "8a7c7b46-3bea-4043-b568-6d91d6335737")]
 		[Flags]
 		public enum CryptExportKeyFlags

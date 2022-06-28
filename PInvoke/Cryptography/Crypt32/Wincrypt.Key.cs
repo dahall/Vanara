@@ -109,7 +109,7 @@ namespace Vanara.PInvoke
 			CERT_FIND_VALID_ENHKEY_USAGE_FLAG = 0x20,
 		}
 
-		/// <summary>Flags for <see cref="CryptEnumKeyIdentifierProperties"/>.</summary>
+		/// <summary>Flags for <see cref="CryptEnumKeyIdentifierProperties(IntPtr, uint, CryptKeyIdFlags, string, IntPtr, IntPtr, PFN_CRYPT_ENUM_KEYID_PROP)"/>.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "6e57d935-4cfb-44af-b1c6-6c399c959452")]
 		[Flags]
 		public enum CryptKeyIdFlags
