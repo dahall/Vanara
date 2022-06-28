@@ -5103,7 +5103,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The name of the stream. The string name format is ":streamname:$streamtype".</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH + 36)] private readonly string cStreamName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH + 36)]
+			public string cStreamName;
 		}
 
 		/// <summary>Represents a search handle used in a subsequent call to the <c>FindNextVolumeMountPoint</c> and retrieved by <c>FindFirstVolumeMountPoint</c>.</summary>
