@@ -53,7 +53,4 @@ CorrespondingAction, FileAttributeConstant, FileOpConstant, FilePermissionConsta
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BkwdComp\" />
-  </ItemGroup>
 </Project>
