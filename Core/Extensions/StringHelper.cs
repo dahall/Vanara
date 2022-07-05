@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 using Vanara.InteropServices;
 
 namespace Vanara.Extensions
 {
 	/// <summary>A safe class that represents an object that is pinned in memory.</summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	public static class StringHelper
 	{
 		/// <summary>Allocates a block of memory allocated from the unmanaged COM task allocator sufficient to hold the number of specified characters.</summary>
@@ -66,7 +67,7 @@ namespace Vanara.Extensions
 			allocatedBytes = 0;
 			if (s == null) return IntPtr.Zero;
 			var chSz = GetCharSize(charSet);
-			var encoding = chSz == 2 ? System.Text.Encoding.Unicode : System.Text.Encoding.ASCII;
+			var encoding = chSz == 2 ? Encoding.Unicode : Encoding.ASCII;
 			var hMem = AllocSecureString(s, charSet);
 			var str = chSz == 2 ? Marshal.PtrToStringUni(hMem) : Marshal.PtrToStringAnsi(hMem);
 			Marshal.FreeCoTaskMem(hMem);
@@ -140,14 +141,14 @@ namespace Vanara.Extensions
 		/// <param name="charSet">The character set.</param>
 		/// <returns>A byte array including <paramref name="value"/> encoded as per <paramref name="charSet"/> and the optional null terminator.</returns>
 		public static byte[] GetBytes(this string value, bool nullTerm = true, CharSet charSet = CharSet.Auto) =>
-			GetBytes(value, GetCharSize(charSet) == 1 ? System.Text.Encoding.ASCII : System.Text.Encoding.Unicode, nullTerm);
+			GetBytes(value, GetCharSize(charSet) == 1 ? Encoding.ASCII : Encoding.Unicode, nullTerm);
 
 		/// <summary>Gets the encoded bytes for a string including an optional null terminator.</summary>
 		/// <param name="value">The string value to convert.</param>
 		/// <param name="enc">The character encoding.</param>
 		/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the resulting byte array.</param>
 		/// <returns>A byte array including <paramref name="value"/> encoded as per <paramref name="enc"/> and the optional null terminator.</returns>
-		public static byte[] GetBytes(this string value, System.Text.Encoding enc, bool nullTerm = true)
+		public static byte[] GetBytes(this string value, Encoding enc, bool nullTerm = true)
 		{
 			var chSz = GetCharSize(enc);
 			var ret = new byte[enc.GetByteCount(value) + (nullTerm ? chSz : 0)];
@@ -163,25 +164,25 @@ namespace Vanara.Extensions
 		/// <param name="charSet">The character set.</param>
 		/// <returns>The number of bytes required to store <paramref name="value"/>. Returns 0 if <paramref name="value"/> is <c>null</c>.</returns>
 		public static int GetByteCount(this string value, bool nullTerm = true, CharSet charSet = CharSet.Auto) =>
-			GetByteCount(value, GetCharSize(charSet) == 1 ? System.Text.Encoding.ASCII : System.Text.Encoding.Unicode);
+			GetByteCount(value, GetCharSize(charSet) == 1 ? Encoding.ASCII : Encoding.Unicode, nullTerm);
 
 		/// <summary>Gets the number of bytes required to store the string.</summary>
 		/// <param name="value">The string value.</param>
 		/// <param name="enc">The character encoding.</param>
 		/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
 		/// <returns>The number of bytes required to store <paramref name="value"/>. Returns 0 if <paramref name="value"/> is <c>null</c>.</returns>
-		public static int GetByteCount(this string value, System.Text.Encoding enc, bool nullTerm = true) =>
+		public static int GetByteCount(this string value, Encoding enc, bool nullTerm = true) =>
 			value is null ? 0 : enc.GetByteCount(value) + (nullTerm ? GetCharSize(enc) : 0);
 
 		/// <summary>Gets the size of a character defined by the supplied <see cref="CharSet"/>.</summary>
 		/// <param name="charSet">The character set to size.</param>
 		/// <returns>The size of a standard character, in bytes, from <paramref name="charSet"/>.</returns>
-		public static int GetCharSize(CharSet charSet = CharSet.Auto) => charSet == CharSet.Auto ? Marshal.SystemDefaultCharSize : (charSet == CharSet.Unicode ? 2 : 1);
+		public static int GetCharSize(CharSet charSet = CharSet.Auto) => charSet == CharSet.Auto ? Marshal.SystemDefaultCharSize : (charSet == CharSet.Unicode ? UnicodeEncoding.CharSize : 1);
 
-		/// <summary>Gets the size of a character defined by the supplied <see cref="System.Text.Encoding"/>.</summary>
+		/// <summary>Gets the size of a character defined by the supplied <see cref="Encoding"/>.</summary>
 		/// <param name="enc">The character encoding type.</param>
 		/// <returns>The size of a standard character, in bytes, from <paramref name="enc"/>.</returns>
-		public static int GetCharSize(System.Text.Encoding enc) => enc.GetByteCount(new[] { '\0' });
+		public static int GetCharSize(Encoding enc) => enc.GetByteCount(new[] { '\0' });
 
 		/// <summary>
 		/// Allocates a managed String and copies all characters up to the first null character or the end of the allocated memory pool from a string stored in unmanaged memory into it.
@@ -196,7 +197,7 @@ namespace Vanara.Extensions
 		public static string GetString(IntPtr ptr, CharSet charSet = CharSet.Auto, long allocatedBytes = long.MaxValue)
 		{
 			if (IsValue(ptr)) return null;
-			var sb = new System.Text.StringBuilder();
+			var sb = new StringBuilder();
 			unsafe
 			{
 				var chkLen = 0L;
