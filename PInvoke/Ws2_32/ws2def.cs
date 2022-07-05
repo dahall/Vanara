@@ -1414,6 +1414,16 @@ namespace Vanara.PInvoke
 				return mem.ToStructure<SOCKADDR_STORAGE>();
 			}
 
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_INET"/> to <see cref="SOCKADDR_STORAGE"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_STORAGE"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_STORAGE(SOCKADDR_INET addr)
+			{
+				using var mem = SafeHGlobalHandle.CreateFromStructure(addr);
+				mem.Size = Marshal.SizeOf(typeof(SOCKADDR_STORAGE));
+				return mem.ToStructure<SOCKADDR_STORAGE>();
+			}
+
 			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_STORAGE"/> to <see cref="SOCKADDR"/>.</summary>
 			/// <param name="addr">The addr.</param>
 			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
@@ -1428,6 +1438,11 @@ namespace Vanara.PInvoke
 			/// <param name="addr">The addr.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
 			public static explicit operator SOCKADDR_IN6(SOCKADDR_STORAGE addr) => (SOCKADDR_IN6)SOCKADDR.CreateFromStructure(addr);
+
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_STORAGE"/> to <see cref="SOCKADDR_INET"/>.</summary>
+			/// <param name="addr">The addr.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_INET"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_INET(SOCKADDR_STORAGE addr) => (SOCKADDR_INET)SOCKADDR.CreateFromStructure(addr);
 		}
 
 		/// <summary>The <c>SOCKET_ADDRESS</c> structure stores protocol-specific address information.</summary>
