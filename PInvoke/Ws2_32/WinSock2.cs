@@ -2698,6 +2698,12 @@ namespace Vanara.PInvoke
 			/// <exception cref="InvalidCastException"></exception>
 			public static explicit operator SOCKADDR_IN6(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET6 ? addr.handle.ToStructure<SOCKADDR_IN6>() : (SOCKADDR_IN6)(SOCKADDR_IN)addr;
 
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_INET"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_INET"/> instance from the conversion.</returns>
+			/// <exception cref="InvalidCastException"></exception>
+			public static explicit operator SOCKADDR_INET(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET6 ? addr.handle.ToStructure<SOCKADDR_INET>() : (SOCKADDR_INET)(SOCKADDR_IN)addr;
+
 			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR"/> to <see cref="IntPtr"/>.</summary>
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
