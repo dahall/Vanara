@@ -793,6 +793,109 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </summary>
 		/// <param name="lpsaAddress">A pointer to the sockaddr structure to translate into a string.</param>
+		/// <param name="lpProtocolInfo">
+		/// A pointer to the WSAPROTOCOL_INFO structure for a particular provider. If this is parameter is <c>NULL</c>, the call is routed
+		/// to the provider of the first protocol supporting the address family indicated in the lpsaAddress parameter.
+		/// </param>
+		/// <param name="lpszAddressString">The human-readable address string.</param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>WSAAddressToString</c> returns a value of zero. Otherwise, the value SOCKET_ERROR is returned, and a
+		/// specific error number can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The specified lpcsAddress, lpProtocolInfo, and lpszAddressString parameters point to memory that is not all in the address space
+		/// of the process, or the buffer pointed to by the lpszAddressString parameter is too small. Pass in a larger buffer.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// An invalid parameter was passed. This error is returned if the lpsaAddress, dwAddressLength, or lpdwAddressStringLength
+		/// parameter are NULL. This error is also returned if the specified address is not a valid socket address, or no transport provider
+		/// supports the indicated address family.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>No buffer space is available.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>
+		/// The Winsock 2 DLL has not been initialized. The application must first call WSAStartup before calling any Windows Sockets functions.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAAddressToString</c> function provides a protocol-independent address-to-string translation. The
+		/// <c>WSAAddressToString</c> function takes a socket address structure pointed to by the lpsaAddress parameter and returns a
+		/// pointer to <c>NULL</c>-terminated string that represents the socket address in the lpszAddressString parameter. While the
+		/// inet_ntoa function works only with IPv4 addresses, the <c>WSAAddressToString</c> function works with any socket address
+		/// supported by a Winsock provider on the local computer including IPv6 addresses.
+		/// </para>
+		/// <para>
+		/// If the lpsaAddress parameter points to an IPv4 socket address (the address family is <c>AF_INET</c>), then the address string
+		/// returned in the buffer pointed to by the lpszAddressString parameter is in dotted-decimal notation as in "192.168.16.0", an
+		/// example of an IPv4 address in dotted-decimal notation.
+		/// </para>
+		/// <para>
+		/// If the lpsaAddress parameter points to an IPv6 socket address (the address family is <c>AF_INET6</c>), then the address string
+		/// returned in the buffer pointed to by the lpszAddressString parameter is in Internet standard format. The basic string
+		/// representation consists of 8 hexadecimal numbers separated by colons. A string of consecutive zero numbers is replaced with a
+		/// double-colon. There can only be one double-colon in the string representation of the IPv6 address.
+		/// </para>
+		/// <para>
+		/// Support for IPv6 addresses using the <c>WSAAddressToString</c> function was added on Windows XP with Service Pack 1 (SP1)and
+		/// later. IPv6 must also be installed on the local computer for the <c>WSAAddressToString</c> function to support IPv6 addresses.
+		/// </para>
+		/// <para>
+		/// <c>Windows Phone 8:</c> The <c>WSAAddressToStringW</c> function is supported for Windows Phone Store apps on Windows Phone 8 and later.
+		/// </para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: The <c>WSAAddressToStringW</c> function is supported for Windows Store
+		/// apps on Windows 8.1, Windows Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaaddresstostringa INT WSAAPI WSAAddressToStringA(
+		// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSTR lpszAddressString, LPDWORD
+		// lpdwAddressStringLength );
+		[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
+		public static Win32Error WSAAddressToString([In] SOCKADDR lpsaAddress, [In, Optional] WSAPROTOCOL_INFO? lpProtocolInfo, out string lpszAddressString)
+		{
+			using var pc = lpProtocolInfo.HasValue ? new SafeCoTaskMemStruct<WSAPROTOCOL_INFO>(lpProtocolInfo.Value) : SafeCoTaskMemStruct<WSAPROTOCOL_INFO>.Null;
+			var sz = 1024U;
+			var err = WSAAddressToString(lpsaAddress, (uint)lpsaAddress.Size, pc, null, ref sz);
+			lpszAddressString = null;
+			if (err == Win32Error.WSAEFAULT && sz > 0)
+			{
+				StringBuilder sb = new((int)sz);
+				err = WSAAddressToString(lpsaAddress, (uint)lpsaAddress.Size, pc, sb, ref sz);
+				if (err.Succeeded) lpszAddressString = sb.ToString();
+			}
+			return err;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>WSAAddressToString</c> function converts all components of a sockaddr structure into a human-readable string
+		/// representation of the address.
+		/// </para>
+		/// <para>
+		/// This is intended to be used mainly for display purposes. If the caller requires that the translation to be performed by a
+		/// particular provider, it should supply the corresponding WSAPROTOCOL_INFO structure in the lpProtocolInfo parameter.
+		/// </para>
+		/// </summary>
+		/// <param name="lpsaAddress">A pointer to the sockaddr structure to translate into a string.</param>
 		/// <param name="dwAddressLength">
 		/// The length, in bytes, of the address in the sockaddr structure pointed to by the lpsaAddress parameter. The dwAddressLength
 		/// parameter may vary in size with different protocols.
@@ -9976,6 +10079,175 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
 		public static extern Win32Error WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+
+		/// <summary>
+		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
+		/// form in a sockaddr structure, suitable for passing to Windows Sockets routines that take such a structure.
+		/// </summary>
+		/// <param name="AddressString">
+		/// A pointer to the zero-terminated string that contains the network address in standard text form to convert.
+		/// </param>
+		/// <param name="AddressFamily">The address family of the network address pointed to by the AddressString parameter.</param>
+		/// <param name="lpProtocolInfo">
+		/// The WSAPROTOCOL_INFO structure associated with the provider to be used. If this is <c>NULL</c>, the call is routed to the
+		/// provider of the first protocol supporting the indicated AddressFamily.
+		/// </param>
+		/// <param name="lpAddress">
+		/// A pointer to a buffer that is filled with a sockaddr structure for the address string if the function succeeds.
+		/// </param>
+		/// <param name="lpAddressLength">
+		/// A pointer to the length, in bytes, of the buffer pointed to by the lpAddress parameter. If the function call is successful, this
+		/// parameter returns a pointer to the size of the sockaddr structure returned in the lpAddress parameter. If the specified buffer
+		/// is not large enough, the function fails with a specific error of WSAEFAULT and this parameter is updated with the required size
+		/// in bytes.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// The return value for <c>WSAStringToAddress</c> is zero if the operation was successful. Otherwise, the value SOCKET_ERROR is
+		/// returned, and a specific error number can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The buffer pointed to by the lpAddress parameter is too small. Pass in a larger buffer.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The functions was unable to translate the string into a sockaddr. See the following Remarks section for more information.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>
+		/// The WS2_32.DLL has not been initialized. The application must first call WSAStartup before calling any Windows Socket functions.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_NOT_ENOUGH_MEMORY</term>
+		/// <term>There was insufficient memory to perform the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAStringToAddress</c> function converts a network address in standard text form into its numeric binary form in a
+		/// sockaddr structure.
+		/// </para>
+		/// <para>
+		/// Any missing components of the address will be defaulted to a reasonable value, if possible. For example, a missing port number
+		/// will default to zero. If the caller wants the translation to be done by a particular provider, it should supply the
+		/// corresponding WSAPROTOCOL_INFO structure in the lpProtocolInfo parameter.
+		/// </para>
+		/// <para>
+		/// The <c>WSAStringToAddress</c> function fails (and returns WSAEINVAL) if the <c>sin_family</c> member of the SOCKADDR_IN
+		/// structure, which is passed in the lpAddress parameter in the form of a <c>sockaddr</c> structure, is not set to AF_INET or AF_INET6.
+		/// </para>
+		/// <para>
+		/// Support for IPv6 addresses using the <c>WSAStringToAddress</c> function was added on Windows XP with Service Pack 1 (SP1)and
+		/// later. IPv6 must also be installed on the local computer for the <c>WSAStringToAddress</c> function to support IPv6 addresses.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
+		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
+		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
+		public static extern Win32Error WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] IntPtr lpAddress, ref int lpAddressLength);
+
+		/// <summary>
+		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
+		/// form in a sockaddr structure, suitable for passing to Windows Sockets routines that take such a structure.
+		/// </summary>
+		/// <param name="AddressString">
+		/// A pointer to the zero-terminated string that contains the network address in standard text form to convert.
+		/// </param>
+		/// <param name="AddressFamily">The address family of the network address pointed to by the AddressString parameter.</param>
+		/// <param name="lpProtocolInfo">
+		/// The WSAPROTOCOL_INFO structure associated with the provider to be used. If this is <c>NULL</c>, the call is routed to the
+		/// provider of the first protocol supporting the indicated AddressFamily.
+		/// </param>
+		/// <param name="lpAddress">
+		/// A pointer to a buffer that is filled with a sockaddr structure for the address string if the function succeeds.
+		/// </param>
+		/// <param name="lpAddressLength">
+		/// A pointer to the length, in bytes, of the buffer pointed to by the lpAddress parameter. If the function call is successful, this
+		/// parameter returns a pointer to the size of the sockaddr structure returned in the lpAddress parameter. If the specified buffer
+		/// is not large enough, the function fails with a specific error of WSAEFAULT and this parameter is updated with the required size
+		/// in bytes.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// The return value for <c>WSAStringToAddress</c> is zero if the operation was successful. Otherwise, the value SOCKET_ERROR is
+		/// returned, and a specific error number can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The buffer pointed to by the lpAddress parameter is too small. Pass in a larger buffer.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The functions was unable to translate the string into a sockaddr. See the following Remarks section for more information.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>
+		/// The WS2_32.DLL has not been initialized. The application must first call WSAStartup before calling any Windows Socket functions.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_NOT_ENOUGH_MEMORY</term>
+		/// <term>There was insufficient memory to perform the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAStringToAddress</c> function converts a network address in standard text form into its numeric binary form in a
+		/// sockaddr structure.
+		/// </para>
+		/// <para>
+		/// Any missing components of the address will be defaulted to a reasonable value, if possible. For example, a missing port number
+		/// will default to zero. If the caller wants the translation to be done by a particular provider, it should supply the
+		/// corresponding WSAPROTOCOL_INFO structure in the lpProtocolInfo parameter.
+		/// </para>
+		/// <para>
+		/// The <c>WSAStringToAddress</c> function fails (and returns WSAEINVAL) if the <c>sin_family</c> member of the SOCKADDR_IN
+		/// structure, which is passed in the lpAddress parameter in the form of a <c>sockaddr</c> structure, is not set to AF_INET or AF_INET6.
+		/// </para>
+		/// <para>
+		/// Support for IPv6 addresses using the <c>WSAStringToAddress</c> function was added on Windows XP with Service Pack 1 (SP1)and
+		/// later. IPv6 must also be installed on the local computer for the <c>WSAStringToAddress</c> function to support IPv6 addresses.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
+		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
+		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
+		public static Win32Error WSAStringToAddress(string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] WSAPROTOCOL_INFO? lpProtocolInfo, out SOCKADDR_INET lpAddress)
+		{
+			using var pc = lpProtocolInfo.HasValue ? new SafeCoTaskMemStruct<WSAPROTOCOL_INFO>(lpProtocolInfo.Value) : SafeCoTaskMemStruct<WSAPROTOCOL_INFO>.Null;
+			using var addr = new SafeCoTaskMemStruct<SOCKADDR_INET>();
+			int sz = addr.Size;
+			var err = WSAStringToAddress(AddressString, AddressFamily, pc, addr, ref sz);
+			lpAddress = addr;
+			return err;
+		}
 
 		/// <summary>
 		/// The <c>WSAWaitForMultipleEvents</c> function returns when one or all of the specified event objects are in the signaled state,
