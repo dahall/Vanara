@@ -4846,6 +4846,190 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
 		public static extern Win32Error WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] IntPtr lpCompletionRoutine);
 
+		/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
+		/// <param name="s">A descriptor identifying a socket.</param>
+		/// <param name="dwIoControlCode">The control code of operation to perform.</param>
+		/// <param name="inVal">The input value.</param>
+		/// <param name="outVal">The output value.</param>
+		/// <returns>
+		/// <para>
+		/// Upon successful completion, the <c>WSAIoctl</c> returns zero. Otherwise, a value of SOCKET_ERROR is returned, and a specific
+		/// error code can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The lpvInBuffer, lpvOutBuffer, lpcbBytesReturned, lpOverlapped, or lpCompletionRoutine parameter is not totally contained in a
+		/// valid part of the user address space, or the cbInBuffer or cbOutBuffer parameter is too small.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// The dwIoControlCode parameter is not a valid command, or a specified input parameter is not acceptable, or the command is not
+		/// applicable to the type of socket specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor s is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// The specified IOCTL command cannot be realized. (For example, the FLOWSPEC structures specified in SIO_SET_QOS or
+		/// SIO_SET_GROUP_QOS cannot be satisfied.)
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as non-blocking and the requested operation would block.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOPROTOOPT</term>
+		/// <term>
+		/// The socket option is not supported on the specified protocol. For example, an attempt to use the SIO_GET_BROADCAST_ADDRESS IOCTL
+		/// was made on an IPv6 socket or an attempt to use the TCP SIO_KEEPALIVE_VALS IOCTL was made on a datagram socket.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAIoctl</c> function is used to set or retrieve operating parameters associated with the socket, the transport protocol,
+		/// or the communications subsystem.
+		/// </para>
+		/// <para>
+		/// If both lpOverlapped and lpCompletionRoutine are <c>NULL</c>, the socket in this function will be treated as a non-overlapped
+		/// socket. For a non-overlapped socket, lpOverlapped and lpCompletionRoutine parameters are ignored, which causes the function to
+		/// behave like the standard ioctlsocket function except that the function can block if socket s is in blocking mode. If socket s is
+		/// in non-blocking mode, this function can return WSAEWOULDBLOCK when the specified operation cannot be finished immediately. In
+		/// this case, the application may change the socket to blocking mode and reissue the request or wait for the corresponding network
+		/// event (such as FD_ROUTING_INTERFACE_CHANGE or FD_ADDRESS_LIST_CHANGE in the case of <c>SIO_ROUTING_INTERFACE_CHANGE</c> or
+		/// <c>SIO_ADDRESS_LIST_CHANGE</c>) using a Windows message (using WSAAsyncSelect)-based or event (using WSAEventSelect)-based
+		/// notification mechanism.
+		/// </para>
+		/// <para>
+		/// Any IOCTL may block indefinitely, depending on the service provider's implementation. If the application cannot tolerate
+		/// blocking in a <c>WSAIoctl</c> call, overlapped I/O would be advised for IOCTLs that are especially likely to block including:
+		/// </para>
+		/// <para><c>SIO_ADDRESS_LIST_CHANGE</c></para>
+		/// <para><c>SIO_FINDROUTE</c></para>
+		/// <para><c>SIO_FLUSH</c></para>
+		/// <para><c>SIO_GET_QOS</c></para>
+		/// <para><c>SIO_GET_GROUP_QOS</c></para>
+		/// <para><c>SIO_ROUTING_INTERFACE_CHANGE</c></para>
+		/// <para><c>SIO_SET_QOS</c></para>
+		/// <para><c>SIO_SET_GROUP_QOS</c></para>
+		/// <para>
+		/// Some protocol-specific IOCTLs may also be especially likely to block. Check the relevant protocol-specific annex for any
+		/// available information.
+		/// </para>
+		/// <para>
+		/// It is possible to adopt an encoding scheme that preserves the currently defined ioctlsocket opcodes while providing a convenient
+		/// way to partition the opcode identifier space in as much as the dwIoControlCode parameter is now a 32-bit entity. The
+		/// dwIoControlCode parameter is built to allow for protocol and vendor independence when adding new control codes while retaining
+		/// backward compatibility with the Windows Sockets 1.1 and Unix control codes. The dwIoControlCode parameter has the following form.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>I</term>
+		/// <term>O</term>
+		/// <term>V</term>
+		/// <term>T</term>
+		/// <term>Vendor/address family</term>
+		/// <term>Code</term>
+		/// </listheader>
+		/// <item>
+		/// <term>3</term>
+		/// <term>3</term>
+		/// <term>2</term>
+		/// <term>2 2</term>
+		/// <term>2 2 2 2 2 2 2 1 1 1 1</term>
+		/// <term>1 1 1 1 1 1</term>
+		/// </item>
+		/// <item>
+		/// <term>1</term>
+		/// <term>0</term>
+		/// <term>9</term>
+		/// <term>8 7</term>
+		/// <term>6 5 4 3 2 1 0 9 8 7 6</term>
+		/// <term>5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> The bits in dwIoControlCode parameter displayed in the table must be read vertically from top to bottom by column.
+		/// So the left-most bit is bit 31, the next bit is bit 30, and the right-most bit is bit 0.
+		/// </para>
+		/// <para>I is set if the input buffer is valid for the code, as with <c>IOC_IN</c>.</para>
+		/// <para>
+		/// O is set if the output buffer is valid for the code, as with <c>IOC_OUT</c>. Control codes using both input and output buffers
+		/// set both I and O.
+		/// </para>
+		/// <para>V is set if there are no parameters for the code, as with <c>IOC_VOID</c>.</para>
+		/// <para>T is a 2-bit quantity that defines the type of the IOCTL. The following values are defined:</para>
+		/// <para>0 The IOCTL is a standard Unix IOCTL code, as with <c>FIONREAD</c> and <c>FIONBIO</c>.</para>
+		/// <para>1 The IOCTL is a generic Windows Sockets 2 IOCTL code. New IOCTL codes defined for Windows Sockets 2 will have T == 1.</para>
+		/// <para>2 The IOCTL applies only to a specific address family.</para>
+		/// <para>
+		/// 3 The IOCTL applies only to a specific vendor's provider, as with <c>IOC_VENDOR</c>. This type allows companies to be assigned a
+		/// vendor number that appears in the <c>Vendor/Address family</c> parameter. Then, the vendor can define new IOCTLs specific to
+		/// that vendor without having to register the IOCTL with a clearinghouse, thereby providing vendor flexibility and privacy.
+		/// </para>
+		/// <para>
+		/// <c>Vendor/Address family</c> An 11-bit quantity that defines the vendor who owns the code (if T == 3) or that contains the
+		/// address family to which the code applies (if T == 2). If this is a Unix IOCTL code (T == 0) then this parameter has the same
+		/// value as the code on Unix. If this is a generic Windows Sockets 2 IOCTL (T == 1) then this parameter can be used as an extension
+		/// of the code parameter to provide additional code values.
+		/// </para>
+		/// <para><c>Code</c> The 16-bit quantity that contains the specific IOCTL code for the operation.</para>
+		/// <para>The following Unix IOCTL codes (commands) are supported.</para>
+		/// <para>The following Windows Sockets 2 commands are supported.</para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. See ExitThread for more information.
+		/// </para>
+		/// <para>Compatibility</para>
+		/// <para>
+		/// The IOCTL codes with T == 0 are a subset of the IOCTL codes used in Berkeley sockets. In particular, there is no command that is
+		/// equivalent to <c>FIOASYNC</c>.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Some IOCTL codes require additional header files. For example, use of the <c>SIO_RCVALL</c> IOCTL requires the
+		/// Mstcpip.h header file.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaioctl int WSAAPI WSAIoctl( SOCKET s, DWORD
+		// dwIoControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned,
+		// LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
+		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
+		public static Win32Error WSAIoctl<TIn, TOut>(SOCKET s, uint dwIoControlCode, TIn inVal, out TOut outVal) where TIn : struct where TOut : struct
+		{
+			using SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>();
+			var ret = WSAIoctl(s, dwIoControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out var bRet);
+			if (ret == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			{
+				ptrOut.Size = bRet;
+				ret = WSAIoctl(s, dwIoControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out bRet);
+			}
+			outVal = ret.Succeeded ? ptrOut.ToStructure<TOut>() : default;
+			return ret;
+		}
+
 		/// <summary>
 		/// The <c>WSAJoinLeaf</c> function joins a leaf node into a multipoint session, exchanges connect data, and specifies needed
 		/// quality of service based on the specified FLOWSPEC structures.
@@ -10806,7 +10990,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSAEVENT"/> that is disposed using <see cref="WSACloseEvent"/>.</summary>
-		public class SafeWSAEVENT : SafeHANDLE
+		public class SafeWSAEVENT : SafeHANDLE, ISyncHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeWSAEVENT"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
