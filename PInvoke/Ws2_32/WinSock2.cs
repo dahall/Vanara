@@ -1319,16 +1319,16 @@ namespace Vanara.PInvoke
 			public byte[] S_un_b => BitConverter.GetBytes(S_addr);
 
 			/// <summary/>
-			public static readonly IN_ADDR INADDR_ANY = new IN_ADDR(0U);
+			public static readonly IN_ADDR INADDR_ANY = new(0U);
 
 			/// <summary/>
-			public static readonly IN_ADDR INADDR_LOOPBACK = new IN_ADDR(0x7f000001);
+			public static readonly IN_ADDR INADDR_LOOPBACK = new(0x7f000001);
 
 			/// <summary/>
-			public static readonly IN_ADDR INADDR_BROADCAST = new IN_ADDR(0xffffffff);
+			public static readonly IN_ADDR INADDR_BROADCAST = new(0xffffffff);
 
 			/// <summary/>
-			public static readonly IN_ADDR INADDR_NONE = new IN_ADDR(0xffffffff);
+			public static readonly IN_ADDR INADDR_NONE = new(0xffffffff);
 
 			/// <summary>Implements the operator ==.</summary>
 			/// <param name="left">The left.</param>
@@ -1360,17 +1360,17 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="IN_ADDR"/>.</summary>
 			/// <param name="a">A UInt32 value.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IN_ADDR(uint a) => new IN_ADDR(a);
+			public static implicit operator IN_ADDR(uint a) => new(a);
 
 			/// <summary>Performs an implicit conversion from <see cref="System.Int64"/> to <see cref="IN_ADDR"/>.</summary>
 			/// <param name="a">An Int64 value.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IN_ADDR(long a) => new IN_ADDR((uint)a);
+			public static implicit operator IN_ADDR(long a) => new((uint)a);
 
 			/// <summary>Performs an explicit conversion from <see cref="IN_ADDR"/> to <see cref="IN6_ADDR"/>.</summary>
 			/// <param name="ipv4">The ipv4.</param>
 			/// <returns>The resulting <see cref="IN6_ADDR"/> instance from the conversion.</returns>
-			public static explicit operator IN6_ADDR(IN_ADDR ipv4) => new IN6_ADDR(ipv4);
+			public static explicit operator IN6_ADDR(IN_ADDR ipv4) => new(ipv4);
 
 			/// <summary>Determines equality between this instance and <paramref name="other"/>.</summary>
 			/// <param name="other">The other value to compare.</param>
@@ -1502,7 +1502,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="byte"/>[] to <see cref="IN6_ADDR"/>.</summary>
 			/// <param name="a">The byte array.</param>
 			/// <returns>The resulting <see cref="IN6_ADDR"/> instance from the conversion.</returns>
-			public static implicit operator IN6_ADDR(byte[] a) => new IN6_ADDR(a);
+			public static implicit operator IN6_ADDR(byte[] a) => new(a);
 
 			/// <summary>Performs an implicit conversion from <see cref="IN6_ADDR"/> to <see cref="byte"/>[].</summary>
 			/// <param name="a">The <see cref="IN6_ADDR"/> instance.</param>
@@ -1782,7 +1782,7 @@ namespace Vanara.PInvoke
 		public struct SOCKET : IHandle
 		{
 			/// <summary>The handle</summary>
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="SOCKET"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1790,11 +1790,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Represents an invalid socket which is different than a null socket.</summary>
 			/// <value>The invalid socket.</value>
-			public static SOCKET INVALID_SOCKET => new SOCKET(new IntPtr(-1));
+			public static SOCKET INVALID_SOCKET => new(new IntPtr(-1));
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="SOCKET"/> object with <see cref="IntPtr.Zero"/>.</summary>
 			/// <value>Returns a <see cref="SOCKET"/> value.</value>
-			public static SOCKET NULL => new SOCKET(IntPtr.Zero);
+			public static SOCKET NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			/// <value><see langword="true"/> if this instance is null; otherwise, <see langword="false"/>.</value>
@@ -1808,7 +1808,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SOCKET"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator SOCKET(IntPtr h) => new SOCKET(h);
+			public static implicit operator SOCKET(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2569,11 +2569,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Represents an invalid socket which is different than a null socket.</summary>
 			/// <value>The invalid socket.</value>
-			public static SafeSOCKET INVALID_SOCKET => new SafeSOCKET(new IntPtr(-1), false);
+			public static SafeSOCKET INVALID_SOCKET => new(new IntPtr(-1), false);
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="SafeSOCKET"/> object with <see cref="IntPtr.Zero"/>.</summary>
 			/// <value>Returns a <see cref="SafeSOCKET"/> value.</value>
-			public static SafeSOCKET NULL => new SafeSOCKET(IntPtr.Zero, false);
+			public static SafeSOCKET NULL => new(IntPtr.Zero, false);
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeSOCKET"/> to <see cref="SOCKET"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
@@ -2670,7 +2670,7 @@ namespace Vanara.PInvoke
 			public SOCKADDR(IPEndPoint endPoint) : this(endPoint.Address.GetAddressBytes(), (ushort)endPoint.Port) { }
 
 			/// <summary>Gets an instance that represents an empty address.</summary>
-			public static SOCKADDR Empty => new SOCKADDR(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
+			public static SOCKADDR Empty => new(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
 
 			/// <summary>Gets the data behind this address as a byte array.</summary>
 			/// <value>The address data.</value>
@@ -2684,7 +2684,7 @@ namespace Vanara.PInvoke
 			/// <typeparam name="T">Native type</typeparam>
 			/// <param name="value">The value.</param>
 			/// <returns><see cref="SOCKADDR"/> object to an native (unmanaged) memory block the size of T.</returns>
-			public static SOCKADDR CreateFromStructure<T>(T value = default) => new SOCKADDR(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), true, s);
+			public static SOCKADDR CreateFromStructure<T>(T value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), true, s);
 
 			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_IN"/>.</summary>
 			/// <param name="addr">The address.</param>
@@ -2712,12 +2712,17 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR"/>.</summary>
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
-			public static implicit operator SOCKADDR(SOCKADDR_IN addr) => new SOCKADDR(addr);
+			public static implicit operator SOCKADDR(SOCKADDR_IN addr) => new(addr);
 
 			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN6"/> to <see cref="SOCKADDR"/>.</summary>
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
-			public static implicit operator SOCKADDR(SOCKADDR_IN6 addr) => new SOCKADDR(addr);
+			public static implicit operator SOCKADDR(SOCKADDR_IN6 addr) => new(addr);
+
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_INET"/> to <see cref="SOCKADDR"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
+			public static implicit operator SOCKADDR(SOCKADDR_INET addr) => CreateFromStructure(addr);
 
 			/// <summary>Provides a copy of <see cref="SOCKADDR"/> as an array of bytes.</summary>
 			/// <value>The array of bytes from this instance.</value>
