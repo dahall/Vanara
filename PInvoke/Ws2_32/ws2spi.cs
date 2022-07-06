@@ -4426,7 +4426,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides a handle to a WSA event.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct WSAEVENT : IHandle
+		public struct WSAEVENT : ISyncHandle
 		{
 			private IntPtr handle;
 
