@@ -4147,6 +4147,362 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock.h", MSDNShortId = "3a6960c9-0c04-4403-aee1-ce250459dc30")]
 		public static extern int setsockopt(SOCKET s, int level, int optname, IntPtr optval, int optlen);
 
+		/// <summary>The <c>setsockopt</c> function sets a socket option.</summary>
+		/// <param name="s">A descriptor that identifies a socket.</param>
+		/// <param name="level">The level at which the option is defined (for example, SOL_SOCKET).</param>
+		/// <param name="optname">
+		/// The socket option for which the value is to be set (for example, SO_BROADCAST). The optname parameter must be a socket option
+		/// defined within the specified level, or behavior is undefined.
+		/// </param>
+		/// <param name="optval">The value for the requested option is specified.</param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>setsockopt</c> returns zero. Otherwise, a value of SOCKET_ERROR is returned, and a specific error code
+		/// can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The buffer pointed to by the optval parameter is not in a valid part of the process address space or the optlen parameter is too small.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The level parameter is not valid, or the information in the buffer pointed to by the optval parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>The connection has timed out when SO_KEEPALIVE is set.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOPROTOOPT</term>
+		/// <term>The option is unknown or unsupported for the specified provider or socket (see SO_GROUP_PRIORITY limitations).</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTCONN</term>
+		/// <term>The connection has been reset when SO_KEEPALIVE is set.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>setsockopt</c> function sets the current value for a socket option associated with a socket of any type, in any state.
+		/// Although options can exist at multiple protocol levels, they are always present at the uppermost socket level. Options affect
+		/// socket operations, such as whether expedited data (OOB data for example) is received in the normal data stream, and whether
+		/// broadcast messages can be sent on the socket.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If the <c>setsockopt</c> function is called before the bind function, TCP/IP options will not be checked by using
+		/// TCP/IP until the <c>bind</c> occurs. In this case, the <c>setsockopt</c> function call will always succeed, but the <c>bind</c>
+		/// function call can fail because of an early <c>setsockopt</c> call failing.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If a socket is opened, a <c>setsockopt</c> call is made, and then a sendto call is made, Windows Sockets performs an
+		/// implicit bind function call.
+		/// </para>
+		/// <para>
+		/// There are two types of socket options: Boolean options that enable or disable a feature or behavior, and options that require an
+		/// integer value or structure. To enable a Boolean option, the optval parameter points to a nonzero integer. To disable the option
+		/// optval points to an integer equal to zero. The optlen parameter should be equal to for Boolean options. For other options,
+		/// optval points to an integer or structure that contains the desired value for the option, and optlen is the length of the integer
+		/// or structure.
+		/// </para>
+		/// <para>
+		/// The following tables list some of the common options supported by the <c>setsockopt</c> function. The Type column identifies the
+		/// type of data addressed by optval parameter. The Description column provides some basic information about the socket option. For
+		/// more complete lists of socket options and more detailed information (default values, for example), see the detailed topics under
+		/// Socket Options.
+		/// </para>
+		/// <para>level = <c>SOL_SOCKET</c></para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Type</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SO_BROADCAST</term>
+		/// <term>BOOL</term>
+		/// <term>Configures a socket for sending broadcast data.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_CONDITIONAL_ACCEPT</term>
+		/// <term>BOOL</term>
+		/// <term>Enables incoming connections are to be accepted or rejected by the application, not by the protocol stack.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_DEBUG</term>
+		/// <term>BOOL</term>
+		/// <term>Enables debug output. Microsoft providers currently do not output any debug information.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_DONTLINGER</term>
+		/// <term>BOOL</term>
+		/// <term>
+		/// Does not block close waiting for unsent data to be sent. Setting this option is equivalent to setting SO_LINGER with l_onoff set
+		/// to zero.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SO_DONTROUTE</term>
+		/// <term>BOOL</term>
+		/// <term>
+		/// Sets whether outgoing data should be sent on interface the socket is bound to and not a routed on some other interface. This
+		/// option is not supported on ATM sockets (results in an error).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SO_GROUP_PRIORITY</term>
+		/// <term>int</term>
+		/// <term>Reserved.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_KEEPALIVE</term>
+		/// <term>BOOL</term>
+		/// <term>Enables sending keep-alive packets for a socket connection. Not supported on ATM sockets (results in an error).</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_LINGER</term>
+		/// <term>LINGER</term>
+		/// <term>Lingers on close if unsent data is present.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_OOBINLINE</term>
+		/// <term>BOOL</term>
+		/// <term>
+		/// Indicates that out-of-bound data should be returned in-line with regular data. This option is only valid for connection-oriented
+		/// protocols that support out-of-band data. For a discussion of this topic, see Protocol Independent Out-Of-band Data.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SO_RCVBUF</term>
+		/// <term>int</term>
+		/// <term>Specifies the total per-socket buffer space reserved for receives.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_REUSEADDR</term>
+		/// <term>BOOL</term>
+		/// <term>
+		/// Allows the socket to be bound to an address that is already in use. For more information, see bind. Not applicable on ATM sockets.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SO_EXCLUSIVEADDRUSE</term>
+		/// <term>BOOL</term>
+		/// <term>Enables a socket to be bound for exclusive access. Does not require administrative privilege.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_RCVTIMEO</term>
+		/// <term>DWORD</term>
+		/// <term>Sets the timeout, in milliseconds, for blocking receive calls.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_SNDBUF</term>
+		/// <term>int</term>
+		/// <term>Specifies the total per-socket buffer space reserved for sends.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_SNDTIMEO</term>
+		/// <term>DWORD</term>
+		/// <term>The timeout, in milliseconds, for blocking send calls.</term>
+		/// </item>
+		/// <item>
+		/// <term>SO_UPDATE_ACCEPT_CONTEXT</term>
+		/// <term>int</term>
+		/// <term>Updates the accepting socket with the context of the listening socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>PVD_CONFIG</term>
+		/// <term>Service Provider Dependent</term>
+		/// <term>
+		/// This object stores the configuration information for the service provider associated with socket s. The exact format of this
+		/// data structure is service provider specific.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>For more complete and detailed information about socket options for level = <c>SOL_SOCKET</c>, see SOL_SOCKET Socket Options.</para>
+		/// <para>level = <c>IPPROTO_TCP</c></para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Type</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TCP_NODELAY</term>
+		/// <term>BOOL</term>
+		/// <term>
+		/// Disables the Nagle algorithm for send coalescing.This socket option is included for backward compatibility with Windows Sockets 1.1
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// For more complete and detailed information about socket options for level = <c>IPPROTO_TCP</c>, see IPPROTO_TCP Socket Options.
+		/// </para>
+		/// <para>level = <c>NSPROTO_IPX</c></para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Type</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IPX_PTYPE</term>
+		/// <term>int</term>
+		/// <term>Sets the IPX packet type.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPX_FILTERPTYPE</term>
+		/// <term>int</term>
+		/// <term>Sets the receive filter packet type</term>
+		/// </item>
+		/// <item>
+		/// <term>IPX_STOPFILTERPTYPE</term>
+		/// <term>int</term>
+		/// <term>Stops filtering the filter type set with IPX_FILTERTYPE</term>
+		/// </item>
+		/// <item>
+		/// <term>IPX_DSTYPE</term>
+		/// <term>int</term>
+		/// <term>Sets the value of the data stream field in the SPX header on every packet sent.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPX_EXTENDED_ADDRESS</term>
+		/// <term>BOOL</term>
+		/// <term>Sets whether extended addressing is enabled.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPX_RECVHDR</term>
+		/// <term>BOOL</term>
+		/// <term>Sets whether the protocol header is sent up on all receive headers.</term>
+		/// </item>
+		/// <item>
+		/// <term>IPX_RECEIVE_BROADCAST</term>
+		/// <term>BOOL</term>
+		/// <term>
+		/// Indicates broadcast packets are likely on the socket. Set to TRUE by default. Applications that do not use broadcasts should set
+		/// this to FALSE for better system performance.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IPX_IMMEDIATESPXACK</term>
+		/// <term>BOOL</term>
+		/// <term>
+		/// Directs SPX connections not to delay before sending an ACK. Applications without back-and-forth traffic should set this to TRUE
+		/// to increase performance.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// For more complete and detailed information about socket options for level = <c>NSPROTO_IPX</c>, see NSPROTO_IPX Socket Options.
+		/// </para>
+		/// <para>BSD options not supported for <c>setsockopt</c> are shown in the following table.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Type</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SO_ACCEPTCONN</term>
+		/// <term>BOOL</term>
+		/// <term>
+		/// Returns whether a socket is in listening mode. This option is only Valid for connection-oriented protocols. This socket option
+		/// is not supported for the setting.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SO_RCVLOWAT</term>
+		/// <term>int</term>
+		/// <term>
+		/// A socket option from BSD UNIX included for backward compatibility. This option sets the minimum number of bytes to process for
+		/// socket input operations.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SO_SNDLOWAT</term>
+		/// <term>int</term>
+		/// <term>
+		/// A socket option from BSD UNIX included for backward compatibility. This option sets the minimum number of bytes to process for
+		/// socket output operations.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SO_TYPE</term>
+		/// <term>int</term>
+		/// <term>
+		/// Returns the socket type for the given socket (SOCK_STREAM or SOCK_DGRAM, for example This socket option is not supported for the
+		/// setting the socket type.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>setsockopt</c>, Winsock may need to wait for a network event before
+		/// the call can complete. Winsock performs an alertable wait in this situation, which can be interrupted by an asynchronous
+		/// procedure call (APC) scheduled on the same thread. Issuing another blocking Winsock call inside an APC that interrupted an
+		/// ongoing blocking Winsock call on the same thread will lead to undefined behavior, and must never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the <c>setsockopt</c> function.</para>
+		/// <para>Notes for IrDA Sockets</para>
+		/// <para>When developing applications using Windows sockets for IrDA, note the following:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The Af_irda.h header file must be explicitly included.</term>
+		/// </item>
+		/// <item>
+		/// <term>IrDA provides the following socket option:</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The IRLMP_IAS_SET socket option enables the application to set a single attribute of a single class in the local IAS. The
+		/// application specifies the class to set, the attribute, and attribute type. The application is expected to allocate a buffer of
+		/// the necessary size for the passed parameters.
+		/// </para>
+		/// <para>
+		/// IrDA provides an IAS database that stores IrDA-based information. Limited access to the IAS database is available through the
+		/// Windows Sockets 2 interface, but such access is not normally used by applications, and exists primarily to support connections
+		/// to non-Windows devices that are not compliant with the Windows Sockets 2 IrDA conventions.
+		/// </para>
+		/// <para>The following structure, <c>IAS_SET</c>, is used with the IRLMP_IAS_SET setsockopt option to manage the local IAS database:</para>
+		/// <para>The following structure, <c>IAS_QUERY</c>, is used with the IRLMP_IAS_QUERY setsockopt option to query a peer's IAS database:</para>
+		/// <para>Many SO_ level socket options are not meaningful to IrDA. Only SO_LINGER is specifically supported.</para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-setsockopt int setsockopt( SOCKET s, int level, int
+		// optname, const char *optval, int optlen );
+		[PInvokeData("winsock.h", MSDNShortId = "3a6960c9-0c04-4403-aee1-ce250459dc30")]
+		public static int setsockopt<TLvl, TIn>(SOCKET s, TLvl level, int optname, in TIn optval) where TIn : struct where TLvl : IConvertible
+		{
+			using var mem = SafeCoTaskMemHandle.CreateFromStructure(optval);
+			return setsockopt(s, level.ToInt32(null), optname, mem, mem.Size);
+		}
+
 		/// <summary>The <c>shutdown</c> function disables sends or receives on a socket.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
 		/// <param name="how">
