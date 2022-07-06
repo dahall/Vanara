@@ -621,7 +621,7 @@ namespace Vanara.PInvoke
 			if (!ret && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			{
 				ptrOut.Size = bRet;
-				ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out bRet, IntPtr.Zero);
+				ret = DeviceIoControl(hDev, ioControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out bRet, IntPtr.Zero);
 			}
 			outVal = ret ? ptrOut.ToStructure<TOut>() : default;
 			return ret;
