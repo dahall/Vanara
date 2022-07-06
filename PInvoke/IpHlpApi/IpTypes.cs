@@ -557,7 +557,7 @@ namespace Vanara.PInvoke
 			/// <para>The interface index for the IPv6 IP address. This member is zero if IPv6 is not available on the interface.</para>
 			/// <para><c>Note</c> This structure member is only available on Windows XP with SP1 and later.</para>
 			/// </summary>
-			private readonly uint Ipv6IfIndex;
+			public uint Ipv6IfIndex;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD[16]</c></para>
