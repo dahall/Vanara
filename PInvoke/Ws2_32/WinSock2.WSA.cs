@@ -780,7 +780,7 @@ namespace Vanara.PInvoke
 		// lpdwAddressStringLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
-		public static extern Win32Error WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, in WSAPROTOCOL_INFO lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
+		public static extern int WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, in WSAPROTOCOL_INFO lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
 
 		/// <summary>
 		/// <para>
@@ -880,9 +880,9 @@ namespace Vanara.PInvoke
 			{
 				StringBuilder sb = new((int)sz);
 				err = WSAAddressToString(lpsaAddress, (uint)lpsaAddress.Size, pc, sb, ref sz);
-				if (err.Succeeded) lpszAddressString = sb.ToString();
+				if (err == 0) lpszAddressString = sb.ToString();
 			}
-			return err;
+			return WSAGetLastError();
 		}
 
 		/// <summary>
@@ -989,7 +989,7 @@ namespace Vanara.PInvoke
 		// lpdwAddressStringLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
-		public static extern Win32Error WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, [Optional] IntPtr lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
+		public static extern int WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, [Optional] IntPtr lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
 
 		/// <summary>
 		/// <para>The <c>WSAAsyncGetHostByAddr</c> function asynchronously retrieves host information that corresponds to an address.</para>
@@ -2276,7 +2276,7 @@ namespace Vanara.PInvoke
 		// u_int wMsg, long lEvent );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "a4d3f599-358c-4a94-91eb-7e1c80244250")]
-		public static extern Win32Error WSAAsyncSelect(SOCKET s, HWND hWnd, uint wMsg, int lEvent);
+		public static extern int WSAAsyncSelect(SOCKET s, HWND hWnd, uint wMsg, int lEvent);
 
 		/// <summary>The <c>WSACancelAsyncRequest</c> function cancels an incomplete asynchronous operation.</summary>
 		/// <param name="hAsyncTaskHandle">Handle that specifies the asynchronous operation to be canceled.</param>
@@ -2336,7 +2336,7 @@ namespace Vanara.PInvoke
 		// hAsyncTaskHandle );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "0e53eccf-ef85-43ec-a02c-12896471a7a9")]
-		public static extern Win32Error WSACancelAsyncRequest(HANDLE hAsyncTaskHandle);
+		public static extern int WSACancelAsyncRequest(HANDLE hAsyncTaskHandle);
 
 		/// <summary>The <c>WSACleanup</c> function terminates use of the Winsock 2 DLL (Ws2_32.dll).</summary>
 		/// <returns>
@@ -2414,7 +2414,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-wsacleanup int WSACleanup( );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "72b7cc3e-be34-41e7-acbf-61742149ec8b")]
-		public static extern Win32Error WSACleanup();
+		public static extern int WSACleanup();
 
 		/// <summary>The <c>WSACloseEvent</c> function closes an open event object handle.</summary>
 		/// <param name="hEvent">Object handle identifying the open event.</param>
@@ -2727,7 +2727,7 @@ namespace Vanara.PInvoke
 		// sockaddr *name, int namelen, LPWSABUF lpCallerData, LPWSABUF lpCalleeData, LPQOS lpSQOS, LPQOS lpGQOS );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3b32cc6e-3df7-4104-a0d4-317fd445c7b2")]
-		public static extern Win32Error WSAConnect(SOCKET s, [In] SOCKADDR name, int namelen, [In, Optional] IntPtr lpCallerData,
+		public static extern int WSAConnect(SOCKET s, [In] SOCKADDR name, int namelen, [In, Optional] IntPtr lpCallerData,
 			[Out, Optional] IntPtr lpCalleeData, [Optional] IntPtr lpSQOS, [Optional] IntPtr lpGQOS);
 
 		/// <summary>
@@ -3267,7 +3267,7 @@ namespace Vanara.PInvoke
 		// SOCKET s, DWORD dwProcessId, LPWSAPROTOCOL_INFOA lpProtocolInfo );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "d4028461-bfa6-4074-9460-5d1371790d41")]
-		public static extern Win32Error WSADuplicateSocket(SOCKET s, uint dwProcessId, out WSAPROTOCOL_INFO lpProtocolInfo);
+		public static extern int WSADuplicateSocket(SOCKET s, uint dwProcessId, out WSAPROTOCOL_INFO lpProtocolInfo);
 
 		/// <summary>The <c>WSAEnumNameSpaceProviders</c> function retrieves information on available namespace providers.</summary>
 		/// <param name="lpdwBufferLength">
@@ -4039,7 +4039,7 @@ namespace Vanara.PInvoke
 		// WSAEVENT hEventObject, long lNetworkEvents );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f98a71e4-47fb-47a4-b37e-e4cc801a8f98")]
-		public static extern Win32Error WSAEventSelect(SOCKET s, WSAEVENT hEventObject, FD lNetworkEvents);
+		public static extern int WSAEventSelect(SOCKET s, WSAEVENT hEventObject, FD lNetworkEvents);
 
 		/// <summary>The <c>WSAGetLastError</c> function returns the error status for the last Windows Sockets operation that failed.</summary>
 		/// <returns>The return value indicates the error code for this thread's last Windows Sockets operation that failed.</returns>
@@ -4350,7 +4350,7 @@ namespace Vanara.PInvoke
 		// lpServiceClassInfo );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "e177bb7d-c7d3-43a4-a809-ab8212feea2e")]
-		public static extern Win32Error WSAGetServiceClassInfo(in Guid lpProviderId, in Guid lpServiceClassId, ref uint lpdwBufSize, IntPtr lpServiceClassInfo);
+		public static extern int WSAGetServiceClassInfo(in Guid lpProviderId, in Guid lpServiceClassId, ref uint lpdwBufSize, IntPtr lpServiceClassInfo);
 
 		/// <summary>
 		/// The <c>WSAGetServiceClassNameByClassId</c> function retrieves the name of the service associated with the specified type. This
@@ -4415,7 +4415,7 @@ namespace Vanara.PInvoke
 		// WSAGetServiceClassNameByClassIdA( LPGUID lpServiceClassId, LPSTR lpszServiceClassName, LPDWORD lpdwBufferLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "0a61751e-10e5-4f91-a0b2-8c1baf477653")]
-		public static extern Win32Error WSAGetServiceClassNameByClassId(in Guid lpServiceClassId, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszServiceClassName, ref uint lpdwBufferLength);
+		public static extern int WSAGetServiceClassNameByClassId(in Guid lpServiceClassId, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszServiceClassName, ref uint lpdwBufferLength);
 
 		/// <summary>The <c>WSAHtonl</c> function converts a <c>u_long</c> from host byte order to network byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4477,7 +4477,7 @@ namespace Vanara.PInvoke
 		// hostlong, OUT u_long *lpnetlong );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "33512f49-d576-4439-ad8d-5c87387d6214")]
-		public static extern Win32Error WSAHtonl([In] SOCKET s, [In] uint hostlong, out uint lpnetlong);
+		public static extern int WSAHtonl([In] SOCKET s, [In] uint hostlong, out uint lpnetlong);
 
 		/// <summary>The <c>WSAHtons</c> function converts a <c>u_short</c> from host byte order to network byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4538,7 +4538,7 @@ namespace Vanara.PInvoke
 		// hostshort, OUT u_short *lpnetshort );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "95fb103b-f7dd-4fa4-bf68-ed8e87cdd96b")]
-		public static extern Win32Error WSAHtons([In] SOCKET s, [In] ushort hostshort, out ushort lpnetshort);
+		public static extern int WSAHtons([In] SOCKET s, [In] ushort hostshort, out ushort lpnetshort);
 
 		/// <summary>
 		/// The <c>WSAInstallServiceClass</c> function registers a service class schema within a namespace. This schema includes the class
@@ -4605,7 +4605,7 @@ namespace Vanara.PInvoke
 		// WSAInstallServiceClassA( LPWSASERVICECLASSINFOA lpServiceClassInfo );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "06760319-aeeb-4ad7-b77a-01efea7ed904")]
-		public static extern Win32Error WSAInstallServiceClass(in WSASERVICECLASSINFO lpServiceClassInfo);
+		public static extern int WSAInstallServiceClass(in WSASERVICECLASSINFO lpServiceClassInfo);
 
 		/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4844,7 +4844,7 @@ namespace Vanara.PInvoke
 		// LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
-		public static extern Win32Error WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] IntPtr lpCompletionRoutine);
+		public static extern int WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] IntPtr lpCompletionRoutine);
 
 		/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -5021,13 +5021,13 @@ namespace Vanara.PInvoke
 		{
 			using SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>();
 			var ret = WSAIoctl(s, dwIoControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out var bRet);
-			if (ret == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			if (ret == SOCKET_ERROR)
 			{
-				ptrOut.Size = bRet;
-				ret = WSAIoctl(s, dwIoControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out bRet);
+				outVal = default;
+				return WSAGetLastError();
 			}
-			outVal = ret.Succeeded ? ptrOut.ToStructure<TOut>() : default;
-			return ret;
+			outVal = ptrOut.ToStructure<TOut>();
+			return Win32Error.ERROR_SUCCESS;
 		}
 
 		/// <summary>
@@ -5543,7 +5543,7 @@ namespace Vanara.PInvoke
 		// LPWSAQUERYSETA lpqsRestrictions, DWORD dwControlFlags, LPHANDLE lphLookup );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "448309ef-b9dd-4960-8016-d26691df59ec")]
-		public static extern Win32Error WSALookupServiceBegin(in WSAQUERYSET lpqsRestrictions, LUP dwControlFlags, out HANDLE lphLookup);
+		public static extern int WSALookupServiceBegin(in WSAQUERYSET lpqsRestrictions, LUP dwControlFlags, out HANDLE lphLookup);
 
 		/// <summary>
 		/// <para>
@@ -5592,7 +5592,7 @@ namespace Vanara.PInvoke
 		// HANDLE hLookup );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f9d2ac54-a818-464d-918e-80ebb5b1b106")]
-		public static extern Win32Error WSALookupServiceEnd(HANDLE hLookup);
+		public static extern int WSALookupServiceEnd(HANDLE hLookup);
 
 		/// <summary>
 		/// <para>
@@ -5878,7 +5878,7 @@ namespace Vanara.PInvoke
 		// HANDLE hLookup, DWORD dwControlFlags, LPDWORD lpdwBufferLength, LPWSAQUERYSETA lpqsResults );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "ab4f1830-b38d-4224-a6a9-6d4512245ad6")]
-		public static extern Win32Error WSALookupServiceNext(HANDLE hLookup, LUP dwControlFlags, ref uint lpdwBufferLength, [Out] IntPtr lpqsResults);
+		public static extern int WSALookupServiceNext(HANDLE hLookup, LUP dwControlFlags, ref uint lpdwBufferLength, [Out] IntPtr lpqsResults);
 
 		/// <summary>The Windows Sockets <c>WSANSPIoctl</c> function enables developers to make I/O control calls to a registered namespace.</summary>
 		/// <param name="hLookup">The lookup handle returned from a previous call to the WSALookupServiceBegin function.</param>
@@ -6010,7 +6010,7 @@ namespace Vanara.PInvoke
 		// LPWSACOMPLETION lpCompletion );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "6ecaedf0-0038-46d3-9916-c9cb069c5e92")]
-		public static extern Win32Error WSANSPIoctl(HANDLE hLookup, uint dwControlCode, [In, Optional] IntPtr lpvInBuffer, uint cbInBuffer, [Out, Optional] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [In, Optional] IntPtr lpCompletion);
+		public static extern int WSANSPIoctl(HANDLE hLookup, uint dwControlCode, [In, Optional] IntPtr lpvInBuffer, uint cbInBuffer, [Out, Optional] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [In, Optional] IntPtr lpCompletion);
 
 		/// <summary>The <c>WSANtohl</c> function converts a <c>u_long</c> from network byte order to host byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -6072,7 +6072,7 @@ namespace Vanara.PInvoke
 		// u_long *lphostlong );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7e3b42eb-3b93-459f-828a-c19e277882c7")]
-		public static extern Win32Error WSANtohl(SOCKET s, uint netlong, out uint lphostlong);
+		public static extern int WSANtohl(SOCKET s, uint netlong, out uint lphostlong);
 
 		/// <summary>The <c>WSANtohs</c> function converts a <c>u_short</c> from network byte order to host byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -6133,7 +6133,7 @@ namespace Vanara.PInvoke
 		// u_short *lphostshort );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "0a4bc3a9-9919-4dcb-8a37-af37e0243c8f")]
-		public static extern Win32Error WSANtohs(SOCKET s, ushort netshort, out ushort lphostshort);
+		public static extern int WSANtohs(SOCKET s, ushort netshort, out ushort lphostshort);
 
 		/// <summary>The <c>WSAPoll</c> function determines status of one or more sockets.</summary>
 		/// <param name="fdArray">
@@ -6327,7 +6327,7 @@ namespace Vanara.PInvoke
 		// fds, INT timeout );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3f6f872c-5cee-49f3-bf22-2e8a5d147987")]
-		public static extern Win32Error WSAPoll([In, Out, MarshalAs(UnmanagedType.LPArray)] WSAPOLLFD[] fdArray, uint fds, int timeout);
+		public static extern int WSAPoll([In, Out, MarshalAs(UnmanagedType.LPArray)] WSAPOLLFD[] fdArray, uint fds, int timeout);
 
 		/// <summary>The <c>WSAProviderConfigChange</c> function notifies the application when the provider configuration is changed.</summary>
 		/// <param name="lpNotificationHandle">
@@ -6411,7 +6411,7 @@ namespace Vanara.PInvoke
 		// lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "abaf367a-8f99-478c-a58c-d57e9f9cd8a1")]
-		public static extern Win32Error WSAProviderConfigChange(ref HANDLE lpNotificationHandle, [In, Out, Optional] IntPtr lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		public static extern int WSAProviderConfigChange(ref HANDLE lpNotificationHandle, [In, Out, Optional] IntPtr lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSARecv</c> function receives data from a connected socket or a bound connectionless socket.</summary>
 		/// <param name="s">A descriptor identifying a connected socket.</param>
@@ -6804,7 +6804,7 @@ namespace Vanara.PInvoke
 		// LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "bfe66e11-e9a7-4321-ad55-3141113e9a03")]
-		public static extern Win32Error WSARecv(SOCKET s, [In] IntPtr lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [In, Out, Optional] IntPtr lpOverlapped,
+		public static extern int WSARecv(SOCKET s, [In] IntPtr lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>
@@ -6899,7 +6899,7 @@ namespace Vanara.PInvoke
 		// LPWSABUF lpInboundDisconnectData );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "33e0fb8e-3ece-427f-b3ef-43a0f5cf0cc8")]
-		public static extern Win32Error WSARecvDisconnect(SOCKET s, [In, Out, Optional] IntPtr lpInboundDisconnectData);
+		public static extern int WSARecvDisconnect(SOCKET s, [In, Out, Optional] IntPtr lpInboundDisconnectData);
 
 		/// <summary>The <c>WSARecvFrom</c> function receives a datagram and stores the source address.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -7199,7 +7199,7 @@ namespace Vanara.PInvoke
 		// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "8617dbb8-0e4e-4cd3-9597-5d20de6778f6")]
-		public static extern Win32Error WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
+		public static extern int WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
 			[Out] SOCKADDR lpFrom, ref int lpFromlen, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSARemoveServiceClass</c> function permanently removes the service class schema from the registry.</summary>
@@ -7246,7 +7246,7 @@ namespace Vanara.PInvoke
 		// LPGUID lpServiceClassId );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7d72f727-cca9-4a07-beb4-d64f23c1f0c1")]
-		public static extern Win32Error WSARemoveServiceClass(in Guid lpServiceClassId);
+		public static extern int WSARemoveServiceClass(in Guid lpServiceClassId);
 
 		/// <summary>The <c>WSAResetEvent</c> function resets the state of the specified event object to nonsignaled.</summary>
 		/// <param name="hEvent">A handle that identifies an open event object handle.</param>
@@ -7590,7 +7590,7 @@ namespace Vanara.PInvoke
 		// lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "764339e6-a1ac-455d-8ebd-ad0fa50dc3b0")]
-		public static extern Win32Error WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
+		public static extern int WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 			MsgFlags dwFlags, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>
@@ -7674,7 +7674,7 @@ namespace Vanara.PInvoke
 		// LPWSABUF lpOutboundDisconnectData );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "c05fc719-e35a-4194-ac01-a294b19ccce9")]
-		public static extern Win32Error WSASendDisconnect(SOCKET s, in WSABUF lpOutboundDisconnectData);
+		public static extern int WSASendDisconnect(SOCKET s, in WSABUF lpOutboundDisconnectData);
 
 		/// <summary>
 		/// The <c>WSASendDisconnect</c> function initiates termination of the connection for the socket and sends disconnect data.
@@ -7757,7 +7757,7 @@ namespace Vanara.PInvoke
 		// LPWSABUF lpOutboundDisconnectData );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "c05fc719-e35a-4194-ac01-a294b19ccce9")]
-		public static extern Win32Error WSASendDisconnect(SOCKET s, [In, Optional] IntPtr lpOutboundDisconnectData);
+		public static extern int WSASendDisconnect(SOCKET s, [In, Optional] IntPtr lpOutboundDisconnectData);
 
 		/// <summary>The <c>WSASendMsg</c> function sends data and optional control information from connected and unconnected sockets.</summary>
 		/// <param name="Handle">A descriptor identifying the socket.</param>
@@ -8064,7 +8064,7 @@ namespace Vanara.PInvoke
 		// lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3b2ba645-6a70-4ba2-b4a2-5bde0c7f8d08")]
-		public static extern Win32Error WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, [In, Out, Optional] IntPtr lpOverlapped,
+		public static extern int WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSASendTo</c> function sends data to a specific destination, using overlapped I/O where applicable.</summary>
@@ -8370,7 +8370,7 @@ namespace Vanara.PInvoke
 		// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "e3a11522-871c-4d6b-a2e6-ca91ffc2b698")]
-		public static extern Win32Error WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
+		public static extern int WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 			MsgFlags dwFlags, [In, Optional] SOCKADDR lpTo, int iTolen, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
@@ -8727,7 +8727,7 @@ namespace Vanara.PInvoke
 		// lpqsRegInfo, WSAESETSERVICEOP essoperation, DWORD dwControlFlags );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "21a8ff26-4c9e-4846-a75a-1a27c746edab")]
-		public static extern Win32Error WSASetService(in WSAQUERYSET lpqsRegInfo, WSAESETSERVICEOP essoperation, ServiceInstallFlags dwControlFlags);
+		public static extern int WSASetService(in WSAQUERYSET lpqsRegInfo, WSAESETSERVICEOP essoperation, ServiceInstallFlags dwControlFlags);
 
 		/// <summary>The <c>WSASocket</c> function creates a socket that is bound to a specific transport-service provider.</summary>
 		/// <param name="af">
@@ -10181,7 +10181,7 @@ namespace Vanara.PInvoke
 		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-		public static extern Win32Error WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, in WSAPROTOCOL_INFO lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+		public static extern int WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, in WSAPROTOCOL_INFO lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
 
 		/// <summary>
 		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
@@ -10262,7 +10262,7 @@ namespace Vanara.PInvoke
 		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-		public static extern Win32Error WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+		public static extern int WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
 
 		/// <summary>
 		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
@@ -10343,7 +10343,7 @@ namespace Vanara.PInvoke
 		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-		public static extern Win32Error WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] IntPtr lpAddress, ref int lpAddressLength);
+		public static extern int WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] IntPtr lpAddress, ref int lpAddressLength);
 
 		/// <summary>
 		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
@@ -10359,12 +10359,6 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="lpAddress">
 		/// A pointer to a buffer that is filled with a sockaddr structure for the address string if the function succeeds.
-		/// </param>
-		/// <param name="lpAddressLength">
-		/// A pointer to the length, in bytes, of the buffer pointed to by the lpAddress parameter. If the function call is successful, this
-		/// parameter returns a pointer to the size of the sockaddr structure returned in the lpAddress parameter. If the specified buffer
-		/// is not large enough, the function fails with a specific error of WSAEFAULT and this parameter is updated with the required size
-		/// in bytes.
 		/// </param>
 		/// <returns>
 		/// <para>
@@ -10429,8 +10423,8 @@ namespace Vanara.PInvoke
 			using var addr = new SafeCoTaskMemStruct<SOCKADDR_INET>();
 			int sz = addr.Size;
 			var err = WSAStringToAddress(AddressString, AddressFamily, pc, addr, ref sz);
-			lpAddress = addr;
-			return err;
+			lpAddress = addr.Value;
+			return err == SOCKET_ERROR ? WSAGetLastError() : Win32Error.ERROR_SUCCESS;
 		}
 
 		/// <summary>
