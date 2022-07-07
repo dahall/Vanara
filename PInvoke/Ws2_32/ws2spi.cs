@@ -4428,14 +4428,20 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct WSAEVENT : ISyncHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="WSAEVENT"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public WSAEVENT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
+			/// <summary>Represents an invalid event handle.</summary>
+			public static WSAEVENT WSA_INVALID_EVENT => new(IntPtr.Zero);
+
 			/// <summary>Returns an invalid handle by instantiating a <see cref="WSAEVENT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static WSAEVENT NULL => new WSAEVENT(IntPtr.Zero);
+			public static WSAEVENT NULL => new(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is invalid.</summary>
+			public bool IsInvalid => handle == IntPtr.Zero;
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -4448,7 +4454,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSAEVENT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator WSAEVENT(IntPtr h) => new WSAEVENT(h);
+			public static implicit operator WSAEVENT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
