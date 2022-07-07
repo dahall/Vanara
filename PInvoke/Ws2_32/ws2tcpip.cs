@@ -1419,7 +1419,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-getipv4sourcefilter int getipv4sourcefilter( SOCKET
 		// Socket, IN_ADDR Interface, IN_ADDR Group, MULTICAST_MODE_TYPE *FilterMode, ULONG *SourceCount, IN_ADDR *SourceList );
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "17D35D24-C419-4787-AB93-E6B1B6B13807")]
-		public static Win32Error getipv4sourcefilter(SOCKET Socket, IN_ADDR Interface, IN_ADDR Group, out MULTICAST_MODE_TYPE FilterMode, ref int SourceCount, IN_ADDR[] SourceList)
+		public static int getipv4sourcefilter(SOCKET Socket, IN_ADDR Interface, IN_ADDR Group, out MULTICAST_MODE_TYPE FilterMode, ref int SourceCount, IN_ADDR[] SourceList)
 		{
 			FilterMode = MULTICAST_MODE_TYPE.MCAST_INCLUDE;
 
@@ -1709,7 +1709,7 @@ namespace Vanara.PInvoke
 		// Interface, const SOCKADDR *Group, int GroupLength, MULTICAST_MODE_TYPE *FilterMode, ULONG *SourceCount, SOCKADDR_STORAGE
 		// *SourceList );
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "2CA84000-F114-439D-BEDE-9990044C7785")]
-		public static Win32Error getsourcefilter(SOCKET Socket, uint Interface, [In] SOCKADDR Group, int GroupLength, out MULTICAST_MODE_TYPE FilterMode, ref int SourceCount, SOCKADDR_STORAGE[] SourceList)
+		public static int getsourcefilter(SOCKET Socket, uint Interface, [In] SOCKADDR Group, int GroupLength, out MULTICAST_MODE_TYPE FilterMode, ref int SourceCount, SOCKADDR_STORAGE[] SourceList)
 		{
 			FilterMode = MULTICAST_MODE_TYPE.MCAST_INCLUDE;
 
@@ -3281,7 +3281,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-setipv4sourcefilter int setipv4sourcefilter( SOCKET
 		// Socket, IN_ADDR Interface, IN_ADDR Group, MULTICAST_MODE_TYPE FilterMode, ULONG SourceCount, const IN_ADDR *SourceList );
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "C296D050-9195-42B5-8EBE-C6004F2DA855")]
-		public static Win32Error setipv4sourcefilter(SOCKET Socket, IN_ADDR Interface, IN_ADDR Group, MULTICAST_MODE_TYPE FilterMode, uint SourceCount, IN_ADDR[] SourceList)
+		public static int setipv4sourcefilter(SOCKET Socket, IN_ADDR Interface, IN_ADDR Group, MULTICAST_MODE_TYPE FilterMode, uint SourceCount, IN_ADDR[] SourceList)
 		{
 			if (SourceCount > SourceList.Length)
 			{
@@ -3345,7 +3345,7 @@ namespace Vanara.PInvoke
 		// Interface, const SOCKADDR *Group, int GroupLength, MULTICAST_MODE_TYPE FilterMode, ULONG SourceCount, const SOCKADDR_STORAGE
 		// *SourceList );
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "320455F3-FDFB-46C6-9F26-3C60064A2CB0")]
-		public static Win32Error setsourcefilter(SOCKET Socket, uint Interface, [In] SOCKADDR Group, int GroupLength, MULTICAST_MODE_TYPE FilterMode, uint SourceCount, SOCKADDR_STORAGE[] SourceList)
+		public static int setsourcefilter(SOCKET Socket, uint Interface, [In] SOCKADDR Group, int GroupLength, MULTICAST_MODE_TYPE FilterMode, uint SourceCount, SOCKADDR_STORAGE[] SourceList)
 		{
 			if (SourceCount > SourceList.Length || GroupLength > Group.Size)
 			{
