@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE1006 // Naming Styles
-
-using System;
+﻿using System;
 using System.Data;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -422,44 +420,7 @@ namespace Vanara.PInvoke
 		/// A pointer to the WSAPROTOCOL_INFO structure for a particular provider. If this is parameter is <c>NULL</c>, the call is routed
 		/// to the provider of the first protocol supporting the address family indicated in the lpsaAddress parameter.
 		/// </param>
-		/// <param name="lpszAddressString">The human-readable address string.</param>
-		/// <returns>
-		/// <para>
-		/// If no error occurs, <c>WSAAddressToString</c> returns a value of zero. Otherwise, the value SOCKET_ERROR is returned, and a
-		/// specific error number can be retrieved by calling WSAGetLastError.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Error code</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>WSAEFAULT</term>
-		/// <term>
-		/// The specified lpcsAddress, lpProtocolInfo, and lpszAddressString parameters point to memory that is not all in the address space
-		/// of the process, or the buffer pointed to by the lpszAddressString parameter is too small. Pass in a larger buffer.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINVAL</term>
-		/// <term>
-		/// An invalid parameter was passed. This error is returned if the lpsaAddress, dwAddressLength, or lpdwAddressStringLength
-		/// parameter are NULL. This error is also returned if the specified address is not a valid socket address, or no transport provider
-		/// supports the indicated address family.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WSAENOBUFS</term>
-		/// <term>No buffer space is available.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSANOTINITIALISED</term>
-		/// <term>
-		/// The Winsock 2 DLL has not been initialized. The application must first call WSAStartup before calling any Windows Sockets functions.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </returns>
+		/// <returns>The human-readable address string.</returns>
 		/// <remarks>
 		/// <para>
 		/// The <c>WSAAddressToString</c> function provides a protocol-independent address-to-string translation. The
@@ -506,7 +467,7 @@ namespace Vanara.PInvoke
 				err = WSAAddressToString(lpsaAddress, (uint)lpsaAddress.Size, pc, sb, ref sz);
 				if (err == 0) return sb.ToString();
 			}
-			err.ThrowIfFailed();
+			throw err.GetException();
 		}
 
 		/// <summary>
@@ -4641,17 +4602,17 @@ namespace Vanara.PInvoke
 		// dwIoControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned,
 		// LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
-		public static Win32Error WSAIoctl<TIn, TOut>(SOCKET s, uint dwIoControlCode, TIn inVal, out TOut outVal) where TIn : struct where TOut : struct
+		public static SocketError WSAIoctl<TIn, TOut>(SOCKET s, uint dwIoControlCode, TIn inVal, out TOut outVal) where TIn : struct where TOut : struct
 		{
 			using SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>();
 			var ret = WSAIoctl(s, dwIoControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out var bRet);
-			if (ret == SOCKET_ERROR)
+			if (ret == SocketError.SocketError)
 			{
 				outVal = default;
 				return WSAGetLastError();
 			}
 			outVal = ptrOut.ToStructure<TOut>();
-			return Win32Error.ERROR_SUCCESS;
+			return SocketError.Success;
 		}
 
 		/// <summary>
@@ -8074,7 +8035,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsasetlasterror void WSASetLastError( int iError );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "596155ee-3dcc-4ae3-97ab-0653e019cbee")]
-		public static extern void WSASetLastError(int iError);
+		public static extern void WSASetLastError(SocketError iError);
 
 		/// <summary>The <c>WSASetService</c> function registers or removes from the registry a service instance within one or more namespaces.</summary>
 		/// <param name="lpqsRegInfo">A pointer to the service information for registration or deregistration.</param>
@@ -9981,39 +9942,7 @@ namespace Vanara.PInvoke
 		/// The WSAPROTOCOL_INFO structure associated with the provider to be used. If this is <c>NULL</c>, the call is routed to the
 		/// provider of the first protocol supporting the indicated AddressFamily.
 		/// </param>
-		/// <param name="lpAddress">
-		/// A pointer to a buffer that is filled with a sockaddr structure for the address string if the function succeeds.
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// The return value for <c>WSAStringToAddress</c> is zero if the operation was successful. Otherwise, the value SOCKET_ERROR is
-		/// returned, and a specific error number can be retrieved by calling WSAGetLastError.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Error code</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>WSAEFAULT</term>
-		/// <term>The buffer pointed to by the lpAddress parameter is too small. Pass in a larger buffer.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSAEINVAL</term>
-		/// <term>The functions was unable to translate the string into a sockaddr. See the following Remarks section for more information.</term>
-		/// </item>
-		/// <item>
-		/// <term>WSANOTINITIALISED</term>
-		/// <term>
-		/// The WS2_32.DLL has not been initialized. The application must first call WSAStartup before calling any Windows Socket functions.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>WSA_NOT_ENOUGH_MEMORY</term>
-		/// <term>There was insufficient memory to perform the operation.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
+		/// <returns>A sockaddr structure for the address string if the function succeeds.</returns>
 		/// <remarks>
 		/// <para>
 		/// The <c>WSAStringToAddress</c> function converts a network address in standard text form into its numeric binary form in a
@@ -10021,8 +9950,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// Any missing components of the address will be defaulted to a reasonable value, if possible. For example, a missing port number
-		/// will default to zero. If the caller wants the translation to be done by a particular provider, it should supply the
-		/// corresponding WSAPROTOCOL_INFO structure in the lpProtocolInfo parameter.
+		/// will default to zero. If the caller wants the translation to be done by a particular provider, it should supply the corresponding
+		/// WSAPROTOCOL_INFO structure in the lpProtocolInfo parameter.
 		/// </para>
 		/// <para>
 		/// The <c>WSAStringToAddress</c> function fails (and returns WSAEINVAL) if the <c>sin_family</c> member of the SOCKADDR_IN
@@ -10041,14 +9970,13 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
 		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-		public static Win32Error WSAStringToAddress(string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] WSAPROTOCOL_INFO? lpProtocolInfo, out SOCKADDR_INET lpAddress)
+		public static SOCKADDR_INET WSAStringToAddress(string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] WSAPROTOCOL_INFO? lpProtocolInfo)
 		{
 			using var pc = lpProtocolInfo.HasValue ? new SafeCoTaskMemStruct<WSAPROTOCOL_INFO>(lpProtocolInfo.Value) : SafeCoTaskMemStruct<WSAPROTOCOL_INFO>.Null;
 			using var addr = new SafeCoTaskMemStruct<SOCKADDR_INET>();
 			int sz = addr.Size;
-			var err = WSAStringToAddress(AddressString, AddressFamily, pc, addr, ref sz);
-			lpAddress = addr.Value;
-			return err == SOCKET_ERROR ? WSAGetLastError() : Win32Error.ERROR_SUCCESS;
+			WSAStringToAddress(AddressString, AddressFamily, pc, addr, ref sz).ThrowIfFailed();
+			return addr.Value;
 		}
 
 		/// <summary>
