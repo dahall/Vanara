@@ -4,11 +4,11 @@
     <SupportedDlls>ws2_32.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
-    <Description>PInvoke API (methods, structures and constants) imported from Windows Ws2_32.dll.</Description>
+    <Description>PInvoke API (methods, structures and constants) for WinSock and WinSock2 imported from Windows Ws2_32.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyName>Vanara.PInvoke.Ws2_32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <PackageTags>pinvoke vanara Ws2_32 sockets winsock interop</PackageTags>
+    <PackageTags>pinvoke;vanara;Ws2_32;sockets;winsock;winsock2;interop</PackageTags>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
