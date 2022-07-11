@@ -169,7 +169,7 @@ namespace Vanara.PInvoke
 		// int *addrlen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "72246263-4806-4ab2-9b26-89a1782a954b")]
-		public static extern SOCKET accept(SOCKET s, SOCKADDR addr, ref int addrlen);
+		public static extern SafeSOCKET accept(SOCKET s, SOCKADDR addr, ref int addrlen);
 
 		/// <summary>The <c>accept</c> function permits an incoming connection attempt on a socket.</summary>
 		/// <param name="s">
@@ -313,7 +313,7 @@ namespace Vanara.PInvoke
 		// int *addrlen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "72246263-4806-4ab2-9b26-89a1782a954b")]
-		public static extern SOCKET accept(SOCKET s, [Optional] IntPtr addr, [Optional] IntPtr addrlen);
+		public static extern SafeSOCKET accept(SOCKET s, [Optional] IntPtr addr, [Optional] IntPtr addrlen);
 
 		/// <summary>The <c>bind</c> function associates a local address with a socket.</summary>
 		/// <param name="s">A descriptor identifying an unbound socket.</param>
@@ -2421,7 +2421,7 @@ namespace Vanara.PInvoke
 		// *argp );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "048fcb8d-acd3-4917-a997-dd133db399f8")]
-		public static extern WSRESULT ioctlsocket(SOCKET s, int cmd, IntPtr argp);
+		public static extern WSRESULT ioctlsocket(SOCKET s, uint cmd, IntPtr argp);
 
 		/// <summary>The <c>listen</c> function places a socket in a state in which it is listening for an incoming connection.</summary>
 		/// <param name="s">A descriptor identifying a bound, unconnected socket.</param>
@@ -2818,7 +2818,207 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recv int recv( SOCKET s, char *buf, int len, int flags );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "8c247cd3-479f-45d0-a038-a24e80cc7c73")]
-		public static extern WSRESULT recv(SOCKET s, IntPtr buf, int len, MsgFlags flags);
+		public static extern int recv(SOCKET s, IntPtr buf, int len, MsgFlags flags);
+
+		/// <summary>The <c>recv</c> function receives data from a connected socket or a bound connectionless socket.</summary>
+		/// <param name="s">The descriptor that identifies a connected socket.</param>
+		/// <param name="buf">A pointer to the buffer to receive the incoming data.</param>
+		/// <param name="len">The length, in bytes, of the buffer pointed to by the buf parameter.</param>
+		/// <param name="flags">
+		/// A set of flags that influences the behavior of this function. See remarks below. See the Remarks section for details on the
+		/// possible value for this parameter.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>recv</c> returns the number of bytes received and the buffer pointed to by the buf parameter will contain
+		/// this data received. If the connection has been gracefully closed, the return value is zero.
+		/// </para>
+		/// <para>Otherwise, a value of SOCKET_ERROR is returned, and a specific error code can be retrieved by calling WSAGetLastError.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The buf parameter is not completely contained in a valid part of the user address space.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTCONN</term>
+		/// <term>The socket is not connected.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>The (blocking) call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>
+		/// For a connection-oriented socket, this error indicates that the connection has been broken due to keep-alive activity that
+		/// detected a failure while the operation was in progress. For a datagram socket, this error indicates that the time to live has expired.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// MSG_OOB was specified, but the socket is not stream-style such as type SOCK_STREAM, OOB data is not supported in the
+		/// communication domain associated with this socket, or the socket is unidirectional and supports only send operations.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESHUTDOWN</term>
+		/// <term>
+		/// The socket has been shut down; it is not possible to receive on a socket after shutdown has been invoked with how set to
+		/// SD_RECEIVE or SD_BOTH.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as nonblocking and the receive operation would block.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMSGSIZE</term>
+		/// <term>The message was too large to fit into the specified buffer and was truncated.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// The socket has not been bound with bind, or an unknown flag was specified, or MSG_OOB was specified for a socket with
+		/// SO_OOBINLINE enabled or (for byte stream sockets only) len was zero or negative.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNABORTED</term>
+		/// <term>
+		/// The virtual circuit was terminated due to a time-out or other failure. The application should close the socket as it is no
+		/// longer usable.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAETIMEDOUT</term>
+		/// <term>The connection has been dropped because of a network failure or because the peer system failed to respond.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>
+		/// The virtual circuit was reset by the remote side executing a hard or abortive close. The application should close the socket as
+		/// it is no longer usable. On a UDP-datagram socket, this error would indicate that a previous send operation resulted in an ICMP
+		/// "Port Unreachable" message.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>recv</c> function is used to read incoming data on connection-oriented sockets, or connectionless sockets. When using a
+		/// connection-oriented protocol, the sockets must be connected before calling <c>recv</c>. When using a connectionless protocol,
+		/// the sockets must be bound before calling <c>recv</c>.
+		/// </para>
+		/// <para>
+		/// The local address of the socket must be known. For server applications, use an explicit bind function or an implicit accept or
+		/// WSAAccept function. Explicit binding is discouraged for client applications. For client applications, the socket can become
+		/// bound implicitly to a local address using connect, WSAConnect, sendto, WSASendTo, or WSAJoinLeaf.
+		/// </para>
+		/// <para>
+		/// For connected or connectionless sockets, the <c>recv</c> function restricts the addresses from which received messages are
+		/// accepted. The function only returns messages from the remote address specified in the connection. Messages from other addresses
+		/// are (silently) discarded.
+		/// </para>
+		/// <para>
+		/// For connection-oriented sockets (type SOCK_STREAM for example), calling <c>recv</c> will return as much data as is currently
+		/// available—up to the size of the buffer specified. If the socket has been configured for in-line reception of OOB data (socket
+		/// option SO_OOBINLINE) and OOB data is yet unread, only OOB data will be returned. The application can use the ioctlsocket or
+		/// WSAIoctl <c>SIOCATMARK</c> command to determine whether any more OOB data remains to be read.
+		/// </para>
+		/// <para>
+		/// For connectionless sockets (type SOCK_DGRAM or other message-oriented sockets), data is extracted from the first enqueued
+		/// datagram (message) from the destination address specified by the connect function.
+		/// </para>
+		/// <para>
+		/// If the datagram or message is larger than the buffer specified, the buffer is filled with the first part of the datagram, and
+		/// <c>recv</c> generates the error WSAEMSGSIZE. For unreliable protocols (for example, UDP) the excess data is lost; for reliable
+		/// protocols, the data is retained by the service provider until it is successfully read by calling <c>recv</c> with a large enough buffer.
+		/// </para>
+		/// <para>
+		/// If no incoming data is available at the socket, the <c>recv</c> call blocks and waits for data to arrive according to the
+		/// blocking rules defined for WSARecv with the MSG_PARTIAL flag not set unless the socket is nonblocking. In this case, a value of
+		/// SOCKET_ERROR is returned with the error code set to WSAEWOULDBLOCK. The select, WSAAsyncSelect, or WSAEventSelect functions can
+		/// be used to determine when more data arrives.
+		/// </para>
+		/// <para>
+		/// If the socket is connection oriented and the remote side has shut down the connection gracefully, and all data has been
+		/// received, a <c>recv</c> will complete immediately with zero bytes received. If the connection has been reset, a <c>recv</c> will
+		/// fail with the error WSAECONNRESET.
+		/// </para>
+		/// <para>
+		/// The flags parameter can be used to influence the behavior of the function invocation beyond the options specified for the
+		/// associated socket. The semantics of this function are determined by the socket options and the flags parameter. The possible
+		/// value of flags parameter is constructed by using the bitwise OR operator with any of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MSG_PEEK</term>
+		/// <term>
+		/// Peeks at the incoming data. The data is copied into the buffer, but is not removed from the input queue. The function
+		/// subsequently returns the amount of data that can be read in a single call to the recv (or recvfrom) function, which may not be
+		/// the same as the total amount of data queued on the socket. The amount of data that can actually be read in a single call to the
+		/// recv (or recvfrom) function is limited to the data size written in the send or sendto function call.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_OOB</term>
+		/// <term>Processes Out Of Band (OOB) data.</term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_WAITALL</term>
+		/// <term>
+		/// The receive request will complete only when one of the following events occurs:Note that if the underlying transport does not
+		/// support MSG_WAITALL, or if the socket is in a non-blocking mode, then this call will fail with WSAEOPNOTSUPP. Also, if
+		/// MSG_WAITALL is specified along with MSG_OOB, MSG_PEEK, or MSG_PARTIAL, then this call will fail with WSAEOPNOTSUPP. This flag is
+		/// not supported on datagram sockets or message-oriented sockets.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>recv</c>, Winsock may need to wait for a network event before the
+		/// call can complete. Winsock performs an alertable wait in this situation, which can be interrupted by an asynchronous procedure
+		/// call (APC) scheduled on the same thread. Issuing another blocking Winsock call inside an APC that interrupted an ongoing
+		/// blocking Winsock call on the same thread will lead to undefined behavior, and must never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following code example shows the use of the <c>recv</c> function.</para>
+		/// <para>Example Code</para>
+		/// <para>For more information, and another example of the <c>recv</c> function, see Getting Started With Winsock.</para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recv int recv( SOCKET s, char *buf, int len, int flags );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock.h", MSDNShortId = "8c247cd3-479f-45d0-a038-a24e80cc7c73")]
+		public static extern int recv(SOCKET s, byte[] buf, int len, MsgFlags flags);
 
 		/// <summary>The <c>recvfrom</c> function receives a datagram and stores the source address.</summary>
 		/// <param name="s">A descriptor identifying a bound socket.</param>
@@ -3001,7 +3201,190 @@ namespace Vanara.PInvoke
 		// flags, sockaddr *from, int *fromlen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "3e4282e0-3ed0-43e7-9b27-72ec36b9cfa1")]
-		public static extern WSRESULT recvfrom(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR from, ref int fromlen);
+		public static extern int recvfrom(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR from, ref int fromlen);
+
+		/// <summary>The <c>recvfrom</c> function receives a datagram and stores the source address.</summary>
+		/// <param name="s">A descriptor identifying a bound socket.</param>
+		/// <param name="buf">A buffer for the incoming data.</param>
+		/// <param name="len">The length, in bytes, of the buffer pointed to by the buf parameter.</param>
+		/// <param name="flags">
+		/// A set of options that modify the behavior of the function call beyond the options specified for the associated socket. See the
+		/// Remarks below for more details.
+		/// </param>
+		/// <param name="from">An optional pointer to a buffer in a sockaddr structure that will hold the source address upon return.</param>
+		/// <param name="fromlen">An optional pointer to the size, in bytes, of the buffer pointed to by the from parameter.</param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>recvfrom</c> returns the number of bytes received. If the connection has been gracefully closed, the
+		/// return value is zero. Otherwise, a value of SOCKET_ERROR is returned, and a specific error code can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The buffer pointed to by the buf or from parameters are not in the user address space, or the fromlen parameter is too small to
+		/// accommodate the source address of the peer address.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>The (blocking) call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// The socket has not been bound with bind, or an unknown flag was specified, or MSG_OOB was specified for a socket with
+		/// SO_OOBINLINE enabled, or (for byte stream-style sockets only) len was zero or negative.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEISCONN</term>
+		/// <term>
+		/// The socket is connected. This function is not permitted with a connected socket, whether the socket is connection oriented or connectionless.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>For a datagram socket, this error indicates that the time to live has expired.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor in the s parameter is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// MSG_OOB was specified, but the socket is not stream-style such as type SOCK_STREAM, OOB data is not supported in the
+		/// communication domain associated with this socket, or the socket is unidirectional and supports only send operations.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESHUTDOWN</term>
+		/// <term>
+		/// The socket has been shut down; it is not possible to recvfrom on a socket after shutdown has been invoked with how set to
+		/// SD_RECEIVE or SD_BOTH.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as nonblocking and the recvfrom operation would block.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMSGSIZE</term>
+		/// <term>The message was too large to fit into the buffer pointed to by the buf parameter and was truncated.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAETIMEDOUT</term>
+		/// <term>
+		/// The connection has been dropped, because of a network failure or because the system on the other end went down without notice.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>
+		/// The virtual circuit was reset by the remote side executing a hard or abortive close. The application should close the socket; it
+		/// is no longer usable. On a UDP-datagram socket this error indicates a previous send operation resulted in an ICMP Port
+		/// Unreachable message.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>recvfrom</c> function reads incoming data on both connected and unconnected sockets and captures the address from which
+		/// the data was sent. This function is typically used with connectionless sockets. The local address of the socket must be known.
+		/// For server applications, this is usually done explicitly through bind. Explicit binding is discouraged for client applications.
+		/// For client applications using this function, the socket can become bound implicitly to a local address through sendto,
+		/// WSASendTo, or WSAJoinLeaf.
+		/// </para>
+		/// <para>
+		/// For stream-oriented sockets such as those of type SOCK_STREAM, a call to <c>recvfrom</c> returns as much information as is
+		/// currently available—up to the size of the buffer specified. If the socket has been configured for inline reception of OOB data
+		/// (socket option SO_OOBINLINE) and OOB data is yet unread, only OOB data will be returned. The application can use the ioctlsocket
+		/// or WSAIoctl <c>SIOCATMARK</c> command to determine whether any more OOB data remains to be read. The from and fromlen parameters
+		/// are ignored for connection-oriented sockets.
+		/// </para>
+		/// <para>
+		/// For message-oriented sockets, data is extracted from the first enqueued message, up to the size of the buffer specified. If the
+		/// datagram or message is larger than the buffer specified, the buffer is filled with the first part of the datagram, and
+		/// <c>recvfrom</c> generates the error WSAEMSGSIZE. For unreliable protocols (for example, UDP) the excess data is lost. For UDP if
+		/// the packet received contains no data (empty), the return value from the <c>recvfrom</c> function function is zero.
+		/// </para>
+		/// <para>
+		/// If the from parameter is nonzero and the socket is not connection oriented, (type SOCK_DGRAM for example), the network address
+		/// of the peer that sent the data is copied to the corresponding sockaddr structure. The value pointed to by fromlen is initialized
+		/// to the size of this structure and is modified, on return, to indicate the actual size of the address stored in the
+		/// <c>sockaddr</c> structure.
+		/// </para>
+		/// <para>
+		/// If no incoming data is available at the socket, the <c>recvfrom</c> function blocks and waits for data to arrive according to
+		/// the blocking rules defined for WSARecv with the MSG_PARTIAL flag not set unless the socket is nonblocking. In this case, a value
+		/// of SOCKET_ERROR is returned with the error code set to WSAEWOULDBLOCK. The select, WSAAsyncSelect, or WSAEventSelect can be used
+		/// to determine when more data arrives.
+		/// </para>
+		/// <para>
+		/// If the socket is connection oriented and the remote side has shut down the connection gracefully, the call to <c>recvfrom</c>
+		/// will complete immediately with zero bytes received. If the connection has been reset <c>recvfrom</c> will fail with the error WSAECONNRESET.
+		/// </para>
+		/// <para>
+		/// The flags parameter can be used to influence the behavior of the function invocation beyond the options specified for the
+		/// associated socket. The semantics of this function are determined by the socket options and the flags parameter. The latter is
+		/// constructed by using the bitwise OR operator with any of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MSG_PEEK</term>
+		/// <term>
+		/// Peeks at the incoming data. The data is copied into the buffer but is not removed from the input queue. The function
+		/// subsequently returns the amount of data that can be read in a single call to the recvfrom (or recv) function, which may not be
+		/// the same as the total amount of data queued on the socket. The amount of data that can actually be read in a single call to the
+		/// recvfrom (or recv) function is limited to the data size written in the send or sendto function call.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_OOB</term>
+		/// <term>Processes Out Of Band (OOB) data.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>recvfrom</c>, Winsock may need to wait for a network event before
+		/// the call can complete. Winsock performs an alertable wait in this situation, which can be interrupted by an asynchronous
+		/// procedure call (APC) scheduled on the same thread. Issuing another blocking Winsock call inside an APC that interrupted an
+		/// ongoing blocking Winsock call on the same thread will lead to undefined behavior, and must never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the use of the <c>recvfrom</c> function.</para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recvfrom int recvfrom( SOCKET s, char *buf, int len, int
+		// flags, sockaddr *from, int *fromlen );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock.h", MSDNShortId = "3e4282e0-3ed0-43e7-9b27-72ec36b9cfa1")]
+		public static extern int recvfrom(SOCKET s, byte[] buf, int len, int flags, SOCKADDR from, ref int fromlen);
 
 		/// <summary>
 		/// The <c>select</c> function determines the status of one or more sockets, waiting if necessary, to perform synchronous I/O.
@@ -3559,7 +3942,203 @@ namespace Vanara.PInvoke
 		// int flags );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "902bb9cf-d847-43fc-8282-394d619b8f1b")]
-		public static extern WSRESULT send(SOCKET s, IntPtr buf, int len, int flags);
+		public static extern int send(SOCKET s, IntPtr buf, int len, int flags);
+
+		/// <summary>The <c>send</c> function sends data on a connected socket.</summary>
+		/// <param name="s">A descriptor identifying a connected socket.</param>
+		/// <param name="buf">A pointer to a buffer containing the data to be transmitted.</param>
+		/// <param name="len">The length, in bytes, of the data in buffer pointed to by the buf parameter.</param>
+		/// <param name="flags">
+		/// <para>
+		/// A set of flags that specify the way in which the call is made. This parameter is constructed by using the bitwise OR operator
+		/// with any of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MSG_DONTROUTE</term>
+		/// <term>
+		/// Specifies that the data should not be subject to routing. A Windows Sockets service provider can choose to ignore this flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_OOB</term>
+		/// <term>Sends OOB data (stream-style socket such as SOCK_STREAM only.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>send</c> returns the total number of bytes sent, which can be less than the number requested to be sent
+		/// in the len parameter. Otherwise, a value of SOCKET_ERROR is returned, and a specific error code can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEACCES</term>
+		/// <term>
+		/// The requested address is a broadcast address, but the appropriate flag was not set. Call setsockopt with the SO_BROADCAST socket
+		/// option to enable use of the broadcast address.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Sockets 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The buf parameter is not completely contained in a valid part of the user address space.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>The connection has been broken due to the keep-alive activity detecting a failure while the operation was in progress.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>No buffer space is available.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTCONN</term>
+		/// <term>The socket is not connected.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// MSG_OOB was specified, but the socket is not stream-style such as type SOCK_STREAM, OOB data is not supported in the
+		/// communication domain associated with this socket, or the socket is unidirectional and supports only receive operations.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESHUTDOWN</term>
+		/// <term>
+		/// The socket has been shut down; it is not possible to send on a socket after shutdown has been invoked with how set to SD_SEND or SD_BOTH.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as nonblocking and the requested operation would block.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMSGSIZE</term>
+		/// <term>The socket is message oriented, and the message is larger than the maximum supported by the underlying transport.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEHOSTUNREACH</term>
+		/// <term>The remote host cannot be reached from this host at this time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// The socket has not been bound with bind, or an unknown flag was specified, or MSG_OOB was specified for a socket with
+		/// SO_OOBINLINE enabled.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNABORTED</term>
+		/// <term>
+		/// The virtual circuit was terminated due to a time-out or other failure. The application should close the socket as it is no
+		/// longer usable.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>
+		/// The virtual circuit was reset by the remote side executing a hard or abortive close. For UDP sockets, the remote host was unable
+		/// to deliver a previously sent UDP datagram and responded with a "Port Unreachable" ICMP packet. The application should close the
+		/// socket as it is no longer usable.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAETIMEDOUT</term>
+		/// <term>
+		/// The connection has been dropped, because of a network failure or because the system on the other end went down without notice.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>send</c> function is used to write outgoing data on a connected socket.</para>
+		/// <para>
+		/// For message-oriented sockets (address family of <c>AF_INET</c> or <c>AF_INET6</c>, type of <c>SOCK_DGRAM</c>, and protocol of
+		/// <c>IPPROTO_UDP</c>, for example), care must be taken not to exceed the maximum packet size of the underlying provider. The
+		/// maximum message packet size for a provider can be obtained by calling getsockopt with the optname parameter set to
+		/// <c>SO_MAX_MSG_SIZE</c> to retrieve the value of socket option. If the data is too long to pass atomically through the underlying
+		/// protocol, the error WSAEMSGSIZE is returned, and no data is transmitted.
+		/// </para>
+		/// <para>
+		/// The successful completion of a <c>send</c> function does not indicate that the data was successfully delivered and received to
+		/// the recipient. This function only indicates the data was successfully sent.
+		/// </para>
+		/// <para>
+		/// If no buffer space is available within the transport system to hold the data to be transmitted, <c>send</c> will block unless
+		/// the socket has been placed in nonblocking mode. On nonblocking stream oriented sockets, the number of bytes written can be
+		/// between 1 and the requested length, depending on buffer availability on both the client and server computers. The select,
+		/// WSAAsyncSelect or WSAEventSelect functions can be used to determine when it is possible to send more data.
+		/// </para>
+		/// <para>
+		/// Calling <c>send</c> with a len parameter of zero is permissible and will be treated by implementations as successful. In such
+		/// cases, <c>send</c> will return zero as a valid value. For message-oriented sockets, a zero-length transport datagram is sent.
+		/// </para>
+		/// <para>
+		/// The flags parameter can be used to influence the behavior of the function beyond the options specified for the associated
+		/// socket. The semantics of the <c>send</c> function are determined by any options previously set on the socket specified in the s
+		/// parameter and the flags parameter passed to the <c>send</c> function.
+		/// </para>
+		/// <para>
+		/// The order of calls made to <c>send</c> is also the order in which the buffers are transmitted to the transport layer.
+		/// <c>send</c> should not be called on the same stream-oriented socket concurrently from different threads, because some Winsock
+		/// providers may split a large send request into multiple transmissions, and this may lead to unintended data interleaving from
+		/// multiple concurrent send requests on the same stream-oriented socket.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>send</c>, Winsock may need to wait for a network event before the
+		/// call can complete. Winsock performs an alertable wait in this situation, which can be interrupted by an asynchronous procedure
+		/// call (APC) scheduled on the same thread. Issuing another blocking Winsock call inside an APC that interrupted an ongoing
+		/// blocking Winsock call on the same thread will lead to undefined behavior, and must never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the use of the <c>send</c> function.</para>
+		/// <para>Example Code</para>
+		/// <para>For a another example that uses the <c>send</c> function, see Getting Started With Winsock.</para>
+		/// <para>Notes for IrDA Sockets</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The Af_irda.h header file must be explicitly included.</term>
+		/// </item>
+		/// </list>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-send int WSAAPI send( SOCKET s, const char *buf, int len,
+		// int flags );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "902bb9cf-d847-43fc-8282-394d619b8f1b")]
+		public static extern int send(SOCKET s, byte[] buf, int len, int flags);
 
 		/// <summary>The <c>sendto</c> function sends data to a specific destination.</summary>
 		/// <param name="s">A descriptor identifying a (possibly connected) socket.</param>
@@ -3792,7 +4371,240 @@ namespace Vanara.PInvoke
 		// flags, const sockaddr *to, int tolen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "a1c89c6b-d11d-4d3e-a664-af2beed0cd09")]
-		public static extern WSRESULT sendto(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR to, int tolen);
+		public static extern int sendto(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR to, int tolen);
+
+		/// <summary>The <c>sendto</c> function sends data to a specific destination.</summary>
+		/// <param name="s">A descriptor identifying a (possibly connected) socket.</param>
+		/// <param name="buf">A pointer to a buffer containing the data to be transmitted.</param>
+		/// <param name="len">The length, in bytes, of the data pointed to by the buf parameter.</param>
+		/// <param name="flags">A set of flags that specify the way in which the call is made.</param>
+		/// <param name="to">An optional pointer to a sockaddr structure that contains the address of the target socket.</param>
+		/// <param name="tolen">The size, in bytes, of the address pointed to by the to parameter.</param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs, <c>sendto</c> returns the total number of bytes sent, which can be less than the number indicated by len.
+		/// Otherwise, a value of SOCKET_ERROR is returned, and a specific error code can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEACCES</term>
+		/// <term>
+		/// The requested address is a broadcast address, but the appropriate flag was not set. Call setsockopt with the SO_BROADCAST
+		/// parameter to allow the use of the broadcast address.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>An unknown flag was specified, or MSG_OOB was specified for a socket with SO_OOBINLINE enabled.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Sockets 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The buf or to parameters are not part of the user address space, or the tolen parameter is too small.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>The connection has been broken due to keep-alive activity detecting a failure while the operation was in progress.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>No buffer space is available.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTCONN</term>
+		/// <term>The socket is not connected (connection-oriented sockets only).</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// MSG_OOB was specified, but the socket is not stream-style such as type SOCK_STREAM, OOB data is not supported in the
+		/// communication domain associated with this socket, or the socket is unidirectional and supports only receive operations.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESHUTDOWN</term>
+		/// <term>
+		/// The socket has been shut down; it is not possible to sendto on a socket after shutdown has been invoked with how set to SD_SEND
+		/// or SD_BOTH.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as nonblocking and the requested operation would block.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMSGSIZE</term>
+		/// <term>The socket is message oriented, and the message is larger than the maximum supported by the underlying transport.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEHOSTUNREACH</term>
+		/// <term>The remote host cannot be reached from this host at this time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNABORTED</term>
+		/// <term>
+		/// The virtual circuit was terminated due to a time-out or other failure. The application should close the socket as it is no
+		/// longer usable.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>
+		/// The virtual circuit was reset by the remote side executing a hard or abortive close. For UPD sockets, the remote host was unable
+		/// to deliver a previously sent UDP datagram and responded with a "Port Unreachable" ICMP packet. The application should close the
+		/// socket as it is no longer usable.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEADDRNOTAVAIL</term>
+		/// <term>The remote address is not a valid address, for example, ADDR_ANY.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEAFNOSUPPORT</term>
+		/// <term>Addresses in the specified family cannot be used with this socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEDESTADDRREQ</term>
+		/// <term>A destination address is required.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETUNREACH</term>
+		/// <term>The network cannot be reached from this host at this time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEHOSTUNREACH</term>
+		/// <term>A socket operation was attempted to an unreachable host.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAETIMEDOUT</term>
+		/// <term>
+		/// The connection has been dropped, because of a network failure or because the system on the other end went down without notice.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>sendto</c> function is used to write outgoing data on a socket. For message-oriented sockets, care must be taken not to
+		/// exceed the maximum packet size of the underlying subnets, which can be obtained by using getsockopt to retrieve the value of
+		/// socket option SO_MAX_MSG_SIZE. If the data is too long to pass atomically through the underlying protocol, the error WSAEMSGSIZE
+		/// is returned and no data is transmitted.
+		/// </para>
+		/// <para>
+		/// The to parameter can be any valid address in the socket's address family, including a broadcast or any multicast address. To
+		/// send to a broadcast address, an application must have used setsockopt with SO_BROADCAST enabled. Otherwise, <c>sendto</c> will
+		/// fail with the error code WSAEACCES. For TCP/IP, an application can send to any multicast address (without becoming a group member).
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If a socket is opened, a setsockopt call is made, and then a <c>sendto</c> call is made, Windows Sockets performs an
+		/// implicit <c>bind</c> function call.
+		/// </para>
+		/// <para>
+		/// If the socket is unbound, unique values are assigned to the local association by the system, and the socket is then marked as
+		/// bound. If the socket is connected, the getsockname function can be used to determine the local IP address and port associated
+		/// with the socket.
+		/// </para>
+		/// <para>
+		/// If the socket is not connected, the getsockname function can be used to determine the local port number associated with the
+		/// socket but the IP address returned is set to the wildcard address for the given protocol (for example, INADDR_ANY or "0.0.0.0"
+		/// for IPv4 and IN6ADDR_ANY_INIT or "::" for IPv6).
+		/// </para>
+		/// <para>The successful completion of a <c>sendto</c> does not indicate that the data was successfully delivered.</para>
+		/// <para>
+		/// The <c>sendto</c> function is normally used on a connectionless socket to send a datagram to a specific peer socket identified
+		/// by the to parameter. Even if the connectionless socket has been previously connected to a specific address, the to parameter
+		/// overrides the destination address for that particular datagram only. On a connection-oriented socket, the to and tolen
+		/// parameters are ignored, making <c>sendto</c> equivalent to send.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>sendto</c>, Winsock may need to wait for a network event before the
+		/// call can complete. Winsock performs an alertable wait in this situation, which can be interrupted by an asynchronous procedure
+		/// call (APC) scheduled on the same thread. Issuing another blocking Winsock call inside an APC that interrupted an ongoing
+		/// blocking Winsock call on the same thread will lead to undefined behavior, and must never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the use of the <c>sendto</c> function.</para>
+		/// <para>For Sockets Using IP (Version 4)</para>
+		/// <para>
+		/// To send a broadcast (on a SOCK_DGRAM only), the address pointed to by the to parameter can be constructed to contain the special
+		/// IPv4 address INADDR_BROADCAST (defined in Winsock2.h), together with the intended port number. If the address pointed to by the
+		/// to parameter contains the INADDR_BROADCAST address and intended port, then the broadcast will be sent out on all interfaces to
+		/// that port.
+		/// </para>
+		/// <para>
+		/// If the broadcast should be sent out only on a specific interface, then the address pointed to by the to parameter should contain
+		/// the subnet broadcast address for the interface and the intended port. For example, an IPv4 network address of 192.168.1.0 with a
+		/// subnet mask of 255.255.255.0 would use a subnet broadcast address of 192.168.1.255.
+		/// </para>
+		/// <para>
+		/// It is generally inadvisable for a broadcast datagram to exceed the size at which fragmentation can occur, which implies that the
+		/// data portion of the datagram (excluding headers) should not exceed 512 bytes.
+		/// </para>
+		/// <para>
+		/// If no buffer space is available within the transport system to hold the data to be transmitted, <c>sendto</c> will block unless
+		/// the socket has been placed in a nonblocking mode. On nonblocking, stream oriented sockets, the number of bytes written can be
+		/// between 1 and the requested length, depending on buffer availability on both the client and server systems. The select,
+		/// WSAAsyncSelect or WSAEventSelect function can be used to determine when it is possible to send more data.
+		/// </para>
+		/// <para>
+		/// Calling <c>sendto</c> with a len of zero is permissible and will return zero as a valid value. For message-oriented sockets, a
+		/// zero-length transport datagram is sent.
+		/// </para>
+		/// <para>
+		/// The flags parameter can be used to influence the behavior of the function invocation beyond the options specified for the
+		/// associated socket. The semantics of this function are determined by the socket options and the flags parameter. The latter is
+		/// constructed by using the bitwise OR operator with any of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MSG_DONTROUTE</term>
+		/// <term>
+		/// Specifies that the data should not be subject to routing. A Windows Sockets service provider can choose to ignore this flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_OOB</term>
+		/// <term>Sends OOB data (stream-style socket such as SOCK_STREAM only).</term>
+		/// </item>
+		/// </list>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-sendto int sendto( SOCKET s, const char *buf, int len, int
+		// flags, const sockaddr *to, int tolen );
+		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winsock.h", MSDNShortId = "a1c89c6b-d11d-4d3e-a664-af2beed0cd09")]
+		public static extern int sendto(SOCKET s, byte[] buf, int len, int flags, SOCKADDR to, int tolen);
 
 		/// <summary>The <c>setsockopt</c> function sets a socket option.</summary>
 		/// <param name="s">A descriptor that identifies a socket.</param>
@@ -5440,7 +6252,7 @@ namespace Vanara.PInvoke
 		// protocol );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "6bf6e6c4-6268-479c-86a6-52e90cf317db")]
-		public static extern SafeSOCKET socket(ADDRESS_FAMILY af, SOCK type, uint protocol);
+		public static extern SafeSOCKET socket(ADDRESS_FAMILY af, SOCK type, uint protocol = 0U);
 
 		/// <summary>
 		/// The <c>protoent</c> structure contains the name and protocol numbers that correspond to a given protocol name. Applications must

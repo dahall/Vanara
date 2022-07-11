@@ -51,6 +51,11 @@ public static partial class Ws2_32
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator WSRESULT(SocketError value) => new((int)value);
 
+		/// <summary>Implements the operator !.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !(WSRESULT value) => value.Failed;
+
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="hrLeft">The first <see cref="WSRESULT"/>.</param>
 		/// <param name="hrRight">The second <see cref="WSRESULT"/>.</param>
@@ -81,7 +86,13 @@ public static partial class Ws2_32
 		/// </summary>
 		/// <param name="value">The 32-bit raw WSRESULT value.</param>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
+		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
 		public static void ThrowIfFailed(int value, string message = null) => new WSRESULT(value).ThrowIfFailed(message);
+
+		/// <summary>Throws the last error.</summary>
+		/// <param name="message">The message.</param>
+		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
+		public static void ThrowLastError(string message = null) => GetLastError().ThrowIfFailed(message);
 
 		/// <summary>Throws the last error if the predicate delegate returns <see langword="true"/>.</summary>
 		/// <typeparam name="T">The type of the value to evaluate.</typeparam>
@@ -89,6 +100,7 @@ public static partial class Ws2_32
 		/// <param name="valueIsFailure">The delegate which returns <see langword="true"/> on failure.</param>
 		/// <param name="message">The message.</param>
 		/// <returns>The <paramref name="value"/> passed in on success.</returns>
+		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
 		public static T ThrowLastErrorIf<T>(T value, Func<T, bool> valueIsFailure, string message = null)
 		{
 			if (valueIsFailure(value))
@@ -99,11 +111,13 @@ public static partial class Ws2_32
 		/// <summary>Throws the last error if the function returns <see langword="false"/>.</summary>
 		/// <param name="value">The value to check.</param>
 		/// <param name="message">The message.</param>
+		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
 		public static bool ThrowLastErrorIfFalse(bool value, string message = null) => ThrowLastErrorIf(value, v => !v, message);
 
 		/// <summary>Throws the last error if the value is an invalid handle.</summary>
 		/// <param name="value">The SafeHandle to check.</param>
 		/// <param name="message">The message.</param>
+		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
 		public static T ThrowLastErrorIfInvalid<T>(T value, string message = null) where T : SafeHandle => ThrowLastErrorIf(value, v => v.IsInvalid, message);
 
 		/// <summary>Compares the current object with another object of the same type.</summary>
@@ -180,16 +194,14 @@ public static partial class Ws2_32
 
 		/// <summary>Gets the last error.</summary>
 		/// <returns>The last error.</returns>
-		[SecurityCritical]
-		[System.Diagnostics.DebuggerStepThrough]
+		[SecurityCritical, System.Diagnostics.DebuggerStepThrough]
 		public static WSRESULT GetLastError() => WSAGetLastError();
 
 		/// <summary>
 		/// If this <see cref="WSRESULT"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
 		/// </summary>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
-		[SecurityCritical]
-		[SecuritySafeCritical]
+		[SecurityCritical, SecuritySafeCritical, System.Diagnostics.DebuggerStepThrough]
 		public void ThrowIfFailed(string message = null)
 		{
 			Exception exception = GetException(message);
@@ -239,6 +251,55 @@ public static partial class Ws2_32
 		uint IConvertible.ToUInt32(IFormatProvider provider) => unchecked((uint)_value);
 
 		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)unchecked((uint)_value)).ToUInt64(provider);
+
+		/// <summary>
+		/// Specified event object handle is invalid.
+		/// <para>An application attempts to use an event object, but the specified handle is not valid.</para>
+		/// </summary>
+		public const int WSA_INVALID_HANDLE = 6;
+
+		/// <summary>
+		/// Insufficient memory available.
+		/// <para>
+		/// An application used a Windows Sockets function that directly maps to a Windows function. The Windows function is indicating a
+		/// lack of required memory resources.
+		/// </para>
+		/// </summary>
+		public const int WSA_NOT_ENOUGH_MEMORY = 8;
+
+		/// <summary>
+		/// One or more parameters are invalid.
+		/// <para>
+		/// An application used a Windows Sockets function which directly maps to a Windows function. The Windows function is indicating a
+		/// problem with one or more parameters.
+		/// </para>
+		/// </summary>
+		public const int WSA_INVALID_PARAMETER = 87;
+
+		/// <summary>
+		/// Overlapped operation aborted.
+		/// <para>An overlapped operation was canceled due to the closure of the socket, or the execution of the SIO_FLUSH command in WSAIoctl.</para>
+		/// </summary>
+		public const int WSA_OPERATION_ABORTED = 995;
+
+		/// <summary>
+		/// Overlapped I/O event object not in signaled state.
+		/// <para>
+		/// The application has tried to determine the status of an overlapped operation which is not yet completed. Applications that use
+		/// WSAGetOverlappedResult (with the fWait flag set to FALSE) in a polling mode to determine when an overlapped operation has
+		/// completed, get this error code until the operation is complete.
+		/// </para>
+		/// </summary>
+		public const int WSA_IO_INCOMPLETE = 996;
+
+		/// <summary>
+		/// Overlapped operations will complete later.
+		/// <para>
+		/// The application has initiated an overlapped operation that cannot be completed immediately. A completion indication will be given
+		/// later when the operation has been completed.
+		/// </para>
+		/// </summary>
+		public const int WSA_IO_PENDING = 997;
 
 		/// <summary>A blocking operation was interrupted by a call to WSACancelBlockingCall.</summary>
 		public const int WSAEINTR = 0x00002714;

@@ -1295,29 +1295,35 @@ namespace Vanara.PInvoke
 			/// <summary>Gets or sets the byte array representing the IPv6 address.</summary>
 			/// <value>The bytes.</value>
 			/// <exception cref="ArgumentException">Byte array must have 16 items. - value</exception>
-			public unsafe byte[] bytes
+			public byte[] bytes
 			{
 				get
 				{
-					var v6addr = new byte[IN6_ADDR_SIZE];
-					fixed (byte* usp = &v6addr[0])
+					unsafe
 					{
-						var ulp2 = (ulong*)usp;
-						ulp2[0] = lower;
-						ulp2[1] = upper;
+						var v6addr = new byte[IN6_ADDR_SIZE];
+						fixed (byte* usp = &v6addr[0])
+						{
+							var ulp2 = (ulong*)usp;
+							ulp2[0] = lower;
+							ulp2[1] = upper;
+						}
+						return v6addr;
 					}
-					return v6addr;
 				}
 				set
 				{
-					if (value == null) value = new byte[IN6_ADDR_SIZE];
-					if (value.Length != IN6_ADDR_SIZE)
-						throw new ArgumentException("Byte array must have 16 items.", nameof(value));
-					fixed (byte* bp = &value[0])
+					unsafe
 					{
-						var ulp = (ulong*)bp;
-						lower = ulp[0];
-						upper = ulp[1];
+						if (value == null) value = new byte[IN6_ADDR_SIZE];
+						if (value.Length != IN6_ADDR_SIZE)
+							throw new ArgumentException("Byte array must have 16 items.", nameof(value));
+						fixed (byte* bp = &value[0])
+						{
+							var ulp = (ulong*)bp;
+							lower = ulp[0];
+							upper = ulp[1];
+						}
 					}
 				}
 			}
@@ -1325,29 +1331,35 @@ namespace Vanara.PInvoke
 			/// <summary>Gets or sets the array of WORD (ushort) values representing the IPv6 address.</summary>
 			/// <value>The array of WORD values.</value>
 			/// <exception cref="ArgumentException">UInt16 array must have 8 items. - value</exception>
-			public unsafe ushort[] words
+			public ushort[] words
 			{
 				get
 				{
-					var v6addr = new ushort[IN6_ADDR_SIZE / 2];
-					fixed (ushort* usp = &v6addr[0])
+					unsafe
 					{
-						var ulp2 = (ulong*)usp;
-						ulp2[0] = lower;
-						ulp2[1] = upper;
+						var v6addr = new ushort[IN6_ADDR_SIZE / 2];
+						fixed (ushort* usp = &v6addr[0])
+						{
+							var ulp2 = (ulong*)usp;
+							ulp2[0] = lower;
+							ulp2[1] = upper;
+						}
+						return v6addr;
 					}
-					return v6addr;
 				}
 				set
 				{
-					if (value == null) value = new ushort[IN6_ADDR_SIZE / 2];
-					if (value.Length != IN6_ADDR_SIZE / 2)
-						throw new ArgumentException("UInt16 array must have 8 items.", nameof(value));
-					fixed (ushort* bp = &value[0])
+					unsafe
 					{
-						var ulp = (ulong*)bp;
-						lower = ulp[0];
-						upper = ulp[1];
+						if (value == null) value = new ushort[IN6_ADDR_SIZE / 2];
+						if (value.Length != IN6_ADDR_SIZE / 2)
+							throw new ArgumentException("UInt16 array must have 8 items.", nameof(value));
+						fixed (ushort* bp = &value[0])
+						{
+							var ulp = (ulong*)bp;
+							lower = ulp[0];
+							upper = ulp[1];
+						}
 					}
 				}
 			}

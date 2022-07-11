@@ -2930,7 +2930,7 @@ namespace Vanara.PInvoke
 		// WSAEnumNameSpaceProvidersW( LPDWORD lpdwBufferLength, LPWSANAMESPACE_INFOW lpnspBuffer );
 		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Unicode)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f5b6cd42-c5cb-43b6-bb96-fd260217e252")]
-		public static extern WSRESULT WSAEnumNameSpaceProviders(ref uint lpdwBufferLength, [Out] IntPtr lpnspBuffer);
+		public static extern int WSAEnumNameSpaceProviders(ref uint lpdwBufferLength, [Out] IntPtr lpnspBuffer);
 
 		/// <summary>The <c>WSAEnumNameSpaceProvidersEx</c> function retrieves information on available namespace providers.</summary>
 		/// <param name="lpdwBufferLength">
@@ -3004,7 +3004,7 @@ namespace Vanara.PInvoke
 		// WSAEnumNameSpaceProvidersExA( LPDWORD lpdwBufferLength, LPWSANAMESPACE_INFOEXA lpnspBuffer );
 		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Unicode)]
 		[PInvokeData("winsock2.h", MSDNShortId = "34bc96aa-63f7-4ab8-9376-6f4b979225ca")]
-		public static extern WSRESULT WSAEnumNameSpaceProvidersEx(ref uint lpdwBufferLength, [Out] IntPtr lpnspBuffer);
+		public static extern int WSAEnumNameSpaceProvidersEx(ref uint lpdwBufferLength, [Out] IntPtr lpnspBuffer);
 
 		/// <summary>
 		/// The <c>WSAEnumNetworkEvents</c> function discovers occurrences of network events for the indicated socket, clear internal
@@ -3278,7 +3278,7 @@ namespace Vanara.PInvoke
 		// lpiProtocols, LPWSAPROTOCOL_INFOA lpProtocolBuffer, LPDWORD lpdwBufferLength );
 		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "928b6937-41a3-4268-a3bc-14c9e04870e4")]
-		public static extern WSRESULT WSAEnumProtocols([Optional, MarshalAs(UnmanagedType.LPArray)] int[] lpiProtocols, [Out] IntPtr lpProtocolBuffer, ref uint lpdwBufferLength);
+		public static extern int WSAEnumProtocols([Optional, MarshalAs(UnmanagedType.LPArray)] int[] lpiProtocols, [Out] IntPtr lpProtocolBuffer, ref uint lpdwBufferLength);
 
 		/// <summary>
 		/// The <c>WSAEventSelect</c> function specifies an event object to be associated with the specified set of FD_XXX network events.
@@ -5912,7 +5912,7 @@ namespace Vanara.PInvoke
 		// fds, INT timeout );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3f6f872c-5cee-49f3-bf22-2e8a5d147987")]
-		public static extern WSRESULT WSAPoll([In, Out, MarshalAs(UnmanagedType.LPArray)] WSAPOLLFD[] fdArray, uint fds, int timeout);
+		public static extern int WSAPoll([In, Out, MarshalAs(UnmanagedType.LPArray)] WSAPOLLFD[] fdArray, uint fds, int timeout);
 
 		/// <summary>The <c>WSAProviderConfigChange</c> function notifies the application when the provider configuration is changed.</summary>
 		/// <param name="lpNotificationHandle">

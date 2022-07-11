@@ -2057,6 +2057,38 @@ namespace Vanara.PInvoke
 		[PInvokeData("ws2def.h", MSDNShortId = "fb6447b4-28f5-4ab7-bbdc-5a57ed38a994")]
 		public static class WinSockIOControlCode
 		{
+			/// <summary>
+			/// Determine the amount of data that can be read atomically from socket s. The lpvOutBuffer parameter points at an unsigned long
+			/// in which WSAIoctl stores the result.
+			/// <para>
+			/// If the socket passed in the s parameter is stream oriented(for example, type SOCK_STREAM), FIONREAD returns the total amount
+			/// of data that can be read in a single receive operation; this is normally the same as the total amount of data queued on the
+			/// socket(since a data stream is byte-oriented, this is not guaranteed).
+			/// </para>
+			/// <para>
+			/// If the socket passed in the s parameter is message oriented(for example, type SOCK_DGRAM), FIONREAD returns the reports the
+			/// total number of bytes available to read, not the size of the first datagram(message) queued on the socket.
+			/// </para>
+			/// </summary>
+			public static readonly uint FIONREAD = _IOR('f', 127); /* get # bytes to read */
+
+			/// <summary>
+			/// Enable or disable non-blocking mode on socket s. The lpvInBuffer parameter points at an unsigned long (QoS), which is nonzero
+			/// if non-blocking mode is to be enabled and zero if it is to be disabled. When a socket is created, it operates in blocking
+			/// mode (that is, non-blocking mode is disabled). This is consistent with BSD sockets.
+			/// <para>
+			/// The WSAAsyncSelect or WSAEventSelect routine automatically sets a socket to non-blocking mode.If WSAAsyncSelect or
+			/// WSAEventSelect has been issued on a socket, then any attempt to use WSAIoctl to set the socket back to blocking mode will
+			/// fail with WSAEINVAL. To set the socket back to blocking mode, an application must first disable WSAAsyncSelect by calling
+			/// WSAAsyncSelect with the lEvent parameter equal to zero, or disable WSAEventSelect by calling WSAEventSelect with the
+			/// lNetworkEvents parameter equal to zero.
+			/// </para>
+			/// </summary>
+			public static readonly uint FIONBIO = _IOW('f', 126); /* set/clear non-blocking i/o */
+
+			/// <summary>Enable notification for when data is waiting to be received.</summary>
+			public static readonly uint FIOASYNC = _IOW('f', 125); /* set/clear async i/o */
+
 			/// <summary>Requests notification of changes in information reported through SIO_ADDRESS_LIST_QUERY</summary>
 			public static readonly uint SIO_ADDRESS_LIST_CHANGE = _WSAIO(IOC_WS2, 23);
 
@@ -2140,11 +2172,45 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(int), CorrespondingAction.Set)]
 			public static readonly uint SIO_TRANSLATE_HANDLE = _WSAIORW(IOC_WS2, 13);
 
+			/// <summary>set high watermark</summary>
+			public static readonly uint SIOCSHIWAT = _IOW('s', 0); /* set high watermark */
+
+			/// <summary>get high watermark</summary>
+			public static readonly uint SIOCGHIWAT = _IOR('s', 1); /* get high watermark */
+
+			/// <summary>set low watermark</summary>
+			public static readonly uint SIOCSLOWAT = _IOW('s', 2); /* set low watermark */
+
+			/// <summary>get low watermark</summary>
+			public static readonly uint SIOCGLOWAT = _IOR('s', 3); /* get low watermark */
+
+			/// <summary>
+			/// Determine whether or not all OOB data has been read. This applies only to a socket of stream-style (for example, type
+			/// SOCK_STREAM) that has been configured for inline reception of any OOB data (SO_OOBINLINE). If no OOB data is waiting to be
+			/// read, the operation returns TRUE. Otherwise, it returns FALSE, and the next receive operation performed on the socket will
+			/// retrieve some or all of the data preceding the mark; the application should use the SIOCATMARK operation to determine whether
+			/// any remains. If there is any normal data preceding the urgent (out of band) data, it will be received in order. (Note that
+			/// recv operations will never mix OOB and normal data in the same call.) lpvOutBuffer points at a BOOL in which WSAIoctl stores
+			/// the result.
+			/// </summary>
+			public static readonly uint SIOCATMARK = _IOR('s', 7); /* at oob mark? */
+
+			private const uint IOCPARM_MASK = 0x7f;            /* parameters must be < 128 bytes */
+			private const uint IOC_VOID = 0x20000000;      /* no parameters */
+			private const uint IOC_OUT = 0x40000000;      /* copy out parameters */
+			private const uint IOC_IN = 0x80000000;      /* copy in parameters */
+			private const uint IOC_INOUT = IOC_IN|IOC_OUT;
 			private const uint IOC_PROTOCOL = 0x10000000;
 			private const uint IOC_UNIX = 0x00000000;
 			private const uint IOC_VENDOR = 0x18000000;
 			private const uint IOC_WS2 = 0x08000000;
 			private const uint IOC_WSK = IOC_WS2 | 0x07000000;
+
+			private static uint _IO(uint x, uint y) => (IOC_VOID|((x)<<8)|(y));
+
+			private static uint _IOR(uint x, uint y) => (IOC_OUT|((sizeof(uint)&IOCPARM_MASK)<<16)|((x)<<8)|(y));
+
+			private static uint _IOW(uint x, uint y) => (IOC_IN|((sizeof(uint)&IOCPARM_MASK)<<16)|((x)<<8)|(y));
 
 			private static uint _WSAIO(uint x, uint y) => IOC_VOID | (x) | (y);
 
