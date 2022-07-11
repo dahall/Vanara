@@ -84,7 +84,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nc-ws2spi-lpnspv2cleanup LPNSPV2CLEANUP Lpnspv2cleanup; INT
 		// Lpnspv2cleanup( LPGUID lpProviderId, LPVOID pvClientSessionArg ) {...}
 		[PInvokeData("ws2spi.h", MSDNShortId = "36064c0e-c83c-4819-a3e4-c89df50eb659")]
-		public delegate SocketError LPNSPV2CLEANUP(in Guid lpProviderId, IntPtr pvClientSessionArg);
+		public delegate WSRESULT LPNSPV2CLEANUP(in Guid lpProviderId, IntPtr pvClientSessionArg);
 
 		/// <summary>
 		/// The <c>NSPv2ClientSessionRundown</c> function notifies a namespace service provider version-2 (NSPv2) provider that the client
@@ -445,7 +445,7 @@ namespace Vanara.PInvoke
 		// dwControlFlags, LPVOID lpvClientSessionArg, LPHANDLE lphLookup ) {...}
 		[PInvokeData("ws2spi.h", MSDNShortId = "5664b85d-8432-4068-aa97-caa57d9377ac")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-		public delegate SocketError LPNSPV2LOOKUPSERVICEBEGIN(in Guid lpProviderId, in WSAQUERYSET2W lpqsRestrictions, uint dwControlFlags, IntPtr lpvClientSessionArg, out HANDLE lphLookup);
+		public delegate WSRESULT LPNSPV2LOOKUPSERVICEBEGIN(in Guid lpProviderId, in WSAQUERYSET2W lpqsRestrictions, uint dwControlFlags, IntPtr lpvClientSessionArg, out HANDLE lphLookup);
 
 		/// <summary>
 		/// The <c>NSPv2LookupServiceEnd</c> function is called to free the handle after previous calls to NSPv2LookupServiceBegin and NSPv2LookupServiceNextEx.
@@ -494,7 +494,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nc-ws2spi-lpnspv2lookupserviceend LPNSPV2LOOKUPSERVICEEND
 		// Lpnspv2lookupserviceend; INT Lpnspv2lookupserviceend( HANDLE hLookup ) {...}
 		[PInvokeData("ws2spi.h", MSDNShortId = "5f2b56c5-3a8e-4bf9-8f28-d2a06543227b")]
-		public delegate SocketError LPNSPV2LOOKUPSERVICEEND(HANDLE hLookup);
+		public delegate WSRESULT LPNSPV2LOOKUPSERVICEEND(HANDLE hLookup);
 
 		/// <summary>
 		/// The <c>NSPv2LookupServiceNextEx</c> function is called after obtaining a handle from a previous call to NSPv2LookupServiceBegin
@@ -1046,7 +1046,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nc-ws2spi-lpnspv2startup LPNSPV2STARTUP Lpnspv2startup; INT
 		// Lpnspv2startup( LPGUID lpProviderId, LPVOID *ppvClientSessionArg ) {...}
 		[PInvokeData("ws2spi.h", MSDNShortId = "93224e66-9c94-4b5c-af11-ae988b74bc03")]
-		public delegate SocketError LPNSPV2STARTUP(in Guid lpProviderId, out IntPtr ppvClientSessionArg);
+		public delegate WSRESULT LPNSPV2STARTUP(in Guid lpProviderId, out IntPtr ppvClientSessionArg);
 
 		/// <summary>The WSC_PROVIDER_AUDIT_INFO structure is not currently used.</summary>
 		/// <remarks>The WSC_PROVIDER_AUDIT_INFO structure is not currently used.</remarks>
@@ -1170,7 +1170,7 @@ namespace Vanara.PInvoke
 		// WPUCompleteOverlappedRequest( SOCKET s, LPWSAOVERLAPPED lpOverlapped, DWORD dwError, DWORD cbTransferred, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "b0e5015f-d23f-46da-91b1-f646111f70f9")]
-		public static extern SocketError WPUCompleteOverlappedRequest(SOCKET s, ref WSAOVERLAPPED lpOverlapped, uint dwError, uint cbTransferred, out int lpErrno);
+		public static extern WSRESULT WPUCompleteOverlappedRequest(SOCKET s, ref WSAOVERLAPPED lpOverlapped, uint dwError, uint cbTransferred, out int lpErrno);
 
 		/// <summary>
 		/// The <c>WSAAdvertiseProvider</c> function makes a specific namespace version-2 provider available for all eligible clients.
@@ -1262,7 +1262,7 @@ namespace Vanara.PInvoke
 		// GUID *puuidProviderId, const LPCNSPV2_ROUTINE pNSPv2Routine );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "574ebfa4-d7f2-43c2-b1ec-35ce3db9151f")]
-		public static extern SocketError WSAAdvertiseProvider(in Guid puuidProviderId, in NSPV2_ROUTINE pNSPv2Routine);
+		public static extern WSRESULT WSAAdvertiseProvider(in Guid puuidProviderId, in NSPV2_ROUTINE pNSPv2Routine);
 
 		/// <summary>
 		/// The <c>WSAProviderCompleteAsyncCall</c> function notifies a client when an asynchronous call to a namespace version-2 provider
@@ -1326,7 +1326,7 @@ namespace Vanara.PInvoke
 		// WSAProviderCompleteAsyncCall( HANDLE hAsyncCall, INT iRetCode );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "2bbc20ae-ad6d-47f6-8ca9-dd5559236fbe")]
-		public static extern SocketError WSAProviderCompleteAsyncCall(HANDLE hAsyncCall, int iRetCode);
+		public static extern WSRESULT WSAProviderCompleteAsyncCall(HANDLE hAsyncCall, int iRetCode);
 
 		/// <summary>
 		/// The <c>WSAUnadvertiseProvider</c> function makes a specific namespace version-2 provider no longer available for clients.
@@ -1368,7 +1368,7 @@ namespace Vanara.PInvoke
 		// const GUID *puuidProviderId );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "5975b496-53a7-4f8a-8efc-27ef447596c2")]
-		public static extern SocketError WSAUnadvertiseProvider(in Guid puuidProviderId);
+		public static extern WSRESULT WSAUnadvertiseProvider(in Guid puuidProviderId);
 
 		/// <summary>
 		/// The <c>WSCDeinstallProvider</c> function removes the specified transport provider from the system configuration database.
@@ -1442,7 +1442,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "9a2afd11-1944-491f-9c92-9dbac6b3b28e")]
-		public static extern SocketError WSCDeinstallProvider(in Guid lpProviderId, out int lpErrno);
+		public static extern WSRESULT WSCDeinstallProvider(in Guid lpProviderId, out int lpErrno);
 
 		/// <summary>
 		/// The <c>WSCDeinstallProvider32</c> function removes the specified 32-bit transport provider from the system configuration database.
@@ -1522,7 +1522,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "3de74059-dbfb-49b9-830b-7b2f81f8b68c")]
-		public static extern SocketError WSCDeinstallProvider32(in Guid lpProviderId, out int lpErrno);
+		public static extern WSRESULT WSCDeinstallProvider32(in Guid lpProviderId, out int lpErrno);
 
 		/// <summary>
 		/// The <c>WSCEnableNSProvider</c> function changes the state of a given namespace provider. It is intended to give the end-user the
@@ -1591,7 +1591,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, BOOL fEnable );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "2dff5af6-3011-4e3f-b812-fffaca8fa2d9")]
-		public static extern SocketError WSCEnableNSProvider(in Guid lpProviderId, [MarshalAs(UnmanagedType.Bool)] bool fEnable);
+		public static extern WSRESULT WSCEnableNSProvider(in Guid lpProviderId, [MarshalAs(UnmanagedType.Bool)] bool fEnable);
 
 		/// <summary>
 		/// The <c>WSCEnableNSProvider32</c> function enables or disables a specified 32-bit namespace provider. It is intended to give the
@@ -1666,7 +1666,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, BOOL fEnable );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "5ab4f8bd-d32d-4962-aac7-2d92847d0e03")]
-		public static extern SocketError WSCEnableNSProvider32(in Guid lpProviderId, [MarshalAs(UnmanagedType.Bool)] bool fEnable);
+		public static extern WSRESULT WSCEnableNSProvider32(in Guid lpProviderId, [MarshalAs(UnmanagedType.Bool)] bool fEnable);
 
 		/// <summary>The <c>WSCEnumNameSpaceProviders32</c> function returns information on available 32-bit namespace providers.</summary>
 		/// <param name="lpdwBufferLength">
@@ -1726,7 +1726,7 @@ namespace Vanara.PInvoke
 		// WSCEnumNameSpaceProviders32( LPDWORD lpdwBufferLength, LPWSANAMESPACE_INFOW lpnspBuffer );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "792737d9-231d-4524-b1a6-b9904951d5b4")]
-		public static extern SocketError WSCEnumNameSpaceProviders32(ref uint lpdwBufferLength, [In, Out] IntPtr lpnspBuffer);
+		public static extern WSRESULT WSCEnumNameSpaceProviders32(ref uint lpdwBufferLength, [In, Out] IntPtr lpnspBuffer);
 
 		/// <summary>The <c>WSCEnumNameSpaceProvidersEx32</c> function retrieves information on available 32-bit namespace providers.</summary>
 		/// <param name="lpdwBufferLength">
@@ -1795,7 +1795,7 @@ namespace Vanara.PInvoke
 		// WSCEnumNameSpaceProvidersEx32( LPDWORD lpdwBufferLength, LPWSANAMESPACE_INFOEXW lpnspBuffer );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "544120b2-7575-4deb-8429-2bd4582eceef")]
-		public static extern SocketError WSCEnumNameSpaceProvidersEx32(ref uint lpdwBufferLength, [In, Out] IntPtr lpnspBuffer);
+		public static extern WSRESULT WSCEnumNameSpaceProvidersEx32(ref uint lpdwBufferLength, [In, Out] IntPtr lpnspBuffer);
 
 		/// <summary>The <c>WSCEnumProtocols</c> function retrieves information about available transport protocols.</summary>
 		/// <param name="lpiProtocols">
@@ -1876,7 +1876,7 @@ namespace Vanara.PInvoke
 		// LPWSAPROTOCOL_INFOW lpProtocolBuffer, LPDWORD lpdwBufferLength, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "c2e5332f-3327-4624-96b4-8e321795961d")]
-		public static extern SocketError WSCEnumProtocols([Optional, MarshalAs(UnmanagedType.LPArray)] int[] lpiProtocols, IntPtr lpProtocolBuffer, ref uint lpdwBufferLength, out int lpErrno);
+		public static extern WSRESULT WSCEnumProtocols([Optional, MarshalAs(UnmanagedType.LPArray)] int[] lpiProtocols, IntPtr lpProtocolBuffer, ref uint lpdwBufferLength, out int lpErrno);
 
 		/// <summary>The <c>WSCEnumProtocols32</c> function retrieves information about available transport protocols.</summary>
 		/// <param name="lpiProtocols">
@@ -1963,7 +1963,7 @@ namespace Vanara.PInvoke
 		// lpiProtocols, LPWSAPROTOCOL_INFOW lpProtocolBuffer, LPDWORD lpdwBufferLength, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "f46042f6-0b14-4a14-abc1-4e40c34b1599")]
-		public static extern SocketError WSCEnumProtocols32([Optional, MarshalAs(UnmanagedType.LPArray)] int[] lpiProtocols, IntPtr lpProtocolBuffer, ref uint lpdwBufferLength, out int lpErrno);
+		public static extern WSRESULT WSCEnumProtocols32([Optional, MarshalAs(UnmanagedType.LPArray)] int[] lpiProtocols, IntPtr lpProtocolBuffer, ref uint lpdwBufferLength, out int lpErrno);
 
 		/// <summary>
 		/// <para>
@@ -2152,7 +2152,7 @@ namespace Vanara.PInvoke
 		// LPCWSTR Path, DWORD PathLength, LPCWSTR Extra, DWORD ExtraLength, DWORD *pPermittedLspCategories, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "c4e149ce-dff9-401a-8488-23676992c04d")]
-		public static extern SocketError WSCGetApplicationCategory([MarshalAs(UnmanagedType.LPWStr)] string Path, uint PathLength, [MarshalAs(UnmanagedType.LPWStr)] string Extra, uint ExtraLength, out uint pPermittedLspCategories, out int lpErrno);
+		public static extern WSRESULT WSCGetApplicationCategory([MarshalAs(UnmanagedType.LPWStr)] string Path, uint PathLength, [MarshalAs(UnmanagedType.LPWStr)] string Extra, uint ExtraLength, out uint pPermittedLspCategories, out int lpErrno);
 
 		/// <summary>
 		/// <para>A pointer to a globally unique identifier (GUID) for the provider.</para>
@@ -2322,7 +2322,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t *InfoSize, DWORD Flags, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "5880f3dd-2a74-4af8-b0d8-2a8eedccc1e6")]
-		public static extern SocketError WSCGetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SizeT InfoSize, uint Flags, out int lpErrno);
+		public static extern WSRESULT WSCGetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SizeT InfoSize, uint Flags, out int lpErrno);
 
 		/// <summary>
 		/// <para>A pointer to a globally unique identifier (GUID) for the provider.</para>
@@ -2498,7 +2498,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t *InfoSize, DWORD Flags, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "91686b38-3cde-4979-8bf6-45e805dd37ff")]
-		public static extern SocketError WSCGetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SizeT InfoSize, uint Flags, out int lpErrno);
+		public static extern WSRESULT WSCGetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SizeT InfoSize, uint Flags, out int lpErrno);
 
 		/// <summary>The <c>WSCGetProviderPath</c> function retrieves the DLL path for the specified provider.</summary>
 		/// <param name="lpProviderId">
@@ -2541,7 +2541,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, WCHAR *lpszProviderDllPath, LPINT lpProviderDllPathLen, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "fe60c8c4-e2d0-48cc-9fdf-e58e408fb1b3")]
-		public static extern SocketError WSCGetProviderPath(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpszProviderDllPath, ref int lpProviderDllPathLen, out int lpErrno);
+		public static extern WSRESULT WSCGetProviderPath(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpszProviderDllPath, ref int lpProviderDllPathLen, out int lpErrno);
 
 		/// <summary>The <c>WSCGetProviderPath32</c> function retrieves the DLL path for the specified 32-bit provider.</summary>
 		/// <param name="lpProviderId">Locally unique identifier of the provider. This value is obtained by using WSCEnumProtocols32.</param>
@@ -2590,7 +2590,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, WCHAR *lpszProviderDllPath, LPINT lpProviderDllPathLen, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "fd4ef7da-344d-4825-93b2-f0cd5622aeac")]
-		public static extern SocketError WSCGetProviderPath32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpszProviderDllPath, ref int lpProviderDllPathLen, out int lpErrno);
+		public static extern WSRESULT WSCGetProviderPath32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpszProviderDllPath, ref int lpProviderDllPathLen, out int lpErrno);
 
 		/// <summary>
 		/// The <c>WSCInstallNameSpace</c> function installs a namespace provider. For providers that are able to support multiple
@@ -2669,7 +2669,7 @@ namespace Vanara.PInvoke
 		// lpszIdentifier, LPWSTR lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "f17f6174-879e-45e7-a250-975d1ee24fe0")]
-		public static extern SocketError WSCInstallNameSpace([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId);
+		public static extern WSRESULT WSCInstallNameSpace([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId);
 
 		/// <summary>
 		/// The <c>WSCInstallNameSpace32</c> function installs a specified 32-bit namespace provider. For providers that are able to support
@@ -2756,7 +2756,7 @@ namespace Vanara.PInvoke
 		// lpszIdentifier, LPWSTR lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "b107fbe6-bbfb-45be-8419-4d85d3c4e80c")]
-		public static extern SocketError WSCInstallNameSpace32([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId);
+		public static extern WSRESULT WSCInstallNameSpace32([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId);
 
 		/// <summary>
 		/// The <c>WSCInstallNameSpaceEx</c> function installs a namespace provider. For providers that are able to support multiple
@@ -2845,7 +2845,7 @@ namespace Vanara.PInvoke
 		// lpszIdentifier, LPWSTR lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId, LPBLOB lpProviderSpecific );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "13dde602-c958-4312-a16f-a393dd6fb829")]
-		public static extern SocketError WSCInstallNameSpaceEx([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId, in BLOB lpProviderSpecific);
+		public static extern WSRESULT WSCInstallNameSpaceEx([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId, in BLOB lpProviderSpecific);
 
 		/// <summary>
 		/// <para>
@@ -2947,7 +2947,7 @@ namespace Vanara.PInvoke
 		// lpszIdentifier, LPWSTR lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId, LPBLOB lpProviderSpecific );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "222ebfcc-8854-4224-b464-28098c84b750")]
-		public static extern SocketError WSCInstallNameSpaceEx32([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId, in BLOB lpProviderSpecific);
+		public static extern WSRESULT WSCInstallNameSpaceEx32([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId, in BLOB lpProviderSpecific);
 
 		/// <summary>
 		/// <para>A pointer to a globally unique identifier (GUID) for the provider.</para>
@@ -3074,7 +3074,7 @@ namespace Vanara.PInvoke
 		// lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "c0736018-2bcf-4281-aa73-3e1ff9eac92e")]
-		public static extern SocketError WSCInstallProvider(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
+		public static extern WSRESULT WSCInstallProvider(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
 
 		/// <summary>
 		/// <para>[**WSCInstallProvider64_32** is no longer available for use as of Windows Vista. Instead, use WSCInstallProvider or WSCInstallProviderAndChains.]</para>
@@ -3213,7 +3213,7 @@ namespace Vanara.PInvoke
 		// lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "50d3a5d1-18f2-439e-a16c-6f31becb1e65")]
-		public static extern SocketError WSCInstallProvider64_32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
+		public static extern WSRESULT WSCInstallProvider64_32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
 
 		/// <summary>
 		/// <para>A pointer to a provider-specific, globally unique identifier (GUID).</para>
@@ -3408,7 +3408,7 @@ namespace Vanara.PInvoke
 		// lpProtocolInfoList, DWORD dwNumberOfEntries, LPDWORD lpdwCatalogEntryId, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "592f48b4-5826-449f-b5cc-b0990679fe9f")]
-		public static extern SocketError WSCInstallProviderAndChains64_32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPWStr)] string lpszLspName, XP1 dwServiceFlags,
+		public static extern WSRESULT WSCInstallProviderAndChains64_32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPWStr)] string lpszLspName, XP1 dwServiceFlags,
 			[MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out uint lpdwCatalogEntryId, out int lpErrno);
 
 		/// <summary>
@@ -3617,7 +3617,7 @@ namespace Vanara.PInvoke
 		// lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "266c9424-f6ab-4630-843d-bc0833d74e4f")]
-		public static extern SocketError WSCSetApplicationCategory([MarshalAs(UnmanagedType.LPWStr)] string Path, uint PathLength, [MarshalAs(UnmanagedType.LPWStr)] string Extra, uint ExtraLength, uint PermittedLspCategories, out uint pPrevPermLspCat, out int lpErrno);
+		public static extern WSRESULT WSCSetApplicationCategory([MarshalAs(UnmanagedType.LPWStr)] string Path, uint PathLength, [MarshalAs(UnmanagedType.LPWStr)] string Extra, uint ExtraLength, uint PermittedLspCategories, out uint pPrevPermLspCat, out int lpErrno);
 
 		/// <summary>
 		/// <para>A pointer to a globally unique identifier (GUID) for the provider.</para>
@@ -3787,7 +3787,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t InfoSize, DWORD Flags, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "10eed3e6-d5a0-4ba4-964e-3d924a231afb")]
-		public static extern SocketError WSCSetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SizeT InfoSize, uint Flags, out int lpErrno);
+		public static extern WSRESULT WSCSetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SizeT InfoSize, uint Flags, out int lpErrno);
 
 		/// <summary>
 		/// <para>A pointer to a globally unique identifier (GUID) for the provider.</para>
@@ -3957,7 +3957,7 @@ namespace Vanara.PInvoke
 		// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t InfoSize, DWORD Flags, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "adb2737f-5327-4306-bd57-f165f339f911")]
-		public static extern SocketError WSCSetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SizeT InfoSize, uint Flags, out int lpErrno);
+		public static extern WSRESULT WSCSetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SizeT InfoSize, uint Flags, out int lpErrno);
 
 		/// <summary>The <c>WSCUnInstallNameSpace</c> function uninstalls the indicated name-space provider.</summary>
 		/// <param name="lpProviderId">A pointer to a globally unique identifier (GUID) for the name-space provider to be uninstalled.</param>
@@ -4023,7 +4023,7 @@ namespace Vanara.PInvoke
 		// lpProviderId );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "5267f986-99fc-4e53-9fbb-3850bb9d24cf")]
-		public static extern SocketError WSCUnInstallNameSpace(in Guid lpProviderId);
+		public static extern WSRESULT WSCUnInstallNameSpace(in Guid lpProviderId);
 
 		/// <summary>The <c>WSCUnInstallNameSpace32</c> function uninstalls a specific 32-bit namespace provider.</summary>
 		/// <param name="lpProviderId">A pointer to a globally unique identifier (GUID) for the name-space provider to be uninstalled.</param>
@@ -4095,7 +4095,7 @@ namespace Vanara.PInvoke
 		// lpProviderId );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "a2a08159-6ac0-493d-8f9f-d19aa199a65f")]
-		public static extern SocketError WSCUnInstallNameSpace32(in Guid lpProviderId);
+		public static extern WSRESULT WSCUnInstallNameSpace32(in Guid lpProviderId);
 
 		/// <summary>The <c>WSCUpdateProvider</c> function modifies the specified transport provider in the system configuration database.</summary>
 		/// <param name="lpProviderId">A pointer to a globally unique identifier (GUID) for the provider.</param>
@@ -4185,7 +4185,7 @@ namespace Vanara.PInvoke
 		// const WCHAR *lpszProviderDllPath, const LPWSAPROTOCOL_INFOW lpProtocolInfoList, DWORD dwNumberOfEntries, LPINT lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "7777a2ff-2ece-4f28-88af-87fc96fdda9f")]
-		public static extern SocketError WSCUpdateProvider(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
+		public static extern WSRESULT WSCUpdateProvider(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
 
 		/// <summary>
 		/// The <c>WSCUpdateProvider32</c> function modifies the specified 32-bit transport provider in the system configuration database.
@@ -4285,7 +4285,7 @@ namespace Vanara.PInvoke
 		// lpErrno );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2spi.h", MSDNShortId = "803ef58a-853b-491c-bed1-e02275fef258")]
-		public static extern SocketError WSCUpdateProvider32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
+		public static extern WSRESULT WSCUpdateProvider32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
 
 		/// <summary>
 		/// The <c>AFPROTOCOLS</c> structure supplies a list of protocols to which application programmers can constrain queries. The

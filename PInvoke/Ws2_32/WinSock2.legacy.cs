@@ -517,7 +517,7 @@ namespace Vanara.PInvoke
 		// namelen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "3a651daa-7404-4ef7-8cff-0d3dff41a8e8")]
-		public static extern SocketError bind(SOCKET s, [In] SOCKADDR addr, int namelen);
+		public static extern WSRESULT bind(SOCKET s, [In] SOCKADDR addr, int namelen);
 
 		/// <summary>The <c>closesocket</c> function closes an existing socket.</summary>
 		/// <param name="s">A descriptor identifying the socket to close.</param>
@@ -787,7 +787,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-closesocket int closesocket( IN SOCKET s );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "2f357aa8-389b-4c92-8a9f-289e048cc41c")]
-		public static extern SocketError closesocket([In] SOCKET s);
+		public static extern WSRESULT closesocket([In] SOCKET s);
 
 		/// <summary>The <c>connect</c> function establishes a connection to a specified socket.</summary>
 		/// <param name="s">A descriptor identifying an unconnected socket.</param>
@@ -1018,7 +1018,7 @@ namespace Vanara.PInvoke
 		// *name, int namelen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "13468139-dc03-45bd-850c-7ac2dbcb6e60")]
-		public static extern SocketError connect(SOCKET s, SOCKADDR name, int namelen);
+		public static extern WSRESULT connect(SOCKET s, SOCKADDR name, int namelen);
 
 		/// <summary>The <c>gethostname</c> function retrieves the standard host name for the local computer.</summary>
 		/// <param name="name">A pointer to a buffer that receives the local host name.</param>
@@ -1090,7 +1090,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-gethostname int gethostname( char *name, int namelen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("winsock.h", MSDNShortId = "8fa40b60-0e93-493b-aee1-cea6cf595707")]
-		public static extern SocketError gethostname(StringBuilder name, int namelen);
+		public static extern WSRESULT gethostname(StringBuilder name, int namelen);
 
 		/// <summary>The <c>GetHostNameW</c> function retrieves the standard host name for the local computer as a Unicode string.</summary>
 		/// <param name="name">A pointer to a buffer that receives the local host name as a <c>null</c>-terminated Unicode string.</param>
@@ -1166,7 +1166,7 @@ namespace Vanara.PInvoke
 		// namelen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("winsock2.h", MSDNShortId = "787EB209-5944-4F0A-8550-FE1115C2298A")]
-		public static extern SocketError GetHostNameW(StringBuilder name, int namelen);
+		public static extern WSRESULT GetHostNameW(StringBuilder name, int namelen);
 
 		/// <summary>The <c>getpeername</c> function retrieves the address of the peer to which a socket is connected.</summary>
 		/// <param name="s">A descriptor identifying a connected socket.</param>
@@ -1232,7 +1232,7 @@ namespace Vanara.PInvoke
 		// *namelen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "df2679a5-cdd9-468b-823a-f98044189f65")]
-		public static extern SocketError getpeername(SOCKET s, SOCKADDR name, ref int namelen);
+		public static extern WSRESULT getpeername(SOCKET s, SOCKADDR name, ref int namelen);
 
 		/// <summary>The <c>getprotobyname</c> function retrieves the protocol information corresponding to a protocol name.</summary>
 		/// <param name="name">Pointer to a null-terminated protocol name.</param>
@@ -1722,7 +1722,7 @@ namespace Vanara.PInvoke
 		// int *namelen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "be20a731-cdfc-48ae-90b2-43f2cf9ecf6d")]
-		public static extern SocketError getsockname(SOCKET s, SOCKADDR name, ref int namelen);
+		public static extern WSRESULT getsockname(SOCKET s, SOCKADDR name, ref int namelen);
 
 		/// <summary>The <c>getsockopt</c> function retrieves a socket option.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -2157,7 +2157,7 @@ namespace Vanara.PInvoke
 		// optname, char *optval, int *optlen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("winsock.h", MSDNShortId = "25bc511d-7a9f-41c1-8983-1af1e3f8bf2d")]
-		public static extern SocketError getsockopt(SOCKET s, int level, int optname, [Optional] IntPtr optval, ref int optlen);
+		public static extern WSRESULT getsockopt(SOCKET s, int level, int optname, [Optional] IntPtr optval, ref int optlen);
 
 		/// <summary>The <c>htonl</c> function converts a <c>u_long</c> from host to TCP/IP network byte order (which is big-endian).</summary>
 		/// <param name="hostlong">A 32-bit number in host byte order.</param>
@@ -2421,7 +2421,7 @@ namespace Vanara.PInvoke
 		// *argp );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "048fcb8d-acd3-4917-a997-dd133db399f8")]
-		public static extern SocketError ioctlsocket(SOCKET s, int cmd, IntPtr argp);
+		public static extern WSRESULT ioctlsocket(SOCKET s, int cmd, IntPtr argp);
 
 		/// <summary>The <c>listen</c> function places a socket in a state in which it is listening for an incoming connection.</summary>
 		/// <param name="s">A descriptor identifying a bound, unconnected socket.</param>
@@ -2555,7 +2555,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-listen int WSAAPI listen( SOCKET s, int backlog );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "1233feeb-a8c1-49ac-ab34-82af224ecf00")]
-		public static extern SocketError listen(SOCKET s, int backlog);
+		public static extern WSRESULT listen(SOCKET s, int backlog);
 
 		/// <summary>
 		/// The <c>ntohl</c> function converts a <c>u_long</c> from TCP/IP network order to host byte order (which is little-endian on Intel processors).
@@ -2818,7 +2818,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recv int recv( SOCKET s, char *buf, int len, int flags );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "8c247cd3-479f-45d0-a038-a24e80cc7c73")]
-		public static extern SocketError recv(SOCKET s, IntPtr buf, int len, MsgFlags flags);
+		public static extern WSRESULT recv(SOCKET s, IntPtr buf, int len, MsgFlags flags);
 
 		/// <summary>The <c>recvfrom</c> function receives a datagram and stores the source address.</summary>
 		/// <param name="s">A descriptor identifying a bound socket.</param>
@@ -3001,7 +3001,7 @@ namespace Vanara.PInvoke
 		// flags, sockaddr *from, int *fromlen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "3e4282e0-3ed0-43e7-9b27-72ec36b9cfa1")]
-		public static extern SocketError recvfrom(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR from, ref int fromlen);
+		public static extern WSRESULT recvfrom(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR from, ref int fromlen);
 
 		/// <summary>
 		/// The <c>select</c> function determines the status of one or more sockets, waiting if necessary, to perform synchronous I/O.
@@ -3182,7 +3182,7 @@ namespace Vanara.PInvoke
 		// fd_set *writefds, fd_set *exceptfds, const timeval *timeout );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.select")]
-		public static extern SocketError select([Optional] int nfds, ref fd_set readfds, ref fd_set writefds, ref fd_set exceptfds, in TIMEVAL timeout);
+		public static extern WSRESULT select([Optional] int nfds, ref fd_set readfds, ref fd_set writefds, ref fd_set exceptfds, in TIMEVAL timeout);
 
 		/// <summary>
 		/// The <c>select</c> function determines the status of one or more sockets, waiting if necessary, to perform synchronous I/O.
@@ -3363,7 +3363,7 @@ namespace Vanara.PInvoke
 		// fd_set *writefds, fd_set *exceptfds, const timeval *timeout );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.select")]
-		public static extern SocketError select([Optional] int nfds, [In, Out, Optional] IntPtr readfds, [In, Out, Optional] IntPtr writefds, [In, Out, Optional] IntPtr exceptfds, [In, Optional] IntPtr timeout);
+		public static extern WSRESULT select([Optional] int nfds, [In, Out, Optional] IntPtr readfds, [In, Out, Optional] IntPtr writefds, [In, Out, Optional] IntPtr exceptfds, [In, Optional] IntPtr timeout);
 
 		/// <summary>The <c>send</c> function sends data on a connected socket.</summary>
 		/// <param name="s">A descriptor identifying a connected socket.</param>
@@ -3559,7 +3559,7 @@ namespace Vanara.PInvoke
 		// int flags );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "902bb9cf-d847-43fc-8282-394d619b8f1b")]
-		public static extern SocketError send(SOCKET s, IntPtr buf, int len, int flags);
+		public static extern WSRESULT send(SOCKET s, IntPtr buf, int len, int flags);
 
 		/// <summary>The <c>sendto</c> function sends data to a specific destination.</summary>
 		/// <param name="s">A descriptor identifying a (possibly connected) socket.</param>
@@ -3792,7 +3792,7 @@ namespace Vanara.PInvoke
 		// flags, const sockaddr *to, int tolen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "a1c89c6b-d11d-4d3e-a664-af2beed0cd09")]
-		public static extern SocketError sendto(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR to, int tolen);
+		public static extern WSRESULT sendto(SOCKET s, IntPtr buf, int len, int flags, SOCKADDR to, int tolen);
 
 		/// <summary>The <c>setsockopt</c> function sets a socket option.</summary>
 		/// <param name="s">A descriptor that identifies a socket.</param>
@@ -4146,7 +4146,7 @@ namespace Vanara.PInvoke
 		// optname, const char *optval, int optlen );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "3a6960c9-0c04-4403-aee1-ce250459dc30")]
-		public static extern SocketError setsockopt(SOCKET s, int level, int optname, IntPtr optval, int optlen);
+		public static extern WSRESULT setsockopt(SOCKET s, int level, int optname, IntPtr optval, int optlen);
 
 		/// <summary>The <c>setsockopt</c> function sets a socket option.</summary>
 		/// <param name="s">A descriptor that identifies a socket.</param>
@@ -4498,7 +4498,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-setsockopt int setsockopt( SOCKET s, int level, int
 		// optname, const char *optval, int optlen );
 		[PInvokeData("winsock.h", MSDNShortId = "3a6960c9-0c04-4403-aee1-ce250459dc30")]
-		public static SocketError setsockopt<TLvl, TIn>(SOCKET s, TLvl level, int optname, in TIn optval) where TIn : struct where TLvl : IConvertible
+		public static WSRESULT setsockopt<TLvl, TIn>(SOCKET s, TLvl level, int optname, in TIn optval) where TIn : struct where TLvl : IConvertible
 		{
 			using var mem = SafeCoTaskMemHandle.CreateFromStructure(optval);
 			return setsockopt(s, level.ToInt32(null), optname, mem, mem.Size);
@@ -4686,7 +4686,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-shutdown int shutdown( SOCKET s, int how );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "6998f0c6-adc9-481f-b9fb-75f9c9f5caaf")]
-		public static extern SocketError shutdown(SOCKET s, SD how);
+		public static extern WSRESULT shutdown(SOCKET s, SD how);
 
 		/// <summary>The <c>socket</c> function creates a socket that is bound to a specific transport service provider.</summary>
 		/// <param name="af">
