@@ -1080,7 +1080,7 @@ namespace Vanara.PInvoke
 		// DhcpServer; BOOL HaveWins; IP_ADDR_STRING PrimaryWinsServer; IP_ADDR_STRING SecondaryWinsServer; time_t LeaseObtained; time_t
 		// LeaseExpires; } IP_ADAPTER_INFO, *PIP_ADAPTER_INFO;
 		[PInvokeData("iptypes.h", MSDNShortId = "f8035801-ca0c-4d86-bfc5-8e2d746af1b4")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct IP_ADAPTER_INFO : ILinkedListElement<IP_ADAPTER_INFO>
 		{
 			/// <summary>
@@ -1262,6 +1262,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets a sequence of IP_ADDR_STRING values representing gateways.</summary>
 			public IEnumerable<IP_ADDR_STRING> Gateways => GatewayList.GetLinkedList(s => s.IpAddress.String != null);
+
+			/// <summary>Gets a sequence of IP_ADDR_STRING values representing DHCP servers.</summary>
+			public IEnumerable<IP_ADDR_STRING> DhcpServers => DhcpServer.GetLinkedList(s => s.IpAddress.String != null);
+
+			/// <summary>Gets a sequence of IP_ADDR_STRING values representing primary WINS servers.</summary>
+			public IEnumerable<IP_ADDR_STRING> PrimaryWinsServers => PrimaryWinsServer.GetLinkedList(s => s.IpAddress.String != null);
 
 			/// <summary>Gets a sequence of IP_ADDR_STRING values representing secondary WINS servers.</summary>
 			public IEnumerable<IP_ADDR_STRING> SecondaryWinsServers => SecondaryWinsServer.GetLinkedList(s => s.IpAddress.String != null);
@@ -1583,7 +1589,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_addr_string typedef struct _IP_ADDR_STRING { struct
 		// _IP_ADDR_STRING *Next; IP_ADDRESS_STRING IpAddress; IP_MASK_STRING IpMask; DWORD Context; } IP_ADDR_STRING, *PIP_ADDR_STRING;
 		[PInvokeData("iptypes.h", MSDNShortId = "783c383d-7fd3-45bc-90f6-2e8ce01db3c3")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct IP_ADDR_STRING : ILinkedListElement<IP_ADDR_STRING>
 		{
 			/// <summary>
