@@ -211,7 +211,7 @@ namespace Vanara.PInvoke
 			{
 				get
 				{
-					if (DnsServerList.IpAddress != null)
+					if (DnsServerList.IpAddress.String != null)
 						yield return DnsServerList;
 					var next = DnsServerList.GetNext();
 					while (next != null)
@@ -1258,13 +1258,13 @@ namespace Vanara.PInvoke
 			public time_t LeaseExpires;
 
 			/// <summary>Gets a sequence of IP_ADDR_STRING values representing IP addresses.</summary>
-			public IEnumerable<IP_ADDR_STRING> IpAddresses => IpAddressList.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> IpAddresses => IpAddressList.GetLinkedList(s => s.IpAddress.String != null);
 
 			/// <summary>Gets a sequence of IP_ADDR_STRING values representing gateways.</summary>
-			public IEnumerable<IP_ADDR_STRING> Gateways => GatewayList.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> Gateways => GatewayList.GetLinkedList(s => s.IpAddress.String != null);
 
 			/// <summary>Gets a sequence of IP_ADDR_STRING values representing secondary WINS servers.</summary>
-			public IEnumerable<IP_ADDR_STRING> SecondaryWinsServers => SecondaryWinsServer.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> SecondaryWinsServers => SecondaryWinsServer.GetLinkedList(s => s.IpAddress.String != null);
 
 			/// <summary>
 			/// <para>Gets a reference to the next <c>IP_ADAPTER_INFO</c> structure in the list.</para>
@@ -1595,18 +1595,17 @@ namespace Vanara.PInvoke
 			/// A value that specifies a structure type with a single member, <c>String</c>. The <c>String</c> member is a <c>char</c> array
 			/// of size 16. This array holds an IPv4 address in dotted decimal notation.
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-			public string IpAddress;
+			public IP_ADDRESS_STRING IpAddress;
 
 			/// <summary>
 			/// A value that specifies a structure type with a single member, <c>String</c>. The <c>String</c> member is a <c>char</c> array
 			/// of size 16. This array holds the IPv4 subnet mask in dotted decimal notation.
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-			public string IpMask;
+			public IP_ADDRESS_STRING IpMask;
 
 			/// <summary>
-			/// A network table entry (NTE). This value corresponds to the NTEContext parameters in the AddIPAddress and DeleteIPAddress functions.
+			/// A network table entry (NTE). This value corresponds to the NTEContext parameters in the <see cref="AddIPAddress"/> and <see
+			/// cref="DeleteIPAddress"/> functions.
 			/// </summary>
 			public uint Context;
 
@@ -1633,6 +1632,9 @@ namespace Vanara.PInvoke
 			/// <summary>A character string that represents an IPv4 address or an IPv4 subnet mask in dotted decimal notation.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
 			public string String;
+
+			/// <inheritdoc/>
+			public override string ToString() => String ?? "";
 		}
 
 		/// <summary>The <c>IP_INTERFACE_NAME_INFO</c> structure contains information about an IPv4 interface on the local computer.</summary>
@@ -1860,7 +1862,7 @@ namespace Vanara.PInvoke
 			/// local computer.
 			/// </para>
 			/// </summary>
-			public IEnumerable<IP_ADDR_STRING> DnsServers => DnsServerList.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> DnsServers => DnsServerList.GetLinkedList(s => s.IpAddress.String != null);
 		}
 
 		/// <summary>
