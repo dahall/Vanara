@@ -1440,7 +1440,8 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winsvc.h", MSDNShortId = "ms681987")]
 		public static extern bool ChangeServiceConfig(SC_HANDLE hService, ServiceTypes nServiceType, ServiceStartType nStartType, ServiceErrorControlType nErrorControl,
-			[Optional] string lpBinaryPathName, [Optional] string lpLoadOrderGroup, out uint lpdwTagId, [In, Optional] string lpDependencies,
+			[Optional] string lpBinaryPathName, [Optional] string lpLoadOrderGroup, out uint lpdwTagId,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpDependencies,
 			[Optional] string lpServiceStartName, [Optional] string lpPassword, [Optional] string lpDisplayName);
 
 		/// <summary>Changes the configuration parameters of a service.</summary>
@@ -1549,7 +1550,8 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winsvc.h", MSDNShortId = "ms681987")]
 		public static extern bool ChangeServiceConfig(SC_HANDLE hService, ServiceTypes nServiceType, ServiceStartType nStartType, ServiceErrorControlType nErrorControl,
-			[Optional] string lpBinaryPathName, [Optional] string lpLoadOrderGroup, [Optional] IntPtr lpdwTagId, [In, Optional] string lpDependencies,
+			[Optional] string lpBinaryPathName, [Optional] string lpLoadOrderGroup, [Optional] IntPtr lpdwTagId,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpDependencies,
 			[Optional] string lpServiceStartName, [Optional] string lpPassword, [Optional] string lpDisplayName);
 
 		/// <summary>Changes the optional configuration parameters of a service.</summary>
