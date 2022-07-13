@@ -1107,7 +1107,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/nf-commdlg-commdlgextendederror DWORD CommDlgExtendedError();
 		[DllImport(Lib_ComDlg32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("commdlg.h", MSDNShortId = "NF:commdlg.CommDlgExtendedError")]
-		public static extern uint CommDlgExtendedError();
+		public static extern ERR CommDlgExtendedError();
 
 		/// <summary>
 		/// Creates a system-defined modeless <c>Find</c> dialog box that lets the user specify a string to search for and options to use
