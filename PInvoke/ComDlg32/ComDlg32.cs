@@ -1,7 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
-using Vanara.Extensions;
+
+using Vanara.Extensions
 using Vanara.InteropServices;
+
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 
@@ -59,6 +61,209 @@ namespace Vanara.PInvoke
 
 			/// <summary>Causes the dialog box to display only solid colors in the set of basic colors.</summary>
 			CC_SOLIDCOLOR = 0x00000080,
+		}
+
+		/// <summary>
+		/// An error code returned by the CommDlgExtendedError function.
+		/// </summary>
+		/// <remarks>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CDERR</term>
+		/// <term>General error codes that can be returned for any of the common dialog box functions.</term>
+		/// </item>
+		/// <item>
+		/// <term>PDERR</term>
+		/// <term>Error codes returned for the PrintDlg function.</term>
+		/// </item>
+		/// <item>
+		/// </item>
+		/// <item>
+		/// <term>CFERR</term>
+		/// <term>Error codes returned for the ChooseFont function.</term>
+		/// </item>
+		/// <item>
+		/// <term>FNERR</term>
+		/// <term>Error codes returned for the GetOpenFileName and GetSaveFileName functions.</term>
+		/// </item>
+		/// <item>
+		/// <term>FRERR</term>
+		/// <term>Error codes returned for the FindText and ReplaceText functions.</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		[PInvokeData("cderr.h")]
+		public enum ERR : uint
+		{
+			/// <summary>
+			/// The dialog box could not be created. The common dialog box function's call to the DialogBox function failed. For example,
+			/// this error occurs if the common dialog box call specifies an invalid window handle.
+			/// </summary>
+			CDERR_DIALOGFAILURE = 0xFFFF,
+
+			/// <summary>
+			/// The common dialog box function failed to find a specified resource.
+			/// </summary>
+			CDERR_FINDRESFAILURE = 0x0006,
+
+			/// <summary>
+			///  The common dialog box function failed during initialization. This error often occurs when sufficient memory is not available.
+			/// </summary>
+			CDERR_INITIALIZATION = 0x0002,
+
+			/// <summary>
+			/// The common dialog box function failed to load a specified resource.
+			/// </summary>
+			CDERR_LOADRESFAILURE = 0x0007,
+
+			/// <summary>
+			/// The common dialog box function failed to load a specified string.
+			/// </summary>
+			CDERR_LOADSTRFAILURE = 0x0005,
+
+			/// <summary>
+			/// The common dialog box function failed to lock a specified resource.
+			/// </summary>
+			CDERR_LOCKRESFAILURE = 0x0008,
+
+			/// <summary>
+			/// The common dialog box function was unable to allocate memory for internal structures.
+			/// </summary>
+			CDERR_MEMALLOCFAILURE = 0x0009,
+
+			/// <summary>
+			/// The common dialog box function was unable to lock the memory associated with a handle.
+			/// </summary>
+			CDERR_MEMLOCKFAILURE = 0x000A,
+
+			/// <summary>
+			/// The <c>ENABLETEMPLATE</c> flag was set in the <c>Flags</c> member of the initialization structure for the corresponding common
+			/// dialog box, but you failed to provide a corresponding instance handle.
+			/// </summary>
+			CDERR_NOHINSTANCE = 0x0004,
+
+			/// <summary>
+			/// The <c>ENABLEHOOK</c> flag was set in the <c>Flags</c> member of the initialization structure for the corresponding common
+			/// dialog box, but you failed to provide a pointer to a corresponding hook procedure.
+			/// </summary>
+			CDERR_NOHOOK = 0x000B,
+
+			/// <summary>
+			/// The <c>ENABLETEMPLATE</c> flag was set in the <c>Flags</c> member of the initialization structure for the corresponding common dialog
+			/// box, but you failed to provide a corresponding template.
+			/// </summary>
+			CDERR_NOTEMPLATE = 0x0003,
+
+			/// <summary>
+			/// The RegisterWindowMessage function returned an error code when it was called by the common dialog box function.
+			/// </summary>
+			CDERR_REGISTERMSGFAIL = 0x000C,
+
+			/// <summary>
+			/// The <c>lStructSize</c> member of the initialization structure for the corresponding common dialog box is invalid.
+			/// </summary>
+			CDERR_STRUCTSIZE = 0x0001,
+
+			/// <summary>
+			/// The PrintDlg function failed when it attempted to create an information context.
+			/// </summary>
+			PDERR_CREATEICFAILURE = 0x100A,
+
+			/// <summary>
+			/// You called the PrintDlg function with the <c>DN_DEFAULTPRN</c> flag specified in the <c>wDefault</c> member of the <c>DEVNAMES</c> structure,
+			/// but the printer described by the other structure members did not match the current default printer. This error occurs when
+			/// you store the <c>DEVNAMES</c> structure, and the user changes the default printer by using the Control Panel.
+			/// <para>To use the printer described by the <c>DEVNAMES</c> structure, clear the <c>DN_DEFAULTPRN</c> flag and call PrintDlg again.</para>
+			/// <para>To use the default printer, replace the <c>DEVNAMES</c> structure (and the structure, if one exists) with <c>NULL</c>; and call PrintDlg again.</para>
+			/// </summary>
+			PDERR_DEFAULTDIFFERENT = 0x100C,
+
+			/// <summary>
+			/// The data in the <c>DEVMODE</c> and <c>DEVNAMES</c> structures describes two different printers.
+			/// </summary>
+			PDERR_DNDMMISMATCH = 0x1009,
+
+			/// <summary>
+			/// The printer driver failed to initialize a <c>DEVMODE</c> structure.
+			/// </summary>
+			PDERR_GETDEVMODEFAIL = 0x1005,
+
+			/// <summary>
+			/// The PrintDlg function failed during initialization, and there is no more specific extended error code to describe the failure.
+			/// This is the generic default error code for the function.
+			/// </summary>
+			PDERR_INITFAILURE = 0x1006,
+
+			/// <summary>
+			/// The PrintDlg function failed to load the device driver for the specified printer.
+			/// </summary>
+			PDERR_LOADDRVFAILURE = 0x1004,
+
+			/// <summary>
+			/// A default printer does not exist.
+			/// </summary>
+			PDERR_NODEFAULTPRN = 0x1008,
+
+			/// <summary>
+			/// No printer drivers were found.
+			/// </summary>
+			PDERR_NODEVICES = 0x1007,
+
+			/// <summary>
+			/// The PrintDlg function failed to parse the strings in the [devices] section of the WIN.INI file.
+			/// </summary>
+			PDERR_PARSEFAILURE = 0x1002,
+
+			/// <summary>
+			/// The [devices] section of the WIN.INI file did not contain an entry for the requested printer.
+			/// </summary>
+			PDERR_PRINTERNOTFOUND = 0x100B,
+
+			/// <summary>
+			/// The <c>PD_RETURNDEFAULT</c> flag was specified in the Flags member of the <c>PRINTDLG</c> structure, but the <c>hDevMode</c> or <c>hDevNames</c> member was not <c>NULL</c>.
+			/// </summary>
+			PDERR_RETDEFFAILURE = 0x1003,
+
+			/// <summary>
+			/// The PrintDlg function failed to load the required resources.
+			/// </summary>
+			PDERR_SETUPFAILURE = 0x1001,
+
+			/// <summary>
+			/// The size specified in the <c>nSizeMax</c> member of the <c>CHOOSEFONT</c> structure is less than the size specified in the <c>nSizeMin</c> member.
+			/// </summary>
+			CFERR_MAXLESSTHANMIN = 0x2002,
+
+			/// <summary>
+			/// No fonts exist.
+			/// </summary>
+			CFERR_NOFONTS = 0x2001,
+
+			/// <summary>
+			/// The buffer pointed to by the <c>lpstrFile</c> member of the <c>OPENFILENAME</c> structure is too small for the file name specified
+			/// by the user. The first two bytes of the <c>lpstrFile</c> buffer contain an integer value specifying the size required to receive
+			/// the full name, in characters.
+			/// </summary>
+			FNERR_BUFFERTOOSMALL = 0x3003,
+
+			/// <summary>
+			/// A file name is invalid.
+			/// </summary>
+			FNERR_INVALIDFILENAME = 0x3002,
+
+			/// <summary>
+			/// An attempt to subclass a list box failed because sufficient memory was not available.
+			/// </summary>
+			FNERR_SUBCLASSFAILURE = 0x3001,
+
+			/// <summary>
+			/// A member of the <c>FINDREPLACE</c> structure points to an invalid buffer.
+			/// </summary>
+			FRERR_BUFFERLENGTHZERO = 0x4001,
 		}
 
 		/// <summary>
