@@ -920,9 +920,10 @@ namespace Vanara.PInvoke
 			SERVICE_QUERY_CONFIG = 0x0001,
 
 			/// <summary>
-			/// Required to call the <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, IntPtr, string, string, string, string)"/> or <see cref="ChangeServiceConfig2"/> function to change the service
-			/// configuration. Because this grants the caller the right to change the executable file that the system runs, it should be
-			/// granted only to administrators.
+			/// Required to call the <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType,
+			/// string, string, IntPtr, string[], string, string, string)"/> or <see cref="ChangeServiceConfig2"/> function to change the
+			/// service configuration. Because this grants the caller the right to change the executable file that the system runs, it should
+			/// be granted only to administrators.
 			/// </summary>
 			SERVICE_CHANGE_CONFIG = 0x0002,
 
