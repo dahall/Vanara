@@ -1173,7 +1173,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Not implemented. To calculate the zone of a URI object, pass the URI to the IInternetSecurityManagerEx2::MapUrlToZoneEx2 method.
 			/// </summary>
-			Uri_PROPERTY_ZONE = 18
+			Uri_PROPERTY_ZONE = 18,
 
 			/// <summary>Designates the final numerical property.</summary>
 			Uri_PROPERTY_DWORD_LAST = 18,
