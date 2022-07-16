@@ -5053,8 +5053,10 @@ namespace Vanara.PInvoke
 		// DWORD_PTR dwContext );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "caaff8e8-7db9-4d6d-8ba2-d8d19475173a")]
-		public static extern SafeHINTERNET HttpOpenRequest(HINTERNET hConnect, [Optional] string lpszVerb, string lpszObjectName, [Optional] string lpszVersion, [Optional] string lpszReferrer,
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringPtrArrayMarshaler), MarshalCookie = "Auto"), Optional] string[] lplpszAcceptTypes, [Optional] INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
+		public static extern SafeHINTERNET HttpOpenRequest(HINTERNET hConnect, string lpszVerb = null, string lpszObjectName = "/",
+			string lpszVersion = null, string lpszReferrer = null,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringPtrArrayMarshaler), MarshalCookie = "Auto")] string[] lplpszAcceptTypes = null,
+			INTERNET_FLAG dwFlags = 0, IntPtr dwContext = default);
 
 		/// <summary>Retrieves header information associated with an HTTP request.</summary>
 		/// <param name="hRequest">A handle returned by a call to the HttpOpenRequest or InternetOpenUrl function.</param>
