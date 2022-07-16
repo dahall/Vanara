@@ -4791,6 +4791,46 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// The <c>CMSG_SIGNER_INFO</c> structure contains the content of the PKCS #7 defined SignerInfo in signed messages. In decoding a
+		/// received message, CryptMsgGetParam is called for each signer to get a <c>CMSG_SIGNER_INFO</c> structure.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cmsg_signer_info typedef struct _CMSG_SIGNER_INFO { DWORD
+		// dwVersion; CERT_NAME_BLOB Issuer; CRYPT_INTEGER_BLOB SerialNumber; CRYPT_ALGORITHM_IDENTIFIER HashAlgorithm;
+		// CRYPT_ALGORITHM_IDENTIFIER HashEncryptionAlgorithm; CRYPT_DATA_BLOB EncryptedHash; CRYPT_ATTRIBUTES AuthAttrs; CRYPT_ATTRIBUTES
+		// UnauthAttrs; } CMSG_SIGNER_INFO, *PCMSG_SIGNER_INFO;
+		[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CMSG_SIGNER_INFO")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CMSG_SIGNER_INFO
+		{
+			/// <summary>The version of this structure.</summary>
+			public uint dwVersion;
+
+			/// <summary>A CERT_NAME_BLOB structure that contains the issuer of a certificate with the public key needed to verify a signature.</summary>
+			public CRYPTOAPI_BLOB Issuer;
+
+			/// <summary>
+			/// A CRYPT_INTEGER_BLOB structure that contains the serial number of the certificate that contains the public key needed to
+			/// verify a signature. For more information, see CERT_INFO.
+			/// </summary>
+			public CRYPTOAPI_BLOB SerialNumber;
+
+			/// <summary>CRYPT_ALGORITHM_IDENTIFIER structure specifying the algorithm used in generating the hash of a message.</summary>
+			public CRYPT_ALGORITHM_IDENTIFIER HashAlgorithm;
+
+			/// <summary>CRYPT_ALGORITHM_IDENTIFIER structure specifying the algorithm used to encrypt the hash.</summary>
+			public CRYPT_ALGORITHM_IDENTIFIER HashEncryptionAlgorithm;
+
+			/// <summary>A CRYPT_DATA_BLOB that contains the encrypted hash of the message, the signature.</summary>
+			public CRYPTOAPI_BLOB EncryptedHash;
+
+			/// <summary>CRYPT_ATTRIBUTES structure containing authenticated attributes of the signer.</summary>
+			public CRYPT_ATTRIBUTES AuthAttrs;
+
+			/// <summary>CRYPT_ATTRIBUTES structure containing unauthenticated attributes of the signer.</summary>
+			public CRYPT_ATTRIBUTES UnauthAttrs;
+		}
+
+		/// <summary>
 		/// <para>
 		/// The <c>CMSG_STREAM_INFO</c> structure is used to enable stream processing of data rather than single block processing. Stream
 		/// processing is most often used when processing large messages. Stream-processed messages can originate from any serialized source
