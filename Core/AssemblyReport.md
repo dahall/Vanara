@@ -75,6 +75,7 @@ Class | Description
 [Vanara.InteropServices.PinnedObject](https://github.com/dahall/Vanara/search?l=C%23&q=PinnedObject) | A safe class that represents an object that is pinned in memory.
 [Vanara.Extensions.ReflectionExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ReflectionExtensions) | Extensions related to <c>System.Reflection</c>
 [Vanara.Extensions.Reflection.ReflectionExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ReflectionExtensions) | Extensions for `System.Object` related to <c>System.Reflection</c>
+[System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=RequiresUnreferencedCodeAttribute) | Indicates that the specified method requires dynamic access to code that is not referenced statically, for example, through `System.Reflection`.
 [Vanara.InteropServices.SafeAllocatedMemoryHandle](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAllocatedMemoryHandle) | Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.
 [Vanara.InteropServices.SafeAllocatedMemoryHandleBase](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAllocatedMemoryHandleBase) | Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
 [Vanara.InteropServices.SafeByteArray](https://github.com/dahall/Vanara/search?l=C%23&q=SafeByteArray) | An safe unmanaged array of bytes allocated on the global heap.
@@ -86,6 +87,7 @@ Class | Description
 [Vanara.InteropServices.SafeHGlobalStruct<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHGlobalStruct<T>) | A structure handler based on unmanaged memory allocated by AllocHGlobal.
 [Vanara.InteropServices.SafeMemoryHandle<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemoryHandle<T>) | Abstract base class for all SafeAllocatedMemoryHandle derivatives that apply a specific memory handling routine set.
 [Vanara.InteropServices.SafeMemoryHandleExt<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemoryHandleExt<T>) | A `System.Runtime.InteropServices.SafeHandle` for memory allocated via COM.
+[Vanara.InteropServices.SafeMemoryPool<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemoryPool<T>) | 
 [Vanara.InteropServices.SafeMemString<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemString<T>) | Base abstract class for a string handler based on `Vanara.InteropServices.SafeMemoryHandle`1`.
 [Vanara.InteropServices.SafeMemStruct<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemStruct<T>) | Base abstract class for a structure handler based on `Vanara.InteropServices.SafeMemoryHandle`1`.
 [Vanara.Collections.SparseArray<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SparseArray<T>) | A sparse array based on a dictionary.

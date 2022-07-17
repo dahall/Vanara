@@ -23,6 +23,7 @@ Native Enum | Header | Managed Enum
 [CC](https://www.google.com/search?num=5&q=CC+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.CC](https://github.com/dahall/Vanara/search?l=C%23&q=CC)  
 [CF](https://www.google.com/search?num=5&q=CF+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.CF](https://github.com/dahall/Vanara/search?l=C%23&q=CF)  
 [DN](https://www.google.com/search?num=5&q=DN+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.DN](https://github.com/dahall/Vanara/search?l=C%23&q=DN)  
+[ERR](https://www.google.com/search?num=5&q=ERR+site%3Adocs.microsoft.com) | cderr.h | [Vanara.PInvoke.ComDlg32.ERR](https://github.com/dahall/Vanara/search?l=C%23&q=ERR)  
 [FR](https://www.google.com/search?num=5&q=FR+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.FR](https://github.com/dahall/Vanara/search?l=C%23&q=FR)  
 [OFN](https://www.google.com/search?num=5&q=OFN+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.OFN](https://github.com/dahall/Vanara/search?l=C%23&q=OFN)  
 [OFN_EX](https://www.google.com/search?num=5&q=OFN_EX+site%3Adocs.microsoft.com) | commdlg.h | [Vanara.PInvoke.ComDlg32.OFN_EX](https://github.com/dahall/Vanara/search?l=C%23&q=OFN_EX)  

@@ -1,5 +1,5 @@
 ## Vanara.PInvoke.Ws2_32  
-PInvoke API (methods, structures and constants) imported from Windows Ws2_32.dll.
+PInvoke API (methods, structures and constants) for WinSock and WinSock2 imported from Windows Ws2_32.dll.
 
 - Includes methods from ws2_32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Ws2_32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Ws2_32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Ws2_32)  
@@ -149,7 +149,7 @@ Native Enum | Header | Managed Enum
 [CONTROL_CHANNEL_TRIGGER_STATUS](https://www.google.com/search?num=5&q=CONTROL_CHANNEL_TRIGGER_STATUS+site%3Adocs.microsoft.com) | mstcpip.h | [Vanara.PInvoke.Ws2_32.CONTROL_CHANNEL_TRIGGER_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=CONTROL_CHANNEL_TRIGGER_STATUS)  
 [FD](https://www.google.com/search?num=5&q=FD+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.FD](https://github.com/dahall/Vanara/search?l=C%23&q=FD)  
 [GROUP](https://www.google.com/search?num=5&q=GROUP+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.GROUP](https://github.com/dahall/Vanara/search?l=C%23&q=GROUP)  
-[IPPROTO](https://www.google.com/search?num=5&q=IPPROTO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ws2_32.IPPROTO](https://github.com/dahall/Vanara/search?l=C%23&q=IPPROTO)  
+[IPPROTO](https://www.google.com/search?num=5&q=IPPROTO+site%3Adocs.microsoft.com) | ws2def.h | [Vanara.PInvoke.Ws2_32.IPPROTO](https://github.com/dahall/Vanara/search?l=C%23&q=IPPROTO)  
 [JL](https://www.google.com/search?num=5&q=JL+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.JL](https://github.com/dahall/Vanara/search?l=C%23&q=JL)  
 [LUP](https://www.google.com/search?num=5&q=LUP+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.LUP](https://github.com/dahall/Vanara/search?l=C%23&q=LUP)  
 [MsgFlags](https://www.google.com/search?num=5&q=MsgFlags+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.MsgFlags](https://github.com/dahall/Vanara/search?l=C%23&q=MsgFlags)  
@@ -194,11 +194,15 @@ Native Structure | Header | Managed Structure
 [FLOWSPEC](https://www.google.com/search?num=5&q=FLOWSPEC+site%3Adocs.microsoft.com) | qos.h | [Vanara.PInvoke.Ws2_32.FLOWSPEC](https://github.com/dahall/Vanara/search?l=C%23&q=FLOWSPEC)  
 [GROUP_FILTER](https://www.google.com/search?num=5&q=GROUP_FILTER+site%3Adocs.microsoft.com) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.GROUP_FILTER](https://github.com/dahall/Vanara/search?l=C%23&q=GROUP_FILTER)  
 [IN_ADDR](https://www.google.com/search?num=5&q=IN_ADDR+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.IN_ADDR](https://github.com/dahall/Vanara/search?l=C%23&q=IN_ADDR)  
+[IN_PKTINFO](https://www.google.com/search?num=5&q=IN_PKTINFO+site%3Adocs.microsoft.com) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.IN_PKTINFO](https://github.com/dahall/Vanara/search?l=C%23&q=IN_PKTINFO)  
 [IN6_ADDR](https://www.google.com/search?num=5&q=IN6_ADDR+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.IN6_ADDR](https://github.com/dahall/Vanara/search?l=C%23&q=IN6_ADDR)  
+[IN6_PKTINFO](https://www.google.com/search?num=5&q=IN6_PKTINFO+site%3Adocs.microsoft.com) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.IN6_PKTINFO](https://github.com/dahall/Vanara/search?l=C%23&q=IN6_PKTINFO)  
 [INET_PORT_RANGE](https://www.google.com/search?num=5&q=INET_PORT_RANGE+site%3Adocs.microsoft.com) | mstcpip.h | [Vanara.PInvoke.Ws2_32.INET_PORT_RANGE](https://github.com/dahall/Vanara/search?l=C%23&q=INET_PORT_RANGE)  
 [INET_PORT_RESERVATION_INSTANCE](https://www.google.com/search?num=5&q=INET_PORT_RESERVATION_INSTANCE+site%3Adocs.microsoft.com) | mstcpip.h | [Vanara.PInvoke.Ws2_32.INET_PORT_RESERVATION_INSTANCE](https://github.com/dahall/Vanara/search?l=C%23&q=INET_PORT_RESERVATION_INSTANCE)  
 [INET_PORT_RESERVATION_TOKEN](https://www.google.com/search?num=5&q=INET_PORT_RESERVATION_TOKEN+site%3Adocs.microsoft.com) | mstcpip.h | [Vanara.PInvoke.Ws2_32.INET_PORT_RESERVATION_TOKEN](https://github.com/dahall/Vanara/search?l=C%23&q=INET_PORT_RESERVATION_TOKEN)  
+[IP_MREQ](https://www.google.com/search?num=5&q=IP_MREQ+site%3Adocs.microsoft.com) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.IP_MREQ](https://github.com/dahall/Vanara/search?l=C%23&q=IP_MREQ)  
 [IP_MSFILTER](https://www.google.com/search?num=5&q=IP_MSFILTER+site%3Adocs.microsoft.com) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.IP_MSFILTER](https://github.com/dahall/Vanara/search?l=C%23&q=IP_MSFILTER)  
+[IPV6_MREQ](https://www.google.com/search?num=5&q=IPV6_MREQ+site%3Adocs.microsoft.com) | ws2ipdef.h | [Vanara.PInvoke.Ws2_32.IPV6_MREQ](https://github.com/dahall/Vanara/search?l=C%23&q=IPV6_MREQ)  
 [LINGER](https://www.google.com/search?num=5&q=LINGER+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.LINGER](https://github.com/dahall/Vanara/search?l=C%23&q=LINGER)  
 [NSPV2_ROUTINE](https://www.google.com/search?num=5&q=NSPV2_ROUTINE+site%3Adocs.microsoft.com) | ws2spi.h | [Vanara.PInvoke.Ws2_32.NSPV2_ROUTINE](https://github.com/dahall/Vanara/search?l=C%23&q=NSPV2_ROUTINE)  
 [PROTOENT](https://www.google.com/search?num=5&q=PROTOENT+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.PROTOENT](https://github.com/dahall/Vanara/search?l=C%23&q=PROTOENT)  
@@ -231,6 +235,7 @@ Native Structure | Header | Managed Structure
 [TIMEVAL](https://www.google.com/search?num=5&q=TIMEVAL+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.TIMEVAL](https://github.com/dahall/Vanara/search?l=C%23&q=TIMEVAL)  
 [TRANSPORT_SETTING_ID](https://www.google.com/search?num=5&q=TRANSPORT_SETTING_ID+site%3Adocs.microsoft.com) | transportsettingcommon.h | [Vanara.PInvoke.Ws2_32.TRANSPORT_SETTING_ID](https://github.com/dahall/Vanara/search?l=C%23&q=TRANSPORT_SETTING_ID)  
 [WSABUF](https://www.google.com/search?num=5&q=WSABUF+site%3Adocs.microsoft.com) | ws2def.h | [Vanara.PInvoke.Ws2_32.WSABUF](https://github.com/dahall/Vanara/search?l=C%23&q=WSABUF)  
+[WSACMSGHDR](https://www.google.com/search?num=5&q=WSACMSGHDR+site%3Adocs.microsoft.com) | ws2def.h | [Vanara.PInvoke.Ws2_32.WSACMSGHDR](https://github.com/dahall/Vanara/search?l=C%23&q=WSACMSGHDR)  
 [WSADATA](https://www.google.com/search?num=5&q=WSADATA+site%3Adocs.microsoft.com) | winsock.h | [Vanara.PInvoke.Ws2_32.WSADATA](https://github.com/dahall/Vanara/search?l=C%23&q=WSADATA)  
 [WSAEVENT](https://www.google.com/search?num=5&q=WSAEVENT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Ws2_32.WSAEVENT](https://github.com/dahall/Vanara/search?l=C%23&q=WSAEVENT)  
 [WSAMSG](https://www.google.com/search?num=5&q=WSAMSG+site%3Adocs.microsoft.com) | ws2def.h | [Vanara.PInvoke.Ws2_32.WSAMSG](https://github.com/dahall/Vanara/search?l=C%23&q=WSAMSG)  
@@ -247,6 +252,7 @@ Native Structure | Header | Managed Structure
 [WSAQUERYSET2W](https://www.google.com/search?num=5&q=WSAQUERYSET2W+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAQUERYSET2W](https://github.com/dahall/Vanara/search?l=C%23&q=WSAQUERYSET2W)  
 [WSASERVICECLASSINFO](https://www.google.com/search?num=5&q=WSASERVICECLASSINFO+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSASERVICECLASSINFO](https://github.com/dahall/Vanara/search?l=C%23&q=WSASERVICECLASSINFO)  
 [WSAVERSION](https://www.google.com/search?num=5&q=WSAVERSION+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSAVERSION](https://github.com/dahall/Vanara/search?l=C%23&q=WSAVERSION)  
+[WSRESULT](https://www.google.com/search?num=5&q=WSRESULT+site%3Adocs.microsoft.com) | winsock2.h | [Vanara.PInvoke.Ws2_32.WSRESULT](https://github.com/dahall/Vanara/search?l=C%23&q=WSRESULT)  
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  

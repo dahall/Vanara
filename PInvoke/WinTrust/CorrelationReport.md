@@ -68,6 +68,7 @@ Native Method | Header | Managed Method
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
+[CCPI](https://www.google.com/search?num=5&q=CCPI+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.CCPI](https://github.com/dahall/Vanara/search?l=C%23&q=CCPI)  
 [CertConfidence](https://www.google.com/search?num=5&q=CertConfidence+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.CertConfidence](https://github.com/dahall/Vanara/search?l=C%23&q=CertConfidence)  
 [CRYPTCAT_ATTR](https://www.google.com/search?num=5&q=CRYPTCAT_ATTR+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_ATTR](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_ATTR)  
 [CRYPTCAT_E](https://www.google.com/search?num=5&q=CRYPTCAT_E+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_E](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_E)  
@@ -75,6 +76,8 @@ Native Enum | Header | Managed Enum
 [CRYPTCAT_VERSION](https://www.google.com/search?num=5&q=CRYPTCAT_VERSION+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCAT_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCAT_VERSION)  
 [DWACTION](https://www.google.com/search?num=5&q=DWACTION+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.DWACTION](https://github.com/dahall/Vanara/search?l=C%23&q=DWACTION)  
 [WIN_CERT_TYPE](https://www.google.com/search?num=5&q=WIN_CERT_TYPE+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WIN_CERT_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=WIN_CERT_TYPE)  
+[WSS](https://www.google.com/search?num=5&q=WSS+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WSS](https://github.com/dahall/Vanara/search?l=C%23&q=WSS)  
+[WSS_SUPPORT](https://www.google.com/search?num=5&q=WSS_SUPPORT+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WSS_SUPPORT](https://github.com/dahall/Vanara/search?l=C%23&q=WSS_SUPPORT)  
 [WT_TRUSTDBDIALOG](https://www.google.com/search?num=5&q=WT_TRUSTDBDIALOG+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WT_TRUSTDBDIALOG](https://github.com/dahall/Vanara/search?l=C%23&q=WT_TRUSTDBDIALOG)  
 [WTD_CHOICE](https://www.google.com/search?num=5&q=WTD_CHOICE+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTD_CHOICE](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_CHOICE)  
 [WTD_REVOKE](https://www.google.com/search?num=5&q=WTD_REVOKE+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WTD_REVOKE](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_REVOKE)  
@@ -87,6 +90,8 @@ Native Enum | Header | Managed Enum
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [CATALOG_INFO](https://www.google.com/search?num=5&q=CATALOG_INFO+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CATALOG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CATALOG_INFO)  
+[CONFIG_CI_PROV_INFO](https://www.google.com/search?num=5&q=CONFIG_CI_PROV_INFO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.CONFIG_CI_PROV_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=CONFIG_CI_PROV_INFO)  
+[CONFIG_CI_PROV_INFO_RESULT](https://www.google.com/search?num=5&q=CONFIG_CI_PROV_INFO_RESULT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.CONFIG_CI_PROV_INFO_RESULT](https://github.com/dahall/Vanara/search?l=C%23&q=CONFIG_CI_PROV_INFO_RESULT)  
 [CRYPT_PROVIDER_CERT](https://www.google.com/search?num=5&q=CRYPT_PROVIDER_CERT+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.CRYPT_PROVIDER_CERT](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPT_PROVIDER_CERT)  
 [CRYPT_PROVIDER_DATA](https://www.google.com/search?num=5&q=CRYPT_PROVIDER_DATA+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.CRYPT_PROVIDER_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPT_PROVIDER_DATA)  
 [CRYPT_PROVIDER_DEFUSAGE](https://www.google.com/search?num=5&q=CRYPT_PROVIDER_DEFUSAGE+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.CRYPT_PROVIDER_DEFUSAGE](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPT_PROVIDER_DEFUSAGE)  
@@ -103,6 +108,8 @@ Native Structure | Header | Managed Structure
 [CRYPTCATCDF](https://www.google.com/search?num=5&q=CRYPTCATCDF+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCATCDF](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCATCDF)  
 [CRYPTCATMEMBER](https://www.google.com/search?num=5&q=CRYPTCATMEMBER+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCATMEMBER](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCATMEMBER)  
 [CRYPTCATSTORE](https://www.google.com/search?num=5&q=CRYPTCATSTORE+site%3Adocs.microsoft.com) | mscat.h | [Vanara.PInvoke.WinTrust.CRYPTCATSTORE](https://github.com/dahall/Vanara/search?l=C%23&q=CRYPTCATSTORE)  
+[DRIVER_VER_INFO](https://www.google.com/search?num=5&q=DRIVER_VER_INFO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.DRIVER_VER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=DRIVER_VER_INFO)  
+[DRIVER_VER_MAJORMINOR](https://www.google.com/search?num=5&q=DRIVER_VER_MAJORMINOR+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.DRIVER_VER_MAJORMINOR](https://github.com/dahall/Vanara/search?l=C%23&q=DRIVER_VER_MAJORMINOR)  
 [HCATADMIN](https://www.google.com/search?num=5&q=HCATADMIN+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.HCATADMIN](https://github.com/dahall/Vanara/search?l=C%23&q=HCATADMIN)  
 [HCATALOG](https://www.google.com/search?num=5&q=HCATALOG+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.HCATALOG](https://github.com/dahall/Vanara/search?l=C%23&q=HCATALOG)  
 [HCATINFO](https://www.google.com/search?num=5&q=HCATINFO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.HCATINFO](https://github.com/dahall/Vanara/search?l=C%23&q=HCATINFO)  
@@ -125,6 +132,9 @@ Native Structure | Header | Managed Structure
 [WINTRUST_FILE_INFO](https://www.google.com/search?num=5&q=WINTRUST_FILE_INFO+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WINTRUST_FILE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WINTRUST_FILE_INFO)  
 [WINTRUST_SGNR_INFO](https://www.google.com/search?num=5&q=WINTRUST_SGNR_INFO+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WINTRUST_SGNR_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WINTRUST_SGNR_INFO)  
 [WINTRUST_SIGNATURE_SETTINGS](https://www.google.com/search?num=5&q=WINTRUST_SIGNATURE_SETTINGS+site%3Adocs.microsoft.com) | wintrust.h | [Vanara.PInvoke.WinTrust.WINTRUST_SIGNATURE_SETTINGS](https://github.com/dahall/Vanara/search?l=C%23&q=WINTRUST_SIGNATURE_SETTINGS)  
+[WTD_GENERIC_CHAIN_POLICY_CREATE_INFO](https://www.google.com/search?num=5&q=WTD_GENERIC_CHAIN_POLICY_CREATE_INFO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.WTD_GENERIC_CHAIN_POLICY_CREATE_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_GENERIC_CHAIN_POLICY_CREATE_INFO)  
+[WTD_GENERIC_CHAIN_POLICY_DATA](https://www.google.com/search?num=5&q=WTD_GENERIC_CHAIN_POLICY_DATA+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.WTD_GENERIC_CHAIN_POLICY_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_GENERIC_CHAIN_POLICY_DATA)  
+[WTD_GENERIC_CHAIN_POLICY_SIGNER_INFO](https://www.google.com/search?num=5&q=WTD_GENERIC_CHAIN_POLICY_SIGNER_INFO+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinTrust.WTD_GENERIC_CHAIN_POLICY_SIGNER_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=WTD_GENERIC_CHAIN_POLICY_SIGNER_INFO)  
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  

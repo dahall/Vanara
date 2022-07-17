@@ -218,6 +218,8 @@ Class | Description
 [Vanara.InteropServices.SafeNativeListBase<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNativeListBase<T>) | An abstract base class for a safe, unmanaged list of structures allocated by a memory scheme.
 [Vanara.PInvoke.SafeResourceId](https://github.com/dahall/Vanara/search?l=C%23&q=SafeResourceId) | Represents a system resource name that can identify as a string, integer, or pointer.
 [Vanara.PInvoke.FunctionHelper.SBFunc<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SBFunc<T>) | Delegate that takes and StringBuilder and initial size and returns a result.
+[Vanara.PInvoke.FunctionHelper.SBFunc<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SBFunc<T>) | Delegate that takes and StringBuilder and initial size and returns a result.
+[Vanara.PInvoke.FunctionHelper.SBFunc<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SBFunc<T>) | Delegate that takes and StringBuilder and initial size and returns a result.
 [Vanara.PInvoke.SECURITY_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=SECURITY_ATTRIBUTES) | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
 [Vanara.PInvoke.FunctionHelper.SizeFunc<T>](https://github.com/dahall/Vanara/search?l=C%23&q=SizeFunc<T>) | Gets a size and returns an error.
 [Vanara.PInvoke.StaticFieldValueHash](https://github.com/dahall/Vanara/search?l=C%23&q=StaticFieldValueHash) | Gets a static field's name from its value and caches the list for faster lookups.

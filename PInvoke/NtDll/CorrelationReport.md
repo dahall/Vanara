@@ -3,14 +3,14 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (33 of 611 functions)  
+### Methods - 5% API coverage (35 of 611 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Adocs.microsoft.com) |  |   
 [ApiSetQueryApiSetPresenceEx](https://www.google.com/search?num=5&q=ApiSetQueryApiSetPresenceEx+site%3Adocs.microsoft.com) |  |   
 [DbgBreakPoint](https://www.google.com/search?num=5&q=DbgBreakPoint+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgBreakPoint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgBreakPoint)  
-[DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Adocs.microsoft.com) |  |   
-[DbgPrintEx](https://www.google.com/search?num=5&q=DbgPrintEx+site%3Adocs.microsoft.com) |  |   
+[DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrint)  
+[DbgPrintEx](https://www.google.com/search?num=5&q=DbgPrintEx+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrintEx](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrintEx)  
 [DbgPrompt](https://www.google.com/search?num=5&q=DbgPrompt+site%3Adocs.microsoft.com) | ntddk.h | [Vanara.PInvoke.NtDll.DbgPrompt](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrompt)  
 [EtwCheckCoverage](https://www.google.com/search?num=5&q=EtwCheckCoverage+site%3Adocs.microsoft.com) |  |   
 [LdrCallEnclave](https://www.google.com/search?num=5&q=LdrCallEnclave+site%3Adocs.microsoft.com) |  |   
@@ -620,6 +620,7 @@ Native Method | Header | Managed Method
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
+[DPFLTR_TYPE](https://www.google.com/search?num=5&q=DPFLTR_TYPE+site%3Adocs.microsoft.com) | dpfilter.h | [Vanara.PInvoke.NtDll.DPFLTR_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DPFLTR_TYPE)  
 [KEY_INFORMATION_CLASS](https://www.google.com/search?num=5&q=KEY_INFORMATION_CLASS+site%3Adocs.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.KEY_INFORMATION_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_INFORMATION_CLASS)  
 [NOTIFICATION_MASK](https://www.google.com/search?num=5&q=NOTIFICATION_MASK+site%3Adocs.microsoft.com) | ktmtypes.h | [Vanara.PInvoke.NtDll.NOTIFICATION_MASK](https://github.com/dahall/Vanara/search?l=C%23&q=NOTIFICATION_MASK)  
 [NtFileCreateOptions](https://www.google.com/search?num=5&q=NtFileCreateOptions+site%3Adocs.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.NtFileCreateOptions](https://github.com/dahall/Vanara/search?l=C%23&q=NtFileCreateOptions)  

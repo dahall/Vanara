@@ -11,6 +11,7 @@ Enum | Description | Values
 [Vanara.Windows.Shell.LibraryFolderFilter](https://github.com/dahall/Vanara/search?l=C%23&q=LibraryFolderFilter) | Defines options for filtering folder items. | FileSystemOnly, StorageObjects, AllItems
 [Vanara.Windows.Shell.LibraryViewTemplate](https://github.com/dahall/Vanara/search?l=C%23&q=LibraryViewTemplate) | Defines the type of view assigned to a library folder. | Documents, General, Music, Pictures, Videos, Custom
 [Vanara.Windows.Shell.LinkResolution](https://github.com/dahall/Vanara/search?l=C%23&q=LinkResolution) | Flags determining how the links with missing targets are resolved. | None, NoUI, AnyMatch, Update, NoUpdate, NoSearch, NoTrack, NoLinkInfo, InvokeMSI, NoUIWithMsgPump, OfferDeleteWithoutFile, KnownFolder, MachineInLocalTarget, UpdateMachineAndSid, NoObjectID
+[Vanara.Configuration.MRUManager.MenuPlacement](https://github.com/dahall/Vanara/search?l=C%23&q=MenuPlacement) | The placement of a menu item in a list. | Bottom, Top
 [Vanara.Windows.Shell.ShellFileOperations.OperationFlags](https://github.com/dahall/Vanara/search?l=C%23&q=OperationFlags) | Flags that control the file operation. | MultiDestFiles, Silent, RenameOnCollision, NoConfirmation, WantMappingHandle, AllowUndo, FilesOnly, SimpleProgress, NoConfirmMkDir, NoErrorUI, NoUI, NoCopySecurityAttribs, NoRecursion, NoConnectedElements, WantNukeWarning, NoSkipJunctions, PreferHardLink, ShowElevationPrompt, RecycleOnDelete, EarlyFailure, PreserveFileExtensions, KeepNewerFile, NoCopyHooks, NoMinimizeBox, MoveACLsAcrossVolumes, DontDisplaySourcePath, DontDisplayDestPath, RequireElevation, AddUndoRecord, CopyAsDownload, DontDisplayLocations
 [Vanara.Windows.Shell.ShellFileOperationDialog.OperationMode](https://github.com/dahall/Vanara/search?l=C%23&q=OperationMode) | Flags used in Mode | Default, Running, Starting, Undoing, BlockedByErrors, Indeterminate
 [Vanara.Windows.Shell.ShellFileOperationDialog.OperationType](https://github.com/dahall/Vanara/search?l=C%23&q=OperationType) | Describes an action being performed that requires progress to be shown to the user using progress dialog. | None, Moving, Copying, Recycling, ApplyingAttributes, Downloading, SearchingInternet, Calculating, Uploading, SearchingFiles, Deleting, Renaming, Formatting, CopyMoving
@@ -32,12 +33,15 @@ Enum | Description | Values
 Interface | Description
 ---- | ----
 [Vanara.Windows.Shell.IComObject](https://github.com/dahall/Vanara/search?l=C%23&q=IComObject) | Exposed methods from `Vanara.Windows.Shell.ComObject`.
+[Vanara.Configuration.MRUManager.IFileListStorage](https://github.com/dahall/Vanara/search?l=C%23&q=IFileListStorage) | Defines a class that implements storage for an MRU file list.
 [Vanara.Windows.Shell.IJumpListItem](https://github.com/dahall/Vanara/search?l=C%23&q=IJumpListItem) | Represents a Jump List item.
+[Vanara.Configuration.MRUManager.IMenuBuilder](https://github.com/dahall/Vanara/search?l=C%23&q=IMenuBuilder) | Defines a class that implements a menu handler for an MRU file list.
 ### Classes
 Class | Description
 ---- | ----
 [Vanara.Windows.ExtenderProviderBase<T>.AddExtenderEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=AddExtenderEventArgs) | Arguments for the `Vanara.Windows.ExtenderProviderBase`1.AddingExtender` event.
 [Vanara.Windows.Shell.Registration.AppRegistration](https://github.com/dahall/Vanara/search?l=C%23&q=AppRegistration) | Represents the registration entries for an application.
+[Vanara.Configuration.MRUManager.AppSettingsFileListStorage](https://github.com/dahall/Vanara/search?l=C%23&q=AppSettingsFileListStorage) | Storage in the local application settings.
 [Vanara.Windows.Shell.BindContext](https://github.com/dahall/Vanara/search?l=C%23&q=BindContext) | Wraps the `System.Runtime.InteropServices.ComTypes.IBindCtx` COM type.
 [Vanara.Windows.Shell.ComClassFactory](https://github.com/dahall/Vanara/search?l=C%23&q=ComClassFactory) | An implementation of `Vanara.PInvoke.Ole32.IClassFactory` to be used in conjunction with `Vanara.Windows.Shell.IComObject` derivatives.
 [Vanara.Windows.Shell.CommandVerb](https://github.com/dahall/Vanara/search?l=C%23&q=CommandVerb) | Encapsulates a shortcut menu verb in the registry.
@@ -61,6 +65,7 @@ Class | Description
 [Vanara.Windows.Shell.ShellContextMenu.MenuItemInfo](https://github.com/dahall/Vanara/search?l=C%23&q=MenuItemInfo) | Provides information about a single menu entry discovered in a native menu.
 [Vanara.PInvoke.MessageLoop.MessageEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=MessageEventArgs) | Holds a copy of the MSG instance retrieved by GetMessage.
 [Vanara.PInvoke.MessageLoop](https://github.com/dahall/Vanara/search?l=C%23&q=MessageLoop) | <para> This class encapsulates the management of a message loop for an application. It supports queuing a callback to the application via the message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when implementing a shell verb as verbs must not block the caller. </para> <note type="note">The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example IExecuteCommand::Execute() or IDropTarget::Drop() passing a method that will complete the initialization work.</note>
+[Vanara.Configuration.MRUManager](https://github.com/dahall/Vanara/search?l=C%23&q=MRUManager) | A class that manages a Most Recently Used file listing.
 [Vanara.Windows.Shell.NativeClipboard](https://github.com/dahall/Vanara/search?l=C%23&q=NativeClipboard) | Initializes and closes a session using the Clipboard calling `Vanara.PInvoke.User32.OpenClipboard(Vanara.PInvoke.HWND)` and then `Vanara.PInvoke.User32.CloseClipboard` on disposal. This can be called multiple times in nested calls and will ensure the Clipboard is only opened and closed at the highest scope.
 [Vanara.Windows.Shell.ProgId](https://github.com/dahall/Vanara/search?l=C%23&q=ProgId) | Represents a programmatic identifier in the registry for an application.
 [Vanara.Windows.Shell.PropertyBag](https://github.com/dahall/Vanara/search?l=C%23&q=PropertyBag) | Encapsulates an `Vanara.PInvoke.OleAut32.IPropertyBag` instance.
@@ -73,6 +78,7 @@ Class | Description
 [Vanara.Windows.Shell.RecycleBin](https://github.com/dahall/Vanara/search?l=C%23&q=RecycleBin) | A static object that represents the system Recycle Bin.
 [Vanara.Windows.Shell.RegBasedDictionary<T>](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedDictionary<T>) | A virtual dictionary that is based on values in the Windows Registry.
 [Vanara.Windows.Shell.RegBasedSettings](https://github.com/dahall/Vanara/search?l=C%23&q=RegBasedSettings) | Base class for registry based settings.
+[Vanara.Configuration.MRUManager.RegistryFileListStorage](https://github.com/dahall/Vanara/search?l=C%23&q=RegistryFileListStorage) | 
 [Vanara.Windows.Shell.SearchCondition](https://github.com/dahall/Vanara/search?l=C%23&q=SearchCondition) | Provides properties and methods for retrieving information about a search condition.
 [Vanara.Windows.Shell.ShellAssociation](https://github.com/dahall/Vanara/search?l=C%23&q=ShellAssociation) | Represents a Shell file association defined in the Windows Registry. Wraps `Vanara.PInvoke.ShlwApi.IQueryAssociations`.
 [Vanara.Windows.Shell.ShellAssociation.ShellAssociationHandler](https://github.com/dahall/Vanara/search?l=C%23&q=ShellAssociationHandler) | Represents a handler (executable) for a `Vanara.Windows.Shell.ShellAssociation`.
@@ -87,6 +93,8 @@ Class | Description
 [Vanara.Windows.Shell.ShellFileOperations](https://github.com/dahall/Vanara/search?l=C%23&q=ShellFileOperations) | Queued and static file operations using the Shell.
 [Vanara.Windows.Shell.ShellFileOperations.ShellFileOpEventArgs](https://github.com/dahall/Vanara/search?l=C%23&q=ShellFileOpEventArgs) | Arguments supplied to events from `Vanara.Windows.Shell.ShellFileOperations`. Depending on the event, some properties may not be set.
 [Vanara.Windows.Shell.ShellFolder](https://github.com/dahall/Vanara/search?l=C%23&q=ShellFolder) | A folder or container of `Vanara.Windows.Shell.ShellItem` instances.
+[Vanara.Windows.Shell.ShellFolderCategorizer](https://github.com/dahall/Vanara/search?l=C%23&q=ShellFolderCategorizer) | Exposes a list of categorizers registered on an IShellFolder.
+[Vanara.Windows.Shell.ShellFolderCategory](https://github.com/dahall/Vanara/search?l=C%23&q=ShellFolderCategory) | A shell folder category object.
 [Vanara.Windows.Shell.ShellImageList](https://github.com/dahall/Vanara/search?l=C%23&q=ShellImageList) | Represents the System Image List holding images for all shell icons.
 [Vanara.Windows.Shell.ShellItem](https://github.com/dahall/Vanara/search?l=C%23&q=ShellItem) | Encapsulates an item in the Windows Shell.
 [Vanara.Windows.Shell.ShellItemArray](https://github.com/dahall/Vanara/search?l=C%23&q=ShellItemArray) | A folder or container of `Vanara.Windows.Shell.ShellItem` instances.

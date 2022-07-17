@@ -130,6 +130,7 @@ Native Enum | Header | Managed Enum
 [GOPHER_TYPE](https://www.google.com/search?num=5&q=GOPHER_TYPE+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.GOPHER_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=GOPHER_TYPE)  
 [HTTP_ADDREQ_FLAG](https://www.google.com/search?num=5&q=HTTP_ADDREQ_FLAG+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.HTTP_ADDREQ_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_ADDREQ_FLAG)  
 [HTTP_QUERY](https://www.google.com/search?num=5&q=HTTP_QUERY+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.HTTP_QUERY](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_QUERY)  
+[HTTP_STATUS](https://www.google.com/search?num=5&q=HTTP_STATUS+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.HTTP_STATUS](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_STATUS)  
 [ICU](https://www.google.com/search?num=5&q=ICU+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.ICU](https://github.com/dahall/Vanara/search?l=C%23&q=ICU)  
 [IDSI_Flags](https://www.google.com/search?num=5&q=IDSI_Flags+site%3Adocs.microsoft.com) | WinInet.h | [Vanara.PInvoke.WinINet.IDSI_Flags](https://github.com/dahall/Vanara/search?l=C%23&q=IDSI_Flags)  
 [INTERNET_AUTODIAL](https://www.google.com/search?num=5&q=INTERNET_AUTODIAL+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.INTERNET_AUTODIAL](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_AUTODIAL)  
