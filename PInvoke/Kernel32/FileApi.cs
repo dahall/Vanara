@@ -4160,7 +4160,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.ReadFile")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReadFile(HFILE hFile, [Out] byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
+		public static extern bool ReadFile(HFILE hFile, [Out] byte[] lpBuffer, int nNumberOfBytesToRead, out int lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
 
 		/// <summary>
 		/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -5746,7 +5746,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.WriteFile")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WriteFile(HFILE hFile, [In] byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, ref NativeOverlapped lpOverlapped);
+		public static extern bool WriteFile(HFILE hFile, [In] byte[] lpBuffer, int nNumberOfBytesToWrite, out int lpNumberOfBytesWritten, ref NativeOverlapped lpOverlapped);
 
 		/// <summary>
 		/// Writes data to the specified file or input/output (I/O) device.
