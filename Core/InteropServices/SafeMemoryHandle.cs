@@ -290,6 +290,11 @@ namespace Vanara.InteropServices
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator IntPtr(SafeAllocatedMemoryHandleBase hMem) => hMem.handle;
 
+		/// <summary>Implements the operator ! which returns <see langword="true"/> if the handle is invalid.</summary>
+		/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !(SafeAllocatedMemoryHandleBase hMem) => hMem.IsInvalid;
+
 #if ALLOWSPAN
 		/// <summary>Creates a new span over this allocated memory.</summary>
 		/// <returns>The span representation of the structure.</returns>
@@ -511,6 +516,22 @@ namespace Vanara.InteropServices
 				unlockedHandle = default;
 			}
 			return stillLocked;
+		}
+
+		/// <summary>
+		/// Clones the memory tied to this instance using <see cref="ISimpleMemoryMethods.AllocMem(int)"/> and returns a pointer to the
+		/// copied memory.
+		/// </summary>
+		/// <returns>
+		/// A pointer, allocated using <see cref="ISimpleMemoryMethods.AllocMem(int)"/>, to a copy of the memory allocated to this instance.
+		/// </returns>
+		protected IntPtr CloneMemory()
+		{
+			var ret = mm.AllocMem(Size);
+			Lock();
+			handle.CopyTo(ret, Size);
+			Unlock();
+			return ret;
 		}
 
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
