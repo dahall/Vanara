@@ -7502,7 +7502,65 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wininet.h", MSDNShortId = "1ec0fe70-4749-4251-9c58-44efdab74688")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InternetReadFile(HINTERNET hFile, IntPtr lpBuffer, uint dwNumberOfBytesToRead, out uint lpdwNumberOfBytesRead);
+		public static extern bool InternetReadFile(HINTERNET hFile, [Out] IntPtr lpBuffer, uint dwNumberOfBytesToRead, out uint lpdwNumberOfBytesRead);
+
+		/// <summary>Reads data from a handle opened by the InternetOpenUrl, FtpOpenFile, or HttpOpenRequest function.</summary>
+		/// <param name="hFile">Handle returned from a previous call to InternetOpenUrl, FtpOpenFile, or HttpOpenRequest.</param>
+		/// <param name="lpBuffer">Pointer to a buffer that receives the data.</param>
+		/// <param name="dwNumberOfBytesToRead">Number of bytes to be read.</param>
+		/// <param name="lpdwNumberOfBytesRead">
+		/// Pointer to a variable that receives the number of bytes read. <c>InternetReadFile</c> sets this value to zero before doing any work
+		/// or error checking.
+		/// </param>
+		/// <returns>
+		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError. An application
+		/// can also use InternetGetLastResponseInfo when necessary.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>InternetReadFile</c> operates much like the base ReadFile function, with a few exceptions. Typically, <c>InternetReadFile</c>
+		/// retrieves data from an HINTERNET handle as a sequential stream of bytes. The amount of data to be read for each call to
+		/// <c>InternetReadFile</c> is specified by the <c>dwNumberOfBytesToRead</c> parameter and the data is returned in the <c>lpBuffer</c>
+		/// parameter. A normal read retrieves the specified <c>dwNumberOfBytesToRead</c> for each call to <c>InternetReadFile</c> until the end
+		/// of the file is reached. To ensure all data is retrieved, an application must continue to call the <c>InternetReadFile</c> function
+		/// until the function returns <c>TRUE</c> and the <c>lpdwNumberOfBytesRead</c> parameter equals zero. This is especially important if
+		/// the requested data is written to the cache, because otherwise the cache will not be properly updated and the file downloaded will not
+		/// be committed to the cache. Note that caching happens automatically unless the original request to open the data stream set the
+		/// <c>INTERNET_FLAG_NO_CACHE_WRITE</c> flag.
+		/// </para>
+		/// <para>
+		/// When an application retrieves a handle using InternetOpenUrl, WinINet attempts to make all data look like a file download, in an
+		/// effort to make reading from the Internet easier for the application. For some types of information, such as FTP file directory
+		/// listings, it converts the data to be returned by <c>InternetReadFile</c> to an HTML stream. It does this on a line-by-line basis. For
+		/// example, it can convert an FTP directory listing to a line of HTML and return this HTML to the application.
+		/// </para>
+		/// <para>
+		/// WinINet attempts to write the HTML to the <c>lpBuffer</c> buffer a line at a time. If the application's buffer is too small to fit at
+		/// least one line of generated HTML, the error code <c>ERROR_INSUFFICIENT_BUFFER</c> is returned as an indication to the application
+		/// that it needs a larger buffer. Also, converted lines might not completely fill the buffer, so <c>InternetReadFile</c> can return with
+		/// less data in <c>lpBuffer</c> than requested. Subsequent reads will retrieve all the converted HTML. The application must again check
+		/// that all data is retrieved as described previously.
+		/// </para>
+		/// <para>
+		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
+		/// destructors of global objects.
+		/// </para>
+		/// <para>
+		/// When running asynchronously, if a call to <c>InternetReadFile</c> does not result in a completed transaction, it will return
+		/// <c>FALSE</c> and a subsequent call to GetLastError will return <c>ERROR_IO_PENDING</c>. When the transaction is completed the
+		/// InternetStatusCallback specified in a previous call to InternetSetStatusCallback will be called with <c>INTERNET_STATUS_REQUEST_COMPLETE</c>.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
+		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetreadfile
+		// BOOL InternetReadFile( [in] HINTERNET hFile, [out] LPVOID lpBuffer, [in] DWORD dwNumberOfBytesToRead, [out] LPDWORD lpdwNumberOfBytesRead );
+		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wininet.h", MSDNShortId = "NF:wininet.InternetReadFile")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool InternetReadFile(HINTERNET hFile, [Out] byte[] lpBuffer, int dwNumberOfBytesToRead, out int lpdwNumberOfBytesRead);
 
 		/// <summary>Reads data from a handle opened by the InternetOpenUrl or HttpOpenRequest function.</summary>
 		/// <param name="hFile">Handle returned by the InternetOpenUrl or HttpOpenRequest function.</param>
@@ -9138,6 +9196,73 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>The <c>InternetCookieHistory</c> structure contains the cookie history.</summary>
+		/// <remarks>
+		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
+		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-internetcookiehistory typedef struct { BOOL fAccepted; BOOL
+		// fLeashed; BOOL fDowngraded; BOOL fRejected; } InternetCookieHistory;
+		[PInvokeData("wininet.h", MSDNShortId = "NS:wininet.__unnamed_struct_15")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct InternetCookieHistory
+		{
+			/// <summary>If true, the cookie was accepted.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fAccepted;
+
+			/// <summary>If true, the cookie was leashed.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fLeashed;
+
+			/// <summary>If true, the cookie was downgraded.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fDowngraded;
+
+			/// <summary>If true, the cookie was rejected.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fRejected;
+		}
+
+		/// <summary>Contains the result of a call to an asynchronous function. This structure is used with InternetStatusCallback.</summary>
+		/// <remarks>
+		/// <para>The value of <c>dwResult</c> is determined by the value of <c>dwInternetStatus</c> in the status callback function.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value of <c>dwInternetStatus</c></term>
+		/// <term>Value of <c>dwResult</c></term>
+		/// </listheader>
+		/// <item>
+		/// <term>INTERNET_STATUS_HANDLE_CREATED</term>
+		/// <term>Pointer to the HINTERNET handle</term>
+		/// </item>
+		/// <item>
+		/// <term>INTERNET_STATUS_REQUEST_COMPLETE</term>
+		/// <term>Boolean return code from the asynchronous function.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
+		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-internet_async_result typedef struct { DWORD_PTR dwResult; DWORD
+		// dwError; } INTERNET_ASYNC_RESULT, *LPINTERNET_ASYNC_RESULT;
+		[PInvokeData("wininet.h", MSDNShortId = "NS:wininet.__unnamed_struct_0")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct INTERNET_ASYNC_RESULT
+		{
+			/// <summary>
+			/// Result. This parameter can be an HINTERNET handle, unsigned long integer, or Boolean return code from an asynchronous function.
+			/// </summary>
+			public IntPtr dwResult;
+
+			/// <summary>
+			/// Error code, if <c>dwResult</c> indicates that the function failed. If the operation succeeded, this member usually contains ERROR_SUCCESS.
+			/// </summary>
+			public Win32Error dwError;
 		}
 
 		/// <summary>Contains the notification data for an authentication request.</summary>
