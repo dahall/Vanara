@@ -41,6 +41,11 @@ CorrespondingAction, FileAttributeConstant, FileOpConstant, FilePermissionConsta
     <None Include="InteropServices\StructMarshaler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="InteropServices\SafeLPSTR.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SafeLPSTR.tt</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,5 +57,14 @@ CorrespondingAction, FileAttributeConstant, FileOpConstant, FilePermissionConsta
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="InteropServices\SafeLPSTR.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SafeLPSTR.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 </Project>
