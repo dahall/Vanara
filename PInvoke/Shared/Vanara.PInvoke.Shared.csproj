@@ -29,9 +29,32 @@ CharacterSet, CM_DEVCAP, CM_FILE, CM_INSTALL_STATE, CM_REMOVAL_POLICY, CM_RESOUR
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Handles\HANDLE.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HANDLE.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5.0')) Or $(TargetFramework.StartsWith('net6.0')) ">
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Handles\HANDLE.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HANDLE.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Handles\HANDLE.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HANDLE.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
