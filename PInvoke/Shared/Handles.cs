@@ -7,7 +7,8 @@ using System.Runtime.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface IGraphicsObjectHandle : IUserHandle { }
+	public interface IGraphicsObjectHandle : IUserHandle
+	{ }
 
 	/// <summary>Signals that a structure or class holds a HANDLE.</summary>
 	public interface IHandle
@@ -18,19 +19,24 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface IKernelHandle : IHandle { }
+	public interface IKernelHandle : IHandle
+	{ }
 
 	/// <summary>Signals that a structure or class holds a pointer to a security object.</summary>
-	public interface ISecurityObject : IHandle { }
+	public interface ISecurityObject : IHandle
+	{ }
 
 	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface IShellHandle : IHandle { }
+	public interface IShellHandle : IHandle
+	{ }
 
 	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface ISyncHandle : IKernelHandle { }
+	public interface ISyncHandle : IKernelHandle
+	{ }
 
 	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface IUserHandle : IHandle { }
+	public interface IUserHandle : IHandle
+	{ }
 
 	/// <summary>Provides a handle to an accelerator table.</summary>
 	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}")]
@@ -43,7 +49,7 @@ namespace Vanara.PInvoke
 		public HACCEL(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HACCEL"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HACCEL NULL => new HACCEL(IntPtr.Zero);
+		public static HACCEL NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -56,7 +62,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HACCEL"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HACCEL(IntPtr h) => new HACCEL(h);
+		public static implicit operator HACCEL(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -91,7 +97,7 @@ namespace Vanara.PInvoke
 		public HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HANDLE NULL => new HANDLE(IntPtr.Zero);
+		public static HANDLE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -104,12 +110,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HANDLE(IntPtr h) => new HANDLE(h);
+		public static implicit operator HANDLE(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeHANDLE"/> to <see cref="HANDLE"/>.</summary>
 		/// <param name="h">The h.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HANDLE(SafeHandle h) => new HANDLE(h.DangerousGetHandle());
+		public static implicit operator HANDLE(SafeHandle h) => new(h.DangerousGetHandle());
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -144,7 +150,7 @@ namespace Vanara.PInvoke
 		public HBITMAP(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HBITMAP"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HBITMAP NULL => new HBITMAP(IntPtr.Zero);
+		public static HBITMAP NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -157,12 +163,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HBITMAP"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HBITMAP(IntPtr h) => new HBITMAP(h);
+		public static implicit operator HBITMAP(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HBITMAP"/>.</summary>
 		/// <param name="h">The pointer to a GDI handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HBITMAP(HGDIOBJ h) => new HBITMAP((IntPtr)h);
+		public static implicit operator HBITMAP(HGDIOBJ h) => new((IntPtr)h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -197,7 +203,7 @@ namespace Vanara.PInvoke
 		public HBRUSH(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HBRUSH"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HBRUSH NULL => new HBRUSH(IntPtr.Zero);
+		public static HBRUSH NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -210,12 +216,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HBRUSH"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HBRUSH(IntPtr h) => new HBRUSH(h);
+		public static implicit operator HBRUSH(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HBRUSH"/>.</summary>
 		/// <param name="h">The pointer to a GDI handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HBRUSH(HGDIOBJ h) => new HBRUSH((IntPtr)h);
+		public static implicit operator HBRUSH(HGDIOBJ h) => new((IntPtr)h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -250,7 +256,7 @@ namespace Vanara.PInvoke
 		public HCOLORSPACE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HCOLORSPACE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCOLORSPACE NULL => new HCOLORSPACE(IntPtr.Zero);
+		public static HCOLORSPACE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -263,7 +269,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCOLORSPACE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCOLORSPACE(IntPtr h) => new HCOLORSPACE(h);
+		public static implicit operator HCOLORSPACE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -298,7 +304,7 @@ namespace Vanara.PInvoke
 		public HCURSOR(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HCURSOR"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCURSOR NULL => new HCURSOR(IntPtr.Zero);
+		public static HCURSOR NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -311,7 +317,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCURSOR"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCURSOR(IntPtr h) => new HCURSOR(h);
+		public static implicit operator HCURSOR(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -346,7 +352,7 @@ namespace Vanara.PInvoke
 		public HDC(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HDC"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDC NULL => new HDC(IntPtr.Zero);
+		public static HDC NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -359,7 +365,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDC"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDC(IntPtr h) => new HDC(h);
+		public static implicit operator HDC(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -394,7 +400,7 @@ namespace Vanara.PInvoke
 		public HDESK(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HDESK"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDESK NULL => new HDESK(IntPtr.Zero);
+		public static HDESK NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -407,7 +413,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDESK"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDESK(IntPtr h) => new HDESK(h);
+		public static implicit operator HDESK(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -442,7 +448,7 @@ namespace Vanara.PInvoke
 		public HDPA(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HDPA"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDPA NULL => new HDPA(IntPtr.Zero);
+		public static HDPA NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -455,7 +461,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDPA"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDPA(IntPtr h) => new HDPA(h);
+		public static implicit operator HDPA(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -490,7 +496,7 @@ namespace Vanara.PInvoke
 		public HDROP(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HDROP"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDROP NULL => new HDROP(IntPtr.Zero);
+		public static HDROP NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -503,7 +509,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDROP"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDROP(IntPtr h) => new HDROP(h);
+		public static implicit operator HDROP(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -538,7 +544,7 @@ namespace Vanara.PInvoke
 		public HDSA(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HDSA"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDSA NULL => new HDSA(IntPtr.Zero);
+		public static HDSA NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -551,7 +557,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDSA"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDSA(IntPtr h) => new HDSA(h);
+		public static implicit operator HDSA(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -565,9 +571,9 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the operator.</returns>
 		public static bool operator ==(HDSA h1, HDSA h2) => h1.Equals(h2);
 
-		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 		public override bool Equals(object obj) => obj is HDSA h && handle == h.handle;
 
 		/// <summary>Returns a hash code for this instance.</summary>
@@ -589,7 +595,7 @@ namespace Vanara.PInvoke
 		public HDWP(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HDWP"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDWP NULL => new HDWP(IntPtr.Zero);
+		public static HDWP NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -602,7 +608,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDWP"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDWP(IntPtr h) => new HDWP(h);
+		public static implicit operator HDWP(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -637,7 +643,7 @@ namespace Vanara.PInvoke
 		public HENHMETAFILE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HENHMETAFILE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HENHMETAFILE NULL => new HENHMETAFILE(IntPtr.Zero);
+		public static HENHMETAFILE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -650,7 +656,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HENHMETAFILE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HENHMETAFILE(IntPtr h) => new HENHMETAFILE(h);
+		public static implicit operator HENHMETAFILE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -685,7 +691,7 @@ namespace Vanara.PInvoke
 		public HEVENT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HEVENT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HEVENT NULL => new HEVENT(IntPtr.Zero);
+		public static HEVENT NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -698,7 +704,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HEVENT"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HEVENT(IntPtr h) => new HEVENT(h);
+		public static implicit operator HEVENT(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -736,7 +742,7 @@ namespace Vanara.PInvoke
 		public HFILE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HFILE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HFILE NULL => new HFILE(IntPtr.Zero);
+		public static HFILE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is an invalid handle (INVALID_HANDLE_VALUE).</summary>
 		public bool IsInvalid => handle == INVALID_HANDLE_VALUE;
@@ -752,12 +758,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFILE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFILE(IntPtr h) => new HFILE(h);
+		public static implicit operator HFILE(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeFileHandle"/> to <see cref="HFILE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFILE(SafeFileHandle h) => new HFILE(h?.DangerousGetHandle() ?? IntPtr.Zero);
+		public static implicit operator HFILE(SafeFileHandle h) => new(h?.DangerousGetHandle() ?? IntPtr.Zero);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -792,7 +798,7 @@ namespace Vanara.PInvoke
 		public HFONT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HFONT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HFONT NULL => new HFONT(IntPtr.Zero);
+		public static HFONT NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -805,12 +811,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFONT"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFONT(IntPtr h) => new HFONT(h);
+		public static implicit operator HFONT(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HFONT"/>.</summary>
 		/// <param name="h">The pointer to a GDI handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFONT(HGDIOBJ h) => new HFONT((IntPtr)h);
+		public static implicit operator HFONT(HGDIOBJ h) => new((IntPtr)h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -845,7 +851,7 @@ namespace Vanara.PInvoke
 		public HGDIOBJ(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HGDIOBJ"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HGDIOBJ NULL => new HGDIOBJ(IntPtr.Zero);
+		public static HGDIOBJ NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -858,57 +864,57 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(IntPtr h) => new HGDIOBJ(h);
+		public static implicit operator HGDIOBJ(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HBITMAP"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HBITMAP h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HBITMAP h) => new((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HBRUSH"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HBRUSH h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HBRUSH h) => new((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HCOLORSPACE"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HCOLORSPACE h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HCOLORSPACE h) => new((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HDC"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HDC h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HDC h) => new((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HFONT"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HFONT h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HFONT h) => new((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HMETAFILE"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HMETAFILE h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HMETAFILE h) => new((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HENHMETAFILE"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HENHMETAFILE h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HENHMETAFILE h) => new((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HPALETTE"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HPALETTE h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HPALETTE h) => new((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HPEN"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HPEN h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HPEN h) => new((IntPtr)h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HRGN"/> to <see cref="HGDIOBJ"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HGDIOBJ(HRGN h) => new HGDIOBJ((IntPtr)h);
+		public static implicit operator HGDIOBJ(HRGN h) => new((IntPtr)h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -943,7 +949,7 @@ namespace Vanara.PInvoke
 		public HICON(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HICON"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HICON NULL => new HICON(IntPtr.Zero);
+		public static HICON NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -956,7 +962,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HICON"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HICON(IntPtr h) => new HICON(h);
+		public static implicit operator HICON(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -991,7 +997,7 @@ namespace Vanara.PInvoke
 		public HIMAGELIST(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HIMAGELIST"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HIMAGELIST NULL => new HIMAGELIST(IntPtr.Zero);
+		public static HIMAGELIST NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1004,7 +1010,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HIMAGELIST"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HIMAGELIST(IntPtr h) => new HIMAGELIST(h);
+		public static implicit operator HIMAGELIST(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1039,7 +1045,7 @@ namespace Vanara.PInvoke
 		public HINSTANCE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HINSTANCE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HINSTANCE NULL => new HINSTANCE(IntPtr.Zero);
+		public static HINSTANCE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1052,7 +1058,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HINSTANCE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HINSTANCE(IntPtr h) => new HINSTANCE(h);
+		public static implicit operator HINSTANCE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1087,7 +1093,7 @@ namespace Vanara.PInvoke
 		public HKEY(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HKEY"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HKEY NULL => new HKEY(IntPtr.Zero);
+		public static HKEY NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1096,14 +1102,14 @@ namespace Vanara.PInvoke
 		/// Registry entries subordinate to this key define types (or classes) of documents and the properties associated with those types.
 		/// Shell and COM applications use the information stored under this key.
 		/// </summary>
-		public static readonly HKEY HKEY_CLASSES_ROOT = new HKEY(new IntPtr(unchecked((int)0x80000000)));
+		public static readonly HKEY HKEY_CLASSES_ROOT = new(new IntPtr(unchecked((int)0x80000000)));
 
 		/// <summary>
 		/// Contains information about the current hardware profile of the local computer system. The information under HKEY_CURRENT_CONFIG
 		/// describes only the differences between the current hardware configuration and the standard configuration. Information about the
 		/// standard hardware configuration is stored under the Software and System keys of HKEY_LOCAL_MACHINE.
 		/// </summary>
-		public static readonly HKEY HKEY_CURRENT_CONFIG = new HKEY(new IntPtr(unchecked((int)0x80000005)));
+		public static readonly HKEY HKEY_CURRENT_CONFIG = new(new IntPtr(unchecked((int)0x80000005)));
 
 		/// <summary>
 		/// Registry entries subordinate to this key define the preferences of the current user. These preferences include the settings of
@@ -1113,10 +1119,10 @@ namespace Vanara.PInvoke
 		/// for example, creates the HKEY_CURRENT_USER\Software\Microsoft key for its applications to use, with each application creating its
 		/// own subkey under the Microsoft key.
 		/// </summary>
-		public static readonly HKEY HKEY_CURRENT_USER = new HKEY(new IntPtr(unchecked((int)0x80000001)));
+		public static readonly HKEY HKEY_CURRENT_USER = new(new IntPtr(unchecked((int)0x80000001)));
 
 		/// <summary></summary>
-		public static readonly HKEY HKEY_DYN_DATA = new HKEY(new IntPtr(unchecked((int)0x80000006)));
+		public static readonly HKEY HKEY_DYN_DATA = new(new IntPtr(unchecked((int)0x80000006)));
 
 		/// <summary>
 		/// Registry entries subordinate to this key define the physical state of the computer, including data about the bus type, system
@@ -1125,19 +1131,19 @@ namespace Vanara.PInvoke
 		/// preferences, network security information, software-related information (such as server names and the location of the server),
 		/// and other system information.
 		/// </summary>
-		public static readonly HKEY HKEY_LOCAL_MACHINE = new HKEY(new IntPtr(unchecked((int)0x80000002)));
+		public static readonly HKEY HKEY_LOCAL_MACHINE = new(new IntPtr(unchecked((int)0x80000002)));
 
 		/// <summary>
 		/// Registry entries subordinate to this key allow you to access performance data. The data is not actually stored in the registry;
 		/// the registry functions cause the system to collect the data from its source.
 		/// </summary>
-		public static readonly HKEY HKEY_PERFORMANCE_DATA = new HKEY(new IntPtr(unchecked((int)0x80000004)));
+		public static readonly HKEY HKEY_PERFORMANCE_DATA = new(new IntPtr(unchecked((int)0x80000004)));
 
 		/// <summary>
 		/// Registry entries subordinate to this key define the default user configuration for new users on the local computer and the user
 		/// configuration for the current user.
 		/// </summary>
-		public static readonly HKEY HKEY_USERS = new HKEY(new IntPtr(unchecked((int)0x80000003)));
+		public static readonly HKEY HKEY_USERS = new(new IntPtr(unchecked((int)0x80000003)));
 
 		/// <summary>Performs an explicit conversion from <see cref="HKEY"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
@@ -1147,12 +1153,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HKEY"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HKEY(IntPtr h) => new HKEY(h);
+		public static implicit operator HKEY(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HKEY"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HKEY(SafeRegistryHandle h) => new HKEY(h.DangerousGetHandle());
+		public static implicit operator HKEY(SafeRegistryHandle h) => new(h.DangerousGetHandle());
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1187,7 +1193,7 @@ namespace Vanara.PInvoke
 		public HMENU(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HMENU"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HMENU NULL => new HMENU(IntPtr.Zero);
+		public static HMENU NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1200,7 +1206,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HMENU"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HMENU(IntPtr h) => new HMENU(h);
+		public static implicit operator HMENU(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1235,7 +1241,7 @@ namespace Vanara.PInvoke
 		public HMETAFILE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HMETAFILE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HMETAFILE NULL => new HMETAFILE(IntPtr.Zero);
+		public static HMETAFILE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1248,7 +1254,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HMETAFILE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HMETAFILE(IntPtr h) => new HMETAFILE(h);
+		public static implicit operator HMETAFILE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1283,7 +1289,7 @@ namespace Vanara.PInvoke
 		public HMONITOR(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HMONITOR"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HMONITOR NULL => new HMONITOR(IntPtr.Zero);
+		public static HMONITOR NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1296,7 +1302,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HMONITOR"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HMONITOR(IntPtr h) => new HMONITOR(h);
+		public static implicit operator HMONITOR(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1331,7 +1337,7 @@ namespace Vanara.PInvoke
 		public HPALETTE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPALETTE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPALETTE NULL => new HPALETTE(IntPtr.Zero);
+		public static HPALETTE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1344,12 +1350,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPALETTE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPALETTE(IntPtr h) => new HPALETTE(h);
+		public static implicit operator HPALETTE(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HPALETTE"/>.</summary>
 		/// <param name="h">The pointer to a GDI handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPALETTE(HGDIOBJ h) => new HPALETTE((IntPtr)h);
+		public static implicit operator HPALETTE(HGDIOBJ h) => new((IntPtr)h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1384,7 +1390,7 @@ namespace Vanara.PInvoke
 		public HPEN(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPEN"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPEN NULL => new HPEN(IntPtr.Zero);
+		public static HPEN NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1397,12 +1403,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPEN"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPEN(IntPtr h) => new HPEN(h);
+		public static implicit operator HPEN(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HPEN"/>.</summary>
 		/// <param name="h">The pointer to a GDI handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPEN(HGDIOBJ h) => new HPEN((IntPtr)h);
+		public static implicit operator HPEN(HGDIOBJ h) => new((IntPtr)h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1437,7 +1443,7 @@ namespace Vanara.PInvoke
 		public HPROCESS(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPROCESS"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPROCESS NULL => new HPROCESS(IntPtr.Zero);
+		public static HPROCESS NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1450,12 +1456,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPROCESS"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPROCESS(IntPtr h) => new HPROCESS(h);
+		public static implicit operator HPROCESS(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="Process"/> to <see cref="HPROCESS"/>.</summary>
 		/// <param name="p">The Process instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPROCESS(Process p) => new HPROCESS(p.Handle);
+		public static implicit operator HPROCESS(Process p) => new(p.Handle);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1490,7 +1496,7 @@ namespace Vanara.PInvoke
 		public HPROPSHEET(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPROPSHEET"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPROPSHEET NULL => new HPROPSHEET(IntPtr.Zero);
+		public static HPROPSHEET NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1503,7 +1509,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPROPSHEET"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPROPSHEET(IntPtr h) => new HPROPSHEET(h);
+		public static implicit operator HPROPSHEET(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1538,7 +1544,7 @@ namespace Vanara.PInvoke
 		public HPROPSHEETPAGE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HPROPSHEETPAGE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPROPSHEETPAGE NULL => new HPROPSHEETPAGE(IntPtr.Zero);
+		public static HPROPSHEETPAGE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1551,7 +1557,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPROPSHEETPAGE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPROPSHEETPAGE(IntPtr h) => new HPROPSHEETPAGE(h);
+		public static implicit operator HPROPSHEETPAGE(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1586,7 +1592,7 @@ namespace Vanara.PInvoke
 		public HRGN(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HRGN"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HRGN NULL => new HRGN(IntPtr.Zero);
+		public static HRGN NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1599,12 +1605,12 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRGN"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRGN(IntPtr h) => new HRGN(h);
+		public static implicit operator HRGN(IntPtr h) => new(h);
 
 		/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HRGN"/>.</summary>
 		/// <param name="h">The pointer to a GDI handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRGN(HGDIOBJ h) => new HRGN((IntPtr)h);
+		public static implicit operator HRGN(HGDIOBJ h) => new((IntPtr)h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1639,7 +1645,7 @@ namespace Vanara.PInvoke
 		public HSECTION(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HSECTION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HSECTION NULL => new HSECTION(IntPtr.Zero);
+		public static HSECTION NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1652,7 +1658,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HSECTION"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HSECTION(IntPtr h) => new HSECTION(h);
+		public static implicit operator HSECTION(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1687,7 +1693,7 @@ namespace Vanara.PInvoke
 		public HTASK(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HTASK"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HTASK NULL => new HTASK(IntPtr.Zero);
+		public static HTASK NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1700,7 +1706,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTASK"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTASK(IntPtr h) => new HTASK(h);
+		public static implicit operator HTASK(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1735,7 +1741,7 @@ namespace Vanara.PInvoke
 		public HTHEME(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HTHEME"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HTHEME NULL => new HTHEME(IntPtr.Zero);
+		public static HTHEME NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1748,7 +1754,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTHEME"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTHEME(IntPtr h) => new HTHEME(h);
+		public static implicit operator HTHEME(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1783,7 +1789,7 @@ namespace Vanara.PInvoke
 		public HTHREAD(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HTHREAD"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HTHREAD NULL => new HTHREAD(IntPtr.Zero);
+		public static HTHREAD NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1796,7 +1802,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTHREAD"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTHREAD(IntPtr h) => new HTHREAD(h);
+		public static implicit operator HTHREAD(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1831,7 +1837,7 @@ namespace Vanara.PInvoke
 		public HTHUMBNAIL(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HTHUMBNAIL"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HTHUMBNAIL NULL => new HTHUMBNAIL(IntPtr.Zero);
+		public static HTHUMBNAIL NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1844,7 +1850,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTHUMBNAIL"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTHUMBNAIL(IntPtr h) => new HTHUMBNAIL(h);
+		public static implicit operator HTHUMBNAIL(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1879,7 +1885,7 @@ namespace Vanara.PInvoke
 		public HTOKEN(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HTOKEN"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HTOKEN NULL => new HTOKEN(IntPtr.Zero);
+		public static HTOKEN NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1892,7 +1898,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HTOKEN"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTOKEN(IntPtr h) => new HTOKEN(h);
+		public static implicit operator HTOKEN(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1927,7 +1933,7 @@ namespace Vanara.PInvoke
 		public HWINSTA(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HWINSTA"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HWINSTA NULL => new HWINSTA(IntPtr.Zero);
+		public static HWINSTA NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1940,7 +1946,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HWINSTA"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HWINSTA(IntPtr h) => new HWINSTA(h);
+		public static implicit operator HWINSTA(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1975,8 +1981,8 @@ namespace Vanara.PInvoke
 		public HWND(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>
-		/// Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost window, the window loses its
-		/// topmost status and is placed at the bottom of all other windows.
+		/// Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost window, the window loses its topmost
+		/// status and is placed at the bottom of all other windows.
 		/// </summary>
 		public static HWND HWND_BOTTOM = new IntPtr(1);
 
@@ -1990,8 +1996,8 @@ namespace Vanara.PInvoke
 		public static HWND HWND_MESSAGE = new IntPtr(-3);
 
 		/// <summary>
-		/// Places the window above all non-topmost windows (that is, behind all topmost windows). This flag has no effect if the window
-		/// is already a non-topmost window.
+		/// Places the window above all non-topmost windows (that is, behind all topmost windows). This flag has no effect if the window is
+		/// already a non-topmost window.
 		/// </summary>
 		public static HWND HWND_NOTOPMOST = new IntPtr(-2);
 
@@ -2002,7 +2008,7 @@ namespace Vanara.PInvoke
 		public static HWND HWND_TOPMOST = new IntPtr(-1);
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HWND"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HWND NULL => new HWND(IntPtr.Zero);
+		public static HWND NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2015,7 +2021,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HWND"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HWND(IntPtr h) => new HWND(h);
+		public static implicit operator HWND(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2050,7 +2056,7 @@ namespace Vanara.PInvoke
 		public PACE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PACE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PACE NULL => new PACE(IntPtr.Zero);
+		public static PACE NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2063,7 +2069,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PACE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PACE(IntPtr h) => new PACE(h);
+		public static implicit operator PACE(IntPtr h) => new(h);
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) => obj is PACE h && handle == h.handle;
@@ -2086,7 +2092,7 @@ namespace Vanara.PInvoke
 		public PACL(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PACL"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PACL NULL => new PACL(IntPtr.Zero);
+		public static PACL NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2099,7 +2105,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PACL"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PACL(IntPtr h) => new PACL(h);
+		public static implicit operator PACL(IntPtr h) => new(h);
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) => obj is PACL h && handle == h.handle;
@@ -2122,7 +2128,7 @@ namespace Vanara.PInvoke
 		public PSECURITY_DESCRIPTOR(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PSECURITY_DESCRIPTOR"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PSECURITY_DESCRIPTOR NULL => new PSECURITY_DESCRIPTOR(IntPtr.Zero);
+		public static PSECURITY_DESCRIPTOR NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2135,7 +2141,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PSECURITY_DESCRIPTOR(IntPtr h) => new PSECURITY_DESCRIPTOR(h);
+		public static implicit operator PSECURITY_DESCRIPTOR(IntPtr h) => new(h);
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) => obj is PSECURITY_DESCRIPTOR h && handle == h.handle;
@@ -2158,7 +2164,7 @@ namespace Vanara.PInvoke
 		public PSID(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PSID"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PSID NULL => new PSID(IntPtr.Zero);
+		public static PSID NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -2171,7 +2177,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PSID"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PSID(IntPtr h) => new PSID(h);
+		public static implicit operator PSID(IntPtr h) => new(h);
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) => obj is PSID h && handle == h.handle;
@@ -2184,9 +2190,9 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Base class for all native handles.</summary>
-	/// <seealso cref="Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid"/>
-	/// <seealso cref="System.IEquatable{T}"/>
-	/// <seealso cref="Vanara.PInvoke.IHandle"/>
+	/// <seealso cref="SafeHandleZeroOrMinusOneIsInvalid"/>
+	/// <seealso cref="IEquatable{T}"/>
+	/// <seealso cref="IHandle"/>
 	[DebuggerDisplay("{handle}")]
 	public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<SafeHANDLE>, IHandle
 	{
@@ -2206,17 +2212,16 @@ namespace Vanara.PInvoke
 		/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
 		public bool IsNull => handle == IntPtr.Zero;
 
+		/// <summary>Implements the operator ! which returns <see langword="true"/> if the handle is invalid.</summary>
+		/// <param name="hMem">The <see cref="SafeHANDLE"/> instance.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !(SafeHANDLE hMem) => hMem.IsInvalid;
+
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
 		public static bool operator !=(SafeHANDLE h1, IHandle h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(SafeHANDLE h1, IHandle h2) => h1?.Equals(h2) ?? h2 is null;
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -2228,37 +2233,29 @@ namespace Vanara.PInvoke
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(SafeHANDLE h1, IHandle h2) => h1?.Equals(h2) ?? h2 is null;
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
 		public static bool operator ==(SafeHANDLE h1, IntPtr h2) => h1?.Equals(h2) ?? false;
 
 		/// <summary>Determines whether the specified <see cref="SafeHANDLE"/>, is equal to this instance.</summary>
 		/// <param name="other">The <see cref="SafeHANDLE"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="SafeHANDLE"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public bool Equals(SafeHANDLE other)
-		{
-			if (other is null)
-				return false;
-			if (ReferenceEquals(this, other))
-				return true;
-			return handle == other.handle && IsClosed == other.IsClosed;
-		}
+		public bool Equals(SafeHANDLE other) => ReferenceEquals(this, other) || other is not null && handle == other.handle && IsClosed == other.IsClosed;
 
-		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj)
+		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj) => obj switch
 		{
-			switch (obj)
-			{
-				case IHandle ih:
-					return handle.Equals(ih.DangerousGetHandle());
-				case SafeHandle sh:
-					return handle.Equals(sh.DangerousGetHandle());
-				case IntPtr p:
-					return handle.Equals(p);
-				default:
-					return base.Equals(obj);
-			}
-		}
+			IHandle ih => handle.Equals(ih.DangerousGetHandle()),
+			SafeHandle sh => handle.Equals(sh.DangerousGetHandle()),
+			IntPtr p => handle.Equals(p),
+			_ => base.Equals(obj),
+		};
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
