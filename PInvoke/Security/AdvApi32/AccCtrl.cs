@@ -882,7 +882,7 @@ namespace Vanara.PInvoke
 		/// associated with the access control or audit control information in an EXPLICIT_ACCESS structure.
 		/// </para>
 		/// </summary>
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		[PInvokeData("AccCtrl.h", MSDNShortId = "aa379636")]
 		public struct TRUSTEE
 		{
