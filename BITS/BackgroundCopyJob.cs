@@ -493,6 +493,19 @@ namespace Vanara.IO
 		public bool OwnerIsElevated => RunAction(() => IJob4.GetOwnerElevationState());
 
 		/// <summary>
+		/// Gets or sets flags that determine if the files of the job can be cached and served to peers and if BITS can download content for
+		/// the job from peers.
+		/// </summary>
+		/// <returns>
+		/// Flags that determine if the files of the job can be cached and served to peers and if BITS can download content for the job from peers.
+		/// </returns>
+		public PeerCaching PeerCachingEnablment
+		{
+			get => (PeerCaching)IJob4.GetPeerCachingFlags();
+			set => IJob4.SetPeerCachingFlags((BG_JOB_ENABLE_PEERCACHING)value);
+		}
+
+		/// <summary>
 		/// Gets or sets the priority level for the job. The priority level determines when the job is processed relative to other jobs in
 		/// the transfer queue.
 		/// </summary>

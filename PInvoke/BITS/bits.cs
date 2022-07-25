@@ -134,6 +134,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Flags that determine if the computer serves content to peers and can download content from peers.</summary>
+		[Flags]
 		public enum BG_ENABLE_PEERCACHING
 		{
 			/// <summary>
@@ -258,6 +259,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Flags that determine if the files of the job can be cached and served to peers and if BITS can download content for the job from peers.
 		/// </summary>
+		[Flags]
 		public enum BG_JOB_ENABLE_PEERCACHING
 		{
 			/// <summary>
@@ -2856,9 +2858,50 @@ namespace Vanara.PInvoke
 			/// Sets flags that determine if the files of the job can be cached and served to peers and if the job can download content from peers.
 			/// </summary>
 			/// <param name="Flags">
+			/// <para>
 			/// Flags that determine if the files of the job can be cached and served to peers and if the job can download content from
 			/// peers. The following flags can be set:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>BG_JOB_ENABLE_PEERCACHING_CLIENT</c> 0x0001</term>
+			/// <term>
+			/// The job can download content from peers. The job will not download from a peer unless both the client computer and the job
+			/// allow Background Intelligent Transfer Service (BITS) to download files from a peer. To enable the client computer to download
+			/// files from a peer, set the EnablePeerCaching group policy or call the IBitsPeerCacheAdministration::SetConfigurationFlags
+			/// method and set the BG_ENABLE_PEERCACHING_CLIENT flag. If one of the following conditions exists, BITS will stop the download
+			/// and reschedule the job to begin transferring from either a peer or the origin server, depending on the value for the job and
+			/// the cache:The download will then resume from where it left off before BITS stopped the job. <c>BITS 4.0:</c> This flag is deprecated.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>BG_JOB_ENABLE_PEERCACHING_SERVER</c> 0x0002</term>
+			/// <term>
+			/// The files of the job can be cached and served to peers. BITS will not cache the files and serve them to peers unless both the
+			/// client computer and job allow BITS to cache and serve the files. To allow BITS to cache and serve the files on the client
+			/// computer, set the EnablePeerCaching group policy or call the IBitsPeerCacheAdministration::SetConfigurationFlags method and
+			/// set the BG_ENABLE_PEERCACHING_SERVER flag. <c>BITS 4.0:</c> This flag is deprecated.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>BG_JOB_DISABLE_BRANCH_CACHE</c> 0x0004</term>
+			/// <term>
+			/// BITS will not use Windows BranchCache for transfer jobs. This setting does not affect the use of Windows BranchCache by
+			/// applications other than BITS.
+			/// </term>
+			/// </item>
+			/// </list>
 			/// </param>
+			/// <remarks>
+			/// Setting these flags has meaning only if the peer caching has been enabled by either setting the EnablePeerCaching group
+			/// policy or calling the IBitsPeerCacheAdministration::SetConfigurationFlags.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits3_0/nf-bits3_0-ibackgroundcopyjob4-setpeercachingflags
+			// HRESULT SetPeerCachingFlags( [in] DWORD Flags );
 			void SetPeerCachingFlags(BG_JOB_ENABLE_PEERCACHING Flags);
 
 			/// <summary>
@@ -2866,9 +2909,31 @@ namespace Vanara.PInvoke
 			/// the job from peers.
 			/// </summary>
 			/// <returns>
+			/// <para>
 			/// Flags that determine if the files of the job can be cached and served to peers and if BITS can download content for the job
 			/// from peers. The following flags can be set:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>BG_JOB_ENABLE_PEERCACHING_CLIENT</c> 0x0001</term>
+			/// <term>The job can download content from peers.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>BG_JOB_ENABLE_PEERCACHING_SERVER</c> 0x0002</term>
+			/// <term>The files of the job can be cached and served to peers.</term>
+			/// </item>
+			/// </list>
 			/// </returns>
+			/// <remarks>
+			/// BITS can download from peers only if peercaching is enabled both at the computer level and at the job level; this API affects
+			/// only the job level. For details, see IBackgroundCopyJob4::SetPeerCachingFlags.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/api/bits3_0/nf-bits3_0-ibackgroundcopyjob4-getpeercachingflags
+			// HRESULT GetPeerCachingFlags( [out] DWORD *pFlags );
 			BG_JOB_ENABLE_PEERCACHING GetPeerCachingFlags();
 
 			/// <summary>Gets the integrity level of the token of the owner that created or took ownership of the job.</summary>
@@ -3291,9 +3356,48 @@ namespace Vanara.PInvoke
 			/// Sets flags that determine if the files of the job can be cached and served to peers and if the job can download content from peers.
 			/// </summary>
 			/// <param name="Flags">
+			/// <para>
 			/// Flags that determine if the files of the job can be cached and served to peers and if the job can download content from
 			/// peers. The following flags can be set:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>BG_JOB_ENABLE_PEERCACHING_CLIENT</c> 0x0001</term>
+			/// <term>
+			/// The job can download content from peers. The job will not download from a peer unless both the client computer and the job
+			/// allow Background Intelligent Transfer Service (BITS) to download files from a peer. To enable the client computer to download
+			/// files from a peer, set the EnablePeerCaching group policy or call the IBitsPeerCacheAdministration::SetConfigurationFlags
+			/// method and set the BG_ENABLE_PEERCACHING_CLIENT flag. If one of the following conditions exists, BITS will stop the download
+			/// and reschedule the job to begin transferring from either a peer or the origin server, depending on the value for the job and
+			/// the cache:The download will then resume from where it left off before BITS stopped the job. <c>BITS 4.0:</c> This flag is deprecated.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>BG_JOB_ENABLE_PEERCACHING_SERVER</c> 0x0002</term>
+			/// <term>
+			/// The files of the job can be cached and served to peers. BITS will not cache the files and serve them to peers unless both the
+			/// client computer and job allow BITS to cache and serve the files. To allow BITS to cache and serve the files on the client
+			/// computer, set the EnablePeerCaching group policy or call the IBitsPeerCacheAdministration::SetConfigurationFlags method and
+			/// set the BG_ENABLE_PEERCACHING_SERVER flag. <c>BITS 4.0:</c> This flag is deprecated.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>BG_JOB_DISABLE_BRANCH_CACHE</c> 0x0004</term>
+			/// <term>
+			/// BITS will not use Windows BranchCache for transfer jobs. This setting does not affect the use of Windows BranchCache by
+			/// applications other than BITS.
+			/// </term>
+			/// </item>
+			/// </list>
 			/// </param>
+			/// <remarks>
+			/// Setting these flags has meaning only if the peer caching has been enabled by either setting the EnablePeerCaching group
+			/// policy or calling the IBitsPeerCacheAdministration::SetConfigurationFlags.
+			/// </remarks>
 			new void SetPeerCachingFlags(BG_JOB_ENABLE_PEERCACHING Flags);
 
 			/// <summary>
@@ -3301,9 +3405,29 @@ namespace Vanara.PInvoke
 			/// the job from peers.
 			/// </summary>
 			/// <returns>
+			/// <para>
 			/// Flags that determine if the files of the job can be cached and served to peers and if BITS can download content for the job
 			/// from peers. The following flags can be set:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>BG_JOB_ENABLE_PEERCACHING_CLIENT</c> 0x0001</term>
+			/// <term>The job can download content from peers.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>BG_JOB_ENABLE_PEERCACHING_SERVER</c> 0x0002</term>
+			/// <term>The files of the job can be cached and served to peers.</term>
+			/// </item>
+			/// </list>
 			/// </returns>
+			/// <remarks>
+			/// BITS can download from peers only if peercaching is enabled both at the computer level and at the job level; this API affects
+			/// only the job level. For details, see IBackgroundCopyJob4::SetPeerCachingFlags.
+			/// </remarks>
 			new BG_JOB_ENABLE_PEERCACHING GetPeerCachingFlags();
 
 			/// <summary>Gets the integrity level of the token of the owner that created or took ownership of the job.</summary>
@@ -4495,7 +4619,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa964302(v=vs.85).aspx
 		[PInvokeData("Bits3_0.h", MSDNShortId = "aa964302")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("659CDEA4-489E-11D9-A9CD-000D56965251")]
-		public interface IEnumBitsPeerCacheRecords
+		public interface IEnumBitsPeerCacheRecords : Vanara.Collections.ICOMEnum<IBitsPeerCacheRecord>
 		{
 			/// <summary>
 			/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements
@@ -4544,7 +4668,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa964308(v=vs.85).aspx
 		[PInvokeData("Bits3_0.h", MSDNShortId = "aa964308")]
 		[ComImport, Guid("659CDEA5-489E-11D9-A9CD-000D56965251"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		public interface IEnumBitsPeers
+		public interface IEnumBitsPeers : Vanara.Collections.ICOMEnum<IBitsPeer>
 		{
 			/// <summary>
 			/// Retrieves a specified number of items in the enumeration sequence. If there are fewer than the requested number of elements

@@ -157,6 +157,60 @@ namespace Vanara.IO
 		Proxy = BG_AUTH_TARGET.BG_AUTH_TARGET_PROXY
 	}
 
+	/// <summary>
+	/// Flags that determine if the files of the job can be cached and served to peers and if BITS can download content for the job from peers.
+	/// </summary>
+	[Flags]
+	public enum BackgroundCopyJobEnablePeerCaching
+	{
+		/// <summary>
+		/// The job can download content from peers.
+		/// <para>
+		/// The job will not download from a peer unless both the client computer and the job allow Background Intelligent Transfer Service
+		/// (BITS) to download files from a peer. To enable the client computer to download files from a peer, set the EnablePeerCaching
+		/// group policy or call the <see cref="PeerCacheAdministration.ConfigurationFlags"/> property and set the <see
+		/// cref="PeerCaching.Enable"/> flag.
+		/// </para>
+		/// <para>
+		/// If one of the following conditions exists, BITS will stop the download and reschedule the job to begin transferring from either a
+		/// peer or the origin server, depending on the value for the job and the cache:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// This value for the cache is <see langword="true"/> and the value for the job toggles between <see langword="true"/> and <see langword="false"/>.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// This value for the job property is <see langword="true"/> and the value for the cache toggles between <see langword="true"/> and
+		/// <see langword="false"/>.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>The download will then resume from where it left off before BITS stopped the job.</para>
+		/// <para><c>BITS 4.0:</c> This flag is deprecated.</para>
+		/// </summary>
+		EnableClient = BG_JOB_ENABLE_PEERCACHING.BG_JOB_ENABLE_PEERCACHING_CLIENT,
+
+		/// <summary>
+		/// The files of the job can be cached and served to peers.
+		/// <para>
+		/// BITS will not cache the files and serve them to peers unless both the client computer and job allow BITS to cache and serve the
+		/// files. To allow BITS to cache and serve the files on the client computer, set the EnablePeerCaching group policy or call the <see
+		/// cref="PeerCacheAdministration.ConfigurationFlags"/> property and set the <see cref="PeerCaching.EnableServer"/> flag.
+		/// </para>
+		/// <para><c>BITS 4.0:</c> This flag is deprecated.</para>
+		/// </summary>
+		EnableServer = BG_JOB_ENABLE_PEERCACHING.BG_JOB_ENABLE_PEERCACHING_SERVER,
+
+		/// <summary>
+		/// BITS will not use Windows BranchCache for transfer jobs. This setting does not affect the use of Windows BranchCache by
+		/// applications other than BITS.
+		/// </summary>
+		DisableBranchCache = BG_JOB_ENABLE_PEERCACHING.BG_JOB_DISABLE_BRANCH_CACHE,
+	}
+
 	/// <summary>Defines the constant values that specify the priority level of a job.</summary>
 	public enum BackgroundCopyJobPriority
 	{
@@ -293,5 +347,48 @@ namespace Vanara.IO
 
 		/// <summary>Specifies that the job uploads a file to the server and receives a reply file from the server application.</summary>
 		UploadReply = BG_JOB_TYPE.BG_JOB_TYPE_UPLOAD_REPLY
+	}
+	/// <summary>Flags that determine if the computer serves content to peers and can download content from peers.</summary>
+	[Flags]
+	public enum PeerCaching
+	{
+		/// <summary>
+		/// The computer can download content from peers.
+		/// <para>
+		/// BITS will not download files from a peer unless both the client computer and the job permit BITS to download files from a peer.
+		/// To permits the job to download files from a peer, use the <see cref="BackgroundCopyJob.PeerCachingEnablment"/> property and set
+		/// the <see cref="BackgroundCopyJobEnablePeerCaching.EnableClient"/> flag.
+		/// </para>
+		/// <para>
+		/// Note that changing this value can affect all jobs on the computer. If one of the following conditions exists, BITS will stop the
+		/// download and reschedule the job to begin transferring from either a peer or the origin server, depending on the value for the job
+		/// and the cache:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// This value for the cache is <see langword="true"/> and the value for the job toggles between <see langword="true"/> and <see langword="false"/>.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// This value for the job property is <see langword="true"/> and the value for the cache toggles between <see langword="true"/> and
+		/// <see langword="false"/>.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>The download will then resume from where it left off before BITS stopped the job.</para>
+		/// </summary>
+		Enable = BG_ENABLE_PEERCACHING.BG_ENABLE_PEERCACHING_CLIENT,
+
+		/// <summary>
+		/// The computer can serve content to peers.
+		/// <para>
+		/// BITS will not cache the files and serve them to peers unless both the client computer and job permit BITS to cache and serve
+		/// files. To permit the job to cache files for a job, use the <see cref="BackgroundCopyJob.PeerCachingEnablment"/> property and set
+		/// the <see cref="BackgroundCopyJobEnablePeerCaching.EnableServer"/> flag.
+		/// </para>
+		/// </summary>
+		EnableServer = BG_ENABLE_PEERCACHING.BG_ENABLE_PEERCACHING_SERVER,
 	}
 }

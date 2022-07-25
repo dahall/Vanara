@@ -50,7 +50,7 @@ namespace Vanara.IO
 			}
 		}
 
-		private static IBackgroundCopyManager IMgr => ciMgr.Item;
+		internal static IBackgroundCopyManager IMgr => ciMgr.Item;
 
 		/// <summary>Copies an existing file to a new file using BITS. Overwriting a file of the same name is not allowed.</summary>
 		/// <param name="sourceFileName">The file to copy.</param>
