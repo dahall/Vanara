@@ -326,7 +326,7 @@ namespace Vanara.IO
 			get
 			{
 				var state = State;
-				if (state != BackgroundCopyJobState.Error && state != BackgroundCopyJobState.TransientError)
+				if (state is not BackgroundCopyJobState.Error and not BackgroundCopyJobState.TransientError)
 					return null;
 				var err = RunAction(() => m_ijob.GetError());
 				return err is null ? null : new BackgroundCopyException(err);
@@ -638,7 +638,7 @@ namespace Vanara.IO
 			set => RunAction(() =>
 			{
 				var st = State;
-				if (st != BackgroundCopyJobState.Acknowledged && st != BackgroundCopyJobState.Cancelled)
+				if (st is not BackgroundCopyJobState.Acknowledged and not BackgroundCopyJobState.Cancelled)
 					m_ijob.SetNotifyFlags(value);
 			});
 		}
@@ -855,7 +855,7 @@ namespace Vanara.IO
 
 		private void HandleCOMException(COMException cex)
 		{
-			if (State == BackgroundCopyJobState.Error || State == BackgroundCopyJobState.TransientError)
+			if (State is BackgroundCopyJobState.Error or BackgroundCopyJobState.TransientError)
 			{
 				OnError(m_ijob.GetError());
 			}

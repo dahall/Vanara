@@ -21,6 +21,10 @@ namespace Vanara.IO
 		/// <summary>Gets the list of currently queued jobs for all users.</summary>
 		public static BackgroundCopyJobCollection Jobs { get; } = new BackgroundCopyJobCollection();
 
+		/// <summary>Gets an object that manages the pool of peers from which you can download content.</summary>
+		/// <value>The peer cache administration.</value>
+		public static PeerCacheAdministration PeerCacheAdministration { get; } = new PeerCacheAdministration(ciMgr.Item);
+
 		/// <summary>Retrieves the running version of BITS.</summary>
 		public static Version Version
 		{

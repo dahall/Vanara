@@ -32,12 +32,9 @@ namespace Vanara.IO.Tests
 
 			var raiseException = false;
 			AutoResetEvent autoReset;
-			
+
 			// Local method because of local vars.
-			void OnDownloadCompleted(object s, BackgroundCopyJobEventArgs e)
-			{
-				DownloadCompleted(e, autoReset, allFilesToDownload.Length, allFilesTotalSize);
-			}
+			void OnDownloadCompleted(object s, BackgroundCopyJobEventArgs e) => DownloadCompleted(e, autoReset, allFilesToDownload.Length, allFilesTotalSize);
 
 
 			// Create a download job.
@@ -86,10 +83,7 @@ namespace Vanara.IO.Tests
 		// Better performance when event methods are defined seperately, preferably static.
 
 
-		private static void OnDownloadError(object s, BackgroundCopyJobEventArgs e)
-		{
-			throw e.Job.LastError;
-		}
+		private static void OnDownloadError(object s, BackgroundCopyJobEventArgs e) => throw e.Job.LastError;
 
 
 		private static void DownloadCompleted(BackgroundCopyJobEventArgs e, AutoResetEvent autoResetEvent, long totalFiles, long totalBytes)
