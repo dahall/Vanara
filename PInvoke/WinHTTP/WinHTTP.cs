@@ -35,6 +35,12 @@ namespace Vanara.PInvoke
 		/// <summary>Default value.</summary>
 		public const string WINHTTP_NO_OUTPUT_BUFFER = null;
 
+		/// <summary/>
+		public const string WINHTTP_NO_PROXY_BYPASS = null;
+
+		/// <summary/>
+		public const string WINHTTP_NO_PROXY_NAME = null;
+
 		/// <summary>Default value.</summary>
 		public const string WINHTTP_NO_REQUEST_DATA = null;
 
