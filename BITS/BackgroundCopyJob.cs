@@ -98,11 +98,12 @@ namespace Vanara.IO
 	/// // Create an event to signal completion
 	/// var evt = new AutoResetEvent(false);
 	/// // Set properties on the job
+	/// job.AutoCompleteOnSuccess = true;
 	/// job.Credentials.Add(BackgroundCopyJobCredentialScheme.Digest, BackgroundCopyJobCredentialTarget.Proxy, "user", "mypwd");
 	/// job.CustomHeaders = new System.Net.WebHeaderCollection() { "A1:Test", "A2:Prova" };
 	/// job.MinimumNotificationInterval = TimeSpan.FromSeconds(1);
 	/// // Set event handlers for job
-	/// job.Completed += (s, e) =&gt; { System.Diagnostics.Debug.WriteLine("Job completed."); job.Complete(); evt.Set(); };
+	/// job.Completed += (s, e) =&gt; { System.Diagnostics.Debug.WriteLine("Job completed."); evt.Set(); };
 	/// job.Error += (s, e) =&gt; throw job.LastError;
 	/// job.FileTransferred += (s, e) =&gt; System.Diagnostics.Debug.WriteLine($"{e.FileInfo.LocalFilePath} of size {e.FileInfo.BytesTransferred} bytes was transferred.");
 	/// // Add download file information
@@ -164,6 +165,15 @@ namespace Vanara.IO
 			get => RunAction(() => (BackgroundCopyACLFlags)IJob3.GetFileACLFlags(), BackgroundCopyACLFlags.None);
 			set => RunAction(() => IJob3.SetFileACLFlags((BG_COPY_FILE)value));
 		}
+
+		/// <summary>
+		/// Gets a value indicating whether to automatically call <see cref="Complete()"/> when the <see cref="Completed"/> event fires.
+		/// </summary>
+		/// <value>
+		/// <see langword="true"/> if you want <see cref="Complete()"/> called automatically on successful job completion; otherwise, <see
+		/// langword="false"/> (the default).
+		/// </value>
+		public bool AutoCompleteOnSuccess { get; set; }
 
 		/// <summary>Retrieves the client certificate from the job.</summary>
 		public X509Certificate2 Certificate
@@ -815,7 +825,12 @@ namespace Vanara.IO
 		}
 
 		/// <summary>Called when the job has completed.</summary>
-		protected virtual void OnCompleted() => Completed?.Invoke(this, new BackgroundCopyJobEventArgs(this));
+		protected virtual void OnCompleted()
+		{
+			if (AutoCompleteOnSuccess)
+				Complete();
+			Completed?.Invoke(this, new BackgroundCopyJobEventArgs(this));
+		}
 
 		/// <summary>Called when an error occurs.</summary>
 		/// <param name="err">The error.</param>
