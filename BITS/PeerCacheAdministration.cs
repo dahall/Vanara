@@ -56,7 +56,11 @@ public class CachePeers : IReadOnlyCollection<CachePeer>
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	private IEnumerable<CachePeer> EnumPeers() => IEnumFromCom<IBitsPeer>.Create(iCacheAdmin.EnumPeers()).Select(i => new CachePeer(i));
+	private IEnumerable<CachePeer> EnumPeers()
+	{
+		IEnumBitsPeers ienum = iCacheAdmin.EnumPeers();
+		return ienum is null ? Enumerable.Empty<CachePeer>() : IEnumFromCom<IBitsPeer>.Create(ienum).Select(i => new CachePeer(i));
+	}
 }
 
 /// <summary>Use <c>PeerCacheAdministration</c> to manage the pool of peers from which you can download content.</summary>
@@ -110,8 +114,8 @@ public class PeerCacheAdministration
 	/// Null-terminated string that contains the URL of the file whose cache records and file you want to delete from the cache.
 	/// </param>
 	public void DeleteUrl(string url) => ciCacheAdmin.Item.DeleteUrl(url);
-
 }
+
 /// <summary>Provides the ability to enumerate the records of the cache.</summary>
 public class PeerCacheRecords : IReadOnlyCollection<PeerCacheRecord>
 {
@@ -136,13 +140,19 @@ public class PeerCacheRecords : IReadOnlyCollection<PeerCacheRecord>
 
 	/// <summary>Deletes a record and file from the cache.</summary>
 	/// <param name="item">The record to delete from the cache.</param>
-	public bool Remove(PeerCacheRecord item) { try { iCacheAdmin.DeleteRecord(item.Id); return true; } catch { return false; } }
+	public bool Remove(PeerCacheRecord item)
+	{ try { iCacheAdmin.DeleteRecord(item.Id); return true; } catch { return false; } }
 
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	private IEnumerable<PeerCacheRecord> EnumRecords() => IEnumFromCom<IBitsPeerCacheRecord>.Create(iCacheAdmin.EnumRecords()).Select(i => new PeerCacheRecord(i));
+	private IEnumerable<PeerCacheRecord> EnumRecords()
+	{
+		IEnumBitsPeerCacheRecords ienum = iCacheAdmin.EnumRecords();
+		return ienum is null ? Enumerable.Empty<PeerCacheRecord>() : IEnumFromCom<IBitsPeerCacheRecord>.Create(ienum).Select(i => new PeerCacheRecord(i));
+	}
 }
+
 /// <summary>Provides information about a file in the BITS peer cache.</summary>
 public class PeerCacheRecord
 {
