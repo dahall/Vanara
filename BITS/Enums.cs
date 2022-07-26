@@ -379,7 +379,7 @@ namespace Vanara.IO
 		/// </list>
 		/// <para>The download will then resume from where it left off before BITS stopped the job.</para>
 		/// </summary>
-		Enable = BG_ENABLE_PEERCACHING.BG_ENABLE_PEERCACHING_CLIENT,
+		EnableClient = BG_ENABLE_PEERCACHING.BG_ENABLE_PEERCACHING_CLIENT,
 
 		/// <summary>
 		/// The computer can serve content to peers.
