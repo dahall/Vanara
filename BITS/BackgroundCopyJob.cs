@@ -509,9 +509,9 @@ namespace Vanara.IO
 		/// <returns>
 		/// Flags that determine if the files of the job can be cached and served to peers and if BITS can download content for the job from peers.
 		/// </returns>
-		public PeerCaching PeerCachingEnablment
+		public BackgroundCopyJobEnablePeerCaching PeerCachingEnablment
 		{
-			get => (PeerCaching)IJob4.GetPeerCachingFlags();
+			get => (BackgroundCopyJobEnablePeerCaching)IJob4.GetPeerCachingFlags();
 			set => IJob4.SetPeerCachingFlags((BG_JOB_ENABLE_PEERCACHING)value);
 		}
 
