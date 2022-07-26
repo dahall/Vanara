@@ -984,20 +984,19 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="DNS_ADDR_ARRAY"/> struct with IPv4 addresses.</summary>
 			/// <param name="addrs">The list of IPv4 addresses.</param>
-			public DNS_ADDR_ARRAY(params SOCKADDR_IN[] addrs) : this()
-			{
-				MaxCount = AddrCount = (uint)(addrs?.Length ?? 0);
-				Family = ADDRESS_FAMILY.AF_INET;
-				AddrArray = Array.ConvertAll(addrs, a => new DNS_ADDR() { MaxSa = new SOCKADDR(a).GetBytes() });
-			}
+			public DNS_ADDR_ARRAY(params SOCKADDR_IN[] addrs) : this(Array.ConvertAll(addrs, a => new SOCKADDR(a))) { }
 
 			/// <summary>Initializes a new instance of the <see cref="DNS_ADDR_ARRAY"/> struct with IPv6 addresses.</summary>
 			/// <param name="addrs">The list of IPv4 addresses.</param>
-			public DNS_ADDR_ARRAY(params SOCKADDR_IN6[] addrs) : this()
+			public DNS_ADDR_ARRAY(params SOCKADDR_IN6[] addrs) : this(Array.ConvertAll(addrs, a => new SOCKADDR(a))) { }
+
+			/// <summary>Initializes a new instance of the <see cref="DNS_ADDR_ARRAY"/> struct with <see cref="SOCKADDR"/> instances.</summary>
+			/// <param name="addrs">The list of socket addresses.</param>
+			public DNS_ADDR_ARRAY(params SOCKADDR[] addrs) : this()
 			{
 				MaxCount = AddrCount = (uint)(addrs?.Length ?? 0);
-				Family = ADDRESS_FAMILY.AF_INET6;
-				AddrArray = Array.ConvertAll(addrs, a => new DNS_ADDR() { MaxSa = new SOCKADDR(a).GetBytes() });
+				Family = AddrCount == 0 ? ADDRESS_FAMILY.AF_INET6 : addrs[0].sa_family;
+				AddrArray = Array.ConvertAll(addrs, a => new DNS_ADDR() { MaxSa = a.GetBytes() });
 			}
 		}
 
