@@ -33,6 +33,9 @@ namespace Vanara.PInvoke
 		public const uint DNS_QUERY_REQUEST_VERSION2 = 0x2;
 
 		/// <summary/>
+		public const uint DNS_QUERY_REQUEST_VERSION3 = 0x3;
+
+		/// <summary/>
 		public const uint DNS_QUERY_RESULTS_VERSION1 = 0x1;
 
 		/// <summary>The format of the ATM address in <c>Address</c>.</summary>
@@ -978,6 +981,24 @@ namespace Vanara.PInvoke
 			/// <summary>An array of DNS_ADDR structures that each contain an IP address.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public DNS_ADDR[] AddrArray;
+
+			/// <summary>Initializes a new instance of the <see cref="DNS_ADDR_ARRAY"/> struct with IPv4 addresses.</summary>
+			/// <param name="addrs">The list of IPv4 addresses.</param>
+			public DNS_ADDR_ARRAY(params SOCKADDR_IN[] addrs) : this()
+			{
+				MaxCount = AddrCount = (uint)(addrs?.Length ?? 0);
+				Family = ADDRESS_FAMILY.AF_INET;
+				AddrArray = Array.ConvertAll(addrs, a => new DNS_ADDR() { MaxSa = new SOCKADDR(a).GetBytes() });
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="DNS_ADDR_ARRAY"/> struct with IPv6 addresses.</summary>
+			/// <param name="addrs">The list of IPv4 addresses.</param>
+			public DNS_ADDR_ARRAY(params SOCKADDR_IN6[] addrs) : this()
+			{
+				MaxCount = AddrCount = (uint)(addrs?.Length ?? 0);
+				Family = ADDRESS_FAMILY.AF_INET6;
+				AddrArray = Array.ConvertAll(addrs, a => new DNS_ADDR() { MaxSa = new SOCKADDR(a).GetBytes() });
+			}
 		}
 
 		/// <summary>Represents per-application DNS settings.</summary>
@@ -1898,7 +1919,8 @@ namespace Vanara.PInvoke
 			/// <para>A pointer to a string that represents the DNS name to query.</para>
 			/// <para><c>Note</c> If <c>QueryName</c> is NULL, the query is for the local machine name.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string QueryName;
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string QueryName;
 
 			/// <summary>
 			/// A value that represents the Resource Record (RR) DNS Record Type that is queried. <c>QueryType</c> determines the format of
@@ -1940,6 +1962,150 @@ namespace Vanara.PInvoke
 
 			/// <summary>A pointer to a user context.</summary>
 			public IntPtr pQueryContext;
+
+			/// <summary>Initializes a new instance of the <see cref="DNS_QUERY_REQUEST"/> struct.</summary>
+			/// <param name="type">The Resource Record (RR) DNS Record Type that is queried.</param>
+			/// <param name="queryName">The DNS name to query.</param>
+			/// <param name="options">The DNS Query Options to use in the DNS query.</param>
+			public DNS_QUERY_REQUEST(DNS_TYPE type, string queryName = null, DNS_QUERY_OPTIONS options = 0) : this()
+			{
+				Version = DNS_QUERY_REQUEST_VERSION1;
+				QueryName = queryName;
+				QueryType = type;
+				QueryOptions = options;
+			}
+		}
+
+		/// <summary>Contains the DNS query parameters used in a call to DnsQueryEx.</summary>
+		/// <remarks>
+		/// <para>The custom servers specified in pCustomServers bypass the system-configured DNS servers.</para>
+		/// <para>
+		/// If the query name matches a rule in the <c>Name Resolution Policy Table (NRPT)</c>, then the custom servers are ignored, and only
+		/// the servers from the <c>NRPT</c> rule are used.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_query_request3 typedef struct _DNS_QUERY_REQUEST3 { ULONG
+		// Version; PCWSTR QueryName; WORD QueryType; ULONG64 QueryOptions; PDNS_ADDR_ARRAY pDnsServerList; ULONG InterfaceIndex;
+		// PDNS_QUERY_COMPLETION_ROUTINE pQueryCompletionCallback; PVOID pQueryContext; BOOL IsNetworkQueryRequired; DWORD
+		// RequiredNetworkIndex; DWORD cCustomServers; DNS_CUSTOM_SERVER *pCustomServers; } DNS_QUERY_REQUEST3, *PDNS_QUERY_REQUEST3;
+		[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_QUERY_REQUEST3")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct DNS_QUERY_REQUEST3
+		{
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The structure version must be the <c>DNS_QUERY_REQUEST_VERSION3</c>; which has a value of 3.</para>
+			/// </summary>
+			public uint Version;
+
+			/// <summary>
+			/// <para>Type: <c>PCWSTR</c></para>
+			/// <para>A pointer to a string that represents the DNS name to query.</para>
+			/// <para>
+			/// <para>Note</para>
+			/// <para>If QueryName is <c>NULL</c>, then the query is for the local machine name.</para>
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string QueryName;
+
+			/// <summary>
+			/// <para>Type: <c>WORD</c></para>
+			/// <para>
+			/// A value that represents the Resource Record (RR) DNS Record Type that is queried. QueryType determines the format of data
+			/// pointed to by pQueryRecords returned in the DNS_QUERY_RESULT structure. For example, if the value of wType is DNS_TYPE_A,
+			/// then the format of data pointed to by pQueryRecords is DNS_A_DATA.
+			/// </para>
+			/// </summary>
+			public DNS_TYPE QueryType;
+
+			// Hack to make this the right size even though the enum is a UInt32.
+			private ulong _QueryOptions;
+
+			/// <summary>
+			/// A value that contains a bitmap of DNS Query Options to use in the DNS query. Options can be combined and all options
+			/// override <c>DNS_QUERY_STANDARD</c>
+			/// </summary>
+			public DNS_QUERY_OPTIONS QueryOptions { get => (DNS_QUERY_OPTIONS)_QueryOptions; set => _QueryOptions = (ulong)value; }
+
+			/// <summary>
+			/// <para>Type: <c>PDNS_ADDR_ARRAY</c></para>
+			/// <para>A pointer to a DNS_ADDR_ARRAY structure that contains a list of DNS servers to use in the query.</para>
+			/// </summary>
+			public IntPtr pDnsServerList;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>
+			/// A value that contains the interface index over which the query is sent. If InterfaceIndex is 0, then all interfaces will be considered.
+			/// </para>
+			/// </summary>
+			public uint InterfaceIndex;
+
+			/// <summary>
+			/// <para>Type: <c>PDNS_QUERY_COMPLETION_ROUTINE</c></para>
+			/// <para>
+			/// A pointer to a DNS_QUERY_COMPLETION_ROUTINE callback that is used to return the results of an asynchronous query from a call
+			/// to DnsQueryEx.
+			/// </para>
+			/// <para>
+			/// <para>Note</para>
+			/// <para>If <c>NULL</c>, then DnsQueryEx is called synchronously.</para>
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public DNS_QUERY_COMPLETION_ROUTINE pQueryCompletionCallback;
+
+			/// <summary>
+			/// <para>Type: <c>PVOID</c></para>
+			/// <para>A pointer to a user context.</para>
+			/// </summary>
+			public IntPtr pQueryContext;
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Reserved.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool IsNetworkQueryRequired;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>Reserved.</para>
+			/// </summary>
+			public uint RequiredNetworkIndex;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of custom servers pointed to by the pCustomServers member.</para>
+			/// </summary>
+			public uint cCustomServers;
+
+			/// <summary>
+			/// <para>Type: _Field_size_(cCustomServers) <c>DNS_CUSTOM_SERVER*</c></para>
+			/// <para>A pointer to an array of N (where N is given in the cCustomServers field) DNS_CUSTOM_SERVER objects.</para>
+			/// <para>If cCustomServers is 0, then pCustomServers must be <c>NULL</c>.</para>
+			/// <para>
+			/// <para>Note</para>
+			/// <para>
+			/// At least one of pCustomServers and pDnsServerList must be <c>NULL</c>. Both set to non- <c>NULL</c> values at the same time
+			/// is not supported.
+			/// </para>
+			/// </para>
+			/// </summary>
+			public IntPtr pCustomServers;
+
+			/// <summary>Initializes a new instance of the <see cref="DNS_QUERY_REQUEST3"/> struct.</summary>
+			/// <param name="type">The Resource Record (RR) DNS Record Type that is queried.</param>
+			/// <param name="queryName">The DNS name to query.</param>
+			/// <param name="options">The DNS Query Options to use in the DNS query.</param>
+			public DNS_QUERY_REQUEST3(DNS_TYPE type, string queryName = null, DNS_QUERY_OPTIONS options = 0) : this()
+			{
+				Version = DNS_QUERY_REQUEST_VERSION1;
+				QueryName = queryName;
+				QueryType = type;
+				QueryOptions = options;
+			}
 		}
 
 		/// <summary>A <c>DNS_QUERY_RESULT</c> structure contains the DNS query results returned from a call to DnsQueryEx.</summary>
@@ -1989,6 +2155,9 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			public IntPtr Reserved;
+
+			/// <summary>An instance of <see cref="DNS_QUERY_RESULT"/> with the <see cref="Version"/> field set to <see cref="DNS_QUERY_RESULTS_VERSION1"/>.</summary>
+			public static readonly DNS_QUERY_RESULT Default = new() { Version = DNS_QUERY_RESULTS_VERSION1 };
 		}
 
 		/// <summary>The <c>DNS_RECORD</c> structure stores a DNS resource record (RR).</summary>
@@ -3197,6 +3366,14 @@ namespace Vanara.PInvoke
 			/// <summary>An array of IP4_ADDRESS data types that contains a list of IPv4 address.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public IP4_ADDRESS[] AddrArray;
+
+			/// <summary>Initializes a new instance of the <see cref="IP4_ARRAY"/> struct.</summary>
+			/// <param name="addrs">The list of IPv4 address.</param>
+			public IP4_ARRAY(params IP4_ADDRESS[] addrs)
+			{
+				AddrCount = (uint)(addrs?.Length ?? 0);
+				AddrArray = addrs;
+			}
 		}
 
 		/// <summary>Contains information related to an ongoing MDNS query. Your application must not modify its contents.</summary>
@@ -3380,10 +3557,7 @@ namespace Vanara.PInvoke
 
 		internal class SafeDNS_NSEC3_DATA : SafeAnysizeStructBase<DNS_NSEC3_DATA>
 		{
-			internal SafeDNS_NSEC3_DATA(DNS_NSEC3_DATA value) : base(baseSz)
-			{
-				ToNative(value);
-			}
+			internal SafeDNS_NSEC3_DATA(DNS_NSEC3_DATA value) : base(baseSz) => ToNative(value);
 
 			internal SafeDNS_NSEC3_DATA(IntPtr allocatedMemory, SizeT size) : base(allocatedMemory, size, false)
 			{

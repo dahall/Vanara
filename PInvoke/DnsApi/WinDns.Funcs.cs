@@ -769,6 +769,108 @@ namespace Vanara.PInvoke
 		[PInvokeData("windns.h", MSDNShortId = "22664B9A-5010-42E7-880B-8D5B16A9F2DC")]
 		public static extern DNS_STATUS DnsQueryEx(in DNS_QUERY_REQUEST pQueryRequest, ref DNS_QUERY_RESULT pQueryResults, ref DNS_QUERY_CANCEL pCancelHandle);
 
+		/// <summary>
+		/// <para>
+		/// The <c>DnsQueryEx</c> function is the asynchronous generic query interface to the DNS namespace, and provides application
+		/// developers with a DNS query resolution interface.
+		/// </para>
+		/// <para>Like DnsQuery, <c>DnsQueryEx</c> can be used to make synchronous queries to the DNS namespace as well.</para>
+		/// </summary>
+		/// <param name="pQueryRequest">
+		/// <para>A pointer to a DNS_QUERY_REQUEST structure that contains the query request information.</para>
+		/// <para>
+		/// <c>Note</c> By omitting the DNS_QUERY_COMPLETION_ROUTINE callback from the <c>pQueryCompleteCallback</c> member of this
+		/// structure, <c>DnsQueryEx</c> is called synchronously.
+		/// </para>
+		/// </param>
+		/// <param name="pQueryResults">
+		/// <para>
+		/// A pointer to a DNS_QUERY_RESULT structure that contains the results of the query. On input, the <c>version</c> member of
+		/// pQueryResults must be <c>DNS_QUERY_REQUEST_VERSION1</c> and all other members should be <c>NULL</c>. On output, the remaining
+		/// members will be filled as part of the query complete.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> For asynchronous queries, an application should not free this structure until the DNS_QUERY_COMPLETION_ROUTINE
+		/// callback is invoked. When the query completes, the DNS_QUERY_RESULT structure contains a pointer to a list of DNS_RECORDS that
+		/// should be freed using DnsRecordListFree.
+		/// </para>
+		/// </param>
+		/// <param name="pCancelHandle">
+		/// <para>A pointer to a DNS_QUERY_CANCEL structure that can be used to cancel a pending asynchronous query.</para>
+		/// <para><c>Note</c> An application should not free this structure until the DNS_QUERY_COMPLETION_ROUTINE callback is invoked.</para>
+		/// </param>
+		/// <returns>
+		/// <para>The <c>DnsQueryEx</c> function has the following possible return values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The call was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>Either the pQueryRequest or pQueryRequest parameters are uninitialized or contain the wrong version.</term>
+		/// </item>
+		/// <item>
+		/// <term>DNS RCODE</term>
+		/// <term>The call resulted in an RCODE error.</term>
+		/// </item>
+		/// <item>
+		/// <term>DNS_INFO_NO_RECORDS</term>
+		/// <term>No records in the response.</term>
+		/// </item>
+		/// <item>
+		/// <term>DNS_REQUEST_PENDING</term>
+		/// <term>The query will be completed asynchronously.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If a call to <c>DnsQueryEx</c> completes synchronously (i.e., the function return value is not <c>DNS_REQUEST_PENDING</c>), the
+		/// <c>pQueryRecords</c> member of pQueryResults contains a pointer to a list of DNS_RECORDS and <c>DnsQueryEx</c> will return
+		/// either error or success.
+		/// </para>
+		/// <para>The following conditions invoke a synchronous call to <c>DnsQueryEx</c> and do not utilize the DNS callback:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The DNS_QUERY_COMPLETION_ROUTINE callback is omitted from the <c>pQueryCompleteCallback</c> member of pQueryRequest.</term>
+		/// </item>
+		/// <item>
+		/// <term>A query is for the local machine name and A or AAAA type Resource Records (RR).</term>
+		/// </item>
+		/// <item>
+		/// <term>A call to <c>DnsQueryEx</c> queries an IPv4 or IPv6 address.</term>
+		/// </item>
+		/// <item>
+		/// <term>A call to <c>DnsQueryEx</c> returns in error.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If a call to <c>DnsQueryEx</c> completes asynchronously, the results of the query are returned by the
+		/// DNS_QUERY_COMPLETION_ROUTINE callback in pQueryRequest, the <c>QueryStatus</c> member of pQueryResults contains
+		/// <c>DNS_REQUEST_PENDING</c>, and <c>DnsQueryEx</c> returns <c>DNS_REQUEST_PENDING</c>. Applications should track the
+		/// pQueryResults structure that is passed into <c>DnsQueryEx</c> until the DNS callback succeeds. Applications can cancel an
+		/// asynchronous query using the pCancelHandle handle returned by <c>DnsQueryEx</c>.
+		/// </para>
+		/// <para>
+		/// pCancelHandle returned from an asynchronous call to <c>DnsQueryEx</c> and pQueryContext is valid until the
+		/// DNS_QUERY_COMPLETION_ROUTINE DNS callback is invoked.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Applications are notified of asynchronous <c>DnsQueryEx</c> completion through the DNS_QUERY_COMPLETION_ROUTINE
+		/// callback within the same process context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsqueryex DNS_STATUS DnsQueryEx( PDNS_QUERY_REQUEST
+		// pQueryRequest, PDNS_QUERY_RESULT pQueryResults, PDNS_QUERY_CANCEL pCancelHandle );
+		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("windns.h", MSDNShortId = "22664B9A-5010-42E7-880B-8D5B16A9F2DC")]
+		public static extern DNS_STATUS DnsQueryEx(in DNS_QUERY_REQUEST3 pQueryRequest, ref DNS_QUERY_RESULT pQueryResults, ref DNS_QUERY_CANCEL pCancelHandle);
+
 		/// <summary>The <c>DnsRecordCompare</c> function compares two DNS resource records (RR).</summary>
 		/// <param name="pRecord1">A pointer to a DNS_RECORD structure that contains the first DNS RR of the comparison pair.</param>
 		/// <param name="pRecord2">A pointer to a DNS_RECORD structure that contains the second DNS RR of the comparison pair.</param>
