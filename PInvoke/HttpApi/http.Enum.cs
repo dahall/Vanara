@@ -1597,6 +1597,17 @@ public static partial class HttpApi
 		HTTP_REQUEST_PROPERTY_SNI_FLAG_NO_SNI = 0x00000002,
 	}
 
+	/// <summary></summary>
+	[PInvokeData("http.h")]
+	[Flags]
+	public enum HTTP_REQUEST_SIZING_INFO_FLAG : uint
+	{
+		HTTP_REQUEST_SIZING_INFO_FLAG_TCP_FAST_OPEN = 0x00000001,
+		HTTP_REQUEST_SIZING_INFO_FLAG_TLS_SESSION_RESUMPTION = 0x00000002,
+		HTTP_REQUEST_SIZING_INFO_FLAG_TLS_FALSE_START = 0x00000004,
+		HTTP_REQUEST_SIZING_INFO_FLAG_FIRST_REQUEST = 0x00000008,
+	}
+
 	/// <summary>List of possible sizes for which information will be retured in HTTP_REQUEST_SIZING_INFO.</summary>
 	[PInvokeData("http.h")]
 	public enum HTTP_REQUEST_SIZING_TYPE

@@ -1435,7 +1435,7 @@ public static partial class HttpApi
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct HTTP_REQUEST_SIZING_INFO
 	{
-		public ulong Flags;
+		public HTTP_REQUEST_SIZING_INFO_FLAG Flags;
 		public uint RequestIndex;
 		public uint RequestSizingCount;
 
