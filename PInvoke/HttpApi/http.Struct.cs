@@ -1385,6 +1385,12 @@ public static partial class HttpApi
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)HTTP_HEADER_ID.HttpHeaderRequestMaximum)]
 		public HTTP_KNOWN_HEADER[] KnownHeaders;
+
+		/// <summary>
+		/// An array of HTTP_UNKNOWN_HEADER structures. This array contains one structure for each of the unknown headers sent
+		/// in the HTTP request.
+		/// </summary>
+		public HTTP_UNKNOWN_HEADER[] UnknownHeaders => pUnknownHeaders.ToArray<HTTP_UNKNOWN_HEADER>(UnknownHeaderCount);
 	}
 
 	/// <summary>The <c>HTTP_REQUEST_INFO</c> structure extends the HTTP_REQUEST structure with additional information about the request.</summary>
@@ -1723,6 +1729,144 @@ public static partial class HttpApi
 		/// A pointer to an array of <see cref="HTTP_REQUEST_INFO"/> structures that contains additional information about the request.
 		/// </summary>
 		public IntPtr pRequestInfo;
+	}
+
+	/// <summary>
+	/// <para>The <c>HTTP_REQUEST_V2</c> structure extends the HTTP_REQUEST_V1 request structure with more information about the request.</para>
+	/// <para>
+	/// Do not use <c>HTTP_REQUEST_V2</c> directly in your code; use HTTP_REQUEST instead to ensure that the proper version, based on the
+	/// operating system the code is compiled under, is used.
+	/// </para>
+	/// </summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/http/ns-http-http_request_v2 typedef struct _HTTP_REQUEST_V2 : _HTTP_REQUEST_V1 {
+	// USHORT RequestInfoCount; PHTTP_REQUEST_INFO pRequestInfo; } HTTP_REQUEST_V2, *PHTTP_REQUEST_V2;
+	[PInvokeData("http.h", MSDNShortId = "NS:http._HTTP_REQUEST_V2")]
+	public class HTTP_REQUEST : IDisposable
+	{
+		public HTTP_REQUEST() => Ptr = new SafeCoTaskMemStruct<HTTP_REQUEST_V2>();
+
+		internal HTTP_REQUEST(SafeCoTaskMemStruct<HTTP_REQUEST_V2> value) => Ptr = value;
+
+		/// <inheritdoc/>
+		void IDisposable.Dispose() => Ptr.Dispose();
+
+		/// <summary>
+		/// <para>A combination of zero or more of the following flag values may be combined, with OR, as appropriate.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term><c>HTTP_REQUEST_FLAG_MORE_ENTITY_BODY_EXISTS</c></term>
+		/// <term>
+		/// There is more entity body to be read for this request. This applies only to incoming requests that span multiple reads. If this
+		/// value is not set, either the whole entity body was copied into the buffer specified by <c>pEntityChunks</c> or the request did
+		/// not include an entity body.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term><c>HTTP_REQUEST_FLAG_IP_ROUTED</c></term>
+		/// <term>
+		/// The request was routed based on host and IP binding. The application should reflect the local IP while flushing kernel cache
+		/// entries for this request. <c>Windows Server 2003 with SP1 and Windows XP with SP2:</c> This flag is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term><c>HTTP_REQUEST_FLAG_HTTP2</c></term>
+		/// <term>Indicates the request was received over HTTP/2.</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public HTTP_REQUEST_FLAG Flags => Ptr.AsRef().Flags;
+
+		/// <summary>
+		/// An identifier for the connection on which the request was received. Use this value when calling HttpWaitForDisconnect or HttpReceiveClientCertificate.
+		/// </summary>
+		public HTTP_CONNECTION_ID ConnectionId => Ptr.AsRef().ConnectionId;
+
+		/// <summary>A value used to identify the request when calling HttpReceiveRequestEntityBody, HttpSendHttpResponse, and/or HttpSendResponseEntityBody.</summary>
+		public HTTP_REQUEST_ID RequestId => Ptr.AsRef().RequestId;
+
+		/// <summary>
+		/// <para>The context that is associated with the URL in the <c>pRawUrl</c> parameter.</para>
+		/// <para><c>Windows Server 2003 with SP1 and Windows XP with SP2:</c></para>
+		/// </summary>
+		public HTTP_URL_CONTEXT UrlContext => Ptr.AsRef().UrlContext;
+
+		/// <summary>An HTTP_VERSION structure that contains the version of HTTP specified by this request.</summary>
+		public HTTP_VERSION Version => Ptr.AsRef().Version;
+
+		/// <summary>An HTTP verb associated with this request. This member can be one of the values from the HTTP_VERB enumeration.</summary>
+		public HTTP_VERB Verb => Ptr.AsRef().Verb;
+
+		/// <summary>
+		/// If the <c>Verb</c> member is equal to <c>HttpVerbUnknown</c>, <c>pUnknownVerb</c>, points to a null-terminated string of octets
+		/// that contains the HTTP verb for this request; otherwise, the application ignores this parameter.
+		/// </summary>
+		public string pUnknownVerb => Ptr.AsRef().pUnknownVerb;
+
+		/// <summary>
+		/// A pointer to a string of octets that contains the original, unprocessed URL targeted by this request. Use this unprocessed URL
+		/// only for tracking or statistical purposes; the <c>CookedUrl</c> member contains the canonical form of the URL for general use.
+		/// </summary>
+		public string pRawUrl => Ptr.AsRef().pRawUrl;
+
+		/// <summary>
+		/// An HTTP_COOKED_URL structure that contains a parsed canonical wide-character version of the URL targeted by this request. This is
+		/// the version of the URL HTTP Listeners should act upon, rather than the raw URL.
+		/// </summary>
+		public HTTP_COOKED_URL CookedUrl => Ptr.AsRef().CookedUrl;
+
+		/// <summary>
+		/// The remote transport IP address associated with this connection.
+		/// </summary>
+		public SOCKADDR_STORAGE RemoteAddress => Ptr.AsRef().Address.RemoteAddress;
+
+		/// <summary>
+		/// The local transport IP address associated with this connection.
+		/// </summary>
+		public SOCKADDR_STORAGE LocalAddress => Ptr.AsRef().Address.LocalAddress;
+
+		/// <summary>
+		/// An array of HTTP_UNKNOWN_HEADER structures. This array contains one structure for each of the unknown headers sent
+		/// in the HTTP request.
+		/// </summary>
+		public HTTP_UNKNOWN_HEADER[] UnknownHeaders => Ptr.AsRef().Headers.UnknownHeaders;
+
+		/// <summary>
+		/// Fixed-size array of HTTP_KNOWN_HEADER structures. The HTTP_HEADER_ID enumeration provides a mapping from header types to array
+		/// indexes. If a known header of a given type is included in the HTTP request, the array element at the index that corresponds to
+		/// that type specifies the header value. Those elements of the array for which no corresponding headers are present contain a
+		/// zero-valued <c>RawValueLength</c> member. Use <c>RawValueLength</c> to determine the end of the header string pointed to by
+		/// <c>pRawValue</c>, rather than relying on the string to have a terminating null.
+		/// </summary>
+		public HTTP_KNOWN_HEADER[] KnownHeaders => Ptr.AsRef().Headers.KnownHeaders;
+
+		/// <summary>The total number of bytes received from the network comprising this request.</summary>
+		public ulong BytesReceived;
+
+		/// <summary>
+		/// An array of <see cref="HTTP_DATA_CHUNK"/> structures that contains the data blocks making up the entity body.
+		/// HttpReceiveHttpRequest does not copy the entity body unless called with the HTTP_RECEIVE_REQUEST_FLAG_COPY_BODY flag set.
+		/// </summary>
+		public HTTP_DATA_CHUNK[] EntityChunks => Ptr.AsRef().pEntityChunks.ToArray<HTTP_DATA_CHUNK>(Ptr.AsRef().EntityChunkCount);
+
+		/// <summary>Raw connection ID for an Secure Sockets Layer (SSL) request.</summary>
+		public HTTP_RAW_CONNECTION_ID RawConnectionId => Ptr.AsRef().RawConnectionId;
+
+		/// <summary>
+		/// A <see cref="HTTP_SSL_INFO"/> structure that contains Secure Sockets Layer (SSL) information about the connection
+		/// on which the request was received.
+		/// </summary>
+		public HTTP_SSL_INFO? sslInfo => Ptr.AsRef().pSslInfo.ToNullableStructure<HTTP_SSL_INFO>();
+
+		/// <summary>
+		/// An array of <see cref="HTTP_REQUEST_INFO"/> structures that contains additional information about the request.
+		/// </summary>
+		public HTTP_REQUEST_INFO[] pRequestInfo => Ptr.AsRef().pRequestInfo.ToArray<HTTP_REQUEST_INFO>(Ptr.AsRef().RequestInfoCount);
+
+		internal SafeCoTaskMemStruct<HTTP_REQUEST_V2> Ptr { get; private set; }
 	}
 
 	/// <summary>The <c>HTTP_RESPONSE_HEADERS</c> structure contains the headers sent with an HTTP response.</summary>
@@ -2931,6 +3075,9 @@ public static partial class HttpApi
 
 		/// <summary>Reserved.</summary>
 		[MarshalAs(UnmanagedType.U1)] public bool CertDeniedByMapper;
+
+		/// <summary>The actual certificate.</summary>
+		public byte[] CertEncoded => pCertEncoded.ToArray<byte>((int)CertEncodedSize);
 	}
 
 	/// <summary>
@@ -2972,7 +3119,11 @@ public static partial class HttpApi
 		public IntPtr pClientCertInfo;
 
 		/// <summary>If non-zero, indicates that the client certificate is already present locally.</summary>
-		public uint SslClientCertNegotiated;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool SslClientCertNegotiated;
+
+		/// <summary>A <see cref="HTTP_SSL_CLIENT_CERT_INFO"/> structure that specifies the client certificate.</summary>
+		public HTTP_SSL_CLIENT_CERT_INFO? ClientCertInfo => pClientCertInfo.ToNullableStructure<HTTP_SSL_CLIENT_CERT_INFO>();
 	}
 
 	/// <summary>
@@ -3196,6 +3347,12 @@ public static partial class HttpApi
 		/// Remarks section.
 		/// </summary>
 		public IntPtr pLocalAddress;
+
+		/// <summary>The remote IP address associated with this connection.</summary>
+		public SOCKADDR_STORAGE RemoteAddress => (SOCKADDR_STORAGE)new SOCKADDR(pRemoteAddress);
+
+		/// <summary>The local IP address associated with this connection.</summary>
+		public SOCKADDR_STORAGE LocalAddress => (SOCKADDR_STORAGE)new SOCKADDR(pLocalAddress);
 	}
 
 	/// <summary>

@@ -2404,7 +2404,6 @@ public static partial class HttpApi
 	/// The <c>HttpReceiveHttpRequest</c> function retrieves the next available HTTP request from the specified request queue either
 	/// synchronously or asynchronously.
 	/// </summary>
-	/// <typeparam name="T">The type of <paramref name="RequestBuffer"/>.</typeparam>
 	/// <param name="RequestQueueHandle">
 	/// <para>
 	/// A handle to the request queue from which to retrieve the next available request. A request queue is created and its handle returned
@@ -2447,16 +2446,11 @@ public static partial class HttpApi
 	/// </list>
 	/// </param>
 	/// <param name="RequestBuffer">
-	/// A pointer to a buffer into which the function copies an HTTP_REQUEST structure and entity body for the HTTP request.
-	/// <c>HTTP_REQUEST.RequestId</c> contains the identifier for this HTTP request, which the application can use in subsequent calls
-	/// HttpReceiveRequestEntityBody, HttpSendHttpResponse, or HttpSendResponseEntityBody.
+	/// An HTTP_REQUEST structure and entity body for the HTTP request. <c>HTTP_REQUEST.RequestId</c> contains the identifier for this HTTP
+	/// request, which the application can use in subsequent calls HttpReceiveRequestEntityBody, HttpSendHttpResponse, or HttpSendResponseEntityBody.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is <c>NO_ERROR</c>.</para>
-	/// <para>
-	/// If the function is being used asynchronously, a return value of <c>ERROR_IO_PENDING</c> indicates that the next request is not yet
-	/// ready and will be retrieved later through normal overlapped I/O completion mechanisms.
-	/// </para>
 	/// <para>If the function fails, the return value is one of the following error codes.</para>
 	/// <list type="table">
 	/// <listheader>
@@ -2521,20 +2515,19 @@ public static partial class HttpApi
 	/// terminated and does not contain illegal characters.
 	/// </para>
 	/// </remarks>
-	public static Win32Error HttpReceiveHttpRequest<T>(HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
-		[In] HTTP_RECEIVE_REQUEST_FLAG Flags, out T RequestBuffer) where T : struct
+	public static Win32Error HttpReceiveHttpRequest(HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
+		[In] HTTP_RECEIVE_REQUEST_FLAG Flags, out HTTP_REQUEST RequestBuffer)
 	{
-		using var mem = new SafeCoTaskMemStruct<T>();
-		var err = HttpReceiveHttpRequest(RequestQueueHandle, RequestId, Flags, mem, mem.Size, out var sz, default);
+		RequestBuffer = new();
+		var err = HttpReceiveHttpRequest(RequestQueueHandle, RequestId, Flags, RequestBuffer.Ptr, RequestBuffer.Ptr.Size, out var sz, default);
 		switch ((uint)err)
 		{
 			case Win32Error.ERROR_SUCCESS:
-				RequestBuffer = mem.Value;
 				return Win32Error.ERROR_SUCCESS;
 
 			case Win32Error.ERROR_MORE_DATA:
-				RequestId = mem.DangerousGetHandle().AsRef<HTTP_REQUEST_V1>().RequestId;
-				mem.Size = sz;
+				RequestId = RequestBuffer.RequestId;
+				RequestBuffer.Ptr.Size = sz;
 				break;
 
 			case Win32Error.ERROR_CONNECTION_INVALID:
@@ -2546,8 +2539,7 @@ public static partial class HttpApi
 				RequestBuffer = default;
 				return err;
 		}
-		err = HttpReceiveHttpRequest(RequestQueueHandle, RequestId, Flags, mem, mem.Size, out _, default);
-		RequestBuffer = mem.Value;
+		err = HttpReceiveHttpRequest(RequestQueueHandle, RequestId, Flags, RequestBuffer.Ptr, RequestBuffer.Ptr.Size, out _, default);
 		return err;
 	}
 
