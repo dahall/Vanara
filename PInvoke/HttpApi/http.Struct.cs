@@ -292,104 +292,182 @@ public static partial class HttpApi
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HTTP_DATA_CHUNK
 	{
+		private HTTP_DATA_CHUNK(HTTP_DATA_CHUNK_TYPE type) { DataChunkType = type; union = default; }
+
+		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromMemory</c>.</summary>
+		/// <param name="mem">The memory.</param>
+		public HTTP_DATA_CHUNK(SafeAllocatedMemoryHandleBase mem) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromMemory)
+		{
+			FromMemory = new(mem);
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromFileHandle</c>.</summary>
+		/// <param name="hFile">The file handle.</param>
+		/// <param name="startingOffset">The starting offset.</param>
+		/// <param name="length">The length.</param>
+		public HTTP_DATA_CHUNK(HFILE hFile, ulong startingOffset = 0, ulong length = HTTP_BYTE_RANGE_TO_EOF) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFileHandle)
+		{
+			FromFileHandle = new() { FileHandle = hFile, ByteRange = new() { StartingOffset = startingOffset, Length = length } };
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromFragmentCache</c>.</summary>
+		/// <param name="fragmentName">Name of the fragment.</param>
+		public HTTP_DATA_CHUNK(string fragmentName) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCache)
+		{
+			FromFragmentCache = new(fragmentName);
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromFragmentCacheEx</c>.</summary>
+		/// <param name="fragmentName">Name of the fragment.</param>
+		/// <param name="startingOffset">The starting offset.</param>
+		/// <param name="length">The length.</param>
+		public HTTP_DATA_CHUNK(string fragmentName, ulong startingOffset = 0, ulong length = HTTP_BYTE_RANGE_TO_EOF) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCacheEx)
+		{
+			FromFragmentCacheEx = new() { pFragmentName = fragmentName, ByteRange = new() { StartingOffset = startingOffset, Length = length } };
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkTrailers</c>.</summary>
+		/// <param name="headers">The headers.</param>
+		public HTTP_DATA_CHUNK(SafeNativeArray<HTTP_UNKNOWN_HEADER> headers) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkTrailers)
+		{
+			Trailers = new() { TrailerCount = (ushort)(headers?.Count ?? 0), pTrailers = headers };
+		}
+
 		/// <summary>Type of data store. This member can be one of the values from the <c>HTTP_DATA_CHUNK_TYPE</c> enumeration.</summary>
 		public HTTP_DATA_CHUNK_TYPE DataChunkType;
 
 		/// <summary/>
-		public UNION union;
+		private UNION union;
+
+		public ref FROMMEMORY FromMemory => ref union.FromMemory;
+
+		/// <summary/>
+		public ref FROMFILEHANDLE FromFileHandle => ref union.FromFileHandle;
+
+		/// <summary/>
+		public ref FROMFRAGMENTCACHE FromFragmentCache => ref union.FromFragmentCache;
+
+		/// <summary/>
+		public ref FROMFRAGMENTCACHEEX FromFragmentCacheEx => ref union.FromFragmentCacheEx;
+
+		/// <summary/>
+		public ref TRAILERS Trailers => ref union.Trailers;
 
 		/// <summary/>
 		[StructLayout(LayoutKind.Explicit)]
-		public struct UNION
+		private struct UNION
 		{
 			/// <summary/>
 			[FieldOffset(0)]
-			public FROMMEMORY FromMemory;
+			private FROMMEMORY _FromMemory;
 
 			/// <summary/>
 			[FieldOffset(0)]
-			public FROMFILEHANDLE FromFileHandle;
+			private FROMFILEHANDLE _FromFileHandle;
 
 			/// <summary/>
 			[FieldOffset(0)]
-			public FROMFRAGMENTCACHE FromFragmentCache;
+			private FROMFRAGMENTCACHE _FromFragmentCache;
 
 			/// <summary/>
 			[FieldOffset(0)]
-			public FROMFRAGMENTCACHEEX FromFragmentCacheEx;
+			private FROMFRAGMENTCACHEEX _FromFragmentCacheEx;
 
 			/// <summary/>
 			[FieldOffset(0)]
-			public TRAILERS Trailers;
+			private TRAILERS _Trailers;
 
 			/// <summary/>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct FROMMEMORY
-			{
-				/// <summary>Pointer to the starting memory address of the data block.</summary>
-				public IntPtr pBuffer;
-
-				/// <summary>Length, in bytes, of the data block.</summary>
-				public uint BufferLength;
-			}
+			public ref FROMMEMORY FromMemory => ref _FromMemory;
 
 			/// <summary/>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct FROMFILEHANDLE
-			{
-				/// <summary>
-				/// An HTTP_BYTE_RANGE structure that specifies all or part of the file. To specify the entire file, set the
-				/// <c>StartingOffset</c> member to zero and the <c>Length</c> member to <c>HTTP_BYTE_RANGE_TO_EOF</c>.
-				/// </summary>
-				public HTTP_BYTE_RANGE ByteRange;
-
-				/// <summary>Open handle to the file in question.</summary>
-				public HFILE FileHandle;
-			}
+			public ref FROMFILEHANDLE FromFileHandle => ref _FromFileHandle;
 
 			/// <summary/>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct FROMFRAGMENTCACHE
-			{
-				/// <summary>Length, in bytes, of the fragment name not including the terminating null character.</summary>
-				public ushort FragmentNameLength;
-
-				/// <summary>
-				/// Pointer to a string that contains the fragment name assigned when the fragment was added to the response-fragment cache
-				/// using the HttpAddFragmentToCache function.
-				/// </summary>
-				[MarshalAs(UnmanagedType.LPWStr)]
-				public string pFragmentName;
-			}
+			public ref FROMFRAGMENTCACHE FromFragmentCache => ref _FromFragmentCache;
 
 			/// <summary/>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct FROMFRAGMENTCACHEEX
-			{
-				/// <summary>An HTTP_BYTE_RANGE structure specifying the byte range in the cached fragment.</summary>
-				public HTTP_BYTE_RANGE ByteRange;
-
-				/// <summary>
-				/// <para>
-				/// Pointer to a string that contains the fragment name assigned when the fragment was added to the response-fragment cache
-				/// using the HttpAddFragmentToCache function. The length of the string cannot exceed 65532 bytes.
-				/// </para>
-				/// <para><c>Note</c> This string must be NULL terminated.</para>
-				/// </summary>
-				[MarshalAs(UnmanagedType.LPWStr)]
-				public string pFragmentName;
-			}
+			public ref FROMFRAGMENTCACHEEX FromFragmentCacheEx => ref _FromFragmentCacheEx;
 
 			/// <summary/>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct TRAILERS
-			{
-				/// <summary>Count of the number of HTTP_UNKNOWN_HEADER structures in the array pointed to by <c>pTrailers</c>.</summary>
-				public ushort TrailerCount;
+			public ref TRAILERS Trailers => ref _Trailers;
+		}
 
-				/// <summary>Pointer to an array of <see cref="HTTP_UNKNOWN_HEADER"/> structures containing the trailers.</summary>
-				public IntPtr pTrailers;
+		/// <summary/>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FROMMEMORY
+		{
+			/// <summary>Pointer to the starting memory address of the data block.</summary>
+			public IntPtr pBuffer;
+
+			/// <summary>Length, in bytes, of the data block.</summary>
+			public uint BufferLength;
+
+			internal FROMMEMORY(SafeAllocatedMemoryHandleBase mem) { pBuffer = mem ?? default; BufferLength = mem?.Size ?? 0; }
+		}
+
+		/// <summary/>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FROMFILEHANDLE
+		{
+			/// <summary>
+			/// An HTTP_BYTE_RANGE structure that specifies all or part of the file. To specify the entire file, set the
+			/// <c>StartingOffset</c> member to zero and the <c>Length</c> member to <c>HTTP_BYTE_RANGE_TO_EOF</c>.
+			/// </summary>
+			public HTTP_BYTE_RANGE ByteRange;
+
+			/// <summary>Open handle to the file in question.</summary>
+			public HFILE FileHandle;
+		}
+
+		/// <summary/>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FROMFRAGMENTCACHE
+		{
+			/// <summary>Length, in bytes, of the fragment name not including the terminating null character.</summary>
+			public ushort FragmentNameLength;
+
+			/// <summary>
+			/// Pointer to a string that contains the fragment name assigned when the fragment was added to the response-fragment cache using
+			/// the HttpAddFragmentToCache function.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string pFragmentName;
+
+			internal FROMFRAGMENTCACHE(string fragmentName)
+			{
+				pFragmentName = fragmentName;
+				FragmentNameLength = (ushort)(fragmentName?.Length ?? 0);
 			}
+		}
+
+		/// <summary/>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FROMFRAGMENTCACHEEX
+		{
+			/// <summary>An HTTP_BYTE_RANGE structure specifying the byte range in the cached fragment.</summary>
+			public HTTP_BYTE_RANGE ByteRange;
+
+			/// <summary>
+			/// <para>
+			/// Pointer to a string that contains the fragment name assigned when the fragment was added to the response-fragment cache using
+			/// the HttpAddFragmentToCache function. The length of the string cannot exceed 65532 bytes.
+			/// </para>
+			/// <para><c>Note</c> This string must be NULL terminated.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string pFragmentName;
+		}
+
+		/// <summary/>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct TRAILERS
+		{
+			/// <summary>Count of the number of HTTP_UNKNOWN_HEADER structures in the array pointed to by <c>pTrailers</c>.</summary>
+			public ushort TrailerCount;
+
+			/// <summary>Pointer to an array of <see cref="HTTP_UNKNOWN_HEADER"/> structures containing the trailers.</summary>
+			public IntPtr pTrailers;
 		}
 	}
 
