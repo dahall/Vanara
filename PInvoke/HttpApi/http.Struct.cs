@@ -1804,13 +1804,13 @@ public static partial class HttpApi
 		/// If the <c>Verb</c> member is equal to <c>HttpVerbUnknown</c>, <c>pUnknownVerb</c>, points to a null-terminated string of octets
 		/// that contains the HTTP verb for this request; otherwise, the application ignores this parameter.
 		/// </summary>
-		public string pUnknownVerb => Ptr.AsRef().pUnknownVerb;
+		public string UnknownVerb => Ptr.AsRef().pUnknownVerb;
 
 		/// <summary>
 		/// A pointer to a string of octets that contains the original, unprocessed URL targeted by this request. Use this unprocessed URL
 		/// only for tracking or statistical purposes; the <c>CookedUrl</c> member contains the canonical form of the URL for general use.
 		/// </summary>
-		public string pRawUrl => Ptr.AsRef().pRawUrl;
+		public string RawUrl => Ptr.AsRef().pRawUrl;
 
 		/// <summary>
 		/// An HTTP_COOKED_URL structure that contains a parsed canonical wide-character version of the URL targeted by this request. This is
@@ -1818,33 +1818,14 @@ public static partial class HttpApi
 		/// </summary>
 		public HTTP_COOKED_URL CookedUrl => Ptr.AsRef().CookedUrl;
 
-		/// <summary>
-		/// The remote transport IP address associated with this connection.
-		/// </summary>
-		public SOCKADDR_STORAGE RemoteAddress => Ptr.AsRef().Address.RemoteAddress;
+		/// <summary>An HTTP_TRANSPORT_ADDRESS structure that contains the transport addresses for the connection for this request.</summary>
+		public HTTP_TRANSPORT_ADDRESS Address => Ptr.AsRef().Address;
 
-		/// <summary>
-		/// The local transport IP address associated with this connection.
-		/// </summary>
-		public SOCKADDR_STORAGE LocalAddress => Ptr.AsRef().Address.LocalAddress;
-
-		/// <summary>
-		/// An array of HTTP_UNKNOWN_HEADER structures. This array contains one structure for each of the unknown headers sent
-		/// in the HTTP request.
-		/// </summary>
-		public HTTP_UNKNOWN_HEADER[] UnknownHeaders => Ptr.AsRef().Headers.UnknownHeaders;
-
-		/// <summary>
-		/// Fixed-size array of HTTP_KNOWN_HEADER structures. The HTTP_HEADER_ID enumeration provides a mapping from header types to array
-		/// indexes. If a known header of a given type is included in the HTTP request, the array element at the index that corresponds to
-		/// that type specifies the header value. Those elements of the array for which no corresponding headers are present contain a
-		/// zero-valued <c>RawValueLength</c> member. Use <c>RawValueLength</c> to determine the end of the header string pointed to by
-		/// <c>pRawValue</c>, rather than relying on the string to have a terminating null.
-		/// </summary>
-		public HTTP_KNOWN_HEADER[] KnownHeaders => Ptr.AsRef().Headers.KnownHeaders;
+		/// <summary>An HTTP_REQUEST_HEADERS structure that contains the headers specified in this request.</summary>
+		public HTTP_REQUEST_HEADERS Headers => Ptr.AsRef().Headers;
 
 		/// <summary>The total number of bytes received from the network comprising this request.</summary>
-		public ulong BytesReceived;
+		public ulong BytesReceived => Ptr.AsRef().BytesReceived;
 
 		/// <summary>
 		/// An array of <see cref="HTTP_DATA_CHUNK"/> structures that contains the data blocks making up the entity body.
@@ -1859,12 +1840,12 @@ public static partial class HttpApi
 		/// A <see cref="HTTP_SSL_INFO"/> structure that contains Secure Sockets Layer (SSL) information about the connection
 		/// on which the request was received.
 		/// </summary>
-		public HTTP_SSL_INFO? sslInfo => Ptr.AsRef().pSslInfo.ToNullableStructure<HTTP_SSL_INFO>();
+		public HTTP_SSL_INFO? SslInfo => Ptr.AsRef().pSslInfo.ToNullableStructure<HTTP_SSL_INFO>();
 
 		/// <summary>
 		/// An array of <see cref="HTTP_REQUEST_INFO"/> structures that contains additional information about the request.
 		/// </summary>
-		public HTTP_REQUEST_INFO[] pRequestInfo => Ptr.AsRef().pRequestInfo.ToArray<HTTP_REQUEST_INFO>(Ptr.AsRef().RequestInfoCount);
+		public HTTP_REQUEST_INFO[] RequestInfo => Ptr.AsRef().pRequestInfo.ToArray<HTTP_REQUEST_INFO>(Ptr.AsRef().RequestInfoCount);
 
 		internal SafeCoTaskMemStruct<HTTP_REQUEST_V2> Ptr { get; private set; }
 	}
@@ -3340,13 +3321,13 @@ public static partial class HttpApi
 		/// A pointer to the remote IP address associated with this connection. For more information about how to access this address, see
 		/// the Remarks section.
 		/// </summary>
-		public IntPtr pRemoteAddress;
+		private IntPtr pRemoteAddress;
 
 		/// <summary>
 		/// A pointer to the local IP address associated with this connection. For more information about how to access this address, see the
 		/// Remarks section.
 		/// </summary>
-		public IntPtr pLocalAddress;
+		private IntPtr pLocalAddress;
 
 		/// <summary>The remote IP address associated with this connection.</summary>
 		public SOCKADDR_STORAGE RemoteAddress => (SOCKADDR_STORAGE)new SOCKADDR(pRemoteAddress);
