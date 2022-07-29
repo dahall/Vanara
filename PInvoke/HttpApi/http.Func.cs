@@ -74,7 +74,7 @@ public static partial class HttpApi
 	// optional] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpAddFragmentToCache")]
-	public static extern uint HttpAddFragmentToCache(HREQQUEUE RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string UrlPrefix,
+	public static extern uint HttpAddFragmentToCache(HREQQUEUEv1 RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string UrlPrefix,
 		in HTTP_DATA_CHUNK DataChunk, in HTTP_CACHE_POLICY CachePolicy, [In, Optional] IntPtr Overlapped);
 
 	/// <summary>
@@ -222,7 +222,7 @@ public static partial class HttpApi
 	// RequestQueueHandle, [in] PCWSTR FullyQualifiedUrl, PVOID Reserved );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpAddUrl")]
-	public static extern Win32Error HttpAddUrl(HREQQUEUE RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string FullyQualifiedUrl, IntPtr Reserved = default);
+	public static extern Win32Error HttpAddUrl(HREQQUEUEv1 RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string FullyQualifiedUrl, IntPtr Reserved = default);
 
 	/// <summary>
 	/// <para>The <c>HttpAddUrlToUrlGroup</c> function adds the specified URL to the URL Group identified by the URL Group ID.</para>
@@ -1072,7 +1072,7 @@ public static partial class HttpApi
 	// [in] HANDLE RequestQueueHandle, [in] PCWSTR UrlPrefix, [in] ULONG Flags, [in] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpFlushResponseCache")]
-	public static extern Win32Error HttpFlushResponseCache([In] HREQQUEUE RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string UrlPrefix,
+	public static extern Win32Error HttpFlushResponseCache([In] HREQQUEUEv1 RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string UrlPrefix,
 		[In] HTTP_FLUSH_RESPONSE_FLAG Flags, [In, Optional] IntPtr Overlapped);
 
 	/// <summary>
@@ -1744,7 +1744,7 @@ public static partial class HttpApi
 	// [in] ULONG BufferLength, [out] PULONG BytesRead, [in] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpReadFragmentFromCache")]
-	public static extern Win32Error HttpReadFragmentFromCache([In] HREQQUEUE RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string UrlPrefix,
+	public static extern Win32Error HttpReadFragmentFromCache([In] HREQQUEUEv1 RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string UrlPrefix,
 		in HTTP_BYTE_RANGE ByteRange, [Out] IntPtr Buffer, [In] uint BufferLength, out uint BytesRead, in NativeOverlapped Overlapped);
 
 	/// <summary>
@@ -1823,7 +1823,7 @@ public static partial class HttpApi
 	// [in] ULONG BufferLength, [out] PULONG BytesRead, [in] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpReadFragmentFromCache")]
-	public static extern Win32Error HttpReadFragmentFromCache([In] HREQQUEUE RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string UrlPrefix,
+	public static extern Win32Error HttpReadFragmentFromCache([In] HREQQUEUEv1 RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string UrlPrefix,
 		[In, Optional] IntPtr ByteRange, [Out] IntPtr Buffer, [In] uint BufferLength, out uint BytesRead, [In, Optional] IntPtr Overlapped);
 
 	/// <summary>
@@ -1963,7 +1963,7 @@ public static partial class HttpApi
 	// LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpReceiveClientCertificate")]
-	public static extern Win32Error HttpReceiveClientCertificate([In] HREQQUEUE RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId,
+	public static extern Win32Error HttpReceiveClientCertificate([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId,
 		[In] HTTP_RECEIVE Flags, [Out] IntPtr SslClientCertInfo, [In] uint SslClientCertInfoSize, out uint BytesReceived, in NativeOverlapped Overlapped);
 
 	/// <summary>
@@ -2103,7 +2103,7 @@ public static partial class HttpApi
 	// LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpReceiveClientCertificate")]
-	public static extern Win32Error HttpReceiveClientCertificate([In] HREQQUEUE RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId,
+	public static extern Win32Error HttpReceiveClientCertificate([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId,
 		[In] HTTP_RECEIVE Flags, [Out] IntPtr SslClientCertInfo, [In] uint SslClientCertInfoSize, out uint BytesReceived, [In, Optional] IntPtr Overlapped);
 
 	/// <summary>
@@ -2250,7 +2250,7 @@ public static partial class HttpApi
 	// RequestBufferLength, [out, optional] PULONG BytesReturned, [in, optional] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpReceiveHttpRequest")]
-	public static extern Win32Error HttpReceiveHttpRequest([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
+	public static extern Win32Error HttpReceiveHttpRequest([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
 		[In] uint Flags, [Out] IntPtr RequestBuffer, [In] uint RequestBufferLength, out uint BytesReturned, in NativeOverlapped Overlapped);
 
 	/// <summary>
@@ -2397,7 +2397,7 @@ public static partial class HttpApi
 	// RequestBufferLength, [out, optional] PULONG BytesReturned, [in, optional] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpReceiveHttpRequest")]
-	public static extern Win32Error HttpReceiveHttpRequest([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
+	public static extern Win32Error HttpReceiveHttpRequest([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
 		[In] uint Flags, [Out] IntPtr RequestBuffer, [In] uint RequestBufferLength, out uint BytesReturned, [In, Optional] IntPtr Overlapped);
 
 	/// <summary>The <c>HttpReceiveRequestEntityBody</c> function receives additional entity body data for a specified HTTP request.</summary>
@@ -2491,7 +2491,7 @@ public static partial class HttpApi
 	// EntityBuffer, [in] ULONG EntityBufferLength, [out, optional] PULONG BytesReturned, [in, optional] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpReceiveRequestEntityBody")]
-	public static extern Win32Error HttpReceiveRequestEntityBody([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
+	public static extern Win32Error HttpReceiveRequestEntityBody([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
 		[In] HTTP_RECEIVE_REQUEST_ENTITY_BODY_FLAG Flags, [Out] IntPtr EntityBuffer, [In] uint EntityBufferLength, out uint BytesReturned,
 		in NativeOverlapped Overlapped);
 
@@ -2586,7 +2586,7 @@ public static partial class HttpApi
 	// EntityBuffer, [in] ULONG EntityBufferLength, [out, optional] PULONG BytesReturned, [in, optional] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpReceiveRequestEntityBody")]
-	public static extern Win32Error HttpReceiveRequestEntityBody([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
+	public static extern Win32Error HttpReceiveRequestEntityBody([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId,
 		[In] HTTP_RECEIVE_REQUEST_ENTITY_BODY_FLAG Flags, [Out] IntPtr EntityBuffer, [In] uint EntityBufferLength, out uint BytesReturned,
 		[In, Optional] IntPtr Overlapped);
 
@@ -2647,7 +2647,7 @@ public static partial class HttpApi
 	// RequestQueueHandle, [in] PCWSTR FullyQualifiedUrl );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpRemoveUrl")]
-	public static extern Win32Error HttpRemoveUrl([In] HREQQUEUE RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string FullyQualifiedUrl);
+	public static extern Win32Error HttpRemoveUrl([In] HREQQUEUEv1 RequestQueueHandle, [MarshalAs(UnmanagedType.LPWStr)] string FullyQualifiedUrl);
 
 	/// <summary>
 	/// <para>
@@ -2869,7 +2869,7 @@ public static partial class HttpApi
 	// optional] PHTTP_LOG_DATA LogData );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSendHttpResponse")]
-	public static extern Win32Error HttpSendHttpResponse([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
+	public static extern Win32Error HttpSendHttpResponse([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
 		in HTTP_RESPONSE_V2 HttpResponse, in HTTP_CACHE_POLICY CachePolicy, out uint BytesSent, [In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2,
 		in NativeOverlapped Overlapped, in HTTP_LOG_DATA LogData);
 
@@ -3025,7 +3025,7 @@ public static partial class HttpApi
 	// optional] PHTTP_LOG_DATA LogData );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSendHttpResponse")]
-	public static extern Win32Error HttpSendHttpResponse([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
+	public static extern Win32Error HttpSendHttpResponse([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
 		in HTTP_RESPONSE_V2 HttpResponse, [In, Optional] IntPtr CachePolicy, out uint BytesSent, [In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2,
 		[In, Optional] IntPtr Overlapped, [In, Optional] IntPtr LogData);
 
@@ -3175,7 +3175,7 @@ public static partial class HttpApi
 	// LPOVERLAPPED Overlapped, [in, optional] PHTTP_LOG_DATA LogData );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSendResponseEntityBody")]
-	public static extern Win32Error HttpSendResponseEntityBody([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
+	public static extern Win32Error HttpSendResponseEntityBody([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
 		[In] ushort EntityChunkCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HTTP_DATA_CHUNK[] EntityChunks, out uint BytesSent,
 		[In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2, in NativeOverlapped Overlapped, in HTTP_LOG_DATA LogData);
 
@@ -3325,7 +3325,7 @@ public static partial class HttpApi
 	// LPOVERLAPPED Overlapped, [in, optional] PHTTP_LOG_DATA LogData );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSendResponseEntityBody")]
-	public static extern Win32Error HttpSendResponseEntityBody([In] HREQQUEUE RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
+	public static extern Win32Error HttpSendResponseEntityBody([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_REQUEST_ID RequestId, [In] HTTP_SEND_RESPONSE_FLAG Flags,
 		[In] ushort EntityChunkCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HTTP_DATA_CHUNK[] EntityChunks, out uint BytesSent,
 		[In, Optional] IntPtr Reserved1, [In, Optional] uint Reserved2, [In, Optional] IntPtr Overlapped, [In, Optional] IntPtr LogData);
 
@@ -4457,7 +4457,7 @@ public static partial class HttpApi
 	// [in] HANDLE RequestQueueHandle, [in] HTTP_CONNECTION_ID ConnectionId, [in] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpWaitForDisconnect")]
-	public static extern Win32Error HttpWaitForDisconnect([In] HREQQUEUE RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId, in NativeOverlapped Overlapped);
+	public static extern Win32Error HttpWaitForDisconnect([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId, in NativeOverlapped Overlapped);
 
 	/// <summary>
 	/// The <c>HttpWaitForDisconnect</c> function notifies the application when the connection to an HTTP client is broken for any reason.
@@ -4509,7 +4509,7 @@ public static partial class HttpApi
 	// [in] HANDLE RequestQueueHandle, [in] HTTP_CONNECTION_ID ConnectionId, [in] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpWaitForDisconnect")]
-	public static extern Win32Error HttpWaitForDisconnect([In] HREQQUEUE RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId, [In, Optional] IntPtr Overlapped);
+	public static extern Win32Error HttpWaitForDisconnect([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId, [In, Optional] IntPtr Overlapped);
 
 	/// <summary>This function is an extension to HttpWaitForDisconnect.</summary>
 	/// <param name="RequestQueueHandle"/>
@@ -4521,7 +4521,7 @@ public static partial class HttpApi
 	// [in] HANDLE RequestQueueHandle, [in] HTTP_CONNECTION_ID ConnectionId, ULONG Reserved, [in] LPOVERLAPPED Overlapped );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpWaitForDisconnectEx")]
-	public static extern Win32Error HttpWaitForDisconnectEx([In] HREQQUEUE RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId, [In, Optional] uint Reserved, [In, Optional] IntPtr Overlapped);
+	public static extern Win32Error HttpWaitForDisconnectEx([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId, [In, Optional] uint Reserved, [In, Optional] IntPtr Overlapped);
 
 	/// <summary>
 	/// The <c>HttpPrepareUrl</c> function parses, analyzes, and normalizes a non-normalized Unicode or punycode URL so it is safe and valid

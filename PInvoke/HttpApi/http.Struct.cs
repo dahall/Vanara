@@ -42,7 +42,7 @@ public static partial class HttpApi
 		/// The request queue that is associated with the URL group. The structure can be used to remove an existing binding by setting this
 		/// parameter to <c>NULL</c>.
 		/// </summary>
-		public HANDLE RequestQueueHandle;
+		public HREQQUEUE RequestQueueHandle;
 	}
 
 	/// <summary>
@@ -1289,7 +1289,7 @@ public static partial class HttpApi
 		/// lifetime of the request. Applications can regenerate the initial 401 challenge to reauthenticate when the token expires.
 		/// </para>
 		/// </summary>
-		public HANDLE AccessToken;
+		public HTOKEN AccessToken;
 
 		/// <summary>The client context attributes for the access token.</summary>
 		public uint ContextAttributes;
