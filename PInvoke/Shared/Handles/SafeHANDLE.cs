@@ -87,23 +87,6 @@ namespace Vanara.PInvoke
 			return ret;
 		}
 
-		void X()
-		{
-			var classes = new System.Collections.Generic.List<(string name, string inheritance, string summaryText)> {
-				( "LPSTR", "LPTSTR", "LPWSTR" ),
-			};
-
-			var casts = new System.Collections.Generic.Dictionary<string, (string, string)> {
-				{ "HANDLE", ("HANDLE", "SafeHandle" ) },
-				{ "HPROCESS", ("Process", "SafeHandle" ) },
-			};
-
-			foreach (var (name, inheritance, summaryText) in classes)
-			{
-				
-			}
-		}
-
 		/// <summary>
 		/// Internal method that actually releases the handle. This is called by <see cref="ReleaseHandle"/> for valid handles and afterwards
 		/// zeros the handle.
