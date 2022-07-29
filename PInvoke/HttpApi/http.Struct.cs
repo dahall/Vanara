@@ -339,19 +339,19 @@ public static partial class HttpApi
 		/// <summary/>
 		private UNION union;
 
-		public ref FROMMEMORY FromMemory => ref union.FromMemory;
+		public FROMMEMORY FromMemory { get => union.FromMemory; set => union.FromMemory = value; }
 
 		/// <summary/>
-		public ref FROMFILEHANDLE FromFileHandle => ref union.FromFileHandle;
+		public FROMFILEHANDLE FromFileHandle { get => union.FromFileHandle; set => union.FromFileHandle = value; }
 
 		/// <summary/>
-		public ref FROMFRAGMENTCACHE FromFragmentCache => ref union.FromFragmentCache;
+		public FROMFRAGMENTCACHE FromFragmentCache { get => union.FromFragmentCache; set => union.FromFragmentCache = value; }
 
 		/// <summary/>
-		public ref FROMFRAGMENTCACHEEX FromFragmentCacheEx => ref union.FromFragmentCacheEx;
+		public FROMFRAGMENTCACHEEX FromFragmentCacheEx { get => union.FromFragmentCacheEx; set => union.FromFragmentCacheEx = value; }
 
 		/// <summary/>
-		public ref TRAILERS Trailers => ref union.Trailers;
+		public TRAILERS Trailers { get => union.Trailers; set => union.Trailers = value; }
 
 		/// <summary/>
 		[StructLayout(LayoutKind.Explicit)]
@@ -359,38 +359,23 @@ public static partial class HttpApi
 		{
 			/// <summary/>
 			[FieldOffset(0)]
-			private FROMMEMORY _FromMemory;
+			public FROMMEMORY FromMemory;
 
 			/// <summary/>
 			[FieldOffset(0)]
-			private FROMFILEHANDLE _FromFileHandle;
+			public FROMFILEHANDLE FromFileHandle;
 
 			/// <summary/>
 			[FieldOffset(0)]
-			private FROMFRAGMENTCACHE _FromFragmentCache;
+			public FROMFRAGMENTCACHE FromFragmentCache;
 
 			/// <summary/>
 			[FieldOffset(0)]
-			private FROMFRAGMENTCACHEEX _FromFragmentCacheEx;
+			public FROMFRAGMENTCACHEEX FromFragmentCacheEx;
 
 			/// <summary/>
 			[FieldOffset(0)]
-			private TRAILERS _Trailers;
-
-			/// <summary/>
-			public ref FROMMEMORY FromMemory => ref _FromMemory;
-
-			/// <summary/>
-			public ref FROMFILEHANDLE FromFileHandle => ref _FromFileHandle;
-
-			/// <summary/>
-			public ref FROMFRAGMENTCACHE FromFragmentCache => ref _FromFragmentCache;
-
-			/// <summary/>
-			public ref FROMFRAGMENTCACHEEX FromFragmentCacheEx => ref _FromFragmentCacheEx;
-
-			/// <summary/>
-			public ref TRAILERS Trailers => ref _Trailers;
+			public TRAILERS Trailers;
 		}
 
 		/// <summary/>
