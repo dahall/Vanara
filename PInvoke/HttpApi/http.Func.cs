@@ -4488,6 +4488,86 @@ public static partial class HttpApi
 		[In] IntPtr PropertyInformation, [In] uint PropertyInformationLength);
 
 	/// <summary>
+	/// The <c>HttpSetUrlGroupProperty</c> function sets a new property or modifies an existing property on the specified URL Group.
+	/// </summary>
+	/// <typeparam name="T">The type of <paramref name="PropertyInformation"/>.</typeparam>
+	/// <param name="UrlGroupId">The ID of the URL Group for which the property is set.</param>
+	/// <param name="PropertyInformation">
+	/// <para>The property information.</para>
+	/// <para>pPropertyInformation is one of the following property information structures based on the property that is set.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Property</term>
+	/// <term>Structure</term>
+	/// </listheader>
+	/// <item>
+	/// <term>HttpServerAuthenticatonProperty</term>
+	/// <term>HTTP_SERVER_AUTHENTICATION_INFO</term>
+	/// </item>
+	/// <item>
+	/// <term>HttpServerExtendedAuthenticationProperty</term>
+	/// <term>HTTP_SERVER_AUTHENTICATION_INFO</term>
+	/// </item>
+	/// <item>
+	/// <term>HttpServerQosProperty</term>
+	/// <term>HTTP_QOS_SETTING_INFO</term>
+	/// </item>
+	/// <item>
+	/// <term>HttpServerBindingProperty</term>
+	/// <term>HTTP_BINDING_INFO</term>
+	/// </item>
+	/// <item>
+	/// <term>HttpServerLoggingProperty</term>
+	/// <term>HTTP_LOGGING_INFO</term>
+	/// </item>
+	/// <item>
+	/// <term>HttpServerStateProperty</term>
+	/// <term>HTTP_STATE_INFO</term>
+	/// </item>
+	/// <item>
+	/// <term>HttpServerTimeoutsProperty</term>
+	/// <term>HTTP_TIMEOUT_LIMIT_INFO</term>
+	/// </item>
+	/// <item>
+	/// <term>HttpServerChannelBindProperty</term>
+	/// <term>HTTP_CHANNEL_BIND_INFO</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns <c>NO_ERROR</c>.</para>
+	/// <para>If the function fails, it returns one of the following error codes.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>
+	/// The property type specified in the <c>Property</c> parameter is not supported for URL Groups. The <c>pPropertyInformation</c>
+	/// parameter is <c>NULL</c>. The <c>PropertyInformationLength</c> parameter is zero. The <c>UrlGroupId</c> parameter does not contain a
+	/// valid server session. The application does not have permission to set the URL Group properties. Only the application that created the
+	/// URL Group can set the properties.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// After the URL Group is created it must be associated with a request queue to receive requests. To associate the URL Group with a
+	/// request queue, the application calls <c>HttpSetUrlGroupProperty</c> with the <c>HttpServerBindingProperty</c> property. If this
+	/// property is not set, matching requests for the URL Group are not delivered to a request queue and the HTTP Server API generates a 503 response.
+	/// </remarks>
+	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSetUrlGroupProperty")]
+	public static Win32Error HttpSetUrlGroupProperty<T>([In] HTTP_URL_GROUP_ID UrlGroupId, in T PropertyInformation) where T: struct
+	{
+		if (!CorrespondingTypeAttribute.CanSet<T, HTTP_SERVER_PROPERTY>(out var Property))
+			throw new ArgumentOutOfRangeException(nameof(PropertyInformation));
+		using SafeCoTaskMemStruct<T> mem = new(PropertyInformation);
+		return HttpSetUrlGroupProperty(UrlGroupId, Property, mem, mem.Size);
+	}
+
+	/// <summary>
 	/// The <c>HttpShutdownRequestQueue</c> function stops queuing requests for the specified request queue process. Outstanding calls to
 	/// HttpReceiveHttpRequest are canceled.
 	/// </summary>
@@ -5030,6 +5110,11 @@ public static partial class HttpApi
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HREQQUEUE(IntPtr h) => new(h);
+
+		/// <summary>Performs an implicit conversion from <see cref="HREQQUEUE"/> to <see cref="HREQQUEUEv1"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HREQQUEUEv1(HREQQUEUE h) => h.handle;
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
