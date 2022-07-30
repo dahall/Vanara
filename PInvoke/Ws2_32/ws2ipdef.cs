@@ -9,6 +9,30 @@ namespace Vanara.PInvoke
 	public static partial class Ws2_32
 	{
 		/// <summary/>
+		public const int IN6ADDR_LINKLOCALPREFIX_LENGTH = 64;
+
+		/// <summary/>
+		public const int IN6ADDR_MULTICASTPREFIX_LENGTH = 8;
+
+		/// <summary/>
+		public const int IN6ADDR_SOLICITEDNODEMULTICASTPREFIX_LENGTH = 104;
+
+		/// <summary/>
+		public const int IN6ADDR_V4MAPPEDPREFIX_LENGTH = 96;
+
+		/// <summary/>
+		public const int IN6ADDR_6TO4PREFIX_LENGTH = 16;
+
+		/// <summary/>
+		public const int IN6ADDR_TEREDOPREFIX_LENGTH = 32;
+
+		/// <summary/>
+		public const int INET_ADDRSTRLEN  = 22;
+
+		/// <summary/>
+		public const int INET6_ADDRSTRLEN = 65;
+
+		/// <summary/>
 		public const uint IOC_IN = 0x80000000;
 
 		/// <summary/>
@@ -580,6 +604,12 @@ namespace Vanara.PInvoke
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR_IN6(IN6_ADDR addr) => new(addr, 0);
+
+			/// <summary>Represents an IPv6 anycast socket address.</summary>
+			public static readonly SOCKADDR_IN6 IN6ADDR_ANY = new() { sin6_family = ADDRESS_FAMILY.AF_INET6, sin6_addr = IN6_ADDR.Unspecified };
+
+			/// <summary>Represents an IPv6 LOOPBACK socket address.</summary>
+			public static readonly SOCKADDR_IN6 IN6ADDR_LOOPBACK = new() { sin6_family = ADDRESS_FAMILY.AF_INET6, sin6_addr = IN6_ADDR.Loopback };
 
 			/// <inheritdoc/>
 			public override string ToString() => $"{sin6_addr}" + (sin6_scope_id == 0 ? "" : "%" + sin6_scope_id.ToString()) + $":{sin6_port}";

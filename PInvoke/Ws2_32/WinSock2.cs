@@ -69,7 +69,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>If TRUE, the SO_LINGER option is disabled.</summary>
 		[CorrespondingType(typeof(BOOL))]
-		public const int SO_DONTLINGER = (int)(~SO_LINGER);
+		public const int SO_DONTLINGER = (int)~SO_LINGER;
 
 		/// <summary>
 		/// Routing is disabled. Setting this succeeds but is ignored on AF_INET sockets; fails on AF_INET6 sockets with WSAENOPROTOOPT.
@@ -86,7 +86,7 @@ namespace Vanara.PInvoke
 		/// Prevents any other socket from binding to the same address and port. This option must be set before calling the bind function.
 		/// </summary>
 		[CorrespondingType(typeof(BOOL))]
-		public const int SO_EXCLUSIVEADDRUSE = ((int)(~SO_REUSEADDR));
+		public const int SO_EXCLUSIVEADDRUSE = (int)~SO_REUSEADDR;
 
 		/// <summary>Reserved.</summary>
 		[CorrespondingType(typeof(GROUP))]
@@ -443,25 +443,25 @@ namespace Vanara.PInvoke
 			NS_ALL = 0,
 
 			/// <summary/>
-			NS_SAP = (1),
+			NS_SAP = 1,
 
 			/// <summary/>
-			NS_NDS = (2),
+			NS_NDS = 2,
 
 			/// <summary/>
-			NS_PEER_BROWSE = (3),
+			NS_PEER_BROWSE = 3,
 
 			/// <summary/>
-			NS_SLP = (5),
+			NS_SLP = 5,
 
 			/// <summary/>
-			NS_DHCP = (6),
+			NS_DHCP = 6,
 
 			/// <summary/>
-			NS_TCPIP_LOCAL = (10),
+			NS_TCPIP_LOCAL = 10,
 
 			/// <summary/>
-			NS_TCPIP_HOSTS = (11),
+			NS_TCPIP_HOSTS = 11,
 
 			/// <summary>The domain name system (DNS) namespace.</summary>
 			NS_DNS = 12,
@@ -485,16 +485,16 @@ namespace Vanara.PInvoke
 			NS_BTH = 16,
 
 			/// <summary/>
-			NS_LOCALNAME = (19),
+			NS_LOCALNAME = 19,
 
 			/// <summary/>
-			NS_NBP = (20),
+			NS_NBP = 20,
 
 			/// <summary/>
-			NS_MS = (30),
+			NS_MS = 30,
 
 			/// <summary/>
-			NS_STDA = (31),
+			NS_STDA = 31,
 
 			/// <summary>The Windows NT Directory Services (NS_NTDS) namespace.</summary>
 			NS_NTDS = 32,
@@ -518,19 +518,19 @@ namespace Vanara.PInvoke
 			NS_PNRPCLOUD = 39,
 
 			/// <summary/>
-			NS_X500 = (40),
+			NS_X500 = 40,
 
 			/// <summary/>
-			NS_NIS = (41),
+			NS_NIS = 41,
 
 			/// <summary/>
-			NS_NISPLUS = (42),
+			NS_NISPLUS = 42,
 
 			/// <summary/>
-			NS_WRQ = (50),
+			NS_WRQ = 50,
 
 			/// <summary/>
-			NS_NETDES = (60)
+			NS_NETDES = 60
 		}
 
 		/// <summary>A set of flags that provides information on how this protocol is represented in the Winsock catalog.</summary>
@@ -1328,6 +1328,108 @@ namespace Vanara.PInvoke
 				}
 			}
 
+			/// <summary>Gets a value indicating whether this instance is an anycast address.</summary>
+			/// <value><see langword="true"/> if this instance is an anycast address; otherwise, <see langword="false"/>.</value>
+			public bool IsAnycast => IsSubnetRerservedAnycast || IsSubnetRouterAnycast;
+
+			/// <summary>Gets a value indicating whether this instance uses EUI-64 interface identifiers.</summary>
+			/// <value><see langword="true"/> if this instance uses EUI-64 interface identifiers; otherwise, <see langword="false"/>.</value>
+			public bool IsEUI64 => (bytes[0] & 0xe0) != 0 && !IsMulticast;
+
+			/// <summary>Gets a value indicating whether this instance is a global address.</summary>
+			/// <value><see langword="true"/> if this instance is a global  address; otherwise, <see langword="false"/>.</value>
+			public bool IsGlobal
+			{
+				get
+				{
+					var High = bytes[0] & 0xf0u;
+					return High != 0 && High != 0xf0;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is a link local address.</summary>
+			/// <value><see langword="true"/> if this instance is a link local address; otherwise, <see langword="false"/>.</value>
+			public bool IsLinkLocal
+			{
+				get
+				{
+					var b = bytes;
+					return b[0] == 0xfe && (b[1] & 0xc0) == 0x80;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is a LOOPBACK address.</summary>
+			/// <value><see langword="true"/> if this instance is a LOOPBACK address; otherwise, <see langword="false"/>.</value>
+			public bool IsLoopback => Equals(Loopback);
+
+			/// <summary>Gets a value indicating whether this instance is a MULTICAST address.</summary>
+			/// <value><see langword="true"/> if this instance is a MULTICAST address; otherwise, <see langword="false"/>.</value>
+			public bool IsMulticast => bytes[0] == 0xff;
+
+			/// <summary>Gets a value indicating whether this instance is a site local address.</summary>
+			/// <value><see langword="true"/> if this instance is a site local address; otherwise, <see langword="false"/>.</value>
+			public bool IsSiteLocal
+			{
+				get
+				{
+					var b = bytes;
+					return b[0] == 0xfe && (b[1] & 0xc0) == 0xc0;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether the subnet router anycast address.</summary>
+			/// <value><see langword="true"/> if the subnet router anycast address; otherwise, <see langword="false"/>.</value>
+			public bool IsSubnetRouterAnycast => IsEUI64 && upper == 0;
+
+			/// <summary>Gets a value indicating whether the subnet reserved anycast address.</summary>
+			/// <value><see langword="true"/> if the subnet reserved anycast address; otherwise, <see langword="false"/>.</value>
+			public bool IsSubnetRerservedAnycast
+			{
+				get
+				{
+					var w = words;
+					return IsEUI64 && w[4] == 0xfffd && w[5] == 0xffff && w[6] == 0xffff && (w[7] & 0x80ff) == 0x80ff;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is an UNSPECIFIED address.</summary>
+			/// <value><see langword="true"/> if this instance is an UNSPECIFIED address; otherwise, <see langword="false"/>.</value>
+			public bool IsUnspecified => Equals(Unspecified);
+
+			/// <summary>Gets a value indicating whether this instance is an IPv4 compatible address.</summary>
+			/// <value><see langword="true"/> if this instance is an IPv4 compatible address; otherwise, <see langword="false"/>.</value>
+			public bool IsV4Compatible
+			{
+				get
+				{
+					var w = words;
+					var b = bytes;
+					return lower == 0 && w[4] == 0 && w[5] ==  0 && w[6] == 0 && b[14] == 0 && (b[15] == 0 || b[15] == 1);
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is an IPv4 mapped address.</summary>
+			/// <value><see langword="true"/> if this instance is an IPv4 mapped address; otherwise, <see langword="false"/>.</value>
+			public bool IsV4Mapped
+			{
+				get
+				{
+					var w = words;
+					return lower == 0 && w[4] == 0 && w[5] == 0xffff;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is an IPv4 translated address.</summary>
+			/// <value><see langword="true"/> if this instance is an IPv4 translated address; otherwise, <see langword="false"/>.</value>
+			public bool IsV4Translated
+			{
+				get
+				{
+					var w = words;
+					return lower == 0 && w[4] == 0xffff && w[5] == 0;
+				}
+			}
+
 			/// <summary>Gets or sets the array of WORD (ushort) values representing the IPv6 address.</summary>
 			/// <value>The array of WORD values.</value>
 			/// <exception cref="ArgumentException">UInt16 array must have 8 items. - value</exception>
@@ -1403,7 +1505,7 @@ namespace Vanara.PInvoke
 				var m_Numbers = words;
 				return string.Format(System.Globalization.CultureInfo.InvariantCulture, numberFormat,
 					m_Numbers[0], m_Numbers[1], m_Numbers[2], m_Numbers[3], m_Numbers[4], m_Numbers[5],
-					((m_Numbers[6] >> 8) & 0xFF), (m_Numbers[6] & 0xFF), ((m_Numbers[7] >> 8) & 0xFF), (m_Numbers[7] & 0xFF));
+					(m_Numbers[6] >> 8) & 0xFF, m_Numbers[6] & 0xFF, (m_Numbers[7] >> 8) & 0xFF, m_Numbers[7] & 0xFF);
 			}
 
 			/// <summary>Determines whether the specified <paramref name="other"/> value is equal to this instance.</summary>
