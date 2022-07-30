@@ -924,6 +924,75 @@ public static partial class HttpApi
 	public static extern Win32Error HttpDeleteServiceConfiguration([In, Optional] IntPtr ServiceHandle, [In] HTTP_SERVICE_CONFIG_ID ConfigId,
 		[In] IntPtr pConfigInformation, [In] uint ConfigInformationLength, [In, Optional] IntPtr pOverlapped);
 
+	/// <summary>
+	/// The <c>HttpDeleteServiceConfiguration</c> function deletes specified data, such as IP addresses or SSL Certificates, from the HTTP
+	/// Server API configuration store, one record at a time.
+	/// </summary>
+	/// <typeparam name="T">The type of <paramref name="pConfigInformation"/>.</typeparam>
+	/// <param name="pConfigInformation">
+	/// <para>Contains data required for the type of configuration specified in the <c>ConfigId</c> parameter.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>ConfigId</c> value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HttpServiceConfigIPListenList</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_IP_LISTEN_PARAM structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSSLCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigUrlAclInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_URLACL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigTimeouts</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_TIMEOUT_KEY structure. <c>Windows Vista and later:</c> This structure is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslSniCertInfo</c></term>
+	/// <term>
+	/// HTTP_SERVICE_CONFIG_SSL_SNI_SET structure. The hostname will be "*" when the SSL central certificate store is queried and wildcard
+	/// bindings are used, and a host name for regular SNI. <c>Windows 8 and later:</c> This structure is supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c><c>HttpServiceConfigSslCcsCertInfo</c></c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_CCS_SET structure. <c>Windows 8 and later:</c> This structure is supported.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns NO_ERROR.</para>
+	/// <para>If the function fails, it returns one of the following error codes.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>One of the parameters are invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Other</c></term>
+	/// <term>A system error code defined in WinError.h.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <exception cref="System.ArgumentOutOfRangeException">pConfigInformation</exception>
+	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpDeleteServiceConfiguration")]
+	public static Win32Error HttpDeleteServiceConfiguration<T>(in T pConfigInformation) where T: struct
+	{
+		if (!CorrespondingTypeAttribute.CanSet<T, HTTP_SERVICE_CONFIG_ID>(out var ConfigId))
+			throw new ArgumentOutOfRangeException(nameof(pConfigInformation));
+		using var mem = new SafeCoTaskMemStruct<T>(pConfigInformation);
+		return HttpDeleteServiceConfiguration(default, ConfigId, mem, mem.Size, default);
+	}
+
 	/// <summary>Retrieves a URL group ID for a URL and a request queue.</summary>
 	/// <param name="FullyQualifiedUrl">
 	/// <para>Type: _In_ <c>PCWSTR</c></para>
@@ -1540,7 +1609,7 @@ public static partial class HttpApi
 	/// </returns>
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpQueryServiceConfiguration")]
 	public static Win32Error HttpQueryServiceConfiguration<TIn, TOut>([In] HTTP_SERVICE_CONFIG_ID ConfigId,
-		in TIn pInput, out TOut pOutput) where TIn: struct where TOut: struct
+		in TIn pInput, out SafeCoTaskMemStruct<TOut> pOutput) where TIn: struct where TOut: struct
 	{
 		using var mem = new SafeCoTaskMemStruct<TIn>(pInput);
 		using var output = new SafeCoTaskMemStruct<TOut>();
@@ -1668,7 +1737,7 @@ public static partial class HttpApi
 	/// </returns>
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpQueryServiceConfiguration")]
 	public static Win32Error HttpQueryServiceConfiguration<TOut>([In] HTTP_SERVICE_CONFIG_ID ConfigId, 
-		out TOut pOutput) where TOut : struct
+		out SafeCoTaskMemStruct<TOut> pOutput) where TOut : struct
 	{
 		using var output = new SafeCoTaskMemStruct<TOut>();
 		var err = HttpQueryServiceConfiguration(default, ConfigId, default, 0, output, output.Size, out var len, default);
