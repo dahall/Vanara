@@ -1392,6 +1392,296 @@ public static partial class HttpApi
 		[Out] IntPtr PropertyInformation, [In] uint PropertyInformationLength, out uint ReturnLength);
 
 	/// <summary>The <c>HttpQueryServiceConfiguration</c> function retrieves one or more HTTP Server API configuration records.</summary>
+	/// <typeparam name="TIn">The type of <paramref name="pInput"/>.</typeparam>
+	/// <typeparam name="TOut">The type of <paramref name="pOutput"/>.</typeparam>
+	/// <param name="ConfigId">
+	/// <para>The configuration record query type. This parameter is one of the following values from the HTTP_SERVICE_CONFIG_ID enumeration.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>ConfigId</c> value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HttpServiceConfigIPListenList</c></term>
+	/// <term>Queries the IP Listen List.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSSLCertInfo</c></term>
+	/// <term>Queries the SSL store for a specific certificate record.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigUrlAclInfo</c></term>
+	/// <term>Queries URL reservation information.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigTimeout</c></term>
+	/// <term>Queries HTTP Server API wide connection timeouts. <c>Windows Vista and later:</c> This enumeration is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslSniCertInfo</c></term>
+	/// <term>
+	/// Queries the SSL Server Name Indication (SNI) store for a specific certificate record. <c>Windows 8 and later:</c> This enumeration
+	/// value is supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslCcsCertInfo</c></term>
+	/// <term>
+	/// Queries the SSL configuration for an SSL Centralized Certificate Store (CCS) record on the port. The port is specified by the
+	/// <c>KeyDesc</c> member of the HTTP_SERVICE_CONFIG_SSL_CCS_QUERY structure that you pass to the <c>pInputConfigInfo</c> parameter.
+	/// <c>Windows 8 and later:</c> This enumeration value is supported.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pInput">
+	/// <para>A structure whose contents further define the query and of the type that correlates with <c>ConfigId</c> in the following table.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>ConfigId</c> value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HttpServiceConfigIPListenList</c></term>
+	/// <term>No input data; set to <c>NULL</c>.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSSLCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_QUERY structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigUrlAclInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_URLACL_QUERY structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigTimeout</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_TIMEOUT_KEY structure. <c>Windows Vista and later:</c> This structure is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslSniCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_SNI_QUERY structure. <c>Windows 8 and later:</c> This structure is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslCcsCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_CCS_QUERY structure. <c>Windows 8 and later:</c> This structure is supported.</term>
+	/// </item>
+	/// </list>
+	/// <para>For more information, see the appropriate query structures.</para>
+	/// </param>
+	/// <param name="pOutput">
+	/// <para>A pointer to a buffer in which the query results are returned. The type of this buffer correlates with <c>ConfigId</c>.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>ConfigId</c> value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HttpServiceConfigIPListenList</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_IP_LISTEN_QUERY structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSSLCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigUrlAclInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_URLACL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigTimeout</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_TIMEOUT_PARAM data type. <c>Windows Vista and later:</c> This structure is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslSniCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_SNI_SET structure. <c>Windows 8 and later:</c> This structure is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslCcsCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_CCS_SET structure. <c>Windows 8 and later:</c> This structure is supported.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <c>NO_ERROR</c>.</para>
+	/// <para>If the function fails, the return value is one of the following error codes.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>One of the parameters are invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INSUFFICIENT_BUFFER</c></term>
+	/// <term>
+	/// The buffer pointed to by <c>pOutputConfigInfo</c> is too small to receive the output data. Call the function again with a buffer at
+	/// least as large as the size pointed to by <c>pReturnLength</c> on exit.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_MORE_DATA</c></term>
+	/// <term>
+	/// This error code is only returned when <c>ConfigId</c> is set to <c>HttpServiceConfigTimeout</c>. The buffer pointed to by
+	/// <c>pOutputConfigInfo</c> is too small to receive the output data. Call the function again with a buffer at least as large as the size
+	/// pointed to by <c>pReturnLength</c> on exit.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NO_MORE_ITEMS</c></term>
+	/// <term>There are no more items to return that meet the specified criteria.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Other</c></term>
+	/// <term>A system error code defined in WinError.h.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpQueryServiceConfiguration")]
+	public static Win32Error HttpQueryServiceConfiguration<TIn, TOut>([In] HTTP_SERVICE_CONFIG_ID ConfigId,
+		in TIn pInput, out TOut pOutput) where TIn: struct where TOut: struct
+	{
+		using var mem = new SafeCoTaskMemStruct<TIn>(pInput);
+		using var output = new SafeCoTaskMemStruct<TOut>();
+		var err = HttpQueryServiceConfiguration(default, ConfigId, mem, mem.Size, output, output.Size, out var len, default);
+		if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+		{
+			output.Size = len;
+			err = HttpQueryServiceConfiguration(default, ConfigId, mem, mem.Size, output, output.Size, out _, default);
+		}
+		pOutput = err.Succeeded ? output.Value : default;
+		return err;
+	}
+
+	/// <summary>The <c>HttpQueryServiceConfiguration</c> function retrieves one or more HTTP Server API configuration records.</summary>
+	/// <typeparam name="TOut">The type of <paramref name="pOutput"/>.</typeparam>
+	/// <param name="ConfigId">
+	/// <para>The configuration record query type. This parameter is one of the following values from the HTTP_SERVICE_CONFIG_ID enumeration.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>ConfigId</c> value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HttpServiceConfigIPListenList</c></term>
+	/// <term>Queries the IP Listen List.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSSLCertInfo</c></term>
+	/// <term>Queries the SSL store for a specific certificate record.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigUrlAclInfo</c></term>
+	/// <term>Queries URL reservation information.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigTimeout</c></term>
+	/// <term>Queries HTTP Server API wide connection timeouts. <c>Windows Vista and later:</c> This enumeration is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslSniCertInfo</c></term>
+	/// <term>
+	/// Queries the SSL Server Name Indication (SNI) store for a specific certificate record. <c>Windows 8 and later:</c> This enumeration
+	/// value is supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslCcsCertInfo</c></term>
+	/// <term>
+	/// Queries the SSL configuration for an SSL Centralized Certificate Store (CCS) record on the port. The port is specified by the
+	/// <c>KeyDesc</c> member of the HTTP_SERVICE_CONFIG_SSL_CCS_QUERY structure that you pass to the <c>pInputConfigInfo</c> parameter.
+	/// <c>Windows 8 and later:</c> This enumeration value is supported.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pOutput">
+	/// <para>A pointer to a buffer in which the query results are returned. The type of this buffer correlates with <c>ConfigId</c>.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>ConfigId</c> value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HttpServiceConfigIPListenList</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_IP_LISTEN_QUERY structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSSLCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigUrlAclInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_URLACL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigTimeout</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_TIMEOUT_PARAM data type. <c>Windows Vista and later:</c> This structure is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslSniCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_SNI_SET structure. <c>Windows 8 and later:</c> This structure is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslCcsCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_CCS_SET structure. <c>Windows 8 and later:</c> This structure is supported.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <c>NO_ERROR</c>.</para>
+	/// <para>If the function fails, the return value is one of the following error codes.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>One of the parameters are invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INSUFFICIENT_BUFFER</c></term>
+	/// <term>
+	/// The buffer pointed to by <c>pOutputConfigInfo</c> is too small to receive the output data. Call the function again with a buffer at
+	/// least as large as the size pointed to by <c>pReturnLength</c> on exit.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_MORE_DATA</c></term>
+	/// <term>
+	/// This error code is only returned when <c>ConfigId</c> is set to <c>HttpServiceConfigTimeout</c>. The buffer pointed to by
+	/// <c>pOutputConfigInfo</c> is too small to receive the output data. Call the function again with a buffer at least as large as the size
+	/// pointed to by <c>pReturnLength</c> on exit.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NO_MORE_ITEMS</c></term>
+	/// <term>There are no more items to return that meet the specified criteria.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Other</c></term>
+	/// <term>A system error code defined in WinError.h.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpQueryServiceConfiguration")]
+	public static Win32Error HttpQueryServiceConfiguration<TOut>([In] HTTP_SERVICE_CONFIG_ID ConfigId, 
+		out TOut pOutput) where TOut : struct
+	{
+		using var output = new SafeCoTaskMemStruct<TOut>();
+		var err = HttpQueryServiceConfiguration(default, ConfigId, default, 0, output, output.Size, out var len, default);
+		if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+		{
+			output.Size = len;
+			err = HttpQueryServiceConfiguration(default, ConfigId, default, 0, output, output.Size, out _, default);
+		}
+		pOutput = err.Succeeded ? output.Value : default;
+		return err;
+	}
+
+	/// <summary>The <c>HttpQueryServiceConfiguration</c> function retrieves one or more HTTP Server API configuration records.</summary>
 	/// <param name="ServiceHandle">Reserved. Must be zero.</param>
 	/// <param name="ConfigId">
 	/// <para>The configuration record query type. This parameter is one of the following values from the HTTP_SERVICE_CONFIG_ID enumeration.</para>
@@ -4358,6 +4648,223 @@ public static partial class HttpApi
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSetServiceConfiguration")]
 	public static extern Win32Error HttpSetServiceConfiguration([In, Optional] HANDLE ServiceHandle, [In] HTTP_SERVICE_CONFIG_ID ConfigId,
 		[In] IntPtr pConfigInformation, [In] uint ConfigInformationLength, [In, Optional] IntPtr pOverlapped);
+
+	/// <summary>
+	/// The <c>HttpSetServiceConfiguration</c> function creates and sets a configuration record for the HTTP Server API configuration store.
+	/// The call fails if the specified record already exists. To change a given configuration record, delete it and then recreate it with a
+	/// different value.
+	/// </summary>
+	/// <typeparam name="T">The type of <paramref name="pConfigInformation"/>.</typeparam>
+	/// <param name="ConfigId">
+	/// <para>Type of configuration record to be set. This parameter can be one of the following values from the HTTP_SERVICE_CONFIG_ID enumeration.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>ConfigId</c> value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HttpServiceConfigIPListenList</c></term>
+	/// <term>Sets a record in the IP Listen List.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSSLCertInfo</c></term>
+	/// <term>Sets a specified SSL certificate record.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigUrlAclInfo</c></term>
+	/// <term>Sets a URL reservation record.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigTimeout</c></term>
+	/// <term>Sets a specified HTTP Server API wide connection time-out. <c>Windows Vista and later:</c> This enumeration value is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslSniCertInfo</c></term>
+	/// <term>
+	/// Sets a specified SSL Server Name Indication (SNI) certificate record. <c>Windows 8 and later:</c> This enumeration value is supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c><c>HttpServiceConfigSslCcsCertInfo</c></c></term>
+	/// <term>
+	/// Sets the SSL certificate record that specifies that Http.sys should consult the Centralized Certificate Store (CCS) store to find
+	/// certificates if the port receives a Transport Layer Security (TLS) handshake. The port is specified by the <c>KeyDesc</c> member of
+	/// the HTTP_SERVICE_CONFIG_SSL_CCS_SET structure that you pass to the <c>pConfigInformation</c> parameter. <c>Windows 8 and later:</c>
+	/// This enumeration value is supported.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pConfigInformation">
+	/// <para>The appropriate data to specify the type of record to be set.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>ConfigId</c> value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HttpServiceConfigIPListenList</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_IP_LISTEN_PARAM structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSSLCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigUrlAclInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_URLACL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigTimeout</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_TIMEOUT_SET structure. <c>Windows Vista and later:</c> This structure is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslSniCertInfo</c></term>
+	/// <term>
+	/// HTTP_SERVICE_CONFIG_SSL_SNI_SET structure. The hostname will be "*" when the SSL central certificate store is queried and wildcard
+	/// bindings are used, and a host name for regular SNI. <c>Windows 8 and later:</c> This structure is supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c><c>HttpServiceConfigSslCcsCertInfo</c></c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_CCS_SET structure. <c>Windows 8 and later:</c> This structure is supported.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <c>NO_ERROR</c>.</para>
+	/// <para>If the function fails, the return value is one of the following error codes.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_ALREADY_EXISTS</c></term>
+	/// <term>The specified record already exists, and must be deleted in order for its value to be re-set.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INSUFFICIENT_BUFFER</c></term>
+	/// <term>The buffer size specified in the <c>ConfigInformationLength</c> parameter is insufficient.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_HANDLE</c></term>
+	/// <term>The <c>ServiceHandle</c> parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>One or more of the supplied parameters is in an unusable form.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NO_SUCH_LOGON_SESSION</c></term>
+	/// <term>The SSL Certificate used is invalid. This can occur only if the <c>HttpServiceConfigSSLCertInfo</c> parameter is used.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Other</c></term>
+	/// <term>A system error code defined in WinError.h.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// The configuration parameters set with <c>HttpSetServiceConfiguration</c> are applied to all the HTTP Server API applications on the
+	/// machine, and persist when the HTTP Server API shuts down, or when the computer is restarted.
+	/// </remarks>
+	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSetServiceConfiguration")]
+	public static Win32Error HttpSetServiceConfiguration<T>([In] HTTP_SERVICE_CONFIG_ID ConfigId, in T pConfigInformation) where T:struct
+	{
+		using var mem = new SafeCoTaskMemStruct<T>(pConfigInformation);
+		return HttpSetServiceConfiguration(default, ConfigId, mem, mem.Size, default);
+	}
+
+	/// <summary>
+	/// The <c>HttpSetServiceConfiguration</c> function creates and sets a configuration record for the HTTP Server API configuration store.
+	/// The call fails if the specified record already exists. To change a given configuration record, delete it and then recreate it with a
+	/// different value.
+	/// </summary>
+	/// <typeparam name="T">The type of <paramref name="pConfigInformation"/>.</typeparam>
+	/// <param name="pConfigInformation">
+	/// <para>The appropriate data to specify the type of record to be set.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>ConfigId</c> value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>HttpServiceConfigIPListenList</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_IP_LISTEN_PARAM structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSSLCertInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigUrlAclInfo</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_URLACL_SET structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigTimeout</c></term>
+	/// <term>HTTP_SERVICE_CONFIG_TIMEOUT_SET structure. <c>Windows Vista and later:</c> This structure is supported.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>HttpServiceConfigSslSniCertInfo</c></term>
+	/// <term>
+	/// HTTP_SERVICE_CONFIG_SSL_SNI_SET structure. The hostname will be "*" when the SSL central certificate store is queried and wildcard
+	/// bindings are used, and a host name for regular SNI. <c>Windows 8 and later:</c> This structure is supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c><c>HttpServiceConfigSslCcsCertInfo</c></c></term>
+	/// <term>HTTP_SERVICE_CONFIG_SSL_CCS_SET structure. <c>Windows 8 and later:</c> This structure is supported.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <c>NO_ERROR</c>.</para>
+	/// <para>If the function fails, the return value is one of the following error codes.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_ALREADY_EXISTS</c></term>
+	/// <term>The specified record already exists, and must be deleted in order for its value to be re-set.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INSUFFICIENT_BUFFER</c></term>
+	/// <term>The buffer size specified in the <c>ConfigInformationLength</c> parameter is insufficient.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_HANDLE</c></term>
+	/// <term>The <c>ServiceHandle</c> parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>One or more of the supplied parameters is in an unusable form.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NO_SUCH_LOGON_SESSION</c></term>
+	/// <term>The SSL Certificate used is invalid. This can occur only if the <c>HttpServiceConfigSSLCertInfo</c> parameter is used.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>Other</c></term>
+	/// <term>A system error code defined in WinError.h.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <exception cref="System.ArgumentOutOfRangeException">pConfigInformation</exception>
+	/// <remarks>
+	/// The configuration parameters set with <c>HttpSetServiceConfiguration</c> are applied to all the HTTP Server API applications on the
+	/// machine, and persist when the HTTP Server API shuts down, or when the computer is restarted.
+	/// </remarks>
+	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpSetServiceConfiguration")]
+	public static Win32Error HttpSetServiceConfiguration<T>(in T pConfigInformation) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanSet<T, HTTP_SERVICE_CONFIG_ID>(out var ConfigId))
+			throw new ArgumentOutOfRangeException(nameof(pConfigInformation));
+		using var mem = new SafeCoTaskMemStruct<T>(pConfigInformation);
+		return HttpSetServiceConfiguration(default, ConfigId, mem, mem.Size, default);
+	}
 
 	/// <summary>
 	/// The <c>HttpSetUrlGroupProperty</c> function sets a new property or modifies an existing property on the specified URL Group.

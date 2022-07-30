@@ -2382,6 +2382,14 @@ public static partial class HttpApi
 		/// </para>
 		/// </summary>
 		public IntPtr pAddress;
+
+		/// <summary>Initializes a new instance of the <see cref="HTTP_SERVICE_CONFIG_IP_LISTEN_PARAM"/> struct.</summary>
+		/// <param name="sockaddr">The SOCKADDR instance.</param>
+		public HTTP_SERVICE_CONFIG_IP_LISTEN_PARAM(SOCKADDR sockaddr)
+		{
+			AddrLength = (ushort)(uint)sockaddr.Size;
+			pAddress = sockaddr;
+		}
 	}
 
 	/// <summary>
