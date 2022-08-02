@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>winscard.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows WinSCard.dll. This assembly provides the definitions and symbols necessary for an Application or Smart Card Service Provider to access the Smartcard Subsystem.</Description>
+    <AssemblyName>Vanara.PInvoke.WinSCard</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;WinSCard;Smart Card;smartcard</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+GetOpenCardNameA GetOpenCardNameW SCardAccessStartedEvent SCardAddReaderToGroup SCardAudit SCardBeginTransaction SCardCancel SCardConnect SCardControl SCardDisconnect SCardEndTransaction SCardEstablishContext SCardForgetCardType SCardForgetReader SCardForgetReaderGroup SCardFreeMemory SCardGetAttrib SCardGetCardTypeProviderName SCardGetDeviceTypeId SCardGetProviderId SCardGetReaderDeviceInstanceId SCardGetReaderIcon SCardGetStatusChange SCardGetTransmitCount SCardIntroduceCardType SCardIntroduceReader SCardIntroduceReaderGroup SCardIsValidContext SCardListCards SCardListInterfaces SCardListReaderGroups SCardListReaders SCardListReadersWithDeviceInstanceId SCardLocateCards SCardLocateCardsByATR SCardReadCache SCardReconnect SCardReleaseContext SCardReleaseStartedEvent SCardRemoveReaderFromGroup SCardSetAttrib SCardSetCardTypeProviderName SCardStatus SCardTransmit SCardUIDlgSelectCardA SCardUIDlgSelectCardW SCardWriteCache
+
+Structures
+OPENCARDNAME OPENCARDNAME_EX OPENCARD_SEARCH_CRITERIA SCARDHANDLE SCARD_ATRMASK SCARD_IO_REQUEST SCARD_READERSTATE SCARD_RET SCARD_T0_COMMAND SCARD_T0_REQUEST SCARD_T1_REQUEST
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>

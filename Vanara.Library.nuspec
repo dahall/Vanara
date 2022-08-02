@@ -94,6 +94,7 @@
       <dependency id="Vanara.PInvoke.WinBio" version="3.4.6" />
       <dependency id="Vanara.PInvoke.WinHTTP" version="3.4.6" />
       <dependency id="Vanara.PInvoke.WinINet" version="3.4.6" />
+      <dependency id="Vanara.PInvoke.WinSCard" version="3.4.6" />
       <dependency id="Vanara.PInvoke.WinTrust" version="3.4.6" />
       <dependency id="Vanara.PInvoke.WlanApi" version="3.4.6" />
       <dependency id="Vanara.PInvoke.Ws2_32" version="3.4.6" />
