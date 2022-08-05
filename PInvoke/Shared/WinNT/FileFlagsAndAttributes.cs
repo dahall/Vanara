@@ -331,7 +331,7 @@ public enum FileFlagsAndAttributes : uint
 /// </summary>
 [PInvokeData("winnt.h")]
 [Flags]
-public enum FileShare : uint
+public enum FILE_SHARE : uint
 {
 	/// <summary>
 	/// Enables subsequent open operations on a file or device to request read access.
