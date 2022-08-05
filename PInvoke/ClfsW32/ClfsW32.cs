@@ -648,7 +648,7 @@ public static partial class ClfsW32
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.CreateLogFile")]
 	public static extern SafeHLOG CreateLogFile([MarshalAs(UnmanagedType.LPWStr)] string pszLogFileName, [In] ACCESS_MASK fDesiredAccess,
-		[In] FileShare dwShareMode, [In, Optional] SECURITY_ATTRIBUTES psaLogFile, [In] CreationOption fCreateDisposition,
+		[In] System.IO.FileShare dwShareMode, [In, Optional] SECURITY_ATTRIBUTES psaLogFile, [In] CreationOption fCreateDisposition,
 		[In] FileFlagsAndAttributes fFlagsAndAttributes);
 
 	/// <summary>

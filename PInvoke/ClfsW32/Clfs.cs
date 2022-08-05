@@ -6,6 +6,8 @@ global using System.Threading;
 global using Vanara.InteropServices;
 
 global using CLFS_CONTAINER_ID = System.UInt32;
+global using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+using Vanara.Extensions;
 
 namespace Vanara.PInvoke;
 
@@ -316,7 +318,7 @@ public static partial class ClfsW32
 	// FileNameActualLength; ULONG FileNameLength; WCHAR FileName[CLFS_MAX_CONTAINER_INFO]; CLFS_CONTAINER_STATE State; CLFS_CONTAINER_ID
 	// PhysicalContainerId; CLFS_CONTAINER_ID LogicalContainerId; } CLS_CONTAINER_INFORMATION, *PCLS_CONTAINER_INFORMATION, PPCLS_CONTAINER_INFORMATION;
 	[PInvokeData("clfs.h", MSDNShortId = "NS:clfs._CLS_CONTAINER_INFORMATION")]
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct CLS_CONTAINER_INFORMATION
 	{
 		/// <summary>
@@ -336,16 +338,16 @@ public static partial class ClfsW32
 		/// <para>SetFileAttributes</para>
 		/// <para>topic lists the valid values for attributes.</para>
 		/// </summary>
-		public uint FileAttributes;
+		public FileFlagsAndAttributes FileAttributes;
 
 		/// <summary>The time a file is created.</summary>
-		public ulong CreationTime;
+		public FILETIME CreationTime;
 
 		/// <summary>The last time a container is read from or written to.</summary>
-		public ulong LastAccessTime;
+		public FILETIME LastAccessTime;
 
 		/// <summary>The last time a container is written to.</summary>
-		public ulong LastWriteTime;
+		public FILETIME LastWriteTime;
 
 		/// <summary>The size of a container, in bytes.</summary>
 		public long ContainerSize;
@@ -658,16 +660,19 @@ public static partial class ClfsW32
 	// cidNode; HANDLE hLog; ULONG cIndex; ULONG cContainers; ULONG cContainersReturned; CLFS_SCAN_MODE eScanMode; PCLS_CONTAINER_INFORMATION
 	// pinfoContainer; } CLS_SCAN_CONTEXT, *PCLS_SCAN_CONTEXT, PPCLS_SCAN_CONTEXT;
 	[PInvokeData("clfs.h", MSDNShortId = "NS:clfs._CLS_SCAN_CONTEXT~r1")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 	public struct CLS_SCAN_CONTEXT
 	{
 		/// <summary>The ID of the current node. For more information, see CLFS_NODE_ID.</summary>
+		[FieldOffset(0)]
 		public CLFS_NODE_ID cidNode;
 
 		/// <summary>A handle to the log being scanned that is obtained from CreateLogFile with permissions to scan the log containers.</summary>
+		[FieldOffset(8)]
 		public HLOG hLog;
 
 		/// <summary>The index of the current container.</summary>
+		[FieldOffset(16)]
 		public uint cIndex;
 
 		/// <summary>
@@ -677,9 +682,11 @@ public static partial class ClfsW32
 		/// number of containers returned is less than this value.
 		/// </para>
 		/// </summary>
+		[FieldOffset(24)]
 		public uint cContainers;
 
 		/// <summary>The number of containers that are returned after a call to ScanLogContainers.</summary>
+		[FieldOffset(32)]
 		public uint cContainersReturned;
 
 		/// <summary>
@@ -715,14 +722,17 @@ public static partial class ClfsW32
 		/// </item>
 		/// </list>
 		/// </summary>
+		[FieldOffset(40)]
 		public CLFS_SCAN_MODE eScanMode;
+
+		[FieldOffset(48)]
+		private IntPtr _pinfoContainer;
 
 		/// <summary>
 		/// A pointer to a client-allocated array of CLFS_CONTAINER_INFORMATION structures to be filled by ScanLogContainers after each
 		/// successful call.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPArray)]
-		public CLS_CONTAINER_INFORMATION[] pinfoContainer;
+		public CLS_CONTAINER_INFORMATION[] pinfoContainer => _pinfoContainer.ToArray<CLS_CONTAINER_INFORMATION>((int)cContainersReturned);
 	}
 
 	/// <summary>
