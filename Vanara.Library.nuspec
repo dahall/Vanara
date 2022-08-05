@@ -27,6 +27,7 @@
       <dependency id="Vanara.PInvoke.CfgMgr32" version="3.4.6" />
       <dependency id="Vanara.PInvoke.CimFs" version="3.4.6" />
       <dependency id="Vanara.PInvoke.CldApi" version="3.4.6" />
+      <dependency id="Vanara.PInvoke.ClfsW32" version="3.4.6" />
       <dependency id="Vanara.PInvoke.ComCtl32" version="3.4.6" />
       <dependency id="Vanara.PInvoke.ComDlg32" version="3.4.6" />
       <dependency id="Vanara.PInvoke.CredUI" version="3.4.6" />

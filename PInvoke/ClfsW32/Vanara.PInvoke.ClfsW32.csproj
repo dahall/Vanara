@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>clfsw32.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Common Log File System (ClfsW32.dll).</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.PInvoke.ClfsW32</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;ClfsW32;common log file system</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+AddLogContainer AddLogContainerSet AdvanceLogBase AlignReservedLog AllocReservedLog CloseAndResetLogFile CreateLogContainerScanContext CreateLogFile CreateLogMarshallingArea DeleteLogByHandle DeleteLogFile DeleteLogMarshallingArea DeregisterManageableLogClient DumpLogRecords FlushLogBuffers FlushLogToLsn FreeReservedLog GetLogContainerName GetLogFileInformation GetLogIoStatistics GetLogReservationInfo GetNextLogArchiveExtent HandleLogFull InstallLogPolicy LogTailAdvanceFailure LsnBlockOffset LsnContainer LsnCreate LsnDecrement LsnEqual LsnGreater LsnIncrement LsnInvalid LsnLess LsnNull LsnRecordSequence PrepareLogArchive QueryLogPolicy ReadLogArchiveMetadata ReadLogNotification ReadLogRecord ReadLogRestartArea ReadNextLogRecord ReadPreviousLogRestartArea RegisterForLogWriteNotification RegisterManageableLogClient RemoveLogContainer RemoveLogContainerSet RemoveLogPolicy ReserveAndAppendLog ReserveAndAppendLogAligned ScanLogContainers SetEndOfLog SetLogArchiveMode SetLogArchiveTail SetLogFileSizeWithPolicy TerminateLogArchive TerminateReadLog TruncateLog ValidateLog WriteLogRestartArea
+
+Structures
+AUTOGROW AUTOSHRINK CLFS_MGMT_NOTIFICATION CLFS_NODE_ID CLS_ARCHIVE_DESCRIPTOR CLS_CONTAINER_INFORMATION CLS_INFORMATION CLS_IO_STATISTICS CLS_IO_STATISTICS_HEADER CLS_LSN CLS_SCAN_CONTEXT CLS_WRITE_ENTRY GROWTHRATE HLOG LOGTAIL LOG_MANAGEMENT_CALLBACKS MAXIMUMSIZE MINIMUMSIZE NEWCONTAINEREXTENSION NEWCONTAINERPREFIX NEWCONTAINERSIZE NEWCONTAINERSUFFIX
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>
