@@ -560,7 +560,7 @@ public static partial class ClfsW32
 	// *PCLS_LSN, PPCLS_LSN;
 	[PInvokeData("clfs.h", MSDNShortId = "NS:clfs._CLS_LSN")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CLS_LSN : IEquatable<CLS_LSN>
+	public struct CLS_LSN : IEquatable<CLS_LSN>, IComparable<CLS_LSN>
 	{
 		/// <summary>The log sequence number (LSN).</summary>
 		public ulong Internal;
@@ -628,6 +628,14 @@ public static partial class ClfsW32
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the operator.</returns>
 		public static CLS_LSN operator ++(CLS_LSN value) => LsnIncrement(value);
+
+		/// <summary>Implements the operator op_Decrement.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the operator.</returns>
+		public static CLS_LSN operator --(CLS_LSN value) => LsnDecrement(value);
+
+		/// <inheritdoc/>
+		public int CompareTo(CLS_LSN other) => LsnLess(this, other) ? -1 : (LsnEqual(this, other) ? 0 : 1);
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) => obj is CLS_LSN lSN && Equals(lSN);

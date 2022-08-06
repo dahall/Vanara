@@ -183,7 +183,7 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainerSet")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AddLogContainerSet([In] HLOG hLog, [In] ushort cContainer, in ulong pcbContainer,
-		[MarshalAs(UnmanagedType.LPWStr)] string[] rgwszContainerPath, [In, Out, Optional] IntPtr pReserved);
+		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] rgwszContainerPath, [In, Out, Optional] IntPtr pReserved);
 
 	/// <summary>Advances the base log sequence number (LSN) of a log stream to the specified LSN.</summary>
 	/// <param name="pvMarshal">A pointer to the marshaling context that a successful call to CreateLogMarshallingArea returns.</param>
