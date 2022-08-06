@@ -294,7 +294,7 @@ public static partial class ClfsW32
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfs/ns-clfs-cls_archive_descriptor typedef struct _CLS_ARCHIVE_DESCRIPTOR {
 	// ULONGLONG coffLow; ULONGLONG coffHigh; CLS_CONTAINER_INFORMATION infoContainer; } CLS_ARCHIVE_DESCRIPTOR, *PCLS_ARCHIVE_DESCRIPTOR, PPCLS_ARCHIVE_DESCRIPTOR;
 	[PInvokeData("clfs.h", MSDNShortId = "NS:clfs._CLS_ARCHIVE_DESCRIPTOR")]
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct CLS_ARCHIVE_DESCRIPTOR
 	{
 		/// <summary>The offset in the container to the first byte of the archive extent.</summary>

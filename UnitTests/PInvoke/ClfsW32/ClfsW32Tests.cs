@@ -4,6 +4,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.ClfsW32;
 
@@ -20,7 +21,7 @@ public class ClfsW32Tests
 	public void _Setup()
 	{
 		System.IO.File.Delete(fnbase + CLFS_BASELOG_EXTENSION);
-		hLog = CreateLogFile(fn, ACCESS_MASK.GENERIC_WRITE | ACCESS_MASK.GENERIC_READ | ACCESS_MASK.DELETE, System.IO.FileShare.Read, null, Kernel32.CreationOption.OPEN_ALWAYS, FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED);
+		hLog = CreateLogFile(fn, ACCESS_MASK.GENERIC_WRITE | ACCESS_MASK.GENERIC_READ | ACCESS_MASK.DELETE, System.IO.FileShare.Read, null, Kernel32.CreationOption.OPEN_ALWAYS, FileFlagsAndAttributes.FILE_ATTRIBUTE_ARCHIVE | FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED);
 		Assert.That(hLog, ResultIs.ValidHandle);
 	}
 
@@ -52,7 +53,7 @@ public class ClfsW32Tests
 			ctx.WriteValues();
 
 			StringBuilder sb = new((int)ctx.pinfoContainer[0].FileNameActualLength + 1);
-			Assert.That(GetLogContainerName(hLog, ctx.pinfoContainer[0].LogicalContainerId, sb, (uint)sb.Capacity, out _), ResultIs.Successful);
+			Assert.That(GetLogContainerName(hLog, ctx.pinfoContainer[0].LogicalContainerId, sb, sb.Capacity, out _), ResultIs.Successful);
 			TestContext.WriteLine(sb);
 		}
 		finally
@@ -94,5 +95,20 @@ public class ClfsW32Tests
 		string[] names = new[] { Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N") };
 		Assert.That(AddLogContainerSet(hLog, (ushort)names.Length, 512 * 1024, names), ResultIs.Successful);
 		Assert.That(RemoveLogContainerSet(hLog, (ushort)names.Length, names, true), ResultIs.Successful);
+	}
+
+	[Test]
+	public void LogArchiveTest()
+	{
+		StringBuilder sb = new(260);
+		Assert.That(PrepareLogArchive(hLog, sb, sb.Capacity, IntPtr.Zero, IntPtr.Zero, out var actLen, out var lfOffset, out var lfLen, out var lsnBase, out var ldsLast, out var lsnTail, out var ctx), ResultIs.Successful);
+		TestContext.WriteLine($"{actLen}, {lfOffset}, {lfLen}, {lsnBase}, {ldsLast}, {lsnTail}, {sb}");
+		using SafeCoTaskMemHandle mem = new(lfLen);
+		Assert.That(ReadLogArchiveMetadata(ctx, 0, mem.Size, mem, out var read), ResultIs.Successful);
+		TestContext.WriteLine(mem.GetBytes(0, (int)read).ToHexDumpString());
+		Assert.That(read, Is.LessThanOrEqualTo((uint)mem.Size));
+		CLS_ARCHIVE_DESCRIPTOR[] descriptor = new CLS_ARCHIVE_DESCRIPTOR[1];
+		if (GetNextLogArchiveExtent(ctx, descriptor, descriptor.Length, out var dRet) && dRet > 0)
+			descriptor[0].WriteValues();
 	}
 }

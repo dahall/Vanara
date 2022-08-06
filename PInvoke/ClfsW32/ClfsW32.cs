@@ -1253,7 +1253,7 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.GetLogContainerName")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetLogContainerName([In] HLOG hLog, [In] CLFS_CONTAINER_ID cidLogicalContainer,
-		[In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwstrContainerName, [In] uint cLenContainerName,
+		[In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwstrContainerName, [In] int cLenContainerName,
 		out uint pcActualLenContainerName);
 
 	/// <summary>
@@ -1373,12 +1373,12 @@ public static partial class ClfsW32
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-getnextlogarchiveextent CLFSUSER_API BOOL
 	// GetNextLogArchiveExtent( [in] CLFS_LOG_ARCHIVE_CONTEXT pvArchiveContext, [in, out] CLFS_ARCHIVE_DESCRIPTOR [] rgadExtent, [in] ULONG
 	// cDescriptors, [out] PULONG pcDescriptorsReturned );
-	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
+	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.GetNextLogArchiveExtent")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNextLogArchiveExtent([In] IntPtr pvArchiveContext,
-		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_ARCHIVE_DESCRIPTOR[] rgadExtent, [In] uint cDescriptors,
-		out uint pcDescriptorsReturned);
+	public static extern bool GetNextLogArchiveExtent([In] SafeArchiveContext pvArchiveContext,
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CLS_ARCHIVE_DESCRIPTOR[] rgadExtent, [In] int cDescriptors,
+		out int pcDescriptorsReturned);
 
 	/// <summary>Returns the sector-aligned block offset that is contained in the specified LSN.</summary>
 	/// <param name="plsn">A pointer to a CLFS_LSN structure from which the block offset is to be retrieved.</param>
@@ -1541,9 +1541,9 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.PrepareLogArchive")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool PrepareLogArchive([In] HLOG hLog, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszBaseLogFileName,
-		[In] uint cLen, in CLS_LSN plsnLow, in CLS_LSN plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
+		[In] int cLen, in CLS_LSN plsnLow, in CLS_LSN plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
 		out ulong pcbBaseLogFileLength, out CLS_LSN plsnBase, out CLS_LSN plsnLast, out CLS_LSN plsnCurrentArchiveTail,
-		out IntPtr ppvArchiveContext);
+		out SafeArchiveContext ppvArchiveContext);
 
 	/// <summary>
 	/// <para>
@@ -1631,9 +1631,9 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.PrepareLogArchive")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool PrepareLogArchive([In] HLOG hLog, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszBaseLogFileName,
-		[In] uint cLen, [In, Optional] IntPtr plsnLow, [In, Optional] IntPtr plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
+		[In] int cLen, [In, Optional] IntPtr plsnLow, [In, Optional] IntPtr plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
 		out ulong pcbBaseLogFileLength, out CLS_LSN plsnBase, out CLS_LSN plsnLast, out CLS_LSN plsnCurrentArchiveTail,
-		out IntPtr ppvArchiveContext);
+		out SafeArchiveContext ppvArchiveContext);
 
 	/// <summary>Copies a range of the archive view of the metadata to the specified buffer.</summary>
 	/// <param name="pvArchiveContext">
@@ -1669,7 +1669,7 @@ public static partial class ClfsW32
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.ReadLogArchiveMetadata")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadLogArchiveMetadata([In] IntPtr pvArchiveContext, [In] uint cbOffset, [In] uint cbBytesToRead,
+	public static extern bool ReadLogArchiveMetadata([In] SafeArchiveContext pvArchiveContext, [In] uint cbOffset, [In] uint cbBytesToRead,
 		[In, Out] IntPtr pbReadBuffer, out uint pcbBytesRead);
 
 	/// <summary>
@@ -3364,6 +3364,23 @@ public static partial class ClfsW32
 
 		/// <inheritdoc/>
 		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a <see cref="SafeHandle"/> for an archive context that is disposed using <see cref="TerminateLogArchive"/>.</summary>
+	public class SafeArchiveContext : SafeHANDLE
+	{
+		/// <summary>Initializes a new instance of the <see cref="SafeArchiveContext"/> class and assigns an existing handle.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		/// <param name="ownsHandle">
+		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+		/// </param>
+		public SafeArchiveContext(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeArchiveContext"/> class.</summary>
+		private SafeArchiveContext() : base() { }
+
+		/// <inheritdoc/>
+		protected override bool InternalReleaseHandle() => TerminateLogArchive(handle);
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HLOG"/> that is disposed using <see cref="CloseHandle"/>.</summary>
