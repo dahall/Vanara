@@ -230,7 +230,6 @@ namespace Vanara.PInvoke
 
 		public override bool GetCreateInstanceSupported(ITypeDescriptorContext context) => true;
 
-		[System.Diagnostics.CodeAnalysis.RequiresUnreferencedCode("")]
 		public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
 		{
 			PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(POINT), attributes);

@@ -169,7 +169,7 @@ namespace Vanara.IO
 		/// The job will not download from a peer unless both the client computer and the job allow Background Intelligent Transfer Service
 		/// (BITS) to download files from a peer. To enable the client computer to download files from a peer, set the EnablePeerCaching
 		/// group policy or call the <see cref="PeerCacheAdministration.ConfigurationFlags"/> property and set the <see
-		/// cref="PeerCaching.Enable"/> flag.
+		/// cref="PeerCaching.EnableClient"/> flag.
 		/// </para>
 		/// <para>
 		/// If one of the following conditions exists, BITS will stop the download and reschedule the job to begin transferring from either a

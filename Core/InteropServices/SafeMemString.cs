@@ -309,7 +309,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object obj) => ReferenceEquals(this, obj) || obj switch
+	public override bool Equals(object? obj) => ReferenceEquals(this, obj) || obj switch
 	{
 		null => false,
 		SafeMemString<TMem> ms => Equals(ms),
@@ -363,7 +363,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	byte IConvertible.ToByte(IFormatProvider? provider) => Convert.ToByte(ToString(), provider);
 
 	/// <inheritdoc/>
-	char IConvertible.ToChar(IFormatProvider? provider) => ToString() is not null ? Convert.ToChar(ToString(), provider) : throw new ArgumentNullException();
+	char IConvertible.ToChar(IFormatProvider? provider) => Convert.ToChar(ToString() ?? throw new ArgumentNullException(), provider);
 
 	/// <inheritdoc/>
 	DateTime IConvertible.ToDateTime(IFormatProvider? provider) => Convert.ToDateTime(ToString(), provider);
@@ -384,7 +384,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	long IConvertible.ToInt64(IFormatProvider? provider) => Convert.ToInt64(ToString(), provider);
 
 	/// <inheritdoc/>
-	sbyte IConvertible.ToSByte(IFormatProvider? provider) => ToString() is null ? (sbyte)0 : Convert.ToSByte(ToString(), provider);
+	sbyte IConvertible.ToSByte(IFormatProvider? provider) => Convert.ToSByte(ToString() ?? "0", provider);
 
 	/// <inheritdoc/>
 	float IConvertible.ToSingle(IFormatProvider? provider) => Convert.ToSingle(ToString(), provider);
