@@ -190,6 +190,7 @@ Native Structure | Header | Managed Structure
 [HCACHEENTRYSTREAM](https://www.google.com/search?num=5&q=HCACHEENTRYSTREAM+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinINet.HCACHEENTRYSTREAM](https://github.com/dahall/Vanara/search?l=C%23&q=HCACHEENTRYSTREAM)  
 [HFINDCACHE](https://www.google.com/search?num=5&q=HFINDCACHE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinINet.HFINDCACHE](https://github.com/dahall/Vanara/search?l=C%23&q=HFINDCACHE)  
 [HINTERNET](https://www.google.com/search?num=5&q=HINTERNET+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinINet.HINTERNET](https://github.com/dahall/Vanara/search?l=C%23&q=HINTERNET)  
+[INTERNET_ASYNC_RESULT](https://www.google.com/search?num=5&q=INTERNET_ASYNC_RESULT+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.INTERNET_ASYNC_RESULT](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_ASYNC_RESULT)  
 [INTERNET_AUTH_NOTIFY_DATA](https://www.google.com/search?num=5&q=INTERNET_AUTH_NOTIFY_DATA+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.INTERNET_AUTH_NOTIFY_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_AUTH_NOTIFY_DATA)  
 [INTERNET_BUFFERS](https://www.google.com/search?num=5&q=INTERNET_BUFFERS+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.INTERNET_BUFFERS](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_BUFFERS)  
 [INTERNET_CACHE_CONFIG_INFO](https://www.google.com/search?num=5&q=INTERNET_CACHE_CONFIG_INFO+site%3Adocs.microsoft.com) | winineti.h | [Vanara.PInvoke.WinINet.INTERNET_CACHE_CONFIG_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_CACHE_CONFIG_INFO)  
@@ -204,6 +205,7 @@ Native Structure | Header | Managed Structure
 [INTERNET_PER_CONN_OPTION_Value](https://www.google.com/search?num=5&q=INTERNET_PER_CONN_OPTION_Value+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.WinINet.INTERNET_PER_CONN_OPTION.INTERNET_PER_CONN_OPTION_Value](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_PER_CONN_OPTION_Value)  
 [INTERNET_PROXY_INFO](https://www.google.com/search?num=5&q=INTERNET_PROXY_INFO+site%3Adocs.microsoft.com) | WinInet.h | [Vanara.PInvoke.WinINet.INTERNET_PROXY_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_PROXY_INFO)  
 [INTERNET_VERSION_INFO](https://www.google.com/search?num=5&q=INTERNET_VERSION_INFO+site%3Adocs.microsoft.com) | WinInet.h | [Vanara.PInvoke.WinINet.INTERNET_VERSION_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=INTERNET_VERSION_INFO)  
+[InternetCookieHistory](https://www.google.com/search?num=5&q=InternetCookieHistory+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.InternetCookieHistory](https://github.com/dahall/Vanara/search?l=C%23&q=InternetCookieHistory)  
 [URL_COMPONENTS](https://www.google.com/search?num=5&q=URL_COMPONENTS+site%3Adocs.microsoft.com) | wininet.h | [Vanara.PInvoke.WinINet.URL_COMPONENTS](https://github.com/dahall/Vanara/search?l=C%23&q=URL_COMPONENTS)  
 ### Classes  
 Native Class | Header | Managed Class  

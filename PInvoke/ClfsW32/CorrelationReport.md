@@ -108,4 +108,5 @@ Native Structure | Header | Managed Structure
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
+[SafeArchiveContext](https://www.google.com/search?num=5&q=SafeArchiveContext+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ClfsW32.SafeArchiveContext](https://github.com/dahall/Vanara/search?l=C%23&q=SafeArchiveContext)  
 [SafeHLOG](https://www.google.com/search?num=5&q=SafeHLOG+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ClfsW32.SafeHLOG](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHLOG)  

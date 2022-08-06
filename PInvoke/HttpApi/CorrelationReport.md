@@ -84,6 +84,7 @@ Native Enum | Header | Managed Enum
 [HTTP_REQUEST_INFO_TYPE](https://www.google.com/search?num=5&q=HTTP_REQUEST_INFO_TYPE+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTP_REQUEST_INFO_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_REQUEST_INFO_TYPE)  
 [HTTP_REQUEST_PROPERTY](https://www.google.com/search?num=5&q=HTTP_REQUEST_PROPERTY+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTP_REQUEST_PROPERTY](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_REQUEST_PROPERTY)  
 [HTTP_REQUEST_PROPERTY_SNI_FLAG](https://www.google.com/search?num=5&q=HTTP_REQUEST_PROPERTY_SNI_FLAG+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTP_REQUEST_PROPERTY_SNI_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_REQUEST_PROPERTY_SNI_FLAG)  
+[HTTP_REQUEST_SIZING_INFO_FLAG](https://www.google.com/search?num=5&q=HTTP_REQUEST_SIZING_INFO_FLAG+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTP_REQUEST_SIZING_INFO_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_REQUEST_SIZING_INFO_FLAG)  
 [HTTP_REQUEST_SIZING_TYPE](https://www.google.com/search?num=5&q=HTTP_REQUEST_SIZING_TYPE+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTP_REQUEST_SIZING_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_REQUEST_SIZING_TYPE)  
 [HTTP_REQUEST_TIMING_TYPE](https://www.google.com/search?num=5&q=HTTP_REQUEST_TIMING_TYPE+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTP_REQUEST_TIMING_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_REQUEST_TIMING_TYPE)  
 [HTTP_RESPONSE_FLAGS](https://www.google.com/search?num=5&q=HTTP_RESPONSE_FLAGS+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTP_RESPONSE_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_RESPONSE_FLAGS)  
@@ -105,10 +106,10 @@ Native Enum | Header | Managed Enum
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[FROMFILEHANDLE](https://www.google.com/search?num=5&q=FROMFILEHANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.UNION.FROMFILEHANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=FROMFILEHANDLE)  
-[FROMFRAGMENTCACHE](https://www.google.com/search?num=5&q=FROMFRAGMENTCACHE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.UNION.FROMFRAGMENTCACHE](https://github.com/dahall/Vanara/search?l=C%23&q=FROMFRAGMENTCACHE)  
-[FROMFRAGMENTCACHEEX](https://www.google.com/search?num=5&q=FROMFRAGMENTCACHEEX+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.UNION.FROMFRAGMENTCACHEEX](https://github.com/dahall/Vanara/search?l=C%23&q=FROMFRAGMENTCACHEEX)  
-[FROMMEMORY](https://www.google.com/search?num=5&q=FROMMEMORY+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.UNION.FROMMEMORY](https://github.com/dahall/Vanara/search?l=C%23&q=FROMMEMORY)  
+[FROMFILEHANDLE](https://www.google.com/search?num=5&q=FROMFILEHANDLE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.FROMFILEHANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=FROMFILEHANDLE)  
+[FROMFRAGMENTCACHE](https://www.google.com/search?num=5&q=FROMFRAGMENTCACHE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.FROMFRAGMENTCACHE](https://github.com/dahall/Vanara/search?l=C%23&q=FROMFRAGMENTCACHE)  
+[FROMFRAGMENTCACHEEX](https://www.google.com/search?num=5&q=FROMFRAGMENTCACHEEX+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.FROMFRAGMENTCACHEEX](https://github.com/dahall/Vanara/search?l=C%23&q=FROMFRAGMENTCACHEEX)  
+[FROMMEMORY](https://www.google.com/search?num=5&q=FROMMEMORY+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.FROMMEMORY](https://github.com/dahall/Vanara/search?l=C%23&q=FROMMEMORY)  
 [HREQQUEUE](https://www.google.com/search?num=5&q=HREQQUEUE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HREQQUEUE](https://github.com/dahall/Vanara/search?l=C%23&q=HREQQUEUE)  
 [HREQQUEUEv1](https://www.google.com/search?num=5&q=HREQQUEUEv1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HREQQUEUEv1](https://github.com/dahall/Vanara/search?l=C%23&q=HREQQUEUEv1)  
 [HTTP_BANDWIDTH_LIMIT_INFO](https://www.google.com/search?num=5&q=HTTP_BANDWIDTH_LIMIT_INFO+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTP_BANDWIDTH_LIMIT_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_BANDWIDTH_LIMIT_INFO)  
@@ -201,11 +202,12 @@ Native Structure | Header | Managed Structure
 [HTTPAPI_VERSION](https://www.google.com/search?num=5&q=HTTPAPI_VERSION+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTPAPI_VERSION](https://github.com/dahall/Vanara/search?l=C%23&q=HTTPAPI_VERSION)  
 [SafeHTTP_SERVER_SESSION_ID](https://www.google.com/search?num=5&q=SafeHTTP_SERVER_SESSION_ID+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.SafeHTTP_SERVER_SESSION_ID](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHTTP_SERVER_SESSION_ID)  
 [SafeHTTP_URL_GROUP_ID](https://www.google.com/search?num=5&q=SafeHTTP_URL_GROUP_ID+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.SafeHTTP_URL_GROUP_ID](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHTTP_URL_GROUP_ID)  
-[TRAILERS](https://www.google.com/search?num=5&q=TRAILERS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.UNION.TRAILERS](https://github.com/dahall/Vanara/search?l=C%23&q=TRAILERS)  
+[TRAILERS](https://www.google.com/search?num=5&q=TRAILERS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_DATA_CHUNK.TRAILERS](https://github.com/dahall/Vanara/search?l=C%23&q=TRAILERS)  
 [UNION](https://www.google.com/search?num=5&q=UNION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.HTTP_SERVICE_CONFIG_SSL_PARAM_EX.UNION](https://github.com/dahall/Vanara/search?l=C%23&q=UNION)  
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
+[HTTP_REQUEST](https://www.google.com/search?num=5&q=HTTP_REQUEST+site%3Adocs.microsoft.com) | http.h | [Vanara.PInvoke.HttpApi.HTTP_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=HTTP_REQUEST)  
 [SafeHREQQUEUE](https://www.google.com/search?num=5&q=SafeHREQQUEUE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.SafeHREQQUEUE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHREQQUEUE)  
 [SafeHREQQUEUEv1](https://www.google.com/search?num=5&q=SafeHREQQUEUEv1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.SafeHREQQUEUEv1](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHREQQUEUEv1)  
 [SafeHTTP_SERVER_SESSION_ID](https://www.google.com/search?num=5&q=SafeHTTP_SERVER_SESSION_ID+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.HttpApi.SafeHTTP_SERVER_SESSION_ID](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHTTP_SERVER_SESSION_ID)  
