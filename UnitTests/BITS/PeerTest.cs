@@ -19,7 +19,7 @@ partial class BackgroundCopyTests
 
 		PeerCaching pc = BackgroundCopyManager.PeerCacheAdministration.ConfigurationFlags;
 		Assert.That(pc == 0 || Enum.IsDefined(typeof(PeerCaching), pc));
-		Assert.That(BackgroundCopyManager.PeerCacheAdministration.ConfigurationFlags = PeerCaching.Enable, Is.EqualTo(PeerCaching.Enable));
+		Assert.That(BackgroundCopyManager.PeerCacheAdministration.ConfigurationFlags = PeerCaching.EnableClient, Is.EqualTo(PeerCaching.EnableClient));
 
 		Assert.That(BackgroundCopyManager.PeerCacheAdministration.Peers, Is.Unique);
 		Assert.That(BackgroundCopyManager.PeerCacheAdministration.Records, Is.Unique);
