@@ -111,4 +111,90 @@ public class ClfsW32Tests
 		if (GetNextLogArchiveExtent(ctx, descriptor, descriptor.Length, out var dRet) && dRet > 0)
 			descriptor[0].WriteValues();
 	}
+	
+	[Test]
+	public void QueryLogPolicyTest([Values] CLFS_MGMT_POLICY_TYPE type)
+	{
+		CLFS_MGMT_POLICY pol = new(type);
+		switch (type)
+		{
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyMaximumSize:
+				pol.PolicyParameters.MaximumSize.Containers = 16;
+				break;
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyMinimumSize:
+				pol.PolicyParameters.MinimumSize.Containers = 2;
+				break;
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyNewContainerSize:
+				pol.PolicyParameters.NewContainerSize.SizeInBytes = 512 * 1024;
+				break;
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyGrowthRate:
+				pol.PolicyParameters.GrowthRate.AbsoluteGrowthInContainers = 0;
+				pol.PolicyParameters.GrowthRate.RelativeGrowthPercentage = 10;
+				break;
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyLogTail:
+				pol.PolicyParameters.LogTail.MinimumAvailableContainers = 2;
+				break;
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyAutoShrink:
+				pol.PolicyParameters.AutoShrink.Percentage = 25;
+				break;
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyAutoGrow:
+				pol.PolicyParameters.AutoGrow.Enabled = true;
+				break;
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyNewContainerPrefix:
+				pol.PolicyParameters.NewContainerPrefix.PrefixString = @"C:\Temp\Container";
+				break;
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyNewContainerSuffix:
+				break;
+			case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyNewContainerExtension:
+				pol.PolicyParameters.NewContainerExtension.ExtensionString = @"cnt";
+				break;
+			default:
+				return;
+		}
+		Assert.That(InstallLogPolicy(hLog, pol), ResultIs.Successful);
+
+		try
+		{
+			Assert.That(QueryLogPolicy(hLog, type, out var mem), ResultIs.Successful);
+			switch (type)
+			{
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyMaximumSize:
+					mem.PolicyParameters.MaximumSize.WriteValues();
+					break;
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyMinimumSize:
+					mem.PolicyParameters.MinimumSize.WriteValues();
+					break;
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyNewContainerSize:
+					mem.PolicyParameters.NewContainerSize.WriteValues();
+					break;
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyGrowthRate:
+					mem.PolicyParameters.GrowthRate.WriteValues();
+					break;
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyLogTail:
+					mem.PolicyParameters.LogTail.WriteValues();
+					break;
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyAutoShrink:
+					mem.PolicyParameters.AutoShrink.WriteValues();
+					break;
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyAutoGrow:
+					mem.PolicyParameters.AutoGrow.WriteValues();
+					break;
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyNewContainerPrefix:
+					mem.PolicyParameters.NewContainerPrefix.WriteValues();
+					break;
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyNewContainerSuffix:
+					mem.PolicyParameters.NewContainerSuffix.WriteValues();
+					break;
+				case CLFS_MGMT_POLICY_TYPE.ClfsMgmtPolicyNewContainerExtension:
+					mem.PolicyParameters.NewContainerExtension.WriteValues();
+					break;
+				default:
+					break;
+			}
+		}
+		finally
+		{
+			Assert.That(RemoveLogPolicy(hLog, type), ResultIs.Successful);
+		}
+	}
 }

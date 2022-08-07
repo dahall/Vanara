@@ -19,6 +19,7 @@ AUTOGROW AUTOSHRINK CLFS_MGMT_NOTIFICATION CLFS_NODE_ID CLS_ARCHIVE_DESCRIPTOR C
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

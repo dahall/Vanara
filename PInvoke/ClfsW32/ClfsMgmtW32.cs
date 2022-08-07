@@ -141,21 +141,23 @@ public static partial class ClfsW32
 	/// <param name="hLog">The handle to the log to query.</param>
 	/// <param name="ePolicyType">Specifies the type of policy to query for. Policy types are enumerated in CLFS_MGMT_POLICY_TYPE.</param>
 	/// <param name="pPolicyBuffer">A pointer to a buffer to receive the returned policies.</param>
-	/// <param name="pcbPolicyBuffer">
-	/// A pointer to the size of <c>pPolicyBuffer</c>. If the buffer is not large enough, <c>pcbPolicyBuffer</c> receives the size buffer
-	/// required to successfully retrieve the specified policies.
-	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero (0). To get extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsmgmtw32/nf-clfsmgmtw32-querylogpolicy CLFSUSER_API BOOL QueryLogPolicy( [in]
 	// HLOG hLog, [in] CLFS_MGMT_POLICY_TYPE ePolicyType, [out] PCLFS_MGMT_POLICY pPolicyBuffer, [in, out] PULONG pcbPolicyBuffer );
-	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsmgmtw32.h", MSDNShortId = "NF:clfsmgmtw32.QueryLogPolicy")]
+	public static bool QueryLogPolicy([In] HLOG hLog, [In] CLFS_MGMT_POLICY_TYPE ePolicyType, out CLFS_MGMT_POLICY pPolicyBuffer)
+	{
+		uint sz = (uint)Marshal.SizeOf(typeof(CLFS_MGMT_POLICY));
+		return QueryLogPolicy(hLog, ePolicyType, out pPolicyBuffer, ref sz);
+	}
+
+	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryLogPolicy([In] HLOG hLog, [In] CLFS_MGMT_POLICY_TYPE ePolicyType,
-		[Out] SafeCoTaskMemStruct<CLFS_MGMT_POLICY> pPolicyBuffer, ref uint pcbPolicyBuffer);
+	private static extern bool QueryLogPolicy([In] HLOG hLog, [In] CLFS_MGMT_POLICY_TYPE ePolicyType,
+		out CLFS_MGMT_POLICY pPolicyBuffer, ref uint pcbPolicyBuffer);
 
 	/// <summary>
 	/// The <c>ReadLogNotification</c> function retrieves notifications from the log manager. It retrieves a queued notification from the log
