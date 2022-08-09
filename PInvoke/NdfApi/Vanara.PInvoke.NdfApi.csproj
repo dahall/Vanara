@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>ndfapi.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Network Diagnostic Framework (NdfApi.dll).</Description>
+    <AssemblyName>Vanara.PInvoke.NdfApi</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;NdfApi;network diagnostic framework</PackageTags>
+    <PackageReleaseNotes />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
+  </ItemGroup>
+</Project>
