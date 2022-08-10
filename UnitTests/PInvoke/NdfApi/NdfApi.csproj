@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.NdfApi</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\Vanara.snk</AssemblyOriginatorKeyFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\NdfApi\Vanara.PInvoke.NdfApi.csproj" />
+  </ItemGroup>
+</Project>

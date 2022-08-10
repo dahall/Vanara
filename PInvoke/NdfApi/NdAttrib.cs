@@ -126,10 +126,10 @@ public static partial class NdfApi
 		RF_CONTACT_ADMIN = 0x20000,
 
 		/// <summary>Reserved for system use.</summary>
-		RF_RESERVED = 0x40000000,
+		DF_TRACELESS = 0x40000000,
 
 		/// <summary>Reserved for system use.</summary>
-		RF_RESERVED_CA = 0x80000000,
+		DF_IMPERSONATION = 0x80000000,
 
 		/// <summary>Reserved for system use.</summary>
 		RF_RESERVED_LNI = 0x10000,
@@ -1194,7 +1194,7 @@ public static partial class NdfApi
 		public string pwszDescription;
 
 		/// <summary>One of the WELL_KNOWN_SID_TYPE if the repair requires certain user contexts or privileges.</summary>
-		public uint sidType;
+		public AdvApi32.WELL_KNOWN_SID_TYPE sidType;
 
 		/// <summary>The number of seconds required to perform the repair.</summary>
 		public long cost;

@@ -649,7 +649,7 @@ public static partial class NdfApi
 	// NdfCreateNetConnectionIncident( [out] NDFHANDLE *handle, GUID id );
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfCreateNetConnectionIncident")]
-	public static extern HRESULT NdfCreateNetConnectionIncident(out SafeNDFHANDLE handle, Guid id);
+	public static extern HRESULT NdfCreateNetConnectionIncident(out SafeNDFHANDLE handle, [In, Optional] Guid id);
 
 	/// <summary>
 	/// The <c>NdfCreatePnrpIncident</c> function creates a session to diagnose issues with the Peer Name Resolution Protocol (PNRP) service.
@@ -1076,7 +1076,7 @@ public static partial class NdfApi
 	// HWND hwnd );
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfExecuteDiagnosis")]
-	public static extern HRESULT NdfExecuteDiagnosis(NDFHANDLE handle, HWND hwnd);
+	public static extern HRESULT NdfExecuteDiagnosis(NDFHANDLE handle, [In, Optional] HWND hwnd);
 
 	/// <summary>
 	/// The <c>NdfGetTraceFile</c> function is used to retrieve the path containing an Event Trace Log (ETL) file that contains Event Tracing
