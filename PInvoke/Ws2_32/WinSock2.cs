@@ -1167,7 +1167,7 @@ namespace Vanara.PInvoke
 			/// <exception cref="ArgumentException">Byte array must have 4 items. - v4addr</exception>
 			public IN_ADDR(byte[] v4addr)
 			{
-				if (v4addr == null && v4addr.Length != 4)
+				if (v4addr == null || v4addr.Length < 4)
 					throw new ArgumentException("Byte array must have 4 items.", nameof(v4addr));
 				S_addr = BitConverter.ToUInt32(v4addr, 0);
 			}
