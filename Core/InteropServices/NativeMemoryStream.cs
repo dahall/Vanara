@@ -371,10 +371,9 @@ namespace Vanara.InteropServices
 		public void Write(string value) => Write(value, CharSet);
 
 		/// <summary>Writes the specified array into the stream.</summary>
-		/// <typeparam name="T">The type of the array item.</typeparam>
 		/// <param name="items">The items.</param>
 		/// <param name="byRef">Write values as a referenced array.</param>
-		public void Write<T>(IEnumerable<T> items, bool byRef = false) where T : struct
+		public void Write(IEnumerable items, bool byRef = false)
 		{
 			if (access == FileAccess.Read) throw new NotSupportedException();
 			if (items == null) return;
