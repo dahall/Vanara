@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using static Vanara.PInvoke.Rpc;
+﻿using static Vanara.PInvoke.Rpc;
 
 namespace Vanara.PInvoke;
 
@@ -516,9 +515,6 @@ public static partial class FwpUClnt
 	public static Win32Error FwpmCalloutGetById0([In] HFWPENG engineHandle, uint id, out SafeFwpmStruct<FWPM_CALLOUT0> callout) =>
 		FwpmGenericGetById(FwpmCalloutGetById0, engineHandle, id, out callout);
 
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmCalloutGetById0([In] HFWPENG engineHandle, uint id, out SafeFwpmMem callout);
-
 	/// <summary>The <c>FwpmCalloutGetByKey0</c> function retrieves a callout object.</summary>
 	/// <param name="engineHandle">
 	/// <para>Type: <c>HANDLE</c></para>
@@ -569,9 +565,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmCalloutGetByKey0")]
 	public static Win32Error FwpmCalloutGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmStruct<FWPM_CALLOUT0> callout) =>
 		FwpmGenericGetByKey(FwpmCalloutGetByKey0, engineHandle, key, out callout);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmCalloutGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem callout);
 
 	/// <summary>The <c>FwpmCalloutGetSecurityInfoByKey0</c> function retrieves a copy of the security descriptor for a callout object.</summary>
 	/// <param name="engineHandle">
@@ -1147,43 +1140,43 @@ public static partial class FwpUClnt
 	public static extern Win32Error FwpmConnectionEnum0([In] HFWPENG engineHandle, [In] HANDLE enumHandle, uint numEntriesRequested,
 		out SafeFwpmMem entries, out uint numEntriesReturned);
 
-	/// <summary>
-	/// The <c>FwpmConnectionEnum0</c> function returns the next page of results from the connection object enumerator.
-	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: FWPM_CONNECTION0***</para>
-	/// <para>Addresses of enumeration entries.</para></param>
-	/// <param name="enumTemplate"><para>Type: FWPM_CONNECTION_ENUM_TEMPLATE0*</para>
-	/// <para>Template for selectively restricting the enumeration.</para></param>
+	/// <summary>The <c>FwpmConnectionEnum0</c> function returns the next page of results from the connection object enumerator.</summary>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: FWPM_CONNECTION0***</para>
+	/// <para>Addresses of enumeration entries.</para>
+	/// </param>
+	/// <param name="enumTemplate">
+	/// <para>Type: FWPM_CONNECTION_ENUM_TEMPLATE0*</para>
+	/// <para>Template for selectively restricting the enumeration.</para>
+	/// </param>
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The connection objects were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The connection objects were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all connection objects are returned.</para>
-	/// <para>
-	///   <c>FwpmConnectionEnum0</c> works on a snapshot of the connection objects taken at the time the enumeration handle was created.</para>
+	/// <para><c>FwpmConnectionEnum0</c> works on a snapshot of the connection objects taken at the time the enumeration handle was created.</para>
 	/// </remarks>
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmConnectionEnum0")]
 	public static Win32Error FwpmConnectionEnum0([In] HFWPENG engineHandle, out SafeFwpmArray<FWPM_CONNECTION0> entries, FWPM_CONNECTION_ENUM_TEMPLATE0? enumTemplate = null) =>
@@ -1232,9 +1225,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmConnectionGetById0")]
 	public static Win32Error FwpmConnectionGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmStruct<FWPM_CONNECTION0> connection) =>
 		FwpmGenericGetById(FwpmConnectionGetById0, engineHandle, id, out connection);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmConnectionGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem connection);
 
 	/// <summary>
 	/// The <c>FwpmConnectionGetSecurityInfo0</c> function retrieves a copy of the security descriptor for a connection object change event.
@@ -2321,6 +2311,62 @@ public static partial class FwpUClnt
 		out SafeFwpmMem entries, out uint numEntriesReturned);
 
 	/// <summary>
+	/// <para>The <c>FwpmNetEventEnum1</c> function returns the next page of results from the network event enumerator.</para>
+	/// <para>
+	/// <c>Note</c><c>FwpmNetEventEnum1</c> is the specific implementation of FwpmNetEventEnum used in Windows 7 and later. See WFP
+	/// Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows 8, FwpmNetEventEnum2 is
+	/// available. For Windows Vista, FwpmNetEventEnum0 is available.
+	/// </para>
+	/// </summary>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: FWPM_NET_EVENT1***</para>
+	/// <para>Addresses of enumeration entries.</para>
+	/// </param>
+	/// <param name="enumTemplate">
+	/// <para>Type: FWPM_NET_EVENT_ENUM_TEMPLATE0*</para>
+	/// <para>Template to selectively restrict the enumeration.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>DWORD</c></para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The network events were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_NET_EVENTS_DISABLED</c> 0x80320013</term>
+	/// <term>The collection of network diagnostic events is disabled. Call FwpmEngineSetOption0 to enable it.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all network event objects are returned.</para>
+	/// <para>
+	/// <c>FwpmNetEventEnum1</c> returns only events that were logged prior to the creation of the <c>enumHandle</c> parameter. See Logging
+	/// for more information.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmNetEventEnum1")]
+	public static Win32Error FwpmNetEventEnum1([In] HFWPENG engineHandle, out SafeFwpmArray<FWPM_NET_EVENT1> entries, FWPM_NET_EVENT_ENUM_TEMPLATE0? enumTemplate = null) =>
+		FwpmGenericEnum(FwpmNetEventCreateEnumHandle0, FwpmNetEventEnum1, FwpmNetEventDestroyEnumHandle0, engineHandle, out entries, enumTemplate);
+
+	/// <summary>
 	/// <para>The <c>FwpmNetEventEnum2</c> function returns the next page of results from the network event enumerator.</para>
 	/// <para>
 	/// <c>Note</c><c>FwpmNetEventEnum2</c> is the specific implementation of FwpmNetEventEnum used in Windows 8 and later. See WFP
@@ -2394,6 +2440,62 @@ public static partial class FwpUClnt
 		out SafeFwpmMem entries, out uint numEntriesReturned);
 
 	/// <summary>
+	/// <para>The <c>FwpmNetEventEnum2</c> function returns the next page of results from the network event enumerator.</para>
+	/// <para>
+	/// <c>Note</c><c>FwpmNetEventEnum2</c> is the specific implementation of FwpmNetEventEnum used in Windows 8 and later. See WFP
+	/// Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows 7, FwpmNetEventEnum1 is
+	/// available. For Windows Vista, FwpmNetEventEnum0 is available.
+	/// </para>
+	/// </summary>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: FWPM_NET_EVENT2***</para>
+	/// <para>Addresses of enumeration entries.</para>
+	/// </param>
+	/// <param name="enumTemplate">
+	/// <para>Type: FWPM_NET_EVENT_ENUM_TEMPLATE0*</para>
+	/// <para>Template to selectively restrict the enumeration.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>DWORD</c></para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The network events were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_NET_EVENTS_DISABLED</c> 0x80320013</term>
+	/// <term>The collection of network diagnostic events is disabled. Call FwpmEngineSetOption0 to enable it.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all network event objects are returned.</para>
+	/// <para>
+	/// <c>FwpmNetEventEnum2</c> returns only events that were logged prior to the creation of the <c>enumHandle</c> parameter. See Logging
+	/// for more information.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmNetEventEnum2")]
+	public static Win32Error FwpmNetEventEnum2([In] HFWPENG engineHandle, out SafeFwpmArray<FWPM_NET_EVENT2> entries, FWPM_NET_EVENT_ENUM_TEMPLATE0? enumTemplate = null) =>
+		FwpmGenericEnum(FwpmNetEventCreateEnumHandle0, FwpmNetEventEnum2, FwpmNetEventDestroyEnumHandle0, engineHandle, out entries, enumTemplate);
+
+	/// <summary>
 	/// <para>The <c>FwpmNetEventEnum3</c> function returns the next page of results from the network event enumerator.</para>
 	/// <para>
 	/// <c>Note</c><c>FwpmNetEventEnum3</c> s the specific implementation of <c>FwpmNetEventEnum</c> used in Windows 10, version 1607 and
@@ -2453,129 +2555,16 @@ public static partial class FwpUClnt
 		out SafeFwpmMem entries, out uint numEntriesReturned);
 
 	/// <summary>
-	/// <para>The <c>FwpmNetEventEnum1</c> function returns the next page of results from the network event enumerator.</para>
-	/// <para>
-	///   <c>Note</c>
-	///   <c>FwpmNetEventEnum1</c> is the specific implementation of FwpmNetEventEnum used in Windows 7 and later. See WFP
-	/// Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows 8, FwpmNetEventEnum2 is
-	/// available. For Windows Vista, FwpmNetEventEnum0 is available.
-	/// </para>
-	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: FWPM_NET_EVENT1***</para>
-	/// <para>Addresses of enumeration entries.</para></param>
-	/// <param name="enumTemplate">
-	/// <para>Type: FWPM_NET_EVENT_ENUM_TEMPLATE0*</para>
-	/// <para>Template to selectively restrict the enumeration.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <c>DWORD</c></para>
-	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The network events were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_NET_EVENTS_DISABLED</c> 0x80320013</term>
-	///     <term>The collection of network diagnostic events is disabled. Call FwpmEngineSetOption0 to enable it.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all network event objects are returned.</para>
-	/// <para>
-	///   <c>FwpmNetEventEnum1</c> returns only events that were logged prior to the creation of the <c>enumHandle</c> parameter. See Logging
-	/// for more information.
-	/// </para>
-	/// </remarks>
-	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmNetEventEnum1")]
-	public static Win32Error FwpmNetEventEnum1([In] HFWPENG engineHandle, out SafeFwpmArray<FWPM_NET_EVENT1> entries, FWPM_NET_EVENT_ENUM_TEMPLATE0? enumTemplate = null) =>
-		FwpmGenericEnum(FwpmNetEventCreateEnumHandle0, FwpmNetEventEnum1, FwpmNetEventDestroyEnumHandle0, engineHandle, out entries, enumTemplate);
-
-	/// <summary>
-	/// <para>The <c>FwpmNetEventEnum2</c> function returns the next page of results from the network event enumerator.</para>
-	/// <para>
-	///   <c>Note</c>
-	///   <c>FwpmNetEventEnum2</c> is the specific implementation of FwpmNetEventEnum used in Windows 8 and later. See WFP
-	/// Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows 7, FwpmNetEventEnum1 is
-	/// available. For Windows Vista, FwpmNetEventEnum0 is available.
-	/// </para>
-	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: FWPM_NET_EVENT2***</para>
-	/// <para>Addresses of enumeration entries.</para></param>
-	/// <param name="enumTemplate">
-	/// <para>Type: FWPM_NET_EVENT_ENUM_TEMPLATE0*</para>
-	/// <para>Template to selectively restrict the enumeration.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <c>DWORD</c></para>
-	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The network events were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_NET_EVENTS_DISABLED</c> 0x80320013</term>
-	///     <term>The collection of network diagnostic events is disabled. Call FwpmEngineSetOption0 to enable it.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all network event objects are returned.</para>
-	/// <para>
-	///   <c>FwpmNetEventEnum2</c> returns only events that were logged prior to the creation of the <c>enumHandle</c> parameter. See Logging
-	/// for more information.
-	/// </para>
-	/// </remarks>
-	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmNetEventEnum2")]
-	public static Win32Error FwpmNetEventEnum2([In] HFWPENG engineHandle, out SafeFwpmArray<FWPM_NET_EVENT2> entries, FWPM_NET_EVENT_ENUM_TEMPLATE0? enumTemplate = null) =>
-		FwpmGenericEnum(FwpmNetEventCreateEnumHandle0, FwpmNetEventEnum2, FwpmNetEventDestroyEnumHandle0, engineHandle, out entries, enumTemplate);
-
-	/// <summary>
 	/// <para>The <c>FwpmNetEventEnum3</c> function returns the next page of results from the network event enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>FwpmNetEventEnum3</c> s the specific implementation of <c>FwpmNetEventEnum</c> used in Windows 10, version 1607 and
+	/// <c>Note</c><c>FwpmNetEventEnum3</c> s the specific implementation of <c>FwpmNetEventEnum</c> used in Windows 10, version 1607 and
 	/// later. See WFP Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows 8,
 	/// FwpmNetEventEnum2 is available. For Windows 7, FwpmNetEventEnum1 is available. For Windows Vista, FwpmNetEventEnum0 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle">Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</param>
+	/// <param name="engineHandle">
+	/// Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.
+	/// </param>
 	/// <param name="entries">Addresses of enumeration entries.</param>
 	/// <param name="enumTemplate">
 	/// <para>Type: FWPM_NET_EVENT_ENUM_TEMPLATE0*</para>
@@ -2583,40 +2572,45 @@ public static partial class FwpUClnt
 	/// </param>
 	/// <returns>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The network events were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_NET_EVENTS_DISABLED</c> 0x80320013</term>
-	///     <term>The collection of network diagnostic events is disabled. Call FwpmEngineSetOption0 to enable it.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The network events were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_NET_EVENTS_DISABLED</c> 0x80320013</term>
+	/// <term>The collection of network diagnostic events is disabled. Call FwpmEngineSetOption0 to enable it.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all network event objects are returned.</para>
 	/// <para>
-	///   <c>FwpmNetEventEnum3</c> returns only events that were logged prior to the creation of the <c>enumHandle</c> parameter. See Logging
+	/// <c>FwpmNetEventEnum3</c> returns only events that were logged prior to the creation of the <c>enumHandle</c> parameter. See Logging
 	/// for more information.
 	/// </para>
 	/// </remarks>
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmNetEventEnum3")]
 	public static Win32Error FwpmNetEventEnum3([In] HFWPENG engineHandle, out SafeFwpmArray<FWPM_NET_EVENT3> entries, FWPM_NET_EVENT_ENUM_TEMPLATE0? enumTemplate = null) =>
 		FwpmGenericEnum(FwpmNetEventCreateEnumHandle0, FwpmNetEventEnum3, FwpmNetEventDestroyEnumHandle0, engineHandle, out entries, enumTemplate);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmCalloutGetById0([In] HFWPENG engineHandle, uint id, out SafeFwpmMem callout);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmCalloutGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem callout);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmConnectionGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem connection);
 }

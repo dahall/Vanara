@@ -209,13 +209,15 @@ public static partial class FwpUClnt
 	public static extern Win32Error FwpmSessionEnum0([In] HFWPENG engineHandle, [In] HANDLE enumHandle, uint numEntriesRequested,
 		out SafeFwpmMem entries, out uint numEntriesReturned);
 
-	/// <summary>
-	/// The <c>FwpmSessionEnum0</c> function returns the next page of results from the session enumerator.
-	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: FWPM_SESSION0***</para>
-	/// <para>Addresses of the enumeration entries.</para></param>
+	/// <summary>The <c>FwpmSessionEnum0</c> function returns the next page of results from the session enumerator.</summary>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: FWPM_SESSION0***</para>
+	/// <para>Addresses of the enumeration entries.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: FWPM_SESSION_ENUM_TEMPLATE0*</para>
 	/// <para>Template to selectively restrict the enumeration.</para>
@@ -223,33 +225,29 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The sessions were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The sessions were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all session objects are returned.</para>
+	/// <para><c>FwpmSessionEnum0</c> works on a snapshot of the sessions taken at the time the enumeration handle was created.</para>
 	/// <para>
-	///   <c>FwpmSessionEnum0</c> works on a snapshot of the sessions taken at the time the enumeration handle was created.</para>
-	/// <para>
-	///   <c>FwpmSessionEnum0</c> is a specific implementation of FwpmSessionEnum. See WFP Version-Independent Names and Targeting Specific
+	/// <c>FwpmSessionEnum0</c> is a specific implementation of FwpmSessionEnum. See WFP Version-Independent Names and Targeting Specific
 	/// Versions of Windows for more information.
 	/// </para>
 	/// </remarks>
@@ -587,13 +585,15 @@ public static partial class FwpUClnt
 	public static extern Win32Error FwpmSubLayerEnum0([In] HFWPENG engineHandle, [In] HANDLE enumHandle, uint numEntriesRequested, out SafeFwpmMem entries,
 		out uint numEntriesReturned);
 
-	/// <summary>
-	/// The <c>FwpmSubLayerEnum0</c> function returns the next page of results from the sublayer enumerator.
-	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: FWPM_SUBLAYER0***</para>
-	/// <para>Addresses of the enumeration entries.</para></param>
+	/// <summary>The <c>FwpmSubLayerEnum0</c> function returns the next page of results from the sublayer enumerator.</summary>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: FWPM_SUBLAYER0***</para>
+	/// <para>Addresses of the enumeration entries.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: FWPM_SUBLAYER_ENUM_TEMPLATE0*</para>
 	/// <para>Template to selectively restrict the enumeration.</para>
@@ -601,33 +601,29 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The sublayers were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The sublayers were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all sublayers are returned.</para>
+	/// <para><c>FwpmSubLayerEnum0</c> works on a snapshot of the sublayers taken at the time the enumeration handle was created.</para>
 	/// <para>
-	///   <c>FwpmSubLayerEnum0</c> works on a snapshot of the sublayers taken at the time the enumeration handle was created.</para>
-	/// <para>
-	///   <c>FwpmSubLayerEnum0</c> is a specific implementation of FwpmSubLayerEnum. See WFP Version-Independent Names and Targeting Specific
+	/// <c>FwpmSubLayerEnum0</c> is a specific implementation of FwpmSubLayerEnum. See WFP Version-Independent Names and Targeting Specific
 	/// Versions of Windows for more information.
 	/// </para>
 	/// </remarks>
@@ -685,9 +681,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmSubLayerGetByKey0")]
 	public static Win32Error FwpmSubLayerGetByKey0([In] HFWPENG engineHandle, in Guid key, out SafeFwpmStruct<FWPM_SUBLAYER0> subLayer) =>
 		FwpmGenericGetByKey(FwpmSubLayerGetByKey0, engineHandle, key, out subLayer);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmSubLayerGetByKey0([In] HFWPENG engineHandle, in Guid key, out SafeFwpmMem subLayer);
 
 	/// <summary>The <c>FwpmSubLayerGetSecurityInfoByKey0</c> function retrieves a copy of the security descriptor for a sublayer.</summary>
 	/// <param name="engineHandle">
@@ -1281,13 +1274,10 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmSystemPortsGet0")]
 	public static Win32Error FwpmSystemPortsGet0([In, Optional] HFWPENG engineHandle, out SafeFwpmStruct<FWPM_SYSTEM_PORTS0> sysPorts)
 	{
-		var err = FwpmSystemPortsGet0(engineHandle, out SafeFwpmMem mem);
+		Win32Error err = FwpmSystemPortsGet0(engineHandle, out SafeFwpmMem mem);
 		sysPorts = mem;
 		return err;
 	}
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmSystemPortsGet0([In, Optional] HFWPENG engineHandle, out SafeFwpmMem sysPorts);
 
 	/// <summary>
 	/// The <c>FwpmSystemPortsSubscribe0</c> function is used to request the delivery of notifications regarding a particular system port.
@@ -2422,16 +2412,19 @@ public static partial class FwpUClnt
 	/// <summary>
 	/// <para>The <c>IkeextSaEnum1</c> function returns the next page of results from the IKE/AuthIP security association (SA) enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>IkeextSaEnum1</c> is the specific implementation of IkeextSaEnum used in Windows 7. See WFP Version-Independent Names
+	/// <c>Note</c><c>IkeextSaEnum1</c> is the specific implementation of IkeextSaEnum used in Windows 7. See WFP Version-Independent Names
 	/// and Targeting Specific Versions of Windows for more information. For Windows 8, IkeextSaEnum2 is available. For Windows Vista,
 	/// IkeextSaEnum0 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: IKEEXT_SA_DETAILS1***</para>
-	/// <para>Addresses of the enumeration entries.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: IKEEXT_SA_DETAILS1***</para>
+	/// <para>Addresses of the enumeration entries.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: IKEEXT_SA_ENUM_TEMPLATE0*</para>
 	/// <para>Template for selectively restricting the enumeration.</para>
@@ -2439,31 +2432,27 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The SAs were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The SAs were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all IKE/AuthIP SA objects are returned.</para>
-	/// <para>
-	///   <c>IkeextSaEnum1</c> works on a snapshot of the SAs taken at the time the enumeration handle was created.</para>
+	/// <para><c>IkeextSaEnum1</c> works on a snapshot of the SAs taken at the time the enumeration handle was created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-ikeextsaenum1 DWORD IkeextSaEnum1( [in] HFWPENG engineHandle, [in]
 	// HANDLE enumHandle, [in] UINT32 numEntriesRequested, [out] IKEEXT_SA_DETAILS1 ***entries, [out] UINT32 *numEntriesReturned );
@@ -2535,16 +2524,19 @@ public static partial class FwpUClnt
 	/// <summary>
 	/// <para>The <c>IkeextSaEnum2</c> function returns the next page of results from the IKE/AuthIP security association (SA) enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>IkeextSaEnum2</c> is the specific implementation of IkeextSaEnum used in Windows 8. See WFP Version-Independent Names
+	/// <c>Note</c><c>IkeextSaEnum2</c> is the specific implementation of IkeextSaEnum used in Windows 8. See WFP Version-Independent Names
 	/// and Targeting Specific Versions of Windows for more information. For Windows 7, IkeextSaEnum1 is available. For Windows Vista,
 	/// IkeextSaEnum0 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: IKEEXT_SA_DETAILS2***</para>
-	/// <para>Addresses of the enumeration entries.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: IKEEXT_SA_DETAILS2***</para>
+	/// <para>Addresses of the enumeration entries.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: IKEEXT_SA_ENUM_TEMPLATE0*</para>
 	/// <para>Template for selectively restricting the enumeration.</para>
@@ -2552,31 +2544,27 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The SAs were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The SAs were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all IKE/AuthIP SA objects are returned.</para>
-	/// <para>
-	///   <c>IkeextSaEnum2</c> works on a snapshot of the SAs taken at the time the enumeration handle was created.</para>
+	/// <para><c>IkeextSaEnum2</c> works on a snapshot of the SAs taken at the time the enumeration handle was created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-ikeextsaenum2 DWORD IkeextSaEnum2( [in] HFWPENG engineHandle, [in]
 	// HANDLE enumHandle, [in] UINT32 numEntriesRequested, [out] IKEEXT_SA_DETAILS2 ***entries, [out] UINT32 *numEntriesReturned );
@@ -2634,9 +2622,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.IkeextSaGetById0")]
 	public static Win32Error IkeextSaGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmStruct<IKEEXT_SA_DETAILS0> sa) =>
 		FwpmGenericGetById(IkeextSaGetById0, engineHandle, id, out sa);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error IkeextSaGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem sa);
 
 	/// <summary>
 	/// <para>The <c>IkeextSaGetById1</c> function retrieves an IKE/AuthIP security association (SA) from the database.</para>
@@ -2697,13 +2682,10 @@ public static partial class FwpUClnt
 	public static Win32Error IkeextSaGetById1([In] HFWPENG engineHandle, ulong id, Guid? saLookupContext, out SafeFwpmStruct<IKEEXT_SA_DETAILS1> sa)
 	{
 		using SafeCoTaskMemStruct<Guid> pCtx = saLookupContext;
-		var err = IkeextSaGetById1(engineHandle, id, (IntPtr)pCtx, out var mem);
+		Win32Error err = IkeextSaGetById1(engineHandle, id, (IntPtr)pCtx, out SafeFwpmMem mem);
 		sa = mem;
 		return err;
 	}
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error IkeextSaGetById1([In] HFWPENG engineHandle, ulong id, [In, Optional] IntPtr saLookupContext, out SafeFwpmMem sa);
 
 	/// <summary>
 	/// <para>The <c>IkeextSaGetById2</c> function retrieves an IKE/AuthIP security association (SA) from the database.</para>
@@ -2764,13 +2746,10 @@ public static partial class FwpUClnt
 	public static Win32Error IkeextSaGetById2([In] HFWPENG engineHandle, ulong id, Guid? saLookupContext, out SafeFwpmStruct<IKEEXT_SA_DETAILS2> sa)
 	{
 		using SafeCoTaskMemStruct<Guid> pCtx = saLookupContext;
-		var err = IkeextSaGetById2(engineHandle, id, (IntPtr)pCtx, out var mem);
+		Win32Error err = IkeextSaGetById2(engineHandle, id, (IntPtr)pCtx, out SafeFwpmMem mem);
 		sa = mem;
 		return err;
 	}
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error IkeextSaGetById2([In] HFWPENG engineHandle, ulong id, [In, Optional] IntPtr saLookupContext, out SafeFwpmMem sa);
 
 	/// <summary>
 	/// The <c>IPsecDospGetSecurityInfo0</c> function retrieves a copy of the security descriptor for the IPsec DoS Protection database.
@@ -3547,9 +3526,6 @@ public static partial class FwpUClnt
 	public static Win32Error IPsecKeyManagersGet0([In] HFWPENG engineHandle, out SafeFwpmArray<IPSEC_KEY_MANAGER0> entries) =>
 		FwpmGenericGetSubs(IPsecKeyManagersGet0, engineHandle, out entries);
 
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error IPsecKeyManagersGet0([In] HFWPENG engineHandle, out SafeFwpmMem entries, out uint numEntries);
-
 	/// <summary>
 	/// The <c>IPsecKeyManagerUnregisterAndDelete0</c> function unregisters a Trusted Intermediary Agent (TIA) which had previously been
 	/// registered with IPsec.
@@ -4256,16 +4232,19 @@ public static partial class FwpUClnt
 	/// <summary>
 	/// <para>The <c>IPsecSaContextEnum0</c> function returns the next page of results from the IPsec security association (SA) context enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>IPsecSaContextEnum0</c> is the specific implementation of IPsecSaContextEnum used in Windows Vista. See WFP
+	/// <c>Note</c><c>IPsecSaContextEnum0</c> is the specific implementation of IPsecSaContextEnum used in Windows Vista. See WFP
 	/// Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows 7 and later,
 	/// IPsecSaContextEnum1 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: IPSEC_SA_CONTEXT0***</para>
-	/// <para>Addresses of the enumeration entries.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: IPSEC_SA_CONTEXT0***</para>
+	/// <para>Addresses of the enumeration entries.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: <c>const IPSEC_SA_CONTEXT_ENUM_TEMPLATE0*</c></para>
 	/// <para>Template to selectively restrict the enumeration.</para>
@@ -4273,25 +4252,22 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The IPsec SA contexts were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The IPsec SA contexts were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
@@ -4367,15 +4343,18 @@ public static partial class FwpUClnt
 	/// <summary>
 	/// <para>The <c>IPsecSaContextEnum1</c> function returns the next page of results from the IPsec security association (SA) context enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>IPsecSaContextEnum1</c> is the specific implementation of IPsecSaContextEnum used in Windows 7 and later. See WFP
+	/// <c>Note</c><c>IPsecSaContextEnum1</c> is the specific implementation of IPsecSaContextEnum used in Windows 7 and later. See WFP
 	/// Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows Vista, IPsecSaContextEnum0 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: IPSEC_SA_CONTEXT1***</para>
-	/// <para>Addresses of the enumeration entries.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: IPSEC_SA_CONTEXT1***</para>
+	/// <para>Addresses of the enumeration entries.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: <c>const IPSEC_SA_CONTEXT_ENUM_TEMPLATE0*</c></para>
 	/// <para>Template to selectively restrict the enumeration.</para>
@@ -4383,25 +4362,22 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The IPsec SA contexts were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The IPsec SA contexts were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
@@ -4512,9 +4488,6 @@ public static partial class FwpUClnt
 	public static Win32Error IPsecSaContextGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmStruct<IPSEC_SA_CONTEXT0> saContext) =>
 		FwpmGenericGetById(IPsecSaContextGetById0, engineHandle, id, out saContext);
 
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error IPsecSaContextGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem saContext);
-
 	/// <summary>
 	/// <para>The <c>IPsecSaContextGetById1</c> function retrieves an IPsec security association (SA) context.</para>
 	/// <para>
@@ -4565,9 +4538,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.IPsecSaContextGetById1")]
 	public static Win32Error IPsecSaContextGetById1([In] HFWPENG engineHandle, ulong id, out SafeFwpmStruct<IPSEC_SA_CONTEXT1> saContext) =>
 		FwpmGenericGetById(IPsecSaContextGetById1, engineHandle, id, out saContext);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error IPsecSaContextGetById1([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem saContext);
 
 	/// <summary>
 	/// <para>The <c>IPsecSaContextGetSpi0</c> function retrieves the security parameters index (SPI) for a security association (SA) context.</para>
@@ -4788,32 +4758,33 @@ public static partial class FwpUClnt
 	/// The <c>IPsecSaContextSubscriptionsGet0</c> function retrieves an array of all the current IPsec security association (SA) change
 	/// notification subscriptions.
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: <c>IPSEC_SA_CONTEXT_SUBSCRIPTION0***</c></para>
-	/// <para>The current IPsec SA notification subscriptions.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: <c>IPSEC_SA_CONTEXT_SUBSCRIPTION0***</c></para>
+	/// <para>The current IPsec SA notification subscriptions.</para>
+	/// </param>
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The subscriptions were retrieved successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The subscriptions were retrieved successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-ipsecsacontextsubscriptionsget0 DWORD
@@ -4821,9 +4792,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.IPsecSaContextSubscriptionsGet0")]
 	public static Win32Error IPsecSaContextSubscriptionsGet0([In] HFWPENG engineHandle, out SafeFwpmArray<IPSEC_SA_CONTEXT_SUBSCRIPTION0> entries) =>
 		FwpmGenericGetSubs(IPsecSaContextSubscriptionsGet0, engineHandle, out entries);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error IPsecSaContextSubscriptionsGet0([In] HFWPENG engineHandle, out SafeFwpmMem entries, out uint numEntries);
 
 	/// <summary>
 	/// The <c>IPsecSaContextUnsubscribe0</c> function is used to cancel an IPsec security association (SA) change subscription and stop
@@ -5313,15 +5281,18 @@ public static partial class FwpUClnt
 	/// <summary>
 	/// <para>The <c>IPsecSaEnum0</c> function returns the next page of results from the IPsec security association (SA) enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>IPsecSaEnum0</c> is the specific implementation of IPsecSaEnum used in Windows Vista. See WFP Version-Independent Names
+	/// <c>Note</c><c>IPsecSaEnum0</c> is the specific implementation of IPsecSaEnum used in Windows Vista. See WFP Version-Independent Names
 	/// and Targeting Specific Versions of Windows for more information. For Windows 7 and later, IPsecSaEnum1 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: IPSEC_SA_DETAILS0***</para>
-	/// <para>Addresses of the enumeration entries.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: IPSEC_SA_DETAILS0***</para>
+	/// <para>Addresses of the enumeration entries.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: IPSEC_SA_ENUM_TEMPLATE0*</para>
 	/// <para>Template to selectively restrict the enumeration.</para>
@@ -5329,31 +5300,27 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The SAs were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The SAs were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all IPsec SA objects are returned.</para>
-	/// <para>
-	///   <c>IPsecSaEnum0</c> works on a snapshot of the SAs taken at the time the enumeration handle was created.</para>
+	/// <para><c>IPsecSaEnum0</c> works on a snapshot of the SAs taken at the time the enumeration handle was created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-ipsecsaenum0 DWORD IPsecSaEnum0( [in] HFWPENG engineHandle, [in]
 	// HANDLE enumHandle, [in] UINT32 numEntriesRequested, [out] IPSEC_SA_DETAILS0 ***entries, [out] UINT32 *numEntriesReturned );
@@ -5425,15 +5392,18 @@ public static partial class FwpUClnt
 	/// <summary>
 	/// <para>The <c>IPsecSaEnum1</c> function returns the next page of results from the IPsec security association (SA) enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>IPsecSaEnum1</c> is the specific implementation of IPsecSaEnum used in Windows 7 and later. See WFP Version-Independent
+	/// <c>Note</c><c>IPsecSaEnum1</c> is the specific implementation of IPsecSaEnum used in Windows 7 and later. See WFP Version-Independent
 	/// Names and Targeting Specific Versions of Windows for more information. For Windows Vista, IPsecSaEnum0 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: IPSEC_SA_DETAILS1***</para>
-	/// <para>Addresses of the enumeration entries.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: IPSEC_SA_DETAILS1***</para>
+	/// <para>Addresses of the enumeration entries.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: IPSEC_SA_ENUM_TEMPLATE0*</para>
 	/// <para>Template to selectively restrict the enumeration.</para>
@@ -5441,35 +5411,58 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The SAs were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The SAs were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all IPsec SA objects are returned.</para>
-	/// <para>
-	///   <c>IPsecSaEnum1</c> works on a snapshot of the SAs taken at the time the enumeration handle was created.</para>
+	/// <para><c>IPsecSaEnum1</c> works on a snapshot of the SAs taken at the time the enumeration handle was created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-ipsecsaenum1 DWORD IPsecSaEnum1( [in] HFWPENG engineHandle, [in]
 	// HANDLE enumHandle, [in] UINT32 numEntriesRequested, [out] IPSEC_SA_DETAILS1 ***entries, [out] UINT32 *numEntriesReturned );
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.IPsecSaEnum1")]
 	public static Win32Error IPsecSaEnum1([In] HFWPENG engineHandle, out SafeFwpmArray<IPSEC_SA_DETAILS1> entries, IPSEC_SA_ENUM_TEMPLATE0? enumTemplate) =>
 		FwpmGenericEnum(IPsecSaCreateEnumHandle0, IPsecSaEnum1, IPsecSaDestroyEnumHandle0, engineHandle, out entries, enumTemplate);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmSubLayerGetByKey0([In] HFWPENG engineHandle, in Guid key, out SafeFwpmMem subLayer);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmSystemPortsGet0([In, Optional] HFWPENG engineHandle, out SafeFwpmMem sysPorts);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error IkeextSaGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem sa);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error IkeextSaGetById1([In] HFWPENG engineHandle, ulong id, [In, Optional] IntPtr saLookupContext, out SafeFwpmMem sa);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error IkeextSaGetById2([In] HFWPENG engineHandle, ulong id, [In, Optional] IntPtr saLookupContext, out SafeFwpmMem sa);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error IPsecKeyManagersGet0([In] HFWPENG engineHandle, out SafeFwpmMem entries, out uint numEntries);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error IPsecSaContextGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem saContext);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error IPsecSaContextGetById1([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem saContext);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error IPsecSaContextSubscriptionsGet0([In] HFWPENG engineHandle, out SafeFwpmMem entries, out uint numEntries);
 }

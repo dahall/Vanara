@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace Vanara.PInvoke;
 
@@ -375,6 +374,18 @@ public static partial class FwpUClnt
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	public delegate void IPSEC_SA_CONTEXT_CALLBACK0([In, Out] IntPtr context, in IPSEC_SA_CONTEXT_CHANGE0 change);
 
+	internal delegate Win32Error ArrayFunc(HFWPENG engineHandle, HANDLE enumHandle, uint numEntriesRequested, out SafeFwpmMem entries, out uint numEntriesReturned);
+
+	internal delegate Win32Error CreateEnumHandleFunc(HFWPENG engineHandle, IntPtr enumTemplate, out HANDLE enumHandle);
+
+	internal delegate Win32Error DestroyEnumHandleFunc(HFWPENG engineHandle, HANDLE enumHandle);
+
+	internal delegate Win32Error GetById<TIn>(HFWPENG engineHandle, TIn id, out SafeFwpmMem value) where TIn : struct;
+
+	internal delegate Win32Error GetByKey(HFWPENG engineHandle, in Guid key, out SafeFwpmMem value);
+
+	internal delegate Win32Error GetSubs(HFWPENG engineHandle, out SafeFwpmMem entries, out uint numEntriesReturned);
+
 	/// <summary>Flags for <c>FwpmDynamicKeywordSubscribe0</c>.</summary>
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmDynamicKeywordSubscribe0")]
 	[Flags]
@@ -444,6 +455,49 @@ public static partial class FwpUClnt
 
 		/// <summary>Updates the [IPSEC_SA_BUNDLE1](/windows/desktop/api/ipsectypes/ns-ipsectypes-ipsec_sa_bundle1) structure.</summary>
 		IPSEC_SA_BUNDLE_UPDATE_MM_SA_ID = 0x40,
+	}
+
+	internal static Win32Error FwpmGenericEnum<TElem, TTemplate>(CreateEnumHandleFunc create, ArrayFunc enum0, DestroyEnumHandleFunc destroy,
+			[In] HFWPENG engineHandle, out SafeFwpmArray<TElem> entries, TTemplate? template = null) where TElem : struct where TTemplate : struct
+	{
+		entries = new(IntPtr.Zero, 0, true);
+		using SafeCoTaskMemStruct<TTemplate> pTempl = template;
+		Win32Error err = create(engineHandle, pTempl, out HANDLE hEnum);
+		if (err.Succeeded)
+		{
+			try
+			{
+				err = enum0(engineHandle, hEnum, Kernel32.INFINITE, out SafeFwpmMem mem, out var c);
+				entries = new(mem, c, true);
+				return err;
+			}
+			finally
+			{
+				_=destroy(engineHandle, hEnum);
+			}
+		}
+		return err;
+	}
+
+	internal static Win32Error FwpmGenericGetById<T, TIn>(GetById<TIn> func, HFWPENG engineHandle, TIn id, out SafeFwpmStruct<T> value) where T : struct where TIn : struct
+	{
+		Win32Error err = func(engineHandle, id, out SafeFwpmMem mem);
+		value = mem;
+		return err;
+	}
+
+	internal static Win32Error FwpmGenericGetByKey<T>(GetByKey func, HFWPENG engineHandle, in Guid key, out SafeFwpmStruct<T> value) where T : struct
+	{
+		Win32Error err = func(engineHandle, key, out SafeFwpmMem mem);
+		value = mem;
+		return err;
+	}
+
+	internal static Win32Error FwpmGenericGetSubs<T>(GetSubs func, HFWPENG engineHandle, out SafeFwpmArray<T> entries) where T : struct
+	{
+		Win32Error err = func(engineHandle, out SafeFwpmMem mem, out var c);
+		entries = new(mem, c);
+		return err;
 	}
 
 	/// <summary>Provides a handle to a callout change subscription.</summary>
@@ -605,237 +659,18 @@ public static partial class FwpUClnt
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
-
-	/// <summary>
-	/// The <c>IPSEC_KEY_MANAGER_CALLBACKS0</c> structure specifies the set of callbacks which should be invoked by IPsec at various stages
-	/// of SA negotiation
-	/// </summary>
-	/// <remarks>
-	/// If the <c>IPSEC_KEY_MANAGER_FLAG_DICTATE_KEY</c> flag is set, all three callbacks must be specified; otherwise, only the
-	/// <c>keyNotify</c> callback should be specified.
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/ns-fwpmu-ipsec_key_manager_callbacks0 typedef struct
-	// _IPSEC_KEY_MANAGER_CALLBACKS0 { GUID reserved; UINT32 flags; IPSEC_KEY_MANAGER_KEY_DICTATION_CHECK0 keyDictationCheck;
-	// IPSEC_KEY_MANAGER_DICTATE_KEY0 keyDictation; IPSEC_KEY_MANAGER_NOTIFY_KEY0 keyNotify; } IPSEC_KEY_MANAGER_CALLBACKS0;
-	[PInvokeData("fwpmu.h", MSDNShortId = "NS:fwpmu._IPSEC_KEY_MANAGER_CALLBACKS0")]
+	/// <summary>Provides a handle to a subscriptor for dynamic keywords.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct IPSEC_KEY_MANAGER_CALLBACKS0
-	{
-		/// <summary>
-		/// <para>Type: <c>GUID</c></para>
-		/// <para>Reserved for system use.</para>
-		/// </summary>
-		public Guid reserved;
-
-		/// <summary>
-		/// <para>Type: <c>UINT32</c></para>
-		/// <para>Reserved for system use.</para>
-		/// </summary>
-		public uint flags;
-
-		/// <summary>
-		/// <para>Type: <c>IPSEC_KEY_MANAGER_KEY_DICTATION_CHECK0</c></para>
-		/// <para>
-		/// Specifies that the Trusted Intermediary Agent (TIA) will dictate the keys for the SA being negotiated. Only used if the
-		/// <c>IPSEC_DICTATE_KEY</c> flag is set.
-		/// </para>
-		/// </summary>
-		public IPSEC_KEY_MANAGER_KEY_DICTATION_CHECK0 keyDictationCheck;
-
-		/// <summary>
-		/// <para>Type: <c>IPSEC_KEY_MANAGER_DICTATE_KEY0</c></para>
-		/// <para>Allows the TIA to dictate the keys for the SA being negotiated. Only used if the <c>IPSEC_DICTATE_KEY</c> flag is set.</para>
-		/// </summary>
-		public IPSEC_KEY_MANAGER_DICTATE_KEY0 keyDictation;
-
-		/// <summary>
-		/// <para>Type: <c>IPSEC_KEY_MANAGER_NOTIFY_KEY0</c></para>
-		/// <para>Notifies the TIA of the keys for the SA being negotiated.</para>
-		/// </summary>
-		public IPSEC_KEY_MANAGER_NOTIFY_KEY0 keyNotify;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for memory returned by FWP functions that is disposed using <see cref="FwpmFreeMemory0"/>.</summary>
-	public class SafeFwpmArray<T> : SafeHANDLE, IReadOnlyList<T> where T : struct
-	{
-		private readonly bool byRef;
-
-		internal SafeFwpmArray(IntPtr preexistingHandle, SizeT count, bool byRef = false) : base(preexistingHandle, true)
-		{
-			Count = count; this.byRef = byRef;
-		}
-
-		internal SafeFwpmArray(SafeFwpmMem preexistingHandle, SizeT count, bool byRef = false) : this(preexistingHandle.ReleaseOwnership(), count, byRef) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class.</summary>
-		private SafeFwpmArray() : base(IntPtr.Zero, true) { }
-
-		/// <inheritdoc/>
-		public int Count { get; private set; }
-
-		/// <inheritdoc/>
-		public T this[int index] => index >= 0 && index < Count ? Enumerate().ElementAt(index) : throw new ArgumentOutOfRangeException(nameof(index));
-
-		/// <inheritdoc/>
-		public IEnumerator<T> GetEnumerator() => Enumerate().GetEnumerator();
-
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { FwpmFreeMemory0(ref handle); handle = default; return true; }
-
-		private IEnumerable<T> Enumerate() => byRef ? handle.ToIEnum<IntPtr>(Count).Select(p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)) : handle.ToIEnum<T>(Count);
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for memory returned by FWP functions that is disposed using <see cref="FwpmFreeMemory0"/>.</summary>
-	public class SafeFwpmMem : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeFwpmMem(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class.</summary>
-		private SafeFwpmMem() : base(IntPtr.Zero, true) { }
-
-		/// <summary>Extracts an array of elements from this memory.</summary>
-		/// <typeparam name="T">The type of the array element to return.</typeparam>
-		/// <param name="elemCount">The element count.</param>
-		/// <param name="byRef">
-		/// if set to <see langword="true"/> the array is extracted from a list of pointers to <typeparamref name="T"/>, rather than an array
-		/// of elements.
-		/// </param>
-		/// <returns>An array of type <typeparamref name="T"/> of length <paramref name="elemCount"/>.</returns>
-		public T[] ToArray<T>(SizeT elemCount, bool byRef) => byRef ? Array.ConvertAll(handle.ToArray<IntPtr>(elemCount) ?? new IntPtr[0], p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)) : handle.ToArray<T>(elemCount) ?? new T[0];
-
-		/// <summary>Extracts a structure from this memory.</summary>
-		/// <typeparam name="T">The type of the structure to extract.</typeparam>
-		/// <returns>The structure or <see langword="null"/> if the handle is invalid.</returns>
-		public T? ToStructure<T>() where T : struct => handle.ToNullableStructure<T>();
-
-		/// <summary>Performs an explicit conversion from <see cref="SafeFwpmMem"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
-		/// <param name="h">The safe handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator PSECURITY_DESCRIPTOR(SafeFwpmMem h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { FwpmFreeMemory0(ref handle); handle = default; return true; }
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for memory returned by FWP functions that is disposed using <see cref="FwpmFreeMemory0"/>.</summary>
-	public class SafeFwpmStruct<T> : SafeHANDLE where T : struct
-	{
-		internal SafeFwpmStruct(IntPtr preexistingHandle) : base(preexistingHandle, true)
-		{
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class.</summary>
-		private SafeFwpmStruct() : base(IntPtr.Zero, true) { }
-
-		/// <summary>Gets the nullable value of the structue pointed to in memory.</summary>
-		/// <value>The value.</value>
-		public T? Value => handle.ToNullableStructure<T>();
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeFwpmMem"/> to <see cref="SafeFwpmStruct{T}"/>.</summary>
-		/// <param name="p">The pointer.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafeFwpmStruct<T>(SafeFwpmMem p) => new(p.ReleaseOwnership());
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeFwpmStruct{T}"/> to <typeparamref name="T"/>.</summary>
-		/// <param name="h">The safe handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator T(SafeFwpmStruct<T> h) => h.Value.GetValueOrDefault();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { FwpmFreeMemory0(ref handle); handle = default; return true; }
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HFWPENG"/> that is disposed using <see cref="FwpmEngineClose0"/>.</summary>
-	public class SafeHFWPENG : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHFWPENG"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHFWPENG(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHFWPENG"/> class.</summary>
-		private SafeHFWPENG() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHFWPENG"/> to <see cref="HFWPENG"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFWPENG(SafeHFWPENG h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => FwpmEngineClose0(handle).Succeeded;
-	}
-
-	internal static Win32Error FwpmGenericEnum<TElem, TTemplate>(CreateEnumHandleFunc create, ArrayFunc enum0, DestroyEnumHandleFunc destroy,
-		[In] HFWPENG engineHandle, out SafeFwpmArray<TElem> entries, TTemplate? template = null) where TElem : struct where TTemplate : struct
-	{
-		entries = new(IntPtr.Zero, 0, true);
-		using SafeCoTaskMemStruct<TTemplate> pTempl = template;
-		var err = create(engineHandle, pTempl, out var hEnum);
-		if (err.Succeeded)
-		{
-			try
-			{
-				err = enum0(engineHandle, hEnum, Kernel32.INFINITE, out var mem, out var c);
-				entries = new(mem, c, true);
-				return err;
-			}
-			finally
-			{
-				destroy(engineHandle, hEnum);
-			}
-		}
-		return err;
-	}
-
-	internal static Win32Error FwpmGenericGetById<T, TIn>(GetById<TIn> func, HFWPENG engineHandle, TIn id, out SafeFwpmStruct<T> value) where T : struct where TIn : struct
-	{
-		var err = func(engineHandle, id, out SafeFwpmMem mem);
-		value = mem;
-		return err;
-	}
-
-	internal static Win32Error FwpmGenericGetByKey<T>(GetByKey func, HFWPENG engineHandle, in Guid key, out SafeFwpmStruct<T> value) where T : struct
-	{
-		var err = func(engineHandle, key, out SafeFwpmMem mem);
-		value = mem;
-		return err;
-	}
-
-	internal static Win32Error FwpmGenericGetSubs<T>(GetSubs func, HFWPENG engineHandle, out SafeFwpmArray<T> entries) where T : struct
-	{
-		var err = func(engineHandle, out var mem, out var c);
-		entries = new(mem, c);
-		return err;
-	}
-
-	internal delegate Win32Error ArrayFunc(HFWPENG engineHandle, HANDLE enumHandle, uint numEntriesRequested, out SafeFwpmMem entries, out uint numEntriesReturned);
-	internal delegate Win32Error CreateEnumHandleFunc(HFWPENG engineHandle, IntPtr enumTemplate, out HANDLE enumHandle);
-	internal delegate Win32Error DestroyEnumHandleFunc(HFWPENG engineHandle, HANDLE enumHandle);
-	internal delegate Win32Error GetById<TIn>(HFWPENG engineHandle, TIn id, out SafeFwpmMem value) where TIn : struct;
-	internal delegate Win32Error GetByKey(HFWPENG engineHandle, in Guid key, out SafeFwpmMem value);
-	internal delegate Win32Error GetSubs(HFWPENG engineHandle, out SafeFwpmMem entries, out uint numEntriesReturned);
-
-	/// <summary>Provides a handle to a IPsec SA context subscription.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HIPSECSACTXSUB : IHandle
+	public struct HFWPMDYNKEYSUB : IHandle
 	{
 		private readonly IntPtr handle;
 
-		/// <summary>Initializes a new instance of the <see cref="HIPSECSACTXSUB"/> struct.</summary>
+		/// <summary>Initializes a new instance of the <see cref="HFWPMDYNKEYSUB"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HIPSECSACTXSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+		public HFWPMDYNKEYSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HIPSECSACTXSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HIPSECSACTXSUB NULL => new(IntPtr.Zero);
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMDYNKEYSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HFWPMDYNKEYSUB NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -843,32 +678,32 @@ public static partial class FwpUClnt
 		/// <summary>Implements the operator !.</summary>
 		/// <param name="h1">The handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HIPSECSACTXSUB h1) => h1.IsNull;
+		public static bool operator !(HFWPMDYNKEYSUB h1) => h1.IsNull;
 
-		/// <summary>Performs an explicit conversion from <see cref="HIPSECSACTXSUB"/> to <see cref="IntPtr"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="HFWPMDYNKEYSUB"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HIPSECSACTXSUB h) => h.handle;
+		public static explicit operator IntPtr(HFWPMDYNKEYSUB h) => h.handle;
 
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HIPSECSACTXSUB"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMDYNKEYSUB"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HIPSECSACTXSUB(IntPtr h) => new(h);
+		public static implicit operator HFWPMDYNKEYSUB(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HIPSECSACTXSUB h1, HIPSECSACTXSUB h2) => !(h1 == h2);
+		public static bool operator !=(HFWPMDYNKEYSUB h1, HFWPMDYNKEYSUB h2) => !(h1 == h2);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HIPSECSACTXSUB h1, HIPSECSACTXSUB h2) => h1.Equals(h2);
+		public static bool operator ==(HFWPMDYNKEYSUB h1, HFWPMDYNKEYSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HIPSECSACTXSUB h && handle == h.handle;
+		public override bool Equals(object obj) => obj is HFWPMDYNKEYSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -877,18 +712,18 @@ public static partial class FwpUClnt
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
-	/// <summary>Provides a handle to an IPSec key manager registration.</summary>
+	/// <summary>Provides a handle to a filter subscription.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HIPSECKEYMGRREG : IHandle
+	public struct HFWPMFILTERSUB : IHandle
 	{
 		private readonly IntPtr handle;
 
-		/// <summary>Initializes a new instance of the <see cref="HIPSECKEYMGRREG"/> struct.</summary>
+		/// <summary>Initializes a new instance of the <see cref="HFWPMFILTERSUB"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HIPSECKEYMGRREG(IntPtr preexistingHandle) => handle = preexistingHandle;
+		public HFWPMFILTERSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HIPSECKEYMGRREG"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HIPSECKEYMGRREG NULL => new(IntPtr.Zero);
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMFILTERSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HFWPMFILTERSUB NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -896,32 +731,244 @@ public static partial class FwpUClnt
 		/// <summary>Implements the operator !.</summary>
 		/// <param name="h1">The handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HIPSECKEYMGRREG h1) => h1.IsNull;
+		public static bool operator !(HFWPMFILTERSUB h1) => h1.IsNull;
 
-		/// <summary>Performs an explicit conversion from <see cref="HIPSECKEYMGRREG"/> to <see cref="IntPtr"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="HFWPMFILTERSUB"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HIPSECKEYMGRREG h) => h.handle;
+		public static explicit operator IntPtr(HFWPMFILTERSUB h) => h.handle;
 
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HIPSECKEYMGRREG"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMFILTERSUB"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HIPSECKEYMGRREG(IntPtr h) => new(h);
+		public static implicit operator HFWPMFILTERSUB(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HIPSECKEYMGRREG h1, HIPSECKEYMGRREG h2) => !(h1 == h2);
+		public static bool operator !=(HFWPMFILTERSUB h1, HFWPMFILTERSUB h2) => !(h1 == h2);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HIPSECKEYMGRREG h1, HIPSECKEYMGRREG h2) => h1.Equals(h2);
+		public static bool operator ==(HFWPMFILTERSUB h1, HFWPMFILTERSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HIPSECKEYMGRREG h && handle == h.handle;
+		public override bool Equals(object obj) => obj is HFWPMFILTERSUB h && handle == h.handle;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a handle to a network event.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HFWPMNETEVTSUB : IHandle
+	{
+		private readonly IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HFWPMNETEVTSUB"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HFWPMNETEVTSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMNETEVTSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HFWPMNETEVTSUB NULL => new(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Implements the operator !.</summary>
+		/// <param name="h1">The handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !(HFWPMNETEVTSUB h1) => h1.IsNull;
+
+		/// <summary>Performs an explicit conversion from <see cref="HFWPMNETEVTSUB"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HFWPMNETEVTSUB h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMNETEVTSUB"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HFWPMNETEVTSUB(IntPtr h) => new(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HFWPMNETEVTSUB h1, HFWPMNETEVTSUB h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HFWPMNETEVTSUB h1, HFWPMNETEVTSUB h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HFWPMNETEVTSUB h && handle == h.handle;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a handle to a provider context subscription.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HFWPMPROVCTXSUB : IHandle
+	{
+		private readonly IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HFWPMPROVCTXSUB"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HFWPMPROVCTXSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMPROVCTXSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HFWPMPROVCTXSUB NULL => new(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Implements the operator !.</summary>
+		/// <param name="h1">The handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !(HFWPMPROVCTXSUB h1) => h1.IsNull;
+
+		/// <summary>Performs an explicit conversion from <see cref="HFWPMPROVCTXSUB"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HFWPMPROVCTXSUB h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMPROVCTXSUB"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HFWPMPROVCTXSUB(IntPtr h) => new(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HFWPMPROVCTXSUB h1, HFWPMPROVCTXSUB h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HFWPMPROVCTXSUB h1, HFWPMPROVCTXSUB h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HFWPMPROVCTXSUB h && handle == h.handle;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a handle to a provider subscription.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HFWPMPROVSUB : IHandle
+	{
+		private readonly IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HFWPMPROVSUB"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HFWPMPROVSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMPROVSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HFWPMPROVSUB NULL => new(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Implements the operator !.</summary>
+		/// <param name="h1">The handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !(HFWPMPROVSUB h1) => h1.IsNull;
+
+		/// <summary>Performs an explicit conversion from <see cref="HFWPMPROVSUB"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HFWPMPROVSUB h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMPROVSUB"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HFWPMPROVSUB(IntPtr h) => new(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HFWPMPROVSUB h1, HFWPMPROVSUB h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HFWPMPROVSUB h1, HFWPMPROVSUB h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HFWPMPROVSUB h && handle == h.handle;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a handle to a SubLayer subscription.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HFWPMSUBLAYERSUB : IHandle
+	{
+		private readonly IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HFWPMSUBLAYERSUB"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HFWPMSUBLAYERSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMSUBLAYERSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HFWPMSUBLAYERSUB NULL => new(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Implements the operator !.</summary>
+		/// <param name="h1">The handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !(HFWPMSUBLAYERSUB h1) => h1.IsNull;
+
+		/// <summary>Performs an explicit conversion from <see cref="HFWPMSUBLAYERSUB"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HFWPMSUBLAYERSUB h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMSUBLAYERSUB"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HFWPMSUBLAYERSUB(IntPtr h) => new(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HFWPMSUBLAYERSUB h1, HFWPMSUBLAYERSUB h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HFWPMSUBLAYERSUB h1, HFWPMSUBLAYERSUB h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HFWPMSUBLAYERSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1036,18 +1083,18 @@ public static partial class FwpUClnt
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
-	/// <summary>Provides a handle to a SubLayer subscription.</summary>
+	/// <summary>Provides a handle to an IPSec key manager registration.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HFWPMSUBLAYERSUB : IHandle
+	public struct HIPSECKEYMGRREG : IHandle
 	{
 		private readonly IntPtr handle;
 
-		/// <summary>Initializes a new instance of the <see cref="HFWPMSUBLAYERSUB"/> struct.</summary>
+		/// <summary>Initializes a new instance of the <see cref="HIPSECKEYMGRREG"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HFWPMSUBLAYERSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+		public HIPSECKEYMGRREG(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMSUBLAYERSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HFWPMSUBLAYERSUB NULL => new(IntPtr.Zero);
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HIPSECKEYMGRREG"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HIPSECKEYMGRREG NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1055,32 +1102,32 @@ public static partial class FwpUClnt
 		/// <summary>Implements the operator !.</summary>
 		/// <param name="h1">The handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HFWPMSUBLAYERSUB h1) => h1.IsNull;
+		public static bool operator !(HIPSECKEYMGRREG h1) => h1.IsNull;
 
-		/// <summary>Performs an explicit conversion from <see cref="HFWPMSUBLAYERSUB"/> to <see cref="IntPtr"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="HIPSECKEYMGRREG"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HFWPMSUBLAYERSUB h) => h.handle;
+		public static explicit operator IntPtr(HIPSECKEYMGRREG h) => h.handle;
 
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMSUBLAYERSUB"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HIPSECKEYMGRREG"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFWPMSUBLAYERSUB(IntPtr h) => new(h);
+		public static implicit operator HIPSECKEYMGRREG(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HFWPMSUBLAYERSUB h1, HFWPMSUBLAYERSUB h2) => !(h1 == h2);
+		public static bool operator !=(HIPSECKEYMGRREG h1, HIPSECKEYMGRREG h2) => !(h1 == h2);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HFWPMSUBLAYERSUB h1, HFWPMSUBLAYERSUB h2) => h1.Equals(h2);
+		public static bool operator ==(HIPSECKEYMGRREG h1, HIPSECKEYMGRREG h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMSUBLAYERSUB h && handle == h.handle;
+		public override bool Equals(object obj) => obj is HIPSECKEYMGRREG h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1089,18 +1136,18 @@ public static partial class FwpUClnt
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
-	/// <summary>Provides a handle to a provider subscription.</summary>
+	/// <summary>Provides a handle to a IPsec SA context subscription.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HFWPMPROVSUB : IHandle
+	public struct HIPSECSACTXSUB : IHandle
 	{
 		private readonly IntPtr handle;
 
-		/// <summary>Initializes a new instance of the <see cref="HFWPMPROVSUB"/> struct.</summary>
+		/// <summary>Initializes a new instance of the <see cref="HIPSECSACTXSUB"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HFWPMPROVSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+		public HIPSECSACTXSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMPROVSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HFWPMPROVSUB NULL => new(IntPtr.Zero);
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HIPSECSACTXSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HIPSECSACTXSUB NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1108,32 +1155,32 @@ public static partial class FwpUClnt
 		/// <summary>Implements the operator !.</summary>
 		/// <param name="h1">The handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HFWPMPROVSUB h1) => h1.IsNull;
+		public static bool operator !(HIPSECSACTXSUB h1) => h1.IsNull;
 
-		/// <summary>Performs an explicit conversion from <see cref="HFWPMPROVSUB"/> to <see cref="IntPtr"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="HIPSECSACTXSUB"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HFWPMPROVSUB h) => h.handle;
+		public static explicit operator IntPtr(HIPSECSACTXSUB h) => h.handle;
 
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMPROVSUB"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HIPSECSACTXSUB"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFWPMPROVSUB(IntPtr h) => new(h);
+		public static implicit operator HIPSECSACTXSUB(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HFWPMPROVSUB h1, HFWPMPROVSUB h2) => !(h1 == h2);
+		public static bool operator !=(HIPSECSACTXSUB h1, HIPSECSACTXSUB h2) => !(h1 == h2);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HFWPMPROVSUB h1, HFWPMPROVSUB h2) => h1.Equals(h2);
+		public static bool operator ==(HIPSECSACTXSUB h1, HIPSECSACTXSUB h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMPROVSUB h && handle == h.handle;
+		public override bool Equals(object obj) => obj is HIPSECSACTXSUB h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1142,214 +1189,173 @@ public static partial class FwpUClnt
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
-	/// <summary>Provides a handle to a provider context subscription.</summary>
+	/// <summary>
+	/// The <c>IPSEC_KEY_MANAGER_CALLBACKS0</c> structure specifies the set of callbacks which should be invoked by IPsec at various stages
+	/// of SA negotiation
+	/// </summary>
+	/// <remarks>
+	/// If the <c>IPSEC_KEY_MANAGER_FLAG_DICTATE_KEY</c> flag is set, all three callbacks must be specified; otherwise, only the
+	/// <c>keyNotify</c> callback should be specified.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/ns-fwpmu-ipsec_key_manager_callbacks0 typedef struct
+	// _IPSEC_KEY_MANAGER_CALLBACKS0 { GUID reserved; UINT32 flags; IPSEC_KEY_MANAGER_KEY_DICTATION_CHECK0 keyDictationCheck;
+	// IPSEC_KEY_MANAGER_DICTATE_KEY0 keyDictation; IPSEC_KEY_MANAGER_NOTIFY_KEY0 keyNotify; } IPSEC_KEY_MANAGER_CALLBACKS0;
+	[PInvokeData("fwpmu.h", MSDNShortId = "NS:fwpmu._IPSEC_KEY_MANAGER_CALLBACKS0")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HFWPMPROVCTXSUB : IHandle
+	public struct IPSEC_KEY_MANAGER_CALLBACKS0
 	{
-		private readonly IntPtr handle;
+		/// <summary>
+		/// <para>Type: <c>GUID</c></para>
+		/// <para>Reserved for system use.</para>
+		/// </summary>
+		public Guid reserved;
 
-		/// <summary>Initializes a new instance of the <see cref="HFWPMPROVCTXSUB"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HFWPMPROVCTXSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+		/// <summary>
+		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Reserved for system use.</para>
+		/// </summary>
+		public uint flags;
 
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMPROVCTXSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HFWPMPROVCTXSUB NULL => new(IntPtr.Zero);
+		/// <summary>
+		/// <para>Type: <c>IPSEC_KEY_MANAGER_KEY_DICTATION_CHECK0</c></para>
+		/// <para>
+		/// Specifies that the Trusted Intermediary Agent (TIA) will dictate the keys for the SA being negotiated. Only used if the
+		/// <c>IPSEC_DICTATE_KEY</c> flag is set.
+		/// </para>
+		/// </summary>
+		public IPSEC_KEY_MANAGER_KEY_DICTATION_CHECK0 keyDictationCheck;
 
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
+		/// <summary>
+		/// <para>Type: <c>IPSEC_KEY_MANAGER_DICTATE_KEY0</c></para>
+		/// <para>Allows the TIA to dictate the keys for the SA being negotiated. Only used if the <c>IPSEC_DICTATE_KEY</c> flag is set.</para>
+		/// </summary>
+		public IPSEC_KEY_MANAGER_DICTATE_KEY0 keyDictation;
 
-		/// <summary>Implements the operator !.</summary>
-		/// <param name="h1">The handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HFWPMPROVCTXSUB h1) => h1.IsNull;
-
-		/// <summary>Performs an explicit conversion from <see cref="HFWPMPROVCTXSUB"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HFWPMPROVCTXSUB h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMPROVCTXSUB"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFWPMPROVCTXSUB(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HFWPMPROVCTXSUB h1, HFWPMPROVCTXSUB h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HFWPMPROVCTXSUB h1, HFWPMPROVCTXSUB h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMPROVCTXSUB h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
+		/// <summary>
+		/// <para>Type: <c>IPSEC_KEY_MANAGER_NOTIFY_KEY0</c></para>
+		/// <para>Notifies the TIA of the keys for the SA being negotiated.</para>
+		/// </summary>
+		public IPSEC_KEY_MANAGER_NOTIFY_KEY0 keyNotify;
 	}
 
-	/// <summary>Provides a handle to a network event.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HFWPMNETEVTSUB : IHandle
+	/// <summary>Provides a <see cref="SafeHandle"/> for memory returned by FWP functions that is disposed using <see cref="FwpmFreeMemory0"/>.</summary>
+	public class SafeFwpmArray<T> : SafeHANDLE, IReadOnlyList<T> where T : struct
 	{
-		private readonly IntPtr handle;
+		private readonly bool byRef;
 
-		/// <summary>Initializes a new instance of the <see cref="HFWPMNETEVTSUB"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HFWPMNETEVTSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+		internal SafeFwpmArray(IntPtr preexistingHandle, SizeT count, bool byRef = false) : base(preexistingHandle, true)
+		{
+			Count = count; this.byRef = byRef;
+		}
 
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMNETEVTSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HFWPMNETEVTSUB NULL => new(IntPtr.Zero);
+		internal SafeFwpmArray(SafeFwpmMem preexistingHandle, SizeT count, bool byRef = false) : this(preexistingHandle.ReleaseOwnership(), count, byRef)
+		{
+		}
 
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Implements the operator !.</summary>
-		/// <param name="h1">The handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HFWPMNETEVTSUB h1) => h1.IsNull;
-
-		/// <summary>Performs an explicit conversion from <see cref="HFWPMNETEVTSUB"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HFWPMNETEVTSUB h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMNETEVTSUB"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFWPMNETEVTSUB(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HFWPMNETEVTSUB h1, HFWPMNETEVTSUB h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HFWPMNETEVTSUB h1, HFWPMNETEVTSUB h2) => h1.Equals(h2);
+		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class.</summary>
+		private SafeFwpmArray() : base(IntPtr.Zero, true) { }
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMNETEVTSUB h && handle == h.handle;
+		public int Count { get; private set; }
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
+		public T this[int index] => index >= 0 && index < Count ? Enumerate().ElementAt(index) : throw new ArgumentOutOfRangeException(nameof(index));
 
 		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
+		public IEnumerator<T> GetEnumerator() => Enumerate().GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		/// <inheritdoc/>
+		protected override bool InternalReleaseHandle() { FwpmFreeMemory0(ref handle); handle = default; return true; }
+
+		private IEnumerable<T> Enumerate() => byRef ? handle.ToIEnum<IntPtr>(Count).Select(p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)) : handle.ToIEnum<T>(Count);
 	}
 
-	/// <summary>Provides a handle to a filter subscription.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HFWPMFILTERSUB : IHandle
+	/// <summary>Provides a <see cref="SafeHandle"/> for memory returned by FWP functions that is disposed using <see cref="FwpmFreeMemory0"/>.</summary>
+	public class SafeFwpmMem : SafeHANDLE
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HFWPMFILTERSUB"/> struct.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class and assigns an existing handle.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HFWPMFILTERSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+		/// <param name="ownsHandle">
+		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+		/// </param>
+		public SafeFwpmMem(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMFILTERSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HFWPMFILTERSUB NULL => new(IntPtr.Zero);
+		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class.</summary>
+		private SafeFwpmMem() : base(IntPtr.Zero, true) { }
 
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Implements the operator !.</summary>
-		/// <param name="h1">The handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HFWPMFILTERSUB h1) => h1.IsNull;
-
-		/// <summary>Performs an explicit conversion from <see cref="HFWPMFILTERSUB"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
+		/// <summary>Performs an explicit conversion from <see cref="SafeFwpmMem"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
+		/// <param name="h">The safe handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HFWPMFILTERSUB h) => h.handle;
+		public static explicit operator PSECURITY_DESCRIPTOR(SafeFwpmMem h) => h.handle;
 
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMFILTERSUB"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFWPMFILTERSUB(IntPtr h) => new(h);
+		/// <summary>Extracts an array of elements from this memory.</summary>
+		/// <typeparam name="T">The type of the array element to return.</typeparam>
+		/// <param name="elemCount">The element count.</param>
+		/// <param name="byRef">
+		/// if set to <see langword="true"/> the array is extracted from a list of pointers to <typeparamref name="T"/>, rather than an array
+		/// of elements.
+		/// </param>
+		/// <returns>An array of type <typeparamref name="T"/> of length <paramref name="elemCount"/>.</returns>
+		public T[] ToArray<T>(SizeT elemCount, bool byRef) => byRef ? Array.ConvertAll(handle.ToArray<IntPtr>(elemCount) ?? new IntPtr[0], p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)) : handle.ToArray<T>(elemCount) ?? new T[0];
 
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HFWPMFILTERSUB h1, HFWPMFILTERSUB h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HFWPMFILTERSUB h1, HFWPMFILTERSUB h2) => h1.Equals(h2);
+		/// <summary>Extracts a structure from this memory.</summary>
+		/// <typeparam name="T">The type of the structure to extract.</typeparam>
+		/// <returns>The structure or <see langword="null"/> if the handle is invalid.</returns>
+		public T? ToStructure<T>() where T : struct => handle.ToNullableStructure<T>();
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMFILTERSUB h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
+		protected override bool InternalReleaseHandle() { FwpmFreeMemory0(ref handle); handle = default; return true; }
 	}
-	/// <summary>Provides a handle to a subscriptor for dynamic keywords.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HFWPMDYNKEYSUB : IHandle
+
+	/// <summary>Provides a <see cref="SafeHandle"/> for memory returned by FWP functions that is disposed using <see cref="FwpmFreeMemory0"/>.</summary>
+	public class SafeFwpmStruct<T> : SafeHANDLE where T : struct
 	{
-		private readonly IntPtr handle;
+		internal SafeFwpmStruct(IntPtr preexistingHandle) : base(preexistingHandle, true)
+		{
+		}
 
-		/// <summary>Initializes a new instance of the <see cref="HFWPMDYNKEYSUB"/> struct.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class.</summary>
+		private SafeFwpmStruct() : base(IntPtr.Zero, true) { }
+
+		/// <summary>Gets the nullable value of the structue pointed to in memory.</summary>
+		/// <value>The value.</value>
+		public T? Value => handle.ToNullableStructure<T>();
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeFwpmMem"/> to <see cref="SafeFwpmStruct{T}"/>.</summary>
+		/// <param name="p">The pointer.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator SafeFwpmStruct<T>(SafeFwpmMem p) => new(p.ReleaseOwnership());
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeFwpmStruct{T}"/> to <typeparamref name="T"/>.</summary>
+		/// <param name="h">The safe handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator T(SafeFwpmStruct<T> h) => h.Value.GetValueOrDefault();
+
+		/// <inheritdoc/>
+		protected override bool InternalReleaseHandle() { FwpmFreeMemory0(ref handle); handle = default; return true; }
+	}
+
+	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HFWPENG"/> that is disposed using <see cref="FwpmEngineClose0"/>.</summary>
+	public class SafeHFWPENG : SafeHANDLE
+	{
+		/// <summary>Initializes a new instance of the <see cref="SafeHFWPENG"/> class and assigns an existing handle.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HFWPMDYNKEYSUB(IntPtr preexistingHandle) => handle = preexistingHandle;
+		/// <param name="ownsHandle">
+		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+		/// </param>
+		public SafeHFWPENG(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HFWPMDYNKEYSUB"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HFWPMDYNKEYSUB NULL => new(IntPtr.Zero);
+		/// <summary>Initializes a new instance of the <see cref="SafeHFWPENG"/> class.</summary>
+		private SafeHFWPENG() : base() { }
 
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Implements the operator !.</summary>
-		/// <param name="h1">The handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HFWPMDYNKEYSUB h1) => h1.IsNull;
-
-		/// <summary>Performs an explicit conversion from <see cref="HFWPMDYNKEYSUB"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
+		/// <summary>Performs an implicit conversion from <see cref="SafeHFWPENG"/> to <see cref="HFWPENG"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HFWPMDYNKEYSUB h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFWPMDYNKEYSUB"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFWPMDYNKEYSUB(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HFWPMDYNKEYSUB h1, HFWPMDYNKEYSUB h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HFWPMDYNKEYSUB h1, HFWPMDYNKEYSUB h2) => h1.Equals(h2);
+		public static implicit operator HFWPENG(SafeHFWPENG h) => h.handle;
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HFWPMDYNKEYSUB h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
+		protected override bool InternalReleaseHandle() => FwpmEngineClose0(handle).Succeeded;
 	}
 }

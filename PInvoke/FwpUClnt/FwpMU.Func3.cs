@@ -375,41 +375,40 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmNetEventSubscriptionsGet0")]
 	public static extern Win32Error FwpmNetEventSubscriptionsGet0([In] HFWPENG engineHandle, out SafeFwpmMem entries, out uint numEntries);
 
-	/// <summary>
-	/// The <c>FwpmNetEventSubscriptionsGet0</c> function retrieves an array of all the current net event notification subscriptions.
-	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: FWPM_NET_EVENT_SUBSCRIPTION0***</para>
-	/// <para>The current net event notification subscriptions.</para></param>
+	/// <summary>The <c>FwpmNetEventSubscriptionsGet0</c> function retrieves an array of all the current net event notification subscriptions.</summary>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: FWPM_NET_EVENT_SUBSCRIPTION0***</para>
+	/// <para>The current net event notification subscriptions.</para>
+	/// </param>
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The subscriptions were retrieved successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The subscriptions were retrieved successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>The returned array (but not the individual entries in the array) must be freed through a call to FwpmFreeMemory0.</para>
 	/// <para>
-	///   <c>FwpmNetEventSubscriptionsGet0</c> is a specific implementation of FwpmNetEventSubscriptionsGet. See WFP Version-Independent Names
+	/// <c>FwpmNetEventSubscriptionsGet0</c> is a specific implementation of FwpmNetEventSubscriptionsGet. See WFP Version-Independent Names
 	/// and Targeting Specific Versions of Windows for more information.
 	/// </para>
 	/// </remarks>
@@ -1085,16 +1084,19 @@ public static partial class FwpUClnt
 	/// <summary>
 	/// <para>The <c>FwpmProviderContextEnum0</c> function returns the next page of results from the provider context enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>FwpmProviderContextEnum0</c> is the specific implementation of FwpmProviderContextEnum used in Windows Vista. See WFP
+	/// <c>Note</c><c>FwpmProviderContextEnum0</c> is the specific implementation of FwpmProviderContextEnum used in Windows Vista. See WFP
 	/// Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows 7, FwpmProviderContextEnum1 is
 	/// available. For Windows 8, FwpmProviderContextEnum2 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: FWPM_PROVIDER_CONTEXT0***</para>
-	/// <para>The returned provider context objects.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: FWPM_PROVIDER_CONTEXT0***</para>
+	/// <para>The returned provider context objects.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: <c>const FWPM_PROVIDER_CONTEXT_ENUM_TEMPLATE0*</c></para>
 	/// <para>Template to selectively restrict the enumeration.</para>
@@ -1102,31 +1104,27 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The provider contexts were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The provider contexts were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all provider contexts are returned.</para>
-	/// <para>
-	///   <c>FwpmProviderContextEnum0</c> works on a snapshot of the provider contexts taken at the time the enumeration handle was created.</para>
+	/// <para><c>FwpmProviderContextEnum0</c> works on a snapshot of the provider contexts taken at the time the enumeration handle was created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-fwpmprovidercontextenum0 DWORD FwpmProviderContextEnum0( [in]
 	// HFWPENG engineHandle, [in] HANDLE enumHandle, [in] UINT32 numEntriesRequested, [out] FWPM_PROVIDER_CONTEXT0 ***entries, [out] UINT32
@@ -1201,16 +1199,19 @@ public static partial class FwpUClnt
 	/// <summary>
 	/// <para>The <c>FwpmProviderContextEnum1</c> function returns the next page of results from the provider context enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>FwpmProviderContextEnum1</c> is the specific implementation of FwpmProviderContextEnum used in Windows 7. See WFP
+	/// <c>Note</c><c>FwpmProviderContextEnum1</c> is the specific implementation of FwpmProviderContextEnum used in Windows 7. See WFP
 	/// Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows 8, FwpmProviderContextEnum2 is
 	/// available. For Windows Vista, FwpmProviderContextEnum0 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: FWPM_PROVIDER_CONTEXT1***</para>
-	/// <para>The returned provider context objects.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: FWPM_PROVIDER_CONTEXT1***</para>
+	/// <para>The returned provider context objects.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: <c>const FWPM_PROVIDER_CONTEXT_ENUM_TEMPLATE0*</c></para>
 	/// <para>Template to selectively restrict the enumeration.</para>
@@ -1218,31 +1219,27 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The provider contexts were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The provider contexts were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all provider contexts are returned.</para>
-	/// <para>
-	///   <c>FwpmProviderContextEnum1</c> works on a snapshot of the provider contexts taken at the time the enumeration handle was created.</para>
+	/// <para><c>FwpmProviderContextEnum1</c> works on a snapshot of the provider contexts taken at the time the enumeration handle was created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-fwpmprovidercontextenum1 DWORD FwpmProviderContextEnum1( [in]
 	// HFWPENG engineHandle, [in] HANDLE enumHandle, [in] UINT32 numEntriesRequested, [out] FWPM_PROVIDER_CONTEXT1 ***entries, [out] UINT32
@@ -1317,16 +1314,19 @@ public static partial class FwpUClnt
 	/// <summary>
 	/// <para>The <c>FwpmProviderContextEnum2</c> function returns the next page of results from the provider context enumerator.</para>
 	/// <para>
-	///   <c>Note</c>
-	///   <c>FwpmProviderContextEnum2</c> is the specific implementation of FwpmProviderContextEnum used in Windows 8. See WFP
+	/// <c>Note</c><c>FwpmProviderContextEnum2</c> is the specific implementation of FwpmProviderContextEnum used in Windows 8. See WFP
 	/// Version-Independent Names and Targeting Specific Versions of Windows for more information. For Windows 7, FwpmProviderContextEnum1 is
 	/// available. For Windows Vista, FwpmProviderContextEnum0 is available.
 	/// </para>
 	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="entries"><para>Type: FWPM_PROVIDER_CONTEXT2***</para>
-	/// <para>The returned provider context objects.</para></param>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="entries">
+	/// <para>Type: FWPM_PROVIDER_CONTEXT2***</para>
+	/// <para>The returned provider context objects.</para>
+	/// </param>
 	/// <param name="enumTemplate">
 	/// <para>Type: <c>const FWPM_PROVIDER_CONTEXT_ENUM_TEMPLATE0*</c></para>
 	/// <para>Template to selectively restrict the enumeration.</para>
@@ -1334,31 +1334,27 @@ public static partial class FwpUClnt
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The provider contexts were enumerated successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The provider contexts were enumerated successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>If <c>enumTemplate</c> is <c>NULL</c>, all provider contexts are returned.</para>
-	/// <para>
-	///   <c>FwpmProviderContextEnum2</c> works on a snapshot of the provider contexts taken at the time the enumeration handle was created.</para>
+	/// <para><c>FwpmProviderContextEnum2</c> works on a snapshot of the provider contexts taken at the time the enumeration handle was created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-fwpmprovidercontextenum2 DWORD FwpmProviderContextEnum2( [in]
 	// HFWPENG engineHandle, [in] HANDLE enumHandle, [in] UINT32 numEntriesRequested, [out] FWPM_PROVIDER_CONTEXT2 ***entries, [out] UINT32
@@ -1421,9 +1417,6 @@ public static partial class FwpUClnt
 	public static Win32Error FwpmProviderContextGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmStruct<FWPM_PROVIDER_CONTEXT0> providerContext) =>
 		FwpmGenericGetById(FwpmProviderContextGetById0, engineHandle, id, out providerContext);
 
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmProviderContextGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem providerContext);
-
 	/// <summary>
 	/// <para>The <c>FwpmProviderContextGetById1</c> function retrieves a provider context.</para>
 	/// <para>
@@ -1477,9 +1470,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmProviderContextGetById1")]
 	public static Win32Error FwpmProviderContextGetById1([In] HFWPENG engineHandle, ulong id, out SafeFwpmStruct<FWPM_PROVIDER_CONTEXT1> providerContext) =>
 		FwpmGenericGetById(FwpmProviderContextGetById1, engineHandle, id, out providerContext);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmProviderContextGetById1([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem providerContext);
 
 	/// <summary>
 	/// <para>The <c>FwpmProviderContextGetById2</c> function retrieves a provider context.</para>
@@ -1535,9 +1525,6 @@ public static partial class FwpUClnt
 	public static Win32Error FwpmProviderContextGetById2([In] HFWPENG engineHandle, ulong id, out SafeFwpmStruct<FWPM_PROVIDER_CONTEXT2> providerContext) =>
 		FwpmGenericGetById(FwpmProviderContextGetById2, engineHandle, id, out providerContext);
 
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmProviderContextGetById2([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem providerContext);
-
 	/// <summary>The <c>FwpmProviderContextGetByKey0</c> function retrieves a provider context.</summary>
 	/// <param name="engineHandle">
 	/// <para>Type: <c>HANDLE</c></para>
@@ -1585,9 +1572,6 @@ public static partial class FwpUClnt
 	public static Win32Error FwpmProviderContextGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmStruct<FWPM_PROVIDER_CONTEXT0> providerContext) =>
 		FwpmGenericGetByKey(FwpmProviderContextGetByKey0, engineHandle, key, out providerContext);
 
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmProviderContextGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem providerContext);
-
 	/// <summary>The <c>FwpmProviderContextGetByKey1</c> function retrieves a provider context.</summary>
 	/// <param name="engineHandle">
 	/// <para>Type: <c>HANDLE</c></para>
@@ -1634,9 +1618,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmProviderContextGetByKey1")]
 	public static Win32Error FwpmProviderContextGetByKey1([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmStruct<FWPM_PROVIDER_CONTEXT1> providerContext) =>
 		FwpmGenericGetByKey(FwpmProviderContextGetByKey1, engineHandle, key, out providerContext);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmProviderContextGetByKey1([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem providerContext);
 
 	/// <summary>
 	/// <para>The <c>FwpmProviderContextGetByKey2</c> function retrieves a provider context.</para>
@@ -1691,9 +1672,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmProviderContextGetByKey2")]
 	public static Win32Error FwpmProviderContextGetByKey2([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmStruct<FWPM_PROVIDER_CONTEXT2> providerContext) =>
 		FwpmGenericGetByKey(FwpmProviderContextGetByKey2, engineHandle, key, out providerContext);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmProviderContextGetByKey2([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem providerContext);
 
 	/// <summary>
 	/// The <c>FwpmProviderContextGetSecurityInfoByKey0</c> function retrieves a copy of the security descriptor for a provider context object.
@@ -2637,9 +2615,6 @@ public static partial class FwpUClnt
 	public static Win32Error FwpmProviderGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmStruct<FWPM_PROVIDER0> provider) =>
 		FwpmGenericGetByKey(FwpmProviderGetByKey0, engineHandle, key, out provider);
 
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmProviderGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem provider);
-
 	/// <summary>The <c>FwpmProviderGetSecurityInfoByKey0</c> function retrieves a copy of the security descriptor for a provider object.</summary>
 	/// <param name="engineHandle">
 	/// <para>Type: <c>HANDLE</c></para>
@@ -3269,4 +3244,25 @@ public static partial class FwpUClnt
 	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmProviderUnsubscribeChanges0")]
 	public static extern Win32Error FwpmProviderUnsubscribeChanges0([In] HFWPENG engineHandle, [In] HFWPMPROVSUB changeHandle);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmProviderContextGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem providerContext);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmProviderContextGetById1([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem providerContext);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmProviderContextGetById2([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem providerContext);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmProviderContextGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem providerContext);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmProviderContextGetByKey1([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem providerContext);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmProviderContextGetByKey2([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem providerContext);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmProviderGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem provider);
 }

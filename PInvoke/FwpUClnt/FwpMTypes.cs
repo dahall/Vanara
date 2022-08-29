@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke;
 
@@ -2376,7 +2375,7 @@ public static partial class FwpUClnt
 		/// </summary>
 		public FWP_AF reserved1;
 
-		private uint pad1;
+		private readonly uint pad1;
 
 		/// <summary>A FWP_BYTE_ARRAY6 structure.</summary>
 		public FWP_BYTE_ARRAY6 reserved2;
@@ -2402,7 +2401,7 @@ public static partial class FwpUClnt
 		/// <summary>The VLAN (802.1p/q) VID, CFI, and Priority bits marshaled into a 16-bit value.</summary>
 		public ushort reserved9;
 
-		private uint pad2;
+		private readonly uint pad2;
 
 		/// <summary>The interface LUID corresponding to the network interface with which this packet is associated.</summary>
 		public ulong reserved10;
@@ -3217,26 +3216,31 @@ public static partial class FwpUClnt
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_MM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_MM_FAILURE0> ikeMmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_IKEEXT_QM_FAILURE0 structure that contains information about an IKE quick mode failure.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_QM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_QM_FAILURE0> ikeQmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_IKEEXT_EM_FAILURE0 structure that contains information about an IKE user mode failure.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_EM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_EM_FAILURE0> ikeEmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_CLASSIFY_DROP0 structure that contains information about a drop event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_CLASSIFY_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_DROP0> classifyDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_IPSEC_KERNEL_DROP0 structure that contains information about an IPsec kernel drop event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IPSEC_KERNEL_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_KERNEL_DROP0> ipsecDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_IPSEC_DOSP_DROP0 structure that contains information about an IPsec DoS Protection event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_IPSEC_DOSP_DROP</c>.</para>
@@ -3245,7 +3249,8 @@ public static partial class FwpUClnt
 		/// <para>Available only in Windows Server 2008 R2, Windows 7, and later.</para>
 		/// </para>
 		/// </summary>
-		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_DOSP_DROP0> idpDrop { get => new(ptr, false); set => ptr = value; }	}
+		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_DOSP_DROP0> idpDrop { get => new(ptr, false); set => ptr = value; }
+	}
 
 	/// <summary>The <c>FWPM_NET_EVENT1</c> structure contains information about all event types. FWPM_NET_EVENT0 is available.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmtypes/ns-fwpmtypes-fwpm_net_event1 typedef struct FWPM_NET_EVENT1_ {
@@ -3269,31 +3274,37 @@ public static partial class FwpUClnt
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_MM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_MM_FAILURE1> ikeMmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_IKEEXT_QM_FAILURE0 structure that contains information about an IKE quick mode failure.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_QM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_QM_FAILURE0> ikeQmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_IKEEXT_EM_FAILURE1 structure that contains information about an IKE user mode failure.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_EM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_EM_FAILURE1> ikeEmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_CLASSIFY_DROP1 structure that contains information about a drop event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_CLASSIFY_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_DROP1> classifyDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_IPSEC_KERNEL_DROP0 structure that contains information about an IPsec kernel drop event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IPSEC_KERNEL_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_KERNEL_DROP0> ipsecDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Address of an FWPM_NET_EVENT_IPSEC_DOSP_DROP0 structure that contains information about an IPsec DoS Protection event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_IPSEC_DOSP_DROP</c>.</para>
 		/// </summary>
-		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_DOSP_DROP0> idpDrop { get => new(ptr, false); set => ptr = value; }	}
+		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_DOSP_DROP0> idpDrop { get => new(ptr, false); set => ptr = value; }
+	}
 
 	/// <summary>The <c>FWPM_NET_EVENT2</c> structure contains information about all event types. FWPM_NET_EVENT0 is available.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmtypes/ns-fwpmtypes-fwpm_net_event2 typedef struct FWPM_NET_EVENT2_ {
@@ -3326,56 +3337,66 @@ public static partial class FwpUClnt
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_MM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_MM_FAILURE1> ikeMmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_NET_EVENT_IKEEXT_QM_FAILURE0</c>*</para>
 		/// <para>Information about an IKE quick mode failure.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_QM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_QM_FAILURE0> ikeQmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_NET_EVENT_IKEEXT_EM_FAILURE1</c>*</para>
 		/// <para>Information about an IKE user mode failure.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_EM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_EM_FAILURE1> ikeEmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_NET_EVENT_CLASSIFY_DROP2</c>*</para>
 		/// <para>Information about a drop event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_CLASSIFY_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_DROP2> classifyDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_NET_EVENT_IPSEC_KERNEL_DROP0</c>*</para>
 		/// <para>Information about an IPsec kernel drop event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IPSEC_KERNEL_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_KERNEL_DROP0> ipsecDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_NET_EVENT_IPSEC_DOSP_DROP0</c>*</para>
 		/// <para>Information about an IPsec DoS Protection event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_IPSEC_DOSP_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_DOSP_DROP0> idpDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_NET_EVENT_CLASSIFY_ALLOW0</c>*</para>
 		/// <para>Information about an allow event.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_ALLOW0> classifyAllow { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_NET_EVENT_CAPABILITY_DROP0</c>*</para>
 		/// <para>Information about a capability-related drop event.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CAPABILITY_DROP0> capabilityDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_NET_EVENT_CAPABILITY_ALLOW0</c>*</para>
 		/// <para>Information about a capability-related allow event.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CAPABILITY_ALLOW0> capabilityAllow { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_NET_EVENT_CLASSIFY_DROP_MAC0</c>*</para>
 		/// <para>Information about a MAC layer drop event.</para>
 		/// </summary>
-		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_DROP_MAC0> classifyDropMac { get => new(ptr, false); set => ptr = value; }	}
+		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_DROP_MAC0> classifyDropMac { get => new(ptr, false); set => ptr = value; }
+	}
 
 	/// <summary>
 	/// The <c>FWPM_NET_EVENT3</c> structure contains information about all event types. FWPM_NET_EVENT2 is available. For Windows 7,
@@ -3404,39 +3425,49 @@ public static partial class FwpUClnt
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_MM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_MM_FAILURE1> ikeMmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Information about an IKE quick mode failure.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_QM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_QM_FAILURE0> ikeQmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Information about an IKE user mode failure.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IKEEXT_EM_FAILURE</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IKEEXT_EM_FAILURE1> ikeEmFailure { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Information about a drop event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_CLASSIFY_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_DROP2> classifyDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Information about an IPsec kernel drop event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_TYPE_IPSEC_KERNEL_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_KERNEL_DROP0> ipsecDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Information about an IPsec DoS Protection event.</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_NET_EVENT_IPSEC_DOSP_DROP</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_IPSEC_DOSP_DROP0> idpDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>Information about an allow event.</summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_ALLOW0> classifyAllow { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>Information about a capability-related drop event.</summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CAPABILITY_DROP0> capabilityDrop { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>Information about a capability-related allow event.</summary>
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CAPABILITY_ALLOW0> capabilityAllow { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>Information about a MAC layer drop event.</summary>
-		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_DROP_MAC0> classifyDropMac { get => new(ptr, false); set => ptr = value; }	}
+		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_DROP_MAC0> classifyDropMac { get => new(ptr, false); set => ptr = value; }
+	}
 
 	/// <summary>The <c>FWPM_PROVIDER_CHANGE0</c> structure specifies a change notification dispatched to subscribers.</summary>
 	/// <remarks>
@@ -3724,61 +3755,73 @@ public static partial class FwpUClnt
 		/// <para>See IPSEC_KEYING_POLICY0 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_KEYING_POLICY0> keyingPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKE_QM_TRANSPORT_CONTEXT</c>.</para>
 		/// <para>See IPSEC_TRANSPORT_POLICY1 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TRANSPORT_POLICY1> ikeQmTransportPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKE_QM_TUNNEL_CONTEXT</c>.</para>
 		/// <para>See IPSEC_TUNNEL_POLICY1 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TUNNEL_POLICY1> ikeQmTunnelPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_AUTHIP_QM_TRANSPORT_CONTEXT</c>.</para>
 		/// <para>See IPSEC_TRANSPORT_POLICY1 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TRANSPORT_POLICY1> authipQmTransportPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_AUTHIP_QM_TUNNEL_CONTEXT</c>.</para>
 		/// <para>See IPSEC_TUNNEL_POLICY1 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TUNNEL_POLICY1> authipQmTunnelPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKE_MM_CONTEXT</c>.</para>
 		/// <para>See IKEEXT_POLICY1 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IKEEXT_POLICY1> ikeMmPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_AUTHIP_MM_CONTEXT</c>.</para>
 		/// <para>See IKEEXT_POLICY1 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IKEEXT_POLICY1> authIpMmPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_GENERAL_CONTEXT</c>.</para>
 		/// <para>See FWP_BYTE_BLOB for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWP_BYTE_BLOB> dataBuffer { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_CLASSIFY_OPTIONS_CONTEXT</c>.</para>
 		/// <para>See FWPM_CLASSIFY_OPTIONS0 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_CLASSIFY_OPTIONS0> classifyOptions { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKEV2_QM_TUNNEL_CONTEXT</c>.</para>
 		/// <para>See IPSEC_TUNNEL_POLICY1 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TUNNEL_POLICY1> ikeV2QmTunnelPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKEV2_MM_CONTEXT</c>.</para>
 		/// <para>See IKEEXT_POLICY1 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IKEEXT_POLICY1> ikeV2MmPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_DOSP_CONTEXT</c>.</para>
 		/// <para>See IPSEC_DOSP_OPTIONS0 for more information.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_DOSP_OPTIONS0> idpOptions { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// LUID identifying the context. This is the context value stored in the <c>FWPS_FILTER1</c> structure for filters that reference a
 		/// provider context. The <c>FWPS_FILTER1</c> structure is documented in the WDK.
@@ -3864,66 +3907,79 @@ public static partial class FwpUClnt
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_KEYING_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_KEYING_POLICY1> keyingPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IPSEC_TRANSPORT_POLICY2</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKE_QM_TRANSPORT_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TRANSPORT_POLICY2> ikeQmTransportPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IPSEC_TUNNEL_POLICY2</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKE_QM_TUNNEL_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TUNNEL_POLICY2> ikeQmTunnelPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IPSEC_TRANSPORT_POLICY2</c>*</para>
 		/// <para>[case()][unique]</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TRANSPORT_POLICY2> authipQmTransportPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IPSEC_TUNNEL_POLICY2</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_AUTHIP_QM_TRANSPORT_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TUNNEL_POLICY2> authipQmTunnelPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IKEEXT_POLICY2</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKE_MM_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IKEEXT_POLICY2> ikeMmPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IKEEXT_POLICY2</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_AUTHIP_MM_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IKEEXT_POLICY2> authIpMmPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWP_BYTE_BLOB</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_GENERAL_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWP_BYTE_BLOB> dataBuffer { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>FWPM_CLASSIFY_OPTIONS0</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_CLASSIFY_OPTIONS_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<FWPM_CLASSIFY_OPTIONS0> classifyOptions { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IPSEC_TUNNEL_POLICY2</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKEV2_QM_TUNNEL_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TUNNEL_POLICY2> ikeV2QmTunnelPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IPSEC_TRANSPORT_POLICY2</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKEV2_QM_TRANSPORT_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_TRANSPORT_POLICY2> ikeV2QmTransportPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IKEEXT_POLICY2</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_IKEV2_MM_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IKEEXT_POLICY2> ikeV2MmPolicy { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>IPSEC_DOSP_OPTIONS0</c>*</para>
 		/// <para>Available when <c>type</c> is <c>FWPM_IPSEC_DOSP_CONTEXT</c>.</para>
 		/// </summary>
 		public SafeCoTaskMemStruct<IPSEC_DOSP_OPTIONS0> idpOptions { get => new(ptr, false); set => ptr = value; }
+
 		/// <summary>
 		/// <para>Type: <c>UINT64</c></para>
 		/// <para>
@@ -4480,10 +4536,10 @@ public static partial class FwpUClnt
 		/// <summary>The number of ports of the specified type.</summary>
 		public uint numPorts;
 
-		/// <summary>Array of IP port numbers (<see cref="ushort"/>) for the specified type.</summary>
+		/// <summary>Array of IP port numbers ( <see cref="ushort"/>) for the specified type.</summary>
 		public IntPtr ports;
 
-		/// <summary>Array of IP port numbers (<see cref="ushort"/>) for the specified type.</summary>
+		/// <summary>Array of IP port numbers ( <see cref="ushort"/>) for the specified type.</summary>
 		public ushort[] GetPorts() => ports.ToArray<ushort>((int)numPorts);
 	}
 

@@ -355,7 +355,7 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmEngineGetOption0")]
 	public static Win32Error FwpmEngineGetOption0<TOut>([In] HFWPENG engineHandle, [In] FWPM_ENGINE_OPTION option, out TOut value) where TOut : struct
 	{
-		var err = FwpmEngineGetOption0(engineHandle, option, out SafeFwpmMem val);
+		Win32Error err = FwpmEngineGetOption0(engineHandle, option, out SafeFwpmMem val);
 		value = val.ToStructure<TOut>().GetValueOrDefault();
 		return err;
 	}
@@ -1177,47 +1177,48 @@ public static partial class FwpUClnt
 	public static Win32Error FwpmFilterEnum0([In] HFWPENG engineHandle, out SafeFwpmArray<FWPM_FILTER0> entries, FWPM_FILTER_ENUM_TEMPLATE0? enumTemplate = null) =>
 		FwpmGenericEnum(FwpmFilterCreateEnumHandle0, FwpmFilterEnum0, FwpmFilterDestroyEnumHandle0, engineHandle, out entries, enumTemplate);
 
-	/// <summary>
-	/// The <c>FwpmFilterGetById0</c> function retrieves a filter object.
-	/// </summary>
-	/// <param name="engineHandle"><para>Type: <c>HANDLE</c></para>
-	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para></param>
-	/// <param name="id"><para>Type: <c>UINT64</c></para>
+	/// <summary>The <c>FwpmFilterGetById0</c> function retrieves a filter object.</summary>
+	/// <param name="engineHandle">
+	/// <para>Type: <c>HANDLE</c></para>
+	/// <para>Handle for an open session to the filter engine. Call FwpmEngineOpen0 to open a session to the filter engine.</para>
+	/// </param>
+	/// <param name="id">
+	/// <para>Type: <c>UINT64</c></para>
 	/// <para>
 	/// A runtime identifier for the desired object. This identifier was received from the system when the application called FwpmFilterAdd0
 	/// for this object.
-	/// </para></param>
-	/// <param name="filter"><para>Type: FWPM_FILTER0**</para>
-	/// <para>The filter information.</para></param>
+	/// </para>
+	/// </param>
+	/// <param name="filter">
+	/// <para>Type: FWPM_FILTER0**</para>
+	/// <para>The filter information.</para>
+	/// </param>
 	/// <returns>
 	/// <para>Type: <c>DWORD</c></para>
 	/// <list type="table">
-	///   <listheader>
-	///     <term>Return code/value</term>
-	///     <term>Description</term>
-	///   </listheader>
-	///   <item>
-	///     <term>
-	///       <c>ERROR_SUCCESS</c> 0</term>
-	///     <term>The filter was retrieved successfully.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
-	///     <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
-	///   </item>
-	///   <item>
-	///     <term>
-	///       <c>RPC_* error code</c> 0x80010001—0x80010122</term>
-	///     <term>Failure to communicate with the remote or local firewall engine.</term>
-	///   </item>
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_SUCCESS</c> 0</term>
+	/// <term>The filter was retrieved successfully.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>FWP_E_* error code</c> 0x80320001—0x80320039</term>
+	/// <term>A Windows Filtering Platform (WFP) specific error. See WFP Error Codes for details.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>RPC_* error code</c> 0x80010001—0x80010122</term>
+	/// <term>Failure to communicate with the remote or local firewall engine.</term>
+	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>The caller must free the returned object by a call to FwpmFreeMemory0.</para>
 	/// <para>The caller needs FWPM_ACTRL_READ access to the filter. See Access Control for more information.</para>
 	/// <para>
-	///   <c>FwpmFilterGetById0</c> is a specific implementation of FwpmFilterGetById. See WFP Version-Independent Names and Targeting Specific
+	/// <c>FwpmFilterGetById0</c> is a specific implementation of FwpmFilterGetById. See WFP Version-Independent Names and Targeting Specific
 	/// Versions of Windows for more information.
 	/// </para>
 	/// </remarks>
@@ -1226,9 +1227,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmFilterGetById0")]
 	public static Win32Error FwpmFilterGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmStruct<FWPM_FILTER0> filter) =>
 		FwpmGenericGetById(FwpmFilterGetById0, engineHandle, id, out filter);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmFilterGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem filter);
 
 	/// <summary>The <c>FwpmFilterGetByKey0</c> function retrieves a filter object.</summary>
 	/// <param name="engineHandle">
@@ -1280,9 +1278,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmFilterGetByKey0")]
 	public static Win32Error FwpmFilterGetByKey0([In] HFWPENG engineHandle, in Guid key, out SafeFwpmStruct<FWPM_FILTER0> filter) =>
 		FwpmGenericGetByKey(FwpmFilterGetByKey0, engineHandle, key, out filter);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmFilterGetByKey0([In] HFWPENG engineHandle, in Guid key, out SafeFwpmMem filter);
 
 	/// <summary>The <c>FwpmFilterGetSecurityInfoByKey0</c> function retrieves a copy of the security descriptor for a filter object.</summary>
 	/// <param name="engineHandle">
@@ -1719,14 +1714,11 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmGetAppIdFromFileName0")]
 	public static Win32Error FwpmGetAppIdFromFileName0([MarshalAs(UnmanagedType.LPWStr)] string fileName, out byte[] appId)
 	{
-		var err = FwpmGetAppIdFromFileName0(fileName, out SafeFwpmMem mem);
-		var blob = mem.ToStructure<FWP_BYTE_BLOB>().GetValueOrDefault();
+		Win32Error err = FwpmGetAppIdFromFileName0(fileName, out SafeFwpmMem mem);
+		FWP_BYTE_BLOB blob = mem.ToStructure<FWP_BYTE_BLOB>().GetValueOrDefault();
 		appId = err.Succeeded ? blob.data.ToArray<byte>((int)blob.size) : null;
 		return err;
 	}
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmGetAppIdFromFileName0([MarshalAs(UnmanagedType.LPWStr)] string fileName, out SafeFwpmMem appId);
 
 	/// <summary>
 	/// <para>The <c>FwpmIPsecTunnelAdd1</c> function adds a new Internet Protocol Security (IPsec) tunnel mode policy to the system.</para>
@@ -2479,9 +2471,6 @@ public static partial class FwpUClnt
 	public static Win32Error FwpmLayerGetById0([In] HFWPENG engineHandle, [In] ushort id, out SafeFwpmStruct<FWPM_LAYER0> layer) =>
 		FwpmGenericGetById(FwpmLayerGetById0, engineHandle, id, out layer);
 
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmLayerGetById0([In] HFWPENG engineHandle, [In] ushort id, out SafeFwpmMem layer);
-
 	/// <summary>The <c>FwpmLayerGetByKey0</c> function retrieves a layer object.</summary>
 	/// <param name="engineHandle">
 	/// <para>Type: <c>HANDLE</c></para>
@@ -2529,9 +2518,6 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmLayerGetByKey0")]
 	public static Win32Error FwpmLayerGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmStruct<FWPM_LAYER0> layer) =>
 		FwpmGenericGetByKey(FwpmLayerGetByKey0, engineHandle, key, out layer);
-
-	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
-	private static extern Win32Error FwpmLayerGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem layer);
 
 	/// <summary>The <c>FwpmLayerGetSecurityInfoByKey0</c> function retrieves a copy of the security descriptor for a layer object.</summary>
 	/// <param name="engineHandle">
@@ -2848,4 +2834,19 @@ public static partial class FwpUClnt
 	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmLayerSetSecurityInfoByKey0")]
 	public static extern Win32Error FwpmLayerSetSecurityInfoByKey0([In] HFWPENG engineHandle, [In, Optional] IntPtr key, SECURITY_INFORMATION securityInfo,
 		[In, Optional] PSID sidOwner, [In, Optional] PSID sidGroup, [In, Optional] PACL dacl, [In, Optional] PACL sacl);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmFilterGetById0([In] HFWPENG engineHandle, ulong id, out SafeFwpmMem filter);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmFilterGetByKey0([In] HFWPENG engineHandle, in Guid key, out SafeFwpmMem filter);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmGetAppIdFromFileName0([MarshalAs(UnmanagedType.LPWStr)] string fileName, out SafeFwpmMem appId);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmLayerGetById0([In] HFWPENG engineHandle, [In] ushort id, out SafeFwpmMem layer);
+
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error FwpmLayerGetByKey0([In] HFWPENG engineHandle, [In] in Guid key, out SafeFwpmMem layer);
 }
