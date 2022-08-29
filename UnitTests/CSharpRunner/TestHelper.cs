@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -17,7 +18,7 @@ namespace Vanara.PInvoke.Tests
 		private static readonly Lazy<JsonSerializerSettings> jsonSet = new(() =>
 			new JsonSerializerSettings()
 			{
-				Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter() },
+				Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter(), new FILETIMEConverter() },
 				ReferenceLoopHandling = ReferenceLoopHandling.Serialize
 			});
 
@@ -77,7 +78,7 @@ namespace Vanara.PInvoke.Tests
 				case null:
 					return "(null)";
 
-				case System.Runtime.InteropServices.ComTypes.FILETIME ft:
+				case FILETIME ft:
 					value = ft.ToDateTime();
 					goto Simple;
 
@@ -113,6 +114,13 @@ Simple:
 			public override SizeT ReadJson(JsonReader reader, Type objectType, SizeT existingValue, bool hasExistingValue, JsonSerializer serializer) => reader.Value is ulong ul ? new SizeT(ul) : new SizeT(0);
 
 			public override void WriteJson(JsonWriter writer, SizeT value, JsonSerializer serializer) => writer.WriteValue(value.Value);
+		}
+
+		private class FILETIMEConverter : JsonConverter<FILETIME>
+		{
+			public override FILETIME ReadJson(JsonReader reader, Type objectType, FILETIME existingValue, bool hasExistingValue, JsonSerializer serializer) => reader.Value is DateTime dt ? dt.ToFileTimeStruct() : default(FILETIME);
+
+			public override void WriteJson(JsonWriter writer, FILETIME value, JsonSerializer serializer) => writer.WriteValue(value.ToDateTime());
 		}
 	}
 }
