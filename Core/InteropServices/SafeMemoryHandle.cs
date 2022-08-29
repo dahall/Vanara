@@ -622,6 +622,18 @@ namespace Vanara.InteropServices
 		}
 
 		/// <summary>
+		/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
+		/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
+		/// pointers to other objects
+		/// </summary>
+		/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
+		public void AddSubReference(params ISafeMemoryHandle[] children)
+		{
+			references ??= new List<ISafeMemoryHandle>();
+			references.AddRange(children);
+		}
+
+		/// <summary>
 		/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
 		/// call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note>
 		/// </summary>
