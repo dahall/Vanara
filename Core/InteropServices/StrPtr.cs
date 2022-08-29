@@ -83,6 +83,11 @@ namespace Vanara.InteropServices
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator GuidPtr(IntPtr p) => new() { ptr = p };
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="GuidPtr"/>.</summary>
+		/// <param name="p">The safe memory handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator GuidPtr(SafeAllocatedMemoryHandleBase p) => new() { ptr = p };
+
 		/// <summary>Determines whether two specified instances of <see cref="GuidPtr"/> are equal.</summary>
 		/// <param name="left">The first pointer or handle to compare.</param>
 		/// <param name="right">The second pointer or handle to compare.</param>
@@ -192,6 +197,11 @@ namespace Vanara.InteropServices
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator StrPtrAnsi(IntPtr p) => new() { ptr = p };
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeLPSTR"/> to <see cref="StrPtrAnsi"/>.</summary>
+		/// <param name="p">The safe memory handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator StrPtrAnsi(SafeLPSTR p) => new() { ptr = p };
+
 		/// <summary>Determines whether two specified instances of <see cref="StrPtrAnsi"/> are equal.</summary>
 		/// <param name="left">The first pointer or handle to compare.</param>
 		/// <param name="right">The second pointer or handle to compare.</param>
@@ -264,6 +274,11 @@ namespace Vanara.InteropServices
 		/// <param name="p">The pointer.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator StrPtrAuto(IntPtr p) => new() { ptr = p };
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeLPTSTR"/> to <see cref="StrPtrAuto"/>.</summary>
+		/// <param name="p">The safe memory handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator StrPtrAuto(SafeLPTSTR p) => new() { ptr = p };
 
 		/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
 		/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
@@ -373,6 +388,11 @@ namespace Vanara.InteropServices
 		/// <param name="p">The pointer.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator StrPtrUni(IntPtr p) => new() { ptr = p };
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeLPWSTR"/> to <see cref="StrPtrUni"/>.</summary>
+		/// <param name="p">The safe memory handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator StrPtrUni(SafeLPWSTR p) => new() { ptr = p };
 
 		/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
 		/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
