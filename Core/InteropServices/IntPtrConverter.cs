@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Vanara.Extensions;
-using Vanara.Extensions.Reflection;
-using Vanara.PInvoke;
 
 namespace Vanara.InteropServices
 {
@@ -61,6 +55,10 @@ namespace Vanara.InteropServices
 						if (destType.IsBlittable())
 						{
 							return GetBlittable(destType);
+						}
+						if (destType.IsNullable())
+						{
+							return ptr != IntPtr.Zero ? InteropExtensions.GetValueType(ptr, Nullable.GetUnderlyingType(destType)) : Activator.CreateInstance(destType, true);
 						}
 						if (destType.IsSerializable)
 						{
