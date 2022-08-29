@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>fwpuclnt.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Filtering Platform (FwpUClnt.dll).</Description>
+    <AssemblyName>Vanara.PInvoke.FwpUClnt</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;FwpUClnt;Windows Filtering Platform</PackageTags>
+    <PackageReleaseNotes />
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Rpc\Vanara.PInvoke.Rpc.csproj" />
+    <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
+  </ItemGroup>
+</Project>
