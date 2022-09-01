@@ -9,8 +9,20 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;NdfApi;network diagnostic framework</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+NdfCancelIncident NdfCloseIncident NdfCreateConnectivityIncident NdfCreateDNSIncident NdfCreateGroupingIncident NdfCreateInboundIncident NdfCreateIncident NdfCreateNetConnectionIncident NdfCreatePnrpIncident NdfCreateSharingIncident NdfCreateWebIncident NdfCreateWebIncidentEx NdfCreateWinSockIncident NdfDiagnoseIncident NdfExecuteDiagnosis NdfGetTraceFile NdfRepairIncident NdfRepairIncidentEx NdfRunDllDiagnoseIncident NdfRunDllDiagnoseNetConnectionIncident NdfRunDllDiagnoseWithAnswerFile NdfRunDllDuplicateIPDefendingSystem NdfRunDllDuplicateIPOffendingSystem NdfRunDllHelpTopic
+
+Structures
+DiagnosticsInfo DIAG_SOCKADDR HelperAttributeInfo HELPER_ATTRIBUTE HYPOTHESIS HypothesisResult LIFE_TIME NDFHANDLE OCTET_STRING RepairInfo RepairInfoEx RootCauseInfo ShellCommandInfo UiInfo
+
+Interfaces
+INetDiagExtensibleHelper INetDiagHelper INetDiagHelperEx INetDiagHelperInfo INetDiagHelperUtilFactory
+
+</PackageReleaseNotes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

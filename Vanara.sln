@@ -361,29 +361,29 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Usp10", "PIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Usp10", "UnitTests\PInvoke\Usp10\Usp10.csproj", "{E21DCE50-E36E-41B3-BE57-D908ACBE88E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.AMSI", "PInvoke\AMSI\Vanara.PInvoke.AMSI.csproj", "{129B31E3-1247-4D73-AA45-52D0B2B4C6FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.AMSI", "PInvoke\AMSI\Vanara.PInvoke.AMSI.csproj", "{129B31E3-1247-4D73-AA45-52D0B2B4C6FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMSI", "UnitTests\PInvoke\AMSI\AMSI.csproj", "{496DFA71-4C35-49AE-95C1-4B802DB91615}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AMSI", "UnitTests\PInvoke\AMSI\AMSI.csproj", "{496DFA71-4C35-49AE-95C1-4B802DB91615}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WinHTTP", "PInvoke\WinHTTP\Vanara.PInvoke.WinHTTP.csproj", "{B8A58F84-9707-4B9C-9AE0-04DDE718E232}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinHTTP", "UnitTests\PInvoke\WinHTTP\WinHTTP.csproj", "{20FB9D67-52BB-4C82-A5FE-BCA09B69CAC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinHTTP", "UnitTests\PInvoke\WinHTTP\WinHTTP.csproj", "{20FB9D67-52BB-4C82-A5FE-BCA09B69CAC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.Management", "Management\Vanara.Management.csproj", "{15BD3A93-7852-48D4-BF65-9F9550DF92D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.Management", "Management\Vanara.Management.csproj", "{15BD3A93-7852-48D4-BF65-9F9550DF92D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.SensorsApi", "PInvoke\SensorsApi\Vanara.PInvoke.SensorsApi.csproj", "{B44CF830-6D89-4D8A-AF71-E08B160415B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorsApi", "UnitTests\PInvoke\SensorsApi\SensorsApi.csproj", "{464F881D-BAF4-4D21-94E9-116B1DD6CCA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SensorsApi", "UnitTests\PInvoke\SensorsApi\SensorsApi.csproj", "{464F881D-BAF4-4D21-94E9-116B1DD6CCA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.HttpApi", "PInvoke\HttpApi\Vanara.PInvoke.HttpApi.csproj", "{69A67DD1-E9B7-4BF1-A63F-A58639C86161}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.HttpApi", "PInvoke\HttpApi\Vanara.PInvoke.HttpApi.csproj", "{69A67DD1-E9B7-4BF1-A63F-A58639C86161}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WinSCard", "PInvoke\WinSCard\Vanara.PInvoke.WinSCard.csproj", "{7CF3A457-04EB-4C0F-91E0-3F2CE9B3EBFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WinSCard", "PInvoke\WinSCard\Vanara.PInvoke.WinSCard.csproj", "{7CF3A457-04EB-4C0F-91E0-3F2CE9B3EBFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinSCard", "UnitTests\PInvoke\WinSCard\WinSCard.csproj", "{72132986-CF35-4CFD-B2BD-8AF006968093}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinSCard", "UnitTests\PInvoke\WinSCard\WinSCard.csproj", "{72132986-CF35-4CFD-B2BD-8AF006968093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.ClfsW32", "PInvoke\ClfsW32\Vanara.PInvoke.ClfsW32.csproj", "{71DF588B-8CCA-4323-9C2D-FDA172148449}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.ClfsW32", "PInvoke\ClfsW32\Vanara.PInvoke.ClfsW32.csproj", "{71DF588B-8CCA-4323-9C2D-FDA172148449}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClfsW32", "UnitTests\PInvoke\ClfsW32\ClfsW32.csproj", "{B0BA98D1-9BB6-4186-BA6D-F17BB252883F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClfsW32", "UnitTests\PInvoke\ClfsW32\ClfsW32.csproj", "{B0BA98D1-9BB6-4186-BA6D-F17BB252883F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.NdfApi", "PInvoke\NdfApi\Vanara.PInvoke.NdfApi.csproj", "{0862170F-1F8D-44D1-9457-E6D054BAD93F}"
 EndProject
@@ -391,7 +391,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NdfApi", "UnitTests\PInvoke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.FwpUClnt", "PInvoke\FwpUClnt\Vanara.PInvoke.FwpUClnt.csproj", "{ACF2422D-F6E1-4D9E-A154-19D526A22E0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FwpUClnt", "UnitTests\PInvoke\FwpUClnt\FwpUClnt.csproj", "{60F5654B-1B09-4229-B012-6255F7599B39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FwpUClnt", "UnitTests\PInvoke\FwpUClnt\FwpUClnt.csproj", "{60F5654B-1B09-4229-B012-6255F7599B39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.DOSvc", "PInvoke\DOSvc\Vanara.PInvoke.DOSvc.csproj", "{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2558,6 +2560,24 @@ Global
 		{60F5654B-1B09-4229-B012-6255F7599B39}.Release|x64.Build.0 = Release|Any CPU
 		{60F5654B-1B09-4229-B012-6255F7599B39}.Release|x86.ActiveCfg = Release|Any CPU
 		{60F5654B-1B09-4229-B012-6255F7599B39}.Release|x86.Build.0 = Release|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Debug|x64.Build.0 = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Debug|x86.Build.0 = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.DebugNoTests|x64.ActiveCfg = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.DebugNoTests|x64.Build.0 = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.DebugNoTests|x86.ActiveCfg = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.DebugNoTests|x86.Build.0 = Debug|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Release|x64.ActiveCfg = Release|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Release|x64.Build.0 = Release|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Release|x86.ActiveCfg = Release|Any CPU
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2729,6 +2749,7 @@ Global
 		{E3C25763-BFB1-4B20-870F-A5A7B209CB24} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{ACF2422D-F6E1-4D9E-A154-19D526A22E0F} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{60F5654B-1B09-4229-B012-6255F7599B39} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
+		{60A7E1CF-66D0-48DA-8EBB-31471DF7FD6F} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

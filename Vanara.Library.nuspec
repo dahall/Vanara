@@ -35,12 +35,14 @@
       <dependency id="Vanara.PInvoke.DbgHelp" version="3.4.7" />
       <dependency id="Vanara.PInvoke.Dhcp" version="3.4.7" />
       <dependency id="Vanara.PInvoke.DnsApi" version="3.4.7" />
+      <dependency id="Vanara.PInvoke.DOSvc" version="3.4.7" />
       <dependency id="Vanara.PInvoke.Drt" version="3.4.7" />
       <dependency id="Vanara.PInvoke.DwmApi" version="3.4.7" />
       <dependency id="Vanara.PInvoke.EnhancedStorage" version="3.4.7" />
       <dependency id="Vanara.PInvoke.FhSvcCtl" version="3.4.7" />
       <dependency id="Vanara.PInvoke.FirewallApi" version="3.4.7" />
       <dependency id="Vanara.PInvoke.FunDisc" version="3.4.7" />
+      <dependency id="Vanara.PInvoke.FwpUClnt" version="3.4.7" />
       <dependency id="Vanara.PInvoke.Gdi32" version="3.4.7" />
       <dependency id="Vanara.PInvoke.Graphics" version="3.4.7" />
       <dependency id="Vanara.PInvoke.HttpApi" version="3.4.7" />
@@ -55,6 +57,7 @@
       <dependency id="Vanara.PInvoke.Mpr" version="3.4.7" />
       <dependency id="Vanara.PInvoke.Msi" version="3.4.7" />
       <dependency id="Vanara.PInvoke.Multimedia" version="3.4.7" />
+      <dependency id="Vanara.PInvoke.NdfApi" version="3.4.7" />
       <dependency id="Vanara.PInvoke.NetApi32" version="3.4.7" />
       <dependency id="Vanara.PInvoke.NetListMgr" version="3.4.7" />
       <dependency id="Vanara.PInvoke.NewDev" version="3.4.7" />

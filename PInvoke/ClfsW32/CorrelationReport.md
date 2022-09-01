@@ -43,7 +43,7 @@ Native Method | Header | Managed Method
 [LsnNull](https://www.google.com/search?num=5&q=LsnNull+site%3Adocs.microsoft.com) | clfs.h | [Vanara.PInvoke.ClfsW32.LsnNull](https://github.com/dahall/Vanara/search?l=C%23&q=LsnNull)  
 [LsnRecordSequence](https://www.google.com/search?num=5&q=LsnRecordSequence+site%3Adocs.microsoft.com) | clfsw32.h | [Vanara.PInvoke.ClfsW32.LsnRecordSequence](https://github.com/dahall/Vanara/search?l=C%23&q=LsnRecordSequence)  
 [PrepareLogArchive](https://www.google.com/search?num=5&q=PrepareLogArchive+site%3Adocs.microsoft.com) | clfsw32.h | [Vanara.PInvoke.ClfsW32.PrepareLogArchive](https://github.com/dahall/Vanara/search?l=C%23&q=PrepareLogArchive)  
-[QueryLogPolicy](https://www.google.com/search?num=5&q=QueryLogPolicy+site%3Adocs.microsoft.com) | clfsmgmtw32.h | [Vanara.PInvoke.ClfsW32.QueryLogPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=QueryLogPolicy)  
+[QueryLogPolicy](https://www.google.com/search?num=5&q=QueryLogPolicy+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ClfsW32.QueryLogPolicy](https://github.com/dahall/Vanara/search?l=C%23&q=QueryLogPolicy)  
 [ReadLogArchiveMetadata](https://www.google.com/search?num=5&q=ReadLogArchiveMetadata+site%3Adocs.microsoft.com) | clfsw32.h | [Vanara.PInvoke.ClfsW32.ReadLogArchiveMetadata](https://github.com/dahall/Vanara/search?l=C%23&q=ReadLogArchiveMetadata)  
 [ReadLogNotification](https://www.google.com/search?num=5&q=ReadLogNotification+site%3Adocs.microsoft.com) | clfsmgmtw32.h | [Vanara.PInvoke.ClfsW32.ReadLogNotification](https://github.com/dahall/Vanara/search?l=C%23&q=ReadLogNotification)  
 [ReadLogRecord](https://www.google.com/search?num=5&q=ReadLogRecord+site%3Adocs.microsoft.com) | clfsw32.h | [Vanara.PInvoke.ClfsW32.ReadLogRecord](https://github.com/dahall/Vanara/search?l=C%23&q=ReadLogRecord)  
@@ -86,6 +86,7 @@ Native Structure | Header | Managed Structure
 [AUTOGROW](https://www.google.com/search?num=5&q=AUTOGROW+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ClfsW32.CLFS_MGMT_POLICY.POLICYPARAMETERS.AUTOGROW](https://github.com/dahall/Vanara/search?l=C%23&q=AUTOGROW)  
 [AUTOSHRINK](https://www.google.com/search?num=5&q=AUTOSHRINK+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ClfsW32.CLFS_MGMT_POLICY.POLICYPARAMETERS.AUTOSHRINK](https://github.com/dahall/Vanara/search?l=C%23&q=AUTOSHRINK)  
 [CLFS_MGMT_NOTIFICATION](https://www.google.com/search?num=5&q=CLFS_MGMT_NOTIFICATION+site%3Adocs.microsoft.com) | clfsmgmt.h | [Vanara.PInvoke.ClfsW32.CLFS_MGMT_NOTIFICATION](https://github.com/dahall/Vanara/search?l=C%23&q=CLFS_MGMT_NOTIFICATION)  
+[CLFS_MGMT_POLICY](https://www.google.com/search?num=5&q=CLFS_MGMT_POLICY+site%3Adocs.microsoft.com) | clfsmgmt.h | [Vanara.PInvoke.ClfsW32.CLFS_MGMT_POLICY](https://github.com/dahall/Vanara/search?l=C%23&q=CLFS_MGMT_POLICY)  
 [CLFS_NODE_ID](https://www.google.com/search?num=5&q=CLFS_NODE_ID+site%3Adocs.microsoft.com) | clfs.h | [Vanara.PInvoke.ClfsW32.CLFS_NODE_ID](https://github.com/dahall/Vanara/search?l=C%23&q=CLFS_NODE_ID)  
 [CLS_ARCHIVE_DESCRIPTOR](https://www.google.com/search?num=5&q=CLS_ARCHIVE_DESCRIPTOR+site%3Adocs.microsoft.com) | clfs.h | [Vanara.PInvoke.ClfsW32.CLS_ARCHIVE_DESCRIPTOR](https://github.com/dahall/Vanara/search?l=C%23&q=CLS_ARCHIVE_DESCRIPTOR)  
 [CLS_CONTAINER_INFORMATION](https://www.google.com/search?num=5&q=CLS_CONTAINER_INFORMATION+site%3Adocs.microsoft.com) | clfs.h | [Vanara.PInvoke.ClfsW32.CLS_CONTAINER_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=CLS_CONTAINER_INFORMATION)  
@@ -105,6 +106,7 @@ Native Structure | Header | Managed Structure
 [NEWCONTAINERPREFIX](https://www.google.com/search?num=5&q=NEWCONTAINERPREFIX+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ClfsW32.CLFS_MGMT_POLICY.POLICYPARAMETERS.NEWCONTAINERPREFIX](https://github.com/dahall/Vanara/search?l=C%23&q=NEWCONTAINERPREFIX)  
 [NEWCONTAINERSIZE](https://www.google.com/search?num=5&q=NEWCONTAINERSIZE+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ClfsW32.CLFS_MGMT_POLICY.POLICYPARAMETERS.NEWCONTAINERSIZE](https://github.com/dahall/Vanara/search?l=C%23&q=NEWCONTAINERSIZE)  
 [NEWCONTAINERSUFFIX](https://www.google.com/search?num=5&q=NEWCONTAINERSUFFIX+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ClfsW32.CLFS_MGMT_POLICY.POLICYPARAMETERS.NEWCONTAINERSUFFIX](https://github.com/dahall/Vanara/search?l=C%23&q=NEWCONTAINERSUFFIX)  
+[POLICYPARAMETERS](https://www.google.com/search?num=5&q=POLICYPARAMETERS+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ClfsW32.CLFS_MGMT_POLICY.POLICYPARAMETERS](https://github.com/dahall/Vanara/search?l=C%23&q=POLICYPARAMETERS)  
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  

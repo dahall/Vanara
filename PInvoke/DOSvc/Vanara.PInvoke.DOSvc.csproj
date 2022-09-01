@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>dosvc.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Delivery Optimization (dosvc.dll).</Description>
+    <AssemblyName>Vanara.PInvoke.DOSvc</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;dosvc;Delivery Optimization</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Structures
+DOSwarmStats DO_DOWNLOAD_ENUM_CATEGORY DO_DOWNLOAD_RANGE DO_DOWNLOAD_RANGES_INFO DO_DOWNLOAD_STATUS
+
+Interfaces
+IDODownload IDODownloadStatusCallback IDOManager
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\BITS\Vanara.PInvoke.BITS.csproj" />
+    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>
