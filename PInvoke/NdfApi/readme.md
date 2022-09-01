@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Network Di
 
 - Includes methods from ndfapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NdfApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NdfApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NdfApi)  
-### Methods - 70% API coverage (17 of 24 functions)  
+### Methods - 100% API coverage (17 of 17 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [NdfCancelIncident](https://www.google.com/search?num=5&q=NdfCancelIncident+site%3Adocs.microsoft.com) | ndfapi.h | [Vanara.PInvoke.NdfApi.NdfCancelIncident](https://github.com/dahall/Vanara/search?l=C%23&q=NdfCancelIncident)  
@@ -23,13 +23,6 @@ Native Method | Header | Managed Method
 [NdfExecuteDiagnosis](https://www.google.com/search?num=5&q=NdfExecuteDiagnosis+site%3Adocs.microsoft.com) | ndfapi.h | [Vanara.PInvoke.NdfApi.NdfExecuteDiagnosis](https://github.com/dahall/Vanara/search?l=C%23&q=NdfExecuteDiagnosis)  
 [NdfGetTraceFile](https://www.google.com/search?num=5&q=NdfGetTraceFile+site%3Adocs.microsoft.com) | ndfapi.h | [Vanara.PInvoke.NdfApi.NdfGetTraceFile](https://github.com/dahall/Vanara/search?l=C%23&q=NdfGetTraceFile)  
 [NdfRepairIncident](https://www.google.com/search?num=5&q=NdfRepairIncident+site%3Adocs.microsoft.com) | ndfapi.h | [Vanara.PInvoke.NdfApi.NdfRepairIncident](https://github.com/dahall/Vanara/search?l=C%23&q=NdfRepairIncident)  
-[NdfRepairIncidentEx](https://www.google.com/search?num=5&q=NdfRepairIncidentEx+site%3Adocs.microsoft.com) |  |   
-[NdfRunDllDiagnoseIncident](https://www.google.com/search?num=5&q=NdfRunDllDiagnoseIncident+site%3Adocs.microsoft.com) |  |   
-[NdfRunDllDiagnoseNetConnectionIncident](https://www.google.com/search?num=5&q=NdfRunDllDiagnoseNetConnectionIncident+site%3Adocs.microsoft.com) |  |   
-[NdfRunDllDiagnoseWithAnswerFile](https://www.google.com/search?num=5&q=NdfRunDllDiagnoseWithAnswerFile+site%3Adocs.microsoft.com) |  |   
-[NdfRunDllDuplicateIPDefendingSystem](https://www.google.com/search?num=5&q=NdfRunDllDuplicateIPDefendingSystem+site%3Adocs.microsoft.com) |  |   
-[NdfRunDllDuplicateIPOffendingSystem](https://www.google.com/search?num=5&q=NdfRunDllDuplicateIPOffendingSystem+site%3Adocs.microsoft.com) |  |   
-[NdfRunDllHelpTopic](https://www.google.com/search?num=5&q=NdfRunDllHelpTopic+site%3Adocs.microsoft.com) |  |   
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

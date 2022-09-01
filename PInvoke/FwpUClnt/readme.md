@@ -3,24 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows Filtering 
 
 - Includes methods from fwpuclnt.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.FwpUClnt?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.FwpUClnt?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.FwpUClnt)  
-### Methods - 63% API coverage (178 of 279 functions)  
+### Methods - 100% API coverage (184 of 184 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[FwpiExpandCriteria0](https://www.google.com/search?num=5&q=FwpiExpandCriteria0+site%3Adocs.microsoft.com) |  |   
-[FwpiFreeCriteria0](https://www.google.com/search?num=5&q=FwpiFreeCriteria0+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerAddAppSids](https://www.google.com/search?num=5&q=FwpiVpnTriggerAddAppSids+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerAddFilePaths](https://www.google.com/search?num=5&q=FwpiVpnTriggerAddFilePaths+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerAddSecurityDescriptor](https://www.google.com/search?num=5&q=FwpiVpnTriggerAddSecurityDescriptor+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerConfigureParameters](https://www.google.com/search?num=5&q=FwpiVpnTriggerConfigureParameters+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerEventSubscribe0](https://www.google.com/search?num=5&q=FwpiVpnTriggerEventSubscribe0+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerEventUnsubscribe0](https://www.google.com/search?num=5&q=FwpiVpnTriggerEventUnsubscribe0+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerInitializeNrptTriggering](https://www.google.com/search?num=5&q=FwpiVpnTriggerInitializeNrptTriggering+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerRemoveAppSids](https://www.google.com/search?num=5&q=FwpiVpnTriggerRemoveAppSids+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerRemoveFilePaths](https://www.google.com/search?num=5&q=FwpiVpnTriggerRemoveFilePaths+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerRemoveSecurityDescriptor](https://www.google.com/search?num=5&q=FwpiVpnTriggerRemoveSecurityDescriptor+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerResetNrptTriggering](https://www.google.com/search?num=5&q=FwpiVpnTriggerResetNrptTriggering+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerSetStateDisconnected](https://www.google.com/search?num=5&q=FwpiVpnTriggerSetStateDisconnected+site%3Adocs.microsoft.com) |  |   
-[FwpiVpnTriggerUninitializeNrptTriggering](https://www.google.com/search?num=5&q=FwpiVpnTriggerUninitializeNrptTriggering+site%3Adocs.microsoft.com) |  |   
 [FwpmCalloutAdd0](https://www.google.com/search?num=5&q=FwpmCalloutAdd0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmCalloutAdd0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmCalloutAdd0)  
 [FwpmCalloutCreateEnumHandle0](https://www.google.com/search?num=5&q=FwpmCalloutCreateEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmCalloutCreateEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmCalloutCreateEnumHandle0)  
 [FwpmCalloutDeleteById0](https://www.google.com/search?num=5&q=FwpmCalloutDeleteById0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmCalloutDeleteById0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmCalloutDeleteById0)  
@@ -43,7 +28,6 @@ Native Method | Header | Managed Method
 [FwpmConnectionSubscribe0](https://www.google.com/search?num=5&q=FwpmConnectionSubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmConnectionSubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmConnectionSubscribe0)  
 [FwpmConnectionSubscriptionsGet0](https://www.google.com/search?num=5&q=FwpmConnectionSubscriptionsGet0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmConnectionSubscriptionsGet0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmConnectionSubscriptionsGet0)  
 [FwpmConnectionUnsubscribe0](https://www.google.com/search?num=5&q=FwpmConnectionUnsubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmConnectionUnsubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmConnectionUnsubscribe0)  
-[FwpmDiagnoseNetFailure0](https://www.google.com/search?num=5&q=FwpmDiagnoseNetFailure0+site%3Adocs.microsoft.com) |  |   
 [FwpmDynamicKeywordSubscribe0](https://www.google.com/search?num=5&q=FwpmDynamicKeywordSubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmDynamicKeywordSubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmDynamicKeywordSubscribe0)  
 [FwpmDynamicKeywordUnsubscribe0](https://www.google.com/search?num=5&q=FwpmDynamicKeywordUnsubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmDynamicKeywordUnsubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmDynamicKeywordUnsubscribe0)  
 [FwpmEngineClose0](https://www.google.com/search?num=5&q=FwpmEngineClose0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmEngineClose0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmEngineClose0)  
@@ -52,11 +36,6 @@ Native Method | Header | Managed Method
 [FwpmEngineOpen0](https://www.google.com/search?num=5&q=FwpmEngineOpen0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmEngineOpen0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmEngineOpen0)  
 [FwpmEngineSetOption0](https://www.google.com/search?num=5&q=FwpmEngineSetOption0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmEngineSetOption0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmEngineSetOption0)  
 [FwpmEngineSetSecurityInfo0](https://www.google.com/search?num=5&q=FwpmEngineSetSecurityInfo0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmEngineSetSecurityInfo0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmEngineSetSecurityInfo0)  
-[FwpmEventProviderCreate0](https://www.google.com/search?num=5&q=FwpmEventProviderCreate0+site%3Adocs.microsoft.com) |  |   
-[FwpmEventProviderDestroy0](https://www.google.com/search?num=5&q=FwpmEventProviderDestroy0+site%3Adocs.microsoft.com) |  |   
-[FwpmEventProviderFireNetEvent0](https://www.google.com/search?num=5&q=FwpmEventProviderFireNetEvent0+site%3Adocs.microsoft.com) |  |   
-[FwpmEventProviderFireNetEventEx0](https://www.google.com/search?num=5&q=FwpmEventProviderFireNetEventEx0+site%3Adocs.microsoft.com) |  |   
-[FwpmEventProviderIsNetEventTypeEnabled0](https://www.google.com/search?num=5&q=FwpmEventProviderIsNetEventTypeEnabled0+site%3Adocs.microsoft.com) |  |   
 [FwpmFilterAdd0](https://www.google.com/search?num=5&q=FwpmFilterAdd0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmFilterAdd0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmFilterAdd0)  
 [FwpmFilterCreateEnumHandle0](https://www.google.com/search?num=5&q=FwpmFilterCreateEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmFilterCreateEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmFilterCreateEnumHandle0)  
 [FwpmFilterDeleteById0](https://www.google.com/search?num=5&q=FwpmFilterDeleteById0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmFilterDeleteById0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmFilterDeleteById0)  
@@ -72,17 +51,9 @@ Native Method | Header | Managed Method
 [FwpmFilterUnsubscribeChanges0](https://www.google.com/search?num=5&q=FwpmFilterUnsubscribeChanges0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmFilterUnsubscribeChanges0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmFilterUnsubscribeChanges0)  
 [FwpmFreeMemory0](https://www.google.com/search?num=5&q=FwpmFreeMemory0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmFreeMemory0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmFreeMemory0)  
 [FwpmGetAppIdFromFileName0](https://www.google.com/search?num=5&q=FwpmGetAppIdFromFileName0+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.FwpmGetAppIdFromFileName0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmGetAppIdFromFileName0)  
-[FwpmGetSidFromOnlineId0](https://www.google.com/search?num=5&q=FwpmGetSidFromOnlineId0+site%3Adocs.microsoft.com) |  |   
-[FwpmIPsecS2STunnelAddConditions0](https://www.google.com/search?num=5&q=FwpmIPsecS2STunnelAddConditions0+site%3Adocs.microsoft.com) |  |   
-[FwpmIPsecS2STunnelAddInterfaceToCompartment0](https://www.google.com/search?num=5&q=FwpmIPsecS2STunnelAddInterfaceToCompartment0+site%3Adocs.microsoft.com) |  |   
-[FwpmIPsecS2STunnelGetInterfaceForCompartment0](https://www.google.com/search?num=5&q=FwpmIPsecS2STunnelGetInterfaceForCompartment0+site%3Adocs.microsoft.com) |  |   
-[FwpmIPsecS2STunnelRemoveConditions0](https://www.google.com/search?num=5&q=FwpmIPsecS2STunnelRemoveConditions0+site%3Adocs.microsoft.com) |  |   
-[FwpmIPsecS2STunnelRemoveInterfaceFromCompartment0](https://www.google.com/search?num=5&q=FwpmIPsecS2STunnelRemoveInterfaceFromCompartment0+site%3Adocs.microsoft.com) |  |   
 [FwpmIPsecTunnelAdd0](https://www.google.com/search?num=5&q=FwpmIPsecTunnelAdd0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmIPsecTunnelAdd0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmIPsecTunnelAdd0)  
 [FwpmIPsecTunnelAdd1](https://www.google.com/search?num=5&q=FwpmIPsecTunnelAdd1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmIPsecTunnelAdd1](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmIPsecTunnelAdd1)  
 [FwpmIPsecTunnelAdd2](https://www.google.com/search?num=5&q=FwpmIPsecTunnelAdd2+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmIPsecTunnelAdd2](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmIPsecTunnelAdd2)  
-[FwpmIPsecTunnelAdd3](https://www.google.com/search?num=5&q=FwpmIPsecTunnelAdd3+site%3Adocs.microsoft.com) |  |   
-[FwpmIPsecTunnelAddConditions0](https://www.google.com/search?num=5&q=FwpmIPsecTunnelAddConditions0+site%3Adocs.microsoft.com) |  |   
 [FwpmIPsecTunnelDeleteByKey0](https://www.google.com/search?num=5&q=FwpmIPsecTunnelDeleteByKey0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmIPsecTunnelDeleteByKey0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmIPsecTunnelDeleteByKey0)  
 [FwpmLayerCreateEnumHandle0](https://www.google.com/search?num=5&q=FwpmLayerCreateEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmLayerCreateEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmLayerCreateEnumHandle0)  
 [FwpmLayerDestroyEnumHandle0](https://www.google.com/search?num=5&q=FwpmLayerDestroyEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmLayerDestroyEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmLayerDestroyEnumHandle0)  
@@ -92,30 +63,22 @@ Native Method | Header | Managed Method
 [FwpmLayerGetSecurityInfoByKey0](https://www.google.com/search?num=5&q=FwpmLayerGetSecurityInfoByKey0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmLayerGetSecurityInfoByKey0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmLayerGetSecurityInfoByKey0)  
 [FwpmLayerSetSecurityInfoByKey0](https://www.google.com/search?num=5&q=FwpmLayerSetSecurityInfoByKey0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmLayerSetSecurityInfoByKey0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmLayerSetSecurityInfoByKey0)  
 [FwpmNetEventCreateEnumHandle0](https://www.google.com/search?num=5&q=FwpmNetEventCreateEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventCreateEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventCreateEnumHandle0)  
-[FwpmNetEventCreateEnumHandleEx](https://www.google.com/search?num=5&q=FwpmNetEventCreateEnumHandleEx+site%3Adocs.microsoft.com) |  |   
 [FwpmNetEventDestroyEnumHandle0](https://www.google.com/search?num=5&q=FwpmNetEventDestroyEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventDestroyEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventDestroyEnumHandle0)  
 [FwpmNetEventEnum0](https://www.google.com/search?num=5&q=FwpmNetEventEnum0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventEnum0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventEnum0)  
 [FwpmNetEventEnum1](https://www.google.com/search?num=5&q=FwpmNetEventEnum1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventEnum1](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventEnum1)  
 [FwpmNetEventEnum2](https://www.google.com/search?num=5&q=FwpmNetEventEnum2+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventEnum2](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventEnum2)  
 [FwpmNetEventEnum3](https://www.google.com/search?num=5&q=FwpmNetEventEnum3+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventEnum3](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventEnum3)  
-[FwpmNetEventEnum4](https://www.google.com/search?num=5&q=FwpmNetEventEnum4+site%3Adocs.microsoft.com) |  |   
-[FwpmNetEventEnum5](https://www.google.com/search?num=5&q=FwpmNetEventEnum5+site%3Adocs.microsoft.com) |  |   
 [FwpmNetEventsGetSecurityInfo0](https://www.google.com/search?num=5&q=FwpmNetEventsGetSecurityInfo0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventsGetSecurityInfo0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventsGetSecurityInfo0)  
-[FwpmNetEventsLost0](https://www.google.com/search?num=5&q=FwpmNetEventsLost0+site%3Adocs.microsoft.com) |  |   
 [FwpmNetEventsSetSecurityInfo0](https://www.google.com/search?num=5&q=FwpmNetEventsSetSecurityInfo0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventsSetSecurityInfo0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventsSetSecurityInfo0)  
 [FwpmNetEventSubscribe0](https://www.google.com/search?num=5&q=FwpmNetEventSubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventSubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventSubscribe0)  
 [FwpmNetEventSubscribe1](https://www.google.com/search?num=5&q=FwpmNetEventSubscribe1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventSubscribe1](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventSubscribe1)  
 [FwpmNetEventSubscribe2](https://www.google.com/search?num=5&q=FwpmNetEventSubscribe2+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventSubscribe2](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventSubscribe2)  
-[FwpmNetEventSubscribe3](https://www.google.com/search?num=5&q=FwpmNetEventSubscribe3+site%3Adocs.microsoft.com) |  |   
-[FwpmNetEventSubscribe4](https://www.google.com/search?num=5&q=FwpmNetEventSubscribe4+site%3Adocs.microsoft.com) |  |   
 [FwpmNetEventSubscriptionsGet0](https://www.google.com/search?num=5&q=FwpmNetEventSubscriptionsGet0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventSubscriptionsGet0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventSubscriptionsGet0)  
 [FwpmNetEventUnsubscribe0](https://www.google.com/search?num=5&q=FwpmNetEventUnsubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmNetEventUnsubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmNetEventUnsubscribe0)  
-[FwpmProcessNameResolutionEvent0](https://www.google.com/search?num=5&q=FwpmProcessNameResolutionEvent0+site%3Adocs.microsoft.com) |  |   
 [FwpmProviderAdd0](https://www.google.com/search?num=5&q=FwpmProviderAdd0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderAdd0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderAdd0)  
 [FwpmProviderContextAdd0](https://www.google.com/search?num=5&q=FwpmProviderContextAdd0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextAdd0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextAdd0)  
 [FwpmProviderContextAdd1](https://www.google.com/search?num=5&q=FwpmProviderContextAdd1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextAdd1](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextAdd1)  
 [FwpmProviderContextAdd2](https://www.google.com/search?num=5&q=FwpmProviderContextAdd2+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextAdd2](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextAdd2)  
-[FwpmProviderContextAdd3](https://www.google.com/search?num=5&q=FwpmProviderContextAdd3+site%3Adocs.microsoft.com) |  |   
 [FwpmProviderContextCreateEnumHandle0](https://www.google.com/search?num=5&q=FwpmProviderContextCreateEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextCreateEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextCreateEnumHandle0)  
 [FwpmProviderContextDeleteById0](https://www.google.com/search?num=5&q=FwpmProviderContextDeleteById0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextDeleteById0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextDeleteById0)  
 [FwpmProviderContextDeleteByKey0](https://www.google.com/search?num=5&q=FwpmProviderContextDeleteByKey0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextDeleteByKey0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextDeleteByKey0)  
@@ -123,15 +86,12 @@ Native Method | Header | Managed Method
 [FwpmProviderContextEnum0](https://www.google.com/search?num=5&q=FwpmProviderContextEnum0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextEnum0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextEnum0)  
 [FwpmProviderContextEnum1](https://www.google.com/search?num=5&q=FwpmProviderContextEnum1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextEnum1](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextEnum1)  
 [FwpmProviderContextEnum2](https://www.google.com/search?num=5&q=FwpmProviderContextEnum2+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextEnum2](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextEnum2)  
-[FwpmProviderContextEnum3](https://www.google.com/search?num=5&q=FwpmProviderContextEnum3+site%3Adocs.microsoft.com) |  |   
 [FwpmProviderContextGetById0](https://www.google.com/search?num=5&q=FwpmProviderContextGetById0+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextGetById0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextGetById0)  
 [FwpmProviderContextGetById1](https://www.google.com/search?num=5&q=FwpmProviderContextGetById1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextGetById1](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextGetById1)  
 [FwpmProviderContextGetById2](https://www.google.com/search?num=5&q=FwpmProviderContextGetById2+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextGetById2](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextGetById2)  
-[FwpmProviderContextGetById3](https://www.google.com/search?num=5&q=FwpmProviderContextGetById3+site%3Adocs.microsoft.com) |  |   
 [FwpmProviderContextGetByKey0](https://www.google.com/search?num=5&q=FwpmProviderContextGetByKey0+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextGetByKey0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextGetByKey0)  
 [FwpmProviderContextGetByKey1](https://www.google.com/search?num=5&q=FwpmProviderContextGetByKey1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextGetByKey1](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextGetByKey1)  
 [FwpmProviderContextGetByKey2](https://www.google.com/search?num=5&q=FwpmProviderContextGetByKey2+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextGetByKey2](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextGetByKey2)  
-[FwpmProviderContextGetByKey3](https://www.google.com/search?num=5&q=FwpmProviderContextGetByKey3+site%3Adocs.microsoft.com) |  |   
 [FwpmProviderContextGetSecurityInfoByKey0](https://www.google.com/search?num=5&q=FwpmProviderContextGetSecurityInfoByKey0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextGetSecurityInfoByKey0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextGetSecurityInfoByKey0)  
 [FwpmProviderContextSetSecurityInfoByKey0](https://www.google.com/search?num=5&q=FwpmProviderContextSetSecurityInfoByKey0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextSetSecurityInfoByKey0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextSetSecurityInfoByKey0)  
 [FwpmProviderContextSubscribeChanges0](https://www.google.com/search?num=5&q=FwpmProviderContextSubscribeChanges0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmProviderContextSubscribeChanges0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmProviderContextSubscribeChanges0)  
@@ -164,7 +124,6 @@ Native Method | Header | Managed Method
 [FwpmSystemPortsGet0](https://www.google.com/search?num=5&q=FwpmSystemPortsGet0+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.FwpmSystemPortsGet0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmSystemPortsGet0)  
 [FwpmSystemPortsSubscribe0](https://www.google.com/search?num=5&q=FwpmSystemPortsSubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmSystemPortsSubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmSystemPortsSubscribe0)  
 [FwpmSystemPortsUnsubscribe0](https://www.google.com/search?num=5&q=FwpmSystemPortsUnsubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmSystemPortsUnsubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmSystemPortsUnsubscribe0)  
-[FwpmTraceRestoreDefaults0](https://www.google.com/search?num=5&q=FwpmTraceRestoreDefaults0+site%3Adocs.microsoft.com) |  |   
 [FwpmTransactionAbort0](https://www.google.com/search?num=5&q=FwpmTransactionAbort0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmTransactionAbort0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmTransactionAbort0)  
 [FwpmTransactionBegin0](https://www.google.com/search?num=5&q=FwpmTransactionBegin0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmTransactionBegin0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmTransactionBegin0)  
 [FwpmTransactionCommit0](https://www.google.com/search?num=5&q=FwpmTransactionCommit0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmTransactionCommit0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmTransactionCommit0)  
@@ -172,29 +131,6 @@ Native Method | Header | Managed Method
 [FwpmvSwitchEventsSetSecurityInfo0](https://www.google.com/search?num=5&q=FwpmvSwitchEventsSetSecurityInfo0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmvSwitchEventsSetSecurityInfo0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmvSwitchEventsSetSecurityInfo0)  
 [FwpmvSwitchEventSubscribe0](https://www.google.com/search?num=5&q=FwpmvSwitchEventSubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmvSwitchEventSubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmvSwitchEventSubscribe0)  
 [FwpmvSwitchEventUnsubscribe0](https://www.google.com/search?num=5&q=FwpmvSwitchEventUnsubscribe0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmvSwitchEventUnsubscribe0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmvSwitchEventUnsubscribe0)  
-[FwppConnectionGetByIPsecInfo](https://www.google.com/search?num=5&q=FwppConnectionGetByIPsecInfo+site%3Adocs.microsoft.com) |  |   
-[FwppConnectionGetByS2STunnelId](https://www.google.com/search?num=5&q=FwppConnectionGetByS2STunnelId+site%3Adocs.microsoft.com) |  |   
-[FwppConnectionGetS2STunnelId](https://www.google.com/search?num=5&q=FwppConnectionGetS2STunnelId+site%3Adocs.microsoft.com) |  |   
-[FwppGetMD5HashBytes](https://www.google.com/search?num=5&q=FwppGetMD5HashBytes+site%3Adocs.microsoft.com) |  |   
-[FwppIPsecSaContextCreate](https://www.google.com/search?num=5&q=FwppIPsecSaContextCreate+site%3Adocs.microsoft.com) |  |   
-[FwpsAleEndpointCreateEnumHandle0](https://www.google.com/search?num=5&q=FwpsAleEndpointCreateEnumHandle0+site%3Adocs.microsoft.com) |  |   
-[FwpsAleEndpointDestroyEnumHandle0](https://www.google.com/search?num=5&q=FwpsAleEndpointDestroyEnumHandle0+site%3Adocs.microsoft.com) |  |   
-[FwpsAleEndpointEnum0](https://www.google.com/search?num=5&q=FwpsAleEndpointEnum0+site%3Adocs.microsoft.com) |  |   
-[FwpsAleEndpointGetById0](https://www.google.com/search?num=5&q=FwpsAleEndpointGetById0+site%3Adocs.microsoft.com) |  |   
-[FwpsAleEndpointGetSecurityInfo0](https://www.google.com/search?num=5&q=FwpsAleEndpointGetSecurityInfo0+site%3Adocs.microsoft.com) |  |   
-[FwpsAleEndpointSetSecurityInfo0](https://www.google.com/search?num=5&q=FwpsAleEndpointSetSecurityInfo0+site%3Adocs.microsoft.com) |  |   
-[FwpsAleExplicitCredentialsQuery0](https://www.google.com/search?num=5&q=FwpsAleExplicitCredentialsQuery0+site%3Adocs.microsoft.com) |  |   
-[FwpsAleGetPortStatus0](https://www.google.com/search?num=5&q=FwpsAleGetPortStatus0+site%3Adocs.microsoft.com) |  |   
-[FwpsClassifyUser0](https://www.google.com/search?num=5&q=FwpsClassifyUser0+site%3Adocs.microsoft.com) |  |   
-[FwpsFreeMemory0](https://www.google.com/search?num=5&q=FwpsFreeMemory0+site%3Adocs.microsoft.com) |  |   
-[FwpsGetInProcReplicaOffset0](https://www.google.com/search?num=5&q=FwpsGetInProcReplicaOffset0+site%3Adocs.microsoft.com) |  |   
-[FwpsLayerCreateInProcReplica0](https://www.google.com/search?num=5&q=FwpsLayerCreateInProcReplica0+site%3Adocs.microsoft.com) |  |   
-[FwpsLayerReleaseInProcReplica0](https://www.google.com/search?num=5&q=FwpsLayerReleaseInProcReplica0+site%3Adocs.microsoft.com) |  |   
-[FwpsOpenToken0](https://www.google.com/search?num=5&q=FwpsOpenToken0+site%3Adocs.microsoft.com) |  |   
-[FwpsQueryIPsecDosFWUsed0](https://www.google.com/search?num=5&q=FwpsQueryIPsecDosFWUsed0+site%3Adocs.microsoft.com) |  |   
-[FwpsQueryIPsecOffloadDone0](https://www.google.com/search?num=5&q=FwpsQueryIPsecOffloadDone0+site%3Adocs.microsoft.com) |  |   
-[GetUnifiedTraceHandle](https://www.google.com/search?num=5&q=GetUnifiedTraceHandle+site%3Adocs.microsoft.com) |  |   
-[IkeextGetConfigParameters0](https://www.google.com/search?num=5&q=IkeextGetConfigParameters0+site%3Adocs.microsoft.com) |  |   
 [IkeextGetStatistics0](https://www.google.com/search?num=5&q=IkeextGetStatistics0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IkeextGetStatistics0](https://github.com/dahall/Vanara/search?l=C%23&q=IkeextGetStatistics0)  
 [IkeextGetStatistics1](https://www.google.com/search?num=5&q=IkeextGetStatistics1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IkeextGetStatistics1](https://github.com/dahall/Vanara/search?l=C%23&q=IkeextGetStatistics1)  
 [IkeextSaCreateEnumHandle0](https://www.google.com/search?num=5&q=IkeextSaCreateEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IkeextSaCreateEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=IkeextSaCreateEnumHandle0)  
@@ -208,34 +144,23 @@ Native Method | Header | Managed Method
 [IkeextSaGetById0](https://www.google.com/search?num=5&q=IkeextSaGetById0+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.IkeextSaGetById0](https://github.com/dahall/Vanara/search?l=C%23&q=IkeextSaGetById0)  
 [IkeextSaGetById1](https://www.google.com/search?num=5&q=IkeextSaGetById1+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.IkeextSaGetById1](https://github.com/dahall/Vanara/search?l=C%23&q=IkeextSaGetById1)  
 [IkeextSaGetById2](https://www.google.com/search?num=5&q=IkeextSaGetById2+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.IkeextSaGetById2](https://github.com/dahall/Vanara/search?l=C%23&q=IkeextSaGetById2)  
-[IkeextSaUpdateAdditionalAddressesByTunnelId0](https://www.google.com/search?num=5&q=IkeextSaUpdateAdditionalAddressesByTunnelId0+site%3Adocs.microsoft.com) |  |   
-[IkeextSaUpdatePreferredAddressesByTunnelId0](https://www.google.com/search?num=5&q=IkeextSaUpdatePreferredAddressesByTunnelId0+site%3Adocs.microsoft.com) |  |   
-[IkeextSetConfigParameters0](https://www.google.com/search?num=5&q=IkeextSetConfigParameters0+site%3Adocs.microsoft.com) |  |   
 [IPsecDospGetSecurityInfo0](https://www.google.com/search?num=5&q=IPsecDospGetSecurityInfo0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecDospGetSecurityInfo0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecDospGetSecurityInfo0)  
 [IPsecDospGetStatistics0](https://www.google.com/search?num=5&q=IPsecDospGetStatistics0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecDospGetStatistics0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecDospGetStatistics0)  
 [IPsecDospSetSecurityInfo0](https://www.google.com/search?num=5&q=IPsecDospSetSecurityInfo0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecDospSetSecurityInfo0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecDospSetSecurityInfo0)  
 [IPsecDospStateCreateEnumHandle0](https://www.google.com/search?num=5&q=IPsecDospStateCreateEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecDospStateCreateEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecDospStateCreateEnumHandle0)  
 [IPsecDospStateDestroyEnumHandle0](https://www.google.com/search?num=5&q=IPsecDospStateDestroyEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecDospStateDestroyEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecDospStateDestroyEnumHandle0)  
 [IPsecDospStateEnum0](https://www.google.com/search?num=5&q=IPsecDospStateEnum0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecDospStateEnum0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecDospStateEnum0)  
-[IPsecGetKeyFromDictator0](https://www.google.com/search?num=5&q=IPsecGetKeyFromDictator0+site%3Adocs.microsoft.com) |  |   
 [IPsecGetStatistics0](https://www.google.com/search?num=5&q=IPsecGetStatistics0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecGetStatistics0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecGetStatistics0)  
 [IPsecGetStatistics1](https://www.google.com/search?num=5&q=IPsecGetStatistics1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecGetStatistics1](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecGetStatistics1)  
-[IPsecKeyDictationCheck0](https://www.google.com/search?num=5&q=IPsecKeyDictationCheck0+site%3Adocs.microsoft.com) |  |   
 [IPsecKeyManagerAddAndRegister0](https://www.google.com/search?num=5&q=IPsecKeyManagerAddAndRegister0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecKeyManagerAddAndRegister0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecKeyManagerAddAndRegister0)  
 [IPsecKeyManagerGetSecurityInfoByKey0](https://www.google.com/search?num=5&q=IPsecKeyManagerGetSecurityInfoByKey0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecKeyManagerGetSecurityInfoByKey0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecKeyManagerGetSecurityInfoByKey0)  
 [IPsecKeyManagerSetSecurityInfoByKey0](https://www.google.com/search?num=5&q=IPsecKeyManagerSetSecurityInfoByKey0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecKeyManagerSetSecurityInfoByKey0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecKeyManagerSetSecurityInfoByKey0)  
 [IPsecKeyManagersGet0](https://www.google.com/search?num=5&q=IPsecKeyManagersGet0+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.FwpUClnt.IPsecKeyManagersGet0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecKeyManagersGet0)  
 [IPsecKeyManagerUnregisterAndDelete0](https://www.google.com/search?num=5&q=IPsecKeyManagerUnregisterAndDelete0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecKeyManagerUnregisterAndDelete0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecKeyManagerUnregisterAndDelete0)  
-[IPsecKeyModuleAdd0](https://www.google.com/search?num=5&q=IPsecKeyModuleAdd0+site%3Adocs.microsoft.com) |  |   
-[IPsecKeyModuleDelete0](https://www.google.com/search?num=5&q=IPsecKeyModuleDelete0+site%3Adocs.microsoft.com) |  |   
-[IPsecKeyModuleUpdateAcquire0](https://www.google.com/search?num=5&q=IPsecKeyModuleUpdateAcquire0+site%3Adocs.microsoft.com) |  |   
-[IPsecKeyNotification0](https://www.google.com/search?num=5&q=IPsecKeyNotification0+site%3Adocs.microsoft.com) |  |   
 [IPsecSaContextAddInbound0](https://www.google.com/search?num=5&q=IPsecSaContextAddInbound0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaContextAddInbound0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaContextAddInbound0)  
 [IPsecSaContextAddInbound1](https://www.google.com/search?num=5&q=IPsecSaContextAddInbound1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaContextAddInbound1](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaContextAddInbound1)  
-[IPsecSaContextAddInboundAndTrackConnection](https://www.google.com/search?num=5&q=IPsecSaContextAddInboundAndTrackConnection+site%3Adocs.microsoft.com) |  |   
 [IPsecSaContextAddOutbound0](https://www.google.com/search?num=5&q=IPsecSaContextAddOutbound0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaContextAddOutbound0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaContextAddOutbound0)  
 [IPsecSaContextAddOutbound1](https://www.google.com/search?num=5&q=IPsecSaContextAddOutbound1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaContextAddOutbound1](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaContextAddOutbound1)  
-[IPsecSaContextAddOutboundAndTrackConnection](https://www.google.com/search?num=5&q=IPsecSaContextAddOutboundAndTrackConnection+site%3Adocs.microsoft.com) |  |   
 [IPsecSaContextCreate0](https://www.google.com/search?num=5&q=IPsecSaContextCreate0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaContextCreate0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaContextCreate0)  
 [IPsecSaContextCreate1](https://www.google.com/search?num=5&q=IPsecSaContextCreate1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaContextCreate1](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaContextCreate1)  
 [IPsecSaContextCreateEnumHandle0](https://www.google.com/search?num=5&q=IPsecSaContextCreateEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaContextCreateEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaContextCreateEnumHandle0)  
@@ -259,32 +184,12 @@ Native Method | Header | Managed Method
 [IPsecSaDestroyEnumHandle0](https://www.google.com/search?num=5&q=IPsecSaDestroyEnumHandle0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaDestroyEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaDestroyEnumHandle0)  
 [IPsecSaEnum0](https://www.google.com/search?num=5&q=IPsecSaEnum0+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaEnum0](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaEnum0)  
 [IPsecSaEnum1](https://www.google.com/search?num=5&q=IPsecSaEnum1+site%3Adocs.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.IPsecSaEnum1](https://github.com/dahall/Vanara/search?l=C%23&q=IPsecSaEnum1)  
-[IPsecSaInitiateAsync0](https://www.google.com/search?num=5&q=IPsecSaInitiateAsync0+site%3Adocs.microsoft.com) |  |   
-[NamespaceCallout](https://www.google.com/search?num=5&q=NamespaceCallout+site%3Adocs.microsoft.com) |  |   
-[WfpCloseDPConfigureHandle](https://www.google.com/search?num=5&q=WfpCloseDPConfigureHandle+site%3Adocs.microsoft.com) |  |   
-[WfpConfigureDPSecurityDescriptor](https://www.google.com/search?num=5&q=WfpConfigureDPSecurityDescriptor+site%3Adocs.microsoft.com) |  |   
-[WfpCreateDPConfigureHandle](https://www.google.com/search?num=5&q=WfpCreateDPConfigureHandle+site%3Adocs.microsoft.com) |  |   
-[WfpRIOChannelClose](https://www.google.com/search?num=5&q=WfpRIOChannelClose+site%3Adocs.microsoft.com) |  |   
-[WfpRIOCleanupRequestQueue](https://www.google.com/search?num=5&q=WfpRIOCleanupRequestQueue+site%3Adocs.microsoft.com) |  |   
-[WfpRIOCloseCompletionQueue](https://www.google.com/search?num=5&q=WfpRIOCloseCompletionQueue+site%3Adocs.microsoft.com) |  |   
-[WfpRIOCreateChannel](https://www.google.com/search?num=5&q=WfpRIOCreateChannel+site%3Adocs.microsoft.com) |  |   
-[WfpRIOCreateCompletionQueue](https://www.google.com/search?num=5&q=WfpRIOCreateCompletionQueue+site%3Adocs.microsoft.com) |  |   
-[WfpRIOCreateRequestQueue](https://www.google.com/search?num=5&q=WfpRIOCreateRequestQueue+site%3Adocs.microsoft.com) |  |   
-[WFPRIODequeueCompletion](https://www.google.com/search?num=5&q=WFPRIODequeueCompletion+site%3Adocs.microsoft.com) |  |   
-[WfpRIODeregisterBuffer](https://www.google.com/search?num=5&q=WfpRIODeregisterBuffer+site%3Adocs.microsoft.com) |  |   
-[WfpRIOIndicateActivityThreshold](https://www.google.com/search?num=5&q=WfpRIOIndicateActivityThreshold+site%3Adocs.microsoft.com) |  |   
-[WfpRIONotify](https://www.google.com/search?num=5&q=WfpRIONotify+site%3Adocs.microsoft.com) |  |   
-[WfpRIOReceive](https://www.google.com/search?num=5&q=WfpRIOReceive+site%3Adocs.microsoft.com) |  |   
-[WfpRIORegisterBuffer](https://www.google.com/search?num=5&q=WfpRIORegisterBuffer+site%3Adocs.microsoft.com) |  |   
-[WfpRIOResume](https://www.google.com/search?num=5&q=WfpRIOResume+site%3Adocs.microsoft.com) |  |   
-[WfpRIOSend](https://www.google.com/search?num=5&q=WfpRIOSend+site%3Adocs.microsoft.com) |  |   
-[WfpRIOSuspend](https://www.google.com/search?num=5&q=WfpRIOSuspend+site%3Adocs.microsoft.com) |  |   
-[WSADeleteSocketPeerTargetName](https://www.google.com/search?num=5&q=WSADeleteSocketPeerTargetName+site%3Adocs.microsoft.com) |  |   
-[WSAImpersonateSocketPeer](https://www.google.com/search?num=5&q=WSAImpersonateSocketPeer+site%3Adocs.microsoft.com) |  |   
-[WSAQuerySocketSecurity](https://www.google.com/search?num=5&q=WSAQuerySocketSecurity+site%3Adocs.microsoft.com) |  |   
-[WSARevertImpersonation](https://www.google.com/search?num=5&q=WSARevertImpersonation+site%3Adocs.microsoft.com) |  |   
-[WSASetSocketPeerTargetName](https://www.google.com/search?num=5&q=WSASetSocketPeerTargetName+site%3Adocs.microsoft.com) |  |   
-[WSASetSocketSecurity](https://www.google.com/search?num=5&q=WSASetSocketSecurity+site%3Adocs.microsoft.com) |  |   
+[WSADeleteSocketPeerTargetName](https://www.google.com/search?num=5&q=WSADeleteSocketPeerTargetName+site%3Adocs.microsoft.com) | ws2tcpip.h | [Vanara.PInvoke.FwpUClnt.WSADeleteSocketPeerTargetName](https://github.com/dahall/Vanara/search?l=C%23&q=WSADeleteSocketPeerTargetName)  
+[WSAImpersonateSocketPeer](https://www.google.com/search?num=5&q=WSAImpersonateSocketPeer+site%3Adocs.microsoft.com) | ws2tcpip.h | [Vanara.PInvoke.FwpUClnt.WSAImpersonateSocketPeer](https://github.com/dahall/Vanara/search?l=C%23&q=WSAImpersonateSocketPeer)  
+[WSAQuerySocketSecurity](https://www.google.com/search?num=5&q=WSAQuerySocketSecurity+site%3Adocs.microsoft.com) | ws2tcpip.h | [Vanara.PInvoke.FwpUClnt.WSAQuerySocketSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=WSAQuerySocketSecurity)  
+[WSARevertImpersonation](https://www.google.com/search?num=5&q=WSARevertImpersonation+site%3Adocs.microsoft.com) | ws2tcpip.h | [Vanara.PInvoke.FwpUClnt.WSARevertImpersonation](https://github.com/dahall/Vanara/search?l=C%23&q=WSARevertImpersonation)  
+[WSASetSocketPeerTargetName](https://www.google.com/search?num=5&q=WSASetSocketPeerTargetName+site%3Adocs.microsoft.com) | ws2tcpip.h | [Vanara.PInvoke.FwpUClnt.WSASetSocketPeerTargetName](https://github.com/dahall/Vanara/search?l=C%23&q=WSASetSocketPeerTargetName)  
+[WSASetSocketSecurity](https://www.google.com/search?num=5&q=WSASetSocketSecurity+site%3Adocs.microsoft.com) | ws2tcpip.h | [Vanara.PInvoke.FwpUClnt.WSASetSocketSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=WSASetSocketSecurity)  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

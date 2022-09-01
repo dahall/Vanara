@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll
 
 - Includes methods from gdi32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Gdi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Gdi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Gdi32)  
-### Methods - 99% API coverage (306 of 309 functions)  
+### Methods - 100% API coverage (306 of 306 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  
@@ -115,9 +115,6 @@ Native Method | Header | Managed Method
 [GdiSetBatchLimit](https://www.google.com/search?num=5&q=GdiSetBatchLimit+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GdiSetBatchLimit](https://github.com/dahall/Vanara/search?l=C%23&q=GdiSetBatchLimit)  
 [GdiStartDocEMF](https://www.google.com/search?num=5&q=GdiStartDocEMF+site%3Adocs.microsoft.com) | winppi.h | [Vanara.PInvoke.Gdi32.GdiStartDocEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiStartDocEMF)  
 [GdiStartPageEMF](https://www.google.com/search?num=5&q=GdiStartPageEMF+site%3Adocs.microsoft.com) | winppi.h | [Vanara.PInvoke.Gdi32.GdiStartPageEMF](https://github.com/dahall/Vanara/search?l=C%23&q=GdiStartPageEMF)  
-[GditGetCallerTLStorage](https://www.google.com/search?num=5&q=GditGetCallerTLStorage+site%3Adocs.microsoft.com) |  |   
-[GditPopCallerInfo](https://www.google.com/search?num=5&q=GditPopCallerInfo+site%3Adocs.microsoft.com) |  |   
-[GditPushCallerInfo](https://www.google.com/search?num=5&q=GditPushCallerInfo+site%3Adocs.microsoft.com) |  |   
 [GdiTransparentBlt](https://www.google.com/search?num=5&q=GdiTransparentBlt+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.TransparentBlt](https://github.com/dahall/Vanara/search?l=C%23&q=TransparentBlt)  
 [GetArcDirection](https://www.google.com/search?num=5&q=GetArcDirection+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetArcDirection](https://github.com/dahall/Vanara/search?l=C%23&q=GetArcDirection)  
 [GetAspectRatioFilterEx](https://www.google.com/search?num=5&q=GetAspectRatioFilterEx+site%3Adocs.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetAspectRatioFilterEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetAspectRatioFilterEx)  
