@@ -2,7 +2,7 @@
 using System;
 using System.Security.Principal;
 
-namespace Vanara.IO.Tests;
+namespace Vanara.PInvoke.Tests;
 
 partial class BackgroundCopyTests
 {

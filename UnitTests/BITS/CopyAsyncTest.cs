@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading;
 
-namespace Vanara.IO.Tests
+namespace Vanara.PInvoke.Tests
 {
 	partial class BackgroundCopyTests
 	{

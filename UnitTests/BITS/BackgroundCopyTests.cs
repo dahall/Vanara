@@ -1,32 +1,32 @@
-﻿using NUnit.Framework;
-using System;
-using System.Diagnostics;
-using System.Linq;
+﻿global using NUnit.Framework;
+global using System;
+global using System.Diagnostics;
+global using System.Linq;
+global using Vanara.IO;
+using System.Reflection;
 
-namespace Vanara.IO.Tests
+namespace Vanara.PInvoke.Tests;
+
+[TestFixture()]
+public partial class BackgroundCopyTests
 {
-	[TestFixture()]
-	public partial class BackgroundCopyTests
+	public string GetCurrentMethodName()
 	{
-		public string GetCurrentMethodName()
-		{
-			var st = new StackTrace();
-			var sf = st.GetFrame(1);
+		var st = new StackTrace();
+		var sf = st.GetFrame(1);
 
-			return sf.GetMethod().Name;
-		}
+		return sf.GetMethod().Name;
 	}
+}
 
-	public static class Ext
+public static class Ext
+{
+	public static T GetDefVal<T>(this object obj, string prop)
 	{
-		public static T GetDefVal<T>(this object obj, string prop)
-		{
-			var pi = obj.GetType().GetProperty(prop, typeof(T));
-			var attr = (System.ComponentModel.DefaultValueAttribute)pi.GetCustomAttributes(typeof(System.ComponentModel.DefaultValueAttribute), false).FirstOrDefault();
-			if (attr?.Value == null) return default;
-			if (attr.Value is T) return (T)attr.Value;
-			var cval = (attr.Value as IConvertible)?.ToType(typeof(T), null);
-			return cval != null ? (T)cval : throw new InvalidCastException();
-		}
+		var pi = obj.GetType().GetProperty(prop, typeof(T));
+		var attr = pi.GetCustomAttribute<System.ComponentModel.DefaultValueAttribute>(false);
+		if (attr?.Value == null) return default;
+		if (attr.Value is T val) return val;
+		return (T)(attr.Value as IConvertible)?.ToType(typeof(T), null) ?? throw new InvalidCastException();
 	}
 }
