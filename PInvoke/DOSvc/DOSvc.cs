@@ -497,7 +497,7 @@ public static partial class DOSvc
 		/// <param name="propVal">The property value to set, stored in a <c>VARIANT</c>.</param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/deliveryoptimization/nf-deliveryoptimization-idodownload-setproperty HRESULT
 		// SetProperty( DODownloadProperty propId, const VARIANT *propVal );
-		void SetProperty([In] DODownloadProperty propId, object propVal);
+		void SetProperty([In] DODownloadProperty propId, [MarshalAs(UnmanagedType.Struct)] object propVal);
 	}
 
 	/// <summary>The <c>IDODownloadStatusCallback</c> interface is used to receive notifications about a download.</summary>
