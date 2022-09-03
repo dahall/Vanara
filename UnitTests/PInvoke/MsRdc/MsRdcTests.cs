@@ -36,7 +36,7 @@ public class MsRdcTests
 		var gParamsCopy = gen.GetGeneratorParameters(MSRDC_MINIMUM_DEPTH);
 		Assert.That(gParams.GetSerializeSize(), Is.EqualTo(gParamsCopy.GetSerializeSize()));
 
-		IRdcFileReader reader = new RdcFileReader(File.OpenRead(TestCaseSources.WordDoc));
+		IRdcFileReader reader = new RdcStreamReader(File.OpenRead(TestCaseSources.WordDoc));
 		//var comp = lib.CreateComparator(reader, maxdepth);
 		var sigRead = lib.CreateSignatureReader(reader);
 		//TestContext.WriteLine($"SigHdrRes={sigRead.ReadHeader()}");
@@ -51,50 +51,5 @@ public class MsRdcTests
 	[Test]
 	public void SigGenTest()
 	{
-	}
-}
-
-[ClassInterface(ClassInterfaceType.None)]
-[SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
-[ComVisible(true)]
-[Guid("01EED492-3E92-4DF1-AC94-A7CDD0F23699")]
-public class RdcFileReader : IRdcFileReader
-{
-	private readonly Stream stream;
-
-	private RdcFileReader() { }
-
-	public RdcFileReader(Stream stream) => this.stream = stream;
-
-	HRESULT IRdcFileReader.GetFileSize(out ulong fileSize)
-	{
-		fileSize = (ulong)stream.Length;
-		return HRESULT.S_OK;
-	}
-
-	HRESULT IRdcFileReader.Read(ulong offsetFileStart, uint bytesToRead, out uint bytesActuallyRead, byte[] buffer, out bool eof)
-	{
-		if (stream.Position != (long)offsetFileStart)
-		{
-			stream.Seek((long)offsetFileStart, SeekOrigin.Begin);
-		}
-
-		var intBuff = new byte[bytesToRead];
-		int read = 0, lastRead;
-		do
-		{
-			lastRead = stream.Read(intBuff, read, ((int)bytesToRead - read));
-			read += lastRead;
-		} while (lastRead != 0 && read < bytesToRead);
-		bytesActuallyRead = (uint)read;
-		Array.Copy(intBuff, buffer, (int)bytesToRead);
-		eof = read < bytesToRead;
-		return HRESULT.S_OK;
-	}
-
-	HRESULT IRdcFileReader.GetFilePosition(out ulong offsetFromStart)
-	{
-		offsetFromStart = (uint)stream.Position;
-		return HRESULT.S_OK;
 	}
 }

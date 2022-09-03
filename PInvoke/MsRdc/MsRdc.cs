@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using Vanara.InteropServices;
@@ -654,21 +655,21 @@ namespace Vanara.PInvoke
 			/// <summary>The <c>CreateComparator</c> method creates a signature comparator.</summary>
 			/// <param name="iSeedSignaturesFile">An IRdcFileReader interface pointer initialized to read the seed signatures.</param>
 			/// <param name="comparatorBufferSize">
-			///   <para>Specifies the size of the comparator buffer. The range is from <c>MSRDC_MINIMUM_COMPAREBUFFER</c> to <c>MSRDC_MAXIMUM_COMPAREBUFFER</c>.</para>
-			///   <para>MSRDC_MINIMUM_COMPAREBUFFER (100000)</para>
-			///   <para>Minimum size of a comparator buffer.</para>
-			///   <para>MSRDC_DEFAULT_COMPAREBUFFER (3200000)</para>
-			///   <para>Default size of a comparator buffer. Used if zero (0) is passed for <c>comparatorBufferSize</c>.</para>
-			///   <para>MSRDC_MAXIMUM_COMPAREBUFFER (1073741824)</para>
-			///   <para>Maximum size of a comparator buffer. (1&lt;&lt;30)</para>
+			/// <para>Specifies the size of the comparator buffer. The range is from <c>MSRDC_MINIMUM_COMPAREBUFFER</c> to <c>MSRDC_MAXIMUM_COMPAREBUFFER</c>.</para>
+			/// <para>MSRDC_MINIMUM_COMPAREBUFFER (100000)</para>
+			/// <para>Minimum size of a comparator buffer.</para>
+			/// <para>MSRDC_DEFAULT_COMPAREBUFFER (3200000)</para>
+			/// <para>Default size of a comparator buffer. Used if zero (0) is passed for <c>comparatorBufferSize</c>.</para>
+			/// <para>MSRDC_MAXIMUM_COMPAREBUFFER (1073741824)</para>
+			/// <para>Maximum size of a comparator buffer. (1&lt;&lt;30)</para>
 			/// </param>
 			/// <returns>
 			/// Pointer to a location that will receive an IRdcComparator interface pointer. On a successful return the interface will be
 			/// initialized on return. Callers must release the interface.
 			/// </returns>
 			/// <remarks>The caller must create a separate signature comparator for each level of recursion.</remarks>
-			// https://docs.microsoft.com/en-us/windows/win32/api/msrdc/nf-msrdc-irdclibrary-createcomparator
-			// HRESULT CreateComparator( [in] IRdcFileReader *iSeedSignaturesFile, [in] ULONG comparatorBufferSize, [out] IRdcComparator **iComparator );
+			// https://docs.microsoft.com/en-us/windows/win32/api/msrdc/nf-msrdc-irdclibrary-createcomparator HRESULT CreateComparator( [in]
+			// IRdcFileReader *iSeedSignaturesFile, [in] ULONG comparatorBufferSize, [out] IRdcComparator **iComparator );
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IRdcComparator CreateComparator([In, MarshalAs(UnmanagedType.Interface)] IRdcFileReader iSeedSignaturesFile, [Optional] uint comparatorBufferSize);
 
@@ -1594,6 +1595,53 @@ namespace Vanara.PInvoke
 		[ComImport, Guid("96236A92-9DBC-11DA-9E3F-0011114AE311"), ClassInterface(ClassInterfaceType.None)]
 		[SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
 		public class RdcSimilarityGenerator { }
+
+		/// <summary>An implementation of <see cref="IRdcFileReader"/> on top of a <see cref="Stream"/>.</summary>
+		/// <seealso cref="IRdcFileReader"/>
+		[ComVisible(true), Guid("01EED492-3E92-4DF1-AC94-A7CDD0F23699"), ClassInterface(ClassInterfaceType.None)]
+		[SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
+		public class RdcStreamReader : IRdcFileReader
+		{
+			private readonly Stream stream;
+
+			/// <summary>Initializes a new instance of the <see cref="RdcStreamReader"/> class with stream to read.</summary>
+			/// <param name="stream">The stream to read from.</param>
+			public RdcStreamReader(Stream stream) => this.stream = stream;
+
+			private RdcStreamReader() { }
+
+			HRESULT IRdcFileReader.GetFilePosition(out ulong offsetFromStart)
+			{
+				offsetFromStart = (uint)stream.Position;
+				return HRESULT.S_OK;
+			}
+
+			HRESULT IRdcFileReader.GetFileSize(out ulong fileSize)
+			{
+				fileSize = (ulong)stream.Length;
+				return HRESULT.S_OK;
+			}
+
+			HRESULT IRdcFileReader.Read(ulong offsetFileStart, uint bytesToRead, out uint bytesActuallyRead, byte[] buffer, out bool eof)
+			{
+				if (stream.Position != (long)offsetFileStart)
+				{
+					stream.Seek((long)offsetFileStart, SeekOrigin.Begin);
+				}
+
+				var intBuff = new byte[bytesToRead];
+				int read = 0, lastRead;
+				do
+				{
+					lastRead = stream.Read(intBuff, read, ((int)bytesToRead - read));
+					read += lastRead;
+				} while (lastRead != 0 && read < bytesToRead);
+				bytesActuallyRead = (uint)read;
+				Array.Copy(intBuff, buffer, (int)bytesToRead);
+				eof = read < bytesToRead;
+				return HRESULT.S_OK;
+			}
+		}
 
 		/// <summary>CLSID_Similarity</summary>
 		[ComImport, Guid("96236A91-9DBC-11DA-9E3F-0011114AE311"), ClassInterface(ClassInterfaceType.None)]
