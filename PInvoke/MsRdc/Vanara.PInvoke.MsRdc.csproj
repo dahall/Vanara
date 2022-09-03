@@ -9,7 +9,16 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;MsRdc</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Structures
+FindSimilarFileIndexResults RdcBufferPointer RdcNeed RdcNeedPointer RdcSignature RdcSignaturePointer SimilarityData SimilarityDumpData SimilarityFileId SimilarityMappedViewInfo
+
+Interfaces
+IFindSimilarResults IRdcComparator IRdcFileReader IRdcFileWriter IRdcGenerator IRdcGeneratorFilterMaxParameters IRdcGeneratorParameters IRdcLibrary IRdcSignatureReader IRdcSimilarityGenerator ISimilarity ISimilarityFileIdTable ISimilarityReportProgress ISimilarityTableDumpState ISimilarityTraitsMappedView ISimilarityTraitsMapping ISimilarityTraitsTable
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

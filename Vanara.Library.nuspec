@@ -56,6 +56,7 @@
       <dependency id="Vanara.PInvoke.Magnification" version="3.4.7" />
       <dependency id="Vanara.PInvoke.Mpr" version="3.4.7" />
       <dependency id="Vanara.PInvoke.Msi" version="3.4.7" />
+      <dependency id="Vanara.PInvoke.MsRdc" version="3.4.7" />
       <dependency id="Vanara.PInvoke.Multimedia" version="3.4.7" />
       <dependency id="Vanara.PInvoke.NdfApi" version="3.4.7" />
       <dependency id="Vanara.PInvoke.NetApi32" version="3.4.7" />
