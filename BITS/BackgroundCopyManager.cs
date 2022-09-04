@@ -35,7 +35,14 @@ namespace Vanara.IO
 
 				static Version GetVer()
 				{
-					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(Environment.ExpandEnvironmentVariables(@"%WinDir%\sysnative\qmgr.dll"));
+					System.Diagnostics.FileVersionInfo fi;
+					bool isWow64 = false;
+					IntPtr oldVal = default;
+					if (isWow64 = (IsWow64Process(GetCurrentProcess(), out var wow) && wow))
+						Wow64DisableWow64FsRedirection(out oldVal);
+					fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(Environment.ExpandEnvironmentVariables(@"%WinDir%\system32\qmgr.dll"));
+					if (isWow64)
+						Wow64RevertWow64FsRedirection(oldVal);
 					return $"{fi.FileMajorPart}.{fi.FileMinorPart}" switch
 					{
 						"7.8" when fi.FileBuildPart >= 18362 => new Version(10, 3),
@@ -51,6 +58,21 @@ namespace Vanara.IO
 						_ => new Version(1, 0),
 					};
 				}
+
+				[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+				[return: MarshalAs(UnmanagedType.Bool)]
+				static extern bool IsWow64Process([In] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] out bool Wow64Process);
+
+				[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+				[return: MarshalAs(UnmanagedType.Bool)]
+				static extern bool Wow64DisableWow64FsRedirection(out IntPtr OldValue);
+
+				[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+				[return: MarshalAs(UnmanagedType.Bool)]
+				static extern bool Wow64RevertWow64FsRedirection(IntPtr OldValue);
+
+				[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true)]
+				static extern HPROCESS GetCurrentProcess();
 			}
 		}
 
