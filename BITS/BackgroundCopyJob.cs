@@ -205,7 +205,7 @@ namespace Vanara.IO
 			get
 			{
 				var hdr = new System.Net.WebHeaderCollection();
-				var str = RunAction(() => IHttpOp.GetCustomHeaders().ToString(), null);
+				var str = RunAction(() => IHttpOp.GetCustomHeaders(), null);
 				if (str is not null)
 				{
 					foreach (var s in str.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries))
