@@ -217,7 +217,14 @@ namespace Vanara.IO
 		/// <param name="item">The object to locate in the <see cref="ICollection{T}"/>.</param>
 		/// <returns>true if <paramref name="item"/> is found in the <see cref="ICollection{T}"/>; otherwise, false.</returns>
 		/// <exception cref="NotImplementedException"></exception>
-		bool ICollection<BackgroundCopyFileInfo>.Contains(BackgroundCopyFileInfo item) => throw new NotSupportedException();
+		bool ICollection<BackgroundCopyFileInfo>.Contains(BackgroundCopyFileInfo item)
+		{
+			var e = GetEnumerator();
+			while (e.MoveNext())
+				if (ReferenceEquals(e.Current, item))
+					return true;
+			return false;
+		}
 
 		/// <summary>
 		/// Copies the elements of the <see cref="ICollection{T}"/> to an <see cref="T:System.Array"/>, starting at a particular
@@ -229,7 +236,15 @@ namespace Vanara.IO
 		/// </param>
 		/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 		/// <exception cref="NotImplementedException"></exception>
-		void ICollection<BackgroundCopyFileInfo>.CopyTo(BackgroundCopyFileInfo[] array, int arrayIndex) => throw new NotSupportedException();
+		void ICollection<BackgroundCopyFileInfo>.CopyTo(BackgroundCopyFileInfo[] array, int arrayIndex)
+		{
+			var e = GetEnumerator();
+			while (array.Length > arrayIndex && e.MoveNext())
+			{
+				array[arrayIndex] = e.Current;
+				arrayIndex++;
+			}
+		}
 
 		/// <summary>Disposes of the BackgroundCopyFileSet object.</summary>
 		void IDisposable.Dispose() => m_ijob = null;
