@@ -52,6 +52,24 @@ namespace Vanara.Diagnostics.Tests
 		}
 
 		[Test]
+		public void EnumSessionsTest()
+		{
+			try
+			{
+				var sessions = Computer.Local.Sessions.ToList();
+				foreach (var session in sessions)
+				{
+					TestContext.WriteLine("=============================");
+					session.WriteValues();
+				}
+			}
+			finally
+			{
+
+			}
+		}
+
+		[Test]
 		public void EnumUsersTest()
 		{
 			const string user = "TestUser123";
