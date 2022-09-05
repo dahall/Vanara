@@ -1,10 +1,8 @@
-﻿using NUnit.Framework;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
 
 namespace Vanara.PInvoke.Tests;
 
-partial class BackgroundCopyTests
+internal partial class BackgroundCopyTests
 {
 	[Test]
 	public void JobCertificateTest()
@@ -12,7 +10,6 @@ partial class BackgroundCopyTests
 		using var job = BackgroundCopyManager.Jobs.Add(GetCurrentMethodName());
 
 		Assert.That(job.Certificate, Is.Null);
-
 
 		using var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
 

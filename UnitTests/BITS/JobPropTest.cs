@@ -1,51 +1,45 @@
-﻿using NUnit.Framework;
-using System;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 
 namespace Vanara.PInvoke.Tests;
 
-partial class BackgroundCopyTests
+internal partial class BackgroundCopyTests
 {
 	[Test]
 	public void JobPropTest()
 	{
 		var currentMethodName = GetCurrentMethodName();
 
-		
 		using var job = BackgroundCopyManager.Jobs.Add(currentMethodName);
 
 		Assert.That(job.DisplayName, Is.EqualTo(currentMethodName));
 
-
 		Assert.That(() => job.ACLFlags = BackgroundCopyACLFlags.All, Throws.Nothing);
 		Assert.That(job.ACLFlags, Is.EqualTo(BackgroundCopyACLFlags.All));
-
 
 		Assert.That(job.Credentials.Count, Is.EqualTo(0));
 		Assert.That(() => job.Credentials.Add(BackgroundCopyJobCredentialScheme.Digest, BackgroundCopyJobCredentialTarget.Proxy, "user", "mypwd"), Throws.Nothing);
 
 		Assert.That(job.Credentials[BackgroundCopyJobCredentialScheme.Digest, BackgroundCopyJobCredentialTarget.Proxy].UserName, Is.EqualTo("user"));
 
-
 		var ch = new System.Net.WebHeaderCollection() { "A1:Test", "A2:Prova" };
 
 		Assert.That(() => job.CustomHeaders = ch, Throws.Nothing);
 		Assert.That(job.CustomHeaders, Has.Count.EqualTo(2));
-		
+
 		Assert.That(job.Description, Is.EqualTo(job.GetDefVal<string>(nameof(job.Description))));
 		Assert.That(() => job.Description = currentMethodName, Throws.Nothing);
 		Assert.That(job.Description, Is.EqualTo(currentMethodName));
-		
+
 		Assert.That(job.DisableNotifications, Is.EqualTo(job.GetDefVal<bool>(nameof(job.DisableNotifications))));
 		Assert.That(() => job.DisableNotifications = true, Throws.Nothing);
 		Assert.That(job.DisableNotifications, Is.EqualTo(true));
-		
+
 		Assert.That(job.DynamicContent, Is.EqualTo(job.GetDefVal<bool>(nameof(job.DynamicContent))));
 		Assert.That(() => job.DynamicContent = true, Throws.Nothing);
 		Assert.That(job.DynamicContent, Is.EqualTo(true));
-		
+
 		Assert.That(job.ErrorCount, Is.EqualTo(job.GetDefVal<int>(nameof(job.ErrorCount))));
-		
+
 		Assert.That(job.HighPerformance, Is.EqualTo(job.GetDefVal<bool>(nameof(job.HighPerformance))));
 		Assert.That(() => job.HighPerformance = true, Throws.Nothing);
 		Assert.That(job.HighPerformance, Is.EqualTo(true));
@@ -54,9 +48,9 @@ partial class BackgroundCopyTests
 		Assert.That(() => job.MakeCustomHeadersWriteOnly(), Throws.Nothing);
 
 		Assert.That(job.ID, Is.Not.EqualTo(Guid.Empty));
-		
+
 		Assert.That(job.JobType, Is.EqualTo(BackgroundCopyJobType.Download));
-		
+
 		Assert.That(job.LastError, Is.Null);
 
 		Assert.That(job.MaxDownloadSize, Is.EqualTo(job.GetDefVal<ulong>(nameof(job.MaxDownloadSize))));

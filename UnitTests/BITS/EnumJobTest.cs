@@ -1,9 +1,6 @@
-﻿using NUnit.Framework;
-using System.Linq;
+﻿namespace Vanara.PInvoke.Tests;
 
-namespace Vanara.PInvoke.Tests;
-
-partial class BackgroundCopyTests
+internal partial class BackgroundCopyTests
 {
 	[Test]
 	public void EnumJobTest()

@@ -1,13 +1,9 @@
-﻿using NUnit.Framework;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading;
 
 namespace Vanara.PInvoke.Tests;
 
-partial class BackgroundCopyTests
+internal partial class BackgroundCopyTests
 {
 	[Test]
 	public void UploadJobTest()
@@ -24,7 +20,6 @@ partial class BackgroundCopyTests
 		var allFilesTotalSize = allFileInfos.Select(fi => fi.Length).Sum();
 		var allFilesToUpload = allFileInfos.Select(fi => fi.Name).ToArray();
 
-
 		var raiseException = false;
 		AutoResetEvent autoReset;
 
@@ -33,7 +28,6 @@ partial class BackgroundCopyTests
 		{
 			UploadCompleted(e, autoReset, allFilesToUpload.Length, allFilesTotalSize);
 		}
-
 
 		// Create an upload job.
 		using var uploadJob = BackgroundCopyManager.Jobs.Add($"{nameof(remoteRoot)} upload", jobType: BackgroundCopyJobType.Upload);
@@ -45,7 +39,6 @@ partial class BackgroundCopyTests
 			uploadJob.FileTransferred += OnUploadFileTransferred;
 			uploadJob.Completed += OnUploadCompleted;
 
-
 			// Add upload file information.
 			var fileToUpload = Path.Combine(remoteRoot.FullName, allFileInfos[0].Name);
 
@@ -54,33 +47,33 @@ partial class BackgroundCopyTests
 			// Start (resume) the job.
 			uploadJob.Resume();
 
-
 			// Block thread and wait.
 			raiseException = !autoReset.WaitOne(TimeSpan.FromSeconds(10));
 		}
-
 
 		// Remove weak references to prevent memory leak.
 		uploadJob.Completed -= OnUploadCompleted;
 		uploadJob.FileTransferred -= OnUploadFileTransferred;
 		uploadJob.Error -= OnUploadError;
 
-
 		if (raiseException)
 			throw new InvalidOperationException();
 	}
 
-
-
-
 	// Better performance when event methods are defined seperately, preferably static.
-
 
 	private static void OnUploadError(object s, BackgroundCopyJobEventArgs e)
 	{
 		throw e.Job.LastError;
 	}
 
+	private static void OnUploadFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
+	{
+		var fileInfo = e.FileInfo;
+
+		// Enable: Debug > Options > Debugging > General: Redirect all Output Window text to the Immediate Window
+		Debug.WriteLine($"Transferred {fileInfo.BytesTransferred:N0} bytes | File: {fileInfo.LocalFilePath}");
+	}
 
 	private static void UploadCompleted(BackgroundCopyJobEventArgs e, AutoResetEvent autoResetEvent, long totalFiles, long totalBytes)
 	{
@@ -91,20 +84,9 @@ partial class BackgroundCopyTests
 		Assert.AreEqual(totalFiles, job.Progress.FilesTotal);
 		Assert.AreEqual(totalBytes, job.Progress.BytesTransferred);
 
-
 		// Enable: Debug > Options > Debugging > General: Redirect all Output Window text to the Immediate Window
 		Debug.WriteLine($"Completed job: {job.DisplayName} | Total files: {job.Progress.FilesTotal:N0} | Bytes: {job.Progress.BytesTotal:N0}");
 
-
 		autoResetEvent.Set();
-	}
-
-
-	private static void OnUploadFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
-	{
-		var fileInfo = e.FileInfo;
-
-		// Enable: Debug > Options > Debugging > General: Redirect all Output Window text to the Immediate Window
-		Debug.WriteLine($"Transferred {fileInfo.BytesTransferred:N0} bytes | File: {fileInfo.LocalFilePath}");
 	}
 }

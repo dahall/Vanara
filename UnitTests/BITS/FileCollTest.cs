@@ -1,9 +1,6 @@
-﻿using NUnit.Framework;
-using System.Linq;
+﻿namespace Vanara.PInvoke.Tests;
 
-namespace Vanara.PInvoke.Tests;
-
-partial class BackgroundCopyTests
+internal partial class BackgroundCopyTests
 {
 	[Test]
 	public void FileCollTest()
@@ -13,7 +10,6 @@ partial class BackgroundCopyTests
 		var srcFile = tempRoot.CreateFile().FullName;
 
 		var dstFile = tempRoot.RandomTxtFileFullPath;
-
 
 		using var job = BackgroundCopyManager.Jobs.Add(GetCurrentMethodName());
 

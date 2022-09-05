@@ -1,9 +1,8 @@
-﻿using NUnit.Framework;
-using System.IO;
+﻿using System.IO;
 
 namespace Vanara.PInvoke.Tests;
 
-partial class BackgroundCopyTests
+internal partial class BackgroundCopyTests
 {
 	[Test]
 	public void CopyTest()
@@ -13,7 +12,6 @@ partial class BackgroundCopyTests
 		var srcFile = tempRoot.CreateFile().FullName;
 
 		var dstFile = tempRoot.RandomTxtFileFullPath;
-
 
 		Assert.That(() => BackgroundCopyManager.Copy(srcFile, dstFile), Throws.Nothing);
 

@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Vanara.PInvoke.Tests;
 
-partial class BackgroundCopyTests
+internal partial class BackgroundCopyTests
 {
 	[Test]
 	public void JobCollTest()
@@ -13,7 +10,6 @@ partial class BackgroundCopyTests
 		var guid = Guid.Empty;
 
 		BackgroundCopyJob job = null;
-
 
 		Assert.That(() => { var j = BackgroundCopyManager.Jobs.Add(GetCurrentMethodName()); guid = j.ID; }, Throws.Nothing);
 
@@ -26,7 +22,6 @@ partial class BackgroundCopyTests
 		Assert.That(job, Is.Not.Null);
 
 		Assert.That(BackgroundCopyManager.Jobs.Count(j => j.ID == guid), Is.EqualTo(1));
-
 
 		var array = new BackgroundCopyJob[BackgroundCopyManager.Jobs.Count];
 

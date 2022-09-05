@@ -1,10 +1,6 @@
-﻿using NUnit.Framework;
-using System;
-using System.Security.Principal;
+﻿namespace Vanara.PInvoke.Tests;
 
-namespace Vanara.PInvoke.Tests;
-
-partial class BackgroundCopyTests
+internal partial class BackgroundCopyTests
 {
 	[Test]
 	public void PeerTest()

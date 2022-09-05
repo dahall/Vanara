@@ -8,7 +8,7 @@ using System.Reflection;
 namespace Vanara.PInvoke.Tests;
 
 [TestFixture()]
-public partial class BackgroundCopyTests
+internal partial class BackgroundCopyTests
 {
 	public string GetCurrentMethodName()
 	{
