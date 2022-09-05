@@ -12,6 +12,21 @@ namespace Vanara.PInvoke
 		/// <summary>A session value the indicates all WTS sessions.</summary>
 		public const uint WTS_ANY_SESSION = unchecked((uint)-2);
 
+		/// <summary>
+		/// To work with sessions running on virtual machines on the RD Virtualization Host server on which the calling application is
+		/// running, specify WTS_CURRENT_SERVER_NAME for the pServerName parameter.
+		/// </summary>
+		public const string WTS_CURRENT_SERVER_NAME = null;
+
+		/// <summary>Indicates the RD Session Host server on which your application is running.</summary>
+		public static SafeHWTSSERVER WTS_CURRENT_SERVER => SafeHWTSSERVER.Current;
+
+		/// <summary>Indicates the RD Session Host server on which your application is running.</summary>
+		public static SafeHWTSSERVER WTS_CURRENT_SERVER_HANDLE => SafeHWTSSERVER.Current;
+
+		/// <summary>Specifies the current session (SessionId)</summary>
+		public const uint WTS_CURRENT_SESSION = unchecked((uint)-1);
+
 		private const int CLIENTADDRESS_LENGTH = 30;
 		private const int CLIENTNAME_LENGTH = 20;
 		private const int DOMAIN_LENGTH = 17;
@@ -35,6 +50,20 @@ namespace Vanara.PInvoke
 
 			/// <summary>The ALT key.</summary>
 			REMOTECONTROL_KBDALT_HOTKEY = 0x4,
+		}
+
+		/// <summary>A <see cref="WTS_INFO_CLASS.WTSClientProtocolType"/> return value indicating the session protocol type.</summary>
+		[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSVirtualChannelOpenEx")]
+		public enum SessionProtocolType : ushort
+		{
+			/// <summary>The console session.</summary>
+			Console = 0,
+
+			/// <summary>This value is retained for legacy purposes.</summary>
+			Legacy = 1,
+
+			/// <summary>The RDP protocol.</summary>
+			RDP = 2
 		}
 
 		/// <summary>Options for <c>WTSVirtualChannelOpenEx</c>.</summary>
@@ -394,7 +423,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// A USHORT value that specifies information about the protocol type for the session. This is one of the following values.
 			/// </summary>
-			[CorrespondingType(typeof(ushort))]
+			[CorrespondingType(typeof(SessionProtocolType))]
 			WTSClientProtocolType,
 
 			/// <summary>
@@ -2853,10 +2882,12 @@ namespace Vanara.PInvoke
 			public uint version;
 
 			/// <summary>This member is reserved.</summary>
-			public uint fConnectClientDrivesAtLogon;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fConnectClientDrivesAtLogon;
 
 			/// <summary>This member is reserved.</summary>
-			public uint fConnectPrinterAtLogon;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fConnectPrinterAtLogon;
 
 			/// <summary>
 			/// <para>Specifies whether the client can use printer redirection.</para>
@@ -2865,7 +2896,8 @@ namespace Vanara.PInvoke
 			/// <para>1</para>
 			/// <para>Disable client printer redirection.</para>
 			/// </summary>
-			public uint fDisablePrinterRedirection;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fDisablePrinterRedirection;
 
 			/// <summary>
 			/// <para>Specifies whether the printer connected to the client is the default printer for the user.</para>
@@ -2874,7 +2906,8 @@ namespace Vanara.PInvoke
 			/// <para>1</para>
 			/// <para>The printer connected to the client is the default printer for the user.</para>
 			/// </summary>
-			public uint fDisableDefaultMainClientPrinter;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fDisableDefaultMainClientPrinter;
 
 			/// <summary>
 			/// <para>
@@ -3711,6 +3744,9 @@ namespace Vanara.PInvoke
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HWTSSERVER(SafeHWTSSERVER h) => h.handle;
+
+			/// <summary>Gets the handle of the current server (WTS_CURRENT_SERVER).</summary>
+			public static SafeHWTSSERVER Current => new(IntPtr.Zero, false);
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { WTSCloseServer(handle); return true; }
