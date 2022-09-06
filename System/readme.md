@@ -79,6 +79,8 @@ Class | Description
 [Vanara.Security.AccessControl.ServiceControllerAuditRule](https://github.com/dahall/Vanara/search?l=C%23&q=ServiceControllerAuditRule) | Represents an abstraction of an access control entry (ACE) that defines an audit rule for a service.
 [Vanara.Extensions.ServiceControllerExtension](https://github.com/dahall/Vanara/search?l=C%23&q=ServiceControllerExtension) | Extension methods for `System.ServiceProcess.ServiceController`.
 [Vanara.Security.AccessControl.ServiceControllerSecurity](https://github.com/dahall/Vanara/search?l=C%23&q=ServiceControllerSecurity) | Represents the access control and audit security for a service.
+[Vanara.Session](https://github.com/dahall/Vanara/search?l=C%23&q=Session) | 
+[Vanara.Sessions](https://github.com/dahall/Vanara/search?l=C%23&q=Sessions) | 
 [Vanara.ShareConnection](https://github.com/dahall/Vanara/search?l=C%23&q=ShareConnection) | Represents a connection to a shared device.
 [Vanara.SharedDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SharedDevice) | Represents a shared device on a computer.
 [Vanara.SharedDevices](https://github.com/dahall/Vanara/search?l=C%23&q=SharedDevices) | Represents all the shared devices on a computers.

@@ -1,7 +1,7 @@
 ## Vanara.PInvoke.ProjectedFSLib  
 PInvoke API (methods, structures and constants) imported from Windows ProjectedFSLib.dll.
 
-- Includes methods from projectedfslib.dll  
+- Includes methods from Vanara.PInvoke.ProjectedFSLib.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.ProjectedFSLib?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.ProjectedFSLib?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.ProjectedFSLib)  
 ### Methods - 100% API coverage (19 of 19 functions)  
 Native Method | Header | Managed Method  
@@ -58,3 +58,7 @@ Native Structure | Header | Managed Structure
 [SECURITYINFORMATION](https://www.google.com/search?num=5&q=SECURITYINFORMATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ProjectedFSLib.PRJ_PLACEHOLDER_INFO.SECURITYINFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=SECURITYINFORMATION)  
 [STREAMSINFORMATION](https://www.google.com/search?num=5&q=STREAMSINFORMATION+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ProjectedFSLib.PRJ_PLACEHOLDER_INFO.STREAMSINFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=STREAMSINFORMATION)  
 [SYMLINK](https://www.google.com/search?num=5&q=SYMLINK+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ProjectedFSLib.PRJ_EXTENDED_INFO.SYMLINK](https://github.com/dahall/Vanara/search?l=C%23&q=SYMLINK)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[ProjectedFSLib](https://www.google.com/search?num=5&q=ProjectedFSLib+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.ProjectedFSLib](https://github.com/dahall/Vanara/search?l=C%23&q=ProjectedFSLib)  

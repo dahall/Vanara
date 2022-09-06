@@ -55,6 +55,7 @@ Native Enum | Header | Managed Enum
 --- | --- | ---  
 [REMOTECONTROL_HOTKEY](https://www.google.com/search?num=5&q=REMOTECONTROL_HOTKEY+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.REMOTECONTROL_HOTKEY](https://github.com/dahall/Vanara/search?l=C%23&q=REMOTECONTROL_HOTKEY)  
 [RENDER_HINT](https://www.google.com/search?num=5&q=RENDER_HINT+site%3Adocs.microsoft.com) | wtshintapi.h | [Vanara.PInvoke.WTSApi32.RENDER_HINT](https://github.com/dahall/Vanara/search?l=C%23&q=RENDER_HINT)  
+[SessionProtocolType](https://www.google.com/search?num=5&q=SessionProtocolType+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.SessionProtocolType](https://github.com/dahall/Vanara/search?l=C%23&q=SessionProtocolType)  
 [WTS_CHANNEL_OPTION](https://www.google.com/search?num=5&q=WTS_CHANNEL_OPTION+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_CHANNEL_OPTION](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_CHANNEL_OPTION)  
 [WTS_CONFIG_CLASS](https://www.google.com/search?num=5&q=WTS_CONFIG_CLASS+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_CONFIG_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_CONFIG_CLASS)  
 [WTS_CONFIG_SOURCE](https://www.google.com/search?num=5&q=WTS_CONFIG_SOURCE+site%3Adocs.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTS_CONFIG_SOURCE](https://github.com/dahall/Vanara/search?l=C%23&q=WTS_CONFIG_SOURCE)  
