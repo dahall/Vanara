@@ -35,8 +35,9 @@ namespace Vanara.IO
 
 				static Version GetVer()
 				{
-					string sysDir = Environment.Is64BitProcess != Environment.Is64BitOperatingSystem ? "sysnative" : "system32"; // handle wow64
-					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(Environment.ExpandEnvironmentVariables($@"%SystemRoot%\{sysDir}\qmgr.dll"));
+					string dllPath = Microsoft.Win32.Registry.GetValue($@"HKEY_CLASSES_ROOT\CLSID\{typeof(IBackgroundCopyManager).GUID:B}\InProcServer32", null, null).ToString() ??
+						Environment.ExpandEnvironmentVariables($@"%SystemRoot%\{(Environment.Is64BitProcess != Environment.Is64BitOperatingSystem ? "sysnative" : "system32")}\qmgr.dll");
+					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath);
 					return $"{fi.FileMajorPart}.{fi.FileMinorPart}" switch
 					{
 						"7.8" when fi.FileBuildPart >= 18362 => new Version(10, 3),
