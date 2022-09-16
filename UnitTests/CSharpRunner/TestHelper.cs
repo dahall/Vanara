@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using Vanara.Extensions;
@@ -18,7 +19,11 @@ namespace Vanara.PInvoke.Tests
 		private static readonly Lazy<JsonSerializerSettings> jsonSet = new(() =>
 			new JsonSerializerSettings()
 			{
-				Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter(), new FILETIMEConverter() },
+				Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(),
+					new GenJsonConverter<ulong, SizeT>(i => new SizeT(i), o => o.Value),
+					new GenJsonConverter<DateTime, FILETIME>(dt => dt.ToFileTimeStruct(), ft => ft.ToDateTime()),
+					new GenJsonConverter<string, IPAddress>(i => IPAddress.Parse(i), o => o.ToString()),
+				},
 				ReferenceLoopHandling = ReferenceLoopHandling.Serialize
 			});
 
@@ -109,18 +114,21 @@ Simple:
 
 		public static void WriteValues(this object value) => TestContext.WriteLine(GetStringVal(value));
 
-		private class SizeTConverter : JsonConverter<SizeT>
+		private class GenJsonConverter<TIn, TOut> : JsonConverter<TOut>
 		{
-			public override SizeT ReadJson(JsonReader reader, Type objectType, SizeT existingValue, bool hasExistingValue, JsonSerializer serializer) => reader.Value is ulong ul ? new SizeT(ul) : new SizeT(0);
+			Func<TIn, TOut> rdr;
+			Func<TOut, TIn> wtr;
 
-			public override void WriteJson(JsonWriter writer, SizeT value, JsonSerializer serializer) => writer.WriteValue(value.Value);
-		}
+			public GenJsonConverter(Func<TIn, TOut> r, Func<TOut, TIn> w)
+			{
+				rdr = r;
+				wtr = w;
+			}
+			public override TOut ReadJson(JsonReader reader, Type objectType, TOut existingValue, bool hasExistingValue, JsonSerializer serializer) =>
+				reader.Value is TIn t ? rdr(t) : default(TOut);
 
-		private class FILETIMEConverter : JsonConverter<FILETIME>
-		{
-			public override FILETIME ReadJson(JsonReader reader, Type objectType, FILETIME existingValue, bool hasExistingValue, JsonSerializer serializer) => reader.Value is DateTime dt ? dt.ToFileTimeStruct() : default(FILETIME);
-
-			public override void WriteJson(JsonWriter writer, FILETIME value, JsonSerializer serializer) => writer.WriteValue(value.ToDateTime());
+			public override void WriteJson(JsonWriter writer, TOut value, JsonSerializer serializer) =>
+				writer.WriteValue(wtr(value));
 		}
 	}
 }
