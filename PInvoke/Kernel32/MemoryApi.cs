@@ -1666,7 +1666,7 @@ namespace Vanara.PInvoke
 		// dwFileOffsetLow, _In_ SIZE_T dwNumberOfBytesToMap);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366761")]
-		public static extern IntPtr MapViewOfFile([In] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, uint dwNumberOfBytesToMap);
+		public static extern IntPtr MapViewOfFile([In] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap);
 
 		/// <summary>
 		/// <para>Maps a view of a file or a pagefile-backed section into the address space of the specified process.</para>
@@ -1866,7 +1866,7 @@ namespace Vanara.PInvoke
 		// dwFileOffsetLow, _In_ SIZE_T dwNumberOfBytesToMap, _In_opt_ LPVOID lpBaseAddress);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366763")]
-		public static extern IntPtr MapViewOfFileEx([In] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, uint dwNumberOfBytesToMap,
+		public static extern IntPtr MapViewOfFileEx([In] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap,
 			[In] IntPtr lpBaseAddress);
 
 		/// <summary>Maps a view of a file mapping into the address space of a calling Windows Store app.</summary>
