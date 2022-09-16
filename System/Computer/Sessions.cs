@@ -279,6 +279,7 @@ public class Session : INamedEntity
 	/// <param name="wait">
 	/// Indicates whether the operation is synchronous. Specify <c>TRUE</c> to wait for the operation to complete, or <c>FALSE</c> to
 	/// return immediately.
+	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is a nonzero value.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>

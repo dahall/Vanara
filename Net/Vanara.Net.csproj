@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Abstracted classes around Win32 networking functions to provide simplified and object-oriented access to key networking capabilities like DNS, DHCP, filtering, access, and discovery.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.Net</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>vanara;net-extensions;networking</PackageTags>
+    <PackageReleaseNotes />
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+    <RootNamespace>Vanara.Net</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PInvoke\Dhcp\Vanara.PInvoke.Dhcp.csproj" />
+    <ProjectReference Include="..\PInvoke\DnsApi\Vanara.PInvoke.DnsApi.csproj" />
+    <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+  </ItemGroup>
+</Project>
