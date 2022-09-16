@@ -28,17 +28,16 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void DhcpRequestParamsTest()
 		{
-			var sendParams = default(DHCPCAPI_PARAMS_ARRAY);
-			using var pparam = new SafeCoTaskMemStruct<DHCPAPI_PARAMS>(new DHCPAPI_PARAMS { OptionId = DHCP_OPTION_ID.OPTION_SUBNET_MASK });
-			//using var pparam = new SafeCoTaskMemStruct<DHCPAPI_PARAMS>(new DHCPAPI_PARAMS { OptionId = DHCP_OPTION_ID.OPTION_HOST_NAME });
-			var reqParams = new DHCPCAPI_PARAMS_ARRAY { nParams = 1, Params = pparam };
-			uint sz = 1000;
-			using var mem = new SafeCoTaskMemHandle(sz);
-			Assert.That(DhcpRequestParams(DHCPCAPI_REQUEST.DHCPCAPI_REQUEST_SYNCHRONOUS, default, adp.Id, IntPtr.Zero, sendParams, reqParams, mem, ref sz, null), ResultIs.Successful);
-			var p = pparam.Value;
-			Assert.That(p.nBytesData, Is.GreaterThan(0));
-			TestContext.Write(new IPAddress(p.Data.ToArray<byte>(4)).ToString());
-			//TestContext.Write(StringHelper.GetString(p.Data, CharSet.Ansi, p.nBytesData));
+			Assert.That(() =>
+			{
+				TestContext.WriteLine(new IPAddress(RequestParam<uint>(adp.Id, DHCP_OPTION_ID.OPTION_SUBNET_MASK)));
+				TestContext.WriteLine(new IPAddress(RequestParam<uint>(adp.Id, DHCP_OPTION_ID.OPTION_ROUTER_ADDRESS)));
+				TestContext.WriteLine(new IPAddress(RequestParam<uint>(adp.Id, DHCP_OPTION_ID.OPTION_BROADCAST_ADDRESS)));
+				Array.ConvertAll(RequestParam<uint[]>(adp.Id, DHCP_OPTION_ID.OPTION_TIME_SERVERS) ?? new uint[0], a => new IPAddress(a)).WriteValues();
+				TestContext.WriteLine(RequestParam<string>(adp.Id, DHCP_OPTION_ID.OPTION_HOST_NAME));
+				TestContext.WriteLine(RequestParam<string>(adp.Id, DHCP_OPTION_ID.OPTION_DOMAIN_NAME));
+				TestContext.WriteLine(RequestParam<string>(adp.Id, DHCP_OPTION_ID.OPTION_MSFT_IE_PROXY));
+			}, Throws.Nothing);
 		}
 
 		[Test]
@@ -50,6 +49,45 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(DhcpRegisterParamChange(DHCPCAPI_REGISTER_HANDLE_EVENT, default, adp.Id, IntPtr.Zero, watchParams, out var hEvent), ResultIs.Successful);
 			Kernel32.WaitForSingleObject(hEvent, 2000);
 			Assert.That(DhcpDeRegisterParamChange(Event: hEvent), ResultIs.Successful);
+		}
+
+		private static T RequestParam<T>(string adapterName, DHCP_OPTION_ID optionId, byte[] classId = null)
+		{
+			using SafeCoTaskMemHandle pClassIdData = new(classId);
+			using SafeCoTaskMemStruct<DHCPCAPI_CLASSID> pClass = (DHCPCAPI_CLASSID?)(classId is null ? null : new DHCPCAPI_CLASSID() { nBytesData = (uint)classId.Length, Data = pClassIdData });
+			DHCPCAPI_PARAMS_ARRAY sendParams = new();
+			using var pparam = new SafeCoTaskMemStruct<DHCPAPI_PARAMS>(new DHCPAPI_PARAMS { OptionId = optionId });
+			DHCPCAPI_PARAMS_ARRAY reqParams = new() { nParams = 1, Params = pparam };
+			uint sz = 0;
+			DhcpRequestParams(DHCPCAPI_REQUEST.DHCPCAPI_REQUEST_SYNCHRONOUS, default, adapterName, pClass, sendParams, reqParams, IntPtr.Zero, ref sz, null).ThrowUnless(Win32Error.ERROR_MORE_DATA);
+			if (sz == 0) return default;
+			using var buffer = new SafeCoTaskMemHandle(sz);
+			Guid appId = Guid.NewGuid();
+			DhcpRequestParams(DHCPCAPI_REQUEST.DHCPCAPI_REQUEST_SYNCHRONOUS, default, adapterName, pClass, sendParams, reqParams, buffer, ref sz, appId.ToString("N")).ThrowIfFailed();
+			try
+			{
+				//if (!typeof(T).IsPrimitive && typeof(T) != typeof(string))
+				//	reqParamCache.Add(appId, buffer);
+				var p = pparam.Value;
+				if (typeof(T).IsArray)
+				{
+					var elemType = typeof(T).GetElementType();
+					try
+					{
+						var elemSz = InteropExtensions.SizeOf(elemType);
+						return (T)(object)p.Data.ToArray(elemType, p.nBytesData / elemSz, 0, p.nBytesData);
+					}
+					catch
+					{
+						throw new ArgumentException("Unable to process array of specfied type.");
+					}
+				}
+				return p.Data.Convert<T>(p.nBytesData, CharSet.Ansi);
+			}
+			finally
+			{
+				DhcpUndoRequestParams(0, default, adapterName, appId.ToString("N"));
+			}
 		}
 
 		internal static DHCP_IP_ADDRESS IPAddrFromStr(string addr)
