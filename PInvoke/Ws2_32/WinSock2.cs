@@ -2574,7 +2574,7 @@ namespace Vanara.PInvoke
 		/// the address family and the total size of the memory buffer in bytes is namelen.
 		/// </para>
 		/// <para>
-		/// The <c>SOCKADDR_STORAGE</c> structure also stores socket address information and the structure is sufficiently large to store
+		/// The <see cref="SOCKADDR_STORAGE"/> structure also stores socket address information and the structure is sufficiently large to store
 		/// IPv4 or IPv6 address information. The use of the <c>SOCKADDR_STORAGE</c> structure promotes protocol-family and protocol-version
 		/// independence, and simplifies development. It is recommended that the <c>SOCKADDR_STORAGE</c> structure be used in place of the
 		/// sockaddr structure. The <c>SOCKADDR_STORAGE</c> structure is supported on Windows Server 2003 and later.
