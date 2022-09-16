@@ -109,6 +109,35 @@ namespace Vanara.PInvoke
 			DHCPCAPI_REQUEST_CANCEL = 0x08,
 		}
 
+		/// <summary>Identifies the client type in a NetBIOS client.</summary>
+		[Flags]
+		public enum NetBIOSNodeType : byte
+		{
+			/// <summary>B-node: Broadcast - no WINS</summary>
+			Bnode = 0x1,
+			/// <summary>P-node: Peer - WINS only</summary>
+			Pnode = 0x2,
+			/// <summary>M-node: Mixed - broadcast, then WINS</summary>
+			Mnode = 0x4,
+			/// <summary>H-node: Hybrid - WINS, then broadcast</summary>
+			Hnode = 0x8
+		}
+
+		/// <summary>This option, sent by both client and server, specifies the type of DHCP message contained in the DHCP packet.</summary>
+		public enum DhcpMessageType : byte
+		{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+			DHCPDISCOVER = 1,
+			DHCPOFFER = 2,
+			DHCPREQUEST = 3,
+			DHCPDECLINE = 4,
+			DHCPACK = 5,
+			DHCPNAK = 6,
+			DHCPRELEASE = 7,
+			DHCPINFORM = 8,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+		}
+
 		/// <summary>
 		/// The <c>DhcpCApiCleanup</c> function enables DHCP to properly clean up resources allocated throughout the use of DHCP function
 		/// calls. The <c>DhcpCApiCleanup</c> function must only be called if a previous call to DhcpCApiInitialize executed successfully.
@@ -579,6 +608,16 @@ namespace Vanara.PInvoke
 
 			/// <summary>Array of DHCPAPI_PARAMS structures.</summary>
 			public IntPtr Params;
+
+			/// <summary>Makes an instance for <see cref="DHCPCAPI_PARAMS_ARRAY"/> from an array of ids.</summary>
+			/// <param name="array">The resulting native array.</param>
+			/// <param name="ids">The list of ids.</param>
+			/// <returns>The resulting instance.</returns>
+			public static DHCPCAPI_PARAMS_ARRAY Make(out InteropServices.SafeNativeArray<DHCPAPI_PARAMS> array, params DHCP_OPTION_ID[] ids)
+			{
+				array = ids.Length == 0 ? null : new(Array.ConvertAll(ids, i => new DHCPAPI_PARAMS { OptionId = i }));
+				return new() { nParams = (uint)ids.Length, Params = ids.Length == 0 ? default : array };
+			}
 		}
 	}
 }
