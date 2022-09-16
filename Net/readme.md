@@ -1,7 +1,7 @@
-## Assembly report for Vanara.Management.dll
-Extensions and helper classes for System.Management.
+## Assembly report for Vanara.Net.dll
+Abstracted classes around Win32 networking functions to provide simplified and object-oriented access to key networking capabilities like DNS, DHCP, filtering, access, and discovery.
 ### Classes
 Class | Description
 ---- | ----
-[Vanara.Management.DynamicMgmtObject](https://github.com/dahall/Vanara/search?l=C%23&q=DynamicMgmtObject) | A dynamic object to handle WMI `System.Management.ManagementBaseObject` references.
-[Vanara.Management.ManagementExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=ManagementExtensions) | Extension methods to work more easily with `System.Management`.
+[Vanara.Net.DhcpClient](https://github.com/dahall/Vanara/search?l=C%23&q=DhcpClient) | Access to client functions related to DHCP
+[Vanara.Net.DnsService](https://github.com/dahall/Vanara/search?l=C%23&q=DnsService) | Represents a DNS service

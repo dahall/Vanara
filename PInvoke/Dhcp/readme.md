@@ -32,7 +32,9 @@ Native Enum | Header | Managed Enum
 --- | --- | ---  
 [DHCP_OPTION_ID](https://www.google.com/search?num=5&q=DHCP_OPTION_ID+site%3Adocs.microsoft.com) | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DHCP_OPTION_ID](https://github.com/dahall/Vanara/search?l=C%23&q=DHCP_OPTION_ID)  
 [DHCPCAPI_REQUEST](https://www.google.com/search?num=5&q=DHCPCAPI_REQUEST+site%3Adocs.microsoft.com) | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DHCPCAPI_REQUEST](https://github.com/dahall/Vanara/search?l=C%23&q=DHCPCAPI_REQUEST)  
+[DhcpMessageType](https://www.google.com/search?num=5&q=DhcpMessageType+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Dhcp.DhcpMessageType](https://github.com/dahall/Vanara/search?l=C%23&q=DhcpMessageType)  
 [DHCPV6_OPTION_ID](https://www.google.com/search?num=5&q=DHCPV6_OPTION_ID+site%3Adocs.microsoft.com) | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DHCPV6_OPTION_ID](https://github.com/dahall/Vanara/search?l=C%23&q=DHCPV6_OPTION_ID)  
+[NetBIOSNodeType](https://www.google.com/search?num=5&q=NetBIOSNodeType+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Dhcp.NetBIOSNodeType](https://github.com/dahall/Vanara/search?l=C%23&q=NetBIOSNodeType)  
 [StatusCode](https://www.google.com/search?num=5&q=StatusCode+site%3Adocs.microsoft.com) | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.StatusCode](https://github.com/dahall/Vanara/search?l=C%23&q=StatusCode)  
 ### Structures  
 Native Structure | Header | Managed Structure  

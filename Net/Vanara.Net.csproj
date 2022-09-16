@@ -6,7 +6,12 @@
     <AssemblyName>Vanara.Net</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>vanara;net-extensions;networking</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+DhcpClient, DnsService
+
+</PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
     <RootNamespace>Vanara.Net</RootNamespace>
   </PropertyGroup>
