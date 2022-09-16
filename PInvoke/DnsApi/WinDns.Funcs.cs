@@ -28,15 +28,15 @@ namespace Vanara.PInvoke
 		/// <param name="Status">A value that contains the status associated with this particular set of results.</param>
 		/// <param name="pQueryContext">A pointer to the user context that was passed to DnsServiceBrowse.</param>
 		/// <param name="pDnsRecord">
-		/// A pointer to a DNS_RECORD structure that contains a list of records describing a discovered service on the network. If not ,
-		/// then you are responsible for freeing the returned RR sets using DnsRecordListFree.
+		/// A pointer to a DNS_RECORD structure that contains a list of records describing a discovered service on the network. If not
+		/// <see langword="null"/>, then you are responsible for freeing the returned RR sets using DnsRecordListFree.
 		/// </param>
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nc-windns-dns_service_browse_callback DNS_SERVICE_BROWSE_CALLBACK
 		// DnsServiceBrowseCallback; void DnsServiceBrowseCallback( DWORD Status, PVOID pQueryContext, PDNS_RECORD pDnsRecord ) {...}
 		[PInvokeData("windns.h")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void DNS_SERVICE_BROWSE_CALLBACK(uint Status, [In] IntPtr pQueryContext, IntPtr pDnsRecord);
+		public delegate void DNS_SERVICE_BROWSE_CALLBACK(DNS_STATUS Status, [In] IntPtr pQueryContext, IntPtr pDnsRecord);
 
 		/// <summary>Used to notify your application that service registration has completed.</summary>
 		/// <param name="Status">A value that contains the status of the registration.</param>
@@ -50,21 +50,21 @@ namespace Vanara.PInvoke
 		// DnsServiceRegisterComplete; void DnsServiceRegisterComplete( DWORD Status, PVOID pQueryContext, PDNS_SERVICE_INSTANCE pInstance ) {...}
 		[PInvokeData("windns.h")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void DNS_SERVICE_REGISTER_COMPLETE(uint Status, [In] IntPtr pQueryContext, [In] IntPtr pInstance);
+		public delegate void DNS_SERVICE_REGISTER_COMPLETE(DNS_STATUS Status, [In] IntPtr pQueryContext, [In] IntPtr pInstance);
 
 		/// <summary>Used to asynchronously return the results of a service resolve operation.</summary>
 		/// <param name="Status">A value that contains the status associated with this particular set of results.</param>
 		/// <param name="pQueryContext">A pointer to the user context that was passed to DnsServiceResolve.</param>
 		/// <param name="pInstance">
-		/// A pointer to a DNS_SERVICE_INSTANCE structure that contains detailed information about a service on the network. If not , then
-		/// you are responsible for freeing the data using DnsServiceFreeInstance.
+		/// A pointer to a DNS_SERVICE_INSTANCE structure that contains detailed information about a service on the network. If not
+		/// <see langword="null"/>, then you are responsible for freeing the data using DnsServiceFreeInstance.
 		/// </param>
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nc-windns-dns_service_resolve_complete DNS_SERVICE_RESOLVE_COMPLETE
 		// DnsServiceResolveComplete; void DnsServiceResolveComplete( DWORD Status, PVOID pQueryContext, PDNS_SERVICE_INSTANCE pInstance ) {...}
 		[PInvokeData("windns.h")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void DNS_SERVICE_RESOLVE_COMPLETE(uint Status, [In] IntPtr pQueryContext, [In] IntPtr pInstance);
+		public delegate void DNS_SERVICE_RESOLVE_COMPLETE(DNS_STATUS Status, [In] IntPtr pQueryContext, [In] IntPtr pInstance);
 
 		/// <summary>Used to asynchronously return the results of an mDNS query.</summary>
 		/// <param name="pQueryContext">A pointer to the user context that was passed to DnsServiceBrowse.</param>
@@ -127,7 +127,8 @@ namespace Vanara.PInvoke
 		// DnsAcquireContextHandle_W( DWORD CredentialFlags, PVOID Credentials, PHANDLE pContext );
 		[DllImport(Lib.Dnsapi, SetLastError = false, EntryPoint = "DnsAcquireContextHandle_W", CharSet = CharSet.Unicode)]
 		[PInvokeData("windns.h", MSDNShortId = "9a820165-2f78-44f4-b49f-dc7a2b6fb4e5")]
-		public static extern DNS_STATUS DnsAcquireContextHandle([MarshalAs(UnmanagedType.Bool)] bool CredentialFlags, [In, Optional] IntPtr Credentials, out SafeHDNSCONTEXT pContext);
+		public static extern DNS_STATUS DnsAcquireContextHandle([MarshalAs(UnmanagedType.Bool)] bool CredentialFlags,
+			[In, Optional] IntPtr Credentials, out SafeHDNSCONTEXT pContext);
 
 		/// <summary>The <c>DnsCancelQuery</c> function can be used to cancel a pending query to the DNS namespace.</summary>
 		/// <param name="pCancelHandle">
@@ -174,7 +175,8 @@ namespace Vanara.PInvoke
 		// DnsExtractRecordsFromMessage_W( PDNS_MESSAGE_BUFFER pDnsBuffer, WORD wMessageLength, PDNS_RECORD *ppRecord );
 		[DllImport(Lib.Dnsapi, SetLastError = false, EntryPoint = "DnsExtractRecordsFromMessage_W", CharSet = CharSet.Unicode)]
 		[PInvokeData("windns.h", MSDNShortId = "0179bf3e-9243-4dd7-a2ab-e2f6f4bf4b82")]
-		public static extern DNS_STATUS DnsExtractRecordsFromMessage([In] IntPtr pDnsBuffer, ushort wMessageLength, out SafeDnsRecordList ppRecord);
+		public static extern DNS_STATUS DnsExtractRecordsFromMessage([In] IntPtr pDnsBuffer, ushort wMessageLength,
+			out SafeDnsRecordList ppRecord);
 
 		/// <summary>The <c>DnsFree</c> function frees memory allocated for DNS records that was obtained using the DnsQuery function.</summary>
 		/// <param name="pData">A pointer to the DNS data to be freed.</param>
@@ -253,7 +255,8 @@ namespace Vanara.PInvoke
 		// DWORD DnsGetApplicationSettings( DWORD *pcServers, DNS_CUSTOM_SERVER **ppDefaultServers, DNS_APPLICATION_SETTINGS *pSettings );
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "NF:windns.DnsGetApplicationSettings", MinClient = PInvokeClient.Windows11)]
-		public static extern Win32Error DnsGetApplicationSettings(out uint pcServers, out IntPtr ppDefaultServers, out DNS_APPLICATION_SETTINGS pSettings);
+		public static extern Win32Error DnsGetApplicationSettings(out uint pcServers, out IntPtr ppDefaultServers,
+			out DNS_APPLICATION_SETTINGS pSettings);
 
 		/// <summary>Retrieves the per-application DNS settings.</summary>
 		/// <param name="ppDefaultServers">
@@ -310,7 +313,8 @@ namespace Vanara.PInvoke
 		// completionRoutine, void *completionContext );
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "fdc8eb09-e071-4f03-974a-2b11a657ab18")]
-		public static extern Win32Error DnsGetProxyInformation([MarshalAs(UnmanagedType.LPWStr)] string hostName, ref DNS_PROXY_INFORMATION proxyInformation, ref DNS_PROXY_INFORMATION defaultProxyInformation,
+		public static extern Win32Error DnsGetProxyInformation([MarshalAs(UnmanagedType.LPWStr)] string hostName,
+			ref DNS_PROXY_INFORMATION proxyInformation, ref DNS_PROXY_INFORMATION defaultProxyInformation,
 			IntPtr completionRoutine = default, IntPtr completionContext = default);
 
 		/// <summary>
@@ -333,7 +337,8 @@ namespace Vanara.PInvoke
 		// completionRoutine, void *completionContext );
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "fdc8eb09-e071-4f03-974a-2b11a657ab18")]
-		public static extern Win32Error DnsGetProxyInformation([MarshalAs(UnmanagedType.LPWStr)] string hostName, ref DNS_PROXY_INFORMATION proxyInformation, IntPtr defaultProxyInformation = default,
+		public static extern Win32Error DnsGetProxyInformation([MarshalAs(UnmanagedType.LPWStr)] string hostName,
+			ref DNS_PROXY_INFORMATION proxyInformation, IntPtr defaultProxyInformation = default,
 			IntPtr completionRoutine = default, IntPtr completionContext = default);
 
 		/// <summary>
@@ -380,7 +385,8 @@ namespace Vanara.PInvoke
 		// PDNS_RECORD pAddRecords, PDNS_RECORD pDeleteRecords, DWORD Options, HANDLE hCredentials, PVOID pExtraList, PVOID pReserved );
 		[DllImport(Lib.Dnsapi, SetLastError = false, EntryPoint = "DnsModifyRecordsInSet_W", CharSet = CharSet.Unicode)]
 		[PInvokeData("windns.h", MSDNShortId = "4287b4e1-a7a2-4b73-b5bb-21bc639bae73")]
-		public static extern DNS_STATUS DnsModifyRecordsInSet(in DNS_RECORD pAddRecords, in DNS_RECORD pDeleteRecords, DNS_UPDATE Options, [Optional] IntPtr hCredentials, [In, Out, Optional] IntPtr pExtraList, IntPtr pReserved = default);
+		public static extern DNS_STATUS DnsModifyRecordsInSet(in DNS_RECORD pAddRecords, in DNS_RECORD pDeleteRecords,
+			DNS_UPDATE Options, [Optional] IntPtr hCredentials, [In, Out, Optional] IntPtr pExtraList, IntPtr pReserved = default);
 
 		/// <summary>
 		/// The <c>DnsModifyRecordsInSet</c> function adds, modifies or removes a Resource Record (RR) set that may have been previously
@@ -426,7 +432,8 @@ namespace Vanara.PInvoke
 		// PDNS_RECORD pAddRecords, PDNS_RECORD pDeleteRecords, DWORD Options, HANDLE hCredentials, PVOID pExtraList, PVOID pReserved );
 		[DllImport(Lib.Dnsapi, SetLastError = false, EntryPoint = "DnsModifyRecordsInSet_W", CharSet = CharSet.Unicode)]
 		[PInvokeData("windns.h", MSDNShortId = "4287b4e1-a7a2-4b73-b5bb-21bc639bae73")]
-		public static extern DNS_STATUS DnsModifyRecordsInSet([In] IntPtr pAddRecords, [In] IntPtr pDeleteRecords, DNS_UPDATE Options, [Optional] IntPtr hCredentials, [In, Out, Optional] IntPtr pExtraList, IntPtr pReserved = default);
+		public static extern DNS_STATUS DnsModifyRecordsInSet([In] IntPtr pAddRecords, [In] IntPtr pDeleteRecords,
+			DNS_UPDATE Options, [Optional] IntPtr hCredentials, [In, Out, Optional] IntPtr pExtraList, IntPtr pReserved = default);
 
 		/// <summary>The <c>DnsNameCompare</c> function compares two DNS names.</summary>
 		/// <param name="pName1"/>
@@ -497,8 +504,8 @@ namespace Vanara.PInvoke
 		// DWORD Options, PVOID pExtra, PDNS_RECORD *ppQueryResults, PVOID *pReserved );
 		[DllImport(Lib.Dnsapi, SetLastError = false, EntryPoint = "DnsQuery_W", CharSet = CharSet.Unicode)]
 		[PInvokeData("windns.h", MSDNShortId = "3d810b76-cea1-4904-9b5a-c2566b332c2c")]
-		public static extern DNS_STATUS DnsQuery(string pszName, DNS_TYPE wType, DNS_QUERY_OPTIONS Options, [In, Out, Optional] IntPtr pExtra,
-			out SafeDnsRecordList ppQueryResults, IntPtr pReserved = default);
+		public static extern DNS_STATUS DnsQuery(string pszName, DNS_TYPE wType, DNS_QUERY_OPTIONS Options,
+			[In, Out, Optional] IntPtr pExtra, out SafeDnsRecordList ppQueryResults, IntPtr pReserved = default);
 
 		/// <summary>
 		/// <para>
@@ -664,8 +671,9 @@ namespace Vanara.PInvoke
 		// Config, DWORD Flag, PCWSTR pwsAdapterName, PVOID pReserved, PVOID pBuffer, PDWORD pBufLen );
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "83de7df8-7e89-42fe-b609-1dc173afc9df")]
-		public static extern DNS_STATUS DnsQueryConfig(DNS_CONFIG_TYPE Config, DNS_CONFIG_FLAG Flag, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwsAdapterName,
-			[In, Optional] IntPtr pReserved, IntPtr pBuffer, ref uint pBufLen);
+		public static extern DNS_STATUS DnsQueryConfig(DNS_CONFIG_TYPE Config, DNS_CONFIG_FLAG Flag,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] string pwsAdapterName, [In, Optional] IntPtr pReserved, IntPtr pBuffer,
+			ref uint pBufLen);
 
 		/// <summary>
 		/// <para>
@@ -767,7 +775,8 @@ namespace Vanara.PInvoke
 		// pQueryRequest, PDNS_QUERY_RESULT pQueryResults, PDNS_QUERY_CANCEL pCancelHandle );
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "22664B9A-5010-42E7-880B-8D5B16A9F2DC")]
-		public static extern DNS_STATUS DnsQueryEx(in DNS_QUERY_REQUEST pQueryRequest, ref DNS_QUERY_RESULT pQueryResults, ref DNS_QUERY_CANCEL pCancelHandle);
+		public static extern DNS_STATUS DnsQueryEx(in DNS_QUERY_REQUEST pQueryRequest, ref DNS_QUERY_RESULT pQueryResults,
+			ref DNS_QUERY_CANCEL pCancelHandle);
 
 		/// <summary>
 		/// <para>
@@ -869,7 +878,8 @@ namespace Vanara.PInvoke
 		// pQueryRequest, PDNS_QUERY_RESULT pQueryResults, PDNS_QUERY_CANCEL pCancelHandle );
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "22664B9A-5010-42E7-880B-8D5B16A9F2DC")]
-		public static extern DNS_STATUS DnsQueryEx(in DNS_QUERY_REQUEST3 pQueryRequest, ref DNS_QUERY_RESULT pQueryResults, ref DNS_QUERY_CANCEL pCancelHandle);
+		public static extern DNS_STATUS DnsQueryEx(in DNS_QUERY_REQUEST3 pQueryRequest, ref DNS_QUERY_RESULT pQueryResults,
+			ref DNS_QUERY_CANCEL pCancelHandle);
 
 		/// <summary>The <c>DnsRecordCompare</c> function compares two DNS resource records (RR).</summary>
 		/// <param name="pRecord1">A pointer to a DNS_RECORD structure that contains the first DNS RR of the comparison pair.</param>
@@ -1084,7 +1094,8 @@ namespace Vanara.PInvoke
 		// PDNS_RECORD pReplaceSet, DWORD Options, HANDLE hContext, PVOID pExtraInfo, PVOID pReserved );
 		[DllImport(Lib.Dnsapi, SetLastError = false, EntryPoint = "DnsReplaceRecordSetW", CharSet = CharSet.Unicode)]
 		[PInvokeData("windns.h", MSDNShortId = "7b99f440-72fa-4cf4-9267-98f436e99a50")]
-		public static extern DNS_STATUS DnsReplaceRecordSet(in DNS_RECORD pReplaceSet, DNS_UPDATE Options, [Optional] HDNSCONTEXT hContext, IntPtr pExtraInfo = default, IntPtr pReserved = default);
+		public static extern DNS_STATUS DnsReplaceRecordSet(in DNS_RECORD pReplaceSet, DNS_UPDATE Options, [Optional] HDNSCONTEXT hContext,
+			IntPtr pExtraInfo = default, IntPtr pReserved = default);
 
 		/// <summary>The <c>DnsReplaceRecordSet</c> function type replaces an existing resource record (RR) set.</summary>
 		/// <param name="pReplaceSet">
@@ -1107,7 +1118,8 @@ namespace Vanara.PInvoke
 		// PDNS_RECORD pReplaceSet, DWORD Options, HANDLE hContext, PVOID pExtraInfo, PVOID pReserved );
 		[DllImport(Lib.Dnsapi, SetLastError = false, EntryPoint = "DnsReplaceRecordSetW", CharSet = CharSet.Unicode)]
 		[PInvokeData("windns.h", MSDNShortId = "7b99f440-72fa-4cf4-9267-98f436e99a50")]
-		public static extern DNS_STATUS DnsReplaceRecordSet([In] IntPtr pReplaceSet, DNS_UPDATE Options, [Optional] HDNSCONTEXT hContext, IntPtr pExtraInfo = default, IntPtr pReserved = default);
+		public static extern DNS_STATUS DnsReplaceRecordSet([In] IntPtr pReplaceSet, DNS_UPDATE Options, [Optional] HDNSCONTEXT hContext,
+			IntPtr pExtraInfo = default, IntPtr pReserved = default);
 
 		/// <summary>Used to initiate a DNS-SD discovery for services running on the local network.</summary>
 		/// <param name="pRequest">A pointer to a DNS_SERVICE_BROWSE_REQUEST structure that contains the browse request information.</param>
@@ -1221,6 +1233,23 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Dnsapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("windns.h")]
 		public static extern DNS_STATUS DnsServiceDeRegister(in DNS_SERVICE_REGISTER_REQUEST pRequest, in DNS_SERVICE_CANCEL pCancel);
+
+		/// <summary>Used to remove a registered service.</summary>
+		/// <param name="pRequest">A pointer to the DNS_SERVICE_REGISTER_REQUEST structure that was used to register the service.</param>
+		/// <param name="pCancel">Must be <see langword="null"/>.</param>
+		/// <returns>
+		/// If successful, returns <c>DNS_REQUEST_PENDING</c>; otherwise, returns the appropriate DNS-specific error code as defined in
+		/// <c>Winerror.h</c>. For extended error information, call GetLastError.
+		/// </returns>
+		/// <remarks>
+		/// This function is asynchronous. The callback will be invoked when the deregistration is completed, with a copy of the
+		/// DNS_SERVICE_INSTANCE structure that was passed to DnsServiceRegister when the service was registered.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsservicederegister DWORD DnsServiceDeRegister(
+		// PDNS_SERVICE_REGISTER_REQUEST pRequest, PDNS_SERVICE_CANCEL pCancel );
+		[DllImport(Lib.Dnsapi, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("windns.h")]
+		public static extern DNS_STATUS DnsServiceDeRegister(in DNS_SERVICE_REGISTER_REQUEST pRequest, [In, Optional] IntPtr pCancel);
 
 		/// <summary>Used to free the resources associated with a DNS_SERVICE_INSTANCE structure.</summary>
 		/// <param name="pInstance">A pointer to the DNS_SERVICE_INSTANCE structure that is to be freed.</param>
@@ -1504,7 +1533,8 @@ namespace Vanara.PInvoke
 		// PSOCKADDR server, PCWSTR queryName, PDWORD serverStatus );
 		[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("windns.h", MSDNShortId = "5b362d05-87b2-44dd-8198-bcb5ab5a64f6")]
-		public static extern DNS_STATUS DnsValidateServerStatus([In] SOCKADDR server, [Optional, MarshalAs(UnmanagedType.LPWStr)] string queryName, out DnsServerStatus serverStatus);
+		public static extern DNS_STATUS DnsValidateServerStatus([In] SOCKADDR server, [Optional, MarshalAs(UnmanagedType.LPWStr)] string queryName,
+			out DnsServerStatus serverStatus);
 
 		/// <summary>
 		/// The <c>DnsWriteQuestionToBuffer</c> function type creates a DNS query message and stores it in a DNS_MESSAGE_BUFFER structure.
@@ -1530,8 +1560,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Dnsapi, SetLastError = true, EntryPoint = "DnsWriteQuestionToBuffer_W", CharSet = CharSet.Unicode)]
 		[PInvokeData("windns.h", MSDNShortId = "9aa853aa-d9b5-41e3-a82a-c25de199924d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DnsWriteQuestionToBuffer([In, Out] IntPtr pDnsBuffer, ref uint pdwBufferSize, [MarshalAs(UnmanagedType.LPWStr)] string pszName,
-			DNS_TYPE wType, ushort Xid, [MarshalAs(UnmanagedType.Bool)] bool fRecursionDesired);
+		public static extern bool DnsWriteQuestionToBuffer([In, Out] IntPtr pDnsBuffer, ref uint pdwBufferSize,
+			[MarshalAs(UnmanagedType.LPWStr)] string pszName, DNS_TYPE wType, ushort Xid, [MarshalAs(UnmanagedType.Bool)] bool fRecursionDesired);
 
 		/// <summary>Provides a handle to a DNS Context.</summary>
 		[StructLayout(LayoutKind.Sequential)]
