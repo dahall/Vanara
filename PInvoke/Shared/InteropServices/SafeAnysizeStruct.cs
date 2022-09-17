@@ -137,7 +137,8 @@ namespace Vanara.InteropServices
 			var local = (T)Marshal.PtrToStructure(allocatedMemory, structType); // Can't use Convert or get circular ref.
 			var cnt = GetArrayLength(local);
 			var arrOffset = Marshal.OffsetOf(structType, fiArray.Name).ToInt32();
-			fiArray.SetValueDirect(__makeref(local), allocatedMemory.ToArray(elemType, cnt, arrOffset, size));
+			Array array = elemType == typeof(string) ? allocatedMemory.ToStringEnum(cnt, GetCharSet(fiArray), arrOffset, size).ToArray() : allocatedMemory.ToArray(elemType, cnt, arrOffset, size);
+			fiArray.SetValueDirect(__makeref(local), array);
 			return local;
 		}
 
@@ -159,16 +160,47 @@ namespace Vanara.InteropServices
 				fiArray.SetValueDirect(__makeref(value), arrVal);
 			}
 			// Determine mem required for current struct and last field value
-			var arrElemSz = Marshal.SizeOf(elemType);
 			var arrLen = ((Array)arrVal).Length;
-			var memSz = baseSz + arrElemSz * (arrLen - 1);
-			// Set memory size
-			Size = memSz;
-			// Marshal base structure - don't use Write to prevent loops
-			Marshal.StructureToPtr(value, handle, false);
-			// Push each element of the array into memory, starting with second item in array since first was pushed by StructureToPtr
-			for (var i = 1; i < arrLen; i++)
-				handle.Write(((Array)arrVal).GetValue(i), baseSz + arrElemSz * (i - 1), memSz);
+			if (elemType == typeof(string))
+			{
+				var charSet = GetCharSet(fiArray);
+				// Set memory size
+				Size = baseSz + (IntPtr.Size * arrLen) + ((string[])arrVal).Sum(s => StringHelper.GetCharSize(charSet) * (s.Length + 1));
+				// Marshal base structure - don't use Write to prevent loops
+				Marshal.StructureToPtr(value, handle, false);
+				// Push each element of the array into memory, starting with second item in array since first was pushed by StructureToPtr
+				var arrOffset = Marshal.OffsetOf(structType, fiArray.Name).ToInt32();
+				handle.Write((string[])arrVal, StringListPackMethod.Packed, charSet, arrOffset, Size);
+			}
+			else
+			{
+				var arrElemSz = Marshal.SizeOf(elemType);
+				var memSz = baseSz + arrElemSz * (arrLen - 1);
+				// Set memory size
+				Size = memSz;
+				// Marshal base structure - don't use Write to prevent loops
+				Marshal.StructureToPtr(value, handle, false);
+				// Push each element of the array into memory, starting with second item in array since first was pushed by StructureToPtr
+				for (var i = 1; i < arrLen; i++)
+					handle.Write(((Array)arrVal).GetValue(i), baseSz + arrElemSz * (i - 1), memSz);
+			}
+		}
+
+		private static CharSet GetCharSet(FieldInfo fi)
+		{
+			if (fi.FieldType.IsArray && fi.FieldType.FindElementType() == typeof(string))
+			{
+				var maa = fi.GetCustomAttribute<MarshalAsAttribute>();
+				if (maa != null)
+					return fi.GetCustomAttribute<MarshalAsAttribute>().ArraySubType switch
+					{
+						UnmanagedType.LPWStr => CharSet.Unicode,
+						UnmanagedType.LPTStr => CharSet.Auto,
+						UnmanagedType.LPStr => CharSet.Ansi,
+						_ => CharSet.Auto,
+					};
+			}
+			return fi.DeclaringType.GetCustomAttribute<StructLayoutAttribute>()?.CharSet ?? CharSet.Auto;
 		}
 	}
 
