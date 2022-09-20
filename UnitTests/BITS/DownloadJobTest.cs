@@ -66,32 +66,32 @@ internal partial class BackgroundCopyTests
 
 		if (raiseException)
 			throw new InvalidOperationException();
-	}
 
-	// Better performance when event methods are defined seperately, preferably static.
+		// Better performance when event methods are defined seperately, preferably static.
 
-	private static void DownloadCompleted(BackgroundCopyJobEventArgs e, AutoResetEvent autoResetEvent, long totalFiles, long totalBytes)
-	{
-		var job = e.Job;
+		static void DownloadCompleted(BackgroundCopyJobEventArgs e, AutoResetEvent autoResetEvent, long totalFiles, long totalBytes)
+		{
+			var job = e.Job;
 
-		job.Complete();
+			job.Complete();
 
-		Assert.AreEqual(totalFiles, job.Progress.FilesTotal);
-		Assert.AreEqual(totalBytes, job.Progress.BytesTransferred);
+			Assert.AreEqual(totalFiles, job.Progress.FilesTotal);
+			Assert.AreEqual(totalBytes, job.Progress.BytesTransferred);
 
-		// Enable: Debug > Options > Debugging > General: Redirect all Output Window text to the Immediate Window
-		Debug.WriteLine($"Completed job: {job.DisplayName} | Total files: {job.Progress.FilesTotal:N0} | Bytes: {job.Progress.BytesTotal:N0}");
+			// Enable: Debug > Options > Debugging > General: Redirect all Output Window text to the Immediate Window
+			Debug.WriteLine($"Completed job: {job.DisplayName} | Total files: {job.Progress.FilesTotal:N0} | Bytes: {job.Progress.BytesTotal:N0}");
 
-		autoResetEvent.Set();
-	}
+			autoResetEvent.Set();
+		}
 
-	private static void OnDownloadError(object s, BackgroundCopyJobEventArgs e) => throw e.Job.LastError;
+		static void OnDownloadError(object s, BackgroundCopyJobEventArgs e) => throw e.Job.LastError;
 
-	private static void OnDownloadFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
-	{
-		var fileInfo = e.FileInfo;
+		static void OnDownloadFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
+		{
+			var fileInfo = e.FileInfo;
 
-		// Enable: Debug > Options > Debugging > General: Redirect all Output Window text to the Immediate Window
-		Debug.WriteLine($"Transferred {fileInfo.BytesTransferred:N0} bytes | File: {fileInfo.LocalFilePath}");
+			// Enable: Debug > Options > Debugging > General: Redirect all Output Window text to the Immediate Window
+			Debug.WriteLine($"Transferred {fileInfo.BytesTransferred:N0} bytes | File: {fileInfo.LocalFilePath}");
+		}
 	}
 }
