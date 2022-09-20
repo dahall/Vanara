@@ -39,13 +39,29 @@ namespace Vanara.IO
 
 		/// <summary>Gets the <see cref="BackgroundCopyJob"/> object with the specified job identifier.</summary>
 		/// <param name="jobId">Unique identifier of the job.</param>
-		/// <returns>The referenced <see cref="BackgroundCopyJob"/> object if found, null if not.</returns>
+		/// <returns>The referenced <see cref="BackgroundCopyJob"/> object if found, <see langword="null"/> if not.</returns>
 		public BackgroundCopyJob this[Guid jobId]
 		{
 			get
 			{
 				var job = BackgroundCopyManager.GetJob(jobId);
 				return job is not null ? new BackgroundCopyJob(job) : throw new KeyNotFoundException();
+			}
+		}
+
+		/// <summary>Gets the first <see cref="BackgroundCopyJob"/> object with the specified display name.</summary>
+		/// <param name="displayName">The display name of the job.</param>
+		/// <returns>The referenced <see cref="BackgroundCopyJob"/> object if found, <see langword="null"/> if not.</returns>
+		public BackgroundCopyJob this[string displayName]
+		{
+			get
+			{
+				var ijobs = BackgroundCopyManager.EnumJobs((BG_JOB_ENUM)JobListRights);
+				IBackgroundCopyJob[] jobs;
+				while ((jobs = ijobs.Next(1)).Length == 1)
+					if (jobs[0].GetDisplayName() == displayName)
+						return new(jobs[0]);
+				return null;
 			}
 		}
 
