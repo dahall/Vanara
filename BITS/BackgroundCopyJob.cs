@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using Vanara.Extensions;
@@ -122,42 +123,64 @@ namespace Vanara.IO
 		internal static readonly Version CopyCallback2 = new(3, 0);
 		internal static readonly Version CopyCallback3 = new(10, 1);
 
+		private EventHandler<BackgroundCopyJobEventArgs> complEvent, errEvent, modEvent;
+		private EventHandler<BackgroundCopyFileRangesTransferredEventArgs> fRangTranEvent;
+		private EventHandler<BackgroundCopyFileTransferredEventArgs> fTranEvent;
+		private readonly bool isReadOnly = false;
 		private IBackgroundCopyJob m_ijob;
-		private Notifier m_notifier;
+		private Notifier m_notifier = null;
 
 		internal BackgroundCopyJob(IBackgroundCopyJob ijob)
 		{
 			m_ijob = ijob ?? throw new ArgumentNullException(nameof(ijob));
-			m_notifier = new Notifier(this);
-			m_ijob.SetNotifyInterface(m_notifier);
-			var bitsVer = BackgroundCopyManager.Version;
-			NotifyFlags = bitsVer switch
-			{
-				var v when v >= CopyCallback3 => BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_JOB_ERROR | BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION | BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED,
-				var v when v >= CopyCallback2 => BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_JOB_ERROR | BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION | BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED,
-				_ => BG_NOTIFY.BG_NOTIFY_JOB_ERROR | BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION | BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED,
-			};
 			Files = new BackgroundCopyFileCollection(m_ijob);
 			Credentials = new BackgroundCopyJobCredentials(IJob2);
+			try { isReadOnly = OwnerIsElevated; }
+			catch
+			{
+				// Try to set a value. If it fails, we know we can't write.
+				try { DisplayName = DisplayName; }
+				catch { isReadOnly = true; }
+			}
 		}
 
 		/// <summary>Occurs when all of the files in the job have been transferred.</summary>
-		public event EventHandler<BackgroundCopyJobEventArgs> Completed;
+		public event EventHandler<BackgroundCopyJobEventArgs> Completed
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED, ref complEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED, ref complEvent, value);
+		}
 
 		/// <summary>Fires when an error occurs.</summary>
-		public event EventHandler<BackgroundCopyJobEventArgs> Error;
+		public event EventHandler<BackgroundCopyJobEventArgs> Error
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_JOB_ERROR, ref errEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_JOB_ERROR, ref errEvent, value);
+		}
 
 		/// <summary>Occurs when file ranges have been transferred.</summary>
-		public event EventHandler<BackgroundCopyFileRangesTransferredEventArgs> FileRangesTransferred;
+		public event EventHandler<BackgroundCopyFileRangesTransferredEventArgs> FileRangesTransferred
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED, ref fRangTranEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED, ref fRangTranEvent, value);
+		}
 
 		/// <summary>Occurs when a file has been transferred.</summary>
-		public event EventHandler<BackgroundCopyFileTransferredEventArgs> FileTransferred;
+		public event EventHandler<BackgroundCopyFileTransferredEventArgs> FileTransferred
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED, ref fTranEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED, ref fTranEvent, value);
+		}
 
 		/// <summary>
 		/// Occurs when the job has been modified. For example, a property value changed, the state of the job changed, or progress is made
 		/// transferring the files.
 		/// </summary>
-		public event EventHandler<BackgroundCopyJobEventArgs> Modified;
+		public event EventHandler<BackgroundCopyJobEventArgs> Modified
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION, ref modEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION, ref modEvent, value);
+		}
 
 		/// <summary>Gets or sets the flags that identify the owner and ACL information to maintain when transferring a file using SMB.</summary>
 		public BackgroundCopyACLFlags ACLFlags
@@ -551,11 +574,11 @@ namespace Vanara.IO
 			set => RunAction(() =>
 			{
 				if (value is null)
-					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_PRECONFIG, null, null);
+					RunAction(() => m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_PRECONFIG, null, null));
 				else if (string.IsNullOrEmpty(value.Address.AbsoluteUri))
-					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_NO_PROXY, null, null);
+					RunAction(() => m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_NO_PROXY, null, null));
 				else
-					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_OVERRIDE, value.Address.AbsoluteUri, string.Join(" ", value.BypassList));
+					RunAction(() => m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_OVERRIDE, value.Address.AbsoluteUri, string.Join(" ", value.BypassList)));
 				if (value.Credentials is not null)
 					throw new ArgumentException("The set Proxy property does not support proxy credentials. Please use the SetCredentials method.");
 			});
@@ -649,7 +672,7 @@ namespace Vanara.IO
 			{
 				var st = State;
 				if (st is not BackgroundCopyJobState.Acknowledged and not BackgroundCopyJobState.Cancelled)
-					m_ijob.SetNotifyFlags(value);
+					RunAction(() => m_ijob.SetNotifyFlags(value));
 			});
 		}
 
@@ -812,7 +835,8 @@ namespace Vanara.IO
 			try
 			{
 				NotifyFlags = 0;
-				m_ijob.SetNotifyInterface(null);
+				if (State is not BackgroundCopyJobState.Cancelled and not BackgroundCopyJobState.Acknowledged)
+					m_ijob.SetNotifyInterface(null);
 				if (State == BackgroundCopyJobState.Transferred)
 					Complete();
 				if (State != BackgroundCopyJobState.Acknowledged)
@@ -829,30 +853,40 @@ namespace Vanara.IO
 		{
 			if (AutoCompleteOnSuccess)
 				Complete();
-			Completed?.Invoke(this, new BackgroundCopyJobEventArgs(this));
+			complEvent?.Invoke(this, new BackgroundCopyJobEventArgs(this));
 		}
 
 		/// <summary>Called when an error occurs.</summary>
 		/// <param name="err">The error.</param>
-		protected virtual void OnError(IBackgroundCopyError err) => Error?.Invoke(this, new BackgroundCopyJobEventArgs(this));
+		protected virtual void OnError(IBackgroundCopyError err) => errEvent?.Invoke(this, new BackgroundCopyJobEventArgs(this));
 
 		/// <summary>Called when a file range has been transferred.</summary>
 		/// <param name="file">The file being transferred.</param>
 		/// <param name="ranges">The ranges transferred.</param>
-		protected virtual void OnFileRangesTransferred(IBackgroundCopyFile file, BG_FILE_RANGE[] ranges) => FileRangesTransferred?.Invoke(this, new BackgroundCopyFileRangesTransferredEventArgs(this, file, ranges));
+		protected virtual void OnFileRangesTransferred(IBackgroundCopyFile file, BG_FILE_RANGE[] ranges) => fRangTranEvent?.Invoke(this, new BackgroundCopyFileRangesTransferredEventArgs(this, file, ranges));
 
 		/// <summary>Called when a file transfer is completed.</summary>
 		/// <param name="pFile">The transferred file.</param>
-		protected virtual void OnFileTransferred(IBackgroundCopyFile pFile) => FileTransferred?.Invoke(this, new BackgroundCopyFileTransferredEventArgs(this, pFile));
+		protected virtual void OnFileTransferred(IBackgroundCopyFile pFile) => fTranEvent?.Invoke(this, new BackgroundCopyFileTransferredEventArgs(this, pFile));
 
 		/// <summary>Called when the job has been modified.</summary>
-		protected virtual void OnModified() => Modified?.Invoke(this, new BackgroundCopyJobEventArgs(this));
+		protected virtual void OnModified() => modEvent?.Invoke(this, new BackgroundCopyJobEventArgs(this));
 
-		private T GetDerived<T>() where T : class
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void AddEvent<T>(BG_NOTIFY flag, ref EventHandler<T> eventHandler, EventHandler<T> value)
 		{
-			var ret = m_ijob as T;
-			return ret ?? throw new PlatformNotSupportedException();
+			if (isReadOnly)
+				throw new UnauthorizedAccessException("This job was created while in an elevated session, but this session is not elevated.");
+			if (m_notifier is null)
+				RunAction(() => m_ijob.SetNotifyInterface(m_notifier ??= new Notifier(this)));
+			var bitsVer = BackgroundCopyManager.Version;
+			if (flag == BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED && bitsVer < CopyCallback2 || flag == BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED && bitsVer < CopyCallback3)
+				throw new NotSupportedException("This event is not supported under this version of Windows.");
+			eventHandler += value;
+			NotifyFlags |= flag;
 		}
+
+		private T GetDerived<T>() where T : class => m_ijob as T ?? throw new PlatformNotSupportedException();
 
 		private object GetProperty(BITS_JOB_PROPERTY_ID id)
 		{
@@ -876,6 +910,14 @@ namespace Vanara.IO
 			}
 			else
 				throw new BackgroundCopyException(cex);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void RemoveEvent<T>(BG_NOTIFY flag, ref EventHandler<T> eventHandler, EventHandler<T> value)
+		{
+			eventHandler -= value;
+			if (eventHandler is null)
+				NotifyFlags = NotifyFlags.ClearFlags(flag);
 		}
 
 		private void RunAction(Action action)
