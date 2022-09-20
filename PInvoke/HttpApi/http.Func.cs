@@ -626,9 +626,13 @@ public static partial class HttpApi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/nf-http-httpcreateserversession HTTPAPI_LINKAGE ULONG HttpCreateServerSession(
 	// [in] HTTPAPI_VERSION Version, [out] PHTTP_SERVER_SESSION_ID ServerSessionId, [in] ULONG Reserved );
-	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpCreateServerSession")]
-	public static extern Win32Error HttpCreateServerSession(HTTPAPI_VERSION Version, out SafeHTTP_SERVER_SESSION_ID ServerSessionId, uint Reserved = 0);
+	public static Win32Error HttpCreateServerSession(HTTPAPI_VERSION Version, out SafeHTTP_SERVER_SESSION_ID ServerSessionId, uint Reserved = 0)
+	{
+		var err = HttpCreateServerSession(Version, out HTTP_SERVER_SESSION_ID id, Reserved);
+		ServerSessionId = new(id);
+		return err;
+	}
 
 	/// <summary>The <c>HttpCreateUrlGroup</c> function creates a URL Group under the specified server session.</summary>
 	/// <param name="ServerSessionId">The identifier of the server session under which the URL Group is created.</param>
@@ -687,9 +691,13 @@ public static partial class HttpApi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/nf-http-httpcreateurlgroup HTTPAPI_LINKAGE ULONG HttpCreateUrlGroup( [in]
 	// HTTP_SERVER_SESSION_ID ServerSessionId, [out] PHTTP_URL_GROUP_ID pUrlGroupId, [in] ULONG Reserved );
-	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpCreateUrlGroup")]
-	public static extern Win32Error HttpCreateUrlGroup(HTTP_SERVER_SESSION_ID ServerSessionId, out SafeHTTP_URL_GROUP_ID pUrlGroupId, uint Reserved = 0);
+	public static Win32Error HttpCreateUrlGroup(HTTP_SERVER_SESSION_ID ServerSessionId, out SafeHTTP_URL_GROUP_ID pUrlGroupId, uint Reserved = 0)
+	{
+		var err = HttpCreateUrlGroup(ServerSessionId, out HTTP_SERVER_SESSION_ID id, Reserved);
+		pUrlGroupId = new(id);
+		return err;
+	}
 
 	/// <summary>
 	/// Declares a resource-to-subresource relationship to use for an HTTP server push. HTTP.sys then performs an HTTP 2.0 server push for
@@ -5634,6 +5642,12 @@ public static partial class HttpApi
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpWaitForDisconnectEx")]
 	public static extern Win32Error HttpWaitForDisconnectEx([In] HREQQUEUEv1 RequestQueueHandle, [In] HTTP_CONNECTION_ID ConnectionId, [In, Optional] uint Reserved, [In, Optional] IntPtr Overlapped);
 
+	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error HttpCreateServerSession(HTTPAPI_VERSION Version, out HTTP_SERVER_SESSION_ID ServerSessionId, uint Reserved = 0);
+
+	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error HttpCreateUrlGroup(HTTP_SERVER_SESSION_ID ServerSessionId, out HTTP_URL_GROUP_ID pUrlGroupId, uint Reserved = 0);
+
 	/// <summary>
 	/// The <c>HttpPrepareUrl</c> function parses, analyzes, and normalizes a non-normalized Unicode or punycode URL so it is safe and valid
 	/// to use in other HTTP functions.
@@ -5822,8 +5836,11 @@ public static partial class HttpApi
 	{
 		private ulong id;
 
+		private SafeHTTP_SERVER_SESSION_ID() { }
+
 		/// <summary>Initializes a new instance of the <see cref="SafeHTTP_SERVER_SESSION_ID"/> class.</summary>
-		private SafeHTTP_SERVER_SESSION_ID() : base() { }
+		/// <param name="id">The identifier.</param>
+		internal SafeHTTP_SERVER_SESSION_ID(ulong id) : base() => this.id = id;
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeHTTP_SERVER_SESSION_ID"/> to <see cref="HTTP_SERVER_SESSION_ID"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
@@ -5831,8 +5848,7 @@ public static partial class HttpApi
 		public static implicit operator HTTP_SERVER_SESSION_ID(SafeHTTP_SERVER_SESSION_ID h) => h.id;
 
 		/// <inheritdoc/>
-		public void Dispose()
-		{ HttpCloseServerSession(id).ThrowIfFailed(); id = 0; }
+		public void Dispose() { HttpCloseServerSession(id).ThrowIfFailed(); id = 0; }
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HTTP_URL_GROUP_ID"/> that is disposed using <see cref="HttpCloseUrlGroup"/>.</summary>
@@ -5841,8 +5857,11 @@ public static partial class HttpApi
 	{
 		private ulong id;
 
-		/// <summary>Initializes a new instance of the <see cref="SafeHTTP_URL_GROUP_ID"/> class.</summary>
 		private SafeHTTP_URL_GROUP_ID() : base() { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeHTTP_URL_GROUP_ID"/> class.</summary>
+		/// <param name="id">The identifier.</param>
+		internal SafeHTTP_URL_GROUP_ID(ulong id) : base() => this.id = id;
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeHTTP_URL_GROUP_ID"/> to <see cref="HTTP_URL_GROUP_ID"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
