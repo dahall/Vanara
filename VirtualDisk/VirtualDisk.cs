@@ -387,14 +387,16 @@ public partial class VirtualDisk : IDisposable, IHandle
 			throw new ArgumentNullException(nameof(path));
 		}
 
-		ManualResetEvent vhdOverlapEvent = new(false);
-		NativeOverlapped vhdOverlap = new() { EventHandle = vhdOverlapEvent.SafeWaitHandle.DangerousGetHandle() };
-		CreateVirtualDisk(storageType, path, mask, securityDescriptor, flags, 0, param, vhdOverlap, out SafeVIRTUAL_DISK_HANDLE hVhd).ThrowUnless(Win32Error.ERROR_IO_PENDING);
+		return await Task.Run(() =>
+		{
+			NativeOverlapped vhdOverlap = new();
+			CreateVirtualDisk(storageType, path, mask, securityDescriptor, flags, 0, param, vhdOverlap, out SafeVIRTUAL_DISK_HANDLE hVhd).ThrowUnless(Win32Error.ERROR_IO_PENDING);
 
-		if (!await GetProgressAsync(hVhd, vhdOverlap, cancellationToken, progress))
-			throw new OperationCanceledException(cancellationToken);
+			if (!GetProgress(hVhd, vhdOverlap, cancellationToken, progress))
+				throw new OperationCanceledException(cancellationToken);
 
-		return new VirtualDisk(hVhd, (OPEN_VIRTUAL_DISK_VERSION)param.Version, path);
+			return new VirtualDisk(hVhd, (OPEN_VIRTUAL_DISK_VERSION)param.Version, path);
+		});
 	}
 
 	/// <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
@@ -779,8 +781,8 @@ public partial class VirtualDisk : IDisposable, IHandle
 		if (!securityDescriptor.IsNull && !securityDescriptor.IsValidSecurityDescriptor())
 			throw new ArgumentException("Invalid security descriptor.");
 
-		await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
-			AttachVirtualDisk(Handle, securityDescriptor, flags, 0, param ?? ATTACH_VIRTUAL_DISK_PARAMETERS.Default, vhdOverlap));
+		await RunAsync(Handle, (in NativeOverlapped vhdOverlap) =>
+			AttachVirtualDisk(Handle, securityDescriptor, flags, 0, param ?? ATTACH_VIRTUAL_DISK_PARAMETERS.Default, vhdOverlap), cancellationToken, progress);
 	}
 
 	/// <summary>
@@ -892,8 +894,8 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// </param>
 	/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
 	public async Task<bool> CompactAsync(CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
-		await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
-			CompactVirtualDisk(Handle, COMPACT_VIRTUAL_DISK_FLAG.COMPACT_VIRTUAL_DISK_FLAG_NONE, COMPACT_VIRTUAL_DISK_PARAMETERS.Default, vhdOverlap));
+		await RunAsync(Handle, (in NativeOverlapped vhdOverlap) =>
+			CompactVirtualDisk(Handle, COMPACT_VIRTUAL_DISK_FLAG.COMPACT_VIRTUAL_DISK_FLAG_NONE, COMPACT_VIRTUAL_DISK_PARAMETERS.Default, vhdOverlap), cancellationToken, progress);
 
 	/// <summary>Returns the value of the handle field.</summary>
 	/// <returns>An IntPtr representing the value of the handle field.</returns>
@@ -954,7 +956,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// </param>
 	/// <returns><c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
 	public async Task<bool> ExpandAsync(ulong newSize, CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
-		await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
+		await RunAsync(Handle, (in NativeOverlapped vhdOverlap) =>
 			{
 				if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
 				{
@@ -963,8 +965,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 
 				EXPAND_VIRTUAL_DISK_PARAMETERS param = new(newSize);
 				return ExpandVirtualDisk(Handle, EXPAND_VIRTUAL_DISK_FLAG.EXPAND_VIRTUAL_DISK_FLAG_NONE, param, vhdOverlap);
-			}
-		);
+			}, cancellationToken, progress);
 
 	/// <summary>Issues an embedded SCSI request directly to a virtual hard disk.</summary>
 	/// <param name="param">A valid RAW_SCSI_VIRTUAL_DISK_PARAMETERS structure that contains snapshot deletion data.</param>
@@ -999,12 +1000,11 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// progress reporting.
 	/// </param>
 	public async Task MergeAsync(uint sourceDepth, uint targetDepth, CancellationToken cancellationToken = default, IProgress<int> progress = default) =>
-		await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
+		await RunAsync(Handle, (in NativeOverlapped vhdOverlap) =>
 		{
 			MERGE_VIRTUAL_DISK_PARAMETERS param = new(sourceDepth, targetDepth);
 			return MergeVirtualDisk(Handle, MERGE_VIRTUAL_DISK_FLAG.MERGE_VIRTUAL_DISK_FLAG_NONE, param, vhdOverlap);
-		}
-		);
+		}, cancellationToken, progress);
 
 	/// <summary>Merges a child virtual hard disk (VHD) in a differencing chain with its immediate parent disk in the chain.</summary>
 	public void MergeWithParent()
@@ -1032,13 +1032,13 @@ public partial class VirtualDisk : IDisposable, IHandle
 		if (ver < OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2)
 			throw new NotSupportedException(@"Mirroring is only available to virtual disks opened under version 2 or higher.");
 
-		await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
+		await RunAsync(Handle, (in NativeOverlapped vhdOverlap) =>
 		{
 			MIRROR_VIRTUAL_DISK_FLAG flags = File.Exists(destPath) ? MIRROR_VIRTUAL_DISK_FLAG.MIRROR_VIRTUAL_DISK_FLAG_EXISTING_FILE : MIRROR_VIRTUAL_DISK_FLAG.MIRROR_VIRTUAL_DISK_FLAG_NONE;
 			SafeCoTaskMemString pDest = new(destPath);
 			MIRROR_VIRTUAL_DISK_PARAMETERS param = new() { Version = MIRROR_VIRTUAL_DISK_VERSION.MIRROR_VIRTUAL_DISK_VERSION_1, Version1 = new() { MirrorVirtualDiskPath = pDest } };
 			return MirrorVirtualDisk(Handle, flags, param, vhdOverlap);
-		});
+		}, cancellationToken, progress);
 	}
 
 	/// <summary>Modifies the internal contents of a virtual disk file. Can be used to set the active leaf, or to fix up snapshot entries.</summary>
@@ -1125,11 +1125,11 @@ public partial class VirtualDisk : IDisposable, IHandle
 			throw new NotSupportedException(@"Expansion is only available to virtual disks opened under version 2 or higher.");
 		}
 
-		return await RunAsync(cancellationToken, progress, Handle, (in NativeOverlapped vhdOverlap) =>
+		return await RunAsync(Handle, (in NativeOverlapped vhdOverlap) =>
 		{
 			RESIZE_VIRTUAL_DISK_PARAMETERS param = new(newSize);
 			return ResizeVirtualDisk(Handle, RESIZE_VIRTUAL_DISK_FLAG.RESIZE_VIRTUAL_DISK_FLAG_NONE, param, vhdOverlap);
-		});
+		}, cancellationToken, progress);
 	}
 
 	/// <summary>Sets the active leaf of a virtual disk file.</summary>
@@ -1207,18 +1207,15 @@ public partial class VirtualDisk : IDisposable, IHandle
 			? output.DeviceNumber : null;
 	}
 
-	private static async Task<bool> GetProgressAsync(VIRTUAL_DISK_HANDLE phVhd, NativeOverlapped reset, CancellationToken cancellationToken = default, IProgress<int> progress = default)
+	private static bool GetProgress(VIRTUAL_DISK_HANDLE hVhd, in NativeOverlapped vhdOverlap, CancellationToken cancellationToken, IProgress<int> progress)
 	{
 		progress?.Report(0);
 		while (true)
 		{
-			Win32Error perr = GetVirtualDiskOperationProgress(phVhd, reset, out VIRTUAL_DISK_PROGRESS prog);
-			perr.ThrowIfFailed();
 			if (cancellationToken.IsCancellationRequested)
-			{
 				return false;
-			}
 
+			GetVirtualDiskOperationProgress(hVhd, vhdOverlap, out VIRTUAL_DISK_PROGRESS prog).ThrowIfFailed();
 			switch (prog.OperationStatus)
 			{
 				case 0:
@@ -1226,19 +1223,14 @@ public partial class VirtualDisk : IDisposable, IHandle
 					return true;
 
 				case Win32Error.ERROR_IO_PENDING:
-					progress?.Report((int)(prog.CurrentValue * 100 / prog.CompletionValue));
+					progress?.Report(Math.Max(100, (int)(prog.CurrentValue * 100 / prog.CompletionValue)));
 					break;
 
 				default:
-					new Win32Error(prog.OperationStatus).ThrowIfFailed();
-					break;
-			}
-			if (prog.CurrentValue == prog.CompletionValue)
-			{
-				return true;
+					throw new Win32Error(prog.OperationStatus).GetException();
 			}
 
-			await Task.Delay(250, cancellationToken);
+			Task.Delay(100, cancellationToken);
 		}
 	}
 
@@ -1268,18 +1260,13 @@ public partial class VirtualDisk : IDisposable, IHandle
 
 	private static SafeHFILE OpenDrive(string fn) => CreateFile(fn, 0, FileShare.ReadWrite, default, FileMode.Open, 0);
 
-	private static async Task<bool> RunAsync(CancellationToken cancellationToken, IProgress<int> progress, VIRTUAL_DISK_HANDLE hVhd, RunAsyncMethod method)
-	{
-		ManualResetEvent vhdOverlapEvent = new(false);
-		NativeOverlapped vhdOverlap = new() { EventHandle = vhdOverlapEvent.SafeWaitHandle.DangerousGetHandle() };
-		Win32Error err = method(in vhdOverlap);
-		if (err != Win32Error.ERROR_IO_PENDING)
+	private static async Task<bool> RunAsync(VIRTUAL_DISK_HANDLE hVhd, RunAsyncMethod method, CancellationToken cancellationToken, IProgress<int> progress) =>
+		await Task.Run(() =>
 		{
-			err.ThrowIfFailed();
-		}
-
-		return await GetProgressAsync(hVhd, vhdOverlap, cancellationToken, progress);
-	}
+			NativeOverlapped vhdOverlap = new();
+			method(in vhdOverlap).ThrowUnless(Win32Error.ERROR_IO_PENDING);
+			return GetProgress(hVhd, vhdOverlap, cancellationToken, progress);
+		});
 
 	private T GetInformation<T>(GET_VIRTUAL_DISK_INFO_VERSION info, long offset = 0)
 	{

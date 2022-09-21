@@ -21,7 +21,7 @@ namespace Vanara.IO.Tests
 		private static readonly string tmpfn = TestCaseSources.TempDirWhack + "TestVHD.vhd";
 
 		[Test]
-		public async Task CompactAsync1Test()
+		public async Task CompactAsyncTest()
 		{
 			using var vhd = VirtualDisk.Open(fn, false);
 			var rpt = new Reporter();
@@ -32,7 +32,7 @@ namespace Vanara.IO.Tests
 		}
 
 		[Test]
-		public async Task CompactAsync2Test()
+		public async Task CompactAsyncMMITest()
 		{
 			using var vhd = VirtualDisk.Open(fn, false);
 			var rpt = new Reporter();
@@ -97,7 +97,7 @@ namespace Vanara.IO.Tests
 				Assert.That(vhd.ParentPaths, Is.Not.Null.And.Length.EqualTo(1)); // must be differencing
 				Assert.That(vhd.ParentTimeStamp, Is.Not.Null); // must be differencing
 				Assert.That(vhd.PhysicalPath, Is.Null); // must be attached
-				Assert.That(vhd.PhysicalSectorSize, Is.EqualTo(0x200));
+				Assert.That(vhd.PhysicalSectorSize, Is.EqualTo(0x1000));
 				Assert.That(vhd.PhysicalSize, Is.LessThan(sz));
 				Assert.That(vhd.ProviderSubtype, Is.EqualTo(VirtualDisk.Subtype.Differencing));
 				Assert.That(vhd.ResilientChangeTrackingEnabled, Is.False);
@@ -137,12 +137,11 @@ namespace Vanara.IO.Tests
 				Assert.That(vhd.MostRecentId, Is.Null.Or.Empty);
 				Assert.That(vhd.NewerChanges, Is.False);
 				Assert.That(vhd.ParentBackingStore, Is.Null); // must be attached
-				Assert.That(vhd.PhysicalSectorSize, Is.EqualTo(0x200));
 				Assert.That(vhd.ParentIdentifier, Is.Null); // must be differencing
 				Assert.That(vhd.ParentPaths, Is.Null); // must be differencing
 				Assert.That(vhd.ParentTimeStamp, Is.Null); // must be differencing
 				Assert.That(vhd.PhysicalPath, Is.Null); // must be attached
-				Assert.That(vhd.PhysicalSectorSize, Is.EqualTo(0x200));
+				Assert.That(vhd.PhysicalSectorSize, Is.EqualTo(0x1000));
 				Assert.That(vhd.PhysicalSize, Is.LessThan(sz));
 				Assert.That(vhd.ProviderSubtype, Is.EqualTo(VirtualDisk.Subtype.Dynamic));
 				Assert.That(vhd.SectorSize, Is.EqualTo(0x200));
