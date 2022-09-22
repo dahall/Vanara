@@ -140,7 +140,11 @@ namespace Vanara.IO
 		internal static void HandleCOMException(COMException cex) => throw new BackgroundCopyException(cex);
 
 		/// <summary>Checks if the current user has administrator rights.</summary>
-		internal static bool IsCurrentUserAdministrator() => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+		internal static bool IsCurrentUserAdministrator()
+		{
+			using var identity = WindowsIdentity.GetCurrent();
+			return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
+		}
 
 		private static void CopyTemplate(string destFileName, CancellationToken ct, Action<BackgroundCopyJobState, byte> report, Action<BackgroundCopyFileCollection> add)
 		{
