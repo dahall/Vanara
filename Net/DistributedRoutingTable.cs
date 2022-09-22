@@ -13,7 +13,6 @@ using static Vanara.PInvoke.Kernel32;
 namespace Vanara.Net;
 
 #if RELEASE
-
 public class DistributedRoutingTable
 {
 	private SafeHDRT hDrt;
@@ -457,11 +456,14 @@ public abstract class DrtSecurityProvider
 		}
 	}
 
-	static HRESULT Execute(Action action) { try { action(); return HRESULT.S_OK; } catch (Exception ex) { return ex.HResult; } }
+	protected abstract void Attach(object context);
+	protected abstract void Detach(object context);
 
-	HRESULT InternalAttach(IntPtr pvContext) => HRESULT.S_OK;
+	static HRESULT Execute(Action<object> action, IntPtr ctx) { try { action(ctx == IntPtr.Zero ? null : GCHandle.FromIntPtr(ctx).Target); return HRESULT.S_OK; } catch (Exception ex) { return ex.HResult; } }
+
+	HRESULT InternalAttach(IntPtr pvContext) => Execute(Attach, pvContext);
 	HRESULT InternalDecryptData(IntPtr pvContext, in DRT_DATA pKeyToken, IntPtr pvKeyContext, uint dwBuffers, DRT_DATA[] pData) => throw new NotImplementedException();
-	void InternalDetach(IntPtr pvContext) { }
+	void InternalDetach(IntPtr pvContext) => Execute(Detach, pvContext);
 	HRESULT InternalEncryptData(IntPtr pvContext, in DRT_DATA pRemoteCredential, uint dwBuffers, DRT_DATA[] pDataBuffers, DRT_DATA[] pEncryptedBuffers, out DRT_DATA pKeyToken) => throw new NotImplementedException();
 	void InternalFreeData(IntPtr pvContext, IntPtr pv) => throw new NotImplementedException();
 	HRESULT InternalGetSerializedCredential(IntPtr pvContext, out DRT_DATA pSelfCredential) => throw new NotImplementedException();
@@ -473,3 +475,4 @@ public abstract class DrtSecurityProvider
 	unsafe HRESULT InternalValidateAndUnpackPayload(IntPtr pvContext, in DRT_DATA pSecuredAddressPayload, DRT_DATA* pCertChain, DRT_DATA* pClassifier, DRT_DATA* pNonce, DRT_DATA* pSecuredPayload, byte* pbProtocolMajor, byte* pbProtocolMinor, out DRT_DATA pKey, DRT_DATA* pPayload, CERT_PUBLIC_KEY_INFO** ppPublicKey, void** ppAddressList, out uint pdwFlags) => throw new NotImplementedException();
 	unsafe HRESULT InternalSecureAndPackPayload(IntPtr pvContext, IntPtr pvKeyContext, byte bProtocolMajor, byte bProtocolMinor, uint dwFlags, in DRT_DATA pKey, DRT_DATA* pPayload, IntPtr pAddressList, in DRT_DATA pNonce, out DRT_DATA pSecuredAddressPayload, DRT_DATA* pClassifier, DRT_DATA* pSecuredPayload, DRT_DATA* pCertChain) => throw new NotImplementedException();
 }
+#endif
