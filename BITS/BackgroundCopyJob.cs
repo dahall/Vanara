@@ -665,7 +665,7 @@ namespace Vanara.IO
 			set => RunAction(() =>
 			{
 				var st = State;
-				if (st is not BackgroundCopyJobState.Acknowledged and not BackgroundCopyJobState.Cancelled)
+				if (m_notifier is not null && st is not BackgroundCopyJobState.Acknowledged and not BackgroundCopyJobState.Cancelled)
 					m_ijob.SetNotifyFlags(value);
 			});
 		}
@@ -987,7 +987,9 @@ namespace Vanara.IO
 	/// <summary>Event argument for background copy job.</summary>
 	public class BackgroundCopyJobEventArgs : EventArgs
 	{
-		internal BackgroundCopyJobEventArgs(BackgroundCopyJob j) => Job = j;
+		/// <summary>Initializes a new instance of the <see cref="BackgroundCopyJobEventArgs"/> class.</summary>
+		/// <param name="j">The job.</param>
+		public BackgroundCopyJobEventArgs(BackgroundCopyJob j) => Job = j;
 
 		/// <summary>Gets the job being processed.</summary>
 		/// <value>The job.</value>
