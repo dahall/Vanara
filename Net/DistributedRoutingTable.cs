@@ -12,6 +12,8 @@ using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.Net;
 
+#if RELEASE
+
 public class DistributedRoutingTable
 {
 	private SafeHDRT hDrt;
@@ -454,6 +456,8 @@ public abstract class DrtSecurityProvider
 			};
 		}
 	}
+
+	static HRESULT Execute(Action action) { try { action(); return HRESULT.S_OK; } catch (Exception ex) { return ex.HResult; } }
 
 	HRESULT InternalAttach(IntPtr pvContext) => HRESULT.S_OK;
 	HRESULT InternalDecryptData(IntPtr pvContext, in DRT_DATA pKeyToken, IntPtr pvKeyContext, uint dwBuffers, DRT_DATA[] pData) => throw new NotImplementedException();
