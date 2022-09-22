@@ -110,7 +110,7 @@ public class DnsService : IDisposable
 		{
 			if (WaitHandle.WaitAny(new[] { cancellationToken.WaitHandle, evt }) == 0)
 				DnsServiceResolveCancel(c);
-		});
+		}, cancellationToken);
 		return result != IntPtr.Zero ? new DnsService(result) : throw err.GetException();
 
 		void ResolveCallback(Win32Error Status, IntPtr pQueryContext, IntPtr pInstance)
@@ -190,16 +190,19 @@ public class DnsService : IDisposable
 		{
 			if (WaitHandle.WaitAny(new[] { cancellationToken.WaitHandle, evt }) == 0)
 				DnsServiceResolveCancel(svcCancel);
-		});
+		}, cancellationToken);
 		registering = false;
 		err.ThrowIfFailed();
 	}
 
 	private static void RegCallback(Win32Error Status, IntPtr pQueryContext, IntPtr pInstance)
 	{
-		DnsService svc = (DnsService)GCHandle.FromIntPtr(pQueryContext).Target;
 		using SafePDNS_SERVICE_INSTANCE i = new(pInstance);
-		svc.err = Status;
-		svc.evt.Set();
+		DnsService? svc = GCHandle.FromIntPtr(pQueryContext).Target as DnsService;
+		if (svc is not null)
+		{
+			svc.err = Status;
+			svc.evt.Set();
+		}
 	}
 }

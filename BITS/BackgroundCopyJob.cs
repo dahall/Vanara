@@ -126,7 +126,6 @@ namespace Vanara.IO
 		private EventHandler<BackgroundCopyJobEventArgs> complEvent, errEvent, modEvent;
 		private EventHandler<BackgroundCopyFileRangesTransferredEventArgs> fRangTranEvent;
 		private EventHandler<BackgroundCopyFileTransferredEventArgs> fTranEvent;
-		private readonly bool isReadOnly = false;
 		private IBackgroundCopyJob m_ijob;
 		private Notifier m_notifier = null;
 
@@ -135,13 +134,6 @@ namespace Vanara.IO
 			m_ijob = ijob ?? throw new ArgumentNullException(nameof(ijob));
 			Files = new BackgroundCopyFileCollection(m_ijob);
 			Credentials = new BackgroundCopyJobCredentials(IJob2);
-			try { isReadOnly = OwnerIsElevated; }
-			catch
-			{
-				// Try to set a value. If it fails, we know we can't write.
-				try { DisplayName = DisplayName; }
-				catch { isReadOnly = true; }
-			}
 		}
 
 		/// <summary>Occurs when all of the files in the job have been transferred.</summary>
@@ -574,11 +566,11 @@ namespace Vanara.IO
 			set => RunAction(() =>
 			{
 				if (value is null)
-					RunAction(() => m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_PRECONFIG, null, null));
+					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_PRECONFIG, null, null);
 				else if (string.IsNullOrEmpty(value.Address.AbsoluteUri))
-					RunAction(() => m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_NO_PROXY, null, null));
+					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_NO_PROXY, null, null);
 				else
-					RunAction(() => m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_OVERRIDE, value.Address.AbsoluteUri, string.Join(" ", value.BypassList)));
+					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_OVERRIDE, value.Address.AbsoluteUri, string.Join(" ", value.BypassList));
 				if (value.Credentials is not null)
 					throw new ArgumentException("The set Proxy property does not support proxy credentials. Please use the SetCredentials method.");
 			});
@@ -837,10 +829,6 @@ namespace Vanara.IO
 				NotifyFlags = 0;
 				if (State is not BackgroundCopyJobState.Cancelled and not BackgroundCopyJobState.Acknowledged)
 					m_ijob.SetNotifyInterface(null);
-				if (State == BackgroundCopyJobState.Transferred)
-					Complete();
-				if (State != BackgroundCopyJobState.Acknowledged)
-					Cancel();
 			}
 			catch { }
 			Files = null;
@@ -872,13 +860,15 @@ namespace Vanara.IO
 		/// <summary>Called when the job has been modified.</summary>
 		protected virtual void OnModified() => modEvent?.Invoke(this, new BackgroundCopyJobEventArgs(this));
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void AddEvent<T>(BG_NOTIFY flag, ref EventHandler<T> eventHandler, EventHandler<T> value)
 		{
-			if (isReadOnly)
-				throw new UnauthorizedAccessException("This job was created while in an elevated session, but this session is not elevated.");
-			if (m_notifier is null)
-				RunAction(() => m_ijob.SetNotifyInterface(m_notifier ??= new Notifier(this)));
+			try
+			{
+				if (m_notifier is null)
+					RunAction(() => m_ijob.SetNotifyInterface(m_notifier ??= new Notifier(this)));
+			}
+			catch (UnauthorizedAccessException uae) { throw new UnauthorizedAccessException("This process does not have permission to edit the job. It was likely created by an elevated process.", uae); }
+			catch (Exception ex) { throw new NotSupportedException("This job is unable to provide events.", ex); }
 			var bitsVer = BackgroundCopyManager.Version;
 			if (flag == BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED && bitsVer < CopyCallback2 || flag == BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED && bitsVer < CopyCallback3)
 				throw new NotSupportedException("This event is not supported under this version of Windows.");
@@ -912,7 +902,6 @@ namespace Vanara.IO
 				throw new BackgroundCopyException(cex);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void RemoveEvent<T>(BG_NOTIFY flag, ref EventHandler<T> eventHandler, EventHandler<T> value)
 		{
 			eventHandler -= value;
