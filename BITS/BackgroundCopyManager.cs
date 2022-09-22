@@ -35,7 +35,7 @@ namespace Vanara.IO
 
 				static Version GetVer()
 				{
-					string dllPath = Microsoft.Win32.Registry.GetValue($@"HKEY_CLASSES_ROOT\CLSID\{typeof(IBackgroundCopyManager).GUID:B}\InProcServer32", null, null).ToString() ??
+					string dllPath = Microsoft.Win32.Registry.GetValue($@"HKEY_CLASSES_ROOT\CLSID\{typeof(IBackgroundCopyManager).GUID:B}\InProcServer32", null, null)?.ToString() ??
 						Environment.ExpandEnvironmentVariables($@"%SystemRoot%\{(Environment.Is64BitProcess != Environment.Is64BitOperatingSystem ? "sysnative" : "system32")}\qmgr.dll");
 					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath);
 					return $"{fi.FileMajorPart}.{fi.FileMinorPart}" switch

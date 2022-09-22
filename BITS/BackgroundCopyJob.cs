@@ -182,7 +182,9 @@ namespace Vanara.IO
 		}
 
 		/// <summary>
-		/// Gets a value indicating whether to automatically call <see cref="Complete()"/> when the <see cref="Completed"/> event fires.
+		/// <para>Gets a value indicating whether to automatically call <see cref="Complete()"/> when the <see cref="Completed"/> event fires.</para>
+		/// <note type="note">This property is not persisted with the job. <see cref="Complete()"/> will only be automatically called if this
+		/// instance has subscribed to the <see cref="Completed"/> event and that event fires.</note>
 		/// </summary>
 		/// <value>
 		/// <see langword="true"/> if you want <see cref="Complete()"/> called automatically on successful job completion; otherwise, <see
@@ -664,7 +666,7 @@ namespace Vanara.IO
 			{
 				var st = State;
 				if (st is not BackgroundCopyJobState.Acknowledged and not BackgroundCopyJobState.Cancelled)
-					RunAction(() => m_ijob.SetNotifyFlags(value));
+					m_ijob.SetNotifyFlags(value);
 			});
 		}
 
@@ -827,7 +829,7 @@ namespace Vanara.IO
 			try
 			{
 				NotifyFlags = 0;
-				if (State is not BackgroundCopyJobState.Cancelled and not BackgroundCopyJobState.Acknowledged)
+				if (m_notifier is not null && State is not BackgroundCopyJobState.Cancelled and not BackgroundCopyJobState.Acknowledged)
 					m_ijob.SetNotifyInterface(null);
 			}
 			catch { }
@@ -867,8 +869,14 @@ namespace Vanara.IO
 				if (m_notifier is null)
 					RunAction(() => m_ijob.SetNotifyInterface(m_notifier ??= new Notifier(this)));
 			}
-			catch (UnauthorizedAccessException uae) { throw new UnauthorizedAccessException("This process does not have permission to edit the job. It was likely created by an elevated process.", uae); }
-			catch (Exception ex) { throw new NotSupportedException("This job is unable to provide events.", ex); }
+			catch (Exception ex)
+			{
+				m_notifier = null;
+				if (ex is UnauthorizedAccessException uae)
+					throw new UnauthorizedAccessException("This process does not have permission to edit the job. It was likely created by an elevated process.", uae);
+				throw new NotSupportedException("This job is unable to provide events.", ex);
+			}
+
 			var bitsVer = BackgroundCopyManager.Version;
 			if (flag == BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED && bitsVer < CopyCallback2 || flag == BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED && bitsVer < CopyCallback3)
 				throw new NotSupportedException("This event is not supported under this version of Windows.");
