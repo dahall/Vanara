@@ -128,12 +128,15 @@ namespace Vanara.IO
 		private EventHandler<BackgroundCopyFileTransferredEventArgs> fTranEvent;
 		private IBackgroundCopyJob m_ijob;
 		private Notifier m_notifier = null;
+		private BG_NOTIFY progNotify = 0;
 
 		internal BackgroundCopyJob(IBackgroundCopyJob ijob)
 		{
 			m_ijob = ijob ?? throw new ArgumentNullException(nameof(ijob));
 			Files = new BackgroundCopyFileCollection(m_ijob);
 			Credentials = new BackgroundCopyJobCredentials(IJob2);
+			// Call to set progNotify;
+			GetNotifyCommandLine(out _, out _, out _);
 		}
 
 		/// <summary>Occurs when all of the files in the job have been transferred.</summary>
@@ -212,6 +215,9 @@ namespace Vanara.IO
 					new X509Certificate2(blob.ToArray<byte>(20));
 			}
 		}
+
+		/// <summary>Gets the time the job was created.</summary>
+		public DateTime CreationTime => Times.CreationTime.ToDateTime();
 
 		/// <summary>The credentials to use for a proxy or remote server user authentication request.</summary>
 		public BackgroundCopyJobCredentials Credentials { get; private set; }
@@ -411,6 +417,9 @@ namespace Vanara.IO
 			set => RunAction(() => m_ijob.SetMinimumRetryDelay((uint)value.TotalSeconds));
 		}
 
+		/// <summary>Gets the time the job was last modified or bytes were transferred.</summary>
+		public DateTime ModificationTime => Times.ModificationTime.ToDateTime();
+
 		/// <summary>
 		/// Gets or sets the length of time, in seconds, that BITS tries to transfer the file after the first transient error occurs. The
 		/// default retry period is 1,209,600 seconds (14 days). Set the retry period to 0 to prevent retries and to force the job into the
@@ -439,6 +448,7 @@ namespace Vanara.IO
 		/// Gets or sets the program to execute if the job enters the Error or Transferred state. BITS executes the program in the context of
 		/// the user who called this method.
 		/// </summary>
+		[Obsolete("Use GetNotifyCommandLine and SetNotifyCommandLine methods. This property will be removed in a future release.")]
 		[DefaultValue(null)]
 		public string NotifyProgram
 		{
@@ -621,6 +631,9 @@ namespace Vanara.IO
 			set => SetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS, value);
 		}
 
+		/// <summary>Gets the time the job entered the Transferred state.</summary>
+		public DateTime TransferCompletionTime => Times.TransferCompletionTime.ToDateTime();
+
 		/// <summary>
 		/// Marks a BITS job as being willing to include default credentials in requests to proxy servers. Enabling this property is
 		/// equivalent to setting a WinHTTP security level of WINHTTP_AUTOLOGON_SECURITY_LEVEL_MEDIUM on the requests that BITS makes on the
@@ -635,15 +648,6 @@ namespace Vanara.IO
 			get => (BackgroundCopyJobCredentialTarget)(BG_AUTH_TARGET)GetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_USE_STORED_CREDENTIALS);
 			set => SetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_USE_STORED_CREDENTIALS, value);
 		}
-
-		/// <summary>Gets the time the job was created.</summary>
-		public DateTime CreationTime => Times.CreationTime.ToDateTime();
-
-		/// <summary>Gets the time the job was last modified or bytes were transferred.</summary>
-		public DateTime ModificationTime => Times.ModificationTime.ToDateTime();
-
-		/// <summary>Gets the time the job entered the Transferred state.</summary>
-		public DateTime TransferCompletionTime => Times.TransferCompletionTime.ToDateTime();
 
 		private IBackgroundCopyJobHttpOptions IHttpOp => GetDerived<IBackgroundCopyJobHttpOptions>();
 
@@ -696,6 +700,30 @@ namespace Vanara.IO
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => ID.GetHashCode();
+
+		/// <summary>Retrieves the program to execute when the job enters the error or transferred state.</summary>
+		/// <param name="exeFullPath">
+		/// The program to execute when the job enters the error or transferred state. This value is <see langword="null"/> if <see
+		/// cref="SetNotifyCommandLine"/> has not been called.
+		/// </param>
+		/// <param name="parameters">
+		/// The arguments of the program in <paramref name="exeFullPath"/>. This value is <see langword="null"/> if <see
+		/// cref="SetNotifyCommandLine"/> has not been called.
+		/// </param>
+		/// <param name="notifyFlags">
+		/// Flags that specify when to execute the program. This value is <c>0</c> if <see cref="SetNotifyCommandLine"/> has not been called.
+		/// </param>
+		public void GetNotifyCommandLine(out string exeFullPath, out string parameters, out BackgroundCopyJobNotify notifyFlags)
+		{
+			(exeFullPath, parameters, progNotify) = RunAction(() =>
+			{
+				IJob2.GetNotifyCmdLine(out var e, out var p);
+				var f = IJob2.GetNotifyFlags();
+				return (string.IsNullOrEmpty(e) ? null : e, string.IsNullOrEmpty(p) ? null : p, f & (BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_JOB_ERROR));
+			});
+			if (exeFullPath is null) progNotify = 0;
+			notifyFlags = (BackgroundCopyJobNotify)progNotify;
+		}
 
 		/// <summary>
 		/// Sets the HTTP custom headers for this job to be write-only. Write-only headers cannot be read by BITS methods such as the <see
@@ -768,6 +796,74 @@ namespace Vanara.IO
 		}
 
 		/// <summary>
+		/// Specifies a program to execute if the job enters the <see cref="BackgroundCopyJobState.Error"/> or <see
+		/// cref="BackgroundCopyJobState.Transferred"/> state. BITS executes the program in the context of the user who called this method.
+		/// </summary>
+		/// <param name="exeFullPath">
+		/// <para>
+		/// The full path of the program to execute. The <paramref name="exeFullPath"/> parameter is limited to MAX_PATH characters. You
+		/// should specify a full path to the program; the method will not use the search path to locate the program.
+		/// </para>
+		/// <para>
+		/// To remove command line notification, set <paramref name="exeFullPath"/> and <paramref name="parameters"/> to <see
+		/// langword="null"/>. The method fails if <paramref name="exeFullPath"/> is <see langword="null"/> and <paramref name="parameters"/>
+		/// is non- <see langword="null"/>.
+		/// </para>
+		/// </param>
+		/// <param name="parameters">
+		/// The parameters for the program in <paramref name="exeFullPath"/>. The <paramref name="parameters"/> parameter is limited to 4,000
+		/// characters when joined to <paramref name="exeFullPath"/>. This parameter can be <see langword="null"/>.
+		/// </param>
+		/// <param name="notifyFlags">Flags that specify when to execute the program.</param>
+		/// <remarks>
+		/// <para>BITS calls the CreateProcessAsUser function to launch the program.</para>
+		/// <para>
+		/// Your program should return an exit code of zero. If your program does not return an exit code of zero, BITS checks the state of
+		/// the job. If the program did not cancel or complete the job, BITS calls the program again after the minimum retry delay specified
+		/// for the job expires.
+		/// </para>
+		/// <para><c>BITS 1.5 and earlier:</c> BITS calls the program only once.</para>
+		/// <para>
+		/// To execute a script, specify WScript.exe (include the full path to WScript.exe) in <paramref name="exeFullPath"/>. The <paramref
+		/// name="parameters"/> parameter should include the script name and any arguments.
+		/// </para>
+		/// <para>
+		/// If your program requires job related information, you must pass this information as arguments. Do not include environment
+		/// variables, such as %system32%, in <paramref name="exeFullPath"/> or <paramref name="parameters"/> — they are not expanded.
+		/// </para>
+		/// <para>
+		/// You should include the full path to the program. If any of the arguments in <paramref name="parameters"/> include a path that
+		/// uses long file names, use quotes around the path.
+		/// </para>
+		/// <para>
+		/// If the program you want to execute uses the reply or download file, the program must call the <see cref="Complete()"/> method to
+		/// make the files available to the client.
+		/// </para>
+		/// <para>Note that BITS still executes the command line even if you call this method after the event occurs.</para>
+		/// <para>
+		/// If the BITS job is in a service account context (ie, networkservice/localsystem/localservice), no form of command-line callback
+		/// will execute.
+		/// </para>
+		/// <para>
+		/// If you call both this method and subscribe to events, BITS will execute the command line only if the correpsonding event handler
+		/// throws an exception. For example, if the handler that BITS calls throws <see cref="NotSupportedException"/>, BITS will execute
+		/// the command line. However, if the handler doesn't throw an exception, BITS will not execute the command line. If the handler and
+		/// command line execution request both fail, BITS will send the notification again after the minimum retry period expires.
+		/// </para>
+		/// <para>Note that calling the <see cref="TakeOwnership"/> method removes command line notification from the job.</para>
+		/// </remarks>
+		public void SetNotifyCommandLine(string exeFullPath, string parameters, BackgroundCopyJobNotify notifyFlags = BackgroundCopyJobNotify.Transferred | BackgroundCopyJobNotify.Error)
+		{
+			exeFullPath = exeFullPath?.Trim('"', ' ');
+			progNotify = string.IsNullOrEmpty(exeFullPath) ? 0 : (BG_NOTIFY)notifyFlags;
+			RunAction(() =>
+			{
+				IJob2.SetNotifyCmdLine(exeFullPath, exeFullPath is null || parameters is null ? null : $"\"{exeFullPath}\" {parameters}");
+				IJob2.SetNotifyFlags(NotifyFlags | progNotify);
+			});
+		}
+
+		/// <summary>
 		/// Server certificates are sent when an HTTPS connection is opened. Use this method to set a callback to be called to validate
 		/// those server certificates.
 		/// </summary>
@@ -828,7 +924,6 @@ namespace Vanara.IO
 		{
 			try
 			{
-				NotifyFlags = 0;
 				if (m_notifier is not null && State is not BackgroundCopyJobState.Cancelled and not BackgroundCopyJobState.Acknowledged)
 					m_ijob.SetNotifyInterface(null);
 			}
@@ -913,7 +1008,7 @@ namespace Vanara.IO
 		private void RemoveEvent<T>(BG_NOTIFY flag, ref EventHandler<T> eventHandler, EventHandler<T> value)
 		{
 			eventHandler -= value;
-			if (eventHandler is null)
+			if (eventHandler is null && !progNotify.IsFlagSet(flag))
 				NotifyFlags = NotifyFlags.ClearFlags(flag);
 		}
 
@@ -968,9 +1063,7 @@ namespace Vanara.IO
 
 			public Notifier(BackgroundCopyJob job) => parent = job;
 
-			private Notifier()
-			{
-			}
+			private Notifier() { }
 
 			public void FileRangesTransferred(IBackgroundCopyJob job, IBackgroundCopyFile file, uint rangeCount, BG_FILE_RANGE[] ranges) => parent.OnFileRangesTransferred(file, ranges);
 

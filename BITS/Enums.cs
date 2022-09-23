@@ -211,6 +211,17 @@ namespace Vanara.IO
 		DisableBranchCache = BG_JOB_ENABLE_PEERCACHING.BG_JOB_DISABLE_BRANCH_CACHE,
 	}
 
+	/// <summary>Identifies the events that your application receives.</summary>
+	[Flags]
+	public enum BackgroundCopyJobNotify
+	{
+		/// <summary>All of the files in the job have been transferred.</summary>
+		Transferred = BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED,
+
+		/// <summary>An error has occurred.</summary>
+		Error = BG_NOTIFY.BG_NOTIFY_JOB_ERROR,
+	}
+
 	/// <summary>Defines the constant values that specify the priority level of a job.</summary>
 	public enum BackgroundCopyJobPriority
 	{
