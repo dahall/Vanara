@@ -2669,7 +2669,7 @@ namespace Vanara.PInvoke
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN"/> instance from the conversion.</returns>
 			/// <exception cref="InvalidCastException"></exception>
-			public static explicit operator SOCKADDR_IN(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET ? addr.handle.ToStructure<SOCKADDR_IN>() : throw new InvalidCastException();
+			public static explicit operator SOCKADDR_IN(SOCKADDR addr) => addr.sa_family is ADDRESS_FAMILY.AF_INET or ADDRESS_FAMILY.AF_UNSPEC ? addr.handle.ToStructure<SOCKADDR_IN>() : throw new InvalidCastException();
 
 			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_IN6"/>.</summary>
 			/// <param name="addr">The address.</param>
