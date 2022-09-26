@@ -1223,7 +1223,7 @@ public partial class VirtualDisk : IDisposable, IHandle
 					return true;
 
 				case Win32Error.ERROR_IO_PENDING:
-					progress?.Report(Math.Max(100, (int)(prog.CurrentValue * 100 / prog.CompletionValue)));
+					progress?.Report(Math.Min(100, (int)(prog.CurrentValue * 100 / prog.CompletionValue)));
 					break;
 
 				default:
