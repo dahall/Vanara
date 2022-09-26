@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -217,10 +218,14 @@ namespace Vanara.PInvoke.Tests
 			o.WriteValues();
 
 			Assert.That(() => GetProcessInformation<PROCESS_MEMORY_EXHAUSTION_INFO>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessMemoryExhaustionInfo), Throws.Exception);
-			Assert.That(() => GetProcessInformation<PROCESS_POWER_THROTTLING_STATE>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessPowerThrottling), Throws.Exception);
 			Assert.That(() => GetProcessInformation<uint>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessInPrivateInfo), Throws.Exception);
 			Assert.That(() => GetProcessInformation<uint>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessReservedValue1), Throws.Exception);
 			Assert.That(() => GetProcessInformation<uint>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessTelemetryCoverageInfo), Throws.Exception);
+
+			var state = new PROCESS_POWER_THROTTLING_STATE(0, 0);
+			using var pin = new PinnedObject(state);
+			Assert.That(GetProcessInformation(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessPowerThrottling, pin, (uint)Marshal.SizeOf<PROCESS_POWER_THROTTLING_STATE>()), ResultIs.Successful);
+			Assert.That((int)state.ControlMask, Is.Not.Zero);
 		}
 
 		[Test]
