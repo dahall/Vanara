@@ -1737,7 +1737,7 @@ namespace Vanara.PInvoke
 			public DRT_BOOTSTRAP_RESOLVE_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="DRT_BOOTSTRAP_RESOLVE_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static DRT_BOOTSTRAP_RESOLVE_CONTEXT NULL => new DRT_BOOTSTRAP_RESOLVE_CONTEXT(IntPtr.Zero);
+			public static DRT_BOOTSTRAP_RESOLVE_CONTEXT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -1750,7 +1750,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="DRT_BOOTSTRAP_RESOLVE_CONTEXT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator DRT_BOOTSTRAP_RESOLVE_CONTEXT(IntPtr h) => new DRT_BOOTSTRAP_RESOLVE_CONTEXT(h);
+			public static implicit operator DRT_BOOTSTRAP_RESOLVE_CONTEXT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -1786,6 +1786,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Pointer to a byte array that contains the common data.</summary>
 			public IntPtr pb;
+
+			/// <summary>Performs an implicit conversion from <see cref="DRT_DATA"/> to <see cref="System.Byte"/>[].</summary>
+			/// <param name="d">The <see cref="DRT_DATA"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator byte[](DRT_DATA d) => d.GetArray();
 		}
 
 		/// <summary>
@@ -2155,7 +2160,7 @@ namespace Vanara.PInvoke
 			public HDRT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HDRT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HDRT NULL => new HDRT(IntPtr.Zero);
+			public static HDRT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2168,7 +2173,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDRT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDRT(IntPtr h) => new HDRT(h);
+			public static implicit operator HDRT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2203,7 +2208,7 @@ namespace Vanara.PInvoke
 			public HDRT_REGISTRATION_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HDRT_REGISTRATION_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HDRT_REGISTRATION_CONTEXT NULL => new HDRT_REGISTRATION_CONTEXT(IntPtr.Zero);
+			public static HDRT_REGISTRATION_CONTEXT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2216,7 +2221,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDRT_REGISTRATION_CONTEXT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDRT_REGISTRATION_CONTEXT(IntPtr h) => new HDRT_REGISTRATION_CONTEXT(h);
+			public static implicit operator HDRT_REGISTRATION_CONTEXT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2251,7 +2256,7 @@ namespace Vanara.PInvoke
 			public HDRT_SEARCH_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HDRT_SEARCH_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HDRT_SEARCH_CONTEXT NULL => new HDRT_SEARCH_CONTEXT(IntPtr.Zero);
+			public static HDRT_SEARCH_CONTEXT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2264,7 +2269,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDRT_SEARCH_CONTEXT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDRT_SEARCH_CONTEXT(IntPtr h) => new HDRT_SEARCH_CONTEXT(h);
+			public static implicit operator HDRT_SEARCH_CONTEXT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2299,7 +2304,7 @@ namespace Vanara.PInvoke
 			public HDRT_TRANSPORT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HDRT_TRANSPORT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HDRT_TRANSPORT NULL => new HDRT_TRANSPORT(IntPtr.Zero);
+			public static HDRT_TRANSPORT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2312,7 +2317,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDRT_TRANSPORT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDRT_TRANSPORT(IntPtr h) => new HDRT_TRANSPORT(h);
+			public static implicit operator HDRT_TRANSPORT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2383,7 +2388,7 @@ namespace Vanara.PInvoke
 			public IntPtr pb => _pb;
 
 			/// <summary>Represents an empty instance of a blob.</summary>
-			public static readonly SafeDRT_DATA Empty = new SafeDRT_DATA(IntPtr.Zero, 0);
+			public static readonly SafeDRT_DATA Empty = new(IntPtr.Zero, 0);
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			public void Dispose()
@@ -2396,13 +2401,13 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="SafeDRT_DATA"/> to <see cref="DRT_DATA"/>.</summary>
 			/// <param name="safeData">The safe data.</param>
 			/// <returns>The resulting <see cref="DRT_DATA"/> instance from the conversion.</returns>
-			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) => new DRT_DATA { cb = safeData._cb, pb = safeData._pb };
+			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) => new() { cb = safeData._cb, pb = safeData._pb };
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 			/// <typeparam name="T">Native type</typeparam>
 			/// <param name="value">The value.</param>
 			/// <returns><see cref="SafeDRT_DATA"/> object to an native (unmanaged) memory block the size of T.</returns>
-			public static SafeDRT_DATA CreateFromStructure<T>(in T value = default) => new SafeDRT_DATA(InteropExtensions.MarshalToPtr(value, MemMethods.AllocMem, out var s), s);
+			public static SafeDRT_DATA CreateFromStructure<T>(in T value = default) => new(InteropExtensions.MarshalToPtr(value, MemMethods.AllocMem, out var s), s);
 
 			/// <summary>
 			/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
@@ -2414,7 +2419,7 @@ namespace Vanara.PInvoke
 			/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
 			/// <returns><see cref="SafeDRT_DATA"/> object to an native (unmanaged) structure with a trail array of structures</returns>
 			public static SafeDRT_DATA CreateFromList<T>(IEnumerable<T> values, int prefixBytes = 0) =>
-				new SafeDRT_DATA(InteropExtensions.MarshalToPtr(values, MemMethods.AllocMem, out var s, prefixBytes), s);
+				new(InteropExtensions.MarshalToPtr(values, MemMethods.AllocMem, out var s, prefixBytes), s);
 
 			/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
 			/// <param name="values">The list of strings.</param>
@@ -2426,7 +2431,7 @@ namespace Vanara.PInvoke
 			/// name="packing"/> model and the character set defined by <paramref name="charSet"/>.
 			/// </returns>
 			public static SafeDRT_DATA CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-				new SafeDRT_DATA(InteropExtensions.MarshalToPtr(values, packing, MemMethods.AllocMem, out var s, charSet, prefixBytes), s);
+				new(InteropExtensions.MarshalToPtr(values, packing, MemMethods.AllocMem, out var s, charSet, prefixBytes), s);
 
 			private static IMemoryMethods MemMethods => HGlobalMemoryMethods.Instance;
 		}

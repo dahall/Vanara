@@ -1,18 +1,22 @@
-﻿using System;
+﻿#if LFJSDFHJDSJFHSDJFH
+#nullable enable
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Crypt32;
 using static Vanara.PInvoke.Drt;
 using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.Ws2_32;
 
 namespace Vanara.Net;
 
-#if RELEASE
 public class DistributedRoutingTable
 {
 	private SafeHDRT hDrt;
@@ -456,23 +460,238 @@ public abstract class DrtSecurityProvider
 		}
 	}
 
-	protected abstract void Attach(object context);
-	protected abstract void Detach(object context);
+	protected static IntPtr Alloc(int size) => Marshal.AllocCoTaskMem(size);
+	protected static void Free(IntPtr ptr) => Marshal.FreeCoTaskMem(ptr);
+	private static DRT_DATA ToData(byte[]? data)
+	{
+		DRT_DATA ret = default;
+		if (data is not null)
+		{
+			ret.pb = data.MarshalToPtr(Alloc, out int cb);
+			ret.cb = (uint)cb;
+		}
+		return ret;
+	}
 
-	static HRESULT Execute(Action<object> action, IntPtr ctx) { try { action(ctx == IntPtr.Zero ? null : GCHandle.FromIntPtr(ctx).Target); return HRESULT.S_OK; } catch (Exception ex) { return ex.HResult; } }
+	/// <summary>Increments the count of references for the Security Provider with a set of DRTs.</summary>
+	protected virtual void Attach() { }
+	/// <summary>Decrements the count of references for the Security Provider with a set of DRTs.</summary>
+	protected virtual void Detach() { }
+	/// <summary>
+	/// Called when the DRT receives a message containing encrypted data. This function is only called when the DRT is operating in the
+	/// <c>DRT_SECURE_CONFIDENTIALPAYLOAD</c> security mode defined by DRT_SECURITY_MODE.
+	/// </summary>
+	/// <param name="pKeyToken">
+	/// Contains the encrypted session key that can be decrypted by the recipient of the message and used to decrypt the protected fields.
+	/// </param>
+	/// <param name="pvKeyContext">Contains the context passed into DrtRegisterKey when the key was registered.</param>
+	/// <param name="pData">Contains the decrypted data upon completion of the function.</param>
+	protected virtual void DecryptData([In] byte[] pKeyToken, [Optional] IntPtr pvKeyContext, byte[][] pData) { }
+	/// <summary>
+	/// Called when the DRT sends a message containing data that must be encrypted. This function is only called when the DRT is
+	/// operating in the <c>DRT_SECURE_CONFIDENTIALPAYLOAD</c> security mode defined by DRT_SECURITY_MODE.
+	/// </summary>
+	/// <param name="pRemoteCredential">Contains the credential of the peer that will receive the protected message.</param>
+	/// <param name="pDataBuffers">Contains the unencrypted buffer.</param>
+	/// <param name="pEncryptedBuffers">Contains the encrypted content upon completion of the function.</param>
+	/// <param name="pKeyToken">
+	/// Contains the encrypted session key that can be decrypted by the recipient of the message and used to decrypted the protected fields.
+	/// </param>
+	/// <returns></returns>
+	protected abstract void EncryptData([In] byte[] pRemoteCredential, byte[][] pDataBuffers, byte[][] pEncryptedBuffers, out byte[] pKeyToken);
+	/// <summary>Called to register a key with the Security Provider.</summary>
+	/// <param name="pRegistration">
+	/// Pointer to the DRT_REGISTRATION structure created by an application and passed to the DrtRegisterKey function.
+	/// </param>
+	/// <param name="pvKeyContext">Pointer to the context data created by an application and passed to the DrtRegisterKey function.</param>
+	/// <returns></returns>
+	protected virtual void RegisterKey(in DRT_REGISTRATION pRegistration, [In, Optional] IntPtr pvKeyContext) { }
+	/// <summary>Called to release resources previously allocated for a security provider function.</summary>
+	/// <param name="pv">Specifies what data to free.</param>
+	protected virtual void FreeData([In, Optional] IntPtr pv) => Free(pv);
+	/// <summary>
+	/// Called when the DRT must provide a credential used to authorize the local node. This function is only called when the DRT is
+	/// operating in the <c>DRT_SECURE_MEMBERSHIP</c> and <c>DRT_SECURE_CONFIDENTIALPAYLOAD</c> security modes defined by DRT_SECURITY_MODE.
+	/// </summary>
+	/// <returns>Contains the serialized credential upon completion of the function.</returns>
+	protected virtual byte[]? GetSerializedCredential() => null;
+	/// <summary>
+	/// Called when the DRT must sign a data blob for inclusion in a DRT protocol message. This function is only called when the DRT is
+	/// operating in the <c>DRT_SECURE_MEMBERSHIP</c> and <c>DRT_SECURE_CONFIDENTIALPAYLOAD</c> security modes defined by DRT_SECURITY_MODE.
+	/// </summary>
+	/// <param name="dataBuffers">Contains the data to be signed.</param>
+	/// <param name="keyIdentifier">
+	/// Upon completion of this function, contains an index that can be used to select from multiple credentials for use in calculating
+	/// the signature.
+	/// </param>
+	/// <param name="signature">Upon completion of this function, contains the signature data.</param>
+	/// <returns></returns>
+	protected virtual void SignData(byte[][] dataBuffers, out byte[]? keyIdentifier, out byte[]? signature) => keyIdentifier = signature = null;
+	/// <summary>Called to deregister a key with the Security Provider.</summary>
+	/// <param name="key">Pointer to the key to which the payload is registered.</param>
+	/// <param name="pvKeyContext">Pointer to the context data created by an application and passed to the DrtRegisterKey function.</param>
+	/// <returns>Pointer to the context data created by the application and passed to DrtRegisterKey.</returns>
+	protected virtual void UnregisterKey(byte[] key, [In, Optional] IntPtr pvKeyContext) { }
+	/// <summary>Called when the DRT must validate a credential provided by a peer node.</summary>
+	/// <param name="pRemoteCredential">Contains the serialized credential provided by the peer node.</param>
+	/// <returns></returns>
+	protected virtual void ValidateRemoteCredential(byte[] pRemoteCredential) { }
+	/// <summary>
+	/// Called when the DRT must verify a signature calculated over a block of data included in a DRT message. This function is only
+	/// called when the DRT is operating in the <c>DRT_SECURE_MEMBERSHIP</c> and <c>DRT_SECURE_CONFIDENTIALPAYLOAD</c> security modes
+	/// defined by DRT_SECURITY_MODE.
+	/// </summary>
+	/// <param name="pDataBuffers">Contains the data over which the signature was calculated.</param>
+	/// <param name="remoteCredentials">Contains the credentials of the remote node used to calculate the signature.</param>
+	/// <param name="keyIdentifier">Contains an index that may be used to select from multiple credentials provided in pRemoteCredentials.</param>
+	/// <param name="signature">Contains the signature to be verified.</param>
+	/// <returns></returns>
+	protected virtual void VerifyData(byte[][] pDataBuffers, byte[] remoteCredentials, byte[] keyIdentifier, byte[] signature)
+	{
+		if (signature is null || signature.Length == 0) throw HRESULT.DRT_E_INVALID_MESSAGE.GetException();
+	}
+	/// <summary>
+	/// Called when an Authority message is received on the wire. It is responsible for validating the data received, and for unpacking the
+	/// service addresses, revoked flag, and nonce from the Secured Address Payload.
+	/// </summary>
+	/// <param name="pSecuredAddressPayload">
+	/// Pointer to the payload received on the wire that contains the service addresses, revoked flag, nonce, and any other data required by
+	/// the security provider.
+	/// </param>
+	/// <param name="pCertChain">Pointer to the cert chain received in the authority message.</param>
+	/// <param name="pClassifier">Pointer to the classifier received in the authority message.</param>
+	/// <param name="pNonce">
+	/// Pointer to the nonce that was sent in the original <c>Inquire</c> or <c>Lookup</c> message. This value must be compared to the value
+	/// embedded in the Secured Address Payload to ensure they are the same. This value is fixed at 16 bytes.
+	/// </param>
+	/// <param name="pSecuredPayload">
+	/// Pointer to the application data payload received in the Authority message. After validation, the original data (after decryption,
+	/// removal of signature, and so on.) is output as pPayload.
+	/// </param>
+	/// <param name="pbProtocolMajor">
+	/// Pointer to the byte array that represents the protocol major version. This is packed in every DRT packet to identify the version of
+	/// the security provider in use when a single DRT instance is supporting multiple Security Providers.
+	/// </param>
+	/// <param name="pbProtocolMinor">
+	/// Pointer to the byte array that represents the protocol minor version. This is packed in every DRT packet to identify the version of
+	/// the security provider in use when a single DRT instance is supporting multiple Security Providers.
+	/// </param>
+	/// <param name="pKey">Pointer to the key to which the payload is registered.</param>
+	/// <param name="pPayload">
+	/// Pointer to the original payload specified by the remote application. <c>pPayload.pb</c> is allocated by the security provider.
+	/// </param>
+	/// <param name="ppPublicKey">Pointer to a pointer to the number of service addresses embedded in the secured address payload.</param>
+	/// <param name="ppAddressList">
+	/// Pointer to a pointer to the service addresses that are embedded in the Secured Address Payload. <c>pAddresses</c> is allocated by the
+	/// security provider.
+	/// </param>
+	/// <param name="pdwFlags">
+	/// Any DRT flags currently defined only to be the revoked or deleted flag that need to be unpacked for the local DRT instance processing.
+	/// <para><c>Note</c> Currently the only allowed value is: <c>DRT_PAYLOAD_REVOKED (1)</c></para>
+	/// </param>
+	/// <returns></returns>
+	protected abstract void ValidateAndUnpackPayload([In] byte[] pSecuredAddressPayload, [In] byte[]? pCertChain,
+		[In] byte[]? pClassifier, [In] byte[]? pNonce, [In] byte[]? pSecuredPayload,
+		out byte pbProtocolMajor, out byte pbProtocolMinor, out byte[] pKey, out byte[]? pPayload,
+		out SafeCoTaskMemStruct<CERT_PUBLIC_KEY_INFO> ppPublicKey, out SafeCoTaskMemStruct<SOCKET_ADDRESS_LIST>? ppAddressList,
+		out uint pdwFlags);
 
-	HRESULT InternalAttach(IntPtr pvContext) => Execute(Attach, pvContext);
-	HRESULT InternalDecryptData(IntPtr pvContext, in DRT_DATA pKeyToken, IntPtr pvKeyContext, uint dwBuffers, DRT_DATA[] pData) => throw new NotImplementedException();
-	void InternalDetach(IntPtr pvContext) => Execute(Detach, pvContext);
-	HRESULT InternalEncryptData(IntPtr pvContext, in DRT_DATA pRemoteCredential, uint dwBuffers, DRT_DATA[] pDataBuffers, DRT_DATA[] pEncryptedBuffers, out DRT_DATA pKeyToken) => throw new NotImplementedException();
-	void InternalFreeData(IntPtr pvContext, IntPtr pv) => throw new NotImplementedException();
-	HRESULT InternalGetSerializedCredential(IntPtr pvContext, out DRT_DATA pSelfCredential) => throw new NotImplementedException();
-	HRESULT InternalRegisterKey(IntPtr pvContext, in DRT_REGISTRATION pRegistration, IntPtr pvKeyContext) => throw new NotImplementedException();
-	HRESULT InternalSignData(IntPtr pvContext, uint dwBuffers, DRT_DATA[] pDataBuffers, out DRT_DATA pKeyIdentifier, out DRT_DATA pSignature) => throw new NotImplementedException();
-	HRESULT InternalUnregisterKey(IntPtr pvContext, in DRT_DATA pKey, IntPtr pvKeyContext) => throw new NotImplementedException();
-	HRESULT InternalValidateRemoteCredential(IntPtr pvContext, in DRT_DATA pRemoteCredential) => throw new NotImplementedException();
-	HRESULT InternalVerifyData(IntPtr pvContext, uint dwBuffers, DRT_DATA[] pDataBuffers, in DRT_DATA pRemoteCredentials, in DRT_DATA pKeyIdentifier, in DRT_DATA pSignature) => throw new NotImplementedException();
-	unsafe HRESULT InternalValidateAndUnpackPayload(IntPtr pvContext, in DRT_DATA pSecuredAddressPayload, DRT_DATA* pCertChain, DRT_DATA* pClassifier, DRT_DATA* pNonce, DRT_DATA* pSecuredPayload, byte* pbProtocolMajor, byte* pbProtocolMinor, out DRT_DATA pKey, DRT_DATA* pPayload, CERT_PUBLIC_KEY_INFO** ppPublicKey, void** ppAddressList, out uint pdwFlags) => throw new NotImplementedException();
+	static HRESULT Execute(Action action)
+	{
+		try
+		{
+			action();
+			return HRESULT.S_OK;
+		}
+		catch (Exception ex) { return ex.HResult; }
+	}
+
+	HRESULT InternalAttach(IntPtr pvContext) => Execute(Attach);
+	HRESULT InternalDecryptData(IntPtr pvContext, in DRT_DATA pKeyToken, IntPtr pvKeyContext, uint dwBuffers, DRT_DATA[] pData)
+	{
+		byte[] pkt = pKeyToken;
+		return Execute(() => DecryptData(pkt, pvKeyContext, Array.ConvertAll(pData, p => p.GetArray())));
+	}
+	void InternalDetach(IntPtr pvContext) => Execute(Detach);
+	HRESULT InternalEncryptData(IntPtr pvContext, in DRT_DATA pRemoteCredential, uint dwBuffers, DRT_DATA[] pDataBuffers, DRT_DATA[] pEncryptedBuffers, out DRT_DATA pKeyToken)
+	{
+		byte[] prc = pRemoteCredential;
+		DRT_DATA dkt = default;
+		var hr = Execute(() =>
+		{
+			EncryptData(prc, Array.ConvertAll(pDataBuffers, p => p.GetArray()), Array.ConvertAll(pEncryptedBuffers, p => p.GetArray()), out var pkt);
+			dkt = ToData(pkt);
+		});
+		pKeyToken = dkt;
+		return hr;
+	}
+
+	void InternalFreeData(IntPtr pvContext, IntPtr pv) => Execute(() => FreeData(pv));
+	HRESULT InternalGetSerializedCredential(IntPtr pvContext, out DRT_DATA pSelfCredential)
+	{
+		byte[]? output = null;
+		var hr = Execute(() => output = GetSerializedCredential());
+		pSelfCredential = ToData(output);
+		return hr;
+	}
+
+	HRESULT InternalRegisterKey(IntPtr pvContext, in DRT_REGISTRATION pRegistration, IntPtr pvKeyContext)
+	{
+		var pr = pRegistration;
+		return Execute(() => RegisterKey(pr, pvKeyContext));
+	}
+
+	HRESULT InternalSignData(IntPtr pvContext, uint dwBuffers, DRT_DATA[] pDataBuffers, out DRT_DATA pKeyIdentifier, out DRT_DATA pSignature)
+	{
+		byte[] id = null, sig = null;
+		var hr = Execute(() => SignData(Array.ConvertAll(pDataBuffers, b => b.GetArray()), out id, out sig));
+		pKeyIdentifier = ToData(id); pSignature = ToData(sig);
+		return hr;
+	}
+
+	HRESULT InternalUnregisterKey(IntPtr pvContext, in DRT_DATA pKey, IntPtr pvKeyContext)
+	{
+		byte[] pk = pKey.GetArray();
+		return Execute(() => UnregisterKey(pk));
+	}
+
+	HRESULT InternalValidateRemoteCredential(IntPtr pvContext, in DRT_DATA pRemoteCredential)
+	{
+		byte[] rc = pRemoteCredential.GetArray();
+		return Execute(() => ValidateRemoteCredential(rc));
+	}
+
+	HRESULT InternalVerifyData(IntPtr pvContext, uint dwBuffers, DRT_DATA[] pDataBuffers, in DRT_DATA pRemoteCredentials, in DRT_DATA pKeyIdentifier, in DRT_DATA pSignature)
+	{
+		byte[] rc = pRemoteCredentials.GetArray(), id = pKeyIdentifier.GetArray(), sig = pSignature.GetArray();
+		return Execute(() => VerifyData(Array.ConvertAll(pDataBuffers, b => b.GetArray()), rc, id, sig));
+	}
+
+	unsafe HRESULT InternalValidateAndUnpackPayload(IntPtr pvContext, in DRT_DATA pSecuredAddressPayload, DRT_DATA* pCertChain,
+		DRT_DATA* pClassifier, DRT_DATA* pNonce, DRT_DATA* pSecuredPayload, byte* pbProtocolMajor, byte* pbProtocolMinor,
+		out DRT_DATA pKey, DRT_DATA* pPayload, CERT_PUBLIC_KEY_INFO** ppPublicKey, void** ppAddressList, out uint pdwFlags)
+	{
+		byte[] sap = pSecuredAddressPayload.GetArray();
+		byte[]? cc = pCertChain is null ? null : (*pCertChain).GetArray();
+		byte[]? cl = pClassifier is null ? null : (*pClassifier).GetArray();
+		byte[]? no = pNonce is null ? null : (*pNonce).GetArray();
+		byte[]? sp = pSecuredPayload is null ? null : (*pSecuredPayload).GetArray();
+		DRT_DATA lpKey = default;
+		uint lpdwFlags = 0;
+		var hr = Execute(() => {
+			ValidateAndUnpackPayload(sap, cc, cl, no, sp, out var maj, out var min, out var k, out var pl, out var pk, out var al, out var fl);
+			*pbProtocolMajor = maj;
+			*pbProtocolMinor = min;
+			lpKey = ToData(k);
+			if (pl is not null) *pPayload = ToData(pl);
+			*ppPublicKey = (CERT_PUBLIC_KEY_INFO*)(void*)pk.TakeOwnership();
+			if (al is not null && !al.IsInvalid) *ppAddressList = (void*)al.TakeOwnership();
+			lpdwFlags = fl;
+		});
+		pKey = lpKey;
+		pdwFlags = lpdwFlags;
+		return hr;
+	}
 	unsafe HRESULT InternalSecureAndPackPayload(IntPtr pvContext, IntPtr pvKeyContext, byte bProtocolMajor, byte bProtocolMinor, uint dwFlags, in DRT_DATA pKey, DRT_DATA* pPayload, IntPtr pAddressList, in DRT_DATA pNonce, out DRT_DATA pSecuredAddressPayload, DRT_DATA* pClassifier, DRT_DATA* pSecuredPayload, DRT_DATA* pCertChain) => throw new NotImplementedException();
 }
 #endif
