@@ -2332,7 +2332,7 @@ namespace Vanara.PInvoke
 			public string Name;
 
 			/// <summary>The default initial value for <c>SYMBOL_INFO</c> with size parameters set.</summary>
-			public static SYMBOL_INFO Default = new() { SizeOfStruct = (uint)Marshal.SizeOf(typeof(SYMBOL_INFO)), MaxNameLen = MAX_SYM_NAME };
+			public static SYMBOL_INFO Default = new() { SizeOfStruct = (uint)Marshal.SizeOf(typeof(SYMBOL_INFO_V)), MaxNameLen = MAX_SYM_NAME };
 		}
 
 		/// <summary>
