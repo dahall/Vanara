@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -9,6 +10,9 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the DbgHelp.dll</summary>
 	public static partial class DbgHelp
 	{
+		/// <summary>The maximum length of a symbol name.</summary>
+		public const int MAX_SYM_NAME = 2000;
+
 		/// <summary>Flags for <see cref="IMAGEHLP_DEFERRED_SYMBOL_LOAD64"/>.</summary>
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGEHLP_DEFERRED_SYMBOL_LOAD64")]
 		[Flags]
@@ -2176,7 +2180,6 @@ namespace Vanara.PInvoke
 		// SizeOfStruct; ULONG TypeIndex; ULONG64 Reserved[2]; ULONG Index; ULONG Size; ULONG64 ModBase; ULONG Flags; ULONG64 Value; ULONG64
 		// Address; ULONG Register; ULONG Scope; ULONG Tag; ULONG NameLen; ULONG MaxNameLen; CHAR Name[1]; } SYMBOL_INFO, *PSYMBOL_INFO;
 		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._SYMBOL_INFO")]
-		[VanaraMarshaler(typeof(SafeAnysizeStringMarshaler<SYMBOL_INFO>), "Auto")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct SYMBOL_INFO
 		{
@@ -2325,8 +2328,193 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// The name of the symbol. The name can be undecorated if the SYMOPT_UNDNAME option is used with the SymSetOptions function.
 			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_SYM_NAME)]
+			public string Name;
+
+			/// <summary>The default initial value for <c>SYMBOL_INFO</c> with size parameters set.</summary>
+			public static SYMBOL_INFO Default = new() { SizeOfStruct = (uint)Marshal.SizeOf(typeof(SYMBOL_INFO)), MaxNameLen = MAX_SYM_NAME };
+		}
+
+		/// <summary>
+		/// Contains symbol information. Use this structure when extracting from a pointer, like in the enumeration callbacks.
+		/// </summary>
+		/// <example>
+		///   <para>This is a sample of how to use this structure in a callback.</para>
+		///   <code>List&lt;SYMBOL_INFO&gt; list = new();
+		/// Win32Error.ThrowLastErrorIfFalse(SymEnumSymbolsEx(hProcess, baseOfDll, mask, EnumProc, userContext, options));
+		///
+		/// bool EnumProc(IntPtr pSymInfo, uint SymbolSize, IntPtr UserContext)
+		/// {
+		///    try { list.Add((SYMBOL_INFO)pSymInfo.ToStructure&lt;SYMBOL_INFO_V&gt;(SymbolSize)); return true; }
+		///    catch { return false; }
+		/// }</code>
+		/// </example>
+		// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-symbol_info typedef struct _SYMBOL_INFO { ULONG
+		// SizeOfStruct; ULONG TypeIndex; ULONG64 Reserved[2]; ULONG Index; ULONG Size; ULONG64 ModBase; ULONG Flags; ULONG64 Value; ULONG64
+		// Address; ULONG Register; ULONG Scope; ULONG Tag; ULONG NameLen; ULONG MaxNameLen; CHAR Name[1]; } SYMBOL_INFO, *PSYMBOL_INFO;
+		[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._SYMBOL_INFO")]
+		[VanaraMarshaler(typeof(SafeAnysizeStringMarshaler<SYMBOL_INFO_V>), "Auto")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct SYMBOL_INFO_V
+		{
+			/// <summary>
+			/// The size of the structure, in bytes. This member must be set to <c>sizeof(SYMBOL_INFO)</c> . Note that the total size of the
+			/// data is the <c>SizeOfStruct + (MaxNameLen - 1) * sizeof(TCHAR)</c> . The reason to subtract one is that the first character
+			/// in the name is accounted for in the size of the structure.
+			/// </summary>
+			public uint SizeOfStruct;
+
+			/// <summary>
+			/// A unique value that identifies the type data that describes the symbol. This value does not persist between sessions.
+			/// </summary>
+			public uint TypeIndex;
+
+			/// <summary>This member is reserved for system use.</summary>
+			public ulong Reserved0;
+
+			private ulong Reserved1;
+
+			/// <summary>
+			/// <para>
+			/// The unique value for the symbol. The value associated with a symbol is not guaranteed to be the same each time you run the process.
+			/// </para>
+			/// <para>
+			/// For PDB symbols, the index value for a symbol is not generated until the symbol is enumerated or retrieved through a search
+			/// by name or address. The index values for all CodeView and COFF symbols are generated when the symbols are loaded.
+			/// </para>
+			/// </summary>
+			public uint Index;
+
+			/// <summary>
+			/// The symbol size, in bytes. This value is meaningful only if the module symbols are from a pdb file; otherwise, this value is
+			/// typically zero and should be ignored.
+			/// </summary>
+			public uint Size;
+
+			/// <summary>The base address of the module that contains the symbol.</summary>
+			public ulong ModBase;
+
+			/// <summary>
+			/// <para>This member can be one or more of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>SYMFLAG_CLR_TOKEN 0x00040000</term>
+			/// <term>The symbol is a CLR token.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_CONSTANT 0x00000100</term>
+			/// <term>The symbol is a constant.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_EXPORT 0x00000200</term>
+			/// <term>The symbol is from the export table.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_FORWARDER 0x00000400</term>
+			/// <term>The symbol is a forwarder.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_FRAMEREL 0x00000020</term>
+			/// <term>Offsets are frame relative.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_FUNCTION 0x00000800</term>
+			/// <term>The symbol is a known function.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_ILREL 0x00010000</term>
+			/// <term>
+			/// The symbol address is an offset relative to the beginning of the intermediate language block. This applies to managed code only.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_LOCAL 0x00000080</term>
+			/// <term>The symbol is a local variable.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_METADATA 0x00020000</term>
+			/// <term>The symbol is managed metadata.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_PARAMETER 0x00000040</term>
+			/// <term>The symbol is a parameter.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_REGISTER 0x00000008</term>
+			/// <term>The symbol is a register. The Register member is used.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_REGREL 0x00000010</term>
+			/// <term>Offsets are register relative.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_SLOT 0x00008000</term>
+			/// <term>The symbol is a managed code slot.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_THUNK 0x00002000</term>
+			/// <term>The symbol is a thunk.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_TLSREL 0x00004000</term>
+			/// <term>The symbol is an offset into the TLS data area.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_VALUEPRESENT 0x00000001</term>
+			/// <term>The Value member is used.</term>
+			/// </item>
+			/// <item>
+			/// <term>SYMFLAG_VIRTUAL 0x00001000</term>
+			/// <term>The symbol is a virtual symbol created by the SymAddSymbol function.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public SYMFLAG Flags;
+
+			/// <summary>The value of a constant.</summary>
+			public ulong Value;
+
+			/// <summary>The virtual address of the start of the symbol.</summary>
+			public ulong Address;
+
+			/// <summary>The register.</summary>
+			public uint Register;
+
+			/// <summary>
+			/// The DIA scope. For more information, see the Debug Interface Access SDK in the Visual Studio documentation. (This resource
+			/// may not be available in some languages and countries.)
+			/// </summary>
+			public uint Scope;
+
+			/// <summary>The PDB classification. These values are defined in Dbghelp.h in the SymTagEnum enumeration type.</summary>
+			public uint Tag;
+
+			/// <summary>The length of the name, in characters, not including the null-terminating character.</summary>
+			public uint NameLen;
+
+			/// <summary>The size of the <c>Name</c> buffer, in characters. If this member is 0, the <c>Name</c> member is not used.</summary>
+			public uint MaxNameLen;
+
+			/// <summary>
+			/// The name of the symbol. The name can be undecorated if the SYMOPT_UNDNAME option is used with the SymSetOptions function.
+			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 			public string Name;
+
+			/// <summary>Performs an implicit conversion from <see cref="SYMBOL_INFO_V"/> to <see cref="SYMBOL_INFO"/>.</summary>
+			/// <param name="r">The r.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SYMBOL_INFO(SYMBOL_INFO_V r)
+			{
+				var ret = default(SYMBOL_INFO);
+				foreach (var fi in typeof(SYMBOL_INFO_V).GetFields())
+					ret.SetFieldValue(fi.Name, fi.GetValue(r));
+				return ret;
+			}
 		}
 
 		/// <summary>Contains symbol server index information.</summary>

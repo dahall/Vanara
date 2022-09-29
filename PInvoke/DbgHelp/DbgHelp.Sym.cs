@@ -1911,7 +1911,7 @@ namespace Vanara.PInvoke
 		/// <para>Examples</para>
 		/// <para>For an example, see Enumerating Symbols.</para>
 		/// </remarks>
-		public static IList<SYMBOL_INFO> SymEnumSymbolsEx(HPROCESS hProcess, [Optional] ulong BaseOfDll, [Optional, MarshalAs(UnmanagedType.LPTStr)] string Mask,
+		public static IList<SYMBOL_INFO> SymEnumSymbolsEx(HPROCESS hProcess, [Optional] ulong BaseOfDll, [Optional] string Mask,
 			SYMENUM Options = SYMENUM.SYMENUM_OPTIONS_DEFAULT, [In] IntPtr UserContext = default)
 		{
 			List<SYMBOL_INFO> list = new();
@@ -1920,7 +1920,7 @@ namespace Vanara.PInvoke
 
 			bool EnumProc(IntPtr pSymInfo, uint SymbolSize, IntPtr UserContext)
 			{
-				try { list.Add(pSymInfo.ToStructure<SYMBOL_INFO>(SymbolSize)); return true; }
+				try { list.Add(pSymInfo.ToStructure<SYMBOL_INFO_V>(SymbolSize)); return true; }
 				catch { }
 				return false;
 			}
