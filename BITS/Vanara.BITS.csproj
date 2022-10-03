@@ -15,7 +15,7 @@ Structures
 BackgroundCopyFileRange, BackgroundCopyJobProgress, BackgroundCopyJobReplyProgress
 
 Enumerations
-BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobEnablePeerCaching, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType, PeerCaching
+BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobEnablePeerCaching, BackgroundCopyJobNotify, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType, PeerCaching
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>

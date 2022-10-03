@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes
 ---
-DhcpClient DnsService 
+CustomDnsBootstapper DhcpClient DistributedRoutingTable DnsService DrtBootstrapProvider DrtCustomBootstrapProvider DrtCustomSecurityProvider DrtSecurityProvider 

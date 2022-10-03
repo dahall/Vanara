@@ -72,3 +72,4 @@ Native Structure | Header | Managed Structure
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [SafeDRT_DATA](https://www.google.com/search?num=5&q=SafeDRT_DATA+site%3Adocs.microsoft.com) | wincrypt.h | [Vanara.PInvoke.Drt.SafeDRT_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=SafeDRT_DATA)  
+[SafeHDRT](https://www.google.com/search?num=5&q=SafeHDRT+site%3Adocs.microsoft.com) |  | [Vanara.PInvoke.Drt.SafeHDRT](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHDRT)  
