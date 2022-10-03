@@ -1688,10 +1688,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the <see cref="SOCKADDR_INET"/> from this instance.</summary>
 			/// <returns>The <see cref="SOCKADDR_INET"/> value pointed to by this instance.</returns>
-			public SOCKADDR_INET GetSOCKADDR() => lpSockaddr.ToStructure<SOCKADDR_INET>();
+			public SOCKADDR_INET GetSOCKADDR() => lpSockaddr.ToStructure<SOCKADDR_INET>(iSockaddrLength);
+
+			/// <summary>Performs an implicit conversion from <see cref="SOCKET_ADDRESS"/> to <see cref="SOCKADDR"/>.</summary>
+			/// <param name="address">The address.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SOCKADDR(SOCKET_ADDRESS address) => new(address);
 
 			/// <summary>Converts to string.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => GetSOCKADDR().ToString();
 		}
 

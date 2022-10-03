@@ -2648,6 +2648,8 @@ namespace Vanara.PInvoke
 			/// <param name="endPoint">The socket address.</param>
 			public SOCKADDR(IPEndPoint endPoint) : this(endPoint.Address.GetAddressBytes(), (ushort)endPoint.Port) { }
 
+			internal SOCKADDR(SOCKET_ADDRESS addr) : base(addr.iSockaddrLength) => addr.lpSockaddr.CopyTo(handle, addr.iSockaddrLength);
+
 			/// <summary>Gets an instance that represents an empty address.</summary>
 			public static SOCKADDR Empty => new(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
 

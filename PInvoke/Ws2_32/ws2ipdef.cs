@@ -785,6 +785,16 @@ namespace Vanara.PInvoke
 			/// <returns>The resulting <see cref="SOCKADDR_INET"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR_INET(SOCKADDR_IN6 address) => new() { Ipv6 = address };
 
+			/// <summary>Performs an explicit conversion from <see cref="System.Net.IPEndPoint"/> to <see cref="SOCKADDR_INET"/>.</summary>
+			/// <param name="address">The address.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator SOCKADDR_INET(System.Net.IPEndPoint address)
+			{
+				if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+					return new() { Ipv4 = new SOCKADDR_IN(new(address.Address.GetAddressBytes()), (ushort)address.Port) };
+				return new() { Ipv6 = new SOCKADDR_IN6(address.Address.GetAddressBytes(), (uint)address.Address.ScopeId, (ushort)address.Port) };
+			}
+
 			/// <summary>Converts to string.</summary>
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString()
