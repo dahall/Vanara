@@ -405,6 +405,9 @@ namespace Vanara.PInvoke
 				throw new ArgumentException(@"Invalid property value.");
 		}
 
+#if NET6_0_OR_GREATER
+		[RequiresUnreferencedCode(null)]
+#endif
 		public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
 		{
 			var props = TypeDescriptor.GetProperties(typeof(PRECT), attributes);
@@ -478,6 +481,9 @@ namespace Vanara.PInvoke
 
 		public override bool GetCreateInstanceSupported(ITypeDescriptorContext context) => true;
 
+#if NET6_0_OR_GREATER
+		[RequiresUnreferencedCode(null)]
+#endif
 		public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
 		{
 			var props = TypeDescriptor.GetProperties(typeof(RECT), attributes);

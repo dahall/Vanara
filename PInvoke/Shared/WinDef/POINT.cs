@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.Reflection;
@@ -230,6 +231,9 @@ namespace Vanara.PInvoke
 
 		public override bool GetCreateInstanceSupported(ITypeDescriptorContext context) => true;
 
+#if NET6_0_OR_GREATER
+		[RequiresUnreferencedCode(null)]
+#endif
 		public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
 		{
 			PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(POINT), attributes);
