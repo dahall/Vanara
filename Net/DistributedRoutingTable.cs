@@ -15,12 +15,194 @@ using static Vanara.PInvoke.Ws2_32;
 
 namespace Vanara.Net;
 
+/// <summary>DNS Bootstrapper</summary>
+/// <seealso cref="Vanara.Net.DrtCustomBootstrapProvider"/>
+public class CustomDnsBootstapper : DrtCustomBootstrapProvider
+{
+	private readonly string hostname;
+	private readonly object m_lock = new();
+	private readonly string port;
+	private uint m_CallbackThreadId;
+	private uint m_dwMaxResults;
+	private bool m_fEndResolve;
+	private bool m_fResolveInProgress;
+	private SafeEventHandle? m_hCallbackComplete;
+
+	/// <summary>Initializes a new instance of the <see cref="CustomDnsBootstapper"/> class.</summary>
+	/// <param name="pNodeName">
+	/// A string that contains a host (node) name or a numeric host address string. For the Internet protocol, the numeric host address
+	/// string is a dotted-decimal IPv4 address or an IPv6 hex address.
+	/// </param>
+	/// <param name="pServiceName">
+	/// <para>A string that contains either a service name or port number represented as a string.</para>
+	/// <para>
+	/// A service name is a string alias for a port number. For example, “http” is an alias for port 80 defined by the Internet Engineering
+	/// Task Force (IETF) as the default port used by web servers for the HTTP protocol. Possible values for the pServiceName parameter when
+	/// a port number is not specified are listed in the following file:
+	/// </para>
+	/// </param>
+	public CustomDnsBootstapper(string pNodeName, string pServiceName)
+	{
+		hostname = pNodeName;
+		port = pServiceName;
+	}
+
+	/// <inheritdoc/>
+	protected override void EndResolve([In] DRT_BOOTSTRAP_RESOLVE_CONTEXT ResolveContext)
+	{
+		var fWaitForCallback = false;
+
+		var CallbackComplete = CreateEvent(default, true, false, default);
+
+		lock (m_lock)
+		{
+			if (m_fResolveInProgress && (GetCurrentThreadId() != m_CallbackThreadId))
+			{
+				if (!m_fEndResolve)
+				{
+					// This is the first thread to call EndResolve and we need to wait for a callback to complete so initialize the class
+					// member event
+					m_fEndResolve = true;
+					m_hCallbackComplete = CallbackComplete;
+				}
+				fWaitForCallback = true;
+			}
+		}
+
+		if (!CallbackComplete.IsInvalid && (m_hCallbackComplete != CallbackComplete))
+		{
+			// This thread was not the first to call EndResolve, so its event is not in use, release it (m_hCallbackComplete is released in
+			// the destructor)
+			CallbackComplete.Dispose();
+		}
+
+		if (fWaitForCallback && m_hCallbackComplete != null)
+		{
+			WaitForSingleObject(m_hCallbackComplete, INFINITE);
+		}
+
+		Release();
+	}
+
+	/// <inheritdoc/>
+	protected override HRESULT InitResolve(bool fSplitDetect, TimeSpan timeout, uint cMaxResults, out DRT_BOOTSTRAP_RESOLVE_CONTEXT pResolveContext, out bool fFatalError)
+	{
+		fFatalError = false;
+		pResolveContext = default;
+
+		var hr = HRESULT.DRT_E_BOOTSTRAPPROVIDER_NOT_ATTACHED;
+		if (IsAttached)
+		{
+			// The cache is not scope aware so we ask for a larger number of addresses than the cache wants. In the expectation that one of
+			// them may be good for us
+			m_dwMaxResults = cMaxResults;
+
+			AddRef();
+			hr = HRESULT.S_OK;
+		}
+
+		if (hr.Failed)
+		{
+			// CustomDNSResolver has no retry cases, so any failed HRESULT is fatal
+			fFatalError = true;
+		}
+
+		return hr;
+	}
+
+	/// <inheritdoc/>
+	protected override HRESULT IssueResolve(DRT_BOOTSTRAP_RESOLVE_CALLBACK callback, [In] IntPtr pvCallbackContext, [In] DRT_BOOTSTRAP_RESOLVE_CONTEXT ResolveContext, out bool fFatalError)
+	{
+		fFatalError = false;
+
+		if (callback is null)
+		{
+			return HRESULT.E_INVALIDARG;
+		}
+
+		var hr = HRESULT.DRT_E_BOOTSTRAPPROVIDER_NOT_ATTACHED;
+		if (IsAttached)
+		{
+			lock (m_lock)
+			{
+				m_fResolveInProgress = true;
+				m_CallbackThreadId = GetCurrentThreadId();
+			}
+
+			if (m_dwMaxResults > 0)
+			{
+				var addresses = hostname.Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+				foreach (var CurrentAddress in addresses)
+				{
+					if (m_fEndResolve)
+						break;
+
+					// Retrieve bootstrap possibilities
+					var addrInf = new ADDRINFOW
+					{
+						ai_flags = ADDRINFO_FLAGS.AI_CANONNAME,
+						ai_family = ADDRESS_FAMILY.AF_UNSPEC,
+						ai_socktype = SOCK.SOCK_STREAM
+					};
+
+					var nStat = GetAddrInfoW(CurrentAddress, port, addrInf, out var results);
+					if (nStat.Succeeded)
+					{
+						using (results)
+						{
+							var cbSA6 = Marshal.SizeOf(typeof(SOCKADDR_IN6));
+							using var psockAddrs = new SafeNativeArray<SOCKADDR_IN6>(results.Select(a => { using var ar = a.addr; return (SOCKADDR_IN6)ar; }).ToArray());
+							var Addresses = new SOCKET_ADDRESS_LIST
+							{
+								iAddressCount = psockAddrs.Count,
+								Address = psockAddrs.Select((a, i) => new SOCKET_ADDRESS { iSockaddrLength = cbSA6, lpSockaddr = ((IntPtr)psockAddrs).Offset(cbSA6) }).ToArray()
+							};
+
+							// Call the callback to signal completion
+							using var pAddresses = Addresses.Pack();
+							callback?.Invoke(hr, pvCallbackContext, pAddresses, false);
+						}
+					}
+					else
+					{
+						// GetAddrInfoW Failed but there may be more addresses in the string so keep going otherwise we return
+						// HRESULT.E_NO_MORE and retry next cycle
+					}
+				}
+			}
+
+			// Tell the drt there will be no more results
+			if (!m_fEndResolve)
+				callback?.Invoke(HRESULT.DRT_E_NO_MORE, pvCallbackContext, default, false);
+
+			lock (m_lock)
+			{
+				if (m_hCallbackComplete != null && !m_hCallbackComplete.IsInvalid)
+				{
+					// Notify EndResolve that callbacks have completed
+					m_hCallbackComplete.Set();
+				}
+				m_fResolveInProgress = false;
+			}
+			hr = HRESULT.S_OK;
+		}
+
+		if (hr.Failed)
+		{
+			// DNSResolver has no retry cases, so any failed HRESULT is fatal
+			fFatalError = true;
+		}
+		return hr;
+	}
+}
+
 /// <summary>Represents a distributed routing table from Win32.</summary>
 public class DistributedRoutingTable
 {
 	private readonly SafeRegisteredWaitHandle? drtWaitEvent;
 	private readonly SafeEventHandle? evt;
 	private readonly SafeHDRT? hDrt;
+	private readonly IntPtr selfPin;
 	private readonly SafeWSA ws = SafeWSA.Initialize();
 	private DRT_SETTINGS pSettings;
 
@@ -51,44 +233,55 @@ public class DistributedRoutingTable
 		evt = CreateEvent(null, false, false);
 		DrtOpen(pSettings, evt, default, out HDRT h).ThrowIfFailed();
 		hDrt = new((IntPtr)h);
-		Win32Error.ThrowLastErrorIfFalse(RegisterWaitForSingleObject(out drtWaitEvent, evt, DrtEventCallback, default /*AddCtx(Drt)*/, INFINITE, WT.WT_EXECUTEDEFAULT));
+		selfPin = GCHandle.Alloc(this).AddrOfPinnedObject();
+		Win32Error.ThrowLastErrorIfFalse(RegisterWaitForSingleObject(out drtWaitEvent, evt, DrtEventCallback, selfPin, INFINITE, WT.WT_EXECUTEDEFAULT));
 	}
 
-	private void DrtEventCallback(IntPtr Param, bool TimedOut)
+	/// <summary>Occurs when the leaf set key changes.</summary>
+	public event EventHandler<DrtLeafSetKeyChangeEventArgs>? LeafSetKeyChange;
+
+	/// <summary>Occurs when the registration state changes.</summary>
+	public event EventHandler<DrtRegistrationStateChangeEventArgs>? RegistrationStateChange;
+
+	/// <summary>Occurs when the status changes.</summary>
+	public event EventHandler<DrtStatusChangeEventArgs>? StatusChange;
+	private static void DrtEventCallback(IntPtr Param, bool TimedOut)
 	{
-		// HRESULT hr; var Drt = GetCtx(Param);
+		var Drt = (DistributedRoutingTable)GCHandle.FromIntPtr(Param).Target;
 
-		// hr = DrtGetEventDataSize(Drt.hDrt, out var ulDrtEventDataLen); if (hr.Failed) { if (hr != HRESULT.DRT_E_NO_MORE) Console.Write("
-		// DrtGetEventDataSize failed: {0}\n", hr); goto Cleanup; }
+		HRESULT hr = DrtGetEventDataSize(Drt.hDrt, out var ulDrtEventDataLen);
+		if (hr.Failed)
+		{
+			if (hr != HRESULT.DRT_E_NO_MORE)
+				throw hr.GetException();
+			goto Cleanup;
+		}
 
-		// using (var pEventData = new SafeCoTaskMemStruct<DRT_EVENT_DATA>(ulDrtEventDataLen)) { if (pEventData.IsInvalid) { Console.Write("
-		// Out of memory\n"); goto Cleanup; }
+		using (SafeCoTaskMemStruct<DRT_EVENT_DATA> pEventData = new(ulDrtEventDataLen))
+		{
+			hr = DrtGetEventData(Drt.hDrt, ulDrtEventDataLen, pEventData);
+			if (hr.Failed)
+			{
+				if (hr != HRESULT.DRT_E_NO_MORE)
+					throw hr.GetException();
+				goto Cleanup;
+			}
 
-		// hr = DrtGetEventData(Drt.hDrt, ulDrtEventDataLen, pEventData); if (hr.Failed) { if (hr != HRESULT.DRT_E_NO_MORE) Console.Write("
-		// DrtGetEventData failed: {0}\n", hr); goto Cleanup; }
-
-		// switch (pEventData.Value.type) { case DRT_EVENT_TYPE.DRT_EVENT_STATUS_CHANGED: switch (pEventData.Value.union.statusChange.status)
-		// { case DRT_STATUS.DRT_ACTIVE: SetConsoleTitle("DrtSdkSample Current Drt Status: Active"); if (g_DisplayEvents) Console.Write(" DRT
-		// Status Changed to Active\n"); break; case DRT_STATUS.DRT_ALONE: SetConsoleTitle("DrtSdkSample Current Drt Status: Alone"); if
-		// (g_DisplayEvents) Console.Write(" DRT Status Changed to Alone\n"); break; case DRT_STATUS.DRT_NO_NETWORK:
-		// SetConsoleTitle("DrtSdkSample Current Drt Status: No Network"); if (g_DisplayEvents) Console.Write(" DRT Status Changed to No
-		// Network\n"); break; case DRT_STATUS.DRT_FAULTED: SetConsoleTitle("DrtSdkSample Current Drt Status: Faulted"); if (g_DisplayEvents)
-		// Console.Write(" DRT Status Changed to Faulted\n"); break; }
-
-		// break; case DRT_EVENT_TYPE.DRT_EVENT_LEAFSET_KEY_CHANGED: if (g_DisplayEvents) { switch
-		// (pEventData.Value.union.leafsetKeyChange.change) { case DRT_LEAFSET_KEY_CHANGE_TYPE.DRT_LEAFSET_KEY_ADDED: Console.Write(" Leafset
-		// Key Added Event: {0}\n", pEventData.Value.hr); break; case DRT_LEAFSET_KEY_CHANGE_TYPE.DRT_LEAFSET_KEY_DELETED: Console.Write("
-		// Leafset Key Deleted Event: {0}\n", pEventData.Value.hr); break; } }
-
-		//				break;
-		//			case DRT_EVENT_TYPE.DRT_EVENT_REGISTRATION_STATE_CHANGED:
-		//				if (g_DisplayEvents)
-		//					Console.Write(" Registration State Changed Event: [hr: 0x%x, registration state: %i]\n", pEventData.Value.hr, pEventData.Value.union.registrationStateChange.state);
-		//				break;
-		//		}
-		//	}
-		//Cleanup:
-		//	return;
+			switch (pEventData.Value.type)
+			{
+				case DRT_EVENT_TYPE.DRT_EVENT_STATUS_CHANGED:
+					Drt.StatusChange?.Invoke(Drt, new(pEventData.Value));
+					break;
+				case DRT_EVENT_TYPE.DRT_EVENT_LEAFSET_KEY_CHANGED:
+					Drt.LeafSetKeyChange?.Invoke(Drt, new(pEventData.Value));
+					break;
+				case DRT_EVENT_TYPE.DRT_EVENT_REGISTRATION_STATE_CHANGED:
+					Drt.RegistrationStateChange?.Invoke(Drt, new(pEventData.Value));
+					break;
+			}
+		}
+	Cleanup:
+		return;
 	}
 }
 
@@ -111,8 +304,7 @@ public class DrtBootstrapProvider : IDisposable
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="DrtBootstrapProvider"/> class.</summary>
-	private DrtBootstrapProvider()
-	{ }
+	private DrtBootstrapProvider() { }
 
 	/// <summary>Initializes a new instance of the <see cref="DrtBootstrapProvider"/> class.</summary>
 	/// <param name="ptr">The PTR.</param>
@@ -224,10 +416,16 @@ public abstract class DrtCustomBootstrapProvider : DrtBootstrapProvider
 	protected virtual object? Context => prov.pvContext == IntPtr.Zero ? null : GCHandle.FromIntPtr(prov.pvContext).Target;
 
 	/// <summary>Gets a value indicating whether this instance is attached.</summary>
-	/// <value>
-	///   <see langword="true" /> if this instance is attached; otherwise, <see langword="false" />.
-	/// </value>
+	/// <value><see langword="true"/> if this instance is attached; otherwise, <see langword="false"/>.</value>
 	protected bool IsAttached => refCount > 0;
+
+	/// <summary>Adds the reference.</summary>
+	protected void AddRef()
+	{
+		if (refCount == 0)
+			GC.SuppressFinalize(this);
+		InterlockedIncrement(ref refCount);
+	}
 
 	/// <summary>Ends the resolution of an endpoint.</summary>
 	/// <param name="ResolveContext">
@@ -273,6 +471,17 @@ public abstract class DrtCustomBootstrapProvider : DrtBootstrapProvider
 	/// </param>
 	protected virtual HRESULT Register([In] IPEndPoint[]? pAddressList) => HRESULT.S_OK;
 
+	/// <summary>Releases this instance.</summary>
+	protected void Release()
+	{
+		if (InterlockedDecrement(ref refCount) == 0)
+		{
+			if (prov.pvContext != default)
+				GCHandle.FromIntPtr(prov.pvContext).Free();
+			GC.ReRegisterForFinalize(this);
+		}
+	}
+
 	/// <summary>
 	/// This function deregisters an endpoint with the bootstrapping mechanism. As a result, other nodes will be unable to find the local
 	/// node via the bootstrap resolver.
@@ -286,32 +495,11 @@ public abstract class DrtCustomBootstrapProvider : DrtBootstrapProvider
 		AddRef();
 		return HRESULT.S_OK;
 	}
-
-	/// <summary>Adds the reference.</summary>
-	protected void AddRef()
-	{
-		if (refCount == 0)
-			GC.SuppressFinalize(this);
-		InterlockedIncrement(ref refCount);
-	}
-
 	private void InternalDetach(IntPtr pvContext)
 	{
 		InterlockedCompareExchange(ref refCount, 0, 1);
 		Release();
 	}
-
-	/// <summary>Releases this instance.</summary>
-	protected void Release()
-	{
-		if (InterlockedDecrement(ref refCount) == 0)
-		{
-			if (prov.pvContext != default)
-				GCHandle.FromIntPtr(prov.pvContext).Free();
-			GC.ReRegisterForFinalize(this);
-		}
-	}
-
 	private void InternalEndResolve(IntPtr pvContext, DRT_BOOTSTRAP_RESOLVE_CONTEXT ResolveContext) => EndResolve(ResolveContext);
 
 	private HRESULT InternalInitResolve(IntPtr pvContext, bool fSplitDetect, uint timeout, uint cMaxResults,
@@ -327,185 +515,66 @@ public abstract class DrtCustomBootstrapProvider : DrtBootstrapProvider
 	private void InternalUnregister(IntPtr pvContext) => Unregister();
 }
 
-/// <summary>DNS Bootstrapper</summary>
-/// <seealso cref="Vanara.Net.DrtCustomBootstrapProvider"/>
-public class CustomDnsBootstapper : DrtCustomBootstrapProvider
+/// <summary>Abstract base class for DRT event arguments.</summary>
+/// <seealso cref="System.EventArgs"/>
+public abstract class DrtEventArgs : EventArgs
 {
-	private readonly string hostname;
-	private readonly string port;
-	private readonly object m_lock = new();
-	private bool m_fResolveInProgress;
-	private uint m_CallbackThreadId;
-	private bool m_fEndResolve;
-	private SafeEventHandle? m_hCallbackComplete;
-	private uint m_dwMaxResults;
-
-	/// <summary>Initializes a new instance of the <see cref="CustomDnsBootstapper"/> class.</summary>
-	/// <param name="pNodeName">
-	/// A string that contains a host (node) name or a numeric host address string. For the Internet protocol, the numeric host address
-	/// string is a dotted-decimal IPv4 address or an IPv6 hex address.
-	/// </param>
-	/// <param name="pServiceName">
-	/// <para>A string that contains either a service name or port number represented as a string.</para>
-	/// <para>
-	/// A service name is a string alias for a port number. For example, “http” is an alias for port 80 defined by the Internet Engineering
-	/// Task Force (IETF) as the default port used by web servers for the HTTP protocol. Possible values for the pServiceName parameter when
-	/// a port number is not specified are listed in the following file:
-	/// </para>
-	/// </param>
-	public CustomDnsBootstapper(string pNodeName, string pServiceName)
+	/// <summary>Initializes a new instance of the <see cref="DrtEventArgs"/> class.</summary>
+	/// <param name="data">The data.</param>
+	protected DrtEventArgs(in DRT_EVENT_DATA data)
 	{
-		hostname = pNodeName;
-		port = pServiceName;
+		LastError = data.hr;
+		Context = data.pvContext;
 	}
 
-	/// <inheritdoc/>
-	protected override void EndResolve([In] DRT_BOOTSTRAP_RESOLVE_CONTEXT ResolveContext)
+	/// <summary>
+	/// Pointer to the context data passed to the API that generated the event. For example, if data is passed into the pvContext parameter
+	/// of DrtOpen, that data is returned through this field.
+	/// </summary>
+	public IntPtr Context { get; }
+
+	/// <summary>
+	/// The HRESULT of the operation for which the event was signaled that indicates if a result is the last result within a search.
+	/// </summary>
+	public HRESULT LastError { get; }
+}
+
+/// <summary>Arguments associated with a DRT leaf set key change event.</summary>
+/// <seealso cref="Vanara.Net.DrtEventArgs"/>
+public class DrtLeafSetKeyChangeEventArgs : DrtEventArgs
+{
+	internal DrtLeafSetKeyChangeEventArgs(in DRT_EVENT_DATA data) : base(data)
 	{
-		var fWaitForCallback = false;
-
-		var CallbackComplete = CreateEvent(default, true, false, default);
-
-		lock (m_lock)
-		{
-			if (m_fResolveInProgress && (GetCurrentThreadId() != m_CallbackThreadId))
-			{
-				if (!m_fEndResolve)
-				{
-					// This is the first thread to call EndResolve and we need to wait for a callback to complete so initialize the class
-					// member event
-					m_fEndResolve = true;
-					m_hCallbackComplete = CallbackComplete;
-				}
-				fWaitForCallback = true;
-			}
-		}
-
-		if (!CallbackComplete.IsInvalid && (m_hCallbackComplete != CallbackComplete))
-		{
-			// This thread was not the first to call EndResolve, so its event is not in use, release it (m_hCallbackComplete is released
-			// in the destructor)
-			CallbackComplete.Dispose();
-		}
-
-		if (fWaitForCallback && m_hCallbackComplete != null)
-		{
-			WaitForSingleObject(m_hCallbackComplete, INFINITE);
-		}
-
-		Release();
+		Type = data.union.leafsetKeyChange.change;
+		LocalKey = data.union.leafsetKeyChange.localKey.GetArray();
+		RemoteKey = data.union.leafsetKeyChange.remoteKey.GetArray();
 	}
 
-	/// <inheritdoc/>
-	protected override HRESULT InitResolve(bool fSplitDetect, TimeSpan timeout, uint cMaxResults, out DRT_BOOTSTRAP_RESOLVE_CONTEXT pResolveContext, out bool fFatalError)
+	/// <summary>Specifies the local key associated with the leaf set that has changed.</summary>
+	public byte[]? LocalKey { get; private set; }
+
+	/// <summary>Specifies the remote key that changed.</summary>
+	public byte[]? RemoteKey { get; private set; }
+
+	/// <summary>Specifies the type of key change that has occurred.</summary>
+	public DRT_LEAFSET_KEY_CHANGE_TYPE Type { get; private set; }
+}
+
+/// <summary>Arguments associated with a DRT registration state change event.</summary>
+/// <seealso cref="Vanara.Net.DrtEventArgs"/>
+public class DrtRegistrationStateChangeEventArgs : DrtEventArgs
+{
+	internal DrtRegistrationStateChangeEventArgs(in DRT_EVENT_DATA data) : base(data)
 	{
-		fFatalError = false;
-		pResolveContext = default;
-
-		var hr = HRESULT.DRT_E_BOOTSTRAPPROVIDER_NOT_ATTACHED;
-		if (IsAttached)
-		{
-			// The cache is not scope aware so we ask for a larger number of addresses than the cache wants. In the expectation that one
-			// of them may be good for us
-			m_dwMaxResults = cMaxResults;
-
-			AddRef();
-			hr = HRESULT.S_OK;
-		}
-
-		if (hr.Failed)
-		{
-			// CustomDNSResolver has no retry cases, so any failed HRESULT is fatal
-			fFatalError = true;
-		}
-
-		return hr;
+		State = data.union.registrationStateChange.state;
+		LocalKey = data.union.registrationStateChange.localKey.GetArray();
 	}
 
-	/// <inheritdoc/>
-	protected override HRESULT IssueResolve(DRT_BOOTSTRAP_RESOLVE_CALLBACK callback, [In] IntPtr pvCallbackContext, [In] DRT_BOOTSTRAP_RESOLVE_CONTEXT ResolveContext, out bool fFatalError)
-	{
-		fFatalError = false;
+	/// <summary>Specifies the local key associated with the registration that has changed.</summary>
+	public byte[]? LocalKey { get; }
 
-		if (callback is null)
-		{
-			return HRESULT.E_INVALIDARG;
-		}
-
-		var hr = HRESULT.DRT_E_BOOTSTRAPPROVIDER_NOT_ATTACHED;
-		if (IsAttached)
-		{
-			lock (m_lock)
-			{
-				m_fResolveInProgress = true;
-				m_CallbackThreadId = GetCurrentThreadId();
-			}
-
-			if (m_dwMaxResults > 0)
-			{
-				var addresses = hostname.Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
-				foreach (var CurrentAddress in addresses)
-				{
-					if (m_fEndResolve)
-						break;
-
-					// Retrieve bootstrap possibilities
-					var addrInf = new ADDRINFOW
-					{
-						ai_flags = ADDRINFO_FLAGS.AI_CANONNAME,
-						ai_family = ADDRESS_FAMILY.AF_UNSPEC,
-						ai_socktype = SOCK.SOCK_STREAM
-					};
-
-					var nStat = GetAddrInfoW(CurrentAddress, port, addrInf, out var results);
-					if (nStat.Succeeded)
-					{
-						using (results)
-						{
-							var cbSA6 = Marshal.SizeOf(typeof(SOCKADDR_IN6));
-							using var psockAddrs = new SafeNativeArray<SOCKADDR_IN6>(results.Select(a => { using var ar = a.addr; return (SOCKADDR_IN6)ar; }).ToArray());
-							var Addresses = new SOCKET_ADDRESS_LIST
-							{
-								iAddressCount = psockAddrs.Count,
-								Address = psockAddrs.Select((a, i) => new SOCKET_ADDRESS { iSockaddrLength = cbSA6, lpSockaddr = ((IntPtr)psockAddrs).Offset(cbSA6) }).ToArray()
-							};
-
-							// Call the callback to signal completion
-							using var pAddresses = Addresses.Pack();
-							callback?.Invoke(hr, pvCallbackContext, pAddresses, false);
-						}
-					}
-					else
-					{
-						// GetAddrInfoW Failed but there may be more addresses in the string so keep going otherwise we return
-						// HRESULT.E_NO_MORE and retry next cycle
-					}
-				}
-			}
-
-			// Tell the drt there will be no more results
-			if (!m_fEndResolve)
-				callback?.Invoke(HRESULT.DRT_E_NO_MORE, pvCallbackContext, default, false);
-
-			lock (m_lock)
-			{
-				if (m_hCallbackComplete != null && !m_hCallbackComplete.IsInvalid)
-				{
-					// Notify EndResolve that callbacks have completed
-					m_hCallbackComplete.Set();
-				}
-				m_fResolveInProgress = false;
-			}
-			hr = HRESULT.S_OK;
-		}
-
-		if (hr.Failed)
-		{
-			// DNSResolver has no retry cases, so any failed HRESULT is fatal
-			fFatalError = true;
-		}
-		return hr;
-	}
+	/// <summary>Specifies the type of registration state change that has occurred.</summary>
+	public DRT_REGISTRATION_STATE State { get; }
 }
 
 /// <summary>Base class for a DRT security provider.</summary>
@@ -526,8 +595,7 @@ public class DrtSecurityProvider : IDisposable
 		pProvType = 'h';
 	}
 
-	private DrtSecurityProvider()
-	{ }
+	private DrtSecurityProvider() { }
 
 	private DrtSecurityProvider(IntPtr ptr, char provType)
 	{
@@ -583,6 +651,31 @@ public class DrtSecurityProvider : IDisposable
 			}
 		}
 	}
+}
+
+/// <summary>Arguments associated with a DRT status change event.</summary>
+/// <seealso cref="Vanara.Net.DrtEventArgs"/>
+public class DrtStatusChangeEventArgs : DrtEventArgs
+{
+	internal DrtStatusChangeEventArgs(in DRT_EVENT_DATA data) : base(data)
+	{
+		Status = data.union.statusChange.status;
+		BootstrapAddresses = Array.ConvertAll(data.union.statusChange.bootstrapAddresses.Addresses, Cvt);
+
+		static IPEndPoint Cvt(SOCKADDR_STORAGE input)
+		{
+			var inet = (SOCKADDR_INET)input;
+			return inet.si_family is ADDRESS_FAMILY.AF_INET or ADDRESS_FAMILY.AF_UNSPEC
+				? new IPEndPoint(inet.Ipv4.sin_addr, inet.Ipv4.sin_port)
+				: new IPEndPoint(new IPAddress(inet.Ipv6.sin6_addr.bytes, inet.Ipv6.sin6_scope_id), inet.Ipv6.sin6_port);
+		}
+	}
+
+	/// <summary>Contains an array of <see cref="IPEndPoint"/> returned by the bootstrap provider.</summary>
+	public IPEndPoint[] BootstrapAddresses { get; }
+
+	/// <summary>Contains the current DRT_STATUS of the local DRT instance.</summary>
+	public DRT_STATUS Status { get; }
 }
 
 internal static class DrtUtil
@@ -653,7 +746,8 @@ internal static class DrtUtil
 public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 {
 	private int refCount;
-	/// <summary>Initializes a new instance of the <see cref="DrtSecurityProvider" /> class.</summary>
+
+	/// <summary>Initializes a new instance of the <see cref="DrtSecurityProvider"/> class.</summary>
 	/// <param name="context">The context.</param>
 	protected DrtCustomSecurityProvider(object? context) : base(default)
 	{
@@ -678,6 +772,14 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 		AddRef();
 	}
 
+	/// <summary>Gets the context provided for all methods.</summary>
+	/// <value>The context object.</value>
+	protected virtual object? Context => prov.pvContext == IntPtr.Zero ? null : GCHandle.FromIntPtr(prov.pvContext).Target;
+
+	/// <summary>Gets a value indicating whether this instance is attached.</summary>
+	/// <value><see langword="true"/> if this instance is attached; otherwise, <see langword="false"/>.</value>
+	protected bool IsAttached => refCount > 0;
+
 	/// <summary>Adds the reference.</summary>
 	protected void AddRef()
 	{
@@ -685,27 +787,6 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 			GC.SuppressFinalize(this);
 		InterlockedIncrement(ref refCount);
 	}
-
-	/// <summary>Releases this instance.</summary>
-	protected void Release()
-	{
-		if (InterlockedDecrement(ref refCount) == 0)
-		{
-			if (prov.pvContext != default)
-				GCHandle.FromIntPtr(prov.pvContext).Free();
-			GC.ReRegisterForFinalize(this);
-		}
-	}
-
-	/// <summary>Gets the context provided for all methods.</summary>
-	/// <value>The context object.</value>
-	protected virtual object? Context => prov.pvContext == IntPtr.Zero ? null : GCHandle.FromIntPtr(prov.pvContext).Target;
-
-	/// <summary>Gets a value indicating whether this instance is attached.</summary>
-	/// <value>
-	///   <see langword="true" /> if this instance is attached; otherwise, <see langword="false" />.
-	/// </value>
-	protected bool IsAttached => refCount > 0;
 
 	/// <summary>
 	/// Called when the DRT receives a message containing encrypted data. This function is only called when the DRT is operating in the
@@ -749,6 +830,17 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 	/// <param name="pvKeyContext">Pointer to the context data created by an application and passed to the DrtRegisterKey function.</param>
 	/// <returns></returns>
 	protected virtual HRESULT RegisterKey(in DRT_REGISTRATION pRegistration, [In, Optional] IntPtr pvKeyContext) => HRESULT.S_OK;
+
+	/// <summary>Releases this instance.</summary>
+	protected void Release()
+	{
+		if (InterlockedDecrement(ref refCount) == 0)
+		{
+			if (prov.pvContext != default)
+				GCHandle.FromIntPtr(prov.pvContext).Free();
+			GC.ReRegisterForFinalize(this);
+		}
+	}
 
 	/// <summary>
 	/// Called when an Authority message is about to be sent on the wire. It is responsible for securing the data before it is sent, and for
@@ -962,10 +1054,8 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 }
 
 /*
-/// <summary>
-/// 
-/// </summary>
-/// <seealso cref="Vanara.Net.DrtCustomSecurityProvider" />
+/// <summary></summary>
+/// <seealso cref="Vanara.Net.DrtCustomSecurityProvider"/>
 public class CustomNullSecurityProvider : DrtCustomSecurityProvider
 {
 	internal unsafe class CCustomNullSecuredAddressPayload : IDisposable
@@ -998,9 +1088,7 @@ public class CustomNullSecurityProvider : DrtCustomSecurityProvider
 		//CERT_PUBLIC_KEY_INFO*
 		private SafeCoTaskMemStruct<CERT_PUBLIC_KEY_INFO>? m_pPublicKey;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CCustomNullSecuredAddressPayload"/> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="CCustomNullSecuredAddressPayload"/> class.</summary>
 		/// <param name="bMajor">The b major.</param>
 		/// <param name="bMinor">The b minor.</param>
 		/// <param name="key">The key.</param>

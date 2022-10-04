@@ -1826,64 +1826,93 @@ namespace Vanara.PInvoke
 			[StructLayout(LayoutKind.Explicit)]
 			public struct UNION
 			{
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a change in a leaf set of a locally registered key; the
+				/// type field of the DRT_EVENT_DATA structure is set to DRT_EVENT_LEAFSET_KEY_CHANGED.
+				/// </summary>
 				[FieldOffset(0)]
 				public LEAFSETKEYCHANGE leafsetKeyChange;
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a change in a local key registration; the type field of
+				/// the DRT_EVENT_DATA structure is set to DRT_EVENT_REGISTRATION_STATE_CHANGED.
+				/// </summary>
 				[FieldOffset(0)]
 				public REGISTRATIONSTATECHANGE registrationStateChange;
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a state change in the local DRT instance; the type field
+				/// of the DRT_EVENT_DATA structure is set to DRT_EVENT_STATUS_CHANGED.
+				/// </summary>
 				[FieldOffset(0)]
 				public STATUSCHANGE statusChange;
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a change in a leaf set of a locally registered key; the
+				/// type field of the DRT_EVENT_DATA structure is set to DRT_EVENT_LEAFSET_KEY_CHANGED.
+				/// </summary>
 				[StructLayout(LayoutKind.Sequential)]
 				public struct LEAFSETKEYCHANGE
 
 				{
-					/// <summary/>
+					/// <summary>Specifies the type of key change that has occurred.</summary>
 					public DRT_LEAFSET_KEY_CHANGE_TYPE change;
 
-					/// <summary/>
+					/// <summary>Specifies the local key associated with the leaf set that has changed.</summary>
 					public DRT_DATA localKey;
 
-					/// <summary/>
+					/// <summary>Specifies the remote key that changed.</summary>
 					public DRT_DATA remoteKey;
 				}
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a change in a local key registration; the type field of
+				/// the DRT_EVENT_DATA structure is set to DRT_EVENT_REGISTRATION_STATE_CHANGED.
+				/// </summary>
 				[StructLayout(LayoutKind.Sequential)]
 				public struct REGISTRATIONSTATECHANGE
 				{
-					/// <summary/>
+					/// <summary>Specifies the type of registration state change that has occurred.</summary>
 					public DRT_REGISTRATION_STATE state;
 
-					/// <summary/>
+					/// <summary>Specifies the local key associated with the registration that has changed.</summary>
 					public DRT_DATA localKey;
 				}
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a state change in the local DRT instance; the type field
+				/// of the DRT_EVENT_DATA structure is set to DRT_EVENT_STATUS_CHANGED.
+				/// </summary>
 				[StructLayout(LayoutKind.Sequential)]
 				public struct STATUSCHANGE
 
 				{
-					/// <summary/>
+					/// <summary>Contains the current DRT_STATUS of the local DRT instance.</summary>
 					public DRT_STATUS status;
 
-					/// <summary/>
+					/// <summary>
+					/// This structure contains the addresses returned by the bootstrap provider when the DRT attempts to join the mesh. This
+					/// structure is completed only when the DRT transitions to the DRT_ALONE state. The contents of this structure can be
+					/// used to diagnose connectivity issues between the local DRT instance and other nodes already present in the mesh.
+					/// </summary>
 					public BOOTSTRAPADDRESSES bootstrapAddresses;
 
-					/// <summary/>
+					/// <summary>
+					/// This structure contains the addresses returned by the bootstrap provider when the DRT attempts to join the mesh. This
+					/// structure is completed only when the DRT transitions to the DRT_ALONE state. The contents of this structure can be
+					/// used to diagnose connectivity issues between the local DRT instance and other nodes already present in the mesh.
+					/// </summary>
 					[StructLayout(LayoutKind.Sequential)]
 					public struct BOOTSTRAPADDRESSES
 					{
-						/// <summary/>
+						/// <summary>Contains the number of addresses in pAddresses.</summary>
 						public uint cntAddress;
 
-						/// <summary>PSOCKADDR_STORAGE</summary>
+						/// <summary>Contains an array of SOCKADDR_STORAGE addresses returned by the bootstrap provider.</summary>
 						public IntPtr pAddresses;
+
+						/// <summary>Gets the array of SOCKADDR_STORAGE addresses returned by the bootstrap provider.</summary>
+						public SOCKADDR_STORAGE[] Addresses => pAddresses.ToArray<SOCKADDR_STORAGE>((int)cntAddress);
 					}
 				}
 			}
