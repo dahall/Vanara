@@ -13,6 +13,8 @@ namespace Vanara.PInvoke
 	public static partial class Drt
 	{
 		private const string Lib_Drt = "drt.dll";
+		private const string Lib_DrtProv = "drtprov.dll";
+		private const string Lib_DrtTrans = "drttransport.dll";
 
 		/// <summary/>
 		public const uint DRT_PAYLOAD_REVOKED = (1 << 0);
@@ -585,7 +587,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatederivedkey HRESULT DrtCreateDerivedKey( PCCERT_CONTEXT
 		// pLocalCert, DRT_DATA *pKey );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateDerivedKey")]
 		public static extern HRESULT DrtCreateDerivedKey(PCCERT_CONTEXT pLocalCert, out DRT_DATA pKey);
 
@@ -629,7 +631,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatederivedkeysecurityprovider HRESULT
 		// DrtCreateDerivedKeySecurityProvider( PCCERT_CONTEXT pRootCert, PCCERT_CONTEXT pLocalCert, DRT_SECURITY_PROVIDER
 		// **ppSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateDerivedKeySecurityProvider")]
 		public static extern HRESULT DrtCreateDerivedKeySecurityProvider(PCCERT_CONTEXT pRootCert, PCCERT_CONTEXT pLocalCert, out IntPtr ppSecurityProvider);
 
@@ -660,7 +662,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatednsbootstrapresolver HRESULT
 		// DrtCreateDnsBootstrapResolver( USHORT port, PCWSTR pwszAddress, DRT_BOOTSTRAP_PROVIDER **ppModule );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateDnsBootstrapResolver")]
 		public static extern HRESULT DrtCreateDnsBootstrapResolver(ushort port, [MarshalAs(UnmanagedType.LPWStr)] string pwszAddress, out IntPtr ppModule);
 
@@ -724,7 +726,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreateipv6udptransport HRESULT DrtCreateIpv6UdpTransport(
 		// DRT_SCOPE scope, ULONG dwScopeId, ULONG dwLocalityThreshold, USHORT *pwPort, HDRT_TRANSPORT *phTransport );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtTrans, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateIpv6UdpTransport")]
 		public static extern HRESULT DrtCreateIpv6UdpTransport(DRT_SCOPE scope, uint dwScopeId, uint dwLocalityThreshold, ref ushort pwPort, out HDRT_TRANSPORT phTransport);
 
@@ -752,7 +754,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatenullsecurityprovider HRESULT
 		// DrtCreateNullSecurityProvider( DRT_SECURITY_PROVIDER **ppSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateNullSecurityProvider")]
 		public static extern HRESULT DrtCreateNullSecurityProvider(out IntPtr ppSecurityProvider);
 
@@ -808,7 +810,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatepnrpbootstrapresolver HRESULT
 		// DrtCreatePnrpBootstrapResolver( BOOL fPublish, PCWSTR pwzPeerName, PCWSTR pwzCloudName, PCWSTR pwzPublishingIdentity,
 		// DRT_BOOTSTRAP_PROVIDER **ppResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreatePnrpBootstrapResolver")]
 		public static extern HRESULT DrtCreatePnrpBootstrapResolver([MarshalAs(UnmanagedType.Bool)] bool fPublish, [MarshalAs(UnmanagedType.LPWStr)] string pwzPeerName,
 			[Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzCloudName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzPublishingIdentity,
@@ -821,7 +823,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletederivedkeysecurityprovider void
 		// DrtDeleteDerivedKeySecurityProvider( DRT_SECURITY_PROVIDER *pSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteDerivedKeySecurityProvider")]
 		public static extern void DrtDeleteDerivedKeySecurityProvider(in DRT_SECURITY_PROVIDER pSecurityProvider);
 
@@ -832,7 +834,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletederivedkeysecurityprovider void
 		// DrtDeleteDerivedKeySecurityProvider( DRT_SECURITY_PROVIDER *pSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteDerivedKeySecurityProvider")]
 		public static extern void DrtDeleteDerivedKeySecurityProvider([In] IntPtr pSecurityProvider);
 
@@ -841,7 +843,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletednsbootstrapresolver void DrtDeleteDnsBootstrapResolver(
 		// DRT_BOOTSTRAP_PROVIDER *pResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteDnsBootstrapResolver")]
 		public static extern void DrtDeleteDnsBootstrapResolver(in DRT_BOOTSTRAP_PROVIDER pResolver);
 
@@ -850,7 +852,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletednsbootstrapresolver void DrtDeleteDnsBootstrapResolver(
 		// DRT_BOOTSTRAP_PROVIDER *pResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteDnsBootstrapResolver")]
 		public static extern void DrtDeleteDnsBootstrapResolver([In] IntPtr pResolver);
 
@@ -884,7 +886,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeleteipv6udptransport HRESULT DrtDeleteIpv6UdpTransport(
 		// HDRT_TRANSPORT hTransport );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtTrans, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteIpv6UdpTransport")]
 		public static extern HRESULT DrtDeleteIpv6UdpTransport(HDRT_TRANSPORT hTransport);
 
@@ -893,7 +895,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletenullsecurityprovider void DrtDeleteNullSecurityProvider(
 		// DRT_SECURITY_PROVIDER *pSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteNullSecurityProvider")]
 		public static extern void DrtDeleteNullSecurityProvider(in DRT_SECURITY_PROVIDER pSecurityProvider);
 
@@ -902,7 +904,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletenullsecurityprovider void DrtDeleteNullSecurityProvider(
 		// DRT_SECURITY_PROVIDER *pSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteNullSecurityProvider")]
 		public static extern void DrtDeleteNullSecurityProvider([In] IntPtr pSecurityProvider);
 
@@ -913,7 +915,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletepnrpbootstrapresolver void DrtDeletePnrpBootstrapResolver(
 		// DRT_BOOTSTRAP_PROVIDER *pResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeletePnrpBootstrapResolver")]
 		public static extern void DrtDeletePnrpBootstrapResolver(in DRT_BOOTSTRAP_PROVIDER pResolver);
 
@@ -924,7 +926,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletepnrpbootstrapresolver void DrtDeletePnrpBootstrapResolver(
 		// DRT_BOOTSTRAP_PROVIDER *pResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeletePnrpBootstrapResolver")]
 		public static extern void DrtDeletePnrpBootstrapResolver([In] IntPtr pResolver);
 

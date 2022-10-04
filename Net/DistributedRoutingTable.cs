@@ -233,7 +233,7 @@ public class DistributedRoutingTable
 		evt = CreateEvent(null, false, false);
 		DrtOpen(pSettings, evt, default, out HDRT h).ThrowIfFailed();
 		hDrt = new((IntPtr)h);
-		selfPin = GCHandle.Alloc(this).AddrOfPinnedObject();
+		selfPin = (IntPtr)GCHandle.Alloc(this, GCHandleType.Normal);
 		Win32Error.ThrowLastErrorIfFalse(RegisterWaitForSingleObject(out drtWaitEvent, evt, DrtEventCallback, selfPin, INFINITE, WT.WT_EXECUTEDEFAULT));
 	}
 

@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Net\Vanara.Net.csproj" />
+    <ProjectReference Include="..\..\PInvoke\FirewallApi\Vanara.PInvoke.FirewallApi.vbproj" />
   </ItemGroup>
 </Project>

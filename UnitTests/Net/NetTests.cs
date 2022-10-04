@@ -2,12 +2,16 @@
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Vanara.InteropServices;
 using Vanara.Net;
 using static Vanara.PInvoke.Dhcp;
+using static Vanara.PInvoke.FirewallApi;
 
 namespace Vanara.PInvoke.Tests;
 
@@ -70,5 +74,64 @@ public class NetTests
 		{
 			client.Dispose();
 		}
+	}
+
+	[Test]
+	public void TestDrt()
+	{
+		using var fw = new Firewall();
+		fw.AddApp(Process.GetCurrentProcess().ProcessName, Process.GetCurrentProcess().MainModule.FileName);
+		try
+		{
+			DistributedRoutingTable drt = new(null, DrtBootstrapProvider.CreateDnsBootstrapResolver(null, 0));
+
+		}
+		finally
+		{
+			try { fw.RemoveApp(Process.GetCurrentProcess().MainModule.FileName); } catch { }
+		}
+	}
+
+	private class Firewall : IDisposable
+	{
+		Dictionary<string, ComReleaser<INetFwAuthorizedApplication>> newApps = new();
+		ComReleaser<INetFwMgr> pMgr;
+		ComReleaser<INetFwPolicy> pPol;
+		ComReleaser<INetFwProfile> pProf;
+		ComReleaser<INetFwAuthorizedApplications> pSet;
+
+		public Firewall()
+		{
+			pMgr = ComReleaserFactory.Create(new INetFwMgr());
+			Assert.IsNotNull(pMgr.Item);
+			pPol = ComReleaserFactory.Create(pMgr.Item.LocalPolicy);
+			Assert.IsNotNull(pPol.Item);
+			pProf = ComReleaserFactory.Create(pPol.Item.CurrentProfile);
+			Assert.IsNotNull(pProf.Item);
+			pSet = ComReleaserFactory.Create(pProf.Item.AuthorizedApplications);
+			Assert.IsNotNull(pSet.Item);
+		}
+
+		public void AddApp(string name, string exePath)
+		{
+			var pNewApp = ComReleaserFactory.Create(new INetFwAuthorizedApplication());
+			pNewApp.Item.Name = name;
+			pNewApp.Item.ProcessImageFileName = exePath;
+			pNewApp.Item.Enabled = true;
+			pSet.Item.Add(pNewApp.Item);
+			newApps.Add(exePath, pNewApp);
+		}
+
+		public void Dispose()
+		{
+			pSet.Dispose();
+			pProf.Dispose();
+			pPol.Dispose();
+			pMgr.Dispose();
+			foreach (var app in newApps.Values)
+				app.Dispose();
+		}
+
+		public void RemoveApp(string exePath) => pSet.Item.Remove(exePath);
 	}
 }
