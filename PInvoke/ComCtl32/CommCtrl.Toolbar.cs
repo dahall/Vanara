@@ -3690,7 +3690,7 @@ namespace Vanara.PInvoke
 		// typedef struct { UINT cbSize; DWORD dwMask; int idCommand; int iImage; BYTE fsState; BYTE fsStyle; WORD cx; DWORD_PTR lParam;
 		// LPTSTR pszText; int cchText;} TBBUTTONINFO, *LPTBBUTTONINFO; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760478(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760478")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct TBBUTTONINFO
 		{
 			/// <summary>
