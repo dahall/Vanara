@@ -3777,7 +3777,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>BYTE</c></c></para>
 			/// <para>Style flags of the button. This can be one or more of the values listed in Toolbar Control and Button Styles.</para>
 			/// </summary>
-			public ToolbarStyle fsStyle { get => (ToolbarStyle)_fsStyle; set => _fsStyle = (byte)((ushort)fsStyle & 0x00FF); }
+			public ToolbarStyle fsStyle { get => (ToolbarStyle)_fsStyle; set => _fsStyle = (byte)((ushort)value & 0x00FF); }
 
 			private byte _fsStyle;
 
