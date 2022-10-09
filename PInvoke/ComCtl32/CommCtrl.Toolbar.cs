@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
@@ -4003,41 +4005,47 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains information specific to an NM_CUSTOMDRAW notification code sent by a toolbar control.</summary>
-		// typedef struct { NMCUSTOMDRAW nmcd; HBRUSH hbrMonoDither; HBRUSH hbrLines; HPEN hpenLines; COLORREF clrText; COLORREF clrMark;
-		// COLORREF clrTextHighlight; COLORREF clrBtnFace; COLORREF clrBtnHighlight; COLORREF clrHighlightHotTrack;
-		// RECT rcText; int nStringBkMode; int nHLStringBkMode; int iListGap;} NMTBCUSTOMDRAW;
-		// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmtbcustomdraw
-		[PInvokeData("Commctrl.h")]
+		// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmtbcustomdraw typedef struct _NMTBCUSTOMDRAW {
+		// NMCUSTOMDRAW nmcd; HBRUSH hbrMonoDither; HBRUSH hbrLines; HPEN hpenLines; COLORREF clrText; COLORREF clrMark; COLORREF
+		// clrTextHighlight; COLORREF clrBtnFace; COLORREF clrBtnHighlight; COLORREF clrHighlightHotTrack; RECT rcText; int nStringBkMode;
+		// int nHLStringBkMode; int iListGap; } NMTBCUSTOMDRAW, *LPNMTBCUSTOMDRAW;
+		[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl._NMTBCUSTOMDRAW")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct NMTBCUSTOMDRAW
 		{
 			/// <summary>
-			/// <para>Type: <c><c>NMCUSTOMDRAW</c></c></para>
-			/// <para><c>NMCUSTOMDRAW</c> structure that contains general custom draw information. The uItemState member of this structure can be modified so that a toolbar item will be drawn in the specified state without actually changing the item's state.</para>
+			/// <para>Type: <c>NMCUSTOMDRAW</c></para>
+			/// <para>
+			/// NMCUSTOMDRAW structure that contains general custom draw information. The <c>uItemState</c> member of this structure can be
+			/// modified so that a toolbar item will be drawn in the specified state without actually changing the item's state.
+			/// </para>
 			/// </summary>
 			public NMCUSTOMDRAW nmcd;
 
 			/// <summary>
 			/// <para>Type: <c>HBRUSH</c></para>
-			/// <para><c>HBRUSH</c> that the control will use when drawing the background of marked or dithered items. This member is ignored if TBCDRF_NOMARK is returned from the NM_CUSTOMDRAW notification code.</para>
+			/// <para>
+			/// HBRUSH that the control will use when drawing the background of marked or dithered items. This member is ignored if
+			/// TBCDRF_NOMARK is returned from the NM_CUSTOMDRAW notification code.
+			/// </para>
 			/// </summary>
 			public HBRUSH hbrMonoDither;
 
 			/// <summary>
 			/// <para>Type: <c>HBRUSH</c></para>
-			/// <para><c>HBRUSH</c> that the control will use when drawing lines on the buttons.</para>
+			/// <para>HBRUSH that the control will use when drawing lines on the buttons.</para>
 			/// </summary>
 			public HBRUSH hbrLines;
 
 			/// <summary>
 			/// <para>Type: <c>HPEN</c></para>
-			/// <para><c>HPEN</c> that the control will use when drawing lines on the buttons.</para>
+			/// <para>HPEN that the control will use when drawing lines on the buttons.</para>
 			/// </summary>
 			public HPEN hpenLines;
 
 			/// <summary>
 			/// <para>Type: <c>COLORREF</c></para>
-			/// <para><c>COLORREF</c> that represents the color that the control will use when drawing text on normal items.</para>
+			/// <para>COLORREF that represents the color that the control will use when drawing text on normal items.</para>
 			/// </summary>
 			public COLORREF clrText;
 
@@ -4061,37 +4069,59 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>Type: <c>COLORREF</c></para>
-			/// <para><c>COLORREF</c> that represents the face color that the control will use when drawing highlighted items. An item is highlighted if it has the TBSTATE_MARKED style and is contained in a toolbar that has the TBSTYLE_FLAT style.</para>
+			/// <para>
+			/// <c>COLORREF</c> that represents the face color that the control will use when drawing highlighted items. An item is
+			/// highlighted if it has the TBSTATE_MARKED style and is contained in a toolbar that has the TBSTYLE_FLAT style.
+			/// </para>
 			/// </summary>
 			public COLORREF clrBtnHighlight;
 
 			/// <summary>
 			/// <para>Type: <c>COLORREF</c></para>
-			/// <para><c>COLORREF</c> that represents the background color that the control will use when drawing text on hot tracked items. This member is ignored if TBCDRF_HILITEHOTTRACK is not returned from the NM_CUSTOMDRAW notification code.</para>
+			/// <para>
+			/// <c>COLORREF</c> that represents the background color that the control will use when drawing text on hot tracked items. This
+			/// member is ignored if TBCDRF_HILITEHOTTRACK is not returned from the NM_CUSTOMDRAW notification code.
+			/// </para>
 			/// </summary>
 			public COLORREF clrHighlightHotTrack;
 
 			/// <summary>
 			/// <para>Type: <c>RECT</c></para>
-			/// <para><c>RECT</c> structure that, on entry, contains the rectangle of the item's text. The right and bottom members of this structure can be modified to change the width and height, respectively, of the text rectangle of the item.</para>
+			/// <para>
+			/// RECT structure that, on entry, contains the rectangle of the item's text. The <c>right</c> and <c>bottom</c> members of this
+			/// structure can be modified to change the width and height, respectively, of the text rectangle of the item.
+			/// </para>
 			/// </summary>
 			public RECT rcText;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
-			/// <para>Background mode that the control will use when drawing the text of a nonhighlighted item. This can be either the TRANSPARENT or OPAQUE value.</para>
+			/// <para>
+			/// Background mode that the control will use when drawing the text of a nonhighlighted item. This can be either the TRANSPARENT
+			/// or OPAQUE value.
+			/// </para>
 			/// </summary>
-			public int nStringBkMode;
+			public BackgroundMode nStringBkMode;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
-			/// <para>Background mode that the control will use when drawing the text of a highlighted item. This can be either the TRANSPARENT or OPAQUE value.</para>
+			/// <para>
+			/// Background mode that the control will use when drawing the text of a highlighted item. This can be either the TRANSPARENT or
+			/// OPAQUE value.
+			/// </para>
 			/// </summary>
-			public int nHLStringBkMode;
+			public BackgroundMode nHLStringBkMode;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
-			/// <para>Version 6.0 Specifies the distance between the toolbar button image and the text, in logical pixels, for toolbars that have TBSTYLE_LIST style set.</para>
+			/// <para>
+			/// Version 6.0 Specifies the distance between the toolbar button image and the text, in logical pixels, for toolbars that have
+			/// TBSTYLE_LIST style set.
+			/// </para>
+			/// <para>
+			/// Note that Comctl32.dll version 6 is not redistributable but it is included in Windows or later. To use Comctl32.dll version
+			/// 6, specify it in a manifest. For more information on manifests, see Enabling Visual Styles.
+			/// </para>
 			/// </summary>
 			public int iListGap;
 		}
