@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
@@ -16,7 +17,7 @@ namespace Vanara.Windows.Shell
 		public IndirectString() { }
 
 		/// <summary>Initializes a new instance of the <see cref="IndirectString"/> class.</summary>
-		public IndirectString(string value) : base(value) { }
+		public IndirectString(string? value) : base(value) { }
 
 		/// <summary>Initializes a new instance of the <see cref="IndirectString"/> class.</summary>
 		/// <param name="module">The module file name.</param>
@@ -29,10 +30,11 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the localized string referred to by this instance.</summary>
 		/// <value>The referenced localized string.</value>
 		[Browsable(false)]
-		public string Value
+		public string? Value
 		{
 			get
 			{
+				if (RawValue is null) return null;
 				if (!IsValid) return RawValue;
 				var sb = new StringBuilder(4096);
 				SHLoadIndirectString(RawValue, sb, (uint)sb.Capacity).ThrowIfFailed();
@@ -43,22 +45,18 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs an implicit conversion from <see cref="IndirectString"/> to <see cref="string"/>.</summary>
 		/// <param name="ind">The ind.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator string(IndirectString ind) => ind.RawValue;
+		public static implicit operator string?(IndirectString? ind) => ind?.RawValue;
 
 		/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="IndirectString"/>.</summary>
 		/// <param name="s">The s.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator IndirectString(string s) => new(s);
-
-		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
-		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => RawValue ?? "";
+		public static implicit operator IndirectString(string? s) => new(s);
 
 		/// <summary>Tries to parse the specified string to create a <see cref="IndirectString"/> instance.</summary>
 		/// <param name="value">The string representation in the format of either "ModuleFileName,ResourceIndex" or "ModuleFileName,-ResourceID".</param>
 		/// <param name="loc">The resulting <see cref="IndirectString"/> instance on success.</param>
 		/// <returns><c>true</c> if successfully parsed.</returns>
-		public static bool TryParse(string value, out IndirectString loc)
+		public static bool TryParse(string? value, out IndirectString loc)
 		{
 			loc = new IndirectString(value);
 			return loc.IsValid || value != null;
@@ -71,16 +69,16 @@ namespace Vanara.Windows.Shell
 
 	internal class IndirectStringTypeConverter : ExpandableObjectConverter
 	{
-		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+		public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) =>
 			sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
-		public override bool CanConvertTo(ITypeDescriptorContext context, Type destType) =>
+		public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destType) =>
 			destType == typeof(InstanceDescriptor) || destType == typeof(string) || base.CanConvertTo(context, destType);
 
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
+		public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
 			value is string s ? IndirectString.TryParse(s, out var loc) ? loc : null : base.ConvertFrom(context, culture, value);
 
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo info, object value, Type destType)
+		public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? info, object? value, Type destType)
 		{
 			if (destType == typeof(string) && value is IndirectString s)
 				return s.RawValue;

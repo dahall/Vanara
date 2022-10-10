@@ -1,6 +1,6 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.ComponentModel;
-using System.Linq;
 
 namespace Vanara.Windows.Shell
 {
@@ -9,7 +9,7 @@ namespace Vanara.Windows.Shell
 	{
 		/// <summary>Initializes a new instance of the <see cref="IndirectResource"/> class.</summary>
 		/// <param name="value">The value of the string.</param>
-		public IndirectResource(string value = null) => RawValue = value;
+		public IndirectResource(string? value = null) => RawValue = value;
 
 		/// <summary>Initializes a new instance of the <see cref="IndirectResource"/> class.</summary>
 		/// <param name="module">The module file name.</param>
@@ -18,7 +18,7 @@ namespace Vanara.Windows.Shell
 		/// is the resource ID of the resource in the module file.
 		/// </param>
 		/// <param name="versionModifier">The version modifier. This value can be, and usually is, <see langword="null"/>.</param>
-		public IndirectResource(string module, int resourceIdOrIndex, string versionModifier = null)
+		public IndirectResource(string module, int resourceIdOrIndex, string? versionModifier = null)
 		{
 			if (module is null) throw new ArgumentNullException(nameof(module));
 			RawValue = $"@{module},{resourceIdOrIndex}" + (versionModifier is null ? "" : ';' + versionModifier);
@@ -40,27 +40,27 @@ namespace Vanara.Windows.Shell
 		/// <summary>Returns true if this location is valid.</summary>
 		/// <value><c>true</c> if this location is valid; otherwise, <c>false</c>.</value>
 		[Browsable(false)]
-		public virtual bool IsValid => (ModuleFileName != null && ResourceId != 0) || ((PackageName != null || PackageResourceIndexFile != null) && PackageLocator != null);
+		public virtual bool IsValid => ModuleFileName != null && ResourceId != 0 || (PackageName != null || PackageResourceIndexFile != null) && PackageLocator != null;
 
 		/// <summary>Gets the module file name.</summary>
 		/// <value>The module file name.</value>
 		[Browsable(false)]
-		public string ModuleFileName
+		public string? ModuleFileName
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || (RawValue.Length > 1 && RawValue[1] == '{')) return null;
+				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{') return null;
 				return RawValue.TrimStart('@').Split(',')[0];
 			}
 		}
 
 		/// <summary>Gets the resource name used to lookup the resource within a package.</summary>
 		/// <value>The resource lookup name.</value>
-		public string PackageLocator
+		public string? PackageLocator
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || (RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}'))) return null;
+				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}')) return null;
 				var parts = RawValue.Substring(2).TrimEnd('}').Split('?');
 				return parts.Length > 1 && parts[1].Trim().StartsWith("ms-resource://") ? parts[1].Trim() : null;
 			}
@@ -74,11 +74,11 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		/// <value>The name of the package. Something like "Microsoft.Camera_6.2.8376.0_x64__8wekyb3d8bbwe".</value>
 		[Browsable(false)]
-		public string PackageName
+		public string? PackageName
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || (RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}'))) return null;
+				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}')) return null;
 				var parts = RawValue.Substring(2).TrimEnd('}').Split('?');
 				return parts[0].Contains('\\') ? null : parts[0];
 			}
@@ -93,11 +93,11 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		/// <value>The package resource index file name. Something like "C:\Program Files\WindowsApps\Microsoft.Camera_6.2.8376.0_x64__8wekyb3d8bbwe\resources.pri".</value>
 		[Browsable(false)]
-		public string PackageResourceIndexFile
+		public string? PackageResourceIndexFile
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || (RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}'))) return null;
+				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}')) return null;
 				var parts = RawValue.Substring(2).TrimEnd('}').Split('?');
 				return parts[0].Contains('\\') && System.IO.Path.GetExtension(parts[0]) != null && System.IO.Path.GetExtension(RawValue).Equals(".pri", StringComparison.InvariantCultureIgnoreCase) ? parts[0] : null;
 			}
@@ -105,7 +105,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the raw value of the string.</summary>
 		/// <value>Returns a <see cref="string"/> value.</value>
-		public string RawValue { get; private set; }
+		public string? RawValue { get; private set; }
 
 		/// <summary>Gets or sets the resource index or resource ID.</summary>
 		/// <value>
@@ -117,7 +117,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || (RawValue.Length > 1 && RawValue[1] == '{')) return 0;
+				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{') return 0;
 				var parts = RawValue.Split(',', ';');
 				return parts.Length > 1 && int.TryParse(parts[1], out var i) ? i : 0;
 			}
@@ -126,11 +126,11 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the version modifier. This value is rarely used.</summary>
 		/// <value>The version modifier (e.g. "v2").</value>
 		[Browsable(false)]
-		public string VersionModifier
+		public string? VersionModifier
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || (RawValue.Length > 1 && RawValue[1] == '{')) return null;
+				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{') return null;
 				var parts = RawValue.Split(',', ';');
 				return parts.Length > 2 ? parts[2] : null;
 			}
@@ -138,6 +138,6 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => RawValue;
+		public override string ToString() => RawValue ?? "";
 	}
 }
