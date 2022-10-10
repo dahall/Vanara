@@ -93,7 +93,7 @@ namespace Vanara.PInvoke
 			get => IS_INTRESOURCE(ptr) ? (ushort)ptr.ToInt32() : 0;
 			set
 			{
-				if (value > ushort.MaxValue || value <= 0) throw new ArgumentOutOfRangeException(nameof(id));
+				if (value is > ushort.MaxValue or <= 0) throw new ArgumentOutOfRangeException(nameof(id));
 				ptr = (IntPtr)(ushort)value;
 			}
 		}
@@ -103,9 +103,15 @@ namespace Vanara.PInvoke
 		public bool IsIntResource => IS_INTRESOURCE(ptr);
 
 		/// <summary>Represent a NULL value.</summary>
-		public static readonly ResourceId NULL = new ResourceId();
+		public static readonly ResourceId NULL = new();
 
-		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="System.Int32"/>.</summary>
+		/// <inheritdoc/>
+		public static bool operator ==(ResourceId left, ResourceId right) => left.Equals(right);
+
+		/// <inheritdoc/>
+		public static bool operator !=(ResourceId left, ResourceId right) => !left.Equals(right);
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="int"/>.</summary>
 		/// <param name="r">The r.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator int(ResourceId r) => r.id;
@@ -118,26 +124,26 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="ResourceId"/>.</summary>
 		/// <param name="resId">The resource identifier.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ResourceId(int resId) => new ResourceId { id = resId };
+		public static implicit operator ResourceId(int resId) => new() { id = resId };
 
 		/// <summary>Performs an implicit conversion from <see cref="ResourceType"/> to <see cref="ResourceId"/>.</summary>
 		/// <param name="resType">Type of the resource.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ResourceId(ResourceType resType) => new ResourceId { id = (int)resType };
+		public static implicit operator ResourceId(ResourceType resType) => new() { id = (int)resType };
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="ResourceId"/>.</summary>
 		/// <param name="p">The PTR.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ResourceId(IntPtr p) => new ResourceId { ptr = p };
+		public static implicit operator ResourceId(IntPtr p) => new() { ptr = p };
 
 		/// <summary>Performs an implicit conversion from <see cref="ResourceId"/> to <see cref="string"/>.</summary>
 		/// <param name="r">The r.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator string(ResourceId r) => r.ToString();
 
-		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 		public override bool Equals(object obj)
 		{
 			switch (obj)
@@ -214,15 +220,21 @@ namespace Vanara.PInvoke
 			get => IS_INTRESOURCE(ptr) ? (ushort)ptr.ToInt32() : 0;
 			set
 			{
-				if (value > ushort.MaxValue || value <= 0) throw new ArgumentOutOfRangeException(nameof(id));
+				if (value is > ushort.MaxValue or <= 0) throw new ArgumentOutOfRangeException(nameof(id));
 				ptr = (IntPtr)(ushort)value;
 			}
 		}
 
 		/// <summary>Represent a NULL value.</summary>
-		public static readonly ResourceIdOrHandle<THandle> NULL = new ResourceIdOrHandle<THandle>();
+		public static readonly ResourceIdOrHandle<THandle> NULL = new();
 
-		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="System.Int32"/>.</summary>
+		/// <inheritdoc/>
+		public static bool operator ==(ResourceIdOrHandle<THandle> left, ResourceIdOrHandle<THandle> right) => left.Equals(right);
+
+		/// <inheritdoc/>
+		public static bool operator !=(ResourceIdOrHandle<THandle> left, ResourceIdOrHandle<THandle> right) => !left.Equals(right);
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="int"/>.</summary>
 		/// <param name="r">The r.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator int(ResourceIdOrHandle<THandle> r) => r.id;
@@ -235,26 +247,26 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="ResourceIdOrHandle{THandle}"/>.</summary>
 		/// <param name="resId">The resource identifier.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ResourceIdOrHandle<THandle>(int resId) => new ResourceIdOrHandle<THandle> { id = resId };
+		public static implicit operator ResourceIdOrHandle<THandle>(int resId) => new() { id = resId };
 
 		/// <summary>Performs an implicit conversion from <see cref="ResourceType"/> to <see cref="ResourceIdOrHandle{THandle}"/>.</summary>
 		/// <param name="resType">Type of the resource.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ResourceIdOrHandle<THandle>(ResourceType resType) => new ResourceIdOrHandle<THandle> { id = (int)resType };
+		public static implicit operator ResourceIdOrHandle<THandle>(ResourceType resType) => new() { id = (int)resType };
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="ResourceIdOrHandle{THandle}"/>.</summary>
 		/// <param name="p">The PTR.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ResourceIdOrHandle<THandle>(THandle p) => new ResourceIdOrHandle<THandle> { ptr = p.DangerousGetHandle() };
+		public static implicit operator ResourceIdOrHandle<THandle>(THandle p) => new() { ptr = p.DangerousGetHandle() };
 
 		/// <summary>Performs an implicit conversion from <see cref="ResourceIdOrHandle{THandle}"/> to <see cref="string"/>.</summary>
 		/// <param name="r">The r.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator string(ResourceIdOrHandle<THandle> r) => r.ToString();
 
-		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 		public override bool Equals(object obj)
 		{
 			switch (obj)
@@ -322,7 +334,7 @@ namespace Vanara.PInvoke
 	public class SafeResourceId : GenericSafeHandle, IEquatable<string>, IEquatable<int>, IEquatable<SafeResourceId>, IEquatable<ResourceId>, IEquatable<IntPtr>, IHandle
 	{
 		/// <summary>Represent a NULL value.</summary>
-		public static readonly SafeResourceId Null = new SafeResourceId();
+		public static readonly SafeResourceId Null = new();
 
 		/// <summary>Initializes a new instance of the <see cref="SafeResourceId"/> class.</summary>
 		/// <param name="resName">Name of the resource.</param>
@@ -373,7 +385,7 @@ namespace Vanara.PInvoke
 			get => IsIntResource ? (ushort)handle.ToInt32() : 0;
 			set
 			{
-				if (value > short.MaxValue || value < short.MinValue) throw new ArgumentOutOfRangeException(nameof(id));
+				if (value is > short.MaxValue or < short.MinValue) throw new ArgumentOutOfRangeException(nameof(id));
 				InternalCloseMethod(handle);
 				SetHandle((IntPtr)unchecked((ushort)value));
 			}
@@ -395,7 +407,7 @@ namespace Vanara.PInvoke
 		/// <returns>The string representation.</returns>
 		public static string GetString(IntPtr ptr, CharSet charSet = CharSet.Auto) => IS_INTRESOURCE(ptr) ? $"#{ptr.ToInt32()}" : StringHelper.GetString(ptr, charSet);
 
-		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="System.Int32"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="int"/>.</summary>
 		/// <param name="r">The r.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator int(SafeResourceId r) => r.IsIntResource ? (ushort)r.handle.ToInt32() : 0;
@@ -408,22 +420,22 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="SafeResourceId"/>.</summary>
 		/// <param name="resName">Name of the resource.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafeResourceId(string resName) => new SafeResourceId(resName);
+		public static implicit operator SafeResourceId(string resName) => new(resName);
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="SafeResourceId"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="SafeResourceId"/>.</summary>
 		/// <param name="resId">The resource identifier.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafeResourceId(int resId) => new SafeResourceId(resId);
+		public static implicit operator SafeResourceId(int resId) => new(resId);
 
 		/// <summary>Performs an implicit conversion from <see cref="ResourceType"/> to <see cref="SafeResourceId"/>.</summary>
 		/// <param name="resType">Type of the resource.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafeResourceId(ResourceType resType) => new SafeResourceId(resType);
+		public static implicit operator SafeResourceId(ResourceType resType) => new(resType);
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SafeResourceId"/>.</summary>
 		/// <param name="ptr">The PTR.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafeResourceId(IntPtr ptr) => new SafeResourceId(ptr);
+		public static implicit operator SafeResourceId(IntPtr ptr) => new(ptr);
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="string"/>.</summary>
 		/// <param name="r">The r.</param>
@@ -434,11 +446,11 @@ namespace Vanara.PInvoke
 		/// Gets a cloned handle that also, if a string resource, copies the string to a new handle which must be released using StringHelper.FreeString.
 		/// </summary>
 		/// <returns>A safe copy of this resource id.</returns>
-		public SafeResourceId Clone() => new SafeResourceId(handle);
+		public SafeResourceId Clone() => new(handle);
 
-		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 		public override bool Equals(object obj)
 		{
 			switch (obj)
