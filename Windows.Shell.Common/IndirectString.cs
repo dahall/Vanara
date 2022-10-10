@@ -4,8 +4,6 @@ using System.ComponentModel.Design.Serialization;
 using System.Globalization;
 using System.Text;
 using Vanara.PInvoke;
-using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Shell
 {
@@ -68,34 +66,22 @@ namespace Vanara.Windows.Shell
 
 	internal class IndirectStringTypeConverter : ExpandableObjectConverter
 	{
-		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-		{
-			if (sourceType == typeof(string))
-				return true;
-			return base.CanConvertFrom(context, sourceType);
-		}
+		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+			sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
-		public override bool CanConvertTo(ITypeDescriptorContext context, Type destType)
-		{
-			if (destType == typeof(InstanceDescriptor) || destType == typeof(string))
-				return true;
-			return base.CanConvertTo(context, destType);
-		}
+		public override bool CanConvertTo(ITypeDescriptorContext context, Type destType) =>
+			destType == typeof(InstanceDescriptor) || destType == typeof(string) || base.CanConvertTo(context, destType);
 
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-		{
-			if (value is string s)
-				return IndirectString.TryParse(s, out var loc) ? loc : null;
-			return base.ConvertFrom(context, culture, value);
-		}
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
+			value is string s ? IndirectString.TryParse(s, out var loc) ? loc : null : base.ConvertFrom(context, culture, value);
 
 		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo info, object value, Type destType)
 		{
 			if (destType == typeof(string) && value is IndirectString s)
 				return s.RawValue;
-			if (destType == typeof(InstanceDescriptor))
-				return new InstanceDescriptor(typeof(IndirectString).GetConstructor(new Type[0]), null, false);
-			return base.ConvertTo(context, info, value, destType);
+			return destType == typeof(InstanceDescriptor)
+				? new InstanceDescriptor(typeof(IndirectString).GetConstructor(new Type[0]), null, false)
+				: base.ConvertTo(context, info, value, destType);
 		}
 	}
 }

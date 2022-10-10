@@ -60,9 +60,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-#pragma warning disable IDE0056 // Use index operator
 				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || (RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}'))) return null;
-#pragma warning restore IDE0056 // Use index operator
 				var parts = RawValue.Substring(2).TrimEnd('}').Split('?');
 				return parts.Length > 1 && parts[1].Trim().StartsWith("ms-resource://") ? parts[1].Trim() : null;
 			}
@@ -80,9 +78,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-#pragma warning disable IDE0056 // Use index operator
 				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || (RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}'))) return null;
-#pragma warning restore IDE0056 // Use index operator
 				var parts = RawValue.Substring(2).TrimEnd('}').Split('?');
 				return parts[0].Contains('\\') ? null : parts[0];
 			}
@@ -101,9 +97,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-#pragma warning disable IDE0056 // Use index operator
 				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || (RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}'))) return null;
-#pragma warning restore IDE0056 // Use index operator
 				var parts = RawValue.Substring(2).TrimEnd('}').Split('?');
 				return parts[0].Contains('\\') && System.IO.Path.GetExtension(parts[0]) != null && System.IO.Path.GetExtension(RawValue).Equals(".pri", StringComparison.InvariantCultureIgnoreCase) ? parts[0] : null;
 			}
@@ -142,8 +136,8 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString() => RawValue;
 	}
 }
