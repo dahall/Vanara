@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.PInvoke;
 
@@ -34,7 +35,7 @@ namespace Vanara.Windows.Shell
 			{
 				if (!IsValid) return RawValue;
 				var sb = new StringBuilder(4096);
-				ShlwApi.SHLoadIndirectString(RawValue, sb, (uint)sb.Capacity).ThrowIfFailed();
+				SHLoadIndirectString(RawValue, sb, (uint)sb.Capacity).ThrowIfFailed();
 				return sb.ToString();
 			}
 		}
@@ -62,6 +63,10 @@ namespace Vanara.Windows.Shell
 			loc = new IndirectString(value);
 			return loc.IsValid || value != null;
 		}
+
+		[DllImport("shlwapi.dll", SetLastError = false, ExactSpelling = true)]
+		private static extern HRESULT SHLoadIndirectString([MarshalAs(UnmanagedType.LPWStr)] string pszSource,
+			[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszOutBuf, uint cchOutBuf, IntPtr ppvReserved = default);
 	}
 
 	internal class IndirectStringTypeConverter : ExpandableObjectConverter
