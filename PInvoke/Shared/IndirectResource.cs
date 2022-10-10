@@ -49,7 +49,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{') return null;
+				if (RawValue is null || RawValue.Length == 0 || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{') return null;
 				return RawValue.TrimStart('@').Split(',')[0];
 			}
 		}
@@ -60,7 +60,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}')) return null;
+				if (RawValue is null || RawValue.Length == 0 || RawValue[0] != '@' || RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}')) return null;
 				var parts = RawValue.Substring(2).TrimEnd('}').Split('?');
 				return parts.Length > 1 && parts[1].Trim().StartsWith("ms-resource://") ? parts[1].Trim() : null;
 			}
@@ -78,9 +78,9 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}')) return null;
+				if (RawValue is null || RawValue.Length == 0 || RawValue[0] != '@' || RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}')) return null;
 				var parts = RawValue.Substring(2).TrimEnd('}').Split('?');
-				return parts[0].Contains('\\') ? null : parts[0];
+				return parts[0].IndexOf('\\') >= 0 ? null : parts[0];
 			}
 		}
 
@@ -97,9 +97,9 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}')) return null;
+				if (RawValue is null || RawValue.Length == 0 || RawValue[0] != '@' || RawValue.Length > 1 && !(RawValue[1] == '{' && RawValue[RawValue.Length - 1] == '}')) return null;
 				var parts = RawValue.Substring(2).TrimEnd('}').Split('?');
-				return parts[0].Contains('\\') && System.IO.Path.GetExtension(parts[0]) != null && System.IO.Path.GetExtension(RawValue).Equals(".pri", StringComparison.InvariantCultureIgnoreCase) ? parts[0] : null;
+				return parts[0].IndexOf('\\') >= 0 && System.IO.Path.GetExtension(parts[0]) != null && System.IO.Path.GetExtension(RawValue).Equals(".pri", StringComparison.InvariantCultureIgnoreCase) ? parts[0] : null;
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{') return 0;
+				if (RawValue is null || RawValue.Length == 0 || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{') return 0;
 				var parts = RawValue.Split(',', ';');
 				return parts.Length > 1 && int.TryParse(parts[1], out var i) ? i : 0;
 			}
@@ -130,7 +130,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(RawValue) || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{') return null;
+				if (RawValue is null || RawValue.Length == 0 || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{') return null;
 				var parts = RawValue.Split(',', ';');
 				return parts.Length > 2 ? parts[2] : null;
 			}
