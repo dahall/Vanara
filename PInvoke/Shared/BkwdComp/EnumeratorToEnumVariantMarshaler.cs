@@ -5,33 +5,21 @@ using Vanara.PInvoke;
 
 namespace System.Runtime.InteropServices.CustomMarshalers
 {
-    /// <summary>
-    /// Marshals the COM
-    /// <code>IEnumVARIANT</code>
-    /// interface to the .NET Framework <see cref="IEnumerator"/> interface, and vice versa.
-    /// </summary>
+    /// <summary>Marshals the COM <c>IEnumVARIANT</c> interface to the .NET Framework <see cref="IEnumerator"/> interface, and vice versa.</summary>
     /// <remarks>
-    /// This custom marshaler marshals
-    /// <code>IEnumVARIANT</code>
-    /// to <see cref="IEnumerator"/> and marshals <see cref="IEnumerator"/> to
-    /// <code>IEnumVARIANT</code>
-    /// . The CLR automatically uses this class to bridge COM enumerators and .NET enumerators. The <see cref="IEnumerator"/> type returned
-    /// by the GetEnumerator method in the imported COM class uses
-    /// <code>EnumeratorToEnumVariantMarshaler</code>
-    /// to map the calls to the
-    /// <code>IEnumVARIANT</code>
-    /// interface pointer returned by the COM object's member with a DISPID of -4.
+    /// This custom marshaler marshals <c>IEnumVARIANT</c> to <see cref="IEnumerator"/> and marshals <see cref="IEnumerator"/> to
+    /// <c>IEnumVARIANT</c>. The CLR automatically uses this class to bridge COM enumerators and .NET enumerators. The <see
+    /// cref="IEnumerator"/> type returned by the GetEnumerator method in the imported COM class uses <c>EnumeratorToEnumVariantMarshaler</c>
+    /// to map the calls to the <c>IEnumVARIANT</c> interface pointer returned by the COM object's member with a DISPID of -4.
     /// </remarks>
     public class EnumeratorToEnumVariantMarshaler : ICustomMarshaler
     {
-        private static readonly EnumeratorToEnumVariantMarshaler s_enumeratorToEnumVariantMarshaler = new EnumeratorToEnumVariantMarshaler();
+        private static readonly EnumeratorToEnumVariantMarshaler s_enumeratorToEnumVariantMarshaler = new();
 
         /// <summary>Returns an instance of the custom marshaler.</summary>
         /// <param name="cookie">String "cookie" parameter that can be used by the custom marshaler.</param>
         /// <returns>An instance of the custom marshaler.</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
         public static ICustomMarshaler GetInstance(string cookie) => s_enumeratorToEnumVariantMarshaler;
-#pragma warning restore IDE0060 // Remove unused parameter
 
         private EnumeratorToEnumVariantMarshaler()
         {
@@ -65,12 +53,12 @@ namespace System.Runtime.InteropServices.CustomMarshalers
 
             if (ManagedObj is EnumeratorViewOfEnumVariant view)
             {
-                return Marshal.GetComInterfaceForObject<object, ComTypes.IEnumVARIANT>(view.GetUnderlyingObject());
+                return Marshal.GetComInterfaceForObject<object, IEnumVARIANT>(view.GetUnderlyingObject());
             }
 
-            EnumVariantViewOfEnumerator nativeView = new EnumVariantViewOfEnumerator((IEnumerator)ManagedObj);
+            EnumVariantViewOfEnumerator nativeView = new((IEnumerator)ManagedObj);
 
-            return Marshal.GetComInterfaceForObject<EnumVariantViewOfEnumerator, ComTypes.IEnumVARIANT>(nativeView);
+            return Marshal.GetComInterfaceForObject<EnumVariantViewOfEnumerator, IEnumVARIANT>(nativeView);
         }
 
         /// <summary>Marshals an object from unmanaged code to managed code.</summary>
@@ -95,7 +83,7 @@ namespace System.Runtime.InteropServices.CustomMarshalers
                 return (comObject as IEnumerator)!;
             }
 
-            return ComDataHelpers.GetOrCreateManagedViewFromComData<ComTypes.IEnumVARIANT, EnumeratorViewOfEnumVariant>(comObject, var => new EnumeratorViewOfEnumVariant(var));
+            return ComDataHelpers.GetOrCreateManagedViewFromComData<IEnumVARIANT, EnumeratorViewOfEnumVariant>(comObject, var => new EnumeratorViewOfEnumVariant(var));
         }
     }
 
@@ -122,15 +110,13 @@ namespace System.Runtime.InteropServices.CustomMarshalers
         }
     }
 
-#pragma warning disable CS0618 // Type or member is obsolete
-    internal class EnumVariantViewOfEnumerator : ComTypes.IEnumVARIANT, ICustomAdapter
-#pragma warning restore CS0618 // Type or member is obsolete
+    internal class EnumVariantViewOfEnumerator : IEnumVARIANT, ICustomAdapter
     {
         public EnumVariantViewOfEnumerator(IEnumerator enumerator) => Enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
 
         public IEnumerator Enumerator { get; }
 
-        public ComTypes.IEnumVARIANT Clone() => Enumerator is ICloneable clonable
+        public IEnumVARIANT Clone() => Enumerator is ICloneable clonable
                 ? new EnumVariantViewOfEnumerator((IEnumerator)clonable.Clone())
                 : throw new COMException("Enumerator is not clonable.", HRESULT.E_FAIL);
 
@@ -197,9 +183,7 @@ namespace System.Runtime.InteropServices.CustomMarshalers
         public object GetUnderlyingObject() => Enumerator;
     }
 
-#pragma warning disable CS0618 // Type or member is obsolete
-    internal class EnumeratorViewOfEnumVariant : ICustomAdapter, System.Collections.IEnumerator
-#pragma warning restore CS0618 // Type or member is obsolete
+    internal class EnumeratorViewOfEnumVariant : ICustomAdapter, IEnumerator
     {
         private readonly IEnumVARIANT _enumVariantObject;
         private bool _fetchedLastObject;
