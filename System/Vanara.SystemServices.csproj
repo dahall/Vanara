@@ -27,6 +27,7 @@ BatteryStatus, EnergySaverStatus, JobLimit, NetworkInterfaceAccessType, NetworkI
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\AMSI\Vanara.PInvoke.AMSI.csproj" />
+    <ProjectReference Include="..\PInvoke\FirewallApi\Vanara.PInvoke.FirewallApi.vbproj" />
     <ProjectReference Include="..\PInvoke\IpHlpApi\Vanara.PInvoke.IpHlpApi.csproj" />
     <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\PInvoke\Mpr\Vanara.PInvoke.Mpr.csproj" />
