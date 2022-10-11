@@ -322,7 +322,7 @@ public class FirewallProfile
 	/// </remarks>
 	public string[]? ExcludedInterfaces
 	{
-		get => iPol.ExcludedInterfaces[type] is null ? null : Array.ConvertAll((object[])iPol.ExcludedInterfaces[type], o => o.ToString());
+		get => iPol.ExcludedInterfaces[type] is null ? null : (string[]?)Array.ConvertAll((object[])iPol.ExcludedInterfaces[type], o => o.ToString());
 		set => iPol.ExcludedInterfaces[type] = value is null || value.Length == 0 ? null : Array.ConvertAll(value, s => (object)s);
 	}
 
@@ -624,7 +624,7 @@ public class FirewallRule : INamedEntity, IEquatable<FirewallRule>
 	/// </remarks>
 	public string[]? InterfaceNames
 	{
-		get => iRule.Interfaces is null ? null : Array.ConvertAll((object[])iRule.Interfaces, o => o.ToString());
+		get => iRule.Interfaces is null ? null : (string[]?)Array.ConvertAll((object[])iRule.Interfaces, o => o.ToString());
 		set => iRule.Interfaces = value is null || value.Length == 0 ? null : Array.ConvertAll(value, s => (object)s);
 	}
 
