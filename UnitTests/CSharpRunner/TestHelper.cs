@@ -6,9 +6,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.ComTypes;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using Vanara.Windows.Shell;
+using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -23,9 +27,29 @@ namespace Vanara.PInvoke.Tests
 					new GenJsonConverter<ulong, SizeT>(i => new SizeT(i), o => o.Value),
 					new GenJsonConverter<DateTime, FILETIME>(dt => dt.ToFileTimeStruct(), ft => ft.ToDateTime()),
 					new GenJsonConverter<string, IPAddress>(i => IPAddress.Parse(i), o => o.ToString()),
+					new GenJsonConverter<string, GenericSecurityDescriptor>(i => new RawSecurityDescriptor(i), o => o.GetSddlForm(AccessControlSections.All)),
+					new GenJsonConverter<string, IndirectString>(i => new(i), o => o.ToString()),
+					new GenJsonConverter<string, SecurityIdentifier>(i => new(i), o => o.ToString()),
 				},
 				ReferenceLoopHandling = ReferenceLoopHandling.Serialize
 			});
+
+		/// <summary>Gets a value indicating whether the current process is elevated.</summary>
+		/// <value><see langword="true"/> if the current process is elevated; otherwise, <see langword="false"/>.</value>
+		public static bool IsElevated
+		{
+			get
+			{
+				try
+				{
+					// Open the access token of the current process with TOKEN_QUERY. 
+					using var hObject = SafeHTOKEN.FromProcess(Process.GetCurrentProcess(), TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE);
+					return hObject.IsElevated;
+				}
+				catch { }
+				return false;
+			}
+		}
 
 		public static Process RunThrottleApp() => Process.Start(testApp);
 
@@ -106,6 +130,9 @@ Simple:
 				case SafeAllocatedMemoryHandleBase mem:
 					return mem.Dump;
 
+				case System.Security.AccessControl.GenericSecurityDescriptor sd:
+					return sd.GetSddlForm(System.Security.AccessControl.AccessControlSections.All);
+
 				default:
 					try { return JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value); }
 					catch (Exception e) { return e.ToString(); }
@@ -116,8 +143,8 @@ Simple:
 
 		private class GenJsonConverter<TIn, TOut> : JsonConverter<TOut>
 		{
-			Func<TIn, TOut> rdr;
-			Func<TOut, TIn> wtr;
+			private readonly Func<TIn, TOut> rdr;
+			private readonly Func<TOut, TIn> wtr;
 
 			public GenJsonConverter(Func<TIn, TOut> r, Func<TOut, TIn> w)
 			{
