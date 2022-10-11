@@ -31,6 +31,11 @@ public static partial class Ws2_32
 		/// <returns>The resulting <see cref="HRESULT"/> instance from the conversion.</returns>
 		public static explicit operator HRESULT(WSRESULT value) => value.ToHRESULT();
 
+		/// <summary>Performs an explicit conversion from <see cref="WSRESULT"/> to <see cref="Win32Error"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The resulting <see cref="Win32Error"/> instance from the conversion.</returns>
+		public static explicit operator Win32Error(WSRESULT value) => unchecked((uint)(value._value == SOCKET_ERROR ? GetLastError()._value : value._value));
+
 		/// <summary>Performs an explicit conversion from <see cref="WSRESULT"/> to <see cref="int"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -211,7 +216,7 @@ public static partial class Ws2_32
 
 		/// <summary>Converts this error to an <see cref="HRESULT"/>.</summary>
 		/// <returns>An equivalent <see cref="HRESULT"/>.</returns>
-		public HRESULT ToHRESULT() => HRESULT.HRESULT_FROM_WIN32(unchecked((uint)(_value == SOCKET_ERROR ? GetLastError()._value : _value)));
+		public HRESULT ToHRESULT() => HRESULT.HRESULT_FROM_WIN32((Win32Error)this);
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
