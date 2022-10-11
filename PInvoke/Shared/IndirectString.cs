@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Vanara.Windows.Shell
 {
 	/// <summary>Wraps a string resource reference used by some Shell classes.</summary>
 	[TypeConverter(typeof(IndirectStringTypeConverter))]
+	[DebuggerDisplay("{RawValue} => {Value}")]
 	public class IndirectString : IndirectResource
 	{
 		/// <summary>Initializes a new instance of the <see cref="IndirectString"/> class.</summary>
