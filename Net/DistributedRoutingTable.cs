@@ -197,13 +197,16 @@ public class CustomDnsBootstapper : DrtCustomBootstrapProvider
 }
 
 /// <summary>Represents a distributed routing table from Win32.</summary>
-public class DistributedRoutingTable
+public class DistributedRoutingTable : IDisposable
 {
+	private static readonly SafeWSA ws = SafeWSA.Initialize();
+
 	private readonly SafeRegisteredWaitHandle? drtWaitEvent;
 	private readonly SafeEventHandle? evt;
 	private readonly SafeHDRT? hDrt;
+	private readonly SafeHDRT_TRANSPORT hTransport;
 	private readonly IntPtr selfPin;
-	private readonly SafeWSA ws = SafeWSA.Initialize();
+	private bool disposedValue;
 	private DRT_SETTINGS pSettings;
 
 	/// <summary>Initializes a new instance of the <see cref="DistributedRoutingTable"/> class.</summary>
@@ -228,13 +231,21 @@ public class DistributedRoutingTable
 			pSecurityProvider = pSecProv,
 			pBootstrapProvider = pBootProv,
 		};
-		DrtCreateIpv6UdpTransport(DRT_SCOPE.DRT_GLOBAL_SCOPE, 0, 300, ref port, out pSettings.hTransport).ThrowIfFailed();
+		DrtCreateIpv6UdpTransport(DRT_SCOPE.DRT_GLOBAL_SCOPE, 0, 300, ref port, out hTransport).ThrowIfFailed();
 
+		pSettings.hTransport = hTransport;
 		evt = CreateEvent(null, false, false);
 		DrtOpen(pSettings, evt, default, out HDRT h).ThrowIfFailed();
 		hDrt = new((IntPtr)h);
 		selfPin = (IntPtr)GCHandle.Alloc(this, GCHandleType.Normal);
 		Win32Error.ThrowLastErrorIfFalse(RegisterWaitForSingleObject(out drtWaitEvent, evt, DrtEventCallback, selfPin, INFINITE, WT.WT_EXECUTEDEFAULT));
+	}
+
+	/// <summary>Finalizes an instance of the <see cref="DistributedRoutingTable"/> class.</summary>
+	~DistributedRoutingTable()
+	{
+		// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+		Dispose(disposing: false);
 	}
 
 	/// <summary>Occurs when the leaf set key changes.</summary>
@@ -245,6 +256,38 @@ public class DistributedRoutingTable
 
 	/// <summary>Occurs when the status changes.</summary>
 	public event EventHandler<DrtStatusChangeEventArgs>? StatusChange;
+
+	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+	public void Dispose()
+	{
+		// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+		Dispose(disposing: true);
+		GC.SuppressFinalize(this);
+	}
+
+	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+	/// <param name="disposing">
+	/// <see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.
+	/// </param>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (!disposedValue)
+		{
+			if (disposing)
+			{
+				if (selfPin != IntPtr.Zero)
+					GCHandle.FromIntPtr(selfPin).Free();
+			}
+
+			drtWaitEvent?.Dispose();
+			evt?.Dispose();
+			hDrt?.Dispose();
+			hTransport?.Dispose();
+
+			disposedValue = true;
+		}
+	}
+
 	private static void DrtEventCallback(IntPtr Param, bool TimedOut)
 	{
 		var Drt = (DistributedRoutingTable)GCHandle.FromIntPtr(Param).Target;
@@ -304,7 +347,22 @@ public class DrtBootstrapProvider : IDisposable
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="DrtBootstrapProvider"/> class.</summary>
-	private DrtBootstrapProvider() { }
+	protected DrtBootstrapProvider() { }
+
+	/// <summary>
+	/// Creates a bootstrap resolver that will use the GetAddrInfo system function to resolve the hostname of a will known node already
+	/// present in the DRT mesh.
+	/// </summary>
+	/// <param name="hostname">Specifies the hostname of the well known node.</param>
+	/// <param name="port">Specifies the port to which the DRT protocol is bound on the well known node.</param>
+	/// <returns>A DNS <see cref="DrtBootstrapProvider"/> instance.</returns>
+	public DrtBootstrapProvider(string? hostname, ushort port)
+	{
+		hostname ??= LocalDnsHost;
+		DrtCreateDnsBootstrapResolver(port, hostname, out IntPtr pbp).ThrowIfFailed();
+		pProv = pbp;
+		pProvType = 'd';
+	}
 
 	/// <summary>Initializes a new instance of the <see cref="DrtBootstrapProvider"/> class.</summary>
 	/// <param name="ptr">The PTR.</param>
@@ -323,20 +381,6 @@ public class DrtBootstrapProvider : IDisposable
 			Win32Error.ThrowLastErrorIfFalse(GetComputerNameEx(COMPUTER_NAME_FORMAT.ComputerNameDnsFullyQualified, out string? name));
 			return name;
 		}
-	}
-
-	/// <summary>
-	/// Creates a bootstrap resolver that will use the GetAddrInfo system function to resolve the hostname of a will known node already
-	/// present in the DRT mesh.
-	/// </summary>
-	/// <param name="hostname">Specifies the hostname of the well known node.</param>
-	/// <param name="port">Specifies the port to which the DRT protocol is bound on the well known node.</param>
-	/// <returns>A DNS <see cref="DrtBootstrapProvider"/> instance.</returns>
-	public static DrtBootstrapProvider CreateDnsBootstrapResolver(string? hostname, ushort port)
-	{
-		hostname ??= LocalDnsHost;
-		DrtCreateDnsBootstrapResolver(port, hostname, out IntPtr pbp).ThrowIfFailed();
-		return new(pbp, 'd');
 	}
 
 	/// <summary>Creates a bootstrap resolver based on the Peer Name Resolution Protocol (PNRP).</summary>
@@ -546,8 +590,8 @@ public class DrtLeafSetKeyChangeEventArgs : DrtEventArgs
 	internal DrtLeafSetKeyChangeEventArgs(in DRT_EVENT_DATA data) : base(data)
 	{
 		Type = data.union.leafsetKeyChange.change;
-		LocalKey = data.union.leafsetKeyChange.localKey.GetArray();
-		RemoteKey = data.union.leafsetKeyChange.remoteKey.GetArray();
+		LocalKey = (byte[])data.union.leafsetKeyChange.localKey;
+		RemoteKey = (byte[])data.union.leafsetKeyChange.remoteKey;
 	}
 
 	/// <summary>Specifies the local key associated with the leaf set that has changed.</summary>
@@ -567,7 +611,7 @@ public class DrtRegistrationStateChangeEventArgs : DrtEventArgs
 	internal DrtRegistrationStateChangeEventArgs(in DRT_EVENT_DATA data) : base(data)
 	{
 		State = data.union.registrationStateChange.state;
-		LocalKey = data.union.registrationStateChange.localKey.GetArray();
+		LocalKey = (byte[])data.union.registrationStateChange.localKey;
 	}
 
 	/// <summary>Specifies the local key associated with the registration that has changed.</summary>
@@ -660,7 +704,7 @@ public class DrtStatusChangeEventArgs : DrtEventArgs
 	internal DrtStatusChangeEventArgs(in DRT_EVENT_DATA data) : base(data)
 	{
 		Status = data.union.statusChange.status;
-		BootstrapAddresses = Array.ConvertAll(data.union.statusChange.bootstrapAddresses.Addresses, Cvt);
+		BootstrapAddresses = data.union.statusChange.bootstrapAddresses.Addresses?.Select(Cvt).ToArray();
 
 		static IPEndPoint Cvt(SOCKADDR_STORAGE input)
 		{
@@ -672,7 +716,7 @@ public class DrtStatusChangeEventArgs : DrtEventArgs
 	}
 
 	/// <summary>Contains an array of <see cref="IPEndPoint"/> returned by the bootstrap provider.</summary>
-	public IPEndPoint[] BootstrapAddresses { get; }
+	public IPEndPoint[]? BootstrapAddresses { get; }
 
 	/// <summary>Contains the current DRT_STATUS of the local DRT instance.</summary>
 	public DRT_STATUS Status { get; }
@@ -975,7 +1019,7 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 	}
 
 	private HRESULT InternalDecryptData(IntPtr pvContext, in DRT_DATA pKeyToken, IntPtr pvKeyContext, uint dwBuffers, DRT_DATA[] pData) =>
-		DecryptData(pKeyToken.GetArray(), pvKeyContext, Array.ConvertAll(pData, p => p.GetArray()));
+		DecryptData((byte[])pKeyToken, pvKeyContext, Array.ConvertAll(pData, p => (byte[])p));
 
 	private void InternalDetach(IntPtr pvContext)
 	{
@@ -985,7 +1029,7 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 
 	private HRESULT InternalEncryptData(IntPtr pvContext, in DRT_DATA pRemoteCredential, uint dwBuffers, DRT_DATA[] pDataBuffers, DRT_DATA[] pEncryptedBuffers, out DRT_DATA pKeyToken)
 	{
-		var hr = EncryptData(pRemoteCredential.GetArray(), Array.ConvertAll(pDataBuffers, p => p.GetArray()), Array.ConvertAll(pEncryptedBuffers, p => p.GetArray()), out byte[]? pkt);
+		var hr = EncryptData((byte[])pRemoteCredential, Array.ConvertAll(pDataBuffers, p => (byte[])p), Array.ConvertAll(pEncryptedBuffers, p => (byte[])p), out byte[]? pkt);
 		pKeyToken = ToData(pkt);
 		return hr;
 	}
@@ -1005,8 +1049,8 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 		uint dwFlags, in DRT_DATA pKey, DRT_DATA* pPayload, IntPtr pAddressList, in DRT_DATA pNonce, out DRT_DATA pSecuredAddressPayload,
 		DRT_DATA* pClassifier, DRT_DATA* pSecuredPayload, DRT_DATA* pCertChain)
 	{
-		HRESULT hr = SecureAndPackPayload(pvContext, bProtocolMajor, bProtocolMinor, dwFlags, pKey.GetArray(), pPayload is null ? null : (*pPayload).GetArray(),
-			ToEndPoints(pAddressList.ToNullableStructure<SOCKET_ADDRESS_LIST>()), pNonce.GetArray(), out byte[]? sap, out byte[]? cl, out byte[]? sp, out byte[]? cc);
+		HRESULT hr = SecureAndPackPayload(pvContext, bProtocolMajor, bProtocolMinor, dwFlags, (byte[])pKey, pPayload is null ? null : (byte[])(*pPayload),
+			ToEndPoints(pAddressList.ToNullableStructure<SOCKET_ADDRESS_LIST>()), (byte[])pNonce, out byte[]? sap, out byte[]? cl, out byte[]? sp, out byte[]? cc);
 		pSecuredAddressPayload = ToData(sap);
 		if (cl is not null)
 			*pClassifier = ToData(cl);
@@ -1019,22 +1063,22 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 
 	private HRESULT InternalSignData(IntPtr pvContext, uint dwBuffers, DRT_DATA[] pDataBuffers, out DRT_DATA pKeyIdentifier, out DRT_DATA pSignature)
 	{
-		HRESULT hr = SignData(Array.ConvertAll(pDataBuffers, b => b.GetArray()), out byte[]? id, out byte[]? sig);
+		HRESULT hr = SignData(Array.ConvertAll(pDataBuffers, b => (byte[])b), out byte[]? id, out byte[]? sig);
 		pKeyIdentifier = ToData(id);
 		pSignature = ToData(sig);
 		return hr;
 	}
 
 	private HRESULT InternalUnregisterKey(IntPtr pvContext, in DRT_DATA pKey, IntPtr pvKeyContext) =>
-		UnregisterKey(pKey.GetArray());
+		UnregisterKey((byte[])pKey);
 
 	private unsafe HRESULT InternalValidateAndUnpackPayload(IntPtr pvContext, in DRT_DATA pSecuredAddressPayload, DRT_DATA* pCertChain,
 		DRT_DATA* pClassifier, DRT_DATA* pNonce, DRT_DATA* pSecuredPayload, byte* pbProtocolMajor, byte* pbProtocolMinor,
 		out DRT_DATA pKey, DRT_DATA* pPayload, CERT_PUBLIC_KEY_INFO** ppPublicKey, void** ppAddressList, out uint pdwFlags)
 	{
-		HRESULT hr = ValidateAndUnpackPayload(pSecuredAddressPayload, pCertChain is null ? null : (*pCertChain).GetArray(),
-			pClassifier is null ? null : (*pClassifier).GetArray(), pNonce is null ? null : (*pNonce).GetArray(),
-			pSecuredPayload is null ? null : (*pSecuredPayload).GetArray(), out byte maj, out byte min, out byte[]? k,
+		HRESULT hr = ValidateAndUnpackPayload(pSecuredAddressPayload, pCertChain is null ? null : (byte[])(*pCertChain),
+			pClassifier is null ? null : (byte[])(*pClassifier), pNonce is null ? null : (byte[])(*pNonce),
+			pSecuredPayload is null ? null : (byte[])(*pSecuredPayload), out byte maj, out byte min, out byte[]? k,
 			out byte[]? pl, out SafeCoTaskMemStruct<CERT_PUBLIC_KEY_INFO>? pk, out IPEndPoint[]? al, out pdwFlags);
 		*pbProtocolMajor = maj;
 		*pbProtocolMinor = min;
@@ -1047,10 +1091,10 @@ public abstract class DrtCustomSecurityProvider : DrtSecurityProvider
 	}
 
 	private HRESULT InternalValidateRemoteCredential(IntPtr pvContext, in DRT_DATA pRemoteCredential) =>
-		ValidateRemoteCredential(pRemoteCredential.GetArray());
+		ValidateRemoteCredential((byte[])pRemoteCredential);
 
 	private HRESULT InternalVerifyData(IntPtr pvContext, uint dwBuffers, DRT_DATA[] pDataBuffers, in DRT_DATA pRemoteCredentials, in DRT_DATA pKeyIdentifier, in DRT_DATA pSignature) =>
-		VerifyData(Array.ConvertAll(pDataBuffers, b => b.GetArray()), pRemoteCredentials.GetArray(), pKeyIdentifier.GetArray(), pSignature.GetArray());
+		VerifyData(Array.ConvertAll(pDataBuffers, b => (byte[])b), (byte[])pRemoteCredentials, (byte[])pKeyIdentifier, (byte[])pSignature);
 }
 
 /*

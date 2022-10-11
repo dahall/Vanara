@@ -79,12 +79,17 @@ public class NetTests
 	[Test]
 	public void TestDrt()
 	{
-		using var fw = new Firewall();
-		fw.AddApp(Process.GetCurrentProcess().ProcessName, Process.GetCurrentProcess().MainModule.FileName);
+		using Firewall fw = new();
+		if (TestHelper.IsElevated)
+			fw.AddApp(Process.GetCurrentProcess().ProcessName, Process.GetCurrentProcess().MainModule.FileName);
 		try
 		{
-			DistributedRoutingTable drt = new(null, DrtBootstrapProvider.CreateDnsBootstrapResolver(null, 0));
-
+			using DistributedRoutingTable drt = new(null, new(null, 0));
+			drt.StatusChange += (s, e) => e.WriteValues();
+			const int msinc = 250;
+			const float totms = 5000;
+			for (int ms = 0; ms < totms; ms += msinc)
+				Thread.Sleep(msinc);
 		}
 		finally
 		{

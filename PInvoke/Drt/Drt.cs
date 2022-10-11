@@ -491,22 +491,22 @@ namespace Vanara.PInvoke
 			/// The local node is connected to the DRT mesh and participating in the DRT system. This is also an indication that remote
 			/// nodes exist and are present in the cache of the local node.
 			/// </summary>
-			DRT_ACTIVE,
+			DRT_ACTIVE = 0,
 
 			/// <summary>
 			/// The local node is participating in the DRT system, but is waiting for remote nodes to join the DRT mesh. This is an
 			/// indication that remote nodes do not exist, or are not yet present in the cache of the local node.
 			/// </summary>
-			DRT_ALONE,
+			DRT_ALONE = 1,
 
 			/// <summary>The local node does not have network connectivity.</summary>
-			DRT_NO_NETWORK,
+			DRT_NO_NETWORK = 10,
 
 			/// <summary>
 			/// A critical error has occurred in the local DRT instance. The DrtClose function must be called, after which an attempt to
 			/// re-open the DRT can be made.
 			/// </summary>
-			DRT_FAULTED,
+			DRT_FAULTED = 20,
 		}
 
 		/// <summary>The <c>DrtClose</c> function closes the local instance of the DRT.</summary>
@@ -728,7 +728,7 @@ namespace Vanara.PInvoke
 		// DRT_SCOPE scope, ULONG dwScopeId, ULONG dwLocalityThreshold, USHORT *pwPort, HDRT_TRANSPORT *phTransport );
 		[DllImport(Lib_DrtTrans, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateIpv6UdpTransport")]
-		public static extern HRESULT DrtCreateIpv6UdpTransport(DRT_SCOPE scope, uint dwScopeId, uint dwLocalityThreshold, ref ushort pwPort, out HDRT_TRANSPORT phTransport);
+		public static extern HRESULT DrtCreateIpv6UdpTransport(DRT_SCOPE scope, uint dwScopeId, uint dwLocalityThreshold, ref ushort pwPort, out SafeHDRT_TRANSPORT phTransport);
 
 		/// <summary>
 		/// The <c>DrtCreateNullSecurityProvider</c> function creates a null security provider. This security provider does not require
@@ -1792,7 +1792,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="DRT_DATA"/> to <see cref="System.Byte"/>[].</summary>
 			/// <param name="d">The <see cref="DRT_DATA"/> instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator byte[](DRT_DATA d) => d.GetArray();
+			public static implicit operator byte[](DRT_DATA d) => d.pb == IntPtr.Zero ? null : d.GetArray();
 		}
 
 		/// <summary>
@@ -2485,6 +2485,28 @@ namespace Vanara.PInvoke
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { DrtClose(handle); return true; }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDRT_TRANSPORT"/> that is disposed using <see cref="DrtDeleteIpv6UdpTransport"/>.</summary>
+		public class SafeHDRT_TRANSPORT : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHDRT_TRANSPORT"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHDRT_TRANSPORT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHDRT_TRANSPORT"/> class.</summary>
+			private SafeHDRT_TRANSPORT() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHDRT_TRANSPORT"/> to <see cref="HDRT_TRANSPORT"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HDRT_TRANSPORT(SafeHDRT_TRANSPORT h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DrtDeleteIpv6UdpTransport(handle).Succeeded;
 		}
 	}
 }
