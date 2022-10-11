@@ -825,10 +825,6 @@ Partial Public Module FirewallApi
         Property BlockAllInboundTraffic(<[In]> ByVal profileType As NET_FW_PROFILE_TYPE2) As Boolean
 
         ''' <summary>
-        ''' <para>
-        ''' [The Windows Firewall API Is available for use in the operating systems specified in the Requirements section. It may be altered
-        ''' Or unavailable in subsequent versions. For Windows Vista And later, use of the Windows Firewall with Advanced Security API Is recommended.]
-        ''' </para>
         ''' <para>Indicates whether interactive firewall notifications are disabled.</para>
         ''' <para>This property Is read/write.</para>
         ''' </summary>
