@@ -609,7 +609,7 @@ namespace Vanara.PInvoke
 		// pLocalCert, DRT_DATA *pKey );
 		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateDerivedKey")]
-		public static extern HRESULT DrtCreateDerivedKey(PCCERT_CONTEXT pLocalCert, out SafeDRT_DATA pKey);
+		public static extern HRESULT DrtCreateDerivedKey(PCCERT_CONTEXT pLocalCert, [Out] SafeDRT_DATA pKey);
 
 		/// <summary>
 		/// The <c>DrtCreateDerivedKeySecurityProvider</c> function creates the derived key security provider for a Distributed Routing Table.
