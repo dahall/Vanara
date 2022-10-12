@@ -16,8 +16,10 @@ namespace Vanara.InteropServices
 	/// <typeparam name="TMem">The memory methods to use for allocation.</typeparam>
 	public class SafeElementArray<TElem, TPrefix, TMem> : SafeMemoryHandle<TMem>, IEnumerable<TElem> where TMem : IMemoryMethods, new() where TElem : struct where TPrefix : IConvertible
 	{
-		private static readonly int ElemSize = InteropExtensions.SizeOf(typeof(TElem));
-		private static readonly int PrefixSize = InteropExtensions.SizeOf(typeof(TPrefix));
+		/// <summary>The size, in bytes, of <c>TElem</c>.</summary>
+		protected static readonly int ElemSize = InteropExtensions.SizeOf(typeof(TElem));
+		/// <summary>The size, in bytes, of <c>TPrefix</c>.</summary>
+		protected static readonly int PrefixSize = InteropExtensions.SizeOf(typeof(TPrefix));
 
 		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class.</summary>
 		protected SafeElementArray() : this(0) { }
