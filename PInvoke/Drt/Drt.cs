@@ -2398,93 +2398,34 @@ namespace Vanara.PInvoke
 		/// </summary>
 		[PInvokeData("wincrypt.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-		public class SafeDRT_DATA : IDisposable
+		public class SafeDRT_DATA : SafeElementArray<byte, uint, HGlobalMemoryMethods>
 		{
-			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
-			private uint _cb;
-
-			/// <summary>A pointer to the data buffer.</summary>
-			private IntPtr _pb;
-
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class.</summary>
 			/// <param name="size">The size, in bytes, to allocate.</param>
-			public SafeDRT_DATA(int size)
-			{
-				_cb = (uint)size;
-				if (size > 0)
-					_pb = MemMethods.AllocMem(size);
-			}
+			public SafeDRT_DATA(uint size) : base(size) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class.</summary>
 			/// <param name="bytes">The bytes to copy into the blob.</param>
-			public SafeDRT_DATA(byte[] bytes) : this(bytes?.Length ?? 0) => Marshal.Copy(bytes, 0, _pb, bytes.Length);
+			public SafeDRT_DATA(byte[] bytes) : base(bytes) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class with a string.</summary>
 			/// <param name="value">The string value.</param>
 			/// <param name="charSet">The character set to use.</param>
-			public SafeDRT_DATA(string value, CharSet charSet = CharSet.Ansi) : this(StringHelper.GetBytes(value, true, charSet))
-			{
-			}
-
-			private SafeDRT_DATA(IntPtr handle, int size)
-			{
-				_pb = handle;
-				_cb = (uint)size;
-			}
+			public SafeDRT_DATA(string value, CharSet charSet = CharSet.Ansi) : base(StringHelper.GetBytes(value, true, charSet)) { }
 
 			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
-			public uint cb => _cb;
+			public uint cb => Count;
 
 			/// <summary>A pointer to the data buffer.</summary>
-			public IntPtr pb => _pb;
+			public IntPtr pb => handle.Offset(PrefixSize);
 
 			/// <summary>Represents an empty instance of a blob.</summary>
-			public static readonly SafeDRT_DATA Empty = new(IntPtr.Zero, 0);
-
-			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-			public void Dispose()
-			{
-				MemMethods.FreeMem(_pb);
-				_pb = IntPtr.Zero;
-				_cb = 0;
-			}
+			public static readonly SafeDRT_DATA Empty = new(0U);
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeDRT_DATA"/> to <see cref="DRT_DATA"/>.</summary>
 			/// <param name="safeData">The safe data.</param>
 			/// <returns>The resulting <see cref="DRT_DATA"/> instance from the conversion.</returns>
-			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) => new() { cb = safeData._cb, pb = safeData._pb };
-
-			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
-			/// <typeparam name="T">Native type</typeparam>
-			/// <param name="value">The value.</param>
-			/// <returns><see cref="SafeDRT_DATA"/> object to an native (unmanaged) memory block the size of T.</returns>
-			public static SafeDRT_DATA CreateFromStructure<T>(in T value = default) => new(InteropExtensions.MarshalToPtr(value, MemMethods.AllocMem, out var s), s);
-
-			/// <summary>
-			/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
-			/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY
-			/// structures with attribute StructLayout of LayoutKind.Sequential are supported.
-			/// </summary>
-			/// <typeparam name="T">Type of the trailing array of structures</typeparam>
-			/// <param name="values">Collection of structure objects</param>
-			/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
-			/// <returns><see cref="SafeDRT_DATA"/> object to an native (unmanaged) structure with a trail array of structures</returns>
-			public static SafeDRT_DATA CreateFromList<T>(IEnumerable<T> values, int prefixBytes = 0) =>
-				new(InteropExtensions.MarshalToPtr(values, MemMethods.AllocMem, out var s, prefixBytes), s);
-
-			/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
-			/// <param name="values">The list of strings.</param>
-			/// <param name="packing">The packing type for the strings.</param>
-			/// <param name="charSet">The character set to use for the strings.</param>
-			/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
-			/// <returns>
-			/// <see cref="SafeDRT_DATA"/> object to an native (unmanaged) array of strings stored using the <paramref
-			/// name="packing"/> model and the character set defined by <paramref name="charSet"/>.
-			/// </returns>
-			public static SafeDRT_DATA CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-				new(InteropExtensions.MarshalToPtr(values, packing, MemMethods.AllocMem, out var s, charSet, prefixBytes), s);
-
-			private static IMemoryMethods MemMethods => HGlobalMemoryMethods.Instance;
+			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) => new() { cb = safeData.cb, pb = safeData.pb };
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDRT"/> that is disposed using <see cref="DrtClose"/>.</summary>
