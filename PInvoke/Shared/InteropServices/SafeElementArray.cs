@@ -14,7 +14,7 @@ namespace Vanara.InteropServices
 	/// <typeparam name="TElem">The type of the array elements.</typeparam>
 	/// <typeparam name="TPrefix">The type of the value used to represent the number of elements in the array.</typeparam>
 	/// <typeparam name="TMem">The memory methods to use for allocation.</typeparam>
-	public class SafeElementArray<TElem, TPrefix, TMem> : SafeMemoryHandle<TMem>, IEnumerable<TElem> where TMem : IMemoryMethods, new() where TElem : struct where TPrefix : IConvertible
+	public class SafeElementArray<TElem, TPrefix, TMem> : SafeMemoryHandle<TMem>, IReadOnlyList<TElem> where TMem : IMemoryMethods, new() where TElem : struct where TPrefix : IConvertible
 	{
 		/// <summary>The size, in bytes, of <c>TElem</c>.</summary>
 		protected static readonly int ElemSize = InteropExtensions.SizeOf(typeof(TElem));
@@ -56,6 +56,17 @@ namespace Vanara.InteropServices
 		{
 		}
 
+		/// <summary>Gets or sets the <typeparamref name="TElem"/> value at the specified index.</summary>
+		/// <value>The <typeparamref name="TElem"/> value.</value>
+		/// <param name="index">The index.</param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentOutOfRangeException">index or index</exception>
+		public virtual TElem this[TPrefix index]
+		{
+			get => handle.ToStructure<TElem>(Size, ElemOffset(index));
+			set => handle.Write(value, ElemOffset(index), Size);
+		}
+
 		/// <summary>Gets the number of elements contained in the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/>.</summary>
 		protected TPrefix Count
 		{
@@ -87,6 +98,10 @@ namespace Vanara.InteropServices
 			set => Count = (TPrefix)Convert.ChangeType(value, typeof(TPrefix));
 		}
 
+		int IReadOnlyCollection<TElem>.Count => Count.ToInt32(null);
+
+		TElem IReadOnlyList<TElem>.this[int index] => this[(TPrefix)Convert.ChangeType(index, typeof(TPrefix))];
+
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="IEnumerator{TElem}"/> that can be used to iterate through the collection.</returns>
 		public IEnumerator<TElem> GetEnumerator() => ((IEnumerable<TElem>)Elements).GetEnumerator();
@@ -94,6 +109,8 @@ namespace Vanara.InteropServices
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		private int ElemOffset(TPrefix index) => index.ToUInt64(null) >= 0 && index.ToUInt64(null) < Count.ToUInt64(null) ? index.ToInt32(null) * ElemSize + PrefixSize : throw new ArgumentOutOfRangeException(nameof(index));
 
 		/// <summary>Converts a byte count to a element count.</summary>
 		/// <param name="byteSize">The byte count.</param>
