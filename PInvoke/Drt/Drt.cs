@@ -404,15 +404,35 @@ namespace Vanara.PInvoke
 			DRT_LEAFSET_KEY_DELETED,
 		}
 
-		/// <summary>
-		/// The <c>DRT_MATCH_TYPE</c> enumeration defines the exactness of a search result returned by DrtGetSearchResult after initiating a
-		/// search with the DrtStartSearch API.
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/drt/ne-drt-drt_match_type typedef enum drt_match_type_tag { DRT_MATCH_EXACT,
-		// DRT_MATCH_NEAR, DRT_MATCH_INTERMEDIATE } DRT_MATCH_TYPE;
+		/// <summary>The <c>DRT_MATCH_TYPE</c> enumeration defines the exactness of a search result returned by DrtGetSearchResult after initiating a search with the DrtStartSearch API.</summary>
+		// https://learn.microsoft.com/en-us/windows/win32/api/drt/ne-drt-drt_match_type
+		// typedef enum drt_match_type_tag { DRT_MATCH_EXACT = 0, DRT_MATCH_NEAR = 1, DRT_MATCH_INTERMEDIATE = 2 } DRT_MATCH_TYPE;
 		[PInvokeData("drt.h", MSDNShortId = "NE:drt.drt_match_type_tag")]
 		public enum DRT_MATCH_TYPE
 		{
+			/// <summary>
+			///   <para>Value:</para>
+			///   <para>0</para>
+			///   <para>The node found is publishing the target key or is publishing a key within the specified range.</para>
+			/// </summary>
+			DRT_MATCH_EXACT,
+
+			/// <summary>
+			///   <para>Value:</para>
+			///   <para>1</para>
+			///   <para>The node found is publishing the numerically closest key to the specified target key.</para>
+			/// </summary>
+			DRT_MATCH_NEAR,
+
+			/// <summary>
+			/// <para>Value:</para>
+			/// <para>2</para>
+			/// <para>
+			/// The node returned is an intermediate node. An application will receive this node match type if <c>fIterative</c> is set to
+			/// <see langword="true"/>.
+			/// </para>
+			/// </summary>
+			DRT_MATCH_INTERMEDIATE,
 		}
 
 		/// <summary>The <c>DRT_REGISTRATION_STATE</c> enumeration defines the set of legal states for a registered key.</summary>
@@ -589,7 +609,7 @@ namespace Vanara.PInvoke
 		// pLocalCert, DRT_DATA *pKey );
 		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateDerivedKey")]
-		public static extern HRESULT DrtCreateDerivedKey(PCCERT_CONTEXT pLocalCert, out DRT_DATA pKey);
+		public static extern HRESULT DrtCreateDerivedKey(PCCERT_CONTEXT pLocalCert, out SafeDRT_DATA pKey);
 
 		/// <summary>
 		/// The <c>DrtCreateDerivedKeySecurityProvider</c> function creates the derived key security provider for a Distributed Routing Table.
@@ -1317,7 +1337,7 @@ namespace Vanara.PInvoke
 		// hEvent, const PVOID pvContext, HDRT *phDrt );
 		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtOpen")]
-		public static extern HRESULT DrtOpen(in DRT_SETTINGS pSettings, HANDLE hEvent, [In, Optional] IntPtr pvContext, out HDRT phDrt);
+		public static extern HRESULT DrtOpen(in DRT_SETTINGS pSettings, HANDLE hEvent, [In, Optional] IntPtr pvContext, out SafeHDRT phDrt);
 
 		/// <summary>The <c>DrtRegisterKey</c> function registers a key in the DRT.</summary>
 		/// <param name="hDrt">A pointer to a handle returned by the DrtOpen function.</param>
