@@ -235,8 +235,7 @@ public class DistributedRoutingTable : IDisposable
 
 		pSettings.hTransport = hTransport;
 		evt = CreateEvent(null, false, false);
-		DrtOpen(pSettings, evt, default, out HDRT h).ThrowIfFailed();
-		hDrt = new((IntPtr)h);
+		DrtOpen(pSettings, evt, default, out hDrt).ThrowIfFailed();
 		selfPin = (IntPtr)GCHandle.Alloc(this, GCHandleType.Normal);
 		Win32Error.ThrowLastErrorIfFalse(RegisterWaitForSingleObject(out drtWaitEvent, evt, DrtEventCallback, selfPin, INFINITE, WT.WT_EXECUTEDEFAULT));
 	}
