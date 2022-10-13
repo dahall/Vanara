@@ -2398,34 +2398,44 @@ namespace Vanara.PInvoke
 		/// </summary>
 		[PInvokeData("wincrypt.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-		public class SafeDRT_DATA : SafeElementArray<byte, uint, HGlobalMemoryMethods>
+		public class SafeDRT_DATA : SafeNativeArray<byte>
 		{
+			static readonly int HdrSize = Marshal.SizeOf(typeof(DRT_DATA));
+
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class.</summary>
 			/// <param name="size">The size, in bytes, to allocate.</param>
-			public SafeDRT_DATA(uint size) : base(size) { }
+			public SafeDRT_DATA(int size) : base(size, (uint)HdrSize) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class.</summary>
 			/// <param name="bytes">The bytes to copy into the blob.</param>
-			public SafeDRT_DATA(byte[] bytes) : base(bytes) { }
+			public SafeDRT_DATA(byte[] bytes) : base(bytes, (uint)HdrSize) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class with a string.</summary>
 			/// <param name="value">The string value.</param>
 			/// <param name="charSet">The character set to use.</param>
-			public SafeDRT_DATA(string value, CharSet charSet = CharSet.Ansi) : base(StringHelper.GetBytes(value, true, charSet)) { }
+			public SafeDRT_DATA(string value, CharSet charSet = CharSet.Ansi) : this(StringHelper.GetBytes(value, true, charSet)) { }
 
 			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
-			public uint cb => Count;
+			public int cb => base.Count;
 
 			/// <summary>A pointer to the data buffer.</summary>
-			public IntPtr pb => handle.Offset(PrefixSize);
+			public IntPtr pb => handle.Offset(HdrSize);
 
 			/// <summary>Represents an empty instance of a blob.</summary>
-			public static readonly SafeDRT_DATA Empty = new(0U);
+			public static readonly SafeDRT_DATA Empty = new(0);
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeDRT_DATA"/> to <see cref="DRT_DATA"/>.</summary>
 			/// <param name="safeData">The safe data.</param>
 			/// <returns>The resulting <see cref="DRT_DATA"/> instance from the conversion.</returns>
-			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) => new() { cb = safeData.cb, pb = safeData.pb };
+			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) { safeData.UpdateHdr(); return safeData.handle.ToStructure<DRT_DATA>(); }
+
+			/// <inheritdoc/>
+			protected override void OnCountChanged() => UpdateHdr();
+
+			/// <inheritdoc/>
+			protected override void OnUpdateHeader() => UpdateHdr();
+
+			private void UpdateHdr() => handle.Write(new DRT_DATA() { cb = (uint)base.Count, pb = base.Count == 0 ? IntPtr.Zero : handle.Offset(HdrSize) });
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDRT"/> that is disposed using <see cref="DrtClose"/>.</summary>
