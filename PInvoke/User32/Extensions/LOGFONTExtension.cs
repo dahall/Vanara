@@ -16,7 +16,7 @@ namespace Vanara.Extensions
 		/// <summary>Sets the point size of the font.</summary>
 		/// <param name="lf">The LOGFONT structure.</param>
 		/// <param name="value">The point size of the font.</param>
-		public static void SetPointSize(this LOGFONT lf, float value) => lf.lfHeight = (int)Math.Round(-value * GetDevicePixelsPerInchY() / 72);
+		public static void SetPointSize(this ref LOGFONT lf, float value) => lf.lfHeight = Convert.ToInt32(-value * GetDevicePixelsPerInchY() / 72);
 
 		private static int GetDevicePixelsPerInchY() => GetDeviceCaps(GetDC(GetDesktopWindow()), DeviceCap.LOGPIXELSY);
 	}
