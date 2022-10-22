@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
@@ -631,7 +630,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-iusernotificationcallback-onballoonuserclick HRESULT
 			// OnBalloonUserClick( POINT *pt );
 			[PreserveSig]
-			HRESULT OnBalloonUserClick(ref Point pt);
+			HRESULT OnBalloonUserClick(ref POINT pt);
 
 			/// <summary>
 			/// Called when the user clicks the icon in the notification area. The applications may launch some customary UI in response.
@@ -650,7 +649,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-iusernotificationcallback-onleftclick HRESULT
 			// OnLeftClick( POINT *pt );
 			[PreserveSig]
-			HRESULT OnLeftClick(ref Point pt);
+			HRESULT OnLeftClick(ref POINT pt);
 
 			/// <summary>
 			/// Called when the user right-clicks (or presses SHIFT+F10) the icon in the notification area. The application should show its
@@ -671,7 +670,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-iusernotificationcallback-oncontextmenu HRESULT
 			// OnContextMenu( POINT *pt );
 			[PreserveSig]
-			HRESULT OnContextMenu(ref Point pt);
+			HRESULT OnContextMenu(ref POINT pt);
 		}
 	}
 }

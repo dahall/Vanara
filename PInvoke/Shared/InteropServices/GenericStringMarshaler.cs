@@ -31,7 +31,7 @@ namespace Vanara.InteropServices
 	/// <seealso cref="System.Runtime.InteropServices.ICustomMarshaler"/>
 	public abstract class GenericStringMarshalerBase<TMem> : ICustomMarshaler where TMem : ISimpleMemoryMethods, new()
 	{
-		private static TMem mem = new TMem();
+		private static readonly TMem mem = new();
 		private readonly CharSet charSet;
 
 		/// <summary>Initializes a new instance of the <see cref="GenericStringMarshalerBase{TMem}"/> class.</summary>

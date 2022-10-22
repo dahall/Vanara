@@ -27,10 +27,8 @@ namespace Vanara.InteropServices
 		/// <exception cref="System.ArgumentNullException">closeMethod</exception>
 		public GenericSafeHandle(IntPtr ptr, Func<IntPtr, bool> closeMethod, bool ownsHandle = true) : base(ownsHandle)
 		{
-			if (closeMethod == null) throw new ArgumentNullException(nameof(closeMethod));
-
 			SetHandle(ptr);
-			CloseMethod = closeMethod;
+			CloseMethod = closeMethod ?? throw new ArgumentNullException(nameof(closeMethod));
 		}
 
 		/// <summary>Gets or sets the close method.</summary>

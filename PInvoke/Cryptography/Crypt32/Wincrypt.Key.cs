@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -22,11 +24,11 @@ namespace Vanara.PInvoke
 		// *pvArg, DWORD cProp, DWORD *rgdwPropId, void **rgpvData, DWORD *rgcbData ) {...}
 		[PInvokeData("wincrypt.h", MSDNShortId = "c4461b79-d216-4d4a-bd5d-9260ec897c14")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool PFN_CRYPT_ENUM_KEYID_PROP(in CRYPTOAPI_BLOB pKeyIdentifier, [Optional] uint dwFlags, [Optional] IntPtr pvReserved, [Optional] IntPtr pvArg, uint cProp, [In] uint[] rgdwPropId, [In] IntPtr[] rgpvData, [In] uint[] rgcbData);
+		public delegate bool PFN_CRYPT_ENUM_KEYID_PROP([In, Optional] IntPtr pKeyIdentifier, [Optional] uint dwFlags, [Optional] IntPtr pvReserved, [Optional] IntPtr pvArg, uint cProp, [In] uint[] rgdwPropId, [In] IntPtr[] rgpvData, [In] uint[] rgcbData);
 
 		/// <summary>Blob type specifier for PUBLICKEYSTRUC.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "99d41222-b4ca-40f3-a240-52b0a9b3a9aa")]
-		public enum BlobType : byte
+		public enum BlobType : uint
 		{
 			/// <summary>The BLOB is a key state BLOB.</summary>
 			KEYSTATEBLOB = 0xC,
@@ -107,7 +109,7 @@ namespace Vanara.PInvoke
 			CERT_FIND_VALID_ENHKEY_USAGE_FLAG = 0x20,
 		}
 
-		/// <summary>Flags for <see cref="CryptEnumKeyIdentifierProperties"/>.</summary>
+		/// <summary>Flags for <see cref="CryptEnumKeyIdentifierProperties(IntPtr, uint, CryptKeyIdFlags, string, IntPtr, IntPtr, PFN_CRYPT_ENUM_KEYID_PROP)"/>.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "6e57d935-4cfb-44af-b1c6-6c399c959452")]
 		[Flags]
 		public enum CryptKeyIdFlags
@@ -411,8 +413,178 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "6e57d935-4cfb-44af-b1c6-6c399c959452")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptEnumKeyIdentifierProperties(in CRYPTOAPI_BLOB pKeyIdentifier, uint dwPropId, CryptKeyIdFlags dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string pwszComputerName,
-			[Optional] IntPtr pvReserved, [In, Out, Optional] IntPtr pvArg, [MarshalAs(UnmanagedType.FunctionPtr)] PFN_CRYPT_ENUM_KEYID_PROP pfnEnum);
+		public static extern bool CryptEnumKeyIdentifierProperties(in CRYPTOAPI_BLOB pKeyIdentifier, [In, Optional] uint dwPropId, CryptKeyIdFlags dwFlags,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszComputerName, [In, Optional] IntPtr pvReserved, [In, Optional] IntPtr pvArg,
+			[MarshalAs(UnmanagedType.FunctionPtr)] PFN_CRYPT_ENUM_KEYID_PROP pfnEnum);
+
+		/// <summary>
+		/// <para>A pointer to a CRYPT_HASH_BLOB structure that contains the key identifier.</para>
+		/// <para>If pKeyIdentifier is <c>NULL</c>, the function enumerates all key identifiers.</para>
+		/// <para>If pKeyIdentifier is not <c>NULL</c>, the callback function pfnEnum is only called for the specified key identifier.</para>
+		/// <para>Indicates the property identifier to be listed.</para>
+		/// <para>If dwPropId is set to zero, this function calls the callback function with all the properties.</para>
+		/// <para>
+		/// If dwPropId is not zero and pKeyIdentifier is <c>NULL</c>, the callback function is called only for those key identifiers that
+		/// have the specified property (sets the cProp parameter of pfnEnum to one). All key identifiers that do not have the property are skipped.
+		/// </para>
+		/// <para>Any certificate property identifier can be used.</para>
+		/// <para>
+		/// By default, the list of key identifiers for the CurrentUser is searched. If CRYPT_KEYID_MACHINE_FLAG is set, the list of key
+		/// identifiers of the LocalMachine (if pwszComputerName is <c>NULL</c>) or of a remote computer (if pwszComputerName is not
+		/// <c>NULL</c>) is searched. For more information, see pwszComputerName.
+		/// </para>
+		/// <para>
+		/// A pointer to the name of a remote computer to be searched. If CRYPT_KEYID_MACHINE_FLAG is set in dwFlags, the remote computer is
+		/// searched for a list of key identifiers. If the local computer is to be searched and not a remote computer, pwszComputerName is
+		/// set to <c>NULL</c>.
+		/// </para>
+		/// <para>Reserved for future use and must be <c>NULL</c>.</para>
+		/// <para>
+		/// A pointer to data to be passed to the callback function. The type is a void that allows the application to declare, define, and
+		/// initialize a structure or argument to hold any information.
+		/// </para>
+		/// <para>
+		/// A pointer to an application-defined callback function that is executed for each key identifier entry that matches the input
+		/// parameters. For details about the callback functions parameters, see CRYPT_ENUM_KEYID_PROP.
+		/// </para>
+		/// </summary>
+		/// <param name="pKeyIdentifier">
+		/// <para>A pointer to a CRYPT_HASH_BLOB structure that contains the key identifier.</para>
+		/// <para>If pKeyIdentifier is <c>NULL</c>, the function enumerates all key identifiers.</para>
+		/// <para>If pKeyIdentifier is not <c>NULL</c>, the callback function pfnEnum is only called for the specified key identifier.</para>
+		/// </param>
+		/// <param name="dwPropId">
+		/// <para>Indicates the property identifier to be listed.</para>
+		/// <para>If dwPropId is set to zero, this function calls the callback function with all the properties.</para>
+		/// <para>
+		/// If dwPropId is not zero and pKeyIdentifier is <c>NULL</c>, the callback function is called only for those key identifiers that
+		/// have the specified property (sets the cProp parameter of pfnEnum to one). All key identifiers that do not have the property are skipped.
+		/// </para>
+		/// <para>Any certificate property identifier can be used.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// By default, the list of key identifiers for the CurrentUser is searched. If CRYPT_KEYID_MACHINE_FLAG is set, the list of key
+		/// identifiers of the LocalMachine (if pwszComputerName is <c>NULL</c>) or of a remote computer (if pwszComputerName is not
+		/// <c>NULL</c>) is searched. For more information, see pwszComputerName.
+		/// </param>
+		/// <param name="pwszComputerName">
+		/// A pointer to the name of a remote computer to be searched. If CRYPT_KEYID_MACHINE_FLAG is set in dwFlags, the remote computer is
+		/// searched for a list of key identifiers. If the local computer is to be searched and not a remote computer, pwszComputerName is
+		/// set to <c>NULL</c>.
+		/// </param>
+		/// <param name="pvReserved">Reserved for future use and must be <c>NULL</c>.</param>
+		/// <param name="pvArg">
+		/// A pointer to data to be passed to the callback function. The type is a void that allows the application to declare, define, and
+		/// initialize a structure or argument to hold any information.
+		/// </param>
+		/// <param name="pfnEnum">
+		/// A pointer to an application-defined callback function that is executed for each key identifier entry that matches the input
+		/// parameters. For details about the callback functions parameters, see CRYPT_ENUM_KEYID_PROP.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// The <c>CryptEnumKeyIdentifierProperties</c> function repeatedly calls the CRYPT_ENUM_KEYID_PROP callback function until the last
+		/// key identifier is enumerated or the callback function returns <c>FALSE</c>.
+		/// </para>
+		/// <para>If the main function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
+		/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
+		/// <para>To continue enumeration, the function returns <c>TRUE</c>.</para>
+		/// <para>To stop enumeration, the function returns <c>FALSE</c> and sets the last error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>A key identifier can have the same properties as a certificate context.</para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Example C Program: Working with Key Identifiers.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptenumkeyidentifierproperties BOOL
+		// CryptEnumKeyIdentifierProperties( const CRYPT_HASH_BLOB *pKeyIdentifier, DWORD dwPropId, DWORD dwFlags, LPCWSTR pwszComputerName,
+		// void *pvReserved, void *pvArg, PFN_CRYPT_ENUM_KEYID_PROP pfnEnum );
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "6e57d935-4cfb-44af-b1c6-6c399c959452")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptEnumKeyIdentifierProperties([In, Optional] IntPtr pKeyIdentifier, [In, Optional] uint dwPropId, CryptKeyIdFlags dwFlags,
+			[Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszComputerName, [In, Optional] IntPtr pvReserved, [In, Optional] IntPtr pvArg,
+			[MarshalAs(UnmanagedType.FunctionPtr)] PFN_CRYPT_ENUM_KEYID_PROP pfnEnum);
+
+		/// <summary>
+		/// <para>A pointer to a CRYPT_HASH_BLOB structure that contains the key identifier.</para>
+		/// <para>If pKeyIdentifier is <c>NULL</c>, the function enumerates all key identifiers.</para>
+		/// <para>If pKeyIdentifier is not <c>NULL</c>, the callback function pfnEnum is only called for the specified key identifier.</para>
+		/// <para>Indicates the property identifier to be listed.</para>
+		/// <para>If dwPropId is set to zero, this function calls the callback function with all the properties.</para>
+		/// <para>
+		/// If dwPropId is not zero and pKeyIdentifier is <c>NULL</c>, the callback function is called only for those key identifiers that
+		/// have the specified property (sets the cProp parameter of pfnEnum to one). All key identifiers that do not have the property are skipped.
+		/// </para>
+		/// <para>Any certificate property identifier can be used.</para>
+		/// <para>
+		/// By default, the list of key identifiers for the CurrentUser is searched. If CRYPT_KEYID_MACHINE_FLAG is set, the list of key
+		/// identifiers of the LocalMachine (if pwszComputerName is <c>NULL</c>) or of a remote computer (if pwszComputerName is not
+		/// <c>NULL</c>) is searched. For more information, see pwszComputerName.
+		/// </para>
+		/// <para>
+		/// A pointer to the name of a remote computer to be searched. If CRYPT_KEYID_MACHINE_FLAG is set in dwFlags, the remote computer is
+		/// searched for a list of key identifiers. If the local computer is to be searched and not a remote computer, pwszComputerName is
+		/// set to <c>NULL</c>.
+		/// </para>
+		/// <para>Reserved for future use and must be <c>NULL</c>.</para>
+		/// <para>
+		/// A pointer to data to be passed to the callback function. The type is a void that allows the application to declare, define, and
+		/// initialize a structure or argument to hold any information.
+		/// </para>
+		/// <para>
+		/// A pointer to an application-defined callback function that is executed for each key identifier entry that matches the input
+		/// parameters. For details about the callback functions parameters, see CRYPT_ENUM_KEYID_PROP.
+		/// </para>
+		/// </summary>
+		/// <param name="pKeyIdentifier">
+		/// <para>A pointer to a CRYPT_HASH_BLOB structure that contains the key identifier.</para>
+		/// <para>If pKeyIdentifier is <c>NULL</c>, the function enumerates all key identifiers.</para>
+		/// <para>If pKeyIdentifier is not <c>NULL</c>, the callback function pfnEnum is only called for the specified key identifier.</para>
+		/// </param>
+		/// <param name="dwPropId">
+		/// <para>Indicates the property identifier to be listed.</para>
+		/// <para>If dwPropId is set to zero, this function calls the callback function with all the properties.</para>
+		/// <para>
+		/// If dwPropId is not zero and pKeyIdentifier is <c>NULL</c>, the callback function is called only for those key identifiers that
+		/// have the specified property (sets the cProp parameter of pfnEnum to one). All key identifiers that do not have the property are skipped.
+		/// </para>
+		/// <para>Any certificate property identifier can be used.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// By default, the list of key identifiers for the CurrentUser is searched. If CRYPT_KEYID_MACHINE_FLAG is set, the list of key
+		/// identifiers of the LocalMachine (if pwszComputerName is <c>NULL</c>) or of a remote computer (if pwszComputerName is not
+		/// <c>NULL</c>) is searched. For more information, see pwszComputerName.
+		/// </param>
+		/// <param name="pwszComputerName">
+		/// A pointer to the name of a remote computer to be searched. If CRYPT_KEYID_MACHINE_FLAG is set in dwFlags, the remote computer is
+		/// searched for a list of key identifiers. If the local computer is to be searched and not a remote computer, pwszComputerName is
+		/// set to <c>NULL</c>.
+		/// </param>
+		/// <returns>A sequence of tuples containing the key identifier and an array of property identifiers and values as byte arrays.</returns>
+		public static IEnumerable<(byte[] keyId, (uint propId, byte[] data)[] props)> CryptEnumKeyIdentifierProperties(CRYPTOAPI_BLOB? pKeyIdentifier = null,
+			uint dwPropId = 0, CryptKeyIdFlags dwFlags = CryptKeyIdFlags.CRYPT_KEYID_MACHINE_FLAG, string pwszComputerName = null)
+		{
+			List<(byte[] keyId, (uint propId, byte[] data)[] props)> output = new();
+			using SafeCoTaskMemStruct<CRYPTOAPI_BLOB> pKeyId = pKeyIdentifier.HasValue ? new(pKeyIdentifier.Value) : SafeCoTaskMemStruct<CRYPTOAPI_BLOB>.Null;
+			Win32Error.ThrowLastErrorIfFalse(CryptEnumKeyIdentifierProperties(pKeyId, dwPropId, dwFlags, pwszComputerName, default, default, fn));
+			return output;
+
+			unsafe bool fn(IntPtr pKeyIdentifier, uint dwFlags, IntPtr pvReserved, IntPtr pvArg, uint cProp, uint[] rgdwPropId, IntPtr[] rgpvData, uint[] rgcbData)
+			{
+				try
+				{
+					var id = pKeyIdentifier == IntPtr.Zero ? null : ((CRYPTOAPI_BLOB*)(void*)pKeyIdentifier)->GetBytes();
+					var props = new (uint propId, byte[] data)[(int)cProp];
+					for (uint i = 0; i < cProp; i++)
+						props[i] = (rgdwPropId[i], rgpvData[i].AsReadOnlySpan<byte>((int)rgcbData[i]).ToArray());
+					output.Add((id, props));
+					return true;
+				}
+				catch { }
+				return false;
+			}
+		}
 
 		/// <summary>
 		/// <para>A pointer to the CRYPT_HASH_BLOB that contains the key identifier.</para>
@@ -686,6 +858,8 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PUBLICKEYSTRUC
 		{
+			private byte _bType;
+
 			/// <summary>
 			/// <para>Contains the key BLOB type.</para>
 			/// <para>
@@ -731,7 +905,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public BlobType bType;
+			public BlobType bType { get => (BlobType)_bType; set => _bType = (byte)bType; }
 
 			/// <summary>
 			/// Contains the version number of the key BLOB format. For example, if the BLOB is a Digital Signature Standard (DSS) version 3

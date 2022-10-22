@@ -17,10 +17,12 @@ namespace Vanara
 	public class Computer : Component, ISupportInitialize, ISerializable
 	{
 		/// <summary>The local computer connected by the current account.</summary>
-		public static readonly Computer Local = new Computer();
+		public static readonly Computer Local = new();
 
+		private UserAccounts accounts;
 		private SharedDevices devices;
 		private bool initializing;
+		private LocalGroups localGroups;
 		private NetworkDeviceConnectionCollection networkConnections;
 		private string targetServer;
 		private bool targetServerSet;
@@ -28,6 +30,7 @@ namespace Vanara
 		private bool userNameSet;
 		private string userPassword;
 		private bool userPasswordSet;
+		private Sessions sessions;
 
 		/// <summary>Initializes a new instance of the <see cref="Computer"/> class connecting to the local machine as the current user.</summary>
 		public Computer() => Connect();
@@ -61,9 +64,8 @@ namespace Vanara
 			EndInit();
 		}
 
-		//public IEnumerable<LocalUser> LocalUsers => LocalUser.GetEnum(Target, UserName, UserPassword);
-
-		//public IEnumerable<LocalGroup> LocalGroups => LocalGroup.GetEnum(Target, UserName, UserPassword);
+		/// <summary>The local groups on this <c>Computer</c>.</summary>
+		public LocalGroups LocalGroups => localGroups ??= new LocalGroups(Target);
 
 		/// <summary>Gets the remote resource collection for this computer.</summary>
 		/// <value>The remote resources.</value>
@@ -81,6 +83,11 @@ namespace Vanara
 		[Browsable(false)]
 		public SharedDevices SharedDevices => devices ??= new SharedDevices(this);
 
+		/// <summary>Gets the windows sessions connected to a computer.</summary>
+		/// <value>An object that views the collection of windows sessions.</value>
+		[Browsable(false)]
+		public Sessions Sessions => sessions ??= new Sessions(this);
+
 		/// <summary>Gets or sets the name of the computer that the user is connected to.</summary>
 		[Category("Data"), DefaultValue(null), Description("The name of the computer to connect to.")]
 		public string Target
@@ -88,7 +95,11 @@ namespace Vanara
 			get => ShouldSerializeTargetServer() ? targetServer : null;
 			set
 			{
-				if (value == null || value.Trim() == string.Empty) value = null;
+				if (value == null || value.Trim() == string.Empty)
+				{
+					value = null;
+				}
+
 				if (string.Compare(value, targetServer, StringComparison.OrdinalIgnoreCase) != 0)
 				{
 					targetServerSet = true;
@@ -98,6 +109,9 @@ namespace Vanara
 			}
 		}
 
+		/// <summary>The user accounts on this <c>Computer</c>.</summary>
+		public UserAccounts UserAccounts => accounts ??= new UserAccounts(Target);
+
 		/// <summary>Gets or sets the user name to be used when connecting to the <see cref="Target"/>.</summary>
 		/// <value>The user name.</value>
 		[Category("Data"), DefaultValue(null), Description("The user name to be used when connecting.")]
@@ -106,7 +120,11 @@ namespace Vanara
 			get => ShouldSerializeUserName() ? userName : null;
 			set
 			{
-				if (value == null || value.Trim() == string.Empty) value = null;
+				if (value == null || value.Trim() == string.Empty)
+				{
+					value = null;
+				}
+
 				if (string.Compare(value, userName, StringComparison.OrdinalIgnoreCase) != 0)
 				{
 					userNameSet = true;
@@ -124,7 +142,11 @@ namespace Vanara
 			get => userPassword;
 			set
 			{
-				if (value == null || value.Trim() == string.Empty) value = null;
+				if (value == null || value.Trim() == string.Empty)
+				{
+					value = null;
+				}
+
 				if (string.CompareOrdinal(value, userPassword) != 0)
 				{
 					userPasswordSet = true;
@@ -139,10 +161,12 @@ namespace Vanara
 			get
 			{
 				if (UserName is null)
+				{
 					return null;
+				}
 
-				var nonUpnIdx = UserName.IndexOf('\\');
-				var un = UserName;
+				int nonUpnIdx = UserName.IndexOf('\\');
+				string un = UserName;
 				string dn = null;
 				if (nonUpnIdx >= 0)
 				{
@@ -183,21 +207,38 @@ namespace Vanara
 				{
 					// Check to ensure character only server name. (Suggested by bigsan)
 					if (targetServer.StartsWith(@"\"))
+					{
 						targetServer = targetServer.TrimStart('\\');
+					}
 					// Make sure null is provided for local machine to compensate for a native library oddity (Found by ctrollen)
 					if (targetServer.Equals(Environment.MachineName, StringComparison.CurrentCultureIgnoreCase))
+					{
 						targetServer = null;
+					}
 				}
 				else
+				{
 					targetServer = null;
+				}
 			}
 		}
 
 		private void ResetUnsetProperties()
 		{
-			if (!targetServerSet) targetServer = null;
-			if (!userNameSet) userName = null;
-			if (!userPasswordSet) userPassword = null;
+			if (!targetServerSet)
+			{
+				targetServer = null;
+			}
+
+			if (!userNameSet)
+			{
+				userName = null;
+			}
+
+			if (!userPasswordSet)
+			{
+				userPassword = null;
+			}
 		}
 
 		private bool ShouldSerializeTargetServer() => targetServer != null && !targetServer.Trim('\\').Equals(Environment.MachineName.Trim('\\'), StringComparison.InvariantCultureIgnoreCase);

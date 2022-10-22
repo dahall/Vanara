@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -547,9 +546,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the rectangle that is excluded from the clipping region.</summary>
 			/// <value>The rectangle.</value>
-			public Rectangle? Exclude
+			public RECT? Exclude
 			{
-				get => prcExclude.ToNullableStructure<Rectangle>();
+				get => prcExclude.ToNullableStructure<RECT>();
 				set
 				{
 					if (prcExclude != IntPtr.Zero) Marshal.FreeCoTaskMem(prcExclude);

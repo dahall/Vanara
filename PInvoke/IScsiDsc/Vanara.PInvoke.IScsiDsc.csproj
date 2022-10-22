@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows ISCSI Discovery Library (IScsiDsc.dll).</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.IScsiDsc</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;IScsiDsc;ISCSI;Discovery Library</PackageTags>
@@ -19,6 +18,7 @@ Structures
 IKE_AUTHENTICATION_INFORMATION IKE_AUTHENTICATION_PRESHARED_KEY ISCSI_CONNECTION_INFO ISCSI_DEVICE_ON_SESSION ISCSI_LOGIN_OPTIONS ISCSI_SESSION_INFO ISCSI_TARGET_MAPPING ISCSI_TARGET_PORTAL ISCSI_TARGET_PORTAL_GROUP ISCSI_TARGET_PORTAL_INFO ISCSI_TARGET_PORTAL_INFO_EX ISCSI_UNIQUE_SESSION_ID ISCSI_VERSION_INFO PERSISTENT_ISCSI_LOGIN_INFO SCSI_ADDRESS SCSI_LUN_LIST STORAGE_DEVICE_NUMBER
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

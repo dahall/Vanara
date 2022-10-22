@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows PowrProf.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.PowrProf</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
@@ -20,6 +19,7 @@ Structures
 BATTERY_REPORTING_SCALE DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS GLOBAL_MACHINE_POWER_POLICY GLOBAL_POWER_POLICY GLOBAL_USER_POWER_POLICY MACHINE_POWER_POLICY MACHINE_PROCESSOR_POWER_POLICY POWER_ACTION_POLICY POWER_POLICY PROCESSOR_POWER_POLICY PROCESSOR_POWER_POLICY_INFO SYSTEM_POWER_CAPABILITIES SYSTEM_POWER_LEVEL THERMAL_EVENT USER_POWER_POLICY
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

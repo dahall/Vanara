@@ -8,7 +8,6 @@
 * Safe pinning of objects in memory
 * Memory stream based on marshaled memory</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.Core</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>vanara;net-extensions;interop</PackageTags>
@@ -16,30 +15,22 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-IArrayStruct&lt;T&gt;, IHistory&lt;T&gt;, IMemoryMethods, ISafeMemoryHandle, ISimpleMemoryMethods, IVanaraMarshaler, AlignedMemory&lt;T&gt;, BitHelper, ByteSizeFormatter, ComConnectionPoint, ComReleaser&lt;T&gt;, ComReleaserFactory, ComStream, ComTypeExtensions, CorrespondingTypeAttribute, CoTaskMemoryMethods, EnumerableEqualityComparer&lt;T&gt;, EnumExtensions, EventedList&lt;T&gt;, FileTimeExtensions, Formatter, FormatterComposer, GenericSafeHandle, GenericVirtualReadOnlyDictionary&lt;T&gt;, HexDempHelpers, HGlobalMemoryMethods, History&lt;T&gt;, IArrayStructExtensions, IArrayStructMarshaler&lt;T&gt;, InteropExtensions, IntPtrConverter, IOExtensions, LibHelper, ListChangedEventArgs&lt;T&gt;, MarshalingStream, MemoryMethodsBase, NativeMemoryEnumerator&lt;T&gt;, NativeMemoryStream, PinnedObject, ReflectionExtensions, ReflectionExtensions, SafeAllocatedMemoryHandle, SafeAllocatedMemoryHandleBase, SafeByteArray, SafeCoTaskMemHandle, SafeCoTaskMemString, SafeCoTaskMemStruct&lt;T&gt;, SafeGuidPtr, SafeHGlobalHandle, SafeHGlobalStruct&lt;T&gt;, SafeMemoryHandle&lt;T&gt;, SafeMemoryHandleExt&lt;T&gt;, SafeMemString&lt;T&gt;, SafeMemStruct&lt;T&gt;, SparseArray&lt;T&gt;, StringHelper, TryGetValueDelegate, UntypedNativeMemoryEnumerator, VanaraCustomMarshaler&lt;T&gt;, VanaraMarshaler, VanaraMarshalerAttribute, VirtualDictionary&lt;T&gt;, VirtualReadOnlyDictionary&lt;T&gt;
+AlignedMemory&lt;T&gt;, BeginEndEventContext, BitHelper, ByteSizeFormatter, ComConnectionPoint, ComReleaser&lt;T&gt;, ComReleaserFactory, ComStream, ComTypeExtensions, ConstantConversionExtensions, CorrespondingTypeAttribute, CoTaskMemoryMethods, EnumerableEqualityComparer&lt;T&gt;, EnumExtensions, EventedList&lt;T&gt;, FileTimeExtensions, Formatter, FormatterComposer, GenericSafeHandle, GenericVirtualReadOnlyDictionary&lt;T&gt;, HexDempHelpers, HGlobalMemoryMethods, History&lt;T&gt;, IArrayStructExtensions, IArrayStructMarshaler&lt;T&gt;, InteropExtensions, IntPtrConverter, IOExtensions, LibHelper, ListChangedEventArgs&lt;T&gt;, MarshalingStream, MemoryMethodsBase, NativeMemoryEnumerator&lt;T&gt;, NativeMemoryStream, PinnedObject, ReflectionExtensions, ReflectionExtensions, RequiresUnreferencedCodeAttribute, SafeAllocatedMemoryHandle, SafeAllocatedMemoryHandleBase, SafeByteArray, SafeCoTaskMemHandle, SafeCoTaskMemString, SafeCoTaskMemStruct&lt;T&gt;, SafeGuidPtr, SafeHGlobalHandle, SafeHGlobalStruct&lt;T&gt;, SafeLPSTR, SafeLPTSTR, SafeLPWSTR, SafeMemoryHandle&lt;T&gt;, SafeMemoryHandleExt&lt;T&gt;, SafeMemoryPool&lt;T&gt;, SafeMemString&lt;T&gt;, SafeMemStruct&lt;T&gt;, SparseArray&lt;T&gt;, StringHelper, TryGetValueDelegate, UntypedNativeMemoryEnumerator, VanaraCustomMarshaler&lt;T&gt;, VanaraMarshaler, VanaraMarshalerAttribute, VirtualDictionary&lt;T&gt;, VirtualReadOnlyDictionary&lt;T&gt;
 
 Structures
 BOOL, BOOLEAN, EnumFlagIndexer&lt;T&gt;, GuidPtr, RefEnumerator&lt;T&gt;, SizeT, StrPtrAnsi, StrPtrAuto, StrPtrUni, time_t
 
 Enumerations
-CorrespondingAction, StringListPackMethod
+CorrespondingAction, FileAttributeConstant, FileOpConstant, FilePermissionConstant, StringListPackMethod
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
-    <Reference Include="System.Drawing" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or '$(TargetFramework)' == 'net40' ">
-    <PackageReference Include="Theraot.Core" Version="3.2.5" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'netcoreapp2.0' Or $(TargetFramework.StartsWith('netstandard')) ">
-    <PackageReference Include="System.Memory" Version="4.5.4" />
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) Or $(TargetFramework.StartsWith('netstandard')) ">
+    <PackageReference Include="System.Memory" Version="4.5.5" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="InteropServices\SafeIDispatch.cs" />
@@ -50,6 +41,11 @@ CorrespondingAction, StringListPackMethod
     <None Include="InteropServices\StructMarshaler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="InteropServices\SafeLPSTR.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SafeLPSTR.tt</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -61,5 +57,14 @@ CorrespondingAction, StringListPackMethod
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="InteropServices\SafeLPSTR.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SafeLPSTR.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>avicap32.dll;avifil32.dll;msacm32.dll;msvfw32.dll;winmm.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Multimedia (avicap32.dll, avifil32.dll, msacm32.dll, msvfw32.dll, winmm.dll).</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.PInvoke.Multimedia</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;winmm;windows multimedia;wav;waveform;audio;msacm32;avifil32</PackageTags>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+acmDriverAdd acmDriverClose acmDriverDetails acmDriverEnum acmDriverID acmDriverMessage acmDriverOpen acmDriverPriority acmDriverRemove acmFilterChoose acmFilterDetails acmFilterEnum acmFilterTagDetails acmFilterTagEnum acmFormatChoose acmFormatDetails acmFormatEnum acmFormatSuggest acmFormatTagDetails acmFormatTagEnum acmGetVersion acmMetrics acmStreamClose acmStreamConvert acmStreamMessage acmStreamOpen acmStreamPrepareHeader acmStreamReset acmStreamSize acmStreamUnprepareHeader auxGetDevCaps auxGetNumDevs auxGetVolume auxOutMessage auxSetVolume AVIBuildFilter AVIClearClipboard AVIFileAddRef AVIFileCreateStream AVIFileEndRecord AVIFileExit AVIFileGetStream AVIFileInfo AVIFileInit AVIFileOpen AVIFileReadData AVIFileRelease AVIFileWriteData AVIGetFromClipboard AVIMakeCompressedStream AVIMakeFileFromStreams AVIMakeStreamFromClipboard AVIPutFileOnClipboard AVISave AVISaveOptions AVISaveOptionsFree AVISaveV AVIStreamAddRef AVIStreamBeginStreaming AVIStreamCreate AVIStreamEndStreaming AVIStreamFindSample AVIStreamGetFrame AVIStreamGetFrameClose AVIStreamGetFrameOpen AVIStreamInfo AVIStreamLength AVIStreamOpenFromFile AVIStreamRead AVIStreamReadData AVIStreamReadFormat AVIStreamRelease AVIStreamSampleToTime AVIStreamSetFormat AVIStreamStart AVIStreamTimeToSample AVIStreamWrite AVIStreamWriteData capCreateCaptureWindow capGetDriverDescription CloseDriver CreateEditableStream DefDriverProc DrawDibBegin DrawDibChangePalette DrawDibClose DrawDibDraw DrawDibEnd DrawDibGetBuffer DrawDibGetPalette DrawDibOpen DrawDibProfileDisplay DrawDibRealize DrawDibSetPalette DrawDibStart DrawDibStop DrawDibTime DriverCallback DrvDefDriverProc DrvGetModuleHandle EditStreamClone EditStreamCopy EditStreamCut EditStreamPaste EditStreamSetInfo EditStreamSetName GetDriverModuleHandle GetOpenFileNamePreview GetSaveFileNamePreview ICClose ICCompress ICCompressorChoose ICCompressorFree ICDecompress ICDraw ICDrawBegin ICGetDisplayFormat ICGetInfo ICImageCompress ICImageDecompress ICInfo ICInstall ICLocate ICOpen ICOpenFunction ICRemove ICSendMessage ICSeqCompressFrame ICSeqCompressFrameEnd ICSeqCompressFrameStart joyConfigChanged joyGetDevCaps joyGetNumDevs joyGetPos joyGetPosEx joyGetThreshold joyReleaseCapture joySetCapture joySetThreshold MCIWndCreate MCIWndRegisterClass midiConnect midiDisconnect midiInAddBuffer midiInClose midiInGetDevCaps midiInGetErrorText midiInGetID midiInGetNumDevs midiInMessage midiInOpen midiInPrepareHeader midiInReset midiInStart midiInStop midiInUnprepareHeader midiOutCacheDrumPatches midiOutCachePatches midiOutClose midiOutGetDevCaps midiOutGetErrorText midiOutGetID midiOutGetNumDevs midiOutGetVolume midiOutLongMsg midiOutMessage midiOutOpen midiOutPrepareHeader midiOutReset midiOutSetVolume midiOutShortMsg midiOutUnprepareHeader midiStreamClose midiStreamOpen midiStreamOut midiStreamPause midiStreamPosition midiStreamProperty midiStreamRestart midiStreamStop mixerClose mixerGetControlDetails mixerGetDevCaps mixerGetID mixerGetLineControls mixerGetLineInfo mixerGetNumDevs mixerMessage mixerOpen mixerSetControlDetails mmioAdvance mmioAscend mmioClose mmioCreateChunk mmioDescend mmioFlush mmioGetInfo mmioInstallIOProc mmioOpen mmioRead mmioRename mmioSeek mmioSendMessage mmioSetBuffer mmioSetInfo mmioStringToFOURCC mmioWrite OpenDriver PlaySound SendDriverMessage sndOpenSound sndPlaySound StretchDIB timeBeginPeriod timeEndPeriod timeGetDevCaps timeGetSystemTime timeGetTime waveInAddBuffer waveInClose waveInGetDevCaps waveInGetErrorText waveInGetID waveInGetNumDevs waveInGetPosition waveInMessage waveInOpen waveInPrepareHeader waveInReset waveInStart waveInStop waveInUnprepareHeader waveOutBreakLoop waveOutClose waveOutGetDevCaps waveOutGetErrorText waveOutGetID waveOutGetNumDevs waveOutGetPitch waveOutGetPlaybackRate waveOutGetPosition waveOutGetVolume waveOutMessage waveOutOpen waveOutPause waveOutPrepareHeader waveOutReset waveOutRestart waveOutSetPitch waveOutSetPlaybackRate waveOutSetVolume waveOutUnprepareHeader waveOutWrite
+
+Structures
+ACMDRIVERDETAILS ACMFILTERCHOOSE ACMFILTERDETAILS ACMFILTERTAGDETAILS ACMFORMATCHOOSE ACMFORMATDETAILS ACMFORMATTAGDETAILS ACMSTREAMHEADER AUXCAPS AVICOMPRESSOPTIONS AVIFILEINFO AVISTREAMINFO BOUNDS CAPDRIVERCAPS CAPDRIVERCAPS CAPINFOCHUNK CAPINFOCHUNK CAPSTATUS CAPSTATUS CAPTUREPARMS CAPTUREPARMS COMPVARS DRAWDIBTIME DRAWDIBTIME DRVCONFIGINFO HACMDRIVER HACMDRIVERID HACMOBJ HACMSTREAM HDRAWDIB HDRVR HIC HMIDI HMIDIIN HMIDIOUT HMIDISTRM HMIXER HMIXEROBJ HMMIO HWAVEIN HWAVEOUT ICCOMPRESS ICCOMPRESSFRAMES ICDECOMPRESS ICDECOMPRESSEX ICDRAW ICDRAWBEGIN ICDRAWSUGGEST ICINFO ICOPEN ICSETSTATUSPROC JOYCAPS JOYINFO JOYINFOEX JOYPOS JOYRANGE JOYREGHWVALUES MDEVICECAPSEX METRICS MIDIEVENT MIDIHDR MIDIINCAPS MIDIOPENDESC MIDIOPENSTRMID MIDIOUTCAPS MIDIPROPTEMPO MIDIPROPTIMEDIV MIDISTRMBUFFVER MIXERCAPS MIXERCONTROL MIXERCONTROLDETAILS MIXERCONTROLDETAILS_BOOLEAN MIXERCONTROLDETAILS_LISTTEXT MIXERCONTROLDETAILS_SIGNED MIXERCONTROLDETAILS_UNSIGNED MIXERLINE MIXERLINECONTROLS MMCKINFO MMIOINFO MMTIME PCMWAVEFORMAT SAMPLES TARGET TIMECAPS VIDEOHDR VIDEOHDR WAVEFILTER WAVEFORMAT WAVEFORMATEX WAVEFORMATEXTENSIBLE WAVEHDR WAVEINCAPS WAVEOUTCAPS
+
+Interfaces
+IAVIEditStream IAVIFile IAVIStream IAVIStreaming IGetFrame
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\ComDlg32\Vanara.PInvoke.ComDlg32.csproj" />
+    <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>

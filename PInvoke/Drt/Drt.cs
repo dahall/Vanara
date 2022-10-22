@@ -12,7 +12,9 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the Drt.dll</summary>
 	public static partial class Drt
 	{
-		private const string Lib_Drt = "Drt.dll";
+		private const string Lib_Drt = "drt.dll";
+		private const string Lib_DrtProv = "drtprov.dll";
+		private const string Lib_DrtTrans = "drttransport.dll";
 
 		/// <summary/>
 		public const uint DRT_PAYLOAD_REVOKED = (1 << 0);
@@ -402,15 +404,35 @@ namespace Vanara.PInvoke
 			DRT_LEAFSET_KEY_DELETED,
 		}
 
-		/// <summary>
-		/// The <c>DRT_MATCH_TYPE</c> enumeration defines the exactness of a search result returned by DrtGetSearchResult after initiating a
-		/// search with the DrtStartSearch API.
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/drt/ne-drt-drt_match_type typedef enum drt_match_type_tag { DRT_MATCH_EXACT,
-		// DRT_MATCH_NEAR, DRT_MATCH_INTERMEDIATE } DRT_MATCH_TYPE;
+		/// <summary>The <c>DRT_MATCH_TYPE</c> enumeration defines the exactness of a search result returned by DrtGetSearchResult after initiating a search with the DrtStartSearch API.</summary>
+		// https://learn.microsoft.com/en-us/windows/win32/api/drt/ne-drt-drt_match_type
+		// typedef enum drt_match_type_tag { DRT_MATCH_EXACT = 0, DRT_MATCH_NEAR = 1, DRT_MATCH_INTERMEDIATE = 2 } DRT_MATCH_TYPE;
 		[PInvokeData("drt.h", MSDNShortId = "NE:drt.drt_match_type_tag")]
 		public enum DRT_MATCH_TYPE
 		{
+			/// <summary>
+			///   <para>Value:</para>
+			///   <para>0</para>
+			///   <para>The node found is publishing the target key or is publishing a key within the specified range.</para>
+			/// </summary>
+			DRT_MATCH_EXACT,
+
+			/// <summary>
+			///   <para>Value:</para>
+			///   <para>1</para>
+			///   <para>The node found is publishing the numerically closest key to the specified target key.</para>
+			/// </summary>
+			DRT_MATCH_NEAR,
+
+			/// <summary>
+			/// <para>Value:</para>
+			/// <para>2</para>
+			/// <para>
+			/// The node returned is an intermediate node. An application will receive this node match type if <c>fIterative</c> is set to
+			/// <see langword="true"/>.
+			/// </para>
+			/// </summary>
+			DRT_MATCH_INTERMEDIATE,
 		}
 
 		/// <summary>The <c>DRT_REGISTRATION_STATE</c> enumeration defines the set of legal states for a registered key.</summary>
@@ -489,22 +511,22 @@ namespace Vanara.PInvoke
 			/// The local node is connected to the DRT mesh and participating in the DRT system. This is also an indication that remote
 			/// nodes exist and are present in the cache of the local node.
 			/// </summary>
-			DRT_ACTIVE,
+			DRT_ACTIVE = 0,
 
 			/// <summary>
 			/// The local node is participating in the DRT system, but is waiting for remote nodes to join the DRT mesh. This is an
 			/// indication that remote nodes do not exist, or are not yet present in the cache of the local node.
 			/// </summary>
-			DRT_ALONE,
+			DRT_ALONE = 1,
 
 			/// <summary>The local node does not have network connectivity.</summary>
-			DRT_NO_NETWORK,
+			DRT_NO_NETWORK = 10,
 
 			/// <summary>
 			/// A critical error has occurred in the local DRT instance. The DrtClose function must be called, after which an attempt to
 			/// re-open the DRT can be made.
 			/// </summary>
-			DRT_FAULTED,
+			DRT_FAULTED = 20,
 		}
 
 		/// <summary>The <c>DrtClose</c> function closes the local instance of the DRT.</summary>
@@ -585,9 +607,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatederivedkey HRESULT DrtCreateDerivedKey( PCCERT_CONTEXT
 		// pLocalCert, DRT_DATA *pKey );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateDerivedKey")]
-		public static extern HRESULT DrtCreateDerivedKey(PCCERT_CONTEXT pLocalCert, out DRT_DATA pKey);
+		public static extern HRESULT DrtCreateDerivedKey(PCCERT_CONTEXT pLocalCert, [Out] SafeDRT_DATA pKey);
 
 		/// <summary>
 		/// The <c>DrtCreateDerivedKeySecurityProvider</c> function creates the derived key security provider for a Distributed Routing Table.
@@ -629,7 +651,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatederivedkeysecurityprovider HRESULT
 		// DrtCreateDerivedKeySecurityProvider( PCCERT_CONTEXT pRootCert, PCCERT_CONTEXT pLocalCert, DRT_SECURITY_PROVIDER
 		// **ppSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateDerivedKeySecurityProvider")]
 		public static extern HRESULT DrtCreateDerivedKeySecurityProvider(PCCERT_CONTEXT pRootCert, PCCERT_CONTEXT pLocalCert, out IntPtr ppSecurityProvider);
 
@@ -660,7 +682,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatednsbootstrapresolver HRESULT
 		// DrtCreateDnsBootstrapResolver( USHORT port, PCWSTR pwszAddress, DRT_BOOTSTRAP_PROVIDER **ppModule );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateDnsBootstrapResolver")]
 		public static extern HRESULT DrtCreateDnsBootstrapResolver(ushort port, [MarshalAs(UnmanagedType.LPWStr)] string pwszAddress, out IntPtr ppModule);
 
@@ -724,9 +746,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreateipv6udptransport HRESULT DrtCreateIpv6UdpTransport(
 		// DRT_SCOPE scope, ULONG dwScopeId, ULONG dwLocalityThreshold, USHORT *pwPort, HDRT_TRANSPORT *phTransport );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtTrans, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateIpv6UdpTransport")]
-		public static extern HRESULT DrtCreateIpv6UdpTransport(DRT_SCOPE scope, uint dwScopeId, uint dwLocalityThreshold, ref ushort pwPort, out HDRT_TRANSPORT phTransport);
+		public static extern HRESULT DrtCreateIpv6UdpTransport(DRT_SCOPE scope, uint dwScopeId, uint dwLocalityThreshold, ref ushort pwPort, out SafeHDRT_TRANSPORT phTransport);
 
 		/// <summary>
 		/// The <c>DrtCreateNullSecurityProvider</c> function creates a null security provider. This security provider does not require
@@ -752,7 +774,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatenullsecurityprovider HRESULT
 		// DrtCreateNullSecurityProvider( DRT_SECURITY_PROVIDER **ppSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreateNullSecurityProvider")]
 		public static extern HRESULT DrtCreateNullSecurityProvider(out IntPtr ppSecurityProvider);
 
@@ -808,7 +830,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtcreatepnrpbootstrapresolver HRESULT
 		// DrtCreatePnrpBootstrapResolver( BOOL fPublish, PCWSTR pwzPeerName, PCWSTR pwzCloudName, PCWSTR pwzPublishingIdentity,
 		// DRT_BOOTSTRAP_PROVIDER **ppResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtCreatePnrpBootstrapResolver")]
 		public static extern HRESULT DrtCreatePnrpBootstrapResolver([MarshalAs(UnmanagedType.Bool)] bool fPublish, [MarshalAs(UnmanagedType.LPWStr)] string pwzPeerName,
 			[Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzCloudName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwzPublishingIdentity,
@@ -821,7 +843,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletederivedkeysecurityprovider void
 		// DrtDeleteDerivedKeySecurityProvider( DRT_SECURITY_PROVIDER *pSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteDerivedKeySecurityProvider")]
 		public static extern void DrtDeleteDerivedKeySecurityProvider(in DRT_SECURITY_PROVIDER pSecurityProvider);
 
@@ -832,7 +854,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletederivedkeysecurityprovider void
 		// DrtDeleteDerivedKeySecurityProvider( DRT_SECURITY_PROVIDER *pSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteDerivedKeySecurityProvider")]
 		public static extern void DrtDeleteDerivedKeySecurityProvider([In] IntPtr pSecurityProvider);
 
@@ -841,7 +863,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletednsbootstrapresolver void DrtDeleteDnsBootstrapResolver(
 		// DRT_BOOTSTRAP_PROVIDER *pResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteDnsBootstrapResolver")]
 		public static extern void DrtDeleteDnsBootstrapResolver(in DRT_BOOTSTRAP_PROVIDER pResolver);
 
@@ -850,7 +872,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletednsbootstrapresolver void DrtDeleteDnsBootstrapResolver(
 		// DRT_BOOTSTRAP_PROVIDER *pResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteDnsBootstrapResolver")]
 		public static extern void DrtDeleteDnsBootstrapResolver([In] IntPtr pResolver);
 
@@ -884,7 +906,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeleteipv6udptransport HRESULT DrtDeleteIpv6UdpTransport(
 		// HDRT_TRANSPORT hTransport );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtTrans, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteIpv6UdpTransport")]
 		public static extern HRESULT DrtDeleteIpv6UdpTransport(HDRT_TRANSPORT hTransport);
 
@@ -893,7 +915,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletenullsecurityprovider void DrtDeleteNullSecurityProvider(
 		// DRT_SECURITY_PROVIDER *pSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteNullSecurityProvider")]
 		public static extern void DrtDeleteNullSecurityProvider(in DRT_SECURITY_PROVIDER pSecurityProvider);
 
@@ -902,7 +924,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletenullsecurityprovider void DrtDeleteNullSecurityProvider(
 		// DRT_SECURITY_PROVIDER *pSecurityProvider );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeleteNullSecurityProvider")]
 		public static extern void DrtDeleteNullSecurityProvider([In] IntPtr pSecurityProvider);
 
@@ -913,7 +935,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletepnrpbootstrapresolver void DrtDeletePnrpBootstrapResolver(
 		// DRT_BOOTSTRAP_PROVIDER *pResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeletePnrpBootstrapResolver")]
 		public static extern void DrtDeletePnrpBootstrapResolver(in DRT_BOOTSTRAP_PROVIDER pResolver);
 
@@ -924,7 +946,7 @@ namespace Vanara.PInvoke
 		/// <returns>None</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtdeletepnrpbootstrapresolver void DrtDeletePnrpBootstrapResolver(
 		// DRT_BOOTSTRAP_PROVIDER *pResolver );
-		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib_DrtProv, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtDeletePnrpBootstrapResolver")]
 		public static extern void DrtDeletePnrpBootstrapResolver([In] IntPtr pResolver);
 
@@ -1315,7 +1337,7 @@ namespace Vanara.PInvoke
 		// hEvent, const PVOID pvContext, HDRT *phDrt );
 		[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtOpen")]
-		public static extern HRESULT DrtOpen(in DRT_SETTINGS pSettings, HANDLE hEvent, [In, Optional] IntPtr pvContext, out HDRT phDrt);
+		public static extern HRESULT DrtOpen(in DRT_SETTINGS pSettings, HANDLE hEvent, [In, Optional] IntPtr pvContext, out SafeHDRT phDrt);
 
 		/// <summary>The <c>DrtRegisterKey</c> function registers a key in the DRT.</summary>
 		/// <param name="hDrt">A pointer to a handle returned by the DrtOpen function.</param>
@@ -1737,7 +1759,7 @@ namespace Vanara.PInvoke
 			public DRT_BOOTSTRAP_RESOLVE_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="DRT_BOOTSTRAP_RESOLVE_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static DRT_BOOTSTRAP_RESOLVE_CONTEXT NULL => new DRT_BOOTSTRAP_RESOLVE_CONTEXT(IntPtr.Zero);
+			public static DRT_BOOTSTRAP_RESOLVE_CONTEXT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -1750,7 +1772,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="DRT_BOOTSTRAP_RESOLVE_CONTEXT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator DRT_BOOTSTRAP_RESOLVE_CONTEXT(IntPtr h) => new DRT_BOOTSTRAP_RESOLVE_CONTEXT(h);
+			public static implicit operator DRT_BOOTSTRAP_RESOLVE_CONTEXT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -1786,6 +1808,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Pointer to a byte array that contains the common data.</summary>
 			public IntPtr pb;
+
+			/// <summary>Performs an implicit conversion from <see cref="DRT_DATA"/> to <see cref="System.Byte"/>[].</summary>
+			/// <param name="d">The <see cref="DRT_DATA"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator byte[](DRT_DATA d) => d.pb == IntPtr.Zero ? null : d.GetArray();
 		}
 
 		/// <summary>
@@ -1821,64 +1848,93 @@ namespace Vanara.PInvoke
 			[StructLayout(LayoutKind.Explicit)]
 			public struct UNION
 			{
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a change in a leaf set of a locally registered key; the
+				/// type field of the DRT_EVENT_DATA structure is set to DRT_EVENT_LEAFSET_KEY_CHANGED.
+				/// </summary>
 				[FieldOffset(0)]
 				public LEAFSETKEYCHANGE leafsetKeyChange;
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a change in a local key registration; the type field of
+				/// the DRT_EVENT_DATA structure is set to DRT_EVENT_REGISTRATION_STATE_CHANGED.
+				/// </summary>
 				[FieldOffset(0)]
 				public REGISTRATIONSTATECHANGE registrationStateChange;
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a state change in the local DRT instance; the type field
+				/// of the DRT_EVENT_DATA structure is set to DRT_EVENT_STATUS_CHANGED.
+				/// </summary>
 				[FieldOffset(0)]
 				public STATUSCHANGE statusChange;
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a change in a leaf set of a locally registered key; the
+				/// type field of the DRT_EVENT_DATA structure is set to DRT_EVENT_LEAFSET_KEY_CHANGED.
+				/// </summary>
 				[StructLayout(LayoutKind.Sequential)]
 				public struct LEAFSETKEYCHANGE
 
 				{
-					/// <summary/>
+					/// <summary>Specifies the type of key change that has occurred.</summary>
 					public DRT_LEAFSET_KEY_CHANGE_TYPE change;
 
-					/// <summary/>
+					/// <summary>Specifies the local key associated with the leaf set that has changed.</summary>
 					public DRT_DATA localKey;
 
-					/// <summary/>
+					/// <summary>Specifies the remote key that changed.</summary>
 					public DRT_DATA remoteKey;
 				}
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a change in a local key registration; the type field of
+				/// the DRT_EVENT_DATA structure is set to DRT_EVENT_REGISTRATION_STATE_CHANGED.
+				/// </summary>
 				[StructLayout(LayoutKind.Sequential)]
 				public struct REGISTRATIONSTATECHANGE
 				{
-					/// <summary/>
+					/// <summary>Specifies the type of registration state change that has occurred.</summary>
 					public DRT_REGISTRATION_STATE state;
 
-					/// <summary/>
+					/// <summary>Specifies the local key associated with the registration that has changed.</summary>
 					public DRT_DATA localKey;
 				}
 
-				/// <summary/>
+				/// <summary>
+				/// This structure appears when the event has been raised to signal a state change in the local DRT instance; the type field
+				/// of the DRT_EVENT_DATA structure is set to DRT_EVENT_STATUS_CHANGED.
+				/// </summary>
 				[StructLayout(LayoutKind.Sequential)]
 				public struct STATUSCHANGE
 
 				{
-					/// <summary/>
+					/// <summary>Contains the current DRT_STATUS of the local DRT instance.</summary>
 					public DRT_STATUS status;
 
-					/// <summary/>
+					/// <summary>
+					/// This structure contains the addresses returned by the bootstrap provider when the DRT attempts to join the mesh. This
+					/// structure is completed only when the DRT transitions to the DRT_ALONE state. The contents of this structure can be
+					/// used to diagnose connectivity issues between the local DRT instance and other nodes already present in the mesh.
+					/// </summary>
 					public BOOTSTRAPADDRESSES bootstrapAddresses;
 
-					/// <summary/>
+					/// <summary>
+					/// This structure contains the addresses returned by the bootstrap provider when the DRT attempts to join the mesh. This
+					/// structure is completed only when the DRT transitions to the DRT_ALONE state. The contents of this structure can be
+					/// used to diagnose connectivity issues between the local DRT instance and other nodes already present in the mesh.
+					/// </summary>
 					[StructLayout(LayoutKind.Sequential)]
 					public struct BOOTSTRAPADDRESSES
 					{
-						/// <summary/>
+						/// <summary>Contains the number of addresses in pAddresses.</summary>
 						public uint cntAddress;
 
-						/// <summary>PSOCKADDR_STORAGE</summary>
+						/// <summary>Contains an array of SOCKADDR_STORAGE addresses returned by the bootstrap provider.</summary>
 						public IntPtr pAddresses;
+
+						/// <summary>Gets the array of SOCKADDR_STORAGE addresses returned by the bootstrap provider.</summary>
+						public SOCKADDR_STORAGE[] Addresses => pAddresses.ToArray<SOCKADDR_STORAGE>((int)cntAddress);
 					}
 				}
 			}
@@ -2155,7 +2211,7 @@ namespace Vanara.PInvoke
 			public HDRT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HDRT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HDRT NULL => new HDRT(IntPtr.Zero);
+			public static HDRT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2168,7 +2224,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDRT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDRT(IntPtr h) => new HDRT(h);
+			public static implicit operator HDRT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2203,7 +2259,7 @@ namespace Vanara.PInvoke
 			public HDRT_REGISTRATION_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HDRT_REGISTRATION_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HDRT_REGISTRATION_CONTEXT NULL => new HDRT_REGISTRATION_CONTEXT(IntPtr.Zero);
+			public static HDRT_REGISTRATION_CONTEXT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2216,7 +2272,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDRT_REGISTRATION_CONTEXT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDRT_REGISTRATION_CONTEXT(IntPtr h) => new HDRT_REGISTRATION_CONTEXT(h);
+			public static implicit operator HDRT_REGISTRATION_CONTEXT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2251,7 +2307,7 @@ namespace Vanara.PInvoke
 			public HDRT_SEARCH_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HDRT_SEARCH_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HDRT_SEARCH_CONTEXT NULL => new HDRT_SEARCH_CONTEXT(IntPtr.Zero);
+			public static HDRT_SEARCH_CONTEXT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2264,7 +2320,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDRT_SEARCH_CONTEXT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDRT_SEARCH_CONTEXT(IntPtr h) => new HDRT_SEARCH_CONTEXT(h);
+			public static implicit operator HDRT_SEARCH_CONTEXT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2299,7 +2355,7 @@ namespace Vanara.PInvoke
 			public HDRT_TRANSPORT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HDRT_TRANSPORT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HDRT_TRANSPORT NULL => new HDRT_TRANSPORT(IntPtr.Zero);
+			public static HDRT_TRANSPORT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2312,7 +2368,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDRT_TRANSPORT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HDRT_TRANSPORT(IntPtr h) => new HDRT_TRANSPORT(h);
+			public static implicit operator HDRT_TRANSPORT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2342,93 +2398,86 @@ namespace Vanara.PInvoke
 		/// </summary>
 		[PInvokeData("wincrypt.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-		public class SafeDRT_DATA : IDisposable
+		public class SafeDRT_DATA : SafeNativeArray<byte>
 		{
-			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
-			private uint _cb;
-
-			/// <summary>A pointer to the data buffer.</summary>
-			private IntPtr _pb;
+			static readonly int HdrSize = Marshal.SizeOf(typeof(DRT_DATA));
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class.</summary>
 			/// <param name="size">The size, in bytes, to allocate.</param>
-			public SafeDRT_DATA(int size)
-			{
-				_cb = (uint)size;
-				if (size > 0)
-					_pb = MemMethods.AllocMem(size);
-			}
+			public SafeDRT_DATA(int size) : base(size, (uint)HdrSize) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class.</summary>
 			/// <param name="bytes">The bytes to copy into the blob.</param>
-			public SafeDRT_DATA(byte[] bytes) : this(bytes?.Length ?? 0) => Marshal.Copy(bytes, 0, _pb, bytes.Length);
+			public SafeDRT_DATA(byte[] bytes) : base(bytes, (uint)HdrSize) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeDRT_DATA"/> class with a string.</summary>
 			/// <param name="value">The string value.</param>
 			/// <param name="charSet">The character set to use.</param>
-			public SafeDRT_DATA(string value, CharSet charSet = CharSet.Ansi) : this(StringHelper.GetBytes(value, true, charSet))
-			{
-			}
-
-			private SafeDRT_DATA(IntPtr handle, int size)
-			{
-				_pb = handle;
-				_cb = (uint)size;
-			}
+			public SafeDRT_DATA(string value, CharSet charSet = CharSet.Ansi) : this(StringHelper.GetBytes(value, true, charSet)) { }
 
 			/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
-			public uint cb => _cb;
+			public int cb => base.Count;
 
 			/// <summary>A pointer to the data buffer.</summary>
-			public IntPtr pb => _pb;
+			public IntPtr pb => handle.Offset(HdrSize);
 
 			/// <summary>Represents an empty instance of a blob.</summary>
-			public static readonly SafeDRT_DATA Empty = new SafeDRT_DATA(IntPtr.Zero, 0);
-
-			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-			public void Dispose()
-			{
-				MemMethods.FreeMem(_pb);
-				_pb = IntPtr.Zero;
-				_cb = 0;
-			}
+			public static readonly SafeDRT_DATA Empty = new(0);
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeDRT_DATA"/> to <see cref="DRT_DATA"/>.</summary>
 			/// <param name="safeData">The safe data.</param>
 			/// <returns>The resulting <see cref="DRT_DATA"/> instance from the conversion.</returns>
-			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) => new DRT_DATA { cb = safeData._cb, pb = safeData._pb };
+			public static implicit operator DRT_DATA(SafeDRT_DATA safeData) { safeData.UpdateHdr(); return safeData.handle.ToStructure<DRT_DATA>(); }
 
-			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
-			/// <typeparam name="T">Native type</typeparam>
-			/// <param name="value">The value.</param>
-			/// <returns><see cref="SafeDRT_DATA"/> object to an native (unmanaged) memory block the size of T.</returns>
-			public static SafeDRT_DATA CreateFromStructure<T>(in T value = default) => new SafeDRT_DATA(InteropExtensions.MarshalToPtr(value, MemMethods.AllocMem, out var s), s);
+			/// <inheritdoc/>
+			protected override void OnCountChanged() => UpdateHdr();
 
-			/// <summary>
-			/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
-			/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY
-			/// structures with attribute StructLayout of LayoutKind.Sequential are supported.
-			/// </summary>
-			/// <typeparam name="T">Type of the trailing array of structures</typeparam>
-			/// <param name="values">Collection of structure objects</param>
-			/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
-			/// <returns><see cref="SafeDRT_DATA"/> object to an native (unmanaged) structure with a trail array of structures</returns>
-			public static SafeDRT_DATA CreateFromList<T>(IEnumerable<T> values, int prefixBytes = 0) =>
-				new SafeDRT_DATA(InteropExtensions.MarshalToPtr(values, MemMethods.AllocMem, out var s, prefixBytes), s);
+			/// <inheritdoc/>
+			protected override void OnUpdateHeader() => UpdateHdr();
 
-			/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
-			/// <param name="values">The list of strings.</param>
-			/// <param name="packing">The packing type for the strings.</param>
-			/// <param name="charSet">The character set to use for the strings.</param>
-			/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
-			/// <returns>
-			/// <see cref="SafeDRT_DATA"/> object to an native (unmanaged) array of strings stored using the <paramref
-			/// name="packing"/> model and the character set defined by <paramref name="charSet"/>.
-			/// </returns>
-			public static SafeDRT_DATA CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-				new SafeDRT_DATA(InteropExtensions.MarshalToPtr(values, packing, MemMethods.AllocMem, out var s, charSet, prefixBytes), s);
+			private void UpdateHdr() => handle.Write(new DRT_DATA() { cb = (uint)base.Count, pb = base.Count == 0 ? IntPtr.Zero : handle.Offset(HdrSize) });
+		}
 
-			private static IMemoryMethods MemMethods => HGlobalMemoryMethods.Instance;
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDRT"/> that is disposed using <see cref="DrtClose"/>.</summary>
+		public class SafeHDRT : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHDRT"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHDRT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHDRT"/> class.</summary>
+			private SafeHDRT() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHDRT"/> to <see cref="HDRT"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HDRT(SafeHDRT h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { DrtClose(handle); return true; }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDRT_TRANSPORT"/> that is disposed using <see cref="DrtDeleteIpv6UdpTransport"/>.</summary>
+		public class SafeHDRT_TRANSPORT : SafeHANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHDRT_TRANSPORT"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHDRT_TRANSPORT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHDRT_TRANSPORT"/> class.</summary>
+			private SafeHDRT_TRANSPORT() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHDRT_TRANSPORT"/> to <see cref="HDRT_TRANSPORT"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HDRT_TRANSPORT(SafeHDRT_TRANSPORT h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DrtDeleteIpv6UdpTransport(handle).Succeeded;
 		}
 	}
 }

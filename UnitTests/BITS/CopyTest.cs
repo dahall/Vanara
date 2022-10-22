@@ -1,23 +1,20 @@
-﻿using NUnit.Framework;
-using System.IO;
+﻿using System.IO;
 
-namespace Vanara.IO.Tests
+namespace Vanara.PInvoke.Tests;
+
+internal partial class BackgroundCopyTests
 {
-	partial class BackgroundCopyTests
+	[Test]
+	public void CopyTest()
 	{
-		[Test]
-		public void CopyTest()
-		{
-			using var tempRoot = new TemporaryDirectory();
+		using var tempRoot = new TemporaryDirectory();
 
-			var srcFile = tempRoot.CreateFile().FullName;
+		var srcFile = tempRoot.CreateFile().FullName;
 
-			var dstFile = tempRoot.RandomTxtFileFullPath;
+		var dstFile = tempRoot.RandomTxtFileFullPath;
 
+		Assert.That(() => BackgroundCopyManager.Copy(srcFile, dstFile), Throws.Nothing);
 
-			Assert.That(() => BackgroundCopyManager.Copy(srcFile, dstFile), Throws.Nothing);
-
-			Assert.That(File.Exists(dstFile));
-		}
+		Assert.That(File.Exists(dstFile));
 	}
 }

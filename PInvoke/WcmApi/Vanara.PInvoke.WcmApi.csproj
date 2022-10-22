@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants imported from Windows WcmApi.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.WcmApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;WcmApi;windows connection manager</PackageTags>
@@ -20,6 +19,7 @@ Structures
 WCM_BILLING_CYCLE_INFO WCM_CONNECTION_COST_DATA WCM_DATAPLAN_STATUS WCM_POLICY_VALUE WCM_PROFILE_INFO WCM_PROFILE_INFO_LIST WCM_TIME_INTERVAL WCM_USAGE_DATA
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

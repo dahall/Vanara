@@ -211,7 +211,7 @@ namespace Vanara.PInvoke
 			{
 				get
 				{
-					if (DnsServerList.IpAddress != null)
+					if (DnsServerList.IpAddress.String != null)
 						yield return DnsServerList;
 					var next = DnsServerList.GetNext();
 					while (next != null)
@@ -557,7 +557,7 @@ namespace Vanara.PInvoke
 			/// <para>The interface index for the IPv6 IP address. This member is zero if IPv6 is not available on the interface.</para>
 			/// <para><c>Note</c> This structure member is only available on Windows XP with SP1 and later.</para>
 			/// </summary>
-			private readonly uint Ipv6IfIndex;
+			public uint Ipv6IfIndex;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD[16]</c></para>
@@ -868,7 +868,12 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_ANYCAST_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Flags; }; }; struct
 		// _IP_ADAPTER_ANYCAST_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_ANYCAST_ADDRESS_XP, *PIP_ADAPTER_ANYCAST_ADDRESS_XP;
 		[PInvokeData("iptypes.h", MSDNShortId = "2626fc86-e29b-4162-8625-207c709d67ed")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 8,
+#if x64
+		Size = 32)]
+#else
+		Size = 24)]
+#endif
 		public struct IP_ADAPTER_ANYCAST_ADDRESS : ILinkedListElement<IP_ADAPTER_ANYCAST_ADDRESS>
 		{
 			/// <summary>Specifies the length of this structure.</summary>
@@ -922,7 +927,12 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_DNS_SERVER_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Reserved; }; }; struct
 		// _IP_ADAPTER_DNS_SERVER_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_DNS_SERVER_ADDRESS_XP, *PIP_ADAPTER_DNS_SERVER_ADDRESS_XP;
 		[PInvokeData("iptypes.h", MSDNShortId = "96855386-9010-40df-8260-16b43ad6646f")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 8,
+#if x64
+		Size = 32)]
+#else
+		Size = 24)]
+#endif
 		public struct IP_ADAPTER_DNS_SERVER_ADDRESS : ILinkedListElement<IP_ADAPTER_DNS_SERVER_ADDRESS>
 		{
 			/// <summary>Specifies the length of this structure.</summary>
@@ -1009,7 +1019,12 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_GATEWAY_ADDRESS_LH { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Reserved; }; }; struct
 		// _IP_ADAPTER_GATEWAY_ADDRESS_LH *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_GATEWAY_ADDRESS_LH, *PIP_ADAPTER_GATEWAY_ADDRESS_LH;
 		[PInvokeData("iptypes.h", MSDNShortId = "CA38504A-1CC9-4ABA-BD4E-1B2EAD6F588B")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 8,
+#if x64
+		Size = 32)]
+#else
+		Size = 24)]
+#endif
 		public struct IP_ADAPTER_GATEWAY_ADDRESS : ILinkedListElement<IP_ADAPTER_GATEWAY_ADDRESS>
 		{
 			/// <summary>Specifies the length of this structure.</summary>
@@ -1233,23 +1248,29 @@ namespace Vanara.PInvoke
 			/// <para>The time when the current DHCP lease was obtained.</para>
 			/// <para>This member is only valid when the <c>DhcpEnabled</c> member is nonzero.</para>
 			/// </summary>
-			public uint LeaseObtained;
+			public time_t LeaseObtained;
 
 			/// <summary>
 			/// <para>Type: <c>time_t</c></para>
 			/// <para>The time when the current DHCP lease expires.</para>
 			/// <para>This member is only valid when the <c>DhcpEnabled</c> member is nonzero.</para>
 			/// </summary>
-			public uint LeaseExpires;
+			public time_t LeaseExpires;
 
 			/// <summary>Gets a sequence of IP_ADDR_STRING values representing IP addresses.</summary>
-			public IEnumerable<IP_ADDR_STRING> IpAddresses => IpAddressList.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> IpAddresses => IpAddressList.GetLinkedList(s => s.IpAddress.String != null);
 
 			/// <summary>Gets a sequence of IP_ADDR_STRING values representing gateways.</summary>
-			public IEnumerable<IP_ADDR_STRING> Gateways => GatewayList.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> Gateways => GatewayList.GetLinkedList(s => s.IpAddress.String != null);
+
+			/// <summary>Gets a sequence of IP_ADDR_STRING values representing DHCP servers.</summary>
+			public IEnumerable<IP_ADDR_STRING> DhcpServers => DhcpServer.GetLinkedList(s => s.IpAddress.String != null);
+
+			/// <summary>Gets a sequence of IP_ADDR_STRING values representing primary WINS servers.</summary>
+			public IEnumerable<IP_ADDR_STRING> PrimaryWinsServers => PrimaryWinsServer.GetLinkedList(s => s.IpAddress.String != null);
 
 			/// <summary>Gets a sequence of IP_ADDR_STRING values representing secondary WINS servers.</summary>
-			public IEnumerable<IP_ADDR_STRING> SecondaryWinsServers => SecondaryWinsServer.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> SecondaryWinsServers => SecondaryWinsServer.GetLinkedList(s => s.IpAddress.String != null);
 
 			/// <summary>
 			/// <para>Gets a reference to the next <c>IP_ADAPTER_INFO</c> structure in the list.</para>
@@ -1281,7 +1302,12 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_MULTICAST_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Flags; }; }; struct
 		// _IP_ADAPTER_MULTICAST_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_MULTICAST_ADDRESS_XP, *PIP_ADAPTER_MULTICAST_ADDRESS_XP;
 		[PInvokeData("iptypes.h", MSDNShortId = "b85a6e0a-df2c-4608-b07a-191b34440a43")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 8,
+#if x64
+		Size = 32)]
+#else
+		Size = 24)]
+#endif
 		public struct IP_ADAPTER_MULTICAST_ADDRESS : ILinkedListElement<IP_ADAPTER_MULTICAST_ADDRESS>
 		{
 			/// <summary>Specifies the length of this structure.</summary>
@@ -1523,7 +1549,12 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_WINS_SERVER_ADDRESS_LH { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Reserved; }; }; struct
 		// _IP_ADAPTER_WINS_SERVER_ADDRESS_LH *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_WINS_SERVER_ADDRESS_LH, *PIP_ADAPTER_WINS_SERVER_ADDRESS_LH;
 		[PInvokeData("iptypes.h", MSDNShortId = "AF9A40C4-63DB-4830-A689-1DFE4DC2CAB7")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 8,
+#if x64
+		Size = 32)]
+#else
+		Size = 24)]
+#endif
 		public struct IP_ADAPTER_WINS_SERVER_ADDRESS : ILinkedListElement<IP_ADAPTER_WINS_SERVER_ADDRESS>
 		{
 			/// <summary>Specifies the length of this structure.</summary>
@@ -1570,18 +1601,17 @@ namespace Vanara.PInvoke
 			/// A value that specifies a structure type with a single member, <c>String</c>. The <c>String</c> member is a <c>char</c> array
 			/// of size 16. This array holds an IPv4 address in dotted decimal notation.
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-			public string IpAddress;
+			public IP_ADDRESS_STRING IpAddress;
 
 			/// <summary>
 			/// A value that specifies a structure type with a single member, <c>String</c>. The <c>String</c> member is a <c>char</c> array
 			/// of size 16. This array holds the IPv4 subnet mask in dotted decimal notation.
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-			public string IpMask;
+			public IP_ADDRESS_STRING IpMask;
 
 			/// <summary>
-			/// A network table entry (NTE). This value corresponds to the NTEContext parameters in the AddIPAddress and DeleteIPAddress functions.
+			/// A network table entry (NTE). This value corresponds to the NTEContext parameters in the <see cref="AddIPAddress"/> and <see
+			/// cref="DeleteIPAddress"/> functions.
 			/// </summary>
 			public uint Context;
 
@@ -1608,6 +1638,9 @@ namespace Vanara.PInvoke
 			/// <summary>A character string that represents an IPv4 address or an IPv4 subnet mask in dotted decimal notation.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
 			public string String;
+
+			/// <inheritdoc/>
+			public override string ToString() => String ?? "";
 		}
 
 		/// <summary>The <c>IP_INTERFACE_NAME_INFO</c> structure contains information about an IPv4 interface on the local computer.</summary>
@@ -1696,6 +1729,8 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IFTYPE MediaType;
 
+			private byte _ConnectionType;
+
 			/// <summary>
 			/// <para>Type: <c>UCHAR</c></para>
 			/// <para>The interface connection type for the adapter.</para>
@@ -1727,8 +1762,9 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[MarshalAs(UnmanagedType.U1)]
-			public NET_IF_CONNECTION_TYPE ConnectionType;
+			public NET_IF_CONNECTION_TYPE ConnectionType { get => (NET_IF_CONNECTION_TYPE)_ConnectionType; set => _ConnectionType = (byte)value; }
+
+			private byte _AccessType;
 
 			/// <summary>
 			/// <para>Type: <c>UCHAR</c></para>
@@ -1771,8 +1807,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[MarshalAs(UnmanagedType.U1)]
-			public NET_IF_ACCESS_TYPE AccessType;
+			public NET_IF_ACCESS_TYPE AccessType { get => (NET_IF_ACCESS_TYPE)_AccessType; set => _AccessType = (byte)value; }
 
 			/// <summary>
 			/// <para>Type: <c>GUID</c></para>
@@ -1833,7 +1868,7 @@ namespace Vanara.PInvoke
 			/// local computer.
 			/// </para>
 			/// </summary>
-			public IEnumerable<IP_ADDR_STRING> DnsServers => DnsServerList.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> DnsServers => DnsServerList.GetLinkedList(s => s.IpAddress.String != null);
 		}
 
 		/// <summary>

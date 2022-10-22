@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke
 {
@@ -47,14 +48,14 @@ namespace Vanara.PInvoke
 		/// </returns>
 		public int CompareTo(object obj)
 		{
-			if (!(obj is IConvertible c)) throw new ArgumentException(@"Object cannot be converted to a UInt16 value for comparison.", nameof(obj));
+			if (obj is not IConvertible c) throw new ArgumentException(@"Object cannot be converted to a UInt16 value for comparison.", nameof(obj));
 			return _value.CompareTo(c.ToUInt16(null));
 		}
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => obj is IConvertible c ? _value.Equals(c.ToUInt16(null)) : false;
+		public override bool Equals(object obj) => obj is IConvertible c && _value.Equals(c.ToUInt16(null));
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -75,7 +76,7 @@ namespace Vanara.PInvoke
 					return $"{fi.Name} ({HexStr(this)})";
 			return HexStr(this);
 
-			string HexStr(in CLIPFORMAT cf) => string.Format(CultureInfo.InvariantCulture, "0x{0:X4}", cf._value);
+			static string HexStr(in CLIPFORMAT cf) => string.Format(CultureInfo.InvariantCulture, "0x{0:X4}", cf._value);
 		}
 
 		/// <summary>Implements the operator ==.</summary>
@@ -105,22 +106,22 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="ushort"/> to <see cref="CLIPFORMAT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator CLIPFORMAT(ushort value) => new CLIPFORMAT(value);
+		public static implicit operator CLIPFORMAT(ushort value) => new(value);
 
 		/// <summary>Performs an implicit conversion from <see cref="short"/> to <see cref="CLIPFORMAT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator CLIPFORMAT(short value) => new CLIPFORMAT(unchecked((ushort)value));
+		public static implicit operator CLIPFORMAT(short value) => new(unchecked((ushort)value));
 
 		/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="CLIPFORMAT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator CLIPFORMAT(uint value) => new CLIPFORMAT((ushort)value);
+		public static implicit operator CLIPFORMAT(uint value) => new((ushort)value);
 
 		/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="CLIPFORMAT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator CLIPFORMAT(int value) => new CLIPFORMAT((ushort)value);
+		public static implicit operator CLIPFORMAT(int value) => new((ushort)value);
 
 		/// <summary>Performs an explicit conversion from <see cref="CLIPFORMAT"/> to <see cref="System.UInt16"/>.</summary>
 		/// <param name="value">The value.</param>
@@ -143,6 +144,7 @@ namespace Vanara.PInvoke
 		public static implicit operator int(CLIPFORMAT value) => value._value;
 
 		/// <summary>A handle to a bitmap (HBITMAP).</summary>
+		[ClipCorrespondingType(typeof(HBITMAP))]
 		public static readonly CLIPFORMAT CF_BITMAP = 2;
 
 		/// <summary>A memory object containing a BITMAPINFO structure followed by the bitmap bits.</summary>
@@ -181,6 +183,7 @@ namespace Vanara.PInvoke
 		public static readonly CLIPFORMAT CF_DSPTEXT = 0x0081;
 
 		/// <summary>A handle to an enhanced metafile (HENHMETAFILE).</summary>
+		[ClipCorrespondingType(typeof(HENHMETAFILE), TYMED.TYMED_ENHMF)]
 		public static readonly CLIPFORMAT CF_ENHMETAFILE = 14;
 
 		/// <summary>
@@ -191,9 +194,11 @@ namespace Vanara.PInvoke
 		/// allocated by the GlobalAlloc function with the GMEM_MOVEABLE flag.
 		/// </para>
 		/// </summary>
+		[ClipCorrespondingType(typeof(int))]
 		public static readonly CLIPFORMAT CF_GDIOBJFIRST = 0x0300;
 
 		/// <summary>See CF_GDIOBJFIRST.</summary>
+		[ClipCorrespondingType(typeof(int))]
 		public static readonly CLIPFORMAT CF_GDIOBJLAST = 0x03FF;
 
 		/// <summary>
@@ -219,18 +224,21 @@ namespace Vanara.PInvoke
 		/// correct code page table is used for the conversion.
 		/// </para>
 		/// </summary>
+		[ClipCorrespondingType(typeof(LCID))]
 		public static readonly CLIPFORMAT CF_LOCALE = 16;
 
 		/// <summary>
 		/// Handle to a metafile picture format as defined by the METAFILEPICT structure. When passing a CF_METAFILEPICT handle by means of
 		/// DDE, the application responsible for deleting hMem should also free the metafile referred to by the CF_METAFILEPICT handle.
 		/// </summary>
+		[ClipCorrespondingType(typeof(HMETAFILE), TYMED.TYMED_MFPICT)]
 		public static readonly CLIPFORMAT CF_METAFILEPICT = 3;
 
 		/// <summary>
 		/// Text format containing characters in the OEM character set. Each line ends with a carriage return/linefeed (CR-LF) combination. A
 		/// null character signals the end of the data.
 		/// </summary>
+		[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(System.Text.ASCIIEncoding))]
 		public static readonly CLIPFORMAT CF_OEMTEXT = 7;
 
 		/// <summary>
@@ -238,6 +246,7 @@ namespace Vanara.PInvoke
 		/// WM_ASKCBFORMATNAME, WM_HSCROLLCLIPBOARD, WM_PAINTCLIPBOARD, WM_SIZECLIPBOARD, and WM_VSCROLLCLIPBOARD messages. The hMem
 		/// parameter must be NULL.
 		/// </summary>
+		[ClipCorrespondingType(null, TYMED.TYMED_NULL)]
 		public static readonly CLIPFORMAT CF_OWNERDISPLAY = 0x0080;
 
 		/// <summary>
@@ -262,9 +271,11 @@ namespace Vanara.PInvoke
 		/// private clipboard formats are not freed automatically; the clipboard owner must free such handles, typically in response to the
 		/// WM_DESTROYCLIPBOARD message.
 		/// </summary>
+		[ClipCorrespondingType(typeof(int))]
 		public static readonly CLIPFORMAT CF_PRIVATEFIRST = 0x0200;
 
 		/// <summary>See CF_PRIVATEFIRST.</summary>
+		[ClipCorrespondingType(typeof(int))]
 		public static readonly CLIPFORMAT CF_PRIVATELAST = 0x02FF;
 
 		/// <summary>Represents audio data more complex than can be represented in a CF_WAVE standard wave format.</summary>
@@ -277,6 +288,7 @@ namespace Vanara.PInvoke
 		/// Text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the data.
 		/// Use this format for ANSI text.
 		/// </summary>
+		[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(System.Text.ASCIIEncoding))]
 		public static readonly CLIPFORMAT CF_TEXT = 1;
 
 		/// <summary>Tagged-image file format.</summary>
@@ -285,9 +297,52 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Unicode text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the data.
 		/// </summary>
+		[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(System.Text.UnicodeEncoding))]
 		public static readonly CLIPFORMAT CF_UNICODETEXT = 13;
 
 		/// <summary>Represents audio data in one of the standard wave formats, such as 11 kHz or 22 kHz PCM.</summary>
 		public static readonly CLIPFORMAT CF_WAVE = 12;
+	}
+
+	/// <summary>Indicates the type, medium and method for getting and setting the payload associated with known clipboard formats.</summary>
+	/// <seealso cref="Vanara.InteropServices.CorrespondingTypeAttribute"/>
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
+	public class ClipCorrespondingTypeAttribute : Vanara.InteropServices.CorrespondingTypeAttribute
+	{
+		/// <summary>Initializes a new instance of the <see cref="ClipCorrespondingTypeAttribute"/> class.</summary>
+		/// <param name="typeRef">The type that corresponds to this entity.</param>
+		/// <param name="medium">The medium type used to store the payload.</param>
+		public ClipCorrespondingTypeAttribute(Type typeRef, TYMED medium = TYMED.TYMED_HGLOBAL) : base(typeRef)
+		{
+			Medium = medium;
+		}
+
+		/// <summary>Gets the medium type used to store the payload.</summary>
+		/// <value>The medium type.</value>
+		public TYMED Medium { get; }
+
+		/// <summary>
+		/// Gets or sets the formatter type used to place the contents of the object of <see
+		/// cref="InteropServices.CorrespondingTypeAttribute.TypeRef"/>. If not specified, it can be assumed the type will be directly marshaled.
+		/// </summary>
+		/// <value>The optional formatter type.</value>
+		public Type Formatter { get; set; }
+	}
+
+	/// <summary>A formatter used to get and set objects on the clipboard. When implemented, use the <see cref="ClipCorrespondingTypeAttribute.Formatter"/> property to 
+	/// associate a clipboard format </summary>
+	public interface IClipboardFormatter
+	{
+		/// <summary>Extracts the object from an HGLOBAL handle.</summary>
+		/// <param name="hGlobal">The HGLOBAL handle.</param>
+		/// <returns>The extracted object.</returns>
+		public object Read(IntPtr hGlobal);
+
+		/// <summary>Inserts the specified object into an allocated HGLOBAL handle.</summary>
+		/// <param name="value">The object value.</param>
+		/// <returns>
+		/// A pointer to allocated memory holding the content. This should be created using GlobalAlloc with the GMEM_MOVEABLE flag.
+		/// </returns>
+		public IntPtr Write(object value);
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using static Vanara.PInvoke.OverlappedAsync;
 
 namespace Vanara.PInvoke.Tests
@@ -23,6 +25,12 @@ namespace Vanara.PInvoke.Tests
 
 				EndOverlappedFunction(oar);
 			}
+		}
+
+		[Test]
+		public void TestStructs()
+		{
+			typeof(Win32Error).Assembly.GetTypes().GetStructSizes(true).WriteValues();
 		}
 	}
 }

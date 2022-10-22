@@ -218,51 +218,383 @@ namespace Vanara.PInvoke
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb787473")]
 		public enum TaskDialogMessage : uint
 		{
-			/// <summary>Navigate page.</summary>
+			/// <summary>Recreates a task dialog with new contents, simulating the functionality of a multi-page wizard.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Not used. Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// A pointer to a <c>TASKDIALOGCONFIG</c> structure that describes the task dialog to create. The calling application must
+			/// allocate this structure and set its members. The values of the members vary depending on the kind of page the user navigates to.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// To launch a wizard task dialog, use the <c>TaskDialogIndirect</c> function. As the user navigates using the wizard, send this
+			/// message to the task dialog to display the next page. A new task dialog (looks like a new page) is created with the elements
+			/// specified in the structure pointed to by lParam. At creation, the entire contents of the dialog frame are destroyed and
+			/// reconstructed. As a result, any state information held by controls (for example, a progress bar, expando button, or
+			/// verification checkbox) in the dialog is lost.
+			/// </para>
+			/// <para>
+			/// The layout of the task dialog may fail and this may not be reflected in the return value. A return value of S_OK reflects
+			/// only that the task dialog received the message and attempted to process it. If the layout of the task dialog fails (the task
+			/// dialog cannot be displayed), the dialog will close and an <c>HRESULT</c> code is returned at the registered callback
+			/// function. For more information on the callback function syntax, see TaskDialogCallbackProc.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-navigate-page
 			TDM_NAVIGATE_PAGE = WindowMessage.WM_USER + 101,
 
-			/// <summary>Click button.</summary>
+			/// <summary>Simulates the action of a button click in a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>An <c>int</c> that specifies the ID of the button to be clicked.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			/// <remarks>
+			/// The button ID specified by wParam is sent to the <c>TaskDialogCallbackProc</c> callback function as part of a
+			/// TDN_BUTTON_CLICKED notification code. After the callback function returns, the task dialog is closed if S_OK was returned
+			/// from the callback function. If S_FALSE was returned from the callback function, the task dialog remains active.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-click-button
 			TDM_CLICK_BUTTON = WindowMessage.WM_USER + 102, // wParam = Button ID
 
-			/// <summary>Set Progress bar to be marquee mode.</summary>
+			/// <summary>Indicates whether the hosted progress bar of a task dialog should be displayed in marquee mode.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
+			/// A <c>BOOL</c> that indicates whether the progress bar should be shown in marquee mode. A value of <c>TRUE</c> turns on
+			/// marquee mode, and a value of <c>FALSE</c> turns off marquee mode.
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			/// <remarks>For information on marquee mode, see Progress Bar Control.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-marquee-progress-bar
 			TDM_SET_MARQUEE_PROGRESS_BAR = WindowMessage.WM_USER + 103, // wParam = 0 (nonMarque) wParam != 0 (Marquee)
 
-			/// <summary>Set Progress bar state.</summary>
+			/// <summary>Sets the state of the progress bar in a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>An <c>int</c> that specifies the state of the progress bar. This parameter can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>PBST_NORMAL</c></term>
+			/// <term>Sets the progress bar to the normal state.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>PBST_PAUSED</c></term>
+			/// <term>Sets the progress bar to the paused state.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>PBST_ERROR</c></term>
+			/// <term>Set the progress bar to the error state.</term>
+			/// </item>
+			/// </list>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>If the function succeeds, the return value is non zero.</para>
+			/// <para>If the function fails, the return value is zero. To get extended error information call GetLastError.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-progress-bar-state
 			TDM_SET_PROGRESS_BAR_STATE = WindowMessage.WM_USER + 104, // wParam = new progress state
 
-			/// <summary>Set progress bar range.</summary>
+			/// <summary>Sets the minimum and maximum values for the progress bar in a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// The <c>LOWORD</c> specifies the minimum value. By default, the minimum value is zero. The <c>HIWORD</c> specifies the maximum
+			/// value. By default, the maximum value is 100.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
+			/// Returns the previous minimum and maximum values, if successful, or zero otherwise. The <c>LOWORD</c> contains the minimum
+			/// value, and the <c>HIWORD</c> contains the maximum value.
+			/// </para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-progress-bar-range
 			TDM_SET_PROGRESS_BAR_RANGE = WindowMessage.WM_USER + 105, // lParam = MAKELPARAM(nMinRange, nMaxRange)
 
-			/// <summary>Set progress bar position.</summary>
+			/// <summary>Sets the position of the progress bar in a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>An <c>int</c> that specifies the new position.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the previous position.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-progress-bar-pos
 			TDM_SET_PROGRESS_BAR_POS = WindowMessage.WM_USER + 106, // wParam = new position
 
-			/// <summary>Set progress bar marquee (animation).</summary>
+			/// <summary>Starts and stops the marquee display of the progress bar in a task dialog, and sets the speed of the marquee.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
+			/// A <c>BOOL</c> that indicates whether to turn the marquee display on or off. Use <c>TRUE</c> to turn on the marquee display,
+			/// or <c>FALSE</c> to turn it off.
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// A <c>UINT</c> that specifies the time, in milliseconds, between marquee animation updates. If this parameter is zero, the
+			/// marquee animation is updated every 30 milliseconds.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			/// <remarks>For information on marquee mode, see Progress Bar Control.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-progress-bar-marquee
 			TDM_SET_PROGRESS_BAR_MARQUEE = WindowMessage.WM_USER + 107, // wParam = 0 (stop marquee), wParam != 0 (start marquee), lparam = speed (milliseconds between repaints)
 
-			/// <summary>Set a text element of the Task Dialog.</summary>
+			/// <summary>Updates a text element in a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
+			/// Indicates the element to update. (For an illustration, see About Task Dialogs.) This parameter must be one of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>TDE_CONTENT</c></term>
+			/// <term>Content.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TDE_EXPANDED_INFORMATION</c></term>
+			/// <term>Expanded information.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TDE_FOOTER</c></term>
+			/// <term>Footer text.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TDE_MAIN_INSTRUCTION</c></term>
+			/// <term>Main instruction.</term>
+			/// </item>
+			/// </list>
+			/// <para><em>lParam</em></para>
+			/// <para>The new text to use.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			/// <remarks>The size or layout of the task dialog may change to accommodate the new text.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-element-text
 			TDM_SET_ELEMENT_TEXT = WindowMessage.WM_USER + 108, // wParam = element (TASKDIALOG_ELEMENTS), lParam = new element text (LPCWSTR)
 
-			/// <summary>Click a radio button.</summary>
+			/// <summary>Simulates the action of a radio button click in a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>An <c>int</c> value that specifies the ID of the radio button to be clicked.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			/// <remarks>
+			/// The specified radio button ID is sent to the <c>TaskDialogCallbackProc</c> callback function as part of a
+			/// TDN_RADIO_BUTTON_CLICKED notification code. After the callback function returns, the radio button will be selected.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-click-radio-button
 			TDM_CLICK_RADIO_BUTTON = WindowMessage.WM_USER + 110, // wParam = Radio Button ID
 
-			/// <summary>Enable or disable a button.</summary>
+			/// <summary>Enables or disables a push button in a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>An <c>int</c> value that specifies the ID of the push button to be enabled or disabled.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Specifies button state. Set to 0 to disable the button; set to nonzero to enable the button.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-enable-button
 			TDM_ENABLE_BUTTON = WindowMessage.WM_USER + 111, // lParam = 0 (disable), lParam != 0 (enable), wParam = Button ID
 
-			/// <summary>Enable or disable a radio button.</summary>
+			/// <summary>Enables or disables a radio button in a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>An <c>int</c> value that specifies the ID of the radio button to be enabled or disabled.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Specifies button state. Set to 0 to disable the button; set to nonzero to enable the button.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-enable-radio-button
 			TDM_ENABLE_RADIO_BUTTON = WindowMessage.WM_USER + 112, // lParam = 0 (disable), lParam != 0 (enable), wParam = Radio Button ID
 
-			/// <summary>Check or uncheck the verification checkbox.</summary>
+			/// <summary>Simulates a click of the verification checkbox of a task dialog, if it exists.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para><c>TRUE</c> to set the state of the checkbox to be checked; <c>FALSE</c> to set it to be unchecked.</para>
+			/// <para><em>lParam</em></para>
+			/// <para><c>TRUE</c> to set the keyboard focus to the checkbox; <c>FALSE</c> otherwise.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-click-verification
 			TDM_CLICK_VERIFICATION = WindowMessage.WM_USER + 113, // wParam = 0 (unchecked), 1 (checked), lParam = 1 (set key focus)
 
-			/// <summary>Update the text of an element (no effect if originally set as null).</summary>
+			/// <summary>Updates a text element in a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
+			/// Indicates the element to update. (For an illustration of the elements, see About Task Dialogs.) This parameter must be one of
+			/// the following values:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>TDE_CONTENT</c></term>
+			/// <term>Content.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TDE_EXPANDED_INFORMATION</c></term>
+			/// <term>Expanded information.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TDE_FOOTER</c></term>
+			/// <term>Footer text.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TDE_MAIN_INSTRUCTION</c></term>
+			/// <term>Main instruction.</term>
+			/// </item>
+			/// </list>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a Unicode string that contains the new text.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// To avoid clipping, the new text must be no longer than the existing text. Setting the text to a shorter string does not cause
+			/// the dialog box to resize.
+			/// </para>
+			/// <para>
+			/// If the <c>pszExpandedInformation</c> member of the <c>TASKDIALOGCONFIG</c> structure used to create the task dialog was
+			/// <c>NULL</c>, and you send a <c>TDM_UPDATE_ELEMENT_TEXT</c> message with TDE_EXPANDED_INFORMATION, nothing will happen.
+			/// </para>
+			/// <para>The above also applies to the footer and TDE_FOOTER.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-update-element-text
 			TDM_UPDATE_ELEMENT_TEXT = WindowMessage.WM_USER + 114, // wParam = element (TASKDIALOG_ELEMENTS), lParam = new element text (LPCWSTR)
 
 			/// <summary>
-			/// Designate whether a given Task Dialog button or command link should have a User Account Control (UAC) shield icon.
+			/// Specifies whether a given task dialog button or command link should have a User Account Control (UAC) shield icon; that is,
+			/// whether the action invoked by the button requires elevation.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The ID of the push button or command link to be updated.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// Set to 0 to designate that the action invoked by the button does not require elevation. Set to nonzero to designate that the
+			/// action requires elevation.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-set-button-elevation-required-state
 			TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE = WindowMessage.WM_USER + 115, // wParam = Button ID, lParam = 0 (elevation not required), lParam != 0 (elevation required)
 
-			/// <summary>Refreshes the icon of the task dialog.</summary>
+			/// <summary>Refreshes the icon of a task dialog.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Indicates which icon element to update. This parameter must be one of the following values:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>TDIE_ICON_MAIN</c></term>
+			/// <term>Main icon.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TDIE_ICON_FOOTER</c></term>
+			/// <term>Footer icon.</term>
+			/// </item>
+			/// </list>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// A pointer to a string (PCWSTR) or handle to an icon (HICON) to display. If lParam is <c>NULL</c>, no icon is displayed,
+			/// regardless of the value of wParam.
+			/// </para>
+			/// <para>
+			/// If the value of wParam is TDIE_ICON_MAIN and the TDF_USE_HICON_MAIN flag is set on the <c>dwFlags</c> member of the
+			/// <c>TASKDIALOGCONFIG</c> structure used to create the task dialog, lParam must contain a handle to an icon (HICON) to display.
+			/// </para>
+			/// <para>
+			/// If the value of wParam is TDIE_ICON_FOOTER and the TDF_USE_HICON_FOOTER flag is set on the <c>dwFlags</c> member of the
+			/// <c>TASKDIALOGCONFIG</c> structure used to create the task dialog, lParam must contain a handle to an icon (HICON) to display.
+			/// </para>
+			/// <para>
+			/// If the TDF_USE_HICON_MAIN or TDF_USE_HICON_FOOTER flags are <c>not</c> set on the <c>dwFlags</c> member, lParam must point to
+			/// a null-terminated, Unicode string (PCWSTR) that contains a valid resource identifier passed through the
+			/// <c>MAKEINTRESOURCE</c> macro. The icon is displayed based on the value of wParam: if the value is TDIE_ICON_MAIN, the icon is
+			/// displayed in the header; if the value is TDIE_ICON_FOOTER, the icon is displayed in the footer. The resource must be either
+			/// from the application's resource module (specified in the <c>hInstance</c> member of the <c>TASKDIALOGCONFIG</c> structure),
+			/// or if <c>hInstance</c> is <c>NULL</c>, from the system's resource module (imageres.dll). To identify a system resource, use a
+			/// valid system identifier passed through the <c>MAKEINTRESOURCE</c> macro or one of the following predefined values from commctrl.h:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>TD_ERROR_ICON</c></term>
+			/// <term>A stop sign icon.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TD_WARNING_ICON</c></term>
+			/// <term>An exclamation point icon.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TD_INFORMATION_ICON</c></term>
+			/// <term>A lowercase letter "i" in a circle icon.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>TD_SHIELD_ICON</c></term>
+			/// <term>A security shield icon.</term>
+			/// </item>
+			/// </list>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// The layout of the task dialog with the icon may fail and this may not be reflected in the return value. A return value of
+			/// S_OK reflects only that the task dialog received the message and attempted to process it. If the layout of the task dialog
+			/// fails, the dialog will close and an <c>HRESULT</c> code is returned at the registered callback function. For more information
+			/// on the callback function syntax, see TaskDialogCallbackProc.
+			/// </para>
+			/// <para>
+			/// If the task dialog is created without a footer (that is, the appropriate footer members of the <c>TASKDIALOGCONFIG</c>
+			/// structure used to create the task dialog are <c>NULL</c>) and this message is sent, a footer is not dynamically added to the
+			/// task dialog. The same is true for sending this message to update a header icon when a task dialog is created without a
+			/// header. To add a header or footer at run time, use the <c>TDM_NAVIGATE_PAGE</c> functionality.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdm-update-icon
 			TDM_UPDATE_ICON = WindowMessage.WM_USER + 116 // wParam = icon element (TASKDIALOG_ICON_ELEMENTS), lParam = new icon (hIcon if TDF_USE_HICON_* was set, PCWSTR otherwise)
 		}
 
@@ -271,73 +603,226 @@ namespace Vanara.PInvoke
 		public enum TaskDialogNotification : uint
 		{
 			/// <summary>
+			/// <para>
 			/// Sent by the task dialog after the dialog has been created and before it is displayed. This notification code is received only
-			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// through the task dialog callback function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_CREATED WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-created
 			TDN_CREATED = 0,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a task dialog when navigation has occurred. This notification code is received only through the task dialog callback
-			/// function, which can be registered using the TaskDialogIndirect method.
+			/// function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_NAVIGATED WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-navigated
 			TDN_NAVIGATED = 1,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a task dialog when the user selects a button or command link in the task dialog. This notification code is received
-			/// only through the task dialog callback function, which can be registered using the TaskDialogIndirect method. To prevent the
-			/// task dialog from closing, the application must return S_FALSE, otherwise the task dialog is closed and the button ID is
-			/// returned via the original application call.
+			/// only through the task dialog callback function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_BUTTON_CLICKED WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>An <c>int</c> that specifies the ID of the button or comand link that was selected.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
+			/// To prevent the task dialog from closing, the application must return <c>S_FALSE</c>, otherwise the task dialog is closed and
+			/// the button ID is returned via the original application call.
+			/// </para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-button-clicked
 			TDN_BUTTON_CLICKED = 2,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a task dialog when the user clicks a hyperlink in the task dialog content. This notification code is received only
-			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// through the task dialog callback function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_HYPERLINK_CLICKED WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a wide-character string containing the URL of the hyperlink.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-hyperlink-clicked
 			TDN_HYPERLINK_CLICKED = 3,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a task dialog approximately every 200 milliseconds. This notification code is sent when the TDF_CALLBACK_TIMER flag
-			/// has been set in the dwFlags member of the TASKDIALOGCONFIG structure that was passed to the TaskDialogIndirect function. This
-			/// notification code is received only through the task dialog callback function, which can be registered using the
-			/// TaskDialogIndirect method.
+			/// has been set in the <c>dwFlags</c> member of the <c>TASKDIALOGCONFIG</c> structure that was passed to the
+			/// <c>TaskDialogIndirect</c> function. This notification code is received only through the task dialog callback function, which
+			/// can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_TIMER WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
+			/// A <c>DWORD</c> that specifies the number of milliseconds since the dialog was created or this notification code returned <c>S_FALSE</c>.
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>To reset the tickcount, the application must return <c>S_FALSE</c>, otherwise the tickcount will continue to increment.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-timer
 			TDN_TIMER = 4,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a task dialog when it is destroyed and its window handle is no longer valid. This notification code is received only
-			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// through the task dialog callback function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_DESTROYED WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-destroyed
 			TDN_DESTROYED = 5,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a task dialog when the user selects a radio button or command link in the task dialog. This notification code is
-			/// received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// received only through the task dialog callback function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_RADIO_BUTTON_CLICKED WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>An <c>int</c> that specifies the ID corresponding to the radio button that was clicked.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-radio-button-clicked
 			TDN_RADIO_BUTTON_CLICKED = 6,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a task dialog after the dialog has been created and before it is displayed. This notification code is received only
-			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// through the task dialog callback function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_DIALOG_CONSTRUCTED WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-dialog-constructed
 			TDN_DIALOG_CONSTRUCTED = 7,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a task dialog when the user clicks the task dialog verification check box. This notification code is received only
-			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// through the task dialog callback function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_VERIFICATION_CLICKED WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
+			/// A <c>BOOL</c> that specifies the status of the verification checkbox. It is <c>TRUE</c> if the verification checkbox is
+			/// checked, or <c>FALSE</c> if it is unchecked.
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-verification-clicked
 			TDN_VERIFICATION_CLICKED = 8,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a task dialog when the user presses F1 on the keyboard while the dialog has focus. This notification code is received
-			/// only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// only through the task dialog callback function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_HELP WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-help
 			TDN_HELP = 9,
 
 			/// <summary>
+			/// <para>
 			/// Sent by the task dialog when the user clicks on the dialog's expando button. This notification is received only through the
-			/// task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// task dialog callback function, which can be registered using the <c>TaskDialogIndirect</c> method.
+			/// </para>
+			/// <para>
+			/// <code>TDN_EXPANDO_BUTTON_CLICKED WPARAM wParam; LPARAM lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>A <c>BOOL</c> that is <c>TRUE</c> if the dialog is expanded, or <c>FALSE</c> if not.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
 			/// </summary>
+			/// <remarks>
+			/// The example in the Syntax section shows the cast to wParam before sending the notification. <c>LPARAM</c> is not used and
+			/// must be zero.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tdn-expando-button-clicked
 			TDN_EXPANDO_BUTTON_CLICKED = 10
 		}
 

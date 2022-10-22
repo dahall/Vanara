@@ -1552,7 +1552,7 @@ namespace Vanara.PInvoke
 			/// <param name="pidlItem">A pointer to an ITEMIDLIST structure that uniquely identifies the item of interest.</param>
 			/// <param name="flags">One of the _SVSIF constants that specify the type of selection to apply.</param>
 			/// <param name="point">A pointer to a POINT structure containing the new position.</param>
-			void SelectAndPositionItem(IntPtr pidlItem, SVSIF flags, in System.Drawing.Point point);
+			void SelectAndPositionItem(IntPtr pidlItem, SVSIF flags, in POINT point);
 		}
 
 		/// <summary>
@@ -1793,7 +1793,7 @@ namespace Vanara.PInvoke
 			/// <param name="pidlItem">A pointer to an ITEMIDLIST structure that uniquely identifies the item of interest.</param>
 			/// <param name="flags">One of the _SVSIF constants that specify the type of selection to apply.</param>
 			/// <param name="point">A pointer to a POINT structure containing the new position.</param>
-			new void SelectAndPositionItem(IntPtr pidlItem, SVSIF flags, in System.Drawing.Point point);
+			new void SelectAndPositionItem(IntPtr pidlItem, SVSIF flags, in POINT point);
 
 			/// <summary>
 			/// Requests the creation of a new Shell view window. The view can be either the right pane of Windows Explorer or the client

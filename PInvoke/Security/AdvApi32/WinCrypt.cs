@@ -11,6 +11,67 @@ namespace Vanara.PInvoke
 	{
 		private delegate bool CryptGetValueMethod<THandle, TEnum>(THandle hKey, TEnum dwParam, IntPtr pbData, ref uint pdwDataLen, uint dwFlags) where THandle : struct where TEnum : Enum;
 
+		/// <summary>
+		/// The PROV_RSA_FULL provider type supports both digital signatures and data encryption. It is considered a general purpose CSP. The
+		/// RSA public key algorithm is used for all public key operations.
+		/// </summary>
+		public const uint PROV_RSA_FULL           = 1;
+		/// <summary>
+		/// The PROV_RSA_SIG provider type is a subset of PROV_RSA_FULL. It supports only those functions and algorithms required for hashes
+		/// and digital signatures.
+		/// </summary>
+		public const uint PROV_RSA_SIG            = 2;
+		/// <summary>
+		/// Supports hashes and digital signatures. The signature algorithm specified by the PROV_DSS provider type is the Digital Signature
+		/// Algorithm (DSA).
+		/// </summary>
+		public const uint PROV_DSS                = 3;
+		/// <summary>
+		/// The PROV_FORTEZZA provider type contains a set of cryptographic protocols and algorithms owned by the National Institute of
+		/// Standards and Technology (NIST).
+		/// </summary>
+		public const uint PROV_FORTEZZA           = 4;
+		/// <summary>
+		/// Designed for the cryptographic needs of the Exchange mail application and other applications compatible with Microsoft Mail.
+		/// </summary>
+		public const uint PROV_MS_EXCHANGE        = 5;
+		/// <summary>The PROV_SSL provider type supports the Secure Sockets Layer (SSL) protocol.</summary>
+		public const uint PROV_SSL                = 6;
+		/// <summary>Supports both RSA and Schannel protocols.</summary>
+		public const uint PROV_RSA_SCHANNEL       = 12;
+		/// <summary>A superset of the PROV_DSS provider type with Diffie-Hellman key exchange.</summary>
+		public const uint PROV_DSS_DH             = 13;
+		/// <summary></summary>
+		public const uint PROV_EC_ECDSA_SIG       = 14;
+		/// <summary></summary>
+		public const uint PROV_EC_ECNRA_SIG       = 15;
+		/// <summary></summary>
+		public const uint PROV_EC_ECDSA_FULL      = 16;
+		/// <summary></summary>
+		public const uint PROV_EC_ECNRA_FULL      = 17;
+		/// <summary>Supports both Diffie-Hellman and Schannel protocols.</summary>
+		public const uint PROV_DH_SCHANNEL        = 18;
+		/// <summary></summary>
+		public const uint PROV_SPYRUS_LYNKS       = 20;
+		/// <summary></summary>
+		public const uint PROV_RNG                = 21;
+		/// <summary></summary>
+		public const uint PROV_INTEL_SEC          = 22;
+		/// <summary></summary>
+		public const uint PROV_REPLACE_OWF        = 23;
+		/// <summary>Supports the same as PROV_RSA_FULL with additional AES encryption capability.</summary>
+		public const uint PROV_RSA_AES            = 24;
+		/// <summary></summary>
+		public const uint PROV_STT_MER            = 7;
+		/// <summary></summary>
+		public const uint PROV_STT_ACQ            = 8;
+		/// <summary></summary>
+		public const uint PROV_STT_BRND           = 9;
+		/// <summary></summary>
+		public const uint PROV_STT_ROOT           = 10;
+		/// <summary></summary>
+		public const uint PROV_STT_ISS = 11;
+
 		/// <summary>Flag values for <see cref="CryptAcquireContext"/>.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "57e13662-3189-4f8d-b90a-d1fbdc09b63c")]
 		[Flags]
@@ -119,7 +180,7 @@ namespace Vanara.PInvoke
 			CRYPT_OAEP = 0x00000040,
 		}
 
-		/// <summary>Flags for <see cref="CryptExportKey"/>.</summary>
+		/// <summary>Flags for <see cref="CryptExportKey(HCRYPTKEY, HCRYPTKEY, BlobType, CryptExportKeyFlags, IntPtr, ref uint)"/>.</summary>
 		[PInvokeData("wincrypt.h", MSDNShortId = "8a7c7b46-3bea-4043-b568-6d91d6335737")]
 		[Flags]
 		public enum CryptExportKeyFlags
@@ -2802,7 +2863,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "2d93ef0f-b48f-481b-ba62-c535476fde08")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptEnumProviders(uint dwIndex, [Optional] IntPtr pdwReserved, [Optional] uint dwFlags, out uint pdwProvType, [Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szProvName, ref uint pcbProvName);
+		public static extern bool CryptEnumProviders(uint dwIndex, [Optional] IntPtr pdwReserved, [Optional] uint dwFlags, out uint pdwProvType,
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szProvName, ref uint pcbProvName);
 
 		/// <summary>
 		/// The CryptEnumProviders function retrieves the first or next available cryptographic service providers (CSPs). Used in a loop,
@@ -2811,9 +2873,9 @@ namespace Vanara.PInvoke
 		/// Possible CSPs include Microsoft Base Cryptographic Provider version 1.0 and Microsoft Enhanced Cryptographic Provider version 1.0.
 		/// </para>
 		/// </summary>
-		/// <returns>A sequence of tuples with a provider name and type.</returns>
+		/// <returns>A sequence of provider names and types.</returns>
 		[PInvokeData("wincrypt.h", MSDNShortId = "2d93ef0f-b48f-481b-ba62-c535476fde08")]
-		public static IEnumerable<Tuple<uint, string>> CryptEnumProviders()
+		public static IEnumerable<(uint provType, string provName)> CryptEnumProviders()
 		{
 			var idx = 0U;
 			uint type;
@@ -2824,7 +2886,7 @@ namespace Vanara.PInvoke
 				sb.EnsureCapacity((int)sz);
 				if (CryptEnumProviders(idx, default, 0, out type, sb, ref sz))
 				{
-					yield return new Tuple<uint, string>(type, sb.ToString());
+					yield return (type, sb.ToString());
 					++idx;
 				}
 				else
@@ -2909,27 +2971,27 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wincrypt.h", MSDNShortId = "7568c963-4d06-4af0-bd15-240402425046")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptEnumProviderTypes(uint dwIndex, [Optional] IntPtr pdwReserved, [Optional] uint dwFlags, out uint pdwProvType, [Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szTypeName, ref uint pcbTypeName);
+		public static extern bool CryptEnumProviderTypes(uint dwIndex, [Optional] IntPtr pdwReserved, [Optional] uint dwFlags, out uint pdwProvType,
+			[Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szTypeName, ref uint pcbTypeName);
 
 		/// <summary>
 		/// The CryptEnumProviderTypes function retrieves the first or next types of cryptographic service provider (CSP) supported on the
 		/// computer. Used in a loop, this function retrieves in sequence all of the CSP types available on a computer.
 		/// <para>Provider types include PROV_RSA_FULL, PROV_RSA_SCHANNEL, and PROV_DSS.</para>
 		/// </summary>
-		/// <returns>A sequence of tuples with a provider type name and type.</returns>
+		/// <returns>A sequence of provider type names and types.</returns>
 		[PInvokeData("wincrypt.h", MSDNShortId = "7568c963-4d06-4af0-bd15-240402425046")]
-		public static IEnumerable<Tuple<uint, string>> CryptEnumProviderTypes()
+		public static IEnumerable<(uint provType, string typeName)> CryptEnumProviderTypes()
 		{
 			var idx = 0U;
-			uint type;
 			var sb = new StringBuilder(1024);
 			var sz = 0U;
-			while (CryptEnumProviderTypes(idx, default, 0, out type, null, ref sz))
+			while (CryptEnumProviderTypes(idx, default, 0, out _, null, ref sz))
 			{
 				sb.EnsureCapacity((int)sz);
-				if (CryptEnumProviderTypes(idx, default, 0, out type, sb, ref sz))
+				if (CryptEnumProviderTypes(idx, default, 0, out var type, sb, ref sz))
 				{
-					yield return new Tuple<uint, string>(type, sb.ToString());
+					yield return (type, sb.ToString());
 					++idx;
 				}
 				else
@@ -2938,31 +3000,29 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>
-		/// The CryptExportKey function exports a cryptographic key or a key pair from a cryptographic service provider (CSP) in a secure manner.
-		/// </para>
-		/// <para>
-		/// A handle to the key to be exported is passed to the function, and the function returns a key BLOB. This key BLOB can be sent
-		/// over a nonsecure transport or stored in a nonsecure storage location. This function can export an Schannel session key, regular
+		/// A handle to the key to be exported is passed to the function, and the function returns a key BLOB. This key BLOB can be sent over
+		/// a nonsecure transport or stored in a nonsecure storage location. This function can export an Schannel session key, regular
 		/// session key, public key, or public/private key pair. The key BLOB to export is useless until the intended recipient uses the
 		/// CryptImportKey function on it to import the key or key pair into a recipient's CSP.
-		/// </para>
 		/// </summary>
 		/// <param name="hKey">A handle to the key to be exported.</param>
 		/// <param name="hExpKey">
 		/// <para>
 		/// A handle to a cryptographic key of the destination user. The key data within the exported key BLOB is encrypted using this key.
-		/// This ensures that only the destination user is able to make use of the key BLOB. Both hExpKey and hKey must come from the same CSP.
+		/// This ensures that only the destination user is able to make use of the key BLOB. Both <c>hExpKey</c> and <c>hKey</c> must come
+		/// from the same CSP.
 		/// </para>
 		/// <para>
 		/// Most often, this is the key exchange public key of the destination user. However, certain protocols in some CSPs require that a
 		/// session key belonging to the destination user be used for this purpose.
 		/// </para>
-		/// <para>If the key BLOB type specified by dwBlobType is <c>PUBLICKEYBLOB</c>, this parameter is unused and must be set to zero.</para>
 		/// <para>
-		/// If the key BLOB type specified by dwBlobType is <c>PRIVATEKEYBLOB</c>, this is typically a handle to a session key that is to be
-		/// used to encrypt the key BLOB. Some CSPs allow this parameter to be zero, in which case the application must encrypt the private
-		/// key BLOB manually so as to protect it.
+		/// If the key BLOB type specified by <c>dwBlobType</c> is <c>PUBLICKEYBLOB</c>, this parameter is unused and must be set to zero.
+		/// </para>
+		/// <para>
+		/// If the key BLOB type specified by <c>dwBlobType</c> is <c>PRIVATEKEYBLOB</c>, this is typically a handle to a session key that is
+		/// to be used to encrypt the key BLOB. Some CSPs allow this parameter to be zero, in which case the application must encrypt the
+		/// private key BLOB manually so as to protect it.
 		/// </para>
 		/// <para>
 		/// To determine how Microsoft cryptographic service providers respond to this parameter, see the private key BLOB sections of
@@ -2976,7 +3036,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwBlobType">
 		/// <para>
-		/// Specifies the type of key BLOB to be exported in pbData. This must be one of the following constants as discussed in
+		/// Specifies the type of key BLOB to be exported in <c>pbData</c>. This must be one of the following constants as discussed in
 		/// Cryptographic Key Storage and Exchange.
 		/// </para>
 		/// <list type="table">
@@ -2985,30 +3045,30 @@ namespace Vanara.PInvoke
 		/// <term>Meaning</term>
 		/// </listheader>
 		/// <item>
-		/// <term>OPAQUEKEYBLOB</term>
+		/// <term><c>OPAQUEKEYBLOB</c></term>
 		/// <term>
-		/// Used to store session keys in an Schannel CSP or any other vendor-specific format. OPAQUEKEYBLOBs are nontransferable and must
-		/// be used within the CSP that generated the BLOB.
+		/// Used to store session keys in an Schannel CSP or any other vendor-specific format. OPAQUEKEYBLOBs are nontransferable and must be
+		/// used within the CSP that generated the BLOB.
 		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>PRIVATEKEYBLOB</term>
+		/// <term><c>PRIVATEKEYBLOB</c></term>
 		/// <term>Used to transport public/private key pairs.</term>
 		/// </item>
 		/// <item>
-		/// <term>PUBLICKEYBLOB</term>
+		/// <term><c>PUBLICKEYBLOB</c></term>
 		/// <term>Used to transport public keys.</term>
 		/// </item>
 		/// <item>
-		/// <term>SIMPLEBLOB</term>
+		/// <term><c>SIMPLEBLOB</c></term>
 		/// <term>Used to transport session keys.</term>
 		/// </item>
 		/// <item>
-		/// <term>PLAINTEXTKEYBLOB</term>
+		/// <term><c>PLAINTEXTKEYBLOB</c></term>
 		/// <term>A PLAINTEXTKEYBLOB used to export any key supported by the CSP in use.</term>
 		/// </item>
 		/// <item>
-		/// <term>SYMMETRICWRAPKEYBLOB</term>
+		/// <term><c>SYMMETRICWRAPKEYBLOB</c></term>
 		/// <term>
 		/// Used to export and import a symmetric key wrapped with another symmetric key. The actual wrapped key is in the format specified
 		/// in the IETF RFC 3217 standard.
@@ -3026,44 +3086,44 @@ namespace Vanara.PInvoke
 		/// <term>Meaning</term>
 		/// </listheader>
 		/// <item>
-		/// <term>CRYPT_BLOB_VER3 0x00000080</term>
+		/// <term><c>CRYPT_BLOB_VER3</c> 0x00000080</term>
 		/// <term>This flag causes this function to export version 3 of a BLOB type.</term>
 		/// </item>
 		/// <item>
-		/// <term>CRYPT_DESTROYKEY 0x00000004</term>
+		/// <term><c>CRYPT_DESTROYKEY</c> 0x00000004</term>
 		/// <term>This flag destroys the original key in the OPAQUEKEYBLOB. This flag is available in Schannel CSPs only.</term>
 		/// </item>
 		/// <item>
-		/// <term>CRYPT_OAEP 0x00000040</term>
+		/// <term><c>CRYPT_OAEP</c> 0x00000040</term>
 		/// <term>This flag causes PKCS #1 version 2 formatting to be created with the RSA encryption and decryption when exporting SIMPLEBLOBs.</term>
 		/// </item>
 		/// <item>
-		/// <term>CRYPT_SSL2_FALLBACK 0x00000002</term>
+		/// <term><c>CRYPT_SSL2_FALLBACK</c> 0x00000002</term>
 		/// <term>
 		/// The first eight bytes of the RSA encryption block padding must be set to 0x03 rather than to random data. This prevents version
 		/// rollback attacks and is discussed in the SSL3 specification. This flag is available for Schannel CSPs only.
 		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>CRYPT_Y_ONLY 0x00000001</term>
+		/// <term><c>CRYPT_Y_ONLY</c> 0x00000001</term>
 		/// <term>This flag is not used.</term>
 		/// </item>
 		/// </list>
 		/// </param>
 		/// <param name="pbData">
 		/// <para>
-		/// A pointer to a buffer that receives the key BLOB data. The format of this BLOB varies depending on the BLOB type requested in
-		/// the dwBlobType parameter. For the format for PRIVATEKEYBLOBs, PUBLICKEYBLOBs, and SIMPLEBLOBs, see Base Provider Key BLOBs.
+		/// A pointer to a buffer that receives the key BLOB data. The format of this BLOB varies depending on the BLOB type requested in the
+		/// <c>dwBlobType</c> parameter. For the format for PRIVATEKEYBLOBs, PUBLICKEYBLOBs, and SIMPLEBLOBs, see Base Provider Key BLOBs.
 		/// </para>
 		/// <para>
-		/// If this parameter is <c>NULL</c>, the required buffer size is placed in the value pointed to by the pdwDataLen parameter. For
-		/// more information, see Retrieving Data of Unknown Length.
+		/// If this parameter is <c>NULL</c>, the required buffer size is placed in the value pointed to by the <c>pdwDataLen</c> parameter.
+		/// For more information, see Retrieving Data of Unknown Length.
 		/// </para>
 		/// </param>
 		/// <param name="pdwDataLen">
 		/// <para>
-		/// A pointer to a <c>DWORD</c> value that, on entry, contains the size, in bytes, of the buffer pointed to by the pbData parameter.
-		/// When the function returns, this value contains the number of bytes stored in the buffer.
+		/// A pointer to a <c>DWORD</c> value that, on entry, contains the size, in bytes, of the buffer pointed to by the <c>pbData</c>
+		/// parameter. When the function returns, this value contains the number of bytes stored in the buffer.
 		/// </para>
 		/// <para>
 		/// <c>Note</c> When processing the data returned in the buffer, applications must use the actual size of the data returned. The
@@ -3071,13 +3131,8 @@ namespace Vanara.PInvoke
 		/// large enough to ensure that the largest possible output data fits in the buffer. On output, the variable pointed to by this
 		/// parameter is updated to reflect the actual size of the data copied to the buffer.
 		/// </para>
-		/// <para>To retrieve the required size of the</para>
-		/// <para>pbData</para>
-		/// <para>buffer, pass</para>
-		/// <para>NULL</para>
-		/// <para>for</para>
-		/// <para>pbData</para>
-		/// <para>. The required buffer size will be placed in the value pointed to by this parameter.</para>
+		/// <para>To retrieve the required size of the <c>pbData</c> buffer, pass <c>NULL</c> for <c>pbData</c>.The required buffer size will
+		/// be placed in the value pointed to by this parameter.</para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
@@ -3092,56 +3147,56 @@ namespace Vanara.PInvoke
 		/// <term>Description</term>
 		/// </listheader>
 		/// <item>
-		/// <term>ERROR_INVALID_HANDLE</term>
+		/// <term><c>ERROR_INVALID_HANDLE</c></term>
 		/// <term>One of the parameters specifies a handle that is not valid.</term>
 		/// </item>
 		/// <item>
-		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term><c>ERROR_INVALID_PARAMETER</c></term>
 		/// <term>One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.</term>
 		/// </item>
 		/// <item>
-		/// <term>ERROR_MORE_DATA</term>
+		/// <term><c>ERROR_MORE_DATA</c></term>
 		/// <term>
-		/// If the buffer specified by the pbData parameter is not large enough to hold the returned data, the function sets the
-		/// ERROR_MORE_DATA code and stores the required buffer size, in bytes, in the variable pointed to by pdwDataLen.
+		/// If the buffer specified by the <c>pbData</c> parameter is not large enough to hold the returned data, the function sets the
+		/// ERROR_MORE_DATA code and stores the required buffer size, in bytes, in the variable pointed to by <c>pdwDataLen</c>.
 		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>NTE_BAD_DATA</term>
+		/// <term><c>NTE_BAD_DATA</c></term>
 		/// <term>
-		/// Either the algorithm that works with the public key to be exported is not supported by this CSP, or an attempt was made to
-		/// export a session key that was encrypted with something other than one of your public keys.
+		/// Either the algorithm that works with the public key to be exported is not supported by this CSP, or an attempt was made to export
+		/// a session key that was encrypted with something other than one of your public keys.
 		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>NTE_BAD_FLAGS</term>
-		/// <term>The dwFlags parameter is nonzero.</term>
+		/// <term><c>NTE_BAD_FLAGS</c></term>
+		/// <term>The <c>dwFlags</c> parameter is nonzero.</term>
 		/// </item>
 		/// <item>
-		/// <term>NTE_BAD_KEY</term>
-		/// <term>One or both of the keys specified by hKey and hExpKey are not valid.</term>
+		/// <term><c>NTE_BAD_KEY</c></term>
+		/// <term>One or both of the keys specified by <c>hKey</c> and <c>hExpKey</c> are not valid.</term>
 		/// </item>
 		/// <item>
-		/// <term>NTE_BAD_KEY_STATE</term>
+		/// <term><c>NTE_BAD_KEY_STATE</c></term>
 		/// <term>
-		/// You do not have permission to export the key. That is, when the hKey key was created, the CRYPT_EXPORTABLE flag was not specified.
+		/// You do not have permission to export the key. That is, when the <c>hKey</c> key was created, the CRYPT_EXPORTABLE flag was not specified.
 		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>NTE_BAD_PUBLIC_KEY</term>
-		/// <term>The key BLOB type specified by dwBlobType is PUBLICKEYBLOB, but hExpKey does not contain a public key handle.</term>
+		/// <term><c>NTE_BAD_PUBLIC_KEY</c></term>
+		/// <term>The key BLOB type specified by <c>dwBlobType</c> is PUBLICKEYBLOB, but <c>hExpKey</c> does not contain a public key handle.</term>
 		/// </item>
 		/// <item>
-		/// <term>NTE_BAD_TYPE</term>
-		/// <term>The dwBlobType parameter specifies an unknown BLOB type.</term>
+		/// <term><c>NTE_BAD_TYPE</c></term>
+		/// <term>The <c>dwBlobType</c> parameter specifies an unknown BLOB type.</term>
 		/// </item>
 		/// <item>
-		/// <term>NTE_BAD_UID</term>
-		/// <term>The CSP context that was specified when the hKey key was created cannot be found.</term>
+		/// <term><c>NTE_BAD_UID</c></term>
+		/// <term>The CSP context that was specified when the <c>hKey</c> key was created cannot be found.</term>
 		/// </item>
 		/// <item>
-		/// <term>NTE_NO_KEY</term>
-		/// <term>A session key is being exported, and the hExpKey parameter does not specify a public key.</term>
+		/// <term><c>NTE_NO_KEY</c></term>
+		/// <term>A session key is being exported, and the <c>hExpKey</c> parameter does not specify a public key.</term>
 		/// </item>
 		/// </list>
 		/// </returns>
@@ -3172,16 +3227,327 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// The following example shows how to export a cryptographic key or a key pair in a more secure manner. This example assumes that a
 		/// cryptographic context has been acquired and that a public key is available for export. For an example that includes the complete
-		/// context for using this function, see Example C Program: Signing a Hash and Verifying the Hash Signature. For another example
-		/// that uses this function, see Example C Program: Exporting a Session Key.
+		/// context for using this function, see Example C Program: Signing a Hash and Verifying the Hash Signature. For another example that
+		/// uses this function, see Example C Program: Exporting a Session Key.
 		/// </para>
+		/// <para><code>#include &lt;windows.h&gt;
+		/// #include &lt;stdio.h&gt;
+		/// #include &lt;Wincrypt.h&gt;
+		/// 
+		/// BOOL GetExportedKey( HCRYPTKEY hKey, DWORD dwBlobType, LPBYTE *ppbKeyBlob, LPDWORD pdwBlobLen) {
+		///   DWORD dwBlobLength;
+		///   *ppbKeyBlob = NULL;
+		///   *pdwBlobLen = 0;
+		///   // Export the public key. Here the public key is exported to a
+		///   // PUBLICKEYBLOB. This BLOB can be written to a file and
+		///   // sent to another user.
+		///   if(CryptExportKey( hKey, NULL, dwBlobType, 0, NULL, &amp;dwBlobLength)) {
+		///     printf("Size of the BLOB for the public key determined. \n");
+		///   } else {
+		///     printf("Error computing BLOB length.\n");
+		///     return FALSE;
+		///   }
+		///   // Allocate memory for the pbKeyBlob.
+		///   if(*ppbKeyBlob = (LPBYTE)malloc(dwBlobLength)) {
+		///     printf("Memory has been allocated for the BLOB. \n"); }
+		///   else {
+		///     printf("Out of memory. \n");
+		///     return FALSE;
+		///   }
+		///   // Do the actual exporting into the key BLOB.
+		///   if(CryptExportKey( hKey, NULL, dwBlobType, 0, *ppbKeyBlob, &amp;dwBlobLength)) {
+		///     printf("Contents have been written to the BLOB. \n");
+		///     *pdwBlobLen = dwBlobLength; }
+		///   else {
+		///     printf("Error exporting key.\n");
+		///     free(*ppbKeyBlob);
+		///     *ppbKeyBlob = NULL;
+		///     return FALSE;
+		///   }
+		///   return TRUE;
+		/// }</code></para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptexportkey BOOL CryptExportKey( HCRYPTKEY hKey,
-		// HCRYPTKEY hExpKey, DWORD dwBlobType, DWORD dwFlags, BYTE *pbData, DWORD *pdwDataLen );
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptexportkey
+		// BOOL CryptExportKey( [in] HCRYPTKEY hKey, [in] HCRYPTKEY hExpKey, [in] DWORD dwBlobType, [in] DWORD dwFlags, [out] BYTE *pbData, [in, out] DWORD *pdwDataLen );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("wincrypt.h", MSDNShortId = "8a7c7b46-3bea-4043-b568-6d91d6335737")]
+		[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptExportKey")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptExportKey(HCRYPTKEY hKey, HCRYPTKEY hExpKey, [MarshalAs(UnmanagedType.U4)] BlobType dwBlobType, CryptExportKeyFlags dwFlags, [Out, Optional] IntPtr pbData, ref uint pdwDataLen);
+		public static extern bool CryptExportKey(HCRYPTKEY hKey, HCRYPTKEY hExpKey, BlobType dwBlobType, CryptExportKeyFlags dwFlags, [Out, Optional] IntPtr pbData, ref uint pdwDataLen);
+
+		/// <summary>
+		/// A handle to the key to be exported is passed to the function, and the function returns a key BLOB. This key BLOB can be sent over
+		/// a nonsecure transport or stored in a nonsecure storage location. This function can export an Schannel session key, regular
+		/// session key, public key, or public/private key pair. The key BLOB to export is useless until the intended recipient uses the
+		/// CryptImportKey function on it to import the key or key pair into a recipient's CSP.
+		/// </summary>
+		/// <param name="hKey">A handle to the key to be exported.</param>
+		/// <param name="hExpKey">
+		/// <para>
+		/// A handle to a cryptographic key of the destination user. The key data within the exported key BLOB is encrypted using this key.
+		/// This ensures that only the destination user is able to make use of the key BLOB. Both <c>hExpKey</c> and <c>hKey</c> must come
+		/// from the same CSP.
+		/// </para>
+		/// <para>
+		/// Most often, this is the key exchange public key of the destination user. However, certain protocols in some CSPs require that a
+		/// session key belonging to the destination user be used for this purpose.
+		/// </para>
+		/// <para>
+		/// If the key BLOB type specified by <c>dwBlobType</c> is <c>PUBLICKEYBLOB</c>, this parameter is unused and must be set to zero.
+		/// </para>
+		/// <para>
+		/// If the key BLOB type specified by <c>dwBlobType</c> is <c>PRIVATEKEYBLOB</c>, this is typically a handle to a session key that is
+		/// to be used to encrypt the key BLOB. Some CSPs allow this parameter to be zero, in which case the application must encrypt the
+		/// private key BLOB manually so as to protect it.
+		/// </para>
+		/// <para>
+		/// To determine how Microsoft cryptographic service providers respond to this parameter, see the private key BLOB sections of
+		/// Microsoft Cryptographic Service Providers.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Some CSPs may modify this parameter as a result of the operation. Applications that subsequently use this key for
+		/// other purposes should call the CryptDuplicateKey function to create a duplicate key handle. When the application has finished
+		/// using the handle, release it by calling the CryptDestroyKey function.
+		/// </para>
+		/// </param>
+		/// <param name="dwBlobType">
+		/// <para>
+		/// Specifies the type of key BLOB to be exported in <c>pbData</c>. This must be one of the following constants as discussed in
+		/// Cryptographic Key Storage and Exchange.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term><c>OPAQUEKEYBLOB</c></term>
+		/// <term>
+		/// Used to store session keys in an Schannel CSP or any other vendor-specific format. OPAQUEKEYBLOBs are nontransferable and must be
+		/// used within the CSP that generated the BLOB.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term><c>PRIVATEKEYBLOB</c></term>
+		/// <term>Used to transport public/private key pairs.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>PUBLICKEYBLOB</c></term>
+		/// <term>Used to transport public keys.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>SIMPLEBLOB</c></term>
+		/// <term>Used to transport session keys.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>PLAINTEXTKEYBLOB</c></term>
+		/// <term>A PLAINTEXTKEYBLOB used to export any key supported by the CSP in use.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>SYMMETRICWRAPKEYBLOB</c></term>
+		/// <term>
+		/// Used to export and import a symmetric key wrapped with another symmetric key. The actual wrapped key is in the format specified
+		/// in the IETF RFC 3217 standard.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Specifies additional options for the function. This parameter can be zero or a combination of one or more of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term><c>CRYPT_BLOB_VER3</c> 0x00000080</term>
+		/// <term>This flag causes this function to export version 3 of a BLOB type.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>CRYPT_DESTROYKEY</c> 0x00000004</term>
+		/// <term>This flag destroys the original key in the OPAQUEKEYBLOB. This flag is available in Schannel CSPs only.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>CRYPT_OAEP</c> 0x00000040</term>
+		/// <term>This flag causes PKCS #1 version 2 formatting to be created with the RSA encryption and decryption when exporting SIMPLEBLOBs.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>CRYPT_SSL2_FALLBACK</c> 0x00000002</term>
+		/// <term>
+		/// The first eight bytes of the RSA encryption block padding must be set to 0x03 rather than to random data. This prevents version
+		/// rollback attacks and is discussed in the SSL3 specification. This flag is available for Schannel CSPs only.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term><c>CRYPT_Y_ONLY</c> 0x00000001</term>
+		/// <term>This flag is not used.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbData">
+		/// <para>
+		/// A pointer to a buffer that receives the key BLOB data. The format of this BLOB varies depending on the BLOB type requested in the
+		/// <c>dwBlobType</c> parameter. For the format for PRIVATEKEYBLOBs, PUBLICKEYBLOBs, and SIMPLEBLOBs, see Base Provider Key BLOBs.
+		/// </para>
+		/// <para>
+		/// If this parameter is <c>NULL</c>, the required buffer size is placed in the value pointed to by the <c>pdwDataLen</c> parameter.
+		/// For more information, see Retrieving Data of Unknown Length.
+		/// </para>
+		/// </param>
+		/// <param name="pdwDataLen">
+		/// <para>
+		/// A pointer to a <c>DWORD</c> value that, on entry, contains the size, in bytes, of the buffer pointed to by the <c>pbData</c>
+		/// parameter. When the function returns, this value contains the number of bytes stored in the buffer.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When processing the data returned in the buffer, applications must use the actual size of the data returned. The
+		/// actual size can be slightly smaller than the size of the buffer specified on input. On input, buffer sizes are usually specified
+		/// large enough to ensure that the largest possible output data fits in the buffer. On output, the variable pointed to by this
+		/// parameter is updated to reflect the actual size of the data copied to the buffer.
+		/// </para>
+		/// <para>To retrieve the required size of the <c>pbData</c> buffer, pass <c>NULL</c> for <c>pbData</c>.The required buffer size will
+		/// be placed in the value pointed to by this parameter.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
+		/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
+		/// <para>
+		/// The error codes prefaced by "NTE" are generated by the particular CSP being used. The following table shows some of the possible
+		/// error codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term><c>ERROR_INVALID_HANDLE</c></term>
+		/// <term>One of the parameters specifies a handle that is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+		/// <term>One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>ERROR_MORE_DATA</c></term>
+		/// <term>
+		/// If the buffer specified by the <c>pbData</c> parameter is not large enough to hold the returned data, the function sets the
+		/// ERROR_MORE_DATA code and stores the required buffer size, in bytes, in the variable pointed to by <c>pdwDataLen</c>.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term><c>NTE_BAD_DATA</c></term>
+		/// <term>
+		/// Either the algorithm that works with the public key to be exported is not supported by this CSP, or an attempt was made to export
+		/// a session key that was encrypted with something other than one of your public keys.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term><c>NTE_BAD_FLAGS</c></term>
+		/// <term>The <c>dwFlags</c> parameter is nonzero.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>NTE_BAD_KEY</c></term>
+		/// <term>One or both of the keys specified by <c>hKey</c> and <c>hExpKey</c> are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>NTE_BAD_KEY_STATE</c></term>
+		/// <term>
+		/// You do not have permission to export the key. That is, when the <c>hKey</c> key was created, the CRYPT_EXPORTABLE flag was not specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term><c>NTE_BAD_PUBLIC_KEY</c></term>
+		/// <term>The key BLOB type specified by <c>dwBlobType</c> is PUBLICKEYBLOB, but <c>hExpKey</c> does not contain a public key handle.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>NTE_BAD_TYPE</c></term>
+		/// <term>The <c>dwBlobType</c> parameter specifies an unknown BLOB type.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>NTE_BAD_UID</c></term>
+		/// <term>The CSP context that was specified when the <c>hKey</c> key was created cannot be found.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>NTE_NO_KEY</c></term>
+		/// <term>A session key is being exported, and the <c>hExpKey</c> parameter does not specify a public key.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// For any of the DES key permutations that use a PLAINTEXTKEYBLOB, only the full key size, including parity bit, may be exported.
+		/// The following key sizes are supported.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Algorithm</term>
+		/// <term>Supported key size</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CALG_DES</term>
+		/// <term>64 bits</term>
+		/// </item>
+		/// <item>
+		/// <term>CALG_3DES_112</term>
+		/// <term>128 bits</term>
+		/// </item>
+		/// <item>
+		/// <term>CALG_3DES</term>
+		/// <term>192 bits</term>
+		/// </item>
+		/// </list>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example shows how to export a cryptographic key or a key pair in a more secure manner. This example assumes that a
+		/// cryptographic context has been acquired and that a public key is available for export. For an example that includes the complete
+		/// context for using this function, see Example C Program: Signing a Hash and Verifying the Hash Signature. For another example that
+		/// uses this function, see Example C Program: Exporting a Session Key.
+		/// </para>
+		/// <para><code>#include &lt;windows.h&gt;
+		/// #include &lt;stdio.h&gt;
+		/// #include &lt;Wincrypt.h&gt;
+		/// 
+		/// BOOL GetExportedKey( HCRYPTKEY hKey, DWORD dwBlobType, LPBYTE *ppbKeyBlob, LPDWORD pdwBlobLen) {
+		///   DWORD dwBlobLength;
+		///   *ppbKeyBlob = NULL;
+		///   *pdwBlobLen = 0;
+		///   // Export the public key. Here the public key is exported to a
+		///   // PUBLICKEYBLOB. This BLOB can be written to a file and
+		///   // sent to another user.
+		///   if(CryptExportKey( hKey, NULL, dwBlobType, 0, NULL, &amp;dwBlobLength)) {
+		///     printf("Size of the BLOB for the public key determined. \n");
+		///   } else {
+		///     printf("Error computing BLOB length.\n");
+		///     return FALSE;
+		///   }
+		///   // Allocate memory for the pbKeyBlob.
+		///   if(*ppbKeyBlob = (LPBYTE)malloc(dwBlobLength)) {
+		///     printf("Memory has been allocated for the BLOB. \n"); }
+		///   else {
+		///     printf("Out of memory. \n");
+		///     return FALSE;
+		///   }
+		///   // Do the actual exporting into the key BLOB.
+		///   if(CryptExportKey( hKey, NULL, dwBlobType, 0, *ppbKeyBlob, &amp;dwBlobLength)) {
+		///     printf("Contents have been written to the BLOB. \n");
+		///     *pdwBlobLen = dwBlobLength; }
+		///   else {
+		///     printf("Error exporting key.\n");
+		///     free(*ppbKeyBlob);
+		///     *ppbKeyBlob = NULL;
+		///     return FALSE;
+		///   }
+		///   return TRUE;
+		/// }</code></para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptexportkey
+		// BOOL CryptExportKey( [in] HCRYPTKEY hKey, [in] HCRYPTKEY hExpKey, [in] DWORD dwBlobType, [in] DWORD dwFlags, [out] BYTE *pbData, [in, out] DWORD *pdwDataLen );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptExportKey")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CryptExportKey(HCRYPTKEY hKey, HCRYPTKEY hExpKey, BlobType dwBlobType, CryptExportKeyFlags dwFlags, [Out, Optional] byte[] pbData, ref uint pdwDataLen);
 
 		/// <summary>
 		/// <para>

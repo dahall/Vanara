@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>portabledeviceapi.dll;portabledeviceconnectapi.dll;portabledevicetypes.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Portable Device (WPD) Api.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.PInvoke.PortableDeviceApi</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;WPD;PortableDeviceApi</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Interfaces
+IConnectionRequestCallback IEnumPortableDeviceConnectors IEnumPortableDeviceObjectIDs IPortableDevice IPortableDeviceCapabilities IPortableDeviceConnector IPortableDeviceContent IPortableDeviceContent2 IPortableDeviceDataStream IPortableDeviceDispatchFactory IPortableDeviceEventCallback IPortableDeviceKeyCollection IPortableDeviceManager IPortableDeviceProperties IPortableDevicePropertiesBulk IPortableDevicePropertiesBulkCallback IPortableDevicePropVariantCollection IPortableDeviceResources IPortableDeviceService IPortableDeviceServiceActivation IPortableDeviceServiceCapabilities IPortableDeviceServiceManager IPortableDeviceServiceMethodCallback IPortableDeviceServiceMethods IPortableDeviceServiceOpenCallback IPortableDeviceValues IPortableDeviceValuesCollection IWpdSerializer
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\SetupAPI\Vanara.PInvoke.SetupAPI.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
+  </ItemGroup>
+</Project>

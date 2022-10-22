@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Vanara.Extensions;
-using Vanara.Extensions.Reflection;
-using Vanara.PInvoke;
 
 namespace Vanara.InteropServices
 {
@@ -61,6 +55,10 @@ namespace Vanara.InteropServices
 						if (destType.IsBlittable())
 						{
 							return GetBlittable(destType);
+						}
+						if (destType.IsNullable())
+						{
+							return ptr != IntPtr.Zero ? InteropExtensions.GetValueType(ptr, Nullable.GetUnderlyingType(destType)) : Activator.CreateInstance(destType, true);
 						}
 						if (destType.IsSerializable)
 						{
@@ -144,11 +142,12 @@ namespace Vanara.InteropServices
 		/// <summary>Converts the specified pointer to <typeparamref name="T"/>.</summary>
 		/// <typeparam name="T">The destination type.</typeparam>
 		/// <param name="hMem">A block of allocated memory.</param>
+		/// <param name="charSet">The character set.</param>
 		/// <returns>A value of the type specified.</returns>
-		public static T ToType<T>(this SafeAllocatedMemoryHandle hMem)
+		public static T ToType<T>(this SafeAllocatedMemoryHandle hMem, CharSet charSet = CharSet.Auto)
 		{
 			if (hMem == null) throw new ArgumentNullException(nameof(hMem));
-			return Convert<T>(hMem.DangerousGetHandle(), hMem.Size);
+			return Convert<T>(hMem.DangerousGetHandle(), hMem.Size, charSet);
 		}
 	}
 }

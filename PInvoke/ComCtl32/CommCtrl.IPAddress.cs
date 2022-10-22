@@ -19,62 +19,99 @@ namespace Vanara.PInvoke
 		/// <summary>IP Address Messages</summary>
 		public enum IPAddressMessage
 		{
-			/// <summary>Clears the contents of the IP address control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>The return value is not used.</returns>
+			/// <summary>Clears the contents of the IP address control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is not used.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-clearaddress
 			IPM_CLEARADDRESS = WindowMessage.WM_USER + 100,
 
-			/// <summary>Sets the address values for all four fields in the IP address control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
-			/// A DWORD value that contains the new address. The field 3 value is contained in bits 0 through 7. The field 2 value is
+			/// <summary>Sets the address values for all four fields in the IP address control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// A <c>DWORD</c> value that contains the new address. The field 3 value is contained in bits 0 through 7. The field 2 value is
 			/// contained in bits 8 through 15. The field 1 value is contained in bits 16 through 23. The field 0 value is contained in bits
-			/// 24 through 31. The MAKEIPADDRESS macro can also be used to create the address information.
-			/// </param>
-			/// <returns>The return value is not used.</returns>
+			/// 24 through 31. The <c>MAKEIPADDRESS</c> macro can also be used to create the address information.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is not used.</para>
+			/// </summary>
+			/// <remarks>This message does not generate an <c>IPN_FIELDCHANGED</c> notification.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-setaddress
 			IPM_SETADDRESS = WindowMessage.WM_USER + 101,
 
-			/// <summary>Gets the address values for all four fields in the IP address control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
-			/// A pointer to a DWORD value that receives the address. The field 3 value will be contained in bits 0 through 7. The field 2
-			/// value will be contained in bits 8 through 15. The field 1 value will be contained in bits 16 through 23. The field 0 value
-			/// will be contained in bits 24 through 31. The FIRST_IPADDRESS, SECOND_IPADDRESS, THIRD_IPADDRESS, and FOURTH_IPADDRESS macros
-			/// can also be used to extract the address information. Zero will be returned as the address for any blank fields.
-			/// </param>
-			/// <returns>Returns the number of nonblank fields.</returns>
+			/// <summary>Gets the address values for all four fields in the IP address control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// A pointer to a <c>DWORD</c> value that receives the address. The field 3 value will be contained in bits 0 through 7. The
+			/// field 2 value will be contained in bits 8 through 15. The field 1 value will be contained in bits 16 through 23. The field 0
+			/// value will be contained in bits 24 through 31. The <c>FIRST_IPADDRESS</c>, <c>SECOND_IPADDRESS</c>, <c>THIRD_IPADDRESS</c>,
+			/// and <c>FOURTH_IPADDRESS</c> macros can also be used to extract the address information. Zero will be returned as the address
+			/// for any blank fields.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the number of nonblank fields.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-getaddress
 			IPM_GETADDRESS = WindowMessage.WM_USER + 102,
 
-			/// <summary>ets the valid range for the specified field in the IP address control.</summary>
+			/// <summary>Sets the valid range for the specified field in the IP address control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>A zero-based field index to which the range will be applied.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// A <c>WORD</c> value that contains the lower limit of the range in the low-order byte and the upper limit in the high-order
+			/// byte. Both of these values are inclusive. The <c>MAKEIPRANGE</c> macro can also be used to create the range.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// If the user enters a value in the field that is outside of this range, the control will send the IPN_FIELDCHANGED
 			/// notification with the entered value. If the value is still outside of the range after sending the notification, the control
 			/// will attempt to change the entered value to the closest range limit.
 			/// </remarks>
-			/// <param name="wParam">A zero-based field index to which the range will be applied.</param>
-			/// <param name="lParam">
-			/// A WORD value that contains the lower limit of the range in the low-order byte and the upper limit in the high-order byte.
-			/// Both of these values are inclusive. The MAKEIPRANGE macro can also be used to create the range.
-			/// </param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-setrange
 			IPM_SETRANGE = WindowMessage.WM_USER + 103,
 
 			/// <summary>
 			/// Sets the keyboard focus to the specified field in the IP address control. All of the text in that field will be selected.
-			/// </summary>
-			/// <param name="wParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// A zero-based field index to which the focus should be set. If this value is greater than the number of fields, focus is set
 			/// to the first blank field. If all fields are nonblank, focus is set to the first field.
-			/// </param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>The return value is not used.</returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is not used.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-setfocus
 			IPM_SETFOCUS = WindowMessage.WM_USER + 104,
 
-			/// <summary>Determines if all fields in the IP address control are blank.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns nonzero if all fields are blank, or zero otherwise.</returns>
+			/// <summary>Determines if all fields in the IP address control are blank.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if all fields are blank, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/ipm-isblank
 			IPM_ISBLANK = WindowMessage.WM_USER + 105,
 		}
 
@@ -82,15 +119,19 @@ namespace Vanara.PInvoke
 		public enum IPAddressNotification
 		{
 			/// <summary>
-			/// Sent when the user changes a field in the control or moves from one field to another. This notification code is sent in the
-			/// form of a WM_NOTIFY message.
-			/// </summary>
-			/// <param name="lParam">
-			/// A pointer to an NMIPADDRESS structure that contains information about the changed address. The iValue member of this
-			/// structure will contain the entered value, even if it is out of the range of the field. You can modify this member to any
-			/// value that is within the range for the field in response to this notification code.
-			/// </param>
-			/// <returns>The return value is ignored.</returns>
+			/// <para>Sent when the user changes a field in the control or moves from one field to another. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.</para>
+			/// <para><code>IPN_FIELDCHANGED lpnmipa = (LPNMIPADDRESS) lParam; </code></para>
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMIPADDRESS</c> structure that contains information about the changed address. The <c>iValue</c> member of this structure will contain the entered value, even if it is out of the range of the field. You can modify this member to any value that is within the range for the field in response to this notification code.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value is ignored.</para></summary>
+			/// <remarks>This notification code is not sent in response to a <c>IPM_SETADDRESS</c> message.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/ipn-fieldchanged
 			IPN_FIELDCHANGED = IPN_FIRST - 0
 		}
 
@@ -133,7 +174,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct NMIPADDRESS
 		{
-			/// <summary>An NMHDR structure that contains additional information about the notification.</summary>
+			/// <summary>An <see cref="NMHDR"/> structure that contains additional information about the notification.</summary>
 			public NMHDR hdr;
 
 			/// <summary>The zero-based number of the field that was changed.</summary>

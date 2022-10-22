@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using static Vanara.PInvoke.User32;
 
@@ -109,7 +108,7 @@ namespace Vanara.PInvoke
 			public SplitButtonInfoStyle uSplitButtonInfoStyle;
 
 			/// <summary>A SIZE structure that specifies the size of the glyph in himlGlyph.</summary>
-			public Size size;
+			public SIZE size;
 
 			/// <summary>Initializes a new instance of the <see cref="BUTTON_SPLITINFO"/> struct and sets the uSplitStyle value.</summary>
 			/// <param name="buttonInfoStyle">The style.</param>

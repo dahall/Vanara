@@ -1,10 +1,9 @@
-﻿using NUnit.Framework;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
 
-namespace Vanara.IO.Tests
+namespace Vanara.PInvoke.Tests
 {
-	partial class BackgroundCopyTests
+	internal partial class BackgroundCopyTests
 	{
 		[Test]
 		public void CopyAsyncTest()
@@ -14,7 +13,6 @@ namespace Vanara.IO.Tests
 			var srcFile = tempRoot.CreateFile().FullName;
 
 			var dstFile = tempRoot.RandomTxtFileFullPath;
-
 
 			using var cts = new CancellationTokenSource();
 

@@ -41,7 +41,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udp6row typedef struct _MIB_UDP6ROW {
 		// IN6_ADDR dwLocalAddr; DWORD dwLocalScopeId; DWORD dwLocalPort; } MIB_UDP6ROW, *PMIB_UDP6ROW;
 		[PInvokeData("udpmib.h", MSDNShortId = "c2cc4f77-8557-4206-9e46-aadf065eb8df")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Size = 24, Pack = 4)]
 		public struct MIB_UDP6ROW
 		{
 			/// <summary>
@@ -210,7 +210,7 @@ namespace Vanara.PInvoke
 		// _MIB_UDP6ROW_OWNER_PID { UCHAR ucLocalAddr[16]; DWORD dwLocalScopeId; DWORD dwLocalPort; DWORD dwOwningPid; }
 		// MIB_UDP6ROW_OWNER_PID, *PMIB_UDP6ROW_OWNER_PID;
 		[PInvokeData("udpmib.h", MSDNShortId = "d3d02485-381b-4058-b4b9-0a2c9c365f43")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Size = 28, Pack = 4)]
 		public struct MIB_UDP6ROW_OWNER_PID
 		{
 			/// <summary>
@@ -280,7 +280,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udprow typedef struct _MIB_UDPROW {
 		// DWORD dwLocalAddr; DWORD dwLocalPort; } MIB_UDPROW, *PMIB_UDPROW;
 		[PInvokeData("udpmib.h", MSDNShortId = "db366802-962f-4e83-838e-1e2f51beab92")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct MIB_UDPROW
 		{
 			/// <summary>
@@ -425,7 +425,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udprow_owner_pid typedef struct
 		// _MIB_UDPROW_OWNER_PID { DWORD dwLocalAddr; DWORD dwLocalPort; DWORD dwOwningPid; } MIB_UDPROW_OWNER_PID, *PMIB_UDPROW_OWNER_PID;
 		[PInvokeData("udpmib.h", MSDNShortId = "b914b6eb-adf9-4a61-ae8f-05d3ff90ce90")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct MIB_UDPROW_OWNER_PID
 		{
 			/// <summary>
@@ -697,14 +697,10 @@ namespace Vanara.PInvoke
 			{
 			}
 
-			/// <summary>
-			/// <para>The number of MIB_UDP6ROW_OWNER_PID elements in <c>table</c>.</para>
-			/// </summary>
+			/// <summary>The number of MIB_UDP6ROW_OWNER_PID elements in <c>table</c>.</summary>
 			public uint dwNumEntries => Count;
 
-			/// <summary>
-			/// <para>An array of MIB_UDP6ROW_OWNER_PID structures returned by a call to GetExtendedUdpTable.</para>
-			/// </summary>
+			/// <summary>An array of MIB_UDP6ROW_OWNER_PID structures returned by a call to GetExtendedUdpTable.</summary>
 			public MIB_UDP6ROW_OWNER_PID[] table { get => Elements; set => Elements = value; }
 
 			/// <summary>Performs an implicit conversion from <see cref="MIB_UDP6TABLE_OWNER_PID"/> to <see cref="IntPtr"/>.</summary>

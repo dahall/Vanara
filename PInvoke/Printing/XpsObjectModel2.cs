@@ -6,10 +6,6 @@ using Vanara.InteropServices;
 using static Vanara.PInvoke.Opc;
 using static Vanara.PInvoke.UrlMon;
 
-using XPS_POINT = System.Drawing.PointF;
-using XPS_RECT = System.Drawing.RectangleF;
-using XPS_SIZE = System.Drawing.SizeF;
-
 namespace Vanara.PInvoke
 {
 	public static partial class XpsObjectModel

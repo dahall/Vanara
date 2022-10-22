@@ -76,7 +76,7 @@ namespace Vanara.PInvoke.Tests
 		public static string TempChildDirWhack => lookup.TryGetValue(nameof(TempChildDirWhack), out var value) ? value : TempChildDir + "\\";
 		public static string TempDir => lookup.TryGetValue(nameof(TempDir), out var value) ? value : @"C:\Temp";
 		public static string TempDirWhack => lookup.TryGetValue(nameof(TempDirWhack), out var value) ? value : TempDir + "\\";
-		public static string VirtualDisk => lookup.TryGetValue(nameof(VirtualDisk), out var value) ? value : @"D:\VirtualBox VMs\Windows Client\Windows XP Pro\Windows XP Pro.vhd";
+		public static string VirtualDisk => lookup.TryGetValue(nameof(VirtualDisk), out var value) ? value : @"C:\Temp\Test.vhdx";
 		public static string WordDoc => lookup.TryGetValue(nameof(WordDoc), out var value) ? value : @"C:\Temp\Test.docx";
 		public static string WordDocLink => lookup.TryGetValue(nameof(WordDocLink), out var value) ? value : @"C:\Temp\Test.lnk";
 

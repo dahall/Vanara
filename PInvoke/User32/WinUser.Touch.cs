@@ -289,7 +289,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "443d12f2-9f26-4e1e-9bf3-cd97b4026399")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EvaluateProximityToPolygon(uint numVertices, [In] System.Drawing.Point[] controlPolygon, in TOUCH_HIT_TESTING_INPUT pHitTestingInput, out TOUCH_HIT_TESTING_PROXIMITY_EVALUATION pProximityEval);
+		public static extern bool EvaluateProximityToPolygon(uint numVertices, [In] POINT[] controlPolygon, in TOUCH_HIT_TESTING_INPUT pHitTestingInput, out TOUCH_HIT_TESTING_PROXIMITY_EVALUATION pProximityEval);
 
 		/// <summary>
 		/// Returns the score of a rectangle as the probable touch target, compared to all other rectangles that intersect the touch contact
@@ -1437,7 +1437,7 @@ namespace Vanara.PInvoke
 			public uint pointerId;
 
 			/// <summary>The screen coordinates of the touch point that the touch digitizer reports.</summary>
-			public System.Drawing.Point point;
+			public POINT point;
 
 			/// <summary>
 			/// <para>
@@ -1472,7 +1472,7 @@ namespace Vanara.PInvoke
 			public ushort score;
 
 			/// <summary>The adjusted touch point that hits the closest object that's identified by the value of Score.</summary>
-			public System.Drawing.Point adjustedPoint;
+			public POINT adjustedPoint;
 		}
 
 		/// <summary>Encapsulates data for touch input.</summary>

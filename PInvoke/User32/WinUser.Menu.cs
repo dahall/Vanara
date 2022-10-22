@@ -2237,7 +2237,7 @@ namespace Vanara.PInvoke
 		// hMenu, POINT ptScreen );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "menuitemfrompoint.htm")]
-		public static extern int MenuItemFromPoint(HWND hWnd, HMENU hMenu, System.Drawing.Point ptScreen);
+		public static extern int MenuItemFromPoint(HWND hWnd, HMENU hMenu, POINT ptScreen);
 
 		/// <summary>
 		/// <para>Changes an existing menu item. This function is used to specify the content, appearance, and behavior of the menu item.</para>

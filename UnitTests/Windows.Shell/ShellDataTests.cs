@@ -82,6 +82,72 @@ namespace Vanara.Windows.Shell.Tests
 			}
 		}
 
+		[Test]
+		public void ShellItemDataTest()
+		{
+			const int cnt = 5;
+			var obj = new ShellDataObject(new ShellFolder(TestCaseSources.TempDir).EnumerateChildren(FolderItemFilter.NonFolders).Take(cnt));
+
+			Assert.IsTrue(obj.ContainsFileDropList());
+			Assert.IsTrue(obj.ContainsShellIdList());
+			Assert.That(obj.GetData(ShellClipboardFormat.CFSTR_SHELLIDLIST, false), Has.Exactly(cnt).Items);
+		}
+
+		[Test]
+		public void GetDataTest()
+		{
+			var obj = new ShellDataObject(new[] { new ShellItem(TestCaseSources.WordDoc) });
+
+			Assert.IsTrue(obj.GetDataPresent(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW));
+			var fd = obj.GetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, true);
+			Assert.IsTrue(fd is ShellFileDescriptor[]);
+			Assert.That((ShellFileDescriptor[])fd, Has.Exactly(1).Items);
+			Assert.That(((ShellFileDescriptor[])fd)[0].Info.Name, Is.EqualTo(System.IO.Path.GetFileName(TestCaseSources.WordDoc)));
+
+			Assert.IsTrue(obj.GetDataPresent(ShellClipboardFormat.CFSTR_FILECONTENTS));
+			var fc = obj.GetData(ShellClipboardFormat.CFSTR_FILECONTENTS, true);
+			Assert.IsTrue(fc is System.IO.Stream[]);
+			Assert.That((System.IO.Stream[])fc, Has.Exactly(1).Items);
+			Assert.That(((System.IO.Stream[])fc)[0].Length, Is.EqualTo(new System.IO.FileInfo(TestCaseSources.WordDoc).Length));
+		}
+
+		[TestCase("<a href=\"http://www.contoso.com\">Contoso</a>")]
+		[TestCase("<html><body><a href=\"http://www.contoso.com\">Contoso</a></body></html>")]
+		public void FormatHtmlForClipboardTest(string snippet)
+		{
+			var bytes = FormatHtmlForClipboard(snippet);
+			string str = System.Text.Encoding.UTF8.GetString(bytes);
+			TestContext.WriteLine(str);
+
+			var extr = GetHtmlFromClipboard(bytes);
+			Assert.That(snippet, Is.EqualTo(extr));
+		}
+
+		[Test]
+		public void GetProps()
+		{
+			var obj = new ShellDataObject();
+
+			Assert.That(obj.Culture, Is.EqualTo(System.Globalization.CultureInfo.CurrentCulture));
+			var cult = new System.Globalization.CultureInfo("fr");
+			Assert.That(() => obj.Culture = cult, Throws.Nothing);
+			Assert.That(obj.Culture, Is.EqualTo(cult));
+
+			Assert.That(obj.InDragLoop, Is.False);
+			Assert.That(() => obj.InDragLoop = true, Throws.Nothing);
+			Assert.That(obj.InDragLoop, Is.True);
+
+			Assert.That(obj.PreferredDropEffect, Is.EqualTo(System.Windows.Forms.DragDropEffects.None));
+			var de = System.Windows.Forms.DragDropEffects.Copy;
+			Assert.That(() => obj.PreferredDropEffect = de, Throws.Nothing);
+			Assert.That(obj.PreferredDropEffect, Is.EqualTo(de));
+
+			Assert.That(obj.TargetClsid, Is.EqualTo(default(Guid)));
+			var cl = Guid.NewGuid();
+			Assert.That(() => obj.TargetClsid = cl, Throws.Nothing);
+			Assert.That(obj.TargetClsid, Is.EqualTo(cl));
+		}
+
 		private static string GetColVal(object o) => o switch
 		{
 			null => string.Empty,

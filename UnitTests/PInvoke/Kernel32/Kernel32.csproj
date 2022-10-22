@@ -2,6 +2,7 @@
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.Kernel32</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />

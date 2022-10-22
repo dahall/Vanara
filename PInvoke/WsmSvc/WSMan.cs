@@ -41,7 +41,7 @@ namespace Vanara.PInvoke
 		/// <summary/>
 		public const string WSMAN_STREAM_ID_STDOUT = "stdout";
 
-		private const string Lib_WsmSvc = "WsmSvc.dll";
+		private const string Lib_WsmSvc = "wsmsvc.dll";
 
 		/// <summary>
 		/// <para>Authorizes a specific operation.</para>

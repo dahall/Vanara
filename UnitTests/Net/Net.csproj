@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.Net</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Net\Vanara.Net.csproj" />
+    <ProjectReference Include="..\..\PInvoke\FirewallApi\Vanara.PInvoke.FirewallApi.vbproj" />
+  </ItemGroup>
+</Project>

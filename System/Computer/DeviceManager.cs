@@ -67,9 +67,23 @@ namespace Vanara.Diagnostics
 			instParam = new Lazy<SP_DEVINSTALL_PARAMS>(GetInstallParams);
 		}
 
+		/// <summary>The GUID of the device's setup class.</summary>
+		public Guid ClassGuid => data.ClassGuid;
+
+		/// <summary>Gets the data the identifies the device.</summary>
+		/// <value>A SP_DEVINFO_DATA structure with identifying device information.</value>
+		public SP_DEVINFO_DATA Data => data;
+
 		/// <summary>The description of the device instance.</summary>
 		/// <value>The description.</value>
 		public string Description => desc.Value;
+
+		/// <summary>Gets the driver path.</summary>
+		public string DriverPath => instParam.Value.DriverPath;
+
+		/// <summary>Gets the handle to the device.</summary>
+		/// <value>A HDEVINFO handle.</value>
+		public HDEVINFO Handle => hdi;
 
 		/// <summary>
 		/// Gets the flags that control installation and user interface operations. Some flags can be set before sending the device
@@ -87,6 +101,12 @@ namespace Vanara.Diagnostics
 		/// <value>The instance identifier.</value>
 		public string InstanceId => instId.Value;
 
+		/// <summary>
+		/// A string that contains the name of the remote computer. If the device information set is for the local computer, this member is
+		/// <see langword="null"/>.
+		/// </summary>
+		public string MachineName => hdi.MachineName;
+
 		/// <summary>The name of the device instance.</summary>
 		/// <value>The name.</value>
 		public string Name => name.Value;
@@ -100,18 +120,6 @@ namespace Vanara.Diagnostics
 		/// <value>The registry properties.</value>
 		public IPropertyProvider<SPDRP, object> RegistryProperties =>
 			rprops ??= (MachineName is null ? new DeviceRegProperties(this) : throw new InvalidOperationException("Properties cannot be retrieved for remote devices."));
-
-		/// <summary>The GUID of the device's setup class.</summary>
-		public Guid ClassGuid => data.ClassGuid;
-
-		/// <summary>Gets the driver path.</summary>
-		public string DriverPath => instParam.Value.DriverPath;
-
-		/// <summary>
-		/// A string that contains the name of the remote computer. If the device information set is for the local computer, this member is
-		/// <see langword="null"/>.
-		/// </summary>
-		public string MachineName => hdi.MachineName;
 
 		/// <inheritdoc/>
 		public void Dispose() { }
@@ -333,9 +341,9 @@ namespace Vanara.Diagnostics
 	/// </remarks>
 	public class DeviceClass : IDisposable
 	{
-		private static readonly Dictionary<string, SP_CLASSIMAGELIST_DATA> imgListData = new Dictionary<string, SP_CLASSIMAGELIST_DATA>();
+		private static readonly Dictionary<string, SP_CLASSIMAGELIST_DATA> imgListData = new();
 #pragma warning disable IDE0052 // Remove unread private members
-		private static readonly FinalizeImgLists imgListFinalizer = new FinalizeImgLists();
+		private static readonly FinalizeImgLists imgListFinalizer = new();
 #pragma warning restore IDE0052 // Remove unread private members
 		private readonly Lazy<int?> bmpIdx, imgIdx;
 		private readonly Lazy<string> name, desc;
@@ -633,15 +641,12 @@ namespace Vanara.Diagnostics
 			internal static object GetRegValue<T>(T key, SafeAllocatedMemoryHandle mem, REG_VALUE_TYPE propType) where T : Enum =>
 							GetRegValue(mem, propType, CorrespondingTypeAttribute.GetCorrespondingTypes(key).FirstOrDefault());
 
-			internal static object GetRegValue(SafeAllocatedMemoryHandle mem, REG_VALUE_TYPE propType, Type cType = null)
+			internal static object GetRegValue(SafeAllocatedMemoryHandle mem, REG_VALUE_TYPE propType, Type cType = null) => propType switch
 			{
-				return propType switch
-				{
-					REG_VALUE_TYPE.REG_DWORD when cType is not null => ((IntPtr)mem).Convert(mem.Size, cType),
-					REG_VALUE_TYPE.REG_BINARY when cType is not null && cType != typeof(byte[]) => ((IntPtr)mem).Convert(mem.Size, cType),
-					_ => propType.GetValue(mem, mem.Size),
-				};
-			}
+				REG_VALUE_TYPE.REG_DWORD when cType is not null => ((IntPtr)mem).Convert(mem.Size, cType),
+				REG_VALUE_TYPE.REG_BINARY when cType is not null && cType != typeof(byte[]) => ((IntPtr)mem).Convert(mem.Size, cType),
+				_ => propType.GetValue(mem, mem.Size),
+			};
 
 			/// <inheritdoc/>
 			protected override void SetValue(SPCRP key, object value)
@@ -901,7 +906,7 @@ namespace Vanara.Diagnostics
 	/// <summary>Class to manage local and remote devices.</summary>
 	public class DeviceManager
 	{
-		private static readonly Lazy<DeviceManager> local = new Lazy<DeviceManager>(() => new DeviceManager(null));
+		private static readonly Lazy<DeviceManager> local = new(() => new DeviceManager(null));
 
 		/// <summary>Initializes a new instance of the <see cref="DeviceManager"/> class on a specified machine.</summary>
 		/// <param name="machineName">Name of the machine on which to manage devices. Specify <see langword="null"/> for the local machine.</param>
@@ -915,8 +920,12 @@ namespace Vanara.Diagnostics
 		public string MachineName { get; }
 
 		/// <summary>Gets the devices associated with this machine.</summary>
+		/// <param name="filter">
+		/// Specifies control options that filter the device information elements that are added to the device information set. This
+		/// property can be a bitwise OR of one or more of the <see cref="DIGCF"/> flags.
+		/// </param>
 		/// <returns>A sequence of <see cref="Device"/> instances on this machine.</returns>
-		public IEnumerable<Device> GetDevices() => new DeviceCollection(null, null, MachineName);
+		public IEnumerable<Device> GetDevices(DIGCF filter = DIGCF.DIGCF_PRESENT) => new DeviceCollection(null, null, MachineName, filter);
 
 		/// <summary>Gets the setup classes available on the machine.</summary>
 		/// <value>A class that provides the collection of setup classes.</value>

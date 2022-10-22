@@ -12,23 +12,6 @@ using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 
-#if NET20
-
-namespace System.IO
-{
-	/// <summary>Specifies whether the underlying handle is inheritable by child processes.</summary>
-	public enum HandleInheritability
-	{
-		/// <summary>Specifies that the handle is not inheritable by child processes.</summary>
-		None = 0,
-
-		/// <summary>Specifies that the handle is inheritable by child processes.</summary>
-		Inheritable = 1,
-	}
-}
-
-#endif
-
 namespace Vanara.Diagnostics
 {
 	/// <summary>The job limit type exceeded as communicated by a <see cref="JobNotificationEventArgs"/>.</summary>

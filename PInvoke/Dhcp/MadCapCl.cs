@@ -9,7 +9,7 @@ namespace Vanara.PInvoke
 		/// <summary>Required length of the buffer for <see cref="MCAST_CLIENT_UID"/>.</summary>
 		public const int MCAST_CLIENT_ID_LEN = 17;
 
-		private const string Lib_Dhcpcsvc = "Dhcpcsvc.dll";
+		private const string Lib_Dhcpcsvc = "dhcpcsvc.dll";
 
 		/// <summary>
 		/// The <c>McastApiCleanup</c> function deallocates resources that are allocated with McastApiStartup. The <c>McastApiCleanup</c>

@@ -11,7 +11,7 @@ namespace Vanara.Extensions.Tests
 	[TestFixture()]
 	public class InteropExtensionsTests
 	{
-		private readonly int i = Marshal.SizeOf(typeof(int));
+		private readonly int intSz = Marshal.SizeOf(typeof(int));
 
 		[Test()]
 		public void IsBlittableTest()
@@ -45,13 +45,13 @@ namespace Vanara.Extensions.Tests
 		[Test()]
 		public void MarshalToPtrTest()
 		{
-			var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + i);
+			var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + intSz);
 			var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
-			((IntPtr)h).Write(rs, i, h.Size);
-			Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * i) == 0);
-			Assert.That(Marshal.ReadInt32((IntPtr)h, 5 * i) == 10);
-			Assert.That(Marshal.ReadInt32((IntPtr)h, 7 * i) == 12);
-			var ro = ((IntPtr)h).ToArray<RECT>(2, i);
+			((IntPtr)h).Write(rs, intSz, h.Size);
+			Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * intSz) == 0);
+			Assert.That(Marshal.ReadInt32((IntPtr)h, 5 * intSz) == 10);
+			Assert.That(Marshal.ReadInt32((IntPtr)h, 7 * intSz) == 12);
+			var ro = ((IntPtr)h).ToArray<RECT>(2, intSz);
 			Assert.That(ro.Length == 2);
 			Assert.That(ro[0].left == 0);
 			Assert.That(ro[1].right == 12);
@@ -64,23 +64,23 @@ namespace Vanara.Extensions.Tests
 			try
 			{
 				var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
-				h = rs.MarshalToPtr(Marshal.AllocHGlobal, out var a, i);
+				h = rs.MarshalToPtr(Marshal.AllocHGlobal, out var a, intSz);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
-				Assert.That(a, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * rs.Length + i));
-				Assert.That(Marshal.ReadInt32(h, 4 * i) == 0);
-				Assert.That(Marshal.ReadInt32(h, 5 * i) == 10);
-				Assert.That(Marshal.ReadInt32(h, 7 * i) == 12);
-				var ro = h.ToArray<RECT>(rs.Length, i);
+				Assert.That(a, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * rs.Length + intSz));
+				Assert.That(Marshal.ReadInt32(h, 4 * intSz) == 0);
+				Assert.That(Marshal.ReadInt32(h, 5 * intSz) == 10);
+				Assert.That(Marshal.ReadInt32(h, 7 * intSz) == 12);
+				var ro = h.ToArray<RECT>(rs.Length, intSz);
 				Assert.That(ro.Length == 2);
 				Assert.That(ro[0].left == 0);
 				Assert.That(ro[1].right == 12);
 				Marshal.FreeHGlobal(h);
 
-				h = new RECT[0].MarshalToPtr(Marshal.AllocHGlobal, out a, i);
+				h = new RECT[0].MarshalToPtr(Marshal.AllocHGlobal, out a, intSz);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
-				Assert.That(a, Is.EqualTo(i));
+				Assert.That(a, Is.EqualTo(intSz));
 
-				Assert.That(() => new DateTime[1].MarshalToPtr(Marshal.AllocHGlobal, out a, i), Throws.Exception);
+				Assert.That(() => new DateTime[1].MarshalToPtr(Marshal.AllocHGlobal, out a, intSz), Throws.Exception);
 			}
 			finally
 			{
@@ -95,38 +95,38 @@ namespace Vanara.Extensions.Tests
 			try
 			{
 				var rs = new[] { "str1", "str2", "str3" };
-				h = rs.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out var a, CharSet.Unicode, i);
+				h = rs.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out var a, CharSet.Unicode, intSz);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				var chSz = 2;
-				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + chSz + i));
-				var ro = h.ToArray<byte>(a - i, i);
+				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + chSz + intSz));
+				var ro = h.ToArray<byte>(a - intSz, intSz);
 				var chars = System.Text.Encoding.Unicode.GetChars(ro);
-				Assert.That(chars.Length, Is.EqualTo((a - i) / chSz));
+				Assert.That(chars.Length, Is.EqualTo((a - intSz) / chSz));
 				Assert.That(chars[0], Is.EqualTo('s'));
 				Assert.That(chars[4], Is.EqualTo('\0'));
 				Assert.That(chars[chars.Length - 2], Is.EqualTo('\0'));
 				Assert.That(chars[chars.Length - 1], Is.EqualTo('\0'));
 				Marshal.FreeHGlobal(h);
 
-				h = rs.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Ansi, i);
+				h = rs.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Ansi, intSz);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				chSz = 1;
-				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + chSz + i));
-				ro = h.ToArray<byte>(a - i, i);
+				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + chSz + intSz));
+				ro = h.ToArray<byte>(a - intSz, intSz);
 				chars = System.Text.Encoding.ASCII.GetChars(ro);
-				Assert.That(chars.Length, Is.EqualTo((a - i) / chSz));
+				Assert.That(chars.Length, Is.EqualTo((a - intSz) / chSz));
 				Assert.That(chars[0], Is.EqualTo('s'));
 				Assert.That(chars[4], Is.EqualTo('\0'));
 				Assert.That(chars[chars.Length - 2], Is.EqualTo('\0'));
 				Assert.That(chars[chars.Length - 1], Is.EqualTo('\0'));
 				Marshal.FreeHGlobal(h);
 
-				h = new string[0].MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Unicode, i);
+				h = new string[0].MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Unicode, intSz);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
-				Assert.That(a, Is.EqualTo(i + 2));
+				Assert.That(a, Is.EqualTo(intSz + 2));
 
-				Assert.That(() => new[] { "" }.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Unicode, i), Throws.ArgumentException);
-				Assert.That(() => new string[] { null }.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Unicode, i), Throws.ArgumentException);
+				Assert.That(() => new[] { "" }.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Unicode, intSz), Throws.ArgumentException);
+				Assert.That(() => new string[] { null }.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out a, CharSet.Unicode, intSz), Throws.ArgumentException);
 			}
 			finally
 			{
@@ -141,29 +141,29 @@ namespace Vanara.Extensions.Tests
 			try
 			{
 				var rs = new[] { "str1", "str2", "str3" };
-				h = rs.MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocHGlobal, out var a, CharSet.Unicode, i);
+				h = rs.MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocHGlobal, out var a, CharSet.Unicode, intSz);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				var chSz = 2;
-				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
-				var ro = h.ToIEnum<IntPtr>(rs.Length, i).ToArray();
+				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + intSz));
+				var ro = h.ToIEnum<IntPtr>(rs.Length, intSz).ToArray();
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
 				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Unicode), Is.EqualTo(rs[i]));
 				Marshal.FreeHGlobal(h);
 
-				h = rs.MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocHGlobal, out a, CharSet.Ansi, i);
+				h = rs.MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocHGlobal, out a, CharSet.Ansi, intSz);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				chSz = 1;
-				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
-				ro = h.ToIEnum<IntPtr>(rs.Length, i).ToArray();
+				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + intSz));
+				ro = h.ToIEnum<IntPtr>(rs.Length, intSz).ToArray();
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
 				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Ansi), Is.EqualTo(rs[i]));
 				Marshal.FreeHGlobal(h);
 
-				h = new string[0].MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocHGlobal, out a, CharSet.Unicode, i);
+				h = new string[0].MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocHGlobal, out a, CharSet.Unicode, intSz);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
-				Assert.That(a, Is.EqualTo(i + IntPtr.Size));
+				Assert.That(a, Is.EqualTo(intSz + IntPtr.Size));
 			}
 			finally
 			{
@@ -177,7 +177,7 @@ namespace Vanara.Extensions.Tests
 			var rect = new RECT(10, 11, 12, 13);
 			var ptr = rect.MarshalToPtr(Marshal.AllocCoTaskMem, out var a);
 			Assert.That(ptr != IntPtr.Zero);
-			Assert.That(Marshal.ReadInt32(ptr, 1 * i) == 11);
+			Assert.That(Marshal.ReadInt32(ptr, 1 * intSz) == 11);
 			Marshal.FreeCoTaskMem(ptr);
 		}
 
@@ -185,28 +185,28 @@ namespace Vanara.Extensions.Tests
 		public void ToArrayTest()
 		{
 			var rs = new[] { 10, 11, 12, 13, 14 };
-			var h = SafeHGlobalHandle.CreateFromList(rs, rs.Length, i);
-			var ro = ((IntPtr)h).ToArray<int>(4, i);
+			var h = SafeHGlobalHandle.CreateFromList(rs, rs.Length, intSz);
+			var ro = ((IntPtr)h).ToArray<int>(4, intSz);
 			Assert.That(ro.Length, Is.EqualTo(4));
 			Assert.That(ro[2], Is.EqualTo(rs[2]));
 
-			Assert.That(((IntPtr)h).ToArray<int>(0, i), Is.Empty);
-			Assert.That(IntPtr.Zero.ToArray<int>(3, i), Is.Null);
+			Assert.That(((IntPtr)h).ToArray<int>(0, intSz), Is.Empty);
+			Assert.That(IntPtr.Zero.ToArray<int>(3, intSz), Is.Null);
 		}
 
 		[Test()]
 		public void ToIEnumTest()
 		{
 			var rs = new[] { 10, 11, 12, 13, 14 };
-			var h = SafeHGlobalHandle.CreateFromList(rs, rs.Length, i);
-			var ro = ((IntPtr)h).ToIEnum<int>(4, i);
+			var h = SafeHGlobalHandle.CreateFromList(rs, rs.Length, intSz);
+			var ro = ((IntPtr)h).ToIEnum<int>(4, intSz);
 			var v = 10;
 			foreach (var rv in ro)
 				Assert.That(rv, Is.EqualTo(v++));
 			Assert.That(v, Is.EqualTo(14));
 
-			Assert.That(((IntPtr)h).ToIEnum<int>(0, i), Is.Empty);
-			Assert.That(IntPtr.Zero.ToIEnum<int>(0, i), Is.Empty);
+			Assert.That(((IntPtr)h).ToIEnum<int>(0, intSz), Is.Empty);
+			Assert.That(IntPtr.Zero.ToIEnum<int>(0, intSz), Is.Empty);
 		}
 
 		[Test()]
@@ -265,62 +265,62 @@ namespace Vanara.Extensions.Tests
 		public void ToStringEnumTest()
 		{
 			var rs = new[] { "str1", "str2", "str3" };
-			using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Concatenated, CharSet.Ansi, i))
+			using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Concatenated, CharSet.Ansi, intSz))
 			{
 				var ptr = sa.DangerousGetHandle();
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-				var se = ptr.ToStringEnum(CharSet.Ansi, i, sa.Size);
+				var se = ptr.ToStringEnum(CharSet.Ansi, intSz, sa.Size);
 				Assert.That(se, Is.EquivalentTo(rs));
-				Assert.That(() => ptr.ToStringEnum(CharSet.Ansi, i, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
-				Assert.That(() => ptr.ToStringEnum(CharSet.Ansi, i, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+				Assert.That(() => ptr.ToStringEnum(CharSet.Ansi, intSz, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+				Assert.That(() => ptr.ToStringEnum(CharSet.Ansi, intSz, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 			}
-			using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Concatenated, CharSet.Unicode, i))
+			using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
 			{
 				var ptr = sa.DangerousGetHandle();
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-				var se = ptr.ToStringEnum(CharSet.Unicode, i, sa.Size);
+				var se = ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size);
 				Assert.That(se, Is.EquivalentTo(rs));
-				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, i, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
-				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, i, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 			}
-			using (var sa = SafeHGlobalHandle.CreateFromStringList(null, StringListPackMethod.Concatenated, CharSet.Unicode, i))
+			using (var sa = SafeHGlobalHandle.CreateFromStringList(null, StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
 			{
 				var ptr = sa.DangerousGetHandle();
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-				var se = ptr.ToStringEnum(CharSet.Unicode, i, sa.Size);
+				var se = ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size);
 				Assert.That(se, Is.Empty);
-				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, i, i).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
-				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, i, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, intSz).Count(), Throws.TypeOf<InsufficientMemoryException>());
+				Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 1).Count(), Throws.TypeOf<InsufficientMemoryException>());
 			}
-			Assert.That(IntPtr.Zero.ToStringEnum(CharSet.Unicode, i), Is.Empty);
+			Assert.That(IntPtr.Zero.ToStringEnum(CharSet.Unicode, intSz), Is.Empty);
 		}
 
 		[Test()]
 		public void ToStringEnumTest1()
 		{
 			var rs = new[] { "str1", "str2", null, "", "str3" };
-			using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Packed, CharSet.Ansi, i))
+			using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Packed, CharSet.Ansi, intSz))
 			{
 				var ptr = sa.DangerousGetHandle();
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-				var se = ptr.ToStringEnum(rs.Length, CharSet.Ansi, i);
+				var se = ptr.ToStringEnum(rs.Length, CharSet.Ansi, intSz);
 				Assert.That(se, Is.EquivalentTo(rs));
 			}
-			using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Packed, CharSet.Unicode, i))
+			using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Packed, CharSet.Unicode, intSz))
 			{
 				var ptr = sa.DangerousGetHandle();
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-				var se = ptr.ToStringEnum(rs.Length, CharSet.Unicode, i);
+				var se = ptr.ToStringEnum(rs.Length, CharSet.Unicode, intSz);
 				Assert.That(se, Is.EquivalentTo(rs));
 			}
-			using (var sa = SafeHGlobalHandle.CreateFromStringList(null, StringListPackMethod.Packed, CharSet.Unicode, i))
+			using (var sa = SafeHGlobalHandle.CreateFromStringList(null, StringListPackMethod.Packed, CharSet.Unicode, intSz))
 			{
 				var ptr = sa.DangerousGetHandle();
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-				var se = ptr.ToStringEnum(0, CharSet.Unicode, i);
+				var se = ptr.ToStringEnum(0, CharSet.Unicode, intSz);
 				Assert.That(se, Is.Empty);
 			}
-			Assert.That(IntPtr.Zero.ToStringEnum(0, CharSet.Unicode, i), Is.Empty);
+			Assert.That(IntPtr.Zero.ToStringEnum(0, CharSet.Unicode, intSz), Is.Empty);
 		}
 
 		[TestCase("Some string value")]
@@ -381,15 +381,15 @@ namespace Vanara.Extensions.Tests
 		[Test]
 		public unsafe void AsUnmanagedArrayPointerTest()
 		{
-			var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + i);
-			var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
-			((IntPtr)h).Write(rs, i, h.Size);
+			var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + intSz);
+			var rs = new[] { new RECT(0, 1, 2, 3), new RECT(10, 11, 12, 13) };
+			((IntPtr)h).Write(rs, intSz, h.Size);
 
-			RECT* r = h.DangerousGetHandle().AsUnmanagedArrayPointer<RECT>(Marshal.SizeOf<RECT>(), i);
-			Assert.That(r->left, Is.EqualTo(10));
-			Assert.That(r->top, Is.EqualTo(11));
-			Assert.That(r->right, Is.EqualTo(12));
-			Assert.That(r->bottom, Is.EqualTo(13));
+			RECT* r = h.DangerousGetHandle().AsUnmanagedArrayPointer<RECT>(rs.Length, intSz, h.Size);
+			Assert.That(r[1].left, Is.EqualTo(10));
+			Assert.That(r[1].top, Is.EqualTo(11));
+			Assert.That(r[1].right, Is.EqualTo(12));
+			Assert.That(r[1].bottom, Is.EqualTo(13));
 		}
 
 		[Test]

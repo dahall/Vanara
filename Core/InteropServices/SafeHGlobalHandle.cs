@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using Vanara.Extensions;
@@ -12,6 +13,10 @@ namespace Vanara.InteropServices
 	/// <seealso cref="IMemoryMethods"/>
 	public sealed class HGlobalMemoryMethods : IMemoryMethods
 	{
+		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+		bool ISimpleMemoryMethods.Lockable => false;
+
 		/// <summary>Static instance to methods.</summary>
 		public static IMemoryMethods Instance { get; } = new HGlobalMemoryMethods();
 
@@ -65,7 +70,8 @@ namespace Vanara.InteropServices
 
 		/// <summary>Unlocks the memory of a specified handle.</summary>
 		/// <param name="hMem">A memory handle.</param>
-		public void UnlockMem(IntPtr hMem) { }
+		/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
+		public bool UnlockMem(IntPtr hMem) => false;
 	}
 
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
@@ -108,13 +114,13 @@ namespace Vanara.InteropServices
 		/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeHGlobalHandle"/> where it owns the reference.</summary>
 		/// <param name="ptr">The <see cref="IntPtr"/>.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafeHGlobalHandle(IntPtr ptr) => new SafeHGlobalHandle(ptr, 0, true);
+		public static implicit operator SafeHGlobalHandle(IntPtr ptr) => new(ptr, 0, true);
 
 		/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 		/// <typeparam name="T">Native type</typeparam>
 		/// <param name="value">The value.</param>
 		/// <returns><see cref="SafeHGlobalHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-		public static SafeHGlobalHandle CreateFromStructure<T>(in T value = default) => new SafeHGlobalHandle(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
+		public static SafeHGlobalHandle CreateFromStructure<T>(in T value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure elements. It is the
@@ -126,7 +132,8 @@ namespace Vanara.InteropServices
 		/// <param name="count">Number of items in <paramref name="values"/>.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
 		/// <returns><see cref="SafeHGlobalHandle"/> object to an native (unmanaged) structure with a trail array of structures</returns>
-		public static SafeHGlobalHandle CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new SafeHGlobalHandle(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes), s);
+		public static SafeHGlobalHandle CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) =>
+			new(InteropExtensions.MarshalToPtr(count < 0 ? values : values.Take(count), mm.AllocMem, out int s, prefixBytes), s);
 
 		/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
 		/// <param name="values">The list of strings.</param>
@@ -134,6 +141,7 @@ namespace Vanara.InteropServices
 		/// <param name="charSet">The character set to use for the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
 		/// <returns><see cref="SafeHGlobalHandle"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character set defined by <paramref name="charSet"/>.</returns>
-		public static SafeHGlobalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new SafeHGlobalHandle(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
+		public static SafeHGlobalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated,
+			CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
 	}
 }

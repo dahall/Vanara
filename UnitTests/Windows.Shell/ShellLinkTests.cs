@@ -1,12 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Forms;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
+using System.IO;
 using Vanara.PInvoke.Tests;
-using static Vanara.PInvoke.Shell32;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.Windows.Shell.Tests
 {
@@ -19,16 +15,15 @@ namespace Vanara.Windows.Shell.Tests
 			using var lnk = new ShellLink(TestCaseSources.WordDoc, "/p", TestCaseSources.TempDir, "Test description");
 			lnk.Properties.ReadOnly = false;
 			lnk.Title = "Test title";
-			lnk.HotKey = Keys.Control | Keys.T;
+			lnk.HotKey = MakeHotKey(VK.VK_T, HOTKEYF.HOTKEYF_CONTROL);
 			lnk.RunAsAdministrator = false;
 			lnk.IconLocation = new IconLocation(TestCaseSources.ResourceFile, -107);
-			lnk.ShowState = FormWindowState.Minimized;
+			lnk.ShowState = WindowStateToSW(System.Windows.Forms.FormWindowState.Minimized);
 
-			var fn = System.IO.Path.GetTempFileName() + ".lnk";
-			lnk.SaveAs(fn);
-			Assert.That(System.IO.File.Exists(fn), Is.True);
+			using var fn = new TempFile("lnk", null);
+			lnk.SaveAs(fn.FullName);
+			Assert.IsTrue(File.Exists(fn.FullName));
 			lnk.ViewInExplorer();
-			System.IO.File.Delete(fn);
 		}
 
 		[Test]
@@ -39,5 +34,9 @@ namespace Vanara.Windows.Shell.Tests
 			using var lnk = new ShellLink(lnkPath);
 			StringAssert.AreEqualIgnoringCase(targetPath, lnk.TargetPath);
 		}
+
+		private static ushort MakeHotKey(VK key, HOTKEYF modifier) => Vanara.PInvoke.Macros.MAKEWORD((byte)key, (byte)modifier);
+		private static PInvoke.ShowWindowCommand WindowStateToSW(System.Windows.Forms.FormWindowState state) => (PInvoke.ShowWindowCommand)state;
+		private static PInvoke.HWND ToHWND(System.Windows.Forms.IWin32Window win) => win?.Handle ?? PInvoke.HWND.NULL;
 	}
 }

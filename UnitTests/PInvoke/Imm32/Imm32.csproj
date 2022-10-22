@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.Imm32</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\Imm32\Vanara.PInvoke.Imm32.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj" />
+  </ItemGroup>
+</Project>

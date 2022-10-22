@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -140,7 +141,7 @@ namespace Vanara.PInvoke
 		// LPHANDLE lpHandle );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "A4DE552D-DEA7-44F5-865F-5B02C9BB4AB6")]
-		public static extern Win32Error GetAddrInfoExCancel(in HANDLE lpHandle);
+		public static extern WSRESULT GetAddrInfoExCancel(in HANDLE lpHandle);
 
 		/// <summary>
 		/// The <c>GetAddrInfoExOverlappedResult</c> function gets the return code for an <c>OVERLAPPED</c> structure used by an
@@ -169,7 +170,7 @@ namespace Vanara.PInvoke
 		// GetAddrInfoExOverlappedResult( LPOVERLAPPED lpOverlapped );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "BBA6E407-561C-4B3C-9218-0047477E82DE")]
-		public static extern Win32Error GetAddrInfoExOverlappedResult(IntPtr lpOverlapped);
+		public static extern WSRESULT GetAddrInfoExOverlappedResult(IntPtr lpOverlapped);
 
 		/// <summary>
 		/// The <c>GetAddrInfoExOverlappedResult</c> function gets the return code for an <c>OVERLAPPED</c> structure used by an
@@ -198,7 +199,7 @@ namespace Vanara.PInvoke
 		// GetAddrInfoExOverlappedResult( LPOVERLAPPED lpOverlapped );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "BBA6E407-561C-4B3C-9218-0047477E82DE")]
-		public static unsafe extern Win32Error GetAddrInfoExOverlappedResult(NativeOverlapped* lpOverlapped);
+		public static unsafe extern WSRESULT GetAddrInfoExOverlappedResult(NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// The <c>GetAddrInfoEx</c> function provides protocol-independent name resolution with additional parameters to qualify which
@@ -864,7 +865,7 @@ namespace Vanara.PInvoke
 		// LPOVERLAPPED lpOverlapped, LPLOOKUPSERVICE_COMPLETION_ROUTINE lpCompletionRoutine, LPHANDLE lpNameHandle );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "cc4ccb2d-ea5a-48bd-a3ae-f70432ab2c39")]
-		public static unsafe extern Win32Error GetAddrInfoExW([Optional, MarshalAs(UnmanagedType.LPWStr)] string pName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pServiceName,
+		public static unsafe extern WSRESULT GetAddrInfoExW([Optional, MarshalAs(UnmanagedType.LPWStr)] string pName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pServiceName,
 			[Optional] NS dwNameSpace, [In, Optional] Guid* lpNspId, [In, Optional] ADDRINFOEXW* hints, out SafeADDRINFOEXWArray ppResult, [In, Optional] TIMEVAL* timeout, [In, Optional] NativeOverlapped* lpOverlapped,
 			[In, Optional] LPLOOKUPSERVICE_COMPLETION_ROUTINE lpCompletionRoutine, [Out, Optional] HANDLE* lpNameHandle);
 
@@ -1344,7 +1345,7 @@ namespace Vanara.PInvoke
 		// PCWSTR pServiceName, const ADDRINFOW *pHints, PADDRINFOW *ppResult );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "82436a88-5b37-4758-a5c9-b60dd1cbc36c")]
-		public static extern Win32Error GetAddrInfoW([Optional] string pNodeName, [Optional] string pServiceName, [Optional] in ADDRINFOW pHints, out SafeADDRINFOWArray ppResult);
+		public static extern WSRESULT GetAddrInfoW([Optional] string pNodeName, [Optional] string pServiceName, [Optional] in ADDRINFOW pHints, out SafeADDRINFOWArray ppResult);
 
 		/// <summary>The <c>getipv4sourcefilter</c> inline function retrieves the multicast filter state for an IPv4 socket.</summary>
 		/// <param name="Socket">A descriptor that identifies a multicast socket.</param>
@@ -1419,13 +1420,13 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-getipv4sourcefilter int getipv4sourcefilter( SOCKET
 		// Socket, IN_ADDR Interface, IN_ADDR Group, MULTICAST_MODE_TYPE *FilterMode, ULONG *SourceCount, IN_ADDR *SourceList );
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "17D35D24-C419-4787-AB93-E6B1B6B13807")]
-		public static Win32Error getipv4sourcefilter(SOCKET Socket, IN_ADDR Interface, IN_ADDR Group, out MULTICAST_MODE_TYPE FilterMode, ref int SourceCount, IN_ADDR[] SourceList)
+		public static WSRESULT getipv4sourcefilter(SOCKET Socket, IN_ADDR Interface, IN_ADDR Group, out MULTICAST_MODE_TYPE FilterMode, ref int SourceCount, IN_ADDR[] SourceList)
 		{
 			FilterMode = MULTICAST_MODE_TYPE.MCAST_INCLUDE;
 
 			if (SourceCount > (SourceList?.Length ?? 0))
 			{
-				WSASetLastError(unchecked((int)Win32Error.WSAENOBUFS));
+				WSASetLastError(WSRESULT.WSAENOBUFS);
 				return SOCKET_ERROR;
 			}
 
@@ -1643,7 +1644,7 @@ namespace Vanara.PInvoke
 		// INT Flags );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "5630a49a-c182-440c-ad54-6ff3ba4274c6")]
-		public static extern Win32Error GetNameInfoW([In] SOCKADDR pSockaddr, int SockaddrLength, StringBuilder pNodeBuffer, uint NodeBufferSize, StringBuilder pServiceBuffer, uint ServiceBufferSize, NI Flags);
+		public static extern WSRESULT GetNameInfoW([In] SOCKADDR pSockaddr, int SockaddrLength, StringBuilder pNodeBuffer, uint NodeBufferSize, StringBuilder pServiceBuffer, uint ServiceBufferSize, NI Flags);
 
 		/// <summary>The <c>getsourcefilter</c> inline function retrieves the multicast filter state for an IPv4 or IPv6 socket.</summary>
 		/// <param name="Socket">A descriptor that identifies a multicast socket.</param>
@@ -1709,13 +1710,13 @@ namespace Vanara.PInvoke
 		// Interface, const SOCKADDR *Group, int GroupLength, MULTICAST_MODE_TYPE *FilterMode, ULONG *SourceCount, SOCKADDR_STORAGE
 		// *SourceList );
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "2CA84000-F114-439D-BEDE-9990044C7785")]
-		public static Win32Error getsourcefilter(SOCKET Socket, uint Interface, [In] SOCKADDR Group, int GroupLength, out MULTICAST_MODE_TYPE FilterMode, ref int SourceCount, SOCKADDR_STORAGE[] SourceList)
+		public static WSRESULT getsourcefilter(SOCKET Socket, uint Interface, [In] SOCKADDR Group, int GroupLength, out MULTICAST_MODE_TYPE FilterMode, ref int SourceCount, SOCKADDR_STORAGE[] SourceList)
 		{
 			FilterMode = MULTICAST_MODE_TYPE.MCAST_INCLUDE;
 
 			if (SourceCount > SourceList.Length || GroupLength > Group.Size)
 			{
-				WSASetLastError(unchecked((int)Win32Error.WSAENOBUFS));
+				WSASetLastError(WSRESULT.WSAENOBUFS);
 				return SOCKET_ERROR;
 			}
 
@@ -2162,7 +2163,7 @@ namespace Vanara.PInvoke
 		// pszAddrString, PVOID pAddrBuf );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "d0705997-0dc7-443b-a43f-611301cc9169")]
-		public static extern int inet_pton(ADDRESS_FAMILY Family, string pszAddrString, out IN_ADDR pAddrBuf);
+		public static extern WSRESULT inet_pton(ADDRESS_FAMILY Family, string pszAddrString, out IN_ADDR pAddrBuf);
 
 		/// <summary>
 		/// The <c>InetPton</c> function converts an IPv4 or IPv6 Internet network address in its standard text presentation form into its
@@ -2305,7 +2306,7 @@ namespace Vanara.PInvoke
 		// pszAddrString, PVOID pAddrBuf );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "d0705997-0dc7-443b-a43f-611301cc9169")]
-		public static extern int inet_pton(ADDRESS_FAMILY Family, string pszAddrString, out IN6_ADDR pAddrBuf);
+		public static extern WSRESULT inet_pton(ADDRESS_FAMILY Family, string pszAddrString, out IN6_ADDR pAddrBuf);
 
 		/// <summary>
 		/// The <c>InetNtop</c> function converts an IPv4 or IPv6 Internet network address into a string in Internet standard format. The
@@ -2726,7 +2727,7 @@ namespace Vanara.PInvoke
 		// pszAddrString, PVOID pAddrBuf );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "d0705997-0dc7-443b-a43f-611301cc9169")]
-		public static extern int InetPtonW(ADDRESS_FAMILY Family, [MarshalAs(UnmanagedType.LPWStr)] string pszAddrString, out IN_ADDR pAddrBuf);
+		public static extern WSRESULT InetPtonW(ADDRESS_FAMILY Family, [MarshalAs(UnmanagedType.LPWStr)] string pszAddrString, out IN_ADDR pAddrBuf);
 
 		/// <summary>
 		/// The <c>InetPton</c> function converts an IPv4 or IPv6 Internet network address in its standard text presentation form into its
@@ -2869,7 +2870,7 @@ namespace Vanara.PInvoke
 		// pszAddrString, PVOID pAddrBuf );
 		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "d0705997-0dc7-443b-a43f-611301cc9169")]
-		public static extern int InetPtonW(ADDRESS_FAMILY Family, [MarshalAs(UnmanagedType.LPWStr)] string pszAddrString, out IN6_ADDR pAddrBuf);
+		public static extern WSRESULT InetPtonW(ADDRESS_FAMILY Family, [MarshalAs(UnmanagedType.LPWStr)] string pszAddrString, out IN6_ADDR pAddrBuf);
 
 		/// <summary>
 		/// The <c>SetAddrInfoEx</c> function registers or deregisters a name, a service name, and associated addresses with a specific
@@ -3045,7 +3046,7 @@ namespace Vanara.PInvoke
 		// lpNameHandle );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "6d3c5b97-32ce-4eb5-a047-d9b37c37cdda")]
-		public static extern int SetAddrInfoEx([MarshalAs(UnmanagedType.LPTStr)] string pName, [Optional, MarshalAs(UnmanagedType.LPTStr)] string pServiceName,
+		public static extern WSRESULT SetAddrInfoEx([MarshalAs(UnmanagedType.LPTStr)] string pName, [Optional, MarshalAs(UnmanagedType.LPTStr)] string pServiceName,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray)] SOCKET_ADDRESS[] pAddresses, [Optional] uint dwAddressCount, [In, Optional] IntPtr lpBlob, [Optional] uint dwFlags, [Optional] NS dwNameSpace,
 			in Guid lpNspId, in TIMEVAL timeout, [In, Optional] IntPtr lpOverlapped, [In, Optional] LPLOOKUPSERVICE_COMPLETION_ROUTINE lpCompletionRoutine, out HANDLE lpNameHandle);
 
@@ -3223,7 +3224,7 @@ namespace Vanara.PInvoke
 		// lpNameHandle );
 		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "6d3c5b97-32ce-4eb5-a047-d9b37c37cdda")]
-		public static unsafe extern int SetAddrInfoEx([MarshalAs(UnmanagedType.LPTStr)] string pName, [Optional, MarshalAs(UnmanagedType.LPTStr)] string pServiceName,
+		public static unsafe extern WSRESULT SetAddrInfoEx([MarshalAs(UnmanagedType.LPTStr)] string pName, [Optional, MarshalAs(UnmanagedType.LPTStr)] string pServiceName,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray)] SOCKET_ADDRESS[] pAddresses, [Optional] uint dwAddressCount, [In, Optional] IntPtr lpBlob,
 			[Optional] uint dwFlags, [Optional] NS dwNameSpace, [In, Optional] Guid* lpNspId, [In, Optional] TIMEVAL* timeout,
 			[In, Optional] NativeOverlapped* lpOverlapped, [In, Optional] LPLOOKUPSERVICE_COMPLETION_ROUTINE lpCompletionRoutine, [Out, Optional] HANDLE* lpNameHandle);
@@ -3281,11 +3282,11 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-setipv4sourcefilter int setipv4sourcefilter( SOCKET
 		// Socket, IN_ADDR Interface, IN_ADDR Group, MULTICAST_MODE_TYPE FilterMode, ULONG SourceCount, const IN_ADDR *SourceList );
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "C296D050-9195-42B5-8EBE-C6004F2DA855")]
-		public static Win32Error setipv4sourcefilter(SOCKET Socket, IN_ADDR Interface, IN_ADDR Group, MULTICAST_MODE_TYPE FilterMode, uint SourceCount, IN_ADDR[] SourceList)
+		public static WSRESULT setipv4sourcefilter(SOCKET Socket, IN_ADDR Interface, IN_ADDR Group, MULTICAST_MODE_TYPE FilterMode, uint SourceCount, IN_ADDR[] SourceList)
 		{
 			if (SourceCount > SourceList.Length)
 			{
-				WSASetLastError(unchecked((int)Win32Error.WSAENOBUFS));
+				WSASetLastError(WSRESULT.WSAENOBUFS);
 				return SOCKET_ERROR;
 			}
 
@@ -3345,11 +3346,11 @@ namespace Vanara.PInvoke
 		// Interface, const SOCKADDR *Group, int GroupLength, MULTICAST_MODE_TYPE FilterMode, ULONG SourceCount, const SOCKADDR_STORAGE
 		// *SourceList );
 		[PInvokeData("ws2tcpip.h", MSDNShortId = "320455F3-FDFB-46C6-9F26-3C60064A2CB0")]
-		public static Win32Error setsourcefilter(SOCKET Socket, uint Interface, [In] SOCKADDR Group, int GroupLength, MULTICAST_MODE_TYPE FilterMode, uint SourceCount, SOCKADDR_STORAGE[] SourceList)
+		public static WSRESULT setsourcefilter(SOCKET Socket, uint Interface, [In] SOCKADDR Group, int GroupLength, MULTICAST_MODE_TYPE FilterMode, uint SourceCount, SOCKADDR_STORAGE[] SourceList)
 		{
 			if (SourceCount > SourceList.Length || GroupLength > Group.Size)
 			{
-				WSASetLastError(unchecked((int)Win32Error.WSAENOBUFS));
+				WSASetLastError(WSRESULT.WSAENOBUFS);
 				return SOCKET_ERROR;
 			}
 

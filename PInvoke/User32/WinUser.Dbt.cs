@@ -328,6 +328,89 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "82094d95-9af3-4222-9c5e-ce2df9bab5e3")]
 		public static extern SafeHDEVNOTIFY RegisterDeviceNotification(HANDLE hRecipient, IntPtr NotificationFilter, DEVICE_NOTIFY Flags);
 
+		/// <summary>Registers the device or type of device for which a window will receive notifications.</summary>
+		/// <param name="hRecipient">
+		/// <para>
+		/// A handle to the window or service that will receive device events for the devices specified in the NotificationFilter parameter.
+		/// The same window handle can be used in multiple calls to <c>RegisterDeviceNotification</c>.
+		/// </para>
+		/// <para>Services can specify either a window handle or service status handle.</para>
+		/// </param>
+		/// <param name="NotificationFilter">
+		/// A pointer to a block of data that specifies the type of device for which notifications should be sent. This block always begins
+		/// with the DEV_BROADCAST_HDR structure. The data following this header is dependent on the value of the <c>dbch_devicetype</c>
+		/// member, which can be <c>DBT_DEVTYP_DEVICEINTERFACE</c> or <c>DBT_DEVTYP_HANDLE</c>. For more information, see Remarks.
+		/// </param>
+		/// <param name="Flags">
+		/// <para>This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DEVICE_NOTIFY_WINDOW_HANDLE 0x00000000</term>
+		/// <term>The hRecipient parameter is a window handle.</term>
+		/// </item>
+		/// <item>
+		/// <term>DEVICE_NOTIFY_SERVICE_HANDLE 0x00000001</term>
+		/// <term>The hRecipient parameter is a service status handle.</term>
+		/// </item>
+		/// </list>
+		/// <para>In addition, you can specify the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DEVICE_NOTIFY_ALL_INTERFACE_CLASSES 0x00000004</term>
+		/// <term>
+		/// Notifies the recipient of device interface events for all device interface classes. (The dbcc_classguid member is ignored.) This
+		/// value can be used only if the dbch_devicetype member is DBT_DEVTYP_DEVICEINTERFACE.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a device notification handle.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Applications send event notifications using the BroadcastSystemMessage function. Any application with a top-level window can
+		/// receive basic notifications by processing the WM_DEVICECHANGE message. Applications can use the <c>RegisterDeviceNotification</c>
+		/// function to register to receive device notifications.
+		/// </para>
+		/// <para>
+		/// Services can use the <c>RegisterDeviceNotification</c> function to register to receive device notifications. If a service
+		/// specifies a window handle in the hRecipient parameter, the notifications are sent to the window procedure. If hRecipient is a
+		/// service status handle, <c>SERVICE_CONTROL_DEVICEEVENT</c> notifications are sent to the service control handler. For more
+		/// information about the service control handler, see HandlerEx.
+		/// </para>
+		/// <para>
+		/// Be sure to handle Plug and Play device events as quickly as possible. Otherwise, the system may become unresponsive. If your
+		/// event handler is to perform an operation that may block execution (such as I/O), it is best to start another thread to perform
+		/// the operation asynchronously.
+		/// </para>
+		/// <para>
+		/// Device notification handles returned by <c>RegisterDeviceNotification</c> must be closed by calling the
+		/// UnregisterDeviceNotification function when they are no longer needed.
+		/// </para>
+		/// <para>
+		/// The DBT_DEVICEARRIVAL and DBT_DEVICEREMOVECOMPLETE events are automatically broadcast to all top-level windows for port devices.
+		/// Therefore, it is not necessary to call <c>RegisterDeviceNotification</c> for ports, and the function fails if the
+		/// <c>dbch_devicetype</c> member is <c>DBT_DEVTYP_PORT</c>. Volume notifications are also broadcast to top-level windows, so the
+		/// function fails if <c>dbch_devicetype</c> is <c>DBT_DEVTYP_VOLUME</c>. OEM-defined devices are not used directly by the system, so
+		/// the function fails if <c>dbch_devicetype</c> is <c>DBT_DEVTYP_OEM</c>.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Registering for Device Notification.</para>
+		/// </remarks>
+		[PInvokeData("winuser.h", MSDNShortId = "82094d95-9af3-4222-9c5e-ce2df9bab5e3")]
+		public static SafeHDEVNOTIFY RegisterDeviceNotification<T>(HANDLE hRecipient, in T NotificationFilter, DEVICE_NOTIFY Flags) where T : struct =>
+			RegisterDeviceNotification(hRecipient, new SafeCoTaskMemStruct<T>(NotificationFilter), Flags);
+
 		/// <summary>Closes the specified device notification handle.</summary>
 		/// <param name="Handle">Device notification handle returned by the RegisterDeviceNotification function.</param>
 		/// <returns>
@@ -346,6 +429,7 @@ namespace Vanara.PInvoke
 		// _DEV_BROADCAST_DEVICEINTERFACE_A { DWORD dbcc_size; DWORD dbcc_devicetype; DWORD dbcc_reserved; GUID dbcc_classguid; char
 		// dbcc_name[1]; } DEV_BROADCAST_DEVICEINTERFACE_A, *PDEV_BROADCAST_DEVICEINTERFACE_A;
 		[PInvokeData("dbt.h", MSDNShortId = "23e6b2b9-2053-4dfa-9c0a-283279f086b8")]
+		[VanaraMarshaler(typeof(AnySizeStringMarshaler<DEV_BROADCAST_DEVICEINTERFACE>), "*")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct DEV_BROADCAST_DEVICEINTERFACE
 		{
@@ -356,7 +440,7 @@ namespace Vanara.PInvoke
 			public uint dbcc_size;
 
 			/// <summary>Set to <c>DBT_DEVTYP_DEVICEINTERFACE</c>.</summary>
-			public uint dbcc_devicetype;
+			public DBT_DEVTYPE dbcc_devicetype;
 
 			/// <summary>Reserved; do not use.</summary>
 			public uint dbcc_reserved;
@@ -371,7 +455,8 @@ namespace Vanara.PInvoke
 			/// ANSI as appropriate. Services always receive a Unicode string, whether they call <c>RegisterDeviceNotificationW</c> or <c>RegisterDeviceNotificationA</c>.
 			/// </para>
 			/// </summary>
-			public StrPtrAuto dbcc_name;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+			public string dbcc_name;
 		}
 
 		/// <summary>Undocumented.</summary>
@@ -383,7 +468,7 @@ namespace Vanara.PInvoke
 			public uint dbcd_size;
 
 			/// <summary>Set to <c>DBT_DEVTYP_DEVNODE</c>.</summary>
-			public uint dbcd_devicetype;
+			public DBT_DEVTYPE dbcd_devicetype;
 
 			/// <summary>Reserved; do not use.</summary>
 			public uint dbcd_reserved;
@@ -392,55 +477,39 @@ namespace Vanara.PInvoke
 			public uint dbcd_devnode;
 		}
 
-		/// <summary>
-		/// <para>Contains information about a file system handle.</para>
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/dbt/ns-dbt-_dev_broadcast_handle typedef struct _DEV_BROADCAST_HANDLE { DWORD
-		// dbch_size; DWORD dbch_devicetype; DWORD dbch_reserved; HANDLE dbch_handle; HDEVNOTIFY dbch_hdevnotify; GUID dbch_eventguid; LONG
-		// dbch_nameoffset; BYTE dbch_data[1]; } DEV_BROADCAST_HANDLE, *PDEV_BROADCAST_HANDLE;
+		/// <summary>Contains information about a file system handle.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/dbt/ns-dbt-_dev_broadcast_handle typedef struct _DEV_BROADCAST_HANDLE {
+		// DWORD dbch_size; DWORD dbch_devicetype; DWORD dbch_reserved; HANDLE dbch_handle; HDEVNOTIFY dbch_hdevnotify; GUID dbch_eventguid;
+		// LONG dbch_nameoffset; BYTE dbch_data[1]; } DEV_BROADCAST_HANDLE, *PDEV_BROADCAST_HANDLE;
 		[PInvokeData("dbt.h", MSDNShortId = "5e542abc-8db3-4251-8b68-11456aa2da5e")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<DEV_BROADCAST_HANDLE>), "*")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct DEV_BROADCAST_HANDLE
 		{
-			/// <summary>
-			/// <para>The size of this structure, in bytes.</para>
-			/// </summary>
+			/// <summary>The size of this structure, in bytes.</summary>
 			public uint dbch_size;
 
-			/// <summary>
-			/// <para>Set to DBT_DEVTYP_HANDLE.</para>
-			/// </summary>
-			public uint dbch_devicetype;
+			/// <summary>Set to DBT_DEVTYP_HANDLE.</summary>
+			public DBT_DEVTYPE dbch_devicetype;
 
-			/// <summary>
-			/// <para>Reserved; do not use.</para>
-			/// </summary>
+			/// <summary>Reserved; do not use.</summary>
 			public uint dbch_reserved;
 
-			/// <summary>
-			/// <para>A handle to the device to be checked.</para>
-			/// </summary>
+			/// <summary>A handle to the device to be checked.</summary>
 			public HANDLE dbch_handle;
 
-			/// <summary>
-			/// <para>A handle to the device notification. This handle is returned by RegisterDeviceNotification.</para>
-			/// </summary>
+			/// <summary>A handle to the device notification. This handle is returned by RegisterDeviceNotification.</summary>
 			public HDEVNOTIFY dbch_hdevnotify;
 
-			/// <summary>
-			/// <para>The GUID for the custom event. For more information, see Device Events. Valid only for DBT_CUSTOMEVENT.</para>
-			/// </summary>
+			/// <summary>The GUID for the custom event. For more information, see Device Events. Valid only for DBT_CUSTOMEVENT.</summary>
 			public Guid dbch_eventguid;
 
-			/// <summary>
-			/// <para>The offset of an optional string buffer. Valid only for DBT_CUSTOMEVENT.</para>
-			/// </summary>
+			/// <summary>The offset of an optional string buffer. Valid only for DBT_CUSTOMEVENT.</summary>
 			public int dbch_nameoffset;
 
-			/// <summary>
-			/// <para>Optional binary data. This member is valid only for DBT_CUSTOMEVENT.</para>
-			/// </summary>
-			public IntPtr dbch_data;
+			/// <summary>Optional binary data. This member is valid only for DBT_CUSTOMEVENT.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public byte[] dbch_data;
 		}
 
 		/// <summary>
@@ -513,7 +582,7 @@ namespace Vanara.PInvoke
 			public uint dbcn_size;
 
 			/// <summary>Set to <c>DBT_DEVTYP_NET</c>.</summary>
-			public uint dbcn_devicetype;
+			public DBT_DEVTYPE dbcn_devicetype;
 
 			/// <summary>Reserved; do not use.</summary>
 			public uint dbcn_reserved;
@@ -536,7 +605,7 @@ namespace Vanara.PInvoke
 			public uint dbco_size;
 
 			/// <summary>Set to <c>DBT_DEVTYP_OEM</c>.</summary>
-			public uint dbco_devicetype;
+			public DBT_DEVTYPE dbco_devicetype;
 
 			/// <summary>Reserved; do not use.</summary>
 			public uint dbco_reserved;
@@ -552,6 +621,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/dbt/ns-dbt-_dev_broadcast_port_a typedef struct _DEV_BROADCAST_PORT_A { DWORD
 		// dbcp_size; DWORD dbcp_devicetype; DWORD dbcp_reserved; char dbcp_name[1]; } DEV_BROADCAST_PORT_A, *PDEV_BROADCAST_PORT_A;
 		[PInvokeData("dbt.h", MSDNShortId = "b8789f1c-7d82-4637-bdb0-016a22b3bc8a")]
+		[VanaraMarshaler(typeof(AnySizeStringMarshaler<DEV_BROADCAST_PORT>), "*")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct DEV_BROADCAST_PORT
 		{
@@ -562,7 +632,7 @@ namespace Vanara.PInvoke
 			public uint dbcp_size;
 
 			/// <summary>Set to <c>DBT_DEVTYP_PORT</c>.</summary>
-			public uint dbcp_devicetype;
+			public DBT_DEVTYPE dbcp_devicetype;
 
 			/// <summary>Reserved; do not use.</summary>
 			public uint dbcp_reserved;
@@ -572,11 +642,13 @@ namespace Vanara.PInvoke
 			/// intended to help the user quickly and accurately identify the device—for example, "COM1" and "Standard 28800 bps Modem" are
 			/// considered friendly names.
 			/// </summary>
-			public StrPtrAuto dbcp_name;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+			public string dbcp_name;
 		}
 
 		/// <summary>Undocumented.</summary>
 		[PInvokeData("dbt.h")]
+		[VanaraMarshaler(typeof(AnySizeStringMarshaler<DEV_BROADCAST_USERDEFINED>), "*")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct DEV_BROADCAST_USERDEFINED
 		{
@@ -584,7 +656,8 @@ namespace Vanara.PInvoke
 			public DEV_BROADCAST_HDR dbud_dbh;
 
 			/// <summary>Undocumented.</summary>
-			public StrPtrAnsi dbud_szName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+			public string dbud_szName;
 		}
 
 		/// <summary>Contains information about a logical volume.</summary>
@@ -613,7 +686,7 @@ namespace Vanara.PInvoke
 			public uint dbcv_size;
 
 			/// <summary>Set to <c>DBT_DEVTYP_VOLUME</c> (2).</summary>
-			public uint dbcv_devicetype;
+			public DBT_DEVTYPE dbcv_devicetype;
 
 			/// <summary>Reserved; do not use.</summary>
 			public uint dbcv_reserved;

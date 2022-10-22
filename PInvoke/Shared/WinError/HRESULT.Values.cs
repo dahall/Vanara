@@ -9772,5 +9772,29 @@ namespace Vanara.PInvoke
 
 		/// <summary>Each index must have a minimum size of ten sectors.</summary>
 		public const int E_IMAPI_RAW_IMAGE_TRACK_INDEX_TOO_CLOSE_TO_OTHER_INDEX = unchecked((int)0x80AA0A0A);
+
+		/// <summary></summary>
+		public const int NDF_E_LENGTH_EXCEEDED = unchecked((int)0x8008F900);
+
+		/// <summary>Helper Class parameter not specified to NdfCreateIncident API.</summary>
+		public const int NDF_E_NOHELPERCLASS = unchecked((int)0x8008F901);
+
+		/// <summary></summary>
+		public const int NDF_E_CANCELLED = unchecked((int)0x8008F902);
+
+		/// <summary></summary>
+		public const int NDF_E_DISABLED = unchecked((int)0x8008F903);
+
+		/// <summary>Inavlid parameter.</summary>
+		public const int NDF_E_BAD_PARAM = unchecked((int)0x8008F905);
+
+		/// <summary>Diagnosis failed to resolve the problems.</summary>
+		public const int NDF_E_VALIDATION = unchecked((int)0x8008F906);
+
+		/// <summary>Diagnostics session result is unkown, the diagnostics phase did not complete.</summary>
+		public const int NDF_E_UNKNOWN = unchecked((int)0x8008F907);
+
+		/// <summary>Diagnostics session finished with problems still present.</summary>
+		public const int NDF_E_PROBLEM_PRESENT = unchecked((int)0x8008F908);
 	}
 }

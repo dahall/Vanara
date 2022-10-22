@@ -198,6 +198,10 @@ namespace Vanara.InteropServices
 		/// <returns>A <see cref="IEnumerator{TElem}"/> that can be used to iterate through the collection.</returns>
 		public IEnumerator<TElem> GetEnumerator() => EnumElements().GetEnumerator();
 
+		/// <summary>Gets an array of pointers to each element in this native array.</summary>
+		/// <returns>An array of pointers to each element in this native array.</returns>
+		public IntPtr[] GetPointers() => Enumerable.Range(0, Count - 1).Select(i => PtrOfElem(i)).ToArray();
+
 		/// <summary>Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"/>.</summary>
 		/// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
 		/// <returns>The index of <paramref name="item"/> if found in the list; otherwise, -1.</returns>

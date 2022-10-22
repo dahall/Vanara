@@ -24,8 +24,8 @@ namespace Vanara.PInvoke
 	/// <seealso cref="IHandle"/>
 	public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	{
-		private readonly SafeHWND hwnd;
 		private readonly WeakReference weakSelfRef;
+		private SafeHWND hwnd;
 		private bool isDisposed;
 		private WindowClass wCls;
 
@@ -43,7 +43,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets the handle.</summary>
 		/// <value>The handle.</value>
-		public HWND Handle => hwnd;
+		public HWND Handle => hwnd ?? HWND.NULL;
 
 		/// <summary>Gets or sets the callback method used to filter window messages.</summary>
 		/// <value>The callback method.</value>
@@ -69,9 +69,14 @@ namespace Vanara.PInvoke
 		/// </summary>
 		protected virtual SafeHWND CreateWindow()
 		{
-			HINSTANCE hInst = GetModuleHandle();
-			wCls = new WindowClass($"{GetType().Name}+{Guid.NewGuid()}", hInst, WndProc);
-			return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(0, wCls.Atom, hWndParent: HWND.HWND_MESSAGE, hInstance: hInst));
+			lock (this)
+			{
+				if (!Handle.IsNull)
+					throw new InvalidOperationException("Window handle already exists.");
+				HINSTANCE hInst = GetModuleHandle();
+				wCls = new WindowClass($"{GetType().Name}+{Guid.NewGuid()}", hInst, WndProc);
+				return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(0, wCls.Atom, hWndParent: HWND.HWND_MESSAGE, hInstance: hInst));
+			}
 		}
 
 		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
@@ -85,6 +90,7 @@ namespace Vanara.PInvoke
 			isDisposed = true;
 
 			hwnd?.Dispose(); // Calls DestroyWindow
+			hwnd = null;
 			wCls?.Unregister();
 		}
 

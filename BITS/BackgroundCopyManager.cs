@@ -21,19 +21,27 @@ namespace Vanara.IO
 		/// <summary>Gets the list of currently queued jobs for all users.</summary>
 		public static BackgroundCopyJobCollection Jobs { get; } = new BackgroundCopyJobCollection();
 
+		/// <summary>Gets an object that manages the pool of peers from which you can download content.</summary>
+		/// <value>The peer cache administration.</value>
+		public static PeerCacheAdministration PeerCacheAdministration { get; } = new PeerCacheAdministration(ciMgr.Item);
+
 		/// <summary>Retrieves the running version of BITS.</summary>
 		public static Version Version
 		{
 			get
 			{
-				try { return ver ?? (ver = GetVer()); }
+				try { return ver ??= GetVer(); }
 				catch { return new Version(); }
 
 				static Version GetVer()
 				{
-					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(Environment.ExpandEnvironmentVariables(@"%WinDir%\Sysnative\qmgr.dll"));
+					string dllPath = Microsoft.Win32.Registry.GetValue($@"HKEY_CLASSES_ROOT\CLSID\{typeof(IBackgroundCopyManager).GUID:B}\InProcServer32", null, null)?.ToString() ??
+						Environment.ExpandEnvironmentVariables($@"%SystemRoot%\{(Environment.Is64BitProcess != Environment.Is64BitOperatingSystem ? "sysnative" : "system32")}\qmgr.dll");
+					var fi = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath);
 					return $"{fi.FileMajorPart}.{fi.FileMinorPart}" switch
 					{
+						"7.8" when fi.FileBuildPart >= 18362 => new Version(10, 3),
+						"7.8" when fi.FileBuildPart >= 17763 => new Version(10, 2),
 						"7.8" => new Version(10, 1),
 						"7.7" => new Version(5, 0),
 						"7.5" => new Version(4, 0),
@@ -48,7 +56,7 @@ namespace Vanara.IO
 			}
 		}
 
-		private static IBackgroundCopyManager IMgr => ciMgr.Item;
+		internal static IBackgroundCopyManager IMgr => ciMgr.Item;
 
 		/// <summary>Copies an existing file to a new file using BITS. Overwriting a file of the same name is not allowed.</summary>
 		/// <param name="sourceFileName">The file to copy.</param>
@@ -77,7 +85,7 @@ namespace Vanara.IO
 		/// BackgroundCopyManager.CopyAsync(src, dest, cts.Token, prog);
 		/// </code>
 		/// </example>
-		public static async Task CopyAsync(string sourceFileName, string destFileName, CancellationToken cancellationToken, IProgress<Tuple<BackgroundCopyJobState, byte>> progress)
+		public static async Task CopyAsync(string sourceFileName, string destFileName, [Optional] CancellationToken cancellationToken, [Optional] IProgress<Tuple<BackgroundCopyJobState, byte>> progress)
 		{
 #if NET40
 			await TaskEx.Run(() => CopyTemplate(destFileName, cancellationToken, (s, p) => progress?.Report(new Tuple<BackgroundCopyJobState, byte>(s,p)), f => f.Add(sourceFileName, destFileName)), cancellationToken);
@@ -91,7 +99,7 @@ namespace Vanara.IO
 		{
 			try
 			{
-				IMgr.CreateJob(displayName, jobType, out var newJobID, out var newJob);
+				IMgr.CreateJob(displayName, jobType, out Guid newJobID, out IBackgroundCopyJob newJob);
 				return newJob;
 			}
 			catch (COMException cex)
@@ -135,23 +143,18 @@ namespace Vanara.IO
 		internal static bool IsCurrentUserAdministrator()
 		{
 			using var identity = WindowsIdentity.GetCurrent();
-
-			var wp = new WindowsPrincipal(identity);
-
-			return wp.IsInRole(WindowsBuiltInRole.Administrator);
+			return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
 		}
-
 
 		private static void CopyTemplate(string destFileName, CancellationToken ct, Action<BackgroundCopyJobState, byte> report, Action<BackgroundCopyFileCollection> add)
 		{
-			var type = (Uri.TryCreate(destFileName, UriKind.Absolute, out var uri) && !uri.IsFile) ? BackgroundCopyJobType.Upload : BackgroundCopyJobType.Download;
+			BackgroundCopyJobType type = (Uri.TryCreate(destFileName, UriKind.Absolute, out Uri uri) && !uri.IsFile) ? BackgroundCopyJobType.Upload : BackgroundCopyJobType.Download;
 
-			using var mainJob = Jobs.Add("Temp" + Guid.NewGuid().ToString(), string.Empty, type);
+			using BackgroundCopyJob mainJob = Jobs.Add("Temp" + Guid.NewGuid().ToString(), string.Empty, type);
 
 			using var manualReset = new ManualResetEventSlim(false);
 
 			BackgroundCopyException err = null;
-
 
 			// Set event handlers for job, these are weak references.
 			mainJob.Completed += OnCompleted;
@@ -165,7 +168,6 @@ namespace Vanara.IO
 
 			manualReset.Wait(ct);
 
-
 			var raiseException = false;
 
 			if (ct.IsCancellationRequested)
@@ -174,13 +176,11 @@ namespace Vanara.IO
 				raiseException = true;
 			}
 
-
 			// Remove weak references to prevent memory leak.
 			mainJob.FileRangesTransferred -= OnFileRangesTransferred;
 			mainJob.FileTransferred -= OnFileTransferred;
 			mainJob.Completed -= OnCompleted;
 			mainJob.Error -= OnError;
-
 
 			if (raiseException)
 				throw new OperationCanceledException();
@@ -188,11 +188,7 @@ namespace Vanara.IO
 			if (null != err)
 				throw err;
 
-
-
-
 			// Better performance when event methods are defined seperately, preferably static.
-
 
 			void OnCompleted(object s, BackgroundCopyJobEventArgs e)
 			{
@@ -206,7 +202,6 @@ namespace Vanara.IO
 				}
 			}
 
-
 			void OnError(object s, BackgroundCopyJobEventArgs e)
 			{
 				if (s is BackgroundCopyJob job)
@@ -219,13 +214,11 @@ namespace Vanara.IO
 				}
 			}
 
-
 			void OnFileTransferred(object s, BackgroundCopyFileTransferredEventArgs e)
 			{
 				if (s is BackgroundCopyJob job)
 					ReportProgress(job, job.State);
 			}
-
 
 			void OnFileRangesTransferred(object s, BackgroundCopyFileRangesTransferredEventArgs e)
 			{
@@ -233,11 +226,7 @@ namespace Vanara.IO
 					ReportProgress(job, job.State);
 			}
 
-
-			void ReportProgress(BackgroundCopyJob job, BackgroundCopyJobState state)
-			{
-				report?.Invoke(state, job.Progress.PercentComplete);
-			}
+			void ReportProgress(BackgroundCopyJob job, BackgroundCopyJobState state) => report?.Invoke(state, job.Progress.PercentComplete);
 		}
 	}
 }

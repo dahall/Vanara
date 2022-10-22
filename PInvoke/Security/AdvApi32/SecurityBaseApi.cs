@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -14,7 +13,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
-		private static readonly Dictionary<Type, int> StructSizes = new Dictionary<Type, int>();
+		private static readonly Dictionary<Type, int> StructSizes = new();
 
 		/// <summary>Specifies the logon provider.</summary>
 		public enum LogonUserProvider
@@ -3975,12 +3974,8 @@ namespace Vanara.PInvoke
 		public static T GetAclInformation<T>(this PACL pAcl) where T : struct
 		{
 			if (!CorrespondingTypeAttribute.CanGet<T, ACL_INFORMATION_CLASS>(out var c)) throw new ArgumentException("Cannot retrieve value of type T.");
-			using (var mem = new SafeCoTaskMemHandle(12))
-			{
-				if (!GetAclInformation(pAcl, mem, (uint)Marshal.SizeOf(typeof(T)), c))
-					throw new Win32Exception();
-				return mem.ToStructure<T>();
-			}
+			using var mem = new SafeCoTaskMemHandle(12);
+			return GetAclInformation(pAcl, mem, (uint)Marshal.SizeOf(typeof(T)), c) ? mem.ToStructure<T>() : throw new Win32Exception();
 		}
 
 		/// <summary>The <c>GetKernelObjectSecurity</c> function retrieves a copy of the security descriptor that protects a kernel object.</summary>
@@ -4315,44 +4310,107 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.Bool)] out bool lpbSaclDefaulted);
 
 		/// <summary>
-		/// The GetTokenInformation function retrieves a specified type of information about an access token. The calling process must have
-		/// appropriate access rights to obtain the information.
+		/// <para>
+		/// The <c>GetTokenInformation</c> function retrieves a specified type of information about an access token. The calling process
+		/// must have appropriate access rights to obtain the information.
+		/// </para>
+		/// <para>
+		/// To determine if a user is a member of a specific group, use the CheckTokenMembership function. To determine group membership for
+		/// app container tokens, use the CheckTokenMembershipEx function.
+		/// </para>
 		/// </summary>
-		/// <param name="hObject">
+		/// <param name="TokenHandle">
 		/// A handle to an access token from which information is retrieved. If TokenInformationClass specifies TokenSource, the handle must
 		/// have TOKEN_QUERY_SOURCE access. For all other TokenInformationClass values, the handle must have TOKEN_QUERY access.
 		/// </param>
-		/// <param name="tokenInfoClass">
+		/// <param name="TokenInformationClass">
 		/// Specifies a value from the TOKEN_INFORMATION_CLASS enumerated type to identify the type of information the function retrieves.
-		/// Any callers who check the TokenIsAppContainer and have it return 0 should also verify that the caller token is not an identify
-		/// level impersonation token. If the current token is not an application container but is an identity level token, you should return AccessDenied.
+		/// Any callers who check the <c>TokenIsAppContainer</c> and have it return 0 should also verify that the caller token is not an
+		/// identify level impersonation token. If the current token is not an app container but is an identity level token, you should
+		/// return <c>AccessDenied</c>.
 		/// </param>
-		/// <param name="pTokenInfo">
-		/// A pointer to a buffer the function fills with the requested information. The structure put into this buffer depends upon the type
-		/// of information specified by the TokenInformationClass parameter.
+		/// <param name="TokenInformation">
+		/// A pointer to a buffer the function fills with the requested information. The structure put into this buffer depends upon the
+		/// type of information specified by the TokenInformationClass parameter.
 		/// </param>
-		/// <param name="tokenInfoLength">
-		/// Specifies the size, in bytes, of the buffer pointed to by the TokenInformation parameter. If TokenInformation is NULL, this
-		/// parameter must be zero.
+		/// <param name="TokenInformationLength">
+		/// Specifies the size, in bytes, of the buffer pointed to by the TokenInformation parameter. If TokenInformation is <c>NULL</c>,
+		/// this parameter must be zero.
 		/// </param>
-		/// <param name="returnLength">
+		/// <param name="ReturnLength">
+		/// <para>
 		/// A pointer to a variable that receives the number of bytes needed for the buffer pointed to by the TokenInformation parameter. If
 		/// this value is larger than the value specified in the TokenInformationLength parameter, the function fails and stores no data in
 		/// the buffer.
+		/// </para>
 		/// <para>
 		/// If the value of the TokenInformationClass parameter is TokenDefaultDacl and the token has no default DACL, the function sets the
-		/// variable pointed to by ReturnLength to sizeof(TOKEN_DEFAULT_DACL) and sets the DefaultDacl member of the TOKEN_DEFAULT_DACL
-		/// structure to NULL.
+		/// variable pointed to by ReturnLength to
+		/// <code>sizeof(</code>
+		/// TOKEN_DEFAULT_DACL
+		/// <code>)</code>
+		/// and sets the <c>DefaultDacl</c> member of the <c>TOKEN_DEFAULT_DACL</c> structure to <c>NULL</c>.
 		/// </para>
 		/// </param>
 		/// <returns>
-		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error
-		/// information, call GetLastError.
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-gettokeninformation
+		// BOOL GetTokenInformation( HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD TokenInformationLength, PDWORD ReturnLength );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446671")]
-		public static extern bool GetTokenInformation(HTOKEN hObject, TOKEN_INFORMATION_CLASS tokenInfoClass, IntPtr pTokenInfo, int tokenInfoLength, out int returnLength);
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "NF:securitybaseapi.GetTokenInformation")]
+		public static extern bool GetTokenInformation(HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, IntPtr TokenInformation, int TokenInformationLength, out int ReturnLength);
+
+		/// <summary>
+		/// <para>
+		/// The <c>GetTokenInformation</c> function retrieves a specified type of information about an access token. The calling process
+		/// must have appropriate access rights to obtain the information.
+		/// </para>
+		/// <para>
+		/// To determine if a user is a member of a specific group, use the CheckTokenMembership function. To determine group membership for
+		/// app container tokens, use the CheckTokenMembershipEx function.
+		/// </para>
+		/// </summary>
+		/// <typeparam name="T">The type of the structure to retrive.</typeparam>
+		/// <param name="TokenHandle">
+		/// A handle to an access token from which information is retrieved. If TokenInformationClass specifies TokenSource, the handle must
+		/// have TOKEN_QUERY_SOURCE access. For all other TokenInformationClass values, the handle must have TOKEN_QUERY access.
+		/// </param>
+		/// <param name="TokenInformationClass">
+		/// Specifies a value from the TOKEN_INFORMATION_CLASS enumerated type to identify the type of information the function retrieves.
+		/// Any callers who check the <c>TokenIsAppContainer</c> and have it return 0 should also verify that the caller token is not an
+		/// identity level impersonation token. If the current token is not an app container but is an identity level token, you should
+		/// return <c>AccessDenied</c>.
+		/// <para>
+		/// If this value is <see langword="null"/>, the value returned will be the first member of <c>TOKEN_INFORMATION_CLASS</c> that
+		/// returns the type specified in <typeparamref name="T"/>.
+		/// </para>
+		/// </param>
+		/// <returns>The requested information.</returns>
+		/// <exception cref="System.InvalidCastException"></exception>
+		// https://docs.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-gettokeninformation
+		// BOOL GetTokenInformation( HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD TokenInformationLength, PDWORD ReturnLength );
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "NF:securitybaseapi.GetTokenInformation")]
+		public static T GetTokenInformation<T>(HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS? TokenInformationClass = null) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet<T, TOKEN_INFORMATION_CLASS>(TokenInformationClass, out var ti))
+				throw new InvalidCastException();
+
+			// Get information size
+			if (!GetTokenInformation(TokenHandle, ti, default, 0, out var cbSize))
+			{
+				var e = Win32Error.GetLastError();
+				if (e != Win32Error.ERROR_INSUFFICIENT_BUFFER && e != Win32Error.ERROR_BAD_LENGTH)
+					e.ThrowIfFailed();
+			}
+
+			// Retrieve token information.
+			using var pType = new SafeCoTaskMemStruct<T>(cbSize);
+			Win32Error.ThrowLastErrorIfFalse(GetTokenInformation(TokenHandle, ti, pType, cbSize, out _));
+			return pType.Value;
+		}
 
 		/// <summary>
 		/// The <c>ImpersonateAnonymousToken</c> function enables the specified thread to impersonate the system's anonymous logon token. To
@@ -4655,22 +4713,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "6ddec01f-237f-4b6a-8ea8-a126017b30c5")]
 		public static bool InsertAccessAllowedAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid)
 		{
-			using (var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_ALLOWED_ACE>(pSid, out var offset)))
+			using var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_ALLOWED_ACE>(pSid, out var offset));
+			// Build ACE
+			var ace = new ACCESS_ALLOWED_ACE
 			{
-				// Build ACE
-				var ace = new ACCESS_ALLOWED_ACE
-				{
-					Header = new ACE_HEADER(AceType.AccessAllowed, AceFlags, aceMem.Size),
-					Mask = AccessMask
-				};
-				Marshal.StructureToPtr(ace, aceMem, false);
-				if (!CopySid(pSid.Length(), ((IntPtr)aceMem).Offset(offset), pSid))
-					return false;
-				// Insert
-				if (!AddAce(pAcl, dwAceRevision, dwStartingAceIndex, aceMem, aceMem.Size))
-					return false;
-				return true;
-			}
+				Header = new ACE_HEADER(AceType.AccessAllowed, AceFlags, aceMem.Size),
+				Mask = AccessMask
+			};
+			Marshal.StructureToPtr(ace, aceMem, false);
+			if (!CopySid(pSid.Length(), ((IntPtr)aceMem).Offset(offset), pSid))
+				return false;
+			// Insert
+			return AddAce(pAcl, dwAceRevision, dwStartingAceIndex, aceMem, aceMem.Size);
 		}
 
 		/// <summary>
@@ -4794,25 +4848,21 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "ccf83e95-ba6f-49f5-a312-52eac90f209a")]
 		public static bool InsertAccessAllowedObjectAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, Guid? ObjectTypeGuid, Guid? InheritedObjectTypeGuid, PSID pSid)
 		{
-			using (var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_ALLOWED_OBJECT_ACE>(pSid, out var offset)))
+			using var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_ALLOWED_OBJECT_ACE>(pSid, out var offset));
+			// Build ACE
+			var ace = new ACCESS_ALLOWED_OBJECT_ACE
 			{
-				// Build ACE
-				var ace = new ACCESS_ALLOWED_OBJECT_ACE
-				{
-					Header = new ACE_HEADER(AceType.AccessAllowedObject, AceFlags, aceMem.Size),
-					Mask = AccessMask,
-					Flags = (ObjectTypeGuid.HasValue ? ObjectAceFlags.ACE_OBJECT_TYPE_PRESENT : 0) | (InheritedObjectTypeGuid.HasValue ? ObjectAceFlags.ACE_INHERITED_OBJECT_TYPE_PRESENT : 0),
-					ObjectType = ObjectTypeGuid.GetValueOrDefault(),
-					InheritedObjectType = InheritedObjectTypeGuid.GetValueOrDefault(),
-				};
-				Marshal.StructureToPtr(ace, aceMem, false);
-				if (!CopySid(pSid.Length(), ((IntPtr)aceMem).Offset(offset), pSid))
-					return false;
-				// Insert
-				if (!AddAce(pAcl, dwAceRevision, dwStartingAceIndex, aceMem, aceMem.Size))
-					return false;
-				return true;
-			}
+				Header = new ACE_HEADER(AceType.AccessAllowedObject, AceFlags, aceMem.Size),
+				Mask = AccessMask,
+				Flags = (ObjectTypeGuid.HasValue ? ObjectAceFlags.ACE_OBJECT_TYPE_PRESENT : 0) | (InheritedObjectTypeGuid.HasValue ? ObjectAceFlags.ACE_INHERITED_OBJECT_TYPE_PRESENT : 0),
+				ObjectType = ObjectTypeGuid.GetValueOrDefault(),
+				InheritedObjectType = InheritedObjectTypeGuid.GetValueOrDefault(),
+			};
+			Marshal.StructureToPtr(ace, aceMem, false);
+			if (!CopySid(pSid.Length(), ((IntPtr)aceMem).Offset(offset), pSid))
+				return false;
+			// Insert
+			return AddAce(pAcl, dwAceRevision, dwStartingAceIndex, aceMem, aceMem.Size);
 		}
 
 		/// <summary>
@@ -4917,22 +4967,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "e353c88c-f82e-40c0-b676-38f0060acc81")]
 		public static bool InsertAccessDeniedAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid)
 		{
-			using (var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_DENIED_ACE>(pSid, out var offset)))
+			using var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_DENIED_ACE>(pSid, out var offset));
+			// Build ACE
+			var ace = new ACCESS_DENIED_ACE
 			{
-				// Build ACE
-				var ace = new ACCESS_DENIED_ACE
-				{
-					Header = new ACE_HEADER(AceType.AccessDenied, AceFlags, aceMem.Size),
-					Mask = AccessMask,
-				};
-				Marshal.StructureToPtr(ace, aceMem, false);
-				if (!CopySid(pSid.Length(), ((IntPtr)aceMem).Offset(offset), pSid))
-					return false;
-				// Insert
-				if (!AddAce(pAcl, dwAceRevision, dwStartingAceIndex, aceMem, aceMem.Size))
-					return false;
-				return true;
-			}
+				Header = new ACE_HEADER(AceType.AccessDenied, AceFlags, aceMem.Size),
+				Mask = AccessMask,
+			};
+			Marshal.StructureToPtr(ace, aceMem, false);
+			if (!CopySid(pSid.Length(), ((IntPtr)aceMem).Offset(offset), pSid))
+				return false;
+			// Insert
+			return AddAce(pAcl, dwAceRevision, dwStartingAceIndex, aceMem, aceMem.Size);
 		}
 
 		/// <summary>
@@ -5058,25 +5104,21 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "1427c908-92b6-46b2-9189-a2fd93c470b1")]
 		public static bool InsertAccessDeniedObjectAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, Guid? ObjectTypeGuid, Guid? InheritedObjectTypeGuid, PSID pSid)
 		{
-			using (var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_DENIED_OBJECT_ACE>(pSid, out var offset)))
+			using var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_DENIED_OBJECT_ACE>(pSid, out var offset));
+			// Build ACE
+			var ace = new ACCESS_DENIED_OBJECT_ACE
 			{
-				// Build ACE
-				var ace = new ACCESS_DENIED_OBJECT_ACE
-				{
-					Header = new ACE_HEADER(AceType.AccessDeniedObject, AceFlags, aceMem.Size),
-					Mask = AccessMask,
-					Flags = (ObjectTypeGuid.HasValue ? ObjectAceFlags.ACE_OBJECT_TYPE_PRESENT : 0) | (InheritedObjectTypeGuid.HasValue ? ObjectAceFlags.ACE_INHERITED_OBJECT_TYPE_PRESENT : 0),
-					ObjectType = ObjectTypeGuid.GetValueOrDefault(),
-					InheritedObjectType = InheritedObjectTypeGuid.GetValueOrDefault(),
-				};
-				Marshal.StructureToPtr(ace, aceMem, false);
-				if (!CopySid(pSid.Length(), ((IntPtr)aceMem).Offset(offset), pSid))
-					return false;
-				// Insert
-				if (!AddAce(pAcl, dwAceRevision, dwStartingAceIndex, aceMem, aceMem.Size))
-					return false;
-				return true;
-			}
+				Header = new ACE_HEADER(AceType.AccessDeniedObject, AceFlags, aceMem.Size),
+				Mask = AccessMask,
+				Flags = (ObjectTypeGuid.HasValue ? ObjectAceFlags.ACE_OBJECT_TYPE_PRESENT : 0) | (InheritedObjectTypeGuid.HasValue ? ObjectAceFlags.ACE_INHERITED_OBJECT_TYPE_PRESENT : 0),
+				ObjectType = ObjectTypeGuid.GetValueOrDefault(),
+				InheritedObjectType = InheritedObjectTypeGuid.GetValueOrDefault(),
+			};
+			Marshal.StructureToPtr(ace, aceMem, false);
+			if (!CopySid(pSid.Length(), ((IntPtr)aceMem).Offset(offset), pSid))
+				return false;
+			// Insert
+			return AddAce(pAcl, dwAceRevision, dwStartingAceIndex, aceMem, aceMem.Size);
 		}
 
 		/// <summary>
@@ -6083,8 +6125,8 @@ namespace Vanara.PInvoke
 		public static bool SetTokenInformation<T>(HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, T TokenInformation)
 		{
 			if (!CorrespondingTypeAttribute.CanSet(TokenInformationClass, typeof(T))) throw new InvalidCastException();
-			using (var mem = SafeHGlobalHandle.CreateFromStructure(TokenInformation))
-				return SetTokenInformation(TokenHandle, TokenInformationClass, mem, mem.Size);
+			using var mem = SafeHGlobalHandle.CreateFromStructure(TokenInformation);
+			return SetTokenInformation(TokenHandle, TokenInformationClass, mem, mem.Size);
 		}
 
 		internal static int GetSize<T>() where T : struct
@@ -6118,7 +6160,7 @@ namespace Vanara.PInvoke
 			/// close the duplicate handle.
 			/// </para>
 			/// </remarks>
-			public static readonly SafeHTOKEN CurrentProcessToken = new SafeHTOKEN((IntPtr)4, false);
+			public static readonly SafeHTOKEN CurrentProcessToken = new((IntPtr)4, false);
 
 			/// <summary>
 			/// Retrieves a pseudo-handle that you can use as a shorthand way to refer to the token that is currently in effect for the
@@ -6139,7 +6181,7 @@ namespace Vanara.PInvoke
 			/// close the duplicate handle.
 			/// </para>
 			/// </remarks>
-			public static readonly SafeHTOKEN CurrentThreadEffectiveToken = new SafeHTOKEN((IntPtr)6, false);
+			public static readonly SafeHTOKEN CurrentThreadEffectiveToken = new((IntPtr)6, false);
 
 			/// <summary>
 			/// Retrieves a pseudo-handle that you can use as a shorthand way to refer to the impersonation token that was assigned to the
@@ -6160,7 +6202,7 @@ namespace Vanara.PInvoke
 			/// close the duplicate handle.
 			/// </para>
 			/// </remarks>
-			public static readonly SafeHTOKEN CurrentThreadToken = new SafeHTOKEN((IntPtr)5, false);
+			public static readonly SafeHTOKEN CurrentThreadToken = new((IntPtr)5, false);
 
 			/// <summary>Initializes a new instance of the <see cref="HTOKEN"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -6318,13 +6360,7 @@ namespace Vanara.PInvoke
 			/// an identify level impersonation token. If the current token is not an application container but is an identity level token,
 			/// you should return AccessDenied.
 			/// </param>
-			public T GetInfo<T>(TOKEN_INFORMATION_CLASS? tokenInfoClass = null)
-			{
-				if (!CorrespondingTypeAttribute.CanGet<T, TOKEN_INFORMATION_CLASS>(tokenInfoClass, out var ti))
-					throw new InvalidCastException();
-				using var pType = GetInfo(ti);
-				return ((IntPtr)pType).Convert<T>(pType.Size);
-			}
+			public T GetInfo<T>(TOKEN_INFORMATION_CLASS? tokenInfoClass = null) where T : struct => GetTokenInformation<T>(this, tokenInfoClass);
 
 			/// <summary>
 			/// Retrieves a specified type of information about an access token. The calling process must have appropriate access rights to
@@ -6349,7 +6385,7 @@ namespace Vanara.PInvoke
 
 				// Retrieve token information.
 				var pType = new SafeCoTaskMemHandle(cbSize);
-				if (!GetTokenInformation(this, tokenInfoClass, pType, cbSize, out cbSize))
+				if (!GetTokenInformation(this, tokenInfoClass, pType, cbSize, out _))
 					Win32Error.ThrowLastError();
 
 				return pType;

@@ -6,9 +6,6 @@ using Vanara.InteropServices;
 using static Vanara.PInvoke.Opc;
 using static Vanara.PInvoke.UrlMon;
 
-using XPS_POINT = System.Drawing.PointF;
-using XPS_RECT = System.Drawing.RectangleF;
-
 namespace Vanara.PInvoke
 {
 	/// <summary>Interfaces and supporting enums and structures for XPS programming.</summary>
@@ -5115,6 +5112,56 @@ namespace Vanara.PInvoke
 			// GetImageType( XPS_IMAGE_TYPE *imageType );
 			[MethodImpl(MethodImplOptions.InternalCall)]
 			XPS_IMAGE_TYPE GetImageType();
+		}
+
+		/// <summary>Represents an x- and y-coordinate pair in two-dimensional space.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/ns-xpsobjectmodel-xps_point typedef struct
+		// __MIDL___MIDL_itf_xpsobjectmodel_0000_0000_0017 { FLOAT x; FLOAT y; } XPS_POINT;
+		[PInvokeData("xpsobjectmodel.h", MSDNShortId = "NS:xpsobjectmodel.__MIDL___MIDL_itf_xpsobjectmodel_0000_0000_0017")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct XPS_POINT 
+		{
+			/// <summary>The x-coordinate of a point.</summary>
+			public float x;
+
+			/// <summary>The y-coordinate of a point.</summary>
+			public float y;
+		}
+
+		/// <summary>Describes the width, height, and location of a rectangle.</summary>
+		/// <remarks>The measurement units depend on the context and are not specified in the structure.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/ns-xpsobjectmodel-xps_rect typedef struct
+		// __MIDL___MIDL_itf_xpsobjectmodel_0000_0000_0019 { FLOAT x; FLOAT y; FLOAT width; FLOAT height; } XPS_RECT;
+		[PInvokeData("xpsobjectmodel.h", MSDNShortId = "NS:xpsobjectmodel.__MIDL___MIDL_itf_xpsobjectmodel_0000_0000_0019")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct XPS_RECT
+		{
+			/// <summary>The x-coordinate of the rectangle's left side.</summary>
+			public float x;
+
+			/// <summary>The y-coordinate of the rectangle's top side.</summary>
+			public float y;
+
+			/// <summary>A non-negative value that represents the object's size in the horizontal (x) dimension.</summary>
+			public float width;
+
+			/// <summary>A non-negative value that represents the object's size in the vertical (y) dimension.</summary>
+			public float height;
+		}
+
+		/// <summary>Describes the size of an object.</summary>
+		/// <remarks>The measurement units are not specified in the structure.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/ns-xpsobjectmodel-xps_size typedef struct
+		// __MIDL___MIDL_itf_xpsobjectmodel_0000_0000_0018 { FLOAT width; FLOAT height; } XPS_SIZE;
+		[PInvokeData("xpsobjectmodel.h", MSDNShortId = "NS:xpsobjectmodel.__MIDL___MIDL_itf_xpsobjectmodel_0000_0000_0018")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct XPS_SIZE
+		{
+			/// <summary>A non-negative value that represents the object's size in the horizontal (x) dimension.</summary>
+			public float width;
+
+			/// <summary>A non-negative value that represents the object's size in the vertical (y) dimension.</summary>
+			public float height;
 		}
 	}
 }

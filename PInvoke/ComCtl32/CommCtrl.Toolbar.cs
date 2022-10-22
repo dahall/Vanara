@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
@@ -8,6 +10,9 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Window class name for the Toolbar control.</summary>
 		public const string TOOLBARCLASSNAME = "ToolbarWindow32";
+
+		/// <summary/>
+		public static readonly IntPtr HINST_COMMCTRL = new(-1);
 
 		private const int TBN_FIRST = -700;
 
@@ -21,15 +26,198 @@ namespace Vanara.PInvoke
 			CMB_MASKED = 2
 		}
 
+		/// <summary>Flags that indicate why the hot item has changed in NMTBHOTITEM.</summary>
+		[PInvokeData("Commctrl.h")]
+		[Flags]
+		public enum HICF : uint
+		{
+			/// <summary>The change in the hot item was caused by a shortcut key.</summary>
+			HICF_ACCELERATOR = 0x00000004,
+
+			/// <summary>The change in the hot item was caused by an arrow key.</summary>
+			HICF_ARROWKEYS = 0x00000002,
+
+			/// <summary>Modifies HICF_ACCELERATOR. If this flag is set, more than one item has the same shortcut key character.</summary>
+			HICF_DUPACCEL = 0x00000008,
+
+			/// <summary>
+			/// Modifies the other reason flags. If this flag is set, there is no previous hot item and idOld does not contain valid information.
+			/// </summary>
+			HICF_ENTERING = 0x00000010,
+
+			/// <summary>
+			/// Modifies the other reason flags. If this flag is set, there is no new hot item and idNew does not contain valid information.
+			/// </summary>
+			HICF_LEAVING = 0x00000020,
+
+			/// <summary>The change in the hot item resulted from a left-click mouse event.</summary>
+			HICF_LMOUSE = 0x00000080,
+
+			/// <summary>The change in the hot item resulted from a mouse event.</summary>
+			HICF_MOUSE = 0x00000001,
+
+			/// <summary>
+			/// The change in the hot item resulted from an event that could not be determined. This will most often be due to a change in
+			/// focus or the TB_SETHOTITEM message.
+			/// </summary>
+			HICF_OTHER = 0x00000000,
+
+			/// <summary>The change in the hot item resulted from the user entering the shortcut key for an item that was already hot.</summary>
+			HICF_RESELECT = 0x00000040,
+
+			/// <summary>Version 5.80. Causes the button to switch states.</summary>
+			HICF_TOGGLEDROPDOWN = 0x00000100,
+		}
+
+		/// <summary>Index values for IDB_HIST_LARGE_COLOR and IDB_HIST_SMALL_COLOR</summary>
+		[PInvokeData("Commctrl.h")]
+		public enum HIST
+		{
+			/// <summary>Move back.</summary>
+			HIST_BACK = 0,
+
+			/// <summary>Move forward.</summary>
+			HIST_FORWARD = 1,
+
+			/// <summary>Open favorites folder.</summary>
+			HIST_FAVORITES = 2,
+
+			/// <summary>Add to favorites.</summary>
+			HIST_ADDTOFAVORITES = 3,
+
+			/// <summary>View tree.</summary>
+			HIST_VIEWTREE = 4,
+		}
+
+		/// <summary>Identifier of a system-defined button image list. Used by TB_LOADIMAGES.</summary>
+		[PInvokeData("Commctrl.h")]
+		public enum IDB
+		{
+			/// <summary>Standard bitmaps in small size.</summary>
+			IDB_STD_SMALL_COLOR = 0,
+
+			/// <summary>Standard bitmaps in large size.</summary>
+			IDB_STD_LARGE_COLOR = 1,
+
+			/// <summary>View bitmaps in small size.</summary>
+			IDB_VIEW_SMALL_COLOR = 4,
+
+			/// <summary>View bitmaps in large size.</summary>
+			IDB_VIEW_LARGE_COLOR = 5,
+
+			/// <summary>Windows Explorer bitmaps in small size.</summary>
+			IDB_HIST_SMALL_COLOR = 8,
+
+			/// <summary>Windows Explorer bitmaps in large size.</summary>
+			IDB_HIST_LARGE_COLOR = 9,
+
+			/// <summary>Windows Explorer travel buttons and favorites bitmaps in normal state.</summary>
+			IDB_HIST_NORMAL = 12,
+
+			/// <summary>Windows Explorer travel buttons and favorites bitmaps in hot state.</summary>
+			IDB_HIST_HOT = 13,
+
+			/// <summary>Windows Explorer travel buttons and favorites bitmaps in disabled state.</summary>
+			IDB_HIST_DISABLED = 14,
+
+			/// <summary>Windows Explorer travel buttons and favorites bitmaps in pressed state.</summary>
+			IDB_HIST_PRESSED = 15,
+		}
+
+		/// <summary>Index values for IDB_STD_LARGE_COLOR and IDB_STD_SMALL_COLOR</summary>
+		[PInvokeData("Commctrl.h")]
+		public enum STD
+		{
+			/// <summary>Cut operation.</summary>
+			STD_CUT = 0,
+
+			/// <summary>Copy operation.</summary>
+			STD_COPY = 1,
+
+			/// <summary>Paste operation.</summary>
+			STD_PASTE = 2,
+
+			/// <summary>Undo operation.</summary>
+			STD_UNDO = 3,
+
+			/// <summary>Redo operation.</summary>
+			STD_REDOW = 4,
+
+			/// <summary>Delete operation.</summary>
+			STD_DELETE = 5,
+
+			/// <summary>New file operation.</summary>
+			STD_FILENEW = 6,
+
+			/// <summary>Open file operation.</summary>
+			STD_FILEOPEN = 7,
+
+			/// <summary>Save file operation.</summary>
+			STD_FILESAVE = 8,
+
+			/// <summary>Print preview operation.</summary>
+			STD_PRINTPRE = 9,
+
+			/// <summary>Properties operation.</summary>
+			STD_PROPERTIES = 10,
+
+			/// <summary>Help operation.</summary>
+			STD_HELP = 11,
+
+			/// <summary>Find operation.</summary>
+			STD_FIND = 12,
+
+			/// <summary>Replace operation.</summary>
+			STD_REPLACE = 13,
+
+			/// <summary>Print operation.</summary>
+			STD_PRINT = 14,
+		}
+
 		/// <summary>
 		/// The value your application can return depends on the current drawing stage. The <c>dwDrawStage</c> member of the associated
 		/// <c>NMCUSTOMDRAW</c> structure holds a value that specifies the drawing stage. You must return one of the following values.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760492")]
-		public enum TBCDRF
+		[Flags]
+		public enum TBCDRF : uint
 		{
-			/// <summary>Version 4.71. Do not draw button edges. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
-			TBCDRF_NOEDGES = 0x00010000,
+			/// <summary>
+			/// The control will draw itself. It will not send any additional NM_CUSTOMDRAW notification codes for this paint cycle. This
+			/// occurs when dwDrawStage equals CDDS_PREPAINT.
+			/// </summary>
+			CDRF_DODEFAULT = 0x00000000,
+
+			/// <summary>
+			/// Your application specified a new font for the item; the control will use the new font. For more information on changing
+			/// fonts, see Changing fonts and colors. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.
+			/// </summary>
+			CDRF_NEWFONT = 0x00000002,
+
+			/// <summary>
+			/// Your application drew the item manually. The control will not draw the item. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.
+			/// </summary>
+			CDRF_SKIPDEFAULT = 0x00000004,
+
+			/// <summary>The control will notify the parent after painting an item. This occurs when dwDrawStage equals CDDS_PREPAINT.</summary>
+			CDRF_NOTIFYPOSTPAINT = 0x00000010,
+
+			/// <summary>
+			/// The control will notify the parent of any item-related drawing operations. It will send NM_CUSTOMDRAW notification codes
+			/// before and after drawing items. This occurs when dwDrawStage equals CDDS_PREPAINT.
+			/// </summary>
+			CDRF_NOTIFYITEMDRAW = 0x00000020,
+
+			/// <summary>
+			/// Version 4.71. The control will notify the parent when a list-view subitem is being drawn. This occurs when dwDrawStage equals CDDS_PREPAINT.
+			/// </summary>
+			CDRF_NOTIFYSUBITEMDRAW = 0x00000020,
+
+			/// <summary>The control will notify the parent after erasing an item. This occurs when dwDrawStage equals CDDS_PREPAINT.</summary>
+			CDRF_NOTIFYPOSTERASE = 0x00000040,
+
+			/// <summary>Version 5.00. Blend the button 50 percent with the background. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
+			TBCDRF_BLENDICON = 0x00200000,
 
 			/// <summary>
 			/// Version 4.71. Use the clrHighlightHotTrack member of the NMTBCUSTOMDRAW structure to draw the background of hot-tracked
@@ -37,23 +225,113 @@ namespace Vanara.PInvoke
 			/// </summary>
 			TBCDRF_HILITEHOTTRACK = 0x00020000,
 
-			/// <summary>Version 4.71. Do not offset the button when pressed. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
-			TBCDRF_NOOFFSET = 0x00040000,
+			/// <summary>Version 5.00. Do not draw button background. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
+			TBCDRF_NOBACKGROUND = 0x00400000,
 
-			/// <summary>Do not draw default highlight of items that have the TBSTATE_MARKED. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
-			TBCDRF_NOMARK = 0x00080000,
+			/// <summary>Version 4.71. Do not draw button edges. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
+			TBCDRF_NOEDGES = 0x00010000,
 
 			/// <summary>Version 4.71. Do not draw etched effect for disabled items. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
 			TBCDRF_NOETCHEDEFFECT = 0x00100000,
 
-			/// <summary>Version 5.00. Blend the button 50 percent with the background. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
-			TBCDRF_BLENDICON = 0x00200000,
+			/// <summary>Do not draw default highlight of items that have the TBSTATE_MARKED. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
+			TBCDRF_NOMARK = 0x00080000,
 
-			/// <summary>Version 5.00. Do not draw button background. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
-			TBCDRF_NOBACKGROUND = 0x00400000,
+			/// <summary>Version 4.71. Do not offset the button when pressed. This occurs when dwDrawStage equals CDDS_ITEMPREPAINT.</summary>
+			TBCDRF_NOOFFSET = 0x00040000,
 
 			/// <summary>Version 6.00, Windows Vista only. Use custom draw colors to render text regardless of visual style.</summary>
 			TBCDRF_USECDCOLORS = 0x00800000,
+		}
+
+		/// <summary>Return value from TBN_DROPDOWN.</summary>
+		[PInvokeData("Commctrl.h")]
+		public enum TBDDRET
+		{
+			/// <summary>The drop-down was handled.</summary>
+			TBDDRET_DEFAULT = 0,
+
+			/// <summary>The drop-down was not handled.</summary>
+			TBDDRET_NODEFAULT = 1,
+
+			/// <summary>The drop-down was handled, but treat the button like a regular button.</summary>
+			TBDDRET_TREATPRESSED = 2,
+		}
+
+		/// <summary>Flags used by TBBUTTONINFO.</summary>
+		[PInvokeData("Commctrl.h")]
+		[Flags]
+		public enum TBIF : uint
+		{
+			/// <summary>Version 5.80. The wParam sent with a TB_GETBUTTONINFO or TB_SETBUTTONINFO message is an index, not an identifier.</summary>
+			TBIF_BYINDEX = 0x80000000,
+
+			/// <summary>The idCommand member contains valid information or is being requested.</summary>
+			TBIF_COMMAND = 0x00000020,
+
+			/// <summary>The iImage member contains valid information or is being requested.</summary>
+			TBIF_IMAGE = 0x00000001,
+
+			/// <summary>The lParam member contains valid information or is being requested.</summary>
+			TBIF_LPARAM = 0x00000010,
+
+			/// <summary>The cx member contains valid information or is being requested.</summary>
+			TBIF_SIZE = 0x00000040,
+
+			/// <summary>The fsState member contains valid information or is being requested.</summary>
+			TBIF_STATE = 0x00000004,
+
+			/// <summary>The fsStyle member contains valid information or is being requested.</summary>
+			TBIF_STYLE = 0x00000008,
+
+			/// <summary>The pszText member contains valid information or is being requested.</summary>
+			TBIF_TEXT = 0x00000002,
+		}
+
+		/// <summary>Defines where the insertion mark is in relation to iButton in TBINSERTMARK.</summary>
+		[PInvokeData("Commctrl.h")]
+		[Flags]
+		public enum TBIMHT : uint
+		{
+			/// <summary>The insertion mark is to the right of the specified button.</summary>
+			TBIMHT_AFTER = 0x00000001,
+
+			/// <summary>
+			/// The insertion mark is on the background of the toolbar. This flag is only used with the TB_INSERTMARKHITTEST message.
+			/// </summary>
+			TBIMHT_BACKGROUND = 0x00000002,
+		}
+
+		/// <summary>Mask that determines the metric to retrieve in TBMETRICS.</summary>
+		[PInvokeData("Commctrl.h")]
+		[Flags]
+		public enum TBMF : uint
+		{
+			/// <summary>Retrieve the cxPad and cyPad values.</summary>
+			TBMF_PAD = 0x00000001,
+
+			/// <summary>Retrieve the cxBarPad and cyBarPad values.</summary>
+			TBMF_BARPAD = 0x00000002,
+
+			/// <summary>Retrieve the cxButtonSpacing and cyButtonSpacing values.</summary>
+			TBMF_BUTTONSPACING = 0x00000004,
+		}
+
+		/// <summary>Set of flags that indicate which members of NMTBDISPINFO are being requested.</summary>
+		[PInvokeData("Commctrl.h")]
+		[Flags]
+		public enum TBNF : uint
+		{
+			/// <summary>The item's image index is being requested. The image index must be placed in the iImage member.</summary>
+			TBNF_IMAGE = 0x00000001,
+
+			/// <summary>Not currently implemented.</summary>
+			TBNF_TEXT = 0x00000002,
+
+			/// <summary>
+			/// Set this flag when processing TBN_GETDISPINFO; the toolbar control will retain the supplied information and not request it again.
+			/// </summary>
+			TBNF_DI_SETITEM = 0x10000000,
 		}
 
 		/// <summary>State values used by TB_GETSTATE and TB_SETSTATE.</summary>
@@ -86,146 +364,235 @@ namespace Vanara.PInvoke
 			TBSTATE_WRAP = 0x20,
 		}
 
-#pragma warning disable CS1572 // XML comment has a param tag, but there is no parameter by that name
-
 		/// <summary>Toolbar Control Messages</summary>
 		[PInvokeData("Commctrl.h")]
 		public enum ToolbarMessage
 		{
-			/// <summary>Enables or disables the specified button in a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button to enable or disable.</param>
-			/// <param name="lParam">
-			/// The <c>LOWORD</c> is a <c>BOOL</c> that indicates whether to enable or disable the specified button. If <c>TRUE</c>, the
-			/// button is enabled. If <c>FALSE</c>, the button is disabled.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <summary>
+			/// Checks or unchecks a given button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button to check.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// The <c>LOWORD</c> is a <c>BOOL</c> that indicates whether to check or uncheck the specified button. If <c>TRUE</c>, the check
+			/// is added. If <c>FALSE</c>, the check is removed.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			/// <remarks>When a button is checked, it is displayed in the pressed state.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-checkbutton
 			TB_CHECKBUTTON = WindowMessage.WM_USER + 2,
 
-			/// <summary>Presses or releases the specified button in a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button to press or release.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Presses or releases the specified button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button to press or release.</para>
+			/// <para><em>lParam</em></para>
 			/// <para>
 			/// The <c>LOWORD</c> is a <c>BOOL</c> that indicates whether to press or release the specified button. If <c>TRUE</c>, the
 			/// button is pressed. If <c>FALSE</c>, the button is released.
 			/// </para>
 			/// <para>The <c>HIWORD</c> must be zero.</para>
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-pressbutton
 			TB_PRESSBUTTON = WindowMessage.WM_USER + 3,
 
-			/// <summary>Hides or shows the specified button in a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button to hide or show.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Hides or shows the specified button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button to hide or show.</para>
+			/// <para><em>lParam</em></para>
 			/// <para>
-			/// The <c>LOWORD</c> is a <c>BOOL</c> that indicates whether to hide or show the specified button. If <c>TRUE</c>, the button
-			/// is hidden. If <c>FALSE</c>, the button is shown.
+			/// The <c>LOWORD</c> is a <c>BOOL</c> that indicates whether to hide or show the specified button. If <c>TRUE</c>, the button is
+			/// hidden. If <c>FALSE</c>, the button is shown.
 			/// </para>
 			/// <para>The <c>HIWORD</c> must be zero.</para>
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-hidebutton
 			TB_HIDEBUTTON = WindowMessage.WM_USER + 4,
 
-			/// <summary>Sets or clears the indeterminate state of the specified button in a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button whose indeterminate state is to be set or cleared.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Sets or clears the indeterminate state of the specified button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button whose indeterminate state is to be set or cleared.</para>
+			/// <para><em>lParam</em></para>
 			/// <para>
 			/// The <c>LOWORD</c> is a <c>BOOL</c> that indicates whether to set or clear the indeterminate state. If <c>TRUE</c>, the
 			/// indeterminate state is set. If <c>FALSE</c>, the state is cleared.
 			/// </para>
 			/// <para>The <c>HIWORD</c> must be zero.</para>
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-indeterminate
 			TB_INDETERMINATE = WindowMessage.WM_USER + 5,
 
-			/// <summary>Sets the highlight state of a given button in a toolbar control.</summary>
-			/// <param name="wParam">Command identifier for a toolbar button.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Sets the highlight state of a given button in a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier for a toolbar button.</para>
+			/// <para><em>lParam</em></para>
 			/// <para>
 			/// The <c>LOWORD</c> is a <c>BOOL</c> that indicates the new highlight state. If <c>TRUE</c>, the button is highlighted. If
 			/// <c>FALSE</c>, the button is set to its default state.
 			/// </para>
 			/// <para>The <c>HIWORD</c> must be zero.</para>
-			/// </param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-markbutton
 			TB_MARKBUTTON = WindowMessage.WM_USER + 6,
 
-			/// <summary>Determines whether the specified button in a toolbar is enabled.</summary>
-			/// <param name="wParam">Command identifier of the button.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns nonzero if the button is enabled, or zero otherwise.</returns>
+			/// <summary>
+			/// Determines whether the specified button in a toolbar is enabled.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if the button is enabled, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-isbuttonenabled
 			TB_ISBUTTONENABLED = WindowMessage.WM_USER + 9,
 
-			/// <summary>Determines whether the specified button in a toolbar is checked.</summary>
-			/// <param name="wParam">Command identifier of the button.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns nonzero if the button is checked, or zero otherwise.</returns>
+			/// <summary>
+			/// Determines whether the specified button in a toolbar is checked.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if the button is checked, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-isbuttonchecked
 			TB_ISBUTTONCHECKED = WindowMessage.WM_USER + 10,
 
-			/// <summary>Determines whether the specified button in a toolbar is pressed.</summary>
-			/// <param name="wParam">Command identifier of the button.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns nonzero if the button is pressed, or zero otherwise.</returns>
+			/// <summary>
+			/// Determines whether the specified button in a toolbar is pressed.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if the button is pressed, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-isbuttonpressed
 			TB_ISBUTTONPRESSED = WindowMessage.WM_USER + 11,
 
-			/// <summary>Determines whether the specified button in a toolbar is hidden.</summary>
-			/// <param name="wParam">Command identifier of the button.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns nonzero if the button is hidden, or zero otherwise.</returns>
+			/// <summary>
+			/// Determines whether the specified button in a toolbar is hidden.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if the button is hidden, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-isbuttonhidden
 			TB_ISBUTTONHIDDEN = WindowMessage.WM_USER + 12,
 
-			/// <summary>Determines whether the specified button in a toolbar is indeterminate.</summary>
-			/// <param name="wParam">Command identifier of the button.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns nonzero if the button is indeterminate, or zero otherwise.</returns>
+			/// <summary>
+			/// Determines whether the specified button in a toolbar is indeterminate.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if the button is indeterminate, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-isbuttonindeterminate
 			TB_ISBUTTONINDETERMINATE = WindowMessage.WM_USER + 13,
 
-			/// <summary>Checks the highlight state of a toolbar button.</summary>
-			/// <param name="wParam">Command identifier for a toolbar button.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns nonzero if the button is highlighted, or zero otherwise.</returns>
+			/// <summary>
+			/// Checks the highlight state of a toolbar button.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier for a toolbar button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if the button is highlighted, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-isbuttonhighlighted
 			TB_ISBUTTONHIGHLIGHTED = WindowMessage.WM_USER + 14,
 
-			/// <summary>Sets the state for the specified button in a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button.</param>
-			/// <param name="lParam">
-			/// The <c>LOWORD</c> is a combination of values listed in Toolbar Button States. The <c>HIWORD</c> must be zero.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <summary>
+			/// Sets the state for the specified button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>The <c>LOWORD</c> is a combination of values listed in Toolbar Button States. The <c>HIWORD</c> must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setstate
 			TB_SETSTATE = WindowMessage.WM_USER + 17,
 
 			/// <summary>
 			/// Retrieves information about the state of the specified button in a toolbar, such as whether it is enabled, pressed, or checked.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button for which to retrieve information.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
+			/// Returns the button state information if successful, or -1 otherwise. The button state information can be a combination of the
+			/// values listed in <c>Toolbar Button States</c>.
+			/// </para>
 			/// </summary>
-			/// <param name="wParam">Command identifier of the button for which to retrieve information.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
-			/// Returns the button state information if successful, or -1 otherwise. The button state information can be a combination of
-			/// the values listed in <c>Toolbar Button States</c>.
-			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getstate
 			TB_GETSTATE = WindowMessage.WM_USER + 18,
 
-			/// <summary>Adds one or more images to the list of button images available for a toolbar.</summary>
-			/// <param name="wParam">
-			/// Number of button images in the bitmap. If lParam specifies a system-defined bitmap, this parameter is ignored.
-			/// </param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Adds one or more images to the list of button images available for a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Number of button images in the bitmap. If lParam specifies a system-defined bitmap, this parameter is ignored.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>TBADDBITMAP</c> structure that contains the identifier of a bitmap resource and the handle to the module
 			/// instance with the executable file that contains the bitmap resource.
-			/// </param>
-			/// <returns>Returns the index of the first new image if successful, or -1 otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the first new image if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// If the toolbar was created using the <c>CreateWindowEx</c> function, you must send the <c>TB_BUTTONSTRUCTSIZE</c> message to
 			/// the toolbar before sending <c>TB_ADDBITMAP</c>.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-addbitmap
 			TB_ADDBITMAP = WindowMessage.WM_USER + 19,
 
-			/// <summary>Adds one or more buttons to a toolbar.</summary>
-			/// <param name="wParam">Number of buttons to add.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Adds one or more buttons to a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Number of buttons to add.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an array of <c>TBBUTTON</c> structures that contain information about the buttons to add. There must be the same
 			/// number of elements in the array as buttons specified by wParam.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// If the toolbar was created using the <c>CreateWindowEx</c> function, you must send the <c>TB_BUTTONSTRUCTSIZE</c> message to
@@ -233,51 +600,93 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>See <c>TB_SETIMAGELIST</c> for a discussion of how to assign bitmaps to toolbar buttons from one or more image lists.</para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-addbuttons
 			TB_ADDBUTTONSA = WindowMessage.WM_USER + 20,
 
-			/// <summary>Inserts a button in a toolbar.</summary>
-			/// <param name="wParam">Zero-based index of a button. The message inserts the new button to the left of this button.</param>
-			/// <param name="lParam">Pointer to a <c>TBBUTTON</c> structure containing information about the button to insert.</param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <summary>
+			/// Inserts a button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Zero-based index of a button. The message inserts the new button to the left of this button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>TBBUTTON</c> structure containing information about the button to insert.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-insertbutton
 			TB_INSERTBUTTONA = WindowMessage.WM_USER + 21,
 
-			/// <summary>Deletes a button from the toolbar.</summary>
-			/// <param name="wParam">Zero-based index of the button to delete.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <summary>
+			/// Deletes a button from the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Zero-based index of the button to delete.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-deletebutton
 			TB_DELETEBUTTON = WindowMessage.WM_USER + 22,
 
-			/// <summary>Retrieves information about the specified button in a toolbar.</summary>
-			/// <param name="wParam">Zero-based index of the button for which to retrieve information.</param>
-			/// <param name="lParam">Pointer to the <c>TBBUTTON</c> structure that receives the button information.</param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <summary>
+			/// Retrieves information about the specified button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Zero-based index of the button for which to retrieve information.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to the <c>TBBUTTON</c> structure that receives the button information.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbutton
 			TB_GETBUTTON = WindowMessage.WM_USER + 23,
 
-			/// <summary>Retrieves a count of the buttons currently in the toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the count of the buttons.</returns>
+			/// <summary>
+			/// Retrieves a count of the buttons currently in the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the count of the buttons.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-buttoncount
 			TB_BUTTONCOUNT = WindowMessage.WM_USER + 24,
 
-			/// <summary>Retrieves the zero-based index for the button associated with the specified command identifier.</summary>
-			/// <param name="wParam">Command identifier associated with the button.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the zero-based index for the button or -1 if the specified command identifier is invalid.</returns>
+			/// <summary>
+			/// Retrieves the zero-based index for the button associated with the specified command identifier.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier associated with the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the zero-based index for the button or -1 if the specified command identifier is invalid.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-commandtoindex
 			TB_COMMANDTOINDEX = WindowMessage.WM_USER + 25,
 
-			/// <summary>Send this message to initiate saving or restoring a toolbar state.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Send this message to initiate saving or restoring a toolbar state.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// Save or restore flag. If this parameter is <c>TRUE</c>, the information is saved. If it is <c>FALSE</c>, the information is restored.
-			/// </param>
-			/// <param name="lParam">
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>TBSAVEPARAMS</c> structure that specifies the registry key, subkey, and value name for the toolbar state information.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
-			/// For version 4.72 and earlier, to use this message to save or restore a toolbar, the parent window of the toolbar control
-			/// must implement a handler for the TBN_GETBUTTONINFO notification code. The toolbar issues this notification to retrieve
-			/// information about each button as it is restored.
+			/// For version 4.72 and earlier, to use this message to save or restore a toolbar, the parent window of the toolbar control must
+			/// implement a handler for the TBN_GETBUTTONINFO notification code. The toolbar issues this notification to retrieve information
+			/// about each button as it is restored.
 			/// </para>
 			/// <para>
 			/// Version 5.80 includes a new save/restore option. At the beginning of the process, and as each button is saved or restored,
@@ -285,21 +694,28 @@ namespace Vanara.PInvoke
 			/// handlers to provide the Shell with the bitmap and state information it needs to successfully save or restore the toolbar state.
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-saverestore
 			TB_SAVERESTOREA = WindowMessage.WM_USER + 26,
 
-			/// <summary>Send this message to initiate saving or restoring a toolbar state.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Send this message to initiate saving or restoring a toolbar state.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// Save or restore flag. If this parameter is <c>TRUE</c>, the information is saved. If it is <c>FALSE</c>, the information is restored.
-			/// </param>
-			/// <param name="lParam">
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>TBSAVEPARAMS</c> structure that specifies the registry key, subkey, and value name for the toolbar state information.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
-			/// For version 4.72 and earlier, to use this message to save or restore a toolbar, the parent window of the toolbar control
-			/// must implement a handler for the TBN_GETBUTTONINFO notification code. The toolbar issues this notification to retrieve
-			/// information about each button as it is restored.
+			/// For version 4.72 and earlier, to use this message to save or restore a toolbar, the parent window of the toolbar control must
+			/// implement a handler for the TBN_GETBUTTONINFO notification code. The toolbar issues this notification to retrieve information
+			/// about each button as it is restored.
 			/// </para>
 			/// <para>
 			/// Version 5.80 includes a new save/restore option. At the beginning of the process, and as each button is saved or restored,
@@ -307,70 +723,111 @@ namespace Vanara.PInvoke
 			/// handlers to provide the Shell with the bitmap and state information it needs to successfully save or restore the toolbar state.
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-saverestore
 			TB_SAVERESTOREW = WindowMessage.WM_USER + 76,
 
-			/// <summary>Displays the <c>Customize Toolbar</c> dialog box.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>No return value.</returns>
-			/// <remarks/>
+			/// <summary>
+			/// Displays the <c>Customize Toolbar</c> dialog box.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>
+			/// <para>Note</para>
+			/// <para>
+			/// The toolbar must handle the TBN_QUERYINSERT and TBN_QUERYDELETE notifications for the <c>Customize Toolbar</c> dialog box to
+			/// appear. If the toolbar does not handle those notifications, <c>TB_CUSTOMIZE</c> has no effect.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-customize
 			TB_CUSTOMIZE = WindowMessage.WM_USER + 27,
 
-			/// <summary>Adds a new string to the toolbar's string pool.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Adds a new string to the toolbar's string pool.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// Handle to the module instance with an executable file that contains the string resource. If lParam instead points to a
 			/// character array with one or more strings, set this parameter to <c>NULL</c>.
-			/// </param>
-			/// <param name="lParam">Resource identifier for the string resource, or a pointer to a TCHAR array. See Remarks.</param>
-			/// <returns>Returns the index of the first new string if successful, or -1 otherwise.</returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Resource identifier for the string resource, or a pointer to a TCHAR array. See Remarks.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the first new string if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
-			/// If wParam is <c>NULL</c>, lParam points to a character array with one or more null-terminated strings. The last string in
-			/// the array must be terminated with two null characters.
+			/// If wParam is <c>NULL</c>, lParam points to a character array with one or more null-terminated strings. The last string in the
+			/// array must be terminated with two null characters.
 			/// </para>
 			/// <para>
 			/// If wParam is the HINSTANCE of the application or of another module containing a string resource, lParam is the resource
 			/// identifier of the string. Each item in the string must begin with an arbitrary separator character, and the string must end
-			/// with two such characters. For example, the text for three buttons might appear in the string table as "/New/Open/Save//".
-			/// The message returns the index of "New" in the toolbar's string pool, and the other items are in consecutive positions.
+			/// with two such characters. For example, the text for three buttons might appear in the string table as "/New/Open/Save//". The
+			/// message returns the index of "New" in the toolbar's string pool, and the other items are in consecutive positions.
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-addstring
 			TB_ADDSTRINGA = WindowMessage.WM_USER + 28,
 
-			/// <summary>Adds a new string to the toolbar's string pool.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Adds a new string to the toolbar's string pool.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// Handle to the module instance with an executable file that contains the string resource. If lParam instead points to a
 			/// character array with one or more strings, set this parameter to <c>NULL</c>.
-			/// </param>
-			/// <param name="lParam">Resource identifier for the string resource, or a pointer to a TCHAR array. See Remarks.</param>
-			/// <returns>Returns the index of the first new string if successful, or -1 otherwise.</returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Resource identifier for the string resource, or a pointer to a TCHAR array. See Remarks.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the first new string if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
-			/// If wParam is <c>NULL</c>, lParam points to a character array with one or more null-terminated strings. The last string in
-			/// the array must be terminated with two null characters.
+			/// If wParam is <c>NULL</c>, lParam points to a character array with one or more null-terminated strings. The last string in the
+			/// array must be terminated with two null characters.
 			/// </para>
 			/// <para>
 			/// If wParam is the HINSTANCE of the application or of another module containing a string resource, lParam is the resource
 			/// identifier of the string. Each item in the string must begin with an arbitrary separator character, and the string must end
-			/// with two such characters. For example, the text for three buttons might appear in the string table as "/New/Open/Save//".
-			/// The message returns the index of "New" in the toolbar's string pool, and the other items are in consecutive positions.
+			/// with two such characters. For example, the text for three buttons might appear in the string table as "/New/Open/Save//". The
+			/// message returns the index of "New" in the toolbar's string pool, and the other items are in consecutive positions.
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-addstring
 			TB_ADDSTRINGW = WindowMessage.WM_USER + 77,
 
-			/// <summary>Retrieves the bounding rectangle of a button in a toolbar.</summary>
-			/// <param name="wParam">Zero-based index of the button for which to retrieve information.</param>
-			/// <param name="lParam">Pointer to a <c>RECT</c> structure that receives the client coordinates of the bounding rectangle.</param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <summary>
+			/// Retrieves the bounding rectangle of a button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Zero-based index of the button for which to retrieve information.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>RECT</c> structure that receives the client coordinates of the bounding rectangle.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message does not retrieve the bounding rectangle for buttons whose state is set to the <c>TBSTATE_HIDDEN</c> value.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getitemrect
 			TB_GETITEMRECT = WindowMessage.WM_USER + 29,
 
-			/// <summary>Specifies the size of the <c>TBBUTTON</c> structure.</summary>
-			/// <param name="wParam">Size, in bytes, of the <c>TBBUTTON</c> structure.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>No return value.</returns>
+			/// <summary>
+			/// Specifies the size of the <c>TBBUTTON</c> structure.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Size, in bytes, of the <c>TBBUTTON</c> structure.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>The system uses the size to determine which version of the common control dynamic-link library (DLL) is being used.</para>
 			/// <para>
@@ -379,14 +836,21 @@ namespace Vanara.PInvoke
 			/// automatically sends <c>TB_BUTTONSTRUCTSIZE</c>, and the size of the <c>TBBUTTON</c> structure is a parameter of the function.
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-buttonstructsize
 			TB_BUTTONSTRUCTSIZE = WindowMessage.WM_USER + 30,
 
-			/// <summary>Sets the size of buttons on a toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Sets the size of buttons on a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// The <c>LOWORD</c> specifies the width, in pixels, of the buttons. The <c>HIWORD</c> specifies the height, in pixels, of the buttons.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para><c>TB_SETBUTTONSIZE</c> should generally be called after adding buttons.</para>
 			/// <para>
@@ -394,61 +858,99 @@ namespace Vanara.PInvoke
 			/// <c>TB_SETBUTTONSIZE</c> to set the actual size of buttons.
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setbuttonsize
 			TB_SETBUTTONSIZE = WindowMessage.WM_USER + 31,
 
-			/// <summary>Sets the size of the bitmapped images to be added to a toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
-			/// The <c>LOWORD</c> specifies the width, in pixels, of the bitmapped images. The <c>HIWORD</c> specifies the height, in
-			/// pixels, of the bitmapped images.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <summary>
+			/// Sets the size of the bitmapped images to be added to a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// The <c>LOWORD</c> specifies the width, in pixels, of the bitmapped images. The <c>HIWORD</c> specifies the height, in pixels,
+			/// of the bitmapped images.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
-			/// The size can be set only before adding any bitmaps to the toolbar. If an application does not explicitly set the bitmap
-			/// size, the size defaults to 16 by 15 pixels.
+			/// The size can be set only before adding any bitmaps to the toolbar. If an application does not explicitly set the bitmap size,
+			/// the size defaults to 16 by 15 pixels.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setbitmapsize
 			TB_SETBITMAPSIZE = WindowMessage.WM_USER + 32,
 
-			/// <summary>Causes a toolbar to be resized.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>No return value.</returns>
+			/// <summary>
+			/// Causes a toolbar to be resized.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// An application sends the <c>TB_AUTOSIZE</c> message after causing the size of a toolbar to change either by setting the
 			/// button or bitmap size or by adding strings for the first time.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-autosize
 			TB_AUTOSIZE = WindowMessage.WM_USER + 33,
 
-			/// <summary>Retrieves the handle to the tooltip control, if any, associated with the toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the handle to the tooltip control, or <c>NULL</c> if the toolbar has no associated tooltip.</returns>
+			/// <summary>
+			/// Retrieves the handle to the tooltip control, if any, associated with the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the handle to the tooltip control, or <c>NULL</c> if the toolbar has no associated tooltip.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-gettooltips
 			TB_GETTOOLTIPS = WindowMessage.WM_USER + 35,
 
-			/// <summary>Associates a tooltip control with a toolbar.</summary>
-			/// <param name="wParam">Handle to the tooltip control.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>No return value.</returns>
+			/// <summary>
+			/// Associates a tooltip control with a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Handle to the tooltip control.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// Any buttons added to a toolbar before sending the <c>TB_SETTOOLTIPS</c> message will not be registered with the tooltip control.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-settooltips
 			TB_SETTOOLTIPS = WindowMessage.WM_USER + 36,
 
-			/// <summary>Sets the window to which the toolbar control sends notification messages.</summary>
-			/// <param name="wParam">Handle to the window to receive notification messages.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <summary>
+			/// Sets the window to which the toolbar control sends notification messages.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Handle to the window to receive notification messages.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// The return value is a handle to the previous notification window, or <c>NULL</c> if there is no previous notification window.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// The <c>TB_SETPARENT</c> message does not change the parent window that was specified when the control was created. Calling
 			/// the <c>GetParent</c> function for a toolbar control will return the actual parent window, not the window specified in
 			/// <c>TB_SETPARENT</c>. To change the control's parent window, call the <c>SetParent</c> function.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setparent
 			TB_SETPARENT = WindowMessage.WM_USER + 37,
 
-			/// <summary>Sets the number of rows of buttons in a toolbar.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Sets the number of rows of buttons in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
 			/// <para>
 			/// The <c>LOWORD</c> specifies the number of rows requested. The minimum number of rows is one, and the maximum number of rows
 			/// is equal to the number of buttons in the toolbar.
@@ -458,46 +960,71 @@ namespace Vanara.PInvoke
 			/// the number of rows specified by wParam. If <c>TRUE</c>, the system creates more rows. If <c>FALSE</c>, the system creates
 			/// fewer rows.
 			/// </para>
-			/// </param>
-			/// <param name="lParam">
-			/// Pointer to a <c>RECT</c> structure that receives the bounding rectangle of the toolbar after the rows are set.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>RECT</c> structure that receives the bounding rectangle of the toolbar after the rows are set.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
-			/// Because the system does not break up button groups when setting the number of rows, the resulting number of rows might
-			/// differ from the number requested.
+			/// Because the system does not break up button groups when setting the number of rows, the resulting number of rows might differ
+			/// from the number requested.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setrows
 			TB_SETROWS = WindowMessage.WM_USER + 39,
 
-			/// <summary>Retrieves the number of rows of buttons in a toolbar with the <c>TBSTYLE_WRAPABLE</c> style.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the number of rows.</returns>
+			/// <summary>
+			/// Retrieves the number of rows of buttons in a toolbar with the <c>TBSTYLE_WRAPABLE</c> style.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the number of rows.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getrows
 			TB_GETROWS = WindowMessage.WM_USER + 40,
 
-			/// <summary>Retrieves the flags that describe the type of bitmap to be used.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <summary>
+			/// Retrieves the flags that describe the type of bitmap to be used.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns a <c>DWORD</c> value that describes the type of bitmap that should be used. If this return value has the TBBF_LARGE
 			/// flag set, applications should use large bitmaps (24 x 24); otherwise, applications should use small bitmaps (16 x 16). All
 			/// other bits are reserved.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// The value returned by <c>TB_GETBITMAPFLAGS</c> is only advisory. The toolbar control recommends large or small bitmaps based
 			/// upon whether the user has chosen large or small fonts.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbitmapflags
 			TB_GETBITMAPFLAGS = WindowMessage.WM_USER + 41,
 
-			/// <summary>Sets the command identifier of a toolbar button.</summary>
-			/// <param name="wParam">Zero-based index of the button whose command identifier is to be set.</param>
-			/// <param name="lParam">Command identifier.</param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <summary>
+			/// Sets the command identifier of a toolbar button.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Zero-based index of the button whose command identifier is to be set.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Command identifier.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setcmdid
 			TB_SETCMDID = WindowMessage.WM_USER + 42,
 
-			/// <summary>Changes the bitmap for a button in a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button that is to receive a new bitmap.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Changes the bitmap for a button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button that is to receive a new bitmap.</para>
+			/// <para><em>lParam</em></para>
 			/// <para>
 			/// Zero-based index of an image in the toolbar's image list. The system displays the specified image in the button. Set this
 			/// parameter to I_IMAGECALLBACK, and the toolbar will send the <c>TBN_GETDISPINFO</c> notification to retrieve the image index
@@ -507,23 +1034,38 @@ namespace Vanara.PInvoke
 			/// Version 5.81. Set this parameter to I_IMAGENONE to indicate that the button does not have an image. The button layout will
 			/// not include any space for a bitmap, only text.
 			/// </para>
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-changebitmap
 			TB_CHANGEBITMAP = WindowMessage.WM_USER + 43,
 
-			/// <summary>Retrieves the index of the bitmap associated with a button in a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button whose bitmap index is to be retrieved.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the index of the bitmap if successful, or zero otherwise.</returns>
+			/// <summary>
+			/// Retrieves the index of the bitmap associated with a button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button whose bitmap index is to be retrieved.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the bitmap if successful, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbitmap
 			TB_GETBITMAP = WindowMessage.WM_USER + 44,
 
-			/// <summary>Retrieves the display text of a button on a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button whose text is to be retrieved.</param>
-			/// <param name="lParam">Pointer to a buffer that receives the button text.</param>
-			/// <returns>
+			/// <summary>
+			/// Retrieves the display text of a button on a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button whose text is to be retrieved.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a buffer that receives the button text.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the length, in characters, of the string pointed to by lParam. The length does not include the terminating null
 			/// character. If unsuccessful, the return value is -1.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// <c>Security Warning:</c> Using this message incorrectly might compromise the security of your program. This message does not
@@ -533,15 +1075,22 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>The returned string corresponds to the text that is currently displayed by the button.</para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbuttontext
 			TB_GETBUTTONTEXTA = WindowMessage.WM_USER + 45,
 
-			/// <summary>Retrieves the display text of a button on a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button whose text is to be retrieved.</param>
-			/// <param name="lParam">Pointer to a buffer that receives the button text.</param>
-			/// <returns>
+			/// <summary>
+			/// Retrieves the display text of a button on a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button whose text is to be retrieved.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a buffer that receives the button text.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the length, in characters, of the string pointed to by lParam. The length does not include the terminating null
 			/// character. If unsuccessful, the return value is -1.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// <c>Security Warning:</c> Using this message incorrectly might compromise the security of your program. This message does not
@@ -551,40 +1100,63 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>The returned string corresponds to the text that is currently displayed by the button.</para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbuttontext
 			TB_GETBUTTONTEXTW = WindowMessage.WM_USER + 75,
 
-			/// <summary>Replaces an existing bitmap with a new bitmap.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Replaces an existing bitmap with a new bitmap.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>TBREPLACEBITMAP</c> structure that contains the information of the bitmap to be replaced and the new bitmap.
-			/// </param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-replacebitmap
 			TB_REPLACEBITMAP = WindowMessage.WM_USER + 46,
 
-			/// <summary>Sets the indentation for the first button in a toolbar control.</summary>
-			/// <param name="wParam">Value specifying the indentation, in pixels.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// <summary>
+			/// Sets the indentation for the first button in a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Value specifying the indentation, in pixels.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setindent
 			TB_SETINDENT = WindowMessage.WM_USER + 47,
 
-			/// <summary>Sets the image list that the toolbar uses to display buttons that are in their default state.</summary>
-			/// <param name="wParam">
-			/// Version 5.80. The index of the list. If you use only one image list, or an earlier version of the common controls, set
-			/// wParam to zero. See Remarks for details on using multiple image lists.
-			/// </param>
-			/// <param name="lParam">
-			/// Handle to the image list to set. If this parameter is <c>NULL</c>, no images are displayed in the buttons.
-			/// </param>
-			/// <returns>
+			/// <summary>
+			/// Sets the image list that the toolbar uses to display buttons that are in their default state.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
+			/// Version 5.80. The index of the list. If you use only one image list, or an earlier version of the common controls, set wParam
+			/// to zero. See Remarks for details on using multiple image lists.
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Handle to the image list to set. If this parameter is <c>NULL</c>, no images are displayed in the buttons.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the handle to the image list previously used to display buttons in their default state, or <c>NULL</c> if no image
 			/// list was previously set.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
+			/// <para>
+			/// <para>Note</para>
+			/// <para>Your application is responsible for freeing the image list after the toolbar is destroyed.</para>
+			/// </para>
 			/// <para>
 			/// The <c>TB_SETIMAGELIST</c> message cannot be combined with <c>TB_ADDBITMAP</c>. It also cannot be used with toolbars created
 			/// with <c>CreateToolbarEx</c>, which calls <c>TB_ADDBITMAP</c> internally. When you create a toolbar with
-			/// <c>CreateToolbarEx</c> or use <c>TB_ADDBITMAP</c> to add images, the toolbar manages the image list internally. Attempting
-			/// to modify it with <c>TB_SETIMAGELIST</c> has unpredictable consequences.
+			/// <c>CreateToolbarEx</c> or use <c>TB_ADDBITMAP</c> to add images, the toolbar manages the image list internally. Attempting to
+			/// modify it with <c>TB_SETIMAGELIST</c> has unpredictable consequences.
 			/// </para>
 			/// <para>
 			/// With version 5.80 or later of the common controls, button images need not come from the same image list. To use multiple
@@ -641,19 +1213,27 @@ namespace Vanara.PInvoke
 			/// <code>//Enable multiple image lists SendMessage(hwndTB, CCM_SETVERSION, (WPARAM) 5, 0); //Set the image lists and assign them IDs of 0-2 SendMessage(hwndTB, TB_SETIMAGELIST, 0, (LPARAM)ahiml[0]); SendMessage(hwndTB, TB_SETIMAGELIST, 1, (LPARAM)ahiml[1]); SendMessage(hwndTB, TB_SETIMAGELIST, 2, (LPARAM)ahiml[2]); // Create the five buttons TBBUTTON rgtb[5]; //... initialize the TBBUTTON structures as usual ... //Assign images to each button rgtb[0].iBitmap = MAKELONG(1, 0); rgtb[1].iBitmap = MAKELONG(1, 1); rgtb[2].iBitmap = MAKELONG(1, 2); rgtb[3].iBitmap = MAKELONG(2, 0); rgtb[4].iBitmap = MAKELONG(3, 1); // Add the five buttons to the toolbar control SendMessage(hwndTB, TB_ADDBUTTONS, 5, (LPARAM)(&amp;rgtb);</code>
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setimagelist
 			TB_SETIMAGELIST = WindowMessage.WM_USER + 48,
 
 			/// <summary>
 			/// Retrieves the image list that a toolbar control uses to display buttons in their default state. A toolbar control uses this
 			/// image list to display buttons when they are not hot or disabled.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the handle to the image list, or <c>NULL</c> if no image list is set.</para>
 			/// </summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the handle to the image list, or <c>NULL</c> if no image list is set.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getimagelist
 			TB_GETIMAGELIST = WindowMessage.WM_USER + 49,
 
-			/// <summary>Loads system-defined button images into a toolbar control's image list.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Loads system-defined button images into a toolbar control's image list.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
 			/// <para>Identifier of a system-defined button image list. This parameter can be set to one of the following values.</para>
 			/// <list type="table">
 			/// <listheader>
@@ -661,242 +1241,362 @@ namespace Vanara.PInvoke
 			/// <term>Meaning</term>
 			/// </listheader>
 			/// <item>
-			/// <term>IDB_HIST_LARGE_COLOR</term>
+			/// <term><c>IDB_HIST_LARGE_COLOR</c></term>
 			/// <term>Windows Explorer bitmaps in large size.</term>
 			/// </item>
 			/// <item>
-			/// <term>IDB_HIST_SMALL_COLOR</term>
+			/// <term><c>IDB_HIST_SMALL_COLOR</c></term>
 			/// <term>Windows Explorer bitmaps in small size.</term>
 			/// </item>
 			/// <item>
-			/// <term>IDB_STD_LARGE_COLOR</term>
+			/// <term><c>IDB_STD_LARGE_COLOR</c></term>
 			/// <term>Standard bitmaps in large size.</term>
 			/// </item>
 			/// <item>
-			/// <term>IDB_STD_SMALL_COLOR</term>
+			/// <term><c>IDB_STD_SMALL_COLOR</c></term>
 			/// <term>Standard bitmaps in small size.</term>
 			/// </item>
 			/// <item>
-			/// <term>IDB_VIEW_LARGE_COLOR</term>
+			/// <term><c>IDB_VIEW_LARGE_COLOR</c></term>
 			/// <term>View bitmaps in large size.</term>
 			/// </item>
 			/// <item>
-			/// <term>IDB_VIEW_SMALL_COLOR</term>
+			/// <term><c>IDB_VIEW_SMALL_COLOR</c></term>
 			/// <term>View bitmaps in small size.</term>
 			/// </item>
 			/// <item>
-			/// <term>IDB_HIST_NORMAL</term>
+			/// <term><c>IDB_HIST_NORMAL</c></term>
 			/// <term>Windows Explorer travel buttons and favorites bitmaps in normal state.</term>
 			/// </item>
 			/// <item>
-			/// <term>IDB_HIST_HOT</term>
+			/// <term><c>IDB_HIST_HOT</c></term>
 			/// <term>Windows Explorer travel buttons and favorites bitmaps in hot state.</term>
 			/// </item>
 			/// <item>
-			/// <term>IDB_HIST_DISABLED</term>
+			/// <term><c>IDB_HIST_DISABLED</c></term>
 			/// <term>Windows Explorer travel buttons and favorites bitmaps in disabled state.</term>
 			/// </item>
 			/// <item>
-			/// <term>IDB_HIST_PRESSED</term>
+			/// <term><c>IDB_HIST_PRESSED</c></term>
 			/// <term>Windows Explorer travel buttons and favorites bitmaps in pressed state.</term>
 			/// </item>
 			/// </list>
-			/// </param>
-			/// <param name="lParam">Instance handle. This parameter must be set to HINST_COMMCTRL.</param>
-			/// <returns>
+			/// <para><em>lParam</em></para>
+			/// <para>Instance handle. This parameter must be set to HINST_COMMCTRL.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// The count of images in the image list. Returns zero if the toolbar has no image list or if the existing image list is empty.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// You must use the proper image index values when you prepare <c>TBBUTTON</c> structures prior to sending the
 			/// <c>TB_ADDBUTTONS</c> message. For a list of image index values for these preset bitmaps, see Toolbar Standard Button Image
 			/// Index Values.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-loadimages
 			TB_LOADIMAGES = WindowMessage.WM_USER + 50,
 
-			/// <summary>Retrieves the bounding rectangle for a specified toolbar button.</summary>
-			/// <param name="wParam">Command identifier of the button.</param>
-			/// <param name="lParam">Pointer to a <c>RECT</c> structure that will receive the bounding rectangle information.</param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// <summary>
+			/// Retrieves the bounding rectangle for a specified toolbar button.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>RECT</c> structure that will receive the bounding rectangle information.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message does not retrieve the bounding rectangle for buttons whose state is set to the <c>TBSTATE_HIDDEN</c> value.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getrect
 			TB_GETRECT = WindowMessage.WM_USER + 51,
 
-			/// <summary>Sets the image list that the toolbar control will use to display hot buttons.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Handle to the image list that will be set.</param>
-			/// <returns>
+			/// <summary>
+			/// Sets the image list that the toolbar control will use to display hot buttons.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Handle to the image list that will be set.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the handle to the image list previously used to display hot buttons, or <c>NULL</c> if no image list was previously set.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// A button is hot when the cursor is over it. Toolbar controls must have the <c>TBSTYLE_FLAT</c> or <c>TBSTYLE_LIST</c> style
 			/// to have hot items.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-sethotimagelist
 			TB_SETHOTIMAGELIST = WindowMessage.WM_USER + 52,
 
-			/// <summary>Retrieves the image list that a toolbar control uses to display hot buttons.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <summary>
+			/// Retrieves the image list that a toolbar control uses to display hot buttons.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the handle to the image list that the control uses to display hot buttons, or <c>NULL</c> if no hot image list is set.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// A button is hot when the cursor is over it. Toolbar controls must have the <c>TBSTYLE_FLAT</c> or <c>TBSTYLE_LIST</c> style
 			/// to have hot items.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-gethotimagelist
 			TB_GETHOTIMAGELIST = WindowMessage.WM_USER + 53,
 
-			/// <summary>Sets the image list that the toolbar control will use to display disabled buttons.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Handle to the image list that will be set.</param>
-			/// <returns>
+			/// <summary>
+			/// Sets the image list that the toolbar control will use to display disabled buttons.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Handle to the image list that will be set.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the handle to the image list previously used to display disabled buttons, or <c>NULL</c> if no image list was
 			/// previously set.
-			/// </returns>
+			/// </para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setdisabledimagelist
 			TB_SETDISABLEDIMAGELIST = WindowMessage.WM_USER + 54,
 
-			/// <summary>Retrieves the image list that a toolbar control uses to display inactive buttons.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the handle to the inactive image list, or <c>NULL</c> if no inactive image list is set.</returns>
+			/// <summary>
+			/// Retrieves the image list that a toolbar control uses to display inactive buttons.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the handle to the inactive image list, or <c>NULL</c> if no inactive image list is set.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getdisabledimagelist
 			TB_GETDISABLEDIMAGELIST = WindowMessage.WM_USER + 55,
 
-			/// <summary>Sets the style for a toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
-			/// Value specifying the styles to be set for the control. This value can be a combination of toolbar control styles.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// <summary>
+			/// Sets the style for a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Value specifying the styles to be set for the control. This value can be a combination of toolbar control styles.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setstyle
 			TB_SETSTYLE = WindowMessage.WM_USER + 56,
 
-			/// <summary>Retrieves the styles currently in use for a toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns a <c>DWORD</c> value that is a combination of toolbar control styles.</returns>
+			/// <summary>
+			/// Retrieves the styles currently in use for a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a <c>DWORD</c> value that is a combination of toolbar control styles.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getstyle
 			TB_GETSTYLE = WindowMessage.WM_USER + 57,
 
-			/// <summary>Retrieves the current width and height of toolbar buttons, in pixels.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns a <c>DWORD</c> value that contains the width and height values in the low word and high word, respectively.</returns>
+			/// <summary>
+			/// Retrieves the current width and height of toolbar buttons, in pixels.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a <c>DWORD</c> value that contains the width and height values in the low word and high word, respectively.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbuttonsize
 			TB_GETBUTTONSIZE = WindowMessage.WM_USER + 58,
 
-			/// <summary>Sets the minimum and maximum button widths in the toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
-			/// <para>
-			/// The <c>LOWORD</c> specifies the minimum button width, in pixels. Toolbar buttons will never be narrower than this value.
-			/// </para>
+			/// <summary>
+			/// Sets the minimum and maximum button widths in the toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>The <c>LOWORD</c> specifies the minimum button width, in pixels. Toolbar buttons will never be narrower than this value.</para>
 			/// <para>
 			/// The <c>HIWORD</c> specifies the maximum button width, in pixels. If button text is too wide, the control displays it with
 			/// ellipsis points.
 			/// </para>
-			/// </param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// Use <c>TB_SETBUTTONWIDTH</c> to set the maximum and minimum allowed widths for buttons before they are added. Use
 			/// <c>TB_SETBUTTONSIZE</c> to set the actual size of buttons.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setbuttonwidth
 			TB_SETBUTTONWIDTH = WindowMessage.WM_USER + 59,
 
-			/// <summary>Sets the maximum number of text rows displayed on a toolbar button.</summary>
-			/// <param name="wParam">Maximum number of rows of text that can be displayed.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// <summary>
+			/// Sets the maximum number of text rows displayed on a toolbar button.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Maximum number of rows of text that can be displayed.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
-			/// To cause text to wrap, you must set the maximum button width by sending a <c>TB_SETBUTTONWIDTH</c> message. The text wraps
-			/// at a word break; line breaks ("\n") in the text are ignored. Text in TBSTYLE_LIST toolbars is always shown on a single line.
+			/// To cause text to wrap, you must set the maximum button width by sending a <c>TB_SETBUTTONWIDTH</c> message. The text wraps at
+			/// a word break; line breaks ("\n") in the text are ignored. Text in TBSTYLE_LIST toolbars is always shown on a single line.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setmaxtextrows
 			TB_SETMAXTEXTROWS = WindowMessage.WM_USER + 60,
 
-			/// <summary>Retrieves the maximum number of text rows that can be displayed on a toolbar button.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns an INT value representing the maximum number of text rows that the control will display for a button.</returns>
+			/// <summary>
+			/// Retrieves the maximum number of text rows that can be displayed on a toolbar button.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns an INT value representing the maximum number of text rows that the control will display for a button.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-gettextrows
 			TB_GETTEXTROWS = WindowMessage.WM_USER + 61,
 
-			/// <summary>Retrieves the <c>IDropTarget</c> for a toolbar control.</summary>
-			/// <param name="wParam">Identifier of the interface being requested. This value must point to <c>IID_IDropTarget</c>.</param>
-			/// <param name="lParam">
-			/// Address that receives the interface pointer. If an error occurs, a <c>NULL</c> pointer is placed in this address.
-			/// </param>
-			/// <returns>Returns an <c>HRESULT</c> value indicating success or failure of the operation.</returns>
+			/// <summary>
+			/// Retrieves the <c>IDropTarget</c> for a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Identifier of the interface being requested. This value must point to <c>IID_IDropTarget</c>.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Address that receives the interface pointer. If an error occurs, a <c>NULL</c> pointer is placed in this address.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns an <c>HRESULT</c> value indicating success or failure of the operation.</para>
+			/// </summary>
 			/// <remarks>The toolbar's <c>IDropTarget</c> is used by the toolbar when objects are dragged over or dropped onto it.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getobject
 			TB_GETOBJECT = WindowMessage.WM_USER + 62,
 
-			/// <summary>Retrieves extended information for a button in a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Retrieves extended information for a button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>TBBUTTONINFO</c> structure that receives the button information. The <c>cbSize</c> and <c>dwMask</c> members
 			/// of this structure must be filled in prior to sending this message.
-			/// </param>
-			/// <returns>Returns the zero-based index of the button, or -1 if an error occurs.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the zero-based index of the button, or -1 if an error occurs.</para>
+			/// </summary>
 			/// <remarks>
 			/// When you use <c>TB_ADDBUTTONS</c> or <c>TB_INSERTBUTTON</c> to place buttons on the toolbar, the button text is commonly
 			/// specified by its string pool index. <c>TB_GETBUTTONINFO</c> will not retrieve this string. To use <c>TB_GETBUTTONINFO</c> to
-			/// retrieve button text, you must first set the text string with <c>TB_SETBUTTONINFO</c>. Once you have set the button text
-			/// with <c>TB_SETBUTTONINFO</c>, you can no longer use the string pool index.
+			/// retrieve button text, you must first set the text string with <c>TB_SETBUTTONINFO</c>. Once you have set the button text with
+			/// <c>TB_SETBUTTONINFO</c>, you can no longer use the string pool index.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbuttoninfo
 			TB_GETBUTTONINFOW = WindowMessage.WM_USER + 63,
 
-			/// <summary>Sets the information for an existing button in a toolbar.</summary>
-			/// <param name="wParam">Button identifier.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Sets the information for an existing button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Button identifier.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>TBBUTTONINFO</c> structure that contains the new button information. The <c>cbSize</c> and <c>dwMask</c>
 			/// members of this structure must be filled in prior to sending this message.
-			/// </param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// Text is commonly assigned to buttons when they are added to a toolbar by specifying the index of a string in the toolbar's
 			/// string pool. If you use a <c>TB_SETBUTTONINFO</c> to assign new text to a button, it will permanently override the text from
 			/// the string pool. You can change the text by calling <c>TB_SETBUTTONINFO</c> again, but you cannot reassign the string from
 			/// the string pool.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setbuttoninfo
 			TB_SETBUTTONINFOW = WindowMessage.WM_USER + 64,
 
-			/// <summary>Retrieves extended information for a button in a toolbar.</summary>
-			/// <param name="wParam">Command identifier of the button.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Retrieves extended information for a button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Command identifier of the button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>TBBUTTONINFO</c> structure that receives the button information. The <c>cbSize</c> and <c>dwMask</c> members
 			/// of this structure must be filled in prior to sending this message.
-			/// </param>
-			/// <returns>Returns the zero-based index of the button, or -1 if an error occurs.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the zero-based index of the button, or -1 if an error occurs.</para>
+			/// </summary>
 			/// <remarks>
 			/// When you use <c>TB_ADDBUTTONS</c> or <c>TB_INSERTBUTTON</c> to place buttons on the toolbar, the button text is commonly
 			/// specified by its string pool index. <c>TB_GETBUTTONINFO</c> will not retrieve this string. To use <c>TB_GETBUTTONINFO</c> to
-			/// retrieve button text, you must first set the text string with <c>TB_SETBUTTONINFO</c>. Once you have set the button text
-			/// with <c>TB_SETBUTTONINFO</c>, you can no longer use the string pool index.
+			/// retrieve button text, you must first set the text string with <c>TB_SETBUTTONINFO</c>. Once you have set the button text with
+			/// <c>TB_SETBUTTONINFO</c>, you can no longer use the string pool index.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbuttoninfo
 			TB_GETBUTTONINFOA = WindowMessage.WM_USER + 65,
 
-			/// <summary>Sets the information for an existing button in a toolbar.</summary>
-			/// <param name="wParam">Button identifier.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Sets the information for an existing button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Button identifier.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>TBBUTTONINFO</c> structure that contains the new button information. The <c>cbSize</c> and <c>dwMask</c>
 			/// members of this structure must be filled in prior to sending this message.
-			/// </param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// Text is commonly assigned to buttons when they are added to a toolbar by specifying the index of a string in the toolbar's
 			/// string pool. If you use a <c>TB_SETBUTTONINFO</c> to assign new text to a button, it will permanently override the text from
 			/// the string pool. You can change the text by calling <c>TB_SETBUTTONINFO</c> again, but you cannot reassign the string from
 			/// the string pool.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setbuttoninfo
 			TB_SETBUTTONINFOA = WindowMessage.WM_USER + 66,
 
-			/// <summary>Inserts a button in a toolbar.</summary>
-			/// <param name="wParam">Zero-based index of a button. The message inserts the new button to the left of this button.</param>
-			/// <param name="lParam">Pointer to a <c>TBBUTTON</c> structure containing information about the button to insert.</param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// <summary>
+			/// Inserts a button in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Zero-based index of a button. The message inserts the new button to the left of this button.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>TBBUTTON</c> structure containing information about the button to insert.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-insertbutton
 			TB_INSERTBUTTONW = WindowMessage.WM_USER + 67,
 
-			/// <summary>Adds one or more buttons to a toolbar.</summary>
-			/// <param name="wParam">Number of buttons to add.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Adds one or more buttons to a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Number of buttons to add.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an array of <c>TBBUTTON</c> structures that contain information about the buttons to add. There must be the same
 			/// number of elements in the array as buttons specified by wParam.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// If the toolbar was created using the <c>CreateWindowEx</c> function, you must send the <c>TB_BUTTONSTRUCTSIZE</c> message to
@@ -904,208 +1604,352 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>See <c>TB_SETIMAGELIST</c> for a discussion of how to assign bitmaps to toolbar buttons from one or more image lists.</para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-addbuttons
 			TB_ADDBUTTONSW = WindowMessage.WM_USER + 68,
 
-			/// <summary>Determines where a point lies in a toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Determines where a point lies in a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>POINT</c> structure that contains the x-coordinate of the hit test in the <c>x</c> member and the
 			/// y-coordinate of the hit test in the <c>y</c> member. The coordinates are relative to the toolbar's client area.
-			/// </param>
-			/// <returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns an integer value. If the return value is zero or a positive value, it is the zero-based index of the nonseparator
 			/// item in which the point lies. If the return value is negative, the point does not lie within a button. The absolute value of
 			/// the return value is the index of a separator item or the nearest nonseparator item.
-			/// </returns>
+			/// </para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-hittest
 			TB_HITTEST = WindowMessage.WM_USER + 69,
 
-			/// <summary>Sets the text drawing flags for the toolbar.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Sets the text drawing flags for the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// One or more of the DT_ flags, specified in <c>DrawText</c>, that indicate which bits in lParam will be used when drawing the text.
-			/// </param>
-			/// <param name="lParam">
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// One or more of the DT_ flags, specified in <c>DrawText</c>, that indicate how the button text will be drawn. This value will
 			/// be passed to the <c>DrawText</c> function when the button text is drawn.
-			/// </param>
-			/// <returns>Returns the previous text drawing flags.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the previous text drawing flags.</para>
+			/// </summary>
 			/// <remarks>
 			/// The wParam parameter allows you to specify which flags will be used when drawing the text, even if these flags are turned
 			/// off. For example, if you do not want the DT_CENTER flag used when drawing text, you would add the DT_CENTER flag to wParam
 			/// and not specify the DT_CENTER flag in lParam. This prevents the control from passing the DT_CENTER flag to the
 			/// <c>DrawText</c> function.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setdrawtextflags
 			TB_SETDRAWTEXTFLAGS = WindowMessage.WM_USER + 70,
 
-			/// <summary>Retrieves the index of the hot item in a toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <summary>
+			/// Retrieves the index of the hot item in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the index of the hot item, or -1 if no hot item is set. Toolbar controls that do not have the <c>TBSTYLE_FLAT</c>
 			/// style do not have hot items.
-			/// </returns>
+			/// </para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-gethotitem
 			TB_GETHOTITEM = WindowMessage.WM_USER + 71,
 
-			/// <summary>Sets the hot item in a toolbar.</summary>
-			/// <param name="wParam">Index of the item that will be made hot. If this value is -1, none of the items will be hot.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the index of the previous hot item, or -1 if there was no hot item.</returns>
+			/// <summary>
+			/// Sets the hot item in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Index of the item that will be made hot. If this value is -1, none of the items will be hot.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the previous hot item, or -1 if there was no hot item.</para>
+			/// </summary>
 			/// <remarks>The behavior of this message is not defined for toolbars that do not have the <c>TBSTYLE_FLAT</c> style.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-sethotitem
 			TB_SETHOTITEM = WindowMessage.WM_USER + 72,
 
-			/// <summary>Sets the anchor highlight setting for a toolbar.</summary>
-			/// <param name="wParam">
-			/// <c>BOOL</c> value that specifies if anchor highlighting is enabled or disabled. If this value is nonzero, anchor
-			/// highlighting will be enabled. If this value is zero, anchor highlighting will be disabled.
-			/// </param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <summary>
+			/// Sets the anchor highlight setting for a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
+			/// <c>BOOL</c> value that specifies if anchor highlighting is enabled or disabled. If this value is nonzero, anchor highlighting
+			/// will be enabled. If this value is zero, anchor highlighting will be disabled.
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the previous anchor highlight setting. If this value is nonzero, anchor highlighting was enabled. If this value is
 			/// zero, anchor highlighting was disabled.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// Anchor highlighting in a toolbar means that the last highlighted item will remain highlighted until another item is
 			/// highlighted. This occurs even if the cursor leaves the toolbar control.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setanchorhighlight
 			TB_SETANCHORHIGHLIGHT = WindowMessage.WM_USER + 73,
 
-			/// <summary>Retrieves the anchor highlight setting for a toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <summary>
+			/// Retrieves the anchor highlight setting for a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns a Boolean value that indicates if anchor highlighting is set. If this value is nonzero, anchor highlighting is
 			/// enabled. If this value is zero, it is disabled.
-			/// </returns>
+			/// </para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getanchorhighlight
 			TB_GETANCHORHIGHLIGHT = WindowMessage.WM_USER + 74,
 
-			/// <summary>Determines the ID of the button that corresponds to the specified accelerator character.</summary>
-			/// <param name="wParam">The accelerator character.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Determines the ID of the button that corresponds to the specified accelerator character.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The accelerator character.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>UINT</c>. On return, if successful, this parameter will hold the id of the button that has wParam as its
 			/// accelerator character.
-			/// </param>
-			/// <returns>Returns a nonzero value if one of the buttons has wParam as its accelerator character, or zero otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a nonzero value if one of the buttons has wParam as its accelerator character, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-mapaccelerator
 			TB_MAPACCELERATORA = WindowMessage.WM_USER + 78,
 
-			/// <summary>Retrieves the current insertion mark for the toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Pointer to a <c>TBINSERTMARK</c> structure that receives the insertion mark.</param>
-			/// <returns>Always returns <c>TRUE</c>.</returns>
+			/// <summary>
+			/// Retrieves the current insertion mark for the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>TBINSERTMARK</c> structure that receives the insertion mark.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Always returns <c>TRUE</c>.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getinsertmark
 			TB_GETINSERTMARK = WindowMessage.WM_USER + 79,
 
-			/// <summary>Sets the current insertion mark for the toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Pointer to a <c>TBINSERTMARK</c> structure that contains the insertion mark.</param>
-			/// <returns>The return value for this message is not used.</returns>
+			/// <summary>
+			/// Sets the current insertion mark for the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>TBINSERTMARK</c> structure that contains the insertion mark.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value for this message is not used.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setinsertmark
 			TB_SETINSERTMARK = WindowMessage.WM_USER + 80,
 
-			/// <summary>Retrieves the insertion mark information for a point in a toolbar.</summary>
-			/// <param name="wParam">
-			/// Pointer to a <c>POINT</c> structure that contains the hit test coordinates, relative to the client area of the toolbar.
-			/// </param>
-			/// <param name="lParam">Pointer to a <c>TBINSERTMARK</c> structure that receives the insertion mark information.</param>
-			/// <returns>Returns nonzero if the point is an insertion mark, or zero otherwise.</returns>
+			/// <summary>
+			/// Retrieves the insertion mark information for a point in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Pointer to a <c>POINT</c> structure that contains the hit test coordinates, relative to the client area of the toolbar.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>TBINSERTMARK</c> structure that receives the insertion mark information.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if the point is an insertion mark, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-insertmarkhittest
 			TB_INSERTMARKHITTEST = WindowMessage.WM_USER + 81,
 
-			/// <summary>Moves a button from one index to another.</summary>
-			/// <param name="wParam">Zero-based index of the button to be moved.</param>
-			/// <param name="lParam">Zero-based index where the button will be moved.</param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// <summary>
+			/// Moves a button from one index to another.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Zero-based index of the button to be moved.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Zero-based index where the button will be moved.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-movebutton
 			TB_MOVEBUTTON = WindowMessage.WM_USER + 82,
 
-			/// <summary>Retrieves the total size of all of the visible buttons and separators in the toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Pointer to a <c>SIZE</c> structure that receives the size of the items.</param>
-			/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
+			/// <summary>
+			/// Retrieves the total size of all of the visible buttons and separators in the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>SIZE</c> structure that receives the size of the items.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns nonzero if successful, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getmaxsize
 			TB_GETMAXSIZE = WindowMessage.WM_USER + 83,
 
-			/// <summary>Sets the extended styles for a toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Value specifying the new extended styles. This parameter can be a combination of extended styles.</param>
-			/// <returns>
-			/// Returns a <c>DWORD</c> that represents the previous extended styles. This value can be a combination of extended styles.
-			/// </returns>
+			/// <summary>
+			/// Sets the extended styles for a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Value specifying the new extended styles. This parameter can be a combination of extended styles.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a <c>DWORD</c> that represents the previous extended styles. This value can be a combination of extended styles.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setextendedstyle
 			TB_SETEXTENDEDSTYLE = WindowMessage.WM_USER + 84,
 
-			/// <summary>Retrieves the extended styles for a toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <summary>
+			/// Retrieves the extended styles for a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns a <c>DWORD</c> that represents the styles currently in use for the toolbar control. This value can be a combination
 			/// of extended styles.
-			/// </returns>
+			/// </para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getextendedstyle
 			TB_GETEXTENDEDSTYLE = WindowMessage.WM_USER + 85,
 
-			/// <summary>Retrieves the padding for a toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>
+			/// <summary>
+			/// Retrieves the padding for a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns a <c>DWORD</c> value that contains the horizontal padding in the low word and the vertical padding in the high word,
 			/// in pixels.
-			/// </returns>
+			/// </para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getpadding
 			TB_GETPADDING = WindowMessage.WM_USER + 86,
 
-			/// <summary>Sets the padding for a toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Sets the padding for a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// The <c>LOWORD</c> specifies the horizontal padding, in pixels. The <c>HIWORD</c> specifies the vertical padding, in pixels.
-			/// </param>
-			/// <returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns a <c>DWORD</c> value that contains the previous horizontal padding in the <c>LOWORD</c> and the previous vertical
 			/// padding in the <c>HIWORD</c>, in pixels.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
 			/// The padding values are used to create a blank area between the edge of the button and the button's image and/or text. Where
 			/// and how much padding is actually applied depends on the type of the button and whether it has an image. The horizontal
 			/// padding is applied to both the right and left of the button, and the vertical padding is applied to both the top and bottom
 			/// of the button. Padding is only applied to buttons that have the <c>TBSTYLE_AUTOSIZE</c> style.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setpadding
 			TB_SETPADDING = WindowMessage.WM_USER + 87,
 
-			/// <summary>Sets the color used to draw the insertion mark for the toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam"><c>COLORREF</c> value that contains the new insertion mark color.</param>
-			/// <returns>Returns a <c>COLORREF</c> value that contains the previous insertion mark color.</returns>
+			/// <summary>
+			/// Sets the color used to draw the insertion mark for the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para><c>COLORREF</c> value that contains the new insertion mark color.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a <c>COLORREF</c> value that contains the previous insertion mark color.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setinsertmarkcolor
 			TB_SETINSERTMARKCOLOR = WindowMessage.WM_USER + 88,
 
-			/// <summary>Retrieves the color used to draw the insertion mark for the toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns a <c>COLORREF</c> value that contains the current insertion mark color.</returns>
+			/// <summary>
+			/// Retrieves the color used to draw the insertion mark for the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a <c>COLORREF</c> value that contains the current insertion mark color.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getinsertmarkcolor
 			TB_GETINSERTMARKCOLOR = WindowMessage.WM_USER + 89,
 
-			/// <summary>Determines the ID of the button that corresponds to the specified accelerator character.</summary>
-			/// <param name="wParam">The accelerator character.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Determines the ID of the button that corresponds to the specified accelerator character.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The accelerator character.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>UINT</c>. On return, if successful, this parameter will hold the id of the button that has wParam as its
 			/// accelerator character.
-			/// </param>
-			/// <returns>Returns a nonzero value if one of the buttons has wParam as its accelerator character, or zero otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns a nonzero value if one of the buttons has wParam as its accelerator character, or zero otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-mapaccelerator
 			TB_MAPACCELERATORW = WindowMessage.WM_USER + 90,
 
-			/// <summary>Retrieves a string from a toolbar's string pool.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Retrieves a string from a toolbar's string pool.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// The <c>LOWORD</c> specifies the length of the lParam buffer, in bytes. The <c>HIWORD</c> specifies the index of the string.
-			/// </param>
-			/// <param name="lParam">Pointer to a buffer used to return the string.</param>
-			/// <returns>Returns the string length if successful, or -1 otherwise.</returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a buffer used to return the string.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the string length if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message returns the specified string from the toolbar's string pool. It does not necessarily correspond to the text
 			/// string currently being displayed by a button. To retrieve a button's current text string, send the toolbar a
 			/// <c>TB_GETBUTTONTEXT</c> message.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getstring
 			TB_GETSTRINGW = WindowMessage.WM_USER + 91,
 
-			/// <summary>Retrieves a string from a toolbar's string pool.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Retrieves a string from a toolbar's string pool.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// The <c>LOWORD</c> specifies the length of the lParam buffer, in bytes. The <c>HIWORD</c> specifies the index of the string.
-			/// </param>
-			/// <param name="lParam">Pointer to a buffer used to return the string.</param>
-			/// <returns>Returns the string length if successful, or -1 otherwise.</returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a buffer used to return the string.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the string length if successful, or -1 otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// This message returns the specified string from the toolbar's string pool. It does not necessarily correspond to the text
 			/// string currently being displayed by a button. To retrieve a button's current text string, send the toolbar a
 			/// <c>TB_GETBUTTONTEXT</c> message.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getstring
 			TB_GETSTRINGA = WindowMessage.WM_USER + 92,
 
 			/// <summary>
@@ -1113,27 +1957,37 @@ namespace Vanara.PInvoke
 			/// [Intended for internal use; not recommended for use in applications. This message may not be supported in future versions of Windows.]
 			/// </para>
 			/// <para>Sets the bounding size for a multi-column toolbar control.</para>
-			/// </summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>SIZE</c> structure whose <c>cy</c> member contains the bounding height. The <c>cx</c> member (the width) is ignored.
-			/// </param>
-			/// <returns>The return value is not used.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is not used.</para>
+			/// </summary>
 			/// <remarks>
 			/// The bounding size controls how buttons are organized into columns. If the toolbar control does not have the
 			/// <c>TBSTYLE_EX_MULTICOLUMN</c> style, this message has no effect.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setboundingsize
 			TB_SETBOUNDINGSIZE = WindowMessage.WM_USER + 93,
 
-			/// <summary>Sets the hot item in a toolbar.</summary>
-			/// <param name="wParam">Index of the item that will be made hot. If this value is -1, none of the items will be hot.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Sets the hot item in a toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Index of the item that will be made hot. If this value is -1, none of the items will be hot.</para>
+			/// <para><em>lParam</em></para>
 			/// <para>A combination of HICF\_xxx flags. See</para>
 			/// <para>**NMTBHOTITEM**</para>
 			/// <para>.</para>
-			/// </param>
-			/// <returns>Returns the index of the previous hot item, or -1 if there was no hot item.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the index of the previous hot item, or -1 if there was no hot item.</para>
+			/// </summary>
 			/// <remarks>The behavior of this message is not defined for toolbars that do not have the <c>TBSTYLE_FLAT</c> style.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-sethotitem2
 			TB_SETHOTITEM2 = WindowMessage.WM_USER + 94,
 
 			/// <summary>
@@ -1141,91 +1995,156 @@ namespace Vanara.PInvoke
 			/// [Intended for internal use; not recommended for use in applications. This message may not be supported in future versions of Windows.]
 			/// </para>
 			/// <para>Retrieves a count of toolbar buttons that have the specified accelerator character.</para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>A <c>WCHAR</c> representing the input accelerator character to test.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>int</c> that receives the number of buttons that have the accelerator character.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is not used.</para>
 			/// </summary>
-			/// <param name="wParam">A <c>WCHAR</c> representing the input accelerator character to test.</param>
-			/// <param name="lParam">Pointer to an <c>int</c> that receives the number of buttons that have the accelerator character.</param>
-			/// <returns>The return value is not used.</returns>
 			/// <remarks>
 			/// First, the system queries all toolbar buttons for matching accelerators. If no matches are found, the system sends the
 			/// TBN_MAPACCELERATOR notification to the parent window, requesting the index of the button that has the specified accelerator
 			/// character. If the parent provides an index, the count is set to 1.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-hasaccelerator
 			TB_HASACCELERATOR = WindowMessage.WM_USER + 95,
 
-			/// <summary>Sets the distance between the toolbar buttons on a specific toolbar.</summary>
-			/// <param name="wParam">The gap, in pixels, between buttons on the toolbar.</param>
-			/// <param name="lParam">Ignored.</param>
-			/// <returns>No return value.</returns>
+			/// <summary>
+			/// Sets the distance between the toolbar buttons on a specific toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The gap, in pixels, between buttons on the toolbar.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Ignored.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
 			/// <remarks>
 			/// The gap between buttons only applies to the toolbar control window that receives this message. Receipt of this message
 			/// triggers a repaint of the toolbar, if the toolbar is currently visible.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setlistgap
 			TB_SETLISTGAP = WindowMessage.WM_USER + 96,
 
-			/// <summary>Gets the number of image lists associated with the toolbar.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the number of image lists.</returns>
+			/// <summary>
+			/// Gets the number of image lists associated with the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the number of image lists.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getimagelistcount
 			TB_GETIMAGELISTCOUNT = WindowMessage.WM_USER + 98,
 
-			/// <summary>Gets the ideal size of the toolbar.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Gets the ideal size of the toolbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// A **BOOL** that indicates whether to retrieve the ideal height or width of the toolbar. Use **TRUE** to retrieve the ideal
 			/// height, **FALSE** to retrieve the ideal width.
-			/// </param>
-			/// <param name="lParam">
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to a <c>SIZE</c> structure that receives the height or width at which all buttons would be displayed. If wParam is
 			/// <c>TRUE</c>, only the <c>cy</c> member (height) is valid. If wParam is <c>FALSE</c>, only the <c>cx</c> member (width) is valid.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getidealsize
 			TB_GETIDEALSIZE = WindowMessage.WM_USER + 99,
 
-			/// <summary>Retrieves the metrics of a toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Pointer to a <c>TBMETRICS</c> structure that receives the toolbar metrics.</param>
-			/// <returns>The return value is not used.</returns>
-			/// <remarks/>
+			/// <summary>
+			/// Retrieves the metrics of a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>TBMETRICS</c> structure that receives the toolbar metrics.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is not used.</para>
+			/// </summary>
+			/// <remarks>
+			/// <para>Note</para>
+			/// <para>
+			/// To use this message, you must provide a manifest specifying Comclt32.dll version 6.0. For more information on manifests, see
+			/// Enabling Visual Styles.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getmetrics
 			TB_GETMETRICS = WindowMessage.WM_USER + 101,
 
-			/// <summary>Sets the metrics of a toolbar control.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam"><c>TBMETRICS</c> structure that contains the toolbar metrics to set.</param>
-			/// <returns>The return value is not used.</returns>
-			/// <remarks/>
+			/// <summary>
+			/// Sets the metrics of a toolbar control.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para><c>TBMETRICS</c> structure that contains the toolbar metrics to set.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is not used.</para>
+			/// </summary>
+			/// <remarks>
+			/// <para>Note</para>
+			/// <para>
+			/// To use this message, you must provide a manifest specifying Comclt32.dll version 6.0. For more information on manifests, see
+			/// Enabling Visual Styles.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setmetrics
 			TB_SETMETRICS = WindowMessage.WM_USER + 102,
 
-			/// <summary>Gets the bounding rectangle of the dropdown window for a toolbar item with style <c>BTNS_DROPDOWN</c>.</summary>
-			/// <param name="wParam">The zero-based index of the toolbar control item for which to retrieve the bounding rectangle.</param>
-			/// <param name="lParam">
+			/// <summary>
+			/// Gets the bounding rectangle of the dropdown window for a toolbar item with style <c>BTNS_DROPDOWN</c>.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>The zero-based index of the toolbar control item for which to retrieve the bounding rectangle.</para>
+			/// <para><em>lParam</em></para>
 			/// <para>A pointer to a</para>
 			/// <para>**RECT**</para>
 			/// <para>
-			/// structure to receive the bounding rectangle information. The message sender is responsible for allocating this structure.
-			/// The coordinates returned in the **RECT** structure are expressed as client coordinates.
+			/// structure to receive the bounding rectangle information. The message sender is responsible for allocating this structure. The
+			/// coordinates returned in the **RECT** structure are expressed as client coordinates.
 			/// </para>
-			/// </param>
-			/// <returns>Always returns nonzero.</returns>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Always returns nonzero.</para>
+			/// </summary>
 			/// <remarks>The item must have the <c>BTNS_DROPDOWN</c> style.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getitemdropdownrect
 			TB_GETITEMDROPDOWNRECT = WindowMessage.WM_USER + 103,
 
-			/// <summary>Sets the image list that the toolbar uses to display buttons that are in a pressed state.</summary>
-			/// <param name="wParam">
+			/// <summary>
+			/// Sets the image list that the toolbar uses to display buttons that are in a pressed state.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>
 			/// The index of the image list. If you use only one image list, set this parameter to zero. See Remarks for details on using
 			/// multiple image lists.
-			/// </param>
-			/// <param name="lParam">
-			/// Handle to the image list to set. If this parameter is <c>NULL</c>, no images are displayed in the buttons.
-			/// </param>
-			/// <returns>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Handle to the image list to set. If this parameter is <c>NULL</c>, no images are displayed in the buttons.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Returns the handle to the image list previously used to display buttons in their pressed state, or <c>NULL</c> if no such
 			/// image list was previously set.
-			/// </returns>
+			/// </para>
+			/// </summary>
 			/// <remarks>
+			/// <para>
+			/// <para>Note</para>
+			/// <para>Your application is responsible for freeing the image list after the toolbar is destroyed.</para>
+			/// </para>
 			/// <para>
 			/// The <c>TB_SETPRESSEDIMAGELIST</c> message cannot be combined with <c>TB_ADDBITMAP</c>. It also cannot be used with toolbars
 			/// created with <c>CreateToolbarEx</c>, which calls <c>TB_ADDBITMAP</c> internally. When you create a toolbar with
-			/// <c>CreateToolbarEx</c> or use <c>TB_ADDBITMAP</c> to add images, the toolbar manages the image list internally. Attempting
-			/// to modify it with <c>TB_SETPRESSEDIMAGELIST</c> has unpredictable consequences.
+			/// <c>CreateToolbarEx</c> or use <c>TB_ADDBITMAP</c> to add images, the toolbar manages the image list internally. Attempting to
+			/// modify it with <c>TB_SETPRESSEDIMAGELIST</c> has unpredictable consequences.
 			/// </para>
 			/// <para>Button images need not come from the same image list. To use multiple image lists for your toolbar button images:</para>
 			/// <list type="number">
@@ -1279,12 +2198,20 @@ namespace Vanara.PInvoke
 			/// <code>// Enable multiple image lists SendMessage(hwndTB, CCM_SETVERSION, (WPARAM) 5, 0); //Set the image lists and assign them IDs of 0-2 SendMessage(hwndTB, TB_SETPRESSEDIMAGELIST, 0, (LPARAM)ahiml[0]); SendMessage(hwndTB, TB_SETPRESSEDIMAGELIST, 1, (LPARAM)ahiml[1]); SendMessage(hwndTB, TB_SETPRESSEDIMAGELIST, 2, (LPARAM)ahiml[2]); // Create the five buttons TBBUTTON rgtb[5]; //... initialize the TBBUTTON structures as usual ... //Assign images to each button rgtb[0].iBitmap = MAKELONG(1, 0); rgtb[1].iBitmap = MAKELONG(1, 1); rgtb[2].iBitmap = MAKELONG(1, 2); rgtb[3].iBitmap = MAKELONG(2, 0); rgtb[4].iBitmap = MAKELONG(3, 1); // Add the five buttons to the toolbar control SendMessage(hwndTB, TB_ADDBUTTONS, 5, (LPARAM)(&amp;rgtb);</code>
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-setpressedimagelist
 			TB_SETPRESSEDIMAGELIST = WindowMessage.WM_USER + 104,
 
-			/// <summary>Gets the image list that a toolbar control uses to display buttons in a pressed state.</summary>
-			/// <param name="wParam">Must be zero.</param>
-			/// <param name="lParam">Must be zero.</param>
-			/// <returns>Returns the handle to the image list, or <c>NULL</c> if no image list is set.</returns>
+			/// <summary>
+			/// Gets the image list that a toolbar control uses to display buttons in a pressed state.
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns the handle to the image list, or <c>NULL</c> if no image list is set.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getpressedimagelist
 			TB_GETPRESSEDIMAGELIST = WindowMessage.WM_USER + 105,
 		}
 
@@ -1300,19 +2227,22 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_GETBUTTONINFO lpnmtb = (LPNMTOOLBAR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTOOLBAR</c> structure. The <c>iItem</c> member specifies a zero-based index that provides a count of the
 			/// buttons the Customize Toolbar dialog box displays as both available and present on the toolbar. The <c>pszText</c> member
 			/// specifies the address of the current button text, and <c>cchText</c> specifies its length in characters. The application
 			/// should fill the structure with information about the button.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if button information was copied to the specified structure, or <c>FALSE</c> otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if button information was copied to the specified structure, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// The toolbar control allocates a buffer, and the receiver (parent window) must copy the text into that buffer. The
-			/// <c>cchText</c> member contains the length of the buffer allocated by the toolbar when TBN_GETBUTTONINFO is sent to the
-			/// parent window.
+			/// <c>cchText</c> member contains the length of the buffer allocated by the toolbar when TBN_GETBUTTONINFO is sent to the parent window.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-getbuttoninfo
 			TBN_GETBUTTONINFOA = TBN_FIRST - 0,
 
 			/// <summary>
@@ -1323,26 +2253,34 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_BEGINDRAG lpnmtb = (LPNMTOOLBAR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTOOLBAR</c> structure. The <c>iItem</c> member contains the command identifier of the button being dragged.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-begindrag
 			TBN_BEGINDRAG = TBN_FIRST - 1,
 
 			/// <summary>
 			/// <para>
-			/// Notifies the toolbar's parent window that the user has stopped dragging a button in a toolbar. This notification code is
-			/// sent in the form of a <c>WM_NOTIFY</c> message.
+			/// Notifies the toolbar's parent window that the user has stopped dragging a button in a toolbar. This notification code is sent
+			/// in the form of a <c>WM_NOTIFY</c> message.
 			/// </para>
 			/// <para>
 			/// <code>TBN_ENDDRAG lpnmtb = (LPNMTOOLBAR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTOOLBAR</c> structure. The <c>iItem</c> member contains the command identifier of the button being dragged.
-			/// </param>
-			/// <returns>No return value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-enddrag
 			TBN_ENDDRAG = TBN_FIRST - 2,
 
 			/// <summary>
@@ -1353,9 +2291,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_BEGINADJUST lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
 			/// </summary>
-			/// <param name="lParam">Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</param>
-			/// <returns>No return value.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-beginadjust
 			TBN_BEGINADJUST = TBN_FIRST - 3,
 
 			/// <summary>
@@ -1366,9 +2308,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_ENDADJUST lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
 			/// </summary>
-			/// <param name="lParam">Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</param>
-			/// <returns>No return value.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-endadjust
 			TBN_ENDADJUST = TBN_FIRST - 4,
 
 			/// <summary>
@@ -1379,9 +2325,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_RESET lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Return TBNRF_ENDCUSTOMIZE to close the Customize Toolbar dialog box. All other return values are ignored.</para>
 			/// </summary>
-			/// <param name="lParam">Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</param>
-			/// <returns>Return TBNRF_ENDCUSTOMIZE to close the Customize Toolbar dialog box. All other return values are ignored.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-reset
 			TBN_RESET = TBN_FIRST - 5,
 
 			/// <summary>
@@ -1392,14 +2342,18 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_QUERYINSERT lpnmtb = (LPNMTOOLBAR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTOOLBAR</c> structure. The <c>iItem</c> member contains the zero-based index of the button to be inserted.
-			/// </param>
-			/// <returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Return <c>TRUE</c> to allow a button to be inserted in front of the given button, or <c>FALSE</c> to prevent the button from
 			/// being inserted.
-			/// </returns>
+			/// </para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-queryinsert
 			TBN_QUERYINSERT = TBN_FIRST - 6,
 
 			/// <summary>
@@ -1410,11 +2364,15 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_QUERYDELETE lpnmtb = (LPNMTOOLBAR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTOOLBAR</c> structure. The <c>iItem</c> member contains the zero-based index of the button to be deleted.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> to allow the button to be deleted, or <c>FALSE</c> to prevent the button from being deleted.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> to allow the button to be deleted, or <c>FALSE</c> to prevent the button from being deleted.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-querydelete
 			TBN_QUERYDELETE = TBN_FIRST - 7,
 
 			/// <summary>
@@ -1425,9 +2383,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_TOOLBARCHANGE lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
 			/// </summary>
-			/// <param name="lParam">Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</param>
-			/// <returns>No return value.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-toolbarchange
 			TBN_TOOLBARCHANGE = TBN_FIRST - 8,
 
 			/// <summary>
@@ -1438,9 +2400,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_CUSTHELP lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
 			/// </summary>
-			/// <param name="lParam">Pointer to an <c>NMHDR</c> structure that contains information about the notification code.</param>
-			/// <returns>No return value.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-custhelp
 			TBN_CUSTHELP = TBN_FIRST - 9,
 
 			/// <summary>
@@ -1451,12 +2417,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_DROPDOWN lpnmtb = (LPNMTOOLBAR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTOOLBAR</c> structure that contains information about this notification code. For this notification code,
 			/// only the <c>hdr</c> and <c>iItem</c> members of this structure are valid.
-			/// </param>
-			/// <returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
 			/// <para>Returns one of the following values:</para>
 			/// <list type="table">
 			/// <listheader>
@@ -1464,20 +2431,30 @@ namespace Vanara.PInvoke
 			/// <term>Description</term>
 			/// </listheader>
 			/// <item>
-			/// <term>TBDDRET_DEFAULT</term>
+			/// <term><c>TBDDRET_DEFAULT</c></term>
 			/// <term>The drop-down was handled.</term>
 			/// </item>
 			/// <item>
-			/// <term>TBDDRET_NODEFAULT</term>
+			/// <term><c>TBDDRET_NODEFAULT</c></term>
 			/// <term>The drop-down was not handled.</term>
 			/// </item>
 			/// <item>
-			/// <term>TBDDRET_TREATPRESSED</term>
+			/// <term><c>TBDDRET_TREATPRESSED</c></term>
 			/// <term>The drop-down was handled, but treat the button like a regular button.</term>
 			/// </item>
 			/// </list>
-			/// </returns>
-			/// <remarks/>
+			/// </summary>
+			/// <remarks>
+			/// <para>Note</para>
+			/// <para>
+			/// Dropdown buttons can be plain ( <c>BTNS_DROPDOWN</c> style), display an arrow next to the button image (
+			/// <c>BTNS_WHOLEDROPDOWN</c> style), or display an arrow that is separated from the image ( <c>TBSTYLE_EX_DRAWDDARROWS</c>
+			/// style). If a separated arrow is used, TBN_DROPDOWN is sent only if the user clicks the arrow portion of the button. If the
+			/// user clicks the main part of the button, a <c>WM_COMMAND</c> message with button's ID is sent, just as with a standard
+			/// button. For the other two styles of dropdown button, TBN_DROPDOWN is sent when the user clicks any part of the button.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-dropdown
 			TBN_DROPDOWN = TBN_FIRST - 10,
 
 			/// <summary>
@@ -1488,12 +2465,15 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_GETOBJECT lpnmon = (LPNMOBJECTNOTIFY) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMOBJECTNOTIFY</c> structure that contains information about the button that the pointer passed over and
 			/// receives data the application provides in response to this notification code.
-			/// </param>
-			/// <returns>The application processing this notification code must return zero.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The application processing this notification code must return zero.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>
 			/// To provide an object, an application must set values in some members of the <c>NMOBJECTNOTIFY</c> structure at lParam. The
@@ -1504,6 +2484,7 @@ namespace Vanara.PInvoke
 			/// If an application does not provide an object, it must set <c>pObject</c> to <c>NULL</c> and <c>hResult</c> to a failure flag.
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-getobject
 			TBN_GETOBJECT = TBN_FIRST - 12,
 
 			/// <summary>
@@ -1514,9 +2495,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_HOTITEMCHANGE lpnmhi = (LPNMTBHOTITEM) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMTBHOTITEM</c> structure that contains information about this notification code.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Return zero to allow the item to be highlighted, or nonzero to prevent the item from being highlighted.</para>
 			/// </summary>
-			/// <param name="lParam">Pointer to an <c>NMTBHOTITEM</c> structure that contains information about this notification code.</param>
-			/// <returns>Return zero to allow the item to be highlighted, or nonzero to prevent the item from being highlighted.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-hotitemchange
 			TBN_HOTITEMCHANGE = TBN_FIRST - 13,
 
 			/// <summary>
@@ -1527,17 +2512,21 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_DRAGOUT lpnmtb = (LPNMTOOLBAR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTOOLBAR</c> structure that contains information about this notification code. For this notification code,
 			/// only the <c>hdr</c> and <c>iItem</c> members of this structure are valid. The <c>iItem</c> member of this structure contains
 			/// the command identifier of the button being dragged.
-			/// </param>
-			/// <returns>The return value is ignored.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
 			/// <remarks>
 			/// This notification code allows an application to implement drag-and-drop functionality for toolbar buttons. When processing
 			/// this notification code, the application will begin the drag-and-drop operation.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-dragout
 			TBN_DRAGOUT = TBN_FIRST - 14,
 
 			/// <summary>
@@ -1548,13 +2537,17 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code> TBN_DELETINGBUTTON lpnmtb = (LPNMTOOLBAR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTOOLBAR</c> structure that contains information about the button being deleted. For this notification
 			/// code, only the <c>hdr</c> and <c>iItem</c> members of this structure are valid. The <c>iItem</c> member of this structure
 			/// contains the command identifier of the button being deleted.
-			/// </param>
-			/// <returns>The return value is ignored.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-deletingbutton
 			TBN_DELETINGBUTTON = TBN_FIRST - 15,
 
 			/// <summary>
@@ -1564,13 +2557,17 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_GETDISPINFO lptbdi = (LPNMTBDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTBDISPINFO</c> structure. The <c>idCommand</c> member specifies the item's command identifier, the
-			/// <c>lParam</c> member contains the item's application-defined data, and the <c>dwMask</c> member specifies what information
-			/// is being requested.
-			/// </param>
-			/// <returns>The return value is ignored by the control.</returns>
+			/// <c>lParam</c> member contains the item's application-defined data, and the <c>dwMask</c> member specifies what information is
+			/// being requested.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-getdispinfo
 			TBN_GETDISPINFOA = TBN_FIRST - 16,
 
 			/// <summary>
@@ -1580,13 +2577,17 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_GETDISPINFO lptbdi = (LPNMTBDISPINFO) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTBDISPINFO</c> structure. The <c>idCommand</c> member specifies the item's command identifier, the
-			/// <c>lParam</c> member contains the item's application-defined data, and the <c>dwMask</c> member specifies what information
-			/// is being requested.
-			/// </param>
-			/// <returns>The return value is ignored by the control.</returns>
+			/// <c>lParam</c> member contains the item's application-defined data, and the <c>dwMask</c> member specifies what information is
+			/// being requested.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-getdispinfo
 			TBN_GETDISPINFOW = TBN_FIRST - 17,
 
 			/// <summary>
@@ -1596,15 +2597,17 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_GETINFOTIP lptbgit = (LPNMTBGETINFOTIP) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMTBGETINFOTIP</c> structure that contains item information and receives infotip information.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
-			/// <param name="lParam">
-			/// Pointer to an <c>NMTBGETINFOTIP</c> structure that contains item information and receives infotip information.
-			/// </param>
-			/// <returns>The return value is ignored by the control.</returns>
 			/// <remarks>
 			/// The infotip support in the toolbar allows the toolbar to display tooltips for items that are as large as INFOTIPSIZE
 			/// characters. If this notification code is not processed, the toolbar will use the item's text for the infotip.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-getinfotip
 			TBN_GETINFOTIPA = TBN_FIRST - 18,
 
 			/// <summary>
@@ -1614,15 +2617,17 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_GETINFOTIP lptbgit = (LPNMTBGETINFOTIP) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMTBGETINFOTIP</c> structure that contains item information and receives infotip information.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
-			/// <param name="lParam">
-			/// Pointer to an <c>NMTBGETINFOTIP</c> structure that contains item information and receives infotip information.
-			/// </param>
-			/// <returns>The return value is ignored by the control.</returns>
 			/// <remarks>
 			/// The infotip support in the toolbar allows the toolbar to display tooltips for items that are as large as INFOTIPSIZE
 			/// characters. If this notification code is not processed, the toolbar will use the item's text for the infotip.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-getinfotip
 			TBN_GETINFOTIPW = TBN_FIRST - 19,
 
 			/// <summary>
@@ -1633,19 +2638,22 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_GETBUTTONINFO lpnmtb = (LPNMTOOLBAR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// Pointer to an <c>NMTOOLBAR</c> structure. The <c>iItem</c> member specifies a zero-based index that provides a count of the
 			/// buttons the Customize Toolbar dialog box displays as both available and present on the toolbar. The <c>pszText</c> member
 			/// specifies the address of the current button text, and <c>cchText</c> specifies its length in characters. The application
 			/// should fill the structure with information about the button.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if button information was copied to the specified structure, or <c>FALSE</c> otherwise.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if button information was copied to the specified structure, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
 			/// <remarks>
 			/// The toolbar control allocates a buffer, and the receiver (parent window) must copy the text into that buffer. The
-			/// <c>cchText</c> member contains the length of the buffer allocated by the toolbar when TBN_GETBUTTONINFO is sent to the
-			/// parent window.
+			/// <c>cchText</c> member contains the length of the buffer allocated by the toolbar when TBN_GETBUTTONINFO is sent to the parent window.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-getbuttoninfo
 			TBN_GETBUTTONINFOW = TBN_FIRST - 20,
 
 			/// <summary>
@@ -1656,19 +2664,23 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_RESTORE lpnmtb = (LPNMTBRESTORE) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMTBRESTORE</c> structure.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
+			/// The application should return zero in response to the first <c>TBN_RESTORE</c> notification code received at the start of the
+			/// restore process to continue restoring the button information. If the application returns a nonzero value, the restore process
+			/// is canceled.
+			/// </para>
 			/// </summary>
-			/// <param name="lParam">Pointer to an <c>NMTBRESTORE</c> structure.</param>
-			/// <returns>
-			/// The application should return zero in response to the first <c>TBN_RESTORE</c> notification code received at the start of
-			/// the restore process to continue restoring the button information. If the application returns a nonzero value, the restore
-			/// process is canceled.
-			/// </returns>
 			/// <remarks>
 			/// The application will receive this notification code once at the start of the restore process and once for each button. This
 			/// notification code gives you an opportunity to extract the information from the data stream that you saved previously. If you
 			/// haven't saved any information, ignore the notification code. See Toolbar Customization for a more detailed discussion of how
 			/// to handle <c>TBN_RESTORE</c>.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-restore
 			TBN_RESTORE = TBN_FIRST - 21,
 
 			/// <summary>
@@ -1679,14 +2691,18 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_SAVE lpnmtb = (LPNMTBSAVE) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMTBSAVE</c> structure.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>No return value.</para>
 			/// </summary>
-			/// <param name="lParam">Pointer to an <c>NMTBSAVE</c> structure.</param>
-			/// <returns>No return value.</returns>
 			/// <remarks>
 			/// The application will receive this notification code once at the start of the save process and once for each button. This
 			/// notification code gives you an opportunity to add your own information to that saved by the Shell. If you do not wish to add
 			/// information, ignore the notification code. See Toolbar Customization for a more detailed discussion of how to handle TBN_SAVE.
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-save
 			TBN_SAVE = TBN_FIRST - 22,
 
 			/// <summary>
@@ -1697,31 +2713,39 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_INITCUSTOMIZE lpnmhdr = (LPNMHDR) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to the toolbar's <c>NMHDR</c> structure.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns TBNRF_HIDEHELP to suppress the Help button.</para>
 			/// </summary>
-			/// <param name="lParam">Pointer to the toolbar's <c>NMHDR</c> structure.</param>
-			/// <returns>Returns TBNRF_HIDEHELP to suppress the Help button.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-initcustomize
 			TBN_INITCUSTOMIZE = TBN_FIRST - 23,
 
 			/// <summary>
 			/// <para>
-			/// Notifies an application with two or more toolbars that the hot item is about to change. This notification code is sent in
-			/// the form of a <c>WM_NOTIFY</c> message.
+			/// Notifies an application with two or more toolbars that the hot item is about to change. This notification code is sent in the
+			/// form of a <c>WM_NOTIFY</c> message.
 			/// </para>
 			/// <para>
 			/// <code>TBN_WRAPHOTITEM lpnmtb = (NMTBWRAPHOTITEM) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to a structure that contains the old hot item ( <c>iStart</c>) and whether the new hot item is before it (
 			/// <c>iDir</c> = -1) or after it ( <c>iDir</c> = 1), as well as a reason why the hot item is changing.
-			/// </param>
-			/// <returns><c>TRUE</c> if the application is handling the hot item change itself; otherwise <c>FALSE</c>.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para><c>TRUE</c> if the application is handling the hot item change itself; otherwise <c>FALSE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>The <c>NMTBWRAPHOTITEM</c> structure must be defined by the application as follows:</para>
 			/// <para>
 			/// <code>typedef struct tagNMTBWRAPHOTITEM { NMHDR hdr; int iStart; int iDir; UINT nReason; // HICF_* flags } NMTBWRAPHOTITEM, *LPNMTBWRAPHOTITEM;</code>
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-wraphotitem
 			TBN_WRAPHOTITEM = TBN_FIRST - 24,
 
 			/// <summary>
@@ -1732,18 +2756,22 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_DUPACCELERATOR lpnmtb = (NMTBDUPACCELERATOR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to a structure that provides an accelerator and that receives a value specifying whether multiple toolbars respond
 			/// to the same character.
-			/// </param>
-			/// <returns>Returns <c>TRUE</c> if successful, otherwise <c>FALSE</c>.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Returns <c>TRUE</c> if successful, otherwise <c>FALSE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>The application must declare the <c>NMTBDUPACCELERATOR</c> structure as follows:</para>
 			/// <para>
 			/// <code>typedef struct tagNMTBDUPACCELERATOR { NMHDR hdr; UINT ch; // The accelerator. BOOL fDup; // TRUE if multiple toolbars respond to the accelerator. } NMTBDUPACCELERATOR, *LPNMTBDUPACCELERATOR;</code>
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-dupaccelerator
 			TBN_DUPACCELERATOR = TBN_FIRST - 25,
 
 			/// <summary>
@@ -1754,12 +2782,15 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_WRAPACCELERATOR lpnmtb = (NMTBWRAPACCELERATOR) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to a structure that contains the accelerator key character, and that receives the index of the corresponding
 			/// button. The index is -1 if the accelerator does not correspond to a command.
-			/// </param>
-			/// <returns><c>TRUE</c> if an index is returned, otherwise <c>FALSE</c>.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para><c>TRUE</c> if an index is returned, otherwise <c>FALSE</c>.</para>
+			/// </summary>
 			/// <remarks>
 			/// <para>Applications with one or more toolbars may receive this notification code.</para>
 			/// <para>The <c>NMTBWRAPACCELERATOR</c> structure must be defined by the application as follows:</para>
@@ -1767,6 +2798,7 @@ namespace Vanara.PInvoke
 			/// <code>typedef struct tagNMTBWRAPACCELERATOR { NMHDR hdr; UINT ch; int iButton; } NMTBWRAPACCELERATOR, *LPNMTBWRAPACCELERATOR;</code>
 			/// </para>
 			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-wrapaccelerator
 			TBN_WRAPACCELERATOR = TBN_FIRST - 26,
 
 			/// <summary>
@@ -1777,9 +2809,13 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_DRAGOVER lpnmtb = (NMTBHOTITEM*) lParam;</code>
 			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMTBHOTITEM</c> structure that specifies which item is being dragged over.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para><c>FALSE</c> if the toolbar should send a TB_MARKBUTTON message; otherwise <c>TRUE</c>.</para>
 			/// </summary>
-			/// <param name="lParam">A pointer to an <c>NMTBHOTITEM</c> structure that specifies which item is being dragged over.</param>
-			/// <returns><c>FALSE</c> if the toolbar should send a TB_MARKBUTTON message; otherwise <c>TRUE</c>.</returns>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-dragover
 			TBN_DRAGOVER = TBN_FIRST - 27,
 
 			/// <summary>
@@ -1790,16 +2826,18 @@ namespace Vanara.PInvoke
 			/// <para>
 			/// <code>TBN_MAPACCELERATOR lpnmtb = (NMCHAR*) lParam;</code>
 			/// </para>
-			/// </summary>
-			/// <param name="lParam">
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to an <c>NMCHAR</c> structure that contains the accelerator key character and that receives the index of the
 			/// corresponding button. The <c>dwItemNext</c> field is -1 if the accelerator does not correspond to a command.
-			/// </param>
-			/// <returns>TRUE if <c>NMCHAR.dwItemNext</c> is set to a value.</returns>
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>TRUE if <c>NMCHAR.dwItemNext</c> is set to a value.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/tbn-mapaccelerator
 			TBN_MAPACCELERATOR = TBN_FIRST - 28,
 		}
-
-#pragma warning restore CS1572 // XML comment has a param tag, but there is no parameter by that name
 
 		/// <summary>Toolbar Control and Button Styles</summary>
 		[PInvokeData("CommCtrl.h")]
@@ -1875,6 +2913,78 @@ namespace Vanara.PInvoke
 			/// vertical toolbar control when the toolbar is part of a vertical rebar control. This style cannot be combined with CCS_VERT.
 			/// </summary>
 			TBSTYLE_WRAPABLE = 0x0200,
+
+			/// <summary>
+			/// Version 5.80. Creates a standard button. Use the equivalent style flag, TBSTYLE_BUTTON, for version 4.72 and earlier. This
+			/// flag is defined as 0, and should be used to signify that no other flags are set.
+			/// </summary>
+			BTNS_BUTTON = TBSTYLE_BUTTON,
+
+			/// <summary>
+			/// Version 5.80. Creates a separator, providing a small gap between button groups. A button that has this style does not receive
+			/// user input. Use the equivalent style flag, TBSTYLE_SEP, for version 4.72 and earlier.
+			/// </summary>
+			BTNS_SEP = TBSTYLE_SEP,
+
+			/// <summary>
+			/// Version 5.80. Creates a dual-state push button that toggles between the pressed and nonpressed states each time the user
+			/// clicks it. The button has a different background color when it is in the pressed state. Use the equivalent style flag,
+			/// TBSTYLE_CHECK, for version 4.72 and earlier.
+			/// </summary>
+			BTNS_CHECK = TBSTYLE_CHECK,
+
+			/// <summary>
+			/// Version 5.80. When combined with BTNS_CHECK, creates a button that stays pressed until another button in the group is
+			/// pressed. Use the equivalent style flag, TBSTYLE_GROUP, for version 4.72 and earlier.
+			/// </summary>
+			BTNS_GROUP = TBSTYLE_GROUP,
+
+			/// <summary>
+			/// Version 5.80. Creates a button that stays pressed until another button in the group is pressed, similar to option buttons
+			/// (also known as radio buttons). It is equivalent to combining BTNS_CHECK and BTNS_GROUP. Use the equivalent style flag,
+			/// TBSTYLE_CHECKGROUP, for version 4.72 and earlier.
+			/// </summary>
+			BTNS_CHECKGROUP = TBSTYLE_CHECKGROUP,
+
+			/// <summary>
+			/// Version 5.80. Creates a drop-down style button that can display a list when the button is clicked. Instead of the WM_COMMAND
+			/// message used for normal buttons, drop-down buttons send a TBN_DROPDOWN notification code. An application can then have the
+			/// notification handler display a list of options. Use the equivalent style flag, TBSTYLE_DROPDOWN, for version 4.72 and earlier.
+			/// <para>
+			/// If the toolbar has the TBSTYLE_EX_DRAWDDARROWS extended style, drop-down buttons will have a drop-down arrow displayed in a
+			/// separate section to their right. If the arrow is clicked, a TBN_DROPDOWN notification code will be sent. If the associated
+			/// button is clicked, a WM_COMMAND message will be sent.
+			/// </para>
+			/// </summary>
+			BTNS_DROPDOWN = TBSTYLE_DROPDOWN,
+
+			/// <summary>
+			/// Version 5.80. Specifies that the toolbar control should not assign the standard width to the button. Instead, the button's
+			/// width will be calculated based on the width of the text plus the image of the button. Use the equivalent style flag,
+			/// TBSTYLE_AUTOSIZE, for version 4.72 and earlier.
+			/// </summary>
+			BTNS_AUTOSIZE = TBSTYLE_AUTOSIZE,
+
+			/// <summary>
+			/// Version 5.80. Specifies that the button text will not have an accelerator prefix associated with it. Use the equivalent style
+			/// flag, TBSTYLE_NOPREFIX, for version 4.72 and earlier.
+			/// </summary>
+			BTNS_NOPREFIX = TBSTYLE_NOPREFIX,
+
+			/// <summary>
+			/// Version 5.81. Specifies that button text should be displayed. All buttons can have text, but only those buttons with the
+			/// BTNS_SHOWTEXT button style will display it. This button style must be used with the TBSTYLE_LIST style and the
+			/// TBSTYLE_EX_MIXEDBUTTONS extended style. If you set text for buttons that do not have the BTNS_SHOWTEXT style, the toolbar
+			/// control will automatically display it as a tooltip when the cursor hovers over the button. This feature allows your
+			/// application to avoid handling the TBN_GETINFOTIP or TTN_GETDISPINFO notification code for the toolbar.
+			/// </summary>
+			BTNS_SHOWTEXT = 0x0040,
+
+			/// <summary>
+			/// Version 5.80. Specifies that the button will have a drop-down arrow, but not as a separate section. Buttons with this style
+			/// behave the same, regardless of whether the TBSTYLE_EX_DRAWDDARROWS extended style is set.
+			/// </summary>
+			BTNS_WHOLEDROPDOWN = 0x0080,
 		}
 
 		/// <summary>This section lists the extended styles supported by toolbar controls.</summary>
@@ -1932,6 +3042,50 @@ namespace Vanara.PInvoke
 			/// toolbar has changed.
 			/// </summary>
 			TBSTYLE_EX_DOUBLEBUFFER = 0x00000080,
+		}
+
+		/// <summary>Index values for IDB_VIEW_LARGE_COLOR and IDB_VIEW_SMALL_COLOR</summary>
+		[PInvokeData("Commctrl.h")]
+		public enum VIEW
+		{
+			/// <summary>Large icons view.</summary>
+			VIEW_LARGEICONS = 0,
+
+			/// <summary>Small icons view.</summary>
+			VIEW_SMALLICONS = 1,
+
+			/// <summary>List view.</summary>
+			VIEW_LIST = 2,
+
+			/// <summary>Details view.</summary>
+			VIEW_DETAILS = 3,
+
+			/// <summary>Sort by name.</summary>
+			VIEW_SORTNAME = 4,
+
+			/// <summary>Sort by size.</summary>
+			VIEW_SORTSIZE = 5,
+
+			/// <summary>Sort by date.</summary>
+			VIEW_SORTDATE = 6,
+
+			/// <summary>Sort by type.</summary>
+			VIEW_SORTTYPE = 7,
+
+			/// <summary>Go to parent folder.</summary>
+			VIEW_PARENTFOLDER = 8,
+
+			/// <summary>Connect to network drive.</summary>
+			VIEW_NETCONNECT = 9,
+
+			/// <summary>Disconnect to network drive.</summary>
+			VIEW_NETDISCONNECT = 10,
+
+			/// <summary>New folder.</summary>
+			VIEW_NEWFOLDER = 11,
+
+			/// <summary>View menu.</summary>
+			VIEW_VIEWMENU = 12,
 		}
 
 		/// <summary>Creates a bitmap for use in a toolbar.</summary>
@@ -2042,7 +3196,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint dwMask;
+			public TBNF dwMask;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
@@ -2072,6 +3226,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>LPTSTR</c></c></para>
 			/// <para>Pointer to a character buffer that receives the item's text.</para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
 			public string pszText;
 
 			/// <summary>
@@ -2100,6 +3255,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>LPTSTR</c></c></para>
 			/// <para>Address of a character buffer that receives the infotip text.</para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
 			public string pszText;
 
 			/// <summary>
@@ -2211,7 +3367,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint dwFlags;           // HICF_*
+			public HICF dwFlags;           // HICF_*
 		}
 
 		/// <summary>
@@ -2403,6 +3559,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>LPTSTR</c></c></para>
 			/// <para>Address of a character buffer that contains the button text.</para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
 			public string pszText;
 
 			/// <summary>
@@ -2535,7 +3692,7 @@ namespace Vanara.PInvoke
 		// typedef struct { UINT cbSize; DWORD dwMask; int idCommand; int iImage; BYTE fsState; BYTE fsStyle; WORD cx; DWORD_PTR lParam;
 		// LPTSTR pszText; int cchText;} TBBUTTONINFO, *LPTBBUTTONINFO; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760478(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760478")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct TBBUTTONINFO
 		{
 			/// <summary>
@@ -2591,7 +3748,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint dwMask;
+			public TBIF dwMask;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
@@ -2616,13 +3773,15 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>BYTE</c></c></para>
 			/// <para>State flags of the button. This can be one or more of the values listed in Toolbar Button States.</para>
 			/// </summary>
-			public byte fsState;
+			public TBSTATE fsState;
 
 			/// <summary>
 			/// <para>Type: <c><c>BYTE</c></c></para>
 			/// <para>Style flags of the button. This can be one or more of the values listed in Toolbar Control and Button Styles.</para>
 			/// </summary>
-			public byte fsStyle;
+			public ToolbarStyle fsStyle { get => (ToolbarStyle)_fsStyle; set => _fsStyle = (byte)((ushort)value & 0x00FF); }
+
+			private byte _fsStyle;
 
 			/// <summary>
 			/// <para>Type: <c><c>WORD</c></c></para>
@@ -2640,7 +3799,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>LPTSTR</c></c></para>
 			/// <para>Address of a character buffer that contains or receives the button text.</para>
 			/// </summary>
-			public string pszText;
+			public IntPtr pszText;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
@@ -2685,7 +3844,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint dwFlags;
+			public TBIMHT dwFlags;
 		}
 
 		/// <summary>Defines the metrics of a toolbar that are used to shrink or expand toolbar items.</summary>
@@ -2726,7 +3885,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint dwMask;
+			public TBMF dwMask;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
@@ -2834,13 +3993,137 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>LPCTSTR</c></c></para>
 			/// <para>Subkey name.</para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
 			public string pszSubKey;
 
 			/// <summary>
 			/// <para>Type: <c><c>LPCTSTR</c></c></para>
 			/// <para>Value name.</para>
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
 			public string pszValueName;
+		}
+
+		/// <summary>Contains information specific to an NM_CUSTOMDRAW notification code sent by a toolbar control.</summary>
+		// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmtbcustomdraw typedef struct _NMTBCUSTOMDRAW {
+		// NMCUSTOMDRAW nmcd; HBRUSH hbrMonoDither; HBRUSH hbrLines; HPEN hpenLines; COLORREF clrText; COLORREF clrMark; COLORREF
+		// clrTextHighlight; COLORREF clrBtnFace; COLORREF clrBtnHighlight; COLORREF clrHighlightHotTrack; RECT rcText; int nStringBkMode;
+		// int nHLStringBkMode; int iListGap; } NMTBCUSTOMDRAW, *LPNMTBCUSTOMDRAW;
+		[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl._NMTBCUSTOMDRAW")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NMTBCUSTOMDRAW
+		{
+			/// <summary>
+			/// <para>Type: <c>NMCUSTOMDRAW</c></para>
+			/// <para>
+			/// NMCUSTOMDRAW structure that contains general custom draw information. The <c>uItemState</c> member of this structure can be
+			/// modified so that a toolbar item will be drawn in the specified state without actually changing the item's state.
+			/// </para>
+			/// </summary>
+			public NMCUSTOMDRAW nmcd;
+
+			/// <summary>
+			/// <para>Type: <c>HBRUSH</c></para>
+			/// <para>
+			/// HBRUSH that the control will use when drawing the background of marked or dithered items. This member is ignored if
+			/// TBCDRF_NOMARK is returned from the NM_CUSTOMDRAW notification code.
+			/// </para>
+			/// </summary>
+			public HBRUSH hbrMonoDither;
+
+			/// <summary>
+			/// <para>Type: <c>HBRUSH</c></para>
+			/// <para>HBRUSH that the control will use when drawing lines on the buttons.</para>
+			/// </summary>
+			public HBRUSH hbrLines;
+
+			/// <summary>
+			/// <para>Type: <c>HPEN</c></para>
+			/// <para>HPEN that the control will use when drawing lines on the buttons.</para>
+			/// </summary>
+			public HPEN hpenLines;
+
+			/// <summary>
+			/// <para>Type: <c>COLORREF</c></para>
+			/// <para>COLORREF that represents the color that the control will use when drawing text on normal items.</para>
+			/// </summary>
+			public COLORREF clrText;
+
+			/// <summary>
+			/// <para>Type: <c>COLORREF</c></para>
+			/// <para><c>COLORREF</c> that represents the background color that the control will use when drawing text on marked items.</para>
+			/// </summary>
+			public COLORREF clrMark;
+
+			/// <summary>
+			/// <para>Type: <c>COLORREF</c></para>
+			/// <para><c>COLORREF</c> that represents the color that the control will use when drawing text on highlighted items.</para>
+			/// </summary>
+			public COLORREF clrTextHighlight;
+
+			/// <summary>
+			/// <para>Type: <c>COLORREF</c></para>
+			/// <para><c>COLORREF</c> that represents the face color that the control will use when drawing buttons.</para>
+			/// </summary>
+			public COLORREF clrBtnFace;
+
+			/// <summary>
+			/// <para>Type: <c>COLORREF</c></para>
+			/// <para>
+			/// <c>COLORREF</c> that represents the face color that the control will use when drawing highlighted items. An item is
+			/// highlighted if it has the TBSTATE_MARKED style and is contained in a toolbar that has the TBSTYLE_FLAT style.
+			/// </para>
+			/// </summary>
+			public COLORREF clrBtnHighlight;
+
+			/// <summary>
+			/// <para>Type: <c>COLORREF</c></para>
+			/// <para>
+			/// <c>COLORREF</c> that represents the background color that the control will use when drawing text on hot tracked items. This
+			/// member is ignored if TBCDRF_HILITEHOTTRACK is not returned from the NM_CUSTOMDRAW notification code.
+			/// </para>
+			/// </summary>
+			public COLORREF clrHighlightHotTrack;
+
+			/// <summary>
+			/// <para>Type: <c>RECT</c></para>
+			/// <para>
+			/// RECT structure that, on entry, contains the rectangle of the item's text. The <c>right</c> and <c>bottom</c> members of this
+			/// structure can be modified to change the width and height, respectively, of the text rectangle of the item.
+			/// </para>
+			/// </summary>
+			public RECT rcText;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>
+			/// Background mode that the control will use when drawing the text of a nonhighlighted item. This can be either the TRANSPARENT
+			/// or OPAQUE value.
+			/// </para>
+			/// </summary>
+			public BackgroundMode nStringBkMode;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>
+			/// Background mode that the control will use when drawing the text of a highlighted item. This can be either the TRANSPARENT or
+			/// OPAQUE value.
+			/// </para>
+			/// </summary>
+			public BackgroundMode nHLStringBkMode;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>
+			/// Version 6.0 Specifies the distance between the toolbar button image and the text, in logical pixels, for toolbars that have
+			/// TBSTYLE_LIST style set.
+			/// </para>
+			/// <para>
+			/// Note that Comctl32.dll version 6 is not redistributable but it is included in Windows or later. To use Comctl32.dll version
+			/// 6, specify it in a manifest. For more information on manifests, see Enabling Visual Styles.
+			/// </para>
+			/// </summary>
+			public int iListGap;
 		}
 	}
 }

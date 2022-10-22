@@ -1152,17 +1152,17 @@ namespace Vanara.PInvoke
 			/// </summary>
 			Uri_PROPERTY_USER_INFO = 13,
 
-			/// <summary>Designates the final string property.</summary>
-			Uri_PROPERTY_STRING_LAST = 14,
-
 			/// <summary>Indicates the user name only, as parsed from the URI. Prompted credentials do not appear here.</summary>
 			Uri_PROPERTY_USER_NAME = 14,
 
-			/// <summary>Designates the first numerical property.</summary>
-			Uri_PROPERTY_DWORD_START = 15,
+			/// <summary>Designates the final string property.</summary>
+			Uri_PROPERTY_STRING_LAST = 14,
 
 			/// <summary>Returns a value from the Uri_HOST_TYPE enumeration.</summary>
 			Uri_PROPERTY_HOST_TYPE = 15,
+
+			/// <summary>Designates the first numerical property.</summary>
+			Uri_PROPERTY_DWORD_START = 15,
 
 			/// <summary>Indicates the port number only.</summary>
 			Uri_PROPERTY_PORT = 16,
@@ -1170,13 +1170,13 @@ namespace Vanara.PInvoke
 			/// <summary>Returns a value from the URL_SCHEME enumeration. See also Uri_PROPERTY_SCHEME_NAME.</summary>
 			Uri_PROPERTY_SCHEME = 17,
 
-			/// <summary>Designates the final numerical property.</summary>
-			Uri_PROPERTY_DWORD_LAST = 18,
-
 			/// <summary>
 			/// Not implemented. To calculate the zone of a URI object, pass the URI to the IInternetSecurityManagerEx2::MapUrlToZoneEx2 method.
 			/// </summary>
-			Uri_PROPERTY_ZONE = 18
+			Uri_PROPERTY_ZONE = 18,
+
+			/// <summary>Designates the final numerical property.</summary>
+			Uri_PROPERTY_DWORD_LAST = 18,
 		}
 
 		/// <summary>Specifies which URL parser to use.</summary>

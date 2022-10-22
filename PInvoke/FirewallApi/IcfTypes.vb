@@ -88,14 +88,6 @@ Partial Public Module FirewallApi
     End Enum
 
     ''' <summary>
-    ''' <para>
-    ''' [The Windows Firewall API is available for use in the operating systems specified in the Requirements section. It may be altered or
-    ''' unavailable in subsequent versions. For Windows Vista and later, use of the Windows Firewall with Advanced Security API is recommended.]
-    ''' </para>
-    ''' <para>
-    ''' [The Windows Firewall API is available for use in the operating systems specified in the Requirements section. It may be altered or
-    ''' unavailable in subsequent versions. For Windows Vista and later, use of the Windows Firewall with Advanced Security API is recommended.]
-    ''' </para>
     ''' <para>The <c>NET_FW_IP_PROTOCOL</c> enumeration type specifies the Internet protocol.</para>
     ''' </summary>
     <PInvokeData("icftypes.h", MSDNShortId:="NE:icftypes.NET_FW_IP_PROTOCOL_")>

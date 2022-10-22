@@ -3,24 +3,28 @@
   <PropertyGroup>
     <Description>.NET classes to manage Windows Virtual Storage (VHD and VHDX) using P/Invoke functions from VirtDisk.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.VirtualDisk</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;vhd</PackageTags>
     <PackageReleaseNotes>Currently implements:
 
 Classes
-VirtualDisk, VirtualDiskMetadata
+VirtualDisk, VirtualDiskMetadata, VirtualDiskSetInformation, VirtualDiskSettingData, VirtualDiskSnapshotInformation
 
 Enumerations
-DeviceType, Subtype
+CompactionMode, DeviceType, Subtype
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) ">
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Management" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Management\Vanara.Management.csproj" />
     <ProjectReference Include="..\PInvoke\Security\Vanara.PInvoke.Security.csproj" />
     <ProjectReference Include="..\PInvoke\VirtDisk\Vanara.PInvoke.VirtDisk.csproj" />
   </ItemGroup>

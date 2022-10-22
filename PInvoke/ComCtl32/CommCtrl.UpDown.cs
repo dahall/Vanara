@@ -20,58 +20,268 @@ namespace Vanara.PInvoke
 		/// <summary>Window messages for the up-down control.</summary>
 		public enum UpDownMessage : uint
 		{
-			/// <summary>Retrieves acceleration information for an up-down control.</summary>
+			/// <summary>Retrieves acceleration information for an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Number of elements in the array specified by lParam.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an array of <c>UDACCEL</c> structures that receive acceleration information.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value is the number of accelerators currently set for the control.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getaccel
 			UDM_GETACCEL = WindowMessage.WM_USER + 108,
 
-			/// <summary>Retrieves the current radix base (that is, either base 10 or 16) for an up-down control.</summary>
+			/// <summary>Retrieves the current radix base (that is, either base 10 or 16) for an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value is the current base value.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getbase
 			UDM_GETBASE = WindowMessage.WM_USER + 110,
 
-			/// <summary>Retrieves the handle to the current buddy window.</summary>
+			/// <summary>Retrieves the handle to the current buddy window.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value is the handle to the current buddy window.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getbuddy
 			UDM_GETBUDDY = WindowMessage.WM_USER + 106,
 
-			/// <summary>Retrieves the current position of an up-down control with 16-bit precision.</summary>
+			/// <summary>Returns the 32-bit position of an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>BOOL</c> value that is set to zero if the value is successfully retrieved or nonzero if an error occurs. If this parameter is set to <c>NULL</c>, errors are not reported.</para>
+			/// <para>If <c>UDM_GETPOS32</c> is used in a cross-process situation, this parameter must be <c>NULL</c>.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>Returns the position of an up-down control with 32-bit precision. Applications must check the lParam value to determine whether the return value is valid.</para>
+			/// </summary>
+			/// <remarks>When it processes this message, the up-down control updates its current position based on the caption of the buddy window. It returns an error if there is no buddy window or if the caption specifies an invalid or out-of-range value.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getpos32
 			UDM_GETPOS = WindowMessage.WM_USER + 104,
 
-			/// <summary>Returns the 32-bit position of an up-down control.</summary>
+			/// <summary>Returns the 32-bit position of an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a <c>BOOL</c> value that is set to zero if the value is successfully retrieved or nonzero if an error occurs. If this parameter is set to <c>NULL</c>, errors are not reported.</para>
+			/// <para>If <c>UDM_GETPOS32</c> is used in a cross-process situation, this parameter must be <c>NULL</c>.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>Returns the position of an up-down control with 32-bit precision. Applications must check the lParam value to determine whether the return value is valid.</para>
+			/// </summary>
+			/// <remarks>When it processes this message, the up-down control updates its current position based on the caption of the buddy window. It returns an error if there is no buddy window or if the caption specifies an invalid or out-of-range value.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getpos32
 			UDM_GETPOS32 = WindowMessage.WM_USER + 114,
 
-			/// <summary>Retrieves the minimum and maximum positions (range) for an up-down control.</summary>
+			/// <summary>Retrieves the minimum and maximum positions (range) for an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value is a 32-bit value that contains the minimum and maximum positions. The <c>LOWORD</c> is the maximum position for the control, and the <c>HIWORD</c> is the minimum position.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getrange
 			UDM_GETRANGE = WindowMessage.WM_USER + 102,
 
-			/// <summary>Retrieves the 32-bit range of an up-down control.</summary>
+			/// <summary>Retrieves the 32-bit range of an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Pointer to a signed integer that receives the lower limit of the up-down control range. This parameter may be <c>NULL</c>.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to a signed integer that receives the upper limit of the up-down control range. This parameter may be <c>NULL</c>.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value for this message is not used.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getrange32
 			UDM_GETRANGE32 = WindowMessage.WM_USER + 112,
 
-			/// <summary>Retrieves the Unicode character format flag for the control.</summary>
+			/// <summary>Retrieves the Unicode character format flag for the control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>Returns the Unicode format flag for the control. If this value is nonzero, the control is using Unicode characters. If this value is zero, the control is using ANSI characters.</para>
+			/// </summary>
+			/// <remarks>See the remarks for <c>CCM_GETUNICODEFORMAT</c> for a discussion of this message.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-getunicodeformat
 			UDM_GETUNICODEFORMAT = CommonControlMessage.CCM_GETUNICODEFORMAT,
 
-			/// <summary>Sets the acceleration for an up-down control.</summary>
+			/// <summary>Sets the acceleration for an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Number of <c>UDACCEL</c> structures specified by aAccels.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an array of <c>UDACCEL</c> structures that contain acceleration information. Elements should be sorted in ascending order based on the <c>nSec</c> member.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setaccel
 			UDM_SETACCEL = WindowMessage.WM_USER + 107,
 
-			/// <summary>
-			/// Sets the radix base for an up-down control. The base value determines whether the buddy window displays numbers in decimal or
-			/// hexadecimal digits. Hexadecimal numbers are always unsigned, and decimal numbers are signed.
+			/// <summary>Sets the radix base for an up-down control. The base value determines whether the buddy window displays numbers in decimal or hexadecimal digits. Hexadecimal numbers are always unsigned, and decimal numbers are signed.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>New base value for the control. This parameter can be 10 for decimal or 16 for hexadecimal.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value is the previous base value. If an invalid base is given, the return value is zero.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setbase
 			UDM_SETBASE = WindowMessage.WM_USER + 109,
 
-			/// <summary>Sets the buddy window for an up-down control.</summary>
+			/// <summary>Sets the buddy window for an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Handle to the new buddy window.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value is the handle to the previous buddy window.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setbuddy
 			UDM_SETBUDDY = WindowMessage.WM_USER + 105,
 
-			/// <summary>Sets the current position for an up-down control with 16-bit precision.</summary>
+			/// <summary>Sets the current position for an up-down control with 16-bit precision.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>New position for the up-down control. If the parameter is outside the control's specified range, lParam will be set to the nearest valid value.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value is the previous position.</para>
+			/// </summary>
+			/// <remarks>This message only supports 16-bit positions. If 32-bit values have been enabled for an up-down control with <c>UDM_SETRANGE32</c>, use <c>UDM_SETPOS32</c>.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setpos
 			UDM_SETPOS = WindowMessage.WM_USER + 103,
 
-			/// <summary>Sets the position of an up-down control with 32-bit precision.</summary>
+			/// <summary>Sets the position of an up-down control with 32-bit precision.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Variable of type integer that specifies the new position for the up-down control. If the parameter is outside the control's specified range, lParam is set to the nearest valid value.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>Returns the previous position.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setpos32
 			UDM_SETPOS32 = WindowMessage.WM_USER + 113,
 
-			/// <summary>Sets the minimum and maximum positions (range) for an up-down control.</summary>
+			/// <summary>Sets the minimum and maximum positions (range) for an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>The <c>LOWORD</c> is a <c>short</c> that specifies the maximum position for the up-down control, and the <c>HIWORD</c> is a <c>short</c> that specifies the minimum position. Neither position can be greater than the UD_MAXVAL value or less than the UD_MINVAL value. In addition, the difference between the two positions cannot exceed UD_MAXVAL.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>The maximum position can be less than the minimum position. Clicking the up arrow button moves the current position closer to the maximum position, and clicking the down arrow button moves toward the minimum position.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setrange
 			UDM_SETRANGE = WindowMessage.WM_USER + 101,
 
-			/// <summary>Sets the 32-bit range of an up-down control.</summary>
+			/// <summary>Sets the 32-bit range of an up-down control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Signed integer value that represents the new lower limit of the up-down control range.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Signed integer value that represents the new upper limit of the up-down control range.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>The return value for this message is not used.</para>
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setrange32
 			UDM_SETRANGE32 = WindowMessage.WM_USER + 111,
 
-			/// <summary>
-			/// Sets the Unicode character format flag for the control. This message allows you to change the character set used by the
-			/// control at run time rather than having to re-create the control.
+			/// <summary>Sets the Unicode character format flag for the control. This message allows you to change the character set used by the control at run time rather than having to re-create the control.
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>wParam</em></para>
+			/// <para>Determines the character set that is used by the control. If this value is <c>TRUE</c>, the control will use Unicode characters. If this value is <c>FALSE</c>, the control will use ANSI characters.</para>
+			/// <para><em>lParam</em></para>
+			/// <para>Must be zero.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>Returns the previous Unicode format flag for the control.</para>
 			/// </summary>
+			/// <remarks>See the remarks for <c>CCM_SETUNICODEFORMAT</c> for a discussion of this message.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udm-setunicodeformat
 			UDM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
 		}
 
@@ -79,16 +289,36 @@ namespace Vanara.PInvoke
 		public enum UpDownNotification : int
 		{
 			/// <summary>
-			/// Notifies an up-down control's parent window that the control is releasing mouse capture. This notification is sent in the
-			/// form of a WM_NOTIFY message.
+			/// <para>Notifies a control's parent window that the control is releasing mouse capture. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.</para>
+			/// <para><code>NM_RELEASEDCAPTURE lpnmh = (LPNMHDR) lParam; </code></para>
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>Unless otherwise specified, the control ignores the return value from this notification code.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-releasedcapture
 			NM_RELEASEDCAPTURE = UDN_FIRST - 1,
 
 			/// <summary>
-			/// Sent by the operating system to the parent window of an up-down control when the position of the control is about to
-			/// change.This happens when the user requests a change in the value by pressing the control's up or down arrow. The UDN_DELTAPOS
-			/// message is sent in the form of a WM_NOTIFY message.
+			/// <para>Sent by the operating system to the parent window of an up-down control when the position of the control is about to change. This happens when the user requests a change in the value by pressing the control's up or down arrow. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.</para>
+			/// <para><code>UDN_DELTAPOS lpnmud = (LPNMUPDOWN) lParam; </code></para>
+			/// <para>
+			/// <strong>Parameters</strong>
+			/// </para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMUPDOWN</c> structure that contains information about the position change. The <c>iPos</c> member of this structure contains the current position of the control. The <c>iDelta</c> member of the structure is a signed integer that contains the proposed change in position. If the user has clicked the up button, this is a positive value. If the user has clicked the down button, this is a negative value.</para>
+			/// <para>
+			/// <strong>Returns</strong>
+			/// </para>
+			/// <para>Return nonzero to prevent the change in the control's position, or zero to allow the change.</para>
 			/// </summary>
+			/// <remarks>The UDN_DELTAPOS notification code is sent before the <c>WM_VSCROLL</c> or <c>WM_HSCROLL</c> message, which actually changes the control's position. This lets you examine, allow, modify, or disallow the change.</remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/udn-deltapos
 			UDN_DELTAPOS = UDN_FIRST
 		}
 
@@ -205,7 +435,7 @@ namespace Vanara.PInvoke
 		// nUpper, int nLower, int nPos); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759977(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb759977")]
-		public static extern IntPtr CreateUpDownControl(uint dwStyle, int x, int y, int cx, int cy, HWND hParent, int nID, HINSTANCE hInst, HWND hBuddy, int nUpper, int nLower, int nPos);
+		public static extern HWND CreateUpDownControl(uint dwStyle, int x, int y, int cx, int cy, HWND hParent, int nID, HINSTANCE hInst, HWND hBuddy, int nUpper, int nLower, int nPos);
 
 		/// <summary>
 		/// Contains information specific to up-down control notification messages. It is identical to and replaces the <c>NM_UPDOWN</c> structure.

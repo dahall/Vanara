@@ -155,7 +155,7 @@ namespace Vanara.Extensions
 		{
 			var rc = new RECT(bounds);
 			var ht = new SafeHTHEME(rnd.Handle, false);
-			using (var hdc = new SafeHDC(dc))
+			using (var hdc = new SafeTempHDC(dc))
 				DrawThemeTextEx(ht, hdc, rnd.Part, rnd.State, text, text.Length, FromTFF(flags), ref rc, options);
 			bounds = rc;
 		}
@@ -195,9 +195,9 @@ namespace Vanara.Extensions
 			{
 				// Create a device-independent bitmap and select it into our DC
 				var info = new BITMAPINFO(bounds.Width, -bounds.Height);
-				using (memoryHdc.SelectObject(CreateDIBSection(HDC.NULL, ref info, DIBColorMode.DIB_RGB_COLORS, out var ppv, IntPtr.Zero, 0)))
+				using (memoryHdc.SelectObject(CreateDIBSection(HDC.NULL, info, DIBColorMode.DIB_RGB_COLORS, out var ppv)))
 				{
-					using (var memoryGraphics = (Graphics)memoryHdc)
+					using (var memoryGraphics = Graphics.FromHdc(memoryHdc.DangerousGetHandle()))
 					{
 						// Setup graphics
 						memoryGraphics.CompositingMode = CompositingMode.SourceOver;
@@ -217,7 +217,7 @@ namespace Vanara.Extensions
 
 					// Copy DIB to Bitmap
 					var bmp = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb);
-					using (var primaryHdc = new SafeHDC(Graphics.FromImage(bmp)))
+					using (var primaryHdc = new SafeTempHDC(Graphics.FromImage(bmp)))
 						BitBlt(primaryHdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, RasterOperationMode.SRCCOPY);
 					return bmp;
 				}
@@ -233,7 +233,7 @@ namespace Vanara.Extensions
 		/// </returns>
 		public static Font GetFont2(this VisualStyleRenderer rnd, IDeviceContext dc = null, Font defaultValue = null)
 		{
-			using (var hdc = new SafeHDC(dc))
+			using (var hdc = new SafeTempHDC(dc))
 			{
 				return 0 != GetThemeFont(new SafeHTHEME(rnd.Handle, false), hdc, rnd.Part, rnd.State, 210, out var f)
 					? defaultValue : Font.FromLogFont(f);

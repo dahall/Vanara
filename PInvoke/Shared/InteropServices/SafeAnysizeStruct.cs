@@ -54,18 +54,14 @@ namespace Vanara.InteropServices
 		/// <summary>Performs an implicit conversion from <typeparamref name="T"/> to <see cref="SafeAnysizeStructBase{T}"/>.</summary>
 		/// <param name="s">The <typeparamref name="T"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-#if !(NET20 || NET35 || NET40)
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-#endif
-		public static implicit operator SafeAnysizeStruct<T>(in T s) => new SafeAnysizeStruct<T>(s);
+		public static implicit operator SafeAnysizeStruct<T>(in T s) => new(s);
 
 		/// <summary>Gets the length of the array from the structure.</summary>
 		/// <param name="local">The local, system marshaled, structure instance extracted from the pointer.</param>
 		/// <returns>The element length of the 'anysize' array.</returns>
-#if !(NET20 || NET35 || NET40)
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-#endif
-		protected override int GetArrayLength(in T local) => fiCount is null ? GetArrLenFromSz() : Convert.ToInt32(fiCount.GetValue(local));
+		protected override int GetArrayLength(in T local) => fiCount is null ? GetArrLenFromSz() : (fiCount.FieldType == typeof(IntPtr) ? ((IntPtr)fiCount.GetValue(local)).ToInt32() : Convert.ToInt32(fiCount.GetValue(local)));
 
 		private int GetArrLenFromSz() => 1 + (Size - baseSz) / Marshal.SizeOf(elemType);
 
@@ -141,7 +137,8 @@ namespace Vanara.InteropServices
 			var local = (T)Marshal.PtrToStructure(allocatedMemory, structType); // Can't use Convert or get circular ref.
 			var cnt = GetArrayLength(local);
 			var arrOffset = Marshal.OffsetOf(structType, fiArray.Name).ToInt32();
-			fiArray.SetValueDirect(__makeref(local), allocatedMemory.ToArray(elemType, cnt, arrOffset, size));
+			Array array = elemType == typeof(string) ? allocatedMemory.ToStringEnum(cnt, GetCharSet(fiArray), arrOffset, size).ToArray() : allocatedMemory.ToArray(elemType, cnt, arrOffset, size);
+			fiArray.SetValueDirect(__makeref(local), array);
 			return local;
 		}
 
@@ -163,16 +160,47 @@ namespace Vanara.InteropServices
 				fiArray.SetValueDirect(__makeref(value), arrVal);
 			}
 			// Determine mem required for current struct and last field value
-			var arrElemSz = Marshal.SizeOf(elemType);
 			var arrLen = ((Array)arrVal).Length;
-			var memSz = baseSz + arrElemSz * (arrLen - 1);
-			// Set memory size
-			Size = memSz;
-			// Marshal base structure - don't use Write to prevent loops
-			Marshal.StructureToPtr(value, handle, false);
-			// Push each element of the array into memory, starting with second item in array since first was pushed by StructureToPtr
-			for (var i = 1; i < arrLen; i++)
-				handle.Write(((Array)arrVal).GetValue(i), baseSz + arrElemSz * (i - 1), memSz);
+			if (elemType == typeof(string))
+			{
+				var charSet = GetCharSet(fiArray);
+				// Set memory size
+				Size = baseSz + (IntPtr.Size * arrLen) + ((string[])arrVal).Sum(s => StringHelper.GetCharSize(charSet) * (s.Length + 1));
+				// Marshal base structure - don't use Write to prevent loops
+				Marshal.StructureToPtr(value, handle, false);
+				// Push each element of the array into memory, starting with second item in array since first was pushed by StructureToPtr
+				var arrOffset = Marshal.OffsetOf(structType, fiArray.Name).ToInt32();
+				handle.Write((string[])arrVal, StringListPackMethod.Packed, charSet, arrOffset, Size);
+			}
+			else
+			{
+				var arrElemSz = Marshal.SizeOf(elemType);
+				var memSz = baseSz + arrElemSz * (arrLen - 1);
+				// Set memory size
+				Size = memSz;
+				// Marshal base structure - don't use Write to prevent loops
+				Marshal.StructureToPtr(value, handle, false);
+				// Push each element of the array into memory, starting with second item in array since first was pushed by StructureToPtr
+				for (var i = 1; i < arrLen; i++)
+					handle.Write(((Array)arrVal).GetValue(i), baseSz + arrElemSz * (i - 1), memSz);
+			}
+		}
+
+		private static CharSet GetCharSet(FieldInfo fi)
+		{
+			if (fi.FieldType.IsArray && fi.FieldType.FindElementType() == typeof(string))
+			{
+				var maa = fi.GetCustomAttribute<MarshalAsAttribute>();
+				if (maa != null)
+					return fi.GetCustomAttribute<MarshalAsAttribute>().ArraySubType switch
+					{
+						UnmanagedType.LPWStr => CharSet.Unicode,
+						UnmanagedType.LPTStr => CharSet.Auto,
+						UnmanagedType.LPStr => CharSet.Ansi,
+						_ => CharSet.Auto,
+					};
+			}
+			return fi.DeclaringType.GetCustomAttribute<StructLayoutAttribute>()?.CharSet ?? CharSet.Auto;
 		}
 	}
 
@@ -186,7 +214,7 @@ namespace Vanara.InteropServices
 	/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
 	public class SafeAnysizeStructMarshaler<T> : IVanaraMarshaler
 	{
-		private string sizeFieldName;
+		private readonly string sizeFieldName;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStructMarshaler{T}"/> class.</summary>
 		/// <param name="cookie">
@@ -197,7 +225,7 @@ namespace Vanara.InteropServices
 		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(T));
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object managedObject) =>
-			managedObject is null ? SafeCoTaskMemHandle.Null : (SafeAllocatedMemoryHandle)new SafeAnysizeStruct<T>((T)managedObject, sizeFieldName);
+			managedObject is null ? SafeCoTaskMemHandle.Null : new SafeAnysizeStruct<T>((T)managedObject, sizeFieldName);
 
 		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
@@ -231,7 +259,7 @@ namespace Vanara.InteropServices
 		private static readonly int baseSz;
 		private readonly FieldInfo fiCount;
 		private static readonly FieldInfo fiArray;
-		private static int strOffset;
+		private static readonly int strOffset;
 		private readonly bool cntIsBytes = false;
 		private readonly bool cntInclNull = true;
 		private readonly bool allMem = false;

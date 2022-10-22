@@ -6,7 +6,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from the SHCore.dll</summary>
 	public static partial class SHCore
 	{
-		private const string Lib_SHCore = "SHCore.dll";
+		private const string Lib_SHCore = "shcore.dll";
 
 		/// <summary>
 		/// <para>Indicates whether the device is a primary or immersive type of display.</para>

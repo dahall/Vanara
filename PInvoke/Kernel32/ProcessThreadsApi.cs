@@ -265,6 +265,29 @@ namespace Vanara.PInvoke
 			DYNAMIC_EH_CONTINUATION_TARGET_PROCESSED = 0x00000002
 		}
 
+		/// <summary>
+		/// Specifies the ways in which an architecture of code can run on a host operating system. More than one bit may be set.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ne-processthreadsapi-machine_attributes typedef enum
+		// _MACHINE_ATTRIBUTES { UserEnabled, KernelEnabled, Wow64Container } MACHINE_ATTRIBUTES;
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NE:processthreadsapi._MACHINE_ATTRIBUTES")]
+		public enum MACHINE_ATTRIBUTES
+		{
+			/// <summary>The specified architecture of code can run in user mode.</summary>
+			UserEnabled,
+
+			/// <summary>The specified architecture of code can run in kernel mode.</summary>
+			KernelEnabled,
+
+			/// <summary>
+			/// The specified architecture of code runs by relying on WOW64's namespace <c>File System Redirector</c> and <c>Registry
+			/// Redirector</c>. This bit will be set, for example, on x86 code running on a host operating system that is x64 or ARM64. When
+			/// the compatibility layer does not use WOW64 style filesystem and registry namespaces, like x64 on ARM64 which runs on the
+			/// root namespace of the OS, this bit will be reset.
+			/// </summary>
+			Wow64Container,
+		}
+
 		/// <summary>The memory priority for the thread or process.</summary>
 		public enum MEMORY_PRIORITY
 		{
@@ -297,37 +320,90 @@ namespace Vanara.PInvoke
 			PROCESS_AFFINITY_ENABLE_AUTO_UPDATE
 		}
 
-		/// <summary>Indicates type of structure used in <c>GetProcessInformation</c> and <c>SetProcessInformation</c> calls.</summary>
+		/// <summary>
+		/// Indicates a specific class of process information. Values from this enumeration are passed into the GetProcessInformation and
+		/// SetProcessInformation functions to specify the type of process information passed in the void pointer argument of the function call.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ne-processthreadsapi-process_information_class typedef enum
+		// _PROCESS_INFORMATION_CLASS { ProcessMemoryPriority, ProcessMemoryExhaustionInfo, ProcessAppMemoryInfo, ProcessInPrivateInfo,
+		// ProcessPowerThrottling, ProcessReservedValue1, ProcessTelemetryCoverageInfo, ProcessProtectionLevelInfo, ProcessLeapSecondInfo,
+		// ProcessMachineTypeInfo, ProcessInformationClassMax } PROCESS_INFORMATION_CLASS;
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NE:processthreadsapi._PROCESS_INFORMATION_CLASS")]
 		public enum PROCESS_INFORMATION_CLASS
 		{
-			/// <summary>Indicates that a MEMORY_PRIORITY_INFORMATION structure is specified for the operation.</summary>
-			[CorrespondingType(typeof(MEMORY_PRIORITY_INFORMATION))]
+			/// <summary>
+			/// The process information is represented by a MEMORY_PRIORITY_INFORMATION structure. Allows applications to lower the default
+			/// memory priority of threads that perform background operations or access files and data that are not expected to be accessed
+			/// again soon.
+			/// </summary>
+			[CorrespondingType(typeof(MEMORY_PRIORITY_INFORMATION), CorrespondingAction.GetSet)]
 			ProcessMemoryPriority,
 
-			/// <summary>Indicates that a PROCESS_MEMORY_EXHAUSTION_INFO structure is specified for the operation.</summary>
-			[CorrespondingType(typeof(PROCESS_MEMORY_EXHAUSTION_INFO))]
+			/// <summary>
+			/// The process information is represented by a PROCESS_MEMORY_EXHAUSTION_INFO structure. Allows applications to configure a
+			/// process to terminate if an allocation fails to commit memory.
+			/// </summary>
+			[CorrespondingType(typeof(PROCESS_MEMORY_EXHAUSTION_INFO), CorrespondingAction.Set)]
 			ProcessMemoryExhaustionInfo,
 
-			/// <summary>Indicates that a APP_MEMORY_INFORMATION structure is specified for the operation.</summary>
-			[CorrespondingType(typeof(APP_MEMORY_INFORMATION))]
+			/// <summary>
+			/// The process information is represented by a APP_MEMORY_INFORMATION structure. Allows applications to query the commit usage
+			/// and the additional commit available to this process. Does not allow the caller to actually get a commit limit.
+			/// </summary>
+			[CorrespondingType(typeof(APP_MEMORY_INFORMATION), CorrespondingAction.Get)]
 			ProcessAppMemoryInfo,
 
-			/// <summary>Undocumented.</summary>
+			/// <summary>
+			/// If a process is set to <c>ProcessInPrivate</c> mode, and a trace session has set the EVENT_ENABLE_PROPERTY_EXCLUDE_INPRIVATE
+			/// flag, then the trace session will drop all events from that process.
+			/// </summary>
 			ProcessInPrivateInfo,
 
-			/// <summary>Indicates that a PROCESS_POWER_THROTTLING_STATE structure is specified for the operation.</summary>
-			[CorrespondingType(typeof(PROCESS_POWER_THROTTLING_STATE))]
+			/// <summary>
+			/// The process information is represented by a PROCESS_POWER_THROTTLING_STATE structure. Allows applications to configure how
+			/// the system should throttle the target process’s activity when managing power.
+			/// </summary>
+			[CorrespondingType(typeof(PROCESS_POWER_THROTTLING_STATE), CorrespondingAction.GetSet)]
 			ProcessPowerThrottling,
 
-			/// <summary>Undocumented.</summary>
+			/// <summary>Reserved.</summary>
 			ProcessReservedValue1,
 
-			/// <summary>Undocumented.</summary>
+			/// <summary>Reserved.</summary>
 			ProcessTelemetryCoverageInfo,
 
-			/// <summary>Indicates that a PROCESS_PROTECTION_LEVEL_INFORMATION structure is specified for the operation.</summary>
-			[CorrespondingType(typeof(PROCESS_PROTECTION_LEVEL_INFORMATION))]
+			/// <summary>The process information is represented by a PROCESS_PROTECTION_LEVEL_INFORMATION structure.</summary>
+			[CorrespondingType(typeof(PROCESS_PROTECTION_LEVEL_INFORMATION), CorrespondingAction.Get)]
 			ProcessProtectionLevelInfo,
+
+			/// <summary>The process information is represented by a PROCESS_LEAP_SECOND_INFO structure.</summary>
+			[CorrespondingType(typeof(PROCESS_LEAP_SECOND_INFO), CorrespondingAction.GetSet)]
+			ProcessLeapSecondInfo,
+
+			/// <summary>The process is represented by a PROCESS_MACHINE_INFORMATION structure.</summary>
+			[CorrespondingType(typeof(PROCESS_MACHINE_INFORMATION), CorrespondingAction.Get)]
+			ProcessMachineTypeInfo,
+		}
+
+		/// <summary>Flags for <see cref="PROCESS_LEAP_SECOND_INFO.Flags"/>.</summary>
+		[PInvokeData("processthreadsapi.h")]
+		[Flags]
+		public enum PROCESS_LEAP_SECOND_INFO_FLAGS
+		{
+			/// <summary>
+			/// This value changes the way positive leap seconds are handled by system. Specifically, it changes how the seconds field
+			/// during a positive leap second is handled by the system. If this value is used, then the positive leap second will be shown
+			/// (For example: 23:59:59 -&gt; 23:59:60 -&gt; 00:00:00. If this value is not used, then "sixty seconds" is disabled, and the
+			/// 59th second preceding a positive leap second will be shown for 2 seconds with the milliseconds value ticking twice as slow.
+			/// So 23:59:59 -&gt; 23:59:59.500 -&gt; 00:00:00, which takes 2 seconds in wall clock time. Disabling "sixty second" can help
+			/// with legacy apps that do not support seeing the seconds value as 60 during the positive leap second. Such apps may crash or
+			/// misbehave. Therefore, in these cases, we display the 59th second for twice as long during the positive leap second. Note
+			/// that this setting is per-process, and does not persist if the process is restarted. Developers should test their app for
+			/// compatibility with seeing the system return "60", and add a call to their app startup routines to either enable or disable
+			/// "sixty seconds". "Sixty seconds" is disabled by default for each process. Obviously, this setting has no effect if leap
+			/// seconds are disabled system-wide, because then the system will never even encounter a leap second.
+			/// </summary>
+			PROCESS_LEAP_SECOND_INFO_FLAG = 1
 		}
 
 		/// <summary>Represents the different memory exhaustion types.</summary>
@@ -2503,6 +2579,27 @@ namespace Vanara.PInvoke
 		public static extern bool GetExitCodeThread([In] HTHREAD hThread, out uint lpExitCode);
 
 		/// <summary>
+		/// Queries if the specified architecture is supported on the current system, either natively or by any form of compatibility or
+		/// emulation layer.
+		/// </summary>
+		/// <param name="Machine">
+		/// An IMAGE_FILE_MACHINE_* value corresponding to the architecture of code to be tested for supportability. See the list of
+		/// architecture values in Image File Machine Constants.
+		/// </param>
+		/// <param name="MachineTypeAttributes">
+		/// Output parameter receives a pointer to a value from the MACHINE_ATTRIBUTES enumeration indicating if the specified code
+		/// architecture can run in user mode, kernel mode, and/or under WOW64 on the host operating system.
+		/// </param>
+		/// <returns>
+		/// If the function fails, the return value is a nonzero HRESULT value. If the function succeeds, the return value is zero.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getmachinetypeattributes HRESULT
+		// GetMachineTypeAttributes( USHORT Machine, MACHINE_ATTRIBUTES *MachineTypeAttributes );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.GetMachineTypeAttributes")]
+		public static extern HRESULT GetMachineTypeAttributes(IMAGE_FILE_MACHINE Machine, out MACHINE_ATTRIBUTES MachineTypeAttributes);
+
+		/// <summary>
 		/// Retrieves the priority class for the specified process. This value, together with the priority value of each thread of the
 		/// process, determines each thread's base priority level.
 		/// </summary>
@@ -2567,6 +2664,47 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683211")]
 		public static extern CREATE_PROCESS GetPriorityClass([In] HPROCESS hProcess);
+
+		/// <summary>Retrieves the list of CPU Sets in the process default set that was set by SetProcessDefaultCpuSetMasks or SetProcessDefaultCpuSets.</summary>
+		/// <param name="Process">
+		/// Specifies a process handle for the process to query. This handle must have the PROCESS_QUERY_LIMITED_INFORMATION access right.
+		/// The value returned by GetCurrentProcess can also be specified here.
+		/// </param>
+		/// <param name="CpuSetMasks">
+		/// Specifies an optional buffer to retrieve a list of GROUP_AFFINITY structures representing the process default CPU Sets.
+		/// </param>
+		/// <param name="CpuSetMaskCount">Specifies the size of the CpuSetMasks array, in elements.</param>
+		/// <param name="RequiredMaskCount">
+		/// On successful return, specifies the number of affinity structures written to the array. If the CpuSetMasks array is too small,
+		/// the function fails with <c>ERROR_INSUFFICIENT_BUFFER</c> and sets the RequiredMaskCount parameter to the number of elements
+		/// required. The number of required elements is always less than or equal to the maximum group count returned by GetMaximumProcessorGroupCount.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero and extended error information can be retrieved by calling GetLastError.</para>
+		/// <para>
+		/// If the array supplied is too small, the error value is <c>ERROR_INSUFFICIENT_BUFFER</c> and the RequiredMaskCount is set to the
+		/// number of elements required.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If no default CPU Sets are set for a given process, then the RequiredMaskCount parameter is set to 0 and the function succeeds.
+		/// </para>
+		/// <para>
+		/// This function is analogous to GetProcessDefaultCpuSets, except that it uses group affinities as opposed to CPU Set IDs to
+		/// represent a list of CPU sets. This means that the process default CPU Sets are mapped to their home processors, and those
+		/// processors are retrieved in the resulting list of group affinities.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocessdefaultcpusetmasks
+		// BOOL GetProcessDefaultCpuSetMasks( HANDLE Process, PGROUP_AFFINITY CpuSetMasks, USHORT CpuSetMaskCount, PUSHORT RequiredMaskCount );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.GetProcessDefaultCpuSetMasks")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetProcessDefaultCpuSetMasks([In] HPROCESS Process,
+			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[] CpuSetMasks,
+			ushort CpuSetMaskCount, out ushort RequiredMaskCount);
 
 		/// <summary>
 		/// Retrieves the list of CPU Sets in the process default set that was set by <c>SetProcessDefaultCpuSets</c>. If no default CPU Sets
@@ -2667,67 +2805,110 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves information about the specified process.</summary>
 		/// <param name="hProcess">
-		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see Process
-		/// Security and Access Rights.
+		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see
+		/// Process Security and Access Rights.
 		/// </param>
-		/// <param name="ProcessInformationClass">The kind of information to retrieve. The only supported value is <c>ProcessMemoryPriority</c></param>
+		/// <param name="ProcessInformationClass">
+		/// A member of the PROCESS_INFORMATION_CLASS enumeration specifying the kind of information to retrieve.
+		/// </param>
 		/// <param name="ProcessInformation">
 		/// <para>Pointer to an object to receive the type of information specified by the ProcessInformationClass parameter.</para>
 		/// <para>
 		/// If the ProcessInformationClass parameter is <c>ProcessMemoryPriority</c>, this parameter must point to a
-		/// <c>MEMORY_PRIORITY_INFORMATION</c> structure.
+		/// MEMORY_PRIORITY_INFORMATION structure.
 		/// </para>
 		/// <para>
 		/// If the ProcessInformationClass parameter is <c>ProcessPowerThrottling</c>, this parameter must point to a
-		/// <c>PROCESS_POWER_THROTTLING_STATE</c> structure.
+		/// PROCESS_POWER_THROTTLING_STATE structure.
 		/// </para>
 		/// <para>
 		/// If the ProcessInformationClass parameter is <c>ProcessProtectionLevelInfo</c>, this parameter must point to a
-		/// <c>PROCESS_PROTECTION_LEVEL_INFORMATION</c> structure.
+		/// PROCESS_PROTECTION_LEVEL_INFORMATION structure.
 		/// </para>
 		/// <para>
-		/// If the ProcessInformationClass parameter is <c>ProcessAppMemoryInfo</c>, this parameter must point to a
-		/// <c>APP_MEMORY_INFORMATION</c> structure.
+		/// If the ProcessInformationClass parameter is <c>ProcessLeapSecondInfo</c>, this parameter must point to a
+		/// PROCESS_LEAP_SECOND_INFO structure.
+		/// </para>
+		/// <para>
+		/// If the ProcessInformationClass parameter is <c>ProcessAppMemoryInfo</c>, this parameter must point to a APP_MEMORY_INFORMATION structure.
 		/// </para>
 		/// </param>
 		/// <param name="ProcessInformationSize">
 		/// <para>The size in bytes of the structure specified by the ProcessInformation parameter.</para>
-		/// <para>If the ProcessInformationClass parameter is <c>ProcessMemoryPriority</c>, this parameter must be .</para>
-		/// <para>If the ProcessInformationClass parameter is <c>ProcessPowerThrottling</c>, this parameter must be .</para>
-		/// <para>If the ProcessInformationClass parameter is <c>ProcessProtectionLevelInfo</c>, this parameter must be .</para>
-		/// <para>If the ProcessInformationClass parameter is <c>ProcessAppMemoryInfo</c>, this parameter must be .</para>
+		/// <para>If the ProcessInformationClass parameter is <c>ProcessMemoryPriority</c>, this parameter must be
+		/// <code>sizeof(MEMORY_PRIORITY_INFORMATION)</code>
+		/// .
+		/// </para>
+		/// <para>If the ProcessInformationClass parameter is <c>ProcessPowerThrottling</c>, this parameter must be
+		/// <code>sizeof(PROCESS_POWER_THROTTLING_STATE)</code>
+		/// .
+		/// </para>
+		/// <para>If the ProcessInformationClass parameter is <c>ProcessProtectionLevelInfo</c>, this parameter must be
+		/// <code>sizeof(PROCESS_PROTECTION_LEVEL_INFORMATION)</code>
+		/// .
+		/// </para>
+		/// <para>If the ProcessInformationClass parameter is <c>ProcessLeapSecondInfo</c>, this parameter must be
+		/// <code>sizeof(PROCESS_LEAP_SECOND_INFO)</code>
+		/// .
+		/// </para>
+		/// <para>If the ProcessInformationClass parameter is <c>ProcessAppMemoryInfo</c>, this parameter must be
+		/// <code>sizeof(APP_MEMORY_INFORMATION)</code>
+		/// .
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		// BOOL WINAPI GetProcessInformation( _In_ HANDLE hProcess, _In_ PROCESS_INFORMATION_CLASS ProcessInformationClass,
-		// _Out_writes_bytes_(ProcessInformationSize) ProcessInformation, _In_ DWORD ProcessInformationSize); https://msdn.microsoft.com/en-us/library/windows/desktop/hh448381(v=vs.85).aspx
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocessinformation
+		// BOOL GetProcessInformation( HANDLE hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, LPVOID ProcessInformation, DWORD ProcessInformationSize );
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.GetProcessInformation")]
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("WinBase.h", MSDNShortId = "hh448381")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetProcessInformation(HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass,
 			IntPtr ProcessInformation, uint ProcessInformationSize);
 
 		/// <summary>Retrieves information about the specified process.</summary>
-		/// <typeparam name="T">The type of information associated with <paramref name="ProcessInformationClass"/>.</typeparam>
+		/// <typeparam name="T">The type to retrive.</typeparam>
 		/// <param name="hProcess">
-		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see Process
-		/// Security and Access Rights.
+		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see
+		/// Process Security and Access Rights.
 		/// </param>
-		/// <param name="ProcessInformationClass">The kind of information to retrieve. The only supported value is <c>ProcessMemoryPriority</c></param>
-		/// <returns>An object containing the type of information specified by the ProcessInformationClass parameter.</returns>
-		/// <exception cref="ArgumentException">Type mismatch.</exception>
-		[PInvokeData("WinBase.h", MSDNShortId = "hh448381")]
-		public static T GetProcessInformation<T>(HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass) where T : struct
+		/// <param name="ProcessInformationClass">
+		/// A member of the PROCESS_INFORMATION_CLASS enumeration specifying the kind of information to retrieve.
+		/// </param>
+		/// <returns>
+		/// <para>Pointer to an object to receive the type of information specified by the ProcessInformationClass parameter.</para>
+		/// <para>
+		/// If the ProcessInformationClass parameter is <c>ProcessMemoryPriority</c>, this parameter must point to a
+		/// MEMORY_PRIORITY_INFORMATION structure.
+		/// </para>
+		/// <para>
+		/// If the ProcessInformationClass parameter is <c>ProcessPowerThrottling</c>, this parameter must point to a
+		/// PROCESS_POWER_THROTTLING_STATE structure.
+		/// </para>
+		/// <para>
+		/// If the ProcessInformationClass parameter is <c>ProcessProtectionLevelInfo</c>, this parameter must point to a
+		/// PROCESS_PROTECTION_LEVEL_INFORMATION structure.
+		/// </para>
+		/// <para>
+		/// If the ProcessInformationClass parameter is <c>ProcessLeapSecondInfo</c>, this parameter must point to a
+		/// PROCESS_LEAP_SECOND_INFO structure.
+		/// </para>
+		/// <para>
+		/// If the ProcessInformationClass parameter is <c>ProcessAppMemoryInfo</c>, this parameter must point to a APP_MEMORY_INFORMATION structure.
+		/// </para>
+		/// </returns>
+		public static T GetProcessInformation<T>(HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass = (PROCESS_INFORMATION_CLASS)(-1)) where T : struct
 		{
-			if (!CorrespondingTypeAttribute.CanGet(ProcessInformationClass, typeof(T))) throw new ArgumentException("Type mismatch.");
-			using (var mem = SafeHGlobalHandle.CreateFromStructure<T>())
-			{
-				if (!GetProcessInformation(hProcess, ProcessInformationClass, (IntPtr)mem, (uint)mem.Size))
-					Win32Error.ThrowLastError();
-				return mem.ToStructure<T>();
-			}
+			if (!ProcessInformationClass.IsValid() && !CorrespondingTypeAttribute.CanGet<T, PROCESS_INFORMATION_CLASS>(out ProcessInformationClass))
+				throw new ArgumentException("The type specified by the type parameter cannot be retrieved for a process.", nameof(T));
+			else if (!CorrespondingTypeAttribute.CanGet(ProcessInformationClass, typeof(T)))
+				throw new ArgumentException("Type mismatch.");
+			using var mem = new SafeCoTaskMemStruct<T>();
+			if (!GetProcessInformation(hProcess, ProcessInformationClass, mem, mem.Size))
+				Win32Error.ThrowLastError();
+			return mem.Value;
 		}
 
 		/// <summary>Retrieves mitigation policy settings for the calling process.</summary>
@@ -4126,6 +4307,38 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetProcessDefaultCpuSets([In] HPROCESS Process, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] CpuSetIds, uint CpuSetIdCound);
 
+		/// <summary>Sets the default CPU Sets assignment for threads in the specified process.</summary>
+		/// <param name="Process">
+		/// Specifies the process for which to set the default CPU Sets. This handle must have the PROCESS_SET_LIMITED_INFORMATION access
+		/// right. The value returned by GetCurrentProcess can also be specified here.
+		/// </param>
+		/// <param name="CpuSetMasks">
+		/// Specifies an optional buffer of GROUP_AFFINITY structures representing the CPU Sets to set as the process default CPU set. If
+		/// this is NULL, the <c>SetProcessDefaultCpuSetMasks</c> function clears out any assignment.
+		/// </param>
+		/// <param name="CpuSetMaskCount">
+		/// Specifies the size of the CpuSetMasks array, in elements. If the buffer is NULL, this value must be zero.
+		/// </param>
+		/// <returns>This function cannot fail when passed valid parameters.</returns>
+		/// <remarks>
+		/// <para>
+		/// Threads belonging to this process which don’t have CPU Sets explicitly set using SetThreadSelectedCpuSetMasks or
+		/// SetThreadSelectedCpuSets, will inherit the sets specified by <c>SetProcessDefaultCpuSetMasks</c> automatically.
+		/// </para>
+		/// <para>
+		/// This function is analogous to SetProcessDefaultCpuSets, except that it uses group affinities as opposed to CPU Set IDs to
+		/// represent a list of CPU sets. This means that the resulting process default CPU Set assignment is the set of all CPU sets with a
+		/// home processor in the provided list of group affinities.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessdefaultcpusetmasks BOOL
+		// SetProcessDefaultCpuSetMasks( HANDLE Process, PGROUP_AFFINITY CpuSetMasks, USHORT CpuSetMaskCount );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.SetProcessDefaultCpuSetMasks")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetProcessDefaultCpuSetMasks([In] HPROCESS Process,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[] CpuSetMasks, [Optional] ushort CpuSetMaskCount);
+
 		/// <summary>Sets dynamic exception handling continuation targets for the specified process.</summary>
 		/// <param name="Process">
 		/// A handle to the process. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more information, see
@@ -4930,6 +5143,40 @@ namespace Vanara.PInvoke
 		[PInvokeData("Processthreadapi.h", MSDNShortId = "mt186428")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetThreadSelectedCpuSets([In] HTHREAD Thread, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] CpuSetIds, uint CpuSetIdCount);
+
+		/// <summary>
+		/// Sets the selected CPU Sets assignment for the specified thread. This assignment overrides the process default assignment, if one
+		/// is set.
+		/// </summary>
+		/// <param name="Thread">
+		/// Specifies the thread on which to set the CPU Set assignment. PROCESS_SET_LIMITED_INFORMATION access right. The value returned by
+		/// GetCurrentProcess can also be specified here.
+		/// </param>
+		/// <param name="CpuSetMasks">
+		/// Specifies an optional buffer of GROUP_AFFINITY structures representing the CPU Sets to set as the thread selected CPU set. If
+		/// this is NULL, the <c>SetThreadSelectedCpuSetMasks</c> function clears out any assignment, reverting to process default
+		/// assignment if one is set.
+		/// </param>
+		/// <param name="CpuSetMaskCount">
+		/// Specifies the number of <c>GROUP_AFFINITY</c> structures in the list passed in the GroupCpuSets argument. If the buffer is NULL,
+		/// this value must be zero.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero and extended error information can be retrieved by calling GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function is analogous to SetThreadSelectedCpuSets, except that it uses group affinities as opposed to CPU Set IDs to
+		/// represent a list of CPU sets. This means that the resulting thread selected CPU Set assignment is the set of all CPU sets with a
+		/// home processor in the provided list of group affinities.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setthreadselectedcpusetmasks BOOL
+		// SetThreadSelectedCpuSetMasks( HANDLE Thread, PGROUP_AFFINITY CpuSetMasks, USHORT CpuSetMaskCount );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.SetThreadSelectedCpuSetMasks")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetThreadSelectedCpuSetMasks([In] HTHREAD Thread,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[] CpuSetMasks, [Optional] ushort CpuSetMaskCount);
 
 		/// <summary>
 		/// Sets the minimum size of the stack associated with the calling thread or fiber that will be available during any stack overflow
@@ -6151,6 +6398,72 @@ namespace Vanara.PInvoke
 			public uint dwThreadId;
 		}
 
+		/// <summary>Specifies how the system handles positive leap seconds.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-process_leap_second_info
+		// typedef struct _PROCESS_LEAP_SECOND_INFO { ULONG Flags; ULONG Reserved; } PROCESS_LEAP_SECOND_INFO, *PPROCESS_LEAP_SECOND_INFO;
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NS:processthreadsapi._PROCESS_LEAP_SECOND_INFO")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PROCESS_LEAP_SECOND_INFO
+		{
+			/// <summary>
+			/// <para>
+			/// Currently, the only valid flag is <c>PROCESS_LEAP_SECOND_INFO_FLAG_ENABLE_SIXTY_SECOND</c>. That flag is described below.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <description>PROCESS_LEAP_SECOND_INFO_FLAG_ENABLE_SIXTY_SECOND</description>
+			/// <description>
+			/// This value changes the way positive leap seconds are handled by system. Specifically, it changes how the seconds field
+			/// during a positive leap second is handled by the system. If this value is used, then the positive leap second will be shown
+			/// (For example: 23:59:59 -&gt; 23:59:60 -&gt; 00:00:00. If this value is not used, then "sixty seconds" is disabled, and the
+			/// 59th second preceding a positive leap second will be shown for 2 seconds with the milliseconds value ticking twice as slow.
+			/// So 23:59:59 -&gt; 23:59:59.500 -&gt; 00:00:00, which takes 2 seconds in wall clock time. Disabling "sixty second" can help
+			/// with legacy apps that do not support seeing the seconds value as 60 during the positive leap second. Such apps may crash or
+			/// misbehave. Therefore, in these cases, we display the 59th second for twice as long during the positive leap second. Note
+			/// that this setting is per-process, and does not persist if the process is restarted. Developers should test their app for
+			/// compatibility with seeing the system return "60", and add a call to their app startup routines to either enable or disable
+			/// "sixty seconds". "Sixty seconds" is disabled by default for each process. Obviously, this setting has no effect if leap
+			/// seconds are disabled system-wide, because then the system will never even encounter a leap second.
+			/// </description>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public PROCESS_LEAP_SECOND_INFO_FLAGS Flags;
+
+			/// <summary>Reserved for future use</summary>
+			public uint Reserved;
+		}
+
+		/// <summary>
+		/// Specifies the architecture of a process and if that architecture of code can run in user mode, kernel mode, and/or under WoW64
+		/// on the host operating system.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-process_machine_information typedef
+		// struct _PROCESS_MACHINE_INFORMATION { USHORT ProcessMachine; USHORT Res0; MACHINE_ATTRIBUTES MachineAttributes; } PROCESS_MACHINE_INFORMATION;
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "NS:processthreadsapi._PROCESS_MACHINE_INFORMATION")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct PROCESS_MACHINE_INFORMATION
+		{
+			/// <summary>
+			/// An IMAGE_FILE_MACHINE_* value indicating the architecture of the associated process. See the list of architecture values in
+			/// Image File Machine Constants.
+			/// </summary>
+			public IMAGE_FILE_MACHINE ProcessMachine;
+
+			/// <summary>Reserved.</summary>
+			public ushort Res0;
+
+			/// <summary>
+			/// A value from the MACHINE_ATTRIBUTES enumeration indicating if the process’s architecture can run in user mode, kernel mode,
+			/// and/or under WOW64 on the host operating system.
+			/// </summary>
+			public MACHINE_ATTRIBUTES MachineAttributes;
+		}
+
 		/// <summary>
 		/// Allows applications to configure a process to terminate if an allocation fails to commit memory. This structure is used by the
 		/// <c>PROCESS_INFORMATION_CLASS</c> class.
@@ -6849,7 +7162,7 @@ namespace Vanara.PInvoke
 			/// new process calls <c>CreateWindow</c> to create an overlapped window if the x or y parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
 			/// </para>
 			/// </summary>
-			public System.Drawing.Point WindowPosition { get => new System.Drawing.Point((int)dwX, (int)dwY); set { dwX = (uint)value.X; dwY = (uint)value.Y; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEPOSITION, value != System.Drawing.Point.Empty); } }
+			public POINT WindowPosition { get => new POINT((int)dwX, (int)dwY); set { dwX = (uint)value.X; dwY = (uint)value.Y; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEPOSITION, value != POINT.Empty); } }
 
 			/// <summary>
 			/// <para>The height of the window if a new window is created, in pixels.</para>
@@ -7568,7 +7881,7 @@ namespace Vanara.PInvoke
 			{
 				var pVal = new PinnedObject(value);
 				values.Add((attr, value, pVal));
-				if (!UpdateProcThreadAttribute(handle, 0, attr, pVal, Marshal.SizeOf(value)))
+				if (!UpdateProcThreadAttribute(handle, 0, attr, pVal, InteropExtensions.SizeOf(value)))
 					Win32Error.ThrowLastError();
 			}
 		}

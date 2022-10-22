@@ -1,0 +1,121 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ output extension=".cs" #>
+<# var classes = new string [] {"LPSTR", "LPTSTR", "LPWSTR"}; #>
+<# var charSets = new string [] {"Ansi", "Auto", "Unicode"}; #>
+<# var ptrs = new string [] {"StrPtrAnsi", "StrPtrAuto", "StrPtrUni"}; #>
+#nullable enable
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Security;
+
+namespace Vanara.InteropServices;
+
+<# for (int i = 0; i < classes.Length; i++) { #>
+/// <summary>Class that reprents a <#= classes[i] #> with allocated memory behind it.</summary>
+public class Safe<#= classes[i] #> : SafeMemString<CoTaskMemoryMethods>
+{
+	const CharSet thisCharSet = CharSet.<#= charSets[i] #>;
+
+	/// <summary>Initializes a new instance of the <see cref="Safe<#= classes[i] #>"/> class.</summary>
+	/// <param name="s">The string value.</param>
+	public Safe<#= classes[i] #>(string s) : base(s, thisCharSet) { }
+
+	/// <summary>Initializes a new instance of the <see cref="Safe<#= classes[i] #>"/> class.</summary>
+	/// <param name="s">The string value.</param>
+	/// <param name="capacity">The size of the buffer in characters.</param>
+	public Safe<#= classes[i] #>(string s, int capacity) : base(s, capacity, thisCharSet) { }
+
+	/// <summary>Initializes a new instance of the <see cref="Safe<#= classes[i] #>"/> class.</summary>
+	/// <param name="s">The string value.</param>
+	public Safe<#= classes[i] #>(SecureString s) : base(s, thisCharSet) { }
+
+	/// <summary>Initializes a new instance of the <see cref="Safe<#= classes[i] #>"/> class.</summary>
+	/// <param name="capacity">The size of the buffer in characters, including the null character terminator.</param>
+	public Safe<#= classes[i] #>(int capacity) : base(capacity, thisCharSet) { }
+
+	/// <summary>Prevents a default instance of the <see cref="Safe<#= classes[i] #>"/> class from being created.</summary>
+	private Safe<#= classes[i] #>() : base() { }
+
+	/// <summary>Initializes a new instance of the <see cref="Safe<#= classes[i] #>"/> class.</summary>
+	/// <param name="ptr">The PTR.</param>
+	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
+	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
+	[ExcludeFromCodeCoverage]
+	private Safe<#= classes[i] #>(<#= ptrs[i] #> ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
+		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
+
+	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
+	/// <value>A null value.</value>
+	public static Safe<#= classes[i] #> Null => new(IntPtr.Zero, false);
+
+	/// <summary>Returns the string value held by a <see cref="Safe<#= classes[i] #>"/>.</summary>
+	/// <param name="s">The <see cref="Safe<#= classes[i] #>"/> instance.</param>
+	/// <returns>A <see cref="string"/> value held by the <see cref="Safe<#= classes[i] #>"/> or <c>null</c> if the handle or value is invalid.</returns>
+	public static implicit operator Safe<#= classes[i] #>(string s) => s.ToString();
+
+	/// <summary>Returns the <#= ptrs[i] #> value held by a <see cref="Safe<#= classes[i] #>"/>.</summary>
+	/// <param name="s">The <see cref="Safe<#= classes[i] #>"/> instance.</param>
+	/// <returns>A <see cref="<#= ptrs[i] #>"/> value held by the <see cref="Safe<#= classes[i] #>"/> or <c>default</c> if the handle or value is invalid.</returns>
+	public static implicit operator <#= ptrs[i] #>(Safe<#= classes[i] #> s) => (<#= ptrs[i] #>)s.handle;
+
+	/// <summary>Appends a copy of the specified string to this instance.</summary>
+	/// <param name="value">The string to append.</param>
+	/// <returns>A reference to this instance after the append operation has completed.</returns>
+	public new Safe<#= classes[i] #> Append(string? value) { base.Append(value); return this; }
+
+	/// <summary>Appends a copy of the specified value to this instance.</summary>
+	/// <param name="value">The value to append.</param>
+	/// <returns>A reference to this instance after the append operation has completed.</returns>
+	public Safe<#= classes[i] #> Append(Safe<#= classes[i] #> value) => Append(value.ToString());
+
+	/// <summary>Inserts a string into this instance at the specified character position.</summary>
+	/// <param name="index">The position in this instance where insertion begins.</param>
+	/// <param name="value">The string to insert.</param>
+	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <paramref name="index"/> is less than zero or greater than the current length of this instance.
+	/// </exception>
+	public new Safe<#= classes[i] #> Insert(int index, string? value) { base.Insert(index, value); return this; }
+
+	/// <summary>Removes the specified range of characters from this instance.</summary>
+	/// <param name="startIndex">The zero-based position in this instance where removal begins.</param>
+	/// <param name="length">The number of characters to remove.</param>
+	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// If <paramref name="startIndex"/> or <paramref name="length"/> is less than zero, or <paramref name="startIndex"/> + <paramref
+	/// name="length"/> is greater than the length of this instance.
+	/// </exception>
+	public new Safe<#= classes[i] #> Remove(int startIndex, int length) { base.Remove(startIndex, length); return this; }
+
+	/// <summary>Replaces all occurrences of a specified string in this instance with another specified string.</summary>
+	/// <param name="oldValue">The string to replace.</param>
+	/// <param name="newValue">The string that replaces <paramref name="oldValue"/>, or <see langword="null"/>.</param>
+	public Safe<#= classes[i] #> Replace(string oldValue, string? newValue) => Replace(oldValue, newValue, 0, Length);
+
+	/// <summary>Replaces the specified old value.</summary>
+	/// <param name="oldValue">The string to replace.</param>
+	/// <param name="newValue">The string that replaces <paramref name="oldValue"/>, or <see langword="null"/>.</param>
+	/// <param name="startIndex">The position in this instance where the substring begins.</param>
+	/// <param name="count">The length of the substring.</param>
+	public new Safe<#= classes[i] #> Replace(string oldValue, string? newValue, int startIndex, int count) { base.Replace(oldValue, newValue, startIndex, count); return this; }
+
+	/// <summary>Replaces all occurrences of a specified character in this instance with another specified character.</summary>
+	/// <param name="oldChar">The character to replace.</param>
+	/// <param name="newChar">The character that replaces <paramref name="oldChar"/>.</param>
+	public Safe<#= classes[i] #> Replace(char oldChar, char newChar) => Replace(oldChar, newChar, 0, Length);
+
+	/// <summary>Replaces, within a substring of this instance, all occurrences of a specified character with another specified character.</summary>
+	/// <param name="oldChar">The character to replace.</param>
+	/// <param name="newChar">The character that replaces <paramref name="oldChar"/>.</param>
+	/// <param name="startIndex">The position in this instance where the substring begins.</param>
+	/// <param name="count">The length of the substring.</param>
+	/// <exception cref="System.ArgumentOutOfRangeException">
+	/// <para><paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of the value of this instance.</para>
+	/// <para>-or-</para>
+	/// <para><paramref name="startIndex"/> or <paramref name="count"/> is less than zero.</para>
+	/// </exception>
+	public new Safe<#= classes[i] #> Replace(char oldChar, char newChar, int startIndex, int count) { base.Replace(oldChar, newChar, startIndex, count); return this; }
+}
+
+<#}#>

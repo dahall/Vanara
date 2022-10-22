@@ -53,6 +53,10 @@ namespace Vanara.InteropServices
 		/// <value>The action allowed for the type.</value>
 		public CorrespondingAction Action { get; }
 
+		/// <summary>Gets or sets the optional encoding type associated with the corresponding type.</summary>
+		/// <value>The encoding type.</value>
+		public Type EncodingType { get; set; }
+
 		/// <summary>Gets the type that corresponds to this enumeration value.</summary>
 		/// <value>The type that corresponds to this enumeration value.</value>
 		public Type TypeRef { get; }
@@ -180,7 +184,7 @@ namespace Vanara.InteropServices
 		/// <param name="value">The enum value.</param>
 		/// <param name="action">The action to filter for.</param>
 		/// <returns>An enumeration of all associated CorrespondingTypeAttribute instances.</returns>
-		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForEnum<TEnum>(TEnum value, CorrespondingAction action = (CorrespondingAction)0xf) where TEnum : System.Enum
+		public static IEnumerable<CorrespondingTypeAttribute> GetAttrForEnum<TEnum>(TEnum value, CorrespondingAction action = (CorrespondingAction)0xf) where TEnum : System.Enum
 		{
 			var valueType = value.GetType();
 			var attr = valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>(false, a => (a.Action & action) > 0);

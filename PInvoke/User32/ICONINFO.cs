@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
@@ -42,12 +41,6 @@ namespace Vanara.PInvoke
 			/// to the destination by using the SRCINVERT flag.
 			/// </summary>
 			public HBITMAP hbmColor;
-
-			/// <summary>Gets the color bitmap associated with the icon.</summary>
-			public Bitmap Bitmap => Image.FromHbitmap((IntPtr)hbmColor);
-
-			/// <summary>Gets the AND bitmap mask associated with the icon.</summary>
-			public Bitmap Mask => Image.FromHbitmap((IntPtr)hbmMask);
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			void IDisposable.Dispose()

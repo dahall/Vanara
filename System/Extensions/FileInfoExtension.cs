@@ -1,11 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-
-#if !(NET20 || NET35)
 using System.Threading.Tasks;
-#endif
-
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 
@@ -70,7 +66,6 @@ namespace Vanara.Extensions
 				throw new Win32Exception();
 		}
 
-#if !(NET20 || NET35)
 		/// <summary>Asynchronously gets whether NTFS compression is enabled for this file.</summary>
 		/// <param name="fi">The file information.</param>
 		/// <returns><see langword="true"/> if the specified files is compressed under NTFS; otherwise <see langword="false"/>.</returns>
@@ -103,6 +98,5 @@ namespace Vanara.Extensions
 			}
 			return tret.Task;
 		}
-#endif
 	}
 }

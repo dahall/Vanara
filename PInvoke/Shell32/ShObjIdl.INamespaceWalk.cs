@@ -217,7 +217,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalk-walk HRESULT Walk( IUnknown
 			// *punkToWalk, DWORD dwFlags, int cDepth, INamespaceWalkCB *pnswcb );
 			[PreserveSig]
-			HRESULT Walk([In, MarshalAs(UnmanagedType.IUnknown)] object punkToWalk, NAMESPACEWALKFLAG dwFlags, int cDepth, [In] INamespaceWalkCB pnswcb);
+			HRESULT Walk([In, MarshalAs(UnmanagedType.IUnknown)] object punkToWalk, NAMESPACEWALKFLAG dwFlags, int cDepth, [In, Optional] INamespaceWalkCB pnswcb);
 
 			/// <summary>Gets a list of objects found during a namespace walk initiated by INamespaceWalk::Walk.</summary>
 			/// <param name="pcItems">
@@ -249,7 +249,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalk-getidarrayresult HRESULT
 			// GetIDArrayResult( UINT *pcItems, PIDLIST_ABSOLUTE **prgpidl );
 			[PreserveSig]
-			HRESULT GetIDArrayResult(out uint pcItems, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 0)] IntPtr[] prgpidl);
+			HRESULT GetIDArrayResult(out uint pcItems, out InteropServices.SafeCoTaskMemHandle prgpidl);
 		}
 
 		/// <summary>

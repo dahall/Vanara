@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -869,47 +868,47 @@ namespace Vanara.PInvoke
 			TMT_CLASSICVALUE = 3202,
 
 			/// <summary>The position offset from the alignment for this part. The alignment is defined by the TMT_OFFSETTYPE value.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_OFFSET = 3401,
 
 			/// <summary>The offset from the text at which text shadows are drawn.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_TEXTSHADOWOFFSET = 3402,
 
 			/// <summary>The minimum size that the normal image file can be used for before moving to the next smallest image file.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_MINSIZE = 3403,
 
 			/// <summary>The minimum size that the first small image file can be used for.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_MINSIZE1 = 3404,
 
 			/// <summary>The minimum size that the second small image file can be used for.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_MINSIZE2 = 3405,
 
 			/// <summary>The minimum size that the third small image file can be used for.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_MINSIZE3 = 3406,
 
 			/// <summary>The minimum size that the fourth small image file can be used for.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_MINSIZE4 = 3407,
 
 			/// <summary>The minimum size that the fifth small image file can be used for.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_MINSIZE5 = 3408,
 
 			/// <summary>The size of the normal image associated with this part.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_NORMALSIZE = 3409,
 
 			/// <summary>The minimum size that the sixth small image file can be used for.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_MINSIZE6 = 3410,
 
 			/// <summary>The minimum size that the seventh small image file can be used for.</summary>
-			[CorrespondingType(typeof(Point))]
+			[CorrespondingType(typeof(POINT))]
 			TMT_MINSIZE7 = 3411,
 
 			/// <summary>The margins used for sizing a non-true-size image.</summary>

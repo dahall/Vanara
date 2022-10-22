@@ -943,17 +943,14 @@ namespace Vanara.PInvoke
 		/// <returns>An array of AUTHZ_SOURCE_SCHEMA_REGISTRATION structures that returns the registered security event sources.</returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzenumeratesecurityeventsources AUTHZAPI BOOL
 		[PInvokeData("authz.h", MSDNShortId = "2a20ccc9-f2ac-41e4-9d86-745004775e67")]
-		public static IEnumerable<SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION> AuthzEnumerateSecurityEventSources()
+		public static IEnumerable<AUTHZ_SOURCE_SCHEMA_REGISTRATION> AuthzEnumerateSecurityEventSources()
 		{
 			var len = 0U;
 			if (!AuthzEnumerateSecurityEventSources(0, IntPtr.Zero, out _, ref len) && len == 0)
 				Win32Error.ThrowLastError();
-			using (var mem = new SafeHGlobalHandle((int)len))
-			{
-				if (!AuthzEnumerateSecurityEventSources(0, (IntPtr)mem, out var cnt, ref len))
-					Win32Error.ThrowLastError();
-				return mem.ToEnumerable<AUTHZ_SOURCE_SCHEMA_REGISTRATION>((int)cnt).Select(r => new SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION(r)).ToArray();
-			}
+			using var mem = new SafeHGlobalHandle((int)len);
+			Win32Error.ThrowLastErrorIfFalse(AuthzEnumerateSecurityEventSources(0, mem, out var cnt, ref len));
+			return mem.ToEnumerable<AUTHZ_SOURCE_SCHEMA_REGISTRATION>((int)cnt).ToArray();
 		}
 
 		/// <summary>
@@ -1679,7 +1676,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "77cb5c6c-1634-4449-8d05-ce6357ad4e4b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzInstallSecurityEventSource([Optional] uint dwFlags, in AUTHZ_SOURCE_SCHEMA_REGISTRATION pRegistration);
+		public static extern bool AuthzInstallSecurityEventSource([Optional] uint dwFlags,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<AUTHZ_SOURCE_SCHEMA_REGISTRATION>))] AUTHZ_SOURCE_SCHEMA_REGISTRATION pRegistration);
 
 		/// <summary>
 		/// <para>The <c>AuthzModifyClaims</c> function adds, deletes, or modifies user and device claims in the Authz client context.</para>
@@ -1921,32 +1919,23 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzreportsecurityevent AUTHZAPI BOOL
 		// AuthzReportSecurityEvent( DWORD dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, DWORD dwAuditId, PSID pUserSid,
 		// DWORD dwCount, ... );
-		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
 		[PInvokeData("authz.h", MSDNShortId = "95d561ef-3233-433a-a1e7-b914df1dd211")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzReportSecurityEvent(APF dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, uint dwAuditId, [Optional] PSID pUserSid, uint dwCount, __arglist);
+		public static extern bool AuthzReportSecurityEvent(APF dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, uint dwAuditId,
+			[Optional] PSID pUserSid, uint dwCount, __arglist);
 
 		/// <summary>
-		/// <para>
-		/// The <c>AuthzReportSecurityEventFromParams</c> function generates a security audit for a registered security event source by using
-		/// the specified array of audit parameters.
-		/// </para>
+		/// The <c>AuthzReportSecurityEventFromParams</c> function generates a security audit for a registered security event source by
+		/// using the specified array of audit parameters.
 		/// </summary>
-		/// <param name="dwFlags">
-		/// <para>Reserved for future use.</para>
-		/// </param>
-		/// <param name="hEventProvider">
-		/// <para>A handle to the registered security event source to use for the audit.</para>
-		/// </param>
-		/// <param name="dwAuditId">
-		/// <para>The identifier of the audit.</para>
-		/// </param>
+		/// <param name="dwFlags">Reserved for future use.</param>
+		/// <param name="hEventProvider">A handle to the registered security event source to use for the audit.</param>
+		/// <param name="dwAuditId">The identifier of the audit.</param>
 		/// <param name="pUserSid">
-		/// <para>A pointer to the security identifier (SID) that will be listed as the source of the audit in the event log.</para>
+		/// A pointer to the security identifier (SID) that will be listed as the source of the audit in the event log.
 		/// </param>
-		/// <param name="pParams">
-		/// <para>An array of audit parameters.</para>
-		/// </param>
+		/// <param name="pParams">An array of audit parameters.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
 		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
@@ -1954,10 +1943,35 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzreportsecurityeventfromparams AUTHZAPI BOOL
 		// AuthzReportSecurityEventFromParams( DWORD dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, DWORD dwAuditId, PSID
 		// pUserSid, PAUDIT_PARAMS pParams );
-		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("authz.h", MSDNShortId = "ee5b598a-0a89-4b32-a9bc-e9c811573b08")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzReportSecurityEventFromParams([Optional] uint dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, uint dwAuditId, [Optional] PSID pUserSid, in AUDIT_PARAMS pParams);
+		public static extern bool AuthzReportSecurityEventFromParams([Optional] uint dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider,
+			uint dwAuditId, [Optional] PSID pUserSid, in AUDIT_PARAMS pParams);
+
+		/// <summary>
+		/// The <c>AuthzReportSecurityEventFromParams</c> function generates a security audit for a registered security event source by
+		/// using the specified array of audit parameters.
+		/// </summary>
+		/// <param name="dwFlags">Reserved for future use.</param>
+		/// <param name="hEventProvider">A handle to the registered security event source to use for the audit.</param>
+		/// <param name="dwAuditId">The identifier of the audit.</param>
+		/// <param name="pUserSid">
+		/// A pointer to the security identifier (SID) that will be listed as the source of the audit in the event log.
+		/// </param>
+		/// <param name="pParams">An array of audit parameters.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+		/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzreportsecurityeventfromparams AUTHZAPI BOOL
+		// AuthzReportSecurityEventFromParams( DWORD dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider, DWORD dwAuditId, PSID
+		// pUserSid, PAUDIT_PARAMS pParams );
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("authz.h", MSDNShortId = "ee5b598a-0a89-4b32-a9bc-e9c811573b08")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AuthzReportSecurityEventFromParams([Optional] uint dwFlags, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider,
+			uint dwAuditId, [Optional] PSID pUserSid, [In, MarshalAs(UnmanagedType.LPArray)] AUDIT_PARAMS[] pParams);
 
 		/// <summary>
 		/// The <c>AuthzSetAppContainerInformation</c> function sets the app container and capability information in a current Authz context.
@@ -2052,14 +2066,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUTHZ_ACCESS_CHECK_RESULTS_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static AUTHZ_ACCESS_CHECK_RESULTS_HANDLE NULL => new AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr.Zero);
+			public static AUTHZ_ACCESS_CHECK_RESULTS_HANDLE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2072,7 +2086,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr h) => new AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(h);
+			public static implicit operator AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2087,7 +2101,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h1, AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -2140,14 +2154,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUTHZ_AUDIT_EVENT_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public AUTHZ_AUDIT_EVENT_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static AUTHZ_AUDIT_EVENT_HANDLE NULL => new AUTHZ_AUDIT_EVENT_HANDLE(IntPtr.Zero);
+			public static AUTHZ_AUDIT_EVENT_HANDLE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2160,7 +2174,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator AUTHZ_AUDIT_EVENT_HANDLE(IntPtr h) => new AUTHZ_AUDIT_EVENT_HANDLE(h);
+			public static implicit operator AUTHZ_AUDIT_EVENT_HANDLE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2175,7 +2189,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(AUTHZ_AUDIT_EVENT_HANDLE h1, AUTHZ_AUDIT_EVENT_HANDLE h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is AUTHZ_AUDIT_EVENT_HANDLE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is AUTHZ_AUDIT_EVENT_HANDLE h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -2188,7 +2202,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2197,7 +2211,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Returns an invalid handle by instantiating a <see cref="AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/> object with <see cref="IntPtr.Zero"/>.
 			/// </summary>
-			public static AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE NULL => new AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(IntPtr.Zero);
+			public static AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2210,7 +2224,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(IntPtr h) => new AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(h);
+			public static implicit operator AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2225,7 +2239,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h1, AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is AUTHZ_CAP_CHANGE_SUBSCRIPTION_HANDLE h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -2238,14 +2252,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUTHZ_CLIENT_CONTEXT_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public AUTHZ_CLIENT_CONTEXT_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static AUTHZ_CLIENT_CONTEXT_HANDLE NULL => new AUTHZ_CLIENT_CONTEXT_HANDLE(IntPtr.Zero);
+			public static AUTHZ_CLIENT_CONTEXT_HANDLE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2258,7 +2272,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator AUTHZ_CLIENT_CONTEXT_HANDLE(IntPtr h) => new AUTHZ_CLIENT_CONTEXT_HANDLE(h);
+			public static implicit operator AUTHZ_CLIENT_CONTEXT_HANDLE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2273,7 +2287,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(AUTHZ_CLIENT_CONTEXT_HANDLE h1, AUTHZ_CLIENT_CONTEXT_HANDLE h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is AUTHZ_CLIENT_CONTEXT_HANDLE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is AUTHZ_CLIENT_CONTEXT_HANDLE h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -2354,11 +2368,12 @@ namespace Vanara.PInvoke
 		// _AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET { PWSTR szObjectTypeName; DWORD dwOffset; }
 		// AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET, *PAUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET;
 		[PInvokeData("authz.h", MSDNShortId = "2ec39edc-7819-41a5-8798-dc51c00ba85e")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET
 		{
 			/// <summary>A pointer to a wide character string that represents the name of the object type.</summary>
-			public StrPtrUni szObjectTypeName;
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string szObjectTypeName;
 
 			/// <summary>Offset of the object type name in an object types message DLL.</summary>
 			public uint dwOffset;
@@ -2368,14 +2383,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUTHZ_RESOURCE_MANAGER_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public AUTHZ_RESOURCE_MANAGER_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static AUTHZ_RESOURCE_MANAGER_HANDLE NULL => new AUTHZ_RESOURCE_MANAGER_HANDLE(IntPtr.Zero);
+			public static AUTHZ_RESOURCE_MANAGER_HANDLE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2388,7 +2403,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator AUTHZ_RESOURCE_MANAGER_HANDLE(IntPtr h) => new AUTHZ_RESOURCE_MANAGER_HANDLE(h);
+			public static implicit operator AUTHZ_RESOURCE_MANAGER_HANDLE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2403,7 +2418,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(AUTHZ_RESOURCE_MANAGER_HANDLE h1, AUTHZ_RESOURCE_MANAGER_HANDLE h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is AUTHZ_RESOURCE_MANAGER_HANDLE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is AUTHZ_RESOURCE_MANAGER_HANDLE h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -2608,7 +2623,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -2617,7 +2632,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Returns an invalid handle by instantiating a <see cref="AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/> object with <see cref="IntPtr.Zero"/>.
 			/// </summary>
-			public static AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE NULL => new AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(IntPtr.Zero);
+			public static AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2630,7 +2645,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(IntPtr h) => new AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(h);
+			public static implicit operator AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2645,7 +2660,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h1, AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -2662,7 +2677,8 @@ namespace Vanara.PInvoke
 		// ObjectTypeNames[ANYSIZE_ARRAY]; } AUTHZ_SOURCE_SCHEMA_REGISTRATION, *PAUTHZ_SOURCE_SCHEMA_REGISTRATION;
 		[PInvokeData("authz.h", MSDNShortId = "8b4d6e14-fb9c-428a-bd94-34eba668edc6")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct AUTHZ_SOURCE_SCHEMA_REGISTRATION
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<AUTHZ_SOURCE_SCHEMA_REGISTRATION>), nameof(dwObjectTypeNameCount))]
+		public class AUTHZ_SOURCE_SCHEMA_REGISTRATION
 		{
 			/// <summary>
 			/// <para>Flags that control the behavior of the operation. The following table shows a possible value.</para>
@@ -2690,21 +2706,26 @@ namespace Vanara.PInvoke
 			public SOURCE_SCHEMA_REGISTRATION_FLAGS dwFlags;
 
 			/// <summary>A pointer to a wide character string that represents the name of the event source.</summary>
-			public StrPtrUni szEventSourceName;
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string szEventSourceName;
 
 			/// <summary>A pointer to a wide character string that represents the name of the resource that contains the event messages.</summary>
-			public StrPtrUni szEventMessageFile;
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string szEventMessageFile;
 
 			/// <summary>A pointer to a wide character string that represents the name of the XML schema file for the event source.</summary>
-			public StrPtrUni szEventSourceXmlSchemaFile;
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string szEventSourceXmlSchemaFile;
 
 			/// <summary>
 			/// A pointer to a wide character string that represents the name of the resource that contains the event parameter strings.
 			/// </summary>
-			public StrPtrUni szEventAccessStringsFile;
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string szEventAccessStringsFile;
 
 			/// <summary>This member is reserved and must be set to <c>NULL</c>.</summary>
-			public StrPtrUni szExecutableImagePath;
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string szExecutableImagePath;
 
 			/// <summary>
 			/// The GUID of a migrated publisher. The value of this member is converted to a string and stored in the registry if the caller
@@ -2716,123 +2737,8 @@ namespace Vanara.PInvoke
 			public uint dwObjectTypeNameCount;
 
 			/// <summary>An array of AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET structures that represents the object types for the events.</summary>
-			public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET ObjectTypeNames;
-		}
-
-		/// <summary/>
-		public class SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION : IDisposable
-		{
-			private List<SafeHGlobalHandle> mem = new List<SafeHGlobalHandle>(7);
-
-			/// <summary>
-			/// <para>Flags that control the behavior of the operation. The following table shows a possible value.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>AUTHZ_ALLOW_MULTIPLE_SOURCE_INSTANCES 0x1</term>
-			/// <term>
-			/// Allows registration of multiple sources with the same name. Use of this flag means that more than one source can call the
-			/// AuthzRegisterSecurityEventSource function with the same szEventSourceName at runtime.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>AUTHZ_MIGRATED_LEGACY_PUBLISHER 0x2</term>
-			/// <term>
-			/// The caller is a migrated publisher that has registered a manifest with WEvtUtil.exe. The GUID of the provider specified by
-			/// the pProviderGuid member is stored in the registry.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public SOURCE_SCHEMA_REGISTRATION_FLAGS dwFlags { get; set; }
-
-			/// <summary>A string that represents the name of the event source.</summary>
-			public string szEventSourceName { get; set; }
-
-			/// <summary>A string that represents the name of the resource that contains the event messages.</summary>
-			public string szEventMessageFile { get; set; }
-
-			/// <summary>A string that represents the name of the XML schema file for the event source.</summary>
-			public string szEventSourceXmlSchemaFile { get; set; }
-
-			/// <summary>
-			/// A pointer to a wide character string that represents the name of the resource that contains the event parameter strings.
-			/// </summary>
-			public string szEventAccessStringsFile { get; set; }
-
-			/// <summary>This member is reserved and must be set to <see langword="null"/>.</summary>
-			public string szExecutableImagePath { get; set; }
-
-			/// <summary>
-			/// The GUID of a migrated publisher. The value of this member is converted to a string and stored in the registry if the caller
-			/// is a migrated publisher.
-			/// </summary>
-			public Guid? pProviderGuid { get; set; }
-
-			/// <summary>A pointer to a wide character string that represents the name of the object type.</summary>
-			public string szObjectTypeName { get; set; }
-
-			/// <summary>Offset of the object type name in an object types message DLL.</summary>
-			public uint dwOffset { get; set; }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION"/> class.</summary>
-			public SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION() { }
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION"/> class from its unmanaged equivalent.
-			/// </summary>
-			/// <param name="outValue">The native <see cref="AUTHZ_SOURCE_SCHEMA_REGISTRATION"/> instance.</param>
-			public SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION(AUTHZ_SOURCE_SCHEMA_REGISTRATION outValue)
-			{
-				dwFlags = outValue.dwFlags;
-				szEventSourceName = outValue.szEventSourceName;
-				szEventMessageFile = outValue.szEventMessageFile;
-				szEventSourceXmlSchemaFile = outValue.szEventSourceXmlSchemaFile;
-				szEventAccessStringsFile = outValue.szEventAccessStringsFile;
-				szExecutableImagePath = outValue.szExecutableImagePath;
-				pProviderGuid = outValue.pProviderGuid;
-				szObjectTypeName = outValue.ObjectTypeNames.szObjectTypeName;
-				dwOffset = outValue.ObjectTypeNames.dwOffset;
-			}
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION"/> to <see cref="AUTHZ_SOURCE_SCHEMA_REGISTRATION"/>.</summary>
-			/// <param name="mgd">The managed equivalent.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator AUTHZ_SOURCE_SCHEMA_REGISTRATION(SafeAUTHZ_SOURCE_SCHEMA_REGISTRATION mgd)
-			{
-				// Write all pointer instances to memory stream so they will be kept in memory
-				var ret = new AUTHZ_SOURCE_SCHEMA_REGISTRATION { dwFlags = mgd.dwFlags };
-				ret.szEventSourceName = SetPtr(mgd.szEventSourceName);
-				ret.szEventMessageFile = SetPtr(mgd.szEventMessageFile);
-				ret.szEventSourceXmlSchemaFile = SetPtr(mgd.szEventSourceXmlSchemaFile);
-				ret.szEventAccessStringsFile = SetPtr(mgd.szEventAccessStringsFile);
-				ret.szExecutableImagePath = SetPtr(mgd.szExecutableImagePath);
-				if (mgd.pProviderGuid.HasValue)
-				{
-					var ptr = SafeHGlobalHandle.CreateFromStructure(mgd.pProviderGuid.Value);
-					mgd.mem.Add(ptr);
-					ret.pProviderGuid = ptr.DangerousGetHandle();
-				}
-				ret.dwObjectTypeNameCount = mgd.szObjectTypeName is null ? 0 : 1U;
-				ret.ObjectTypeNames.szObjectTypeName = SetPtr(mgd.szObjectTypeName);
-				ret.ObjectTypeNames.dwOffset = mgd.dwOffset;
-
-				return ret;
-
-				IntPtr SetPtr(string value)
-				{
-					if (value is null) return IntPtr.Zero;
-					var ptr = new SafeHGlobalHandle(value);
-					mgd.mem.Add(ptr);
-					return ptr.DangerousGetHandle();
-				}
-			}
-
-			/// <inheritdoc/>
-			public void Dispose() { foreach (var m in mem) m.Dispose(); mem.Clear(); }
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET[] ObjectTypeNames;
 		}
 
 		/// <summary>
@@ -2877,23 +2783,17 @@ namespace Vanara.PInvoke
 				Error = Marshal.AllocHGlobal(sz);
 			}
 
-#pragma warning disable 612
 
 			/// <summary>Gets or sets the granted access mask values. The length of this array must match the value in <see cref="ResultListLength"/>.</summary>
 			/// <value>The granted access mask values.</value>
 			public uint[] GrantedAccessMaskValues
 			{
-				get
-				{
-					if (GrantedAccessMask != IntPtr.Zero && ResultListLength > 0)
-						return GrantedAccessMask.ToArray<uint>(ResultListLength);
-					return new uint[0];
-				}
+				get => GrantedAccessMask != IntPtr.Zero && ResultListLength > 0 ? GrantedAccessMask.ToArray<uint>(ResultListLength) : (new uint[0]);
 				set
 				{
-					if (value == null && ResultListLength != 0)
+					if (value is null && ResultListLength != 0)
 						throw new ArgumentNullException(nameof(GrantedAccessMaskValues), $"Value cannot be null if {nameof(ResultListLength)} field does not equal 0.");
-					if (value != null && value.Length != ResultListLength)
+					if (value is not null && value.Length != ResultListLength)
 						throw new ArgumentOutOfRangeException(nameof(GrantedAccessMaskValues), $"Number of items must match value of {nameof(ResultListLength)} field.");
 					CopyArrayToPtr(value, GrantedAccessMask);
 				}
@@ -2915,17 +2815,14 @@ namespace Vanara.PInvoke
 			/// <value>The system access control list (SACL) evaluation results values.</value>
 			public uint[] SaclEvaluationResultsValues
 			{
-				get
-				{
-					if (SaclEvaluationResults != IntPtr.Zero && ResultListLength > 0)
-						return SaclEvaluationResults.ToArray<uint>(ResultListLength);
-					return new uint[0];
-				}
+				get => SaclEvaluationResults != IntPtr.Zero && ResultListLength > 0
+						? SaclEvaluationResults.ToArray<uint>(ResultListLength)
+						: (new uint[0]);
 				set
 				{
-					if (value == null && ResultListLength != 0)
+					if (value is null && ResultListLength != 0)
 						throw new ArgumentNullException(nameof(SaclEvaluationResultsValues), $"Value cannot be null if {nameof(ResultListLength)} field does not equal 0.");
-					if (value != null && value.Length != ResultListLength)
+					if (value is not null && value.Length != ResultListLength)
 						throw new ArgumentOutOfRangeException(nameof(SaclEvaluationResultsValues), $"Number of items must match value of {nameof(ResultListLength)} field.");
 					CopyArrayToPtr(value, SaclEvaluationResults);
 				}
@@ -2935,23 +2832,16 @@ namespace Vanara.PInvoke
 			/// <value>The results values.</value>
 			public uint[] ErrorValues
 			{
-				get
-				{
-					if (Error != IntPtr.Zero && ResultListLength > 0)
-						return Error.ToArray<uint>(ResultListLength);
-					return new uint[0];
-				}
+				get => Error != IntPtr.Zero && ResultListLength > 0 ? Error.ToArray<uint>(ResultListLength) : (new uint[0]);
 				set
 				{
-					if (value == null && ResultListLength != 0)
+					if (value is null && ResultListLength != 0)
 						throw new ArgumentNullException(nameof(ErrorValues), $"Value cannot be null if {nameof(ResultListLength)} field does not equal 0.");
-					if (value != null && value.Length != ResultListLength)
+					if (value is not null && value.Length != ResultListLength)
 						throw new ArgumentOutOfRangeException(nameof(ErrorValues), $"Number of items must match value of {nameof(ResultListLength)} field.");
 					CopyArrayToPtr(value, Error);
 				}
 			}
-
-#pragma warning restore 612
 
 			void IDisposable.Dispose()
 			{
@@ -3152,7 +3042,7 @@ namespace Vanara.PInvoke
 
 		internal class AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler : ICustomMarshaler
 		{
-			public static ICustomMarshaler GetInstance(string cookie) => new AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler();
+			public static ICustomMarshaler GetInstance(string _) => new AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler();
 
 			public void CleanUpManagedData(object ManagedObj)
 			{
@@ -3165,7 +3055,7 @@ namespace Vanara.PInvoke
 			public IntPtr MarshalManagedToNative(object ManagedObj)
 			{
 				// Determine size
-				if (!(ManagedObj is AUTHZ_SECURITY_ATTRIBUTES_INFORMATION attrInfo)) throw new InvalidOperationException("This marshaler only works on AUTHZ_SECURITY_ATTRIBUTES_INFORMATION structures.");
+				if (ManagedObj is not AUTHZ_SECURITY_ATTRIBUTES_INFORMATION attrInfo) throw new InvalidOperationException("This marshaler only works on AUTHZ_SECURITY_ATTRIBUTES_INFORMATION structures.");
 				var sz1 = Marshal.SizeOf(typeof(Internal_AUTHZ_SECURITY_ATTRIBUTES_INFORMATION)) +
 						 attrInfo.AttributeCount * Marshal.SizeOf(typeof(Internal_AUTHZ_SECURITY_ATTRIBUTE_V1));
 				var sz2 = 0L;
@@ -3267,7 +3157,7 @@ namespace Vanara.PInvoke
 				return new AUTHZ_SECURITY_ATTRIBUTES_INFORMATION(attrInfo.pAttributeV1 == IntPtr.Zero ? null :
 					Array.ConvertAll(attrInfo.pAttributeV1.ToArray<Internal_AUTHZ_SECURITY_ATTRIBUTE_V1>((int)attrInfo.AttributeCount), Conv));
 
-				AUTHZ_SECURITY_ATTRIBUTE_V1 Conv(Internal_AUTHZ_SECURITY_ATTRIBUTE_V1 input)
+				static AUTHZ_SECURITY_ATTRIBUTE_V1 Conv(Internal_AUTHZ_SECURITY_ATTRIBUTE_V1 input)
 				{
 					var v1 = new AUTHZ_SECURITY_ATTRIBUTE_V1 { pName = StringHelper.GetString(input.pName, CharSet.Unicode), Flags = input.Flags, ValueCount = input.ValueCount, ValueType = input.ValueType };
 					switch (v1.ValueType)

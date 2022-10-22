@@ -920,9 +920,10 @@ namespace Vanara.PInvoke
 			SERVICE_QUERY_CONFIG = 0x0001,
 
 			/// <summary>
-			/// Required to call the <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType, string, string, IntPtr, string, string, string, string)"/> or <see cref="ChangeServiceConfig2"/> function to change the service
-			/// configuration. Because this grants the caller the right to change the executable file that the system runs, it should be
-			/// granted only to administrators.
+			/// Required to call the <see cref="ChangeServiceConfig(SC_HANDLE, ServiceTypes, ServiceStartType, ServiceErrorControlType,
+			/// string, string, IntPtr, string[], string, string, string)"/> or <see cref="ChangeServiceConfig2"/> function to change the
+			/// service configuration. Because this grants the caller the right to change the executable file that the system runs, it should
+			/// be granted only to administrators.
 			/// </summary>
 			SERVICE_CHANGE_CONFIG = 0x0002,
 
@@ -1440,7 +1441,8 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winsvc.h", MSDNShortId = "ms681987")]
 		public static extern bool ChangeServiceConfig(SC_HANDLE hService, ServiceTypes nServiceType, ServiceStartType nStartType, ServiceErrorControlType nErrorControl,
-			[Optional] string lpBinaryPathName, [Optional] string lpLoadOrderGroup, out uint lpdwTagId, [In, Optional] string lpDependencies,
+			[Optional] string lpBinaryPathName, [Optional] string lpLoadOrderGroup, out uint lpdwTagId,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpDependencies,
 			[Optional] string lpServiceStartName, [Optional] string lpPassword, [Optional] string lpDisplayName);
 
 		/// <summary>Changes the configuration parameters of a service.</summary>
@@ -1549,7 +1551,8 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winsvc.h", MSDNShortId = "ms681987")]
 		public static extern bool ChangeServiceConfig(SC_HANDLE hService, ServiceTypes nServiceType, ServiceStartType nStartType, ServiceErrorControlType nErrorControl,
-			[Optional] string lpBinaryPathName, [Optional] string lpLoadOrderGroup, [Optional] IntPtr lpdwTagId, [In, Optional] string lpDependencies,
+			[Optional] string lpBinaryPathName, [Optional] string lpLoadOrderGroup, [Optional] IntPtr lpdwTagId,
+			[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[] lpDependencies,
 			[Optional] string lpServiceStartName, [Optional] string lpPassword, [Optional] string lpDisplayName);
 
 		/// <summary>Changes the optional configuration parameters of a service.</summary>

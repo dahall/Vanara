@@ -180,40 +180,40 @@ namespace Vanara.PInvoke
 		public enum MIB_TCP_STATE
 		{
 			/// <summary>The TCP connection is closed.</summary>
-			MIB_TCP_STATE_CLOSED,
+			MIB_TCP_STATE_CLOSED = 1,
 
 			/// <summary>The TCP connection is in the listen state.</summary>
-			MIB_TCP_STATE_LISTEN,
+			MIB_TCP_STATE_LISTEN = 2,
 
 			/// <summary>A SYN packet has been sent.</summary>
-			MIB_TCP_STATE_SYN_SENT,
+			MIB_TCP_STATE_SYN_SENT = 3,
 
 			/// <summary>A SYN packet has been received.</summary>
-			MIB_TCP_STATE_SYN_RCVD,
+			MIB_TCP_STATE_SYN_RCVD = 4,
 
 			/// <summary>The TCP connection has been established.</summary>
-			MIB_TCP_STATE_ESTAB,
+			MIB_TCP_STATE_ESTAB = 5,
 
 			/// <summary>The TCP connection is waiting for a FIN packet.</summary>
-			MIB_TCP_STATE_FIN_WAIT1,
+			MIB_TCP_STATE_FIN_WAIT1 = 6,
 
 			/// <summary>The TCP connection is waiting for a FIN packet.</summary>
-			MIB_TCP_STATE_FIN_WAIT2,
+			MIB_TCP_STATE_FIN_WAIT2 = 7,
 
 			/// <summary>The TCP connection is in the close wait state.</summary>
-			MIB_TCP_STATE_CLOSE_WAIT,
+			MIB_TCP_STATE_CLOSE_WAIT = 8,
 
 			/// <summary>The TCP connection is closing.</summary>
-			MIB_TCP_STATE_CLOSING,
+			MIB_TCP_STATE_CLOSING = 9,
 
 			/// <summary>The TCP connection is in the last ACK state.</summary>
-			MIB_TCP_STATE_LAST_ACK,
+			MIB_TCP_STATE_LAST_ACK = 10,
 
 			/// <summary>The TCP connection is in the time wait state.</summary>
-			MIB_TCP_STATE_TIME_WAIT,
+			MIB_TCP_STATE_TIME_WAIT = 11,
 
 			/// <summary>The TCP connection is in the delete TCB state.</summary>
-			MIB_TCP_STATE_DELETE_TCB,
+			MIB_TCP_STATE_DELETE_TCB = 12,
 		}
 
 		/// <summary>

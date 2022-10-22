@@ -322,7 +322,7 @@ namespace Vanara.Extensions
 		/// </param>
 		/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 		/// <returns>A pointer to the memory allocated by <paramref name="memAlloc"/>.</returns>
-		public static IntPtr MarshalToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null)
+		public static IntPtr MarshalToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Func<IntPtr, bool> memUnlock = null)
 		{
 			memLock ??= Passthrough;
 			if (VanaraMarshaler.CanMarshal(typeof(T), out IVanaraMarshaler marshaler))
@@ -364,7 +364,7 @@ namespace Vanara.Extensions
 		/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 		/// <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
 		/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
-		public static IntPtr MarshalToPtr<T>(this IEnumerable<T> items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null)
+		public static IntPtr MarshalToPtr<T>(this IEnumerable<T> items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Func<IntPtr, bool> memUnlock = null)
 		{
 			if (!typeof(T).IsMarshalable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 
@@ -401,7 +401,7 @@ namespace Vanara.Extensions
 		/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 		/// <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
 		/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
-		public static IntPtr MarshalToPtr<T>(this T[] items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null) =>
+		public static IntPtr MarshalToPtr<T>(this T[] items, Func<int, IntPtr> memAlloc, out int bytesAllocated, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Func<IntPtr, bool> memUnlock = null) =>
 			MarshalToPtr(items.Cast<T>(), memAlloc, out bytesAllocated, prefixBytes, memLock, memUnlock);
 
 		/// <summary>
@@ -424,7 +424,7 @@ namespace Vanara.Extensions
 		/// Pointer to the allocated native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character
 		/// set defined by <paramref name="charSet"/>.
 		/// </returns>
-		public static IntPtr MarshalToPtr(this IEnumerable<string> values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null)
+		public static IntPtr MarshalToPtr(this IEnumerable<string> values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Func<IntPtr, bool> memUnlock = null)
 		{
 			memLock ??= Passthrough;
 
@@ -469,7 +469,7 @@ namespace Vanara.Extensions
 		/// Pointer to the allocated native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character
 		/// set defined by <paramref name="charSet"/>.
 		/// </returns>
-		public static IntPtr MarshalToPtr(this string[] values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Action<IntPtr> memUnlock = null) =>
+		public static IntPtr MarshalToPtr(this string[] values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0, Func<IntPtr, IntPtr> memLock = null, Func<IntPtr, bool> memUnlock = null) =>
 			MarshalToPtr((IEnumerable<string>)values, packing, memAlloc, out bytesAllocated, charSet, prefixBytes, memLock, memUnlock);
 
 		/// <summary>Adds an offset to the value of a pointer.</summary>
@@ -714,7 +714,13 @@ namespace Vanara.Extensions
 			if (lptr == IntPtr.Zero) yield break;
 			var charLength = StringHelper.GetCharSize(charSet);
 			var i = prefixBytes;
-			if (allocatedBytes == 0) allocatedBytes = SizeT.MaxValue;
+			if (allocatedBytes == 0)
+				allocatedBytes = SizeT.MaxValue;
+			else if (allocatedBytes - prefixBytes - charLength < 0)
+				throw new InsufficientMemoryException();
+			// handle condition where there is just the null terminator
+			else if (allocatedBytes - prefixBytes - charLength == 0 && GetCh(lptr.Offset(prefixBytes)) == 0)
+				yield break;
 			for (IntPtr ptr = lptr.Offset(i); i + charLength <= allocatedBytes && GetCh(ptr) != 0; i += charLength, ptr = lptr.Offset(i))
 			{
 				for (IntPtr cptr = ptr; i + charLength <= allocatedBytes && GetCh(cptr) != 0; cptr = cptr.Offset(charLength), i += charLength) { }

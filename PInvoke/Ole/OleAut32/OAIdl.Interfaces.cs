@@ -396,7 +396,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-addreftypeinfo HRESULT AddRefTypeInfo(//
 			// ITypeInfo *pTInfo, HREFTYPE *phRefType);
 			[PreserveSig]
-			HRESULT AddRefTypeInfo([In] ITypeInfo pTInfo, in uint phRefType);
+			HRESULT AddRefTypeInfo([In] ITypeInfo pTInfo, out uint phRefType);
 
 			/// <summary>Adds a function description to the type description.</summary>
 			/// <param name="index">The index of the new FUNCDESC in the type information.</param>
@@ -549,7 +549,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-setimpltypeflags HRESULT
 			// SetImplTypeFlags(// UINT index, INT implTypeFlags);
 			[PreserveSig]
-			HRESULT SetImplTypeFlags(uint index, int implTypeFlags);
+			HRESULT SetImplTypeFlags(uint index, System.Runtime.InteropServices.ComTypes.IMPLTYPEFLAGS implTypeFlags);
 
 			/// <summary>Specifies the data alignment for an item of TYPEKIND=TKIND_RECORD.</summary>
 			/// <param name="cbAlignment">
@@ -1344,7 +1344,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-addreftypeinfo HRESULT AddRefTypeInfo(//
 			// ITypeInfo *pTInfo, HREFTYPE *phRefType);
 			[PreserveSig]
-			new HRESULT AddRefTypeInfo([In] ITypeInfo pTInfo, in uint phRefType);
+			new HRESULT AddRefTypeInfo([In] ITypeInfo pTInfo, out uint phRefType);
 
 			/// <summary>Adds a function description to the type description.</summary>
 			/// <param name="index">The index of the new FUNCDESC in the type information.</param>
@@ -1497,7 +1497,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-setimpltypeflags HRESULT
 			// SetImplTypeFlags(// UINT index, INT implTypeFlags);
 			[PreserveSig]
-			new HRESULT SetImplTypeFlags(uint index, int implTypeFlags);
+			new HRESULT SetImplTypeFlags(uint index, System.Runtime.InteropServices.ComTypes.IMPLTYPEFLAGS implTypeFlags);
 
 			/// <summary>Specifies the data alignment for an item of TYPEKIND=TKIND_RECORD.</summary>
 			/// <param name="cbAlignment">

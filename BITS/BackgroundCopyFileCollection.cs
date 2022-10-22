@@ -124,7 +124,7 @@ namespace Vanara.IO
 		/// <param name="length">Number of bytes in the range.</param>
 		public void Add(string remoteFilePath, string localFilePath, long initialOffset, long length = -1)
 		{
-			IBackgroundCopyJob3 ijob3 = null;
+			IBackgroundCopyJob3 ijob3;
 			try { ijob3 = (IBackgroundCopyJob3)m_ijob; }
 			catch { throw new NotSupportedException(); }
 			var rng = new[] { new BG_FILE_RANGE { InitialOffset = (ulong)initialOffset, Length = length == -1 ? ulong.MaxValue : (ulong)length } };
@@ -217,7 +217,14 @@ namespace Vanara.IO
 		/// <param name="item">The object to locate in the <see cref="ICollection{T}"/>.</param>
 		/// <returns>true if <paramref name="item"/> is found in the <see cref="ICollection{T}"/>; otherwise, false.</returns>
 		/// <exception cref="NotImplementedException"></exception>
-		bool ICollection<BackgroundCopyFileInfo>.Contains(BackgroundCopyFileInfo item) => throw new NotSupportedException();
+		bool ICollection<BackgroundCopyFileInfo>.Contains(BackgroundCopyFileInfo item)
+		{
+			var e = GetEnumerator();
+			while (e.MoveNext())
+				if (ReferenceEquals(e.Current, item))
+					return true;
+			return false;
+		}
 
 		/// <summary>
 		/// Copies the elements of the <see cref="ICollection{T}"/> to an <see cref="T:System.Array"/>, starting at a particular
@@ -229,7 +236,15 @@ namespace Vanara.IO
 		/// </param>
 		/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 		/// <exception cref="NotImplementedException"></exception>
-		void ICollection<BackgroundCopyFileInfo>.CopyTo(BackgroundCopyFileInfo[] array, int arrayIndex) => throw new NotSupportedException();
+		void ICollection<BackgroundCopyFileInfo>.CopyTo(BackgroundCopyFileInfo[] array, int arrayIndex)
+		{
+			var e = GetEnumerator();
+			while (array.Length > arrayIndex && e.MoveNext())
+			{
+				array[arrayIndex] = e.Current;
+				arrayIndex++;
+			}
+		}
 
 		/// <summary>Disposes of the BackgroundCopyFileSet object.</summary>
 		void IDisposable.Dispose() => m_ijob = null;
@@ -274,8 +289,8 @@ namespace Vanara.IO
 			private static bool TryGetNext(IEnumBackgroundCopyFiles e, out BackgroundCopyFileInfo i)
 			{
 				var ifi = e.Next(1)?.FirstOrDefault();
-				i = ifi != null ? new BackgroundCopyFileInfo(ifi) : null;
-				return i != null;
+				i = ifi is not null ? new BackgroundCopyFileInfo(ifi) : null;
+				return i is not null;
 			}
 		}
 	}

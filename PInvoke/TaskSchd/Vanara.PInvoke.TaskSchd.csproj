@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported for Windows Task Scheduler 1.0 and 2.0 COM objects.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.TaskSchd</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
@@ -23,6 +22,7 @@ Interfaces
 IAction IActionCollection IBootTrigger IComHandlerAction IDailyTrigger IEmailAction IEventTrigger IExecAction IIdleSettings IIdleTrigger ILogonTrigger IMaintenanceSettings IMonthlyDOWTrigger IMonthlyTrigger INetworkSettings IPrincipal IPrincipal2 IRegisteredTask IRegisteredTaskCollection IRegistrationInfo IRegistrationTrigger IRepetitionPattern IRunningTask IRunningTaskCollection ISessionStateChangeTrigger IShowMessageAction ITask ITaskDefinition ITaskFolder ITaskFolderCollection ITaskHandler ITaskHandlerStatus ITaskNamedValueCollection ITaskNamedValuePair ITaskScheduler ITaskService ITaskSettings ITaskSettings2 ITaskSettings3 ITaskVariables ITimeTrigger ITrigger ITriggerCollection IWeeklyTrigger
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <NoWarn>0618</NoWarn>

@@ -119,7 +119,7 @@ namespace Vanara.PInvoke
 		// MIB_TCP_STATE State; IN6_ADDR LocalAddr; DWORD dwLocalScopeId; DWORD dwLocalPort; IN6_ADDR RemoteAddr; DWORD dwRemoteScopeId;
 		// DWORD dwRemotePort; } MIB_TCP6ROW, *PMIB_TCP6ROW;
 		[PInvokeData("tcpmib.h", MSDNShortId = "b3e9eda5-5e86-4790-8b1b-ca9bae44b502")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct MIB_TCP6ROW
 		{
 			/// <summary>
@@ -682,7 +682,7 @@ namespace Vanara.PInvoke
 		// LocalAddr; DWORD dwLocalScopeId; DWORD dwLocalPort; IN6_ADDR RemoteAddr; DWORD dwRemoteScopeId; DWORD dwRemotePort; MIB_TCP_STATE
 		// State; DWORD dwOwningPid; TCP_CONNECTION_OFFLOAD_STATE dwOffloadState; } MIB_TCP6ROW2, *PMIB_TCP6ROW2;
 		[PInvokeData("tcpmib.h", MSDNShortId = "bbec3397-0317-40f7-926f-2ec48cf5386d")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct MIB_TCP6ROW2
 		{
 			/// <summary>

@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -47,7 +46,7 @@ namespace Vanara.PInvoke
 		// int LBItemFromPt( HWND hLB, POINT pt, BOOL bAutoScroll); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761724(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761724")]
-		public static extern int LBItemFromPt(HWND hLB, Point pt, [MarshalAs(UnmanagedType.Bool)] bool bAutoScroll);
+		public static extern int LBItemFromPt(HWND hLB, POINT pt, [MarshalAs(UnmanagedType.Bool)] bool bAutoScroll);
 
 		/// <summary>Changes the specified single-selection list box to a drag list box.</summary>
 		/// <param name="hLB">

@@ -109,7 +109,7 @@ namespace Vanara.PInvoke.Tests
 		public void LoadImageFromThumbnailProviderTest()
 		{
 			IShellItem shi = null;
-			Assert.That(() => shi = GetShellItemForPath(TestCaseSources.ImageFile), Throws.Nothing);
+			Assert.That(() => shi = GetShellItemForPath(TestCaseSources.LargeFile), Throws.Nothing);
 			try
 			{
 				uint sz = 32;
@@ -128,7 +128,7 @@ namespace Vanara.PInvoke.Tests
 		public void LoadImageFromThumbnailProviderTest2()
 		{
 			IShellItem shi = null;
-			Assert.That(() => shi = GetShellItemForPath(TestCaseSources.ImageFile), Throws.Nothing);
+			Assert.That(() => shi = GetShellItemForPath(TestCaseSources.LargeFile), Throws.Nothing);
 			try
 			{
 				var pi = GetParentAndItem(shi);

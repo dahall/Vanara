@@ -4,10 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Net;
+using System.Runtime.InteropServices.ComTypes;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using Vanara.Windows.Shell;
+using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -15,29 +20,55 @@ namespace Vanara.PInvoke.Tests
 	{
 		private const string testApp = @"C:\Users\dahall\Documents\Visual Studio 2017\Projects\TestSysConsumption\bin\Debug\netcoreapp3.0\TestSysConsumption.exe";
 
-		private static Lazy<JsonSerializerSettings> jsonSet = new Lazy<JsonSerializerSettings>(() =>
-			new JsonSerializerSettings() {
-				Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(), new SizeTConverter() },
+		private static readonly Lazy<JsonSerializerSettings> jsonSet = new(() =>
+			new JsonSerializerSettings()
+			{
+				Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(),
+					new GenJsonConverter<ulong, SizeT>(i => new SizeT(i), o => o.Value),
+					new GenJsonConverter<DateTime, FILETIME>(dt => dt.ToFileTimeStruct(), ft => ft.ToDateTime()),
+					new GenJsonConverter<string, IPAddress>(i => IPAddress.Parse(i), o => o.ToString()),
+					new GenJsonConverter<string, GenericSecurityDescriptor>(i => new RawSecurityDescriptor(i), o => o.GetSddlForm(AccessControlSections.All)),
+					new GenJsonConverter<string, IndirectString>(i => new(i), o => o.ToString()),
+					new GenJsonConverter<string, SecurityIdentifier>(i => new(i), o => o.ToString()),
+				},
 				ReferenceLoopHandling = ReferenceLoopHandling.Serialize
 			});
+
+		/// <summary>Gets a value indicating whether the current process is elevated.</summary>
+		/// <value><see langword="true"/> if the current process is elevated; otherwise, <see langword="false"/>.</value>
+		public static bool IsElevated
+		{
+			get
+			{
+				try
+				{
+					// Open the access token of the current process with TOKEN_QUERY. 
+					using var hObject = SafeHTOKEN.FromProcess(Process.GetCurrentProcess(), TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE);
+					return hObject.IsElevated;
+				}
+				catch { }
+				return false;
+			}
+		}
 
 		public static Process RunThrottleApp() => Process.Start(testApp);
 
 		public static void SetThrottle(string type, bool on)
 		{
-			using (var evt = new EventWaitHandle(false, EventResetMode.AutoReset, (on ? "" : "End") + type))
-				evt.Set();
+			using var evt = new EventWaitHandle(false, EventResetMode.AutoReset, (on ? "" : "End") + type);
+			evt.Set();
 		}
 
-		public static IList<string> GetNestedStructSizes(this Type type, params string[] filters)
+		public static IList<string> GetNestedStructSizes(this Type type, params string[] filters) =>
+			type.GetNestedTypes(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).GetStructSizes(false, filters);
+
+		public static IList<string> GetStructSizes(this Type[] types, bool fullName = false, params string[] filters)
 		{
-			var output = new List<string>();
-			var attr = System.Reflection.TypeAttributes.SequentialLayout | System.Reflection.TypeAttributes.ExplicitLayout;
-			foreach (var t in type.GetNestedTypes(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).
-				Where(t => t.IsValueType && !t.IsEnum && (t.Attributes & attr) != 0 && ((filters?.Length ?? 0) == 0 || filters.Any(s => t.Name.Contains(s)))))
-				output.Add($"{t.Name} = {Marshal.SizeOf(t)}");
-			output.Sort();
-			return output;
+			System.Reflection.TypeAttributes attr = System.Reflection.TypeAttributes.SequentialLayout | System.Reflection.TypeAttributes.ExplicitLayout;
+			return types.Where(t => t.IsValueType && !t.IsEnum && !t.IsGenericType && (t.Attributes & attr) != 0 && ((filters?.Length ?? 0) == 0 || filters.Any(s => t.Name.Contains(s)))).
+				OrderBy(t => fullName ? t.FullName : t.Name).Select(t => $"{(fullName ? t.FullName : t.Name)} = {GetTypeSize(t)}").ToList();
+
+			static long GetTypeSize(Type t) { try { return (long)InteropExtensions.SizeOf(t); } catch { return -1; } }
 		}
 
 		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, object, object[]> action = null, Action<Exception> error = null) where TEnum : Enum =>
@@ -45,17 +76,17 @@ namespace Vanara.PInvoke.Tests
 
 		public static void RunForEach<TEnum>(Type lib, string name, Func<TEnum, object[]> makeParam, Action<TEnum, Exception> error = null, Action<TEnum, object, object[]> action = null, CorrespondingAction? filter = null) where TEnum : Enum
 		{
-			var mi = lib.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Where(m => m.IsGenericMethod && m.Name == name).First();
+			System.Reflection.MethodInfo mi = lib.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Where(m => m.IsGenericMethod && m.Name == name).First();
 			if (mi is null) throw new ArgumentException("Unable to find method.");
-			foreach (var e in Enum.GetValues(typeof(TEnum)).Cast<TEnum>())
+			foreach (TEnum e in Enum.GetValues(typeof(TEnum)).Cast<TEnum>())
 			{
-				var type = (filter.HasValue ? CorrespondingTypeAttribute.GetCorrespondingTypes(e, filter.Value) : CorrespondingTypeAttribute.GetCorrespondingTypes(e)).FirstOrDefault();
+				Type type = (filter.HasValue ? CorrespondingTypeAttribute.GetCorrespondingTypes(e, filter.Value) : CorrespondingTypeAttribute.GetCorrespondingTypes(e)).FirstOrDefault();
 				if (type is null)
 				{
 					TestContext.WriteLine($"No corresponding type found for {e}.");
 					continue;
 				}
-				var gmi = mi.MakeGenericMethod(type);
+				System.Reflection.MethodInfo gmi = mi.MakeGenericMethod(type);
 				var param = makeParam(e);
 				try
 				{
@@ -76,7 +107,7 @@ namespace Vanara.PInvoke.Tests
 				case null:
 					return "(null)";
 
-				case System.Runtime.InteropServices.ComTypes.FILETIME ft:
+				case FILETIME ft:
 					value = ft.ToDateTime();
 					goto Simple;
 
@@ -85,9 +116,9 @@ namespace Vanara.PInvoke.Tests
 					goto Simple;
 
 				case DateTime:
-				case Decimal:
+				case decimal:
 				case var v when v.GetType().IsPrimitive || v.GetType().IsEnum:
-					Simple:
+Simple:
 					return $"{value.GetType().Name} : [{value}]";
 
 				case string s:
@@ -99,6 +130,9 @@ namespace Vanara.PInvoke.Tests
 				case SafeAllocatedMemoryHandleBase mem:
 					return mem.Dump;
 
+				case System.Security.AccessControl.GenericSecurityDescriptor sd:
+					return sd.GetSddlForm(System.Security.AccessControl.AccessControlSections.All);
+
 				default:
 					try { return JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value); }
 					catch (Exception e) { return e.ToString(); }
@@ -107,11 +141,21 @@ namespace Vanara.PInvoke.Tests
 
 		public static void WriteValues(this object value) => TestContext.WriteLine(GetStringVal(value));
 
-		private class SizeTConverter : JsonConverter<SizeT>
+		private class GenJsonConverter<TIn, TOut> : JsonConverter<TOut>
 		{
-			public override SizeT ReadJson(JsonReader reader, Type objectType, SizeT existingValue, bool hasExistingValue, JsonSerializer serializer) => reader.Value is ulong ul ? new SizeT(ul) : new SizeT(0);
+			private readonly Func<TIn, TOut> rdr;
+			private readonly Func<TOut, TIn> wtr;
 
-			public override void WriteJson(JsonWriter writer, SizeT value, JsonSerializer serializer) => writer.WriteValue(value.Value);
+			public GenJsonConverter(Func<TIn, TOut> r, Func<TOut, TIn> w)
+			{
+				rdr = r;
+				wtr = w;
+			}
+			public override TOut ReadJson(JsonReader reader, Type objectType, TOut existingValue, bool hasExistingValue, JsonSerializer serializer) =>
+				reader.Value is TIn t ? rdr(t) : default(TOut);
+
+			public override void WriteJson(JsonWriter writer, TOut value, JsonSerializer serializer) =>
+				writer.WriteValue(wtr(value));
 		}
 	}
 }

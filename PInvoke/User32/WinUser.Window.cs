@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -947,7 +946,7 @@ namespace Vanara.PInvoke
 			TPM_WORKAREA = 0x10000,
 		}
 
-		/// <summary>Flags for <see cref="UpdateLayeredWindow(HWND, HDC, in Point, in SIZE, HDC, in Point, COLORREF, in Gdi32.BLENDFUNCTION, UpdateLayeredWindowFlags)"/></summary>
+		/// <summary>Flags for <see cref="UpdateLayeredWindow(HWND, HDC, in POINT, in SIZE, HDC, in POINT, COLORREF, in Gdi32.BLENDFUNCTION, UpdateLayeredWindowFlags)"/></summary>
 		[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 		[Flags]
 		public enum UpdateLayeredWindowFlags
@@ -1621,7 +1620,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "calculatepopupwindowposition")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CalculatePopupWindowPosition(in Point anchorPoint, in SIZE windowSize, TrackPopupMenuFlags flags, [Optional] PRECT excludeRect, out RECT popupWindowPosition);
+		public static extern bool CalculatePopupWindowPosition(in POINT anchorPoint, in SIZE windowSize, TrackPopupMenuFlags flags, [Optional] PRECT excludeRect, out RECT popupWindowPosition);
 
 		/// <summary>Passes message information to the specified window procedure.</summary>
 		/// <param name="lpPrevWndFunc">
@@ -1942,7 +1941,7 @@ namespace Vanara.PInvoke
 		// hWndParent, POINT Point );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "childwindowfrompoint")]
-		public static extern HWND ChildWindowFromPoint(HWND hWndParent, Point Point);
+		public static extern HWND ChildWindowFromPoint(HWND hWndParent, POINT Point);
 
 		/// <summary>
 		/// <para>
@@ -2004,7 +2003,7 @@ namespace Vanara.PInvoke
 		// hwnd, POINT pt, UINT flags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "childwindowfrompointex")]
-		public static extern HWND ChildWindowFromPointEx(HWND hwnd, Point pt, ChildWindowSkipOptions flags);
+		public static extern HWND ChildWindowFromPointEx(HWND hwnd, POINT pt, ChildWindowSkipOptions flags);
 
 		/// <summary>
 		/// <para>Minimizes (but does not destroy) the specified window.</para>
@@ -3163,7 +3162,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DragDetect(HWND hwnd, System.Drawing.Point pt);
+		public static extern bool DragDetect(HWND hwnd, POINT pt);
 
 		/// <summary>
 		/// Enables or disables mouse and keyboard input to the specified window or control. When input is disabled, the window does not
@@ -5392,7 +5391,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "logicaltophysicalpoint")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LogicalToPhysicalPoint(HWND hWnd, ref Point lpPoint);
+		public static extern bool LogicalToPhysicalPoint(HWND hWnd, ref POINT lpPoint);
 
 		/// <summary>
 		/// <para>
@@ -5587,7 +5586,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "physicaltologicalpoint")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PhysicalToLogicalPoint(HWND hWnd, ref Point lpPoint);
+		public static extern bool PhysicalToLogicalPoint(HWND hWnd, ref POINT lpPoint);
 
 		/// <summary>
 		/// The <c>PrintWindow</c> function copies a visual window into the specified device context (DC), typically a printer DC.
@@ -5662,7 +5661,7 @@ namespace Vanara.PInvoke
 		// HWND hwndParent, POINT ptParentClientCoords );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "realchildwindowfrompoint")]
-		public static extern HWND RealChildWindowFromPoint(HWND hwndParent, Point ptParentClientCoords);
+		public static extern HWND RealChildWindowFromPoint(HWND hwndParent, POINT ptParentClientCoords);
 
 		/// <summary>
 		/// <para>Retrieves a string that specifies the window type.</para>
@@ -7314,7 +7313,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdateLayeredWindow(HWND hWnd, HDC hdcDst, in Point pptDst, in SIZE psize, HDC hdcSrc, in Point pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
+		public static extern bool UpdateLayeredWindow(HWND hWnd, HDC hdcDst, in POINT pptDst, in SIZE psize, HDC hdcSrc, in POINT pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 		/// <summary>
 		/// <para>Updates the position, size, shape, content, and translucency of a layered window.</para>
@@ -7487,7 +7486,7 @@ namespace Vanara.PInvoke
 		// POINT Point );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "windowfromphysicalpoint")]
-		public static extern HWND WindowFromPhysicalPoint(Point Point);
+		public static extern HWND WindowFromPhysicalPoint(POINT Point);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the window that contains the specified point.</para>
@@ -7514,7 +7513,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-windowfrompoint HWND WindowFromPoint( POINT Point );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "windowfrompoint")]
-		public static extern HWND WindowFromPoint(Point Point);
+		public static extern HWND WindowFromPoint(POINT Point);
 
 		/// <summary>
 		/// <para>
@@ -8011,7 +8010,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The top-left corner of the first icon.</para>
 			/// </summary>
-			public Point ptStart;
+			public POINT ptStart;
 		}
 
 		/// <summary>
@@ -8848,13 +8847,13 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The coordinates of the window's upper-left corner when the window is minimized.</para>
 			/// </summary>
-			public Point ptMinPosition;
+			public POINT ptMinPosition;
 
 			/// <summary>
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The coordinates of the window's upper-left corner when the window is maximized.</para>
 			/// </summary>
-			public Point ptMaxPosition;
+			public POINT ptMaxPosition;
 
 			/// <summary>
 			/// <para>Type: <c>RECT</c></para>

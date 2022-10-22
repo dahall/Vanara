@@ -364,7 +364,7 @@ namespace Vanara.PInvoke.Tests
 
 			void MouseEventProc(in MOUSE_EVENT_RECORD mouseEvent)
 			{
-				Debug.Write("Mouse event: ");
+				Debug.Write($"Mouse event: {mouseEvent.dwMousePosition} ");
 				switch (mouseEvent.dwEventFlags)
 				{
 					case MOUSE_EVENT_FLAG.NONE:

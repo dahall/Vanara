@@ -11,6 +11,10 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary> To extract the sorting rule, use a bitwise AND operator (&amp;) to combine lParam with SHCIDS_COLUMNMASK (0X0000FFFF).
+		/// This operation masks off the upper sixteen bits of lParam. </summary>
+		public const SHCIDS SHCIDS_COLUMNMASK = (SHCIDS)0x0000FFFF;
+
 		/// <summary>Provides a set of flags for use with the CATEGORY_INFO structure.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/ne-shobjidl_core-categoryinfo_flags typedef enum
 		// CATEGORYINFO_FLAGS { CATINFO_NORMAL, CATINFO_COLLAPSED, CATINFO_HIDDEN, CATINFO_EXPANDED, CATINFO_NOHEADER,
@@ -81,6 +85,28 @@ namespace Vanara.PInvoke
 
 			/// <summary>Display mode to view the contents of the folders in the navigation pane.</summary>
 			FEM_NAVIGATION,
+		}
+
+		/// <summary>Flags that modify the sorting rule.</summary>
+		[PInvokeData("shobjidl_core.h")]
+		[Flags]
+		public enum SHCIDS : uint
+		{
+			/// <summary>
+			/// Version 5.0. When comparing by name, compare the system names but not the display names. When this flag is passed, the two
+			/// items are compared by whatever criteria the Shell folder determines are most efficient, as long as it implements a
+			/// consistent sort function. This flag is useful when comparing for equality or when the results of the sort are not displayed
+			/// to the user. This flag cannot be combined with other flags.
+			/// </summary>
+			SHCIDS_CANONICALONLY = 0x10000000,
+
+			/// <summary>
+			/// Version 5.0. Compare all the information contained in the ITEMIDLIST structure, not just the display names. This flag is
+			/// valid only for folder objects that support the IShellFolder2 interface. For instance, if the two items are files, the folder
+			/// should compare their names, sizes, file times, attributes, and any other information in the structures. If this flag is set,
+			/// the lower sixteen bits of lParam must be zero.
+			/// </summary>
+			SHCIDS_ALLFIELDS = 0x80000000
 		}
 
 		/// <summary>
@@ -450,6 +476,16 @@ namespace Vanara.PInvoke
 			// CreateCategory( const GUID *pguid, REFIID riid, void **ppv );
 			[PreserveSig]
 			HRESULT CreateCategory(in Guid pguid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+		}
+
+		/// <summary>Creates a category object.</summary>
+		/// <param name="prov">The <see cref="ICategoryProvider"/> instance.</param>
+		/// <param name="pguid">The <c>GUID</c> for the category object.</param>
+		/// <returns>The category object.</returns>
+		public static ICategorizer CreateCategory(this ICategoryProvider prov, in Guid pguid)
+		{
+			prov.CreateCategory(pguid, typeof(ICategorizer).GUID, out var ppv).ThrowIfFailed();
+			return (ICategorizer)ppv;
 		}
 
 		/// <summary>A standard OLE enumerator used by a client to determine the available search objects for a folder.</summary>

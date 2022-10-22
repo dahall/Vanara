@@ -45,7 +45,7 @@ namespace Vanara.PInvoke.Tests
 			using (var ico2 = ExtractIcon(HINSTANCE.NULL, "notepad.exe", -2))
 				Assert.That(ico2.IsInvalid, Is.False);
 			using var icoCnt = ExtractIcon(HINSTANCE.NULL, "notepad.exe", -1);
-			Assert.That(icoCnt.DangerousGetHandle().ToInt32(), Is.EqualTo(1));
+			Assert.That(icoCnt.DangerousGetHandle().ToInt32(), Is.GreaterThanOrEqualTo(1));
 		}
 
 		[Test]
@@ -60,7 +60,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(ico2, Is.EqualTo(2));
 			Free();
 			var icoCnt = ExtractIconEx("notepad.exe", -1, null, null, 0);
-			Assert.That(icoCnt, Is.EqualTo(1));
+			Assert.That(icoCnt, Is.GreaterThanOrEqualTo(1));
 
 			void Free()
 			{
@@ -78,7 +78,7 @@ namespace Vanara.PInvoke.Tests
 			var ico2 = ExtractIconEx("notepad.exe", -2, 1, out _, out _);
 			Assert.That(ico2, Is.EqualTo(2));
 			var icoCnt = ExtractIconEx("notepad.exe", -1, 0, out lgIco, out _);
-			Assert.That(icoCnt, Is.EqualTo(1));
+			Assert.That(icoCnt, Is.GreaterThanOrEqualTo(1));
 			Assert.That(lgIco, Is.Null);
 		}
 
@@ -106,9 +106,9 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(ppv, Is.Not.Null);
 			((IExtractIconW)ppv).Extract(icoFile, 0, 48, out var lg, 16, out var sm).ThrowIfFailed();
 			Assert.That(lg.IsInvalid, Is.False);
-			Assert.That(lg.ToIcon().Height, Is.EqualTo(48));
+			Assert.That(lg.Size.Height, Is.EqualTo(48));
 			Assert.That(sm.IsInvalid, Is.False);
-			Assert.That(sm.ToIcon().Height, Is.EqualTo(16));
+			Assert.That(sm.Size.Height, Is.EqualTo(16));
 			Marshal.FinalReleaseComObject(ppv);
 		}
 
@@ -118,7 +118,7 @@ namespace Vanara.PInvoke.Tests
 			const string icoFile = @"notepad.exe";
 			Assert.That(SHDefExtractIcon(icoFile, -2, 0, out _, out var sm, Macros.MAKELONG(48, 16)), Is.EqualTo((HRESULT)0));
 			Assert.That(sm.IsInvalid, Is.False);
-			Assert.That(sm.ToIcon().Height, Is.EqualTo(16));
+			Assert.That(sm.Size.Height, Is.EqualTo(16));
 		}
 
 		[Test]

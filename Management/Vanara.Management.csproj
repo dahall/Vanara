@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Extensions and helper classes for System.Management.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.Management</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>vanara;net-extensions;WMI</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+DynamicMgmtObject, ManagementExtensions
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--<ProjectReference Include="..\..\Core\Vanara.Core.csproj" />-->
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="5.0.0" />
+  </ItemGroup>
+</Project>

@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (interfaces and constants) imported from Windows Image Mastering API.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0-windows;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.IMAPI</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;IMAPI;Image Mastering</PackageTags>
@@ -16,6 +15,7 @@ Interfaces
 DDiscFormat2DataEvents DDiscFormat2EraseEvents DDiscFormat2RawCDEvents DDiscFormat2TrackAtOnceEvents DDiscMaster2Events DFileSystemImageEvents DFileSystemImageImportEvents DWriteEngine2Events IBlockRange IBlockRangeList IBootOptions IBurnVerification IDiscFormat2 IDiscFormat2Data IDiscFormat2DataEventArgs IDiscFormat2Erase IDiscFormat2RawCD IDiscFormat2RawCDEventArgs IDiscFormat2TrackAtOnce IDiscFormat2TrackAtOnceEventArgs IDiscMaster2 IDiscRecorder2 IDiscRecorder2Ex IEnumFsiItems IEnumProgressItems IFileSystemImage IFileSystemImage2 IFileSystemImage3 IFileSystemImageResult IFileSystemImageResult2 IFsiDirectoryItem IFsiDirectoryItem2 IFsiFileItem IFsiFileItem2 IFsiItem IFsiNamedStreams IIsoImageManager IMultisession IMultisessionRandomWrite IMultisessionSequential IMultisessionSequential2 IProgressItem IProgressItems IRawCDImageCreator IRawCDImageTrackInfo IWriteEngine2 IWriteEngine2EventArgs IWriteSpeedDescriptor
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -255,7 +254,7 @@ namespace Vanara.PInvoke
 		// PSPropertyBag_ReadPOINTL( IPropertyBag *propBag, LPCWSTR propName, POINTL *value );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "B8F66DF9-A366-41a7-8311-B9E1CDE14ADB")]
-		public static extern HRESULT PSPropertyBag_ReadPOINTL(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, out Point value);
+		public static extern HRESULT PSPropertyBag_ReadPOINTL(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, out POINT value);
 
 		/// <summary>
 		/// <para>Retrieves the property coordinates stored in a POINTS structure of a specified property bag.</para>
@@ -816,7 +815,7 @@ namespace Vanara.PInvoke
 		// PSPropertyBag_WritePOINTL( IPropertyBag *propBag, LPCWSTR propName, const POINTL *value );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "881A9D35-DF77-44d1-86DF-D6BC97AC0DD4")]
-		public static extern HRESULT PSPropertyBag_WritePOINTL(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, in Point value);
+		public static extern HRESULT PSPropertyBag_WritePOINTL(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, in POINT value);
 
 		/// <summary>
 		/// <para>Stores the property coordinates in aPOINTS structure of a specified property bag.</para>

@@ -28,7 +28,7 @@ namespace Vanara.PInvoke
 		/// <summary>RM_SESSION_KEY_LEN - size in bytes of binary session key</summary>
 		public const int RM_SESSION_KEY_LEN = 16;
 
-		private const string Lib_Rstrtmgr = "Rstrtmgr.dll";
+		private const string Lib_Rstrtmgr = "rstrtmgr.dll";
 
 		/// <summary>
 		/// The <c>RM_WRITE_STATUS_CALLBACK</c> function can be implemented by the user interface that controls the Restart Manager. The

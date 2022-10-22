@@ -5,13 +5,28 @@ namespace Vanara.PInvoke
 {
 	public static partial class Ole32
 	{
+		/// <summary>Browsable Shell Extention</summary>
+		public static readonly Guid CATID_BrowsableShellExt = new Guid(0x00021490, 0, 0, 0xC0, 0, 0, 0, 0, 0, 0, 0x46);
+
+		/// <summary>The catid browse in place</summary>
+		public static readonly Guid CATID_BrowseInPlace = new Guid(0x00021491, 0, 0, 0xC0, 0, 0, 0, 0, 0, 0, 0x46);
+
+		/// <summary>Desk Band</summary>
+		public static readonly Guid CATID_DeskBand = new Guid(0x00021492, 0, 0, 0xC0, 0, 0, 0, 0, 0, 0, 0x46);
+
+		/// <summary>Vertical Explorer Bar</summary>
+		public static readonly Guid CATID_InfoBand = new Guid(0x00021493, 0, 0, 0xC0, 0, 0, 0, 0, 0, 0, 0x46);
+
+		/// <summary>Horizontal Explorer Bar</summary>
+		public static readonly Guid CATID_CommBand = new Guid(0x00021494, 0, 0, 0xC0, 0, 0, 0, 0, 0, 0, 0x46);
+
 		/// <summary>
 		/// Obtains information about the categories implemented or required by a certain class, as well as information about the categories
 		/// registered on the specified computer.
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/comcat/nn-comcat-icatinformation
 		[PInvokeData("comcat.h", MSDNShortId = "NN:comcat.ICatInformation")]
-		[ComImport, Guid("0002E013-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[ComImport, Guid("0002E013-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(StdComponentCategoriesMgr))]
 		public interface ICatInformation
 		{
 			/// <summary>Retrieves an enumerator for the component categories registered on the system.</summary>
@@ -106,7 +121,7 @@ namespace Vanara.PInvoke
 		/// human-readable names of categories and the categories implemented/required by a given component or class.
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/comcat/nn-comcat-icatregister
-		[ComImport, Guid("0002E012-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[ComImport, Guid("0002E012-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(StdComponentCategoriesMgr))]
 		public interface ICatRegister
 		{
 			/// <summary>
@@ -324,5 +339,9 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
 			public string szDescription;
 		}
+
+		/// <summary>Implements CLSID_StdComponentCategoriesMgr.</summary>
+		[ComImport, Guid("0002E005-0000-0000-C000-000000000046"), ClassInterface(ClassInterfaceType.None)]
+		public class StdComponentCategoriesMgr { }
 	}
 }

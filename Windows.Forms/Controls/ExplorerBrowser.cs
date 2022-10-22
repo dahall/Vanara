@@ -710,16 +710,16 @@ namespace Vanara.Windows.Forms
         {
             get
             {
-                using var fv2 = ComReleaserFactory.Create(GetFolderView2());
-                fv2.Item?.GetViewModeAndIconSize(out _, out thumbnailSize);
+                var fv2 = GetFolderView2();
+                fv2?.GetViewModeAndIconSize(out _, out thumbnailSize);
                 return thumbnailSize;
             }
             set
             {
-                using var fv2 = ComReleaserFactory.Create(GetFolderView2());
-                if (fv2.Item is null) return;
-                fv2.Item.GetViewModeAndIconSize(out var fvm, out _);
-                fv2.Item.SetViewModeAndIconSize(fvm, thumbnailSize = value);
+                var fv2 = GetFolderView2();
+                if (fv2 is null) return;
+                fv2.GetViewModeAndIconSize(out var fvm, out _);
+                fv2.SetViewModeAndIconSize(fvm, thumbnailSize = value);
             }
         }
 
@@ -822,17 +822,17 @@ namespace Vanara.Windows.Forms
         /// <summary>Selects all items in the current view.</summary>
         public void SelectAll()
         {
-            using var fv2 = ComReleaserFactory.Create(GetFolderView2());
-            if (fv2.Item is null) return;
-            for (var i = 0; i < fv2.Item.ItemCount(SVGIO.SVGIO_ALLVIEW); i++)
-                fv2.Item.SelectItem(i, SVSIF.SVSI_SELECT);
+            var fv2 = GetFolderView2();
+            if (fv2 is null) return;
+            for (var i = 0; i < fv2.ItemCount(SVGIO.SVGIO_ALLVIEW); i++)
+                fv2.SelectItem(i, SVSIF.SVSI_SELECT);
         }
 
         /// <summary>Unselects all items in the current view.</summary>
         public void UnselectAll()
         {
-            using var fv2 = ComReleaserFactory.Create(GetFolderView2());
-            fv2.Item?.SelectItem(-1, SVSIF.SVSI_DESELECTOTHERS);
+            var fv2 = GetFolderView2();
+            fv2?.SelectItem(-1, SVSIF.SVSI_DESELECTOTHERS);
         }
 
         HRESULT ICommDlgBrowser3.GetCurrentFilter(StringBuilder pszFileSpec, int cchFileSpec) => HRESULT.S_OK;
@@ -889,19 +889,22 @@ namespace Vanara.Windows.Forms
         HRESULT IExplorerBrowserEvents.OnNavigationComplete(IntPtr pidlFolder)
         {
             folderSettings.ViewMode = GetCurrentViewMode();
-            OnNavigated(new NavigatedEventArgs { NewLocation = new ShellItem(pidlFolder) });
+            OnNavigated(new NavigatedEventArgs { NewLocation = new ShellItem(new PIDL(pidlFolder, clone: true)) });
+            // Remember! We're not the owner of the given PIDL, so we have to make our own copy for our own heap! See Issue #158
             return HRESULT.S_OK;
         }
 
         HRESULT IExplorerBrowserEvents.OnNavigationFailed(IntPtr pidlFolder)
         {
-            OnNavigationFailed(new NavigationFailedEventArgs { FailedLocation = new ShellItem(pidlFolder) });
+            OnNavigationFailed(new NavigationFailedEventArgs { FailedLocation = new ShellItem(new PIDL(pidlFolder, clone: true)) });
+            // Remember! We're not the owner of the given PIDL, so we have to make our own copy for our own heap! See Issue #158
             return HRESULT.S_OK;
         }
 
         HRESULT IExplorerBrowserEvents.OnNavigationPending(IntPtr pidlFolder)
         {
-            OnNavigating(new NavigatingEventArgs { PendingLocation = new ShellItem(pidlFolder) }, out var cancelled);
+            OnNavigating(new NavigatingEventArgs { PendingLocation = new ShellItem(new PIDL(pidlFolder, clone: true)) }, out var cancelled);
+            // Remember! We're not the owner of the given PIDL, so we have to make our own copy for our own heap! See Issue #158
             return cancelled ? (HRESULT)HRESULT_CANCELLED : HRESULT.S_OK;
         }
 
@@ -952,8 +955,8 @@ namespace Vanara.Windows.Forms
         {
             try
             {
-                using var fv2 = ComReleaserFactory.Create(GetFolderView2());
-                return fv2.Item?.Items<IShellItemArray>(opt);
+                var fv2 = GetFolderView2();
+                return fv2?.Items<IShellItemArray>(opt);
             }
             catch { return null; }
         }
@@ -1129,8 +1132,8 @@ namespace Vanara.Windows.Forms
 
         private FOLDERVIEWMODE GetCurrentViewMode()
         {
-            using var fv2 = ComReleaserFactory.Create(GetFolderView2());
-            return fv2.Item?.GetCurrentViewMode() ?? 0;
+            var fv2 = GetFolderView2();
+            return fv2?.GetCurrentViewMode() ?? 0;
         }
 
         private bool IsContentFlagSet(ExplorerBrowserContentSectionOptions flag) => folderSettings.fFlags.IsFlagSet((FOLDERFLAGS)flag);
@@ -1430,8 +1433,8 @@ namespace Vanara.Windows.Forms
             {
                 get
                 {
-                    using var fv2 = ComReleaserFactory.Create(eb?.GetFolderView2());
-                    return fv2.Item?.ItemCount(option) ?? 0;
+                    var fv2 = eb?.GetFolderView2();
+                    return fv2?.ItemCount(option) ?? 0;
                 }
             }
 

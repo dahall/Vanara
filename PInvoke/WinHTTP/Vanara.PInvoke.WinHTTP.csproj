@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>winhttp.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows WinHTTP.dll.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.PInvoke.WinHTTP</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;WinHTTP</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+WinHttpAddRequestHeaders WinHttpAddRequestHeadersEx WinHttpCheckPlatform WinHttpCloseHandle WinHttpConnect WinHttpCrackUrl WinHttpCreateProxyResolver WinHttpCreateUrl WinHttpDetectAutoProxyConfigUrl WinHttpFreeProxyResult WinHttpFreeQueryConnectionGroupResult WinHttpGetDefaultProxyConfiguration WinHttpGetIEProxyConfigForCurrentUser WinHttpGetProxyForUrl WinHttpGetProxyForUrlEx WinHttpGetProxyResult WinHttpOpen WinHttpOpenRequest WinHttpQueryAuthSchemes WinHttpQueryConnectionGroup WinHttpQueryDataAvailable WinHttpQueryHeaders WinHttpQueryHeadersEx WinHttpQueryOption WinHttpReadData WinHttpReadDataEx WinHttpReceiveResponse WinHttpResetAutoProxy WinHttpSendRequest WinHttpSetCredentials WinHttpSetDefaultProxyConfiguration WinHttpSetOption WinHttpSetStatusCallback WinHttpSetTimeouts WinHttpTimeFromSystemTime WinHttpTimeToSystemTime WinHttpWebSocketClose WinHttpWebSocketCompleteUpgrade WinHttpWebSocketQueryCloseStatus WinHttpWebSocketReceive WinHttpWebSocketSend WinHttpWebSocketShutdown WinHttpWriteData
+
+Structures
+HINTERNET HTTP_VERSION_INFO WINHTTP_ASYNC_RESULT WINHTTP_AUTOPROXY_OPTIONS WINHTTP_CERTIFICATE_INFO WINHTTP_CONNECTION_GROUP WINHTTP_CONNECTION_INFO WINHTTP_CREDS WINHTTP_CREDS_EX WINHTTP_CURRENT_USER_IE_PROXY_CONFIG WINHTTP_EXTENDED_HEADER WINHTTP_HEADER_NAME WINHTTP_HOST_CONNECTION_GROUP WINHTTP_MATCH_CONNECTION_GUID WINHTTP_PROXY_INFO WINHTTP_PROXY_INFO_IN WINHTTP_PROXY_NETWORKING_KEY WINHTTP_PROXY_RESULT WINHTTP_PROXY_RESULT_ENTRY WINHTTP_PROXY_SETTINGS WINHTTP_QUERY_CONNECTION_GROUP_RESULT WINHTTP_REQUEST_STATS WINHTTP_REQUEST_TIMES WINHTTP_SECURITY_INFO WINHTTP_URL_COMPONENTS WINHTTP_URL_COMPONENTS_IN WINHTTP_WEB_SOCKET_ASYNC_RESULT WINHTTP_WEB_SOCKET_STATUS
+
+</PackageReleaseNotes>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
+    <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
+  </ItemGroup>
+</Project>

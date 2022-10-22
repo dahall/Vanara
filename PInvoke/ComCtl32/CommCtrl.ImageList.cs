@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Gdi32;
@@ -567,7 +566,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="riid">An IID for the image list.</param>
 			/// <returns>The address of a pointer to the interface for the image list if successful, NULL otherwise.</returns>
-			IImageList GetDragImage(out Point ppt, out Point pptHotspot, in Guid riid);
+			IImageList GetDragImage(out POINT ppt, out POINT pptHotspot, in Guid riid);
 
 			/// <summary>Gets the flags of an image.</summary>
 			/// <param name="i">A value of type int that contains the index of the images whose flags need to be retrieved.</param>
@@ -810,7 +809,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="riid">An IID for the image list.</param>
 			/// <returns>The address of a pointer to the interface for the image list if successful, NULL otherwise.</returns>
-			new IImageList GetDragImage(out Point ppt, out Point pptHotspot, in Guid riid);
+			new IImageList GetDragImage(out POINT ppt, out POINT pptHotspot, in Guid riid);
 
 			/// <summary>Gets the flags of an image.</summary>
 			/// <param name="i">A value of type int that contains the index of the images whose flags need to be retrieved.</param>
@@ -908,10 +907,10 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the dimensions of images in an image list. All images in an image list have the same dimensions.</summary>
 		/// <param name="il">The <see cref="IImageList"/> instance.</param>
 		/// <returns>The size of images.</returns>
-		public static Size GetIconSize(this IImageList il)
+		public static SIZE GetIconSize(this IImageList il)
 		{
 			il.GetIconSize(out var cx, out var cy);
-			return new Size(cx, cy);
+			return new SIZE(cx, cy);
 		}
 
 		/// <summary>Get an image list interface from an image list handle.</summary>
@@ -1382,7 +1381,7 @@ namespace Vanara.PInvoke
 		/// <param name="size">
 		/// A value that contains the width and height, in pixels, of the images in the image list. All images in an image list have the same dimensions.
 		/// </param>
-		public static void SetIconSize(this IImageList il, Size size) => il.SetIconSize(size.Width, size.Height);
+		public static void SetIconSize(this IImageList il, SIZE size) => il.SetIconSize(size.Width, size.Height);
 
 		/// <summary>Contains information about an image in an image list. This structure is used with the IImageList::GetImageInfo function.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761393")]

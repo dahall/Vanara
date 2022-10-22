@@ -29,7 +29,7 @@ namespace Vanara.PInvoke.Tests
 			var addr = new SOCKADDR(localIP4);
 			var len = 256U;
 			var sb = new StringBuilder((int)len);
-			Assert.That(WSAAddressToString(addr, addr.Size, default, sb, ref len), ResultIs.Not.Value(-1));
+			Assert.That(WSAAddressToString(addr, addr.Size, default, sb, ref len), ResultIs.Successful);
 			TestContext.Write(sb);
 			Assert.That(sb.ToString(), Is.EqualTo(localIP4.ToString()));
 		}
@@ -48,12 +48,12 @@ namespace Vanara.PInvoke.Tests
 		public void WSAEnumNameSpaceProvidersTest()
 		{
 			var len = 0U;
-			Assert.That(WSAEnumNameSpaceProviders(ref len, default), ResultIs.Value(-1));
+			Assert.That(WSAEnumNameSpaceProviders(ref len, default), ResultIs.Failure);
 			//Assert.That(WSAGetLastError(), Is.EqualTo((Win32Error)Win32Error.WSAEFAULT));
 			Assert.That(len, Is.GreaterThan(0));
 			using var mem = new SafeHGlobalHandle(len);
 			var cnt = WSAEnumNameSpaceProviders(ref len, mem);
-			Assert.That(cnt, ResultIs.Not.Value(-1));
+			Assert.That(cnt, ResultIs.Successful);
 			TestContext.Write(string.Join("\n", mem.ToEnumerable<WSANAMESPACE_INFOW>(cnt).Select(n => $"{n.lpszIdentifier.ToString()}: {n.NSProviderId}, {n.dwNameSpace}, {n.fActive}")));
 		}
 
@@ -61,12 +61,12 @@ namespace Vanara.PInvoke.Tests
 		public void WSAEnumNameSpaceProvidersExTest()
 		{
 			var len = 0U;
-			Assert.That(WSAEnumNameSpaceProvidersEx(ref len, default), ResultIs.Value(-1));
+			Assert.That(WSAEnumNameSpaceProvidersEx(ref len, default), ResultIs.Failure);
 			//Assert.That(WSAGetLastError(), Is.EqualTo((Win32Error)Win32Error.WSAEFAULT));
 			Assert.That(len, Is.GreaterThan(0));
 			using var mem = new SafeHGlobalHandle(len);
 			var cnt = WSAEnumNameSpaceProvidersEx(ref len, mem);
-			Assert.That(cnt, ResultIs.Not.Value(-1));
+			Assert.That(cnt, ResultIs.Successful);
 			TestContext.Write(string.Join("\n", mem.ToEnumerable<WSANAMESPACE_INFOEXW>(cnt).Select(n => $"{n.lpszIdentifier.ToString()}: {n.NSProviderId}, {n.dwNameSpace}, {n.fActive}")));
 		}
 
@@ -75,32 +75,32 @@ namespace Vanara.PInvoke.Tests
 		{
 			var ListenSocket = tcpSocket;
 			var InetAddr = new SOCKADDR(IN_ADDR.INADDR_ANY, htons(27015));
-			Assert.That(bind(ListenSocket, InetAddr, InetAddr.Size), ResultIs.Not.Value(-1));
+			Assert.That(bind(ListenSocket, InetAddr, InetAddr.Size), ResultIs.Successful);
 			using var evt = WSACreateEvent();
 			Assert.That(evt, ResultIs.ValidHandle);
-			Assert.That(WSAEventSelect(ListenSocket, evt, FD.FD_ACCEPT | FD.FD_CLOSE), ResultIs.Not.Value(-1));
-			Assert.That(listen(ListenSocket, 10), ResultIs.Not.Value(-1));
+			Assert.That(WSAEventSelect(ListenSocket, evt, FD.FD_ACCEPT | FD.FD_CLOSE), ResultIs.Successful);
+			Assert.That(listen(ListenSocket, 10), ResultIs.Successful);
 			var EventArray = new WSAEVENT[] { evt };
 			WSAWaitForMultipleEvents((uint)EventArray.Length, EventArray, true, 500, false);
-			Assert.That(WSAEnumNetworkEvents(ListenSocket, evt, out var nets), ResultIs.Not.Value(-1));
+			Assert.That(WSAEnumNetworkEvents(ListenSocket, evt, out var nets), ResultIs.Successful);
 		}
 
 		[Test]
 		public void WSAEnumProtocolsTest()
 		{
 			var len = 0U;
-			Assert.That(WSAEnumProtocols(null, default, ref len), ResultIs.Value(-1));
+			Assert.That(WSAEnumProtocols(null, default, ref len), ResultIs.Failure);
 			Assert.That(len, Is.GreaterThan(0));
 			using var mem = new SafeHGlobalHandle(len);
 			var cnt = WSAEnumProtocols(null, mem, ref len);
-			Assert.That(cnt, ResultIs.Not.Value(-1));
+			Assert.That(cnt, ResultIs.Successful);
 			TestContext.Write(string.Join("\n", mem.ToEnumerable<WSAPROTOCOL_INFO>(cnt).Select(p => $"{p.szProtocol}: {(ADDRESS_FAMILY)p.iAddressFamily}, {p.iSocketType}, {p.iProtocol}")));
 		}
 
 		[Test]
 		public void WSAHtonlTest()
 		{
-			Assert.That(WSAHtonl(tcpSocket, 0x01020304, out var ret), ResultIs.Not.Value(-1));
+			Assert.That(WSAHtonl(tcpSocket, 0x01020304, out var ret), ResultIs.Successful);
 			Assert.That(ret, Is.EqualTo(0x04030201));
 		}
 	}

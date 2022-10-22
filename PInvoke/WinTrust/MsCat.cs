@@ -434,7 +434,7 @@ namespace Vanara.PInvoke
 		// HCATADMIN hCatAdmin, PWSTR pwszCatalogFile, PWSTR pwszSelectBaseName, DWORD dwFlags );
 		[PInvokeData("mscat.h", MSDNShortId = "a227597c-a0af-4b86-bd29-03f478aef244")]
 		public static SafeHCATINFO CryptCATAdminAddCatalog(SafeHCATADMIN hCatAdmin, [MarshalAs(UnmanagedType.LPWStr)] string pwszCatalogFile, [MarshalAs(UnmanagedType.LPWStr), Optional] string pwszSelectBaseName, uint dwFlags) =>
-			new SafeHCATINFO(InternalCryptCATAdminAddCatalog(hCatAdmin, pwszCatalogFile, pwszSelectBaseName, dwFlags), hCatAdmin, true);
+			new(InternalCryptCATAdminAddCatalog(hCatAdmin, pwszCatalogFile, pwszSelectBaseName, dwFlags), hCatAdmin, true);
 
 		/// <summary>
 		/// <para>
@@ -529,7 +529,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("mscat.h", MSDNShortId = "CBFA60A8-5E5A-4FAD-8AD3-26539802CD53")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CryptCATAdminCalcHashFromFileHandle2(HCATADMIN hCatAdmin, HFILE hFile, ref uint pcbHash, IntPtr pbHash, uint dwFlags = 0);
+		public static extern bool CryptCATAdminCalcHashFromFileHandle2(HCATADMIN hCatAdmin, HFILE hFile, ref uint pcbHash, IntPtr pbHash = default, uint dwFlags = 0);
 
 		/// <summary>
 		/// <para>
@@ -566,7 +566,45 @@ namespace Vanara.PInvoke
 		// CryptCATAdminEnumCatalogFromHash( HCATADMIN hCatAdmin, BYTE *pbHash, DWORD cbHash, DWORD dwFlags, HCATINFO *phPrevCatInfo );
 		[PInvokeData("mscat.h", MSDNShortId = "33ab2d01-94ab-4d23-a054-9da0731485d6")]
 		public static SafeHCATINFO CryptCATAdminEnumCatalogFromHash(SafeHCATADMIN hCatAdmin, IntPtr pbHash, uint cbHash, [Optional] uint dwFlags, ref HCATINFO phPrevCatInfo) =>
-			new SafeHCATINFO(InternalCryptCATAdminEnumCatalogFromHash(hCatAdmin, pbHash, cbHash, dwFlags, ref phPrevCatInfo), hCatAdmin, true);
+			new(InternalCryptCATAdminEnumCatalogFromHash(hCatAdmin, pbHash, cbHash, dwFlags, ref phPrevCatInfo), hCatAdmin, true);
+
+		/// <summary>
+		/// <para>
+		/// [The <c>CryptCATAdminEnumCatalogFromHash</c> function is available for use in the operating systems specified in the Requirements
+		/// section. It may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// The <c>CryptCATAdminEnumCatalogFromHash</c> function enumerates the catalogs that contain a specified hash. The hash is typically
+		/// returned from the CryptCATAdminCalcHashFromFileHandle function. This function has no associated import library. You must use the
+		/// LoadLibrary and GetProcAddress functions to dynamically link to Wintrust.dll. After the final call to this function, call
+		/// CryptCATAdminReleaseCatalogContext to release allocated memory.
+		/// </para>
+		/// </summary>
+		/// <param name="hCatAdmin">A handle to a catalog administrator context previously assigned by the CryptCATAdminAcquireContext function.</param>
+		/// <param name="pbHash">A pointer to the buffer that contains the hash retrieved by calling CryptCATAdminCalcHashFromFileHandle.</param>
+		/// <param name="cbHash">Number of bytes in the buffer allocated for pbHash.</param>
+		/// <param name="dwFlags">This parameter is reserved for future use and must be set to zero.</param>
+		/// <param name="phPrevCatInfo">
+		/// The safe handle to the previous catalog context or <c>NULL</c>, if an enumeration is re-queried. If <c>NULL</c> is passed in for
+		/// this parameter, then the caller gets information only for the first catalog that contains the hash; an enumeration is not made.
+		/// If phPrevCatInfo contains <c>NULL</c>, then an enumeration of the catalogs that contain the hash is started, and subsequent calls
+		/// to <c>CryptCATAdminEnumCatalogFromHash</c> must set phPrevCatInfo to the return value from the previous call.
+		/// </param>
+		/// <returns>
+		/// <para>The return value is a handle to the catalog context or <c>NULL</c>, if there are no more catalogs to enumerate or retrieve.</para>
+		/// <para>
+		/// For extended error information, call the GetLastError function. For a complete list of error codes provided by the operating
+		/// system, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatadminenumcatalogfromhash HCATINFO
+		// CryptCATAdminEnumCatalogFromHash( HCATADMIN hCatAdmin, BYTE *pbHash, DWORD cbHash, DWORD dwFlags, HCATINFO *phPrevCatInfo );
+		[PInvokeData("mscat.h", MSDNShortId = "33ab2d01-94ab-4d23-a054-9da0731485d6")]
+		public static SafeHCATINFO CryptCATAdminEnumCatalogFromHash(SafeHCATADMIN hCatAdmin, IntPtr pbHash, uint cbHash, [Optional] uint dwFlags, SafeHCATINFO phPrevCatInfo = null)
+		{
+			HCATINFO hPrev = phPrevCatInfo ?? default;
+			return new SafeHCATINFO(InternalCryptCATAdminEnumCatalogFromHash(hCatAdmin, pbHash, cbHash, dwFlags, ref hPrev), hCatAdmin, true);
+		}
 
 		/// <summary>
 		/// <para>
@@ -1710,14 +1748,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HCATALOG : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HCATALOG"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HCATALOG(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HCATALOG"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HCATALOG NULL => new HCATALOG(IntPtr.Zero);
+			public static HCATALOG NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -1730,7 +1768,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCATALOG"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HCATALOG(IntPtr h) => new HCATALOG(h);
+			public static implicit operator HCATALOG(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -1745,7 +1783,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HCATALOG h1, HCATALOG h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HCATALOG h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HCATALOG h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -1765,7 +1803,7 @@ namespace Vanara.PInvoke
 			public HCATINFO(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HCATINFO"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HCATINFO NULL => new HCATINFO(IntPtr.Zero);
+			public static HCATINFO NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -1778,7 +1816,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCATINFO"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HCATINFO(IntPtr h) => new HCATINFO(h);
+			public static implicit operator HCATINFO(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -1793,7 +1831,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HCATINFO h1, HCATINFO h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HCATINFO h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HCATINFO h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();

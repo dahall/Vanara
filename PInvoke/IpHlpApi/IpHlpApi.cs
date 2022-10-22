@@ -57,6 +57,27 @@ namespace Vanara.PInvoke
 		/// <summary/>
 		public const int TCPIP_OWNING_MODULE_SIZE = 16;
 
+		/// <summary>
+		/// <para>
+		/// A callback function that you implement in your app in order to be notified of changes to the timestamp capabilities of a network
+		/// adapter. Pass a pointer to your implementation when you call <c>RegisterInterfaceTimestampConfigChange</c>.
+		/// </para>
+		/// <para>For more info, and code examples, see Packet timestamping.</para>
+		/// </summary>
+		/// <param name="CallerContext">
+		/// <para>Type: _In_ <c>PVOID</c></para>
+		/// <para>
+		/// The caller-allocated context that you passed to <c>RegisterInterfaceTimestampConfigChange</c>, or <c>NULL</c> if you didn't pass
+		/// a context.
+		/// </para>
+		/// </param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iphlpapi/nc-iphlpapi-interface_timestamp_config_change_callback
+		// INTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK InterfaceTimestampConfigChangeCallback; void InterfaceTimestampConfigChangeCallback( PVOID CallerContext ) {...}
+		[PInvokeData("iphlpapi.h", MSDNShortId = "NC:iphlpapi.INTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK", MinClient = PInvokeClient.Windows11)]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void INTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK(IntPtr CallerContext);
+
 		/// <summary>The type of addresses to retrieve in <see cref="GetAdaptersAddresses(GetAdaptersAddressesFlags, ADDRESS_FAMILY)"/>.</summary>
 		[PInvokeData("iptypes.h")]
 		[Flags]
@@ -3633,6 +3654,36 @@ namespace Vanara.PInvoke
 		public static MIB_IFTABLE GetIfTable(bool sorted = false) => GetTable((IntPtr p, ref uint len) => GetIfTable(p, ref len, sorted), len => new MIB_IFTABLE(len));
 
 		/// <summary>
+		/// <para>Retrieves the currently enabled timestamp capabilities of a network adapter.</para>
+		/// <para>For more info, and code examples, see Packet timestamping.</para>
+		/// </summary>
+		/// <param name="InterfaceLuid">
+		/// <para>Type: _In_ <c>CONST NET_LUID*</c></para>
+		/// <para>
+		/// The network locally unique identifier (LUID) of the network adapter for which currently enabled timestamp capabilities are to be retrieved.
+		/// </para>
+		/// </param>
+		/// <param name="TimestampCapabilites">
+		/// <para>Type: _Out_ <c>PINTERFACE_TIMESTAMP_CAPABILITIES</c></para>
+		/// <para>
+		/// If the function succeeds, then TimestampCapabilites returns a structure that describes the currently enabled timestamp capabilities.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// If the function succeeds, then it returns <c>NO_ERROR</c>. If the network card corresponding to InterfaceLuid isn't
+		/// timestamp-aware, then the function returns <c>ERROR_NOT_SUPPORTED</c>. If the network card driver advertises an unsupported
+		/// timestamp configuration, then the function returns <c>ERROR_BAD_DRIVER</c>.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iphlpapi/nf-iphlpapi-getinterfaceactivetimestampcapabilities
+		// IPHLPAPI_DLL_LINKAGE DWORD GetInterfaceActiveTimestampCapabilities( const NET_LUID *InterfaceLuid, PINTERFACE_TIMESTAMP_CAPABILITIES TimestampCapabilites );
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("iphlpapi.h", MSDNShortId = "NF:iphlpapi.GetInterfaceActiveTimestampCapabilities", MinClient = PInvokeClient.Windows11)]
+		public static extern Win32Error GetInterfaceActiveTimestampCapabilities(in NET_LUID InterfaceLuid, out INTERFACE_TIMESTAMP_CAPABILITIES TimestampCapabilites);
+
+		/// <summary>
 		/// <para>
 		/// The <c>GetInterfaceInfo</c> function obtains the list of the network interface adapters with IPv4 enabled on the local system.
 		/// </para>
@@ -3740,6 +3791,33 @@ namespace Vanara.PInvoke
 		/// <returns>An IP_INTERFACE_INFO structure that receives the list of adapters.</returns>
 		[PInvokeData("iphlpapi.h", MSDNShortId = "efc0d175-2c6d-4608-b385-1623a9e0375c")]
 		public static IP_INTERFACE_INFO GetInterfaceInfo() => GetTable((IntPtr p, ref uint len) => GetInterfaceInfo(p, ref len), len => new IP_INTERFACE_INFO(len));
+
+		/// <summary>
+		/// <para>Retrieves the supported timestamp capabilities of a network adapter.</para>
+		/// <para>For more info, and code examples, see Packet timestamping.</para>
+		/// </summary>
+		/// <param name="InterfaceLuid">
+		/// <para>Type: _In_ <c>CONST NET_LUID*</c></para>
+		/// <para>
+		/// The network locally unique identifier (LUID) of the network adapter for which supported timestamp capabilities are to be retrieved.
+		/// </para>
+		/// </param>
+		/// <param name="TimestampCapabilites">
+		/// <para>Type: _Out_ <c>PINTERFACE_TIMESTAMP_CAPABILITIES</c></para>
+		/// <para>If the function succeeds, then TimestampCapabilites returns a structure that describes the supported timestamp capabilities.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// If the function succeeds, then it returns <c>NO_ERROR</c>. If the network card corresponding to InterfaceLuid isn't
+		/// timestamp-aware, then the function returns <c>ERROR_NOT_SUPPORTED</c>.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iphlpapi/nf-iphlpapi-getinterfacesupportedtimestampcapabilities
+		// IPHLPAPI_DLL_LINKAGE DWORD GetInterfaceSupportedTimestampCapabilities( const NET_LUID *InterfaceLuid, PINTERFACE_TIMESTAMP_CAPABILITIES TimestampCapabilites );
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("iphlpapi.h", MSDNShortId = "NF:iphlpapi.GetInterfaceSupportedTimestampCapabilities", MinClient = PInvokeClient.Windows11)]
+		public static extern Win32Error GetInterfaceSupportedTimestampCapabilities(in NET_LUID InterfaceLuid, out INTERFACE_TIMESTAMP_CAPABILITIES TimestampCapabilites);
 
 		/// <summary>
 		/// <para>The <c>GetIpAddrTable</c> function retrieves the interface–to–IPv4 address mapping table.</para>
@@ -7805,6 +7883,37 @@ namespace Vanara.PInvoke
 		public static unsafe string PhysicalAddressToString(byte* physAddr) => $"{physAddr[0]:X}-{physAddr[1]:X}-{physAddr[2]:X}-{physAddr[3]:X}-{physAddr[4]:X}-{physAddr[5]:X}";
 
 		/// <summary>
+		/// <para>
+		/// Registers a user-implemented callback function, which the system calls to notify you of a timestamp capability change. You can
+		/// cancel the registration by calling <c>UnregisterInterfaceTimestampConfigChange</c>.
+		/// </para>
+		/// <para>For more info, and code examples, see Packet timestamping.</para>
+		/// </summary>
+		/// <param name="Callback">
+		/// <para>Type: _In_ <c>PINTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK</c></para>
+		/// <para>Your callback function, to be invoked when a timestamp capability change happens.</para>
+		/// </param>
+		/// <param name="CallerContext">
+		/// <para>Type: _In_opt_ <c>PVOID</c></para>
+		/// <para>An optional caller-allocated context.</para>
+		/// </param>
+		/// <param name="NotificationHandle">
+		/// <para>Type: _Out_ <c>HIFTIMESTAMPCHANGE</c></para>
+		/// <para>A handle, returned by the function, that identifies the registration.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>A <c>DWORD</c> return code indicating success or failure.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iphlpapi/nf-iphlpapi-registerinterfacetimestampconfigchange
+		// IPHLPAPI_DLL_LINKAGE DWORD RegisterInterfaceTimestampConfigChange( PINTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK Callback, PVOID
+		// CallerContext, HIFTIMESTAMPCHANGE *NotificationHandle );
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("iphlpapi.h", MSDNShortId = "NF:iphlpapi.RegisterInterfaceTimestampConfigChange", MinClient = PInvokeClient.Windows11)]
+		public static extern Win32Error RegisterInterfaceTimestampConfigChange([In] INTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK Callback,
+			IntPtr CallerContext, out HIFTIMESTAMPCHANGE NotificationHandle);
+
+		/// <summary>
 		/// The <c>RestoreMediaSense</c> function restores the media sensing capability of the TCP/IP stack on a local computer on which the
 		/// DisableMediaSense function was previously called.
 		/// </summary>
@@ -9554,6 +9663,36 @@ namespace Vanara.PInvoke
 		[PInvokeData("iphlpapi.h", MSDNShortId = "95f0387f-24e8-4382-b78e-e59bcec0f2ed")]
 		public static extern unsafe Win32Error UnenableRouter(System.Threading.NativeOverlapped* pOverlapped, out uint lpdwEnableCount);
 
+		/// <summary>
+		/// <para>
+		/// Cancels notifications about timestamp capability changes by unregistering the callback function you registered in a call to <c>RegisterInterfaceTimestampConfigChange</c>.
+		/// </para>
+		/// <para>
+		/// To avoid deadlock, you shouldn't call <c>UnregisterInterfaceTimestampConfigChange</c> in the context of the thread that's
+		/// executing a callback that was specified to <c>RegisterInterfaceTimestampConfigChange</c>. This is because
+		/// <c>UnregisterInterfaceTimestampConfigChange</c> waits for outstanding notification callbacks to complete before it returns.
+		/// Consequently, <c>UnregisterInterfaceTimestampConfigChange</c> mustn't be called in a way that prevents an outstanding
+		/// notification callback from completing. No further callbacks will take place after
+		/// <c>UnregisterInterfaceTimestampConfigChange</c> returns.
+		/// </para>
+		/// <para>For more info, and code examples, see Packet timestamping.</para>
+		/// </summary>
+		/// <param name="NotificationHandle">
+		/// <para>Type: _In_ <c>HIFTIMESTAMPCHANGE</c></para>
+		/// <para>
+		/// The handle that was returned by <c>RegisterInterfaceTimestampConfigChange</c>. This identifies the registration to be canceled.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>A <c>DWORD</c> return code indicating success or failure.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iphlpapi/nf-iphlpapi-unregisterinterfacetimestampconfigchange
+		// IPHLPAPI_DLL_LINKAGE VOID UnregisterInterfaceTimestampConfigChange( HIFTIMESTAMPCHANGE NotificationHandle );
+		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("iphlpapi.h", MSDNShortId = "NF:iphlpapi.UnregisterInterfaceTimestampConfigChange", MinClient = PInvokeClient.Windows11)]
+		public static extern void UnregisterInterfaceTimestampConfigChange([In] HIFTIMESTAMPCHANGE NotificationHandle);
+
 		private static TRet GetTable<TRet>(FunctionHelper.PtrFunc<uint> func, Func<uint, TRet> make, uint memErr = Win32Error.ERROR_INSUFFICIENT_BUFFER) where TRet : SafeHandle
 		{
 			uint len = 0;
@@ -9564,6 +9703,289 @@ namespace Vanara.PInvoke
 			var mem = make(len);
 			func(mem.DangerousGetHandle(), ref len).ThrowIfFailed();
 			return mem;
+		}
+
+		/// <summary>Provides a handle to a notification registration for a timestamp capability change.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HIFTIMESTAMPCHANGE : IHandle
+		{
+			private readonly IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HIFTIMESTAMPCHANGE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HIFTIMESTAMPCHANGE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HIFTIMESTAMPCHANGE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HIFTIMESTAMPCHANGE NULL => new(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HIFTIMESTAMPCHANGE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HIFTIMESTAMPCHANGE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HIFTIMESTAMPCHANGE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HIFTIMESTAMPCHANGE(IntPtr h) => new(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HIFTIMESTAMPCHANGE h1, HIFTIMESTAMPCHANGE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HIFTIMESTAMPCHANGE h1, HIFTIMESTAMPCHANGE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HIFTIMESTAMPCHANGE h && handle == h.handle;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>
+		/// <para>Describes the timestamping capabilities of a network interface card's (NIC's) hardware.</para>
+		/// <para>For more info, and code examples, see Packet timestamping.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// All of the <c>INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES</c> structure's members represent hardware timestamp capabilities. The
+		/// hardware timestamps are generated using the NIC's hardware clock.
+		/// </para>
+		/// <para>Having both hardware and software timestamps enabled together isn't supported.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iphlpapi/ns-iphlpapi-interface_hardware_timestamp_capabilities typedef struct
+		// _INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES { BOOLEAN PtpV2OverUdpIPv4EventMessageReceive; BOOLEAN
+		// PtpV2OverUdpIPv4AllMessageReceive; BOOLEAN PtpV2OverUdpIPv4EventMessageTransmit; BOOLEAN PtpV2OverUdpIPv4AllMessageTransmit;
+		// BOOLEAN PtpV2OverUdpIPv6EventMessageReceive; BOOLEAN PtpV2OverUdpIPv6AllMessageReceive; BOOLEAN
+		// PtpV2OverUdpIPv6EventMessageTransmit; BOOLEAN PtpV2OverUdpIPv6AllMessageTransmit; BOOLEAN AllReceive; BOOLEAN AllTransmit;
+		// BOOLEAN TaggedTransmit; } INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES, *PINTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES;
+		[PInvokeData("iphlpapi.h", MSDNShortId = "NS:iphlpapi._INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES", MinClient = PInvokeClient.Windows11)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES
+		{
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// <c>TRUE</c> indicates that, during packet reception, the NIC can recognize in hardware a PTP version 2 event message
+			/// contained in an IPv4 UDP packet, and can generate a timestamp in hardware corresponding to when such a packet was received.
+			/// A value of <c>FALSE</c> indicates that the hardware is not capable of this.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool PtpV2OverUdpIPv4EventMessageReceive;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// <c>TRUE</c> indicates that, during packet reception, the NIC can recognize in hardware any PTP version 2 message (not just
+			/// PTP event messages) contained in an IPv4 UDP packet, and can generate a timestamp in hardware corresponding to when such a
+			/// packet was received. A value of <c>FALSE</c> indicates that the hardware is not capable of this.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool PtpV2OverUdpIPv4AllMessageReceive;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// <c>TRUE</c> indicates that, during packet transmission, the NIC can recognize in hardware a PTP version 2 event message
+			/// contained in an IPv4 UDP packet, and can generate a timestamp in hardware corresponding to when such a packet was
+			/// transmitted. A value of <c>FALSE</c> indicates that the hardware is not capable of this.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool PtpV2OverUdpIPv4EventMessageTransmit;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// <c>TRUE</c> indicates that, during packet transmission, the NIC can recognize in hardware any PTP version 2 message (not
+			/// just PTP event messages) contained in an IPv4 UDP packet, and can generate a timestamp in hardware corresponding to when
+			/// such a packet was transmitted. A value of <c>FALSE</c> indicates that the hardware is not capable of this.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool PtpV2OverUdpIPv4AllMessageTransmit;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>The same as PtpV2OverUdpIPv4EventMsgReceiveHw, except that it applies to IPv6.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool PtpV2OverUdpIPv6EventMessageReceive;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>The same as PtpV2OverUdpIPv4AllMsgReceiveHw, except that it applies to IPv6.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool PtpV2OverUdpIPv6AllMessageReceive;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>The same as PtpV2OverUdpIPv4EventMsgTransmitHw, except that it applies to IPv6.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool PtpV2OverUdpIPv6EventMessageTransmit;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>The same as PtpV2OverUdpIPv4AllMsgTransmitHw, except that it applies to IPv6.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool PtpV2OverUdpIPv6AllMessageTransmit;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// <c>TRUE</c> indicates that the NIC can generate a hardware timestamp for all received packets (that is, not just PTP). A
+			/// value of <c>FALSE</c> indicates that the hardware is not capable of this.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool AllReceive;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// <c>TRUE</c> indicates that the NIC can generate a hardware timestamp for all transmitted packets (that is, not just PTP). A
+			/// value of <c>FALSE</c> indicates that the hardware is not capable of this.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool AllTransmit;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// <c>TRUE</c> indicates that the NIC can generate a hardware timestamp for any specific transmitted packet when indicated to
+			/// do so by the application. A value of <c>FALSE</c> indicates that the hardware is not capable of this. See
+			/// <c>TIMESTAMPING_CONFIG</c> (and <c>TIMESTAMPING_FLAG_TX</c>) to determine how to request a timestamp when sending UDP
+			/// packets through Windows Sockets.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool TaggedTransmit;
+		}
+
+		/// <summary>
+		/// <para>Describes the software timestamping capabilities of a NIC's miniport driver.</para>
+		/// <para>For more info, and code examples, see Packet timestamping.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// All of the <c>INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES</c> structure's members represent software timestamp capabilities. The
+		/// software timestamp generated by the NIC driver corresponds to a counter value obtained by calling <c>QueryPerformanceCounter</c>.
+		/// </para>
+		/// <para>Having both hardware and software timestamps enabled together isn't supported.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iphlpapi/ns-iphlpapi-interface_software_timestamp_capabilities typedef struct
+		// _INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES { BOOLEAN AllReceive; BOOLEAN AllTransmit; BOOLEAN TaggedTransmit; }
+		// INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES, *PINTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES;
+		[PInvokeData("iphlpapi.h", MSDNShortId = "NS:iphlpapi._INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES", MinClient = PInvokeClient.Windows11)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES
+		{
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// Also contains members that describe the software timestamping capabilities of a NIC's miniport driver. Not a hardware
+			/// capability. <c>TRUE</c> indicates that the NIC's miniport driver can generate a software timestamp for all received packets.
+			/// A value of <c>FALSE</c> indicates that the software is not capable of this.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool AllReceive;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// Not a hardware capability. Analogous to AllReceiveSw, except it applies to the transmit direction. <c>TRUE</c> indicates
+			/// that the NIC's miniport driver can generate a software timestamp for all transmitted packets. A value of <c>FALSE</c>
+			/// indicates that the software is not capable of this.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool AllTransmit;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// Not a hardware capability. <c>TRUE</c> indicates that the NIC's miniport driver can generate a software timestamp for any
+			/// specific transmitted packet when indicated to do so by the application. A value of <c>FALSE</c> indicates that the software
+			/// is not capable of this. See <c>TIMESTAMPING_CONFIG</c> (and <c>TIMESTAMPING_FLAG_TX</c>) to determine how to request a
+			/// timestamp when sending UDP packets through Windows Sockets.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool TaggedTransmit;
+		}
+
+		/// <summary>
+		/// <para>Describes the exact timestamp capabilities that a network adapter supports.</para>
+		/// <para>
+		/// To retrieve the supported timestamp capabilities of a network adapter, call the
+		/// <c>GetInterfaceSupportedTimestampCapabilities</c> function. That function returns the supported timestamping capabilities in the
+		/// form of an <c>INTERFACE_TIMESTAMP_CAPABILITIES</c> object.
+		/// </para>
+		/// <para>For more info, and code examples, see Packet timestamping.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/iphlpapi/ns-iphlpapi-interface_timestamp_capabilities
+		// typedef struct _INTERFACE_TIMESTAMP_CAPABILITIES { ULONG64 HardwareClockFrequencyHz; BOOLEAN SupportsCrossTimestamp; INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES HardwareCapabilities; INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES SoftwareCapabilities; } INTERFACE_TIMESTAMP_CAPABILITIES, *PINTERFACE_TIMESTAMP_CAPABILITIES;
+		[PInvokeData("iphlpapi.h", MSDNShortId = "NS:iphlpapi._INTERFACE_TIMESTAMP_CAPABILITIES", MinClient = PInvokeClient.Windows11)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct INTERFACE_TIMESTAMP_CAPABILITIES
+		{
+			/// <summary>
+			/// <para>Type: <c>ULONG64</c></para>
+			/// <para>
+			/// Contains the frequency of the network adapter's hardware clock, rounded off to the nearest integer in Hertz units. Note this
+			/// is the nominal frequency, and the actual frequency might not be the same as this. This data could be used to display the
+			/// nominal clock frequency to end users for informational purposes. It's possible for HardwareClockFrequencyHz to contain the
+			/// value 0.
+			/// </para>
+			/// </summary>
+			public ulong HardwareClockFrequencyHz;
+
+			/// <summary>
+			/// <para>Type: <c>BOOLEAN</c></para>
+			/// <para>
+			/// A value of <c>TRUE</c> indicates that the network adapter driver is capable of generating a hardware cross timestamp. A
+			/// cross timestamp refers to a set of network interface card (NIC) hardware timestamp and system timestamp(s) obtained very
+			/// close to one another. A value of <c>FALSE</c> indicates that this capability doesn't exist.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool SupportsCrossTimestamp;
+
+			/// <summary>
+			/// <para>Type: <c>INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES</c></para>
+			/// <para>
+			/// Describes the timestamping capabilities of the network interface card's (NIC's) hardware. Having both hardware and software
+			/// timestamps enabled together isn't supported.
+			/// </para>
+			/// </summary>
+			public INTERFACE_HARDWARE_TIMESTAMP_CAPABILITIES HardwareCapabilities;
+
+			/// <summary>
+			/// <para>Type: <c>INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES</c></para>
+			/// <para>
+			/// Describes the software timestamping capabilities of a network interface card's (NIC's) miniport driver. Having both hardware
+			/// and software timestamps enabled together isn't supported.
+			/// </para>
+			/// </summary>
+			public INTERFACE_SOFTWARE_TIMESTAMP_CAPABILITIES SoftwareCapabilities;
 		}
 
 		/// <summary>Describes a network address.</summary>

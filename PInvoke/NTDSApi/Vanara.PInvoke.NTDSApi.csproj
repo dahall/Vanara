@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows NTDSApi.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.NTDSApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
@@ -20,6 +19,7 @@ Structures
 DCInfoHandle DS_DOMAIN_CONTROLLER_INFO_1 DS_DOMAIN_CONTROLLER_INFO_2 DS_DOMAIN_CONTROLLER_INFO_3 DS_NAME_RESULT DS_NAME_RESULT_ITEM DS_REPL_ATTR_META_DATA DS_REPL_ATTR_META_DATA_2 DS_REPL_ATTR_META_DATA_BLOB DS_REPL_ATTR_VALUE_META_DATA DS_REPL_ATTR_VALUE_META_DATA_2 DS_REPL_ATTR_VALUE_META_DATA_EXT DS_REPL_CURSOR DS_REPL_CURSORS DS_REPL_CURSORS_2 DS_REPL_CURSORS_3W DS_REPL_CURSOR_2 DS_REPL_CURSOR_3W DS_REPL_CURSOR_BLOB DS_REPL_KCC_DSA_FAILURESW DS_REPL_KCC_DSA_FAILUREW DS_REPL_KCC_DSA_FAILUREW_BLOB DS_REPL_NEIGHBOR DS_REPL_NEIGHBORS DS_REPL_NEIGHBORW_BLOB DS_REPL_OBJ_META_DATA DS_REPL_OBJ_META_DATA_2 DS_REPL_OPW DS_REPL_OPW_BLOB DS_REPL_PENDING_OPSW DS_REPL_QUEUE_STATISTICSW DS_REPL_VALUE_META_DATA DS_REPL_VALUE_META_DATA_2 DS_REPL_VALUE_META_DATA_BLOB DS_REPL_VALUE_META_DATA_BLOB_EXT DS_REPL_VALUE_META_DATA_EXT DS_REPSYNCALL_ERRINFO DS_REPSYNCALL_UPDATE DS_SCHEMA_GUID_MAP DS_SITE_COST_INFO SCHEDULE SCHEDULE_HEADER SpnArrayHandle
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

@@ -12,6 +12,7 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Represents a managed pointer to an ITEMIDLIST.</summary>
 		[PInvokeData("Shtypes.h", MSDNShortId = "bb773321")]
+		[DebuggerDisplay("[{ToString()}]")]
 		public class PIDL : SafeHANDLE, IEnumerable<PIDL>, IEquatable<PIDL>, IEquatable<IntPtr>
 		{
 			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class.</summary>
@@ -31,6 +32,14 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class from an array of bytes.</summary>
 			/// <param name="bytes">The bytes.</param>
 			public PIDL(byte[] bytes) { using var p = new PinnedObject(bytes); SetHandle(IntILClone(p)); }
+
+			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class from a stream holding an absolute ITEMIDLIST.</summary>
+			/// <param name="stream">The stream interface instance from which the ITEMIDLIST loads.</param>
+			public PIDL(System.Runtime.InteropServices.ComTypes.IStream stream)
+			{
+				ILLoadFromStreamEx(stream, out var p).ThrowIfFailed();
+				SetHandle(p.ReleaseOwnership());
+			}
 
 			/// <summary>Initializes a new instance of the <see cref="PIDL"/> class.</summary>
 			internal PIDL() { }
@@ -148,6 +157,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Removes the last identifier from the list.</summary>
 			public bool RemoveLastId() => ILRemoveLastID(handle);
+
+			/// <summary>Saves an ITEMIDLIST structure to a stream.</summary>
+			/// <param name="stream">An IStream instance where the ITEMIDLIST is saved.</param>
+			/// <remarks>The stream must be opened for writing, or <see cref="SaveToStream"/> returns an error.</remarks>
+			public void SaveToStream(System.Runtime.InteropServices.ComTypes.IStream stream) => ILSaveToStream(stream, new(handle, false, false)).ThrowIfFailed();
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>

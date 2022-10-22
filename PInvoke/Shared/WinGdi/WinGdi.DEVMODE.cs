@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -912,7 +911,7 @@ namespace Vanara.PInvoke
 			public DMRES dmPrintQuality;
 
 			[FieldOffset(0)]
-			public Point dmPosition;
+			public POINT dmPosition;
 
 			[FieldOffset(8)]
 			public DMDO dmDisplayOrientation;
@@ -1441,7 +1440,7 @@ namespace Vanara.PInvoke
 		/// For display devices only, a POINTL structure that indicates the positional coordinates of the display device in reference to
 		/// the desktop area. The primary display device is always located at coordinates (0,0).
 		/// </summary>
-		public Point dmPosition { get => Union.dmPosition; set => Union.dmPosition = value; }
+		public POINT dmPosition { get => Union.dmPosition; set => Union.dmPosition = value; }
 
 		/// <summary>
 		/// <para>

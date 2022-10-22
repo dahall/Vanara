@@ -28,7 +28,7 @@ namespace Vanara.Windows.Shell
 	public partial class ThumbnailToolbarButton : INotifyPropertyChanged
 	{
 		internal THUMBBUTTON btn;
-		internal ImageIndexer indexer = new ImageIndexer();
+		internal ImageIndexer indexer = new();
 		private Icon icon;
 		private ThumbnailToolbar parent;
 		private Visibility visibility;

@@ -3879,11 +3879,11 @@ namespace Vanara.PInvoke
 		/// values contained in the dwItem1 and dwItem2 parameters must be the same, respectively, for all specified events.
 		/// </param>
 		/// <param name="uFlags">Flags that, when combined bitwise with SHCNF_TYPE, indicate the meaning of the dwItem1 and dwItem2 parameters.</param>
-		/// <param name="dwItem1">Optional. First event-dependent value.</param>
-		/// <param name="dwItem2">Optional. Second event-dependent value.</param>
+		/// <param name="dwItem1">Optional. First event-dependent value or <see cref="PIDL.Null"/>.</param>
+		/// <param name="dwItem2">Optional. Second event-dependent value or <see cref="PIDL.Null"/>.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h")]
-		public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, PIDL dwItem1, [Optional] PIDL dwItem2);
+		public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, PIDL dwItem1, PIDL dwItem2);
 
 		/// <summary>
 		/// <para>Unregisters the client's window process from receiving SHChangeNotify messages.</para>
@@ -4128,7 +4128,7 @@ namespace Vanara.PInvoke
 		// SHCreateDefaultContextMenu( const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "055ff0a0-9ba7-463d-9684-3fd072b190da")]
-		public static extern HRESULT SHCreateDefaultContextMenu(ref DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHCreateDefaultContextMenu(in DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -4398,7 +4398,7 @@ namespace Vanara.PInvoke
 		// SHCreateShellFolderView( const SFV_CREATE *pcsfv, IShellView **ppsv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "f2948a6d-84a5-456b-b328-ba76dba46e9d")]
-		public static extern HRESULT SHCreateShellFolderView(ref SFV_CREATE pcsfv, out IShellView ppsv);
+		public static extern HRESULT SHCreateShellFolderView(in SFV_CREATE pcsfv, out IShellView ppsv);
 
 		/// <summary>
 		/// <para>
@@ -4435,7 +4435,7 @@ namespace Vanara.PInvoke
 		// SHCreateShellFolderViewEx( CSFV *pcsfv, IShellView **ppsv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "7edd6786-7d74-4065-8cf1-cbb489007a46")]
-		public static extern HRESULT SHCreateShellFolderViewEx(ref CSFV pcsfv, out IShellView ppsv);
+		public static extern HRESULT SHCreateShellFolderViewEx(in CSFV pcsfv, out IShellView ppsv);
 
 		/// <summary>
 		/// <para>Creates an IShellItem object.</para>
@@ -5360,7 +5360,7 @@ namespace Vanara.PInvoke
 		/// <param name="ppv">When this method returns, contains the interface pointer requested in riid. This is typically IImageList.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
-		public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, out IImageList ppv);
+		public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>

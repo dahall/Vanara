@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -57,7 +56,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "3b1e2699-7f5f-444d-9072-f2ca7c8fa511")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ClientToScreen(HWND hWnd, ref Point lpPoint);
+		public static extern bool ClientToScreen(HWND hWnd, ref POINT lpPoint);
 
 		/// <summary>Retrieves the screen auto-rotation preferences for the current process.</summary>
 		/// <param name="pOrientation">
@@ -133,7 +132,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("WinUser.h", MSDNShortId = "")]
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, ref Point lpPoints, uint cPoints = 1);
+		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, ref POINT lpPoints, uint cPoints = 1);
 
 		/// <summary>
 		/// The MapWindowPoints function converts (maps) a set of points from a coordinate space relative to one window to a coordinate space
@@ -165,7 +164,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("WinUser.h", MSDNShortId = "")]
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Point[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
+		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
 
 		/// <summary>The ScreenToClient function converts the screen coordinates of a specified point on the screen to client-area coordinates.</summary>
 		/// <param name="hWnd">A handle to the window whose client area will be used for the conversion.</param>
@@ -177,7 +176,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[System.Security.SecurityCritical]
-		public static extern bool ScreenToClient(HWND hWnd, [In, Out] ref Point lpPoint);
+		public static extern bool ScreenToClient(HWND hWnd, [In, Out] ref POINT lpPoint);
 
 		/// <summary>Sets the orientation preferences of the display.</summary>
 		/// <param name="orientation">The orientation.</param>

@@ -142,17 +142,20 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void DnsServiceBrowseTest()
 		{
-			using var evt = Kernel32.CreateEvent(null, false, true);
+			const int timeout = 20000;
+			const string query = "_http._tcp.local";
+
+			using var evt = Kernel32.CreateEvent(null, false, false);
 
 			var br = new DNS_SERVICE_BROWSE_REQUEST
 			{
 				Version = DNS_QUERY_REQUEST_VERSION1,
-				QueryName = "_windns-example._udp",
-				pQueryContext = (IntPtr)evt
+				QueryName = query,
+				pQueryContext = (IntPtr)evt,
+				Callback = new() { pBrowseCallback = (DNS_SERVICE_BROWSE_CALLBACK)Callback }
 			};
-			br.Callback.pBrowseCallback = Callback;
 			Assert.That(DnsServiceBrowse(br, out var cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
-			if (Kernel32.WaitForSingleObject(evt, 20000) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
+			if (Kernel32.WaitForSingleObject(evt, timeout) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
 			{
 				Assert.That(DnsServiceBrowseCancel(cancel), ResultIs.Successful);
 				Assert.Fail("Browse callback not called.");
@@ -161,33 +164,31 @@ namespace Vanara.PInvoke.Tests
 			var queryRequest = new MDNS_QUERY_REQUEST
 			{
 				Version = DNS_QUERY_REQUEST_VERSION1,
-				Query = "_windns-example._udp.local",
+				Query = query,
 				QueryType = DNS_TYPE.DNS_TYPE_PTR,
 				QueryOptions = (ulong)DNS_QUERY_OPTIONS.DNS_QUERY_STANDARD,
 				pQueryCallback = QueryCallback,
 				pQueryContext = (IntPtr)evt
 			};
 			Assert.That(DnsStartMulticastQuery(queryRequest, out var queryHandle), ResultIs.Successful);
-			if (Kernel32.WaitForSingleObject(evt, 20000) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
+			if (Kernel32.WaitForSingleObject(evt, timeout) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
 			{
 				Assert.That(DnsStopMulticastQuery(queryHandle), ResultIs.Successful);
 				Assert.Fail("Multicast callback not called.");
 			}
 
-			void Callback(uint Status, IntPtr pQueryContext, IntPtr pDnsRecord)
+			void Callback(Win32Error Status, IntPtr pQueryContext, IntPtr pDnsRecord)
 			{
+				using var recs = new SafeDnsRecordList(pDnsRecord);
+				System.Diagnostics.Debug.WriteLine($"Stat:{(Win32Error)Status}; Name:{recs.FirstOrDefault().pName}");
 				Kernel32.SetEvent(pQueryContext);
 			}
 
 			void QueryCallback(IntPtr pQueryContext, IntPtr pQueryHandle, IntPtr pQueryResults)
 			{
-				var pQueryRecs = IntPtr.Zero;
-				unsafe
-				{
-					var pQR = (DNS_QUERY_RESULT*)(void*)pQueryResults;
-					pQueryResults = pQR->pQueryRecords;
-				}
-				using var recs = new SafeDnsRecordList(pQueryRecs);
+				ref DNS_QUERY_RESULT pQR = ref pQueryResults.AsRef<DNS_QUERY_RESULT>();
+				System.Diagnostics.Debug.WriteLine($"Stat:{pQR.QueryStatus}; Opt:{pQR.QueryOptions}");
+				using var recs = new SafeDnsRecordList(pQR.pQueryRecords);
 				using var qevt = Kernel32.CreateEvent(null, false, true);
 				var rec = recs.FirstOrDefault();
 				if (rec.wDataLength == 0)
@@ -196,11 +197,11 @@ namespace Vanara.PInvoke.Tests
 				{
 					Version = DNS_QUERY_REQUEST_VERSION1,
 					QueryName = rec.Data is DNS_PTR_DATA d ? d.pNameHost : null,
-					pResolveCompletionCallback = ResolveCallback,
+					pResolveCompletionCallback = (DNS_SERVICE_RESOLVE_COMPLETE)ResolveCallback,
 					pQueryContext = (IntPtr)qevt
 				};
 				Assert.That(DnsServiceResolve(resolveRequest, out var cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
-				if (Kernel32.WaitForSingleObject(qevt, 20000) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
+				if (Kernel32.WaitForSingleObject(qevt, timeout) != Kernel32.WAIT_STATUS.WAIT_OBJECT_0)
 				{
 					Assert.That(DnsServiceResolveCancel(cancel), ResultIs.Successful);
 					Assert.Fail("Resolve callback not called.");
@@ -208,8 +209,10 @@ namespace Vanara.PInvoke.Tests
 				Kernel32.SetEvent(pQueryContext);
 			}
 
-			void ResolveCallback(uint Status, IntPtr pQueryContext, IntPtr pInstance)
+			void ResolveCallback(Win32Error Status, IntPtr pQueryContext, IntPtr pInstance)
 			{
+				using var inst = new SafePDNS_SERVICE_INSTANCE(pInstance);
+				System.Diagnostics.Debug.WriteLine($"Stat:{(Win32Error)Status}; Name:{inst.pszInstanceName}");
 				Kernel32.SetEvent(pQueryContext);
 			}
 		}
@@ -233,7 +236,7 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(DnsServiceRegisterCancel(cancel), ResultIs.Successful);
 			Assert.That(DnsServiceDeRegister(sr, cancel), ResultIs.Value(Win32Error.DNS_REQUEST_PENDING));
 
-			void Callback(uint Status, IntPtr pQueryContext, IntPtr pInstance) => callbackCalled = true;
+			void Callback(Win32Error Status, IntPtr pQueryContext, IntPtr pInstance) => callbackCalled = true;
 		}
 
 		[Test]

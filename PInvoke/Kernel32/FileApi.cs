@@ -338,7 +338,7 @@ namespace Vanara.PInvoke
 		/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
 		public static unsafe IAsyncResult BeginReadFile(HFILE hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object stateObject)
 		{
-			var ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+			OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 			fixed (byte* pIn = buffer)
 			{
 				var ret = ReadFile(hFile, pIn, numberOfBytesToRead, null, ar.Overlapped);
@@ -392,7 +392,7 @@ namespace Vanara.PInvoke
 		/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
 		public static unsafe IAsyncResult BeginWriteFile(HFILE hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object stateObject)
 		{
-			var ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+			OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 			fixed (byte* pIn = buffer)
 			{
 				var ret = WriteFile(hFile, pIn, numberOfBytesToWrite, null, ar.Overlapped);
@@ -1817,8 +1817,8 @@ namespace Vanara.PInvoke
 		public static IEnumerable<WIN32_FIND_DATA> EnumFilesEx(string lpFileName, FINDEX_SEARCH_OPS fSearchOp = FINDEX_SEARCH_OPS.FindExSearchNameMatch, FIND_FIRST dwAdditionalFlags = 0, bool excludeShortName = false)
 		{
 			var minWin7 = Environment.OSVersion.Version >= new Version(6, 1);
-			var lvl = excludeShortName && minWin7 ? FINDEX_INFO_LEVELS.FindExInfoBasic : FINDEX_INFO_LEVELS.FindExInfoStandard;
-			using (var h = FindFirstFileEx(lpFileName, lvl, out var data, fSearchOp, default, dwAdditionalFlags))
+			FINDEX_INFO_LEVELS lvl = excludeShortName && minWin7 ? FINDEX_INFO_LEVELS.FindExInfoBasic : FINDEX_INFO_LEVELS.FindExInfoStandard;
+			using (SafeSearchHandle h = FindFirstFileEx(lpFileName, lvl, out WIN32_FIND_DATA data, fSearchOp, default, dwAdditionalFlags))
 			{
 				if (h.IsInvalid) ThrowIfNotNoMore();
 				yield return data;
@@ -1827,7 +1827,7 @@ namespace Vanara.PInvoke
 				ThrowIfNotNoMore();
 			}
 
-			void ThrowIfNotNoMore() { var e = Win32Error.GetLastError(); if (e.Failed && e != Win32Error.ERROR_NO_MORE_FILES) throw e.GetException(); }
+			static void ThrowIfNotNoMore() { var e = Win32Error.GetLastError(); if (e.Failed && e != Win32Error.ERROR_NO_MORE_FILES) throw e.GetException(); }
 		}
 
 		/// <summary>Retrieves the names of the volumes on a computer using <see cref="FindFirstVolume"/> and <see cref="FindNextVolume"/>.</summary>
@@ -1835,7 +1835,7 @@ namespace Vanara.PInvoke
 		public static IEnumerable<string> EnumVolumes()
 		{
 			var sb = new StringBuilder(MAX_PATH, MAX_PATH);
-			using (var h = FindFirstVolume(sb, (uint)sb.Capacity))
+			using (SafeVolumeSearchHandle h = FindFirstVolume(sb, (uint)sb.Capacity))
 			{
 				if (h.IsInvalid) ThrowIfNotNoMore();
 				yield return sb.ToString();
@@ -1844,7 +1844,7 @@ namespace Vanara.PInvoke
 				ThrowIfNotNoMore();
 			}
 
-			void ThrowIfNotNoMore() { var e = Win32Error.GetLastError(); if (e.Failed && e != Win32Error.ERROR_NO_MORE_FILES) throw e.GetException(); }
+			static void ThrowIfNotNoMore() { var e = Win32Error.GetLastError(); if (e.Failed && e != Win32Error.ERROR_NO_MORE_FILES) throw e.GetException(); }
 		}
 
 		/// <summary>Converts a file time to a local file time.</summary>
@@ -3013,6 +3013,96 @@ namespace Vanara.PInvoke
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364992")]
 		public static extern uint GetTempPath(uint nBufferLength, StringBuilder lpBuffer);
 
+		/// <summary>Retrieves the path of the directory designated for temporary files, based on the privileges of the calling process.</summary>
+		/// <param name="BufferLength">The size of the string buffer identified by lpBuffer, in <c>TCHARs</c>.</param>
+		/// <param name="Buffer">
+		/// A pointer to a string buffer that receives the null-terminated string specifying the temporary file path. The returned string
+		/// ends with a backslash, for example, "C:\TEMP\".
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the length, in <c>TCHARs</c>, of the string copied to lpBuffer, not including the
+		/// terminating null character. If the return value is greater than nBufferLength, the return value is the length, in <c>TCHARs</c>,
+		/// of the buffer required to hold the path.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <para>The maximum possible return value is <c>MAX_PATH</c>+1 (261).</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When calling this function from a process running as SYSTEM it will return the path C:\Windows\SystemTemp, which is inaccessible
+		/// to non-SYSTEM processes. For non-SYSTEM processes, <c>GetTempPath2</c> will behave the same as GetTempPath.
+		/// </para>
+		/// <para>
+		/// The <c>GetTempPath2</c> function checks for the existence of environment variables in the following order and uses the first
+		/// path found:
+		/// </para>
+		/// <list type="number">
+		/// <item>
+		/// <term>The path specified by the TMP environment variable.</term>
+		/// </item>
+		/// <item>
+		/// <term>The path specified by the TEMP environment variable.</term>
+		/// </item>
+		/// <item>
+		/// <term>The path specified by the USERPROFILE environment variable.</term>
+		/// </item>
+		/// <item>
+		/// <term>The Windows directory.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Note that the function does not verify that the path exists, nor does it test to see if the current process has any kind of
+		/// access rights to the path. The <c>GetTempPath2</c> function returns the properly formatted string that specifies the fully
+		/// qualified path based on the environment variable search order as previously specified. The application should verify the
+		/// existence of the path and adequate access rights to the path prior to any use for file I/O operations.
+		/// </para>
+		/// <para>Symbolic link behavior悠f the path points to a symbolic link, the temp path name maintains any symbolic links.</para>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// <para>Examples</para>
+		/// <para>For an example, see Creating and Using a Temporary File.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The fileapi.h header defines GetTempPath2 as an alias which automatically selects the ANSI or Unicode version of this function
+		/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+		/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+		/// Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-gettemppath2w
+		// DWORD GetTempPath2W( [in] DWORD BufferLength, [out] LPWSTR Buffer );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetTempPath2W")]
+		public static extern uint GetTempPath2(uint BufferLength, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder Buffer);
+
 		/// <summary>Retrieves information about the file system and volume associated with the specified root directory.</summary>
 		/// <param name="lpRootPathName">
 		/// A pointer to a string that contains the root directory of the volume to be described.
@@ -3167,7 +3257,7 @@ namespace Vanara.PInvoke
 		{
 			var sb1 = new StringBuilder(MAX_PATH + 1);
 			var sb2 = new StringBuilder(MAX_PATH + 1);
-			var ret = GetVolumeInformation(rootPathName, sb1, sb1.Capacity, out var sn, out var cl, out var flags, sb2, sb2.Capacity);
+			var ret = GetVolumeInformation(rootPathName, sb1, sb1.Capacity, out var sn, out var cl, out FileSystemFlags flags, sb2, sb2.Capacity);
 			volumeName = sb1.ToString();
 			volumeSerialNumber = sn;
 			maximumComponentLength = cl;
@@ -3721,17 +3811,15 @@ namespace Vanara.PInvoke
 		{
 			deviceName = deviceName?.TrimEnd('\\');
 			var bytes = 16;
-			var retLen = 0U;
-			using (var mem = new SafeHGlobalHandle(0))
+			uint retLen;
+			using var mem = new SafeHGlobalHandle(0);
+			do
 			{
-				do
-				{
-					mem.Size = (bytes *= 4);
-					retLen = QueryDosDevice(deviceName, (IntPtr)mem, mem.Size / Marshal.SystemDefaultCharSize);
-				} while (retLen == 0 && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
-				if (retLen == 0) throw new Win32Exception();
-				return mem.ToStringEnum().ToArray();
-			}
+				mem.Size = bytes *= 4;
+				retLen = QueryDosDevice(deviceName, mem, mem.Size / Marshal.SystemDefaultCharSize);
+			} while (retLen == 0 && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
+			if (retLen == 0) throw new Win32Exception();
+			return mem.ToStringEnum().ToArray();
 		}
 
 		/// <summary>
@@ -3815,6 +3903,264 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
 		public static extern unsafe bool ReadFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, [Optional] uint* lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
+
+		/// <summary>
+		/// <para>
+		/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
+		/// supported by the device.
+		/// </para>
+		/// <para>
+		/// This function is designed for both synchronous and asynchronous operations. For a similar function designed solely for asynchronous
+		/// operation, see ReadFileEx.
+		/// </para>
+		/// </summary>
+		/// <param name="hFile">
+		/// <para>
+		/// A handle to the device (for example, a file, file stream, physical disk, volume, console buffer, tape drive, socket, communications
+		/// resource, mailslot, or pipe).
+		/// </para>
+		/// <para>
+		/// The <c>hFile</c> parameter must have been created with read access. For more information, see Generic Access Rights and File Security
+		/// and Access Rights.
+		/// </para>
+		/// <para>
+		/// For asynchronous read operations, <c>hFile</c> can be any handle that is opened with the <c>FILE_FLAG_OVERLAPPED</c> flag by the
+		/// CreateFile function, or a socket handle returned by the socket or accept function.
+		/// </para>
+		/// </param>
+		/// <param name="lpBuffer">
+		/// <para>A pointer to the buffer that receives the data read from a file or device.</para>
+		/// <para>
+		/// This buffer must remain valid for the duration of the read operation. The caller must not use this buffer until the read operation is completed.
+		/// </para>
+		/// </param>
+		/// <param name="nNumberOfBytesToRead">The maximum number of bytes to be read.</param>
+		/// <param name="lpNumberOfBytesRead">
+		/// <para>
+		/// A pointer to the variable that receives the number of bytes read when using a synchronous <c>hFile</c> parameter. <c>ReadFile</c>
+		/// sets this value to zero before doing any work or error checking. Use <c>NULL</c> for this parameter if this is an asynchronous
+		/// operation to avoid potentially erroneous results.
+		/// </para>
+		/// <para>This parameter can be <c>NULL</c> only when the <c>lpOverlapped</c> parameter is not <c>NULL</c>.</para>
+		/// <para>For more information, see the Remarks section.</para>
+		/// </param>
+		/// <param name="lpOverlapped">
+		/// <para>
+		/// A pointer to an OVERLAPPED structure is required if the <c>hFile</c> parameter was opened with <c>FILE_FLAG_OVERLAPPED</c>, otherwise
+		/// it can be <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// If <c>hFile</c> is opened with <c>FILE_FLAG_OVERLAPPED</c>, the <c>lpOverlapped</c> parameter must point to a valid and unique
+		/// OVERLAPPED structure, otherwise the function can incorrectly report that the read operation is complete.
+		/// </para>
+		/// <para>
+		/// For an <c>hFile</c> that supports byte offsets, if you use this parameter you must specify a byte offset at which to start reading
+		/// from the file or device. This offset is specified by setting the <c>Offset</c> and <c>OffsetHigh</c> members of the OVERLAPPED
+		/// structure. For an <c>hFile</c> that does not support byte offsets, <c>Offset</c> and <c>OffsetHigh</c> are ignored.
+		/// </para>
+		/// <para>
+		/// For more information about different combinations of <c>lpOverlapped</c> and <c>FILE_FLAG_OVERLAPPED</c>, see the Remarks section and
+		/// the <c>Synchronization and File Position</c> section.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero ( <c>TRUE</c>).</para>
+		/// <para>
+		/// If the function fails, or is completing asynchronously, the return value is zero ( <c>FALSE</c>). To get extended error information,
+		/// call the GetLastError function.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>ReadFile</c> function returns when one of the following conditions occur:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The number of bytes requested is read.</term>
+		/// </item>
+		/// <item>
+		/// <term>A write operation completes on the write end of the pipe.</term>
+		/// </item>
+		/// <item>
+		/// <term>An asynchronous handle is being used and the read is occurring asynchronously.</term>
+		/// </item>
+		/// <item>
+		/// <term>An error occurs.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>ReadFile</c> function may fail with <c>ERROR_INVALID_USER_BUFFER</c> or <c>ERROR_NOT_ENOUGH_MEMORY</c> whenever there are too
+		/// many outstanding asynchronous I/O requests.
+		/// </para>
+		/// <para>To cancel all pending asynchronous I/O operations, use either:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>CancelIo葉his function only cancels operations issued by the calling thread for the specified file handle.</term>
+		/// </item>
+		/// <item>
+		/// <term>CancelIoEx葉his function cancels all operations issued by the threads for the specified file handle.</term>
+		/// </item>
+		/// </list>
+		/// <para>Use CancelSynchronousIo to cancel pending synchronous I/O operations.</para>
+		/// <para>I/O operations that are canceled complete with the error <c>ERROR_OPERATION_ABORTED</c>.</para>
+		/// <para>
+		/// The <c>ReadFile</c> function may fail with <c>ERROR_NOT_ENOUGH_QUOTA</c>, which means the calling process's buffer could not be
+		/// page-locked. For additional information, see SetProcessWorkingSetSize.
+		/// </para>
+		/// <para>If part of a file is locked by another process and the read operation overlaps the locked portion, this function fails.</para>
+		/// <para>
+		/// Accessing the input buffer while a read operation is using the buffer may lead to corruption of the data read into that buffer.
+		/// Applications must not read from, write to, reallocate, or free the input buffer that a read operation is using until the read
+		/// operation completes. This can be particularly problematic when using an asynchronous file handle. Additional information regarding
+		/// synchronous versus asynchronous file handles can be found in the Synchronization and File Position section and in the CreateFile
+		/// reference topic.
+		/// </para>
+		/// <para>
+		/// Characters can be read from the console input buffer by using <c>ReadFile</c> with a handle to console input. The console mode
+		/// determines the exact behavior of the <c>ReadFile</c> function. By default, the console mode is <c>ENABLE_LINE_INPUT</c>, which
+		/// indicates that <c>ReadFile</c> should read until it reaches a carriage return. If you press Ctrl+C, the call succeeds, but
+		/// GetLastError returns <c>ERROR_OPERATION_ABORTED</c>. For more information, see CreateFile.
+		/// </para>
+		/// <para>
+		/// When reading from a communications device, the behavior of <c>ReadFile</c> is determined by the current communication time-out as set
+		/// and retrieved by using the SetCommTimeouts and GetCommTimeouts functions. Unpredictable results can occur if you fail to set the
+		/// time-out values. For more information about communication time-outs, see COMMTIMEOUTS.
+		/// </para>
+		/// <para>
+		/// If <c>ReadFile</c> attempts to read from a mailslot that has a buffer that is too small, the function returns <c>FALSE</c> and
+		/// GetLastError returns <c>ERROR_INSUFFICIENT_BUFFER</c>.
+		/// </para>
+		/// <para>
+		/// There are strict requirements for successfully working with files opened with CreateFile using the <c>FILE_FLAG_NO_BUFFERING</c>
+		/// flag. For details see File Buffering.
+		/// </para>
+		/// <para>If <c>hFile</c> was opened with <c>FILE_FLAG_OVERLAPPED</c>, the following conditions are in effect:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// The <c>lpOverlapped</c> parameter must point to a valid and unique OVERLAPPED structure, otherwise the function can incorrectly
+		/// report that the read operation is complete.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The <c>lpNumberOfBytesRead</c> parameter should be set to <c>NULL</c>. Use the GetOverlappedResult function to get the actual number
+		/// of bytes read. If the <c>hFile</c> parameter is associated with an I/O completion port, you can also get the number of bytes read by
+		/// calling the GetQueuedCompletionStatus function.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>Synchronization and File Position</para>
+		/// <para>
+		/// If <c>hFile</c> is opened with <c>FILE_FLAG_OVERLAPPED</c>, it is an asynchronous file handle; otherwise it is synchronous. The rules
+		/// for using the OVERLAPPED structure are slightly different for each, as previously noted.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If a file or device is opened for asynchronous I/O, subsequent calls to functions such as <c>ReadFile</c> using that
+		/// handle generally return immediately, but can also behave synchronously with respect to blocked execution. For more information see http://support.microsoft.com/kb/156932.
+		/// </para>
+		/// <para>Considerations for working with asynchronous file handles:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// <c>ReadFile</c> may return before the read operation is complete. In this scenario, <c>ReadFile</c> returns <c>FALSE</c> and the
+		/// GetLastError function returns <c>ERROR_IO_PENDING</c>, which allows the calling process to continue while the system completes the
+		/// read operation.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>The <c>lpOverlapped</c> parameter must not be <c>NULL</c> and should be used with the following facts in mind:</term>
+		/// </item>
+		/// </list>
+		/// <para>Considerations for working with synchronous file handles:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// If <c>lpOverlapped</c> is <c>NULL</c>, the read operation starts at the current file position and <c>ReadFile</c> does not return
+		/// until the operation is complete, and the system updates the file pointer before <c>ReadFile</c> returns.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If <c>lpOverlapped</c> is not <c>NULL</c>, the read operation starts at the offset that is specified in the OVERLAPPED structure and
+		/// <c>ReadFile</c> does not return until the read operation is complete. The system updates the <c>OVERLAPPED</c> offset before
+		/// <c>ReadFile</c> returns.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If <c>lpOverlapped</c> is <c>NULL</c>, then when a synchronous read operation reaches the end of a file, <c>ReadFile</c> returns
+		/// <c>TRUE</c> and sets
+		/// <code>*lpNumberOfBytesRead</code>
+		/// to zero.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If <c>lpOverlapped</c> is not <c>NULL</c>, then when a synchronous read operation reaches the end of a file, <c>ReadFile</c> returns
+		/// <c>FALSE</c> and GetLastError returns <c>ERROR_HANDLE_EOF</c>.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>For more information, see CreateFile and Synchronous and Asynchronous I/O.</para>
+		/// <para>Pipes</para>
+		/// <para>
+		/// If an anonymous pipe is being used and the write handle has been closed, when <c>ReadFile</c> attempts to read using the pipe's
+		/// corresponding read handle, the function returns <c>FALSE</c> and GetLastError returns <c>ERROR_BROKEN_PIPE</c>.
+		/// </para>
+		/// <para>
+		/// If a named pipe is being read in message mode and the next message is longer than the <c>nNumberOfBytesToRead</c> parameter
+		/// specifies, <c>ReadFile</c> returns <c>FALSE</c> and GetLastError returns <c>ERROR_MORE_DATA</c>. The remainder of the message can be
+		/// read by a subsequent call to the <c>ReadFile</c> or PeekNamedPipe function.
+		/// </para>
+		/// <para>
+		/// If the <c>lpNumberOfBytesRead</c> parameter is zero when <c>ReadFile</c> returns <c>TRUE</c> on a pipe, the other end of the pipe
+		/// called the WriteFile function with <c>nNumberOfBytesToWrite</c> set to zero.
+		/// </para>
+		/// <para>For more information about pipes, see Pipes.</para>
+		/// <para>Transacted Operations</para>
+		/// <para>
+		/// If there is a transaction bound to the file handle, then the function returns data from the transacted view of the file. A transacted
+		/// read handle is guaranteed to show the same view of a file for the duration of the handle. For more information, see About
+		/// Transactional NTFS.
+		/// </para>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// <para>Examples</para>
+		/// <para>
+		/// For a code example that shows you how to test for end-of-file, see Testing for the End of a File. For other examples, see Creating
+		/// and Using a Temporary File and Opening a File for Reading or Writing.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile
+		// BOOL ReadFile( [in] HANDLE hFile, [out] LPVOID lpBuffer, [in] DWORD nNumberOfBytesToRead, [out, optional] LPDWORD lpNumberOfBytesRead, [in, out, optional] LPOVERLAPPED lpOverlapped );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.ReadFile")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReadFile(HFILE hFile, [Out] byte[] lpBuffer, int nNumberOfBytesToRead, out int lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
 
 		/// <summary>
 		/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -4218,8 +4564,8 @@ namespace Vanara.PInvoke
 		public static bool SetFileInformationByHandle<T>([In] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, T lpFileInformation) where T : struct
 		{
 			if (!CorrespondingTypeAttribute.CanSet(FileInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch.");
-			using (var mem = SafeHGlobalHandle.CreateFromStructure(lpFileInformation))
-				return SetFileInformationByHandle(hFile, FileInformationClass, mem, (uint)mem.Size);
+			using var mem = SafeHGlobalHandle.CreateFromStructure(lpFileInformation);
+			return SetFileInformationByHandle(hFile, FileInformationClass, mem, mem.Size);
 		}
 
 		/// <summary>
@@ -5116,6 +5462,293 @@ namespace Vanara.PInvoke
 		public static extern unsafe bool WriteFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, [Optional] uint* lpNumberOfBytesWritten, [Optional] NativeOverlapped* lpOverlapped);
 
 		/// <summary>
+		/// <para>Writes data to the specified file or input/output (I/O) device.</para>
+		/// <para>
+		/// This function is designed for both synchronous and asynchronous operation. For a similar function designed solely for asynchronous
+		/// operation, see WriteFileEx.
+		/// </para>
+		/// </summary>
+		/// <param name="hFile">
+		/// <para>
+		/// A handle to the file or I/O device (for example, a file, file stream, physical disk, volume, console buffer, tape drive, socket,
+		/// communications resource, mailslot, or pipe).
+		/// </para>
+		/// <para>
+		/// The <c>hFile</c> parameter must have been created with the write access. For more information, see Generic Access Rights and File
+		/// Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// For asynchronous write operations, <c>hFile</c> can be any handle opened with the CreateFile function using the
+		/// <c>FILE_FLAG_OVERLAPPED</c> flag or a socket handle returned by the socket or accept function.
+		/// </para>
+		/// </param>
+		/// <param name="lpBuffer">
+		/// <para>A pointer to the buffer containing the data to be written to the file or device.</para>
+		/// <para>
+		/// This buffer must remain valid for the duration of the write operation. The caller must not use this buffer until the write operation
+		/// is completed.
+		/// </para>
+		/// </param>
+		/// <param name="nNumberOfBytesToWrite">
+		/// <para>The number of bytes to be written to the file or device.</para>
+		/// <para>
+		/// A value of zero specifies a null write operation. The behavior of a null write operation depends on the underlying file system or
+		/// communications technology.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> Pipe write operations across a network are limited in size per write. The amount varies
+		/// per platform. For x86 platforms it's 63.97 MB. For x64 platforms it's 31.97 MB. For Itanium it's 63.95 MB. For more information
+		/// regarding pipes, see the Remarks section.
+		/// </para>
+		/// </param>
+		/// <param name="lpNumberOfBytesWritten">
+		/// <para>
+		/// A pointer to the variable that receives the number of bytes written when using a synchronous <c>hFile</c> parameter. <c>WriteFile</c>
+		/// sets this value to zero before doing any work or error checking. Use <c>NULL</c> for this parameter if this is an asynchronous
+		/// operation to avoid potentially erroneous results.
+		/// </para>
+		/// <para>This parameter can be <c>NULL</c> only when the <c>lpOverlapped</c> parameter is not <c>NULL</c>.</para>
+		/// <para><c>Windows 7:</c> This parameter can not be <c>NULL</c>.</para>
+		/// <para>For more information, see the Remarks section.</para>
+		/// </param>
+		/// <param name="lpOverlapped">
+		/// <para>
+		/// A pointer to an OVERLAPPED structure is required if the <c>hFile</c> parameter was opened with <c>FILE_FLAG_OVERLAPPED</c>, otherwise
+		/// this parameter can be <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// For an <c>hFile</c> that supports byte offsets, if you use this parameter you must specify a byte offset at which to start writing to
+		/// the file or device. This offset is specified by setting the <c>Offset</c> and <c>OffsetHigh</c> members of the OVERLAPPED structure.
+		/// For an <c>hFile</c> that does not support byte offsets, <c>Offset</c> and <c>OffsetHigh</c> are ignored.
+		/// </para>
+		/// <para>
+		/// To write to the end of file, specify both the <c>Offset</c> and <c>OffsetHigh</c> members of the OVERLAPPED structure as 0xFFFFFFFF.
+		/// This is functionally equivalent to previously calling the CreateFile function to open <c>hFile</c> using <c>FILE_APPEND_DATA</c> access.
+		/// </para>
+		/// <para>
+		/// For more information about different combinations of <c>lpOverlapped</c> and <c>FILE_FLAG_OVERLAPPED</c>, see the Remarks section and
+		/// the Synchronization and File Position section.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero ( <c>TRUE</c>).</para>
+		/// <para>
+		/// If the function fails, or is completing asynchronously, the return value is zero ( <c>FALSE</c>). To get extended error information,
+		/// call the GetLastError function.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The GetLastError code <c>ERROR_IO_PENDING</c> is not a failure; it designates the write operation is pending completion
+		/// asynchronously. For more information, see Remarks.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>WriteFile</c> function returns when one of the following conditions occur:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The number of bytes requested is written.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// A read operation releases buffer space on the read end of the pipe (if the write was blocked). For more information, see the Pipes section.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>An asynchronous handle is being used and the write is occurring asynchronously.</term>
+		/// </item>
+		/// <item>
+		/// <term>An error occurs.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>WriteFile</c> function may fail with <c>ERROR_INVALID_USER_BUFFER</c> or <c>ERROR_NOT_ENOUGH_MEMORY</c> whenever there are too
+		/// many outstanding asynchronous I/O requests.
+		/// </para>
+		/// <para>To cancel all pending asynchronous I/O operations, use either:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>CancelIo葉his function cancels only operations issued by the calling thread for the specified file handle.</term>
+		/// </item>
+		/// <item>
+		/// <term>CancelIoEx葉his function cancels all operations issued by the threads for the specified file handle.</term>
+		/// </item>
+		/// </list>
+		/// <para>Use the CancelSynchronousIo function to cancel pending synchronous I/O operations.</para>
+		/// <para>I/O operations that are canceled complete with the error <c>ERROR_OPERATION_ABORTED</c>.</para>
+		/// <para>
+		/// The <c>WriteFile</c> function may fail with <c>ERROR_NOT_ENOUGH_QUOTA</c>, which means the calling process's buffer could not be
+		/// page-locked. For more information, see SetProcessWorkingSetSize.
+		/// </para>
+		/// <para>If part of the file is locked by another process and the write operation overlaps the locked portion, <c>WriteFile</c> fails.</para>
+		/// <para>
+		/// When writing to a file, the last write time is not fully updated until all handles used for writing have been closed. Therefore, to
+		/// ensure an accurate last write time, close the file handle immediately after writing to the file.
+		/// </para>
+		/// <para>
+		/// Accessing the output buffer while a write operation is using the buffer may lead to corruption of the data written from that buffer.
+		/// Applications must not write to, reallocate, or free the output buffer that a write operation is using until the write operation
+		/// completes. This can be particularly problematic when using an asynchronous file handle. Additional information regarding synchronous
+		/// versus asynchronous file handles can be found later in the Synchronization and File Position section and Synchronous and Asynchronous I/O.
+		/// </para>
+		/// <para>Note that the time stamps may not be updated correctly for a remote file. To ensure consistent results, use unbuffered I/O.</para>
+		/// <para>
+		/// The system interprets zero bytes to write as specifying a null write operation and <c>WriteFile</c> does not truncate or extend the
+		/// file. To truncate or extend a file, use the SetEndOfFile function.
+		/// </para>
+		/// <para>
+		/// Characters can be written to the screen buffer using <c>WriteFile</c> with a handle to console output. The exact behavior of the
+		/// function is determined by the console mode. The data is written to the current cursor position. The cursor position is updated after
+		/// the write operation. For more information about console handles, see CreateFile.
+		/// </para>
+		/// <para>
+		/// When writing to a communications device, the behavior of <c>WriteFile</c> is determined by the current communication time-out as set
+		/// and retrieved by using the SetCommTimeouts and GetCommTimeouts functions. Unpredictable results can occur if you fail to set the
+		/// time-out values. For more information about communication time-outs, see COMMTIMEOUTS.
+		/// </para>
+		/// <para>
+		/// Although a single-sector write is atomic, a multi-sector write is not guaranteed to be atomic unless you are using a transaction
+		/// (that is, the handle created is a transacted handle; for example, a handle created using CreateFileTransacted). Multi-sector writes
+		/// that are cached may not always be written to the disk right away; therefore, specify <c>FILE_FLAG_WRITE_THROUGH</c> in CreateFile to
+		/// ensure that an entire multi-sector write is written to the disk without potential caching delays.
+		/// </para>
+		/// <para>
+		/// If you write directly to a volume that has a mounted file system, you must first obtain exclusive access to the volume. Otherwise,
+		/// you risk causing data corruption or system instability, because your application's writes may conflict with other changes coming from
+		/// the file system and leave the contents of the volume in an inconsistent state. To prevent these problems, the following changes have
+		/// been made in Windows Vista and later:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// A write on a volume handle will succeed if the volume does not have a mounted file system, or if one of the following conditions is true:
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>A write on a disk handle will succeed if one of the following conditions is true:</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// There are strict requirements for successfully working with files opened with CreateFile using <c>FILE_FLAG_NO_BUFFERING</c>. For
+		/// details see File Buffering.
+		/// </para>
+		/// <para>If <c>hFile</c> was opened with <c>FILE_FLAG_OVERLAPPED</c>, the following conditions are in effect:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// The <c>lpOverlapped</c> parameter must point to a valid and unique OVERLAPPED structure, otherwise the function can incorrectly
+		/// report that the write operation is complete.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The <c>lpNumberOfBytesWritten</c> parameter should be set to <c>NULL</c>. To get the number of bytes written, use the
+		/// GetOverlappedResult function. If the <c>hFile</c> parameter is associated with an I/O completion port, you can also get the number of
+		/// bytes written by calling the GetQueuedCompletionStatus function.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>In Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>Yes</term>
+		/// </item>
+		/// </list>
+		/// <para>Synchronization and File Position</para>
+		/// <para>
+		/// If <c>hFile</c> is opened with <c>FILE_FLAG_OVERLAPPED</c>, it is an asynchronous file handle; otherwise it is synchronous. The rules
+		/// for using the OVERLAPPED structure are slightly different for each, as previously noted.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If a file or device is opened for asynchronous I/O, subsequent calls to functions such as <c>WriteFile</c> using that
+		/// handle generally return immediately, but can also behave synchronously with respect to blocked execution. For more information, see http://support.microsoft.com/kb/156932.
+		/// </para>
+		/// <para>Considerations for working with asynchronous file handles:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// <c>WriteFile</c> may return before the write operation is complete. In this scenario, <c>WriteFile</c> returns <c>FALSE</c> and the
+		/// GetLastError function returns <c>ERROR_IO_PENDING</c>, which allows the calling process to continue while the system completes the
+		/// write operation.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>The <c>lpOverlapped</c> parameter must not be <c>NULL</c> and should be used with the following facts in mind:</term>
+		/// </item>
+		/// </list>
+		/// <para>Considerations for working with synchronous file handles:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// If <c>lpOverlapped</c> is <c>NULL</c>, the write operation starts at the current file position and <c>WriteFile</c> does not return
+		/// until the operation is complete, and the system updates the file pointer before <c>WriteFile</c> returns.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If <c>lpOverlapped</c> is not <c>NULL</c>, the write operation starts at the offset that is specified in the OVERLAPPED structure and
+		/// <c>WriteFile</c> does not return until the write operation is complete. The system updates the <c>OVERLAPPED</c> Internal and
+		/// InternalHigh fields before <c>WriteFile</c> returns.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>For more information, see CreateFile and Synchronous and Asynchronous I/O.</para>
+		/// <para>Pipes</para>
+		/// <para>
+		/// If an anonymous pipe is being used and the read handle has been closed, when <c>WriteFile</c> attempts to write using the pipe's
+		/// corresponding write handle, the function returns <c>FALSE</c> and GetLastError returns <c>ERROR_BROKEN_PIPE</c>.
+		/// </para>
+		/// <para>
+		/// If the pipe buffer is full when an application uses the <c>WriteFile</c> function to write to a pipe, the write operation may not
+		/// finish immediately. The write operation will be completed when a read operation (using the ReadFile function) makes more system
+		/// buffer space available for the pipe.
+		/// </para>
+		/// <para>
+		/// When writing to a non-blocking, byte-mode pipe handle with insufficient buffer space, <c>WriteFile</c> returns <c>TRUE</c> with *
+		/// <c>lpNumberOfBytesWritten</c> &lt; <c>nNumberOfBytesToWrite</c>.
+		/// </para>
+		/// <para>For more information about pipes, see Pipes.</para>
+		/// <para>Transacted Operations</para>
+		/// <para>
+		/// If there is a transaction bound to the file handle, then the file write is transacted. For more information, see About Transactional NTFS.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For some examples, see Creating and Using a Temporary File and Opening a File for Reading or Writing.</para>
+		/// <para>
+		/// The following C++ example shows how to align sectors for unbuffered file writes. The <c>Size</c> variable is the size of the original
+		/// data block you are interested in writing to the file. For additional rules regarding unbuffered file I/O, see File Buffering.
+		/// </para>
+		/// <para>
+		/// <code>#include &lt;windows.h&gt; #define ROUND_UP_SIZE(Value,Pow2) ((SIZE_T) ((((ULONG)(Value)) + (Pow2) - 1) &amp; (~(((LONG)(Pow2)) - 1)))) #define ROUND_UP_PTR(Ptr,Pow2) ((void *) ((((ULONG_PTR)(Ptr)) + (Pow2) - 1) &amp; (~(((LONG_PTR)(Pow2)) - 1)))) int main() { // Sample data unsigned long bytesPerSector = 65536; // obtained from the GetFreeDiskSpace function. unsigned long size = 15536; // Buffer size of your data to write. // Ensure you have one more sector than Size would require. size_t sizeNeeded = bytesPerSector + ROUND_UP_SIZE(size, bytesPerSector); // Replace this statement with any allocation routine. auto buffer = new uint8_t[SizeNeeded]; // Actual alignment happens here. auto bufferAligned = ROUND_UP_PTR(buffer, bytesPerSector); // ... Add code using bufferAligned here. // Replace with corresponding free routine. delete buffer; }</code>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile
+		// BOOL WriteFile( [in] HANDLE hFile, [in] LPCVOID lpBuffer, [in] DWORD nNumberOfBytesToWrite, [out, optional] LPDWORD lpNumberOfBytesWritten, [in, out, optional] LPOVERLAPPED lpOverlapped );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.WriteFile")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool WriteFile(HFILE hFile, [In] byte[] lpBuffer, int nNumberOfBytesToWrite, out int lpNumberOfBytesWritten, ref NativeOverlapped lpOverlapped);
+
+		/// <summary>
 		/// Writes data to the specified file or input/output (I/O) device.
 		/// <para>
 		/// This function is designed for both synchronous and asynchronous operation. For a similar function designed solely for
@@ -5776,7 +6409,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> that releases a created HFILE instance at disposal using CloseHandle.</summary>
-		public class SafeHFILE : SafeKernelHandle
+		public class SafeHFILE : SafeSyncHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="HFILE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -5793,7 +6426,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="Microsoft.Win32.SafeHandles.SafeFileHandle"/> to <see cref="SafeHFILE"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static explicit operator SafeHFILE(Microsoft.Win32.SafeHandles.SafeFileHandle h) => new SafeHFILE(h.DangerousGetHandle(), false);
+			public static explicit operator SafeHFILE(Microsoft.Win32.SafeHandles.SafeFileHandle h) => new(h.DangerousGetHandle(), false);
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHFILE"/> to <see cref="HFILE"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>

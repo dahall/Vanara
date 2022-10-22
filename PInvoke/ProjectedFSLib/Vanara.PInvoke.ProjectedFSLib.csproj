@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows ProjectedFSLib.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.ProjectedFSLib</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;ProjectedFSLib;Projected File System</PackageTags>
@@ -20,6 +19,7 @@ Structures
 EAINFORMATION PRJ_CALLBACKS PRJ_CALLBACK_DATA PRJ_COMPLETE_COMMAND_EXTENDED_PARAMETERS PRJ_DIR_ENTRY_BUFFER_HANDLE PRJ_EXTENDED_INFO PRJ_FILE_BASIC_INFO PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT PRJ_NOTIFICATION_MAPPING PRJ_NOTIFICATION_PARAMETERS PRJ_PLACEHOLDER_INFO PRJ_PLACEHOLDER_VERSION_INFO PRJ_STARTVIRTUALIZING_OPTIONS PRJ_VIRTUALIZATION_INSTANCE_INFO SECURITYINFORMATION STREAMSINFORMATION SYMLINK
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

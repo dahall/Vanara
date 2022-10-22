@@ -109,7 +109,7 @@ namespace Vanara.Windows.Forms
 				if (!CompositionSupported)
 					return;
 				DwmpGetColorizationParameters(out var p).ThrowIfFailed();
-				p.clrColor = value;
+				p.clrColor = (COLORREF)value;
 				DwmpSetColorizationParameters(p, 1).ThrowIfFailed();
 				Microsoft.Win32.Registry.CurrentUser.SetValue(@"Software\Microsoft\Windows\DWM\ColorizationColor", value.ToArgb(), Microsoft.Win32.RegistryValueKind.DWord);
 			}
@@ -213,7 +213,10 @@ namespace Vanara.Windows.Forms
 				throw new ArgumentNullException(nameof(window));
 			var bb = new DWM_BLURBEHIND(enabled);
 			if (graphics != null && region != null)
-				bb.SetRegion(graphics, region);
+			{
+				bb.hRgnBlur = region.GetHrgn(graphics);
+				bb.dwFlags |= DWM_BLURBEHIND_Mask.DWM_BB_BLURREGION;
+			}
 			if (transitionOnMaximized)
 				bb.TransitionOnMaximized = true;
 			DwmEnableBlurBehindWindow(window.Handle, bb);

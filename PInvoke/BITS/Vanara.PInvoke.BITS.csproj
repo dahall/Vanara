@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (interfaces, structures and constants) imported for Windows BITS (Background Intelligent Transfer Service).</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.BITS</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;bits;copy</PackageTags>
@@ -17,9 +16,10 @@ Structures
 BG_AUTH_CREDENTIALS BG_AUTH_CREDENTIALS_UNION BG_BASIC_CREDENTIALS BG_FILE_INFO BG_FILE_PROGRESS BG_FILE_RANGE BG_JOB_PROGRESS BG_JOB_REPLY_PROGRESS BG_JOB_TIMES BITS_FILE_PROPERTY_VALUE BITS_JOB_PROPERTY_VALUE
 
 Interfaces
-IBackgroundCopyCallback IBackgroundCopyCallback2 IBackgroundCopyCallback3 IBackgroundCopyError IBackgroundCopyFile IBackgroundCopyFile2 IBackgroundCopyFile3 IBackgroundCopyFile4 IBackgroundCopyFile5 IBackgroundCopyFile6 IBackgroundCopyJob IBackgroundCopyJob2 IBackgroundCopyJob3 IBackgroundCopyJob4 IBackgroundCopyJob5 IBackgroundCopyJobHttpOptions IBackgroundCopyManager IBitsPeer IBitsPeerCacheAdministration IBitsPeerCacheRecord IBitsTokenOptions IEnumBackgroundCopyFiles IEnumBackgroundCopyJobs IEnumBitsPeerCacheRecords IEnumBitsPeers
+IBackgroundCopyCallback IBackgroundCopyCallback2 IBackgroundCopyCallback3 IBackgroundCopyError IBackgroundCopyFile IBackgroundCopyFile2 IBackgroundCopyFile3 IBackgroundCopyFile4 IBackgroundCopyFile5 IBackgroundCopyFile6 IBackgroundCopyJob IBackgroundCopyJob2 IBackgroundCopyJob3 IBackgroundCopyJob4 IBackgroundCopyJob5 IBackgroundCopyJobHttpOptions IBackgroundCopyJobHttpOptions2 IBackgroundCopyJobHttpOptions3 IBackgroundCopyManager IBackgroundCopyServerCertificateValidationCallback IBitsPeer IBitsPeerCacheAdministration IBitsPeerCacheRecord IBitsTokenOptions IEnumBackgroundCopyFiles IEnumBackgroundCopyJobs IEnumBitsPeerCacheRecords IEnumBitsPeers
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

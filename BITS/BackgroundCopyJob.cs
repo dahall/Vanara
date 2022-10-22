@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using Vanara.Extensions;
@@ -46,7 +47,7 @@ namespace Vanara.IO
 		/// <summary>Performs an implicit conversion from <see cref="BG_JOB_PROGRESS"/> to <see cref="BackgroundCopyJobProgress"/>.</summary>
 		/// <param name="p">The BG_JOB_PROGRESS instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BackgroundCopyJobProgress(BG_JOB_PROGRESS p) => new BackgroundCopyJobProgress(p);
+		public static implicit operator BackgroundCopyJobProgress(BG_JOB_PROGRESS p) => new(p);
 	}
 
 	/// <summary>Provides progress information related to the reply portion of an upload-reply job.</summary>
@@ -66,7 +67,7 @@ namespace Vanara.IO
 		/// <summary>Performs an implicit conversion from <see cref="BG_JOB_REPLY_PROGRESS"/> to <see cref="BackgroundCopyJobReplyProgress"/>.</summary>
 		/// <param name="p">The BG_JOB_REPLY_PROGRESS instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BackgroundCopyJobReplyProgress(BG_JOB_REPLY_PROGRESS p) => new BackgroundCopyJobReplyProgress(p);
+		public static implicit operator BackgroundCopyJobReplyProgress(BG_JOB_REPLY_PROGRESS p) => new(p);
 	}
 
 	/// <summary>Used by <see cref="BackgroundCopyJob.FileRangesTransferred"/> events.</summary>
@@ -98,11 +99,12 @@ namespace Vanara.IO
 	/// // Create an event to signal completion
 	/// var evt = new AutoResetEvent(false);
 	/// // Set properties on the job
+	/// job.AutoCompleteOnSuccess = true;
 	/// job.Credentials.Add(BackgroundCopyJobCredentialScheme.Digest, BackgroundCopyJobCredentialTarget.Proxy, "user", "mypwd");
 	/// job.CustomHeaders = new System.Net.WebHeaderCollection() { "A1:Test", "A2:Prova" };
 	/// job.MinimumNotificationInterval = TimeSpan.FromSeconds(1);
 	/// // Set event handlers for job
-	/// job.Completed += (s, e) =&gt; { System.Diagnostics.Debug.WriteLine("Job completed."); job.Complete(); evt.Set(); };
+	/// job.Completed += (s, e) =&gt; { System.Diagnostics.Debug.WriteLine("Job completed."); evt.Set(); };
 	/// job.Error += (s, e) =&gt; throw job.LastError;
 	/// job.FileTransferred += (s, e) =&gt; System.Diagnostics.Debug.WriteLine($"{e.FileInfo.LocalFilePath} of size {e.FileInfo.BytesTransferred} bytes was transferred.");
 	/// // Add download file information
@@ -118,37 +120,62 @@ namespace Vanara.IO
 		internal static readonly TimeSpan DEFAULT_RETRY_DELAY = TimeSpan.FromSeconds(600); //10 minutes (600 seconds)
 		internal static readonly TimeSpan DEFAULT_RETRY_PERIOD = TimeSpan.FromSeconds(1209600); //20160 minutes (1209600 seconds)
 		internal static readonly TimeSpan DEFAULT_TIMEOUT = TimeSpan.FromSeconds(7776000); // 7776000 seconds
+		internal static readonly Version CopyCallback2 = new(3, 0);
+		internal static readonly Version CopyCallback3 = new(10, 1);
 
+		private EventHandler<BackgroundCopyJobEventArgs> complEvent, errEvent, modEvent;
+		private EventHandler<BackgroundCopyFileRangesTransferredEventArgs> fRangTranEvent;
+		private EventHandler<BackgroundCopyFileTransferredEventArgs> fTranEvent;
 		private IBackgroundCopyJob m_ijob;
-		private Notifier m_notifier;
+		private Notifier m_notifier = null;
+		private BG_NOTIFY progNotify = 0;
 
 		internal BackgroundCopyJob(IBackgroundCopyJob ijob)
 		{
 			m_ijob = ijob ?? throw new ArgumentNullException(nameof(ijob));
-			m_notifier = new Notifier(this);
-			m_ijob.SetNotifyInterface(m_notifier);
-			NotifyFlags = BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_JOB_ERROR | BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION | BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED;
 			Files = new BackgroundCopyFileCollection(m_ijob);
 			Credentials = new BackgroundCopyJobCredentials(IJob2);
+			// Call to set progNotify;
+			GetNotifyCommandLine(out _, out _, out _);
 		}
 
 		/// <summary>Occurs when all of the files in the job have been transferred.</summary>
-		public event EventHandler<BackgroundCopyJobEventArgs> Completed;
+		public event EventHandler<BackgroundCopyJobEventArgs> Completed
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED, ref complEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED, ref complEvent, value);
+		}
 
 		/// <summary>Fires when an error occurs.</summary>
-		public event EventHandler<BackgroundCopyJobEventArgs> Error;
+		public event EventHandler<BackgroundCopyJobEventArgs> Error
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_JOB_ERROR, ref errEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_JOB_ERROR, ref errEvent, value);
+		}
 
 		/// <summary>Occurs when file ranges have been transferred.</summary>
-		public event EventHandler<BackgroundCopyFileRangesTransferredEventArgs> FileRangesTransferred;
+		public event EventHandler<BackgroundCopyFileRangesTransferredEventArgs> FileRangesTransferred
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED, ref fRangTranEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED, ref fRangTranEvent, value);
+		}
 
 		/// <summary>Occurs when a file has been transferred.</summary>
-		public event EventHandler<BackgroundCopyFileTransferredEventArgs> FileTransferred;
+		public event EventHandler<BackgroundCopyFileTransferredEventArgs> FileTransferred
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED, ref fTranEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED, ref fTranEvent, value);
+		}
 
 		/// <summary>
 		/// Occurs when the job has been modified. For example, a property value changed, the state of the job changed, or progress is made
 		/// transferring the files.
 		/// </summary>
-		public event EventHandler<BackgroundCopyJobEventArgs> Modified;
+		public event EventHandler<BackgroundCopyJobEventArgs> Modified
+		{
+			add => AddEvent(BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION, ref modEvent, value);
+			remove => RemoveEvent(BG_NOTIFY.BG_NOTIFY_JOB_MODIFICATION, ref modEvent, value);
+		}
 
 		/// <summary>Gets or sets the flags that identify the owner and ACL information to maintain when transferring a file using SMB.</summary>
 		public BackgroundCopyACLFlags ACLFlags
@@ -157,6 +184,17 @@ namespace Vanara.IO
 			set => RunAction(() => IJob3.SetFileACLFlags((BG_COPY_FILE)value));
 		}
 
+		/// <summary>
+		/// <para>Gets a value indicating whether to automatically call <see cref="Complete()"/> when the <see cref="Completed"/> event fires.</para>
+		/// <note type="note">This property is not persisted with the job. <see cref="Complete()"/> will only be automatically called if this
+		/// instance has subscribed to the <see cref="Completed"/> event and that event fires.</note>
+		/// </summary>
+		/// <value>
+		/// <see langword="true"/> if you want <see cref="Complete()"/> called automatically on successful job completion; otherwise, <see
+		/// langword="false"/> (the default).
+		/// </value>
+		public bool AutoCompleteOnSuccess { get; set; }
+
 		/// <summary>Retrieves the client certificate from the job.</summary>
 		public X509Certificate2 Certificate
 		{
@@ -164,31 +202,22 @@ namespace Vanara.IO
 			{
 				IHttpOp.GetClientCertificate(out var loc, out var mstore, out var blob, out var subj);
 				if (blob.IsInvalid) return null;
-				var store = mstore;
-				switch (store)
+				var store = mstore switch
 				{
-					case "MY":
-						store = "My";
-						break;
-
-					case "ROOT":
-						store = "Root";
-						break;
-
-					case "SPC":
-						store = "TrustedPublisher";
-						break;
-
-					case "CA":
-					default:
-						break;
-				}
+					"MY" => "My",
+					"ROOT" => "Root",
+					"SPC" => "TrustedPublisher",
+					_ => mstore,
+				};
 				var xstore = new X509Store(store, (StoreLocation)(loc + 1));
 				xstore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
 				return xstore.Certificates.Find(X509FindType.FindBySubjectName, subj, false).OfType<X509Certificate2>().FirstOrDefault() ??
 					new X509Certificate2(blob.ToArray<byte>(20));
 			}
 		}
+
+		/// <summary>Gets the time the job was created.</summary>
+		public DateTime CreationTime => Times.CreationTime.ToDateTime();
 
 		/// <summary>The credentials to use for a proxy or remote server user authentication request.</summary>
 		public BackgroundCopyJobCredentials Credentials { get; private set; }
@@ -199,8 +228,8 @@ namespace Vanara.IO
 			get
 			{
 				var hdr = new System.Net.WebHeaderCollection();
-				var str = RunAction(() => IHttpOp.GetCustomHeaders().ToString(), null);
-				if (str != null)
+				var str = RunAction(() => IHttpOp.GetCustomHeaders(), null);
+				if (str is not null)
 				{
 					foreach (var s in str.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries))
 						hdr.Add(s);
@@ -288,6 +317,36 @@ namespace Vanara.IO
 			set => SetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_HIGH_PERFORMANCE, value);
 		}
 
+		/// <summary>Gets or sets the default HTTP method used for a BITS transfer.</summary>
+		/// <value>The HTTP method name.</value>
+		/// <remarks>
+		/// <para>
+		/// BITS allows you, as the developer, to choose an HTTP method other than the default method. This increases BITS' ability to
+		/// interact with servers that don't adhere to the normal BITS requirements for HTTP servers. Bear the following in mind when you
+		/// choose a different HTTP method from the default one.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>BITS automatically changes the job priority to BG_JOB_PRIORITY_FOREGROUND, and prevents that priority from being changed.</item>
+		/// <item>
+		/// An error that would ordinarily be resumable (such as loss of connectivity) transitions the job to an ERROR state. You, as the
+		/// developer, can restart the job by calling IBackgroundCopyJob::Resume, and the job will be restarted from the beginning. See Life
+		/// Cycle of a BITS Job for more information on BITS job states.
+		/// </item>
+		/// <item>BITS doesn’t allow DYNAMIC_CONTENT nor ON_DEMAND_MODE jobs with <c>SetHttpMethod</c>.</item>
+		/// </list>
+		/// <para>
+		/// <c>SetHttpMethod</c> does nothing if the method name that you pass matches the default HTTP method for the transfer type. For
+		/// example, if you set a download job method to "GET" (the default), then the job priority won't be changed. The HTTP method must
+		/// be set before the first call to IBackgroundCopyJob::Resume that starts the job.
+		/// </para>
+		/// </remarks>
+		[DefaultValue("GET")]
+		public string HttpMethod
+		{
+			get => RunAction(() => IHttpOp2.GetHttpMethod());
+			set => RunAction(() => IHttpOp2.SetHttpMethod(value));
+		}
+
 		/// <summary>Gets the job identifier.</summary>
 		public Guid ID => RunAction(() => m_ijob.GetId(), Guid.Empty);
 
@@ -300,10 +359,10 @@ namespace Vanara.IO
 			get
 			{
 				var state = State;
-				if (state != BackgroundCopyJobState.Error && state != BackgroundCopyJobState.TransientError)
+				if (state is not BackgroundCopyJobState.Error and not BackgroundCopyJobState.TransientError)
 					return null;
 				var err = RunAction(() => m_ijob.GetError());
-				return err == null ? null : new BackgroundCopyException(err);
+				return err is null ? null : new BackgroundCopyException(err);
 			}
 		}
 
@@ -358,6 +417,9 @@ namespace Vanara.IO
 			set => RunAction(() => m_ijob.SetMinimumRetryDelay((uint)value.TotalSeconds));
 		}
 
+		/// <summary>Gets the time the job was last modified or bytes were transferred.</summary>
+		public DateTime ModificationTime => Times.ModificationTime.ToDateTime();
+
 		/// <summary>
 		/// Gets or sets the length of time, in seconds, that BITS tries to transfer the file after the first transient error occurs. The
 		/// default retry period is 1,209,600 seconds (14 days). Set the retry period to 0 to prevent retries and to force the job into the
@@ -386,6 +448,7 @@ namespace Vanara.IO
 		/// Gets or sets the program to execute if the job enters the Error or Transferred state. BITS executes the program in the context of
 		/// the user who called this method.
 		/// </summary>
+		[Obsolete("Use GetNotifyCommandLine and SetNotifyCommandLine methods. This property will be removed in a future release.")]
 		[DefaultValue(null)]
 		public string NotifyProgram
 		{
@@ -402,7 +465,7 @@ namespace Vanara.IO
 				}
 				if (string.IsNullOrEmpty(a))
 				{
-					if (p == null)
+					if (p is null)
 						return string.Empty;
 					else
 						return p;
@@ -467,6 +530,19 @@ namespace Vanara.IO
 		public bool OwnerIsElevated => RunAction(() => IJob4.GetOwnerElevationState());
 
 		/// <summary>
+		/// Gets or sets flags that determine if the files of the job can be cached and served to peers and if BITS can download content for
+		/// the job from peers.
+		/// </summary>
+		/// <returns>
+		/// Flags that determine if the files of the job can be cached and served to peers and if BITS can download content for the job from peers.
+		/// </returns>
+		public BackgroundCopyJobEnablePeerCaching PeerCachingEnablment
+		{
+			get => (BackgroundCopyJobEnablePeerCaching)IJob4.GetPeerCachingFlags();
+			set => IJob4.SetPeerCachingFlags((BG_JOB_ENABLE_PEERCACHING)value);
+		}
+
+		/// <summary>
 		/// Gets or sets the priority level for the job. The priority level determines when the job is processed relative to other jobs in
 		/// the transfer queue.
 		/// </summary>
@@ -501,13 +577,13 @@ namespace Vanara.IO
 			});
 			set => RunAction(() =>
 			{
-				if (value == null)
+				if (value is null)
 					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_PRECONFIG, null, null);
 				else if (string.IsNullOrEmpty(value.Address.AbsoluteUri))
 					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_NO_PROXY, null, null);
 				else
 					m_ijob.SetProxySettings(BG_JOB_PROXY_USAGE.BG_JOB_PROXY_USAGE_OVERRIDE, value.Address.AbsoluteUri, string.Join(" ", value.BypassList));
-				if (value.Credentials != null)
+				if (value.Credentials is not null)
 					throw new ArgumentException("The set Proxy property does not support proxy credentials. Please use the SetCredentials method.");
 			});
 		}
@@ -555,6 +631,9 @@ namespace Vanara.IO
 			set => SetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS, value);
 		}
 
+		/// <summary>Gets the time the job entered the Transferred state.</summary>
+		public DateTime TransferCompletionTime => Times.TransferCompletionTime.ToDateTime();
+
 		/// <summary>
 		/// Marks a BITS job as being willing to include default credentials in requests to proxy servers. Enabling this property is
 		/// equivalent to setting a WinHTTP security level of WINHTTP_AUTOLOGON_SECURITY_LEVEL_MEDIUM on the requests that BITS makes on the
@@ -570,16 +649,11 @@ namespace Vanara.IO
 			set => SetProperty(BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_USE_STORED_CREDENTIALS, value);
 		}
 
-		/// <summary>Gets the time the job was created.</summary>
-		public DateTime CreationTime => Times.CreationTime.ToDateTime();
-
-		/// <summary>Gets the time the job was last modified or bytes were transferred.</summary>
-		public DateTime ModificationTime => Times.ModificationTime.ToDateTime();
-
-		/// <summary>Gets the time the job entered the Transferred state.</summary>
-		public DateTime TransferCompletionTime => Times.TransferCompletionTime.ToDateTime();
-
 		private IBackgroundCopyJobHttpOptions IHttpOp => GetDerived<IBackgroundCopyJobHttpOptions>();
+
+		private IBackgroundCopyJobHttpOptions2 IHttpOp2 => GetDerived<IBackgroundCopyJobHttpOptions2>();
+
+		private IBackgroundCopyJobHttpOptions3 IHttpOp3 => GetDerived<IBackgroundCopyJobHttpOptions3>();
 
 		private IBackgroundCopyJob2 IJob2 => GetDerived<IBackgroundCopyJob2>();
 
@@ -595,7 +669,7 @@ namespace Vanara.IO
 			set => RunAction(() =>
 			{
 				var st = State;
-				if (st != BackgroundCopyJobState.Acknowledged && st != BackgroundCopyJobState.Cancelled)
+				if (m_notifier is not null && st is not BackgroundCopyJobState.Acknowledged and not BackgroundCopyJobState.Cancelled)
 					m_ijob.SetNotifyFlags(value);
 			});
 		}
@@ -626,6 +700,41 @@ namespace Vanara.IO
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => ID.GetHashCode();
+
+		/// <summary>Retrieves the program to execute when the job enters the error or transferred state.</summary>
+		/// <param name="exeFullPath">
+		/// The program to execute when the job enters the error or transferred state. This value is <see langword="null"/> if <see
+		/// cref="SetNotifyCommandLine"/> has not been called.
+		/// </param>
+		/// <param name="parameters">
+		/// The arguments of the program in <paramref name="exeFullPath"/>. This value is <see langword="null"/> if <see
+		/// cref="SetNotifyCommandLine"/> has not been called.
+		/// </param>
+		/// <param name="notifyFlags">
+		/// Flags that specify when to execute the program. This value is <c>0</c> if <see cref="SetNotifyCommandLine"/> has not been called.
+		/// </param>
+		public void GetNotifyCommandLine(out string exeFullPath, out string parameters, out BackgroundCopyJobNotify notifyFlags)
+		{
+			(exeFullPath, parameters, progNotify) = RunAction(() =>
+			{
+				IJob2.GetNotifyCmdLine(out var e, out var p);
+				var f = IJob2.GetNotifyFlags();
+				return (string.IsNullOrEmpty(e) ? null : e, string.IsNullOrEmpty(p) ? null : p, f & (BG_NOTIFY.BG_NOTIFY_JOB_TRANSFERRED | BG_NOTIFY.BG_NOTIFY_JOB_ERROR));
+			});
+			if (exeFullPath is null) progNotify = 0;
+			notifyFlags = (BackgroundCopyJobNotify)progNotify;
+		}
+
+		/// <summary>
+		/// Sets the HTTP custom headers for this job to be write-only. Write-only headers cannot be read by BITS methods such as the <see
+		/// cref="CustomHeaders"/> property.
+		/// </summary>
+		/// <remarks>
+		/// Use this API when your BITS custom headers must include security information (such as an API token) that you don't want to be
+		/// readable by other programs running on the same computer. The BITS process, of course, can still read these headers, and send
+		/// them over the HTTP connection. Once the headers are set to write-only, that cannot be unset.
+		/// </remarks>
+		public void MakeCustomHeadersWriteOnly() => RunAction(() => IHttpOp3.MakeCustomHeadersWriteOnly());
 
 		/// <summary>
 		/// Use the ReplaceRemotePrefix method to replace the beginning text of all remote names in the download job with the given string.
@@ -687,6 +796,114 @@ namespace Vanara.IO
 		}
 
 		/// <summary>
+		/// Specifies a program to execute if the job enters the <see cref="BackgroundCopyJobState.Error"/> or <see
+		/// cref="BackgroundCopyJobState.Transferred"/> state. BITS executes the program in the context of the user who called this method.
+		/// </summary>
+		/// <param name="exeFullPath">
+		/// <para>
+		/// The full path of the program to execute. The <paramref name="exeFullPath"/> parameter is limited to MAX_PATH characters. You
+		/// should specify a full path to the program; the method will not use the search path to locate the program.
+		/// </para>
+		/// <para>
+		/// To remove command line notification, set <paramref name="exeFullPath"/> and <paramref name="parameters"/> to <see
+		/// langword="null"/>. The method fails if <paramref name="exeFullPath"/> is <see langword="null"/> and <paramref name="parameters"/>
+		/// is non- <see langword="null"/>.
+		/// </para>
+		/// </param>
+		/// <param name="parameters">
+		/// The parameters for the program in <paramref name="exeFullPath"/>. The <paramref name="parameters"/> parameter is limited to 4,000
+		/// characters when joined to <paramref name="exeFullPath"/>. This parameter can be <see langword="null"/>.
+		/// </param>
+		/// <param name="notifyFlags">Flags that specify when to execute the program.</param>
+		/// <remarks>
+		/// <para>BITS calls the CreateProcessAsUser function to launch the program.</para>
+		/// <para>
+		/// Your program should return an exit code of zero. If your program does not return an exit code of zero, BITS checks the state of
+		/// the job. If the program did not cancel or complete the job, BITS calls the program again after the minimum retry delay specified
+		/// for the job expires.
+		/// </para>
+		/// <para><c>BITS 1.5 and earlier:</c> BITS calls the program only once.</para>
+		/// <para>
+		/// To execute a script, specify WScript.exe (include the full path to WScript.exe) in <paramref name="exeFullPath"/>. The <paramref
+		/// name="parameters"/> parameter should include the script name and any arguments.
+		/// </para>
+		/// <para>
+		/// If your program requires job related information, you must pass this information as arguments. Do not include environment
+		/// variables, such as %system32%, in <paramref name="exeFullPath"/> or <paramref name="parameters"/> — they are not expanded.
+		/// </para>
+		/// <para>
+		/// You should include the full path to the program. If any of the arguments in <paramref name="parameters"/> include a path that
+		/// uses long file names, use quotes around the path.
+		/// </para>
+		/// <para>
+		/// If the program you want to execute uses the reply or download file, the program must call the <see cref="Complete()"/> method to
+		/// make the files available to the client.
+		/// </para>
+		/// <para>Note that BITS still executes the command line even if you call this method after the event occurs.</para>
+		/// <para>
+		/// If the BITS job is in a service account context (ie, networkservice/localsystem/localservice), no form of command-line callback
+		/// will execute.
+		/// </para>
+		/// <para>
+		/// If you call both this method and subscribe to events, BITS will execute the command line only if the correpsonding event handler
+		/// throws an exception. For example, if the handler that BITS calls throws <see cref="NotSupportedException"/>, BITS will execute
+		/// the command line. However, if the handler doesn't throw an exception, BITS will not execute the command line. If the handler and
+		/// command line execution request both fail, BITS will send the notification again after the minimum retry period expires.
+		/// </para>
+		/// <para>Note that calling the <see cref="TakeOwnership"/> method removes command line notification from the job.</para>
+		/// </remarks>
+		public void SetNotifyCommandLine(string exeFullPath, string parameters, BackgroundCopyJobNotify notifyFlags = BackgroundCopyJobNotify.Transferred | BackgroundCopyJobNotify.Error)
+		{
+			exeFullPath = exeFullPath?.Trim('"', ' ');
+			progNotify = string.IsNullOrEmpty(exeFullPath) ? 0 : (BG_NOTIFY)notifyFlags;
+			RunAction(() =>
+			{
+				IJob2.SetNotifyCmdLine(exeFullPath, exeFullPath is null || parameters is null ? null : $"\"{exeFullPath}\" {parameters}");
+				IJob2.SetNotifyFlags(NotifyFlags | progNotify);
+			});
+		}
+
+		/// <summary>
+		/// Server certificates are sent when an HTTPS connection is opened. Use this method to set a callback to be called to validate
+		/// those server certificates.
+		/// </summary>
+		/// <param name="callback">
+		/// An object that implements <see cref="IBackgroundCopyServerCertificateValidationCallback"/>. To remove the current callback
+		/// interface pointer, set this parameter to <see langword="null"/>.
+		/// </param>
+		/// <remarks>
+		/// <para>Use this method when you want to perform your own checks on the server certificate.</para>
+		/// <para>Call this method only if you implement the <see cref="IBackgroundCopyServerCertificateValidationCallback"/> interface.</para>
+		/// <para>
+		/// The validation interface becomes invalid when your application terminates; BITS does not maintain a record of the validation
+		/// interface. As a result, your application's initialization process should call <c>SetServerCertificateValidationInterface</c> on
+		/// those existing jobs for which you want to receive certificate validation requests.
+		/// </para>
+		/// <para>
+		/// If more than one application calls <c>SetServerCertificateValidationInterface</c> to set the notification interface for the job,
+		/// the last application to call it is the one that will receive notifications. The other applications will not receive notifications.
+		/// </para>
+		/// <para>
+		/// If any certificate errors are found during the OS validation of the certificate, then the connection is aborted, and the custom
+		/// callback is never called. You can customize the OS validation logic with a call to
+		/// IBackgroundCopyJobHttpOptions::SetSecurityFlags. For example, you can ignore expected certificate validation errors.
+		/// </para>
+		/// <para>
+		/// If OS validation passes, then the <see cref="IBackgroundCopyServerCertificateValidationCallback.ValidateServerCertificate"/>
+		/// method is called before completing the TLS handshake and before the HTTP request is sent.
+		/// </para>
+		/// <para>
+		/// If your validation method declines the certificate, the job will transition to <c>BG_JOB_STATE_TRANSIENT_ERROR</c> with a job
+		/// error context of <c>BG_ERROR_CONTEXT_SERVER_CERTIFICATE_CALLBACK</c> and the error <c>HRESULT</c> from your callback. If your
+		/// callback couldn't be called (for example, because BITS needed to validate a server certificate after your program exited), then
+		/// the job error code will be <c>BG_E_SERVER_CERT_VALIDATION_INTERFACE_REQUIRED</c>. When your application is next run, it can fix
+		/// this error by setting the validation callback again and resuming the job.
+		/// </para>
+		/// </remarks>
+		public void SetServerCertificateValidationInterface(IBackgroundCopyServerCertificateValidationCallback callback) =>
+			RunAction(() => IHttpOp3.SetServerCertificateValidationInterface(callback));
+
+		/// <summary>
 		/// Use the Suspend method to suspend a job. New jobs, jobs that are in error, and jobs that have finished transferring files are
 		/// automatically suspended.
 		/// </summary>
@@ -707,12 +924,8 @@ namespace Vanara.IO
 		{
 			try
 			{
-				NotifyFlags = 0;
-				m_ijob.SetNotifyInterface(null);
-				if (State == BackgroundCopyJobState.Transferred)
-					Complete();
-				if (State != BackgroundCopyJobState.Acknowledged)
-					Cancel();
+				if (m_notifier is not null && State is not BackgroundCopyJobState.Cancelled and not BackgroundCopyJobState.Acknowledged)
+					m_ijob.SetNotifyInterface(null);
 			}
 			catch { }
 			Files = null;
@@ -721,66 +934,82 @@ namespace Vanara.IO
 		}
 
 		/// <summary>Called when the job has completed.</summary>
-		protected virtual void OnCompleted() => Completed?.Invoke(this, new BackgroundCopyJobEventArgs(this));
+		protected virtual void OnCompleted()
+		{
+			if (AutoCompleteOnSuccess)
+				Complete();
+			complEvent?.Invoke(this, new BackgroundCopyJobEventArgs(this));
+		}
 
 		/// <summary>Called when an error occurs.</summary>
 		/// <param name="err">The error.</param>
-		protected virtual void OnError(IBackgroundCopyError err) => Error?.Invoke(this, new BackgroundCopyJobEventArgs(this));
+		protected virtual void OnError(IBackgroundCopyError err) => errEvent?.Invoke(this, new BackgroundCopyJobEventArgs(this));
 
 		/// <summary>Called when a file range has been transferred.</summary>
 		/// <param name="file">The file being transferred.</param>
 		/// <param name="ranges">The ranges transferred.</param>
-		protected virtual void OnFileRangesTransferred(IBackgroundCopyFile file, BG_FILE_RANGE[] ranges) => FileRangesTransferred?.Invoke(this, new BackgroundCopyFileRangesTransferredEventArgs(this, file, ranges));
+		protected virtual void OnFileRangesTransferred(IBackgroundCopyFile file, BG_FILE_RANGE[] ranges) => fRangTranEvent?.Invoke(this, new BackgroundCopyFileRangesTransferredEventArgs(this, file, ranges));
 
 		/// <summary>Called when a file transfer is completed.</summary>
 		/// <param name="pFile">The transferred file.</param>
-		protected virtual void OnFileTransferred(IBackgroundCopyFile pFile) => FileTransferred?.Invoke(this, new BackgroundCopyFileTransferredEventArgs(this, pFile));
+		protected virtual void OnFileTransferred(IBackgroundCopyFile pFile) => fTranEvent?.Invoke(this, new BackgroundCopyFileTransferredEventArgs(this, pFile));
 
 		/// <summary>Called when the job has been modified.</summary>
-		protected virtual void OnModified() => Modified?.Invoke(this, new BackgroundCopyJobEventArgs(this));
+		protected virtual void OnModified() => modEvent?.Invoke(this, new BackgroundCopyJobEventArgs(this));
 
-		private T GetDerived<T>() where T : class
+		private void AddEvent<T>(BG_NOTIFY flag, ref EventHandler<T> eventHandler, EventHandler<T> value)
 		{
-			var ret = m_ijob as T;
-			return ret ?? throw new PlatformNotSupportedException();
+			try
+			{
+				if (m_notifier is null)
+					RunAction(() => m_ijob.SetNotifyInterface(m_notifier ??= new Notifier(this)));
+			}
+			catch (Exception ex)
+			{
+				m_notifier = null;
+				if (ex is UnauthorizedAccessException uae)
+					throw new UnauthorizedAccessException("This process does not have permission to edit the job. It was likely created by an elevated process.", uae);
+				throw new NotSupportedException("This job is unable to provide events.", ex);
+			}
+
+			var bitsVer = BackgroundCopyManager.Version;
+			if (flag == BG_NOTIFY.BG_NOTIFY_FILE_TRANSFERRED && bitsVer < CopyCallback2 || flag == BG_NOTIFY.BG_NOTIFY_FILE_RANGES_TRANSFERRED && bitsVer < CopyCallback3)
+				throw new NotSupportedException("This event is not supported under this version of Windows.");
+			eventHandler += value;
+			NotifyFlags |= flag;
 		}
+
+		private T GetDerived<T>() where T : class => m_ijob as T ?? throw new PlatformNotSupportedException();
 
 		private object GetProperty(BITS_JOB_PROPERTY_ID id)
 		{
 			var value = RunAction(() => IJob5.GetProperty(id));
-			switch (id)
+			return id switch
 			{
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_MAX_DOWNLOAD_SIZE:
-					return value.Uint64;
-
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS:
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_MINIMUM_NOTIFICATION_INTERVAL_MS:
-					return value.Dword;
-
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_NOTIFICATION_CLSID:
-					return value.ClsID;
-
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_DYNAMIC_CONTENT:
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_HIGH_PERFORMANCE:
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ON_DEMAND_MODE:
-					return value.Enable;
-
-				case BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_USE_STORED_CREDENTIALS:
-					return value.Target;
-
-				default:
-					throw new ArgumentOutOfRangeException(nameof(id));
-			}
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_MAX_DOWNLOAD_SIZE => value.Uint64,
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ID_COST_FLAGS or BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_MINIMUM_NOTIFICATION_INTERVAL_MS => value.Dword,
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_NOTIFICATION_CLSID => value.ClsID,
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_DYNAMIC_CONTENT or BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_HIGH_PERFORMANCE or BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_ON_DEMAND_MODE => value.Enable,
+				BITS_JOB_PROPERTY_ID.BITS_JOB_PROPERTY_USE_STORED_CREDENTIALS => value.Target,
+				_ => throw new ArgumentOutOfRangeException(nameof(id)),
+			};
 		}
 
 		private void HandleCOMException(COMException cex)
 		{
-			if (State == BackgroundCopyJobState.Error || State == BackgroundCopyJobState.TransientError)
+			if (State is BackgroundCopyJobState.Error or BackgroundCopyJobState.TransientError)
 			{
 				OnError(m_ijob.GetError());
 			}
 			else
 				throw new BackgroundCopyException(cex);
+		}
+
+		private void RemoveEvent<T>(BG_NOTIFY flag, ref EventHandler<T> eventHandler, EventHandler<T> value)
+		{
+			eventHandler -= value;
+			if (eventHandler is null && !progNotify.IsFlagSet(flag))
+				NotifyFlags = NotifyFlags.ClearFlags(flag);
 		}
 
 		private void RunAction(Action action)
@@ -834,9 +1063,7 @@ namespace Vanara.IO
 
 			public Notifier(BackgroundCopyJob job) => parent = job;
 
-			private Notifier()
-			{
-			}
+			private Notifier() { }
 
 			public void FileRangesTransferred(IBackgroundCopyJob job, IBackgroundCopyFile file, uint rangeCount, BG_FILE_RANGE[] ranges) => parent.OnFileRangesTransferred(file, ranges);
 
@@ -853,7 +1080,9 @@ namespace Vanara.IO
 	/// <summary>Event argument for background copy job.</summary>
 	public class BackgroundCopyJobEventArgs : EventArgs
 	{
-		internal BackgroundCopyJobEventArgs(BackgroundCopyJob j) => Job = j;
+		/// <summary>Initializes a new instance of the <see cref="BackgroundCopyJobEventArgs"/> class.</summary>
+		/// <param name="j">The job.</param>
+		public BackgroundCopyJobEventArgs(BackgroundCopyJob j) => Job = j;
 
 		/// <summary>Gets the job being processed.</summary>
 		/// <value>The job.</value>

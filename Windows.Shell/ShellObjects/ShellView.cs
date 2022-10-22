@@ -160,7 +160,7 @@ namespace Vanara.Windows.Shell
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ShellItem[] SelectedItems
 		{
-			get => Array.ConvertAll(GetItems(IShellView, SVGIO.SVGIO_SELECTION), i => new ShellItem(i));
+			get => GetItems(IShellView, SVGIO.SVGIO_SELECTION);
 			set
 			{
 				// Deselect all
@@ -189,7 +189,7 @@ namespace Vanara.Windows.Shell
 		public HWND WindowHandle => shellViewWindow;
 
 		/// <summary>Gets the default size of the control.</summary>
-		protected override Size DefaultSize => new Size(250, 200);
+		protected override Size DefaultSize => new(250, 200);
 
 		private IShellBrowser Browser => iBrowser ??= new ShellBrowser(/* this */);
 
@@ -240,7 +240,7 @@ namespace Vanara.Windows.Shell
 			try
 			{
 				RecreateShellView();
-				History.Add(folder.PIDL);
+				History.Add(new ShellItem(folder.PIDL));
 				OnNavigated();
 			}
 			catch (Exception)
@@ -347,7 +347,7 @@ namespace Vanara.Windows.Shell
 		{
 			base.OnCreateControl();
 			CreateShellView();
-			History.Add(CurrentFolder.PIDL);
+			History.Add(new ShellItem(CurrentFolder.PIDL));
 			OnNavigated();
 		}
 
@@ -379,22 +379,17 @@ namespace Vanara.Windows.Shell
 		}
 
 		private static IShellView CreateViewObject(ShellFolder folder, HWND owner) =>
-			folder?.iShellFolder.CreateViewObject<IShellView>(owner);
+			folder?.IShellFolder.CreateViewObject<IShellView>(owner);
 
-		private static PIDL GetFolderForView(IShellView iView)
-		{
-			PIDL pidl = GetItems(iView, SVGIO.SVGIO_ALLVIEW).FirstOrDefault();
-			pidl?.RemoveLastId();
-			return pidl;
-		}
+		private static ShellFolder GetFolderForView(IShellView iView) => GetItems(iView, SVGIO.SVGIO_ALLVIEW).FirstOrDefault()?.Parent;
 
 		private static IShellItemArray GetItemArray(IShellView iView, SVGIO uItem) => ((IFolderView)iView).Items<IShellItemArray>(uItem);
 
-		private static PIDL[] GetItems(IShellView iView, SVGIO uItem)
+		private static ShellItem[] GetItems(IShellView iView, SVGIO uItem)
 		{
 			using ComReleaser<IDataObject> ido = ComReleaserFactory.Create(iView.GetItemObject<IDataObject>(uItem));
 			var shdo = new ShellDataObject(ido.Item);
-			return shdo.GetShellIdList();
+			return shdo.GetShellIdList().ToArray();
 		}
 
 		private void CreateShellView()

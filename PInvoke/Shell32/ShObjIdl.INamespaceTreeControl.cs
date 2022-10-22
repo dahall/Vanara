@@ -849,7 +849,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-hittest HRESULT
 			// HitTest( POINT *ppt, IShellItem **ppsiOut );
 			[PreserveSig]
-			HRESULT HitTest(in System.Drawing.Point ppt, out IShellItem ppsiOut);
+			HRESULT HitTest(in POINT ppt, out IShellItem ppsiOut);
 
 			/// <summary>Gets the RECT structure that describes the size and position of a given item.</summary>
 			/// <param name="psi">
@@ -1261,7 +1261,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-inamespacetreecontrol-hittest HRESULT
 			// HitTest( POINT *ppt, IShellItem **ppsiOut );
 			[PreserveSig]
-			new HRESULT HitTest(in System.Drawing.Point ppt, out IShellItem ppsiOut);
+			new HRESULT HitTest(in POINT ppt, out IShellItem ppsiOut);
 
 			/// <summary>Gets the RECT structure that describes the size and position of a given item.</summary>
 			/// <param name="psi">

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -1981,7 +1980,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemePosition( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ POINT *pPoint); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759762(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759762")]
-		public static extern HRESULT GetThemePosition(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out Point pPoint);
+		public static extern HRESULT GetThemePosition(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out POINT pPoint);
 
 		/// <summary>Retrieves the location of the theme property definition for a property.</summary>
 		/// <param name="hTheme">Handle to a window's specified theme data. Use OpenThemeData to create an HTHEME.</param>
@@ -2640,7 +2639,7 @@ namespace Vanara.PInvoke
 		// LPCRECT pRect, _In_ HRGN hrgn, _In_ POINT ptTest, _Out_ WORD *pwHitTestCode); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759808(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759808")]
-		public static extern HRESULT HitTestThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, HitTestOptions dwOptions, in RECT pRect, HRGN hrgn, Point ptTest, out HitTestValues pwHitTestCode);
+		public static extern HRESULT HitTestThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, HitTestOptions dwOptions, in RECT pRect, HRGN hrgn, POINT ptTest, out HitTestValues pwHitTestCode);
 
 		/// <summary>Reports whether the current application's user interface displays using visual styles.</summary>
 		/// <returns>
@@ -3185,7 +3184,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>POINT</c></c></para>
 			/// <para>Specifies the amount of offset, in logical coordinates, between the shadow and the text.</para>
 			/// </summary>
-			public Point ptShadowOffset;
+			public POINT ptShadowOffset;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
@@ -3301,7 +3300,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the color of the outline that will be drawn around the text.</summary>
 			/// <value>The color of the border.</value>
-			public Color BorderColor
+			public COLORREF BorderColor
 			{
 				get => crBorder;
 				set
@@ -3369,7 +3368,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the color of the shadow drawn behind the text.</summary>
 			/// <value>The color of the shadow.</value>
-			public Color ShadowColor
+			public COLORREF ShadowColor
 			{
 				get => crShadow;
 				set
@@ -3381,9 +3380,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the amount of offset, in logical coordinates, between the shadow and the text.</summary>
 			/// <value>The shadow offset.</value>
-			public Point ShadowOffset
+			public POINT ShadowOffset
 			{
-				get => new Point(ptShadowOffset.X, ptShadowOffset.Y);
+				get => new POINT(ptShadowOffset.X, ptShadowOffset.Y);
 				set
 				{
 					ptShadowOffset = value;
@@ -3404,7 +3403,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the color of the text that will be drawn.</summary>
 			/// <value>The color of the text.</value>
-			public Color TextColor
+			public COLORREF TextColor
 			{
 				get => crText;
 				set
@@ -3600,7 +3599,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="DTBGOPTS"/> class.</summary>
 			/// <param name="clipRect">The rectangle to which drawing is clipped.</param>
-			public DTBGOPTS(Rectangle? clipRect)
+			public DTBGOPTS(RECT? clipRect)
 			{
 				dwSize = (uint)Marshal.SizeOf(this);
 				ClipRectangle = clipRect;
@@ -3608,12 +3607,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the bounding rectangle of the clip region.</summary>
 			/// <value>The clip rectangle.</value>
-			public Rectangle? ClipRectangle
+			public RECT? ClipRectangle
 			{
 				get
 				{
-					Rectangle r = rcClip;
-					return r.IsEmpty ? (Rectangle?)null : r;
+					RECT r = rcClip;
+					return r.IsEmpty ? (RECT?)null : r;
 				}
 				set
 				{
@@ -3638,10 +3637,10 @@ namespace Vanara.PInvoke
 			/// <value><c>true</c> if not mirroring; otherwise, <c>false</c>.</value>
 			public bool DoNotMirror { get => dwFlags.IsFlagSet(DrawThemeBackgroundFlags.DTBG_NOMIRROR); set => SetFlag(DrawThemeBackgroundFlags.DTBG_NOMIRROR, value); }
 
-			/// <summary>Performs an implicit conversion from <see cref="System.Drawing.Rectangle"/> to <see cref="DTBGOPTS"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="RECT"/> to <see cref="DTBGOPTS"/>.</summary>
 			/// <param name="clipRectangle">The clipping rectangle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator DTBGOPTS(Rectangle clipRectangle) => new DTBGOPTS(clipRectangle);
+			public static implicit operator DTBGOPTS(RECT clipRectangle) => new DTBGOPTS(clipRectangle);
 
 			private void SetFlag(DrawThemeBackgroundFlags f, bool value) => dwFlags = dwFlags.SetFlags(f, value);
 		}

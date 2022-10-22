@@ -41,6 +41,11 @@ namespace Vanara.InteropServices
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator IntPtr(PinnedObject ap) => !ap.IsInvalid ? ap.pinnedArray.AddrOfPinnedObject().Offset(ap.mOffset) : IntPtr.Zero;
 
+		/// <summary>Get an unsafe pointer to the pinned memory of the object with any preset offset.</summary>
+		/// <param name="ap">The <see cref="PinnedObject"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static unsafe implicit operator void*(PinnedObject ap) => !ap.IsInvalid ? (void*)ap.pinnedArray.AddrOfPinnedObject().Offset(ap.mOffset) : null;
+
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
 		{

@@ -1,42 +1,33 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
-namespace Vanara.IO.Tests
+namespace Vanara.PInvoke.Tests;
+
+internal partial class BackgroundCopyTests
 {
-	partial class BackgroundCopyTests
+	[Test]
+	public void JobCollTest()
 	{
-		[Test]
-		public void JobCollTest()
+		BackgroundCopyJob newJob = null;
+		var guid = Guid.Empty;
+		Assert.That(() => { guid = (newJob = BackgroundCopyManager.Jobs.Add(GetCurrentMethodName())).ID; }, Throws.Nothing);
+		try
 		{
-			var guid = Guid.Empty;
-
-			BackgroundCopyJob job = null;
-
-
-			Assert.That(() => { var j = BackgroundCopyManager.Jobs.Add(GetCurrentMethodName()); guid = j.ID; }, Throws.Nothing);
-
 			Assert.That(BackgroundCopyManager.Jobs.Count, Is.GreaterThanOrEqualTo(1));
-
 			Assert.That(BackgroundCopyManager.Jobs.Contains(guid), Is.True);
 
+			BackgroundCopyJob job = null;
 			Assert.That(() => job = BackgroundCopyManager.Jobs[guid], Throws.Nothing);
-
 			Assert.That(job, Is.Not.Null);
 
-			Assert.That(BackgroundCopyManager.Jobs.Count(j => j.ID == guid), Is.EqualTo(1));
-
-
 			var array = new BackgroundCopyJob[BackgroundCopyManager.Jobs.Count];
-
 			Assert.That(() => ((ICollection<BackgroundCopyJob>)BackgroundCopyManager.Jobs).CopyTo(array, 0), Throws.Nothing);
-
 			Assert.That(array[0], Is.Not.Null);
-
-			Assert.That(() => BackgroundCopyManager.Jobs.Remove(job), Throws.Nothing);
-
-			Assert.That(BackgroundCopyManager.Jobs.Contains(guid), Is.False);
+			TestContext.WriteLine(string.Join("\n", array.Select(j => $"'{j.DisplayName}' ({j.Files.Count}:{j.State})")));
 		}
+		finally
+		{
+			Assert.That(() => BackgroundCopyManager.Jobs.Remove(newJob), Throws.Nothing);
+		}
+		Assert.That(BackgroundCopyManager.Jobs.Contains(guid), Is.False);
 	}
 }

@@ -17,7 +17,6 @@ namespace Vanara.Windows.Shell.Tests
 	public class RecycleBinTests
 	{
 		const string tempDir = "C:\\Temp";
-		const string tempDir2 = "D:\\";
 
 		[Test]
 		public void RecycleBinEnumTest()
@@ -28,8 +27,6 @@ namespace Vanara.Windows.Shell.Tests
 			var fileContent = new string('0', 1024);
 			for (int i = 0; i < 5; i++)
 				MakeFile(tempDir);
-			for (int i = 0; i < 5; i++)
-				MakeFile(tempDir2);
 
 			try
 			{

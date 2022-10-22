@@ -19,7 +19,7 @@ namespace Vanara.InteropServices
 		private readonly FileAccess access;
 		private readonly long chunkSize = DefaultCapacity;
 		private readonly SafeAllocatedMemoryHandle hmem;
-		private readonly List<Reference> references = new List<Reference>();
+		private readonly List<Reference> references = new();
 		private long capacity, length, position, preflushPos;
 
 		/// <summary>Initializes a new instance of the <see cref="NativeMemoryStream"/> class.</summary>
@@ -371,10 +371,9 @@ namespace Vanara.InteropServices
 		public void Write(string value) => Write(value, CharSet);
 
 		/// <summary>Writes the specified array into the stream.</summary>
-		/// <typeparam name="T">The type of the array item.</typeparam>
 		/// <param name="items">The items.</param>
 		/// <param name="byRef">Write values as a referenced array.</param>
-		public void Write<T>(IEnumerable<T> items, bool byRef = false) where T : struct
+		public void Write(IEnumerable items, bool byRef = false)
 		{
 			if (access == FileAccess.Read) throw new NotSupportedException();
 			if (items == null) return;
@@ -438,7 +437,7 @@ namespace Vanara.InteropServices
 			{
 				ThrowIfDisposed();
 				var stSize = GetSize(value);
-				EnsureCapacity(stSize + Position);
+				EnsureCapacity(stSize + Position + 64); // Added some padding
 				//ResetIfFlushed();
 				if (value is IntPtr p)
 					Marshal.WriteIntPtr(PositionPtr, p);
@@ -478,7 +477,7 @@ namespace Vanara.InteropServices
 			var sz = GetSize(value);
 			if (sz > 0)
 			{
-				EnsureCapacity(sz + IntPtr.Size + Length);
+				EnsureCapacity(sz + IntPtr.Size + Length + 64);
 				length += sz;
 				references.Add(new Reference(Position, value));
 			}
@@ -502,29 +501,16 @@ namespace Vanara.InteropServices
 		protected virtual int GetSize(object obj, CharSet charSet = CharSet.None)
 		{
 			if (charSet == CharSet.None) charSet = CharSet;
-			switch (obj)
+			return obj switch
 			{
-				case null:
-					return 0;
-
-				case string s:
-					return s.GetByteCount(true, charSet);
-
-				case IntPtr p:
-					return IntPtr.Size;
-
-				case IEnumerable<byte> b:
-					return b.Count();
-
-				case IEnumerable<string> es:
-					return es.Sum(s => s.GetByteCount(true, charSet));
-
-				case IEnumerable<object> eo:
-					return eo.Sum(o => o is null ? 0 : (int)InteropExtensions.SizeOf(o.GetType()));
-
-				default:
-					return (int)InteropExtensions.SizeOf(obj.GetType());
-			}
+				null => 0,
+				string s => s.GetByteCount(true, charSet),
+				IntPtr p => IntPtr.Size,
+				IEnumerable<byte> b => b.Count(),
+				IEnumerable<string> es => es.Sum(s => s.GetByteCount(true, charSet)),
+				IEnumerable<object> eo => eo.Sum(o => o is null ? 0 : InteropExtensions.SizeOf(o)),
+				_ => InteropExtensions.SizeOf(obj),
+			};
 		}
 
 		private int GetRefSize() => references.Sum(e => GetSize(e.Value));

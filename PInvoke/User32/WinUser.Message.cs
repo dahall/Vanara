@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
@@ -3102,37 +3103,12 @@ namespace Vanara.PInvoke
 			return SendMessage(hWnd, Convert.ToUInt32(msg), wmem, ref lParam);
 		}
 
-		private static IntPtr SendMessage<TLP>(HWND hWnd, uint msg, IntPtr wParam, ref TLP lParam)
+		private static IntPtr SendMessage<TLP>(HWND hWnd, uint msg, IntPtr wParam, ref TLP lParam) where TLP : struct
 		{
-			// If this must mbe manually marshaled, do it
-			if (typeof(IVanaraMarshaler).IsAssignableFrom(typeof(TLP)))
-				return ManualMarshalSM(hWnd, msg, wParam, ref lParam);
-
-			// Try to pin first as this is most efficient.
-			// This will fail just like checking for blit-ability, so take the hit once.
-			try
-			{
-				using var lpin = new PinnedObject(lParam);
-				return SendMessage(hWnd, msg, wParam, lpin);
-			}
-			catch (ArgumentException)
-			{
-				// If not blitable, manually marshal
-				return ManualMarshalSM(hWnd, msg, wParam, ref lParam);
-			}
-			catch
-			{
-				// For all other exceptions, throw error.
-				throw;
-			}
-
-			static IntPtr ManualMarshalSM(HWND hWnd, uint msg, IntPtr wParam, ref TLP lParam)
-			{
-				using var lmem = SafeCoTaskMemHandle.CreateFromStructure(lParam);
-				var lret = SendMessage(hWnd, msg, wParam, lmem);
-				lParam = lmem.ToStructure<TLP>();
-				return lret;
-			}
+			using var lmem = SafeCoTaskMemHandle.CreateFromStructure(lParam);
+			var lret = SendMessage(hWnd, msg, wParam, lmem);
+			lParam = lmem.ToStructure<TLP>();
+			return lret;
 		}
 
 		/// <summary>

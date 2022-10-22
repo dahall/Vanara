@@ -69,7 +69,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>If TRUE, the SO_LINGER option is disabled.</summary>
 		[CorrespondingType(typeof(BOOL))]
-		public const int SO_DONTLINGER = (int)(~SO_LINGER);
+		public const int SO_DONTLINGER = (int)~SO_LINGER;
 
 		/// <summary>
 		/// Routing is disabled. Setting this succeeds but is ignored on AF_INET sockets; fails on AF_INET6 sockets with WSAENOPROTOOPT.
@@ -86,7 +86,7 @@ namespace Vanara.PInvoke
 		/// Prevents any other socket from binding to the same address and port. This option must be set before calling the bind function.
 		/// </summary>
 		[CorrespondingType(typeof(BOOL))]
-		public const int SO_EXCLUSIVEADDRUSE = ((int)(~SO_REUSEADDR));
+		public const int SO_EXCLUSIVEADDRUSE = (int)~SO_REUSEADDR;
 
 		/// <summary>Reserved.</summary>
 		[CorrespondingType(typeof(GROUP))]
@@ -180,7 +180,7 @@ namespace Vanara.PInvoke
 		public const int SO_USELOOPBACK = 0x0040;
 
 		/// <summary>A value that indicates a function failure.</summary>
-		public const uint SOCKET_ERROR = unchecked((uint)-1);
+		public const int SOCKET_ERROR = -1;
 
 		/// <summary>The socket option level.</summary>
 		public const int SOL_SOCKET = 0xffff;
@@ -424,141 +424,6 @@ namespace Vanara.PInvoke
 			SG_CONSTRAINED_GROUP = 0x02
 		}
 
-		/// <summary>Protocols. The IPv6 defines are specified in RFC 2292.</summary>
-		public enum IPPROTO
-		{
-			/// <summary/>
-			IPPROTO_HOPOPTS = 0,
-
-			/// <summary>
-			/// The Internet Control Message Protocol (ICMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or
-			/// AF_INET6 and the type parameter is SOCK_RAW or unspecified.
-			/// <para>This protocol value is supported on Windows XP and later.</para>
-			/// </summary>
-			IPPROTO_ICMP = 1,
-
-			/// <summary>
-			/// The Internet Group Management Protocol (IGMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or
-			/// AF_INET6 and the type parameter is SOCK_RAW or unspecified.
-			/// <para>This protocol value is supported on Windows XP and later.</para>
-			/// </summary>
-			IPPROTO_IGMP = 2,
-
-			/// <summary>
-			/// The Bluetooth Radio Frequency Communications (Bluetooth RFCOMM) protocol. This is a possible value when the af parameter is
-			/// AF_BTH and the type parameter is SOCK_STREAM.
-			/// <para>This protocol value is supported on Windows XP with SP2 or later.</para>
-			/// </summary>
-			IPPROTO_GGP = 3,
-
-			/// <summary/>
-			IPPROTO_IPV4 = 4,
-
-			/// <summary/>
-			IPPROTO_ST = 5,
-
-			/// <summary>
-			/// The Transmission Control Protocol (TCP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type
-			/// parameter is SOCK_STREAM.
-			/// </summary>
-			IPPROTO_TCP = 6,
-
-			/// <summary/>
-			IPPROTO_CBT = 7,
-
-			/// <summary/>
-			IPPROTO_EGP = 8,
-
-			/// <summary/>
-			IPPROTO_IGP = 9,
-
-			/// <summary/>
-			IPPROTO_PUP = 12,
-
-			/// <summary>
-			/// The User Datagram Protocol (UDP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type
-			/// parameter is SOCK_DGRAM.
-			/// </summary>
-			IPPROTO_UDP = 17,
-
-			/// <summary/>
-			IPPROTO_IDP = 22,
-
-			/// <summary/>
-			IPPROTO_RDP = 27,
-
-			/// <summary/>
-			IPPROTO_IPV6 = 41,
-
-			/// <summary/>
-			IPPROTO_ROUTING = 43,
-
-			/// <summary/>
-			IPPROTO_FRAGMENT = 44,
-
-			/// <summary/>
-			IPPROTO_ESP = 50,
-
-			/// <summary/>
-			IPPROTO_AH = 51,
-
-			/// <summary>
-			/// The Internet Control Message Protocol Version 6 (ICMPv6). This is a possible value when the af parameter is AF_UNSPEC,
-			/// AF_INET, or AF_INET6 and the type parameter is SOCK_RAW or unspecified.
-			/// <para>This protocol value is supported on Windows XP and later.</para>
-			/// </summary>
-			IPPROTO_ICMPV6 = 58,
-
-			/// <summary/>
-			IPPROTO_NONE = 59,
-
-			/// <summary/>
-			IPPROTO_DSTOPTS = 60,
-
-			/// <summary/>
-			IPPROTO_ND = 77,
-
-			/// <summary/>
-			IPPROTO_ICLFXBM = 78,
-
-			/// <summary/>
-			IPPROTO_PIM = 103,
-
-			/// <summary>
-			/// The PGM protocol for reliable multicast. This is a possible value when the af parameter is AF_INET and the type parameter is
-			/// SOCK_RDM. On the Windows SDK released for Windows Vista and later, this protocol is also called IPPROTO_PGM.
-			/// <para>This protocol value is only supported if the Reliable Multicast Protocol is installed.</para>
-			/// </summary>
-			IPPROTO_PGM = 113,
-
-			/// <summary/>
-			IPPROTO_L2TP = 115,
-
-			/// <summary/>
-			IPPROTO_SCTP = 132,
-
-			/// <summary/>
-			IPPROTO_RAW = 255,
-
-			/// <summary/>
-			IPPROTO_MAX = 256,
-
-			/// <summary/>
-			IPPROTO_RESERVED_RAW = 257,
-
-			/// <summary/>
-			IPPROTO_RESERVED_IPSEC = 258,
-
-			/// <summary/>
-			IPPROTO_RESERVED_IPSECOFFLOAD = 259,
-
-			/// <summary/>
-			IPPROTO_RESERVED_WNV = 260,
-
-			/// <summary/>
-			IPPROTO_RESERVED_MAX = 261
-		}
-
 		/// <summary>Indicate either big-endian or little-endian with the values 0 and 1 respectively.</summary>
 		[PInvokeData("winsock2.h", MSDNShortId = "be5f3e81-1442-43c7-9e4e-9eb2b2a05132")]
 		public enum NetworkByteOrder
@@ -578,25 +443,25 @@ namespace Vanara.PInvoke
 			NS_ALL = 0,
 
 			/// <summary/>
-			NS_SAP = (1),
+			NS_SAP = 1,
 
 			/// <summary/>
-			NS_NDS = (2),
+			NS_NDS = 2,
 
 			/// <summary/>
-			NS_PEER_BROWSE = (3),
+			NS_PEER_BROWSE = 3,
 
 			/// <summary/>
-			NS_SLP = (5),
+			NS_SLP = 5,
 
 			/// <summary/>
-			NS_DHCP = (6),
+			NS_DHCP = 6,
 
 			/// <summary/>
-			NS_TCPIP_LOCAL = (10),
+			NS_TCPIP_LOCAL = 10,
 
 			/// <summary/>
-			NS_TCPIP_HOSTS = (11),
+			NS_TCPIP_HOSTS = 11,
 
 			/// <summary>The domain name system (DNS) namespace.</summary>
 			NS_DNS = 12,
@@ -620,16 +485,16 @@ namespace Vanara.PInvoke
 			NS_BTH = 16,
 
 			/// <summary/>
-			NS_LOCALNAME = (19),
+			NS_LOCALNAME = 19,
 
 			/// <summary/>
-			NS_NBP = (20),
+			NS_NBP = 20,
 
 			/// <summary/>
-			NS_MS = (30),
+			NS_MS = 30,
 
 			/// <summary/>
-			NS_STDA = (31),
+			NS_STDA = 31,
 
 			/// <summary>The Windows NT Directory Services (NS_NTDS) namespace.</summary>
 			NS_NTDS = 32,
@@ -653,19 +518,19 @@ namespace Vanara.PInvoke
 			NS_PNRPCLOUD = 39,
 
 			/// <summary/>
-			NS_X500 = (40),
+			NS_X500 = 40,
 
 			/// <summary/>
-			NS_NIS = (41),
+			NS_NIS = 41,
 
 			/// <summary/>
-			NS_NISPLUS = (42),
+			NS_NISPLUS = 42,
 
 			/// <summary/>
-			NS_WRQ = (50),
+			NS_WRQ = 50,
 
 			/// <summary/>
-			NS_NETDES = (60)
+			NS_NETDES = 60
 		}
 
 		/// <summary>A set of flags that provides information on how this protocol is represented in the Winsock catalog.</summary>
@@ -733,6 +598,109 @@ namespace Vanara.PInvoke
 
 			/// <summary>A socket type that provides a pseudo-stream packet based on datagrams.</summary>
 			SOCK_SEQPACKET = 5,
+		}
+
+		/// <summary>a bitmask of the notification events for the socket.</summary>
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[Flags]
+		public enum SOCK_NOTIFY_EVENT : ushort
+		{
+			/// <summary>Input is available from the socket without blocking.</summary>
+			SOCK_NOTIFY_EVENT_IN = SOCK_NOTIFY_REGISTER_EVENT.SOCK_NOTIFY_REGISTER_EVENT_IN,
+
+			/// <summary>Output can be provided to the socket without blocking.</summary>
+			SOCK_NOTIFY_EVENT_OUT = SOCK_NOTIFY_REGISTER_EVENT.SOCK_NOTIFY_REGISTER_EVENT_OUT,
+
+			/// <summary>The socket connection has terminated.</summary>
+			SOCK_NOTIFY_EVENT_HANGUP = SOCK_NOTIFY_REGISTER_EVENT.SOCK_NOTIFY_REGISTER_EVENT_HANGUP,
+
+			/// <summary>The socket is in an error state.</summary>
+			SOCK_NOTIFY_EVENT_ERR = 0x40,
+
+			/// <summary>The notification has been deregistered.</summary>
+			SOCK_NOTIFY_EVENT_REMOVE = 0x80,
+
+			/// <summary>All events.</summary>
+			SOCK_NOTIFY_EVENTS_ALL = SOCK_NOTIFY_REGISTER_EVENT.SOCK_NOTIFY_REGISTER_EVENTS_ALL | SOCK_NOTIFY_EVENT_ERR | SOCK_NOTIFY_EVENT_REMOVE,
+		}
+
+		/// <summary>Indicates the operation to perform on a registration. At most one operation may be performed at a time.</summary>
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[Flags]
+		public enum SOCK_NOTIFY_OP : byte
+		{
+			/// <summary>
+			/// No registration operations should take place. Use this if your application calls ProcessSocketNotifications and is only
+			/// interested in receiving notifications.
+			/// </summary>
+			SOCK_NOTIFY_OP_NONE = 0x00,
+
+			/// <summary>
+			/// Enables the registration. Notifications must not be re-enabled until the SOCK_NOTIFY_EVENT_DISABLE notification is received.
+			/// </summary>
+			SOCK_NOTIFY_OP_ENABLE = 0x01,
+
+			/// <summary>
+			/// Disables the registration, but doesn't destroy the underlying data structures. Note that this doesn't remove the
+			/// registration, it merely suppresses queuing of new notifications. Notifications that have already been queued might still be
+			/// delivered until the SOCK_NOTIFY_EVENT_DISABLE event is received.
+			/// </summary>
+			SOCK_NOTIFY_OP_DISABLE = 0x02,
+
+			/// <summary>
+			/// Removes a previously-registered notification. Both enabled and disabled notifications may be removed. The
+			/// SOCK_NOTIFY_EVENT_REMOVE notification is issued, with the guarantee that no more notifications will be issued afterwards for
+			/// that completion key unless it is re-registered.
+			/// </summary>
+			SOCK_NOTIFY_OP_REMOVE = 0x04,
+		}
+
+		/// <summary>A set of flags indicating the notifications being requested.</summary>
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[Flags]
+		public enum SOCK_NOTIFY_REGISTER_EVENT : ushort
+		{
+			/// <summary>Notifications should not be issued.</summary>
+			SOCK_NOTIFY_REGISTER_EVENT_NONE = 0x00,
+
+			/// <summary>A notification should be issued when data can be read without blocking.</summary>
+			SOCK_NOTIFY_REGISTER_EVENT_IN = 0x01,
+
+			/// <summary>A notification should be issued when data can be written without blocking.</summary>
+			SOCK_NOTIFY_REGISTER_EVENT_OUT = 0x02,
+
+			/// <summary>A notification should be issued when a stream-oriented connection was either disconnected or aborted.</summary>
+			SOCK_NOTIFY_REGISTER_EVENT_HANGUP = 0x04,
+
+			/// <summary>All flags.</summary>
+			SOCK_NOTIFY_REGISTER_EVENTS_ALL = SOCK_NOTIFY_REGISTER_EVENT_IN | SOCK_NOTIFY_REGISTER_EVENT_OUT | SOCK_NOTIFY_REGISTER_EVENT_HANGUP
+		}
+
+		/// <summary>A set of flags indicating the trigger behavior.</summary>
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[Flags]
+		public enum SOCK_NOTIFY_TRIGGER : byte
+		{
+			/// <summary>The registration will be disabled (not removed) upon delivery of the next notification.</summary>
+			SOCK_NOTIFY_TRIGGER_ONESHOT = 0x01,
+
+			/// <summary>The registration will remain active until it is explicitly disabled or removed.</summary>
+			SOCK_NOTIFY_TRIGGER_PERSISTENT = 0x02,
+
+			/// <summary>
+			/// The registration is for level-triggered notifications. Not compatible with edge-triggered. One of edge- or level-triggered
+			/// must be supplied.
+			/// </summary>
+			SOCK_NOTIFY_TRIGGER_LEVEL = 0x04,
+
+			/// <summary>
+			/// The registration is for edge-triggered notifications. Not compatible with level-triggered. One of edge- or level-triggered
+			/// must be supplied.
+			/// </summary>
+			SOCK_NOTIFY_TRIGGER_EDGE = 0x08,
+
+			/// <summary>All triggers.</summary>
+			SOCK_NOTIFY_TRIGGER_ALL = SOCK_NOTIFY_TRIGGER_ONESHOT | SOCK_NOTIFY_TRIGGER_PERSISTENT | SOCK_NOTIFY_TRIGGER_LEVEL | SOCK_NOTIFY_TRIGGER_EDGE,
 		}
 
 		/// <summary>
@@ -849,6 +817,203 @@ namespace Vanara.PInvoke
 			/// </summary>
 			XP1_SAN_SUPPORT_SDP = 0x00080000,
 		}
+
+		/// <summary>
+		/// <para>
+		/// Associates a set of sockets with a completion port, and retrieves any notifications that are already pending on that port. Once
+		/// associated, the completion port receives the socket state notifications that were specified. Only Microsoft Winsock provider
+		/// sockets are supported.
+		/// </para>
+		/// <para>
+		/// To reduce system call overhead, you can register for notifications and retrieve them in a single call to
+		/// <c>ProcessSocketNotifications</c>. Alternatively, you can retrieve them explicitly by calling the usual I/O completion port
+		/// functions, such as GetQueuedCompletionStatus. Notifications retrieved using <c>ProcessSocketNotifications</c> are the same as
+		/// those retrieved using GetQueuedCompletionStatusEx, which might include notification packets other than socket state changes.
+		/// </para>
+		/// <para>
+		/// The notification event flags are the integer value of the dwNumberOfBytesTransferred fields of the returned OVERLAPPED_ENTRY
+		/// structures. This is similar to using JOBOBJECT_ASSOCIATE_COMPLETION_PORT, which also uses the dwNumberOfBytesTransferred field
+		/// to send integer messages. Call the SocketNotificationRetrieveEvents function to obtain them.
+		/// </para>
+		/// <para>
+		/// A socket handle can be registered to only one IOCP at a time. Re-registering a previously-registered socket handle overwrites
+		/// the existing registration. Before you close a handle used for registration, you should explicitly remove registration, and wait
+		/// for the <c>SOCK_NOTIFY_EVENT_REMOVE</c> notification (see <c>Remarks</c> in this topic).
+		/// </para>
+		/// <para>For more info, and code examples, see Winsock socket state notifications.</para>
+		/// </summary>
+		/// <param name="completionPort">
+		/// <para>Type: _In_ <c>HANDLE</c></para>
+		/// <para>
+		/// A handle to an I/O completion port created using the CreateIoCompletionPort function. The port will be used in the
+		/// CompletionPort parameter of the PostQueuedCompletionStatus function when messages are sent on behalf of the socket.
+		/// </para>
+		/// </param>
+		/// <param name="registrationCount">
+		/// <para>Type: _In_ <c>UINT32</c></para>
+		/// <para>The number of registrations supplied by registrationInfos.</para>
+		/// </param>
+		/// <param name="registrationInfos">
+		/// <para>Type: _Inout_updates_opt_(registrationCount) <c>SOCK_NOTIFY_REGISTRATION*</c></para>
+		/// <para>
+		/// A pointer to an array of SOCK_NOTIFY_REGISTRATION structures that define the notification registration parameters. These include
+		/// the socket of interest, the notification events of interest, and the operation flags. On success, you must inspect the elements
+		/// for whether the registration was processed successfully. This argument must be <c>NULL</c> if registrationCount is 0.
+		/// </para>
+		/// </param>
+		/// <param name="timeoutMs">
+		/// <para>Type: _In_ <c>UINT32</c></para>
+		/// <para>
+		/// The time in milliseconds that you're willing to wait for a completion packet to appear at the completion port. If a completion
+		/// packet doesn't appear within the specified time, then the function times out and returns <c>ERROR_TIMEOUT</c>.
+		/// </para>
+		/// <para>
+		/// If timeoutMs is <c>INFINITE</c> (0xFFFFFFFF), then the function will never time out. If timeoutMs is 0, and there is no I/O
+		/// operation to dequeue, then the function will time out immediately.
+		/// </para>
+		/// <para>The value of timeoutMs must be 0 if completionCount is 0.</para>
+		/// </param>
+		/// <param name="completionCount">
+		/// <para>Type: _In_ <c>ULONG</c></para>
+		/// <para>
+		/// The maximum number of OVERLAPPED_ENTRY structures to remove. If 0 is specified, then only registration operations will be processed.
+		/// </para>
+		/// </param>
+		/// <param name="completionPortEntries">
+		/// <para>Type: _Out_writes_to_opt_(completionCount, *receivedEntryCount) <c>OVERLAPPED_ENTRY*</c></para>
+		/// <para>
+		/// On input, points to a pre-allocated array of OVERLAPPED_ENTRY structures. The array mustn't overlap with the registrationInfos
+		/// array. The value of completionPortEntries must be <c>NULL</c> if completionCount is 0.
+		/// </para>
+		/// <para>
+		/// On output, receives an array of OVERLAPPED_ENTRY structures that hold the entries. The number of array elements is provided by
+		/// ReceivedEntryCount. The dwNumberOfBytesTransferred fields of the structures are integer masks of received events. The
+		/// lpOverlapped fields are reserved and must not be used as pointers.
+		/// </para>
+		/// </param>
+		/// <param name="receivedEntryCount">
+		/// <para>Type: _Out_opt_ <c>UINT32*</c></para>
+		/// <para>A pointer to a variable that receives the number of entries removed. Must be <c>NULL</c> if completionCount is 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If successful, returns <c>ERROR_SUCCESS</c>. If the function succeeded and you supplied a non-0 completionCount, but no
+		/// completion packets appeared within the specified time, returns <c>WAIT_TIMEOUT</c>. Otherwise, returns an appropriate
+		/// <c>WSAE*</c> error code.
+		/// </para>
+		/// <para>
+		/// If <c>ERROR_SUCCESS</c> or <c>WAIT_TIMEOUT</c> is returned, then you must inspect the individual registration infos'
+		/// registration results. Otherwise, the entire operation failed, and no changes occurred.
+		/// </para>
+		/// </returns>
+		/// <remarks>See SocketNotificationRetrieveEvents for the events that are possible when a notification is received.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-processsocketnotifications DWORD WSAAPI
+		// ProcessSocketNotifications( HANDLE completionPort, UINT32 registrationCount, SOCK_NOTIFY_REGISTRATION *registrationInfos, UINT32
+		// timeoutMs, ULONG completionCount, OVERLAPPED_ENTRY *completionPortEntries, UINT32 *receivedEntryCount );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.ProcessSocketNotifications")]
+		public static extern uint ProcessSocketNotifications(HFILE completionPort, uint registrationCount,
+			[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[] registrationInfos,
+			uint timeoutMs, uint completionCount,
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] Kernel32.OVERLAPPED_ENTRY[] completionPortEntries, out uint receivedEntryCount);
+
+		/// <summary>
+		/// <para>
+		/// Associates a set of sockets with a completion port, and retrieves any notifications that are already pending on that port. Once
+		/// associated, the completion port receives the socket state notifications that were specified. Only Microsoft Winsock provider
+		/// sockets are supported.
+		/// </para>
+		/// <para>
+		/// To reduce system call overhead, you can register for notifications and retrieve them in a single call to
+		/// <c>ProcessSocketNotifications</c>. Alternatively, you can retrieve them explicitly by calling the usual I/O completion port
+		/// functions, such as GetQueuedCompletionStatus. Notifications retrieved using <c>ProcessSocketNotifications</c> are the same as
+		/// those retrieved using GetQueuedCompletionStatusEx, which might include notification packets other than socket state changes.
+		/// </para>
+		/// <para>
+		/// The notification event flags are the integer value of the dwNumberOfBytesTransferred fields of the returned OVERLAPPED_ENTRY
+		/// structures. This is similar to using JOBOBJECT_ASSOCIATE_COMPLETION_PORT, which also uses the dwNumberOfBytesTransferred field
+		/// to send integer messages. Call the SocketNotificationRetrieveEvents function to obtain them.
+		/// </para>
+		/// <para>
+		/// A socket handle can be registered to only one IOCP at a time. Re-registering a previously-registered socket handle overwrites
+		/// the existing registration. Before you close a handle used for registration, you should explicitly remove registration, and wait
+		/// for the <c>SOCK_NOTIFY_EVENT_REMOVE</c> notification (see <c>Remarks</c> in this topic).
+		/// </para>
+		/// <para>For more info, and code examples, see Winsock socket state notifications.</para>
+		/// </summary>
+		/// <param name="completionPort">
+		/// <para>Type: _In_ <c>HANDLE</c></para>
+		/// <para>
+		/// A handle to an I/O completion port created using the CreateIoCompletionPort function. The port will be used in the
+		/// CompletionPort parameter of the PostQueuedCompletionStatus function when messages are sent on behalf of the socket.
+		/// </para>
+		/// </param>
+		/// <param name="registrationCount">
+		/// <para>Type: _In_ <c>UINT32</c></para>
+		/// <para>The number of registrations supplied by registrationInfos.</para>
+		/// </param>
+		/// <param name="registrationInfos">
+		/// <para>Type: _Inout_updates_opt_(registrationCount) <c>SOCK_NOTIFY_REGISTRATION*</c></para>
+		/// <para>
+		/// A pointer to an array of SOCK_NOTIFY_REGISTRATION structures that define the notification registration parameters. These include
+		/// the socket of interest, the notification events of interest, and the operation flags. On success, you must inspect the elements
+		/// for whether the registration was processed successfully. This argument must be <c>NULL</c> if registrationCount is 0.
+		/// </para>
+		/// </param>
+		/// <param name="timeoutMs">
+		/// <para>Type: _In_ <c>UINT32</c></para>
+		/// <para>
+		/// The time in milliseconds that you're willing to wait for a completion packet to appear at the completion port. If a completion
+		/// packet doesn't appear within the specified time, then the function times out and returns <c>ERROR_TIMEOUT</c>.
+		/// </para>
+		/// <para>
+		/// If timeoutMs is <c>INFINITE</c> (0xFFFFFFFF), then the function will never time out. If timeoutMs is 0, and there is no I/O
+		/// operation to dequeue, then the function will time out immediately.
+		/// </para>
+		/// <para>The value of timeoutMs must be 0 if completionCount is 0.</para>
+		/// </param>
+		/// <param name="completionCount">
+		/// <para>Type: _In_ <c>ULONG</c></para>
+		/// <para>
+		/// The maximum number of OVERLAPPED_ENTRY structures to remove. If 0 is specified, then only registration operations will be processed.
+		/// </para>
+		/// </param>
+		/// <param name="completionPortEntries">
+		/// <para>Type: _Out_writes_to_opt_(completionCount, *receivedEntryCount) <c>OVERLAPPED_ENTRY*</c></para>
+		/// <para>
+		/// On input, points to a pre-allocated array of OVERLAPPED_ENTRY structures. The array mustn't overlap with the registrationInfos
+		/// array. The value of completionPortEntries must be <c>NULL</c> if completionCount is 0.
+		/// </para>
+		/// <para>
+		/// On output, receives an array of OVERLAPPED_ENTRY structures that hold the entries. The number of array elements is provided by
+		/// ReceivedEntryCount. The dwNumberOfBytesTransferred fields of the structures are integer masks of received events. The
+		/// lpOverlapped fields are reserved and must not be used as pointers.
+		/// </para>
+		/// </param>
+		/// <param name="receivedEntryCount">
+		/// <para>Type: _Out_opt_ <c>UINT32*</c></para>
+		/// <para>A pointer to a variable that receives the number of entries removed. Must be <c>NULL</c> if completionCount is 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If successful, returns <c>ERROR_SUCCESS</c>. If the function succeeded and you supplied a non-0 completionCount, but no
+		/// completion packets appeared within the specified time, returns <c>WAIT_TIMEOUT</c>. Otherwise, returns an appropriate
+		/// <c>WSAE*</c> error code.
+		/// </para>
+		/// <para>
+		/// If <c>ERROR_SUCCESS</c> or <c>WAIT_TIMEOUT</c> is returned, then you must inspect the individual registration infos'
+		/// registration results. Otherwise, the entire operation failed, and no changes occurred.
+		/// </para>
+		/// </returns>
+		/// <remarks>See SocketNotificationRetrieveEvents for the events that are possible when a notification is received.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-processsocketnotifications DWORD WSAAPI
+		// ProcessSocketNotifications( HANDLE completionPort, UINT32 registrationCount, SOCK_NOTIFY_REGISTRATION *registrationInfos, UINT32
+		// timeoutMs, ULONG completionCount, OVERLAPPED_ENTRY *completionPortEntries, UINT32 *receivedEntryCount );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "NF:winsock2.ProcessSocketNotifications")]
+		public static extern Win32Error ProcessSocketNotifications(HFILE completionPort, uint registrationCount,
+			[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCK_NOTIFY_REGISTRATION[] registrationInfos,
+			uint timeoutMs, [Optional] uint completionCount, [In, Optional] IntPtr completionPortEntries, [In, Optional] IntPtr receivedEntryCount);
 
 		/// <summary/>
 		/// <param name="b"/>
@@ -1002,7 +1167,7 @@ namespace Vanara.PInvoke
 			/// <exception cref="ArgumentException">Byte array must have 4 items. - v4addr</exception>
 			public IN_ADDR(byte[] v4addr)
 			{
-				if (v4addr == null && v4addr.Length != 4)
+				if (v4addr == null || v4addr.Length < 4)
 					throw new ArgumentException("Byte array must have 4 items.", nameof(v4addr));
 				S_addr = BitConverter.ToUInt32(v4addr, 0);
 			}
@@ -1019,16 +1184,16 @@ namespace Vanara.PInvoke
 			public byte[] S_un_b => BitConverter.GetBytes(S_addr);
 
 			/// <summary/>
-			public static readonly IN_ADDR INADDR_ANY = new IN_ADDR(0U);
+			public static readonly IN_ADDR INADDR_ANY = new(0U);
 
 			/// <summary/>
-			public static readonly IN_ADDR INADDR_LOOPBACK = new IN_ADDR(0x7f000001);
+			public static readonly IN_ADDR INADDR_LOOPBACK = new(0x7f000001);
 
 			/// <summary/>
-			public static readonly IN_ADDR INADDR_BROADCAST = new IN_ADDR(0xffffffff);
+			public static readonly IN_ADDR INADDR_BROADCAST = new(0xffffffff);
 
 			/// <summary/>
-			public static readonly IN_ADDR INADDR_NONE = new IN_ADDR(0xffffffff);
+			public static readonly IN_ADDR INADDR_NONE = new(0xffffffff);
 
 			/// <summary>Implements the operator ==.</summary>
 			/// <param name="left">The left.</param>
@@ -1060,17 +1225,17 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="IN_ADDR"/>.</summary>
 			/// <param name="a">A UInt32 value.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IN_ADDR(uint a) => new IN_ADDR(a);
+			public static implicit operator IN_ADDR(uint a) => new(a);
 
 			/// <summary>Performs an implicit conversion from <see cref="System.Int64"/> to <see cref="IN_ADDR"/>.</summary>
 			/// <param name="a">An Int64 value.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IN_ADDR(long a) => new IN_ADDR((uint)a);
+			public static implicit operator IN_ADDR(long a) => new((uint)a);
 
 			/// <summary>Performs an explicit conversion from <see cref="IN_ADDR"/> to <see cref="IN6_ADDR"/>.</summary>
 			/// <param name="ipv4">The ipv4.</param>
 			/// <returns>The resulting <see cref="IN6_ADDR"/> instance from the conversion.</returns>
-			public static explicit operator IN6_ADDR(IN_ADDR ipv4) => new IN6_ADDR(ipv4);
+			public static explicit operator IN6_ADDR(IN_ADDR ipv4) => new(ipv4);
 
 			/// <summary>Determines equality between this instance and <paramref name="other"/>.</summary>
 			/// <param name="other">The other value to compare.</param>
@@ -1105,11 +1270,11 @@ namespace Vanara.PInvoke
 			private ulong lower;
 			private ulong upper;
 
-			/// <summary>The IPv6 standard loopback address.</summary>
-			public static readonly IN6_ADDR Loopback = new IN6_ADDR { lower = 0xff_01_00_00_00_00_00_00, upper = 0x00_00_00_00_00_00_00_01 };
+			/// <summary>The IPv6 standard loopback address (<c>IN6ADDR_LOOPBACK_INIT</c>).</summary>
+			public static readonly IN6_ADDR Loopback = new(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
 
-			/// <summary>The IPv6 standard unspecified address.</summary>
-			public static readonly IN6_ADDR Unspecified = new IN6_ADDR { lower = 0, upper = 0 };
+			/// <summary>The IPv6 standard unspecified address (<c>IN6ADDR_ANY_INIT</c>).</summary>
+			public static readonly IN6_ADDR Unspecified = new();
 
 			/// <summary>Initializes a new instance of the <see cref="IN6_ADDR"/> struct.</summary>
 			/// <param name="v6addr">The IPv6 address as an array of bytes.</param>
@@ -1130,59 +1295,173 @@ namespace Vanara.PInvoke
 			/// <summary>Gets or sets the byte array representing the IPv6 address.</summary>
 			/// <value>The bytes.</value>
 			/// <exception cref="ArgumentException">Byte array must have 16 items. - value</exception>
-			public unsafe byte[] bytes
+			public byte[] bytes
 			{
 				get
 				{
-					var v6addr = new byte[IN6_ADDR_SIZE];
-					fixed (byte* usp = &v6addr[0])
+					unsafe
 					{
-						var ulp2 = (ulong*)usp;
-						ulp2[0] = lower;
-						ulp2[1] = upper;
+						var v6addr = new byte[IN6_ADDR_SIZE];
+						fixed (byte* usp = &v6addr[0])
+						{
+							var ulp2 = (ulong*)usp;
+							ulp2[0] = lower;
+							ulp2[1] = upper;
+						}
+						return v6addr;
 					}
-					return v6addr;
 				}
 				set
 				{
-					if (value == null) value = new byte[IN6_ADDR_SIZE];
-					if (value.Length != IN6_ADDR_SIZE)
-						throw new ArgumentException("Byte array must have 16 items.", nameof(value));
-					fixed (byte* bp = &value[0])
+					unsafe
 					{
-						var ulp = (ulong*)bp;
-						lower = ulp[0];
-						upper = ulp[1];
+						if (value == null) value = new byte[IN6_ADDR_SIZE];
+						if (value.Length != IN6_ADDR_SIZE)
+							throw new ArgumentException("Byte array must have 16 items.", nameof(value));
+						fixed (byte* bp = &value[0])
+						{
+							var ulp = (ulong*)bp;
+							lower = ulp[0];
+							upper = ulp[1];
+						}
 					}
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is an anycast address.</summary>
+			/// <value><see langword="true"/> if this instance is an anycast address; otherwise, <see langword="false"/>.</value>
+			public bool IsAnycast => IsSubnetRerservedAnycast || IsSubnetRouterAnycast;
+
+			/// <summary>Gets a value indicating whether this instance uses EUI-64 interface identifiers.</summary>
+			/// <value><see langword="true"/> if this instance uses EUI-64 interface identifiers; otherwise, <see langword="false"/>.</value>
+			public bool IsEUI64 => (bytes[0] & 0xe0) != 0 && !IsMulticast;
+
+			/// <summary>Gets a value indicating whether this instance is a global address.</summary>
+			/// <value><see langword="true"/> if this instance is a global  address; otherwise, <see langword="false"/>.</value>
+			public bool IsGlobal
+			{
+				get
+				{
+					var High = bytes[0] & 0xf0u;
+					return High != 0 && High != 0xf0;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is a link local address.</summary>
+			/// <value><see langword="true"/> if this instance is a link local address; otherwise, <see langword="false"/>.</value>
+			public bool IsLinkLocal
+			{
+				get
+				{
+					var b = bytes;
+					return b[0] == 0xfe && (b[1] & 0xc0) == 0x80;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is a LOOPBACK address.</summary>
+			/// <value><see langword="true"/> if this instance is a LOOPBACK address; otherwise, <see langword="false"/>.</value>
+			public bool IsLoopback => Equals(Loopback);
+
+			/// <summary>Gets a value indicating whether this instance is a MULTICAST address.</summary>
+			/// <value><see langword="true"/> if this instance is a MULTICAST address; otherwise, <see langword="false"/>.</value>
+			public bool IsMulticast => bytes[0] == 0xff;
+
+			/// <summary>Gets a value indicating whether this instance is a site local address.</summary>
+			/// <value><see langword="true"/> if this instance is a site local address; otherwise, <see langword="false"/>.</value>
+			public bool IsSiteLocal
+			{
+				get
+				{
+					var b = bytes;
+					return b[0] == 0xfe && (b[1] & 0xc0) == 0xc0;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether the subnet router anycast address.</summary>
+			/// <value><see langword="true"/> if the subnet router anycast address; otherwise, <see langword="false"/>.</value>
+			public bool IsSubnetRouterAnycast => IsEUI64 && upper == 0;
+
+			/// <summary>Gets a value indicating whether the subnet reserved anycast address.</summary>
+			/// <value><see langword="true"/> if the subnet reserved anycast address; otherwise, <see langword="false"/>.</value>
+			public bool IsSubnetRerservedAnycast
+			{
+				get
+				{
+					var w = words;
+					return IsEUI64 && w[4] == 0xfffd && w[5] == 0xffff && w[6] == 0xffff && (w[7] & 0x80ff) == 0x80ff;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is an UNSPECIFIED address.</summary>
+			/// <value><see langword="true"/> if this instance is an UNSPECIFIED address; otherwise, <see langword="false"/>.</value>
+			public bool IsUnspecified => Equals(Unspecified);
+
+			/// <summary>Gets a value indicating whether this instance is an IPv4 compatible address.</summary>
+			/// <value><see langword="true"/> if this instance is an IPv4 compatible address; otherwise, <see langword="false"/>.</value>
+			public bool IsV4Compatible
+			{
+				get
+				{
+					var w = words;
+					var b = bytes;
+					return lower == 0 && w[4] == 0 && w[5] ==  0 && w[6] == 0 && b[14] == 0 && (b[15] == 0 || b[15] == 1);
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is an IPv4 mapped address.</summary>
+			/// <value><see langword="true"/> if this instance is an IPv4 mapped address; otherwise, <see langword="false"/>.</value>
+			public bool IsV4Mapped
+			{
+				get
+				{
+					var w = words;
+					return lower == 0 && w[4] == 0 && w[5] == 0xffff;
+				}
+			}
+
+			/// <summary>Gets a value indicating whether this instance is an IPv4 translated address.</summary>
+			/// <value><see langword="true"/> if this instance is an IPv4 translated address; otherwise, <see langword="false"/>.</value>
+			public bool IsV4Translated
+			{
+				get
+				{
+					var w = words;
+					return lower == 0 && w[4] == 0xffff && w[5] == 0;
 				}
 			}
 
 			/// <summary>Gets or sets the array of WORD (ushort) values representing the IPv6 address.</summary>
 			/// <value>The array of WORD values.</value>
 			/// <exception cref="ArgumentException">UInt16 array must have 8 items. - value</exception>
-			public unsafe ushort[] words
+			public ushort[] words
 			{
 				get
 				{
-					var v6addr = new ushort[IN6_ADDR_SIZE / 2];
-					fixed (ushort* usp = &v6addr[0])
+					unsafe
 					{
-						var ulp2 = (ulong*)usp;
-						ulp2[0] = lower;
-						ulp2[1] = upper;
+						var v6addr = new ushort[IN6_ADDR_SIZE / 2];
+						fixed (ushort* usp = &v6addr[0])
+						{
+							var ulp2 = (ulong*)usp;
+							ulp2[0] = lower;
+							ulp2[1] = upper;
+						}
+						return v6addr;
 					}
-					return v6addr;
 				}
 				set
 				{
-					if (value == null) value = new ushort[IN6_ADDR_SIZE / 2];
-					if (value.Length != IN6_ADDR_SIZE / 2)
-						throw new ArgumentException("UInt16 array must have 8 items.", nameof(value));
-					fixed (ushort* bp = &value[0])
+					unsafe
 					{
-						var ulp = (ulong*)bp;
-						lower = ulp[0];
-						upper = ulp[1];
+						if (value == null) value = new ushort[IN6_ADDR_SIZE / 2];
+						if (value.Length != IN6_ADDR_SIZE / 2)
+							throw new ArgumentException("UInt16 array must have 8 items.", nameof(value));
+						fixed (ushort* bp = &value[0])
+						{
+							var ulp = (ulong*)bp;
+							lower = ulp[0];
+							upper = ulp[1];
+						}
 					}
 				}
 			}
@@ -1202,7 +1481,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="byte"/>[] to <see cref="IN6_ADDR"/>.</summary>
 			/// <param name="a">The byte array.</param>
 			/// <returns>The resulting <see cref="IN6_ADDR"/> instance from the conversion.</returns>
-			public static implicit operator IN6_ADDR(byte[] a) => new IN6_ADDR(a);
+			public static implicit operator IN6_ADDR(byte[] a) => new(a);
 
 			/// <summary>Performs an implicit conversion from <see cref="IN6_ADDR"/> to <see cref="byte"/>[].</summary>
 			/// <param name="a">The <see cref="IN6_ADDR"/> instance.</param>
@@ -1226,7 +1505,7 @@ namespace Vanara.PInvoke
 				var m_Numbers = words;
 				return string.Format(System.Globalization.CultureInfo.InvariantCulture, numberFormat,
 					m_Numbers[0], m_Numbers[1], m_Numbers[2], m_Numbers[3], m_Numbers[4], m_Numbers[5],
-					((m_Numbers[6] >> 8) & 0xFF), (m_Numbers[6] & 0xFF), ((m_Numbers[7] >> 8) & 0xFF), (m_Numbers[7] & 0xFF));
+					(m_Numbers[6] >> 8) & 0xFF, m_Numbers[6] & 0xFF, (m_Numbers[7] >> 8) & 0xFF, m_Numbers[7] & 0xFF);
 			}
 
 			/// <summary>Determines whether the specified <paramref name="other"/> value is equal to this instance.</summary>
@@ -1367,6 +1646,114 @@ namespace Vanara.PInvoke
 			public WSABUF ProviderSpecific;
 		}
 
+		/// <summary>
+		/// <para>Represents info supplied to the ProcessSocketNotifications function.</para>
+		/// <para>For more info, and code examples, see Winsock socket state notifications.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-sock_notify_registration typedef struct
+		// SOCK_NOTIFY_REGISTRATION { SOCKET socket; PVOID completionKey; UINT16 eventFilter; UINT8 operation; UINT8 triggerFlags; DWORD
+		// registrationResult; } SOCK_NOTIFY_REGISTRATION;
+		[PInvokeData("winsock2.h", MSDNShortId = "NS:winsock2.SOCK_NOTIFY_REGISTRATION")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SOCK_NOTIFY_REGISTRATION
+		{
+			/// <summary>
+			/// <para>Type: <c>SOCKET</c></para>
+			/// <para>
+			/// A handle to a Winsock socket opened by any of the WSASocket, socket, WSAAccept, accept, or WSADuplicateSocket functions.
+			/// Only Microsoft Winsock provider sockets are supported.
+			/// </para>
+			/// </summary>
+			public SOCKET socket;
+
+			/// <summary>
+			/// <para>Type: <c>PVOID</c></para>
+			/// <para>
+			/// The value to use in the dwCompletionKey parameter of the PostQueuedCompletionStatus function when notifications are sent on
+			/// behalf of the socket. This parameter is used upon registration creation. To change the completion key, remove the
+			/// registration and re-register it.
+			/// </para>
+			/// </summary>
+			public IntPtr completionKey;
+
+			/// <summary>
+			/// <para>Type: <c>UINT16</c></para>
+			/// <para>
+			/// A set of flags indicating the notifications being requested. This must be one or more of the following values (defined in
+			/// <code>WinSock2.h</code>
+			/// ).
+			/// </para>
+			/// <para>
+			/// <c>SOCK_NOTIFY_REGISTER_EVENT_NONE</c>. Notifications should not be issued. <c>SOCK_NOTIFY_REGISTER_EVENT_IN</c>. A
+			/// notification should be issued when data can be read without blocking. <c>SOCK_NOTIFY_REGISTER_EVENT_OUT</c>. A notification
+			/// should be issued when data can be written without blocking. <c>SOCK_NOTIFY_REGISTER_EVENT_HANGUP</c>. A notification should
+			/// be issued when a stream-oriented connection was either disconnected or aborted. <c>SOCK_NOTIFY_REGISTER_EVENTS_ALL</c>. Has
+			/// the value
+			/// <code>(SOCK_NOTIFY_REGISTER_EVENT_IN | SOCK_NOTIFY_REGISTER_EVENT_OUT | SOCK_NOTIFY_REGISTER_EVENT_HANGUP)</code>
+			/// .
+			/// </para>
+			/// </summary>
+			public SOCK_NOTIFY_REGISTER_EVENT eventFilter;
+
+			/// <summary>
+			/// <para>Type: <c>UINT8</c></para>
+			/// <para>
+			/// Indicates the operation to perform on a registration. At most one operation may be performed at a time. These values are
+			/// defined in
+			/// <code>WinSock2.h</code>
+			/// .
+			/// </para>
+			/// <para>
+			/// <c>SOCK_NOTIFY_OP_NONE</c>. No registration operations should take place. Use this if your application calls
+			/// ProcessSocketNotifications and is only interested in receiving notifications. <c>SOCK_NOTIFY_OP_ENABLE</c>. Enables the
+			/// registration. Notifications must not be re-enabled until the <c>SOCK_NOTIFY_EVENT_DISABLE</c> notification is received.
+			/// <c>SOCK_NOTIFY_OP_DISABLE</c>. Disables the registration, but doesn't destroy the underlying data structures. Note that this
+			/// doesn't remove the registration, it merely suppresses queuing of new notifications. Notifications that have already been
+			/// queued might still be delivered until the <c>SOCK_NOTIFY_EVENT_DISABLE</c> event is received. <c>SOCK_NOTIFY_OP_REMOVE</c>.
+			/// Removes a previously-registered notification. Both enabled and disabled notifications may be removed. The
+			/// <c>SOCK_NOTIFY_EVENT_REMOVE</c> notification is issued, with the guarantee that no more notifications will be issued
+			/// afterwards for that completion key unless it is re-registered.
+			/// </para>
+			/// </summary>
+			public SOCK_NOTIFY_OP operation;
+
+			/// <summary>
+			/// <para>Type: <c>UINT8</c></para>
+			/// <para>A set of flags indicating the trigger behavior (defined in
+			/// <code>WinSock2.h</code>
+			/// ).
+			/// </para>
+			/// <para>
+			/// <c>SOCK_NOTIFY_TRIGGER_ONESHOT</c>. The registration will be disabled (not removed) upon delivery of the next notification.
+			/// <c>SOCK_NOTIFY_TRIGGER_PERSISTENT</c>. The registration will remain active until it is explicitly disabled or removed.
+			/// <c>SOCK_NOTIFY_TRIGGER_LEVEL</c>. The registration is for level-triggered notifications. Not compatible with edge-triggered.
+			/// One of edge- or level-triggered must be supplied. <c>SOCK_NOTIFY_TRIGGER_EDGE</c>. The registration is for edge-triggered
+			/// notifications. Not compatible with level-triggered. One of edge- or level-triggered must be supplied.
+			/// </para>
+			/// <para>
+			/// Notifications are only supplied when the registration is enabled. Notifications are not queued up while the registration is
+			/// disabled. As notifications are queued up for a given socket, they are coalesced into a single notification. Therefore,
+			/// multiple events may be described by a single event mask for the socket.
+			/// </para>
+			/// <para>Given the registration is enabled, level-triggered notifications are supplied whenever the desired conditions hold.</para>
+			/// <para>
+			/// Given the registration is enabled, edge-triggered notifications are supplied whenever a condition changes from not holding
+			/// to holding. The condition must change while the registration is enabled for a notification to be queued. As such, after
+			/// registering, the socket's receive buffer must be completely drained to ensure a notification is received.
+			/// </para>
+			/// </summary>
+			public SOCK_NOTIFY_TRIGGER triggerFlags;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// After a successful call to ProcessSocketNotifications, registrationResult contains a code indicating the success or failure
+			/// of the registration. A value of <c>ERROR_SUCCESS</c> indicates that registration was successful.
+			/// </para>
+			/// </summary>
+			public Win32Error registrationResult;
+		}
+
 		/// <summary>Provides a handle to a socket.</summary>
 		/// <seealso cref="Vanara.PInvoke.IHandle"/>
 		[PInvokeData("winsock2.h")]
@@ -1374,7 +1761,7 @@ namespace Vanara.PInvoke
 		public struct SOCKET : IHandle
 		{
 			/// <summary>The handle</summary>
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="SOCKET"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1382,11 +1769,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Represents an invalid socket which is different than a null socket.</summary>
 			/// <value>The invalid socket.</value>
-			public static SOCKET INVALID_SOCKET => new SOCKET(new IntPtr(-1));
+			public static SOCKET INVALID_SOCKET => new(new IntPtr(-1));
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="SOCKET"/> object with <see cref="IntPtr.Zero"/>.</summary>
 			/// <value>Returns a <see cref="SOCKET"/> value.</value>
-			public static SOCKET NULL => new SOCKET(IntPtr.Zero);
+			public static SOCKET NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			/// <value><see langword="true"/> if this instance is null; otherwise, <see langword="false"/>.</value>
@@ -1400,7 +1787,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SOCKET"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator SOCKET(IntPtr h) => new SOCKET(h);
+			public static implicit operator SOCKET(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2161,11 +2548,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Represents an invalid socket which is different than a null socket.</summary>
 			/// <value>The invalid socket.</value>
-			public static SafeSOCKET INVALID_SOCKET => new SafeSOCKET(new IntPtr(-1), false);
+			public static SafeSOCKET INVALID_SOCKET => new(new IntPtr(-1), false);
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="SafeSOCKET"/> object with <see cref="IntPtr.Zero"/>.</summary>
 			/// <value>Returns a <see cref="SafeSOCKET"/> value.</value>
-			public static SafeSOCKET NULL => new SafeSOCKET(IntPtr.Zero, false);
+			public static SafeSOCKET NULL => new(IntPtr.Zero, false);
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeSOCKET"/> to <see cref="SOCKET"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
@@ -2187,7 +2574,7 @@ namespace Vanara.PInvoke
 		/// the address family and the total size of the memory buffer in bytes is namelen.
 		/// </para>
 		/// <para>
-		/// The <c>SOCKADDR_STORAGE</c> structure also stores socket address information and the structure is sufficiently large to store
+		/// The <see cref="SOCKADDR_STORAGE"/> structure also stores socket address information and the structure is sufficiently large to store
 		/// IPv4 or IPv6 address information. The use of the <c>SOCKADDR_STORAGE</c> structure promotes protocol-family and protocol-version
 		/// independence, and simplifies development. It is recommended that the <c>SOCKADDR_STORAGE</c> structure be used in place of the
 		/// sockaddr structure. The <c>SOCKADDR_STORAGE</c> structure is supported on Windows Server 2003 and later.
@@ -2261,12 +2648,10 @@ namespace Vanara.PInvoke
 			/// <param name="endPoint">The socket address.</param>
 			public SOCKADDR(IPEndPoint endPoint) : this(endPoint.Address.GetAddressBytes(), (ushort)endPoint.Port) { }
 
-			/// <summary>Gets an instance that represents an empty address.</summary>
-			public static SOCKADDR Empty => new SOCKADDR(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
+			internal SOCKADDR(SOCKET_ADDRESS addr) : base(addr.iSockaddrLength) => addr.lpSockaddr.CopyTo(handle, addr.iSockaddrLength);
 
-			/// <summary>Provides a copy of <see cref="SOCKADDR"/> as an array of bytes.</summary>
-			/// <value>The array of bytes from this instance.</value>
-			public byte[] GetAddressBytes() => GetBytes(0, Size);
+			/// <summary>Gets an instance that represents an empty address.</summary>
+			public static SOCKADDR Empty => new(new byte[Marshal.SizeOf(typeof(IN6_ADDR))]);
 
 			/// <summary>Gets the data behind this address as a byte array.</summary>
 			/// <value>The address data.</value>
@@ -2280,13 +2665,13 @@ namespace Vanara.PInvoke
 			/// <typeparam name="T">Native type</typeparam>
 			/// <param name="value">The value.</param>
 			/// <returns><see cref="SOCKADDR"/> object to an native (unmanaged) memory block the size of T.</returns>
-			public static SOCKADDR CreateFromStructure<T>(T value = default) => new SOCKADDR(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), true, s);
+			public static SOCKADDR CreateFromStructure<T>(T value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), true, s);
 
 			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_IN"/>.</summary>
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN"/> instance from the conversion.</returns>
 			/// <exception cref="InvalidCastException"></exception>
-			public static explicit operator SOCKADDR_IN(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET ? addr.handle.ToStructure<SOCKADDR_IN>() : throw new InvalidCastException();
+			public static explicit operator SOCKADDR_IN(SOCKADDR addr) => addr.sa_family is ADDRESS_FAMILY.AF_INET or ADDRESS_FAMILY.AF_UNSPEC ? addr.handle.ToStructure<SOCKADDR_IN>() : throw new InvalidCastException();
 
 			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_IN6"/>.</summary>
 			/// <param name="addr">The address.</param>
@@ -2294,20 +2679,35 @@ namespace Vanara.PInvoke
 			/// <exception cref="InvalidCastException"></exception>
 			public static explicit operator SOCKADDR_IN6(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET6 ? addr.handle.ToStructure<SOCKADDR_IN6>() : (SOCKADDR_IN6)(SOCKADDR_IN)addr;
 
-			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR"/>.</summary>
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR"/> to <see cref="SOCKADDR_INET"/>.</summary>
 			/// <param name="addr">The address.</param>
-			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
-			public static implicit operator SOCKADDR(SOCKADDR_IN addr) => new SOCKADDR(addr);
-
-			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN6"/> to <see cref="SOCKADDR"/>.</summary>
-			/// <param name="addr">The address.</param>
-			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
-			public static implicit operator SOCKADDR(SOCKADDR_IN6 addr) => new SOCKADDR(addr);
+			/// <returns>The resulting <see cref="SOCKADDR_INET"/> instance from the conversion.</returns>
+			/// <exception cref="InvalidCastException"></exception>
+			public static explicit operator SOCKADDR_INET(SOCKADDR addr) => addr.sa_family == ADDRESS_FAMILY.AF_INET6 ? addr.handle.ToStructure<SOCKADDR_INET>() : (SOCKADDR_INET)(SOCKADDR_IN)addr;
 
 			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR"/> to <see cref="IntPtr"/>.</summary>
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
 			public static implicit operator IntPtr(SOCKADDR addr) => addr.DangerousGetHandle();
+
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
+			public static implicit operator SOCKADDR(SOCKADDR_IN addr) => new(addr);
+
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN6"/> to <see cref="SOCKADDR"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
+			public static implicit operator SOCKADDR(SOCKADDR_IN6 addr) => new(addr);
+
+			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_INET"/> to <see cref="SOCKADDR"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
+			public static implicit operator SOCKADDR(SOCKADDR_INET addr) => CreateFromStructure(addr);
+
+			/// <summary>Provides a copy of <see cref="SOCKADDR"/> as an array of bytes.</summary>
+			/// <value>The array of bytes from this instance.</value>
+			public byte[] GetAddressBytes() => GetBytes(0, Size);
 
 			/// <inheritdoc/>
 			public override string ToString() => sa_family == ADDRESS_FAMILY.AF_INET ? ((SOCKADDR_IN)this).ToString() : ((SOCKADDR_IN6)this).ToString();

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
@@ -151,7 +150,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>The return value is a safe handle to the newly created image.</para>
 		/// </returns>
-		public static SafeHICON CopyIcon(HICON h, Size desiredSize = default, CopyImageOptions options = 0)
+		public static SafeHICON CopyIcon(HICON h, SIZE desiredSize = default, CopyImageOptions options = 0)
 		{
 			var hret = CopyImage(h.DangerousGetHandle(), LoadImageType.IMAGE_ICON, desiredSize.Width, desiredSize.Height, options);
 			if (hret == HANDLE.NULL) Win32Error.ThrowLastError();
@@ -851,6 +850,26 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetIconInfoEx(HICON hicon, ref ICONINFOEX piconinfo);
 
+		/// <summary>Gets the size of an icon from its handle.</summary>
+		/// <param name="hIcon">The icon handle.</param>
+		/// <returns>The size of the icon in pixels.</returns>
+		public static SIZE GetSize(this HICON hIcon)
+		{
+			using ICONINFO info = new();
+			Win32Error.ThrowLastErrorIfFalse(GetIconInfo(hIcon, info));
+			if (!info.hbmColor.IsNull)
+			{
+				var bmp = GetObject<BITMAP>(info.hbmColor);
+				return new(bmp.bmWidth, bmp.bmHeight);
+			}
+			if (!info.hbmMask.IsNull)
+			{
+				var bmp = GetObject<BITMAP>(info.hbmMask);
+				return new(bmp.bmWidth, bmp.bmHeight / 2);
+			}
+			return SIZE.Empty;
+		}
+
 		/// <summary>
 		/// <para>Loads the specified icon resource from the executable (.exe) file associated with an application instance.</para>
 		/// <para><c>Note</c> This function has been superseded by the LoadImage function.</para>
@@ -1238,11 +1257,7 @@ namespace Vanara.PInvoke
 		public static extern uint PrivateExtractIcons(string szFileName, int nIconIndex, int cxIcon, int cyIcon,
 			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SafeHICON[] phicon, out uint piconid, uint nIcons, LoadImageOptions flags);
 
-		/// <summary>Creates a managed <see cref="System.Drawing.Bitmap"/> from this HICON instance.</summary>
-		/// <returns>A managed bitmap instance.</returns>
-		public static Bitmap ToBitmap(this HICON hIcon) => hIcon.IsNull ? null : (Bitmap)Bitmap.FromHicon((IntPtr)hIcon).Clone();
-
-#if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
+#if WPF && !NETSTANDARD2_0
 		/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HICON"/>.</summary>
 		/// <param name="hIcon">The HICON value.</param>
 		/// <returns>The BitmapSource instance. If <paramref name="hIcon"/> is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
@@ -1271,10 +1286,6 @@ namespace Vanara.PInvoke
 			Win32Error.ThrowLastErrorIfFalse(GetIconInfo(hIcon, icoInfo));
 			return new SafeHBITMAP((IntPtr)CopyImage((IntPtr)icoInfo.hbmColor, LoadImageType.IMAGE_BITMAP, 0, 0, CopyImageOptions.LR_CREATEDIBSECTION), true);
 		}
-
-		/// <summary>Creates a managed <see cref="System.Drawing.Icon"/> from this HICON instance.</summary>
-		/// <returns>A managed icon instance.</returns>
-		public static Icon ToIcon(this HICON hIcon) => hIcon.IsNull ? null : (Icon)Icon.FromHandle((IntPtr)hIcon).Clone();
 
 		/// <summary>
 		/// <para>Contains information about an icon or a cursor. Extends ICONINFO. Used by GetIconInfoEx.</para>
@@ -1372,16 +1383,15 @@ namespace Vanara.PInvoke
 			{
 			}
 
+			/// <summary>Gets the size of this icon in pixels.</summary>
+			public SIZE Size => GetSize(handle);
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeHICON"/> to <see cref="HICON"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HICON(SafeHICON h) => h.handle;
 
-			/// <summary>Creates a managed <see cref="System.Drawing.Bitmap"/>.</summary>
-			/// <returns>A managed bitmap instance.</returns>
-			public Bitmap ToBitmap() => ((HICON)this).ToBitmap();
-
-#if !NET20 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1
+#if WPF && !NETSTANDARD2_0
 			/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="SafeHICON"/>.</summary>
 			/// <returns>The BitmapSource instance. If this is a <c>NULL</c> handle, <see langword="null"/> is returned.</returns>
 			public System.Windows.Media.Imaging.BitmapSource ToBitmapSource() => ((HICON)this).ToBitmapSource();
@@ -1390,10 +1400,6 @@ namespace Vanara.PInvoke
 			/// <summary>Creates a <see cref="SafeHBITMAP"/> from this HICON instance.</summary>
 			/// <returns>A bitmap handle.</returns>
 			public SafeHBITMAP ToHBITMAP() => ((HICON)this).ToHBITMAP();
-
-			/// <summary>Creates a managed <see cref="System.Drawing.Icon"/>.</summary>
-			/// <returns>A managed icon instance.</returns>
-			public Icon ToIcon() => ((HICON)this).ToIcon();
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => DestroyIcon(this);

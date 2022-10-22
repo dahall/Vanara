@@ -283,6 +283,49 @@ namespace Vanara.PInvoke
 		public static extern NTStatus LsaAddAccountRights(LSA_HANDLE PolicyHandle, PSID AccountSid,
 			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))] string[] UserRights, uint CountOfRights);
 
+		/// <summary>
+		/// The <c>LsaAddAccountRights</c> function assigns one or more privileges to an account. If the account does not exist,
+		/// <c>LsaAddAccountRights</c> creates it.
+		/// </summary>
+		/// <param name="PolicyHandle">
+		/// A handle to a Policy object. The handle must have the POLICY_LOOKUP_NAMES access right. If the account identified by the
+		/// AccountSid parameter does not exist, the handle must have the POLICY_CREATE_ACCOUNT access right. For more information, see
+		/// Opening a Policy Object Handle.
+		/// </param>
+		/// <param name="AccountSid">Pointer to the SID of the account to which the function assigns privileges.</param>
+		/// <param name="UserRights">
+		/// Pointer to an array of LSA_UNICODE_STRING structures. Each structure contains the name of a privilege to add to the account. For
+		/// a list of privilege names, see Privilege Constants.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is an NTSTATUS code, which can be the following value or one of the LSA Policy Function
+		/// Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_NO_SUCH_PRIVILEGE</term>
+		/// <term>One of the privilege names is not valid.</term>
+		/// </item>
+		/// </list>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>If you specify privileges already granted to the account, they are ignored.</para>
+		/// <para>For an example that demonstrates calling this function, see Managing Account Permissions.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-lsaaddaccountrights NTSTATUS LsaAddAccountRights(
+		// LSA_HANDLE PolicyHandle, PSID AccountSid, PLSA_UNICODE_STRING UserRights, ULONG CountOfRights );
+		[PInvokeData("ntsecapi.h", MSDNShortId = "66b78404-02c2-48e9-92c3-d27b68f77c23")]
+		public static NTStatus LsaAddAccountRights(LSA_HANDLE PolicyHandle, PSID AccountSid,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))] params string[] UserRights) =>
+			LsaAddAccountRights(PolicyHandle, AccountSid, UserRights, (uint)UserRights?.Length);
+
 		/// <summary>Undocumented function for creating an account.</summary>
 		/// <param name="PolicyHandle">A handle to a Policy object. For more information, see Opening a Policy Object Handle.</param>
 		/// <param name="AccountSid">Pointer to the SID of the account for which to enumerate privileges.</param>
@@ -351,7 +394,8 @@ namespace Vanara.PInvoke
 		// PTRUSTED_DOMAIN_AUTH_INFORMATION AuthenticationInformation, ACCESS_MASK DesiredAccess, PLSA_HANDLE TrustedDomainHandle );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "2f458098-9498-4f08-bd13-ac572678d734")]
-		public static extern NTStatus LsaCreateTrustedDomainEx(LSA_HANDLE PolicyHandle, in TRUSTED_DOMAIN_INFORMATION_EX TrustedDomainInformation, in TRUSTED_DOMAIN_AUTH_INFORMATION AuthenticationInformation, ACCESS_MASK DesiredAccess, out SafeLSA_HANDLE TrustedDomainHandle);
+		public static extern NTStatus LsaCreateTrustedDomainEx(LSA_HANDLE PolicyHandle, in TRUSTED_DOMAIN_INFORMATION_EX TrustedDomainInformation,
+			in TRUSTED_DOMAIN_AUTH_INFORMATION AuthenticationInformation, ACCESS_MASK DesiredAccess, out SafeLSA_HANDLE TrustedDomainHandle);
 
 		/// <summary>
 		/// The <c>LsaDeleteTrustedDomain</c> function removes a trusted domain from the list of trusted domains for a system and deletes the
@@ -1837,7 +1881,9 @@ namespace Vanara.PInvoke
 		// InformationClass, PVOID *Buffer );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ntsecapi.h", MSDNShortId = "d33d6cee-bd8b-49f4-8e65-07cdc65bec7c")]
-		public static extern NTStatus LsaQueryTrustedDomainInfoByName(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string TrustedDomainName, TRUSTED_INFORMATION_CLASS InformationClass, out SafeLsaMemoryHandle Buffer);
+		public static extern NTStatus LsaQueryTrustedDomainInfoByName(LSA_HANDLE PolicyHandle,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string TrustedDomainName,
+			TRUSTED_INFORMATION_CLASS InformationClass, out SafeLsaMemoryHandle Buffer);
 
 		/// <summary>
 		/// <para>
@@ -1898,13 +1944,67 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntsecapi.h", MSDNShortId = "ad250a01-7a24-4fae-975c-aa3e65731c82")]
 		// public static extern NTSTATUS LsaRemoveAccountRights(LSA_HANDLE PolicyHandle, PSID AccountSid, [MarshalAs(UnmanagedType.U1)] bool
 		// AllRights, PLSA_UNICODE_STRING UserRights, uint CountOfRights);
-		public static extern NTStatus LsaRemoveAccountRights(
-			LSA_HANDLE PolicyHandle,
-			PSID AccountSid,
-			[MarshalAs(UnmanagedType.Bool)] bool AllRights,
-			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))]
-			string[] UserRights,
-			uint CountOfRights);
+		public static extern NTStatus LsaRemoveAccountRights( LSA_HANDLE PolicyHandle, PSID AccountSid, [MarshalAs(UnmanagedType.Bool)] bool AllRights,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))] string[] UserRights, uint CountOfRights);
+
+		/// <summary>
+		/// <para>
+		/// The <c>LsaRemoveAccountRights</c> function removes one or more privileges from an account. You can specify the privileges to be
+		/// removed, or you can set a flag to remove all privileges. When you remove all privileges, the function deletes the account. If you
+		/// specify privileges not held by the account, the function ignores them.
+		/// </para>
+		/// </summary>
+		/// <param name="PolicyHandle">
+		/// <para>
+		/// A handle to a Policy object. The handle must have the POLICY_LOOKUP_NAMES access right. For more information, see Opening a
+		/// Policy Object Handle.
+		/// </para>
+		/// </param>
+		/// <param name="AccountSid">
+		/// <para>Pointer to the security identifier (SID) of the account from which the privileges are removed.</para>
+		/// </param>
+		/// <param name="AllRights">
+		/// <para>
+		/// If <c>TRUE</c>, the function removes all privileges and deletes the account. In this case, the function ignores the UserRights
+		/// parameter. If <c>FALSE</c>, the function removes the privileges specified by the UserRights parameter.
+		/// </para>
+		/// </param>
+		/// <param name="UserRights">
+		/// <para>
+		/// Pointer to an array of LSA_UNICODE_STRING structures. Each structure contains the name of a privilege to be removed from the
+		/// account. For a list of privilege names, see Privilege Constants.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is an NTSTATUS code, which can be one of the following values or one of the LSA Policy
+		/// Function Return Values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_NO_SUCH_PRIVILEGE</term>
+		/// <term>One of the privilege names is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>Indicates the UserRights parameter was NULL and the AllRights parameter was FALSE.</term>
+		/// </item>
+		/// </list>
+		/// <para>You can use the LsaNtStatusToWinError function to convert the NTSTATUS code to a Windows error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaremoveaccountrights NTSTATUS LsaRemoveAccountRights(
+		// LSA_HANDLE PolicyHandle, PSID AccountSid, BOOLEAN AllRights, PLSA_UNICODE_STRING UserRights, ULONG CountOfRights );
+		[PInvokeData("ntsecapi.h", MSDNShortId = "ad250a01-7a24-4fae-975c-aa3e65731c82")]
+		// public static extern NTSTATUS LsaRemoveAccountRights(LSA_HANDLE PolicyHandle, PSID AccountSid, [MarshalAs(UnmanagedType.U1)] bool
+		// AllRights, PLSA_UNICODE_STRING UserRights, uint CountOfRights);
+		public static NTStatus LsaRemoveAccountRights(LSA_HANDLE PolicyHandle, PSID AccountSid, [MarshalAs(UnmanagedType.Bool)] bool AllRights,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))] params string[] UserRights) =>
+			LsaRemoveAccountRights(PolicyHandle, AccountSid, AllRights, UserRights, (uint)UserRights?.Length);
 
 		/// <summary>Do not use the LSA private data functions. Instead, use the CryptProtectData and CryptUnprotectData functions.</summary>
 		/// <param name="PolicyHandle">
@@ -3232,17 +3332,16 @@ namespace Vanara.PInvoke
 				if (ManagedObj is string[] a)
 				{
 					var uma = Array.ConvertAll(a, p => new LSA_UNICODE_STRING { length = (ushort)StringHelper.GetByteCount(p, false, CharSet.Unicode) });
-					var sz = Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
-					var strSz = uma.Sum(s => s.length + 2);
-					var result = Marshal.AllocCoTaskMem(sz * a.Length + strSz);
-					var strPtr = result.Offset(sz * a.Length);
+					var strSz = uma.Sum(s => s.length + UnicodeEncoding.CharSize);
+					var result = Marshal.AllocCoTaskMem(LsaUnicodeStringMarshaler.ssz * a.Length + strSz);
+					var strPtr = result.Offset(LsaUnicodeStringMarshaler.ssz * a.Length);
 					for (var i = 0; i < uma.Length; i++)
 					{
 						uma[i].Buffer = strPtr;
 						StringHelper.Write(a[i], (IntPtr)uma[i].Buffer, out var byteCnt, true, CharSet.Unicode);
 						uma[i].MaximumLength = (ushort)byteCnt;
 						strPtr = strPtr.Offset(byteCnt);
-						Marshal.StructureToPtr(uma[i], result.Offset(i * sz), false);
+						Marshal.StructureToPtr(uma[i], result.Offset(i * LsaUnicodeStringMarshaler.ssz), false);
 					}
 					return result;
 				}
@@ -3260,6 +3359,8 @@ namespace Vanara.PInvoke
 		/// <seealso cref="ICustomMarshaler"/>
 		internal class LsaUnicodeStringMarshaler : ICustomMarshaler
 		{
+			internal static readonly int ssz = Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
+
 			public static ICustomMarshaler GetInstance(string _) => new LsaUnicodeStringMarshaler();
 
 			public void CleanUpManagedData(object ManagedObj)
@@ -3289,9 +3390,7 @@ namespace Vanara.PInvoke
 			{
 				if (value is null) return IntPtr.Zero;
 				var lus = new LSA_UNICODE_STRING { length = (ushort)StringHelper.GetByteCount(value, false, CharSet.Unicode) };
-				var chSz = StringHelper.GetCharSize(CharSet.Unicode);
-				lus.MaximumLength = (ushort)(lus.length + chSz);
-				var ssz = Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
+				lus.MaximumLength = (ushort)(lus.length + UnicodeEncoding.CharSize);
 				var mem = Marshal.AllocCoTaskMem(ssz + lus.MaximumLength);
 				lus.Buffer = mem.Offset(ssz);
 				mem.Write(lus);

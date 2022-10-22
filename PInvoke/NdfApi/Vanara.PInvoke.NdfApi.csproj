@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>ndfapi.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Network Diagnostic Framework (NdfApi.dll).</Description>
+    <AssemblyName>Vanara.PInvoke.NdfApi</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;NdfApi;network diagnostic framework</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+NdfCancelIncident NdfCloseIncident NdfCreateConnectivityIncident NdfCreateDNSIncident NdfCreateGroupingIncident NdfCreateInboundIncident NdfCreateIncident NdfCreateNetConnectionIncident NdfCreatePnrpIncident NdfCreateSharingIncident NdfCreateWebIncident NdfCreateWebIncidentEx NdfCreateWinSockIncident NdfDiagnoseIncident NdfExecuteDiagnosis NdfGetTraceFile NdfRepairIncident
+
+Structures
+DiagnosticsInfo DIAG_SOCKADDR HelperAttributeInfo HELPER_ATTRIBUTE HYPOTHESIS HypothesisResult LIFE_TIME NDFHANDLE OCTET_STRING RepairInfo RepairInfoEx RootCauseInfo ShellCommandInfo UiInfo
+
+Interfaces
+INetDiagExtensibleHelper INetDiagHelper INetDiagHelperEx INetDiagHelperInfo INetDiagHelperUtilFactory
+
+</PackageReleaseNotes>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
+    <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
+  </ItemGroup>
+</Project>

@@ -123,6 +123,27 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void SymEnumSymbolsExTest()
+		{
+			using var fakeProc = new ProcessSymbolHandler(new IntPtr(1), null, false);
+			var pdbBase = SymLoadModuleEx(fakeProc, default, @"C:\Windows\System32\ntdll.dll");
+			var list = SymEnumSymbolsEx(fakeProc, pdbBase);
+			Assert.That(list, Is.Not.Empty);
+			foreach (var i in list.OrderBy(i => i.Index))
+				TestContext.WriteLine($"{i.Index,3}) {i.Name}");
+		}
+
+		[Test]
+		public void SymFromIndexTest()
+		{
+			using var fakeProc = new ProcessSymbolHandler(new IntPtr(1), null, false);
+			var pdbBase = SymLoadModuleEx(fakeProc, default, @"C:\Windows\System32\ntdll.dll");
+			var si = SYMBOL_INFO.Default;
+			Assert.That(SymFromIndex(fakeProc, pdbBase, 1, ref si), ResultIs.Successful);
+			si.WriteValues();
+		}
+
+		[Test]
 		public unsafe void SymGetOmapsTest()
 		{
 			var (_, BaseOfDll) = SymEnumerateModules(hProc, true).First();

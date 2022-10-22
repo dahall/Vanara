@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 
+#pragma warning disable IDE1006 // Naming Styles
 namespace Vanara.PInvoke
 {
 	public static partial class Ws2_32
@@ -98,6 +99,145 @@ namespace Vanara.PInvoke
 			AI_RESOLUTION_HANDLE = 0x40000000,
 		}
 
+		/// <summary>Protocols. The IPv6 defines are specified in RFC 2292.</summary>
+		[PInvokeData("ws2def.h")]
+		public enum IPPROTO
+		{
+			/// <summary/>
+			IPPROTO_IP = 0,
+
+			/// <summary/>
+			IPPROTO_HOPOPTS = 0,
+
+			/// <summary>
+			/// The Internet Control Message Protocol (ICMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or
+			/// AF_INET6 and the type parameter is SOCK_RAW or unspecified.
+			/// <para>This protocol value is supported on Windows XP and later.</para>
+			/// </summary>
+			IPPROTO_ICMP = 1,
+
+			/// <summary>
+			/// The Internet Group Management Protocol (IGMP). This is a possible value when the af parameter is AF_UNSPEC, AF_INET, or
+			/// AF_INET6 and the type parameter is SOCK_RAW or unspecified.
+			/// <para>This protocol value is supported on Windows XP and later.</para>
+			/// </summary>
+			IPPROTO_IGMP = 2,
+
+			/// <summary>
+			/// The Bluetooth Radio Frequency Communications (Bluetooth RFCOMM) protocol. This is a possible value when the af parameter is
+			/// AF_BTH and the type parameter is SOCK_STREAM.
+			/// <para>This protocol value is supported on Windows XP with SP2 or later.</para>
+			/// </summary>
+			IPPROTO_GGP = 3,
+
+			/// <summary/>
+			IPPROTO_IPV4 = 4,
+
+			/// <summary/>
+			IPPROTO_ST = 5,
+
+			/// <summary>
+			/// The Transmission Control Protocol (TCP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type
+			/// parameter is SOCK_STREAM.
+			/// </summary>
+			IPPROTO_TCP = 6,
+
+			/// <summary/>
+			IPPROTO_CBT = 7,
+
+			/// <summary/>
+			IPPROTO_EGP = 8,
+
+			/// <summary/>
+			IPPROTO_IGP = 9,
+
+			/// <summary/>
+			IPPROTO_PUP = 12,
+
+			/// <summary>
+			/// The User Datagram Protocol (UDP). This is a possible value when the af parameter is AF_INET or AF_INET6 and the type
+			/// parameter is SOCK_DGRAM.
+			/// </summary>
+			IPPROTO_UDP = 17,
+
+			/// <summary/>
+			IPPROTO_IDP = 22,
+
+			/// <summary/>
+			IPPROTO_RDP = 27,
+
+			/// <summary/>
+			IPPROTO_IPV6 = 41,
+
+			/// <summary/>
+			IPPROTO_ROUTING = 43,
+
+			/// <summary/>
+			IPPROTO_FRAGMENT = 44,
+
+			/// <summary/>
+			IPPROTO_ESP = 50,
+
+			/// <summary/>
+			IPPROTO_AH = 51,
+
+			/// <summary>
+			/// The Internet Control Message Protocol Version 6 (ICMPv6). This is a possible value when the af parameter is AF_UNSPEC,
+			/// AF_INET, or AF_INET6 and the type parameter is SOCK_RAW or unspecified.
+			/// <para>This protocol value is supported on Windows XP and later.</para>
+			/// </summary>
+			IPPROTO_ICMPV6 = 58,
+
+			/// <summary/>
+			IPPROTO_NONE = 59,
+
+			/// <summary/>
+			IPPROTO_DSTOPTS = 60,
+
+			/// <summary/>
+			IPPROTO_ND = 77,
+
+			/// <summary/>
+			IPPROTO_ICLFXBM = 78,
+
+			/// <summary/>
+			IPPROTO_PIM = 103,
+
+			/// <summary>
+			/// The PGM protocol for reliable multicast. This is a possible value when the af parameter is AF_INET and the type parameter is
+			/// SOCK_RDM. On the Windows SDK released for Windows Vista and later, this protocol is also called IPPROTO_PGM.
+			/// <para>This protocol value is only supported if the Reliable Multicast Protocol is installed.</para>
+			/// </summary>
+			IPPROTO_PGM = 113,
+
+			/// <summary/>
+			IPPROTO_L2TP = 115,
+
+			/// <summary/>
+			IPPROTO_SCTP = 132,
+
+			/// <summary/>
+			IPPROTO_RAW = 255,
+
+			/// <summary/>
+			IPPROTO_MAX = 256,
+
+			/// <summary/>
+			IPPROTO_RESERVED_RAW = 257,
+
+			/// <summary/>
+			IPPROTO_RESERVED_IPSEC = 258,
+
+			/// <summary/>
+			IPPROTO_RESERVED_IPSECOFFLOAD = 259,
+
+			/// <summary/>
+			IPPROTO_RESERVED_WNV = 260,
+
+			/// <summary/>
+			IPPROTO_RESERVED_MAX = 261
+		}
+
 		/// <summary>Customize processing of the GetNameInfoW function.</summary>
 		[PInvokeData("ws2def.h", MSDNShortId = "5630a49a-c182-440c-ad54-6ff3ba4274c6")]
 		public enum NI
@@ -161,6 +301,76 @@ namespace Vanara.PInvoke
 		/// <returns>The size, in bytes, required to hold the structure. This does not include allocation for the addresses pointed to by each <see cref="SOCKET_ADDRESS"/>.</returns>
 		[PInvokeData("ws2def.h")]
 		public static SizeT SIZEOF_SOCKET_ADDRESS_LIST(SizeT AddressCount) => Marshal.OffsetOf(typeof(SOCKET_ADDRESS_LIST), "Address").ToInt32() + Marshal.SizeOf(typeof(SOCKET_ADDRESS)) * AddressCount;
+
+#if x64
+		public static readonly SizeT MAX_NATURAL_ALIGNMENT = sizeof(ulong);
+#else
+		/// <summary>The maximum natural alignment</summary>
+		public static readonly SizeT MAX_NATURAL_ALIGNMENT = sizeof(uint);
+#endif
+
+		[StructLayout(LayoutKind.Sequential)]
+		private struct AlignedStruct<T> where T : struct
+		{
+			private readonly byte b;
+			public readonly T type;
+		}
+
+		/// <summary>Returns the alignment in bytes of the specified type as a value of type <see cref="SizeT"/>.</summary>
+		/// <typeparam name="T">The type for which to get the alignment.</typeparam>
+		/// <returns>The alignment in bytes of the specified type.</returns>
+		public static SizeT TYPE_ALIGNMENT<T>() where T : struct => Marshal.OffsetOf(typeof(AlignedStruct<T>), "type").ToInt64();
+
+		/// <summary>Returns the alignment in bytes of padding as a value of type <see cref="SizeT"/>.</summary>
+		/// <param name="length">The padding length.</param>
+		/// <returns>The alignment in bytes.</returns>
+		public static SizeT WSA_CMSGDATA_ALIGN(SizeT length) => (length + MAX_NATURAL_ALIGNMENT-1) & (~(MAX_NATURAL_ALIGNMENT-1));
+
+		/// <summary>Returns the alignment in bytes of WSACMSGHDR with padding as a value of type <see cref="SizeT"/>.</summary>
+		/// <param name="length">The padding length.</param>
+		/// <returns>The alignment in bytes.</returns>
+		public static SizeT WSA_CMSGHDR_ALIGN(SizeT length) =>
+			(length + TYPE_ALIGNMENT<WSACMSGHDR>()-1) & (~(TYPE_ALIGNMENT<WSACMSGHDR>()-1));
+
+		/// <summary>
+		/// Returns a pointer to the first byte of data (what is referred to as the cmsg_data member though it is not defined in the structure).
+		/// </summary>
+		/// <param name="cmsg">The WSACMSGHDR instance.</param>
+		/// <returns>The pointer.</returns>
+		public static unsafe byte* WSA_CMSG_DATA(WSACMSGHDR* cmsg) => (byte*)cmsg + WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR)));
+
+		/// <summary>
+		/// Returns the first ancillary data object, or a null if there is no ancillary data in the control buffer of the WSAMSG structure.
+		/// </summary>
+		/// <param name="msg">The message.</param>
+		/// <returns>The first ancillary data object, or a null.</returns>
+		public static unsafe WSACMSGHDR* WSA_CMSG_FIRSTHDR(in WSAMSG msg) =>
+			(msg.Control.len >= Marshal.SizeOf(typeof(WSACMSGHDR))) ? (WSACMSGHDR*)msg.Control.buf : default;
+
+		/// <summary>Returns the value to store in cmsg_len given the amount of data.</summary>
+		/// <param name="length">The length.</param>
+		/// <returns>The data length.</returns>
+		public static SizeT WSA_CMSG_LEN(SizeT length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR))) + length;
+
+		/// <summary>Returns the next ancillary data object, or a null if there are no more data objects.</summary>
+		/// <param name="msg">The message.</param>
+		/// <param name="cmsg">The message header.</param>
+		/// <returns>The next header.</returns>
+		public static unsafe WSACMSGHDR* WSA_CMSG_NXTHDR(in WSAMSG msg, WSACMSGHDR* cmsg)
+		{
+			if (cmsg is null)
+				return WSA_CMSG_FIRSTHDR(msg);
+			unsafe
+			{
+				var len = (byte*)cmsg + WSA_CMSGHDR_ALIGN(cmsg->cmsg_len) + Marshal.SizeOf(typeof(WSACMSGHDR));
+				return len > (byte*)msg.Control.buf + msg.Control.len ? null : (WSACMSGHDR*)((byte*)cmsg + WSA_CMSGHDR_ALIGN(cmsg->cmsg_len));
+			}
+		}
+
+		/// <summary>Returns total size of an ancillary data object given the amount of data. Used to allocate the correct amount of space.</summary>
+		/// <param name="length">The length.</param>
+		/// <returns>Total size</returns>
+		public static SizeT WSA_CMSG_SPACE(SizeT length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR)) + WSA_CMSGHDR_ALIGN(length));
 
 		/// <summary>
 		/// The addrinfoex2 structure is used by the GetAddrInfoEx function to hold host address information when both a canonical name and
@@ -471,7 +681,7 @@ namespace Vanara.PInvoke
 			/// <c>ai_addrlen</c> member.
 			/// </para>
 			/// </summary>
-			public SOCKADDR addr => new SOCKADDR(ai_addr, false, ai_addrlen);
+			public SOCKADDR addr => new(ai_addr, false, ai_addrlen);
 
 			/// <inheritdoc/>
 			public override string ToString() => $"{ai_fqdn}::{ai_canonname}:{ai_flags},{ai_family},{ai_socktype},{ai_protocol},{addr}";
@@ -848,7 +1058,7 @@ namespace Vanara.PInvoke
 			/// <c>ai_addrlen</c> member.
 			/// </para>
 			/// </summary>
-			public SOCKADDR addr => new SOCKADDR(ai_addr, false, ai_addrlen);
+			public SOCKADDR addr => new(ai_addr, false, ai_addrlen);
 
 			/// <inheritdoc/>
 			public override string ToString() => $"{ai_canonname}:{ai_flags},{ai_family},{ai_socktype},{ai_protocol},{addr}";
@@ -1235,7 +1445,7 @@ namespace Vanara.PInvoke
 			/// <c>ai_addrlen</c> member.
 			/// </para>
 			/// </summary>
-			public SOCKADDR addr => new SOCKADDR(ai_addr, false, ai_addrlen);
+			public SOCKADDR addr => new(ai_addr, false, ai_addrlen);
 
 			/// <inheritdoc/>
 			public override string ToString() => $"{ai_canonname}:{ai_flags},{ai_family},{ai_socktype},{ai_protocol},{addr}";
@@ -1333,12 +1543,12 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="SOCKADDR_IN"/>.</summary>
 			/// <param name="addr">The addr.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN"/> instance from the conversion.</returns>
-			public static implicit operator SOCKADDR_IN(IN_ADDR addr) => new SOCKADDR_IN(addr);
+			public static implicit operator SOCKADDR_IN(IN_ADDR addr) => new(addr);
 
 			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR_IN6"/>.</summary>
 			/// <param name="ipv4">The ipv4 address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
-			public static explicit operator SOCKADDR_IN6(SOCKADDR_IN ipv4) => new SOCKADDR_IN6(ipv4);
+			public static explicit operator SOCKADDR_IN6(SOCKADDR_IN ipv4) => new(ipv4);
 
 			/// <summary>Converts to string.</summary>
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -1414,6 +1624,16 @@ namespace Vanara.PInvoke
 				return mem.ToStructure<SOCKADDR_STORAGE>();
 			}
 
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_INET"/> to <see cref="SOCKADDR_STORAGE"/>.</summary>
+			/// <param name="addr">The address.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_STORAGE"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_STORAGE(SOCKADDR_INET addr)
+			{
+				using var mem = SafeHGlobalHandle.CreateFromStructure(addr);
+				mem.Size = Marshal.SizeOf(typeof(SOCKADDR_STORAGE));
+				return mem.ToStructure<SOCKADDR_STORAGE>();
+			}
+
 			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_STORAGE"/> to <see cref="SOCKADDR"/>.</summary>
 			/// <param name="addr">The addr.</param>
 			/// <returns>The resulting <see cref="SOCKADDR"/> instance from the conversion.</returns>
@@ -1428,6 +1648,11 @@ namespace Vanara.PInvoke
 			/// <param name="addr">The addr.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
 			public static explicit operator SOCKADDR_IN6(SOCKADDR_STORAGE addr) => (SOCKADDR_IN6)SOCKADDR.CreateFromStructure(addr);
+
+			/// <summary>Performs an explicit conversion from <see cref="SOCKADDR_STORAGE"/> to <see cref="SOCKADDR_INET"/>.</summary>
+			/// <param name="addr">The addr.</param>
+			/// <returns>The resulting <see cref="SOCKADDR_INET"/> instance from the conversion.</returns>
+			public static explicit operator SOCKADDR_INET(SOCKADDR_STORAGE addr) => (SOCKADDR_INET)SOCKADDR.CreateFromStructure(addr);
 		}
 
 		/// <summary>The <c>SOCKET_ADDRESS</c> structure stores protocol-specific address information.</summary>
@@ -1447,7 +1672,12 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-socket_address typedef struct _SOCKET_ADDRESS { LPSOCKADDR
 		// lpSockaddr; INT iSockaddrLength; } SOCKET_ADDRESS, *PSOCKET_ADDRESS, *LPSOCKET_ADDRESS;
 		[PInvokeData("ws2def.h", MSDNShortId = "37fbcb96-a859-4eca-8928-8051f95407b9")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential,
+#if x64
+		Size = 16)]
+#else
+		Size = 8)]
+#endif
 		public struct SOCKET_ADDRESS
 		{
 			/// <summary>A pointer to a socket address represented as a SOCKADDR structure.</summary>
@@ -1458,10 +1688,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the <see cref="SOCKADDR_INET"/> from this instance.</summary>
 			/// <returns>The <see cref="SOCKADDR_INET"/> value pointed to by this instance.</returns>
-			public SOCKADDR_INET GetSOCKADDR() => lpSockaddr.ToStructure<SOCKADDR_INET>();
+			public SOCKADDR_INET GetSOCKADDR() => lpSockaddr.ToStructure<SOCKADDR_INET>(iSockaddrLength);
+
+			/// <summary>Performs an implicit conversion from <see cref="SOCKET_ADDRESS"/> to <see cref="SOCKADDR"/>.</summary>
+			/// <param name="address">The address.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SOCKADDR(SOCKET_ADDRESS address) => new(address);
 
 			/// <summary>Converts to string.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => GetSOCKADDR().ToString();
 		}
 
@@ -1562,6 +1797,30 @@ namespace Vanara.PInvoke
 
 			/// <summary>A pointer to the buffer.</summary>
 			public IntPtr buf;
+		}
+
+		/// <summary>The CMSGHDR structure defines the header for a control data object that is associated with a datagram.</summary>
+		/// <remarks>
+		/// The control information data that is associated with a datagram is made up of one or more control data objects. Each object
+		/// begins with a CMSGHDR structure.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-wsacmsghdr typedef struct _WSACMSGHDR { SIZE_T cmsg_len; INT
+		// cmsg_level; INT cmsg_type; } WSACMSGHDR, *PWSACMSGHDR, *LPWSACMSGHDR;
+		[PInvokeData("ws2def.h", MSDNShortId = "NS:ws2def._WSACMSGHDR")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct WSACMSGHDR
+		{
+			/// <summary>
+			/// <para>The number of bytes from the beginning of the CMSGHDR structure to the end of the control data.</para>
+			/// <para><c>Note</c> The value of the <c>cmsg_len</c> member does not account for any padding that may follow the control data.</para>
+			/// </summary>
+			public SizeT cmsg_len;
+
+			/// <summary>The protocol that originated the control information.</summary>
+			public int cmsg_level;
+
+			/// <summary>The protocol-specific type of control information.</summary>
+			public int cmsg_type;
 		}
 
 		/// <summary>
@@ -1803,6 +2062,38 @@ namespace Vanara.PInvoke
 		[PInvokeData("ws2def.h", MSDNShortId = "fb6447b4-28f5-4ab7-bbdc-5a57ed38a994")]
 		public static class WinSockIOControlCode
 		{
+			/// <summary>
+			/// Determine the amount of data that can be read atomically from socket s. The lpvOutBuffer parameter points at an unsigned long
+			/// in which WSAIoctl stores the result.
+			/// <para>
+			/// If the socket passed in the s parameter is stream oriented(for example, type SOCK_STREAM), FIONREAD returns the total amount
+			/// of data that can be read in a single receive operation; this is normally the same as the total amount of data queued on the
+			/// socket(since a data stream is byte-oriented, this is not guaranteed).
+			/// </para>
+			/// <para>
+			/// If the socket passed in the s parameter is message oriented(for example, type SOCK_DGRAM), FIONREAD returns the reports the
+			/// total number of bytes available to read, not the size of the first datagram(message) queued on the socket.
+			/// </para>
+			/// </summary>
+			public static readonly uint FIONREAD = _IOR('f', 127); /* get # bytes to read */
+
+			/// <summary>
+			/// Enable or disable non-blocking mode on socket s. The lpvInBuffer parameter points at an unsigned long (QoS), which is nonzero
+			/// if non-blocking mode is to be enabled and zero if it is to be disabled. When a socket is created, it operates in blocking
+			/// mode (that is, non-blocking mode is disabled). This is consistent with BSD sockets.
+			/// <para>
+			/// The WSAAsyncSelect or WSAEventSelect routine automatically sets a socket to non-blocking mode.If WSAAsyncSelect or
+			/// WSAEventSelect has been issued on a socket, then any attempt to use WSAIoctl to set the socket back to blocking mode will
+			/// fail with WSAEINVAL. To set the socket back to blocking mode, an application must first disable WSAAsyncSelect by calling
+			/// WSAAsyncSelect with the lEvent parameter equal to zero, or disable WSAEventSelect by calling WSAEventSelect with the
+			/// lNetworkEvents parameter equal to zero.
+			/// </para>
+			/// </summary>
+			public static readonly uint FIONBIO = _IOW('f', 126); /* set/clear non-blocking i/o */
+
+			/// <summary>Enable notification for when data is waiting to be received.</summary>
+			public static readonly uint FIOASYNC = _IOW('f', 125); /* set/clear async i/o */
+
 			/// <summary>Requests notification of changes in information reported through SIO_ADDRESS_LIST_QUERY</summary>
 			public static readonly uint SIO_ADDRESS_LIST_CHANGE = _WSAIO(IOC_WS2, 23);
 
@@ -1886,19 +2177,53 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(int), CorrespondingAction.Set)]
 			public static readonly uint SIO_TRANSLATE_HANDLE = _WSAIORW(IOC_WS2, 13);
 
+			/// <summary>set high watermark</summary>
+			public static readonly uint SIOCSHIWAT = _IOW('s', 0); /* set high watermark */
+
+			/// <summary>get high watermark</summary>
+			public static readonly uint SIOCGHIWAT = _IOR('s', 1); /* get high watermark */
+
+			/// <summary>set low watermark</summary>
+			public static readonly uint SIOCSLOWAT = _IOW('s', 2); /* set low watermark */
+
+			/// <summary>get low watermark</summary>
+			public static readonly uint SIOCGLOWAT = _IOR('s', 3); /* get low watermark */
+
+			/// <summary>
+			/// Determine whether or not all OOB data has been read. This applies only to a socket of stream-style (for example, type
+			/// SOCK_STREAM) that has been configured for inline reception of any OOB data (SO_OOBINLINE). If no OOB data is waiting to be
+			/// read, the operation returns TRUE. Otherwise, it returns FALSE, and the next receive operation performed on the socket will
+			/// retrieve some or all of the data preceding the mark; the application should use the SIOCATMARK operation to determine whether
+			/// any remains. If there is any normal data preceding the urgent (out of band) data, it will be received in order. (Note that
+			/// recv operations will never mix OOB and normal data in the same call.) lpvOutBuffer points at a BOOL in which WSAIoctl stores
+			/// the result.
+			/// </summary>
+			public static readonly uint SIOCATMARK = _IOR('s', 7); /* at oob mark? */
+
+			private const uint IOCPARM_MASK = 0x7f;            /* parameters must be < 128 bytes */
+			private const uint IOC_VOID = 0x20000000;      /* no parameters */
+			private const uint IOC_OUT = 0x40000000;      /* copy out parameters */
+			private const uint IOC_IN = 0x80000000;      /* copy in parameters */
+			private const uint IOC_INOUT = IOC_IN|IOC_OUT;
 			private const uint IOC_PROTOCOL = 0x10000000;
 			private const uint IOC_UNIX = 0x00000000;
 			private const uint IOC_VENDOR = 0x18000000;
 			private const uint IOC_WS2 = 0x08000000;
 			private const uint IOC_WSK = IOC_WS2 | 0x07000000;
 
-			private static uint _WSAIO(uint x, uint y) => (IOC_VOID | (x) | (y));
+			private static uint _IO(uint x, uint y) => (IOC_VOID|((x)<<8)|(y));
 
-			private static uint _WSAIOR(uint x, uint y) => (IOC_OUT | (x) | (y));
+			private static uint _IOR(uint x, uint y) => (IOC_OUT|((sizeof(uint)&IOCPARM_MASK)<<16)|((x)<<8)|(y));
 
-			private static uint _WSAIORW(uint x, uint y) => (IOC_INOUT | (x) | (y));
+			private static uint _IOW(uint x, uint y) => (IOC_IN|((sizeof(uint)&IOCPARM_MASK)<<16)|((x)<<8)|(y));
 
-			private static uint _WSAIOW(uint x, uint y) => (IOC_IN | (x) | (y));
+			private static uint _WSAIO(uint x, uint y) => IOC_VOID | (x) | (y);
+
+			private static uint _WSAIOR(uint x, uint y) => IOC_OUT | (x) | (y);
+
+			private static uint _WSAIORW(uint x, uint y) => IOC_INOUT | (x) | (y);
+
+			private static uint _WSAIOW(uint x, uint y) => IOC_IN | (x) | (y);
 		}
 	}
 }

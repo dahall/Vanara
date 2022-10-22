@@ -3,10 +3,35 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 
+#pragma warning disable IDE1006 // Naming Styles
 namespace Vanara.PInvoke
 {
 	public static partial class Ws2_32
 	{
+		/// <summary/>
+		public const int IN6ADDR_LINKLOCALPREFIX_LENGTH = 64;
+
+		/// <summary/>
+		public const int IN6ADDR_MULTICASTPREFIX_LENGTH = 8;
+
+		/// <summary/>
+		public const int IN6ADDR_SOLICITEDNODEMULTICASTPREFIX_LENGTH = 104;
+
+		/// <summary/>
+		public const int IN6ADDR_V4MAPPEDPREFIX_LENGTH = 96;
+
+		/// <summary/>
+		public const int IN6ADDR_6TO4PREFIX_LENGTH = 16;
+
+		/// <summary/>
+		public const int IN6ADDR_TEREDOPREFIX_LENGTH = 32;
+
+		/// <summary/>
+		public const int INET_ADDRSTRLEN  = 22;
+
+		/// <summary/>
+		public const int INET6_ADDRSTRLEN = 65;
+
 		/// <summary/>
 		public const uint IOC_IN = 0x80000000;
 
@@ -190,6 +215,163 @@ namespace Vanara.PInvoke
 			public SOCKADDR_STORAGE[] gf_slist;
 		}
 
+		/// <summary>
+		/// The <c>in_pktinfo</c> structure is used to store received packet address information, and is used by Windows to return
+		/// information about received packets and also allows specifying the local IPv4 address to use for sending packets.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If the IP_PKTINFO socket option is set on a socket of type <c>SOCK_DGRAM</c> or <c>SOCK_RAW</c>, one of the control data objects
+		/// returned by the LPFN_WSARECVMSG (WSARecvMsg) function will contain an <c>in_pktinfo</c> structure used to store received packet
+		/// address information.
+		/// </para>
+		/// <para>
+		/// On an IPv4 socket of type <c>SOCK_DGRAM</c> or <c>SOCK_RAW</c>, an application can specific the local IP address to use for
+		/// sending with the WSASendMsg function. One of the control data objects passed in the WSAMSG structure to the <c>WSASendMsg</c>
+		/// function may contain an <c>in_pktinfo</c> structure used to specify the local IPv4 address to use for sending.
+		/// </para>
+		/// <para>
+		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+		/// has changed and the <c>in_pktinfo</c> structure is defined in the <c>Ws2ipdef.h</c> header file which is automatically included
+		/// in the <c>Ws2tcpip.h</c> header file. The <c>Ws2ipdef.h</c> header files should never be used directly.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2ipdef/ns-ws2ipdef-in_pktinfo typedef struct in_pktinfo { IN_ADDR ipi_addr;
+		// ULONG ipi_ifindex; } IN_PKTINFO, *PIN_PKTINFO;
+		[PInvokeData("ws2ipdef.h", MSDNShortId = "NS:ws2ipdef.in_pktinfo")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IN_PKTINFO
+		{
+			/// <summary>
+			/// The destination IPv4 address from the IP header of the received packet when used with the LPFN_WSARECVMSG (WSARecvMsg)
+			/// function. The local source IPv4 address to set in the IP header when used with the WSASendMsg function.
+			/// </summary>
+			public IN_ADDR ipi_addr;
+
+			/// <summary>
+			/// The interface on which the packet was received when used with the LPFN_WSARECVMSG (WSARecvMsg) function. The interface on
+			/// which the packet should be sent when used with the WSASendMsg function.
+			/// </summary>
+			public uint ipi_ifindex;
+		}
+
+		/// <summary>
+		/// The <c>in6_pktinfo</c> structure is used to store received IPv6 packet address information, and is used by Windows to return
+		/// information about received packets and also allows specifying the local IPv6 address to use for sending packets.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If the IPV6_PKTINFO socket option is set on a socket of type <c>SOCK_DGRAM</c> or <c>SOCK_RAW</c>, one of the control data
+		/// objects returned by the LPFN_WSARECVMSG (WSARecvMsg) function will contain an <c>in6_pktinfo</c> structure used to store received
+		/// packet address information.
+		/// </para>
+		/// <para>
+		/// On an IPv6 socket of type <c>SOCK_DGRAM</c> or <c>SOCK_RAW</c>, an application can specific the local IP source address to use
+		/// for sending with the WSASendMsg function. One of the control data objects passed in the WSAMSG structure to the <c>WSASendMsg</c>
+		/// function may contain an <c>in6_pktinfo</c> structure used to specify the local IPv6 address to use for sending.
+		/// </para>
+		/// <para>
+		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+		/// has changed and the <c>in6_pktinfo</c> structure is defined in the <c>Ws2ipdef.h</c> header file which is automatically included
+		/// in the <c>Ws2tcpip.h</c> header file. The <c>Ws2ipdef.h</c> header files should never be used directly.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2ipdef/ns-ws2ipdef-in6_pktinfo typedef struct in6_pktinfo { IN6_ADDR
+		// ipi6_addr; ULONG ipi6_ifindex; } IN6_PKTINFO, *PIN6_PKTINFO;
+		[PInvokeData("ws2ipdef.h", MSDNShortId = "NS:ws2ipdef.in6_pktinfo")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IN6_PKTINFO
+		{
+			/// <summary>
+			/// The destination IPv6 address from the IP header of the received packet when used with the LPFN_WSARECVMSG (WSARecvMsg)
+			/// function. The local source IPv6 address to set in the IP header when used with the WSASendMsg function.
+			/// </summary>
+			public IN6_ADDR ipi6_addr;
+
+			/// <summary>
+			/// The interface on which the packet was received when used with the LPFN_WSARECVMSG (WSARecvMsg) function. The interface on
+			/// which the packet should be sent when used with the WSASendMsg function.
+			/// </summary>
+			public uint ipi6_ifindex;
+		}
+
+		/// <summary>The <c>ip_mreq</c> structure provides multicast group information for IPv4 addresses.</summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>ip_mreq</c> structure is used with IPv4 addresses. The <c>ip_mreq</c> structure is used with the IP_ADD_MEMBERSHIP and
+		/// <c>IP_DROP_MEMBERSHIP</c> socket options.
+		/// </para>
+		/// <para>
+		/// The <c>ip_mreq</c> structure and related structures used for IPv4 multicast programming are based on IETF recommendations in
+		/// sections 4 and 8.1 of RFC 3768. For more information, see http://www.ietf.org/rfc/rfc3678.txt.
+		/// </para>
+		/// <para>
+		/// For more configurable multicast capabilities with IPv4, use the ip_mreq_source structure. See Multicast Programming for more information.
+		/// </para>
+		/// <para>
+		/// On Windows Vista and later, a set of socket options are available for multicast programming that support IPv6 and IPv4 addresses.
+		/// These socket options are IP agnostic and can be used on both IPv6 and IPv4. These IP agnostic options use the GROUP_REQ and the
+		/// GROUP_SOURCE_REQ structures and are the preferred socket options for multicast programming on Windows Vista and later.
+		/// </para>
+		/// <para>The <c>ip_mreq</c> structure is the IPv4 equivalent of the IPv6-based ipv6_mreq structure.</para>
+		/// <para>
+		/// The <c>imr_interface</c> member can be an interface index. Any IP address in the 0.x.x.x block (first octet of 0) except for the
+		/// IP address of 0.0.0.0 is treated as an interface index. An interface index is a 24-bit number. The 0.0.0.0/8 IPv4 address block
+		/// is not used (this range is reserved). The GetAdaptersAddresses function can be used to obtain interface index information to use
+		/// for the <c>imr_interface</c> member.
+		/// </para>
+		/// <para>
+		/// It is recommended that a local IPv4 address or interface index always be specified in the <c>imr_interface</c> member of the
+		/// <c>ip_mreq</c> structure, rather than use the default interface. This is particularly important on computers with multiple
+		/// network interfaces and multiple public IPv4 addresses.
+		/// </para>
+		/// <para>
+		/// The default interface used for IPv4 multicast is determined by the networking stack in Windows. An application can determine the
+		/// default interface used for IPv4 multicast using the GetIpForwardTable function to retrieve the IPv4 routing table. The network
+		/// interface with the lowest value for the routing metric for a destination IP address of 224.0.0.0 is the default interface for
+		/// IPv4 multicast. The routing table can also be displayed from the command prompt with the following command:
+		/// </para>
+		/// <para><c>route print</c></para>
+		/// <para>
+		/// The IP_MULTICAST_IF socket option can be used to set the default interface to send IPv4 multicast packets. This socket option
+		/// does not change the default interface used to receive IPv4 multicast packets.
+		/// </para>
+		/// <para>
+		/// A typical IPv4 multicast application would use the IP_ADD_MEMBERSHIP socket option with the <c>ip_mreq</c> structure to join a
+		/// multicast group and listen for multicast packets on a specific interface. The <c>IP_MULTICAST_IF</c> socket option would be used
+		/// to set the interface to send IPv4 multicast packets to the multicast group. The most common scenario would be a multicast
+		/// application that listens and sends on the same interface for a multicast group. Multiple sockets might be used by a multicast
+		/// application with one socket for listening and one or more sockets for sending.
+		/// </para>
+		/// <para>
+		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+		/// has changed and the <c>ip_mreq</c> structure is defined in the <c>Ws2ipdef.h</c> header file which is automatically included in
+		/// the <c>Ws2tcpip.h</c> header file. The <c>Ws2ipdef.h</c> header files should never be used directly.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The <c>IP_MREQ</c> and <c>PIP_MREQ</c> derived structures are only defined on the Windows SDK released with Windows
+		/// Vista and later. The <c>ip_mreq</c> structure should be used on earlier versions of the Windows SDK.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2ipdef/ns-ws2ipdef-ip_mreq typedef struct ip_mreq { IN_ADDR imr_multiaddr;
+		// IN_ADDR imr_interface; } IP_MREQ, *PIP_MREQ;
+		[PInvokeData("ws2ipdef.h", MSDNShortId = "NS:ws2ipdef.ip_mreq")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IP_MREQ
+		{
+			/// <summary>The address of the IPv4 multicast group.</summary>
+			public IN_ADDR imr_multiaddr;
+
+			/// <summary>
+			/// <para>
+			/// The local IPv4 address of the interface or the interface index on which the multicast group should be joined or dropped. This
+			/// value is in network byte order. If this member specifies an IPv4 address of 0.0.0.0, the default IPv4 multicast interface is used.
+			/// </para>
+			/// <para>To use an interface index of 1 would be the same as an IP address of 0.0.0.1.</para>
+			/// </summary>
+			public IN_ADDR imr_interface;
+		}
+
 		/// <summary>The <c>ip_msfilter</c> structure provides multicast filtering parameters for IPv4 addresses.</summary>
 		/// <remarks>
 		/// <para>
@@ -286,6 +468,77 @@ namespace Vanara.PInvoke
 			public IN_ADDR[] imsf_slist;
 		}
 
+		/// <summary>The <c>ipv6_mreq</c> structure provides multicast group information for IPv6 addresses.</summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>ipv6_mreq</c> structure is used with IPv6 addresses. The <c>ipv6_mreq</c> structure is used with the IPV6_ADD_MEMBERSHIP,
+		/// <c>IPV6_DROP_MEMBERSHIP</c>, <c>IPV6_JOIN_GROUP</c>, and <c>IPV6_LEAVE_GROUP</c> socket options. The <c>IPV6_JOIN_GROUP</c> and
+		/// <c>IPV6_ADD_MEMBERSHIP</c> socket options are defined to be the same. The <c>IPV6_LEAVE_GROUP</c> and <c>IPV6_DROP_MEMBERSHIP</c>
+		/// socket options are defined to be the same.
+		/// </para>
+		/// <para>
+		/// On Windows Vista and later, a set of socket options are available for multicast programming that support IPv6 and IPv4 addresses.
+		/// These socket options are IP agnostic and can be used on both IPv6 and IPv4. These IP agnostic options use the GROUP_REQ and the
+		/// GROUP_SOURCE_REQ structures and are the preferred socket options for multicast programming on Windows Vista and later.
+		/// </para>
+		/// <para>The <c>ipv6_mreq</c> structure is the IPv6 equivalent of the IPv4-based ip_mreq structure.</para>
+		/// <para>
+		/// The GetAdaptersAddresses function can be used to obtain interface index information required for the <c>ipv6mr_interface</c> member.
+		/// </para>
+		/// <para>
+		/// The <c>ipv6_mreq</c> structure and the <c>IPPROTO_IPV6</c> level socket options that use this structure are only valid on
+		/// datagram and raw sockets (the socket type must be <c>SOCK_DGRAM</c> or <c>SOCK_RAW</c>).
+		/// </para>
+		/// <para>
+		/// It is recommended that a local IPv6 interface index always be specified in the <c>ipv6mr_interface</c> member of the
+		/// <c>ipv6_mreq</c> structure, rather than use the default interface. This is particularly important on computers with multiple
+		/// network interfaces and multiple public IPv6 addresses.
+		/// </para>
+		/// <para>
+		/// The default interface used for IPv6 multicast is determined by the networking stack in Windows. On Windows Vista and later, an
+		/// application can determine the default interface used for IPv6 multicast using the GetIpForwardTable2 function to retrieve the
+		/// IPv6 routing table. The network interface with the lowest value for the routing metric for a destination IPv6 multicast address
+		/// (the FF00::/8 IPv6 address block) is the default interface for IPv6 multicast. The routing table can also be displayed from the
+		/// command prompt with the following command:
+		/// </para>
+		/// <para><c>route print</c></para>
+		/// <para>
+		/// The IPV6_MULTICAST_IF socket option can be used to set the default interface to send IPv6 multicast packets. This socket option
+		/// does not change the default interface used to receive IPv6 multicast packets.
+		/// </para>
+		/// <para>
+		/// A typical IPv6 multicast application would use the IPV6_ADD_MEMBERSHIP or <c>IPV6_JOIN_GROUP</c> socket option with the
+		/// <c>ipv6_mreq</c> structure to join a multicast group and listen for multicast packets on a specific interface. The
+		/// <c>IPV6_MULTICAST_IF</c> socket option would be used to set the interface to send IPv6 multicast packets to the multicast group.
+		/// The most common scenario would be a multicast application that listens and sends on the same interface for a multicast group.
+		/// Multiple sockets might be used by a multicast application with one socket for listening and one or more sockets for sending.
+		/// </para>
+		/// <para>
+		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+		/// has changed and the <c>ipv6_mreq</c> structure is defined in the <c>Ws2ipdef.h</c> header file which is automatically included in
+		/// the <c>Ws2tcpip.h</c> header file. The <c>Ws2ipdef.h</c> header files should never be used directly.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The <c>PIP6_MREQ</c> derived structure is only defined on the Windows SDK released with Windows Vista and later. The
+		/// GROUP_REQ and the GROUP_SOURCE_REQ structures and are the preferred socket options for multicast programming on Windows Vista and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/ws2ipdef/ns-ws2ipdef-ipv6_mreq typedef struct ipv6_mreq { IN6_ADDR
+		// ipv6mr_multiaddr; ULONG ipv6mr_interface; } IPV6_MREQ, *PIPV6_MREQ;
+		[PInvokeData("ws2ipdef.h", MSDNShortId = "NS:ws2ipdef.ipv6_mreq")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IPV6_MREQ
+		{
+			/// <summary>The address of the IPv6 multicast group.</summary>
+			public IN6_ADDR ipv6mr_multiaddr;
+
+			/// <summary>
+			/// The interface index of the local interface on which the multicast group should be joined or dropped. If this member specifies
+			/// an interface index of 0, the default multicast interface is used.
+			/// </summary>
+			public uint ipv6mr_interface;
+		}
+
 		/// <summary>The SOCKADDR_IN6 structure specifies a transport address and port for the AF_INET6 address family.</summary>
 		/// <remarks>
 		/// <para>
@@ -350,7 +603,13 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IN6_ADDR"/> to <see cref="SOCKADDR_IN6"/>.</summary>
 			/// <param name="addr">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN6"/> instance from the conversion.</returns>
-			public static implicit operator SOCKADDR_IN6(IN6_ADDR addr) => new SOCKADDR_IN6(addr, 0);
+			public static implicit operator SOCKADDR_IN6(IN6_ADDR addr) => new(addr, 0);
+
+			/// <summary>Represents an IPv6 anycast socket address.</summary>
+			public static readonly SOCKADDR_IN6 IN6ADDR_ANY = new() { sin6_family = ADDRESS_FAMILY.AF_INET6, sin6_addr = IN6_ADDR.Unspecified };
+
+			/// <summary>Represents an IPv6 LOOPBACK socket address.</summary>
+			public static readonly SOCKADDR_IN6 IN6ADDR_LOOPBACK = new() { sin6_family = ADDRESS_FAMILY.AF_INET6, sin6_addr = IN6_ADDR.Loopback };
 
 			/// <inheritdoc/>
 			public override string ToString() => $"{sin6_addr}" + (sin6_scope_id == 0 ? "" : "%" + sin6_scope_id.ToString()) + $":{sin6_port}";
@@ -377,10 +636,10 @@ namespace Vanara.PInvoke
 		public struct SOCKADDR_IN6_PAIR
 		{
 			/// <summary>The source address</summary>
-			private IntPtr _SourceAddress;
+			private readonly IntPtr _SourceAddress;
 
 			/// <summary>The destination address</summary>
-			private IntPtr _DestinationAddress;
+			private readonly IntPtr _DestinationAddress;
 
 			/// <summary>
 			/// A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the
@@ -400,7 +659,8 @@ namespace Vanara.PInvoke
 			/// <param name="unmgd">The unmanaged value.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_IN6_PAIR_NATIVE"/> instance from the conversion.</returns>
 			public static implicit operator SOCKADDR_IN6_PAIR_NATIVE(SOCKADDR_IN6_PAIR unmgd) =>
-				new SOCKADDR_IN6_PAIR_NATIVE { SourceAddress = unmgd.SourceAddress, DestinationAddress = unmgd.DestinationAddress };
+				new()
+				{ SourceAddress = unmgd.SourceAddress, DestinationAddress = unmgd.DestinationAddress };
 
 			/// <summary>Converts to string.</summary>
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -497,6 +757,9 @@ namespace Vanara.PInvoke
 			[FieldOffset(0)]
 			public ADDRESS_FAMILY si_family;
 
+			/// <summary>Gets the size of the actual address (not necessarily the size of the structure).</summary>
+			public int Size => si_family == ADDRESS_FAMILY.AF_INET ? Marshal.SizeOf(typeof(SOCKADDR_IN)) : Marshal.SizeOf(typeof(SOCKADDR_IN6));
+
 			/// <summary>Specifies whether this instance is equal to the specified object.</summary>
 			/// <param name="other">The object to test for equality.</param>
 			/// <returns><see langword="true"/> if <paramref name="other"/> is equal to this instance.</returns>
@@ -515,12 +778,22 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN"/> to <see cref="SOCKADDR_INET"/>.</summary>
 			/// <param name="address">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_INET"/> instance from the conversion.</returns>
-			public static implicit operator SOCKADDR_INET(SOCKADDR_IN address) => new SOCKADDR_INET { Ipv4 = address };
+			public static implicit operator SOCKADDR_INET(SOCKADDR_IN address) => new() { Ipv4 = address };
 
 			/// <summary>Performs an implicit conversion from <see cref="SOCKADDR_IN6"/> to <see cref="SOCKADDR_INET"/>.</summary>
 			/// <param name="address">The address.</param>
 			/// <returns>The resulting <see cref="SOCKADDR_INET"/> instance from the conversion.</returns>
-			public static implicit operator SOCKADDR_INET(SOCKADDR_IN6 address) => new SOCKADDR_INET { Ipv6 = address };
+			public static implicit operator SOCKADDR_INET(SOCKADDR_IN6 address) => new() { Ipv6 = address };
+
+			/// <summary>Performs an explicit conversion from <see cref="System.Net.IPEndPoint"/> to <see cref="SOCKADDR_INET"/>.</summary>
+			/// <param name="address">The address.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator SOCKADDR_INET(System.Net.IPEndPoint address)
+			{
+				if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+					return new() { Ipv4 = new SOCKADDR_IN(new(address.Address.GetAddressBytes()), (ushort)address.Port) };
+				return new() { Ipv6 = new SOCKADDR_IN6(address.Address.GetAddressBytes(), (uint)address.Address.ScopeId, (ushort)address.Port) };
+			}
 
 			/// <summary>Converts to string.</summary>
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>cimfs.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows CimFs.dll.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.PInvoke.CimFs</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;Cim;CimFs</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+CimCloseImage CimCloseStream CimCommitImage CimCreateAlternateStream CimCreateFile CimCreateHardLink CimCreateImage CimDeletePath CimDismountImage CimMountImage CimWriteStream
+
+Structures
+CIMFS_FILE_METADATA CIMFS_IMAGE_HANDLE CIMFS_STREAM_HANDLE
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>

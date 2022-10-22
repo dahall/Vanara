@@ -1,7 +1,6 @@
-﻿#pragma warning disable IDE1006 // Naming Styles
-
-using System;
+﻿using System;
 using System.Data;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -12,382 +11,6 @@ namespace Vanara.PInvoke
 	/// <summary>Functions, structures and constants from ws2_32.h.</summary>
 	public static partial class Ws2_32
 	{
-		/// <summary>The CompletionRoutine is a placeholder for an application-defined or library-defined function name.</summary>
-		/// <param name="dwError">Specifies the completion status for the overlapped operation as indicated by lpOverlapped.</param>
-		/// <param name="cbTransferred">Specifies the number of bytes received.</param>
-		/// <param name="lpOverlapped">The overlapped operation.</param>
-		/// <param name="dwFlags">Contains information that would have appeared in lpFlags if the receive operation had completed immediately.</param>
-		// void (CALLBACK* LPWSAOVERLAPPED_COMPLETION_ROUTINE) ( IN DWORD dwError, IN DWORD cbTransferred, IN LPWSAOVERLAPPED lpOverlapped,
-		// IN DWORD dwFlags );
-		[PInvokeData("winsock2.h", MSDNShortId = "abaf367a-8f99-478c-a58c-d57e9f9cd8a1")]
-		public delegate void LPWSAOVERLAPPED_COMPLETION_ROUTINE([In] uint dwError, [In] uint cbTransferred, [In] in WSAOVERLAPPED lpOverlapped, [In] uint dwFlags);
-
-		/// <summary>Network events.</summary>
-		[PInvokeData("winsock2.h", MSDNShortId = "f98a71e4-47fb-47a4-b37e-e4cc801a8f98")]
-		public enum FD
-		{
-			/// <summary>Wants to receive notification of readiness for reading.</summary>
-			FD_READ = (1 << 0),
-
-			/// <summary>Wants to receive notification of readiness for writing.</summary>
-			FD_WRITE = (1 << 1),
-
-			/// <summary>Wants to receive notification of the arrival of OOB data.</summary>
-			FD_OOB = (1 << 2),
-
-			/// <summary>Wants to receive notification of incoming connections.</summary>
-			FD_ACCEPT = (1 << 3),
-
-			/// <summary>Wants to receive notification of completed connection or multipoint join operation.</summary>
-			FD_CONNECT = (1 << 4),
-
-			/// <summary>Wants to receive notification of socket closure.</summary>
-			FD_CLOSE = (1 << 5),
-
-			/// <summary>Wants to receive notification of socket (QoS changes.</summary>
-			FD_QOS = (1 << 6),
-
-			/// <summary>Reserved for future use with socket groups. Want to receive notification of socket group QoS changes.</summary>
-			FD_GROUP_QOS = (1 << 7),
-
-			/// <summary>Wants to receive notification of routing interface changes for the specified destination.</summary>
-			FD_ROUTING_INTERFACE_CHANGE = (1 << 8),
-
-			/// <summary>Wants to receive notification of local address list changes for the address family of the socket.</summary>
-			FD_ADDRESS_LIST_CHANGE = (1 << 9),
-
-			/// <summary>All events.</summary>
-			FD_ALL_EVENTS = ((1 << 10) - 1)
-		}
-
-		/// <summary>Flags to indicate that the socket is acting as a sender (JL_SENDER_ONLY), receiver (JL_RECEIVER_ONLY), or both (JL_BOTH).</summary>
-		[PInvokeData("winsock2.h", MSDNShortId = "ef9efa03-feed-4f0d-b874-c646cce745c9")]
-		[Flags]
-		public enum JL
-		{
-			/// <summary>Acting as a sender.</summary>
-			JL_SENDER_ONLY = 0x01,
-
-			/// <summary>Acting as a receiver.</summary>
-			JL_RECEIVER_ONLY = 0x02,
-
-			/// <summary>Acting as both sender and receiver.</summary>
-			JL_BOTH = 0x04,
-		}
-
-		/// <summary>Flags that control the depth of the search.</summary>
-		[PInvokeData("winsock2.h", MSDNShortId = "448309ef-b9dd-4960-8016-d26691df59ec")]
-		[Flags]
-		public enum LUP : uint
-		{
-			/// <summary>Queries deep as opposed to just the first level.</summary>
-			LUP_DEEP = 0x0001,
-
-			/// <summary>Returns containers only.</summary>
-			LUP_CONTAINERS = 0x0002,
-
-			/// <summary>Do not return containers.</summary>
-			LUP_NOCONTAINERS = 0x0004,
-
-			/// <summary>If possible, returns results in the order of distance. The measure of distance is provider specific.</summary>
-			LUP_NEAREST = 0x0008,
-
-			/// <summary>Retrieves the name as lpszServiceInstanceName.</summary>
-			LUP_RETURN_NAME = 0x0010,
-
-			/// <summary>Retrieves the type as lpServiceClassId.</summary>
-			LUP_RETURN_TYPE = 0x0020,
-
-			/// <summary>Retrieves the version as lpVersion.</summary>
-			LUP_RETURN_VERSION = 0x0040,
-
-			/// <summary>Retrieves the comment as lpszComment.</summary>
-			LUP_RETURN_COMMENT = 0x0080,
-
-			/// <summary>Retrieves the addresses as lpcsaBuffer.</summary>
-			LUP_RETURN_ADDR = 0x0100,
-
-			/// <summary>Retrieves the private data as lpBlob.</summary>
-			LUP_RETURN_BLOB = 0x0200,
-
-			/// <summary>
-			/// Any available alias information is to be returned in successive calls to WSALookupServiceNext, and each alias returned will
-			/// have the RESULT_IS_ALIAS flag set.
-			/// </summary>
-			LUP_RETURN_ALIASES = 0x0400,
-
-			/// <summary>Retrieves the query string used for the request.</summary>
-			LUP_RETURN_QUERY_STRING = 0x0800,
-
-			/// <summary>A set of flags that retrieves all of the LUP_RETURN_* values.</summary>
-			LUP_RETURN_ALL = 0x0FF0,
-
-			/// <summary>If the provider has cached information, ignore the cache and query the namespace itself.</summary>
-			LUP_FLUSHCACHE = 0x1000,
-
-			/// <summary>
-			/// Used as a value for the dwControlFlags parameter in NSPLookupServiceNext. Setting this flag instructs the provider to
-			/// discard the last result set, which was too large for the supplied buffer, and move on to the next result set.
-			/// </summary>
-			LUP_FLUSHPREVIOUS = 0x2000,
-
-			/// <summary>Indicates that the namespace provider should included non-authoritative results for names.</summary>
-			LUP_NON_AUTHORITATIVE = 0x4000,
-
-			/// <summary>
-			/// Indicates whether prime response is in the remote or local part of CSADDR_INFO structure. The other part must be usable in
-			/// either case. This option applies only to service instance requests.
-			/// </summary>
-			LUP_RES_SERVICE = 0x8000,
-
-			/// <summary>Indicates that the namespace provider should use a secure query. This option only applies to name query requests.</summary>
-			LUP_SECURE = 0x8000,
-
-			/// <summary>Indicates that the namespace provider should return only preferred names.</summary>
-			LUP_RETURN_PREFERRED_NAMES = 0x10000,
-
-			/// <summary>Indicates that the namespace provider should return the address configuration.</summary>
-			LUP_ADDRCONFIG = 0x100000,
-
-			/// <summary>
-			/// Indicates that the namespace provider should return the dual addresses. This option only applies to dual-mode sockets (IPv6
-			/// and IPv4 mapped addresses).
-			/// </summary>
-			LUP_DUAL_ADDR = 0x200000,
-
-			/// <summary/>
-			LUP_DNS_ONLY = 0x20000,
-
-			/// <summary/>
-			LUP_FILESERVER = 0x00400000,
-
-			/// <summary>
-			/// Indicates that the namespace provider should disable automatic International Domain Names encoding. This value is supported
-			/// on Windows 8 and Windows Server 2012
-			/// </summary>
-			LUP_DISABLE_IDN_ENCODING = 0x00800000,
-
-			/// <summary/>
-			LUP_API_ANSI = 0x01000000,
-
-			/// <summary/>
-			LUP_RESOLUTION_HANDLE = 0x80000000,
-		}
-
-		/// <summary>
-		/// The lpFlags parameter can be used to influence the behavior of the function invocation beyond the options specified for the
-		/// associated socket. That is, the semantics of this function are determined by the socket options and the lpFlags parameter.
-		/// </summary>
-		[PInvokeData("winsock2.h", MSDNShortId = "bfe66e11-e9a7-4321-ad55-3141113e9a03")]
-		[Flags]
-		public enum MsgFlags
-		{
-			/// <summary>Processes OOB data.</summary>
-			MSG_OOB = 0x1,
-
-			/// <summary>
-			/// Peeks at the incoming data. The data is copied into the buffer, but is not removed from the input queue. This flag is valid
-			/// only for nonoverlapped sockets.
-			/// </summary>
-			MSG_PEEK = 0x2,
-
-			/// <summary/>
-			MSG_DONTROUTE = 0x4,
-
-			/// <summary>
-			/// The receive request will complete only when one of the following events occurs: Be aware that if the underlying transport
-			/// provider does not support MSG_WAITALL, or if the socket is in a non-blocking mode, then this call will fail with
-			/// WSAEOPNOTSUPP. Also, if MSG_WAITALL is specified along with MSG_OOB, MSG_PEEK, or MSG_PARTIAL, then this call will fail with
-			/// WSAEOPNOTSUPP. This flag is not supported on datagram sockets or message-oriented sockets.
-			/// </summary>
-			MSG_WAITALL = 0x8,
-
-			/// <summary>
-			/// This flag is for stream-oriented sockets only. This flag allows an application that uses stream sockets to tell the
-			/// transport provider not to delay completion of partially filled pending receive requests. This is a hint to the transport
-			/// provider that the application is willing to receive any incoming data as soon as possible without necessarily waiting for
-			/// the remainder of the data that might still be in transit. What constitutes a partially filled pending receive request is a
-			/// transport-specific matter. In the case of TCP, this refers to the case of incoming TCP segments being placed into the
-			/// receive request data buffer where none of the TCP segments indicated a PUSH bit value of 1. In this case, TCP may hold the
-			/// partially filled receive request a little longer to allow the remainder of the data to arrive with a TCP segment that has
-			/// the PUSH bit set to 1. This flag tells TCP not to hold the receive request but to complete it immediately. Using this flag
-			/// for large block transfers is not recommended since processing partial blocks is often not optimal. This flag is useful only
-			/// for cases where receiving and processing the partial data immediately helps decrease processing latency. This flag is a hint
-			/// rather than an actual guarantee. This flag is supported on Windows 8.1, Windows Server 2012 R2, and later.
-			/// </summary>
-			MSG_PUSH_IMMEDIATE = 0x20,
-
-			/// <summary>
-			/// This flag is for message-oriented sockets only. On output, this flag indicates that the data specified is a portion of the
-			/// message transmitted by the sender. Remaining portions of the message will be specified in subsequent receive operations. A
-			/// subsequent receive operation with the MSG_PARTIAL flag cleared indicates end of sender's message. As an input parameter,
-			/// this flag indicates that the receive operation should complete even if only part of a message has been received by the
-			/// transport provider.
-			/// </summary>
-			MSG_PARTIAL = 0x8000,
-
-			/// <summary/>
-			MSG_INTERRUPT = 0x10,
-
-			/// <summary>The datagram was truncated. More data was present than the process allocated room for.</summary>
-			MSG_TRUNC = 0x0100,
-
-			/// <summary>The control (ancillary) data was truncated. More control data was present than the process allocated room for.</summary>
-			MSG_CTRUNC = 0x0200,
-
-			/// <summary>The datagram was received as a link-layer broadcast or with a destination IP address that is a broadcast address.</summary>
-			MSG_BCAST = 0x0400,
-
-			/// <summary>The datagram was received with a destination IP address that is a multicast address.</summary>
-			MSG_MCAST = 0x0800,
-
-			/// <summary>
-			/// This flag specifies that queued errors should be received from the socket error queue. The error is passed in an ancillary
-			/// message with a type dependent on the protocol (for IPv4 IP_RECVERR). The user should supply a buffer of sufficient size.See
-			/// cmsg(3) and ip(7) for more information.The payload of the original packet that caused the error is passed as normal data via
-			/// msg_iovec. The original destination address of the datagram that caused the error is supplied via msg_name.
-			/// </summary>
-			MSG_ERRQUEUE = 0x1000,
-		}
-
-		/// <summary>
-		/// A set of flags that indicate the type of status being requested or, upon return from the WSAPoll function call, the results of
-		/// the status query.
-		/// </summary>
-		[PInvokeData("winsock2.h", MSDNShortId = "88f122ce-e2ca-44ce-bd53-d73d0962e7ef")]
-		[Flags]
-		public enum PollFlags : short
-		{
-			/// <summary>Normal data may be read without blocking.</summary>
-			POLLRDNORM = 0x0100,
-
-			/// <summary>Priority band (out-of-band) data may be read without blocking.</summary>
-			POLLRDBAND = 0x0200,
-
-			/// <summary>POLLRDNORM | POLLRDBAND</summary>
-			POLLIN = (POLLRDNORM | POLLRDBAND),
-
-			/// <summary>Priority data may be read without blocking. This flag is not returned by the Microsoft Winsock provider.</summary>
-			POLLPRI = 0x0400,
-
-			/// <summary>Normal data may be written without blocking.</summary>
-			POLLWRNORM = 0x0010,
-
-			/// <summary>Normal data may be written without blocking.</summary>
-			POLLOUT = (POLLWRNORM),
-
-			/// <summary/>
-			POLLWRBAND = 0x0020,
-
-			/// <summary>An error has occurred.</summary>
-			POLLERR = 0x0001,
-
-			/// <summary>A stream-oriented connection was either disconnected or aborted.</summary>
-			POLLHUP = 0x0002,
-
-			/// <summary>An invalid socket was used.</summary>
-			POLLNVAL = 0x0004,
-		}
-
-		/// <summary>Service install flags value that further controls the operation performed of the WSASetServicefunction.</summary>
-		[PInvokeData("winsock2.h", MSDNShortId = "21a8ff26-4c9e-4846-a75a-1a27c746edab")]
-		[Flags]
-		public enum ServiceInstallFlags
-		{
-			/// <summary>
-			/// Controls scope of operation. When this flag is not set, service addresses are managed as a group. A register or removal from
-			/// the registry invalidates all existing addresses before adding the given address set. When set, the action is only performed
-			/// on the given address set. A register does not invalidate existing addresses and a removal from the registry only invalidates
-			/// the given set of addresses.
-			/// </summary>
-			SERVICE_MULTIPLE = 0x00000001,
-		}
-
-		/// <summary>A set of flags used to specify additional socket attributes.</summary>
-		[PInvokeData("winsock2.h", MSDNShortId = "dcf2e543-de54-43d9-9e45-4cb935da3548")]
-		[Flags]
-		public enum WSA_FLAG
-		{
-			/// <term>
-			/// Create a socket that supports overlapped I/O operations. Most sockets should be created with this flag set. Overlapped
-			/// sockets can utilize WSASend, WSASendTo, WSARecv, WSARecvFrom, and WSAIoctl for overlapped I/O operations, which allow
-			/// multiple operations to be initiated and in progress simultaneously. All functions that allow overlapped operation (WSASend,
-			/// WSARecv, WSASendTo, WSARecvFrom, WSAIoctl) also support nonoverlapped usage on an overlapped socket if the values for
-			/// parameters related to overlapped operations are NULL.
-			/// </term>
-			WSA_FLAG_OVERLAPPED = 0x01,
-
-			/// <term>
-			/// Create a socket that will be a c_root in a multipoint session. This attribute is only allowed if the WSAPROTOCOL_INFO
-			/// structure for the transport provider that creates the socket supports a multipoint or multicast mechanism and the control
-			/// plane for a multipoint session is rooted. This would be indicated by the dwServiceFlags1 member of the WSAPROTOCOL_INFO
-			/// structure with the XP1_SUPPORT_MULTIPOINT and XP1_MULTIPOINT_CONTROL_PLANE flags set. When the lpProtocolInfo parameter is
-			/// not NULL, the WSAPROTOCOL_INFO structure for the transport provider is pointed to by the lpProtocolInfo parameter. When the
-			/// lpProtocolInfo parameter is NULL, the WSAPROTOCOL_INFO structure is based on the transport provider selected by the values
-			/// specified for the af, type, and protocol parameters. Refer to Multipoint and Multicast Semantics for additional information
-			/// on a multipoint session.
-			/// </term>
-			WSA_FLAG_MULTIPOINT_C_ROOT = 0x02,
-
-			/// <term>
-			/// Create a socket that will be a c_leaf in a multipoint session. This attribute is only allowed if the WSAPROTOCOL_INFO
-			/// structure for the transport provider that creates the socket supports a multipoint or multicast mechanism and the control
-			/// plane for a multipoint session is non-rooted. This would be indicated by the dwServiceFlags1 member of the WSAPROTOCOL_INFO
-			/// structure with the XP1_SUPPORT_MULTIPOINT flag set and the XP1_MULTIPOINT_CONTROL_PLANE flag not set. When the
-			/// lpProtocolInfo parameter is not NULL, the WSAPROTOCOL_INFO structure for the transport provider is pointed to by the
-			/// lpProtocolInfo parameter. When the lpProtocolInfo parameter is NULL, the WSAPROTOCOL_INFO structure is based on the
-			/// transport provider selected by the values specified for the af, type, and protocol parameters. Refer to Multipoint and
-			/// Multicast Semantics for additional information on a multipoint session.
-			/// </term>
-			WSA_FLAG_MULTIPOINT_C_LEAF = 0x04,
-
-			/// <term>
-			/// Create a socket that will be a d_root in a multipoint session. This attribute is only allowed if the WSAPROTOCOL_INFO
-			/// structure for the transport provider that creates the socket supports a multipoint or multicast mechanism and the data plane
-			/// for a multipoint session is rooted. This would be indicated by the dwServiceFlags1 member of the WSAPROTOCOL_INFO structure
-			/// with the XP1_SUPPORT_MULTIPOINT and XP1_MULTIPOINT_DATA_PLANE flags set. When the lpProtocolInfo parameter is not NULL, the
-			/// WSAPROTOCOL_INFO structure for the transport provider is pointed to by the lpProtocolInfo parameter. When the lpProtocolInfo
-			/// parameter is NULL, the WSAPROTOCOL_INFO structure is based on the transport provider selected by the values specified for
-			/// the af, type, and protocol parameters. Refer to Multipoint and Multicast Semantics for additional information on a
-			/// multipoint session.
-			/// </term>
-			WSA_FLAG_MULTIPOINT_D_ROOT = 0x08,
-
-			/// <term>
-			/// Create a socket that will be a d_leaf in a multipoint session. This attribute is only allowed if the WSAPROTOCOL_INFO
-			/// structure for the transport provider that creates the socket supports a multipoint or multicast mechanism and the data plane
-			/// for a multipoint session is non-rooted. This would be indicated by the dwServiceFlags1 member of the WSAPROTOCOL_INFO
-			/// structure with the XP1_SUPPORT_MULTIPOINT flag set and the XP1_MULTIPOINT_DATA_PLANE flag not set. When the lpProtocolInfo
-			/// parameter is not NULL, the WSAPROTOCOL_INFO structure for the transport provider is pointed to by the lpProtocolInfo
-			/// parameter. When the lpProtocolInfo parameter is NULL, the WSAPROTOCOL_INFO structure is based on the transport provider
-			/// selected by the values specified for the af, type, and protocol parameters. Refer to Multipoint and Multicast Semantics for
-			/// additional information on a multipoint session.
-			/// </term>
-			WSA_FLAG_MULTIPOINT_D_LEAF = 0x10,
-
-			/// <term>
-			/// Create a socket that allows the the ability to set a security descriptor on the socket that contains a security access
-			/// control list (SACL) as opposed to just a discretionary access control list (DACL). SACLs are used for generating audits and
-			/// alarms when an access check occurs on the object. For a socket, an access check occurs to determine whether the socket
-			/// should be allowed to bind to a specific address specified to the bind function. The ACCESS_SYSTEM_SECURITY access right
-			/// controls the ability to get or set the SACL in an object's security descriptor. The system grants this access right only if
-			/// the SE_SECURITY_NAME privilege is enabled in the access token of the requesting thread.
-			/// </term>
-			WSA_FLAG_ACCESS_SYSTEM_SECURITY = 0x40,
-
-			/// <term>
-			/// Create a socket that is non-inheritable. A socket handle created by the WSASocket or the socket function is inheritable by
-			/// default. When this flag is set, the socket handle is non-inheritable. The GetHandleInformation function can be used to
-			/// determine if a socket handle was created with the WSA_FLAG_NO_HANDLE_INHERIT flag set. The GetHandleInformation function
-			/// will return that the HANDLE_FLAG_INHERIT value is set. This flag is supported on Windows 7 with SP1, Windows Server 2008 R2
-			/// with SP1, and later
-			/// </term>
-			WSA_FLAG_NO_HANDLE_INHERIT = 0x80,
-
-			/// <summary/>
-			WSA_FLAG_REGISTERED_IO = 0x100,
-		}
-
 		/// <summary>The <c>__WSAFDIsSet</c> function specifies whether a socket is included in a set of socket descriptors.</summary>
 		/// <param name="arg1">TBD</param>
 		/// <param name="arg2">
@@ -405,7 +28,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-__wsafdisset int __WSAFDIsSet( SOCKET , fd_set * );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "ca420136-0b3b-45a1-85ce-83ab6ba1a70a")]
-		public static extern int __WSAFDIsSet(SOCKET arg1, in fd_set arg2);
+		public static extern WSRESULT __WSAFDIsSet(SOCKET arg1, in fd_set arg2);
 
 		/// <summary>
 		/// The <c>WSAAccept</c> function conditionally accepts a connection based on the return value of a condition function, provides
@@ -672,7 +295,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaaccept SOCKET WSAAPI WSAAccept( SOCKET s, sockaddr
 		// *addr, LPINT addrlen, LPCONDITIONPROC lpfnCondition, DWORD_PTR dwCallbackData );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f385f63f-49b2-4eb7-8717-ad4cca1a2252")]
 		public static extern SOCKET WSAAccept(SOCKET s, SOCKADDR addr, ref int addrlen, [In, Out, Optional] ConditionFunc lpfnCondition, [In, Out, Optional] IntPtr dwCallbackData);
 
@@ -778,9 +401,74 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaaddresstostringa INT WSAAPI WSAAddressToStringA(
 		// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSTR lpszAddressString, LPDWORD
 		// lpdwAddressStringLength );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
-		public static extern Win32Error WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, in WSAPROTOCOL_INFO lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
+		public static extern WSRESULT WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, in WSAPROTOCOL_INFO lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
+
+		/// <summary>
+		/// <para>
+		/// The <c>WSAAddressToString</c> function converts all components of a sockaddr structure into a human-readable string
+		/// representation of the address.
+		/// </para>
+		/// <para>
+		/// This is intended to be used mainly for display purposes. If the caller requires that the translation to be performed by a
+		/// particular provider, it should supply the corresponding WSAPROTOCOL_INFO structure in the lpProtocolInfo parameter.
+		/// </para>
+		/// </summary>
+		/// <param name="lpsaAddress">A pointer to the sockaddr structure to translate into a string.</param>
+		/// <param name="lpProtocolInfo">
+		/// A pointer to the WSAPROTOCOL_INFO structure for a particular provider. If this is parameter is <c>NULL</c>, the call is routed
+		/// to the provider of the first protocol supporting the address family indicated in the lpsaAddress parameter.
+		/// </param>
+		/// <returns>The human-readable address string.</returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAAddressToString</c> function provides a protocol-independent address-to-string translation. The
+		/// <c>WSAAddressToString</c> function takes a socket address structure pointed to by the lpsaAddress parameter and returns a
+		/// pointer to <c>NULL</c>-terminated string that represents the socket address in the lpszAddressString parameter. While the
+		/// inet_ntoa function works only with IPv4 addresses, the <c>WSAAddressToString</c> function works with any socket address
+		/// supported by a Winsock provider on the local computer including IPv6 addresses.
+		/// </para>
+		/// <para>
+		/// If the lpsaAddress parameter points to an IPv4 socket address (the address family is <c>AF_INET</c>), then the address string
+		/// returned in the buffer pointed to by the lpszAddressString parameter is in dotted-decimal notation as in "192.168.16.0", an
+		/// example of an IPv4 address in dotted-decimal notation.
+		/// </para>
+		/// <para>
+		/// If the lpsaAddress parameter points to an IPv6 socket address (the address family is <c>AF_INET6</c>), then the address string
+		/// returned in the buffer pointed to by the lpszAddressString parameter is in Internet standard format. The basic string
+		/// representation consists of 8 hexadecimal numbers separated by colons. A string of consecutive zero numbers is replaced with a
+		/// double-colon. There can only be one double-colon in the string representation of the IPv6 address.
+		/// </para>
+		/// <para>
+		/// Support for IPv6 addresses using the <c>WSAAddressToString</c> function was added on Windows XP with Service Pack 1 (SP1)and
+		/// later. IPv6 must also be installed on the local computer for the <c>WSAAddressToString</c> function to support IPv6 addresses.
+		/// </para>
+		/// <para>
+		/// <c>Windows Phone 8:</c> The <c>WSAAddressToStringW</c> function is supported for Windows Phone Store apps on Windows Phone 8 and later.
+		/// </para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: The <c>WSAAddressToStringW</c> function is supported for Windows Store
+		/// apps on Windows 8.1, Windows Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaaddresstostringa INT WSAAPI WSAAddressToStringA(
+		// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSTR lpszAddressString, LPDWORD
+		// lpdwAddressStringLength );
+		[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
+		public static string WSAAddressToString([In] SOCKADDR lpsaAddress, [In, Optional] WSAPROTOCOL_INFO? lpProtocolInfo)
+		{
+			using var pc = lpProtocolInfo.HasValue ? new SafeCoTaskMemStruct<WSAPROTOCOL_INFO>(lpProtocolInfo.Value) : SafeCoTaskMemStruct<WSAPROTOCOL_INFO>.Null;
+			var sz = 1024U;
+			var err = WSAAddressToString(lpsaAddress, (uint)lpsaAddress.Size, pc, null, ref sz);
+			if (err == WSRESULT.WSAEFAULT && sz > 0)
+			{
+				StringBuilder sb = new((int)sz);
+				err = WSAAddressToString(lpsaAddress, (uint)lpsaAddress.Size, pc, sb, ref sz);
+				if (err == 0) return sb.ToString();
+			}
+			throw err.GetException();
+		}
 
 		/// <summary>
 		/// <para>
@@ -884,9 +572,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaaddresstostringa INT WSAAPI WSAAddressToStringA(
 		// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSTR lpszAddressString, LPDWORD
 		// lpdwAddressStringLength );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
-		public static extern Win32Error WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, [Optional] IntPtr lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
+		public static extern WSRESULT WSAAddressToString([In] SOCKADDR lpsaAddress, uint dwAddressLength, [Optional] IntPtr lpProtocolInfo, StringBuilder lpszAddressString, ref uint lpdwAddressStringLength);
 
 		/// <summary>
 		/// <para>The <c>WSAAsyncGetHostByAddr</c> function asynchronously retrieves host information that corresponds to an address.</para>
@@ -1029,7 +717,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsaasyncgethostbyaddr HANDLE WSAAsyncGetHostByAddr( HWND
 		// hWnd, u_int wMsg, const char *addr, int len, int type, char *buf, int buflen );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "814cbb2e-8dd2-44b0-b8be-cfc5491bdc49")]
 		public static extern HANDLE WSAAsyncGetHostByAddr(HWND hWnd, uint wMsg, [In] IntPtr addr, int len, int type, [Out] IntPtr buf, int buflen);
 
@@ -1240,7 +928,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsaasyncgetprotobyname HANDLE WSAAsyncGetProtoByName( HWND
 		// hWnd, u_int wMsg, const char *name, char *buf, int buflen );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("winsock.h", MSDNShortId = "747c40fd-5dc1-4533-896e-bc1c4368d7bd")]
 		public static extern HANDLE WSAAsyncGetProtoByName(HWND hWnd, uint wMsg, [In] string name, [Out] IntPtr buf, int buflen);
 
@@ -1375,7 +1063,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsaasyncgetprotobynumber HANDLE WSAAsyncGetProtoByNumber(
 		// HWND hWnd, u_int wMsg, int number, char *buf, int buflen );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "10f28345-c178-47c0-9d0f-87f6743131d9")]
 		public static extern HANDLE WSAAsyncGetProtoByNumber(HWND hWnd, uint wMsg, int number, [Out] IntPtr buf, int buflen);
 
@@ -1514,7 +1202,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsaasyncgetservbyname HANDLE WSAAsyncGetServByName( HWND
 		// hWnd, u_int wMsg, const char *name, const char *proto, char *buf, int buflen );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("winsock.h", MSDNShortId = "d3524197-cd7a-4863-8fbb-a05e6f5d38e0")]
 		public static extern HANDLE WSAAsyncGetServByName(HWND hWnd, uint wMsg, [In] string name, [In, Optional] string proto, [Out] IntPtr buf, int buflen);
 
@@ -1652,7 +1340,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaasyncgetservbyport HANDLE WSAAPI
 		// WSAAsyncGetServByPort( HWND hWnd, u_int wMsg, int port, const char *proto, char *buf, int buflen );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "0d0bd09c-ea97-46fb-b7b0-6e3e0a41dbc1")]
 		public static extern HANDLE WSAAsyncGetServByPort(HWND hWnd, uint wMsg, int port, [In, Optional] string proto, [Out] IntPtr buf, int buflen);
 
@@ -2171,9 +1859,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsaasyncselect int WSAAsyncSelect( SOCKET s, HWND hWnd,
 		// u_int wMsg, long lEvent );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "a4d3f599-358c-4a94-91eb-7e1c80244250")]
-		public static extern Win32Error WSAAsyncSelect(SOCKET s, HWND hWnd, uint wMsg, int lEvent);
+		public static extern WSRESULT WSAAsyncSelect(SOCKET s, HWND hWnd, uint wMsg, int lEvent);
 
 		/// <summary>The <c>WSACancelAsyncRequest</c> function cancels an incomplete asynchronous operation.</summary>
 		/// <param name="hAsyncTaskHandle">Handle that specifies the asynchronous operation to be canceled.</param>
@@ -2231,9 +1919,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsacancelasyncrequest int WSACancelAsyncRequest( HANDLE
 		// hAsyncTaskHandle );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "0e53eccf-ef85-43ec-a02c-12896471a7a9")]
-		public static extern Win32Error WSACancelAsyncRequest(HANDLE hAsyncTaskHandle);
+		public static extern WSRESULT WSACancelAsyncRequest(HANDLE hAsyncTaskHandle);
 
 		/// <summary>The <c>WSACleanup</c> function terminates use of the Winsock 2 DLL (Ws2_32.dll).</summary>
 		/// <returns>
@@ -2309,9 +1997,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-wsacleanup int WSACleanup( );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "72b7cc3e-be34-41e7-acbf-61742149ec8b")]
-		public static extern Win32Error WSACleanup();
+		public static extern WSRESULT WSACleanup();
 
 		/// <summary>The <c>WSACloseEvent</c> function closes an open event object handle.</summary>
 		/// <param name="hEvent">Object handle identifying the open event.</param>
@@ -2354,7 +2042,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsacloseevent BOOL WSAAPI WSACloseEvent( WSAEVENT hEvent );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "40cefe46-10a3-4b6a-8c89-3e16237fc685")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WSACloseEvent(WSAEVENT hEvent);
@@ -2622,9 +2310,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaconnect int WSAAPI WSAConnect( SOCKET s, const
 		// sockaddr *name, int namelen, LPWSABUF lpCallerData, LPWSABUF lpCalleeData, LPQOS lpSQOS, LPQOS lpGQOS );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3b32cc6e-3df7-4104-a0d4-317fd445c7b2")]
-		public static extern Win32Error WSAConnect(SOCKET s, [In] SOCKADDR name, int namelen, [In, Optional] IntPtr lpCallerData,
+		public static extern WSRESULT WSAConnect(SOCKET s, [In] SOCKADDR name, int namelen, [In, Optional] IntPtr lpCallerData,
 			[Out, Optional] IntPtr lpCalleeData, [Optional] IntPtr lpSQOS, [Optional] IntPtr lpGQOS);
 
 		/// <summary>
@@ -2794,7 +2482,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaconnectbylist BOOL WSAConnectByList( SOCKET s,
 		// PSOCKET_ADDRESS_LIST SocketAddress, LPDWORD LocalAddressLength, LPSOCKADDR LocalAddress, LPDWORD RemoteAddressLength, LPSOCKADDR
 		// RemoteAddress, const timeval *timeout, LPWSAOVERLAPPED Reserved );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7323d814-e96e-44b9-8ade-a9317e4fbf17")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WSAConnectByList(SOCKET s, in SOCKET_ADDRESS_LIST SocketAddress, ref uint LocalAddressLength, [Out] SOCKADDR LocalAddress,
@@ -2949,7 +2637,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaconnectbynamea BOOL WSAConnectByNameA( SOCKET s,
 		// LPCSTR nodename, LPCSTR servicename, LPDWORD LocalAddressLength, LPSOCKADDR LocalAddress, LPDWORD RemoteAddressLength, LPSOCKADDR
 		// RemoteAddress, const timeval *timeout, LPWSAOVERLAPPED Reserved );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "6d87699f-03bd-4579-9907-ae3c29b7332b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WSAConnectByName(SOCKET s, [MarshalAs(UnmanagedType.LPTStr)] string nodename, [MarshalAs(UnmanagedType.LPTStr)] string servicename, ref uint LocalAddressLength,
@@ -3006,7 +2694,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsacreateevent WSAEVENT WSAAPI WSACreateEvent();
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "cff3bc31-f34c-4bb2-9004-5ec31d0a704a")]
 		public static extern SafeWSAEVENT WSACreateEvent();
 
@@ -3162,9 +2850,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaduplicatesocketa int WSAAPI WSADuplicateSocketA(
 		// SOCKET s, DWORD dwProcessId, LPWSAPROTOCOL_INFOA lpProtocolInfo );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "d4028461-bfa6-4074-9460-5d1371790d41")]
-		public static extern Win32Error WSADuplicateSocket(SOCKET s, uint dwProcessId, out WSAPROTOCOL_INFO lpProtocolInfo);
+		public static extern WSRESULT WSADuplicateSocket(SOCKET s, uint dwProcessId, out WSAPROTOCOL_INFO lpProtocolInfo);
 
 		/// <summary>The <c>WSAEnumNameSpaceProviders</c> function retrieves information on available namespace providers.</summary>
 		/// <param name="lpdwBufferLength">
@@ -3240,7 +2928,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaenumnamespaceprovidersw INT WSAAPI
 		// WSAEnumNameSpaceProvidersW( LPDWORD lpdwBufferLength, LPWSANAMESPACE_INFOW lpnspBuffer );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Unicode)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f5b6cd42-c5cb-43b6-bb96-fd260217e252")]
 		public static extern int WSAEnumNameSpaceProviders(ref uint lpdwBufferLength, [Out] IntPtr lpnspBuffer);
 
@@ -3314,7 +3002,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaenumnamespaceprovidersexa INT WSAAPI
 		// WSAEnumNameSpaceProvidersExA( LPDWORD lpdwBufferLength, LPWSANAMESPACE_INFOEXA lpnspBuffer );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Unicode)]
 		[PInvokeData("winsock2.h", MSDNShortId = "34bc96aa-63f7-4ab8-9376-6f4b979225ca")]
 		public static extern int WSAEnumNameSpaceProvidersEx(ref uint lpdwBufferLength, [Out] IntPtr lpnspBuffer);
 
@@ -3480,9 +3168,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaenumnetworkevents int WSAAPI WSAEnumNetworkEvents(
 		// SOCKET s, WSAEVENT hEventObject, LPWSANETWORKEVENTS lpNetworkEvents );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "2e6abccd-c82c-4a6b-8720-259986ac9984")]
-		public static extern int WSAEnumNetworkEvents(SOCKET s, [Optional] WSAEVENT hEventObject, out WSANETWORKEVENTS lpNetworkEvents);
+		public static extern WSRESULT WSAEnumNetworkEvents(SOCKET s, [Optional] WSAEVENT hEventObject, out WSANETWORKEVENTS lpNetworkEvents);
 
 		/// <summary>The <c>WSAEnumProtocols</c> function retrieves information about available transport protocols.</summary>
 		/// <param name="lpiProtocols">
@@ -3588,7 +3276,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaenumprotocolsa int WSAAPI WSAEnumProtocolsA( LPINT
 		// lpiProtocols, LPWSAPROTOCOL_INFOA lpProtocolBuffer, LPDWORD lpdwBufferLength );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "928b6937-41a3-4268-a3bc-14c9e04870e4")]
 		public static extern int WSAEnumProtocols([Optional, MarshalAs(UnmanagedType.LPArray)] int[] lpiProtocols, [Out] IntPtr lpProtocolBuffer, ref uint lpdwBufferLength);
 
@@ -3934,9 +3622,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaeventselect int WSAAPI WSAEventSelect( SOCKET s,
 		// WSAEVENT hEventObject, long lNetworkEvents );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f98a71e4-47fb-47a4-b37e-e4cc801a8f98")]
-		public static extern Win32Error WSAEventSelect(SOCKET s, WSAEVENT hEventObject, FD lNetworkEvents);
+		public static extern WSRESULT WSAEventSelect(SOCKET s, WSAEVENT hEventObject, FD lNetworkEvents);
 
 		/// <summary>The <c>WSAGetLastError</c> function returns the error status for the last Windows Sockets operation that failed.</summary>
 		/// <returns>The return value indicates the error code for this thread's last Windows Sockets operation that failed.</returns>
@@ -3981,9 +3669,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-wsagetlasterror int WSAGetLastError( );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "39e41b66-44ed-46dc-bfc2-65228b669992")]
-		public static extern Win32Error WSAGetLastError();
+		public static extern WSRESULT WSAGetLastError();
 
 		/// <summary>The <c>WSAGetOverlappedResult</c> function retrieves the results of an overlapped operation on the specified socket.</summary>
 		/// <param name="s">
@@ -4098,7 +3786,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsagetoverlappedresult BOOL WSAAPI
 		// WSAGetOverlappedResult( SOCKET s, LPWSAOVERLAPPED lpOverlapped, LPDWORD lpcbTransfer, BOOL fWait, LPDWORD lpdwFlags );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3c43ccfd-0fe7-4ecc-9517-e0a1c448f7e4")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WSAGetOverlappedResult(SOCKET s, in WSAOVERLAPPED lpOverlapped, out uint lpcbTransfer, [MarshalAs(UnmanagedType.Bool)] bool fWait, out uint lpdwFlags);
@@ -4159,7 +3847,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsagetqosbyname BOOL WSAAPI WSAGetQOSByName( SOCKET s,
 		// LPWSABUF lpQOSName, LPQOS lpQOS );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "9b586856-5441-414b-8b91-298c952c351b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WSAGetQOSByName(SOCKET s, in WSABUF lpQOSName, out QOS lpQOS);
@@ -4245,9 +3933,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsagetserviceclassinfow INT WSAAPI
 		// WSAGetServiceClassInfoW( LPGUID lpProviderId, LPGUID lpServiceClassId, LPDWORD lpdwBufSize, LPWSASERVICECLASSINFOW
 		// lpServiceClassInfo );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "e177bb7d-c7d3-43a4-a809-ab8212feea2e")]
-		public static extern Win32Error WSAGetServiceClassInfo(in Guid lpProviderId, in Guid lpServiceClassId, ref uint lpdwBufSize, IntPtr lpServiceClassInfo);
+		public static extern WSRESULT WSAGetServiceClassInfo(in Guid lpProviderId, in Guid lpServiceClassId, ref uint lpdwBufSize, IntPtr lpServiceClassInfo);
 
 		/// <summary>
 		/// The <c>WSAGetServiceClassNameByClassId</c> function retrieves the name of the service associated with the specified type. This
@@ -4310,9 +3998,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsagetserviceclassnamebyclassida INT WSAAPI
 		// WSAGetServiceClassNameByClassIdA( LPGUID lpServiceClassId, LPSTR lpszServiceClassName, LPDWORD lpdwBufferLength );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "0a61751e-10e5-4f91-a0b2-8c1baf477653")]
-		public static extern Win32Error WSAGetServiceClassNameByClassId(in Guid lpServiceClassId, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszServiceClassName, ref uint lpdwBufferLength);
+		public static extern WSRESULT WSAGetServiceClassNameByClassId(in Guid lpServiceClassId, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszServiceClassName, ref uint lpdwBufferLength);
 
 		/// <summary>The <c>WSAHtonl</c> function converts a <c>u_long</c> from host byte order to network byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4372,9 +4060,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsahtonl int WSAAPI WSAHtonl( IN SOCKET s, IN u_long
 		// hostlong, OUT u_long *lpnetlong );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "33512f49-d576-4439-ad8d-5c87387d6214")]
-		public static extern Win32Error WSAHtonl([In] SOCKET s, [In] uint hostlong, out uint lpnetlong);
+		public static extern WSRESULT WSAHtonl([In] SOCKET s, [In] uint hostlong, out uint lpnetlong);
 
 		/// <summary>The <c>WSAHtons</c> function converts a <c>u_short</c> from host byte order to network byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4433,9 +4121,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsahtons int WSAAPI WSAHtons( IN SOCKET s, IN u_short
 		// hostshort, OUT u_short *lpnetshort );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "95fb103b-f7dd-4fa4-bf68-ed8e87cdd96b")]
-		public static extern Win32Error WSAHtons([In] SOCKET s, [In] ushort hostshort, out ushort lpnetshort);
+		public static extern WSRESULT WSAHtons([In] SOCKET s, [In] ushort hostshort, out ushort lpnetshort);
 
 		/// <summary>
 		/// The <c>WSAInstallServiceClass</c> function registers a service class schema within a namespace. This schema includes the class
@@ -4500,9 +4188,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsainstallserviceclassa INT WSAAPI
 		// WSAInstallServiceClassA( LPWSASERVICECLASSINFOA lpServiceClassInfo );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "06760319-aeeb-4ad7-b77a-01efea7ed904")]
-		public static extern Win32Error WSAInstallServiceClass(in WSASERVICECLASSINFO lpServiceClassInfo);
+		public static extern WSRESULT WSAInstallServiceClass(in WSASERVICECLASSINFO lpServiceClassInfo);
 
 		/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -4739,9 +4427,193 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaioctl int WSAAPI WSAIoctl( SOCKET s, DWORD
 		// dwIoControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned,
 		// LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
-		public static extern Win32Error WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] IntPtr lpCompletionRoutine);
+		public static extern WSRESULT WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] IntPtr lpCompletionRoutine);
+
+		/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
+		/// <param name="s">A descriptor identifying a socket.</param>
+		/// <param name="dwIoControlCode">The control code of operation to perform.</param>
+		/// <param name="inVal">The input value.</param>
+		/// <param name="outVal">The output value.</param>
+		/// <returns>
+		/// <para>
+		/// Upon successful completion, the <c>WSAIoctl</c> returns zero. Otherwise, a value of SOCKET_ERROR is returned, and a specific
+		/// error code can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The lpvInBuffer, lpvOutBuffer, lpcbBytesReturned, lpOverlapped, or lpCompletionRoutine parameter is not totally contained in a
+		/// valid part of the user address space, or the cbInBuffer or cbOutBuffer parameter is too small.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// The dwIoControlCode parameter is not a valid command, or a specified input parameter is not acceptable, or the command is not
+		/// applicable to the type of socket specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor s is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// The specified IOCTL command cannot be realized. (For example, the FLOWSPEC structures specified in SIO_SET_QOS or
+		/// SIO_SET_GROUP_QOS cannot be satisfied.)
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as non-blocking and the requested operation would block.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOPROTOOPT</term>
+		/// <term>
+		/// The socket option is not supported on the specified protocol. For example, an attempt to use the SIO_GET_BROADCAST_ADDRESS IOCTL
+		/// was made on an IPv6 socket or an attempt to use the TCP SIO_KEEPALIVE_VALS IOCTL was made on a datagram socket.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAIoctl</c> function is used to set or retrieve operating parameters associated with the socket, the transport protocol,
+		/// or the communications subsystem.
+		/// </para>
+		/// <para>
+		/// If both lpOverlapped and lpCompletionRoutine are <c>NULL</c>, the socket in this function will be treated as a non-overlapped
+		/// socket. For a non-overlapped socket, lpOverlapped and lpCompletionRoutine parameters are ignored, which causes the function to
+		/// behave like the standard ioctlsocket function except that the function can block if socket s is in blocking mode. If socket s is
+		/// in non-blocking mode, this function can return WSAEWOULDBLOCK when the specified operation cannot be finished immediately. In
+		/// this case, the application may change the socket to blocking mode and reissue the request or wait for the corresponding network
+		/// event (such as FD_ROUTING_INTERFACE_CHANGE or FD_ADDRESS_LIST_CHANGE in the case of <c>SIO_ROUTING_INTERFACE_CHANGE</c> or
+		/// <c>SIO_ADDRESS_LIST_CHANGE</c>) using a Windows message (using WSAAsyncSelect)-based or event (using WSAEventSelect)-based
+		/// notification mechanism.
+		/// </para>
+		/// <para>
+		/// Any IOCTL may block indefinitely, depending on the service provider's implementation. If the application cannot tolerate
+		/// blocking in a <c>WSAIoctl</c> call, overlapped I/O would be advised for IOCTLs that are especially likely to block including:
+		/// </para>
+		/// <para><c>SIO_ADDRESS_LIST_CHANGE</c></para>
+		/// <para><c>SIO_FINDROUTE</c></para>
+		/// <para><c>SIO_FLUSH</c></para>
+		/// <para><c>SIO_GET_QOS</c></para>
+		/// <para><c>SIO_GET_GROUP_QOS</c></para>
+		/// <para><c>SIO_ROUTING_INTERFACE_CHANGE</c></para>
+		/// <para><c>SIO_SET_QOS</c></para>
+		/// <para><c>SIO_SET_GROUP_QOS</c></para>
+		/// <para>
+		/// Some protocol-specific IOCTLs may also be especially likely to block. Check the relevant protocol-specific annex for any
+		/// available information.
+		/// </para>
+		/// <para>
+		/// It is possible to adopt an encoding scheme that preserves the currently defined ioctlsocket opcodes while providing a convenient
+		/// way to partition the opcode identifier space in as much as the dwIoControlCode parameter is now a 32-bit entity. The
+		/// dwIoControlCode parameter is built to allow for protocol and vendor independence when adding new control codes while retaining
+		/// backward compatibility with the Windows Sockets 1.1 and Unix control codes. The dwIoControlCode parameter has the following form.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>I</term>
+		/// <term>O</term>
+		/// <term>V</term>
+		/// <term>T</term>
+		/// <term>Vendor/address family</term>
+		/// <term>Code</term>
+		/// </listheader>
+		/// <item>
+		/// <term>3</term>
+		/// <term>3</term>
+		/// <term>2</term>
+		/// <term>2 2</term>
+		/// <term>2 2 2 2 2 2 2 1 1 1 1</term>
+		/// <term>1 1 1 1 1 1</term>
+		/// </item>
+		/// <item>
+		/// <term>1</term>
+		/// <term>0</term>
+		/// <term>9</term>
+		/// <term>8 7</term>
+		/// <term>6 5 4 3 2 1 0 9 8 7 6</term>
+		/// <term>5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> The bits in dwIoControlCode parameter displayed in the table must be read vertically from top to bottom by column.
+		/// So the left-most bit is bit 31, the next bit is bit 30, and the right-most bit is bit 0.
+		/// </para>
+		/// <para>I is set if the input buffer is valid for the code, as with <c>IOC_IN</c>.</para>
+		/// <para>
+		/// O is set if the output buffer is valid for the code, as with <c>IOC_OUT</c>. Control codes using both input and output buffers
+		/// set both I and O.
+		/// </para>
+		/// <para>V is set if there are no parameters for the code, as with <c>IOC_VOID</c>.</para>
+		/// <para>T is a 2-bit quantity that defines the type of the IOCTL. The following values are defined:</para>
+		/// <para>0 The IOCTL is a standard Unix IOCTL code, as with <c>FIONREAD</c> and <c>FIONBIO</c>.</para>
+		/// <para>1 The IOCTL is a generic Windows Sockets 2 IOCTL code. New IOCTL codes defined for Windows Sockets 2 will have T == 1.</para>
+		/// <para>2 The IOCTL applies only to a specific address family.</para>
+		/// <para>
+		/// 3 The IOCTL applies only to a specific vendor's provider, as with <c>IOC_VENDOR</c>. This type allows companies to be assigned a
+		/// vendor number that appears in the <c>Vendor/Address family</c> parameter. Then, the vendor can define new IOCTLs specific to
+		/// that vendor without having to register the IOCTL with a clearinghouse, thereby providing vendor flexibility and privacy.
+		/// </para>
+		/// <para>
+		/// <c>Vendor/Address family</c> An 11-bit quantity that defines the vendor who owns the code (if T == 3) or that contains the
+		/// address family to which the code applies (if T == 2). If this is a Unix IOCTL code (T == 0) then this parameter has the same
+		/// value as the code on Unix. If this is a generic Windows Sockets 2 IOCTL (T == 1) then this parameter can be used as an extension
+		/// of the code parameter to provide additional code values.
+		/// </para>
+		/// <para><c>Code</c> The 16-bit quantity that contains the specific IOCTL code for the operation.</para>
+		/// <para>The following Unix IOCTL codes (commands) are supported.</para>
+		/// <para>The following Windows Sockets 2 commands are supported.</para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. See ExitThread for more information.
+		/// </para>
+		/// <para>Compatibility</para>
+		/// <para>
+		/// The IOCTL codes with T == 0 are a subset of the IOCTL codes used in Berkeley sockets. In particular, there is no command that is
+		/// equivalent to <c>FIOASYNC</c>.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Some IOCTL codes require additional header files. For example, use of the <c>SIO_RCVALL</c> IOCTL requires the
+		/// Mstcpip.h header file.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaioctl int WSAAPI WSAIoctl( SOCKET s, DWORD
+		// dwIoControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned,
+		// LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
+		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
+		public static WSRESULT WSAIoctl<TIn, TOut>(SOCKET s, uint dwIoControlCode, TIn inVal, out TOut outVal) where TIn : struct where TOut : struct
+		{
+			using SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>();
+			var ret = WSAIoctl(s, dwIoControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out var bRet);
+			if (ret.Failed)
+			{
+				outVal = default;
+				return WSAGetLastError();
+			}
+			outVal = ptrOut.ToStructure<TOut>();
+			return 0;
+		}
 
 		/// <summary>
 		/// The <c>WSAJoinLeaf</c> function joins a leaf node into a multipoint session, exchanges connect data, and specifies needed
@@ -4976,7 +4848,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsajoinleaf SOCKET WSAAPI WSAJoinLeaf( SOCKET s, const
 		// sockaddr *name, int namelen, LPWSABUF lpCallerData, LPWSABUF lpCalleeData, LPQOS lpSQOS, LPQOS lpGQOS, DWORD dwFlags );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "ef9efa03-feed-4f0d-b874-c646cce745c9")]
 		public static extern SOCKET WSAJoinLeaf(SOCKET s, [In] SOCKADDR name, int namelen, [In, Optional] IntPtr lpCallerData, [Out, Optional] IntPtr lpCalleeData, [In, Optional] IntPtr lpSQOS, [In, Optional] IntPtr lpGQOS, JL dwFlags);
 
@@ -5254,9 +5126,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsalookupservicebegina INT WSAAPI WSALookupServiceBeginA(
 		// LPWSAQUERYSETA lpqsRestrictions, DWORD dwControlFlags, LPHANDLE lphLookup );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "448309ef-b9dd-4960-8016-d26691df59ec")]
-		public static extern Win32Error WSALookupServiceBegin(in WSAQUERYSET lpqsRestrictions, LUP dwControlFlags, out HANDLE lphLookup);
+		public static extern WSRESULT WSALookupServiceBegin(in WSAQUERYSET lpqsRestrictions, LUP dwControlFlags, out HANDLE lphLookup);
 
 		/// <summary>
 		/// <para>
@@ -5303,9 +5175,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsalookupserviceend INT WSAAPI WSALookupServiceEnd(
 		// HANDLE hLookup );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "f9d2ac54-a818-464d-918e-80ebb5b1b106")]
-		public static extern Win32Error WSALookupServiceEnd(HANDLE hLookup);
+		public static extern WSRESULT WSALookupServiceEnd(HANDLE hLookup);
 
 		/// <summary>
 		/// <para>
@@ -5589,9 +5461,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsalookupservicenexta INT WSAAPI WSALookupServiceNextA(
 		// HANDLE hLookup, DWORD dwControlFlags, LPDWORD lpdwBufferLength, LPWSAQUERYSETA lpqsResults );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "ab4f1830-b38d-4224-a6a9-6d4512245ad6")]
-		public static extern Win32Error WSALookupServiceNext(HANDLE hLookup, LUP dwControlFlags, ref uint lpdwBufferLength, [Out] IntPtr lpqsResults);
+		public static extern WSRESULT WSALookupServiceNext(HANDLE hLookup, LUP dwControlFlags, ref uint lpdwBufferLength, [Out] IntPtr lpqsResults);
 
 		/// <summary>The Windows Sockets <c>WSANSPIoctl</c> function enables developers to make I/O control calls to a registered namespace.</summary>
 		/// <param name="hLookup">The lookup handle returned from a previous call to the WSALookupServiceBegin function.</param>
@@ -5721,9 +5593,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsanspioctl INT WSAAPI WSANSPIoctl( HANDLE hLookup, DWORD
 		// dwControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned,
 		// LPWSACOMPLETION lpCompletion );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "6ecaedf0-0038-46d3-9916-c9cb069c5e92")]
-		public static extern Win32Error WSANSPIoctl(HANDLE hLookup, uint dwControlCode, [In, Optional] IntPtr lpvInBuffer, uint cbInBuffer, [Out, Optional] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [In, Optional] IntPtr lpCompletion);
+		public static extern WSRESULT WSANSPIoctl(HANDLE hLookup, uint dwControlCode, [In, Optional] IntPtr lpvInBuffer, uint cbInBuffer, [Out, Optional] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [In, Optional] IntPtr lpCompletion);
 
 		/// <summary>The <c>WSANtohl</c> function converts a <c>u_long</c> from network byte order to host byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -5783,9 +5655,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsantohl int WSAAPI WSANtohl( SOCKET s, u_long netlong,
 		// u_long *lphostlong );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7e3b42eb-3b93-459f-828a-c19e277882c7")]
-		public static extern Win32Error WSANtohl(SOCKET s, uint netlong, out uint lphostlong);
+		public static extern WSRESULT WSANtohl(SOCKET s, uint netlong, out uint lphostlong);
 
 		/// <summary>The <c>WSANtohs</c> function converts a <c>u_short</c> from network byte order to host byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -5844,9 +5716,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsantohs int WSAAPI WSANtohs( SOCKET s, u_short netshort,
 		// u_short *lphostshort );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "0a4bc3a9-9919-4dcb-8a37-af37e0243c8f")]
-		public static extern Win32Error WSANtohs(SOCKET s, ushort netshort, out ushort lphostshort);
+		public static extern WSRESULT WSANtohs(SOCKET s, ushort netshort, out ushort lphostshort);
 
 		/// <summary>The <c>WSAPoll</c> function determines status of one or more sockets.</summary>
 		/// <param name="fdArray">
@@ -6038,9 +5910,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsapoll int WSAAPI WSAPoll( LPWSAPOLLFD fdArray, ULONG
 		// fds, INT timeout );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3f6f872c-5cee-49f3-bf22-2e8a5d147987")]
-		public static extern Win32Error WSAPoll([In, Out, MarshalAs(UnmanagedType.LPArray)] WSAPOLLFD[] fdArray, uint fds, int timeout);
+		public static extern int WSAPoll([In, Out, MarshalAs(UnmanagedType.LPArray)] WSAPOLLFD[] fdArray, uint fds, int timeout);
 
 		/// <summary>The <c>WSAProviderConfigChange</c> function notifies the application when the provider configuration is changed.</summary>
 		/// <param name="lpNotificationHandle">
@@ -6122,9 +5994,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaproviderconfigchange INT WSAAPI
 		// WSAProviderConfigChange( LPHANDLE lpNotificationHandle, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE
 		// lpCompletionRoutine );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "abaf367a-8f99-478c-a58c-d57e9f9cd8a1")]
-		public static extern Win32Error WSAProviderConfigChange(ref HANDLE lpNotificationHandle, [In, Out, Optional] IntPtr lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		public static extern WSRESULT WSAProviderConfigChange(ref HANDLE lpNotificationHandle, [In, Out, Optional] IntPtr lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSARecv</c> function receives data from a connected socket or a bound connectionless socket.</summary>
 		/// <param name="s">A descriptor identifying a connected socket.</param>
@@ -6515,9 +6387,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsarecv int WSAAPI WSARecv( SOCKET s, LPWSABUF lpBuffers,
 		// DWORD dwBufferCount, LPDWORD lpNumberOfBytesRecvd, LPDWORD lpFlags, LPWSAOVERLAPPED lpOverlapped,
 		// LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "bfe66e11-e9a7-4321-ad55-3141113e9a03")]
-		public static extern Win32Error WSARecv(SOCKET s, [In] IntPtr lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [In, Out, Optional] IntPtr lpOverlapped,
+		public static extern WSRESULT WSARecv(SOCKET s, [In] IntPtr lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>
@@ -6610,9 +6482,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsarecvdisconnect int WSAAPI WSARecvDisconnect( SOCKET s,
 		// LPWSABUF lpInboundDisconnectData );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "33e0fb8e-3ece-427f-b3ef-43a0f5cf0cc8")]
-		public static extern Win32Error WSARecvDisconnect(SOCKET s, [In, Out, Optional] IntPtr lpInboundDisconnectData);
+		public static extern WSRESULT WSARecvDisconnect(SOCKET s, [In, Out, Optional] IntPtr lpInboundDisconnectData);
 
 		/// <summary>The <c>WSARecvFrom</c> function receives a datagram and stores the source address.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -6910,9 +6782,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsarecvfrom int WSAAPI WSARecvFrom( SOCKET s, LPWSABUF
 		// lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesRecvd, LPDWORD lpFlags, sockaddr *lpFrom, LPINT lpFromlen, LPWSAOVERLAPPED
 		// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "8617dbb8-0e4e-4cd3-9597-5d20de6778f6")]
-		public static extern Win32Error WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
+		public static extern WSRESULT WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
 			[Out] SOCKADDR lpFrom, ref int lpFromlen, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSARemoveServiceClass</c> function permanently removes the service class schema from the registry.</summary>
@@ -6957,9 +6829,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaremoveserviceclass INT WSAAPI WSARemoveServiceClass(
 		// LPGUID lpServiceClassId );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7d72f727-cca9-4a07-beb4-d64f23c1f0c1")]
-		public static extern Win32Error WSARemoveServiceClass(in Guid lpServiceClassId);
+		public static extern WSRESULT WSARemoveServiceClass(in Guid lpServiceClassId);
 
 		/// <summary>The <c>WSAResetEvent</c> function resets the state of the specified event object to nonsignaled.</summary>
 		/// <param name="hEvent">A handle that identifies an open event object handle.</param>
@@ -7005,7 +6877,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsaresetevent BOOL WSAAPI WSAResetEvent( WSAEVENT hEvent );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "99a8b0f3-977f-44cd-a224-0819d7513c90")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WSAResetEvent(WSAEVENT hEvent);
@@ -7301,9 +7173,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasend int WSAAPI WSASend( SOCKET s, LPWSABUF lpBuffers,
 		// DWORD dwBufferCount, LPDWORD lpNumberOfBytesSent, DWORD dwFlags, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE
 		// lpCompletionRoutine );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "764339e6-a1ac-455d-8ebd-ad0fa50dc3b0")]
-		public static extern Win32Error WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
+		public static extern WSRESULT WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 			MsgFlags dwFlags, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>
@@ -7385,9 +7257,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasenddisconnect int WSAAPI WSASendDisconnect( SOCKET s,
 		// LPWSABUF lpOutboundDisconnectData );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "c05fc719-e35a-4194-ac01-a294b19ccce9")]
-		public static extern Win32Error WSASendDisconnect(SOCKET s, in WSABUF lpOutboundDisconnectData);
+		public static extern WSRESULT WSASendDisconnect(SOCKET s, in WSABUF lpOutboundDisconnectData);
 
 		/// <summary>
 		/// The <c>WSASendDisconnect</c> function initiates termination of the connection for the socket and sends disconnect data.
@@ -7468,9 +7340,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasenddisconnect int WSAAPI WSASendDisconnect( SOCKET s,
 		// LPWSABUF lpOutboundDisconnectData );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "c05fc719-e35a-4194-ac01-a294b19ccce9")]
-		public static extern Win32Error WSASendDisconnect(SOCKET s, [In, Optional] IntPtr lpOutboundDisconnectData);
+		public static extern WSRESULT WSASendDisconnect(SOCKET s, [In, Optional] IntPtr lpOutboundDisconnectData);
 
 		/// <summary>The <c>WSASendMsg</c> function sends data and optional control information from connected and unconnected sockets.</summary>
 		/// <param name="Handle">A descriptor identifying the socket.</param>
@@ -7775,9 +7647,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasendmsg int WSAAPI WSASendMsg( SOCKET Handle, LPWSAMSG
 		// lpMsg, DWORD dwFlags, LPDWORD lpNumberOfBytesSent, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE
 		// lpCompletionRoutine );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "3b2ba645-6a70-4ba2-b4a2-5bde0c7f8d08")]
-		public static extern Win32Error WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, [In, Out, Optional] IntPtr lpOverlapped,
+		public static extern WSRESULT WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSASendTo</c> function sends data to a specific destination, using overlapped I/O where applicable.</summary>
@@ -8081,9 +7953,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasendto int WSAAPI WSASendTo( SOCKET s, LPWSABUF
 		// lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesSent, DWORD dwFlags, const sockaddr *lpTo, int iTolen, LPWSAOVERLAPPED
 		// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "e3a11522-871c-4d6b-a2e6-ca91ffc2b698")]
-		public static extern Win32Error WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
+		public static extern WSRESULT WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 			MsgFlags dwFlags, [In, Optional] SOCKADDR lpTo, int iTolen, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
@@ -8124,7 +7996,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasetevent BOOL WSAAPI WSASetEvent( WSAEVENT hEvent );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "8a3f41fe-77da-4e4e-975d-00eec7c11446")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WSASetEvent(WSAEVENT hEvent);
@@ -8161,9 +8033,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsasetlasterror void WSASetLastError( int iError );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "596155ee-3dcc-4ae3-97ab-0653e019cbee")]
-		public static extern void WSASetLastError(int iError);
+		public static extern void WSASetLastError(WSRESULT iError);
 
 		/// <summary>The <c>WSASetService</c> function registers or removes from the registry a service instance within one or more namespaces.</summary>
 		/// <param name="lpqsRegInfo">A pointer to the service information for registration or deregistration.</param>
@@ -8438,9 +8310,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasetservicea INT WSAAPI WSASetServiceA( LPWSAQUERYSETA
 		// lpqsRegInfo, WSAESETSERVICEOP essoperation, DWORD dwControlFlags );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "21a8ff26-4c9e-4846-a75a-1a27c746edab")]
-		public static extern Win32Error WSASetService(in WSAQUERYSET lpqsRegInfo, WSAESETSERVICEOP essoperation, ServiceInstallFlags dwControlFlags);
+		public static extern WSRESULT WSASetService(in WSAQUERYSET lpqsRegInfo, WSAESETSERVICEOP essoperation, ServiceInstallFlags dwControlFlags);
 
 		/// <summary>The <c>WSASocket</c> function creates a socket that is bound to a specific transport-service provider.</summary>
 		/// <param name="af">
@@ -8995,7 +8867,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasocketa SOCKET WSAAPI WSASocketA( int af, int type,
 		// int protocol, LPWSAPROTOCOL_INFOA lpProtocolInfo, GROUP g, DWORD dwFlags );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "dcf2e543-de54-43d9-9e45-4cb935da3548")]
 		public static extern SOCKET WSASocket(ADDRESS_FAMILY af, SOCK type, IPPROTO protocol, in WSAPROTOCOL_INFO lpProtocolInfo, GROUP g, WSA_FLAG dwFlags);
 
@@ -9552,7 +9424,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasocketa SOCKET WSAAPI WSASocketA( int af, int type,
 		// int protocol, LPWSAPROTOCOL_INFOA lpProtocolInfo, GROUP g, DWORD dwFlags );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "dcf2e543-de54-43d9-9e45-4cb935da3548")]
 		public static extern SOCKET WSASocket(ADDRESS_FAMILY af, SOCK type, IPPROTO protocol, [Optional] IntPtr lpProtocolInfo, GROUP g, WSA_FLAG dwFlags);
 
@@ -9811,7 +9683,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-wsastartup int WSAStartup( WORD wVersionRequired,
 		// LPWSADATA lpWSAData );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock.h", MSDNShortId = "08299592-867c-491d-9769-d16602133659")]
 		public static extern Win32Error WSAStartup(ushort wVersionRequired, out WSADATA lpWSAData);
 
@@ -9892,9 +9764,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
 		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-		public static extern Win32Error WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, in WSAPROTOCOL_INFO lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+		public static extern WSRESULT WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, in WSAPROTOCOL_INFO lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
 
 		/// <summary>
 		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
@@ -9973,9 +9845,139 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
 		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
-		[DllImport(Lib.Ws2_32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
-		public static extern Win32Error WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+		public static extern WSRESULT WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] SOCKADDR lpAddress, ref int lpAddressLength);
+
+		/// <summary>
+		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
+		/// form in a sockaddr structure, suitable for passing to Windows Sockets routines that take such a structure.
+		/// </summary>
+		/// <param name="AddressString">
+		/// A pointer to the zero-terminated string that contains the network address in standard text form to convert.
+		/// </param>
+		/// <param name="AddressFamily">The address family of the network address pointed to by the AddressString parameter.</param>
+		/// <param name="lpProtocolInfo">
+		/// The WSAPROTOCOL_INFO structure associated with the provider to be used. If this is <c>NULL</c>, the call is routed to the
+		/// provider of the first protocol supporting the indicated AddressFamily.
+		/// </param>
+		/// <param name="lpAddress">
+		/// A pointer to a buffer that is filled with a sockaddr structure for the address string if the function succeeds.
+		/// </param>
+		/// <param name="lpAddressLength">
+		/// A pointer to the length, in bytes, of the buffer pointed to by the lpAddress parameter. If the function call is successful, this
+		/// parameter returns a pointer to the size of the sockaddr structure returned in the lpAddress parameter. If the specified buffer
+		/// is not large enough, the function fails with a specific error of WSAEFAULT and this parameter is updated with the required size
+		/// in bytes.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// The return value for <c>WSAStringToAddress</c> is zero if the operation was successful. Otherwise, the value SOCKET_ERROR is
+		/// returned, and a specific error number can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The buffer pointed to by the lpAddress parameter is too small. Pass in a larger buffer.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The functions was unable to translate the string into a sockaddr. See the following Remarks section for more information.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>
+		/// The WS2_32.DLL has not been initialized. The application must first call WSAStartup before calling any Windows Socket functions.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_NOT_ENOUGH_MEMORY</term>
+		/// <term>There was insufficient memory to perform the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAStringToAddress</c> function converts a network address in standard text form into its numeric binary form in a
+		/// sockaddr structure.
+		/// </para>
+		/// <para>
+		/// Any missing components of the address will be defaulted to a reasonable value, if possible. For example, a missing port number
+		/// will default to zero. If the caller wants the translation to be done by a particular provider, it should supply the
+		/// corresponding WSAPROTOCOL_INFO structure in the lpProtocolInfo parameter.
+		/// </para>
+		/// <para>
+		/// The <c>WSAStringToAddress</c> function fails (and returns WSAEINVAL) if the <c>sin_family</c> member of the SOCKADDR_IN
+		/// structure, which is passed in the lpAddress parameter in the form of a <c>sockaddr</c> structure, is not set to AF_INET or AF_INET6.
+		/// </para>
+		/// <para>
+		/// Support for IPv6 addresses using the <c>WSAStringToAddress</c> function was added on Windows XP with Service Pack 1 (SP1)and
+		/// later. IPv6 must also be installed on the local computer for the <c>WSAStringToAddress</c> function to support IPv6 addresses.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
+		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
+		[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
+		public static extern WSRESULT WSAStringToAddress([MarshalAs(UnmanagedType.LPTStr)] string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] IntPtr lpProtocolInfo, [Out] IntPtr lpAddress, ref int lpAddressLength);
+
+		/// <summary>
+		/// The <c>WSAStringToAddress</c> function converts a network address in its standard text presentation form into its numeric binary
+		/// form in a sockaddr structure, suitable for passing to Windows Sockets routines that take such a structure.
+		/// </summary>
+		/// <param name="AddressString">
+		/// A pointer to the zero-terminated string that contains the network address in standard text form to convert.
+		/// </param>
+		/// <param name="AddressFamily">The address family of the network address pointed to by the AddressString parameter.</param>
+		/// <param name="lpProtocolInfo">
+		/// The WSAPROTOCOL_INFO structure associated with the provider to be used. If this is <c>NULL</c>, the call is routed to the
+		/// provider of the first protocol supporting the indicated AddressFamily.
+		/// </param>
+		/// <returns>A sockaddr structure for the address string if the function succeeds.</returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAStringToAddress</c> function converts a network address in standard text form into its numeric binary form in a
+		/// sockaddr structure.
+		/// </para>
+		/// <para>
+		/// Any missing components of the address will be defaulted to a reasonable value, if possible. For example, a missing port number
+		/// will default to zero. If the caller wants the translation to be done by a particular provider, it should supply the corresponding
+		/// WSAPROTOCOL_INFO structure in the lpProtocolInfo parameter.
+		/// </para>
+		/// <para>
+		/// The <c>WSAStringToAddress</c> function fails (and returns WSAEINVAL) if the <c>sin_family</c> member of the SOCKADDR_IN
+		/// structure, which is passed in the lpAddress parameter in the form of a <c>sockaddr</c> structure, is not set to AF_INET or AF_INET6.
+		/// </para>
+		/// <para>
+		/// Support for IPv6 addresses using the <c>WSAStringToAddress</c> function was added on Windows XP with Service Pack 1 (SP1)and
+		/// later. IPv6 must also be installed on the local computer for the <c>WSAStringToAddress</c> function to support IPv6 addresses.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
+		// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
+		[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
+		public static SOCKADDR_INET WSAStringToAddress(string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] WSAPROTOCOL_INFO? lpProtocolInfo)
+		{
+			using var pc = lpProtocolInfo.HasValue ? new SafeCoTaskMemStruct<WSAPROTOCOL_INFO>(lpProtocolInfo.Value) : SafeCoTaskMemStruct<WSAPROTOCOL_INFO>.Null;
+			using var addr = new SafeCoTaskMemStruct<SOCKADDR_INET>();
+			int sz = addr.Size;
+			WSAStringToAddress(AddressString, AddressFamily, pc, addr, ref sz).ThrowIfFailed();
+			return addr.Value;
+		}
 
 		/// <summary>
 		/// The <c>WSAWaitForMultipleEvents</c> function returns when one or all of the specified event objects are in the signaled state,
@@ -10134,482 +10136,8 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsawaitformultipleevents DWORD WSAAPI
 		// WSAWaitForMultipleEvents( DWORD cEvents, const WSAEVENT *lphEvents, BOOL fWaitAll, DWORD dwTimeout, BOOL fAlertable );
-		[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "7a978ade-6323-455b-b655-f372f4bcadc8")]
 		public static extern Kernel32.WAIT_STATUS WSAWaitForMultipleEvents(uint cEvents, [In, MarshalAs(UnmanagedType.LPArray)] WSAEVENT[] lphEvents, [MarshalAs(UnmanagedType.Bool)] bool fWaitAll, uint dwTimeout, [MarshalAs(UnmanagedType.Bool)] bool fAlertable);
-
-		/// <summary>
-		/// The <c>fd_set</c> structure is used by various Windows Sockets functions and service providers, such as the select function, to
-		/// place sockets into a "set" for various purposes, such as testing a given socket for readability using the readfds parameter of
-		/// the <c>select</c> function.
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winsock/ns-winsock-fd_set typedef struct fd_set { u_int fd_count; SOCKET
-		// fd_array[FD_SETSIZE]; } fd_set, FD_SET, *PFD_SET, *LPFD_SET;
-		[PInvokeData("winsock.h", MSDNShortId = "2af5d69d-190e-4814-8d8b-438431808625")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct fd_set
-		{
-			/// <summary>The number of sockets in the set.</summary>
-			public uint fd_count;
-
-			/// <summary>An array of sockets that are in the set.</summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-			public SOCKET[] fd_array;
-		}
-
-		/// <summary>The <c>WSANETWORKEVENTS</c> structure is used to store a socket's internal information about network events.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsanetworkevents typedef struct _WSANETWORKEVENTS { long
-		// lNetworkEvents; int iErrorCode[FD_MAX_EVENTS]; } WSANETWORKEVENTS, *LPWSANETWORKEVENTS;
-		[PInvokeData("winsock2.h", MSDNShortId = "72ae4aa8-4e15-4215-8dcb-45e394ac1313")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct WSANETWORKEVENTS
-		{
-			/// <summary>Indicates which of the FD_XXX network events have occurred.</summary>
-			public int lNetworkEvents;
-
-			/// <summary>
-			/// Array that contains any associated error codes, with an array index that corresponds to the position of event bits in
-			/// <c>lNetworkEvents</c>. The identifiers FD_READ_BIT, FD_WRITE_BIT and others can be used to index the <c>iErrorCode</c> array.
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
-			public int[] iErrorCode;
-		}
-
-		/// <summary>The <c>WSANSCLASSINFO</c> structure provides individual parameter information for a specific Windows Sockets namespace.</summary>
-		/// <remarks>
-		/// The <c>WSANSCLASSINFO</c> structure is defined differently depending on whether ANSI or UNICODE is used. The above syntax block
-		/// applies to ANSI; for UNICODE, the datatype for <c>lpszName</c> is <c>LPWSTR</c>.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsansclassinfoa typedef struct _WSANSClassInfoA { LPSTR
-		// lpszName; DWORD dwNameSpace; DWORD dwValueType; DWORD dwValueSize; LPVOID lpValue; } WSANSCLASSINFOA, *PWSANSCLASSINFOA, *LPWSANSCLASSINFOA;
-		[PInvokeData("winsock2.h", MSDNShortId = "b4f811ad-7967-45bd-b563-a28bb1633596")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct WSANSCLASSINFO
-		{
-			/// <summary>String value associated with the parameter, such as SAPID, TCPPORT, and so forth.</summary>
-			[MarshalAs(UnmanagedType.LPStr)]
-			public string lpszName;
-
-			/// <summary>GUID associated with the namespace.</summary>
-			public uint dwNameSpace;
-
-			/// <summary>Value type for the parameter, such as REG_DWORD or REG_SZ, and so forth.</summary>
-			public uint dwValueType;
-
-			/// <summary>Size of the parameter provided in <c>lpValue</c>, in bytes.</summary>
-			public uint dwValueSize;
-
-			/// <summary>Pointer to the value of the parameter.</summary>
-			public IntPtr lpValue;
-		}
-
-		/// <summary>The <c>WSAPOLLFD</c> structure stores socket information used by the WSAPoll function.</summary>
-		/// <remarks>
-		/// <para>The <c>WSAPOLLFD</c> structure is defined on Windows Vista and later.</para>
-		/// <para>
-		/// The <c>WSAPOLLFD</c> structure is used by the WSAPoll function to determine the status of one or more sockets. The set of
-		/// sockets for which status is requested is specified in fdarray parameter, which is an array of <c>WSAPOLLFD</c> structures. An
-		/// application sets the appropriate flags in the <c>events</c> member of the <c>WSAPOLLFD</c> structure to specify the type of
-		/// status requested for each corresponding socket. The <c>WSAPoll</c> function returns the status of a socket in the <c>revents</c>
-		/// member of the <c>WSAPOLLFD</c> structure.
-		/// </para>
-		/// <para>
-		/// If the <c>fd</c> member of the <c>WSAPOLLFD</c> structure is set to a negative value, the structure is ignored by the WSAPoll
-		/// function call, and the <c>revents</c> member is cleared upon return. This is useful to applications that maintain a fixed
-		/// allocation for the fdarray parameter of <c>WSAPoll</c>; such applications need not waste resources compacting elements of the
-		/// array for unused entries or reallocating memory. It is unnecessary to clear the <c>revents</c> member prior to calling the
-		/// <c>WSAPoll</c> function.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsapollfd typedef struct pollfd { SOCKET fd; SHORT
-		// events; SHORT revents; } WSAPOLLFD, *PWSAPOLLFD, *LPWSAPOLLFD;
-		[PInvokeData("winsock2.h", MSDNShortId = "88f122ce-e2ca-44ce-bd53-d73d0962e7ef")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct WSAPOLLFD
-		{
-			/// <summary>
-			/// <para>Type: <c>SOCKET</c></para>
-			/// <para>The identifier of the socket for which to find status. This parameter is ignored if set to a negative value. See Remarks.</para>
-			/// </summary>
-			public SOCKET fd;
-
-			/// <summary>
-			/// <para>Type: <c>short</c></para>
-			/// <para>A set of flags indicating the type of status being requested. This must be one or more of the following.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Flag</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>POLLPRI</term>
-			/// <term>Priority data may be read without blocking. This flag is not supported by the Microsoft Winsock provider.</term>
-			/// </item>
-			/// <item>
-			/// <term>POLLRDBAND</term>
-			/// <term>Priority band (out-of-band) data can be read without blocking.</term>
-			/// </item>
-			/// <item>
-			/// <term>POLLRDNORM</term>
-			/// <term>Normal data can be read without blocking.</term>
-			/// </item>
-			/// <item>
-			/// <term>POLLWRNORM</term>
-			/// <term>Normal data can be written without blocking.</term>
-			/// </item>
-			/// </list>
-			/// <para>
-			/// The POLLIN flag is defined as the combination of the <c>POLLRDNORM</c> and <c>POLLRDBAND</c> flag values. The POLLOUT flag
-			/// is defined as the same as the <c>POLLWRNORM</c> flag value.
-			/// </para>
-			/// </summary>
-			public PollFlags events;
-
-			/// <summary>
-			/// <para>Type: <c>short</c></para>
-			/// <para>
-			/// A set of flags that indicate, upon return from the WSAPoll function call, the results of the status query. This can a
-			/// combination of the following flags.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Flag</term>
-			/// <term>Description</term>
-			/// </listheader>
-			/// <item>
-			/// <term>POLLERR</term>
-			/// <term>An error has occurred.</term>
-			/// </item>
-			/// <item>
-			/// <term>POLLHUP</term>
-			/// <term>A stream-oriented connection was either disconnected or aborted.</term>
-			/// </item>
-			/// <item>
-			/// <term>POLLNVAL</term>
-			/// <term>An invalid socket was used.</term>
-			/// </item>
-			/// <item>
-			/// <term>POLLPRI</term>
-			/// <term>Priority data may be read without blocking. This flag is not returned by the Microsoft Winsock provider.</term>
-			/// </item>
-			/// <item>
-			/// <term>POLLRDBAND</term>
-			/// <term>Priority band (out-of-band) data may be read without blocking.</term>
-			/// </item>
-			/// <item>
-			/// <term>POLLRDNORM</term>
-			/// <term>Normal data may be read without blocking.</term>
-			/// </item>
-			/// <item>
-			/// <term>POLLWRNORM</term>
-			/// <term>Normal data may be written without blocking.</term>
-			/// </item>
-			/// </list>
-			/// <para>
-			/// The POLLIN flag is defined as the combination of the <c>POLLRDNORM</c> and <c>POLLRDBAND</c> flag values. The POLLOUT flag
-			/// is defined as the same as the <c>POLLWRNORM</c> flag value.
-			/// </para>
-			/// <para>
-			/// For sockets that do not satisfy the status query, and have no error, the <c>revents</c> member is set to zero upon return.
-			/// </para>
-			/// </summary>
-			public PollFlags revents;
-		}
-
-		/// <summary>
-		/// The <c>WSAQUERYSET</c> structure provides relevant information about a given service, including service class ID, service name,
-		/// applicable namespace identifier and protocol information, as well as a set of transport addresses at which the service listens.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <c>WSAQUERYSET</c> structure is used as part of the original namespace provider version 1 architecture available on Windows
-		/// 95 and later. A newer version 2 of the namespace architecture is available on Windows Vista and later.
-		/// </para>
-		/// <para>
-		/// In most instances, applications interested in only a particular transport protocol should constrain their query by address
-		/// family and protocol rather than by namespace. This would allow an application that needs to locate a TCP/IP service, for
-		/// example, to have its query processed by all available namespaces such as the local hosts file, DNS, and NIS.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsaquerysetw typedef struct _WSAQuerySetW { DWORD dwSize;
-		// LPWSTR lpszServiceInstanceName; LPGUID lpServiceClassId; LPWSAVERSION lpVersion; LPWSTR lpszComment; DWORD dwNameSpace; LPGUID
-		// lpNSProviderId; LPWSTR lpszContext; DWORD dwNumberOfProtocols; LPAFPROTOCOLS lpafpProtocols; LPWSTR lpszQueryString; DWORD
-		// dwNumberOfCsAddrs; LPCSADDR_INFO lpcsaBuffer; DWORD dwOutputFlags; LPBLOB lpBlob; } WSAQUERYSETW, *PWSAQUERYSETW, *LPWSAQUERYSETW;
-		[PInvokeData("winsock2.h", MSDNShortId = "6c81fbba-aaf4-49ca-ab79-b6fe5dfb0076")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct WSAQUERYSET
-		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The size, in bytes, of the <c>WSAQUERYSET</c> structure. This member is used as a versioning mechanism since the size of the
-			/// <c>WSAQUERYSET</c> structure has changed on later versions of Windows.
-			/// </para>
-			/// </summary>
-			public uint dwSize;
-
-			/// <summary>
-			/// <para>Type: <c>LPTSTR</c></para>
-			/// <para>
-			/// A pointer to an optional NULL-terminated string that contains service name. The semantics for using wildcards within the
-			/// string are not defined, but can be supported by certain namespace providers.
-			/// </para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string lpszServiceInstanceName;
-
-			/// <summary>
-			/// <para>Type: <c>LPGUID</c></para>
-			/// <para>The GUID corresponding to the service class. This member is required to be set.</para>
-			/// </summary>
-			public GuidPtr lpServiceClassId;
-
-			/// <summary>
-			/// <para>Type: <c>LPWSAVERSION</c></para>
-			/// <para>
-			/// A pointer to an optional desired version number of the namespace provider. This member provides version comparison semantics
-			/// (that is, the version requested must match exactly, or version must be not less than the value supplied).
-			/// </para>
-			/// </summary>
-			public IntPtr lpVersion;
-
-			/// <summary>
-			/// <para>Type: <c>LPTSTR</c></para>
-			/// <para>This member is ignored for queries.</para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string lpszComment;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// A namespace identifier that determines which namespace providers are queried. Passing a specific namespace identifier will
-			/// result in only namespace providers that support the specified namespace being queried. Specifying <c>NS_ALL</c> will result
-			/// in all installed and active namespace providers being queried.
-			/// </para>
-			/// <para>
-			/// Options for the <c>dwNameSpace</c> member are listed in the Winsock2.h include file. Several new namespace providers are
-			/// included with Windows Vista and later. Other namespace providers can be installed, so the following possible values are only
-			/// those commonly available. Many other values are possible.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>NS_ALL</term>
-			/// <term>All installed and active namespaces.</term>
-			/// </item>
-			/// <item>
-			/// <term>NS_BTH</term>
-			/// <term>The Bluetooth namespace. This namespace identifier is supported on Windows Vista and later.</term>
-			/// </item>
-			/// <item>
-			/// <term>NS_DNS</term>
-			/// <term>The domain name system (DNS) namespace.</term>
-			/// </item>
-			/// <item>
-			/// <term>NS_EMAIL</term>
-			/// <term>The email namespace. This namespace identifier is supported on Windows Vista and later.</term>
-			/// </item>
-			/// <item>
-			/// <term>NS_NLA</term>
-			/// <term>The network location awareness (NLA) namespace. This namespace identifier is supported on Windows XP and later.</term>
-			/// </item>
-			/// <item>
-			/// <term>NS_PNRPNAME</term>
-			/// <term>
-			/// The peer-to-peer name space for a specific peer name. This namespace identifier is supported on Windows Vista and later.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>NS_PNRPCLOUD</term>
-			/// <term>
-			/// The peer-to-peer name space for a collection of peer names. This namespace identifier is supported on Windows Vista and later.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public NS dwNameSpace;
-
-			/// <summary>
-			/// <para>Type: <c>LPGUID</c></para>
-			/// <para>
-			/// A pointer to an optional GUID of a specific namespace provider to query in the case where multiple namespace providers are
-			/// registered under a single namespace such as <c>NS_DNS</c>. Passing the GUID for a specific namespace provider will result in
-			/// only the specified namespace provider being queried. The WSAEnumNameSpaceProviders and WSAEnumNameSpaceProvidersEx functions
-			/// can be called to retrieve the GUID for a namespace provider.
-			/// </para>
-			/// </summary>
-			public GuidPtr lpNSProviderId;
-
-			/// <summary>
-			/// <para>Type: <c>LPTSTR</c></para>
-			/// <para>A pointer to an optional starting point of the query in a hierarchical namespace.</para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string lpszContext;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The size, in bytes, of the protocol constraint array. This member can be zero.</para>
-			/// </summary>
-			public uint dwNumberOfProtocols;
-
-			/// <summary>
-			/// <para>Type: <c>LPAFPROTOCOLS</c></para>
-			/// <para>A pointer to an optional array of AFPROTOCOLS structures. Only services that utilize these protocols will be returned.</para>
-			/// </summary>
-			public IntPtr lpafpProtocols;
-
-			/// <summary>
-			/// <para>Type: <c>LPTSTR</c></para>
-			/// <para>
-			/// A pointer to an optional NULL-terminated query string. Some namespaces, such as Whois++, support enriched SQL-like queries
-			/// that are contained in a simple text string. This parameter is used to specify that string.
-			/// </para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.LPTStr)] public string lpszQueryString;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>This member is ignored for queries.</para>
-			/// </summary>
-			public uint dwNumberOfCsAddrs;
-
-			/// <summary>
-			/// <para>Type: <c>LPCSADDR_INFO</c></para>
-			/// <para>This member is ignored for queries.</para>
-			/// </summary>
-			public IntPtr lpcsaBuffer;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>This member is ignored for queries.</para>
-			/// </summary>
-			public uint dwOutputFlags;
-
-			/// <summary>
-			/// <para>Type: <c>LPBLOB</c></para>
-			/// <para>
-			/// An optional pointer to data that is used to query or set provider-specific namespace information. The format of this
-			/// information is specific to the namespace provider.
-			/// </para>
-			/// </summary>
-			public IntPtr lpBlob;
-
-			/// <summary>Initializes a new instance of the <see cref="WSAQUERYSET"/> struct.</summary>
-			/// <param name="nameSpace">The name space.</param>
-			public WSAQUERYSET(NS nameSpace) : this()
-			{
-				dwSize = (uint)Marshal.SizeOf(this);
-				dwNameSpace = nameSpace;
-			}
-		}
-
-		/// <summary>
-		/// The <c>WSASERVICECLASSINFO</c> structure contains information about a specified service class. For each service class in Windows
-		/// Sockets 2, there is a single <c>WSASERVICECLASSINFO</c> structure.
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsaserviceclassinfow typedef struct _WSAServiceClassInfoW
-		// { LPGUID lpServiceClassId; LPWSTR lpszServiceClassName; DWORD dwCount; LPWSANSCLASSINFOW lpClassInfos; } WSASERVICECLASSINFOW,
-		// *PWSASERVICECLASSINFOW, *LPWSASERVICECLASSINFOW;
-		[PInvokeData("winsock2.h", MSDNShortId = "02422c24-34a6-4e34-a795-66b0b687ac44")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct WSASERVICECLASSINFO
-		{
-			/// <summary>Unique Identifier (GUID) for the service class.</summary>
-			public GuidPtr lpServiceClassId;
-
-			/// <summary>Well known name associated with the service class.</summary>
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string lpszServiceClassName;
-
-			/// <summary>Number of entries in <c>lpClassInfos</c>.</summary>
-			public uint dwCount;
-
-			/// <summary>Array of WSANSCLASSINFO structures that contains information about the service class.</summary>
-			public IntPtr lpClassInfos;
-
-			/// <summary>Marshaled array of WSANSCLASSINFO structures that contains information about the service class.</summary>
-			public WSANSCLASSINFO[] ClassInfos => lpClassInfos.ToArray<WSANSCLASSINFO>((int)dwCount);
-		}
-
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSAEVENT"/> that is disposed using <see cref="WSACloseEvent"/>.</summary>
-		public class SafeWSAEVENT : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeWSAEVENT"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeWSAEVENT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeWSAEVENT"/> class.</summary>
-			private SafeWSAEVENT() : base() { }
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeWSAEVENT"/> to <see cref="WSAEVENT"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator WSAEVENT(SafeWSAEVENT h) => h.handle;
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => WSACloseEvent(handle);
-		}
-
-		/// <summary>
-		/// A disposable class to manage initialization of the WSA library. See remarks for use.
-		/// </summary>
-		/// <example>
-		/// <code>
-		/// using (var wsa = SafeWSA.Initialize())
-		/// {
-		///    // Call WSA functions...
-		/// }
-		/// </code>
-		/// Or, if you must have a certain version of the library, use the <c>InitDemandVersion</c> static method.
-		/// <code>
-		/// using (var wsa = SafeWSA.InitDemandVersion(Macros.MAKEWORD(1, 1)))
-		/// {
-		///    // Call WSA functions.
-		///    // The above call with throw a VersionNotFoundException if that version is not supported.
-		/// }
-		/// </code>
-		/// </example>
-		/// <seealso cref="System.IDisposable" />
-		public class SafeWSA : IDisposable
-		{
-			private WSADATA data;
-
-			private SafeWSA() { }
-
-			/// <summary>Initiates use of the Winsock DLL by a process.</summary>
-			/// <param name="wVersionRequired">The requested version of the WinSock library.</param>
-			/// <returns>An object that holds the WinSock library while in scope. Upon disposal, <c>WSACleanup</c> is called.</returns>
-			public static SafeWSA Initialize(ushort wVersionRequired = 0x0202)
-			{
-				var ret = new SafeWSA();
-				WSAStartup(wVersionRequired, out ret.data).ThrowIfFailed();
-				return ret;
-			}
-
-			/// <summary>
-			/// Initiates use of the Winsock DLL by a process and throws an exception if <paramref name="wVersionRequired"/> isn't available.
-			/// </summary>
-			/// <param name="wVersionRequired">The required version of the WinSock library.</param>
-			/// <returns>An object that holds the WinSock library while in scope. Upon disposal, <c>WSACleanup</c> is called.</returns>
-			/// <exception cref="VersionNotFoundException"></exception>
-			public static SafeWSA DemandVersion(ushort wVersionRequired)
-			{
-				var ret = Initialize(wVersionRequired);
-				if (ret.Data.wVersion != wVersionRequired)
-					throw new VersionNotFoundException();
-				return ret;
-			}
-
-			/// <summary>Gets the WSADATA value returned by <c>WSAStartup</c>.</summary>
-			/// <value>The data.</value>
-			public WSADATA Data { get => data; private set => data = value; }
-
-			void IDisposable.Dispose() => WSACleanup();
-		}
 	}
 }

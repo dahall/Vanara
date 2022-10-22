@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using static Vanara.PInvoke.OleAut32;
 
@@ -107,7 +106,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexecutecommand-setposition HRESULT
 			// SetPosition( POINT pt );
 			[PreserveSig]
-			HRESULT SetPosition(Point pt);
+			HRESULT SetPosition(POINT pt);
 
 			/// <summary>Sets the specified window's visual state.</summary>
 			/// <param name="nShow">

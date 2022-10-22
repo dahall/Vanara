@@ -1,17 +1,38 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Text.RegularExpressions;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.User32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		private static readonly Lazy<Dictionary<uint, (string name, ClipCorrespondingTypeAttribute attr)>> clipFmtIds = new(() =>
+				   {
+					   Type type = typeof(CLIPFORMAT);
+					   Dictionary<uint, (string Name, ClipCorrespondingTypeAttribute)> knownIds = type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(f => f.FieldType == type && f.IsInitOnly).ToDictionary(f => (uint)(CLIPFORMAT)f.GetValue(null), f => (f.Name, f.GetCustomAttributes<ClipCorrespondingTypeAttribute>().FirstOrDefault()));
+					   foreach (FieldInfo f in typeof(ShellClipboardFormat).GetFields(BindingFlags.Public).Where(f => f.FieldType == typeof(string)))
+					   {
+						   string s = (string)f.GetValue(null);
+						   knownIds.Add(RegisterClipboardFormat(s), (s, f.GetCustomAttributes<ClipCorrespondingTypeAttribute>().FirstOrDefault()));
+					   }
+					   return knownIds;
+				   });
+
 		/// <summary>
 		/// <para>Values used with the DROPDESCRIPTION structure to specify the drop image.</para>
 		/// </summary>
@@ -81,6 +102,462 @@ namespace Vanara.PInvoke
 			FD_UNICODE = 0x80000000,
 		}
 
+		/// <summary>Takes an HTML fragment and wraps it in the HTML format specification for the clipboard.</summary>
+		/// <param name="htmlFragment">
+		/// The fragment contains pure, valid HTML representing the area the user has selected (to Copy, for example). This contains the
+		/// selected text plus the opening tags and attributes of any element that has an end tag within the selected text, and end tags at
+		/// the end of the fragment for any start tag included. This is all information required for basic pasting of an HTML fragment.
+		/// </param>
+		/// <param name="sourceUrl"></param>
+		/// <returns></returns>
+		public static byte[] FormatHtmlForClipboard(string htmlFragment, string sourceUrl = null)
+		{
+			const string Header = "Version:0.9\nStartHTML:{0:0000000000}\nEndHTML:{1:0000000000}\nStartFragment:{2:0000000000}\nEndFragment:{3:0000000000}\n";
+			const string htmlDocType = "<!DOCTYPE html>";
+			const string htmlBodyStart = "<html>\n{0}<body>\n";
+			const string baseRef = "<head><base href=\"{0}\"></head>\n";
+			const string htmlBodyEnd = "\n</body>\n</html>";
+			const string fragmentStart = "<!--StartFragment-->";
+			const string fragmentEnd = "<!--EndFragment-->";
+
+			StringBuilder sb = new();
+
+			if (htmlFragment.IndexOf("<!DOCTYPE", StringComparison.OrdinalIgnoreCase) < 0)
+			{
+				sb.Append(htmlDocType);
+			}
+
+			if (htmlFragment.IndexOf("<HTML>", StringComparison.OrdinalIgnoreCase) < 0)
+			{
+				sb.AppendFormat(htmlBodyStart, string.IsNullOrEmpty(sourceUrl) ? "" : string.Format(baseRef, sourceUrl));
+			}
+
+			int fragStartIdx = htmlFragment.IndexOf(fragmentStart, StringComparison.OrdinalIgnoreCase);
+			if (fragStartIdx < 0)
+			{
+				sb.Append(fragmentStart);
+			}
+			else
+			{
+				sb.Append(htmlFragment.Substring(0, fragStartIdx + fragmentStart.Length));
+				htmlFragment = htmlFragment.Remove(0, fragStartIdx + fragmentStart.Length);
+			}
+			fragStartIdx = Encoding.UTF8.GetByteCount(sb.ToString());
+
+			int fragEndIdx = htmlFragment.IndexOf(fragmentEnd, StringComparison.OrdinalIgnoreCase);
+			if (fragEndIdx < 0)
+			{
+				sb.Append(htmlFragment);
+				fragEndIdx = Encoding.UTF8.GetByteCount(sb.ToString());
+				sb.Append(fragmentEnd);
+			}
+			else
+			{
+				string preFrag = htmlFragment.Substring(0, fragEndIdx);
+				htmlFragment = htmlFragment.Remove(0, fragEndIdx);
+				sb.Append(preFrag);
+				fragEndIdx = Encoding.UTF8.GetByteCount(sb.ToString());
+				sb.Append(htmlFragment);
+			}
+			if (htmlFragment.IndexOf("</HTML>", StringComparison.OrdinalIgnoreCase) < 0)
+			{
+				sb.Append(htmlBodyEnd);
+			}
+
+			var ctx = string.IsNullOrEmpty(sourceUrl) ? "" : "SourceURL:" + sourceUrl + "\n";
+			var HdrLen = Encoding.UTF8.GetByteCount(string.Format(Header, 0, 0, 0, 0) + ctx);
+
+			int startHtml = HdrLen;
+			int endHtml = HdrLen + Encoding.UTF8.GetByteCount(sb.ToString());
+			int startFrag = HdrLen + fragStartIdx;
+			int endFrag = HdrLen + fragEndIdx;
+			sb.Insert(0, string.Format(Header, startHtml, endHtml, startFrag, endFrag) + ctx);
+			sb.Append('\0');
+
+			return Encoding.UTF8.GetBytes(sb.ToString());
+		}
+
+		/// <summary>Obtains data from a source data object.</summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <param name="aspect">
+		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration values.
+		/// A single clipboard format can support multiple aspects or views of the object. Most data and presentation transfer and caching
+		/// methods pass aspect information. For example, a caller might request an object's iconic picture, using the metafile clipboard
+		/// format to retrieve it. Note that only one DVASPECT value can be used in dwAspect. That is, dwAspect cannot be the result of a
+		/// Boolean OR operation on several DVASPECT values.
+		/// </param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
+		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
+		public static object GetData(this IDataObject dataObj, uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
+		{
+			ClipCorrespondingTypeAttribute attr = clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null;
+			TYMED tymed = attr?.Medium ?? TYMED.TYMED_FILE | TYMED.TYMED_HGLOBAL | TYMED.TYMED_ISTREAM | TYMED.TYMED_ISTORAGE | TYMED.TYMED_GDI | TYMED.TYMED_MFPICT | TYMED.TYMED_ENHMF;
+			FORMATETC formatetc = new()
+			{
+				cfFormat = unchecked((short)(ushort)formatId),
+				dwAspect = aspect,
+				lindex = index,
+				tymed = tymed
+			};
+			STGMEDIUM medium = new() { tymed = attr?.Medium ?? TYMED.TYMED_HGLOBAL };
+			dataObj.GetData(ref formatetc, out medium);
+
+			// Handle TYMED values
+			bool userFree = medium.pUnkForRelease is null;
+			switch (medium.tymed)
+			{
+				case TYMED.TYMED_HGLOBAL:
+					// Pass this one through
+					break;
+
+				case TYMED.TYMED_FILE:
+					return new SafeMoveableHGlobalHandle(medium.unionmember, userFree).ToString(-1, CharSet.Ansi);
+
+				case TYMED.TYMED_ISTREAM:
+					return Marshal.GetObjectForIUnknown(medium.unionmember) as IStream;
+
+				case TYMED.TYMED_ISTORAGE:
+					return Marshal.GetObjectForIUnknown(medium.unionmember) as IStorage;
+
+				case TYMED.TYMED_GDI:
+					if (userFree)
+					{
+						return new SafeHBITMAP(medium.unionmember);
+					}
+					else
+					{
+						return (HBITMAP)medium.unionmember;
+					}
+
+				case TYMED.TYMED_MFPICT:
+					if (userFree)
+					{
+						return new SafeHMETAFILE(medium.unionmember);
+					}
+					else
+					{
+						return (HMETAFILE)medium.unionmember;
+					}
+
+				case TYMED.TYMED_ENHMF:
+					if (userFree)
+					{
+						return new SafeHENHMETAFILE(medium.unionmember);
+					}
+					else
+					{
+						return (HENHMETAFILE)medium.unionmember;
+					}
+
+				case TYMED.TYMED_NULL:
+					return null;
+
+				default:
+					throw new InvalidOperationException();
+			}
+
+			using SafeMoveableHGlobalHandle hmem = new(medium.unionmember, userFree);
+			try
+			{
+				hmem.Lock();
+
+				// Handle CF_HDROP since it can't indicate specialty
+				if (CLIPFORMAT.CF_HDROP.Equals(formatId))
+				{
+					return ClipboardHDROPFormatter.Instance.Read(hmem);
+				}
+
+				// If there's no hint, return bytes
+				if (attr is null)
+				{
+					return hmem.GetBytes();
+				}
+
+				// Use clipboard formatter if available
+				if (attr.Formatter is not null)
+				{
+					return ((IClipboardFormatter)Activator.CreateInstance(attr.Formatter)).Read(hmem);
+				}
+
+				// Handle strings
+				if (attr.TypeRef == typeof(string))
+				{
+					Encoding enc = (Encoding)Activator.CreateInstance(attr.EncodingType ?? typeof(UnicodeEncoding));
+					return enc.GetString(hmem.GetBytes());
+				}
+
+				CharSet charSet = CharSet.Auto;
+				if (attr.EncodingType == typeof(ASCIIEncoding))
+					charSet = CharSet.Ansi;
+				else if (attr.EncodingType == typeof(UnicodeEncoding))
+					charSet = CharSet.Unicode;
+
+				// Handle string[]
+				if (attr.TypeRef == typeof(string[]))
+				{
+					return hmem.ToStringEnum(charSet).ToArray();
+				}
+
+				// Handle other types
+				return hmem.DangerousGetHandle().Convert(hmem.Size, attr.TypeRef, charSet);
+			}
+			finally
+			{
+				hmem.Unlock();
+			}
+		}
+
+		/// <summary>Obtains data from a source data object.</summary>
+		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
+		public static T GetData<T>(this IDataObject dataObj, uint formatId, int index = -1)
+		{
+			FORMATETC formatetc = new()
+			{
+				cfFormat = unchecked((short)(ushort)formatId),
+				dwAspect = DVASPECT.DVASPECT_CONTENT,
+				lindex = index,
+				tymed = TYMED.TYMED_HGLOBAL
+			};
+			STGMEDIUM medium = new() { tymed = TYMED.TYMED_HGLOBAL };
+			dataObj.GetData(ref formatetc, out medium);
+			if (medium.tymed != TYMED.TYMED_HGLOBAL)
+				throw new ArgumentException("This format does not support direct type access.", nameof(formatId));
+			if (medium.unionmember == default)
+				return default;
+			using SafeMoveableHGlobalHandle hmem = new(medium.unionmember, medium.pUnkForRelease is null);
+			try
+			{
+				hmem.Lock();
+				return hmem.ToType<T>();
+			}
+			finally
+			{
+				hmem.Unlock();
+			}
+		}
+
+		/// <summary>Gets an HTML string from bytes returned from the clipboard.</summary>
+		/// <param name="bytes">The bytes from the clipboard.</param>
+		/// <returns>The string representing the HTML.</returns>
+		/// <exception cref="System.InvalidOperationException">HTML format header cannot be processed.</exception>
+		public static string GetHtmlFromClipboard(byte[] bytes)
+		{
+			const string HdrRegEx = @"Version:\d\.\d\s+StartHTML:(\d+)\s+EndHTML:(\d+)\s+StartFragment:(\d+)\s+EndFragment:(\d+)\s+(?:StartSelection:(\d+)\s+EndSelection:(\d+)\s+)?";
+
+			if (bytes is null)
+			{
+				return null;
+			}
+
+			// Get UTF8 encoded string
+			string utf8String = Encoding.UTF8.GetString(bytes);
+			// Find markers
+			Match match = Regex.Match(utf8String, HdrRegEx);
+			if (!match.Success)
+			{
+				throw new InvalidOperationException("HTML format header cannot be processed.");
+			}
+
+			//int startHtml = int.Parse(match.Groups[1].Value.TrimStart('0'));
+			//int endHtml = int.Parse(match.Groups[2].Value.TrimStart('0'));
+			int startFrag = int.Parse(match.Groups[3].Value.TrimStart('0'));
+			int endFrag = int.Parse(match.Groups[4].Value.TrimStart('0'));
+			//int startSel = int.Parse(match.Groups[5].Value.TrimStart('0'));
+			//int endSel = int.Parse(match.Groups[6].Value.TrimStart('0'));
+
+			return Encoding.UTF8.GetString(bytes, startFrag, endFrag - startFrag);
+		}
+
+		/// <summary>Transfer a data stream to an object that contains a data source.</summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <param name="obj">The object to add.</param>
+		/// <param name="aspect">
+		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration values.
+		/// A single clipboard format can support multiple aspects or views of the object. Most data and presentation transfer and caching
+		/// methods pass aspect information. For example, a caller might request an object's iconic picture, using the metafile clipboard
+		/// format to retrieve it. Note that only one DVASPECT value can be used in dwAspect. That is, dwAspect cannot be the result of a
+		/// Boolean OR operation on several DVASPECT values.
+		/// </param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		public static void SetData(this IDataObject dataObj, uint formatId, object obj, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
+		{
+			TYMED tymed = TYMED.TYMED_HGLOBAL;
+			IntPtr mbr = default;
+			switch (obj)
+			{
+				case null:
+					tymed = TYMED.TYMED_NULL;
+					break;
+
+				case byte[] bytes:
+					ClipboardBytesFormatter.Instance.Write(bytes);
+					break;
+
+				case MemoryStream mstream:
+					ClipboardBytesFormatter.Instance.Write(mstream.GetBuffer());
+					break;
+
+				case Stream stream:
+					byte[] sbytes = new byte[stream.Length];
+					stream.Position = 0;
+					stream.Read(sbytes, 0, sbytes.Length);
+					ClipboardBytesFormatter.Instance.Write(sbytes);
+					break;
+
+				case string str:
+					if (CLIPFORMAT.CF_UNICODETEXT.Equals(formatId) ||
+						RegisterClipboardFormat(ShellClipboardFormat.CFSTR_INETURLW) == formatId ||
+						RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEW) == formatId)
+					{
+						ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, true, CharSet.Unicode));
+					}
+					else if (CLIPFORMAT.CF_TEXT.Equals(formatId) || CLIPFORMAT.CF_OEMTEXT.Equals(formatId) ||
+						RegisterClipboardFormat(ShellClipboardFormat.CF_RTF) == formatId ||
+						RegisterClipboardFormat(ShellClipboardFormat.CFSTR_INETURLA) == formatId ||
+						RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEA) == formatId ||
+						RegisterClipboardFormat(ShellClipboardFormat.CF_CSV) == formatId)
+					{
+						ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, true, CharSet.Ansi));
+					}
+					else if (RegisterClipboardFormat(ShellClipboardFormat.CF_HTML) == formatId)
+					{
+						ClipboardHtmlFormatter.Instance.Write(str);
+					}
+					else
+					{
+						ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, true, CharSet.Auto));
+					}
+
+					break;
+
+				case IEnumerable<string> strlist:
+					if (CLIPFORMAT.CF_HDROP.Equals(formatId) ||
+						formatId == RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPA) ||
+						formatId == RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPW))
+					{
+						mbr = ClipboardHDROPFormatter.Instance.Write(strlist);
+					}
+
+					break;
+
+				case IStream str:
+					tymed = TYMED.TYMED_ISTREAM;
+					mbr = Marshal.GetIUnknownForObject(str);
+					break;
+
+				case IStorage store:
+					tymed = TYMED.TYMED_ISTORAGE;
+					mbr = Marshal.GetIUnknownForObject(store);
+					break;
+
+				case System.Runtime.Serialization.ISerializable ser:
+					mbr = ClipboardSerializedFormatter.Instance.Write(ser);
+					break;
+
+				case SafeMoveableHGlobalHandle hg:
+					mbr = hg.TakeOwnership();
+					break;
+
+				case SafeAllocatedMemoryHandle h:
+					mbr = new SafeMoveableHGlobalHandle(h).TakeOwnership();
+					break;
+
+				case HBITMAP:
+				case SafeHBITMAP:
+					tymed = TYMED.TYMED_GDI;
+					mbr = ((IHandle)obj).DangerousGetHandle();
+					break;
+
+				case HMETAFILE:
+				case SafeHMETAFILE:
+					tymed = TYMED.TYMED_MFPICT;
+					mbr = ((IHandle)obj).DangerousGetHandle();
+					break;
+
+				case HENHMETAFILE:
+				case SafeHENHMETAFILE:
+					tymed = TYMED.TYMED_ENHMF;
+					mbr = ((IHandle)obj).DangerousGetHandle();
+					break;
+			}
+			FORMATETC formatetc = new()
+			{
+				cfFormat = unchecked((short)(ushort)formatId),
+				dwAspect = aspect,
+				lindex = index,
+				tymed = tymed
+			};
+			STGMEDIUM medium = new() { tymed = tymed, unionmember = mbr };
+			dataObj.SetData(ref formatetc, ref medium, true);
+		}
+
+		/// <summary>Transfer a data stream to an object that contains a data source.</summary>
+		/// <typeparam name="T">The type of the object being passed.</typeparam>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <param name="obj">The object to add.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		public static void SetData<T>(this IDataObject dataObj, uint formatId, T obj, int index = -1) where T : struct =>
+			SetData(dataObj, formatId, SafeMoveableHGlobalHandle.CreateFromStructure(obj), DVASPECT.DVASPECT_CONTENT, index);
+
+		/// <summary>Obtains data from a source data object.</summary>
+		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <param name="obj">The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <returns><see langword="true"/> if data is available and retrieved; otherwise <see langword="false"/>.</returns>
+		public static bool TryGetData<T>(this IDataObject dataObj, uint formatId, out T obj, int index = -1)
+		{
+			FORMATETC formatetc = new()
+			{
+				cfFormat = unchecked((short)(ushort)formatId),
+				dwAspect = DVASPECT.DVASPECT_CONTENT,
+				lindex = index,
+				tymed = TYMED.TYMED_HGLOBAL
+			};
+			obj = default;
+			if (dataObj.QueryGetData(ref formatetc) != HRESULT.S_OK)
+				return false;
+			try
+			{
+				STGMEDIUM medium = new() { tymed = TYMED.TYMED_HGLOBAL };
+				dataObj.GetData(ref formatetc, out medium);
+				if (medium.tymed == TYMED.TYMED_HGLOBAL && medium.unionmember != default)
+				{
+					using SafeMoveableHGlobalHandle hmem = new(medium.unionmember, medium.pUnkForRelease is null);
+					obj = hmem.ToType<T>();
+					return true;
+				}
+			}
+			catch
+			{
+			}
+			return false;
+		}
+
 		/// <summary>
 		/// <para>
 		/// Used with the CFSTR_SHELLIDLIST clipboard format to transfer the pointer to an item identifier list (PIDL) of one or more Shell
@@ -90,8 +567,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// To use this structure to retrieve a particular PIDL, add the <c>aoffset</c> value of the PIDL to the address of the structure.
-		/// The following two macros can be used to retrieve PIDLs from the structure. The first retrieves the PIDL of the parent folder.
-		/// The second retrieves a PIDL, specified by its zero-based index.
+		/// The following two macros can be used to retrieve PIDLs from the structure. The first retrieves the PIDL of the parent folder. The
+		/// second retrieves a PIDL, specified by its zero-based index.
 		/// </para>
 		/// <para>
 		/// The value that is returned by these macros is a pointer to the ITEMIDLIST structure. Since these structures vary in length, you
@@ -101,6 +578,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_ida typedef struct _IDA { UINT cidl; UINT
 		// aoffset[1]; } CIDA, *LPIDA;
 		[PInvokeData("shlobj_core.h", MSDNShortId = "30caf91d-8f3c-48ea-ad64-47f919f33f1d")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<CIDA>), nameof(cidl))]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CIDA
 		{
@@ -119,37 +597,30 @@ namespace Vanara.PInvoke
 			/// transferred. All of these PIDLs are relative to the PIDL of the parent folder.
 			/// </para>
 			/// </summary>
-			public IntPtr aoffset;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public uint[] aoffset;
 
-			/// <summary>
-			/// <para>Type: <c>UINT[]</c></para>
-			/// <para>
-			/// An array of offsets, relative to the beginning of this structure. The array contains <c>cidl</c>+1 elements. The first
-			/// element of <c>aoffset</c> contains an offset to the fully qualified PIDL of a parent folder. If this PIDL is empty, the
-			/// parent folder is the desktop. Each of the remaining elements of the array contains an offset to one of the PIDLs to be
-			/// transferred. All of these PIDLs are relative to the PIDL of the parent folder.
-			/// </para>
-			/// </summary>
-			/// <value>Returns a <see cref="uint"/>[] value.</value>
-			public uint[] offsets => aoffset.ToArray<uint>((int)cidl + 1);
-
-			/// <summary>Gets the folder PIDL from <see cref="offsets"/>.</summary>
+			/// <summary>Gets the folder PIDL from <see cref="aoffset"/>.</summary>
 			/// <returns>A PIDL.</returns>
 			public PIDL GetFolderPIDL()
 			{
-				using var pinned = new PinnedObject(this);
-				return new PIDL(((IntPtr)pinned).Offset(offsets[0]), true);
+				using PinnedObject pinned = new(this);
+				return new PIDL(((IntPtr)pinned).Offset(aoffset[0]), true);
 			}
 
-			/// <summary>Gets the item relative PIDL from <see cref="offsets"/> at the specified index.</summary>
+			/// <summary>Gets the item relative PIDL from <see cref="aoffset"/> at the specified index.</summary>
 			/// <param name="childIndex">Index of the child PIDL.</param>
 			/// <returns>A PIDL.</returns>
 			/// <exception cref="ArgumentOutOfRangeException">childIndex</exception>
 			public PIDL GetItemRelativePIDL(int childIndex)
 			{
-				if (childIndex >= cidl) throw new ArgumentOutOfRangeException(nameof(childIndex));
-				using var pinned = new PinnedObject(this);
-				return new PIDL(((IntPtr)pinned).Offset(offsets[childIndex + 1]), true);
+				if (childIndex >= cidl)
+				{
+					throw new ArgumentOutOfRangeException(nameof(childIndex));
+				}
+
+				using PinnedObject pinned = new(this);
+				return new PIDL(((IntPtr)pinned).Offset(aoffset[childIndex + 1]), true);
 			}
 		}
 
@@ -193,7 +664,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>The drop point. The coordinates depend on <c>fNC</c>.</para>
 			/// </summary>
-			public System.Drawing.Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -214,6 +685,66 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.Bool)]
 			public bool fWide;
+
+			/// <summary>
+			/// Gets the file name array appended to this struture. It consists of a series of strings, each containing one file's fully
+			/// qualified path. This method should only be called when the <see cref="DROPFILES"/> instance is a reference value pulled from
+			/// the clipboard's HGLOBAL allocation.
+			/// </summary>
+			/// <returns>The file list.</returns>
+			public string[] DangerousGetFileList()
+			{
+				using PinnedObject pinned = new(this);
+				return ((IntPtr)pinned).ToStringEnum(fWide ? CharSet.Unicode : CharSet.Ansi, (int)pFiles).ToArray();
+			}
+		}
+
+		/// <summary>Contains the clipboard format definition for CFSTR_FILE_ATTRIBUTES_ARRAY.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shlobj_core/ns-shlobj_core-file_attributes_array typedef struct { UINT cItems;
+		// DWORD dwSumFileAttributes; DWORD dwProductFileAttributes; DWORD rgdwFileAttributes[1]; } FILE_ATTRIBUTES_ARRAY;
+		[PInvokeData("shlobj_core.h", MSDNShortId = "NS:shlobj_core.__unnamed_struct_7")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<FILE_ATTRIBUTES_ARRAY>), nameof(cItems))]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FILE_ATTRIBUTES_ARRAY
+		{
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The number of items in the <c>rgdwFileAttributes</c> array.</para>
+			/// </summary>
+			public uint cItems;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>All of the attributes combined using OR.</para>
+			/// </summary>
+			public uint dwSumFileAttributes;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>All of the attributes combined using AND.</para>
+			/// </summary>
+			public uint dwProductFileAttributes;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD[1]</c></para>
+			/// <para>An array of file attributes.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public uint[] rgdwFileAttributes;
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="FILE_ATTRIBUTES_ARRAY"/> struct from a sequence of <see
+			/// cref="FileFlagsAndAttributes"/> values.
+			/// </summary>
+			/// <param name="fileAttrs">The sequence of file attributes.</param>
+			public FILE_ATTRIBUTES_ARRAY(IEnumerable<FileFlagsAndAttributes> fileAttrs)
+			{
+				List<FileFlagsAndAttributes> list = fileAttrs.ToList();
+				cItems = (uint)list.Count;
+				dwSumFileAttributes = (uint)list.Aggregate((a, n) => a | n);
+				dwProductFileAttributes = (uint)list.Aggregate((a, n) => a & n);
+				rgdwFileAttributes = list.Cast<uint>().ToArray();
+			}
 		}
 
 		/// <summary>
@@ -232,8 +763,8 @@ namespace Vanara.PInvoke
 		/// (TYMED_ISTREAM or TYMED_HGLOBAL).
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_filedescriptora typedef struct _FILEDESCRIPTORA
-		// { DWORD dwFlags; CLSID clsid; SIZEL sizel; POINTL pointl; DWORD dwFileAttributes; FILETIME ftCreationTime; FILETIME
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_filedescriptora typedef struct _FILEDESCRIPTORA {
+		// DWORD dwFlags; CLSID clsid; SIZEL sizel; POINTL pointl; DWORD dwFileAttributes; FILETIME ftCreationTime; FILETIME
 		// ftLastAccessTime; FILETIME ftLastWriteTime; DWORD nFileSizeHigh; DWORD nFileSizeLow; CHAR cFileName[MAX_PATH]; } FILEDESCRIPTORA, *LPFILEDESCRIPTORA;
 		[PInvokeData("shlobj_core.h", MSDNShortId = "b81a7e52-5bd8-4fa4-bd76-9a58afaceec0")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -284,7 +815,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINTL</c></para>
 			/// <para>The screen coordinates of the file object.</para>
 			/// </summary>
-			public Point pointl;
+			public POINT pointl;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -330,7 +861,7 @@ namespace Vanara.PInvoke
 			public string cFileName;
 
 			/// <summary>The file size, in bytes.</summary>
-			public ulong nFileSIze
+			public ulong nFileSize
 			{
 				get => Macros.MAKELONG64(nFileSizeLow, nFileSizeHigh);
 				set
@@ -345,6 +876,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_filegroupdescriptora typedef struct
 		// _FILEGROUPDESCRIPTORA { UINT cItems; FILEDESCRIPTORA fgd[1]; } FILEGROUPDESCRIPTORA, *LPFILEGROUPDESCRIPTORA;
 		[PInvokeData("shlobj_core.h", MSDNShortId = "9357ab73-086c-44db-8f89-e14240647e89")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<FILEGROUPDESCRIPTOR>), nameof(cItems))]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct FILEGROUPDESCRIPTOR : IEnumerable<FILEDESCRIPTOR>
 		{
@@ -358,19 +890,182 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>FILEDESCRIPTOR[1]</c></para>
 			/// <para>An array of FILEDESCRIPTOR structures that contain the file information.</para>
 			/// </summary>
-			public IntPtr fgd;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public FILEDESCRIPTOR[] fgd;
 
 			/// <inheritdoc/>
-			public IEnumerator<FILEDESCRIPTOR> GetEnumerator() => fgd.ToIEnum<FILEDESCRIPTOR>((int)cItems).GetEnumerator();
+			public IEnumerator<FILEDESCRIPTOR> GetEnumerator() => ((IEnumerable<FILEDESCRIPTOR>)fgd).GetEnumerator();
 
 			/// <inheritdoc/>
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 
-		/// <summary>Defines the CF_NETRESOURCE clipboard format.</summary>
+		/// <summary>
+		/// <para>
+		/// The following structure contains information about a network resource. It is used by several of the network provider functions,
+		/// including NPOpenEnum and NPAddConnection.
+		/// </para>
+		/// <note type="note">This is a duplicate of the structure in the <c>Vanara.PInvoke.Mpr</c> library. Here, however, the string values
+		/// must be represented as offsets within the memory.</note>
+		/// </summary>
+		/// <remarks>
+		/// <note type="">The winnetwk.h header defines NETRESOURCE as an alias which automatically selects the ANSI or Unicode version of
+		/// this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
+		/// that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+		/// Conventions for Function Prototypes.</note>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/ns-winnetwk-netresourcew typedef struct _NETRESOURCEW { DWORD dwScope;
+		// DWORD dwType; DWORD dwDisplayType; DWORD dwUsage; LPWSTR lpLocalName; LPWSTR lpRemoteName; LPWSTR lpComment; LPWSTR lpProvider; }
+		// NETRESOURCEW, *LPNETRESOURCEW;
+		[PInvokeData("winnetwk.h", MSDNShortId = "NS:winnetwk._NETRESOURCEW")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NETRESOURCE
+		{
+			/// <summary>
+			/// <para>Indicates the scope of the enumeration. This can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>RESOURCE_CONNECTED</c></term>
+			/// <term>Current connections to network resources.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCE_GLOBALNET</c></term>
+			/// <term>All network resources. These may or may not be connected.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCE_CONTEXT</c></term>
+			/// <term>The network resources associated with the user's current and default network context. The meaning of this is provider-specific.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint dwScope;
+
+			/// <summary>
+			/// <para>Indicates the resource type. This can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>RESOURCETYPE_DISK</c></term>
+			/// <term>The resource is a shared disk volume.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCETYPE_PRINT</c></term>
+			/// <term>The resource is a shared printer.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCETYPE_ANY</c></term>
+			/// <term>
+			/// The resource matches more than one type, for example, a container of both print and disk resources, or a resource which is
+			/// neither print or disk.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint dwType;
+
+			/// <summary>
+			/// <para>
+			/// Set by the provider to indicate what display type a user interface should use to represent this resource. The following types
+			/// are defined.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>RESOURCEDISPLAYTYPE_NETWORK</c></term>
+			/// <term>The resource is a network provider.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCEDISPLAYTYPE_DOMAIN</c></term>
+			/// <term>The resource is a collection of servers.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCEDISPLAYTYPE_SERVER</c></term>
+			/// <term>The resource is a server.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCEDISPLAYTYPE_SHARE</c></term>
+			/// <term>The resource is a share point.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCEDISPLAYTYPE_DIRECTORY</c></term>
+			/// <term>The resource is a directory.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCEDISPLAYTYPE_GENERIC</c></term>
+			/// <term>The resource type is unspecified. This value is used by network providers that do not specify resource types.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint dwDisplayType;
+
+			/// <summary>
+			/// <para>
+			/// A bitmask that indicates how you can enumerate information about the resource. It is defined only if <c>dwScope</c> is set to
+			/// RESOURCE_GLOBALNET. The <c>dwUsage</c> field can contain one or more of the following flags.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>RESOURCEUSAGE_CONNECTABLE</c></term>
+			/// <term>
+			/// You can connect to the resource by calling NPAddConnection. If <c>dwType</c> is RESOURCETYPE_DISK, then, after you have
+			/// connected to the resource, you can use the file system APIs, such as FindFirstFile, and FindNextFile, to enumerate any files
+			/// and directories the resource contains.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>RESOURCEUSAGE_CONTAINER</c></term>
+			/// <term>
+			/// The resource is a container for other resources that can be enumerated by means of the NPOpenEnum, NPEnumResource, and
+			/// NPCloseEnum functions. The container may, however, be empty at the time the enumeration is made. In other words, the first
+			/// call to NPEnumResource may return WN_NO_MORE_ENTRIES.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint dwUsage;
+
+			/// <summary>
+			/// <para>
+			/// If <c>dwScope</c> is RESOURCE_CONNECTED, the <c>lpLocalName</c> field contains the name of a redirected device. If the
+			/// connection is a deviceless connection, this field contains <c>NULL</c>.
+			/// </para>
+			/// <para>If <c>dwScope</c> is not set to RESOURCE_CONNECTED, this field is undefined.</para>
+			/// </summary>
+			public IntPtr lpLocalName;
+
+			/// <summary>
+			/// If the enumerated item is a network resource, this field contains a remote network name. This name may be then passed to
+			/// NPAddConnection to make a network connection if <c>dwUsage</c> is set to RESOURCEUSAGE_CONNECTABLE. If the enumerated item is
+			/// a current connection, this field will refer to the remote network name that <c>lpLocalName</c> is connected to.
+			/// </summary>
+			public IntPtr lpRemoteName;
+
+			/// <summary>May be any provider-supplied comment associated with the enumerated item.</summary>
+			public IntPtr lpComment;
+
+			/// <summary>Specifies the name of the provider that owns this enumerated item.</summary>
+			public IntPtr lpProvider;
+		}
+
+		/// <summary>Defines the <see cref="ShellClipboardFormat.CFSTR_NETRESOURCES"/> clipboard format.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_nresarray typedef struct _NRESARRAY { UINT
 		// cItems; NETRESOURCE nr[1]; } NRESARRAY, *LPNRESARRAY;
 		[PInvokeData("shlobj_core.h", MSDNShortId = "261338c2-8fb4-4d10-8392-f9f6254a30ed")]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<NRESARRAY>), nameof(cItems))]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct NRESARRAY
 		{
@@ -387,7 +1082,8 @@ namespace Vanara.PInvoke
 			/// types) in the structure contain offsets instead of addresses.
 			/// </para>
 			/// </summary>
-			public IntPtr nr;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public NETRESOURCE[] nr;
 		}
 
 		/// <summary>
@@ -399,8 +1095,7 @@ namespace Vanara.PInvoke
 		/// <list type="number">
 		/// <item>
 		/// <term>
-		/// Create a bitmap of the size specified by <c>sizeDragImage</c> with a handle to a device context (HDC) that is compatible with
-		/// the screen.
+		/// Create a bitmap of the size specified by <c>sizeDragImage</c> with a handle to a device context (HDC) that is compatible with the screen.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -440,7 +1135,7 @@ namespace Vanara.PInvoke
 			/// from the upper-left corner of the drag image to the location of the cursor.
 			/// </para>
 			/// </summary>
-			public System.Drawing.Point ptOffset;
+			public POINT ptOffset;
 
 			/// <summary>
 			/// <para>Type: <c>HBITMAP</c></para>
@@ -457,46 +1152,52 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// Shell clipboard formats are used to identify the type of Shell data being transferred through the clipboard. Most Shell
-		/// clipboard formats identify a type of data, such as a list of file names or pointers to item identifier lists (PIDLs). However,
-		/// some formats are used for communication between source and target. They can expedite the data transfer process by supporting
-		/// Shell operations such as optimized move and delete_on_paste. Shell data is always contained in a data object that uses a
-		/// FORMATETC structure as a more general way to characterize data. The structure's cfFormat member is set to the clipboard format
-		/// for the particular item of data. The other members provide additional information, such as the data transfer mechanism. The data
-		/// is contained in an accompanying STGMEDIUM structure.
+		/// Shell clipboard formats are used to identify the type of Shell data being transferred through the clipboard. Most Shell clipboard
+		/// formats identify a type of data, such as a list of file names or pointers to item identifier lists (PIDLs). However, some formats
+		/// are used for communication between source and target. They can expedite the data transfer process by supporting Shell operations
+		/// such as optimized move and delete_on_paste. Shell data is always contained in a data object that uses a FORMATETC structure as a
+		/// more general way to characterize data. The structure's cfFormat member is set to the clipboard format for the particular item of
+		/// data. The other members provide additional information, such as the data transfer mechanism. The data is contained in an
+		/// accompanying STGMEDIUM structure.
 		/// </para>
 		/// <note type="note">Standard clipboard format identifiers have the form CF_XXX.A common example is CF_TEXT, which is used for
-		/// transferring ANSI text data.These identifiers have predefined values and can be used directly with FORMATETC structures. With
+		/// transferring ANSI text data. These identifiers have predefined values and can be used directly with FORMATETC structures. With
 		/// the exception of CF_HDROP, Shell format identifiers are not predefined. With the exception of DragWindow, they have the form
 		/// CFSTR_XXX.To differentiate these values from predefined formats, they are often referred to as simply formats. However, unlike
-		/// predefined formats, they must be registered by both source and target before they can be used to transfer data.To register a
-		/// Shell format, include the Shlobj.h header file and pass the CFSTR_XXX format identifier to RegisterClipboardFormat.This function
+		/// predefined formats, they must be registered by both source and target before they can be used to transfer data. To register a
+		/// Shell format, include the Shlobj.h header file and pass the CFSTR_XXX format identifier to RegisterClipboardFormat. This function
 		/// returns a valid clipboard format value, which can then be used as the cfFormat member of a FORMATETC structure.</note>
 		/// </summary>
 		public static class ShellClipboardFormat
 		{
+			/// <summary>Comma Separated Value</summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			public const string CF_CSV = "Csv";
+
 			/// <summary>HTML Format</summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UTF8Encoding), Formatter = typeof(ClipboardHtmlFormatter))]
 			public const string CF_HTML = "HTML Format";
-
-			/// <summary>Rich Text Format</summary>
-			public const string CF_RTF = "Rich Text Format";
-
-			/// <summary>Rich Text Format Without Objects</summary>
-			public const string CF_RTFNOOBJS = "Rich Text Format Without Objects";
 
 			/// <summary>RichEdit Text and Objects</summary>
 			public const string CF_RETEXTOBJ = "RichEdit Text and Objects";
 
-			/// <summary>Comma Separated Value</summary>
-			public const string CF_CSV = "Csv";
+			/// <summary>Rich Text Format</summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			public const string CF_RTF = "Rich Text Format";
+
+			/// <summary>Rich Text Format Without Objects</summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			public const string CF_RTFNOOBJS = "Rich Text Format Without Objects";
 
 			/// <summary>Undocumented.</summary>
 			public const string CFSTR_AUTOPLAY_SHELLIDLISTS = "Autoplay Enumerated IDList Array";
 
 			/// <summary>Undocumented.</summary>
+			[ClipCorrespondingType(typeof(DROPDESCRIPTION))]
 			public const string CFSTR_DROPDESCRIPTION = "DropDescription";
 
 			/// <summary>Undocumented.</summary>
+			[ClipCorrespondingType(typeof(FILE_ATTRIBUTES_ARRAY))]
 			public const string CFSTR_FILE_ATTRIBUTES_ARRAY = "File Attributes Array";
 
 			/// <summary>
@@ -507,88 +1208,93 @@ namespace Vanara.PInvoke
 			/// file can also be a storage or global memory object (TYMED_ISTORAGE or TYMED_HGLOBAL). The associated CFSTR_FILEDESCRIPTOR
 			/// format contains a FILEDESCRIPTOR structure for each file that specifies the file's name and attributes.
 			/// <para>
-			/// The target treats the data associated with a CFSTR_FILECONTENTS format as if it were a file.When the target calls
+			/// The target treats the data associated with a CFSTR_FILECONTENTS format as if it were a file. When the target calls
 			/// IDataObject::GetData to extract the data, it specifies a particular file by setting the lindex member of the FORMATETC
-			/// structure to the zero-based index of the file's FILEDESCRIPTOR structure in the accompanying CFSTR_FILEDESCRIPTOR format.
-			/// The target then uses the returned interface pointer or global memory handle to extract the data.
+			/// structure to the zero-based index of the file's FILEDESCRIPTOR structure in the accompanying CFSTR_FILEDESCRIPTOR format. The
+			/// target then uses the returned interface pointer or global memory handle to extract the data.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(IStream[]), TYMED.TYMED_ISTREAM)]
 			public const string CFSTR_FILECONTENTS = "FileContents";
 
 			/// <summary>
-			/// This format identifier is used with the CFSTR_FILECONTENTS format to transfer data as a group of files. These two formats
-			/// are the preferred way to transfer Shell objects that are not stored as file-system files. For example, these formats can be
-			/// used to transfer a group of email messages as individual files, even though each email is actually stored as a block of data
-			/// in a database. The data consists of an STGMEDIUM structure that contains a global memory object. The structure's hGlobal
-			/// member points to a FILEGROUPDESCRIPTOR structure that is followed by an array containing one FILEDESCRIPTOR structure for
-			/// each file in the group. For each FILEDESCRIPTOR structure, there is a separate CFSTR_FILECONTENTS format that contains the
-			/// contents of the file. To identify a particular file's CFSTR_FILECONTENTS format, set the lIndex value of the FORMATETC
-			/// structure to the zero-based index of the file's FILEDESCRIPTOR structure.
+			/// This format identifier is used with the CFSTR_FILECONTENTS format to transfer data as a group of files. These two formats are
+			/// the preferred way to transfer Shell objects that are not stored as file-system files. For example, these formats can be used
+			/// to transfer a group of email messages as individual files, even though each email is actually stored as a block of data in a
+			/// database. The data consists of an STGMEDIUM structure that contains a global memory object. The structure's hGlobal member
+			/// points to a FILEGROUPDESCRIPTOR structure that is followed by an array containing one FILEDESCRIPTOR structure for each file
+			/// in the group. For each FILEDESCRIPTOR structure, there is a separate CFSTR_FILECONTENTS format that contains the contents of
+			/// the file. To identify a particular file's CFSTR_FILECONTENTS format, set the lIndex value of the FORMATETC structure to the
+			/// zero-based index of the file's FILEDESCRIPTOR structure.
 			/// <para>
 			/// The CFSTR_FILEDESCRIPTOR format is commonly used to transfer data as if it were a group of files, regardless of how it is
 			/// actually stored. From the target's perspective, each CFSTR_FILECONTENTS format represents a single file and is treated
-			/// accordingly. However, the source can store the data in any way it chooses. While a CSFTR_FILECONTENTS format might
-			/// correspond to a single file, it could also, for example, represent data extracted by the source from a database or text document.
+			/// accordingly. However, the source can store the data in any way it chooses. While a CSFTR_FILECONTENTS format might correspond
+			/// to a single file, it could also, for example, represent data extracted by the source from a database or text document.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(FILEGROUPDESCRIPTOR), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
 			public const string CFSTR_FILEDESCRIPTORA = "FileGroupDescriptor";
 
 			/// <summary>
-			/// This format identifier is used with the CFSTR_FILECONTENTS format to transfer data as a group of files. These two formats
-			/// are the preferred way to transfer Shell objects that are not stored as file-system files. For example, these formats can be
-			/// used to transfer a group of email messages as individual files, even though each email is actually stored as a block of data
-			/// in a database. The data consists of an STGMEDIUM structure that contains a global memory object. The structure's hGlobal
-			/// member points to a FILEGROUPDESCRIPTOR structure that is followed by an array containing one FILEDESCRIPTOR structure for
-			/// each file in the group. For each FILEDESCRIPTOR structure, there is a separate CFSTR_FILECONTENTS format that contains the
-			/// contents of the file. To identify a particular file's CFSTR_FILECONTENTS format, set the lIndex value of the FORMATETC
-			/// structure to the zero-based index of the file's FILEDESCRIPTOR structure.
+			/// This format identifier is used with the CFSTR_FILECONTENTS format to transfer data as a group of files. These two formats are
+			/// the preferred way to transfer Shell objects that are not stored as file-system files. For example, these formats can be used
+			/// to transfer a group of email messages as individual files, even though each email is actually stored as a block of data in a
+			/// database. The data consists of an STGMEDIUM structure that contains a global memory object. The structure's hGlobal member
+			/// points to a FILEGROUPDESCRIPTOR structure that is followed by an array containing one FILEDESCRIPTOR structure for each file
+			/// in the group. For each FILEDESCRIPTOR structure, there is a separate CFSTR_FILECONTENTS format that contains the contents of
+			/// the file. To identify a particular file's CFSTR_FILECONTENTS format, set the lIndex value of the FORMATETC structure to the
+			/// zero-based index of the file's FILEDESCRIPTOR structure.
 			/// <para>
 			/// The CFSTR_FILEDESCRIPTOR format is commonly used to transfer data as if it were a group of files, regardless of how it is
 			/// actually stored. From the target's perspective, each CFSTR_FILECONTENTS format represents a single file and is treated
-			/// accordingly. However, the source can store the data in any way it chooses. While a CSFTR_FILECONTENTS format might
-			/// correspond to a single file, it could also, for example, represent data extracted by the source from a database or text document.
+			/// accordingly. However, the source can store the data in any way it chooses. While a CSFTR_FILECONTENTS format might correspond
+			/// to a single file, it could also, for example, represent data extracted by the source from a database or text document.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(FILEGROUPDESCRIPTOR), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_FILEDESCRIPTORW = "FileGroupDescriptorW";
 
 			/// <summary>
 			/// This format identifier is used to transfer a single file. The data consists of an STGMEDIUM structure that contains a global
-			/// memory object. The structure's hGlobal member points to a single null-terminated string containing the file's fully
-			/// qualified file path. This format has been superseded by CF_HDROP, but it is supported for backward compatibility with
-			/// Windows 3.1 applications.
+			/// memory object. The structure's hGlobal member points to a single null-terminated string containing the file's fully qualified
+			/// file path. This format has been superseded by CF_HDROP, but it is supported for backward compatibility with Windows 3.1 applications.
 			/// </summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
 			public const string CFSTR_FILENAMEA = "FileName";
 
 			/// <summary>
 			/// This format identifier is used when a group of files in CF_HDROP format is being renamed as well as transferred. The data
 			/// consists of an STGMEDIUM structure that contains a global memory object. The structure's hGlobal member points to a double
-			/// null-terminated character array. This array contains a new name for each file, in the same order that the files are listed
-			/// in the accompanying CF_HDROP format. The format of the character array is the same as that used by CF_HDROP to list the
+			/// null-terminated character array. This array contains a new name for each file, in the same order that the files are listed in
+			/// the accompanying CF_HDROP format. The format of the character array is the same as that used by CF_HDROP to list the
 			/// transferred files.
 			/// </summary>
+			[ClipCorrespondingType(typeof(string[]), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
 			public const string CFSTR_FILENAMEMAPA = "FileNameMap";
 
 			/// <summary>
 			/// This format identifier is used when a group of files in CF_HDROP format is being renamed as well as transferred. The data
 			/// consists of an STGMEDIUM structure that contains a global memory object. The structure's hGlobal member points to a double
-			/// null-terminated character array. This array contains a new name for each file, in the same order that the files are listed
-			/// in the accompanying CF_HDROP format. The format of the character array is the same as that used by CF_HDROP to list the
+			/// null-terminated character array. This array contains a new name for each file, in the same order that the files are listed in
+			/// the accompanying CF_HDROP format. The format of the character array is the same as that used by CF_HDROP to list the
 			/// transferred files.
 			/// </summary>
+			[ClipCorrespondingType(typeof(string[]), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_FILENAMEMAPW = "FileNameMapW";
 
 			/// <summary>
 			/// This format identifier is used to transfer a single file. The data consists of an STGMEDIUM structure that contains a global
-			/// memory object. The structure's hGlobal member points to a single null-terminated string containing the file's fully
-			/// qualified file path. This format has been superseded by CF_HDROP, but it is supported for backward compatibility with
-			/// Windows 3.1 applications.
+			/// memory object. The structure's hGlobal member points to a single null-terminated string containing the file's fully qualified
+			/// file path. This format has been superseded by CF_HDROP, but it is supported for backward compatibility with Windows 3.1 applications.
 			/// </summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_FILENAMEW = "FileNameW";
 
 			/// <summary>
 			/// This format identifier is used by a data object to indicate whether it is in a drag-and-drop loop. The data is an STGMEDIUM
-			/// structure that contains a global memory object. The structure's hGlobal member points to a DWORD value. If the DWORD value
-			/// is nonzero, the data object is within a drag-and-drop loop. If the value is set to zero, the data object is not within a
+			/// structure that contains a global memory object. The structure's hGlobal member points to a DWORD value. If the DWORD value is
+			/// nonzero, the data object is within a drag-and-drop loop. If the value is set to zero, the data object is not within a
 			/// drag-and-drop loop.
 			/// <para>
 			/// Some drop targets might call IDataObject::GetData and attempt to extract data while the object is still within the
@@ -599,25 +1305,29 @@ namespace Vanara.PInvoke
 			/// set CFSTR_INDRAGLOOP, it should act as if the value is set to zero.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(BOOL))]
 			public const string CFSTR_INDRAGLOOP = "InShellDragLoop";
 
 			/// <summary>
 			/// This format identifier replaces CFSTR_SHELLURL (deprecated). If you want your application to manipulate clipboard URLs, use
-			/// CFSTR_INETURL instead of CFSTR_SHELLURL (deprecated). This format gives the best clipboard representation of a single URL.
-			/// If UNICODE is not defined, the application retrieves the CF_TEXT/CFSTR_SHELLURL version of the URL. If UNICODE is defined,
-			/// the application retrieves the CF_UNICODE version of the URL.
+			/// CFSTR_INETURL instead of CFSTR_SHELLURL (deprecated). This format gives the best clipboard representation of a single URL. If
+			/// UNICODE is not defined, the application retrieves the CF_TEXT/CFSTR_SHELLURL version of the URL. If UNICODE is defined, the
+			/// application retrieves the CF_UNICODE version of the URL.
 			/// </summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
 			public const string CFSTR_INETURLA = CFSTR_SHELLURL;
 
 			/// <summary>
 			/// This format identifier replaces CFSTR_SHELLURL (deprecated). If you want your application to manipulate clipboard URLs, use
-			/// CFSTR_INETURL instead of CFSTR_SHELLURL (deprecated). This format gives the best clipboard representation of a single URL.
-			/// If UNICODE is not defined, the application retrieves the CF_TEXT/CFSTR_SHELLURL version of the URL. If UNICODE is defined,
-			/// the application retrieves the CF_UNICODE version of the URL.
+			/// CFSTR_INETURL instead of CFSTR_SHELLURL (deprecated). This format gives the best clipboard representation of a single URL. If
+			/// UNICODE is not defined, the application retrieves the CF_TEXT/CFSTR_SHELLURL version of the URL. If UNICODE is defined, the
+			/// application retrieves the CF_UNICODE version of the URL.
 			/// </summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_INETURLW = "UniformResourceLocatorW";
 
 			/// <summary>Undocumented.</summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_INVOKECOMMAND_DROPPARAM = "InvokeCommand DropParam";
 
 			/// <summary>
@@ -626,21 +1336,22 @@ namespace Vanara.PInvoke
 			/// structure's hGlobal member points to a DWORD containing a DROPEFFECT value.
 			/// <para>
 			/// The CFSTR_PERFORMEDDROPEFFECT format identifier was intended to allow the target to indicate to the data object what
-			/// operation actually took place.However, the Shell uses optimized moves for file system objects whenever possible.In that
-			/// case, the Shell normally sets the CFSTR_PERFORMEDDROPEFFECT value to DROPEFFECT_NONE, to indicate to the data object that
-			/// the original data has been deleted. Thus, the source cannot use the CFSTR_PERFORMEDDROPEFFECT value to determine which
-			/// operation has taken place. While most sources do not need this information, there are some exceptions. For instance, even
-			/// though optimized moves eliminate the need for a source to delete any data, the source might still need to update a related
-			/// database to indicate that the files have been moved or copied.
+			/// operation actually took place.However, the Shell uses optimized moves for file system objects whenever possible.In that case,
+			/// the Shell normally sets the CFSTR_PERFORMEDDROPEFFECT value to DROPEFFECT_NONE, to indicate to the data object that the
+			/// original data has been deleted. Thus, the source cannot use the CFSTR_PERFORMEDDROPEFFECT value to determine which operation
+			/// has taken place. While most sources do not need this information, there are some exceptions. For instance, even though
+			/// optimized moves eliminate the need for a source to delete any data, the source might still need to update a related database
+			/// to indicate that the files have been moved or copied.
 			/// </para>
 			/// <para>
 			/// If a source needs to know which operation took place, it can call the data object's IDataObject::GetData method and request
 			/// the CFSTR_LOGICALPERFORMEDDROPEFFECT format. This format essentially reflects what happens from the user's point of view
-			/// after the operation is complete.If a new file is created and the original file is deleted, the user sees a move operation
+			/// after the operation is complete. If a new file is created and the original file is deleted, the user sees a move operation
 			/// and the format's data value is set to DROPEFFECT_MOVE. If the original file is still there, the user sees a copy operation
-			/// and the format's data value is set to DROPEFFECT_COPY.If a link was created, the format's data value will be DROPEFFECT_LINK.
+			/// and the format's data value is set to DROPEFFECT_COPY. If a link was created, the format's data value will be DROPEFFECT_LINK.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(DROPEFFECT))]
 			public const string CFSTR_LOGICALPERFORMEDDROPEFFECT = "Logical Performed DropEffect";
 
 			/// <summary>
@@ -650,7 +1361,7 @@ namespace Vanara.PInvoke
 			/// points to a single null-terminated string containing the fully qualified file path. The path string must end with a '\'
 			/// character, followed by the terminating NULL.
 			/// <para>
-			/// Prior to Windows 2000, volumes could be mounted only on drive letters.For Windows 2000 and later systems with an NTFS
+			/// Prior to Windows 2000, volumes could be mounted only on drive letters. For Windows 2000 and later systems with an NTFS
 			/// formatted drive, you can also mount volumes on empty folders. This feature allows a volume to be mounted without taking up a
 			/// drive letter. The mounted volume can use any currently supported format, including FAT, FAT32, NTFS, and CDFS.
 			/// </para>
@@ -666,30 +1377,32 @@ namespace Vanara.PInvoke
 			/// folders as well as drive letters, the handler must be able to understand both the CSFTR_MOUNTEDVOLUME and CF_HDROP formats.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
 			public const string CFSTR_MOUNTEDVOLUME = "MountedVolume";
 
 			/// <summary>
 			/// This format identifier is used when transferring network resources, such as a domain or server. The data is an STGMEDIUM
-			/// structure that contains a global memory object. The structure's hGlobal member points to a NRESARRAY structure. The nr
-			/// member of that structure indicates a NETRESOURCE structure whose lpRemoteName member contains a null-terminated string
-			/// identifying the network resource. The drop target can then use the data with any of the Windows Networking (WNet) API
-			/// functions, such as WNetAddConnection, to perform network operations on the object.
+			/// structure that contains a global memory object. The structure's hGlobal member points to a NRESARRAY structure. The nr member
+			/// of that structure indicates a NETRESOURCE structure whose lpRemoteName member contains a null-terminated string identifying
+			/// the network resource. The drop target can then use the data with any of the Windows Networking (WNet) API functions, such as
+			/// WNetAddConnection, to perform network operations on the object.
 			/// </summary>
+			[ClipCorrespondingType(typeof(NRESARRAY))]
 			public const string CFSTR_NETRESOURCES = "Net Resource";
 
 			/// <summary>
 			/// This format identifier is used by the target to inform the data object, through its IDataObject::SetData method, that a
-			/// delete-on-paste operation succeeded. The data is an STGMEDIUM structure that contains a global memory object. The
-			/// structure's hGlobal member points to a DWORD containing a DROPEFFECT value. This format is used to notify the data object
-			/// that it should complete the cut operation and delete the original data, if necessary. For more information, see
-			/// Delete-on-Paste Operations.
+			/// delete-on-paste operation succeeded. The data is an STGMEDIUM structure that contains a global memory object. The structure's
+			/// hGlobal member points to a DWORD containing a DROPEFFECT value. This format is used to notify the data object that it should
+			/// complete the cut operation and delete the original data, if necessary. For more information, see Delete-on-Paste Operations.
 			/// </summary>
+			[ClipCorrespondingType(typeof(DROPEFFECT))]
 			public const string CFSTR_PASTESUCCEEDED = "Paste Succeeded";
 
 			/// <summary>
-			/// This format identifier is used by the target to inform the data object through its IDataObject::SetData method of the
-			/// outcome of a data transfer. The data is an STGMEDIUM structure that contains a global memory object. The structure's hGlobal
-			/// member points to a DWORD set to the appropriate DROPEFFECT value, normally DROPEFFECT_MOVE or DROPEFFECT_COPY.
+			/// This format identifier is used by the target to inform the data object through its IDataObject::SetData method of the outcome
+			/// of a data transfer. The data is an STGMEDIUM structure that contains a global memory object. The structure's hGlobal member
+			/// points to a DWORD set to the appropriate DROPEFFECT value, normally DROPEFFECT_MOVE or DROPEFFECT_COPY.
 			/// <para>
 			/// This format is normally used when the outcome of an operation can be either move or copy, such as in an optimized move or
 			/// delete-on-paste operation.It provides a reliable way for the target to tell the data object what actually happened. It was
@@ -697,6 +1410,7 @@ namespace Vanara.PInvoke
 			/// The CFSTR_PERFORMEDDROPEFFECT format is the reliable way to indicate that an unoptimized move has taken place.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(DROPEFFECT))]
 			public const string CFSTR_PERFORMEDDROPEFFECT = "Performed DropEffect";
 
 			/// <summary>Undocumented.</summary>
@@ -704,10 +1418,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// <para>
-			/// This format identifier is used by the source to specify whether its preferred method of data transfer is move or copy. A
-			/// drop target requests this format by calling the data object's IDataObject::GetData method. The data is an STGMEDIUM
-			/// structure that contains a global memory object. The structure's hGlobal member points to a DWORD value. This value is set to
-			/// DROPEFFECT_MOVE if a move operation is preferred or DROPEFFECT_COPY if a copy operation is preferred.
+			/// This format identifier is used by the source to specify whether its preferred method of data transfer is move or copy. A drop
+			/// target requests this format by calling the data object's IDataObject::GetData method. The data is an STGMEDIUM structure that
+			/// contains a global memory object. The structure's hGlobal member points to a DWORD value. This value is set to DROPEFFECT_MOVE
+			/// if a move operation is preferred or DROPEFFECT_COPY if a copy operation is preferred.
 			/// </para>
 			/// <para>
 			/// This feature is used when a source can support either a move or copy operation. It uses the CFSTR_PREFERREDDROPEFFECT format
@@ -726,12 +1440,13 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>
 			/// Before Microsoft Internet Explorer 4.0, an application indicated that it was transferring shortcut file types by setting
-			/// FD_LINKUI in the dwFlags member of the FILEDESCRIPTOR structure. Targets then had to use a potentially time-consuming call
-			/// to IDataObject::GetData to find out if the FD_LINKUI flag was set. Now, the preferred way to indicate that shortcuts are
-			/// being transferred is to use the CFSTR_PREFERREDDROPEFFECT format set to DROPEFFECT_LINK. However, for backward compatibility
-			/// with older systems, sources should still set the FD_LINKUI flag.
+			/// FD_LINKUI in the dwFlags member of the FILEDESCRIPTOR structure. Targets then had to use a potentially time-consuming call to
+			/// IDataObject::GetData to find out if the FD_LINKUI flag was set. Now, the preferred way to indicate that shortcuts are being
+			/// transferred is to use the CFSTR_PREFERREDDROPEFFECT format set to DROPEFFECT_LINK. However, for backward compatibility with
+			/// older systems, sources should still set the FD_LINKUI flag.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(DROPEFFECT))]
 			public const string CFSTR_PREFERREDDROPEFFECT = "Preferred DropEffect";
 
 			/// <summary>
@@ -740,9 +1455,11 @@ namespace Vanara.PInvoke
 			/// CF_HDROP. However, the pFiles member of the DROPFILES structure contains one or more friendly names of printers instead of
 			/// file paths.
 			/// </summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
 			public const string CFSTR_PRINTERGROUP = "PrinterFriendlyName";
 
 			/// <summary>Undocumented.</summary>
+			[ClipCorrespondingType(typeof(Guid))]
 			public const string CFSTR_SHELLDROPHANDLER = "DropHandlerCLSID";
 
 			/// <summary>
@@ -754,6 +1471,7 @@ namespace Vanara.PInvoke
 			///#define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)-&gt;aoffset[i+1])</code>
 			///   <note type="note">The value that is returned by these macros is a pointer to the PIDL's ITEMIDLIST structure. Since these structures vary in length, you must determine the end of the structure by walking through each of the ITEMIDLIST structure's SHITEMID structures until you reach the two-byte NULL that marks the end.</note>
 			/// </summary>
+			[ClipCorrespondingType(typeof(CIDA))]
 			public const string CFSTR_SHELLIDLIST = "Shell IDList Array";
 
 			/// <summary>
@@ -764,9 +1482,11 @@ namespace Vanara.PInvoke
 			/// structures specify the locations of the individual objects relative to the group's position. They must be in the same order
 			/// as that used to list the objects in the associated format.
 			/// </summary>
+			[ClipCorrespondingType(typeof(POINT[]))]
 			public const string CFSTR_SHELLIDLISTOFFSET = "Shell Object Offsets";
 
-			/// <summary><note type="note">This format identifier has been deprecated; use CFSTR_INETURL instead.</note></summary>
+			/// <summary><note type="note">This format identifier has been deprecated; use <see cref="CFSTR_INETURLA"/> instead.</note></summary>
+			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
 			public const string CFSTR_SHELLURL = "UniformResourceLocator";
 
 			/// <summary>
@@ -780,6 +1500,7 @@ namespace Vanara.PInvoke
 			/// Bin's CLSID (CLSID_RecycleBin). The source can then delete the original object.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(Guid))]
 			public const string CFSTR_TARGETCLSID = "TargetCLSID";
 
 			/// <summary>
@@ -795,10 +1516,90 @@ namespace Vanara.PInvoke
 			/// IInternetSecurityManager::ProcessUrlAction method, using the PUAF_ENFORCERESTRICTED flag.
 			/// </para>
 			/// </summary>
+			[ClipCorrespondingType(typeof(uint))]
 			public const string CFSTR_UNTRUSTEDDRAGDROP = "UntrustedDragDrop";
 
 			/// <summary>Undocumented.</summary>
+			[ClipCorrespondingType(typeof(uint))]
 			public const string CFSTR_ZONEIDENTIFIER = "ZoneIdentifier";
+		}
+
+		internal class ClipboardBytesFormatter : IClipboardFormatter
+		{
+			public static ClipboardBytesFormatter Instance { get; } = new();
+
+			public virtual object Read(IntPtr hGlobal) => new SafeMoveableHGlobalHandle(hGlobal, false).GetBytes();
+
+			public virtual IntPtr Write(object value) => new SafeMoveableHGlobalHandle((byte[])value).TakeOwnership();
+		}
+
+		internal class ClipboardHDROPFormatter : IClipboardFormatter
+		{
+			public static ClipboardHDROPFormatter Instance { get; } = new();
+
+			public object Read(IntPtr hGlobal)
+			{
+				SafeMoveableHGlobalHandle h = new(hGlobal, false);
+				DROPFILES df = h.ToStructure<DROPFILES>();
+				return h.ToStringEnum(df.fWide ? CharSet.Unicode : CharSet.Ansi, Marshal.SizeOf(typeof(DROPFILES))).ToArray();
+			}
+
+			public IntPtr Write(object value) => Write(value, Marshal.SystemDefaultCharSize != 1);
+
+			public IntPtr Write(object value, bool wideChar)
+			{
+				SafeMoveableHGlobalHandle dfmem = SafeMoveableHGlobalHandle.CreateFromStructure(new DROPFILES { pFiles = (uint)Marshal.SizeOf(typeof(DROPFILES)), fWide = wideChar });
+				new NativeMemoryStream(dfmem) { CharSet = wideChar ? CharSet.Unicode : CharSet.Ansi }.Write((string[])value);
+				return dfmem.TakeOwnership();
+			}
+		}
+
+		internal class ClipboardHtmlFormatter : ClipboardBytesFormatter
+		{
+			public new static ClipboardHtmlFormatter Instance { get; } = new();
+
+			public override object Read(IntPtr hGlobal) => GetHtmlFromClipboard((byte[])base.Read(hGlobal));
+
+			public override IntPtr Write(object value) => base.Write(FormatHtmlForClipboard((string)value));
+		}
+		internal class ClipboardSerializedFormatter : IClipboardFormatter
+		{
+			private static readonly byte[] guid = new Guid("FD9EA796-3B13-4370-A679-56106BB288FB").ToByteArray();
+			public static ClipboardSerializedFormatter Instance { get; } = new();
+
+			public object Read(IntPtr hGlobal)
+			{
+				byte[] bytes = (byte[])ClipboardBytesFormatter.Instance.Read(hGlobal);
+				if (bytes.Length <= guid.Length || !Equals(bytes, guid, guid.Length))
+				{
+					throw new InvalidDataException();
+				}
+
+				using MemoryStream mem = new(bytes, false) { Position = guid.Length };
+				return new BinaryFormatter() { AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple }.Deserialize(mem);
+
+				static bool Equals(byte[] bytes, byte[] guid, int length)
+				{
+					for (int i = 0; i < length; i++)
+					{
+						if (bytes[i] != guid[i])
+						{
+							return false;
+						}
+					}
+
+					return true;
+				}
+			}
+
+			public IntPtr Write(object value)
+			{
+				System.Runtime.Serialization.ISerializable ser = (System.Runtime.Serialization.ISerializable)value;
+				MemoryStream ms = new();
+				new BinaryWriter(ms).Write(guid);
+				new BinaryFormatter().Serialize(ms, ser);
+				return ClipboardBytesFormatter.Instance.Write(ms.GetBuffer());
+			}
 		}
 	}
 }

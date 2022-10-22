@@ -105,7 +105,7 @@ namespace Vanara.PInvoke.Tests
 				}, Throws.Nothing);
 				var rParams = Instance.CreateRenderingParams();
 				pFF.Item.GetRecommendedRenderingMode(9f, 72f, DWRITE_MEASURING_MODE.DWRITE_MEASURING_MODE_NATURAL, rParams).WriteValues();
-				var hMon = User32.MonitorFromPoint(System.Drawing.Point.Empty, User32.MonitorFlags.MONITOR_DEFAULTTOPRIMARY);
+				var hMon = User32.MonitorFromPoint(POINT.Empty, User32.MonitorFlags.MONITOR_DEFAULTTOPRIMARY);
 				rParams = Instance.CreateMonitorRenderingParams(hMon);
 				pFF.Item.GetRecommendedRenderingMode(9f, 72f, DWRITE_MEASURING_MODE.DWRITE_MEASURING_MODE_NATURAL, rParams).WriteValues();
 				rParams = Instance.CreateCustomRenderingParams(2.2f, 1f, 1f, DWRITE_PIXEL_GEOMETRY.DWRITE_PIXEL_GEOMETRY_BGR, DWRITE_RENDERING_MODE.DWRITE_RENDERING_MODE_ALIASED);

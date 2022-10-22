@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke
@@ -300,8 +301,8 @@ namespace Vanara.PInvoke
 			new HRESULT GetCurFolder(ref PIDL ppidl);
 
 			/// <summary>
-			/// Initializes a folder and specifies its location in the namespace. If the folder is a shortcut, this method also specifies
-			/// the location of the target folder.
+			/// Initializes a folder and specifies its location in the namespace. If the folder is a shortcut, this method also specifies the
+			/// location of the target folder.
 			/// </summary>
 			/// <param name="pbc">
 			/// <para>Type: <c>IBindCtx*</c></para>
@@ -315,8 +316,10 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </param>
 			/// <param name="ppfti">
-			/// <para>Type: <c>const PERSIST_FOLDER_TARGET_INFO*</c></para>
-			/// <para>A pointer to a PERSIST_FOLDER_TARGET_INFO structure that specifies the location of the target folder and its attributes.</para>
+			/// <para>Type: <c>const <see cref="PERSIST_FOLDER_TARGET_INFO"/>*</c></para>
+			/// <para>
+			/// A pointer to a <see cref="PERSIST_FOLDER_TARGET_INFO"/> structure that specifies the location of the target folder and its attributes.
+			/// </para>
 			/// <para>If ppfti points to a valid structure, pidlRoot represents a folder shortcut.</para>
 			/// <para>
 			/// If ppfti is set to <c>NULL</c>, pidlRoot represents a normal folder. In that case, <c>InitializeEx</c> should behave as if
@@ -333,7 +336,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ipersistfolder3-initializeex HRESULT
 			// InitializeEx( IBindCtx *pbc, PCIDLIST_ABSOLUTE pidlRoot, const PERSIST_FOLDER_TARGET_INFO *ppfti );
-			void InitializeEx([In] IBindCtx pbc, [In] PIDL pidlRoot, in PERSIST_FOLDER_TARGET_INFO ppfti);
+			void InitializeEx([In, Optional] IBindCtx pbc, [In] PIDL pidlRoot, [In, Optional] IntPtr ppfti);
 
 			/// <summary>Provides the location and attributes of a folder shortcut's target folder.</summary>
 			/// <returns>
@@ -347,6 +350,36 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ipersistfolder3-getfoldertargetinfo HRESULT
 			// GetFolderTargetInfo( PERSIST_FOLDER_TARGET_INFO *ppfti );
 			PERSIST_FOLDER_TARGET_INFO GetFolderTargetInfo();
+		}
+
+		/// <summary>
+		/// Initializes a folder and specifies its location in the namespace. If the folder is a shortcut, this method also specifies the
+		/// location of the target folder.
+		/// </summary>
+		/// <param name="pf3">The IPersistFolder3 instance.</param>
+		/// <param name="pbc">
+		/// <para>Type: <c>IBindCtx*</c></para>
+		/// <para>A pointer to an IBindCtx object that provides the bind context. This parameter can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pidlRoot">
+		/// <para>Type: <c>LPCITEMIDLIST</c></para>
+		/// <para>
+		/// A pointer to a fully qualified PIDL that specifies the absolute location of a folder or folder shortcut. The calling application
+		/// is responsible for allocating and freeing this PIDL.
+		/// </para>
+		/// </param>
+		/// <param name="pfti">
+		/// <para>A <see cref="PERSIST_FOLDER_TARGET_INFO"/> structure that specifies the location of the target folder and its attributes.</para>
+		/// <para>If ppfti points to a valid structure, pidlRoot represents a folder shortcut.</para>
+		/// </param>
+		/// <remarks>
+		/// This function is an extended version of IPersistFolder::Initialize. It allows the Shell to initialize folder shortcuts as well as
+		/// normal folders.
+		/// </remarks>
+		public static void InitializeEx(this IPersistFolder3 pf3, [In, Optional] IBindCtx pbc, [In] PIDL pidlRoot, in PERSIST_FOLDER_TARGET_INFO pfti)
+		{
+			using SafeCoTaskMemStruct<PERSIST_FOLDER_TARGET_INFO> ppfti = new(pfti);
+			pf3.InitializeEx(pbc, pidlRoot, ppfti);
 		}
 
 		/// <summary>

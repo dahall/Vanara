@@ -254,6 +254,16 @@ namespace Vanara.PInvoke
 			ALG_TYPE_THIRDPARTY = (8 << 9),
 		}
 
+		/// <summary>Indicates which nested union member of CERT_STRONG_SIGN_PARA points to the strong signature information.</summary>
+		public enum CERT_INFO_CHOICE : uint
+		{
+			/// <summary>Specifies the pSerializedInfo member of CERT_STRONG_SIGN_PARA.</summary>
+			CERT_STRONG_SIGN_SERIALIZED_INFO_CHOICE = 1,
+
+			/// <summary>Specifies the pszOID member of CERT_STRONG_SIGN_PARA.</summary>
+			CERT_STRONG_SIGN_OID_INFO_CHOICE = 2,
+		}
+
 		/// <summary>Values used by CertFindType.</summary>
 		public enum CertCompareFunction : ushort
 		{
@@ -2173,7 +2183,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			[FieldOffset(4)]
-			public uint dwInfoChoice;
+			public CERT_INFO_CHOICE dwInfoChoice;
 
 			/// <summary>Reserved.</summary>
 			[FieldOffset(8)]

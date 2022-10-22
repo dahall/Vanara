@@ -813,6 +813,12 @@ namespace Vanara.PInvoke
 			/// <summary>Returns the data as a 32-bit number for headers whose value is a number, such as the status code.</summary>
 			HTTP_QUERY_FLAG_NUMBER = 0x20000000,
 
+			/// <summary>
+			/// If this bit is set in the dwInfoLevel parameter of HttpQueryInfo(), then the values from several headers of the same name
+			/// will be combined using comma as the delimiter.
+			/// </summary>
+			HTTP_QUERY_FLAG_COALESCE_WITH_COMMA = 0x40000000,
+
 			/// <summary>Queries request headers only.</summary>
 			HTTP_QUERY_FLAG_REQUEST_HEADERS = 0x80000000,
 
@@ -821,6 +827,154 @@ namespace Vanara.PInvoke
 			/// headers whose value is a date/time string, such as "Last-Modified-Time".
 			/// </summary>
 			HTTP_QUERY_FLAG_SYSTEMTIME = 0x40000000,
+		}
+
+		/// <summary>The HTTP status codes returned by servers on the Internet.</summary>
+		// https://docs.microsoft.com/en-us/windows/win32/wininet/http-status-codes
+		[PInvokeData("wininet.h")]
+		public enum HTTP_STATUS : uint
+		{
+			/// <summary>The request can be continued.</summary>
+			HTTP_STATUS_CONTINUE = 100,
+
+			/// <summary>The server has switched protocols in an upgrade header.</summary>
+			HTTP_STATUS_SWITCH_PROTOCOLS = 101,
+
+			/// <summary>The request completed successfully.</summary>
+			HTTP_STATUS_OK = 200,
+
+			/// <summary>The request has been fulfilled and resulted in the creation of a new resource.</summary>
+			HTTP_STATUS_CREATED = 201,
+
+			/// <summary>The request has been accepted for processing, but the processing has not been completed.</summary>
+			HTTP_STATUS_ACCEPTED = 202,
+
+			/// <summary>The returned meta information in the entity-header is not the definitive set available from the origin server.</summary>
+			HTTP_STATUS_PARTIAL = 203,
+
+			/// <summary>The server has fulfilled the request, but there is no new information to send back.</summary>
+			HTTP_STATUS_NO_CONTENT = 204,
+
+			/// <summary>
+			/// The request has been completed, and the client program should reset the document view that caused the request to be sent to
+			/// allow the user to easily initiate another input action.
+			/// </summary>
+			HTTP_STATUS_RESET_CONTENT = 205,
+
+			/// <summary>The server has fulfilled the partial GET request for the resource.</summary>
+			HTTP_STATUS_PARTIAL_CONTENT = 206,
+
+			/// <summary>The server couldn't decide what to return.</summary>
+			HTTP_STATUS_AMBIGUOUS = 300,
+
+			/// <summary>
+			/// The requested resource has been assigned to a new permanent URI (Uniform Resource Identifier), and any future references to
+			/// this resource should be done using one of the returned URIs.
+			/// </summary>
+			HTTP_STATUS_MOVED = 301,
+
+			/// <summary>The requested resource resides temporarily under a different URI (Uniform Resource Identifier).</summary>
+			HTTP_STATUS_REDIRECT = 302,
+
+			/// <summary>
+			/// The response to the request can be found under a different URI (Uniform Resource Identifier) and should be retrieved using a
+			/// GET HTTP verb on that resource.
+			/// </summary>
+			HTTP_STATUS_REDIRECT_METHOD = 303,
+
+			/// <summary>The requested resource has not been modified.</summary>
+			HTTP_STATUS_NOT_MODIFIED = 304,
+
+			/// <summary>The requested resource must be accessed through the proxy given by the location field.</summary>
+			HTTP_STATUS_USE_PROXY = 305,
+
+			/// <summary>The redirected request keeps the same HTTP verb. HTTP/1.1 behavior.</summary>
+			HTTP_STATUS_REDIRECT_KEEP_VERB = 307,
+
+			/// <summary>The request could not be processed by the server due to invalid syntax.</summary>
+			HTTP_STATUS_BAD_REQUEST = 400,
+
+			/// <summary>The requested resource requires user authentication.</summary>
+			HTTP_STATUS_DENIED = 401,
+
+			/// <summary>Not currently implemented in the HTTP protocol.</summary>
+			HTTP_STATUS_PAYMENT_REQ = 402,
+
+			/// <summary>The server understood the request, but is refusing to fulfill it.</summary>
+			HTTP_STATUS_FORBIDDEN = 403,
+
+			/// <summary>The server has not found anything matching the requested URI (Uniform Resource Identifier).</summary>
+			HTTP_STATUS_NOT_FOUND = 404,
+
+			/// <summary>The HTTP verb used is not allowed.</summary>
+			HTTP_STATUS_BAD_METHOD = 405,
+
+			/// <summary>No responses acceptable to the client were found.</summary>
+			HTTP_STATUS_NONE_ACCEPTABLE = 406,
+
+			/// <summary>Proxy authentication required.</summary>
+			HTTP_STATUS_PROXY_AUTH_REQ = 407,
+
+			/// <summary>The server timed out waiting for the request.</summary>
+			HTTP_STATUS_REQUEST_TIMEOUT = 408,
+
+			/// <summary>
+			/// The request could not be completed due to a conflict with the current state of the resource. The user should resubmit with
+			/// more information.
+			/// </summary>
+			HTTP_STATUS_CONFLICT = 409,
+
+			/// <summary>The requested resource is no longer available at the server, and no forwarding address is known.</summary>
+			HTTP_STATUS_GONE = 410,
+
+			/// <summary>The server refuses to accept the request without a defined content length.</summary>
+			HTTP_STATUS_LENGTH_REQUIRED = 411,
+
+			/// <summary>
+			/// The precondition given in one or more of the request header fields evaluated to false when it was tested on the server.
+			/// </summary>
+			HTTP_STATUS_PRECOND_FAILED = 412,
+
+			/// <summary>
+			/// The server is refusing to process a request because the request entity is larger than the server is willing or able to process.
+			/// </summary>
+			HTTP_STATUS_REQUEST_TOO_LARGE = 413,
+
+			/// <summary>
+			/// The server is refusing to service the request because the request URI (Uniform Resource Identifier) is longer than the server
+			/// is willing to interpret.
+			/// </summary>
+			HTTP_STATUS_URI_TOO_LONG = 414,
+
+			/// <summary>
+			/// The server is refusing to service the request because the entity of the request is in a format not supported by the requested
+			/// resource for the requested method.
+			/// </summary>
+			HTTP_STATUS_UNSUPPORTED_MEDIA = 415,
+
+			/// <summary>The request should be retried after doing the appropriate action.</summary>
+			HTTP_STATUS_RETRY_WITH = 449,
+
+			/// <summary>The server encountered an unexpected condition that prevented it from fulfilling the request.</summary>
+			HTTP_STATUS_SERVER_ERROR = 500,
+
+			/// <summary>The server does not support the functionality required to fulfill the request.</summary>
+			HTTP_STATUS_NOT_SUPPORTED = 501,
+
+			/// <summary>
+			/// The server, while acting as a gateway or proxy, received an invalid response from the upstream server it accessed in
+			/// attempting to fulfill the request.
+			/// </summary>
+			HTTP_STATUS_BAD_GATEWAY = 502,
+
+			/// <summary>The service is temporarily overloaded.</summary>
+			HTTP_STATUS_SERVICE_UNAVAIL = 503,
+
+			/// <summary>The request was timed out waiting for a gateway.</summary>
+			HTTP_STATUS_GATEWAY_TIMEOUT = 504,
+
+			/// <summary>The server does not support, or refuses to support, the HTTP protocol version that was used in the request message.</summary>
+			HTTP_STATUS_VERSION_NOT_SUP = 505,
 		}
 
 		/// <summary>Controls canonicalization.</summary>
@@ -3348,39 +3502,37 @@ namespace Vanara.PInvoke
 		/// </returns>
 		public static IEnumerable<INTERNET_CACHE_ENTRY_INFO_MGD> FindUrlCacheEntries(string lpszUrlSearchPattern = null)
 		{
-			using (var mem = new SafeHGlobalHandle(1024))
+			using var mem = new SafeHGlobalHandle(1024);
+			uint sz = mem.Size;
+			var h = FindFirstUrlCacheEntry(lpszUrlSearchPattern, mem, ref sz);
+			if (h.IsNull)
 			{
-				uint sz = mem.Size;
-				var h = FindFirstUrlCacheEntry(lpszUrlSearchPattern, mem, ref sz);
-				if (h.IsNull)
+				Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+				mem.Size = sz;
+				h = FindFirstUrlCacheEntry(lpszUrlSearchPattern, mem, ref sz);
+				if (h.IsNull) Win32Error.ThrowLastError();
+			}
+			yield return new INTERNET_CACHE_ENTRY_INFO_MGD(mem.ToStructure<INTERNET_CACHE_ENTRY_INFO>());
+			try
+			{
+				do
 				{
-					Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-					mem.Size = sz;
-					h = FindFirstUrlCacheEntry(lpszUrlSearchPattern, mem, ref sz);
-					if (h.IsNull) Win32Error.ThrowLastError();
-				}
-				yield return new INTERNET_CACHE_ENTRY_INFO_MGD(mem.ToStructure<INTERNET_CACHE_ENTRY_INFO>());
-				try
-				{
-					do
+					if (!FindNextUrlCacheEntry(h, mem, ref sz))
 					{
+						var err = Win32Error.GetLastError();
+						if (err == Win32Error.ERROR_NO_MORE_ITEMS)
+							break;
+						err.ThrowUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+						mem.Size = sz;
 						if (!FindNextUrlCacheEntry(h, mem, ref sz))
-						{
-							var err = Win32Error.GetLastError();
-							if (err == Win32Error.ERROR_NO_MORE_ITEMS)
-								break;
-							err.ThrowUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-							mem.Size = sz;
-							if (!FindNextUrlCacheEntry(h, mem, ref sz))
-								Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_ITEMS);
-						}
-						yield return new INTERNET_CACHE_ENTRY_INFO_MGD(mem.ToStructure<INTERNET_CACHE_ENTRY_INFO>());
-					} while (true);
-				}
-				finally
-				{
-					FindCloseUrlCache(h);
-				}
+							Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_ITEMS);
+					}
+					yield return new INTERNET_CACHE_ENTRY_INFO_MGD(mem.ToStructure<INTERNET_CACHE_ENTRY_INFO>());
+				} while (true);
+			}
+			finally
+			{
+				FindCloseUrlCache(h);
 			}
 		}
 
@@ -4901,8 +5053,10 @@ namespace Vanara.PInvoke
 		// DWORD_PTR dwContext );
 		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wininet.h", MSDNShortId = "caaff8e8-7db9-4d6d-8ba2-d8d19475173a")]
-		public static extern SafeHINTERNET HttpOpenRequest(HINTERNET hConnect, [Optional] string lpszVerb, string lpszObjectName, [Optional] string lpszVersion, [Optional] string lpszReferrer,
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringPtrArrayMarshaler), MarshalCookie = "Auto"), Optional] string[] lplpszAcceptTypes, [Optional] INTERNET_FLAG dwFlags, [Optional] IntPtr dwContext);
+		public static extern SafeHINTERNET HttpOpenRequest(HINTERNET hConnect, string lpszVerb = null, string lpszObjectName = "/",
+			string lpszVersion = null, string lpszReferrer = null,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringPtrArrayMarshaler), MarshalCookie = "Auto")] string[] lplpszAcceptTypes = null,
+			INTERNET_FLAG dwFlags = 0, IntPtr dwContext = default);
 
 		/// <summary>Retrieves header information associated with an HTTP request.</summary>
 		/// <param name="hRequest">A handle returned by a call to the HttpOpenRequest or InternetOpenUrl function.</param>
@@ -4981,6 +5135,77 @@ namespace Vanara.PInvoke
 		/// A combination of an attribute to be retrieved and flags that modify the request. For a list of possible attribute and modifier
 		/// values, see Query Info Flags.
 		/// </param>
+		/// <param name="lpBuffer">A pointer to a buffer to receive the requested information. This parameter must not be <c>NULL</c>.</param>
+		/// <param name="lpdwBufferLength">
+		/// <para>A pointer to a variable that contains, on entry, the size in bytes of the buffer pointed to by lpvBuffer.</para>
+		/// <para>
+		/// When the function returns successfully, this variable contains the number of bytes of information written to the buffer. In the
+		/// case of a string, the byte count does not include the string's terminating <c>null</c> character.
+		/// </para>
+		/// <para>
+		/// When the function fails with an extended error code of <c>ERROR_INSUFFICIENT_BUFFER</c>, the variable pointed to by
+		/// lpdwBufferLength contains on exit the size, in bytes, of a buffer large enough to receive the requested information. The calling
+		/// application can then allocate a buffer of this size or larger, and call the function again.
+		/// </para>
+		/// </param>
+		/// <param name="lpdwIndex">
+		/// A pointer to a zero-based header index used to enumerate multiple headers with the same name. When calling the function, this
+		/// parameter is the index of the specified header to return. When the function returns, this parameter is the index of the next
+		/// header. If the next index cannot be found, <c>ERROR_HTTP_HEADER_NOT_FOUND</c> is returned.
+		/// </param>
+		/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError.</returns>
+		/// <remarks>
+		/// <para>You can retrieve the following types of data from <c>HttpQueryInfo</c>:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Strings (default)</term>
+		/// </item>
+		/// <item>
+		/// <term>SYSTEMTIME (for dates)</term>
+		/// </item>
+		/// <item>
+		/// <term><c>DWORD</c> (for <c>STATUS_CODE</c>, <c>CONTENT_LENGTH</c>, and so on, if <c>HTTP_QUERY_FLAG_NUMBER</c> has been used)</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If your application requires that the data be returned as a data type other than a string, you must include the appropriate
+		/// modifier with the attribute passed to dwInfoLevel.
+		/// </para>
+		/// <para>
+		/// The <c>HttpQueryInfo</c> function is available in Microsoft Internet Explorer 3.0 for ISO-8859-1 characters (
+		/// <c>HttpQueryInfoA</c> function) and in Internet Explorer 4.0 or later for ISO-8859-1 characters ( <c>HttpQueryInfoA</c>
+		/// function) and for ISO-8859-1 characters converted to UTF-16LE characters.(the <c>HttpQueryInfoW</c> function).
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The <c>HttpQueryInfoA</c> function represents headers as ISO-8859-1 characters not ANSI characters. The
+		/// <c>HttpQueryInfoW</c> function represents headers as ISO-8859-1 characters converted to UTF-16LE characters. As a result, it is
+		/// never safe to use the <c>HttpQueryInfoW</c> function when the headers can contain non-ASCII characters. Instead, an application
+		/// can use the MultiByteToWideChar and WideCharToMultiByte functions with a Codepage parameter set to 28591 to map between ANSI
+		/// characters and UTF-16LE characters.
+		/// </para>
+		/// <para>See Retrieving HTTP Headers for an example code calling the <c>HttpQueryInfo</c> function.</para>
+		/// <para>
+		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
+		/// destructors of global objects.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
+		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-httpqueryinfoa BOOLAPI HttpQueryInfoA( HINTERNET hRequest,
+		// DWORD dwInfoLevel, LPVOID lpBuffer, LPDWORD lpdwBufferLength, LPDWORD lpdwIndex );
+		[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("wininet.h", MSDNShortId = "5747ce19-5004-4eea-abe9-dd00abac1b3b")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool HttpQueryInfo(HINTERNET hRequest, HTTP_QUERY dwInfoLevel, IntPtr lpBuffer, ref uint lpdwBufferLength, [In, Optional] IntPtr lpdwIndex);
+
+		/// <summary>Retrieves header information associated with an HTTP request.</summary>
+		/// <param name="hRequest">A handle returned by a call to the HttpOpenRequest or InternetOpenUrl function.</param>
+		/// <param name="dwInfoLevel">
+		/// A combination of an attribute to be retrieved and flags that modify the request. For a list of possible attribute and modifier
+		/// values, see Query Info Flags.
+		/// </param>
 		/// <param name="lpdwIndex">
 		/// A pointer to a zero-based header index used to enumerate multiple headers with the same name. When calling the function, this
 		/// parameter is the index of the specified header to return. When the function returns, this parameter is the index of the next
@@ -4993,11 +5218,28 @@ namespace Vanara.PInvoke
 		{
 			var sz = 0U;
 			HttpQueryInfo(hRequest, dwInfoLevel, IntPtr.Zero, ref sz, ref lpdwIndex);
-			var err = Win32Error.GetLastError();
-			if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) err.ThrowIfFailed();
+			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
 			var hMem = new SafeCoTaskMemHandle(sz);
-			var res = HttpQueryInfo(hRequest, dwInfoLevel, hMem, ref sz, ref lpdwIndex);
-			if (!res) Win32Error.ThrowLastError();
+			Win32Error.ThrowLastErrorIfFalse(HttpQueryInfo(hRequest, dwInfoLevel, hMem, ref sz, ref lpdwIndex));
+			return hMem;
+		}
+
+		/// <summary>Retrieves header information associated with an HTTP request.</summary>
+		/// <param name="hRequest">A handle returned by a call to the HttpOpenRequest or InternetOpenUrl function.</param>
+		/// <param name="dwInfoLevel">
+		/// A combination of an attribute to be retrieved and flags that modify the request. For a list of possible attribute and modifier
+		/// values, see Query Info Flags.
+		/// </param>
+		/// <returns>
+		/// A <see cref="SafeCoTaskMemHandle"/> instance with sufficient memory needed to hold the response. This should be cast to the type required.
+		/// </returns>
+		public static ISafeMemoryHandle HttpQueryInfo(HINTERNET hRequest, HTTP_QUERY dwInfoLevel)
+		{
+			var sz = 0U;
+			HttpQueryInfo(hRequest, dwInfoLevel, IntPtr.Zero, ref sz);
+			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+			var hMem = new SafeCoTaskMemHandle(sz);
+			Win32Error.ThrowLastErrorIfFalse(HttpQueryInfo(hRequest, dwInfoLevel, hMem, ref sz));
 			return hMem;
 		}
 
@@ -5019,8 +5261,25 @@ namespace Vanara.PInvoke
 		/// <returns>The HTTP information.</returns>
 		public static T HttpQueryInfo<T>(HINTERNET hRequest, HTTP_QUERY dwInfoLevel, ref uint lpdwIndex)
 		{
-			using (var hMem = HttpQueryInfo(hRequest, dwInfoLevel, ref lpdwIndex))
-				return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1) : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>());
+			using ISafeMemoryHandle hMem = HttpQueryInfo(hRequest, dwInfoLevel, ref lpdwIndex);
+			return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1) : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>());
+		}
+
+		/// <summary>Retrieves header information associated with an HTTP request.</summary>
+		/// <typeparam name="T">
+		/// Return type. This should be, by default, a <see cref="string"/> unless one of the return type modification flags is passed into
+		/// <paramref name="dwInfoLevel"/>.
+		/// </typeparam>
+		/// <param name="hRequest">A handle returned by a call to the HttpOpenRequest or InternetOpenUrl function.</param>
+		/// <param name="dwInfoLevel">
+		/// A combination of an attribute to be retrieved and flags that modify the request. For a list of possible attribute and modifier
+		/// values, see Query Info Flags.
+		/// </param>
+		/// <returns>The HTTP information.</returns>
+		public static T HttpQueryInfo<T>(HINTERNET hRequest, HTTP_QUERY dwInfoLevel)
+		{
+			using ISafeMemoryHandle hMem = HttpQueryInfo(hRequest, dwInfoLevel);
+			return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1) : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>());
 		}
 
 		/// <summary>
@@ -7183,8 +7442,8 @@ namespace Vanara.PInvoke
 		public static T InternetQueryOption<T>(HINTERNET hInternet, InternetOptionFlags option)
 		{
 			if (!CorrespondingTypeAttribute.CanGet(option, typeof(T))) throw new ArgumentException($"{option} cannot be used to get values of type {typeof(T)}.");
-			using (var hMem = InternetQueryOption(hInternet, option))
-				return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1) : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>());
+			using var hMem = InternetQueryOption(hInternet, option);
+			return typeof(T) == typeof(string) ? (T)(object)hMem.ToString(-1) : (typeof(T) == typeof(bool) ? (T)(object)Convert.ToBoolean(hMem.ToStructure<uint>()) : hMem.ToStructure<T>());
 		}
 
 		/// <summary>Reads data from a handle opened by the InternetOpenUrl, FtpOpenFile, or HttpOpenRequest function.</summary>
@@ -7243,7 +7502,65 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("wininet.h", MSDNShortId = "1ec0fe70-4749-4251-9c58-44efdab74688")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InternetReadFile(HINTERNET hFile, IntPtr lpBuffer, uint dwNumberOfBytesToRead, out uint lpdwNumberOfBytesRead);
+		public static extern bool InternetReadFile(HINTERNET hFile, [Out] IntPtr lpBuffer, uint dwNumberOfBytesToRead, out uint lpdwNumberOfBytesRead);
+
+		/// <summary>Reads data from a handle opened by the InternetOpenUrl, FtpOpenFile, or HttpOpenRequest function.</summary>
+		/// <param name="hFile">Handle returned from a previous call to InternetOpenUrl, FtpOpenFile, or HttpOpenRequest.</param>
+		/// <param name="lpBuffer">Pointer to a buffer that receives the data.</param>
+		/// <param name="dwNumberOfBytesToRead">Number of bytes to be read.</param>
+		/// <param name="lpdwNumberOfBytesRead">
+		/// Pointer to a variable that receives the number of bytes read. <c>InternetReadFile</c> sets this value to zero before doing any work
+		/// or error checking.
+		/// </param>
+		/// <returns>
+		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. To get extended error information, call GetLastError. An application
+		/// can also use InternetGetLastResponseInfo when necessary.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>InternetReadFile</c> operates much like the base ReadFile function, with a few exceptions. Typically, <c>InternetReadFile</c>
+		/// retrieves data from an HINTERNET handle as a sequential stream of bytes. The amount of data to be read for each call to
+		/// <c>InternetReadFile</c> is specified by the <c>dwNumberOfBytesToRead</c> parameter and the data is returned in the <c>lpBuffer</c>
+		/// parameter. A normal read retrieves the specified <c>dwNumberOfBytesToRead</c> for each call to <c>InternetReadFile</c> until the end
+		/// of the file is reached. To ensure all data is retrieved, an application must continue to call the <c>InternetReadFile</c> function
+		/// until the function returns <c>TRUE</c> and the <c>lpdwNumberOfBytesRead</c> parameter equals zero. This is especially important if
+		/// the requested data is written to the cache, because otherwise the cache will not be properly updated and the file downloaded will not
+		/// be committed to the cache. Note that caching happens automatically unless the original request to open the data stream set the
+		/// <c>INTERNET_FLAG_NO_CACHE_WRITE</c> flag.
+		/// </para>
+		/// <para>
+		/// When an application retrieves a handle using InternetOpenUrl, WinINet attempts to make all data look like a file download, in an
+		/// effort to make reading from the Internet easier for the application. For some types of information, such as FTP file directory
+		/// listings, it converts the data to be returned by <c>InternetReadFile</c> to an HTML stream. It does this on a line-by-line basis. For
+		/// example, it can convert an FTP directory listing to a line of HTML and return this HTML to the application.
+		/// </para>
+		/// <para>
+		/// WinINet attempts to write the HTML to the <c>lpBuffer</c> buffer a line at a time. If the application's buffer is too small to fit at
+		/// least one line of generated HTML, the error code <c>ERROR_INSUFFICIENT_BUFFER</c> is returned as an indication to the application
+		/// that it needs a larger buffer. Also, converted lines might not completely fill the buffer, so <c>InternetReadFile</c> can return with
+		/// less data in <c>lpBuffer</c> than requested. Subsequent reads will retrieve all the converted HTML. The application must again check
+		/// that all data is retrieved as described previously.
+		/// </para>
+		/// <para>
+		/// Like all other aspects of the WinINet API, this function cannot be safely called from within DllMain or the constructors and
+		/// destructors of global objects.
+		/// </para>
+		/// <para>
+		/// When running asynchronously, if a call to <c>InternetReadFile</c> does not result in a completed transaction, it will return
+		/// <c>FALSE</c> and a subsequent call to GetLastError will return <c>ERROR_IO_PENDING</c>. When the transaction is completed the
+		/// InternetStatusCallback specified in a previous call to InternetSetStatusCallback will be called with <c>INTERNET_STATUS_REQUEST_COMPLETE</c>.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
+		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetreadfile
+		// BOOL InternetReadFile( [in] HINTERNET hFile, [out] LPVOID lpBuffer, [in] DWORD dwNumberOfBytesToRead, [out] LPDWORD lpdwNumberOfBytesRead );
+		[DllImport(Lib.WinInet, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("wininet.h", MSDNShortId = "NF:wininet.InternetReadFile")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool InternetReadFile(HINTERNET hFile, [Out] byte[] lpBuffer, int dwNumberOfBytesToRead, out int lpdwNumberOfBytesRead);
 
 		/// <summary>Reads data from a handle opened by the InternetOpenUrl or HttpOpenRequest function.</summary>
 		/// <param name="hFile">Handle returned by the InternetOpenUrl or HttpOpenRequest function.</param>
@@ -7568,8 +7885,8 @@ namespace Vanara.PInvoke
 		public static bool InternetSetOption<T>(HINTERNET hInternet, InternetOptionFlags option, T value)
 		{
 			if (!CorrespondingTypeAttribute.CanSet(option, typeof(T))) throw new ArgumentException($"{option} cannot be used to set values of type {typeof(T)}.");
-			using (var hMem = typeof(T) == typeof(string) ? new SafeCoTaskMemHandle(value?.ToString()) : (typeof(T) == typeof(bool) ? SafeCoTaskMemHandle.CreateFromStructure(Convert.ToUInt32(value)) : SafeCoTaskMemHandle.CreateFromStructure(value)))
-				return InternetSetOption(hInternet, option, hMem, typeof(T) == typeof(string) ? value?.ToString().Length + 1 ?? 0 : (int)hMem.Size);
+			using SafeAllocatedMemoryHandle hMem = typeof(T) == typeof(string) ? new SafeCoTaskMemString(value?.ToString(), CharSet.Auto) : (typeof(T) == typeof(bool) ? SafeCoTaskMemHandle.CreateFromStructure(Convert.ToUInt32(value)) : SafeCoTaskMemHandle.CreateFromStructure(value));
+			return InternetSetOption(hInternet, option, hMem, typeof(T) == typeof(string) ? value?.ToString().Length + 1 ?? 0 : (int)hMem.Size);
 		}
 
 		/// <summary>
@@ -8741,14 +9058,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HCACHEENTRYSTREAM : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HCACHEENTRYSTREAM"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HCACHEENTRYSTREAM(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HCACHEENTRYSTREAM"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HCACHEENTRYSTREAM NULL => new HCACHEENTRYSTREAM(IntPtr.Zero);
+			public static HCACHEENTRYSTREAM NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -8761,7 +9078,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCACHEENTRYSTREAM"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HCACHEENTRYSTREAM(IntPtr h) => new HCACHEENTRYSTREAM(h);
+			public static implicit operator HCACHEENTRYSTREAM(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -8776,7 +9093,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HCACHEENTRYSTREAM h1, HCACHEENTRYSTREAM h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HCACHEENTRYSTREAM h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HCACHEENTRYSTREAM h &&handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -8796,7 +9113,7 @@ namespace Vanara.PInvoke
 			public HFINDCACHE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HFINDCACHE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HFINDCACHE NULL => new HFINDCACHE(IntPtr.Zero);
+			public static HFINDCACHE NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -8809,7 +9126,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HFINDCACHE"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HFINDCACHE(IntPtr h) => new HFINDCACHE(h);
+			public static implicit operator HFINDCACHE(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -8824,7 +9141,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HFINDCACHE h1, HFINDCACHE h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HFINDCACHE h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HFINDCACHE h &&handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -8844,7 +9161,7 @@ namespace Vanara.PInvoke
 			public HINTERNET(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HINTERNET"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HINTERNET NULL => new HINTERNET(IntPtr.Zero);
+			public static HINTERNET NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -8857,7 +9174,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HINTERNET"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HINTERNET(IntPtr h) => new HINTERNET(h);
+			public static implicit operator HINTERNET(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -8872,13 +9189,80 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HINTERNET h1, HINTERNET h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HINTERNET h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HINTERNET h &&handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
 
 			/// <inheritdoc/>
 			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>The <c>InternetCookieHistory</c> structure contains the cookie history.</summary>
+		/// <remarks>
+		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
+		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-internetcookiehistory typedef struct { BOOL fAccepted; BOOL
+		// fLeashed; BOOL fDowngraded; BOOL fRejected; } InternetCookieHistory;
+		[PInvokeData("wininet.h", MSDNShortId = "NS:wininet.__unnamed_struct_15")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct InternetCookieHistory
+		{
+			/// <summary>If true, the cookie was accepted.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fAccepted;
+
+			/// <summary>If true, the cookie was leashed.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fLeashed;
+
+			/// <summary>If true, the cookie was downgraded.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fDowngraded;
+
+			/// <summary>If true, the cookie was rejected.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fRejected;
+		}
+
+		/// <summary>Contains the result of a call to an asynchronous function. This structure is used with InternetStatusCallback.</summary>
+		/// <remarks>
+		/// <para>The value of <c>dwResult</c> is determined by the value of <c>dwInternetStatus</c> in the status callback function.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value of <c>dwInternetStatus</c></term>
+		/// <term>Value of <c>dwResult</c></term>
+		/// </listheader>
+		/// <item>
+		/// <term>INTERNET_STATUS_HANDLE_CREATED</term>
+		/// <term>Pointer to the HINTERNET handle</term>
+		/// </item>
+		/// <item>
+		/// <term>INTERNET_STATUS_REQUEST_COMPLETE</term>
+		/// <term>Boolean return code from the asynchronous function.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
+		/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-internet_async_result typedef struct { DWORD_PTR dwResult; DWORD
+		// dwError; } INTERNET_ASYNC_RESULT, *LPINTERNET_ASYNC_RESULT;
+		[PInvokeData("wininet.h", MSDNShortId = "NS:wininet.__unnamed_struct_0")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct INTERNET_ASYNC_RESULT
+		{
+			/// <summary>
+			/// Result. This parameter can be an HINTERNET handle, unsigned long integer, or Boolean return code from an asynchronous function.
+			/// </summary>
+			public IntPtr dwResult;
+
+			/// <summary>
+			/// Error code, if <c>dwResult</c> indicates that the function failed. If the operation succeeded, this member usually contains ERROR_SUCCESS.
+			/// </summary>
+			public Win32Error dwError;
 		}
 
 		/// <summary>Contains the notification data for an authentication request.</summary>
@@ -8908,7 +9292,7 @@ namespace Vanara.PInvoke
 			public IntPtr dwContext;
 
 			/// <summary>The default instance of INTERNET_AUTH_NOTIFY_DATA with cbStruct set.</summary>
-			public static readonly INTERNET_AUTH_NOTIFY_DATA Default = new INTERNET_AUTH_NOTIFY_DATA { cbStruct = (uint)Marshal.SizeOf(typeof(INTERNET_AUTH_NOTIFY_DATA)) };
+			public static readonly INTERNET_AUTH_NOTIFY_DATA Default = new() { cbStruct = (uint)Marshal.SizeOf(typeof(INTERNET_AUTH_NOTIFY_DATA)) };
 		}
 
 		/// <summary>Contains both the data and header information.</summary>
@@ -8954,7 +9338,7 @@ namespace Vanara.PInvoke
 			public uint dwOffsetHigh;
 
 			/// <summary>The default instance of INTERNET_BUFFERS with dwStructSize set.</summary>
-			public static readonly INTERNET_BUFFERS Default = new INTERNET_BUFFERS { dwStructSize = (uint)Marshal.SizeOf(typeof(INTERNET_BUFFERS)) };
+			public static readonly INTERNET_BUFFERS Default = new() { dwStructSize = (uint)Marshal.SizeOf(typeof(INTERNET_BUFFERS)) };
 		}
 
 		/// <summary>Contains information about the configuration of the Internet cache.</summary>
@@ -9003,7 +9387,7 @@ namespace Vanara.PInvoke
 			public uint dwExemptUsage;
 
 			/// <summary>The default instance of INTERNET_CACHE_CONFIG_INFO with dwStructSize set.</summary>
-			public static readonly INTERNET_CACHE_CONFIG_INFO Default = new INTERNET_CACHE_CONFIG_INFO { dwStructSize = (uint)Marshal.SizeOf(typeof(INTERNET_CACHE_CONFIG_INFO)) };
+			public static readonly INTERNET_CACHE_CONFIG_INFO Default = new() { dwStructSize = (uint)Marshal.SizeOf(typeof(INTERNET_CACHE_CONFIG_INFO)) };
 		}
 
 		/// <summary>Entry in <c>INTERNET_CACHE_CONFIG_INFO</c>.</summary>
@@ -9155,7 +9539,7 @@ namespace Vanara.PInvoke
 			public uint dwExemptDelta;
 
 			/// <summary>The default instance of INTERNET_CACHE_ENTRY_INFO with dwStructSize set.</summary>
-			public static readonly INTERNET_CACHE_ENTRY_INFO Default = new INTERNET_CACHE_ENTRY_INFO { dwStructSize = (uint)Marshal.SizeOf(typeof(INTERNET_CACHE_ENTRY_INFO)) };
+			public static readonly INTERNET_CACHE_ENTRY_INFO Default = new() { dwStructSize = (uint)Marshal.SizeOf(typeof(INTERNET_CACHE_ENTRY_INFO)) };
 		}
 
 		/// <summary>Contains information about an entry in the Internet cache.</summary>
@@ -9494,7 +9878,7 @@ namespace Vanara.PInvoke
 			public IntPtr pOptions;
 
 			/// <summary>The default instance of INTERNET_PER_CONN_OPTION_LIST with dwSize set.</summary>
-			public static readonly INTERNET_PER_CONN_OPTION_LIST Default = new INTERNET_PER_CONN_OPTION_LIST { dwSize = (uint)Marshal.SizeOf(typeof(INTERNET_PER_CONN_OPTION_LIST)) };
+			public static readonly INTERNET_PER_CONN_OPTION_LIST Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(INTERNET_PER_CONN_OPTION_LIST)) };
 		}
 
 		/// <summary>
@@ -9604,7 +9988,7 @@ namespace Vanara.PInvoke
 			public uint dwExtraInfoLength;
 
 			/// <summary>The default instance of URL_COMPONENTS with dwStructSize set.</summary>
-			public static readonly URL_COMPONENTS Default = new URL_COMPONENTS { dwStructSize = (uint)Marshal.SizeOf(typeof(URL_COMPONENTS)) };
+			public static readonly URL_COMPONENTS Default = new() { dwStructSize = (uint)Marshal.SizeOf(typeof(URL_COMPONENTS)) };
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCACHEENTRYSTREAM"/> that is disposed using <see cref="UnlockUrlCacheEntryStream"/>.</summary>
@@ -9643,7 +10027,7 @@ namespace Vanara.PInvoke
 			internal SafeHINTERNET() : base() { }
 
 			/// <summary>Represents a NULL value for this handle.</summary>
-			public static SafeHINTERNET Null => new SafeHINTERNET();
+			public static SafeHINTERNET Null => new();
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHINTERNET"/> to <see cref="HINTERNET"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>

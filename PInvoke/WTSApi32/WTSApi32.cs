@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
@@ -13,10 +12,25 @@ namespace Vanara.PInvoke
 		/// <summary>A session value the indicates all WTS sessions.</summary>
 		public const uint WTS_ANY_SESSION = unchecked((uint)-2);
 
+		/// <summary>
+		/// To work with sessions running on virtual machines on the RD Virtualization Host server on which the calling application is
+		/// running, specify WTS_CURRENT_SERVER_NAME for the pServerName parameter.
+		/// </summary>
+		public const string WTS_CURRENT_SERVER_NAME = null;
+
+		/// <summary>Indicates the RD Session Host server on which your application is running.</summary>
+		public static SafeHWTSSERVER WTS_CURRENT_SERVER => SafeHWTSSERVER.Current;
+
+		/// <summary>Indicates the RD Session Host server on which your application is running.</summary>
+		public static SafeHWTSSERVER WTS_CURRENT_SERVER_HANDLE => SafeHWTSSERVER.Current;
+
+		/// <summary>Specifies the current session (SessionId)</summary>
+		public const uint WTS_CURRENT_SESSION = unchecked((uint)-1);
+
 		private const int CLIENTADDRESS_LENGTH = 30;
 		private const int CLIENTNAME_LENGTH = 20;
 		private const int DOMAIN_LENGTH = 17;
-		private const string Lib_WTSApi32 = "WTSApi32.dll";
+		private const string Lib_WTSApi32 = "wtsapi32.dll";
 		private const int MAX_PATH = 260;
 		private const int USERNAME_LENGTH = 20;
 		private const int WINSTATIONNAME_LENGTH = 32;
@@ -36,6 +50,20 @@ namespace Vanara.PInvoke
 
 			/// <summary>The ALT key.</summary>
 			REMOTECONTROL_KBDALT_HOTKEY = 0x4,
+		}
+
+		/// <summary>A <see cref="WTS_INFO_CLASS.WTSClientProtocolType"/> return value indicating the session protocol type.</summary>
+		[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSVirtualChannelOpenEx")]
+		public enum SessionProtocolType : ushort
+		{
+			/// <summary>The console session.</summary>
+			Console = 0,
+
+			/// <summary>This value is retained for legacy purposes.</summary>
+			Legacy = 1,
+
+			/// <summary>The RDP protocol.</summary>
+			RDP = 2
 		}
 
 		/// <summary>Options for <c>WTSVirtualChannelOpenEx</c>.</summary>
@@ -395,7 +423,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// A USHORT value that specifies information about the protocol type for the session. This is one of the following values.
 			/// </summary>
-			[CorrespondingType(typeof(ushort))]
+			[CorrespondingType(typeof(SessionProtocolType))]
 			WTSClientProtocolType,
 
 			/// <summary>
@@ -1103,7 +1131,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves the child session identifier, if present.</summary>
 		/// <param name="pSessionId">
-		/// The address of a <c>ULONG</c> variable that receives the child session identifier. This will be ( <c>ULONG</c>)–1 if there is no
+		/// The address of a <c>ULONG</c> variable that receives the child session identifier. This will be ( <c>ULONG</c>)â€“1 if there is no
 		/// child session for the current session.
 		/// </param>
 		/// <returns>Returns nonzero if the function succeeds or zero otherwise.</returns>
@@ -1684,7 +1712,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// If <c>FALSE</c>, the function returns immediately and the pResponse parameter returns <c>IDASYNC</c>. Use this method for simple
-		/// information messages (such as print job–notification messages) that do not need to return the user's response to the calling program.
+		/// information messages (such as print jobâ€“notification messages) that do not need to return the user's response to the calling program.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -2854,10 +2882,12 @@ namespace Vanara.PInvoke
 			public uint version;
 
 			/// <summary>This member is reserved.</summary>
-			public uint fConnectClientDrivesAtLogon;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fConnectClientDrivesAtLogon;
 
 			/// <summary>This member is reserved.</summary>
-			public uint fConnectPrinterAtLogon;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fConnectPrinterAtLogon;
 
 			/// <summary>
 			/// <para>Specifies whether the client can use printer redirection.</para>
@@ -2866,7 +2896,8 @@ namespace Vanara.PInvoke
 			/// <para>1</para>
 			/// <para>Disable client printer redirection.</para>
 			/// </summary>
-			public uint fDisablePrinterRedirection;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fDisablePrinterRedirection;
 
 			/// <summary>
 			/// <para>Specifies whether the printer connected to the client is the default printer for the user.</para>
@@ -2875,7 +2906,8 @@ namespace Vanara.PInvoke
 			/// <para>1</para>
 			/// <para>The printer connected to the client is the default printer for the user.</para>
 			/// </summary>
-			public uint fDisableDefaultMainClientPrinter;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fDisableDefaultMainClientPrinter;
 
 			/// <summary>
 			/// <para>
@@ -2955,7 +2987,7 @@ namespace Vanara.PInvoke
 			public uint IncomingCompressedBytes;
 
 			/// <summary/>
-			public uint OutgoingCompressedBy;
+			public uint OutgoingCompressedBytes;
 
 			/// <summary>A null-terminated string that contains the name of the WinStation for the session.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = WINSTATIONNAME_LENGTH)]
@@ -2966,23 +2998,38 @@ namespace Vanara.PInvoke
 			public string Domain;
 
 			/// <summary>A null-terminated string that contains the name of the user who owns the session.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = USERNAME_LENGTH + 1)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = USERNAME_LENGTH + 2)]
 			public string UserName;
 
 			/// <summary>The most recent client connection time.</summary>
-			public FILETIME ConnectTime;
+			public long ConnectTimeUTC;
+			
+			/// <summary>The most recent client connection time.</summary>
+			public DateTime ConnectTime => DateTime.FromFileTimeUtc(ConnectTimeUTC);
 
 			/// <summary>The last client disconnection time.</summary>
-			public FILETIME DisconnectTime;
+			public long DisconnectTimeUTC;
+			
+			/// <summary>The last client disconnection time.</summary>
+			public DateTime DisconnectTime => DateTime.FromFileTimeUtc(DisconnectTimeUTC);
 
 			/// <summary>The time of the last user input in the session.</summary>
-			public FILETIME LastInputTime;
+			public long LastInputTimeUTC;
+			
+			/// <summary>The time of the last user input in the session.</summary>
+			public DateTime LastInputTime => DateTime.FromFileTimeUtc(LogonTimeUTC);
 
 			/// <summary>The time that the user logged on to the session.</summary>
-			public FILETIME LogonTime;
+			public long LogonTimeUTC;
+			
+			/// <summary>The time that the user logged on to the session.</summary>
+			public DateTime LogonTime => DateTime.FromFileTimeUtc(LogonTimeUTC);
 
 			/// <summary>The time that the <c>WTSINFO</c> data structure was called.</summary>
-			public FILETIME CurrentTime;
+			public long CurrentTimeUTC;
+			
+			/// <summary>The time that the <c>WTSINFO</c> data structure was called.</summary>
+			public DateTime CurrentTime => DateTime.FromFileTimeUtc(CurrentTimeUTC);
 		}
 
 		/// <summary>
@@ -3066,31 +3113,61 @@ namespace Vanara.PInvoke
 			/// The time that the user logged on to the session. This value is stored as a large integer that represents the number of
 			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time (Greenwich Mean Time).
 			/// </summary>
-			public FILETIME LogonTime;
+			public long LogonTimeUTC;
+			
+			/// <summary>
+			/// The time that the user logged on to the session. This value is stored as a large integer that represents the number of
+			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time (Greenwich Mean Time).
+			/// </summary>
+			public DateTime LogonTime => DateTime.FromFileTimeUtc(LogonTimeUTC);
 
 			/// <summary>
 			/// The time of the most recent client connection to the session. This value is stored as a large integer that represents the
 			/// number of 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
 			/// </summary>
-			public FILETIME ConnectTime;
+			public long ConnectTimeUTC;
+			
+			/// <summary>
+			/// The time of the most recent client connection to the session. This value is stored as a large integer that represents the
+			/// number of 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
+			/// </summary>
+			public DateTime ConnectTime => DateTime.FromFileTimeUtc(ConnectTimeUTC);
 
 			/// <summary>
 			/// The time of the most recent client disconnection to the session. This value is stored as a large integer that represents the
 			/// number of 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
 			/// </summary>
-			public FILETIME DisconnectTime;
+			public long DisconnectTimeUTC;
+
+			/// <summary>
+			/// The time of the most recent client disconnection to the session. This value is stored as a large integer that represents the
+			/// number of 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
+			/// </summary>
+			public DateTime DisconnectTime => DateTime.FromFileTimeUtc(DisconnectTimeUTC);			
 
 			/// <summary>
 			/// The time of the last user input in the session. This value is stored as a large integer that represents the number of
 			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
 			/// </summary>
-			public FILETIME LastInputTime;
+			public long LastInputTimeUTC;
+			
+			/// <summary>
+			/// The time of the last user input in the session. This value is stored as a large integer that represents the number of
+			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
+			/// </summary>
+			public DateTime LastInputTime => DateTime.FromFileTimeUtc(LastInputTimeUTC);			
 
 			/// <summary>
 			/// The time that this structure was filled. This value is stored as a large integer that represents the number of
 			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
 			/// </summary>
-			public FILETIME CurrentTime;
+			public long CurrentTimeUTC;
+			
+			/// <summary>
+			/// The time that this structure was filled. This value is stored as a large integer that represents the number of
+			/// 100-nanosecond intervals since January 1, 1601 Coordinated Universal Time.
+			/// </summary>
+			public DateTime CurrentTime => DateTime.FromFileTimeUtc(CurrentTimeUTC);			
 
 			/// <summary>
 			/// The number of bytes of uncompressed Remote Desktop Protocol (RDP) data sent from the client to the server since the client connected.
@@ -3667,6 +3744,9 @@ namespace Vanara.PInvoke
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HWTSSERVER(SafeHWTSSERVER h) => h.handle;
+
+			/// <summary>Gets the handle of the current server (WTS_CURRENT_SERVER).</summary>
+			public static SafeHWTSSERVER Current => new(IntPtr.Zero, false);
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { WTSCloseServer(handle); return true; }

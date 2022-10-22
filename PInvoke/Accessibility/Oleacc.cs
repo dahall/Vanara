@@ -373,7 +373,7 @@ namespace Vanara.PInvoke
 		// POINT ptScreen, IAccessible **ppacc, VARIANT *pvarChild );
 		[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("oleacc.h", MSDNShortId = "b781b74f-5c36-4a65-a9b1-ecf7f8e5b531")]
-		public static extern HRESULT AccessibleObjectFromPoint(System.Drawing.Point ptScreen, out IAccessible ppacc, [MarshalAs(UnmanagedType.Struct)] out object pvarChild);
+		public static extern HRESULT AccessibleObjectFromPoint(POINT ptScreen, out IAccessible ppacc, [MarshalAs(UnmanagedType.Struct)] out object pvarChild);
 
 		/// <summary>Retrieves the address of the specified interface for the object associated with the specified window.</summary>
 		/// <param name="hwnd">
@@ -508,7 +508,7 @@ namespace Vanara.PInvoke
 		// HWND hwndApp, HWND hwndTarget, POINT ptTarget );
 		[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("oleacc.h", MSDNShortId = "CB533913-95A7-45D5-B0D3-E931E4F73B2E")]
-		public static extern HRESULT AccNotifyTouchInteraction(HWND hwndApp, HWND hwndTarget, System.Drawing.Point ptTarget);
+		public static extern HRESULT AccNotifyTouchInteraction(HWND hwndApp, HWND hwndTarget, POINT ptTarget);
 
 		/// <summary>
 		/// Sets system values that indicate whether an assistive technology (AT) application's current state affects functionality that is

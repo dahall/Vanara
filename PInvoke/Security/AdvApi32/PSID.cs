@@ -53,6 +53,10 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 			private SafePSID() : base() { }
 
+			/// <summary>Gets a pointer to the SID_IDENTIFIER_AUTHORITY structure in this security identifier (SID).</summary>
+			/// <returns>A pointer to the SID_IDENTIFIER_AUTHORITY structure for this SID structure.</returns>
+			public PSID_IDENTIFIER_AUTHORITY Authority => GetSidIdentifierAuthority(this);
+
 			/// <summary>Gets the SID for the current user</summary>
 			/// <value>The current user's SID.</value>
 			public static SafePSID Current
@@ -77,6 +81,10 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the length, in bytes, of the SID.</summary>
 			/// <value>The SID length, in bytes.</value>
 			public int Length => IsValidSid ? GetLengthSid(this) : 0;
+
+			/// <summary>Enumerates the subauthorities in a security identifier (SID). The subauthority values are relative identifiers (RID).</summary>
+			/// <returns>A sequence of subauthorities.</returns>
+			public IEnumerable<uint> SubAuthorities => ((PSID)this).GetSubAuthorities();
 
 			/// <summary>Gets the string used to display in the debugger.</summary>
 			internal string DebugString
@@ -126,9 +134,8 @@ namespace Vanara.PInvoke
 			/// <returns>A <see cref="SafePSID"/> instance of the user account SID associated with a security token.</returns>
 			public static SafePSID FromToken(HTOKEN hToken)
 			{
-				var hTok = new SafeHTOKEN((IntPtr)hToken, false);
-				using var pUserToken = hTok.GetInfo(TOKEN_INFORMATION_CLASS.TokenUser);
-				return new SafePSID(pUserToken.ToStructure<TOKEN_USER>().User.Sid);
+				using var hTok = new SafeHTOKEN((IntPtr)hToken, false);
+				return hTok.GetInfo<TOKEN_USER>(TOKEN_INFORMATION_CLASS.TokenUser).User.Sid;
 			}
 
 			/// <summary>Performs an explicit conversion from <see cref="SafePSID"/> to <see cref="IntPtr"/>.</summary>
@@ -212,16 +219,13 @@ namespace Vanara.PInvoke
 			/// <summary>Determines whether the specified <see cref="object"/> is equal to the current <see cref="object"/>.</summary>
 			/// <param name="obj">The object to compare with the current object.</param>
 			/// <returns>true if the specified <see cref="object"/> is equal to the current <see cref="object"/>; otherwise, false.</returns>
-			public override bool Equals(object obj)
+			public override bool Equals(object obj) => obj switch
 			{
-				if (obj is SafePSID psid2)
-					return Equals(psid2);
-				if (obj is PSID psidh)
-					return Equals(psidh);
-				if (obj is IntPtr ptr)
-					return Equals(ptr);
-				return false;
-			}
+				SafePSID psid2 => Equals(psid2),
+				PSID psidh => Equals(psidh),
+				IntPtr ptr => Equals(ptr),
+				_ => false
+			};
 
 			/// <summary>Gets the binary form of this SafePSID.</summary>
 			/// <returns>An array of bytes containing the Sid.</returns>
@@ -384,6 +388,30 @@ namespace Vanara.PInvoke
 		/// <returns><see langword="true"/> if the SID structures are equal; <see langword="false"/> otherwise.</returns>
 		public static bool Equals(this PSID psid1, PSID psid2) => AdvApi32.EqualSid(psid1, psid2);
 
+		/// <summary>
+		/// The <c>GetAuthority</c> function returns a pointer to the SID_IDENTIFIER_AUTHORITY structure in a specified security identifier (SID).
+		/// </summary>
+		/// <param name="pSid">
+		/// <para>A pointer to the SID structure for which a pointer to the SID_IDENTIFIER_AUTHORITY structure is returned.</para>
+		/// <para>
+		/// This function does not handle SID structures that are not valid. Call the IsValidSid function to verify that the <c>SID</c>
+		/// structure is valid before you call this function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is a pointer to the SID_IDENTIFIER_AUTHORITY structure for the specified SID structure.
+		/// </para>
+		/// <para>
+		/// If the function fails, the return value is undefined. The function fails if the SID structure pointed to by the pSid parameter
+		/// is not valid. To get extended error information, call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// This function uses a 32-bit RID value. For applications that require a larger RID value, use CreateWellKnownSid and related functions.
+		/// </remarks>
+		public static AdvApi32.PSID_IDENTIFIER_AUTHORITY GetAuthority(this PSID pSid) => AdvApi32.GetSidIdentifierAuthority(pSid);
+
 		/// <summary>Gets the binary form of the SID structure.</summary>
 		/// <param name="pSid">The SID structure pointer.</param>
 		/// <returns>The binary form (byte array) of the SID structure.</returns>
@@ -398,6 +426,15 @@ namespace Vanara.PInvoke
 		{
 			Win32Error.ThrowLastErrorIfFalse(AdvApi32.GetWindowsAccountDomainSid(pSid, out var pDomSid));
 			return pDomSid;
+		}
+
+		/// <summary>Enumerates the subauthorities in a security identifier (SID). The subauthority values are relative identifiers (RID).</summary>
+		/// <param name="pSid">A pointer to the SID structure from which a pointer to a subauthority is to be returned.</param>
+		/// <returns>A sequence of subauthorities.</returns>
+		public static IEnumerable<uint> GetSubAuthorities(this PSID pSid)
+		{
+			for (uint i = 0; i < AdvApi32.GetSidSubAuthorityCount(pSid); i++)
+				yield return AdvApi32.GetSidSubAuthority(pSid, i);
 		}
 
 		/// <summary>

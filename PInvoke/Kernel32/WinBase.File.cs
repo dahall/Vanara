@@ -1193,17 +1193,14 @@ namespace Vanara.PInvoke
 			var h = FindFirstStream(fileName, STREAM_INFO_LEVELS.FindStreamInfoStandard, out var data);
 			if (h.IsInvalid)
 			{
-				var err = Win32Error.GetLastError();
-				if (err == Win32Error.ERROR_HANDLE_EOF)
-					yield break;
-				else
-					err.ThrowIfFailed();
+				Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_HANDLE_EOF);
+				yield break;
 			}
-			while (FindNextStream(h, out data))
+			do
+			{
 				yield return data;
-			var err2 = Win32Error.GetLastError();
-			if (err2 != Win32Error.ERROR_HANDLE_EOF)
-				err2.ThrowIfFailed();
+			} while (FindNextStream(h, out data));
+			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_HANDLE_EOF);
 		}
 
 		/// <summary>Creates an enumeration of all the hard links to the specified file.</summary>
@@ -3318,7 +3315,7 @@ namespace Vanara.PInvoke
 			public IntPtr pvCallbackContext;
 
 			/// <summary>Provides a default instance with size field set.</summary>
-			public static readonly COPYFILE2_EXTENDED_PARAMETERS Default = new COPYFILE2_EXTENDED_PARAMETERS { dwSize = (uint)Marshal.SizeOf(typeof(COPYFILE2_EXTENDED_PARAMETERS)) };
+			public static readonly COPYFILE2_EXTENDED_PARAMETERS Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(COPYFILE2_EXTENDED_PARAMETERS)) };
 		}
 
 		/// <summary>
@@ -3967,8 +3964,8 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct FILE_ID_128
 		{
-			private ulong id0;
-			private ulong id1;
+			private readonly ulong id0;
+			private readonly ulong id1;
 
 			/// <summary>
 			/// <para>A byte array containing the 128 bit identifier.</para>
@@ -3977,13 +3974,13 @@ namespace Vanara.PInvoke
 			{
 				get
 				{
-					using (var pin = new PinnedObject(id0))
-						return ((IntPtr)pin).ToArray<byte>(16);
+					using PinnedObject pin = new(id0);
+					return ((IntPtr)pin).ToArray<byte>(16);
 				}
 				set
 				{
-					using (var pin = new PinnedObject(id0))
-						Marshal.Copy(value, 0, pin, 16);
+					using PinnedObject pin = new(id0);
+					Marshal.Copy(value, 0, pin, 16);
 				}
 			}
 		}
@@ -4192,7 +4189,7 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Provides a default instance with size field set.</summary>
-			public static readonly FILE_ID_DESCRIPTOR Default = new FILE_ID_DESCRIPTOR { dwSize = (uint)Marshal.SizeOf(typeof(FILE_ID_DESCRIPTOR)) };
+			public static readonly FILE_ID_DESCRIPTOR Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(FILE_ID_DESCRIPTOR)) };
 		}
 
 		/// <summary>
@@ -4853,7 +4850,7 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>The default instance with size and version set.</summary>
-			public static readonly FILE_REMOTE_PROTOCOL_INFO Default = new FILE_REMOTE_PROTOCOL_INFO { StructureSize = (ushort)Marshal.SizeOf(typeof(FILE_REMOTE_PROTOCOL_INFO)), StructureVersion = 2 };
+			public static readonly FILE_REMOTE_PROTOCOL_INFO Default = new() { StructureSize = (ushort)Marshal.SizeOf(typeof(FILE_REMOTE_PROTOCOL_INFO)), StructureVersion = 2 };
 		}
 
 		/// <summary>
@@ -5056,37 +5053,6 @@ namespace Vanara.PInvoke
 			public string StreamName;
 		}
 
-		/// <summary>Contains information about a file that the <c>OpenFile</c> function opened or attempted to open.</summary>
-		// typedef struct _OFSTRUCT { BYTE cBytes; BYTE fFixedDisk; WORD nErrCode; WORD Reserved1; WORD Reserved2; CHAR
-		// szPathName[OFS_MAXPATHNAME];} OFSTRUCT,
-		// *POFSTRUCT; https://msdn.microsoft.com/en-us/library/windows/desktop/aa365282(v=vs.85).aspx
-		[PInvokeData("WinBase.h", MSDNShortId = "aa365282")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-		public struct OFSTRUCT
-		{
-			/// <summary>The size of the structure, in bytes.</summary>
-			public byte cBytes;
-
-			/// <summary>If this member is nonzero, the file is on a hard (fixed) disk. Otherwise, it is not.</summary>
-			public byte fFixedDisk;
-
-			/// <summary>The MS-DOS error code if the <c>OpenFile</c> function failed.</summary>
-			public ushort nErrCode;
-
-			/// <summary>Reserved; do not use.</summary>
-			public ushort Reserved1;
-
-			/// <summary>Reserved; do not use.</summary>
-			public ushort Reserved2;
-
-			/// <summary>The path and file name of the file.</summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-			public string szPathName;
-
-			/// <summary>Provides a default instance with size field set.</summary>
-			public static readonly OFSTRUCT Default = new OFSTRUCT { cBytes = (byte)Marshal.SizeOf(typeof(OFSTRUCT)) };
-		}
-
 		/// <summary>Contains attribute information for a file or directory. The GetFileAttributesEx function uses this structure.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365739")]
@@ -5134,7 +5100,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>The name of the stream. The string name format is ":streamname:$streamtype".</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH + 36)] private readonly string cStreamName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH + 36)]
+			public string cStreamName;
 		}
 
 		/// <summary>Represents a search handle used in a subsequent call to the <c>FindNextVolumeMountPoint</c> and retrieved by <c>FindFirstVolumeMountPoint</c>.</summary>

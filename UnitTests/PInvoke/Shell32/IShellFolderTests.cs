@@ -23,7 +23,7 @@ namespace Vanara.PInvoke.Tests
 			TestContext.WriteLine($"Sort={sortIdx}; Display={dispIdx}");
 
 			// List all property keys
-			for (uint i = 0; i < uint.MaxValue; i++)
+			for (uint i = 0; i < 50; i++)
 			{
 				try { TestContext.WriteLine($"{i}) Key={(pFolder.Item.MapColumnToSCID(i, out var pk).Succeeded ? pk : default)}; State={(pFolder.Item.GetDefaultColumnState(i, out var st).Succeeded ? st : default)}"); }
 				catch { break; }

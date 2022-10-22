@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -220,7 +219,7 @@ namespace Vanara.PInvoke
 		/// <para>The return value is a safe handle to the newly created image.</para>
 		/// </returns>
 		[PInvokeData("winuser.h")]
-		public static SafeHCURSOR CopyCursor(HCURSOR h, Size desiredSize = default, CopyImageOptions options = 0)
+		public static SafeHCURSOR CopyCursor(HCURSOR h, SIZE desiredSize = default, CopyImageOptions options = 0)
 		{
 			var hret = CopyImage(h.DangerousGetHandle(), LoadImageType.IMAGE_CURSOR, desiredSize.Width, desiredSize.Height, options);
 			if (hret == HANDLE.NULL) Win32Error.ThrowLastError();
@@ -416,7 +415,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getcursorpos")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCursorPos(out System.Drawing.Point lpPoint);
+		public static extern bool GetCursorPos(out POINT lpPoint);
 
 		/// <summary>
 		/// <para>Retrieves the position of the cursor in physical coordinates.</para>
@@ -438,7 +437,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getphysicalcursorpos")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetPhysicalCursorPos(out System.Drawing.Point lpPoint);
+		public static extern bool GetPhysicalCursorPos(out POINT lpPoint);
 
 		/// <summary>
 		/// <para>Loads the specified cursor resource from the executable (.EXE) file associated with an application instance.</para>
@@ -980,7 +979,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>POINT</c></para>
 			/// <para>A structure that receives the screen coordinates of the cursor.</para>
 			/// </summary>
-			public System.Drawing.Point ptScreenPos;
+			public POINT ptScreenPos;
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HCURSOR instance at disposal using DestroyCursor.</summary>

@@ -5,10 +5,6 @@ using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Opc;
 
-using XPS_POINT = System.Drawing.PointF;
-using XPS_RECT = System.Drawing.RectangleF;
-using XPS_SIZE = System.Drawing.SizeF;
-
 namespace Vanara.PInvoke
 {
 	public static partial class XpsObjectModel

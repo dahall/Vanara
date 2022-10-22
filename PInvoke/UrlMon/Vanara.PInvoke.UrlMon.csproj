@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants imported from UrlMon.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net20;net35;net40;net45;net5.0;netstandard2.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.UrlMon</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;UrlMon</PackageTags>
@@ -17,12 +16,13 @@ Functions
 AsyncInstallDistributionUnit CoGetClassObjectFromURL CoInternetCombineIUri CoInternetCombineUrl CoInternetCombineUrlEx CoInternetCompareUrl CoInternetGetSession CoInternetParseIUri CoInternetParseUrl CoInternetQueryInfo CompareSecurityIds CompatFlagsFromClsid CopyBindInfo CopyStgMedium CreateAsyncBindCtx CreateAsyncBindCtxEx CreateFormatEnumerator CreateIUriBuilder CreateUri CreateUriFromMultiByteString CreateUriWithFragment CreateURLMoniker CreateURLMonikerEx CreateURLMonikerEx2 FaultInIEFeature FindMediaType FindMediaTypeClass FindMimeFromData GetClassFileOrMime GetComponentIDFromCLSSPEC IEInstallScope IsAsyncMoniker IsValidURL MkParseDisplayNameEx ObtainUserAgentString RegisterBindStatusCallback RegisterFormatEnumerator RegisterMediaTypeClass RegisterMediaTypes ReleaseBindInfo RevokeBindStatusCallback RevokeFormatEnumerator URLDownloadToCacheFile URLDownloadToFile UrlMkGetSessionOption UrlMkSetSessionOption URLOpenBlockingStream URLOpenPullStream URLOpenStream
 
 Structures
-BINDINFO
+AUTHENTICATEINFO BINDINFO
 
 Interfaces
-IBinding IBindStatusCallback IInternetSession IUri IUriBuilder
+IAuthenticate IAuthenticateEx IBindHost IBinding IBindStatusCallback IInternetSession IPersistMoniker IUri IUriBuilder
 
 </PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

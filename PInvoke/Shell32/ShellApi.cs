@@ -14,6 +14,9 @@ namespace Vanara.PInvoke
 	/// <summary>Interfaces, functions, enumerated types and structures for Shell32.dll.</summary>
 	public static partial class Shell32
 	{
+		/// <summary/>
+		public const int NINF_KEY = 0x1;
+		
 		/// <summary>Values used in APPBARDATA.</summary>
 		[PInvokeData("shellapi.h", MSDNShortId = "cf86fe15-4beb-49b7-b73e-2ad61cedc3f8")]
 		public enum ABE
@@ -37,54 +40,330 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>
 			/// Registers a new appbar and specifies the message identifier that the system should use to send notification messages to the appbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that contains the new appbar's window handle and message identifier. You must specify
+			/// the cbSize, hWnd, and uCallbackMessage members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Returns TRUE if successful, or FALSE if an error occurs or if the appbar is already registered.</para>
 			/// </summary>
 			ABM_NEW = 0x00000000,
 
-			/// <summary>Unregisters an appbar, removing the bar from the system's internal list.</summary>
+			/// <summary>
+			/// Unregisters an appbar, removing the bar from the system's internal list.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that contains the handle to the appbar to unregister. You must specify the cbSize and
+			/// hWnd members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
+			/// <remarks>This message causes the system to send the ABN_POSCHANGED notification message to all appbars.</remarks>
 			ABM_REMOVE = 0x00000001,
 
-			/// <summary>Requests a size and screen position for an appbar.</summary>
+			/// <summary>
+			/// Requests a size and screen position for an appbar. When the request is made, the message proposes a screen edge and a
+			/// bounding rectangle for the appbar. The system adjusts the bounding rectangle so that the appbar does not interfere with the
+			/// Windows taskbar or any other appbars.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. The uEdge member specifies a screen edge, and the rc member contains the proposed
+			/// bounding rectangle. When the SHAppBarMessage function returns, rc contains the approved bounding rectangle. You must specify
+			/// the cbSize, hWnd, uEdge, and rc members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
+			/// <remarks>An appbar should send this message before sending the ABM_SETPOS message.</remarks>
 			ABM_QUERYPOS = 0x00000002,
 
-			/// <summary>Sets the size and screen position of an appbar.</summary>
+			/// <summary>
+			/// Sets the size and screen position of an appbar. The message specifies a screen edge and the bounding rectangle for the
+			/// appbar. The system may adjust the bounding rectangle so that the appbar does not interfere with the Windows taskbar or any
+			/// other appbars.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. The uEdge member specifies a screen edge, and the rc member contains the bounding
+			/// rectangle. When the SHAppBarMessage function returns, rc contains the approved bounding rectangle. You must specify the
+			/// cbSize, hWnd, uEdge, and rc members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
+			/// <remarks>This message causes the system to send the ABN_POSCHANGED notification message to all appbars.</remarks>
 			ABM_SETPOS = 0x00000003,
 
-			/// <summary>Retrieves the autohide and always-on-top states of the Windows taskbar.</summary>
+			/// <summary>
+			/// Retrieves the autohide and always-on-top states of the Windows taskbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// Pointer to an APPBARDATA structure. You must specify the cbSize member when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns zero if the taskbar is neither in the autohide nor always-on-top state. Otherwise, the return value is one or both of
+			/// the following:
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ABS_ALWAYSONTOP</term>
+			/// <description>
+			/// The taskbar is in the always-on-top state. <note type="note">As of Windows 7, ABS_ALWAYSONTOP is no longer returned because
+			/// the taskbar is always in that state. Older code should be updated to ignore the absence of this value in not assume that
+			/// return value to mean that the taskbar is not in the always-on-top state.</note>
+			/// </description>
+			/// </item>
+			/// <item>
+			/// <term>ABS_AUTOHIDE</term>
+			/// <description>The taskbar is in the autohide state.</description>
+			/// </item>
+			/// </list>
+			/// </summary>
+			/// <remarks>This message causes the system to send the ABN_POSCHANGED notification message to all appbars.</remarks>
 			ABM_GETSTATE = 0x00000004,
 
 			/// <summary>
+			/// <para>
 			/// Retrieves the bounding rectangle of the Windows taskbar. Note that this applies only to the system taskbar. Other objects,
 			/// particularly toolbars supplied with third-party software, also can be present. As a result, some of the screen area not
 			/// covered by the Windows taskbar might not be visible to the user. To retrieve the area of the screen not covered by both the
 			/// taskbar and other app bars—the working area available to your application—, use the GetMonitorInfo function.
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure whose rc member receives the bounding rectangle, in screen coordinates, of the taskbar.
+			/// You must specify the cbSize when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Returns TRUE if successful; otherwise, FALSE.</para>
 			/// </summary>
+			/// <remarks>
+			/// Note that this applies only to the system taskbar. Other objects, particularly toolbars supplied with third-party software,
+			/// also can be present. As a result, some of the screen area not covered by the Windows taskbar might not be visible to the
+			/// user. To retrieve the area of the screen not covered by both the taskbar and other app bars the working area available to
+			/// your application , use the GetMonitorInfo function.
+			/// </remarks>
 			ABM_GETTASKBARPOS = 0x00000005,
 
 			/// <summary>
-			/// Notifies the system to activate or deactivate an appbar. The lParam member of the APPBARDATA pointed to by pData is set to
-			/// TRUE to activate or FALSE to deactivate.
+			/// Notifies the system that an appbar has been activated. An appbar should call this message in response to the WM_ACTIVATE message.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that identifies the appbar to activate. You must specify the cbSize and hWnd members
+			/// when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
 			/// </summary>
+			/// <remarks>
+			/// This message is ignored if the hWnd member of the structure pointed to by pabd identifies an autohide appbar. The system
+			/// automatically sets the z-order for autohide appbars.
+			/// </remarks>
 			ABM_ACTIVATE = 0x00000006,
 
-			/// <summary>Retrieves the handle to the autohide appbar associated with a particular edge of the screen.</summary>
+			/// <summary>
+			/// Retrieves the handle to the autohide appbar associated with an edge of the screen. If the system has multiple monitors, the
+			/// monitor that contains the primary taskbar is used. <note type="note">To query for an autohide appbar on a specific monitor,
+			/// use ABM_GETAUTOHIDEBAREX.</note>
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that specifies the screen edge. You must specify the cbSize and uEdge members when
+			/// sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns the handle to the autohide appbar. The return value is NULL if an error occurs or if no autohide appbar is associated
+			/// with the given edge.
+			/// </para>
+			/// </summary>
 			ABM_GETAUTOHIDEBAR = 0x00000007,
 
-			/// <summary>Registers or unregisters an autohide appbar for an edge of the screen.</summary>
+			/// <summary>
+			/// Registers or unregisters an autohide appbar for a given edge of the screen. If the system has multiple monitors, the monitor
+			/// that contains the primary taskbar is used. <note type="note">To register or unregister an autohide appbar on a specific
+			/// monitor, use ABM_SETAUTOHIDEBAREX.</note>
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. Set the lParam member to TRUE to register the appbar or FALSE to unregister it. You
+			/// must specify the cbSize, hWnd, uEdge, and lParam members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns TRUE if successful, or FALSE if an error occurs or if an autohide appbar is already registered for the given edge.
+			/// </para>
+			/// </summary>
+			/// <remarks>
+			/// The system allows only one autohide appbar for each edge of the screen. This is determined when the member uEdge of the
+			/// APPBARDATA structure is set.
+			/// </remarks>
 			ABM_SETAUTOHIDEBAR = 0x00000008,
 
-			/// <summary>Notifies the system when an appbar's position has changed.</summary>
+			/// <summary>
+			/// Notifies the system when an appbar's position has changed. An appbar should call this message in response to the
+			/// WM_WINDOWPOSCHANGED message.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that identifies the appbar to activate. You must specify the cbSize and hWnd members
+			/// when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
+			/// <remarks>This message is ignored if the hWnd member of the structure pointed to by pabd identifies an autohide appbar.</remarks>
 			ABM_WINDOWPOSCHANGED = 0x00000009,
 
-			/// <summary>Windows XP and later: Sets the state of the appbar's autohide and always-on-top attributes.</summary>
+			/// <summary>
+			/// Sets the autohide and always-on-top states of the Windows taskbar.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. You must specify the cbSize and hWnd members when sending this message. Data for the
+			/// desired state is sent in the lParam member using one of the following values.
+			/// </para>
+			/// <list type="definition">
+			/// <item>
+			/// <term>0</term>
+			/// <description>Autohide and always-on-top both off</description>
+			/// </item>
+			/// <item>
+			/// <term>ABS_ALWAYSONTOP</term>
+			/// <description>Always-on-top on, autohide off</description>
+			/// </item>
+			/// <item>
+			/// <term>ABS_AUTOHIDE</term>
+			/// <description>Autohide on, always-on-top off</description>
+			/// </item>
+			/// <item>
+			/// <term>ABS_AUTOHIDE | ABS_ALWAYSONTOP</term>
+			/// <description>Autohide and always-on-top both on</description>
+			/// </item>
+			/// </list>
+			/// <para><strong>Return value</strong></para>
+			/// <para>Always returns TRUE.</para>
+			/// </summary>
 			ABM_SETSTATE = 0x0000000A,
 
 			/// <summary>
-			/// Windows XP and later: Retrieves the handle to the autohide appbar associated with a particular edge of a particular monitor.
+			/// Retrieves the handle to the autohide appbar associated with an edge of the screen. This message extends ABM_GETAUTOHIDEBAR by
+			/// enabling you to specify a particular monitor, for use in multiple monitor situations.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure that specifies the screen edge and monitor. You must specify the cbSize, uEdge, and rc
+			/// members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns the handle to the autohide appbar. The return value is NULL if an error occurs or if no autohide appbar is associated
+			/// with the given edge of the given monitor.
+			/// </para>
 			/// </summary>
 			ABM_GETAUTOHIDEBAREX = 0x0000000B,
 
-			/// <summary>Windows XP and later: Registers or unregisters an autohide appbar for an edge of a particular monitor.</summary>
+			/// <summary>
+			/// Registers or unregisters an autohide appbar for a given edge of the screen. This message extends ABM_SETAUTOHIDEBAR by
+			/// enabling you to specify a particular monitor, for use in multiple monitor situations.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// A pointer to an APPBARDATA structure. Set the lParam member is to TRUE to register the appbar or FALSE to unregister it. You
+			/// must specify the cbSize, hWnd, uEdge, rc, and lParam members when sending this message; all other members are ignored.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// Returns TRUE if successful, or FALSE if an error occurs or if an autohide appbar is already registered for the given edge on
+			/// the given monitor.
+			/// </para>
+			/// </summary>
+			/// <remarks>
+			/// The system allows only one autohide appbar for each edge of each monitor. The monitor is determined by the rc member and the
+			/// edge is determined by the uEdge member of the APPBARDATA structure.
+			/// </remarks>
 			ABM_SETAUTOHIDEBAREX = 0x0000000C,
+		}
+
+		/// <summary>Windows Shell notifications.</summary>
+		[PInvokeData("shellapi.h")]
+		public enum ABN : int
+		{
+			/// <summary>
+			/// Notifies an appbar that the taskbar's autohide or always-on-top state has changed that is, the user has selected or cleared
+			/// the "Always on top" or "Auto hide" check box on the taskbar's property sheet.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>This message has no parameters.</para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>An appbar can use this notification message to set its state to conform to that of the taskbar, if desired.</remarks>
+			ABN_STATECHANGE = 0,
+
+			/// <summary>
+			/// Notifies an appbar when an event has occurred that may affect the appbar's size and position. Events include changes in the
+			/// taskbar's size, position, and visibility state, as well as the addition, removal, or resizing of another appbar on the same
+			/// side of the screen.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>This message has no parameters.</para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>
+			/// An appbar should respond to this notification message by sending the ABM_QUERYPOS and ABM_SETPOS messages. If its position
+			/// has changed, the appbar should call the MoveWindow function to move itself to the new position.
+			/// </remarks>
+			ABN_POSCHANGED,
+
+			/// <summary>
+			/// Notifies an appbar when a full-screen application is opening or closing. This notification is sent in the form of an
+			/// application-defined message that is set by the ABM_NEW message.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// <em>lParam:</em> A flag specifying whether a full-screen application is opening or closing. This parameter is TRUE if the
+			/// application is opening or FALSE if it is closing.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>
+			/// When a full-screen application is opening, an appbar must drop to the bottom of the z-order. When it is closing, the appbar
+			/// should restore its z-order position.
+			/// </remarks>
+			ABN_FULLSCREENAPP,
+
+			/// <summary>
+			/// Notifies an appbar that the user has selected the Cascade, Tile Horizontally, or Tile Vertically command from the taskbar's
+			/// shortcut menu.
+			/// <para><strong>Parameters</strong></para>
+			/// <para>
+			/// <em>lParam:</em> A flag specifying whether the cascade or tile operation is beginning. This parameter is TRUE if the
+			/// operation is beginning and the windows have not yet been moved. It is FALSE if the operation has completed.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>No return value.</para>
+			/// </summary>
+			/// <remarks>
+			/// The system sends this notification message twice first with lParam set to TRUE and then with lParam set to FALSE. The first
+			/// notification is sent before the windows are cascaded or tiled, and the second is sent after the cascade or tile operation has occurred.
+			/// </remarks>
+			ABN_WINDOWARRANGE
+		}
+
+		/// <summary>Data for the desired state of the Windows taskbar.</summary>
+		[PInvokeData("shellapi.h")]
+		[Flags]
+		public enum ABS : int
+		{
+			/// <summary>Autohide on, always-on-top off.</summary>
+			ABS_AUTOHIDE = 1,
+
+			/// <summary>
+			/// Always-on-top on, autohide off. As of Windows 7, ABS_ALWAYSONTOP is no longer returned because the taskbar is always in that
+			/// state. Older code should be updated to ignore the absence of this value in not assume that return value to mean that the
+			/// taskbar is not in the always-on-top state.
+			/// </summary>
+			ABS_ALWAYSONTOP = 2,
 		}
 
 		/// <summary>Where to obtain association data and the form the data is stored in.</summary>
@@ -311,6 +590,48 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			NIM_SETVERSION = 0x00000004,
+		}
+
+		/// <summary>Shell notification messages delivered as a result of calling <see cref="Shell_NotifyIcon"/>.</summary>
+		[PInvokeData("shellapi.h")]
+		public enum NIN : uint
+		{
+			/// <summary>Sent when a user selects a notify icon with the mouse and activates it with the ENTER key</summary>
+			NIN_SELECT = WM_USER + 0,
+
+			/// <summary>
+			/// Sent when a user selects a notify icon with the keyboard and activates it with the SPACEBAR or ENTER key, the version 5.0
+			/// Shell sends the associated application an NIN_KEYSELECT notification. Earlier versions send WM_RBUTTONDOWN and WM_RBUTTONUP messages.
+			/// </summary>
+			NIN_KEYSELECT = NIN_SELECT | NINF_KEY,
+
+			/// <summary>Sent when the balloon is shown (balloons are queued).</summary>
+			NIN_BALLOONSHOW = WM_USER + 2,
+
+			/// <summary>
+			/// Sent when the balloon disappears. For example, when the icon is deleted. This message is not sent if the balloon is
+			/// dismissed because of a timeout or if the user clicks the mouse.
+			/// <para>
+			/// As of Windows 7, NIN_BALLOONHIDE is also sent when a notification with the NIIF_RESPECT_QUIET_TIME flag set attempts to
+			/// display during quiet time (a user's first hour on a new computer). In that case, the balloon is never displayed at all.
+			/// </para>
+			/// </summary>
+			NIN_BALLOONHIDE = WM_USER + 3,
+
+			/// <summary>Sent when the balloon is dismissed because of a timeout.</summary>
+			NIN_BALLOONTIMEOUT = WM_USER + 4,
+
+			/// <summary>Sent when the balloon is dismissed because the user clicked the mouse.</summary>
+			NIN_BALLOONUSERCLICK = WM_USER + 5,
+
+			/// <summary>
+			/// Sent when the user hovers the cursor over an icon to indicate that the richer pop-up UI should be used in place of a
+			/// standard textual tooltip.
+			/// </summary>
+			NIN_POPUPOPEN = WM_USER + 6,
+
+			/// <summary>Sent when a cursor no longer hovers over an icon to indicate that the rich pop-up UI should be closed.</summary>
+			NIN_POPUPCLOSE = WM_USER + 7,
 		}
 
 		/// <summary>State flags for NOTIFYICONDATA.</summary>
@@ -1132,7 +1453,8 @@ namespace Vanara.PInvoke
 		// const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
-		public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses, uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses,
+			uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>Retrieves an object that implements an IQueryAssociations interface.</summary>
 		/// <typeparam name="TIntf">Reference to the desired IID type, normally IQueryAssociations.</typeparam>
@@ -1249,7 +1571,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-commandlinetoargvw
 		// LPWSTR * CommandLineToArgvW( LPCWSTR lpCmdLine, int *pNumArgs );
 		[PInvokeData("shellapi.h", MSDNShortId = "9889a016-b7a5-402b-8305-6f7c199d41b3")]
-		public static string[] CommandLineToArgvW(string lpCmdLine) =>
+		public static string[] CommandLineToArgvW(string lpCmdLine = "") =>
 			CommandLineToArgvW(lpCmdLine, out var pNumArgs).ToStringEnum(pNumArgs, CharSet.Unicode).ToArray();
 
 		/// <summary>
@@ -1344,7 +1666,7 @@ namespace Vanara.PInvoke
 		// iFile, LPSTR lpszFile, UINT cch );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "93fab381-9035-46c4-ba9d-efb2d0801d84")]
-		public static extern uint DragQueryFile(HDROP hDrop, uint iFile, string lpszFile, uint cch);
+		public static extern uint DragQueryFile(HDROP hDrop, uint iFile, [Optional] string lpszFile, uint cch);
 
 		/// <summary>
 		/// <para>Retrieves the position of the mouse pointer at the time a file was dropped during a drag-and-drop operation.</para>
@@ -1368,7 +1690,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "87794ab0-a075-4a1f-869f-5998bdc57a1d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DragQueryPoint(HDROP hDrop, ref System.Drawing.Point ppt);
+		public static extern bool DragQueryPoint(HDROP hDrop, ref POINT ppt);
 
 		/// <summary>Creates a duplicate of a specified icon.</summary>
 		/// <param name="hInst">Type: <c>HINSTANCE</c></param>
@@ -1380,11 +1702,14 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HICON</c></para>
 		/// <para>If successful, the function returns the handle to the new icon that was created; otherwise, <c>NULL</c>.</para>
 		/// </returns>
-		/// <remarks>When it is no longer needed, the caller is responsible for freeing the icon handle returned by <c>DuplicateIcon</c> by calling the DestroyIcon function.</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-duplicateicon
-		// HICON DuplicateIcon( HINSTANCE hInst, HICON hIcon );
+		/// <remarks>
+		/// When it is no longer needed, the caller is responsible for freeing the icon handle returned by <c>DuplicateIcon</c> by calling
+		/// the DestroyIcon function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-duplicateicon HICON DuplicateIcon( [in] HINSTANCE hInst,
+		// [in] HICON hIcon );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("shellapi.h", MSDNShortId = "488a24e1-f6f0-4bbd-9487-2b4c650f4879")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.DuplicateIcon")]
 		public static extern SafeHICON DuplicateIcon([Optional] HINSTANCE hInst, HICON hIcon);
 
 		/// <summary>Gets a handle to an icon stored as a resource in a file or an icon stored in a file's associated executable file.</summary>
@@ -1400,8 +1725,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// When this function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
-		/// lpIconPath or an associated executable file) the function stores the full path and file name of that executable in the buffer
-		/// pointed to by this parameter.
+		/// <c>lpIconPath</c> or an associated executable file) the function stores the full path and file name of that executable in the
+		/// buffer pointed to by this parameter.
 		/// </para>
 		/// </param>
 		/// <param name="piIcon">
@@ -1409,15 +1734,15 @@ namespace Vanara.PInvoke
 		/// <para>Pointer to a <c>WORD</c> value that, on entry, specifies the index of the icon whose handle is to be obtained.</para>
 		/// <para>
 		/// When the function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
-		/// lpIconPath or an associated executable file), this value points to the icon's index in that file.
+		/// <c>lpIconPath</c> or an associated executable file), this value points to the icon's index in that file.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HICON</c></para>
 		/// <para>
 		/// If the function succeeds, the return value is an icon handle. If the icon is extracted from an associated executable file, the
-		/// function stores the full path and file name of the executable file in the string pointed to by lpIconPath, and stores the icon's
-		/// identifier in the <c>WORD</c> pointed to by lpiIcon.
+		/// function stores the full path and file name of the executable file in the string pointed to by <c>lpIconPath</c>, and stores the
+		/// icon's identifier in the <c>WORD</c> pointed to by <c>lpiIcon</c>.
 		/// </para>
 		/// <para>If the function fails, the return value is <c>NULL</c>.</para>
 		/// </returns>
@@ -1427,18 +1752,32 @@ namespace Vanara.PInvoke
 		/// calling the DestroyIcon function.
 		/// </para>
 		/// <para>
-		/// The <c>ExtractAssociatedIcon</c> function first looks for the indexed icon in the file specified by lpIconPath. If the function
-		/// cannot obtain the icon handle from that file, and the file has an associated executable file, it looks in that executable file
-		/// for an icon. Associations with executable files are based on file name extensions and are stored in the per-user part of the registry.
+		/// The <c>ExtractAssociatedIcon</c> function first looks for the indexed icon in the file specified by <c>lpIconPath</c>. If the
+		/// function cannot obtain the icon handle from that file, and the file has an associated executable file, it looks in that
+		/// executable file for an icon. Associations with executable files are based on file name extensions and are stored in the per-user
+		/// part of the registry.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines ExtractAssociatedIcon as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extractassociatedicona
-		// HICON ExtractAssociatedIconA( HINSTANCE hInst, LPSTR pszIconPath, WORD *piIcon );
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extractassociatedicona HICON ExtractAssociatedIconA( [in]
+		// HINSTANCE hInst, [in, out] LPSTR pszIconPath, [in, out] WORD *piIcon );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "157ce603-9988-4cae-a2cd-51db290268c3")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractAssociatedIconA")]
 		public static extern SafeHICON ExtractAssociatedIcon(HINSTANCE hInst, StringBuilder pszIconPath, ref ushort piIcon);
 
 		/// <summary>
+		/// <para>
+		/// [ <c>ExtractAssociatedIconEx</c> is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
+		/// </para>
 		/// <para>
 		/// Gets a handle to an icon stored as a resource in a file or an icon stored in a file's associated executable file. It extends the
 		/// ExtractAssociatedIcon function by retrieving the icon's ID when that icon is extracted from an executable file.
@@ -1449,13 +1788,32 @@ namespace Vanara.PInvoke
 		/// <para>The handle of the module from which to extract the icon.</para>
 		/// </param>
 		/// <param name="pszIconPath">
-		/// <para>TBD</para>
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>
+		/// Pointer to a string that, on entry, specifies the full path and file name of the file that contains the icon. The function
+		/// extracts the icon handle from that file, or from an executable file associated with that file.
+		/// </para>
+		/// <para>
+		/// When this function returns, if the icon handle was obtained from an executable file (either an executable file directly pointed
+		/// to by this parameter or an associated executable file) the function stores the full path and file name of that executable in the
+		/// buffer pointed to by this parameter.
+		/// </para>
 		/// </param>
 		/// <param name="piIconIndex">
-		/// <para>TBD</para>
+		/// <para>Type: <c>LPWORD</c></para>
+		/// <para>Pointer to a <c>WORD</c> value that, on entry, specifies the index of the icon whose handle is to be obtained.</para>
+		/// <para>
+		/// When the function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
+		/// <c>lpIconPath</c> or an associated executable file), this value points to the icon's index in that file.
+		/// </para>
 		/// </param>
 		/// <param name="piIconId">
-		/// <para>TBD</para>
+		/// <para>Type: <c>LPWORD</c></para>
+		/// <para>Pointer to a <c>WORD</c> value that, on entry, specifies the ID of the icon whose handle is to be obtained.</para>
+		/// <para>
+		/// When the function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by
+		/// <c>lpIconPath</c> or an associated executable file), this value points to the icon's ID within that file.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HICON</c></para>
@@ -1463,11 +1821,20 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>The icon handle returned by this function must be released by calling DestroyIcon when it is no longer needed.</para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines ExtractAssociatedIconEx as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extractassociatediconexa HICON ExtractAssociatedIconExA(
-		// HINSTANCE hInst, LPSTR pszIconPath, WORD *piIconIndex, WORD *piIconId );
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extractassociatediconexa HICON ExtractAssociatedIconExA(
+		// [in] HINSTANCE hInst, [in, out] LPSTR pszIconPath, [in, out] WORD *piIconIndex, [in, out] WORD *piIconId );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "f32260b0-917b-4406-aeee-34f71a7c7309")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractAssociatedIconExA")]
 		public static extern SafeHICON ExtractAssociatedIconEx(HINSTANCE hInst, StringBuilder pszIconPath, ref ushort piIconIndex, ref ushort piIconId);
 
 		/// <summary>
@@ -1484,39 +1851,87 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="nIconIndex">
 		/// <para>Type: <c>UINT</c></para>
-		/// <para>Specifies the zero-based index of the icon to retrieve. For example, if this value is 0, the function returns a handle to the first icon in the specified file.</para>
-		/// <para>If this value is -1, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ICO file, the return value is 1.</para>
-		/// <para>If this value is a negative number not equal to –1, the function returns a handle to the icon in the specified file whose resource identifier is equal to the absolute value of nIconIndex. For example, you should use –3 to extract the icon whose resource identifier is 3. To extract the icon whose resource identifier is 1, use the ExtractIconEx function.</para>
+		/// <para>
+		/// Specifies the zero-based index of the icon to retrieve. For example, if this value is 0, the function returns a handle to the
+		/// first icon in the specified file.
+		/// </para>
+		/// <para>
+		/// If this value is -1, the function returns the total number of icons in the specified file. If the file is an executable file or
+		/// DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ICO file, the return value is 1.
+		/// </para>
+		/// <para>
+		/// If this value is a negative number not equal to –1, the function returns a handle to the icon in the specified file whose
+		/// resource identifier is equal to the absolute value of <c>nIconIndex</c>. For example, you should use –3 to extract the icon whose
+		/// resource identifier is 3. To extract the icon whose resource identifier is 1, use the ExtractIconEx function.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HICON</c></para>
-		/// <para>The return value is a handle to an icon. If the file specified was not an executable file, DLL, or icon file, the return is 1. If no icons were found in the file, the return value is <c>NULL</c>.</para>
+		/// <para>
+		/// The return value is a handle to an icon. If the file specified was not an executable file, DLL, or icon file, the return is 1. If
+		/// no icons were found in the file, the return value is <c>NULL</c>.
+		/// </para>
 		/// </returns>
-		/// <remarks>When it is no longer needed, you must destroy the icon handle returned by <c>ExtractIcon</c> by calling the DestroyIcon function.</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extracticona
-		// HICON ExtractIconA( HINSTANCE hInst, LPCSTR pszExeFileName, UINT nIconIndex );
+		/// <remarks>
+		/// <para>
+		/// When it is no longer needed, you must destroy the icon handle returned by <c>ExtractIcon</c> by calling the DestroyIcon function.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines ExtractIcon as an alias which automatically selects the ANSI or Unicode version of this function
+		/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+		/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+		/// Function Prototypes.
+		/// </para>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extracticona HICON ExtractIconA( [in] HINSTANCE hInst,
+		// [in] LPCSTR pszExeFileName, UINT nIconIndex );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "a0314423-79d6-416e-8be0-be946477da3e")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractIconA")]
 		public static extern SafeHICON ExtractIcon(HINSTANCE hInst, string pszExeFileName, int nIconIndex);
 
-		/// <summary>The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.</summary>
+		/// <summary>
+		/// The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable
+		/// file, DLL, or icon file.
+		/// </summary>
 		/// <param name="lpszFile">
 		/// <para>Type: <c>LPCTSTR</c></para>
-		/// <para>Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.</para>
+		/// <para>
+		/// Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.
+		/// </para>
 		/// </param>
 		/// <param name="nIconIndex">
 		/// <para>Type: <c>int</c></para>
-		/// <para>Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first icon in the specified file.</para>
-		/// <para>If this value is –1 and phiconLarge and phiconSmall are both <c>NULL</c>, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ico file, the return value is 1.</para>
-		/// <para>If this value is a negative number and either phiconLarge or phiconSmall is not <c>NULL</c>, the function begins by extracting the icon whose resource identifier is equal to the absolute value of nIconIndex. For example, use -3 to extract the icon whose resource identifier is 3.</para>
+		/// <para>
+		/// Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first
+		/// icon in the specified file.
+		/// </para>
+		/// <para>
+		/// If this value is –1 and <c>phiconLarge</c> and <c>phiconSmall</c> are both <c>NULL</c>, the function returns the total number of
+		/// icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources.
+		/// If the file is an .ico file, the return value is 1.
+		/// </para>
+		/// <para>
+		/// If this value is a negative number and either <c>phiconLarge</c> or <c>phiconSmall</c> is not <c>NULL</c>, the function begins by
+		/// extracting the icon whose resource identifier is equal to the absolute value of <c>nIconIndex</c>. For example, use -3 to extract
+		/// the icon whose resource identifier is 3.
+		/// </para>
 		/// </param>
 		/// <param name="phiconLarge">
 		/// <para>Type: <c>HICON*</c></para>
-		/// <para>Pointer to an array of icon handles that receives handles to the large icons extracted from the file. If this parameter is <c>NULL</c>, no large icons are extracted from the file.</para>
+		/// <para>
+		/// Pointer to an array of icon handles that receives handles to the large icons extracted from the file. If this parameter is
+		/// <c>NULL</c>, no large icons are extracted from the file.
+		/// </para>
 		/// </param>
 		/// <param name="phiconSmall">
 		/// <para>Type: <c>HICON*</c></para>
-		/// <para>Pointer to an array of icon handles that receives handles to the small icons extracted from the file. If this parameter is <c>NULL</c>, no small icons are extracted from the file.</para>
+		/// <para>
+		/// Pointer to an array of icon handles that receives handles to the small icons extracted from the file. If this parameter is
+		/// <c>NULL</c>, no small icons are extracted from the file.
+		/// </para>
 		/// </param>
 		/// <param name="nIcons">
 		/// <para>Type: <c>UINT</c></para>
@@ -1524,20 +1939,49 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>UINT</c></para>
-		/// <para>If the nIconIndex parameter is -1, the phiconLarge parameter is <c>NULL</c>, and the phiconSmall parameter is <c>NULL</c>, then the return value is the number of icons contained in the specified file. Otherwise, the return value is the number of icons successfully extracted from the file.</para>
+		/// <para>
+		/// If the nIconIndex parameter is -1 and both the phiconLarge and phiconSmall parameters are <c>NULL</c>, then the return value is
+		/// the number of icons contained in the specified file.
+		/// </para>
+		/// <para>
+		/// If the nIconIndex parameter is any value other than -1 and either phiconLarge or phiconSmall is not <c>NULL</c>, the return value
+		/// is the number of icons successfully extracted from the file.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// If the function encounters an error, it returns <c>UINT_MAX</c>. In this case, you can call GetLastError to retrieve the error
+		/// code. For example, this function returns <c>UINT_MAX</c> if the file specified by lpszFile cannot be found while the nIconIndex
+		/// parameter is any value other than -1 and either phiconLarge or phiconSmall is not <c>NULL</c>. In this case, <c>GetLastError</c>
+		/// returns <c>ERROR_FILE_NOT_FOUND</c> (2).
+		/// </para>
+		/// </para>
 		/// </returns>
 		/// <remarks>
-		/// <para>When they are no longer needed, you must destroy all icons extracted by <c>ExtractIconEx</c> by calling the DestroyIcon function.</para>
-		/// <para>To retrieve the dimensions of the large and small icons, use this function with the SM_CXICON, SM_CYICON, SM_CXSMICON, and SM_CYSMICON flags.</para>
+		/// <para>
+		/// When they are no longer needed, you must destroy all icons extracted by <c>ExtractIconEx</c> by calling the DestroyIcon function.
+		/// </para>
+		/// <para>
+		/// To retrieve the dimensions of the large and small icons, use this function with the SM_CXICON, SM_CYICON, SM_CXSMICON, and
+		/// SM_CYSMICON flags.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines ExtractIconEx as an alias which automatically selects the ANSI or Unicode version of this function
+		/// based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not
+		/// encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for
+		/// Function Prototypes.
+		/// </para>
+		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extracticonexa
-		// UINT ExtractIconExA( LPCSTR lpszFile, int nIconIndex, HICON *phiconLarge, HICON *phiconSmall, UINT nIcons );
-		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "1c4d760a-79b5-4646-9cf2-6cd32c5d05ee")]
-		//  public static extern uint ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string lpszFile, int nIconIndex, ref HICON phiconLarge, ref HICON phiconSmall, uint nIcons);
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extracticonexa UINT ExtractIconExA( [in] LPCSTR lpszFile,
+		// [in] int nIconIndex, [out] HICON *phiconLarge, [out] HICON *phiconSmall, UINT nIcons );
+		[DllImport(Lib.Shell32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractIconExA")]
 		public static extern uint ExtractIconEx(string lpszFile, int nIconIndex,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconLarge,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconSmall, uint nIcons);
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconLarge,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HICON[] phiconSmall, uint nIcons);
 
 		/// <summary>The <c>ExtractIconEx</c> function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.</summary>
 		/// <param name="lpszFile">
@@ -1786,7 +2230,7 @@ namespace Vanara.PInvoke
 		// SHAddFromPropSheetExtArray( HPSXA hpsxa, LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "e0570cd6-dda2-43e4-8540-58baef37bf18")]
-		public static extern uint SHAddFromPropSheetExtArray(IntPtr hpsxa, AddPropSheetPageProc lpfnAddPage, IntPtr lParam);
+		public static extern uint SHAddFromPropSheetExtArray(IntPtr hpsxa, AddPropSheetPageProc lpfnAddPage, [Optional] IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -1874,7 +2318,7 @@ namespace Vanara.PInvoke
 		// dwMessage, PAPPBARDATA pData );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "173d6eff-b33b-4d7d-bedd-5ebfb1e45954")]
-		public static extern UIntPtr SHAppBarMessage(ABM dwMessage, ref APPBARDATA pData);
+		public static extern IntPtr SHAppBarMessage(ABM dwMessage, ref APPBARDATA pData);
 
 		/// <summary>
 		/// <para>Sends a message to the taskbar's status area.</para>
@@ -2085,7 +2529,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "0919e356-84e8-475e-8628-23097b19c50d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShellAbout(HWND hWnd, string szApp, string szOtherStuff, HICON hIcon);
+		public static extern bool ShellAbout([Optional] HWND hWnd, string szApp, [Optional] string szOtherStuff, [Optional] HICON hIcon);
 
 		/// <summary>
 		/// <para>Performs an operation on a specified file.</para>
@@ -2293,7 +2737,8 @@ namespace Vanara.PInvoke
 		// lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "8b1f3978-a0ee-4684-8a37-98e270b63897")]
-		public static extern IntPtr ShellExecute(HWND hwnd, string lpOperation, string lpFile, string lpParameters, string lpDirectory, ShowWindowCommand nShowCmd);
+		public static extern IntPtr ShellExecute([Optional] HWND hwnd, [Optional] string lpOperation, string lpFile, [Optional] string lpParameters,
+			[Optional] string lpDirectory, ShowWindowCommand nShowCmd);
 
 		/// <summary>Performs an operation on a specified file.</summary>
 		/// <param name="lpExecInfo">
@@ -2341,7 +2786,7 @@ namespace Vanara.PInvoke
 		// hwnd, LPCSTR pszRootPath, DWORD dwFlags );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "c3995be7-bc8b-4e1f-8ef6-fdf4c0a75720")]
-		public static extern HRESULT SHEmptyRecycleBin(HWND hwnd, string pszRootPath, SHERB dwFlags);
+		public static extern HRESULT SHEmptyRecycleBin([Optional] HWND hwnd, [Optional] string pszRootPath, SHERB dwFlags);
 
 		/// <summary>
 		/// <para>Enumerates the user accounts that have unread email.</para>
@@ -2999,41 +3444,44 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>The type of printer operation to perform. One of the following values:</para>
 		/// <para>PRINTACTION_OPEN (0)</para>
-		/// <para>0x0. Open the printer specified by . The parameter is ignored.</para>
+		/// <para>0x0. Open the printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// <para>PRINTACTION_PROPERTIES (1)</para>
 		/// <para>
-		/// 0x1. Display the property pages for the printer specified by . The parameter can be <c>NULL</c> or can name a specific property
-		/// sheet to display, either by name or number. If the high <c>WORD</c> of is nonzero, it is assumed that this parameter is a pointer
-		/// to a buffer that contains the name of the sheet to open. Otherwise, is seen as the zero-based index of the property sheet to open.
+		/// 0x1. Display the property pages for the printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter can be <c>NULL</c> or can
+		/// name a specific property sheet to display, either by name or number. If the high <c>WORD</c> of <c>lpBuf2</c> is nonzero, it is
+		/// assumed that this parameter is a pointer to a buffer that contains the name of the sheet to open. Otherwise, <c>lpBuf2</c> is
+		/// seen as the zero-based index of the property sheet to open.
 		/// </para>
 		/// <para>PRINTACTION_NETINSTALL (2)</para>
-		/// <para>0x2. Install the network printer specified by . The parameter is ignored.</para>
+		/// <para>0x2. Install the network printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// <para>PRINTACTION_NETINSTALLLINK (3)</para>
 		/// <para>
-		/// 0x3. Create a shortcut to the network printer specified by . The parameter specifies the drive and path of the folder in which to
-		/// create the shortcut. The network printer must already have been installed on the local computer.
+		/// 0x3. Create a shortcut to the network printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter specifies the drive and
+		/// path of the folder in which to create the shortcut. The network printer must already have been installed on the local computer.
 		/// </para>
 		/// <para>PRINTACTION_TESTPAGE (4)</para>
-		/// <para>0x4. Print a test page on the printer specified by . The parameter is ignored.</para>
+		/// <para>0x4. Print a test page on the printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// <para>PRINTACTION_OPENNETPRN (5)</para>
-		/// <para>0x5. Open the network printer specified by . The parameter is ignored.</para>
+		/// <para>0x5. Open the network printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// <para>PRINTACTION_DOCUMENTDEFAULTS (6)</para>
-		/// <para>0x6. Display the default document properties for the printer specified by . The parameter is ignored.</para>
+		/// <para>
+		/// 0x6. Display the default document properties for the printer specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.
+		/// </para>
 		/// <para>PRINTACTION_SERVERPROPERTIES (7)</para>
-		/// <para>0x7. Display the properties for the printer server specified by . The parameter is ignored.</para>
+		/// <para>0x7. Display the properties for the printer server specified by <c>lpBuf1</c>. The <c>lpBuf2</c> parameter is ignored.</para>
 		/// </param>
 		/// <param name="lpBuf1">
 		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>
 		/// Pointer to a null-terminated string that contains additional information for the printer command. The information contained in
-		/// this parameter depends upon the value of .
+		/// this parameter depends upon the value of <c>uAction</c>.
 		/// </para>
 		/// </param>
 		/// <param name="lpBuf2">
 		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>
 		/// Pointer to a null-terminated string that contains additional information for the printer command. The information contained in
-		/// this parameter depends upon the value of .
+		/// this parameter depends upon the value of <c>uAction</c>.
 		/// </para>
 		/// </param>
 		/// <param name="fModal">
@@ -3049,26 +3497,33 @@ namespace Vanara.PInvoke
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// When a printer name is specified by , the name can either be the name of a local printer or the server and share name of a
-		/// network printer. When specifying a network printer name, the name must be specified in this format:
+		/// When a printer name is specified by <c>lpBuf1</c>, the name can either be the name of a local printer or the server and share
+		/// name of a network printer. When specifying a network printer name, the name must be specified in this format:
 		/// </para>
-		/// <para>This function is implemented in</para>
-		/// <para>Shell versions 4.71</para>
 		/// <para>
-		/// and later. In order to maintain backward compatibility with previous Shell versions, this function should not be used explicitly.
-		/// Instead, the
+		/// <code>"\\&lt;server&gt;&lt;shared printer name&gt;"</code>
 		/// </para>
-		/// <para>LoadLibrary</para>
-		/// <para>and</para>
-		/// <para>GetProcAddress</para>
-		/// <para>functions should be used to obtain the function address.</para>
+		/// <para>
+		/// This function is implemented in Shell versions 4.71 and later. In order to maintain backward compatibility with previous Shell
+		/// versions, this function should not be used explicitly. Instead, the LoadLibrary and GetProcAddress functions should be used to
+		/// obtain the function address.
+		/// </para>
+		/// <para>
+		/// <para>Note</para>
+		/// <para>
+		/// The shellapi.h header defines SHInvokePrinterCommand as an alias which automatically selects the ANSI or Unicode version of this
+		/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that
+		/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions
+		/// for Function Prototypes.
+		/// </para>
+		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shinvokeprintercommanda BOOL SHInvokePrinterCommandA(
-		// HWND hwnd, UINT uAction, LPCSTR lpBuf1, LPCSTR lpBuf2, BOOL fModal );
+		// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shinvokeprintercommanda BOOL SHInvokePrinterCommandA( [in,
+		// optional] HWND hwnd, UINT uAction, [in] LPCSTR lpBuf1, [in, optional] LPCSTR lpBuf2, BOOL fModal );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("shellapi.h", MSDNShortId = "32a5802f-cef7-4dbd-affd-82285fe97a8c")]
+		[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.SHInvokePrinterCommandA")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHInvokePrinterCommand(HWND hwnd, PRINTACTION uAction, string lpBuf1, string lpBuf2, [MarshalAs(UnmanagedType.Bool)] bool fModal);
+		public static extern bool SHInvokePrinterCommand(HWND hwnd, PRINTACTION uAction, string lpBuf1, [Optional] string lpBuf2, [MarshalAs(UnmanagedType.Bool)] bool fModal);
 
 		/// <summary>
 		/// <para>
@@ -3359,7 +3814,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "ac2d591a-f431-4da7-aa9f-0476634ec9cf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHTestTokenMembership(HTOKEN hToken, uint ulRID);
+		public static extern bool SHTestTokenMembership([Optional] HTOKEN hToken, uint ulRID);
 
 		/// <summary>
 		/// UNDOCUMENTED: Use at your own risk.
@@ -3378,6 +3833,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/ns-shellapi-_appbardata typedef struct _AppBarData { DWORD cbSize;
 		// HWND hWnd; UINT uCallbackMessage; UINT uEdge; RECT rc; LPARAM lParam; } APPBARDATA, *PAPPBARDATA;
 		[PInvokeData("shellapi.h", MSDNShortId = "cf86fe15-4beb-49b7-b73e-2ad61cedc3f8")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct APPBARDATA
 		{
 			/// <summary>
@@ -3394,31 +3850,6 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public HWND hWnd;
-
-			/// <summary>
-			/// <para>Type: <c>LPARAM</c></para>
-			/// <para>A message-dependent value. This member is used with these messages:</para>
-			/// <para>ABM_SETAUTOHIDEBAR</para>
-			/// <para>ABM_SETAUTOHIDEBAREX</para>
-			/// <para>ABM_SETSTATE</para>
-			/// <para>See the individual message pages for details.</para>
-			/// </summary>
-			public IntPtr lParam;
-
-			/// <summary>
-			/// <para>Type: <c>RECT</c></para>
-			/// <para>A RECT structure whose use varies depending on the message:</para>
-			/// <list type="bullet">
-			/// <item>
-			/// ABM_GETTASKBARPOS, ABM_QUERYPOS, ABM_SETPOS: The bounding rectangle, in screen coordinates, of an appbar or the Windows taskbar.
-			/// </item>
-			/// <item>
-			/// ABM_GETAUTOHIDEBAREX, ABM_SETAUTOHIDEBAREX: The monitor on which the operation is being performed. This information can be
-			/// retrieved through the GetMonitorInfo function.
-			/// </item>
-			/// </list>
-			/// </summary>
-			public RECT rc;
 
 			/// <summary>
 			/// <para>Type: <c>UINT</c></para>
@@ -3449,6 +3880,47 @@ namespace Vanara.PInvoke
 			/// <para>Top edge.</para>
 			/// </summary>
 			public ABE uEdge;
+
+			/// <summary>
+			/// <para>Type: <c>RECT</c></para>
+			/// <para>A RECT structure whose use varies depending on the message:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// ABM_GETTASKBARPOS, ABM_QUERYPOS, ABM_SETPOS: The bounding rectangle, in screen coordinates, of an appbar or the Windows taskbar.
+			/// </item>
+			/// <item>
+			/// ABM_GETAUTOHIDEBAREX, ABM_SETAUTOHIDEBAREX: The monitor on which the operation is being performed. This information can be
+			/// retrieved through the GetMonitorInfo function.
+			/// </item>
+			/// </list>
+			/// </summary>
+			public RECT rc;
+
+			/// <summary>
+			/// <para>Type: <c>LPARAM</c></para>
+			/// <para>A message-dependent value. This member is used with these messages:</para>
+			/// <para>ABM_SETAUTOHIDEBAR</para>
+			/// <para>ABM_SETAUTOHIDEBAREX</para>
+			/// <para>ABM_SETSTATE</para>
+			/// <para>See the individual message pages for details.</para>
+			/// </summary>
+			public IntPtr lParam;
+
+			/// <summary>Initializes a new instance of the <see cref="APPBARDATA"/> struct.</summary>
+			/// <param name="hWnd">The handle to the appbar window.</param>
+			/// <param name="callbackMessage">An application-defined message identifier.</param>
+			/// <param name="edge">A value that specifies an edge of the screen.</param>
+			/// <param name="rect">A RECT structure whose use varies depending on the message.</param>
+			/// <param name="lParam">A message-dependent value.</param>
+			public APPBARDATA(HWND hWnd = default, uint callbackMessage = 0, ABE edge = 0, RECT rect = default, int lParam = default)
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(APPBARDATA));
+				this.hWnd = hWnd;
+				uCallbackMessage = callbackMessage;
+				uEdge = edge;
+				rc = rect;
+				this.lParam = new(lParam);
+			}
 		}
 
 		/// <summary>Defines information used by AssocCreateForClasses to retrieve an IQueryAssociations interface for a given file association.</summary>
@@ -3696,8 +4168,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>
-			/// A handle to the parent window used by the notification's callback function. For more information, see the member of the
-			/// NOTIFYICONDATA structure.
+			/// A handle to the parent window used by the notification's callback function. For more information, see the <see
+			/// cref="NOTIFYICONDATA.hwnd"/> member of the NOTIFYICONDATA structure.
 			/// </para>
 			/// </summary>
 			public HWND hWnd;
@@ -3705,8 +4177,8 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>Type: <c>UINT</c></para>
 			/// <para>
-			/// The application-defined identifier of the notification icon. Multiple icons can be associated with a single , each with their
-			/// own .
+			/// The application-defined identifier of the notification icon. Multiple icons can be associated with a single <c>hWnd</c>,
+			/// each with their own <c>uID</c>.
 			/// </para>
 			/// </summary>
 			public uint uID;
@@ -3716,6 +4188,27 @@ namespace Vanara.PInvoke
 			/// <para>A registered GUID that identifies the icon. Use <c>GUID_NULL</c> if the icon is not identified by a GUID.</para>
 			/// </summary>
 			public Guid guidItem;
+
+			/// <summary>Initializes a new instance of the <see cref="NOTIFYICONIDENTIFIER"/> struct.</summary>
+			/// <param name="hWnd">A handle to the parent window used by the notification's callback function.</param>
+			/// <param name="uID">The application-defined identifier of the notification icon.</param>
+			public NOTIFYICONIDENTIFIER(HWND hWnd, uint uID)
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(NOTIFYICONIDENTIFIER));
+				this.hWnd = hWnd;
+				this.uID = uID;
+				guidItem = default;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="NOTIFYICONIDENTIFIER"/> struct.</summary>
+			/// <param name="guidItem">A registered GUID that identifies the icon.</param>
+			public NOTIFYICONIDENTIFIER(Guid guidItem)
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(NOTIFYICONIDENTIFIER));
+				this.hWnd = default;
+				this.uID = default;
+				this.guidItem = guidItem;
+			}
 		}
 
 		/// <summary>Contains information used by ShellExecuteEx.</summary>
@@ -4074,7 +4567,7 @@ namespace Vanara.PInvoke
 			public string szPath;
 
 			/// <summary>The default empty instance of SHSTOCKICONINFO with cbSize set appropriately.</summary>
-			public static readonly SHSTOCKICONINFO Default = new SHSTOCKICONINFO { cbSize = (uint)Marshal.SizeOf(typeof(SHSTOCKICONINFO)) };
+			public static readonly SHSTOCKICONINFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(SHSTOCKICONINFO)) };
 		}
 	}
 }

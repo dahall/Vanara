@@ -12,10 +12,17 @@ namespace Vanara.PInvoke
 		/// <summary>No color.</summary>
 		public const uint CLR_NONE = 0xFFFFFFFF;
 
-		/// <summary/>
+		/// <summary>
+		/// By specifying the I_IMAGECALLBACK value instead of the index of an image, you can delay specifying the selected or nonselected
+		/// image until the item is about to be redrawn. I_IMAGECALLBACK directs the control to query the application for the index by
+		/// sending a control specific notification message.
+		/// </summary>
 		public const int I_IMAGECALLBACK = -1;
 
-		/// <summary/>
+		/// <summary>
+		/// Set LPARAM to I_IMAGENONE to indicate that the button does not have an image. The button layout will not include any
+		/// space for a bitmap, only text.
+		/// </summary>
 		public const int I_IMAGENONE = -2;
 
 		/// <summary/>
@@ -135,83 +142,169 @@ namespace Vanara.PInvoke
 		public enum CommonControlNotification
 		{
 			/// <summary>
+			/// <para>
 			/// Notifies a control's parent window that the control could not complete an operation because there was not enough memory
-			/// available. This notification code is sent in the form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMHDR structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// available. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_OUTOFMEMORY lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-outofmemory
 			NM_OUTOFMEMORY = NM_FIRST - 1,
 
 			/// <summary>
-			/// Sent by a control when the user clicks with the left mouse button. This notification code is sent in the form of a WM_NOTIFY message.
+			/// <para>
+			/// Sent by a list-view control when the user clicks an item with the left mouse button. This notification code is sent in the
+			/// form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_CLICK lpnmitem = (LPNMITEMACTIVATE) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// Version 4.71. Pointer to an <c>NMITEMACTIVATE</c> structure that contains additional information about this notification. The
+			/// <c>iItem</c>, <c>iSubItem</c>, and <c>ptAction</c> members of this structure contain information about the item.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value for this notification is not used.</para>
 			/// </summary>
+			/// <remarks>
+			/// The <c>iItem</c> member of lParam is only valid if the icon or first-column label has been clicked. To determine which item
+			/// is selected when a click takes place elsewhere in a row, send an <c>LVM_SUBITEMHITTEST</c> message.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-click-list-view
 			NM_CLICK = NM_FIRST - 2,
 
 			/// <summary>
-			/// Sent by a control when the user double-clicks with the left mouse button. This notification code is sent in the form of a
-			/// WM_NOTIFY message.
+			/// <para>
+			/// Sent by a list-view control when the user double-clicks an item with the left mouse button. This notification code is sent in
+			/// the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_DBLCLK lpnmitem = (LPNMITEMACTIVATE) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// Version 4.71. Pointer to an <c>NMITEMACTIVATE</c> structure that contains additional information about this notification. The
+			/// <c>iItem</c>, <c>iSubItem</c>, and <c>ptAction</c> members of this structure contain information about the item.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value for this notification is not used.</para>
 			/// </summary>
+			/// <remarks>
+			/// The <c>iItem</c> member of lParam is only valid if the icon or first-column label has been clicked. To determine which item
+			/// is selected when a click takes place elsewhere in a row, send an <c>LVM_SUBITEMHITTEST</c> message.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-dblclk-list-view
 			NM_DBLCLK = NM_FIRST - 3,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a control's parent window that the control has the input focus and that the user has pressed the ENTER key. This
-			/// notification code is sent in the form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMHDR structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_RETURN lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-return
 			NM_RETURN = NM_FIRST - 4,
 
 			/// <summary>
-			/// Sent by a control when the user clicks with the right mouse button. This notification code is sent in the form of a WM_NOTIFY message.
+			/// <para>
+			/// Notifies the parent window of a tree-view control that the user has clicked the right mouse button within the control. This
+			/// notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_RCLICK lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Return nonzero to prevent the default processing, or zero to allow the default processing.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-rclick-tree-view
 			NM_RCLICK = NM_FIRST - 5,
 
 			/// <summary>
-			/// Sent by a control when the user double-clicks with the right mouse button. This notification code is sent in the form of a
-			/// WM_NOTIFY message.
+			/// <para>
+			/// Notifies the parent of a tree-view control that the user has double-clicked the right mouse button within the control. This
+			/// notification is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_RDBLCLK lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>Pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Return nonzero to prevent the default processing, or zero to allow the default processing.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-rdblclk-tree-view
 			NM_RDBLCLK = NM_FIRST - 6,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a control's parent window that the control has received the input focus. This notification code is sent in the form
-			/// of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMHDR structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_SETFOCUS lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-setfocus
 			NM_SETFOCUS = NM_FIRST - 7,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a control's parent window that the control has lost the input focus. This notification code is sent in the form of a
-			/// WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMHDR structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_KILLFOCUS lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-killfocus
 			NM_KILLFOCUS = NM_FIRST - 8,
 
 			/// <summary>
-			/// Notifies a control's parent window about custom drawing operations. This notification code is sent in the form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>
+			/// <para>
+			/// Notifies a control's parent window about custom drawing operations. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_CUSTOMDRAW #ifdef LIST_VIEW_CUSTOM_DRAW lpNMCustomDraw = (LPNMLVCUSTOMDRAW) lParam; #elif TOOL_TIPS_CUSTOM_DRAW lpNMCustomDraw = (LPNMTTCUSTOMDRAW) lParam; #elif TREE_VIEW_CUSTOM_DRAW lpNMCustomDraw = (LPNMTVCUSTOMDRAW) lParam; #elif TOOL_BAR_CUSTOM_DRAW lpNMCustomDraw = (LPNMTBCUSTOMDRAW) lParam; #else lpNMCustomDraw = (LPNMCUSTOMDRAW) lParam; #endif</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
 			/// A pointer to a custom draw-related structure that contains information about the drawing operation. The following list
 			/// specifies the controls and their associated structures.
+			/// </para>
 			/// <list type="table">
 			/// <listheader>
 			/// <term>Control</term>
@@ -219,210 +312,322 @@ namespace Vanara.PInvoke
 			/// </listheader>
 			/// <item>
 			/// <term>Rebar, trackbar, and header</term>
-			/// <term>NMCUSTOMDRAW</term>
+			/// <term><c>NMCUSTOMDRAW</c></term>
 			/// </item>
 			/// <item>
 			/// <term>List view</term>
-			/// <term>NMLVCUSTOMDRAW</term>
+			/// <term><c>NMLVCUSTOMDRAW</c></term>
 			/// </item>
 			/// <item>
 			/// <term>Tooltip</term>
-			/// <term>NMTTCUSTOMDRAW</term>
+			/// <term><c>NMTTCUSTOMDRAW</c></term>
 			/// </item>
 			/// <item>
 			/// <term>Tree view</term>
-			/// <term>NMTVCUSTOMDRAW</term>
+			/// <term><c>NMTVCUSTOMDRAW</c></term>
 			/// </item>
 			/// <item>
 			/// <term>Toolbar</term>
-			/// <term>NMTBCUSTOMDRAW</term>
+			/// <term><c>NMTBCUSTOMDRAW</c></term>
 			/// </item>
 			/// </list>
-			/// </description>
-			/// </item>
-			/// </list>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
+			/// The value your application can return depends on the current drawing stage. The <c>dwDrawStage</c> member of the associated
+			/// <c>NMCUSTOMDRAW</c> structure holds a value that specifies the drawing stage. You must return one of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
 			/// <item>
-			/// <term>Return value</term>
-			/// <description>
-			/// The value your application can return depends on the current drawing stage. The dwDrawStage member of the associated
-			/// NMCUSTOMDRAW structure holds a value that specifies the drawing stage.
-			/// </description>
+			/// <term><c>CDRF_DODEFAULT</c></term>
+			/// <term>
+			/// The control will draw itself. It will not send additional NM_CUSTOMDRAW notification codes for this paint cycle. This flag
+			/// cannot be used with any other flag.
+			/// </term>
 			/// </item>
+			/// <item>
+			/// <term><c>CDRF_DOERASE</c></term>
+			/// <term>The control will only draw the background.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>CDRF_NEWFONT</c></term>
+			/// <term>
+			/// Your application specified a new font for the item; the control will use the new font. For more information on changing
+			/// fonts, see Changing fonts and colors. This occurs when <c>dwDrawStage</c> equals CDDS_ITEMPREPAINT.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>CDRF_NOTIFYITEMDRAW</c></term>
+			/// <term>
+			/// The control will notify the parent of any item-related drawing operations. It will send NM_CUSTOMDRAW notification codes
+			/// before and after drawing items. This occurs when <c>dwDrawStage</c> equals CDDS_PREPAINT.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>CDRF_NOTIFYPOSTERASE</c></term>
+			/// <term>The control will notify the parent after erasing an item. This occurs when <c>dwDrawStage</c> equals CDDS_PREPAINT.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>CDRF_NOTIFYPOSTPAINT</c></term>
+			/// <term>
+			/// The control will send an NM_CUSTOMDRAW notification code when the painting cycle for the entire control is complete. This
+			/// occurs when <c>dwDrawStage</c> equals CDDS_PREPAINT.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>CDRF_NOTIFYSUBITEMDRAW</c></term>
+			/// <term>
+			/// Your application will receive an NM_CUSTOMDRAW notification code with <c>dwDrawStage</c> set to CDDS_ITEMPREPAINT |
+			/// CDDS_SUBITEM before each list-view subitem is drawn. You can then specify font and color for each subitem separately or
+			/// return <c>CDRF_DODEFAULT</c> for default processing. This occurs when <c>dwDrawStage</c> equals CDDS_ITEMPREPAINT.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>CDRF_SKIPDEFAULT</c></term>
+			/// <term>
+			/// Your application drew the item manually. The control will not draw the item. This occurs when <c>dwDrawStage</c> equals CDDS_ITEMPREPAINT.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term><c>CDRF_SKIPPOSTPAINT</c></term>
+			/// <term>The control will not draw the focus rectangle around an item.</term>
+			/// </item>
+			/// </list>
 			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// Currently, the following controls support custom draw functionality: header, list view, rebar, toolbar, tooltip, trackbar,
+			/// and tree view. Custom draw is also supported for button controls if you have an application manifest to ensure that
+			/// Comctl32.dll version 6 is available.
+			/// </para>
+			/// <para>
+			/// If this message is handled in a dialog procedure, you must set the return value as part of the window data before returning
+			/// <c>TRUE</c>. For more information, see <c>DialogProc</c>.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-customdraw
 			NM_CUSTOMDRAW = NM_FIRST - 12,
 
 			/// <summary>
-			/// Sent by a control when the mouse hovers over an item. This notification code is sent in the form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMHDR structure that contains additional information about this notification.</description>
-			/// </item>
-			/// <item>
-			/// <term>Return value</term>
-			/// <description>
+			/// <para>
+			/// Sent by a control when the mouse hovers over an item. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_HOVER lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Unless otherwise specified, return zero to allow the control to process the hover normally, or nonzero to prevent the hover
 			/// from being processed.
-			/// </description>
-			/// </item>
-			/// </list>
+			/// </para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-hover
 			NM_HOVER = NM_FIRST - 13,
 
 			/// <summary>
-			/// Sent by a rebar control when the control receives a WM_NCHITTEST message. This notification code is sent in the form of a
-			/// WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>
-			/// A pointer to a NMMOUSE structure that contains information about the notification code. The pt member contains the mouse
-			/// coordinates of the hit test message.
-			/// </description>
-			/// </item>
-			/// <item>
-			/// <term>Return value</term>
-			/// <description>
+			/// <para>
+			/// Sent by a rebar control when the control receives a <c>WM_NCHITTEST</c> message. This notification code is sent in the form
+			/// of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_NCHITTEST lpnmmouse = (LPNMMOUSE) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// A pointer to a <c>NMMOUSE</c> structure that contains information about the notification code. The pt member contains the
+			/// mouse coordinates of the hit test message.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>
 			/// Unless otherwise specified, return zero to allow the control to perform default processing of the hit test message, or return
-			/// one of the HT* values documented under WM_NCHITTEST to override the default hit test processing.
-			/// </description>
-			/// </item>
-			/// </list>
+			/// one of the HT* values documented under <c>WM_NCHITTEST</c> to override the default hit test processing.
+			/// </para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-nchittest
 			NM_NCHITTEST = NM_FIRST - 14,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a control when the control has the keyboard focus and the user presses a key. This notification code is sent in the
-			/// form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>
-			/// A pointer to an NMKEY structure that contains additional information about the key that caused the notification code.
-			/// </description>
-			/// </item>
-			/// <item>
-			/// <term>Return value</term>
-			/// <description>Return nonzero to prevent the control from processing the key, or zero otherwise.</description>
-			/// </item>
-			/// </list>
+			/// form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_KEYDOWN lpnmk = (LPNMKEY) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// A pointer to an <c>NMKEY</c> structure that contains additional information about the key that caused the notification code.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Return nonzero to prevent the control from processing the key, or zero otherwise.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-keydown
 			NM_KEYDOWN = NM_FIRST - 15,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a control's parent window that the control is releasing mouse capture. This notification code is sent in the form of
-			/// a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMHDR structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_RELEASEDCAPTURE lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Unless otherwise specified, the control ignores the return value from this notification code.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-releasedcapture
 			NM_RELEASEDCAPTURE = NM_FIRST - 16,
 
 			/// <summary>
-			/// Notifies a control's parent window that the control is setting the cursor in response to a WM_SETCURSOR message. This
-			/// notification code is sent in the form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMMOUSE structure that contains additional information about this notification.</description>
-			/// </item>
-			/// <item>
-			/// <term>Return value</term>
-			/// <description>
-			/// Return zero to enable the control to set the cursor or nonzero to prevent the control from setting the cursor.
-			/// </description>
-			/// </item>
-			/// </list>
+			/// <para>
+			/// Notifies a control's parent window that the control is setting the cursor in response to a <c>WM_SETCURSOR</c> message. This
+			/// notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_SETCURSOR lpnmm = (LPNMMOUSE) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMMOUSE</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Return zero to enable the control to set the cursor or nonzero to prevent the control from setting the cursor.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-setcursor
 			NM_SETCURSOR = NM_FIRST - 17,
 
 			/// <summary>
+			/// <para>
 			/// The NM_CHAR notification code is sent by a control when a character key is processed. This notification code is sent in the
-			/// form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>
-			/// A pointer to an NMCHAR structure that contains additional information about the character that caused the notification code.
-			/// </description>
-			/// </item>
-			/// </list>
+			/// form of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_CHAR lpnmc = (LPNMCHAR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>
+			/// A pointer to an <c>NMCHAR</c> structure that contains additional information about the character that caused the notification code.
+			/// </para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by most controls. For more information, see the documentation for the individual controls.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-char
 			NM_CHAR = NM_FIRST - 18,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a control's parent window that the control has created a tooltip control. This notification code is sent in the form
-			/// of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMTOOLTIPSCREATED structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_TOOLTIPSCREATED lpnmttc = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMTOOLTIPSCREATED</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>Unless otherwise specified, the control ignores the return value from this notification code.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-tooltipscreated
 			NM_TOOLTIPSCREATED = NM_FIRST - 19,
 
 			/// <summary>
+			/// <para>
 			/// Notifies a control's parent window that the left mouse button has been pressed. This notification code is sent in the form of
-			/// a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMHDR structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_LDOWN lpnmhdr = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-ldown
 			NM_LDOWN = NM_FIRST - 20,
 
 			/// <summary>This notification code is not supported.</summary>
 			NM_RDOWN = NM_FIRST - 21,
 
 			/// <summary>
-			/// Notifies a control's parent window that the theme has changed. This notification code is sent in the form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMHDR structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// <para>
+			/// Notifies a control's parent window that the theme has changed. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_THEMECHANGED lpnmhdr = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-themechanged
 			NM_THEMECHANGED = NM_FIRST - 22,
 
 			/// <summary>
-			/// Sent by a list-view control when the control has changed a font. This notification code is sent in the form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMHDR structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// <para>
+			/// Sent by a list-view control when the control has changed a font. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_FONTCHANGED lpnmh = (LPNMHDR) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-fontchanged
 			NM_FONTCHANGED = NM_FIRST - 23,
 
 			/// <summary>
-			/// Notifies a control's parent window about custom text operations. This notification code is sent in the form of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMCUSTOMTEXT structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// <para>
+			/// Notifies a control's parent window about custom text operations. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_CUSTOMTEXT lpnmct = (NMCUSTOMTEXT) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMCUSTOMTEXT</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-customtext
 			NM_CUSTOMTEXT = NM_FIRST - 24,
 
 			/// <summary>
+			/// <para>
 			/// Sent by a tree-view control to its parent window that the state image is changing. This notification code is sent in the form
-			/// of a WM_NOTIFY message.
-			/// <list>
-			/// <item>
-			/// <term>lParam</term>
-			/// <description>A pointer to an NMTVSTATEIMAGECHANGING structure that contains additional information about this notification.</description>
-			/// </item>
-			/// </list>
+			/// of a <c>WM_NOTIFY</c> message.
+			/// </para>
+			/// <para>
+			/// <code>NM_TVSTATEIMAGECHANGING lpnmtsic = (LPNMTVSTATEIMAGECHANGING) lParam;</code>
+			/// </para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>lParam</em></para>
+			/// <para>A pointer to an <c>NMTVSTATEIMAGECHANGING</c> structure that contains additional information about this notification.</para>
+			/// <para><strong>Returns</strong></para>
+			/// <para>The return value is ignored by the control.</para>
 			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/win32/controls/nm-tvstateimagechanging
 			NM_TVSTATEIMAGECHANGING = NM_FIRST - 24,
 		}
 
@@ -1375,7 +1580,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c><c>POINT</c></c></para>
 			/// <para>A <c>POINT</c> structure that contains the client coordinates of the mouse when the click occurred.</para>
 			/// </summary>
-			public System.Drawing.Point pt;
+			public POINT pt;
 
 			/// <summary>
 			/// <para>Type: <c><c>LPARAM</c></c></para>

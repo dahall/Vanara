@@ -5,6 +5,8 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+#pragma warning disable IDE1006 // Naming Styles
+
 		/// <summary>
 		/// <para>The type of device that sent the input message.</para>
 		/// </summary>
@@ -217,15 +219,15 @@ namespace Vanara.PInvoke
 			RIDEV_EXCLUDE = 0x00000010,
 
 			/// <summary>
-			/// If set, this enables the caller to receive input in the background only if the foreground application does not process it. In
-			/// other words, if the foreground application is not registered for raw input, then the background application that is
+			/// If set, this enables the caller to receive input in the background only if the foreground application does not process it.
+			/// In other words, if the foreground application is not registered for raw input, then the background application that is
 			/// registered will receive the input. <page>Windows XP: This flag is not supported until Windows Vista</page>
 			/// </summary>
 			RIDEV_EXINPUTSINK = 0x00001000,
 
 			/// <summary>
-			/// If set, this enables the caller to receive the input even when the caller is not in the foreground. Note that hwndTarget must
-			/// be specified.
+			/// If set, this enables the caller to receive the input even when the caller is not in the foreground. Note that hwndTarget
+			/// must be specified.
 			/// </summary>
 			RIDEV_INPUTSINK = 0x00000100,
 
@@ -249,8 +251,8 @@ namespace Vanara.PInvoke
 			RIDEV_PAGEONLY = 0x00000020,
 
 			/// <summary>
-			/// If set, this removes the top level collection from the inclusion list. This tells the operating system to stop reading from a
-			/// device which matches the top level collection.
+			/// If set, this removes the top level collection from the inclusion list. This tells the operating system to stop reading from
+			/// a device which matches the top level collection.
 			/// </summary>
 			RIDEV_REMOVE = 0x00000001,
 		}
@@ -332,9 +334,9 @@ namespace Vanara.PInvoke
 		/// only the session that invoked the function.
 		/// </para>
 		/// <para>
-		/// The tick count when the last input event was received (see LASTINPUTINFO) is not guaranteed to be incremental. In some cases, the
-		/// value might be less than the tick count of a prior event. For example, this can be caused by a timing gap between the raw input
-		/// thread and the desktop thread or an event raised by SendInput, which supplies its own tick count.
+		/// The tick count when the last input event was received (see LASTINPUTINFO) is not guaranteed to be incremental. In some cases,
+		/// the value might be less than the tick count of a prior event. For example, this can be caused by a timing gap between the raw
+		/// input thread and the desktop thread or an event raised by SendInput, which supplies its own tick count.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getlastinputinfo BOOL GetLastInputInfo( PLASTINPUTINFO
@@ -380,8 +382,8 @@ namespace Vanara.PInvoke
 		/// how to align <c>RAWINPUT</c> for WOW64.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getrawinputbuffer UINT GetRawInputBuffer( PRAWINPUT pData,
-		// PUINT pcbSize, UINT cbSizeHeader );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getrawinputbuffer UINT GetRawInputBuffer( PRAWINPUT
+		// pData, PUINT pcbSize, UINT cbSizeHeader );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		public static extern uint GetRawInputBuffer(IntPtr pData, ref uint pcbSize, uint cbSizeHeader);
@@ -436,8 +438,8 @@ namespace Vanara.PInvoke
 		/// <c>GetRawInputData</c> gets the raw input one RAWINPUT structure at a time. In contrast, GetRawInputBuffer gets an array of
 		/// <c>RAWINPUT</c> structures.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getrawinputdata UINT GetRawInputData( HRAWINPUT hRawInput,
-		// UINT uiCommand, LPVOID pData, PUINT pcbSize, UINT cbSizeHeader );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getrawinputdata UINT GetRawInputData( HRAWINPUT
+		// hRawInput, UINT uiCommand, LPVOID pData, PUINT pcbSize, UINT cbSizeHeader );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
 		public static extern uint GetRawInputData(HRAWINPUT hRawInput, RID uiCommand, IntPtr pData, ref uint pcbSize, uint cbSizeHeader);
@@ -458,8 +460,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>RIDI_DEVICENAME 0x20000007</term>
 		/// <term>
-		/// pData points to a string that contains the device name. For this uiCommand only, the value in pcbSize is the character count (not
-		/// the byte count).
+		/// pData points to a string that contains the device name. For this uiCommand only, the value in pcbSize is the character count
+		/// (not the byte count).
 		/// </term>
 		/// </item>
 		/// <item>
@@ -492,8 +494,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>Call GetLastError to identify any other errors.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getrawinputdeviceinfoa UINT GetRawInputDeviceInfoA( HANDLE
-		// hDevice, UINT uiCommand, LPVOID pData, PUINT pcbSize );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getrawinputdeviceinfoa UINT GetRawInputDeviceInfoA(
+		// HANDLE hDevice, UINT uiCommand, LPVOID pData, PUINT pcbSize );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, uint uiCommand, IntPtr pData, ref uint pcbSize);
@@ -555,9 +557,9 @@ namespace Vanara.PInvoke
 		/// If successful, the function returns a non-negative number that is the number of RAWINPUTDEVICE structures written to the buffer.
 		/// </para>
 		/// <para>
-		/// If the pRawInputDevices buffer is too small or <c>NULL</c>, the function sets the last error as <c>ERROR_INSUFFICIENT_BUFFER</c>,
-		/// returns -1, and sets puiNumDevices to the required number of devices. If the function fails for any other reason, it returns -1.
-		/// For more details, call GetLastError.
+		/// If the pRawInputDevices buffer is too small or <c>NULL</c>, the function sets the last error as
+		/// <c>ERROR_INSUFFICIENT_BUFFER</c>, returns -1, and sets puiNumDevices to the required number of devices. If the function fails
+		/// for any other reason, it returns -1. For more details, call GetLastError.
 		/// </para>
 		/// </returns>
 		/// <remarks>To receive raw input from a device, an application must register it by using RegisterRawInputDevices.</remarks>
@@ -626,8 +628,8 @@ namespace Vanara.PInvoke
 		/// returns zero, the input was already blocked by another thread. To get extended error information, call GetLastError.
 		/// </para>
 		/// <para>
-		/// This function fails when it is blocked by UIPI. Note that neither GetLastError nor the return value will indicate the failure was
-		/// caused by UIPI blocking.
+		/// This function fails when it is blocked by UIPI. Note that neither GetLastError nor the return value will indicate the failure
+		/// was caused by UIPI blocking.
 		/// </para>
 		/// </returns>
 		/// <remarks>
@@ -637,8 +639,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// The <c>SendInput</c> function inserts the events in the INPUT structures serially into the keyboard or mouse input stream. These
-		/// events are not interspersed with other keyboard or mouse input events inserted either by the user (with the keyboard or mouse) or
-		/// by calls to keybd_event, mouse_event, or other calls to <c>SendInput</c>.
+		/// events are not interspersed with other keyboard or mouse input events inserted either by the user (with the keyboard or mouse)
+		/// or by calls to keybd_event, mouse_event, or other calls to <c>SendInput</c>.
 		/// </para>
 		/// <para>
 		/// This function does not reset the keyboard's current state. Any keys that are already pressed when the function is called might
@@ -650,8 +652,8 @@ namespace Vanara.PInvoke
 		/// event hook must decode input originating from the touch keyboard. For more information, see Surrogates and Supplementary Characters.
 		/// </para>
 		/// <para>
-		/// An accessibility application can use <c>SendInput</c> to inject keystrokes corresponding to application launch shortcut keys that
-		/// are handled by the shell. This functionality is not guaranteed to work for other types of applications.
+		/// An accessibility application can use <c>SendInput</c> to inject keystrokes corresponding to application launch shortcut keys
+		/// that are handled by the shell. This functionality is not guaranteed to work for other types of applications.
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendinput UINT SendInput( UINT cInputs, LPINPUT pInputs,
@@ -690,14 +692,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HRAWINPUT : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="HRAWINPUT"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			public HRAWINPUT(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HRAWINPUT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			public static HRAWINPUT NULL => new HRAWINPUT(IntPtr.Zero);
+			public static HRAWINPUT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -710,7 +712,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRAWINPUT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HRAWINPUT(IntPtr h) => new HRAWINPUT(h);
+			public static implicit operator HRAWINPUT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -725,7 +727,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(HRAWINPUT h1, HRAWINPUT h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is HRAWINPUT h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is HRAWINPUT h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();
@@ -744,7 +746,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-taginput typedef struct tagINPUT { DWORD type; union {
 		// MOUSEINPUT mi; KEYBDINPUT ki; HARDWAREINPUT hi; } DUMMYUNIONNAME; } INPUT, *PINPUT, *LPINPUT;
 		[PInvokeData("winuser.h", MSDNShortId = "")]
-		[StructLayout(LayoutKind.Explicit)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct INPUT
 		{
 			/// <summary>
@@ -769,29 +771,103 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(0)]
 			public INPUTTYPE type;
+
+			private UNION union;
 
 			/// <summary>
 			/// <para>Type: <c>MOUSEINPUT</c></para>
 			/// <para>The information about a simulated mouse event.</para>
 			/// </summary>
-			[FieldOffset(4)]
-			public MOUSEINPUT mi;
+			public MOUSEINPUT mi { get => union.mi; set => union.mi = value; }
 
 			/// <summary>
 			/// <para>Type: <c>KEYBDINPUT</c></para>
 			/// <para>The information about a simulated keyboard event.</para>
 			/// </summary>
-			[FieldOffset(4)]
-			public KEYBDINPUT ki;
+			public KEYBDINPUT ki { get => union.ki; set => union.ki = value; }
 
 			/// <summary>
 			/// <para>Type: <c>HARDWAREINPUT</c></para>
 			/// <para>The information about a simulated hardware event.</para>
 			/// </summary>
-			[FieldOffset(4)]
-			public HARDWAREINPUT hi;
+			public HARDWAREINPUT hi { get => union.hi; set => union.hi = value; }
+
+			[StructLayout(LayoutKind.Explicit)]
+			private struct UNION
+			{
+				[FieldOffset(0)]
+				public MOUSEINPUT mi;
+
+				[FieldOffset(0)]
+				public KEYBDINPUT ki;
+
+				[FieldOffset(0)]
+				public HARDWAREINPUT hi;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="INPUT"/> struct for keyboard input.</summary>
+			/// <param name="keyFlags">Specifies various aspects of a keystroke.</param>
+			/// <param name="vkOrScan">
+			/// If KEYEVENTF_SCANCODE, the value represents a hardware scan code for the key, otherwise, this value represents a virtual key-code.
+			/// </param>
+			public INPUT(KEYEVENTF keyFlags, ushort vkOrScan)
+			{
+				type = INPUTTYPE.INPUT_KEYBOARD;
+				union = new UNION { ki = new KEYBDINPUT { dwFlags = keyFlags, wVk = (keyFlags & KEYEVENTF.KEYEVENTF_SCANCODE) == 0 ? vkOrScan : (ushort)0, wScan = (keyFlags & KEYEVENTF.KEYEVENTF_SCANCODE) != 0 ? vkOrScan : (ushort)0 } };
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="INPUT"/> struct for mouse input.</summary>
+			/// <param name="keyFlags">A set of bit flags that specify various aspects of mouse motion and button clicks.</param>
+			/// <param name="mouseData">
+			/// <para>
+			/// If <c>dwFlags</c> contains <c>MOUSEEVENTF_WHEEL</c>, then <c>mouseData</c> specifies the amount of wheel movement. A
+			/// positive value indicates that the wheel was rotated forward, away from the user; a negative value indicates that the wheel
+			/// was rotated backward, toward the user. One wheel click is defined as <c>WHEEL_DELTA</c>, which is 120.
+			/// </para>
+			/// <para>
+			/// Windows Vista: If dwFlags contains <c>MOUSEEVENTF_HWHEEL</c>, then dwData specifies the amount of wheel movement. A positive
+			/// value indicates that the wheel was rotated to the right; a negative value indicates that the wheel was rotated to the left.
+			/// One wheel click is defined as <c>WHEEL_DELTA</c>, which is 120.
+			/// </para>
+			/// <para>
+			/// If <c>dwFlags</c> does not contain <c>MOUSEEVENTF_WHEEL</c>, <c>MOUSEEVENTF_XDOWN</c>, or <c>MOUSEEVENTF_XUP</c>, then
+			/// <c>mouseData</c> should be zero.
+			/// </para>
+			/// <para>
+			/// If <c>dwFlags</c> contains <c>MOUSEEVENTF_XDOWN</c> or <c>MOUSEEVENTF_XUP</c>, then <c>mouseData</c> specifies which X
+			/// buttons were pressed or released. This value may be any combination of the following flags.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>XBUTTON1 0x0001</term>
+			/// <term>Set if the first X button is pressed or released.</term>
+			/// </item>
+			/// <item>
+			/// <term>XBUTTON2 0x0002</term>
+			/// <term>Set if the second X button is pressed or released.</term>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="dx">
+			/// The absolute position of the mouse, or the amount of motion since the last mouse event was generated, depending on the value
+			/// of the <c>dwFlags</c> member. Absolute data is specified as the x coordinate of the mouse; relative data is specified as the
+			/// number of pixels moved.
+			/// </param>
+			/// <param name="dy">
+			/// The absolute position of the mouse, or the amount of motion since the last mouse event was generated, depending on the value
+			/// of the <c>dwFlags</c> member. Absolute data is specified as the y coordinate of the mouse; relative data is specified as the
+			/// number of pixels moved.
+			/// </param>
+			public INPUT(MOUSEEVENTF keyFlags, int mouseData = 0, int dx = 0, int dy = 0)
+			{
+				type = INPUTTYPE.INPUT_MOUSE;
+				union = new UNION { mi = new MOUSEINPUT { dwFlags = keyFlags, dx = dx, dy = dy, mouseData = mouseData } };
+			}
 		}
 
 		/// <summary>Contains information about the source of the input message.</summary>
@@ -827,6 +903,9 @@ namespace Vanara.PInvoke
 			/// <para>The tick count when the last input event was received.</para>
 			/// </summary>
 			public uint dwTime;
+
+			/// <summary>Gets a default instance with the size field set appropriately.</summary>
+			public static readonly LASTINPUTINFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(LASTINPUTINFO)) };
 		}
 
 		/// <summary>Contains information about a simulated mouse event.</summary>
@@ -860,8 +939,8 @@ namespace Vanara.PInvoke
 		/// specified relative mouse movement along the x or y axis by up to four times.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagmouseinput typedef struct tagMOUSEINPUT { LONG dx; LONG
-		// dy; DWORD mouseData; DWORD dwFlags; DWORD time; ULONG_PTR dwExtraInfo; } MOUSEINPUT, *PMOUSEINPUT, *LPMOUSEINPUT;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagmouseinput typedef struct tagMOUSEINPUT { LONG dx;
+		// LONG dy; DWORD mouseData; DWORD dwFlags; DWORD time; ULONG_PTR dwExtraInfo; } MOUSEINPUT, *PMOUSEINPUT, *LPMOUSEINPUT;
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct MOUSEINPUT
@@ -889,9 +968,9 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>
-			/// If <c>dwFlags</c> contains <c>MOUSEEVENTF_WHEEL</c>, then <c>mouseData</c> specifies the amount of wheel movement. A positive
-			/// value indicates that the wheel was rotated forward, away from the user; a negative value indicates that the wheel was rotated
-			/// backward, toward the user. One wheel click is defined as <c>WHEEL_DELTA</c>, which is 120.
+			/// If <c>dwFlags</c> contains <c>MOUSEEVENTF_WHEEL</c>, then <c>mouseData</c> specifies the amount of wheel movement. A
+			/// positive value indicates that the wheel was rotated forward, away from the user; a negative value indicates that the wheel
+			/// was rotated backward, toward the user. One wheel click is defined as <c>WHEEL_DELTA</c>, which is 120.
 			/// </para>
 			/// <para>
 			/// Windows Vista: If dwFlags contains <c>MOUSEEVENTF_HWHEEL</c>, then dwData specifies the amount of wheel movement. A positive
@@ -921,7 +1000,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint mouseData;
+			public int mouseData;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -930,13 +1009,13 @@ namespace Vanara.PInvoke
 			/// reasonable combination of the following values.
 			/// </para>
 			/// <para>
-			/// The bit flags that specify mouse button status are set to indicate changes in status, not ongoing conditions. For example, if
-			/// the left mouse button is pressed and held down, <c>MOUSEEVENTF_LEFTDOWN</c> is set when the left button is first pressed, but
-			/// not for subsequent motions. Similarly, <c>MOUSEEVENTF_LEFTUP</c> is set only when the button is first released.
+			/// The bit flags that specify mouse button status are set to indicate changes in status, not ongoing conditions. For example,
+			/// if the left mouse button is pressed and held down, <c>MOUSEEVENTF_LEFTDOWN</c> is set when the left button is first pressed,
+			/// but not for subsequent motions. Similarly, <c>MOUSEEVENTF_LEFTUP</c> is set only when the button is first released.
 			/// </para>
 			/// <para>
-			/// You cannot specify both the <c>MOUSEEVENTF_WHEEL</c> flag and either <c>MOUSEEVENTF_XDOWN</c> or <c>MOUSEEVENTF_XUP</c> flags
-			/// simultaneously in the <c>dwFlags</c> parameter, because they both require use of the <c>mouseData</c> field.
+			/// You cannot specify both the <c>MOUSEEVENTF_WHEEL</c> flag and either <c>MOUSEEVENTF_XDOWN</c> or <c>MOUSEEVENTF_XUP</c>
+			/// flags simultaneously in the <c>dwFlags</c> parameter, because they both require use of the <c>mouseData</c> field.
 			/// </para>
 			/// <list type="table">
 			/// <listheader>
@@ -1012,7 +1091,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint dwFlags;
+			public MOUSEEVENTF dwFlags;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
@@ -1026,13 +1105,13 @@ namespace Vanara.PInvoke
 			/// An additional value associated with the mouse event. An application calls GetMessageExtraInfo to obtain this extra information.
 			/// </para>
 			/// </summary>
-			public UIntPtr dwExtraInfo;
+			public IntPtr dwExtraInfo;
 		}
 
 		/// <summary>Describes the format of the raw input from a Human Interface Device (HID).</summary>
 		/// <remarks>
-		/// Each WM_INPUT can indicate several inputs, but all of the inputs come from the same HID. The size of the <c>bRawData</c> array is
-		/// <c>dwSizeHid</c> * <c>dwCount</c>.
+		/// Each WM_INPUT can indicate several inputs, but all of the inputs come from the same HID. The size of the <c>bRawData</c> array
+		/// is <c>dwSizeHid</c> * <c>dwCount</c>.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawhid typedef struct tagRAWHID { DWORD dwSizeHid;
 		// DWORD dwCount; BYTE bRawData[1]; } RAWHID, *PRAWHID, *LPRAWHID;
@@ -1170,16 +1249,16 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>RIDEV_EXINPUTSINK 0x00001000</term>
 			/// <term>
-			/// If set, this enables the caller to receive input in the background only if the foreground application does not process it. In
-			/// other words, if the foreground application is not registered for raw input, then the background application that is
+			/// If set, this enables the caller to receive input in the background only if the foreground application does not process it.
+			/// In other words, if the foreground application is not registered for raw input, then the background application that is
 			/// registered will receive the input. Windows XP: This flag is not supported until Windows Vista
 			/// </term>
 			/// </item>
 			/// <item>
 			/// <term>RIDEV_INPUTSINK 0x00000100</term>
 			/// <term>
-			/// If set, this enables the caller to receive the input even when the caller is not in the foreground. Note that hwndTarget must
-			/// be specified.
+			/// If set, this enables the caller to receive the input even when the caller is not in the foreground. Note that hwndTarget
+			/// must be specified.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -1207,8 +1286,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>RIDEV_REMOVE 0x00000001</term>
 			/// <term>
-			/// If set, this removes the top level collection from the inclusion list. This tells the operating system to stop reading from a
-			/// device which matches the top level collection.
+			/// If set, this removes the top level collection from the inclusion list. This tells the operating system to stop reading from
+			/// a device which matches the top level collection.
 			/// </term>
 			/// </item>
 			/// </list>
@@ -1223,8 +1302,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains information about a raw input device.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawinputdevicelist typedef struct tagRAWINPUTDEVICELIST
-		// { HANDLE hDevice; DWORD dwType; } RAWINPUTDEVICELIST, *PRAWINPUTDEVICELIST;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawinputdevicelist typedef struct
+		// tagRAWINPUTDEVICELIST { HANDLE hDevice; DWORD dwType; } RAWINPUTDEVICELIST, *PRAWINPUTDEVICELIST;
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct RAWINPUTDEVICELIST
@@ -1266,8 +1345,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>To get more information on the device, use <c>hDevice</c> in a call to GetRawInputDeviceInfo.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawinputheader typedef struct tagRAWINPUTHEADER { DWORD
-		// dwType; DWORD dwSize; HANDLE hDevice; WPARAM wParam; } RAWINPUTHEADER, *PRAWINPUTHEADER, *LPRAWINPUTHEADER;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawinputheader typedef struct tagRAWINPUTHEADER {
+		// DWORD dwType; DWORD dwSize; HANDLE hDevice; WPARAM wParam; } RAWINPUTHEADER, *PRAWINPUTHEADER, *LPRAWINPUTHEADER;
 		[PInvokeData("winuser.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct RAWINPUTHEADER

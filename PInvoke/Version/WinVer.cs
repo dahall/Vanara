@@ -7,7 +7,7 @@ namespace Vanara.PInvoke
 	/// <summary>Items from version.dll.</summary>
 	public static partial class VersionDll
 	{
-		private const string Lib_Version = "Version.dll";
+		private const string Lib_Version = "version.dll";
 
 		/// <summary>Retrieves version information for the specified file.</summary>
 		/// <param name="lptstrFilename">

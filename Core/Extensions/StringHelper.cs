@@ -1,13 +1,16 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 using Vanara.InteropServices;
 
 namespace Vanara.Extensions
 {
 	/// <summary>A safe class that represents an object that is pinned in memory.</summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <seealso cref="IDisposable"/>
 	public static class StringHelper
 	{
 		/// <summary>Allocates a block of memory allocated from the unmanaged COM task allocator sufficient to hold the number of specified characters.</summary>
@@ -40,7 +43,7 @@ namespace Vanara.Extensions
 		/// <param name="s">The managed object to copy.</param>
 		/// <param name="charSet">The character set.</param>
 		/// <returns>The address, in unmanaged memory, where the <paramref name="s"/> parameter was copied to, or 0 if a null object was supplied.</returns>
-		public static IntPtr AllocSecureString(SecureString s, CharSet charSet = CharSet.Auto)
+		public static IntPtr AllocSecureString(SecureString? s, CharSet charSet = CharSet.Auto)
 		{
 			if (s == null) return IntPtr.Zero;
 			if (GetCharSize(charSet) == 2)
@@ -53,7 +56,7 @@ namespace Vanara.Extensions
 		/// <param name="charSet">The character set.</param>
 		/// <param name="memAllocator">The method used to allocate the memory.</param>
 		/// <returns>The address, in unmanaged memory, where the <paramref name="s"/> parameter was copied to, or 0 if a null object was supplied.</returns>
-		public static IntPtr AllocSecureString(SecureString s, CharSet charSet, Func<int, IntPtr> memAllocator) => AllocSecureString(s, charSet, memAllocator, out _);
+		public static IntPtr AllocSecureString(SecureString? s, CharSet charSet, Func<int, IntPtr> memAllocator) => AllocSecureString(s, charSet, memAllocator, out _);
 
 		/// <summary>Copies the contents of a managed <see cref="SecureString"/> object to a block of memory allocated from a supplied allocation method.</summary>
 		/// <param name="s">The managed object to copy.</param>
@@ -61,12 +64,12 @@ namespace Vanara.Extensions
 		/// <param name="memAllocator">The method used to allocate the memory.</param>
 		/// <param name="allocatedBytes">Returns the number of allocated bytes for the string.</param>
 		/// <returns>The address, in unmanaged memory, where the <paramref name="s"/> parameter was copied to, or 0 if a null object was supplied.</returns>
-		public static IntPtr AllocSecureString(SecureString s, CharSet charSet, Func<int, IntPtr> memAllocator, out int allocatedBytes)
+		public static IntPtr AllocSecureString(SecureString? s, CharSet charSet, Func<int, IntPtr> memAllocator, out int allocatedBytes)
 		{
 			allocatedBytes = 0;
 			if (s == null) return IntPtr.Zero;
 			var chSz = GetCharSize(charSet);
-			var encoding = chSz == 2 ? System.Text.Encoding.Unicode : System.Text.Encoding.ASCII;
+			var encoding = chSz == 2 ? Encoding.Unicode : Encoding.ASCII;
 			var hMem = AllocSecureString(s, charSet);
 			var str = chSz == 2 ? Marshal.PtrToStringUni(hMem) : Marshal.PtrToStringAnsi(hMem);
 			Marshal.FreeCoTaskMem(hMem);
@@ -82,14 +85,14 @@ namespace Vanara.Extensions
 		/// <param name="s">A managed string to be copied.</param>
 		/// <param name="charSet">The character set.</param>
 		/// <returns>The allocated memory block, or 0 if <paramref name="s"/> is null.</returns>
-		public static IntPtr AllocString(string s, CharSet charSet = CharSet.Auto) => charSet == CharSet.Auto ? Marshal.StringToCoTaskMemAuto(s) : (charSet == CharSet.Unicode ? Marshal.StringToCoTaskMemUni(s) : Marshal.StringToCoTaskMemAnsi(s));
+		public static IntPtr AllocString(string? s, CharSet charSet = CharSet.Auto) => charSet == CharSet.Auto ? Marshal.StringToCoTaskMemAuto(s) : (charSet == CharSet.Unicode ? Marshal.StringToCoTaskMemUni(s) : Marshal.StringToCoTaskMemAnsi(s));
 
 		/// <summary>Copies the contents of a managed String to a block of memory allocated from a supplied allocation method.</summary>
 		/// <param name="s">A managed string to be copied.</param>
 		/// <param name="charSet">The character set.</param>
 		/// <param name="memAllocator">The method used to allocate the memory.</param>
 		/// <returns>The allocated memory block, or 0 if <paramref name="s"/> is null.</returns>
-		public static IntPtr AllocString(string s, CharSet charSet, Func<int, IntPtr> memAllocator) => AllocString(s, charSet, memAllocator, out _);
+		public static IntPtr AllocString(string? s, CharSet charSet, Func<int, IntPtr> memAllocator) => AllocString(s, charSet, memAllocator, out _);
 
 		/// <summary>
 		/// Copies the contents of a managed String to a block of memory allocated from a supplied allocation method.
@@ -99,7 +102,7 @@ namespace Vanara.Extensions
 		/// <param name="memAllocator">The method used to allocate the memory.</param>
 		/// <param name="allocatedBytes">Returns the number of allocated bytes for the string.</param>
 		/// <returns>The allocated memory block, or 0 if <paramref name="s" /> is null.</returns>
-		public static IntPtr AllocString(string s, CharSet charSet, Func<int, IntPtr> memAllocator, out int allocatedBytes)
+		public static IntPtr AllocString(string? s, CharSet charSet, Func<int, IntPtr> memAllocator, out int allocatedBytes)
 		{
 			if (s == null) { allocatedBytes = 0; return IntPtr.Zero; }
 			var b = s.GetBytes(true, charSet);
@@ -139,10 +142,17 @@ namespace Vanara.Extensions
 		/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the resulting byte array.</param>
 		/// <param name="charSet">The character set.</param>
 		/// <returns>A byte array including <paramref name="value"/> encoded as per <paramref name="charSet"/> and the optional null terminator.</returns>
-		public static byte[] GetBytes(this string value, bool nullTerm = true, CharSet charSet = CharSet.Auto)
+		public static byte[] GetBytes(this string value, bool nullTerm = true, CharSet charSet = CharSet.Auto) =>
+			GetBytes(value, GetCharSize(charSet) == 1 ? Encoding.ASCII : Encoding.Unicode, nullTerm);
+
+		/// <summary>Gets the encoded bytes for a string including an optional null terminator.</summary>
+		/// <param name="value">The string value to convert.</param>
+		/// <param name="enc">The character encoding.</param>
+		/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the resulting byte array.</param>
+		/// <returns>A byte array including <paramref name="value"/> encoded as per <paramref name="enc"/> and the optional null terminator.</returns>
+		public static byte[] GetBytes(this string value, Encoding enc, bool nullTerm = true)
 		{
-			var chSz = GetCharSize(charSet);
-			var enc = chSz == 1 ? System.Text.Encoding.ASCII : System.Text.Encoding.Unicode;
+			var chSz = GetCharSize(enc);
 			var ret = new byte[enc.GetByteCount(value) + (nullTerm ? chSz : 0)];
 			enc.GetBytes(value, 0, value.Length, ret, 0);
 			if (nullTerm)
@@ -155,18 +165,26 @@ namespace Vanara.Extensions
 		/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
 		/// <param name="charSet">The character set.</param>
 		/// <returns>The number of bytes required to store <paramref name="value"/>. Returns 0 if <paramref name="value"/> is <c>null</c>.</returns>
-		public static int GetByteCount(this string value, bool nullTerm = true, CharSet charSet = CharSet.Auto)
-		{
-			if (value == null) return 0;
-			var chSz = GetCharSize(charSet);
-			var enc = chSz == 1 ? System.Text.Encoding.ASCII : System.Text.Encoding.Unicode;
-			return enc.GetByteCount(value) + (nullTerm ? chSz : 0);
-		}
+		public static int GetByteCount(this string value, bool nullTerm = true, CharSet charSet = CharSet.Auto) =>
+			GetByteCount(value, GetCharSize(charSet) == 1 ? Encoding.ASCII : Encoding.Unicode, nullTerm);
+
+		/// <summary>Gets the number of bytes required to store the string.</summary>
+		/// <param name="value">The string value.</param>
+		/// <param name="enc">The character encoding.</param>
+		/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
+		/// <returns>The number of bytes required to store <paramref name="value"/>. Returns 0 if <paramref name="value"/> is <c>null</c>.</returns>
+		public static int GetByteCount(this string value, Encoding enc, bool nullTerm = true) =>
+			value is null ? 0 : enc.GetByteCount(value) + (nullTerm ? GetCharSize(enc) : 0);
 
 		/// <summary>Gets the size of a character defined by the supplied <see cref="CharSet"/>.</summary>
 		/// <param name="charSet">The character set to size.</param>
 		/// <returns>The size of a standard character, in bytes, from <paramref name="charSet"/>.</returns>
-		public static int GetCharSize(CharSet charSet = CharSet.Auto) => charSet == CharSet.Auto ? Marshal.SystemDefaultCharSize : (charSet == CharSet.Unicode ? 2 : 1);
+		public static int GetCharSize(CharSet charSet = CharSet.Auto) => charSet == CharSet.Auto ? Marshal.SystemDefaultCharSize : (charSet == CharSet.Unicode ? UnicodeEncoding.CharSize : 1);
+
+		/// <summary>Gets the size of a character defined by the supplied <see cref="Encoding"/>.</summary>
+		/// <param name="enc">The character encoding type.</param>
+		/// <returns>The size of a standard character, in bytes, from <paramref name="enc"/>.</returns>
+		public static int GetCharSize(Encoding enc) => enc.GetByteCount(new[] { '\0' });
 
 		/// <summary>
 		/// Allocates a managed String and copies all characters up to the first null character or the end of the allocated memory pool from a string stored in unmanaged memory into it.
@@ -178,10 +196,10 @@ namespace Vanara.Extensions
 		/// A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr"/> parameter is not null;
 		/// otherwise, this method returns null.
 		/// </returns>
-		public static string GetString(IntPtr ptr, CharSet charSet = CharSet.Auto, long allocatedBytes = long.MaxValue)
+		public static string? GetString(IntPtr ptr, CharSet charSet = CharSet.Auto, long allocatedBytes = long.MaxValue)
 		{
 			if (IsValue(ptr)) return null;
-			var sb = new System.Text.StringBuilder();
+			var sb = new StringBuilder();
 			unsafe
 			{
 				var chkLen = 0L;
@@ -209,7 +227,7 @@ namespace Vanara.Extensions
 		/// A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr"/> parameter is not null;
 		/// otherwise, this method returns null.
 		/// </returns>
-		public static string GetString(IntPtr ptr, int length, CharSet charSet = CharSet.Auto) => GetString(ptr, charSet, length * GetCharSize(charSet));
+		public static string? GetString(IntPtr ptr, int length, CharSet charSet = CharSet.Auto) => GetString(ptr, charSet, length * GetCharSize(charSet));
 
 		/// <summary>Indicates whether a specified string is <see langword="null"/>, empty, or consists only of white-space characters.</summary>
 		/// <param name="value">The string to test.</param>
@@ -217,7 +235,7 @@ namespace Vanara.Extensions
 		/// <see langword="true"/> if the <paramref name="value"/> parameter is <see langword="null"/> or <see cref="string.Empty"/>, or if
 		/// value consists exclusively of white-space characters.
 		/// </returns>
-		public static bool IsNullOrWhiteSpace(string value) => value is null || value.All(c => char.IsWhiteSpace(c));
+		public static bool IsNullOrWhiteSpace(string? value) => value is null || value.All(c => char.IsWhiteSpace(c));
 
 		/// <summary>Refreshes the memory block from the unmanaged COM task allocator and copies the contents of a new managed String.</summary>
 		/// <param name="ptr">The address of the first character.</param>
@@ -225,7 +243,7 @@ namespace Vanara.Extensions
 		/// <param name="s">A managed string to be copied.</param>
 		/// <param name="charSet">The character set of the string.</param>
 		/// <returns><c>true</c> if the memory block was reallocated; <c>false</c> if set to null.</returns>
-		public static bool RefreshString(ref IntPtr ptr, out uint charLen, string s, CharSet charSet = CharSet.Auto)
+		public static bool RefreshString(ref IntPtr ptr, out uint charLen, string? s, CharSet charSet = CharSet.Auto)
 		{
 			FreeString(ptr, charSet);
 			ptr = AllocString(s, charSet);
@@ -240,7 +258,7 @@ namespace Vanara.Extensions
 		/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
 		/// <param name="charSet">The character set of the string.</param>
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
-		public static void Write(string value, IntPtr ptr, out int byteCnt, bool nullTerm = true, CharSet charSet = CharSet.Auto, long allocatedBytes = long.MaxValue)
+		public static void Write(string? value, IntPtr ptr, out int byteCnt, bool nullTerm = true, CharSet charSet = CharSet.Auto, long allocatedBytes = long.MaxValue)
 		{
 			if (value is null)
 			{

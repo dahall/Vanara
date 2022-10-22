@@ -318,12 +318,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>A WCHAR buffer that contains the string. The string does not need to be null-terminated.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 257)]
-			public string[] String;
+			public string String;
 		}
 
 		/// <summary/>
 		[PInvokeData("ifdef.h")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct IF_PHYSICAL_ADDRESS
 		{
 			/// <summary>A USHORT value that contains the length, in bytes, of the string.</summary>
@@ -331,7 +331,7 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-			public string[] Address;
+			public string Address;
 		}
 
 		/// <summary>

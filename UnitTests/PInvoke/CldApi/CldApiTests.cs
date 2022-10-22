@@ -209,8 +209,7 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(File.Exists(destFile), Is.True);
 
 				using var hFile = GetHFILE(destFile);
-				var usn = 0;
-				Assert.That(CfSetInSyncState(hFile, CF_IN_SYNC_STATE.CF_IN_SYNC_STATE_IN_SYNC, CF_SET_IN_SYNC_FLAGS.CF_SET_IN_SYNC_FLAG_NONE, ref usn), ResultIs.Successful);
+				Assert.That(CfSetInSyncState(hFile, CF_IN_SYNC_STATE.CF_IN_SYNC_STATE_IN_SYNC, CF_SET_IN_SYNC_FLAGS.CF_SET_IN_SYNC_FLAG_NONE), ResultIs.Successful);
 				Assert.That(CfSetPinState(hFile, CF_PIN_STATE.CF_PIN_STATE_PINNED, CF_SET_PIN_FLAGS.CF_SET_PIN_FLAG_NONE), ResultIs.Successful);
 			}
 			finally

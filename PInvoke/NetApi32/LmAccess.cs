@@ -8,11 +8,23 @@ namespace Vanara.PInvoke
 {
 	public static partial class NetApi32
 	{
+		/// <summary>Represents the number of days in a week.</summary>
+		public const uint SAM_DAYS_PER_WEEK = 7;
+
+		/// <summary>Represents the number of hours in a week.</summary>
+		public const uint SAM_HOURS_PER_WEEK = 24 * SAM_DAYS_PER_WEEK;
+
+		/// <summary>Represents the number of minutes in a week.</summary>
+		public const uint SAM_MINUTES_PER_WEEK = 60 * SAM_HOURS_PER_WEEK;
+
 		/// <summary>The units per day</summary>
 		public const uint UNITS_PER_DAY = 24;
 
 		/// <summary>The units per week</summary>
 		public const uint UNITS_PER_WEEK = UNITS_PER_DAY * 7;
+
+		/// <summary>Specify USER_MAXSTORAGE_UNLIMITED to use all available disk space.</summary>
+		public const uint USER_MAXSTORAGE_UNLIMITED = unchecked((uint)(-1));
 
 		private const int ENCRYPTED_PWLEN = 16;
 

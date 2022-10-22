@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>msctf.dll;input.dll;msimtf.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Text Services Framework modules.</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.PInvoke.TextServicesFramework</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;Text Services Framework;msctf</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+DoMsCtfMonitor EnumEnabledLayoutOrTip EnumLayoutOrTipForSetup InitLocalMsCtfMonitor InstallLayoutOrTip InstallLayoutOrTipUserReg MsimtfIsWindowFiltered QueryLayoutOrTipString QueryLayoutOrTipStringUserReg SaveDefaultUserInputSettings SaveSystemAcctInputSettings SetDefaultLayoutOrTip SetDefaultLayoutOrTipUserReg SetInputScope SetInputScopes SetInputScopes2 SetInputScopeXML TF_CreateCategoryMgr TF_CreateDisplayAttributeMgr TF_CreateInputProcessorProfiles TF_CreateLangBarItemMgr TF_CreateLangBarMgr TF_CreateThreadMgr TF_GetThreadMgr TF_InvalidAssemblyListCacheIfExist UninitLocalMsCtfMonitor
+
+Structures
+LAYOUTORTIP LAYOUTORTIPPROFILE TF_DA_COLOR TF_DISPLAYATTRIBUTE TF_HALTCOND TF_INPUTPROCESSORPROFILE TF_LANGBARITEMINFO TF_LANGUAGEPROFILE TF_LBBALLOONINFO TF_LMLATTELEMENT TF_PERSISTENT_PROPERTY_HEADER_ACP TF_PRESERVEDKEY TF_PROPERTYVAL TF_SELECTION TF_SELECTIONSTYLE TS_ATTRVAL TS_RUNINFO TS_SELECTIONSTYLE TS_SELECTION_ACP TS_SELECTION_ANCHOR TS_STATUS TS_TEXTCHANGE
+
+Interfaces
+IAnchor IEnumITfCompositionView IEnumSpeechCommands IEnumTfCandidates IEnumTfContexts IEnumTfContextViews IEnumTfDisplayAttributeInfo IEnumTfDocumentMgrs IEnumTfFunctionProviders IEnumTfInputProcessorProfiles IEnumTfLangBarItems IEnumTfLanguageProfiles IEnumTfLatticeElements IEnumTfProperties IEnumTfPropertyValue IEnumTfRanges IEnumTfUIElements ISpeechCommandProvider ITextStoreACP ITextStoreACP2 ITextStoreACPServices ITextStoreACPSink ITextStoreACPSinkEx ITextStoreAnchor ITextStoreAnchorEx ITextStoreAnchorSink ITextStoreAnchorSinkEx ITfActiveLanguageProfileNotifySink ITfCandidateList ITfCandidateListUIElement ITfCandidateListUIElementBehavior ITfCandidateString ITfCategoryMgr ITfCleanupContextDurationSink ITfCleanupContextSink ITfClientId ITfCompartment ITfCompartmentEventSink ITfCompartmentMgr ITfComposition ITfCompositionSink ITfCompositionView ITfConfigureSystemKeystrokeFeed ITfContext ITfContextComposition ITfContextKeyEventSink ITfContextOwner ITfContextOwnerCompositionServices ITfContextOwnerCompositionSink ITfContextOwnerServices ITfContextView ITfCreatePropertyStore ITfDisplayAttributeInfo ITfDisplayAttributeMgr ITfDisplayAttributeNotifySink ITfDisplayAttributeProvider ITfDocumentMgr ITfEditRecord ITfEditSession ITfEditTransactionSink ITfFnAdviseText ITfFnBalloon ITfFnConfigure ITfFnConfigureRegisterEudc ITfFnConfigureRegisterWord ITfFnCustomSpeechCommand ITfFnGetPreferredTouchKeyboardLayout ITfFnGetSAPIObject ITfFnLangProfileUtil ITfFnLMInternal ITfFnLMProcessor ITfFnPlayBack ITfFnPropertyUIStatus ITfFnReconversion ITfFnSearchCandidateProvider ITfFnShowHelp ITfFunction ITfFunctionProvider ITfInputProcessorProfileActivationSink ITfInputProcessorProfileMgr ITfInputProcessorProfiles ITfInputProcessorProfilesEx ITfInputProcessorProfileSubstituteLayout ITfInputScope ITfInputScope2 ITfInsertAtSelection ITfIntegratableCandidateListUIElement ITfKeyEventSink ITfKeystrokeMgr ITfKeyTraceEventSink ITfLangBarEventSink ITfLangBarItem ITfLangBarItemBalloon ITfLangBarItemBitmap ITfLangBarItemBitmapButton ITfLangBarItemButton ITfLangBarItemMgr ITfLangBarItemSink ITfLangBarMgr ITfLanguageProfileNotifySink ITfLMLattice ITfMenu ITfMessagePump ITfMouseSink ITfMouseTracker ITfMouseTrackerACP ITfPersistentPropertyLoaderACP ITfPreservedKeyNotifySink ITfProperty ITfPropertyStore ITfQueryEmbedded ITfRange ITfRangeACP ITfRangeBackup ITfReadingInformationUIElement ITfReadOnlyProperty ITfSource ITfSourceSingle ITfSpeechUIServer ITfStatusSink ITfSystemDeviceTypeLangBarItem ITfSystemLangBarItem ITfSystemLangBarItemSink ITfSystemLangBarItemText ITfTextEditSink ITfTextInputProcessor ITfTextInputProcessorEx ITfTextLayoutSink ITfThreadFocusSink ITfThreadMgr ITfThreadMgr2 ITfThreadMgrEventSink ITfThreadMgrEx ITfToolTipUIElement ITfTransitoryExtensionSink ITfTransitoryExtensionUIElement ITfUIElement ITfUIElementMgr ITfUIElementSink
+
+</PackageReleaseNotes>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
+    <ProjectReference Include="..\User32\Vanara.PInvoke.User32.csproj" />
+  </ItemGroup>
+</Project>

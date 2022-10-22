@@ -355,7 +355,7 @@ namespace Vanara.PInvoke
 		// UINT nPlanes, UINT nBitCount, const VOID *lpBits );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "b52e1baf-6a81-44bc-a061-4d42e6f4ed64")]
-		public static extern SafeHBITMAP CreateBitmap(int nWidth, int nHeight, uint nPlanes, uint nBitCount, IntPtr lpBits);
+		public static extern SafeHBITMAP CreateBitmap(int nWidth, int nHeight, uint nPlanes, uint nBitCount, [In, Optional] IntPtr lpBits);
 
 		/// <summary>
 		/// The <c>CreateBitmap</c> function creates a bitmap with the specified width, height, and color format (color planes and bits-per-pixel).
@@ -412,7 +412,7 @@ namespace Vanara.PInvoke
 		// UINT nPlanes, UINT nBitCount, const VOID *lpBits );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "b52e1baf-6a81-44bc-a061-4d42e6f4ed64")]
-		public static extern SafeHBITMAP CreateBitmap(int nWidth, int nHeight, uint nPlanes, uint nBitCount, byte[] lpBits);
+		public static extern SafeHBITMAP CreateBitmap(int nWidth, int nHeight, uint nPlanes, uint nBitCount, [In, Optional] byte[] lpBits);
 
 		/// <summary>
 		/// The <c>CreateBitmapIndirect</c> function creates a bitmap with the specified width, height, and color format (color planes and bits-per-pixel).
@@ -595,7 +595,93 @@ namespace Vanara.PInvoke
 		// BITMAPINFOHEADER *pbmih, DWORD flInit, const VOID *pjBits, const BITMAPINFO *pbmi, UINT iUsage );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "e9a5b525-a6b6-4309-9e53-69d274b85783")]
-		public static extern SafeHBITMAP CreateDIBitmap(HDC hdc, ref BITMAPINFOHEADER pbmih, CBM flInit, byte[] pjBits, in BITMAPINFO pbmi, DIBColorMode iUsage);
+		public static extern SafeHBITMAP CreateDIBitmap(HDC hdc, in BITMAPINFOHEADER pbmih, CBM flInit, [In, Optional] byte[] pjBits, in BITMAPINFO pbmi, DIBColorMode iUsage);
+
+		/// <summary>
+		/// The <c>CreateDIBitmap</c> function creates a compatible bitmap (DDB) from a DIB and, optionally, sets the bitmap bits.
+		/// </summary>
+		/// <param name="hdc">A handle to a device context.</param>
+		/// <param name="pbmih">
+		/// <para>A pointer to a bitmap information header structure, BITMAPV5HEADER.</para>
+		/// <para>
+		/// If fdwInit is CBM_INIT, the function uses the bitmap information header structure to obtain the desired width and height of the
+		/// bitmap as well as other information. Note that a positive value for the height indicates a bottom-up DIB while a negative value
+		/// for the height indicates a top-down DIB. Calling <c>CreateDIBitmap</c> with fdwInit as CBM_INIT is equivalent to calling the
+		/// CreateCompatibleBitmap function to create a DDB in the format of the device and then calling the SetDIBits function to translate
+		/// the DIB bits to the DDB.
+		/// </para>
+		/// </param>
+		/// <param name="flInit">
+		/// <para>Specifies how the system initializes the bitmap bits. The following value is defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CBM_INIT</term>
+		/// <term>
+		/// If this flag is set, the system uses the data pointed to by the lpbInit and lpbmi parameters to initialize the bitmap bits. If
+		/// this flag is clear, the data pointed to by those parameters is not used.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>If fdwInit is zero, the system does not initialize the bitmap bits.</para>
+		/// </param>
+		/// <param name="pjBits">
+		/// A pointer to an array of bytes containing the initial bitmap data. The format of the data depends on the <c>biBitCount</c> member
+		/// of the BITMAPINFO structure to which the lpbmi parameter points.
+		/// </param>
+		/// <param name="pbmi">
+		/// A pointer to a BITMAPINFO structure that describes the dimensions and color format of the array pointed to by the lpbInit parameter.
+		/// </param>
+		/// <param name="iUsage">
+		/// <para>
+		/// Specifies whether the <c>bmiColors</c> member of the BITMAPINFO structure was initialized and, if so, whether <c>bmiColors</c>
+		/// contains explicit red, green, blue (RGB) values or palette indexes. The fuUsage parameter must be one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DIB_PAL_COLORS</term>
+		/// <term>
+		/// A color table is provided and consists of an array of 16-bit indexes into the logical palette of the device context into which
+		/// the bitmap is to be selected.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DIB_RGB_COLORS</term>
+		/// <term>A color table is provided and contains literal RGB values.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the compatible bitmap.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The DDB that is created will be whatever bit depth your reference DC is. To create a bitmap that is of different bit depth, use CreateDIBSection.
+		/// </para>
+		/// <para>
+		/// For a device to reach optimal bitmap-drawing speed, specify fdwInit as CBM_INIT. Then, use the same color depth DIB as the video
+		/// mode. When the video is running 4- or 8-bpp, use DIB_PAL_COLORS.
+		/// </para>
+		/// <para>The CBM_CREATDIB flag for the fdwInit parameter is no longer supported.</para>
+		/// <para>When you no longer need the bitmap, call the DeleteObject function to delete it.</para>
+		/// <para>
+		/// <c>ICM:</c> No color management is performed. The contents of the resulting bitmap are not color matched after the bitmap has
+		/// been created.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createdibitmap HBITMAP CreateDIBitmap( HDC hdc, const
+		// BITMAPINFOHEADER *pbmih, DWORD flInit, const VOID *pjBits, const BITMAPINFO *pbmi, UINT iUsage );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "e9a5b525-a6b6-4309-9e53-69d274b85783")]
+		public static extern SafeHBITMAP CreateDIBitmap(HDC hdc, [In, Optional] IntPtr pbmih, CBM flInit, [In, Optional] byte[] pjBits, [In, Optional] SafeBITMAPINFO pbmi, DIBColorMode iUsage);
 
 		/// <summary>
 		/// The <c>CreateDIBSection</c> function creates a DIB that applications can write to directly. The function gives you a pointer to
@@ -692,7 +778,104 @@ namespace Vanara.PInvoke
 		// BITMAPINFO *pbmi, UINT usage, VOID **ppvBits, HANDLE hSection, DWORD offset );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "9276ec84-2860-42be-a9f8-d4efb8d25eec")]
-		public static extern SafeHBITMAP CreateDIBSection(HDC hdc, ref BITMAPINFO pbmi, DIBColorMode usage, out IntPtr ppvBits, HSECTION hSection, uint offset);
+		public static extern SafeHBITMAP CreateDIBSection([In, Optional] HDC hdc, in BITMAPINFO pbmi, DIBColorMode usage, out IntPtr ppvBits, [In, Optional] HSECTION hSection, [In, Optional] uint offset);
+
+		/// <summary>
+		/// The <c>CreateDIBSection</c> function creates a DIB that applications can write to directly. The function gives you a pointer to
+		/// the location of the bitmap bit values. You can supply a handle to a file-mapping object that the function will use to create the
+		/// bitmap, or you can let the system allocate the memory for the bitmap.
+		/// </summary>
+		/// <param name="hdc">
+		/// A handle to a device context. If the value of iUsage is DIB_PAL_COLORS, the function uses this device context's logical palette
+		/// to initialize the DIB colors.
+		/// </param>
+		/// <param name="pbmi">
+		/// A pointer to a BITMAPINFO structure that specifies various attributes of the DIB, including the bitmap dimensions and colors.
+		/// </param>
+		/// <param name="usage">
+		/// <para>
+		/// The type of data contained in the <c>bmiColors</c> array member of the BITMAPINFO structure pointed to by pbmi (either logical
+		/// palette indexes or literal RGB values). The following values are defined.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DIB_PAL_COLORS</term>
+		/// <term>The bmiColors member is an array of 16-bit indexes into the logical palette of the device context specified by hdc.</term>
+		/// </item>
+		/// <item>
+		/// <term>DIB_RGB_COLORS</term>
+		/// <term>The BITMAPINFO structure contains an array of literal RGB values.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="ppvBits">A pointer to a variable that receives a pointer to the location of the DIB bit values.</param>
+		/// <param name="hSection">
+		/// <para>A handle to a file-mapping object that the function will use to create the DIB. This parameter can be <c>NULL</c>.</para>
+		/// <para>
+		/// If hSection is not <c>NULL</c>, it must be a handle to a file-mapping object created by calling the CreateFileMapping function
+		/// with the PAGE_READWRITE or PAGE_WRITECOPY flag. Read-only DIB sections are not supported. Handles created by other means will
+		/// cause <c>CreateDIBSection</c> to fail.
+		/// </para>
+		/// <para>
+		/// If hSection is not <c>NULL</c>, the <c>CreateDIBSection</c> function locates the bitmap bit values at offset dwOffset in the
+		/// file-mapping object referred to by hSection. An application can later retrieve the hSection handle by calling the GetObject
+		/// function with the <c>HBITMAP</c> returned by <c>CreateDIBSection</c>.
+		/// </para>
+		/// <para>
+		/// If hSection is <c>NULL</c>, the system allocates memory for the DIB. In this case, the <c>CreateDIBSection</c> function ignores
+		/// the dwOffset parameter. An application cannot later obtain a handle to this memory. The <c>dshSection</c> member of the
+		/// DIBSECTION structure filled in by calling the GetObject function will be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="offset">
+		/// The offset from the beginning of the file-mapping object referenced by hSection where storage for the bitmap bit values is to
+		/// begin. This value is ignored if hSection is <c>NULL</c>. The bitmap bit values are aligned on doubleword boundaries, so dwOffset
+		/// must be a multiple of the size of a <c>DWORD</c>.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is a handle to the newly created DIB, and *ppvBits points to the bitmap bit values.
+		/// </para>
+		/// <para>If the function fails, the return value is <c>NULL</c>, and *ppvBits is <c>NULL</c>.</para>
+		/// <para>This function can return the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>One or more of the input parameters is invalid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// As noted above, if hSection is <c>NULL</c>, the system allocates memory for the DIB. The system closes the handle to that memory
+		/// when you later delete the DIB by calling the DeleteObject function. If hSection is not <c>NULL</c>, you must close the hSection
+		/// memory handle yourself after calling <c>DeleteObject</c> to delete the bitmap.
+		/// </para>
+		/// <para>You cannot paste a DIB section from one application into another application.</para>
+		/// <para>
+		/// <c>CreateDIBSection</c> does not use the BITMAPINFOHEADER parameters biXPelsPerMeter or biYPelsPerMeter and will not provide
+		/// resolution information in the BITMAPINFO structure.
+		/// </para>
+		/// <para>
+		/// You need to guarantee that the GDI subsystem has completed any drawing to a bitmap created by <c>CreateDIBSection</c> before you
+		/// draw to the bitmap yourself. Access to the bitmap must be synchronized. Do this by calling the GdiFlush function. This applies to
+		/// any use of the pointer to the bitmap bit values, including passing the pointer in calls to functions such as SetDIBits.
+		/// </para>
+		/// <para><c>ICM:</c> No color management is done.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createdibsection HBITMAP CreateDIBSection( HDC hdc, const
+		// BITMAPINFO *pbmi, UINT usage, VOID **ppvBits, HANDLE hSection, DWORD offset );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "9276ec84-2860-42be-a9f8-d4efb8d25eec")]
+		public static extern SafeHBITMAP CreateDIBSection([In, Optional] HDC hdc, [In] SafeBITMAPINFO pbmi, DIBColorMode usage, out IntPtr ppvBits, [In, Optional] HSECTION hSection, [In, Optional] uint offset);
 
 		/// <summary>
 		/// <para>
@@ -1013,7 +1196,7 @@ namespace Vanara.PInvoke
 		// UINT cLines, LPVOID lpvBits, LPBITMAPINFO lpbmi, UINT usage );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "be3ffa3f-b343-4e38-8b1e-aeccf35d92b8")]
-		public static extern int GetDIBits(HDC hdc, HBITMAP hbm, uint start, uint cLines, ref byte[] lpvBits, ref BITMAPINFO lpbmi, DIBColorMode usage);
+		public static extern int GetDIBits([In] HDC hdc, [In] HBITMAP hbm, uint start, uint cLines, [Out, Optional] byte[] lpvBits, ref BITMAPINFO lpbmi, DIBColorMode usage);
 
 		/// <summary>
 		/// The <c>GetDIBits</c> function retrieves the bits of the specified compatible bitmap and copies them into a buffer as a DIB using
@@ -1127,7 +1310,7 @@ namespace Vanara.PInvoke
 		// UINT cLines, LPVOID lpvBits, LPBITMAPINFO lpbmi, UINT usage );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "be3ffa3f-b343-4e38-8b1e-aeccf35d92b8")]
-		public static extern int GetDIBits(HDC hdc, HBITMAP hbm, uint start, uint cLines, IntPtr lpvBits, ref BITMAPINFO lpbmi, DIBColorMode usage);
+		public static extern int GetDIBits([In] HDC hdc, [In] HBITMAP hbm, uint start, uint cLines, [Out, Optional] IntPtr lpvBits, [In, Out] SafeBITMAPINFO lpbmi, DIBColorMode usage);
 
 		/// <summary>The <c>GetPixel</c> function retrieves the red, green, blue (RGB) color value of the pixel at the specified coordinates.</summary>
 		/// <param name="hdc">A handle to the device context.</param>
@@ -1437,7 +1620,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "2a56c71b-2e96-418b-8625-a808d76e0c85")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PlgBlt(HDC hdcDest, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 3)] System.Drawing.Point[] lpPoint,
+		public static extern bool PlgBlt(HDC hdcDest, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 3)] POINT[] lpPoint,
 			HDC hdcSrc, int xSrc, int ySrc, int width, int height, HBITMAP hbmMask, int xMask, int yMask);
 
 		/// <summary>
@@ -1602,7 +1785,88 @@ namespace Vanara.PInvoke
 		// UINT cLines, const VOID *lpBits, const BITMAPINFO *lpbmi, UINT ColorUse );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "706f4532-4073-4d5c-ae2d-e33aea9163e9")]
-		public static extern int SetDIBits(HDC hdc, HBITMAP hbm, uint start, uint cLines, byte[] lpBits, ref BITMAPINFO lpbmi, DIBColorMode ColorUse);
+		public static extern int SetDIBits([In, Optional] HDC hdc, [In] HBITMAP hbm, uint start, uint cLines, [In] byte[] lpBits, in BITMAPINFO lpbmi, DIBColorMode ColorUse);
+
+		/// <summary>
+		/// The <c>SetDIBits</c> function sets the pixels in a compatible bitmap (DDB) using the color data found in the specified DIB.
+		/// </summary>
+		/// <param name="hdc">A handle to a device context.</param>
+		/// <param name="hbm">A handle to the compatible bitmap (DDB) that is to be altered using the color data from the specified DIB.</param>
+		/// <param name="start">The starting scan line for the device-independent color data in the array pointed to by the lpvBits parameter.</param>
+		/// <param name="cLines">The number of scan lines found in the array containing device-independent color data.</param>
+		/// <param name="lpBits">
+		/// A pointer to the DIB color data, stored as an array of bytes. The format of the bitmap values depends on the <c>biBitCount</c>
+		/// member of the BITMAPINFO structure pointed to by the lpbmi parameter.
+		/// </param>
+		/// <param name="lpbmi">A pointer to a BITMAPINFO structure that contains information about the DIB.</param>
+		/// <param name="ColorUse">
+		/// <para>
+		/// Indicates whether the <c>bmiColors</c> member of the BITMAPINFO structure was provided and, if so, whether <c>bmiColors</c>
+		/// contains explicit red, green, blue (RGB) values or palette indexes. The fuColorUse parameter must be one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DIB_PAL_COLORS</term>
+		/// <term>
+		/// The color table consists of an array of 16-bit indexes into the logical palette of the device context identified by the hdc parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DIB_RGB_COLORS</term>
+		/// <term>The color table is provided and contains literal RGB values.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the number of scan lines copied.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// <para>This can be the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>One or more of the input parameters is invalid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>Optimal bitmap drawing speed is obtained when the bitmap bits are indexes into the system palette.</para>
+		/// <para>
+		/// Applications can retrieve the system palette colors and indexes by calling the GetSystemPaletteEntries function. After the colors
+		/// and indexes are retrieved, the application can create the DIB. For more information, see System Palette.
+		/// </para>
+		/// <para>
+		/// The device context identified by the hdc parameter is used only if the DIB_PAL_COLORS constant is set for the fuColorUse
+		/// parameter; otherwise it is ignored.
+		/// </para>
+		/// <para>
+		/// The bitmap identified by the hbmp parameter must not be selected into a device context when the application calls this function.
+		/// </para>
+		/// <para>The scan lines must be aligned on a <c>DWORD</c> except for RLE-compressed bitmaps.</para>
+		/// <para>
+		/// The origin for bottom-up DIBs is the lower-left corner of the bitmap; the origin for top-down DIBs is the upper-left corner of
+		/// the bitmap.
+		/// </para>
+		/// <para>
+		/// <c>ICM:</c> Color management is performed if color management has been enabled with a call to SetICMMode with the iEnableICM
+		/// parameter set to ICM_ON. If the bitmap specified by lpbmi has a BITMAPV4HEADER that specifies the gamma and endpoints members, or
+		/// a BITMAPV5HEADER that specifies either the gamma and endpoints members or the profileData and profileSize members, then the call
+		/// treats the bitmap's pixels as being expressed in the color space described by those members, rather than in the device context's
+		/// source color space.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setdibits int SetDIBits( HDC hdc, HBITMAP hbm, UINT start,
+		// UINT cLines, const VOID *lpBits, const BITMAPINFO *lpbmi, UINT ColorUse );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "706f4532-4073-4d5c-ae2d-e33aea9163e9")]
+		public static extern int SetDIBits([In, Optional] HDC hdc, [In] HBITMAP hbm, uint start, uint cLines, [In] IntPtr lpBits, [In] SafeBITMAPINFO lpbmi, DIBColorMode ColorUse);
 
 		/// <summary>
 		/// The <c>SetDIBitsToDevice</c> function sets the pixels in the specified rectangle on the device that is associated with the
@@ -1697,8 +1961,104 @@ namespace Vanara.PInvoke
 		// ColorUse );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "41225400-12e3-47ba-8b88-ac1d5b0fa90f")]
-		public static extern int SetDIBitsToDevice(HDC hdc, int xDest, int yDest, uint w, uint h, int xSrc, int ySrc, uint StartScan,
-			uint cLines, byte[] lpvBits, ref BITMAPINFO lpbmi, DIBColorMode ColorUse);
+		public static extern int SetDIBitsToDevice([In] HDC hdc, int xDest, int yDest, uint w, uint h, int xSrc, int ySrc, uint StartScan,
+			uint cLines, [In] byte[] lpvBits, in BITMAPINFO lpbmi, DIBColorMode ColorUse);
+
+		/// <summary>
+		/// The <c>SetDIBitsToDevice</c> function sets the pixels in the specified rectangle on the device that is associated with the
+		/// destination device context using color data from a DIB, JPEG, or PNG image.
+		/// </summary>
+		/// <param name="hdc">A handle to the device context.</param>
+		/// <param name="xDest">The x-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
+		/// <param name="yDest">The y-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
+		/// <param name="w">The width, in logical units, of the image.</param>
+		/// <param name="h">The height, in logical units, of the image.</param>
+		/// <param name="xSrc">The x-coordinate, in logical units, of the lower-left corner of the image.</param>
+		/// <param name="ySrc">The y-coordinate, in logical units, of the lower-left corner of the image.</param>
+		/// <param name="StartScan">The starting scan line in the image.</param>
+		/// <param name="cLines">The number of DIB scan lines contained in the array pointed to by the lpvBits parameter.</param>
+		/// <param name="lpvBits">
+		/// A pointer to the color data stored as an array of bytes. For more information, see the following Remarks section.
+		/// </param>
+		/// <param name="lpbmi">A pointer to a BITMAPINFO structure that contains information about the DIB.</param>
+		/// <param name="ColorUse">
+		/// <para>
+		/// Indicates whether the <c>bmiColors</c> member of the BITMAPINFO structure contains explicit red, green, blue (RGB) values or
+		/// indexes into a palette. For more information, see the following Remarks section.
+		/// </para>
+		/// <para>The fuColorUse parameter must be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DIB_PAL_COLORS</term>
+		/// <term>The color table consists of an array of 16-bit indexes into the currently selected logical palette.</term>
+		/// </item>
+		/// <item>
+		/// <term>DIB_RGB_COLORS</term>
+		/// <term>The color table contains literal RGB values.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the number of scan lines set.</para>
+		/// <para>If zero scan lines are set (such as when dwHeight is 0) or the function fails, the function returns zero.</para>
+		/// <para>
+		/// If the driver cannot support the JPEG or PNG file image passed to <c>SetDIBitsToDevice</c>, the function will fail and return
+		/// GDI_ERROR. If failure does occur, the application must fall back on its own JPEG or PNG support to decompress the image into a
+		/// bitmap, and then pass the bitmap to <c>SetDIBitsToDevice</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Optimal bitmap drawing speed is obtained when the bitmap bits are indexes into the system palette.</para>
+		/// <para>
+		/// Applications can retrieve the system palette colors and indexes by calling the GetSystemPaletteEntries function. After the colors
+		/// and indexes are retrieved, the application can create the DIB. For more information about the system palette, see Colors.
+		/// </para>
+		/// <para>The scan lines must be aligned on a <c>DWORD</c> except for RLE-compressed bitmaps.</para>
+		/// <para>The origin of a bottom-up DIB is the lower-left corner of the bitmap; the origin of a top-down DIB is the upper-left corner.</para>
+		/// <para>
+		/// To reduce the amount of memory required to set bits from a large DIB on a device surface, an application can band the output by
+		/// repeatedly calling <c>SetDIBitsToDevice</c>, placing a different portion of the bitmap into the lpvBits array each time. The
+		/// values of the uStartScan and cScanLines parameters identify the portion of the bitmap contained in the lpvBits array.
+		/// </para>
+		/// <para>
+		/// The <c>SetDIBitsToDevice</c> function returns an error if it is called by a process that is running in the background while a
+		/// full-screen MS-DOS session runs in the foreground.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// If the <c>biCompression</c> member of BITMAPINFOHEADER is BI_JPEG or BI_PNG, lpvBits points to a buffer containing a JPEG or PNG
+		/// image. The <c>biSizeImage</c> member of specifies the size of the buffer. The fuColorUse parameter must be set to DIB_RGB_COLORS.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// To ensure proper metafile spooling while printing, applications must call the CHECKJPEGFORMAT or CHECKPNGFORMAT escape to verify
+		/// that the printer recognizes the JPEG or PNG image, respectively, before calling <c>SetDIBitsToDevice</c>.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>ICM:</c> Color management is performed if color management has been enabled with a call to SetICMMode with the iEnableICM
+		/// parameter set to ICM_ON. If the bitmap specified by lpbmi has a BITMAPV4HEADER that specifies the gamma and endpoints members, or
+		/// a BITMAPV5HEADER that specifies either the gamma and endpoints members or the profileData and profileSize members, then the call
+		/// treats the bitmap's pixels as being expressed in the color space described by those members, rather than in the device context's
+		/// source color space.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Testing a Printer for JPEG or PNG Support.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setdibitstodevice int SetDIBitsToDevice( HDC hdc, int xDest,
+		// int yDest, DWORD w, DWORD h, int xSrc, int ySrc, UINT StartScan, UINT cLines, const VOID *lpvBits, const BITMAPINFO *lpbmi, UINT
+		// ColorUse );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "41225400-12e3-47ba-8b88-ac1d5b0fa90f")]
+		public static extern int SetDIBitsToDevice([In] HDC hdc, int xDest, int yDest, uint w, uint h, int xSrc, int ySrc, uint StartScan,
+			uint cLines, [In] IntPtr lpvBits, [In] SafeBITMAPINFO lpbmi, DIBColorMode ColorUse);
 
 		/// <summary>The <c>SetPixel</c> function sets the pixel at the specified coordinates to the specified color.</summary>
 		/// <param name="hdc">A handle to the device context.</param>
@@ -2029,8 +2389,111 @@ namespace Vanara.PInvoke
 		// *lpbmi, UINT iUsage, DWORD rop );
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("wingdi.h", MSDNShortId = "3d57a79a-338d-48ab-8161-3ce17739bf20")]
-		public static extern int StretchDIBits(HDC hdc, int xDest, int yDest, int DestWidth, int DestHeight, int xSrc, int ySrc, int SrcWidth,
-			int SrcHeight, byte[] lpBits, ref BITMAPINFO lpbmi, DIBColorMode iUsage, RasterOperationMode rop);
+		public static extern int StretchDIBits([In] HDC hdc, int xDest, int yDest, int DestWidth, int DestHeight, int xSrc, int ySrc, int SrcWidth,
+			int SrcHeight, [In, Optional] byte[] lpBits, in BITMAPINFO lpbmi, DIBColorMode iUsage, RasterOperationMode rop);
+
+		/// <summary>
+		/// The <c>StretchDIBits</c> function copies the color data for a rectangle of pixels in a DIB, JPEG, or PNG image to the specified
+		/// destination rectangle. If the destination rectangle is larger than the source rectangle, this function stretches the rows and
+		/// columns of color data to fit the destination rectangle. If the destination rectangle is smaller than the source rectangle, this
+		/// function compresses the rows and columns by using the specified raster operation.
+		/// </summary>
+		/// <param name="hdc">A handle to the destination device context.</param>
+		/// <param name="xDest">The x-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
+		/// <param name="yDest">The y-coordinate, in logical units, of the upper-left corner of the destination rectangle.</param>
+		/// <param name="DestWidth">The width, in logical units, of the destination rectangle.</param>
+		/// <param name="DestHeight">The height, in logical units, of the destination rectangle.</param>
+		/// <param name="xSrc">The x-coordinate, in pixels, of the source rectangle in the image.</param>
+		/// <param name="ySrc">The y-coordinate, in pixels, of the source rectangle in the image.</param>
+		/// <param name="SrcWidth">The width, in pixels, of the source rectangle in the image.</param>
+		/// <param name="SrcHeight">The height, in pixels, of the source rectangle in the image.</param>
+		/// <param name="lpBits">
+		/// A pointer to the image bits, which are stored as an array of bytes. For more information, see the Remarks section.
+		/// </param>
+		/// <param name="lpbmi">A pointer to a BITMAPINFO structure that contains information about the DIB.</param>
+		/// <param name="iUsage">
+		/// <para>
+		/// Specifies whether the <c>bmiColors</c> member of the BITMAPINFO structure was provided and, if so, whether <c>bmiColors</c>
+		/// contains explicit red, green, blue (RGB) values or indexes. The iUsage parameter must be one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DIB_PAL_COLORS</term>
+		/// <term>The array contains 16-bit indexes into the logical palette of the source device context.</term>
+		/// </item>
+		/// <item>
+		/// <term>DIB_RGB_COLORS</term>
+		/// <term>The color table contains literal RGB values.</term>
+		/// </item>
+		/// </list>
+		/// <para>For more information, see the Remarks section.</para>
+		/// </param>
+		/// <param name="rop">
+		/// A raster-operation code that specifies how the source pixels, the destination device context's current brush, and the destination
+		/// pixels are to be combined to form the new image. For a list of some common raster operation codes, see BitBlt.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the number of scan lines copied. Note that this value can be negative for mirrored content.
+		/// </para>
+		/// <para>If the function fails, or no scan lines are copied, the return value is 0.</para>
+		/// <para>
+		/// If the driver cannot support the JPEG or PNG file image passed to <c>StretchDIBits</c>, the function will fail and return
+		/// GDI_ERROR. If failure does occur, the application must fall back on its own JPEG or PNG support to decompress the image into a
+		/// bitmap, and then pass the bitmap to <c>StretchDIBits</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The origin of a bottom-up DIB is the lower-left corner; the origin of a top-down DIB is the upper-left corner.</para>
+		/// <para>
+		/// <c>StretchDIBits</c> creates a mirror image of a bitmap if the signs of the nSrcWidth and nDestWidth parameters, or if the
+		/// nSrcHeight and nDestHeight parameters differ. If nSrcWidth and nDestWidth have different signs, the function creates a mirror
+		/// image of the bitmap along the x-axis. If nSrcHeight and nDestHeight have different signs, the function creates a mirror image of
+		/// the bitmap along the y-axis.
+		/// </para>
+		/// <para>
+		/// <c>StretchDIBits</c> creates a top-down image if the sign of the <c>biHeight</c> member of the BITMAPINFOHEADER structure for the
+		/// DIB is negative. For a code example, see Sizing a JPEG or PNG Image.
+		/// </para>
+		/// <para>
+		/// This function allows a JPEG or PNG image to be passed as the source image. How each parameter is used remains the same, except:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// If the <c>biCompression</c> member of BITMAPINFOHEADER is BI_JPEG or BI_PNG, lpBits points to a buffer containing a JPEG or PNG
+		/// image, respectively. The <c>biSizeImage</c> member of the <c>BITMAPINFOHEADER</c> structure specifies the size of the buffer. The
+		/// iUsage parameter must be set to DIB_RGB_COLORS. The dwRop parameter must be set to SRCCOPY.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// To ensure proper metafile spooling while printing, applications must call the CHECKJPEGFORMAT or CHECKPNGFORMAT escape to verify
+		/// that the printer recognizes the JPEG or PNG image, respectively, before calling <c>StretchDIBits</c>.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>ICM:</c> Color management is performed if color management has been enabled with a call to SetICMMode with the iEnableICM
+		/// parameter set to ICM_ON. If the bitmap specified by lpBitsInfo has a BITMAPV4HEADER that specifies the gamma and endpoints
+		/// members, or a BITMAPV5HEADER that specifies either the gamma and endpoints members or the profileData and profileSize members,
+		/// then the call treats the bitmap's pixels as being expressed in the color space described by those members, rather than in the
+		/// device context's source color space.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Sizing a JPEG or PNG Image.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-stretchdibits int StretchDIBits( HDC hdc, int xDest, int
+		// yDest, int DestWidth, int DestHeight, int xSrc, int ySrc, int SrcWidth, int SrcHeight, const VOID *lpBits, const BITMAPINFO
+		// *lpbmi, UINT iUsage, DWORD rop );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "3d57a79a-338d-48ab-8161-3ce17739bf20")]
+		public static extern int StretchDIBits([In] HDC hdc, int xDest, int yDest, int DestWidth, int DestHeight, int xSrc, int ySrc, int SrcWidth,
+			int SrcHeight, [In, Optional] IntPtr lpBits, [In] SafeBITMAPINFO lpbmi, DIBColorMode iUsage, RasterOperationMode rop);
 
 		/// <summary>
 		/// <para>

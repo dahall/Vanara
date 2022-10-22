@@ -742,7 +742,7 @@ namespace Vanara.PInvoke
 			/// one pixel wide on raster devices. The <c>y</c> member in the <c>POINT</c> structure for <c>lopnWidth</c> is not used.
 			/// </para>
 			/// </summary>
-			public System.Drawing.Point lopnWidth;
+			public POINT lopnWidth;
 
 			/// <summary>
 			/// <para>The pen color. To generate a COLORREF structure, use the RGB macro.</para>

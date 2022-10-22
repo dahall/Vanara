@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -208,7 +207,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "8a47a238-082c-44b8-a270-5ebb4d3d9fc8")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PtInRect(in RECT lprc, Point pt);
+		public static extern bool PtInRect(in RECT lprc, POINT pt);
 
 		/// <summary>
 		/// The <c>SetRect</c> function sets the coordinates of the specified rectangle. This is equivalent to assigning the left, top,

@@ -1,20 +1,16 @@
-﻿using NUnit.Framework;
-using System.Linq;
+﻿namespace Vanara.PInvoke.Tests;
 
-namespace Vanara.IO.Tests
+internal partial class BackgroundCopyTests
 {
-	partial class BackgroundCopyTests
+	[Test]
+	public void EnumJobTest()
 	{
-		[Test]
-		public void EnumJobTest()
-		{
-			var cnt = 0;
+		var cnt = 0;
 
-			Assert.That(() => BackgroundCopyManager.Jobs.Count, Throws.Nothing);
+		Assert.That(() => BackgroundCopyManager.Jobs.Count, Throws.Nothing);
 
-			Assert.That(cnt = BackgroundCopyManager.Jobs.Count, Is.GreaterThanOrEqualTo(0));
+		Assert.That(cnt = BackgroundCopyManager.Jobs.Count, Is.GreaterThanOrEqualTo(0));
 
-			Assert.That(BackgroundCopyManager.Jobs.Count(), Is.EqualTo(cnt));
-		}
+		Assert.That(BackgroundCopyManager.Jobs.Count(), Is.EqualTo(cnt));
 	}
 }

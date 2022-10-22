@@ -36,11 +36,10 @@ namespace Vanara.Windows.Shell.Tests
 			using var cb = new Clipboard();
 			var fmts = cb.EnumAvailableFormats();
 			Assert.That(fmts, Is.Not.Empty);
-			TestContext.Write(string.Join(", ", fmts.Select(f => f.Name)));
+			TestContext.Write(string.Join(", ", fmts.Select(f => Clipboard.GetFormatName(f))));
 
 			var fmt = fmts.First();
-			Assert.IsTrue(Clipboard.IsFormatAvailable(fmt.Id));
-			Assert.IsTrue(Clipboard.IsFormatAvailable(fmt.Name));
+			Assert.IsTrue(Clipboard.IsFormatAvailable(fmt));
 		}
 
 		[Test]
@@ -54,7 +53,7 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void GetPriorityFormatTest()
 		{
-			var fmts = Clipboard.CurrentlySupportedFormats.Select(f => f.Id).ToArray();
+			var fmts = Clipboard.CurrentlySupportedFormats.ToArray();
 			Assert.That(Clipboard.GetFirstFormatAvailable(fmts), Is.GreaterThan(0));
 		}
 
@@ -76,6 +75,21 @@ namespace Vanara.Windows.Shell.Tests
 			const string txt = @"“We’ve been here”";
 			using var cb = new Clipboard();
 			cb.SetText(txt, html);
+		}
+
+		//[Test]
+		public void ChangeEventTest()
+		{
+			var sawChange = new System.Threading.ManualResetEvent(false);
+			Clipboard.ClipboardUpdate += OnUpdate;
+			System.Threading.Thread.SpinWait(1000);
+			WFClipboard.SetText("Hello");
+			//using var cb = new Clipboard();
+			//cb.SetText("Hello");
+			Assert.IsTrue(sawChange.WaitOne(5000));
+			Clipboard.ClipboardUpdate -= OnUpdate;
+
+			void OnUpdate(object sender, EventArgs e) => sawChange.Set();
 		}
 	}
 }

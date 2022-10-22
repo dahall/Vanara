@@ -302,6 +302,37 @@ namespace Vanara.PInvoke
 			SECURITY_CAPABILITY_REMOVABLE_STORAGE = 0x0000000A,
 		}
 
+		/// <summary>The <c>MANDATORY_LEVEL</c> enumeration lists the possible security levels.
+		/// <note>These values have been adjusted to equal the RID values of the mandatory SID label.</note>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-mandatory_level typedef enum _MANDATORY_LEVEL {
+		// MandatoryLevelUntrusted, MandatoryLevelLow, MandatoryLevelMedium, MandatoryLevelHigh, MandatoryLevelSystem,
+		// MandatoryLevelSecureProcess, MandatoryLevelCount } MANDATORY_LEVEL, *PMANDATORY_LEVEL;
+		[PInvokeData("winnt.h", MSDNShortId = "NE:winnt._MANDATORY_LEVEL")]
+		public enum MANDATORY_LEVEL : uint
+		{
+			/// <summary>Untrusted</summary>
+			MandatoryLevelUntrusted = 0,
+
+			/// <summary>Low</summary>
+			MandatoryLevelLow = 0x1000,
+
+			/// <summary>Medium</summary>
+			MandatoryLevelMedium = 0x2000,
+
+			/// <summary>Medium High</summary>
+			MandatoryLevelMediumHigh = MandatoryLevelMedium + 0x100,
+
+			/// <summary>High</summary>
+			MandatoryLevelHigh = 0x3000,
+
+			/// <summary>System</summary>
+			MandatoryLevelSystem = 0x4000,
+
+			/// <summary>Secure process</summary>
+			MandatoryLevelSecureProcess = 0x5000,
+		}
+
 		/// <summary>
 		/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members are present in an object ACE.
 		/// </summary>
@@ -3186,10 +3217,55 @@ namespace Vanara.PInvoke
 		/// <summary>The SID_IDENTIFIER_AUTHORITY structure represents the top-level authority of a security identifier (SID).</summary>
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		[PInvokeData("Winnt.h", MSDNShortId = "aa379598")]
-		public struct SID_IDENTIFIER_AUTHORITY
+		public struct SID_IDENTIFIER_AUTHORITY : IEquatable<PSID_IDENTIFIER_AUTHORITY>, IEquatable<SID_IDENTIFIER_AUTHORITY>, IEquatable<byte[]>
 		{
 			/// <summary>An array of 6 bytes specifying a SID's top-level authority.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)] public byte[] Value;
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(SID_IDENTIFIER_AUTHORITY h1, SID_IDENTIFIER_AUTHORITY h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(SID_IDENTIFIER_AUTHORITY h1, SID_IDENTIFIER_AUTHORITY h2) => h1.Equals(h2);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(PSID_IDENTIFIER_AUTHORITY other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other.Value);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(SID_IDENTIFIER_AUTHORITY other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other.Value);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(byte[] other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj switch
+			{
+				PSID_IDENTIFIER_AUTHORITY h => Equals(h),
+				SID_IDENTIFIER_AUTHORITY h => Equals(h),
+				byte[] h => Equals(h),
+				_ => ReferenceEquals(Value, obj),
+			};
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => Value.GetHashCode();
 		}
 
 		/// <summary>
@@ -4422,7 +4498,7 @@ namespace Vanara.PInvoke
 		// _SID_IDENTIFIER_AUTHORITY { BYTE Value[6]; } SID_IDENTIFIER_AUTHORITY, *PSID_IDENTIFIER_AUTHORITY;
 		[PInvokeData("winnt.h", MSDNShortId = "450a6d2d-d2e4-4098-90af-a8024ddcfcb5")]
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public class PSID_IDENTIFIER_AUTHORITY
+		public class PSID_IDENTIFIER_AUTHORITY : IEquatable<PSID_IDENTIFIER_AUTHORITY>, IEquatable<SID_IDENTIFIER_AUTHORITY>, IEquatable<byte[]>
 		{
 			/// <summary>An array of 6 bytes specifying a SID's top-level authority.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
@@ -4496,11 +4572,48 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the operator.</returns>
 			public static bool operator ==(PSID_IDENTIFIER_AUTHORITY h1, PSID_IDENTIFIER_AUTHORITY h2) => h1.Equals(h2);
 
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(PSID_IDENTIFIER_AUTHORITY other) => Equals6Bytes(Value, other.Value);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(SID_IDENTIFIER_AUTHORITY other) => Equals6Bytes(Value, other.Value);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
+			/// </returns>
+			public bool Equals(byte[] other) => Equals6Bytes(Value, other);
+
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is PSID_IDENTIFIER_AUTHORITY h ? h.LongValue == h.LongValue : false;
+			public override bool Equals(object obj) => obj switch
+			{
+				PSID_IDENTIFIER_AUTHORITY h => Equals(h),
+				SID_IDENTIFIER_AUTHORITY h => Equals(h),
+				byte[] h => Equals(h),
+				_ => ReferenceEquals(Value, obj),
+			};
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => LongValue.GetHashCode();
+
+			internal static bool Equals6Bytes(byte[] a, byte[] b)
+			{
+				if (a is null || b is null || a.Length != 6 || b.Length != 6)
+					return false;
+				for (int i = 0; i < 6; i++)
+					if (a[i] != b[i])
+						return false;
+				return true;
+			}
 		}
 
 		/// <summary>A SafeHandle for access control lists. If owned, will call LocalFree on the pointer when disposed.</summary>
@@ -4968,131 +5081,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString() => ConvertSecurityDescriptorToStringSecurityDescriptor(handle, defSecInfo);
+			public override string ToString() => ToString(defSecInfo);
+
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <param name="secInfo">
+			/// Specifies a combination of the SECURITY_INFORMATION bit flags to indicate the components of the security descriptor to include in
+			/// the output string.
+			/// </param>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
+			public string ToString(SECURITY_INFORMATION secInfo) => ConvertSecurityDescriptorToStringSecurityDescriptor(handle, secInfo);
 		}
-	}
-
-	/// <summary>Extension methods for PACE, PACL and PSECURITY_DESCRIPTOR.</summary>
-	public static class WinNTExtensions
-	{
-		/// <summary>Gets the number of ACEs held by an ACL.</summary>
-		/// <param name="pACL">The pointer to the ACL structure to query.</param>
-		/// <returns>The ace count.</returns>
-		public static uint AceCount(this PACL pACL) => AdvApi32.IsValidAcl(pACL) && AdvApi32.GetAclInformation(pACL, out AdvApi32.ACL_SIZE_INFORMATION si) ? si.AceCount : 0;
-
-		/// <summary>Gets the total number of bytes allocated to the ACL.</summary>
-		/// <param name="pACL">The pointer to the ACL structure to query.</param>
-		/// <returns>The total of the free and used bytes in the ACL.</returns>
-		public static uint BytesAllocated(this PACL pACL) => AdvApi32.IsValidAcl(pACL) && AdvApi32.GetAclInformation(pACL, out AdvApi32.ACL_SIZE_INFORMATION si) ? si.AclBytesFree + si.AclBytesInUse : 0;
-
-		/// <summary>Gets the Flags for an ACE, if defined.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The Flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static ObjectAceFlags? GetFlags(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			return !pAce.IsObjectAce() ? null : (ObjectAceFlags?)pAce.DangerousGetHandle().ToStructure<AdvApi32.ACCESS_ALLOWED_OBJECT_ACE>().Flags;
-		}
-
-		/// <summary>Gets the header for an ACE.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The <see cref="AdvApi32.ACE_HEADER"/> value.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static AdvApi32.ACE_HEADER GetHeader(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<AdvApi32.ACE_HEADER>() : throw new ArgumentNullException(nameof(pAce));
-
-		/// <summary>Gets the InheritedObjectType for an ACE, if defined.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The InheritedObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static Guid? GetInheritedObjectType(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<AdvApi32.ACCESS_ALLOWED_OBJECT_ACE>().InheritedObjectType;
-		}
-
-		/// <summary>Gets the mask for an ACE.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The ACCESS_MASK value.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static uint GetMask(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<AdvApi32.ACCESS_ALLOWED_ACE>().Mask : throw new ArgumentNullException(nameof(pAce));
-
-		/// <summary>Gets the ObjectType for an ACE, if defined.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The ObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static Guid? GetObjectType(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<AdvApi32.ACCESS_ALLOWED_OBJECT_ACE>().ObjectType;
-		}
-
-		/// <summary>Gets the SID for an ACE.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The SID value.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static AdvApi32.SafePSID GetSid(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			var offset = Marshal.SizeOf(typeof(AdvApi32.ACE_HEADER)) + sizeof(uint);
-			if (pAce.IsObjectAce()) offset += sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2;
-			unsafe
-			{
-				return AdvApi32.SafePSID.CreateFromPtr((IntPtr)((byte*)pAce.DangerousGetHandle() + offset));
-			}
-		}
-
-		/// <summary>Determines if a ACE is an object ACE.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns><see langword="true"/> if is this is an object ACE; otherwise, <see langword="false"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		/// <exception cref="System.ArgumentOutOfRangeException">pAce - Unknown ACE type.</exception>
-		public static bool IsObjectAce(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			var aceType = (byte)GetHeader(pAce).AceType;
-			if (aceType > 0x15) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
-			return (aceType >= 0x5 && aceType <= 0x8) || aceType == 0xB || aceType == 0xC || aceType == 0xF || aceType == 0x10;
-		}
-
-		/// <summary>Determines whether the security descriptor is self-relative.</summary>
-		/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>
-		/// <returns><c>true</c> if it is self-relative; otherwise, <c>false</c>.</returns>
-		public static bool IsSelfRelative(this PSECURITY_DESCRIPTOR pSD) => AdvApi32.GetSecurityDescriptorControl(pSD, out var ctrl, out _) ? ctrl.IsFlagSet(AdvApi32.SECURITY_DESCRIPTOR_CONTROL.SE_SELF_RELATIVE) : throw Win32Error.GetLastError().GetException();
-
-		/// <summary>Validates an access control list (ACL).</summary>
-		/// <param name="pAcl">The pointer to the ACL structure to query.</param>
-		/// <returns><c>true</c> if the ACL is valid; otherwise, <c>false</c>.</returns>
-		public static bool IsValidAcl(this PACL pAcl) => AdvApi32.IsValidAcl(pAcl);
-
-		/// <summary>Determines whether the components of a security descriptor are valid.</summary>
-		/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>
-		/// <returns>
-		/// <c>true</c> if the components of the security descriptor are valid. If any of the components of the security descriptor are not
-		/// valid, the return value is <c>false</c>.
-		/// </returns>
-		public static bool IsValidSecurityDescriptor(this PSECURITY_DESCRIPTOR pSD) => AdvApi32.IsValidSecurityDescriptor(pSD);
-
-		/// <summary>Gets the size, in bytes, of an ACE.</summary>
-		/// <param name="pAce">The pointer to the ACE structure to query.</param>
-		/// <returns>The size, in bytes, of the ACE.</returns>
-		public static uint Length(this PACE pAce)
-		{
-			unsafe
-			{
-				var p = (AdvApi32.ACE_HEADER*)(void*)pAce.DangerousGetHandle();
-				return p == null ? 0U : p->AceSize;
-			}
-		}
-
-		/// <summary>Gets the size, in bytes, of an ACL. If the ACL is not valid, 0 is returned.</summary>
-		/// <param name="pACL">The pointer to the ACL structure to query.</param>
-		/// <returns>The size, in bytes, of an ACL. If the ACL is not valid, 0 is returned.</returns>
-		public static uint Length(this PACL pACL) => AdvApi32.IsValidAcl(pACL) && AdvApi32.GetAclInformation(pACL, out AdvApi32.ACL_SIZE_INFORMATION si) ? si.AclBytesInUse : 0;
-
-		/// <summary>Gets the size, in bytes, of a security descriptor. If it is not valid, 0 is returned.</summary>
-		/// <param name="pSD">The pointer to the SECURITY_DESCRIPTOR structure to query.</param>
-		/// <returns>The size, in bytes, of a security descriptor. If it is not valid, 0 is returned.</returns>
-		public static uint Length(this PSECURITY_DESCRIPTOR pSD) => AdvApi32.IsValidSecurityDescriptor(pSD) ? AdvApi32.GetSecurityDescriptorLength(pSD) : 0U;
 	}
 }

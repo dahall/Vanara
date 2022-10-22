@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
@@ -779,7 +780,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT GetImage([In, MarshalAs(UnmanagedType.Struct)] SIZE size, [In] SIIGBF flags, out Gdi32.SafeHBITMAP phbm);
+			HRESULT GetImage([In, MarshalAs(UnmanagedType.Struct)] SIZE size, [In] SIIGBF flags, out SafeHBITMAP phbm);
 		}
 
 		/// <summary>Extension method to simplify using the <see cref="IShellItem.BindToHandler"/> method.</summary>

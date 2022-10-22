@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
@@ -2088,7 +2087,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd144871(v=vs.85).aspx
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winuser.h", MSDNShortId = "dd144871")]
-		public static extern SafeHDC GetDC(HWND ptr);
+		public static extern SafeHDC GetDC([In, Optional] HWND ptr);
 
 		/// <summary>
 		/// <para>
@@ -2187,7 +2186,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdcex HDC GetDCEx( HWND hWnd, HRGN hrgnClip, DWORD flags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "590cf928-0ad6-43f8-97e9-1dafbcfa9f49")]
-		public static extern HDC GetDCEx(HWND hWnd, HRGN hrgnClip, DCX flags);
+		public static extern HDC GetDCEx([In, Optional] HWND hWnd, [In, Optional] HRGN hrgnClip, DCX flags);
 
 		/// <summary>Retrieves the count of handles to graphical user interface (GUI) objects in use by the specified process.</summary>
 		/// <param name="hProcess">
@@ -2357,10 +2356,10 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-gettabbedtextextenta DWORD GetTabbedTextExtentA( HDC hdc,
 		// LPCSTR lpString, int chCount, int nTabPositions, const INT *lpnTabStopPositions );
 		[PInvokeData("winuser.h", MSDNShortId = "3444bb8d-4a30-47d4-b211-01f7cba39975")]
-		public static Size GetTabbedTextExtent(HDC hdc, string lpString, int[] lpnTabStopPositions)
+		public static SIZE GetTabbedTextExtent(HDC hdc, string lpString, int[] lpnTabStopPositions)
 		{
 			var ret = GetTabbedTextExtent(hdc, lpString, lpString?.Length ?? 0, lpnTabStopPositions?.Length ?? 0, lpnTabStopPositions);
-			return new Size(Macros.LOWORD(ret), Macros.HIWORD(ret));
+			return new SIZE(Macros.LOWORD(ret), Macros.HIWORD(ret));
 		}
 
 		/// <summary>The <c>GetUserObjectSecurity</c> function retrieves security information for the specified user object.</summary>
@@ -2990,32 +2989,32 @@ namespace Vanara.PInvoke
 		public struct MINMAXINFO
 		{
 			/// <summary>Reserved; do not use.</summary>
-			public Point reserved;
+			public POINT reserved;
 
 			/// <summary>
 			/// The maximized width (x member) and the maximized height (y member) of the window. For top-level windows, this value is based
 			/// on the width of the primary monitor.
 			/// </summary>
-			public Size maxSize;
+			public SIZE maxSize;
 
 			/// <summary>
 			/// The position of the left side of the maximized window (x member) and the position of the top of the maximized window (y
 			/// member). For top-level windows, this value is based on the position of the primary monitor.
 			/// </summary>
-			public Point maxPosition;
+			public POINT maxPosition;
 
 			/// <summary>
 			/// The minimum tracking width (x member) and the minimum tracking height (y member) of the window. This value can be obtained
 			/// programmatically from the system metrics SM_CXMINTRACK and SM_CYMINTRACK (see the GetSystemMetrics function).
 			/// </summary>
-			public Size minTrackSize;
+			public SIZE minTrackSize;
 
 			/// <summary>
 			/// The maximum tracking width (x member) and the maximum tracking height (y member) of the window. This value is based on the
 			/// size of the virtual screen and can be obtained programmatically from the system metrics SM_CXMAXTRACK and SM_CYMAXTRACK (see
 			/// the GetSystemMetrics function).
 			/// </summary>
-			public Size maxTrackSize;
+			public SIZE maxTrackSize;
 		}
 
 		/// <summary>Contains information about the size and position of a window.</summary>
@@ -3045,6 +3044,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>The window position. This member can be one or more of the following values.</summary>
 			public SetWindowPosFlags flags;
+
+			/// <summary>Creates a <see cref="WINDOWPOS"/> structure from an LPARAM value.</summary>
+			/// <param name="lParam">The LPARAM value.</param>
+			/// <returns>A <see cref="WINDOWPOS"/> structure.</returns>
+			public static WINDOWPOS FromLParam(IntPtr lParam) => (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS));
+
+			/// <summary>Updates the <see cref="WINDOWPOS"/> value pointed to by an LPARAM value from this instance.</summary>
+			/// <param name="lParam">The LPARAM value to update.</param>
+			public void UpdateLParam(IntPtr lParam) => Marshal.StructureToPtr(this, lParam, false);
 		}
 
 		/// <summary>Special window handles</summary>

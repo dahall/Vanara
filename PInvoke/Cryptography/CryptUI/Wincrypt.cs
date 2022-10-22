@@ -1891,7 +1891,7 @@ namespace Vanara.PInvoke
 				/// certificate to import. This member is used if the <c>dwSubjectChoice</c> member contains <c>CRYPTUI_WIZ_IMPORT_SUBJECT_FILE</c>.
 				/// </summary>
 				[FieldOffset(0)]
-				[MarshalAs(UnmanagedType.LPWStr)] public string pwszFileName;
+				public StrPtrUni pwszFileName;
 
 				/// <summary>
 				/// A pointer to the CERT_CONTEXT structure that contains the certificate to import. This member is used if the
@@ -1975,7 +1975,7 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT : IHandle
 		{
-			private IntPtr handle;
+			private readonly IntPtr handle;
 
 			/// <summary>Initializes a new instance of the <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1984,7 +1984,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Returns an invalid handle by instantiating a <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.
 			/// </summary>
-			public static PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT NULL => new PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(IntPtr.Zero);
+			public static PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT NULL => new(IntPtr.Zero);
 
 			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 			public bool IsNull => handle == IntPtr.Zero;
@@ -2002,7 +2002,7 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/>.</summary>
 			/// <param name="h">The pointer to a handle.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(IntPtr h) => new PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(h);
+			public static implicit operator PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(IntPtr h) => new(h);
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="h1">The first handle.</param>
@@ -2017,7 +2017,7 @@ namespace Vanara.PInvoke
 			public static bool operator ==(PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h1, PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h2) => h1.Equals(h2);
 
 			/// <inheritdoc/>
-			public override bool Equals(object obj) => obj is PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h ? handle == h.handle : false;
+			public override bool Equals(object obj) => obj is PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h && handle == h.handle;
 
 			/// <inheritdoc/>
 			public override int GetHashCode() => handle.GetHashCode();

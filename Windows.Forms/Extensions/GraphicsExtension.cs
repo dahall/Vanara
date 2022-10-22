@@ -260,8 +260,8 @@ namespace Vanara.Extensions
 		/// </returns>
 		public static int MeasureText(this IDeviceContext dc, System.Text.StringBuilder text, Font font, Size proposedSize, TextFormatFlags flags)
 		{
-			using var hdc = new SafeHDC(dc);
-			using var ctx = hdc.SelectObject((HFONT)font.ToHfont());
+			using var hdc = new SafeTempHDC(dc);
+			using var ctx = new GdiObjectContext(hdc, (HFONT)font.ToHfont());
 			return Win32Error.ThrowLastErrorIf(DrawTextEx(hdc, text, text.Length, new RECT(0, 0, proposedSize.Width, proposedSize.Height), (DrawTextFlags)(int)flags | DrawTextFlags.DT_CALCRECT), h => h == 0);
 		}
 	}

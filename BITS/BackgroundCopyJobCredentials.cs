@@ -71,7 +71,7 @@ namespace Vanara.IO
 		/// <summary>Gets a value indicating whether the <see cref="ICollection{T}"/> is read-only.</summary>
 		bool ICollection<BackgroundCopyJobCredential>.IsReadOnly => false;
 
-		private Dictionary<uint, BackgroundCopyJobCredential> Values => dict ?? (dict = new Dictionary<uint, BackgroundCopyJobCredential>());
+		private Dictionary<uint, BackgroundCopyJobCredential> Values => dict ??= new Dictionary<uint, BackgroundCopyJobCredential>();
 
 		/// <summary>Gets the <see cref="BackgroundCopyJobCredential"/> with the specified scheme and target.</summary>
 		/// <param name="scheme">The credential scheme.</param>
@@ -102,7 +102,7 @@ namespace Vanara.IO
 		/// <summary>Removes all items from the <see cref="ICollection{T}"/>.</summary>
 		public void Clear()
 		{
-			if (dict == null) return;
+			if (dict is null) return;
 			foreach (var key in Values.Keys)
 				Remove(Values[key]);
 		}
@@ -110,7 +110,7 @@ namespace Vanara.IO
 		/// <summary>Determines whether the <see cref="ICollection{T}"/> contains a specific value.</summary>
 		/// <param name="item">The object to locate in the <see cref="ICollection{T}"/>.</param>
 		/// <returns>true if <paramref name="item"/> is found in the <see cref="ICollection{T}"/>; otherwise, false.</returns>
-		public bool Contains(BackgroundCopyJobCredential item) => dict == null ? false : Values.ContainsKey(item.Key);
+		public bool Contains(BackgroundCopyJobCredential item) => dict is not null && Values.ContainsKey(item.Key);
 
 		/// <summary>
 		/// Copies the elements of the <see cref="ICollection{T}"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
@@ -122,7 +122,7 @@ namespace Vanara.IO
 		/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 		public void CopyTo(BackgroundCopyJobCredential[] array, int arrayIndex)
 		{
-			if (dict == null) return;
+			if (dict is null) return;
 			Array.Copy(Values.Values.ToArray(), 0, array, arrayIndex, Count);
 		}
 
@@ -139,7 +139,7 @@ namespace Vanara.IO
 			try
 			{
 				ijob2.RemoveCredentials((BG_AUTH_TARGET)target, (BG_AUTH_SCHEME)scheme);
-				if (dict != null)
+				if (dict is not null)
 					Values.Remove(MakeKey(scheme, target));
 				return true;
 			}
