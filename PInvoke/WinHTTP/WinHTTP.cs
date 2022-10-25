@@ -1800,6 +1800,40 @@ namespace Vanara.PInvoke
 			WINHTTP_PROTOCOL_FLAG_HTTP3 = 0x2,
 		}
 
+		/// <summary>Defines constants that specify proxy settings types for extended proxy settings APIs.</summary>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winhttp/ne-winhttp-winhttp_proxy_settings_type typedef enum
+		// _WINHTTP_PROXY_SETTINGS_TYPE { WinHttpProxySettingsTypeUnknown, WinHttpProxySettingsTypeWsl, WinHttpProxySettingsTypeWsa }
+		// WINHTTP_PROXY_SETTINGS_TYPE, *PWINHTTP_PROXY_SETTINGS_TYPE;
+		[PInvokeData("winhttp.h", MSDNShortId = "NE:winhttp._WINHTTP_PROXY_SETTINGS_TYPE")]
+		public enum WINHTTP_PROXY_SETTINGS_TYPE
+		{
+			/// <summary>Specifies an unknown type.</summary>
+			WinHttpProxySettingsTypeUnknown,
+
+			/// <summary>Specifies settings for Windows Subsystem for Linux (WSL).</summary>
+			WinHttpProxySettingsTypeWsl,
+
+			/// <summary>Specifies settings for Windows Subsystem for Android (WSA).</summary>
+			WinHttpProxySettingsTypeWsa,
+		}
+
+		/// <summary></summary>
+		[Flags]
+		public enum WINHTTP_PROXY_TYPE : ulong
+		{
+			/// <summary>Direct to net</summary>
+			WINHTTP_PROXY_TYPE_DIRECT = 0x00000001,
+
+			/// <summary>Via named proxy</summary>
+			WINHTTP_PROXY_TYPE_PROXY = 0x00000002,
+
+			/// <summary>Autoproxy URL</summary>
+			WINHTTP_PROXY_TYPE_AUTO_PROXY_URL = 0x00000004,
+
+			/// <summary>Use autoproxy detection</summary>
+			WINHTTP_PROXY_TYPE_AUTO_DETECT = 0x00000008,
+		}
+
 		/// <summary>
 		/// <para>These attributes and modifiers are used by WinHttpQueryHeaders.</para>
 		/// <para>

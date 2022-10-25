@@ -47,6 +47,20 @@ namespace Vanara.PInvoke
 			AR_LAPTOP = 0x80,
 		}
 
+		/// <summary>Defines constants that indicate whether a window is registered or unregistered to receive tooltip dismiss notifications.</summary>
+		/// <remarks>This enumeration is used by the RegisterForTooltipDismissNotification function.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ne-winuser-tooltip_dismiss_flags
+		// typedef enum { TDF_REGISTER, TDF_UNREGISTER } TOOLTIP_DISMISS_FLAGS;
+		[PInvokeData("winuser.h", MSDNShortId = "NE:winuser.__unnamed_enum_2")]
+		public enum TOOLTIP_DISMISS_FLAGS
+		{
+			/// <summary>The window is registered to receive tooltip dismiss notifications.</summary>
+			TDF_REGISTER,
+
+			/// <summary>The window is unregistered from receiving tooltip dismiss notifications.</summary>
+			TDF_UNREGISTER,
+		}
+
 		/// <summary>
 		/// <para>Translates a string into the OEM-defined character set.</para>
 		/// <para><c>Warning</c> Do not use. See Security Considerations.</para>
@@ -195,6 +209,76 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool OemToCharBuff(string lpszSrc, StringBuilder lpszDst, uint cchDstLength);
+
+		/// <summary>Registers or unregisters windows to receive notification to dismiss their tooltip windows.</summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the window to receive the <c>WM_TOOLTIPDISMISS</c> message.</para>
+		/// </param>
+		/// <param name="tdFlags">
+		/// <para>Type: <c>TOOLTIP_DISMISS_FLAGS</c></para>
+		/// <para>
+		/// A value of the enumeration that specifies whether the function registers or unregisters the window. <c>TDF_REGISTER</c> to
+		/// register; <c>TDF_UNREGISTER</c> to unregister.
+		/// </para>
+		/// </param>
+		/// <returns><c>TRUE</c> if the window was successfully registered or unregistered; otherwise, <c>FALSE</c>. (See Remarks.)</returns>
+		/// <remarks>
+		/// <para>
+		/// This function makes tooltips more accessible by letting apps and frameworks that support tooltips register and unregister to be
+		/// notified by a <c>WM_TOOLTIPDISMISS</c> message when the system requires all showing tooltips to be dismissed.
+		/// </para>
+		/// <para>
+		/// Apps should register for this notification each time they show a tooltip and hide their tooltips in response to a
+		/// <c>WM_TOOLTIPDISMISS</c> message. When a tooltip is hidden for some other reason, like a mouse action, the app should unregister.
+		/// </para>
+		/// <para>
+		/// System-defined triggers for tooltip dismissal include a solitary Ctrl key up or Ctrl+Shift+F10. (The set of triggers may change
+		/// over time.)
+		/// </para>
+		/// <para>The function takes either the <c>HWND</c> of a tooltip window or the <c>HWND</c> of an app window that has child tooltips.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// If a tooltip <c>HWND</c> itself is registered, the tooltip window is expected to register upon showing and to dismiss upon
+		/// receiving a <c>WM_TOOLTIPDISMISS</c> message.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// If an app <c>HWND</c> registers on behalf of its tooltips, the app's window is expected to register upon showing tooltips and
+		/// dismiss all of its tooltips upon receiving a <c>WM_TOOLTIPDISMISS</c> message.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Tooltip or app windows are expected to call the function to register each time tooltips are shown. Registered windows are
+		/// automatically unregistered upon posting <c>WM_TOOLTIPDISMISS</c>.
+		/// </para>
+		/// <para>
+		/// The <c>TDF_UNREGISTER</c> flag is used to explicitly unregister a window when a tooltip window is dismissed by application or
+		/// framework prerogative (such as moving the cursor out of the "safe zone"). If an app or framework calls with <c>TDF_UNREGISTER</c>
+		/// after the window has been automatically unregistered, the function returns <c>FALSE</c>. There is no impact on future registrations.
+		/// </para>
+		/// <para>Return values</para>
+		/// <para>The HWND passed into the function must be owned by the calling process; otherwise, the function returns <c>FALSE</c>.</para>
+		/// <para>
+		/// When called with <c>TDF_REGISTER</c> and a window belonging to the calling process, the function returns <c>TRUE</c> if the
+		/// window was successfully registered or <c>FALSE</c> if the window was already registered. The window is treated as registered
+		/// either way.
+		/// </para>
+		/// <para>
+		/// When called with <c>TDF_UNREGISTER</c> and a windows belonging to the calling process, the function returns <c>TRUE</c> if the
+		/// window is successfully unregistered, or <c>FALSE</c> if the windows was not currently registered. The window is treated as
+		/// unregistered either way.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerfortooltipdismissnotification?view=vs-2019
+		// BOOL RegisterForTooltipDismissNotification( HWND hWnd, TOOLTIP_DISMISS_FLAGS tdFlags );
+		[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.RegisterForTooltipDismissNotification")]
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool RegisterForTooltipDismissNotification(HWND hWnd, TOOLTIP_DISMISS_FLAGS tdFlags);
 
 		/// <summary>
 		/// <para>Sets the last-error code.</para>

@@ -12,7 +12,7 @@ public static partial class Qwave
 	/// </summary>
 	public const ulong QOS_OUTGOING_DEFAULT_MINIMUM_BANDWIDTH = 0xFFFFFFFF;
 
-	/// <summary>Flags used by <see cref="QOSAddSocketToFlow"/>.</summary>
+	/// <summary>Flags used by <see cref="QOSAddSocketToFlow(HQOS, SOCKET, SOCKADDR, QOS_TRAFFIC_TYPE, QOS_FLOW_TYPE, ref QOS_FLOWID)"/>.</summary>
 	[PInvokeData("qos2.h")]
 	public enum QOS_FLOW_TYPE
 	{

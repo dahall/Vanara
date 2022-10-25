@@ -5,6 +5,29 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary>Undocumented</summary>
+		[PInvokeData("winbase.h", MinClient = PInvokeClient.Windows11)]
+		public enum FILE_FLUSH_MODE
+		{
+			/// <summary>same as WIN32 FlushFileBuffers(); Flushes data, metadata, AND sends a SYNC command to the hardware</summary>
+			FILE_FLUSH_DEFAULT = 0,
+			/// <summary>Flush data only</summary>
+			FILE_FLUSH_DATA,
+			/// <summary>Flush data + SYNC (minimal metadata)</summary>
+			FILE_FLUSH_MIN_METADATA,
+			/// <summary>Flush data + metadata</summary>
+			FILE_FLUSH_NO_SYNC,
+		}
+
+		/// <summary>Undocumented</summary>
+		[PInvokeData("winbase.h", MinClient = PInvokeClient.Windows11)]
+		public enum FILE_WRITE_FLAGS
+		{
+			/// <summary>Undocumented</summary>
+			FILE_WRITE_FLAGS_NONE,
+			/// <summary>Undocumented</summary>
+			FILE_WRITE_FLAGS_WRITE_THROUGH = 0x000000001,
+		}
 		/// <summary>Specifies advisory flags for creating an I/O ring with a call to CreateIoRing.</summary>
 		/// <remarks>
 		/// Use the IORING_CREATE_FLAGS structure to pass flags into <c>CreateIoRing</c>. Any unknown or unsupported advisory flags provided
@@ -114,6 +137,52 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ioringapi.h", MSDNShortId = "NF:ioringapi.BuildIoRingCancelRequest", MinClient = PInvokeClient.Windows11)]
 		public static extern HRESULT BuildIoRingCancelRequest(HIORING ioRing, IORING_HANDLE_REF file, IntPtr opToCancel, [In, Optional] IntPtr userData);
+
+		/// <summary>Undocumented.</summary>
+		/// <param name="ioRing">An <c>HIORING</c> representing a handle to the I/O ring for which a cancellation is requested.</param>
+		/// <param name="fileRef">An IORING_HANDLE_REF representing the file associated with the operation to flush.</param>
+		/// <param name="flushMode">The flush mode.</param>
+		/// <param name="userData">
+		/// A UINT_PTR value identifying the file write operation. Specify this value when cancelling the operation with a call to
+		/// BuildIoRingCancelRequest. If an app implements cancellation behavior for the operation, the userData value must be unique.
+		/// Otherwise, the value is treated as opaque by the system and can be anything, including 0.
+		/// </param>
+		/// <param name="sqeFlags">
+		/// A bitwise OR combination of values from the IORING_SQE_FLAGS enumeration specifying kernel behavior options for I/O ring
+		/// submission queue entries.
+		/// </param>
+		/// <returns>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success</term>
+		/// </item>
+		/// <item>
+		/// <term>IORING_E_SUBMISSION_QUEUE_FULL</term>
+		/// <term>
+		/// The submission queue is full, and no additional entries are available to build. The application must submit the existing entries
+		/// and wait for some of them to complete before adding more operations to the queue.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IORING_E_UNKNOWN_REQUIRED_FLAG</term>
+		/// <term>
+		/// The application provided a required flag that is not known to the implementation. Library code should check the IoRingVersion
+		/// field of the IORING_INFO obtained from a call to GetIoRingInfo to determine the API version of an I/O ring which determines the
+		/// operations and flags that are supported. Applications should know the version they used to create the I/O ring and therefore
+		/// should not provide unsupported flags at runtime.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ioringapi.h", MinClient = PInvokeClient.Windows11)]
+		public static extern HRESULT BuildIoRingFlushFile([In] HIORING ioRing, IORING_HANDLE_REF fileRef, FILE_FLUSH_MODE flushMode,
+			IntPtr userData, IORING_SQE_FLAGS sqeFlags);
 
 		/// <summary>Performs an asynchronous read from a file using an I/O ring. This operation is similar to calling ReadFileEx.</summary>
 		/// <param name="ioRing">An <c>HIORING</c> representing a handle to the I/O ring which will perform the read operation.</param>
@@ -275,6 +344,61 @@ namespace Vanara.PInvoke
 		public static extern HRESULT BuildIoRingRegisterFileHandles(HIORING ioRing, uint count,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] HANDLE[] handles, [In, Optional] IntPtr userData);
 
+		/// <summary>Undocumented. Performs an asynchronous write to a file using an I/O ring. This operation is similar to calling WriteFileEx.</summary>
+		/// <param name="ioRing">An <c>HIORING</c> representing a handle to the I/O ring for which a cancellation is requested.</param>
+		/// <param name="fileRef">An IORING_HANDLE_REF specifying the file to write.</param>
+		/// <param name="bufferRef">
+		/// An IORING_BUFFER_REF specifying the buffer into which the file is write. The provided buffer must have a size of at least
+		/// numberOfBytesToRead bytes.
+		/// </param>
+		/// <param name="numberOfBytesToWrite">The number of bytes to write.</param>
+		/// <param name="fileOffset">The offset into the file to begin reading.</param>
+		/// <param name="writeFlags">The write flags.</param>
+		/// <param name="userData">
+		/// A UINT_PTR value identifying the file write operation. Specify this value when cancelling the operation with a call to
+		/// BuildIoRingCancelRequest. If an app implements cancellation behavior for the operation, the userData value must be unique.
+		/// Otherwise, the value is treated as opaque by the system and can be anything, including 0.
+		/// </param>
+		/// <param name="sqeFlags">
+		/// A bitwise OR combination of values from the IORING_SQE_FLAGS enumeration specifying kernel behavior options for I/O ring
+		/// submission queue entries.
+		/// </param>
+		/// <returns>
+		/// <para>Returns an HRESULT including, but not limited to the following:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success</term>
+		/// </item>
+		/// <item>
+		/// <term>IORING_E_SUBMISSION_QUEUE_FULL</term>
+		/// <term>
+		/// The submission queue is full, and no additional entries are available to build. The application must submit the existing entries
+		/// and wait for some of them to complete before adding more operations to the queue.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>IORING_E_UNKNOWN_REQUIRED_FLAG</term>
+		/// <term>
+		/// The application provided a required flag that is not known to the implementation. Library code should check the IoRingVersion
+		/// field of the IORING_INFO obtained from a call to GetIoRingInfo to determine the API version of an I/O ring which determines the
+		/// operations and flags that are supported. Applications should know the version they used to create the I/O ring and therefore
+		/// should not provide unsupported flags at runtime.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// Check I/O ring support for read file operations by calling IsIoRingOpSupported and specifying IORING_OP_WRITE for the op parameter.
+		/// </remarks>
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ioringapi.h", MinClient = PInvokeClient.Windows11)]
+		public static extern HRESULT BuildIoRingWriteFile([In] HIORING ioRing, IORING_HANDLE_REF fileRef, IORING_BUFFER_REF bufferRef,
+			uint numberOfBytesToWrite, ulong fileOffset, FILE_WRITE_FLAGS writeFlags, IntPtr userData, IORING_SQE_FLAGS sqeFlags);
 		/// <summary>Closes an <c>HIORING</c> handle that was previously opened with a call to CreateIoRing.</summary>
 		/// <param name="ioRing">The <c>HIORING</c> handle to close.</param>
 		/// <returns>Returns S_OK on success.</returns>
@@ -461,6 +585,53 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ioringapi.h", MSDNShortId = "NF:ioringapi.QueryIoRingCapabilities", MinClient = PInvokeClient.Windows11)]
 		public static extern HRESULT QueryIoRingCapabilities(out IORING_CAPABILITIES capabilities);
+
+		/// <summary>Registers a completion queue event with an I/O ring.</summary>
+		/// <param name="ioRing">An <c>HIORING</c> representing a handle to the I/O ring for which the completion event is registered.</param>
+		/// <param name="hEvent">A handle to the event object. The CreateEvent or OpenEvent function returns this handle.</param>
+		/// <returns>
+		/// <para>Returns an HRESULT including the following values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALID_HANDLE</term>
+		/// <term>An invalid handle was passed in the <c>ioRing</c> parameter.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>An invalid handle was passed in the <c>hEvent</c> parameter.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The kernel will signal this event when it places the first entry into an empty completion queue, i.e. the kernel only sets the
+		/// event to the signaled state when the completion queue transitions from the empty to non-empty state. Applications should call
+		/// PopIoRingCompletion until it indicates no more entries and then wait for any additional async completions to complete via the
+		/// provided HANDLE. Otherwise, the event won’t enter the signaled state and the wait may block until a timeout occurs, or forever if
+		/// an infinite timeout is used.
+		/// </para>
+		/// <para>
+		/// The kernel will internally duplicate the handle, so it is safe for the application to close the handle when waits are no longer
+		/// needed. Providing an event handle value of NULL simply clears any existing value. Setting a value of INVALID_HANDLE_VALUE raises
+		/// an error, as will any other invalid handle value, to aid in detecting code bugs early.
+		/// </para>
+		/// <para>
+		/// There is, at most, one event handle associated with an HIORING, attempting to set a second one will replace any that already exists.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/ioringapi/nf-ioringapi-setioringcompletionevent
+		// HRESULT SetIoRingCompletionEvent( HIORING ioRing, HANDLE hEvent );
+		[PInvokeData("ioringapi.h", MSDNShortId = "NF:ioringapi.SetIoRingCompletionEvent")]
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
+		public static extern HRESULT SetIoRingCompletionEvent(HIORING ioRing, HEVENT hEvent);
 
 		/// <summary>
 		/// Submits all constructed but not yet submitted entries to the kernel’s queue and optionally waits for a set of operations to complete.
