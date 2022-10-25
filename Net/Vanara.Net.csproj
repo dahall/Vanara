@@ -9,7 +9,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-CustomDnsBootstapper, DhcpClient, DistributedRoutingTable, DnsService, DrtBootstrapProvider, DrtCustomBootstrapProvider, DrtCustomSecurityProvider, DrtSecurityProvider
+CustomDnsBootstapper, DhcpClient, DistributedRoutingTable, DnsService, DrtBootstrapProvider, DrtCustomBootstrapProvider, DrtCustomSecurityProvider, DrtEventArgs, DrtLeafSetKeyChangeEventArgs, DrtRegistrationStateChangeEventArgs, DrtSecurityProvider, DrtStatusChangeEventArgs
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>

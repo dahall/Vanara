@@ -9,8 +9,17 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;qos;quality of service;windows</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+QOSAddSocketToFlow QOSCancel QOSCloseHandle QOSCreateHandle QOSEnumerateFlows QOSNotifyFlow QOSQueryFlow QOSRemoveSocketFromFlow QOSSetFlow QOSStartTrackingClient QOSStopTrackingClient TcAddFilter TcAddFlow TcCloseInterface TcDeleteFilter TcDeleteFlow TcDeregisterClient TcEnumerateFlows TcEnumerateInterfaces TcGetFlowName TcModifyFlow TcOpenInterface TcQueryFlow TcQueryInterface TcRegisterClient TcSetFlow TcSetInterface
+
+Structures
+ADDRESS_LIST_DESCRIPTOR AD_GENERAL_PARAMS AD_GUARANTEED CONTROL_SERVICE ENUMERATION_BUFFER FLOWDESCRIPTOR HCLIENT HFILTER HFLOW HFLOWENUM HIFC HQOS ICMP IPX IPX_PATTERN IP_PATTERN NETWORK_ADDRESS NETWORK_ADDRESS_LIST PARAM_BUFFER PORTS QOS_DESTADDR QOS_DIFFSERV QOS_DIFFSERV_RULE QOS_DS_CLASS QOS_FLOWRATE_OUTGOING QOS_FLOW_FUNDAMENTALS QOS_FRIENDLY_NAME QOS_OBJECT_HDR QOS_PACKET_PRIORITY QOS_SD_MODE QOS_SHAPING_RATE QOS_TCP_TRAFFIC QOS_TRAFFIC_CLASS QOS_VERSION RSVP_ADSPEC RSVP_FILTERSPEC RSVP_FILTERSPEC_V4 RSVP_FILTERSPEC_V4_GPI RSVP_FILTERSPEC_V6 RSVP_FILTERSPEC_V6_FLOW RSVP_FILTERSPEC_V6_GPI RSVP_POLICY RSVP_POLICY_INFO RSVP_RESERVE_INFO RSVP_STATUS_INFO TCI_CLIENT_FUNC_LIST TC_GEN_FILTER TC_IFC_DESCRIPTOR UNION UNION
+
+</PackageReleaseNotes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

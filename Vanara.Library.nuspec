@@ -75,6 +75,7 @@
       <dependency id="Vanara.PInvoke.PowrProf" version="3.4.10" />
       <dependency id="Vanara.PInvoke.Printing" version="3.4.10" />
       <dependency id="Vanara.PInvoke.ProjectedFSLib" version="3.4.10" />
+      <dependency id="Vanara.PInvoke.QoS" version="3.4.10" />
       <dependency id="Vanara.PInvoke.Rpc" version="3.4.10" />
       <dependency id="Vanara.PInvoke.RstrtMgr" version="3.4.10" />
       <dependency id="Vanara.PInvoke.SearchApi" version="3.4.10" />
