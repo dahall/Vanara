@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Version>3.4.10</Version>
+    <Version>3.4.11</Version>
     <TargetFrameworks>net45;net48;net5.0;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
     <Authors>David Hall</Authors>
