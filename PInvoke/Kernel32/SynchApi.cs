@@ -1574,6 +1574,51 @@ namespace Vanara.PInvoke
 			[In, Optional] IntPtr lpArgToCompletionRoutine, [MarshalAs(UnmanagedType.Bool)] bool fResume = false);
 
 		/// <summary>
+		/// Activates the specified waitable timer. When the due time arrives, the timer is signaled and the thread that set the timer calls
+		/// the optional completion routine.
+		/// </summary>
+		/// <param name="hTimer">
+		/// <para>A handle to the timer object. The <c>CreateWaitableTimer</c> or <c>OpenWaitableTimer</c> function returns this handle.</para>
+		/// <para>
+		/// The handle must have the <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and
+		/// Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="pDueTime">
+		/// The time after which the state of the timer is to be set to signaled, in 100 nanosecond intervals. Use the format described by
+		/// the <c>FILETIME</c> structure. Positive values indicate absolute time. Be sure to use a UTC-based absolute time, as the system
+		/// uses UTC-based time internally. Negative values indicate relative time. The actual timer accuracy depends on the capability of
+		/// your hardware. For more information about UTC-based time, see System Time.
+		/// </param>
+		/// <param name="lPeriod">
+		/// The period of the timer, in milliseconds. If lPeriod is zero, the timer is signaled once. If lPeriod is greater than zero, the
+		/// timer is periodic. A periodic timer automatically reactivates each time the period elapses, until the timer is canceled using the
+		/// <c>CancelWaitableTimer</c> function or reset using <c>SetWaitableTimer</c>. If lPeriod is less than zero, the function fails.
+		/// </param>
+		/// <param name="pfnCompletionRoutine">
+		/// A pointer to an optional completion routine. The completion routine is application-defined function of type
+		/// <c>PTIMERAPCROUTINE</c> to be executed when the timer is signaled. For more information on the timer callback function, see
+		/// <c>TimerAPCProc</c>. For more information about APCs and thread pool threads, see Remarks.
+		/// </param>
+		/// <param name="lpArgToCompletionRoutine">A pointer to a structure that is passed to the completion routine.</param>
+		/// <param name="fResume">
+		/// If this parameter is <c>TRUE</c>, restores a system in suspended power conservation mode when the timer state is set to signaled.
+		/// Otherwise, the system is not restored. If the system does not support a restore, the call succeeds, but <c>GetLastError</c>
+		/// returns <c>ERROR_NOT_SUPPORTED</c>.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI SetWaitableTimer( _In_ HANDLE hTimer, _In_ const LARGE_INTEGER *pDueTime, _In_ LONG lPeriod, _In_opt_ PTIMERAPCROUTINE
+		// pfnCompletionRoutine, _In_opt_ LPVOID lpArgToCompletionRoutine, _In_ BOOL fResume); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686289(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms686289")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetWaitableTimer([In] SafeWaitableTimerHandle hTimer, in long pDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc pfnCompletionRoutine,
+			[In, Optional] IntPtr lpArgToCompletionRoutine, [MarshalAs(UnmanagedType.Bool)] bool fResume = false);
+
+		/// <summary>
 		/// Activates the specified waitable timer and provides context information for the timer. When the due time arrives, the timer is
 		/// signaled and the thread that set the timer calls the optional completion routine.
 		/// </summary>
@@ -1654,7 +1699,91 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "dd405521")]
 		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetWaitableTimerEx([In] SafeWaitableTimerHandle hTimer, in long lpDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc pfnCompletionRoutine,
+			[In, Optional] IntPtr lpArgToCompletionRoutine, [In] REASON_CONTEXT WakeContext, uint TolerableDelay);
+
+		/// <summary>
+		/// Activates the specified waitable timer and provides context information for the timer. When the due time arrives, the timer is
+		/// signaled and the thread that set the timer calls the optional completion routine.
+		/// </summary>
+		/// <param name="hTimer">
+		/// <para>A handle to the timer object. The <c>CreateWaitableTimer</c> or <c>OpenWaitableTimer</c> function returns this handle.</para>
+		/// <para>
+		/// The handle must have the <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and
+		/// Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="lpDueTime">
+		/// The time after which the state of the timer is to be set to signaled, in 100 nanosecond intervals. Use the format described by
+		/// the <c>FILETIME</c> structure. Positive values indicate absolute time. Be sure to use a UTC-based absolute time, as the system
+		/// uses UTC-based time internally. Negative values indicate relative time. The actual timer accuracy depends on the capability of
+		/// your hardware. For more information about UTC-based time, see System Time.
+		/// </param>
+		/// <param name="lPeriod">
+		/// The period of the timer, in milliseconds. If lPeriod is zero, the timer is signaled once. If lPeriod is greater than zero, the
+		/// timer is periodic. A periodic timer automatically reactivates each time the period elapses, until the timer is canceled using the
+		/// <c>CancelWaitableTimer</c> function or reset using <c>SetWaitableTimerEx</c>. If lPeriod is less than zero, the function fails.
+		/// </param>
+		/// <param name="pfnCompletionRoutine">
+		/// A pointer to an optional completion routine. The completion routine is application-defined function of type
+		/// <c>PTIMERAPCROUTINE</c> to be executed when the timer is signaled. For more information on the timer callback function, see
+		/// <c>TimerAPCProc</c>. For more information about APCs and thread pool threads, see Remarks.
+		/// </param>
+		/// <param name="lpArgToCompletionRoutine">A pointer to a structure that is passed to the completion routine.</param>
+		/// <param name="WakeContext">Pointer to a <c>REASON_CONTEXT</c> structure that contains context information for the timer.</param>
+		/// <param name="TolerableDelay">The tolerable delay for expiration time, in milliseconds.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI SetWaitableTimerEx( _In_ HANDLE hTimer, _In_ const LARGE_INTEGER *lpDueTime, _In_ LONG lPeriod, _In_ PTIMERAPCROUTINE
+		// pfnCompletionRoutine, _In_ LPVOID lpArgToCompletionRoutine, _In_ PREASON_CONTEXT WakeContext, _In_ ULONG TolerableDelay); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405521(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "dd405521")]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetWaitableTimerEx([In] SafeWaitableTimerHandle hTimer, in FILETIME lpDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc pfnCompletionRoutine,
+			[In, Optional] IntPtr lpArgToCompletionRoutine, [Optional] IntPtr WakeContext, uint TolerableDelay);
+
+		/// <summary>
+		/// Activates the specified waitable timer and provides context information for the timer. When the due time arrives, the timer is
+		/// signaled and the thread that set the timer calls the optional completion routine.
+		/// </summary>
+		/// <param name="hTimer">
+		/// <para>A handle to the timer object. The <c>CreateWaitableTimer</c> or <c>OpenWaitableTimer</c> function returns this handle.</para>
+		/// <para>
+		/// The handle must have the <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and
+		/// Access Rights.
+		/// </para>
+		/// </param>
+		/// <param name="lpDueTime">
+		/// The time after which the state of the timer is to be set to signaled, in 100 nanosecond intervals. Use the format described by
+		/// the <c>FILETIME</c> structure. Positive values indicate absolute time. Be sure to use a UTC-based absolute time, as the system
+		/// uses UTC-based time internally. Negative values indicate relative time. The actual timer accuracy depends on the capability of
+		/// your hardware. For more information about UTC-based time, see System Time.
+		/// </param>
+		/// <param name="lPeriod">
+		/// The period of the timer, in milliseconds. If lPeriod is zero, the timer is signaled once. If lPeriod is greater than zero, the
+		/// timer is periodic. A periodic timer automatically reactivates each time the period elapses, until the timer is canceled using the
+		/// <c>CancelWaitableTimer</c> function or reset using <c>SetWaitableTimerEx</c>. If lPeriod is less than zero, the function fails.
+		/// </param>
+		/// <param name="pfnCompletionRoutine">
+		/// A pointer to an optional completion routine. The completion routine is application-defined function of type
+		/// <c>PTIMERAPCROUTINE</c> to be executed when the timer is signaled. For more information on the timer callback function, see
+		/// <c>TimerAPCProc</c>. For more information about APCs and thread pool threads, see Remarks.
+		/// </param>
+		/// <param name="lpArgToCompletionRoutine">A pointer to a structure that is passed to the completion routine.</param>
+		/// <param name="WakeContext">Pointer to a <c>REASON_CONTEXT</c> structure that contains context information for the timer.</param>
+		/// <param name="TolerableDelay">The tolerable delay for expiration time, in milliseconds.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI SetWaitableTimerEx( _In_ HANDLE hTimer, _In_ const LARGE_INTEGER *lpDueTime, _In_ LONG lPeriod, _In_ PTIMERAPCROUTINE
+		// pfnCompletionRoutine, _In_ LPVOID lpArgToCompletionRoutine, _In_ PREASON_CONTEXT WakeContext, _In_ ULONG TolerableDelay); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405521(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("WinBase.h", MSDNShortId = "dd405521")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetWaitableTimerEx([In] SafeWaitableTimerHandle hTimer, in long lpDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc pfnCompletionRoutine,
 			[In, Optional] IntPtr lpArgToCompletionRoutine, [Optional] IntPtr WakeContext, uint TolerableDelay);
 
 		/// <summary>Signals one object and waits on another object as a single operation.</summary>
