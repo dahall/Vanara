@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Ws2_32;
 
 #pragma warning disable IDE1006 // Naming Styles
 namespace Vanara.PInvoke;
@@ -87,17 +88,198 @@ public static partial class Ws2_32
 	/// </summary>
 	public static readonly uint SIOCSMSFILTER = _IOW('t', 126, typeof(uint));
 
+	/// <summary>IPPROTO_IPV6 socket options</summary>
+	[PInvokeData("ws2ipdef.h")]
+	public enum IPV6
+	{
+		/// <summary>Adds an interface index to the IFLIST associated with the IP_IFLIST option.</summary>
+		[CorrespondingType(typeof(uint))]
+		IPV6_ADD_IFLIST = 29,
+		/// <summary>
+		/// Join the socket to the supplied multicast group on the specified interface. This option is only valid on datagram and raw sockets
+		/// (the socket type must be SOCK_DGRAM or SOCK_RAW).
+		/// </summary>
+		//[CorrespondingType(typeof(ipv6_mreq))]
+		IPV6_ADD_MEMBERSHIP = 12,
+		/// <summary/>
+		IPV6_CHECKSUM = 26,
+		/// <summary>
+		/// Removes an interface index from the IFLIST associated with the IP_IFLIST option. Entries can be removed only by the application,
+		/// so be aware that entries might go stale once an interface is removed.
+		/// </summary>
+		[CorrespondingType(typeof(uint))]
+		IPV6_DEL_IFLIST = 30,
+		/// <summary>Don't fragment IP datagrams.</summary>
+		IPV6_DONTFRAG = 14,
+		/// <summary>
+		/// Leave the supplied multicast group from the given interface. This option is only valid on datagram and raw sockets (the socket
+		/// type must be SOCK_DGRAM or SOCK_RAW).
+		/// </summary>
+		//[CorrespondingType(typeof(ipv6_mreq))]
+		IPV6_DROP_MEMBERSHIP = 13,
+		/// <summary/>
+		IPV6_ECN = 50,
+		/// <summary>Gets the current IFLIST associated with the IP_IFLIST option. Returns error if IP_IFLIST is not enabled.</summary>
+		[CorrespondingType(typeof(uint[]))]
+		IPV6_GET_IFLIST = 33,
+		/// <summary>
+		/// Indicates the application provides the IPv6 header on all outgoing data. If the optval parameter is set to 1 on the call to
+		/// setsockopt, the option is enabled. If optval is set to 0, the option is disabled. The default value is disabled. This option is
+		/// only valid for datagram and raw sockets (the socket type must be SOCK_DGRAM or SOCK_RAW). A TCP/IP service provider that supports
+		/// SOCK_RAW should also support IPV6_HDRINCL.
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		IPV6_HDRINCL = 2,
+		/// <summary>
+		/// Indicates that hop (TTL) information should be returned in the LPFN_WSARECVMSG (WSARecvMsg) function. If optval is set to 1 on
+		/// the call to setsockopt, the option is enabled. If set to 0, the option is disabled. This option is only valid for datagram and
+		/// raw sockets (the socket type must be SOCK_DGRAM or SOCK_RAW).
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		IPV6_HOPLIMIT = 21,
+		/// <summary/>
+		IPV6_HOPOPTS = 1,
+		/// <summary>
+		/// Gets or sets the IP_IFLIST state of the socket. When this option is set to true, Datagram reception is restricted to interfaces
+		/// that are in the IFLIST. Datagrams received on any other interfaces are ignored. IFLIST starts empty. Use IP_ADD_IFLIST and
+		/// IP_DEL_IFLIST to edit the IFLIST.
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		IPV6_IFLIST = 28,
+		/// <summary>Same as IPV6_ADD_MEMBERSHIP</summary>
+		IPV6_JOIN_GROUP = IPV6_ADD_MEMBERSHIP,
+		/// <summary>Same as IPV6_DROP_MEMBERSHIP</summary>
+		IPV6_LEAVE_GROUP = IPV6_DROP_MEMBERSHIP,
+		/// <summary>Gets the system's estimate of the path MTU. Socket must be connected.</summary>
+		[CorrespondingType(typeof(uint))]
+		IPV6_MTU = 72,
+		/// <summary>
+		/// Gets or sets the path MTU discovery state for the socket. The default value is IP_PMTUDISC_NOT_SET. For stream sockets,
+		/// IP_PMTUDISC_NOT_SET and IP_PMTUDISC_DO will perform path MTU discovery. IP_PMTUDISC_DONT and IP_PMTUDISC_PROBE will turn off path
+		/// MTU discovery. For datagram sockets, if set to IP_PMTUDISC_DO , attempts to send packets larger than path MTU will result in an
+		/// error. If set to IP_PMTUDISC_DONT, packets will be fragmented according to interface MTU. If set to IP_PMTUDISC_PROBE, attempts
+		/// to send packets larger than interface MTU will result in an error.
+		/// </summary>
+		[CorrespondingType(typeof(uint))]
+		IPV6_MTU_DISCOVER = 71,
+		/// <summary>
+		/// Gets or sets the TTL value associated with IPv6 multicast traffic on the socket. It is illegal to set the TTL to a value greater
+		/// than 255. This option is only valid for datagram and raw sockets (the socket type must be SOCK_DGRAM or SOCK_RAW).
+		/// </summary>
+		[CorrespondingType(typeof(uint))]
+		IPV6_MULTICAST_HOPS = 10,
+		/// <summary>
+		/// Gets or sets the outgoing interface for sending IPv6 multicast traffic. This option does not change the default interface for
+		/// receiving IPv6 multicast traffic. This option is important for multihomed computers. The input value for setting this option is a
+		/// 4-byte interface index of the desired outgoing interface in host byte order. The GetAdaptersAddresses function can be used to
+		/// obtain the interface index information. If optval is set to NULL on call to setsockopt, the default IPv6 interface is used. If
+		/// optval is zero , the default interface for receiving multicast is specified for sending multicast traffic. When getting this
+		/// option, the optval returns the current default interface index for sending multicast IPv6 traffic in host byte order.
+		/// </summary>
+		[CorrespondingType(typeof(uint))]
+		IPV6_MULTICAST_IF = 9,
+		/// <summary>
+		/// Indicates multicast data sent on the socket will be echoed to the sockets receive buffer if it is also joined on the destination
+		/// multicast group. If optval is set to 1 on the call to setsockopt, the option is enabled. If set to 0, the option is disabled.
+		/// This option is only valid for datagram and raw sockets (the socket type must be SOCK_DGRAM or SOCK_RAW).
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		IPV6_MULTICAST_LOOP = 11,
+		/// <summary/>
+		IPV6_NRT_INTERFACE = 74,
+		/// <summary>Indicates that packet information should be returned by the LPFN_WSARECVMSG (WSARecvMsg) function.</summary>
+		[CorrespondingType(typeof(BOOL))]
+		IPV6_PKTINFO = 19,
+		/// <summary/>
+		IPV6_PKTINFO_EX = 51,
+		/// <summary>
+		/// Enables restriction of a socket to a specified scope, such as addresses with the same link local or site local prefix. Provides
+		/// various restriction levels and default settings. See IPV6_PROTECTION_LEVEL for more information.
+		/// </summary>
+		[CorrespondingType(typeof(int))]
+		IPV6_PROTECTION_LEVEL = 23,
+		/// <summary/>
+		IPV6_RECVDSTADDR = 25,
+		/// <summary/>
+		IPV6_RECVECN = 50,
+		/// <summary/>
+		IPV6_RECVERR = 75,
+		/// <summary>
+		/// Indicates whether the IP stack should populate the control buffer with details about which interface received a packet with a
+		/// datagram socket. When this value is true, the LPFN_WSARECVMSG (WSARecvMsg) function will return optional control data containing
+		/// the interface where the packet was received for datagram sockets. This option allows the IPv6 interface where the packet was
+		/// received to be returned in the WSAMSG structure. This option is only valid for datagram and raw sockets (the socket type must be
+		/// SOCK_DGRAM or SOCK_RAW).
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		IPV6_RECVIF = 24,
+		/// <summary/>
+		IPV6_RECVRTHDR = 38,
+		/// <summary>
+		/// Indicates whether the IP stack should populate the control buffer with a message containing the Traffic Class IPv6 header field
+		/// on a received datagram. When this value is true, the LPFN_WSARECVMSG (WSARecvMsg) function will return optional control data
+		/// containing the Traffic Class IPv6 header field value of the received datagram. This option allows the Traffic Class IPv6 header
+		/// field of the received datagram to be returned in the WSAMSG structure. The returned message type will be IPV6_TCLASS. All DSCP
+		/// and ECN bits of the Traffic Class field will be returned. This option is only valid on datagram sockets (the socket type must be SOCK_DGRAM).
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		IPV6_RECVTCLASS = 40,
+		/// <summary/>
+		IPV6_RTHDR = 32,
+		/// <summary/>
+		IPV6_TCLASS = 39,
+		/// <summary>
+		/// Gets or sets the current TTL value associated with IPv6 socket for unicast traffic. It is illegal to set the TTL to a value
+		/// greater than 255.
+		/// </summary>
+		[CorrespondingType(typeof(uint))]
+		IPV6_UNICAST_HOPS = 4,
+		/// <summary>
+		/// Gets or sets the outgoing interface for sending IPv6 traffic. This option does not change the default interface for receiving
+		/// IPv6 traffic. This option is important for multihomed computers. The input value for setting this option is a 4-byte interface
+		/// index of the desired outgoing interface in host byte order. The GetAdaptersAddresses function can be used to obtain the interface
+		/// index information. If optval is zero, the default interface for sending IPv6 traffic is set to unspecified. When getting this
+		/// option, the optval returns the current default interface index for sending IPv6 traffic in host byte order.
+		/// </summary>
+		[CorrespondingType(typeof(uint))]
+		IPV6_UNICAST_IF = 31,
+		/// <summary>
+		/// Gets or sets an upper bound on the IP layer MTU (in bytes) for the given socket. If the value is higher than the system's
+		/// estimate of the path MTU (which you can retrieve on a connected socket by querying the IPV6_MTU socket option), then the option
+		/// has no effect. If the value is lower, then outbound packets larger than this will be fragmented, or will fail to send, depending
+		/// on the value of IPV6_DONTFRAG. Default value is IP_UNSPECIFIED_USER_MTU (MAXULONG). For type-safety, you should use the
+		/// WSAGetIPUserMtu and WSASetIPUserMtu functions instead of using the socket option directly.
+		/// </summary>
+		[CorrespondingType(typeof(uint))]
+		IPV6_USER_MTU = 76,
+		/// <summary>
+		/// Indicates if a socket created for the AF_INET6 address family is restricted to IPv6 communications only. Sockets created for the
+		/// AF_INET6 address family may be used for both IPv6 and IPv4 communications. Some applications may want to restrict their use of a
+		/// socket created for the AF_INET6 address family to IPv6 communications only. When this value is nonzero (the default on Windows),
+		/// a socket created for the AF_INET6 address family can be used to send and receive IPv6 packets only. When this value is zero, a
+		/// socket created for the AF_INET6 address family can be used to send and receive packets to and from an IPv6 address or an IPv4
+		/// address. Note that the ability to interact with an IPv4 address requires the use of IPv4 mapped addresses. This socket option is
+		/// supported on Windows Vista or later.
+		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
+		IPV6_V6ONLY = 27,
+		/// <summary/>
+		IPV6_WFP_REDIRECT_CONTEXT = 70,
+		/// <summary/>
+		IPV6_WFP_REDIRECT_RECORDS = 60,
+	}
+
 	/// <summary>The <c>MULTICAST_MODE_TYPE</c> enumeration specifies the filter mode for multicast group addresses.</summary>
 	/// <remarks>
 	/// <para>This enumeration is supported on Windows Vistaand later.</para>
 	/// <para>
-	/// The <c>MULTICAST_MODE_TYPE</c> enumeration is used in the <c>gf_fmode</c> member of the GROUP_SOURCE_REQ structure to determine
-	/// if a list of IP addresses should included or excluded. The values from this enumeration can also be used in the
-	/// <c>imsf_fmode</c> member of the ip_msfilter structure.
+	/// The <c>MULTICAST_MODE_TYPE</c> enumeration is used in the <c>gf_fmode</c> member of the GROUP_SOURCE_REQ structure to determine if a
+	/// list of IP addresses should included or excluded. The values from this enumeration can also be used in the <c>imsf_fmode</c> member
+	/// of the ip_msfilter structure.
 	/// </para>
 	/// <para>
-	/// The <c>MULTICAST_MODE_TYPE</c> enumeration is defined in the Ws2ipdef.h header file which is automatically included in the
-	/// Ws2tcpip.h header file. The Ws2ipdef.h header files should never be used directly.
+	/// The <c>MULTICAST_MODE_TYPE</c> enumeration is defined in the Ws2ipdef.h header file which is automatically included in the Ws2tcpip.h
+	/// header file. The Ws2ipdef.h header files should never be used directly.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ws2ipdef/ne-ws2ipdef-multicast_mode_type typedef enum { MCAST_INCLUDE,
