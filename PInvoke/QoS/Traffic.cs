@@ -1845,6 +1845,12 @@ public static partial class Traffic
 		/// <summary/>
 		public UNION S_un;
 
+		/// <summary>Protocol identifier.</summary>
+		public byte ProtocolId;
+
+		/// <summary>Reserved for future use.</summary>
+		public byte Reserved3_1, Reserved3_2, Reserved3_3;
+
 		/// <summary/>
 		[StructLayout(LayoutKind.Explicit)]
 		public struct UNION
@@ -1887,11 +1893,20 @@ public static partial class Traffic
 			}
 		}
 
-		/// <summary>Protocol identifier.</summary>
-		private byte ProtocolId;
+		/// <summary>The source port.</summary>
+		public ushort tcSrcPort { get => S_un.S_un_ports.s_srcport; set => S_un.S_un_ports.s_srcport = value; }
 
-		/// <summary>Reserved for future use.</summary>
-		public byte Reserved3_1, Reserved3_2, Reserved3_3;
+		/// <summary>The destination port.</summary>
+		public ushort tcDstPort { get => S_un.S_un_ports.s_dstport; set => S_un.S_un_ports.s_dstport = value; }
+
+		/// <summary>The ICMP message type.</summary>
+		public byte tcIcmpType { get => S_un.S_un_icmp.s_type; set => S_un.S_un_icmp.s_type = value; }
+
+		/// <summary>The ICMP message code.</summary>
+		public byte tcIcmpCode { get => S_un.S_un_icmp.s_code; set => S_un.S_un_icmp.s_code = value; }
+
+		/// <summary>Service provider interface.</summary>
+		public uint tcSpi { get => S_un.S_Spi; set => S_un.S_Spi = value; }
 	}
 
 	/// <summary>
