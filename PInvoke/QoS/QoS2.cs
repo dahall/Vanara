@@ -1313,6 +1313,211 @@ public static partial class Qwave
 		[In, Out, Optional] IntPtr Buffer, [Optional] uint Flags, [Optional] IntPtr Overlapped);
 
 	/// <summary>
+	/// The <c>QOSNotifyFlow</c> function registers the calling application to receive a notification about changes in network
+	/// characteristics, such as congestion. Notifications may also be sent when a desired throughput is able to be achieved.
+	/// </summary>
+	/// <typeparam name="T">The type of <paramref name="value"/>.</typeparam>
+	/// <param name="QOSHandle">Handle to the QOS subsystem returned by QOSCreateHandle.</param>
+	/// <param name="FlowId">
+	/// Specifies the flow identifier from which the application wishes to receive notifications. A <c>QOS_FLOWID</c> is an unsigned 32-bit integer.
+	/// </param>
+	/// <param name="Operation">A QOS_NOTIFY_FLOW value that indicates what the type of notification being requested.</param>
+	/// <param name="value">The value.</param>
+	/// <param name="Overlapped">
+	/// Pointer to an OVERLAPPED structure used for asynchronous output. This must be se to <c>NULL</c> if this function is not being called asynchronously.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, a return value of nonzero is sent when the conditions set by the <c>Operation</c> parameter are met.</para>
+	/// <para>
+	/// If the function fails, the return value is 0. To get extended error information, call <c>GetLastError</c>. Some possible error codes follow.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_ACCESS_DISABLED_BY_POLICY</c></term>
+	/// <term>
+	/// The QoS subsystem is currently configured by policy to not allow this operation on the network path between this host and the
+	/// destination host. For example, the default policy prevents qWAVE experiments from running to off-link destinations.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_IO_PENDING</c></term>
+	/// <term>Indicates that notification request was successfully received. Results will be returned during overlapped completion.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_HANDLE</c></term>
+	/// <term>The <c>QOSHandle</c> parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>The <c>FlowId</c> parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_ENOUGH_MEMORY</c></term>
+	/// <term>Indicates that a memory allocation failed.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_FOUND</c></term>
+	/// <term>Invalid <c>FlowId</c> specified.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_SUPPORTED</c></term>
+	/// <term>
+	/// The operation being performed requires information that the QoS subsystem does not have. Obtaining this information on this network
+	/// is currently not supported. For example, bandwidth estimations cannot be obtained on a network path where the destination host is off-link.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NO_SYSTEM_RESOURCES</c></term>
+	/// <term>There are insufficient resources to carry out the operation.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_IO_DEVICE</c></term>
+	/// <term>The request could not be performed because of an I/O device error.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_DEVICE_REINITIALIZATION_NEEDED</c></term>
+	/// <term>
+	/// The indicated device requires reinitialization due to hardware errors. The application should clean up and call QOSCreateHandle again.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_SUPPORTED</c></term>
+	/// <term>The QOS subsystem has determined that the operation requested could not be completed on the network path specified.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_ADAP_HDW_ERR</c></term>
+	/// <term>A network adapter hardware error occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_HOST_UNREACHABLE</c></term>
+	/// <term>The network location cannot be reached.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_UNEXP_NET_ERR</c></term>
+	/// <term>The network connection with the remote host failed.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_ALREADY_EXISTS</c></term>
+	/// <term>There is already a request for notifications of the same type pending on this flow.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>This function may be called asynchronously.</remarks>
+	[PInvokeData("qos2.h", MSDNShortId = "NF:qos2.QOSNotifyFlow")]
+	public static bool QOSNotifyFlow<T>([In] HQOS QOSHandle, [In] uint FlowId, [In] QOS_NOTIFY_FLOW Operation, T value, ref NativeOverlapped Overlapped) where T : unmanaged
+	{
+		unsafe
+		{
+			uint sz = (uint)sizeof(T);
+			return QOSNotifyFlow(QOSHandle, FlowId, Operation, ref sz, (IntPtr)(void*)&value, 0, ref Overlapped);
+		}
+	}
+
+	/// <summary>
+	/// The <c>QOSNotifyFlow</c> function registers the calling application to receive a notification about changes in network
+	/// characteristics, such as congestion. Notifications may also be sent when a desired throughput is able to be achieved.
+	/// </summary>
+	/// <param name="QOSHandle">Handle to the QOS subsystem returned by QOSCreateHandle.</param>
+	/// <param name="FlowId">
+	/// Specifies the flow identifier from which the application wishes to receive notifications. A <c>QOS_FLOWID</c> is an unsigned 32-bit integer.
+	/// </param>
+	/// <param name="Operation">A QOS_NOTIFY_FLOW value that indicates what the type of notification being requested.</param>
+	/// <param name="Overlapped">
+	/// Pointer to an OVERLAPPED structure used for asynchronous output. This must be se to <c>NULL</c> if this function is not being called asynchronously.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, a return value of nonzero is sent when the conditions set by the <c>Operation</c> parameter are met.</para>
+	/// <para>
+	/// If the function fails, the return value is 0. To get extended error information, call <c>GetLastError</c>. Some possible error codes follow.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_ACCESS_DISABLED_BY_POLICY</c></term>
+	/// <term>
+	/// The QoS subsystem is currently configured by policy to not allow this operation on the network path between this host and the
+	/// destination host. For example, the default policy prevents qWAVE experiments from running to off-link destinations.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_IO_PENDING</c></term>
+	/// <term>Indicates that notification request was successfully received. Results will be returned during overlapped completion.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_HANDLE</c></term>
+	/// <term>The <c>QOSHandle</c> parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>The <c>FlowId</c> parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_ENOUGH_MEMORY</c></term>
+	/// <term>Indicates that a memory allocation failed.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_FOUND</c></term>
+	/// <term>Invalid <c>FlowId</c> specified.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_SUPPORTED</c></term>
+	/// <term>
+	/// The operation being performed requires information that the QoS subsystem does not have. Obtaining this information on this network
+	/// is currently not supported. For example, bandwidth estimations cannot be obtained on a network path where the destination host is off-link.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NO_SYSTEM_RESOURCES</c></term>
+	/// <term>There are insufficient resources to carry out the operation.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_IO_DEVICE</c></term>
+	/// <term>The request could not be performed because of an I/O device error.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_DEVICE_REINITIALIZATION_NEEDED</c></term>
+	/// <term>
+	/// The indicated device requires reinitialization due to hardware errors. The application should clean up and call QOSCreateHandle again.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_SUPPORTED</c></term>
+	/// <term>The QOS subsystem has determined that the operation requested could not be completed on the network path specified.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_ADAP_HDW_ERR</c></term>
+	/// <term>A network adapter hardware error occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_HOST_UNREACHABLE</c></term>
+	/// <term>The network location cannot be reached.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_UNEXP_NET_ERR</c></term>
+	/// <term>The network connection with the remote host failed.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_ALREADY_EXISTS</c></term>
+	/// <term>There is already a request for notifications of the same type pending on this flow.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>This function may be called asynchronously.</remarks>
+	[PInvokeData("qos2.h", MSDNShortId = "NF:qos2.QOSNotifyFlow")]
+	public static bool QOSNotifyFlow([In] HQOS QOSHandle, [In] uint FlowId, [In] QOS_NOTIFY_FLOW Operation, ref NativeOverlapped Overlapped)
+	{
+		uint sz = 0;
+		return QOSNotifyFlow(QOSHandle, FlowId, Operation, ref sz, IntPtr.Zero, 0, ref Overlapped);
+	}
+
+	/// <summary>
 	/// The <c>QOSQueryFlow</c> function requests information about a specific flow added to the QoS subsystem. This function may be called asynchronously.
 	/// </summary>
 	/// <param name="QOSHandle">Handle to the QOS subsystem returned by QOSCreateHandle.</param>
@@ -2114,6 +2319,183 @@ public static partial class Qwave
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool QOSSetFlow([In] HQOS QOSHandle, [In] QOS_FLOWID FlowId, [In] QOS_SET_FLOW Operation, uint Size, [In] IntPtr Buffer,
 		[Optional] uint Flags, [Optional] IntPtr Overlapped);
+
+	/// <summary>
+	/// The <c>QOSSetFlow</c> function is called by an application to request the QOS subsystem to prioritize the application's packets and
+	/// change the flow traffic. This function is also used to notify the QoS subsystem of a flow change: for example, if the flow rate is
+	/// changed in order to account for network congestion, or if the QoS priority value requires adjustment for transferring or streaming
+	/// different types of content over a single persistent socket connection.
+	/// </summary>
+	/// <param name="QOSHandle">Handle to the QOS subsystem returned by QOSCreateHandle.</param>
+	/// <param name="FlowId">A flow identifier. A <c>QOS_FLOWID</c> is an unsigned 32-bit integer.</param>
+	/// <param name="Operation">
+	/// <para>
+	/// A QOS_SET_FLOW enumerated type that identifies what will be changed in the flow. This parameter specifies what structure the
+	/// <c>Buffer</c> will contain.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>QOSSetTrafficType</c> 0</term>
+	/// <term>The traffic type of the flow will be changed. The <c>Buffer</c> will contain a pointer to a QOS_TRAFFIC_TYPE constant.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>QOSSetOutgoingRate</c> 1</term>
+	/// <term>The flow rate will be changed. The <c>Buffer</c> will contain a pointer to a QOS_FLOWRATE_OUTGOING structure.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>QOSSetOutgoingDSCPValue</c> 2</term>
+	/// <term>
+	/// Windows 7, Windows Server 2008 R2, and later: The outgoing DSCP value will be changed. The <c>Buffer</c> will contain a pointer to a
+	/// <c>DWORD</c> value that defines the arbitrary DSCP value.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="value">The structure specified by the value of the <c>Operation</c> parameter.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>
+	/// If the function fails, the return value is 0. To get extended error information, call <c>GetLastError</c>. Some possible error codes follow.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_ACCESS_DISABLED_BY_POLICY</c></term>
+	/// <term>
+	/// The QoS subsystem is currently configured by policy to not allow this operation on the network path between this host and the
+	/// destination host. For example, the default policy prevents qWAVE experiments from running to off-link destinations.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_IO_PENDING</c></term>
+	/// <term>The update flow request was successfully received. Results will be returned during overlapped completion.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_ACCESS_DENIED</c></term>
+	/// <term>The calling application does not have sufficient privileges for the requested operation.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_HANDLE</c></term>
+	/// <term>The <c>QOSHandle</c> parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>The <c>FlowId</c> parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NETWORK_BUSY</c></term>
+	/// <term>The requested flow properties were not available on this path.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_FOUND</c></term>
+	/// <term>The <c>FlowId</c> parameter specified cannot be found.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_ENOUGH_MEMORY</c></term>
+	/// <term>A memory allocation failed.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NOT_SUPPORTED</c></term>
+	/// <term>
+	/// The operation being performed requires information that the QoS subsystem does not have. Obtaining this information on this network
+	/// is currently not supported. For example, bandwidth estimations cannot be obtained on a network path where the destination host is off-link.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_NO_SYSTEM_RESOURCES</c></term>
+	/// <term>There are insufficient resources to carry out the operation.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_IO_DEVICE</c></term>
+	/// <term>The request could not be performed because of an I/O device error.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_DEVICE_REINITIALIZATION_NEEDED</c></term>
+	/// <term>
+	/// The indicated device requires reinitialization due to hardware errors. The application should clean up and call QOSCreateHandle again.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_ADAP_HDW_ERR</c></term>
+	/// <term>A network adapter hardware error occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_HOST_UNREACHABLE</c></term>
+	/// <term>The network location cannot be reached.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_RETRY</c></term>
+	/// <term>
+	/// There is currently insufficient data about networking conditions to answer the query. This is typically a transient state where qWAVE
+	/// has erred on the side of caution as it awaits more data before ascertaining the state of the network.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_UNEXP_NET_ERR</c></term>
+	/// <term>The network connection with the remote host failed.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If QOSStartTrackingClient has not already been called, calling <c>QOSSetFlow</c> will cause the QOS subsystem to perform the following.
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>Discover whether the end-to-end network path supports prioritization.</term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Track end-to-end network characteristics by way of network experiments. These experiments do not place any noteworthy stress on the network.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If <c>QOSSetFlow</c> returns <c>ERROR_NETWORK_BUSY</c> there is insufficient bandwidth for the specified flow rate and network
+	/// priority cannot be granted. The application can still transmit a data stream but the flow will not receive priority marking. Ideally
+	/// an application would not attempt to stream at the requested rate if there is insufficient bandwidth. If <c>ERROR_NETWORK_BUSY</c> is
+	/// returned the following safe strategy is available:
+	/// </para>
+	/// <list type="number">
+	/// <item>
+	/// <term>
+	/// Query the QoS subsystem with QOSNotifyFlow in order to determine the current available bandwidth and begin to stream at the received
+	/// lower rate with priority if the network supports it.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Request notification with QOSNotifyFlow for when the originally desired amount of bandwidth is available. When notification is
+	/// received call <c>QOSSetFlow</c> with the new bandwidth request and send at the new rate again with prioritization if supported.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>This function may optionally be called asynchronously.</para>
+	/// <para>Examples</para>
+	/// <para>
+	/// The following code snippet demonstrates the use of QOSSetFlow in an application. Input parameters <c>QOSHandle</c>, <c>FlowId</c>,
+	/// <c>FlowId</c>, <c>QOSSetOutgoingRate</c>, and <c>sizeof</c>( <c>QoSOutgoingFlowrate</c>) must be previously initialized by other QoS
+	/// functions and calculations within the application.
+	/// </para>
+	/// <para>Other QoS function examples that show initialization of parameters include QOSCreateHandle, QOSAddSocketToFlow, and QOSQueryFlow.</para>
+	/// <para>See the Windows SDK for a complete sample code listing. SDK folder: Samples\NetDs\GQos\Qos2</para>
+	/// </remarks>
+	[PInvokeData("qos2.h", MSDNShortId = "NF:qos2.QOSSetFlow")]
+	public static bool QOSSetFlow<T>([In] HQOS QOSHandle, [In] uint FlowId, [In] QOS_SET_FLOW Operation, T value) where T : unmanaged
+	{
+		unsafe
+		{
+			uint sz = (uint)sizeof(T);
+			return QOSSetFlow(QOSHandle, FlowId, Operation, sz, (IntPtr)(void*)&value, 0, default);
+		}
+	}
 
 	/// <summary>
 	/// The <c>QOSStartTrackingClient</c> function notifies the QOS subsystem of the existence of a new client. Calling this function
