@@ -387,5 +387,17 @@ namespace Vanara.PInvoke
 			/// <summary/>
 			WSA_FLAG_REGISTERED_IO = 0x100,
 		}
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+		[PInvokeData("winsock2.h")]
+		public enum WSACOMPLETIONTYPE
+		{
+			NSP_NOTIFY_IMMEDIATELY,
+			NSP_NOTIFY_HWND,
+			NSP_NOTIFY_EVENT,
+			NSP_NOTIFY_PORT,
+			NSP_NOTIFY_APC,
+		}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 }

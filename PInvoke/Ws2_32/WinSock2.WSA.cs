@@ -4429,7 +4429,250 @@ namespace Vanara.PInvoke
 		// LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
-		public static extern WSRESULT WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] IntPtr lpCompletionRoutine);
+		public static extern WSRESULT WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer,
+			uint cbOutBuffer, out uint lpcbBytesReturned, [Optional] IntPtr lpOverlapped,
+			[Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+
+		/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
+		/// <param name="s">A descriptor identifying a socket.</param>
+		/// <param name="dwIoControlCode">The control code of operation to perform.</param>
+		/// <param name="lpvInBuffer">A pointer to the input buffer.</param>
+		/// <param name="cbInBuffer">The size, in bytes, of the input buffer.</param>
+		/// <param name="lpvOutBuffer">A pointer to the output buffer.</param>
+		/// <param name="cbOutBuffer">The size, in bytes, of the output buffer.</param>
+		/// <param name="lpcbBytesReturned">A pointer to actual number of bytes of output.</param>
+		/// <param name="lpOverlapped">A pointer to a WSAOVERLAPPED structure (ignored for non-overlapped sockets).</param>
+		/// <param name="lpCompletionRoutine">
+		/// <c>Note</c> A pointer to the completion routine called when the operation has been completed (ignored for non-overlapped
+		/// sockets). See Remarks.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Upon successful completion, the <c>WSAIoctl</c> returns zero. Otherwise, a value of SOCKET_ERROR is returned, and a specific
+		/// error code can be retrieved by calling WSAGetLastError.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSA_IO_PENDING</term>
+		/// <term>An overlapped operation was successfully initiated and completion will be indicated at a later time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The lpvInBuffer, lpvOutBuffer, lpcbBytesReturned, lpOverlapped, or lpCompletionRoutine parameter is not totally contained in a
+		/// valid part of the user address space, or the cbInBuffer or cbOutBuffer parameter is too small.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// The dwIoControlCode parameter is not a valid command, or a specified input parameter is not acceptable, or the command is not
+		/// applicable to the type of socket specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>The function is invoked when a callback is in progress.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor s is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// The specified IOCTL command cannot be realized. (For example, the FLOWSPEC structures specified in SIO_SET_QOS or
+		/// SIO_SET_GROUP_QOS cannot be satisfied.)
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>The socket is marked as non-blocking and the requested operation would block.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOPROTOOPT</term>
+		/// <term>
+		/// The socket option is not supported on the specified protocol. For example, an attempt to use the SIO_GET_BROADCAST_ADDRESS IOCTL
+		/// was made on an IPv6 socket or an attempt to use the TCP SIO_KEEPALIVE_VALS IOCTL was made on a datagram socket.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSAIoctl</c> function is used to set or retrieve operating parameters associated with the socket, the transport protocol,
+		/// or the communications subsystem.
+		/// </para>
+		/// <para>
+		/// If both lpOverlapped and lpCompletionRoutine are <c>NULL</c>, the socket in this function will be treated as a non-overlapped
+		/// socket. For a non-overlapped socket, lpOverlapped and lpCompletionRoutine parameters are ignored, which causes the function to
+		/// behave like the standard ioctlsocket function except that the function can block if socket s is in blocking mode. If socket s is
+		/// in non-blocking mode, this function can return WSAEWOULDBLOCK when the specified operation cannot be finished immediately. In
+		/// this case, the application may change the socket to blocking mode and reissue the request or wait for the corresponding network
+		/// event (such as FD_ROUTING_INTERFACE_CHANGE or FD_ADDRESS_LIST_CHANGE in the case of <c>SIO_ROUTING_INTERFACE_CHANGE</c> or
+		/// <c>SIO_ADDRESS_LIST_CHANGE</c>) using a Windows message (using WSAAsyncSelect)-based or event (using WSAEventSelect)-based
+		/// notification mechanism.
+		/// </para>
+		/// <para>
+		/// For overlapped sockets, operations that cannot be completed immediately will be initiated, and completion will be indicated at a
+		/// later time. The <c>DWORD</c> value pointed to by the lpcbBytesReturned parameter that is returned may be ignored. The final
+		/// completion status and bytes returned can be retrieved when the appropriate completion method is signaled when the operation has completed.
+		/// </para>
+		/// <para>
+		/// Any IOCTL may block indefinitely, depending on the service provider's implementation. If the application cannot tolerate
+		/// blocking in a <c>WSAIoctl</c> call, overlapped I/O would be advised for IOCTLs that are especially likely to block including:
+		/// </para>
+		/// <para><c>SIO_ADDRESS_LIST_CHANGE</c></para>
+		/// <para><c>SIO_FINDROUTE</c></para>
+		/// <para><c>SIO_FLUSH</c></para>
+		/// <para><c>SIO_GET_QOS</c></para>
+		/// <para><c>SIO_GET_GROUP_QOS</c></para>
+		/// <para><c>SIO_ROUTING_INTERFACE_CHANGE</c></para>
+		/// <para><c>SIO_SET_QOS</c></para>
+		/// <para><c>SIO_SET_GROUP_QOS</c></para>
+		/// <para>
+		/// Some protocol-specific IOCTLs may also be especially likely to block. Check the relevant protocol-specific annex for any
+		/// available information.
+		/// </para>
+		/// <para>The prototype for the completion routine pointed to by the lpCompletionRoutine parameter is as follows:</para>
+		/// <para>
+		/// The CompletionRoutine is a placeholder for an application-supplied function name. The dwError parameter specifies the completion
+		/// status for the overlapped operation as indicated by lpOverlapped parameter. The cbTransferred parameter specifies the number of
+		/// bytes received. The dwFlags parameter is not used for this IOCTL. The completion routine does not return a value.
+		/// </para>
+		/// <para>
+		/// It is possible to adopt an encoding scheme that preserves the currently defined ioctlsocket opcodes while providing a convenient
+		/// way to partition the opcode identifier space in as much as the dwIoControlCode parameter is now a 32-bit entity. The
+		/// dwIoControlCode parameter is built to allow for protocol and vendor independence when adding new control codes while retaining
+		/// backward compatibility with the Windows Sockets 1.1 and Unix control codes. The dwIoControlCode parameter has the following form.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>I</term>
+		/// <term>O</term>
+		/// <term>V</term>
+		/// <term>T</term>
+		/// <term>Vendor/address family</term>
+		/// <term>Code</term>
+		/// </listheader>
+		/// <item>
+		/// <term>3</term>
+		/// <term>3</term>
+		/// <term>2</term>
+		/// <term>2 2</term>
+		/// <term>2 2 2 2 2 2 2 1 1 1 1</term>
+		/// <term>1 1 1 1 1 1</term>
+		/// </item>
+		/// <item>
+		/// <term>1</term>
+		/// <term>0</term>
+		/// <term>9</term>
+		/// <term>8 7</term>
+		/// <term>6 5 4 3 2 1 0 9 8 7 6</term>
+		/// <term>5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> The bits in dwIoControlCode parameter displayed in the table must be read vertically from top to bottom by column.
+		/// So the left-most bit is bit 31, the next bit is bit 30, and the right-most bit is bit 0.
+		/// </para>
+		/// <para>I is set if the input buffer is valid for the code, as with <c>IOC_IN</c>.</para>
+		/// <para>
+		/// O is set if the output buffer is valid for the code, as with <c>IOC_OUT</c>. Control codes using both input and output buffers
+		/// set both I and O.
+		/// </para>
+		/// <para>V is set if there are no parameters for the code, as with <c>IOC_VOID</c>.</para>
+		/// <para>T is a 2-bit quantity that defines the type of the IOCTL. The following values are defined:</para>
+		/// <para>0 The IOCTL is a standard Unix IOCTL code, as with <c>FIONREAD</c> and <c>FIONBIO</c>.</para>
+		/// <para>1 The IOCTL is a generic Windows Sockets 2 IOCTL code. New IOCTL codes defined for Windows Sockets 2 will have T == 1.</para>
+		/// <para>2 The IOCTL applies only to a specific address family.</para>
+		/// <para>
+		/// 3 The IOCTL applies only to a specific vendor's provider, as with <c>IOC_VENDOR</c>. This type allows companies to be assigned a
+		/// vendor number that appears in the <c>Vendor/Address family</c> parameter. Then, the vendor can define new IOCTLs specific to
+		/// that vendor without having to register the IOCTL with a clearinghouse, thereby providing vendor flexibility and privacy.
+		/// </para>
+		/// <para>
+		/// <c>Vendor/Address family</c> An 11-bit quantity that defines the vendor who owns the code (if T == 3) or that contains the
+		/// address family to which the code applies (if T == 2). If this is a Unix IOCTL code (T == 0) then this parameter has the same
+		/// value as the code on Unix. If this is a generic Windows Sockets 2 IOCTL (T == 1) then this parameter can be used as an extension
+		/// of the code parameter to provide additional code values.
+		/// </para>
+		/// <para><c>Code</c> The 16-bit quantity that contains the specific IOCTL code for the operation.</para>
+		/// <para>The following Unix IOCTL codes (commands) are supported.</para>
+		/// <para>The following Windows Sockets 2 commands are supported.</para>
+		/// <para>
+		/// If an overlapped operation completes immediately, <c>WSAIoctl</c> returns a value of zero and the lpcbBytesReturned parameter is
+		/// updated with the number of bytes in the output buffer. If the overlapped operation is successfully initiated and will complete
+		/// later, this function returns SOCKET_ERROR and indicates error code WSA_IO_PENDING. In this case, lpcbBytesReturned is not
+		/// updated. When the overlapped operation completes the amount of data in the output buffer is indicated either through the
+		/// cbTransferred parameter in the completion routine (if specified), or through the lpcbTransfer parameter in WSAGetOverlappedResult.
+		/// </para>
+		/// <para>
+		/// When called with an overlapped socket, the lpOverlapped parameter must be valid for the duration of the overlapped operation.
+		/// The lpOverlapped parameter contains the address of a WSAOVERLAPPED structure.
+		/// </para>
+		/// <para>
+		/// If the lpCompletionRoutine parameter is <c>NULL</c>, the hEvent parameter of lpOverlapped is signaled when the overlapped
+		/// operation completes if it contains a valid event object handle. An application can use WSAWaitForMultipleEvents or
+		/// WSAGetOverlappedResult to wait or poll on the event object.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. See ExitThread for more information.
+		/// </para>
+		/// <para>
+		/// If lpCompletionRoutine is not <c>NULL</c>, the hEvent parameter is ignored and can be used by the application to pass context
+		/// information to the completion routine. A caller that passes a non- <c>NULL</c> lpCompletionRoutine and later calls
+		/// WSAGetOverlappedResult for the same overlapped I/O request may not set the fWait parameter for that invocation of
+		/// <c>WSAGetOverlappedResult</c> to <c>TRUE</c>. In this case, the usage of the hEvent parameter is undefined, and attempting to
+		/// wait on the hEvent parameter would produce unpredictable results.
+		/// </para>
+		/// <para>The prototype of the completion routine is as follows:</para>
+		/// <para>
+		/// This <c>CompletionRoutine</c> is a placeholder for an application-defined or library-defined function. The completion routine is
+		/// invoked only if the thread is in an alertable state. To put a thread into an alertable state, use the WSAWaitForMultipleEvents,
+		/// WaitForSingleObjectEx, or WaitForMultipleObjectsEx function with the fAlertable or bAlertable parameter set to <c>TRUE</c>.
+		/// </para>
+		/// <para>
+		/// The dwError parameter of <c>CompletionRoutine</c> specifies the completion status for the overlapped operation as indicated by
+		/// lpOverlapped. The cbTransferred parameter specifies the number of bytes returned. Currently, no flag values are defined and
+		/// dwFlags will be zero. The <c>CompletionRoutine</c> function does not return a value.
+		/// </para>
+		/// <para>
+		/// Returning from this function allows invocation of another pending completion routine for this socket. The completion routines
+		/// can be called in any order, not necessarily in the same order the overlapped operations are completed.
+		/// </para>
+		/// <para>Compatibility</para>
+		/// <para>
+		/// The IOCTL codes with T == 0 are a subset of the IOCTL codes used in Berkeley sockets. In particular, there is no command that is
+		/// equivalent to <c>FIOASYNC</c>.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Some IOCTL codes require additional header files. For example, use of the <c>SIO_RCVALL</c> IOCTL requires the
+		/// Mstcpip.h header file.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaioctl int WSAAPI WSAIoctl( SOCKET s, DWORD
+		// dwIoControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned,
+		// LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "038aeca6-d7b7-4f74-ac69-4536c2e5118b")]
+		public static extern WSRESULT WSAIoctl(SOCKET s, uint dwIoControlCode, [In] IntPtr lpvInBuffer, uint cbInBuffer, [Out] IntPtr lpvOutBuffer,
+			uint cbOutBuffer, out uint lpcbBytesReturned, ref WSAOVERLAPPED lpOverlapped,
+			[Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSAIoctl</c> function controls the mode of a socket.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -5595,7 +5838,141 @@ namespace Vanara.PInvoke
 		// LPWSACOMPLETION lpCompletion );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "6ecaedf0-0038-46d3-9916-c9cb069c5e92")]
-		public static extern WSRESULT WSANSPIoctl(HANDLE hLookup, uint dwControlCode, [In, Optional] IntPtr lpvInBuffer, uint cbInBuffer, [Out, Optional] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [In, Optional] IntPtr lpCompletion);
+		public static extern WSRESULT WSANSPIoctl(HANDLE hLookup, uint dwControlCode, [In, Optional] IntPtr lpvInBuffer, uint cbInBuffer,
+			[Out, Optional] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, [In, Optional] IntPtr lpCompletion);
+
+		/// <summary>The Windows Sockets <c>WSANSPIoctl</c> function enables developers to make I/O control calls to a registered namespace.</summary>
+		/// <param name="hLookup">The lookup handle returned from a previous call to the WSALookupServiceBegin function.</param>
+		/// <param name="dwControlCode">
+		/// <para>The control code of the operation to perform.</para>
+		/// <para>The values that may be used for the dwControlCode parameter are determined by the namespace provider.</para>
+		/// <para>
+		/// The following value is supported by several Microsoft namespace providers including the Network Location Awareness (NS_NLA)
+		/// namespace provider. This IOCTL is defined in the Winsock2.h header file.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SIO_NSP_NOTIFY_CHANGE</term>
+		/// <term>
+		/// This operation checks if the results returned with previous calls using the hLookup parameter are still valid. These previous
+		/// calls include the initial call to the WSALookupServiceBegin function to retrieve the hLookup parameter. These previous calls may
+		/// also include calls to the WSALookupServiceNext function using the hLookup parameter.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpvInBuffer">A pointer to the input buffer.</param>
+		/// <param name="cbInBuffer">The size, in bytes, of the input buffer.</param>
+		/// <param name="lpvOutBuffer">A pointer to the output buffer.</param>
+		/// <param name="cbOutBuffer">The size, in bytes, of the output buffer.</param>
+		/// <param name="lpcbBytesReturned">A pointer to the number of bytes returned.</param>
+		/// <param name="lpCompletion">
+		/// A pointer to a WSACOMPLETION structure, used for asynchronous processing. Set lpCompletion to <c>NULL</c> to force blocking
+		/// (synchronous) execution.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Success returns NO_ERROR. Failure returns SOCKET_ERROR, and a specific error code can be retrieved by calling the
+		/// WSAGetLastError function. The following table describes the error codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSA_INVALID_HANDLE</term>
+		/// <term>The hLookup parameter was not a valid query handle returned by WSALookupServiceBegin.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_IO_PENDING</term>
+		/// <term>An overlapped operation was successfully initiated and completion will be indicated at a later time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The lpvInBuffer, cbInBuffer, lpvOutBuffer, cbOutBuffer, or lpCompletion argument is not totally contained in a valid part of the
+		/// user address space. Alternatively, the cbInBuffer or cbOutBuffer argument is too small, and the argument is modified to reflect
+		/// the required allocation size.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>
+		/// A supplied parameter is not acceptable, or the operation inappropriately returns results from multiple namespaces when it does
+		/// not make sense for the specified operation.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// The operation is not supported. This error is returned if the namespace provider does not implement this function. This error
+		/// can also be returned if the specified dwControlCode is an unrecognized command.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>
+		/// The socket is not using overlapped I/O (asynchronous processing), yet the lpCompletion parameter is non-NULL. This error is used
+		/// as a special notification for the SIO_NSP_NOTIFY_CHANGE IOCTL when the lpCompletion parameter is NULL (a poll) to indicate that
+		/// a query set remains valid.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSANSPIoctl</c> function is used to set or retrieve operating parameters associated with a query handle to a namespace
+		/// provider. The hLookup parameter is a handle to the namespace provider query previously returned by the WSALookupServiceBegin
+		/// function (not a socket handle).
+		/// </para>
+		/// <para>
+		/// Any IOCTL sent to a namespace provider may block indefinitely, depending upon the implementation of the namespace. If an
+		/// application cannot tolerate blocking in a <c>WSANSPIoctl</c> function call, overlapped I/O should be used and the lpCompletion
+		/// parameter should point to a WSACOMPLETION structure. To make a <c>WSANSPIoctl</c> function call nonblocking and return
+		/// immediately, set the <c>Type</c> member of the <c>WSACOMPLETION</c> structure to <c>NSP_NOTIFY_IMMEDIATELY</c>.
+		/// </para>
+		/// <para>
+		/// If lpCompletion is <c>NULL</c>, the <c>WSANSPIoctl</c> function executes as a blocking call. The namespace provider should
+		/// return immediately and should not block. But each namespace is responsible for enforcing this behavior.
+		/// </para>
+		/// <para>The following IOCTL code is supported by several Microsoft name space provider:</para>
+		/// <para>
+		/// Immediate poll operations are usually much less expensive since they do not require a notification object. In most cases, this
+		/// is implemented as a simple Boolean variable check. Asynchronous notification, however, may necessitate the creation of dedicated
+		/// worker threads and/or inter-process communication channels, depending on the implementation of the namespace provider service,
+		/// and will incur processing overhead related to the notification object involved with signaling the change event.
+		/// </para>
+		/// <para>
+		/// To cancel an asynchronous notification request, end the original query with a WSALookupServiceEnd function call on the affected
+		/// query handle. Canceling the asynchronous notification for LUP_NOTIFY_HWND will not post any message, however, an overlapped
+		/// operation will be completed and notification will be delivered with the error WSA_OPERATION_ABORTED.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. See ExitThread for more information.
+		/// </para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsanspioctl INT WSAAPI WSANSPIoctl( HANDLE hLookup, DWORD
+		// dwControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned,
+		// LPWSACOMPLETION lpCompletion );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "6ecaedf0-0038-46d3-9916-c9cb069c5e92")]
+		public static extern WSRESULT WSANSPIoctl(HANDLE hLookup, uint dwControlCode, [In, Optional] IntPtr lpvInBuffer, uint cbInBuffer,
+			[Out, Optional] IntPtr lpvOutBuffer, uint cbOutBuffer, out uint lpcbBytesReturned, in WSACOMPLETION lpCompletion);
 
 		/// <summary>The <c>WSANtohl</c> function converts a <c>u_long</c> from network byte order to host byte order.</summary>
 		/// <param name="s">A descriptor identifying a socket.</param>
@@ -5996,7 +6373,8 @@ namespace Vanara.PInvoke
 		// lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "abaf367a-8f99-478c-a58c-d57e9f9cd8a1")]
-		public static extern WSRESULT WSAProviderConfigChange(ref HANDLE lpNotificationHandle, [In, Out, Optional] IntPtr lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		public static extern WSRESULT WSAProviderConfigChange(ref HANDLE lpNotificationHandle, [In, Out, Optional] IntPtr lpOverlapped,
+			LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSARecv</c> function receives data from a connected socket or a bound connectionless socket.</summary>
 		/// <param name="s">A descriptor identifying a connected socket.</param>
@@ -6389,7 +6767,403 @@ namespace Vanara.PInvoke
 		// LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
 		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winsock2.h", MSDNShortId = "bfe66e11-e9a7-4321-ad55-3141113e9a03")]
-		public static extern WSRESULT WSARecv(SOCKET s, [In] IntPtr lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [In, Out, Optional] IntPtr lpOverlapped,
+		public static extern WSRESULT WSARecv(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WSABUF[] lpBuffers,
+			uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, [In, Out, Optional] IntPtr lpOverlapped,
+			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+
+		/// <summary>The <c>WSARecv</c> function receives data from a connected socket or a bound connectionless socket.</summary>
+		/// <param name="s">A descriptor identifying a connected socket.</param>
+		/// <param name="lpBuffers">
+		/// A pointer to an array of WSABUF structures. Each <c>WSABUF</c> structure contains a pointer to a buffer and the length, in
+		/// bytes, of the buffer.
+		/// </param>
+		/// <param name="dwBufferCount">The number of WSABUF structures in the lpBuffers array.</param>
+		/// <param name="lpNumberOfBytesRecvd">
+		/// <para>A pointer to the number, in bytes, of data received by this call if the receive operation completes immediately.</para>
+		/// <para>
+		/// Use <c>NULL</c> for this parameter if the lpOverlapped parameter is not <c>NULL</c> to avoid potentially erroneous results. This
+		/// parameter can be <c>NULL</c> only if the lpOverlapped parameter is not <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpFlags">
+		/// A pointer to flags used to modify the behavior of the <c>WSARecv</c> function call. For more information, see the Remarks section.
+		/// </param>
+		/// <param name="lpOverlapped">A pointer to a WSAOVERLAPPED structure (ignored for nonoverlapped sockets).</param>
+		/// <param name="lpCompletionRoutine">
+		/// A pointer to the completion routine called when the receive operation has been completed (ignored for nonoverlapped sockets).
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs and the receive operation has completed immediately, <c>WSARecv</c> returns zero. In this case, the
+		/// completion routine will have already been scheduled to be called once the calling thread is in the alertable state. Otherwise, a
+		/// value of <c>SOCKET_ERROR</c> is returned, and a specific error code can be retrieved by calling WSAGetLastError. The error code
+		/// WSA_IO_PENDING indicates that the overlapped operation has been successfully initiated and that completion will be indicated at
+		/// a later time. Any other error code indicates that the overlapped operation was not successfully initiated and no completion
+		/// indication will occur.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAECONNABORTED</term>
+		/// <term>The virtual circuit was terminated due to a time-out or other failure.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>
+		/// For a stream socket, the virtual circuit was reset by the remote side. The application should close the socket as it is no
+		/// longer usable. For a UDP datagram socket, this error would indicate that a previous send operation resulted in an ICMP "Port
+		/// Unreachable" message.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEDISCON</term>
+		/// <term>Socket s is message oriented and the virtual circuit was gracefully closed by the remote side.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>The lpBuffers parameter is not completely contained in a valid part of the user address space.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>The (blocking) call was canceled by the WSACancelBlockingCall function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The socket has not been bound (for example, with bind).</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMSGSIZE</term>
+		/// <term>
+		/// The message was too large to fit into the specified buffer and (for unreliable protocols only) any trailing portion of the
+		/// message that did not fit into the buffer has been discarded.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>
+		/// For a connection-oriented socket, this error indicates that the connection has been broken due to keep-alive activity that
+		/// detected a failure while the operation was in progress. For a datagram socket, this error indicates that the time to live has expired.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTCONN</term>
+		/// <term>The socket is not connected.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// MSG_OOB was specified, but the socket is not stream-style such as type SOCK_STREAM, OOB data is not supported in the
+		/// communication domain associated with this socket, or the socket is unidirectional and supports only send operations.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESHUTDOWN</term>
+		/// <term>
+		/// The socket has been shut down; it is not possible to call WSARecv on a socket after shutdown has been invoked with how set to
+		/// SD_RECEIVE or SD_BOTH.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAETIMEDOUT</term>
+		/// <term>The connection has been dropped because of a network failure or because the peer system failed to respond.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>
+		/// Windows NT: Overlapped sockets: there are too many outstanding overlapped I/O requests. Nonoverlapped sockets: The socket is
+		/// marked as nonblocking and the receive operation cannot be completed immediately.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_IO_PENDING</term>
+		/// <term>An overlapped operation was successfully initiated and completion will be indicated at a later time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_OPERATION_ABORTED</term>
+		/// <term>The overlapped operation has been canceled due to the closure of the socket.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSARecv</c> function provides some additional features compared with the standard recv function in three important areas:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>It can be used in conjunction with overlapped sockets to perform overlapped recv operations.</term>
+		/// </item>
+		/// <item>
+		/// <term>It allows multiple receive buffers to be specified making it applicable to the scatter/gather type of I/O.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The lpFlags parameter is used both on input and returned on output, allowing applications to sense the output state of the
+		/// <c>MSG_PARTIAL</c> flag bit. However, the <c>MSG_PARTIAL</c> flag bit is not supported by all protocols.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>WSARecv</c> function is used on connected sockets or bound connectionless sockets specified by the s parameter and is
+		/// used to read incoming data. The socket's local address must be known. For server applications, this is usually done explicitly
+		/// through bind or implicitly through accept or WSAAccept. Explicit binding is discouraged for client applications. For client
+		/// applications the socket can become bound implicitly to a local address through connect, WSAConnect, sendto, WSASendTo, or WSAJoinLeaf.
+		/// </para>
+		/// <para>
+		/// For connected, connectionless sockets, this function restricts the addresses from which received messages are accepted. The
+		/// function only returns messages from the remote address specified in the connection. Messages from other addresses are (silently) discarded.
+		/// </para>
+		/// <para>
+		/// For overlapped sockets, <c>WSARecv</c> is used to post one or more buffers into which incoming data will be placed as it becomes
+		/// available, after which the application-specified completion indication (invocation of the completion routine or setting of an
+		/// event object) occurs. If the operation does not complete immediately, the final completion status is retrieved through the
+		/// completion routine or WSAGetOverlappedResult.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. See ExitThread for more information.
+		/// </para>
+		/// <para>
+		/// If both lpOverlapped and lpCompletionRoutine are <c>NULL</c>, the socket in this function will be treated as a nonoverlapped socket.
+		/// </para>
+		/// <para>
+		/// For nonoverlapped sockets, the blocking semantics are identical to that of the standard recv function and the lpOverlapped and
+		/// lpCompletionRoutine parameters are ignored. Any data that has already been received and buffered by the transport will be copied
+		/// into the specified user buffers. In the case of a blocking socket with no data currently having been received and buffered by
+		/// the transport, the call will block until data is received. Windows Sockets 2 does not define any standard blocking time-out
+		/// mechanism for this function. For protocols acting as byte-stream protocols the stack tries to return as much data as possible
+		/// subject to the available buffer space and amount of received data available. However, receipt of a single byte is sufficient to
+		/// unblock the caller. There is no guarantee that more than a single byte will be returned. For protocols acting as
+		/// message-oriented, a full message is required to unblock the caller.
+		/// </para>
+		/// <para><c>Note</c> The socket options <c>SO_RCVTIMEO</c> and <c>SO_SNDTIMEO</c> apply only to blocking sockets.</para>
+		/// <para>
+		/// Whether or not a protocol is acting as byte stream is determined by the setting of XP1_MESSAGE_ORIENTED and XP1_PSEUDO_STREAM in
+		/// its WSAPROTOCOL_INFO structure and the setting of the MSG_PARTIAL flag passed in to this function (for protocols that support
+		/// it). The following table lists relevant combinations, (an asterisk (*) indicates that the setting of this bit does not matter in
+		/// this case).
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>XP1_MESSAGE_ORIENTED</term>
+		/// <term>XP1_PSEUDO_STREAM</term>
+		/// <term>MSG_PARTIAL</term>
+		/// <term>Acts as</term>
+		/// </listheader>
+		/// <item>
+		/// <term>not set</term>
+		/// <term>*</term>
+		/// <term>*</term>
+		/// <term>Byte stream</term>
+		/// </item>
+		/// <item>
+		/// <term>*</term>
+		/// <term>Set</term>
+		/// <term>*</term>
+		/// <term>Byte stream</term>
+		/// </item>
+		/// <item>
+		/// <term>set</term>
+		/// <term>Not set</term>
+		/// <term>set</term>
+		/// <term>Byte stream</term>
+		/// </item>
+		/// <item>
+		/// <term>set</term>
+		/// <term>Not set</term>
+		/// <term>not set</term>
+		/// <term>Message oriented</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The buffers are filled in the order in which they appear in the array pointed to by lpBuffers, and the buffers are packed so
+		/// that no holes are created.
+		/// </para>
+		/// <para>
+		/// If this function is completed in an overlapped manner, it is the Winsock service provider's responsibility to capture the WSABUF
+		/// structures before returning from this call. This enables applications to build stack-based <c>WSABUF</c> arrays pointed to by
+		/// the lpBuffers parameter.
+		/// </para>
+		/// <para>
+		/// For byte stream-style sockets (for example, type <c>SOCK_STREAM</c>), incoming data is placed into the buffers until the buffers
+		/// are filled, the connection is closed, or the internally buffered data is exhausted. Regardless of whether or not the incoming
+		/// data fills all the buffers, the completion indication occurs for overlapped sockets.
+		/// </para>
+		/// <para>
+		/// For message-oriented sockets (for example, type <c>SOCK_DGRAM</c>), an incoming message is placed into the buffers up to the
+		/// total size of the buffers, and the completion indication occurs for overlapped sockets. If the message is larger than the
+		/// buffers, the buffers are filled with the first part of the message. If the <c>MSG_PARTIAL</c> feature is supported by the
+		/// underlying service provider, the <c>MSG_PARTIAL</c> flag is set in lpFlags and subsequent receive operations will retrieve the
+		/// rest of the message. If <c>MSG_PARTIAL</c> is not supported but the protocol is reliable, <c>WSARecv</c> generates the error
+		/// WSAEMSGSIZE and a subsequent receive operation with a larger buffer can be used to retrieve the entire message. Otherwise, (that
+		/// is, the protocol is unreliable and does not support <c>MSG_PARTIAL</c>), the excess data is lost, and <c>WSARecv</c> generates
+		/// the error WSAEMSGSIZE.
+		/// </para>
+		/// <para>
+		/// For connection-oriented sockets, <c>WSARecv</c> can indicate the graceful termination of the virtual circuit in one of two ways
+		/// that depend on whether the socket is byte stream or message oriented. For byte streams, zero bytes having been read (as
+		/// indicated by a zero return value to indicate success, and lpNumberOfBytesRecvd value of zero) indicates graceful closure and
+		/// that no more bytes will ever be read. For message-oriented sockets, where a zero byte message is often allowable, a failure with
+		/// an error code of WSAEDISCON is used to indicate graceful closure. In any case a return error code of WSAECONNRESET indicates an
+		/// abortive close has occurred.
+		/// </para>
+		/// <para>
+		/// The lpFlags parameter can be used to influence the behavior of the function invocation beyond the options specified for the
+		/// associated socket. That is, the semantics of this function are determined by the socket options and the lpFlags parameter. The
+		/// latter is constructed by using the bitwise OR operator with any of the values listed in the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MSG_PEEK</term>
+		/// <term>
+		/// Peeks at the incoming data. The data is copied into the buffer, but is not removed from the input queue. This flag is valid only
+		/// for nonoverlapped sockets.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_OOB</term>
+		/// <term>Processes OOB data.</term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_PARTIAL</term>
+		/// <term>
+		/// This flag is for message-oriented sockets only. On output, this flag indicates that the data specified is a portion of the
+		/// message transmitted by the sender. Remaining portions of the message will be specified in subsequent receive operations. A
+		/// subsequent receive operation with the MSG_PARTIAL flag cleared indicates end of sender's message. As an input parameter, this
+		/// flag indicates that the receive operation should complete even if only part of a message has been received by the transport provider.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_PUSH_IMMEDIATE</term>
+		/// <term>
+		/// This flag is for stream-oriented sockets only. This flag allows an application that uses stream sockets to tell the transport
+		/// provider not to delay completion of partially filled pending receive requests. This is a hint to the transport provider that the
+		/// application is willing to receive any incoming data as soon as possible without necessarily waiting for the remainder of the
+		/// data that might still be in transit. What constitutes a partially filled pending receive request is a transport-specific matter.
+		/// In the case of TCP, this refers to the case of incoming TCP segments being placed into the receive request data buffer where
+		/// none of the TCP segments indicated a PUSH bit value of 1. In this case, TCP may hold the partially filled receive request a
+		/// little longer to allow the remainder of the data to arrive with a TCP segment that has the PUSH bit set to 1. This flag tells
+		/// TCP not to hold the receive request but to complete it immediately. Using this flag for large block transfers is not recommended
+		/// since processing partial blocks is often not optimal. This flag is useful only for cases where receiving and processing the
+		/// partial data immediately helps decrease processing latency. This flag is a hint rather than an actual guarantee. This flag is
+		/// supported on Windows 8.1, Windows Server 2012 R2, and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_WAITALL</term>
+		/// <term>
+		/// The receive request will complete only when one of the following events occurs: Be aware that if the underlying transport
+		/// provider does not support MSG_WAITALL, or if the socket is in a non-blocking mode, then this call will fail with WSAEOPNOTSUPP.
+		/// Also, if MSG_WAITALL is specified along with MSG_OOB, MSG_PEEK, or MSG_PARTIAL, then this call will fail with WSAEOPNOTSUPP.
+		/// This flag is not supported on datagram sockets or message-oriented sockets.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// For message-oriented sockets, the <c>MSG_PARTIAL</c> bit is set in the lpFlags parameter if a partial message is received. If a
+		/// complete message is received, <c>MSG_PARTIAL</c> is cleared in lpFlags. In the case of delayed completion, the value pointed to
+		/// by lpFlags is not updated. When completion has been indicated, the application should call WSAGetOverlappedResult and examine
+		/// the flags indicated by the lpdwFlags parameter.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>WSARecv</c> with the lpOverlapped parameter set to NULL, Winsock may
+		/// need to wait for a network event before the call can complete. Winsock performs an alertable wait in this situation, which can
+		/// be interrupted by an asynchronous procedure call (APC) scheduled on the same thread. Issuing another blocking Winsock call
+		/// inside an APC that interrupted an ongoing blocking Winsock call on the same thread will lead to undefined behavior, and must
+		/// never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Overlapped Socket I/O</para>
+		/// <para>
+		/// If an overlapped operation completes immediately, <c>WSARecv</c> returns a value of zero and the lpNumberOfBytesRecvd parameter
+		/// is updated with the number of bytes received and the flag bits indicated by the lpFlags parameter are also updated. If the
+		/// overlapped operation is successfully initiated and will complete later, <c>WSARecv</c> returns <c>SOCKET_ERROR</c> and indicates
+		/// error code WSA_IO_PENDING. In this case, lpNumberOfBytesRecvd and lpFlags are not updated. When the overlapped operation
+		/// completes, the amount of data transferred is indicated either through the cbTransferred parameter in the completion routine (if
+		/// specified), or through the lpcbTransfer parameter in WSAGetOverlappedResult. Flag values are obtained by examining the lpdwFlags
+		/// parameter of <c>WSAGetOverlappedResult</c>.
+		/// </para>
+		/// <para>
+		/// The <c>WSARecv</c> function using overlapped I/O can be called from within the completion routine of a previous <c>WSARecv</c>,
+		/// WSARecvFrom, WSASend or WSASendTo function. For a given socket, I/O completion routines will not be nested. This permits
+		/// time-sensitive data transmissions to occur entirely within a preemptive context.
+		/// </para>
+		/// <para>
+		/// The lpOverlapped parameter must be valid for the duration of the overlapped operation. If multiple I/O operations are
+		/// simultaneously outstanding, each must reference a separate WSAOVERLAPPED structure.
+		/// </para>
+		/// <para>
+		/// If the lpCompletionRoutine parameter is <c>NULL</c>, the hEvent parameter of lpOverlapped is signaled when the overlapped
+		/// operation completes if it contains a valid event object handle. An application can use WSAWaitForMultipleEvents or
+		/// WSAGetOverlappedResult to wait or poll on the event object.
+		/// </para>
+		/// <para>
+		/// If lpCompletionRoutine is not <c>NULL</c>, the hEvent parameter is ignored and can be used by the application to pass context
+		/// information to the completion routine. A caller that passes a non- <c>NULL</c> lpCompletionRoutine and later calls
+		/// WSAGetOverlappedResult for the same overlapped I/O request may not set the fWait parameter for that invocation of
+		/// <c>WSAGetOverlappedResult</c> to <c>TRUE</c>. In this case the usage of the hEvent parameter is undefined, and attempting to
+		/// wait on the hEvent parameter would produce unpredictable results.
+		/// </para>
+		/// <para>
+		/// The completion routine follows the same rules as stipulated for Windows file I/O completion routines. The completion routine
+		/// will not be invoked until the thread is in an alertable wait state such as can occur when the function WSAWaitForMultipleEvents
+		/// with the fAlertable parameter set to <c>TRUE</c> is invoked.
+		/// </para>
+		/// <para>The prototype of the completion routine is as follows:</para>
+		/// <para>
+		/// CompletionRoutine is a placeholder for an application-defined or library-defined function name. The dwError specifies the
+		/// completion status for the overlapped operation as indicated by lpOverlapped. The cbTransferred parameter specifies the number of
+		/// bytes received. The dwFlags parameter contains information that would have appeared in lpFlags if the receive operation had
+		/// completed immediately. This function does not return a value.
+		/// </para>
+		/// <para>
+		/// Returning from this function allows invocation of another pending completion routine for this socket. When using
+		/// WSAWaitForMultipleEvents, all waiting completion routines are called before the alertable thread's wait is satisfied with a
+		/// return code of <c>WSA_IO_COMPLETION</c>. The completion routines can be called in any order, not necessarily in the same order
+		/// the overlapped operations are completed. However, the posted buffers are guaranteed to be filled in the same order in which they
+		/// are specified.
+		/// </para>
+		/// <para>
+		/// If you are using I/O completion ports, be aware that the order of calls made to <c>WSARecv</c> is also the order in which the
+		/// buffers are populated. <c>WSARecv</c> should not be called on the same socket simultaneously from different threads, because it
+		/// can result in an unpredictable buffer order.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example shows how to use the <c>WSARecv</c> function in overlapped I/O mode.</para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsarecv int WSAAPI WSARecv( SOCKET s, LPWSABUF lpBuffers,
+		// DWORD dwBufferCount, LPDWORD lpNumberOfBytesRecvd, LPDWORD lpFlags, LPWSAOVERLAPPED lpOverlapped,
+		// LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "bfe66e11-e9a7-4321-ad55-3141113e9a03")]
+		public static extern WSRESULT WSARecv(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WSABUF[] lpBuffers,
+			uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags, ref WSAOVERLAPPED lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>
@@ -6787,6 +7561,307 @@ namespace Vanara.PInvoke
 		public static extern WSRESULT WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
 			[Out] SOCKADDR lpFrom, ref int lpFromlen, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
+		/// <summary>The <c>WSARecvFrom</c> function receives a datagram and stores the source address.</summary>
+		/// <param name="s">A descriptor identifying a socket.</param>
+		/// <param name="lpBuffers">
+		/// A pointer to an array of WSABUF structures. Each <c>WSABUF</c> structure contains a pointer to a buffer and the length of the buffer.
+		/// </param>
+		/// <param name="dwBufferCount">The number of WSABUF structures in the lpBuffers array.</param>
+		/// <param name="lpNumberOfBytesRecvd">
+		/// <para>A pointer to the number of bytes received by this call if the <c>WSARecvFrom</c> operation completes immediately.</para>
+		/// <para>
+		/// Use <c>NULL</c> for this parameter if the lpOverlapped parameter is not <c>NULL</c> to avoid potentially erroneous results. This
+		/// parameter can be <c>NULL</c> only if the lpOverlapped parameter is not <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpFlags">A pointer to flags used to modify the behavior of the <c>WSARecvFrom</c> function call. See remarks below.</param>
+		/// <param name="lpFrom">
+		/// An optional pointer to a buffer that will hold the source address upon the completion of the overlapped operation.
+		/// </param>
+		/// <param name="lpFromlen">A pointer to the size, in bytes, of the "from" buffer required only if lpFrom is specified.</param>
+		/// <param name="lpOverlapped">A pointer to a WSAOVERLAPPED structure (ignored for nonoverlapped sockets).</param>
+		/// <param name="lpCompletionRoutine">
+		/// A pointer to the completion routine called when the <c>WSARecvFrom</c> operation has been completed (ignored for nonoverlapped sockets).
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs and the receive operation has completed immediately, <c>WSARecvFrom</c> returns zero. In this case, the
+		/// completion routine will have already been scheduled to be called once the calling thread is in the alertable state. Otherwise, a
+		/// value of <c>SOCKET_ERROR</c> is returned, and a specific error code can be retrieved by calling WSAGetLastError. The error code
+		/// <c>WSA_IO_PENDING</c> indicates that the overlapped operation has been successfully initiated and that completion will be
+		/// indicated at a later time. Any other error code indicates that the overlapped operation was not successfully initiated and no
+		/// completion indication will occur.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>
+		/// The virtual circuit was reset by the remote side executing a hard or abortive close. The application should close the socket as
+		/// it is no longer usable. For a UPD datagram socket, this error would indicate that a previous send operation resulted in an ICMP
+		/// "Port Unreachable" message.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The lpBuffers, lpFlags, lpFrom, lpNumberOfBytesRecvd, lpFromlen, lpOverlapped, or lpCompletionRoutine parameter is not totally
+		/// contained in a valid part of the user address space: the lpFrom buffer was too small to accommodate the peer address.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Socket 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The socket has not been bound (with bind, for example).</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMSGSIZE</term>
+		/// <term>
+		/// The message was too large for the specified buffer and (for unreliable protocols only) any trailing portion of the message that
+		/// did not fit into the buffer has been discarded.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>For a datagram socket, this error indicates that the time to live has expired.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTCONN</term>
+		/// <term>The socket is not connected (connection-oriented sockets only).</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>
+		/// Windows NT: Overlapped sockets: There are too many outstanding overlapped I/O requests. Nonoverlapped sockets: The socket is
+		/// marked as nonblocking and the receive operation cannot be completed immediately.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_IO_PENDING</term>
+		/// <term>An overlapped operation was successfully initiated and completion will be indicated later.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_OPERATION_ABORTED</term>
+		/// <term>The overlapped operation has been canceled due to the closure of the socket.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSARecvFrom</c> function provides functionality over and above the standard recvfrom function in three important areas:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>It can be used in conjunction with overlapped sockets to perform overlapped receive operations.</term>
+		/// </item>
+		/// <item>
+		/// <term>It allows multiple receive buffers to be specified making it applicable to the scatter/gather type of I/O.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The lpFlags parameter is both an input and an output parameter, allowing applications to sense the output state of the
+		/// <c>MSG_PARTIAL</c> flag bit. Be aware that the <c>MSG_PARTIAL</c> flag bit is not supported by all protocols.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>WSARecvFrom</c> function is used primarily on a connectionless socket specified by s. The socket's local address must be
+		/// known. For server applications, this is usually done explicitly through bind. Explicit binding is discouraged for client
+		/// applications. For client applications using this function the socket can become bound implicitly to a local address through
+		/// sendto, WSASendTo, or WSAJoinLeaf.
+		/// </para>
+		/// <para>
+		/// For overlapped sockets, this function is used to post one or more buffers into which incoming data will be placed as it becomes
+		/// available on a (possibly connected) socket, after which the application-specified completion indication (invocation of the
+		/// completion routine or setting of an event object) occurs. If the operation does not complete immediately, the final completion
+		/// status is retrieved through the completion routine or WSAGetOverlappedResult. Also, the values indicated by lpFrom and lpFromlen
+		/// are not updated until completion is itself indicated. Applications must not use or disturb these values until they have been
+		/// updated, therefore the application must not use automatic (that is, stack-based) variables for these parameters.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. See ExitThread for more information.
+		/// </para>
+		/// <para>
+		/// If both lpOverlapped and lpCompletionRoutine are <c>NULL</c>, the socket in this function will be treated as a nonoverlapped socket.
+		/// </para>
+		/// <para>
+		/// For nonoverlapped sockets, the blocking semantics are identical to that of the standard WSARecv function and the lpOverlapped
+		/// and lpCompletionRoutine parameters are ignored. Any data that has already been received and buffered by the transport will be
+		/// copied into the user buffers. For the case of a blocking socket with no data currently having been received and buffered by the
+		/// transport, the call will block until data is received.
+		/// </para>
+		/// <para>
+		/// The buffers are filled in the order in which they appear in the array indicated by lpBuffers, and the buffers are packed so that
+		/// no holes are created.
+		/// </para>
+		/// <para>
+		/// If this function is completed in an overlapped manner, it is the Winsock service provider's responsibility to capture the WSABUF
+		/// structures before returning from this call. This enables applications to build stack-based <c>WSABUF</c> arrays pointed to by
+		/// the lpBuffers parameter.
+		/// </para>
+		/// <para>
+		/// For connectionless socket types, the address from which the data originated is copied to the buffer indicated by lpFrom. The
+		/// value pointed to by lpFromlen is initialized to the size of this buffer, and is modified on completion to indicate the actual
+		/// size of the address stored there. As stated previously for overlapped sockets, the lpFrom and lpFromlen parameters are not
+		/// updated until after the overlapped I/O has completed. The memory pointed to by these parameters must, therefore, remain
+		/// available to the service provider and cannot be allocated on the application stack frame. The lpFrom and lpFromlen parameters
+		/// are ignored for connection-oriented sockets.
+		/// </para>
+		/// <para>For byte stream–style sockets (for example, type SOCK_STREAM), incoming data is placed into the buffers until:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The buffers are filled.</term>
+		/// </item>
+		/// <item>
+		/// <term>The connection is closed.</term>
+		/// </item>
+		/// <item>
+		/// <term>The internally buffered data is exhausted.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Regardless of whether or not the incoming data fills all the buffers, the completion indication occurs for overlapped sockets.
+		/// For message-oriented sockets, an incoming message is placed into the buffers up to the total size of the buffers, and the
+		/// completion indication occurs for overlapped sockets. If the message is larger than the buffers, the buffers are filled with the
+		/// first part of the message. If the <c>MSG_PARTIAL</c> feature is supported by the underlying service provider, the
+		/// <c>MSG_PARTIAL</c> flag is set in lpFlags and subsequent receive operation(s) will retrieve the rest of the message. If
+		/// <c>MSG_PARTIAL</c> is not supported, but the protocol is reliable, <c>WSARecvFrom</c> generates the error WSAEMSGSIZE and a
+		/// subsequent receive operation with a larger buffer can be used to retrieve the entire message. Otherwise, (that is, the protocol
+		/// is unreliable and does not support <c>MSG_PARTIAL</c>), the excess data is lost, and <c>WSARecvFrom</c> generates the error WSAEMSGSIZE.
+		/// </para>
+		/// <para>
+		/// The lpFlags parameter can be used to influence the behavior of the function invocation beyond the options specified for the
+		/// associated socket. That is, the semantics of this function are determined by the socket options and the lpFlags parameter. The
+		/// latter is constructed by using the bitwise OR operator with any of any of the values listed in the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MSG_PEEK</term>
+		/// <term>
+		/// Previews the incoming data. The data is copied into the buffer, but is not removed from the input queue. This flag is valid only
+		/// for nonoverlapped sockets.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_OOB</term>
+		/// <term>Processes OOB data.</term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_PARTIAL</term>
+		/// <term>
+		/// This flag is for message-oriented sockets only. On output, this flag indicates that the data is a portion of the message
+		/// transmitted by the sender. Remaining portions of the message will be transmitted in subsequent receive operations. A subsequent
+		/// receive operation with MSG_PARTIAL flag cleared indicates the end of the sender's message. As an input parameter, this flag
+		/// indicates that the receive operation should complete even if only part of a message has been received by the service provider.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// For message-oriented sockets, the <c>MSG_PARTIAL</c> bit is set in the lpFlags parameter if a partial message is received. If a
+		/// complete message is received, <c>MSG_PARTIAL</c> is cleared in lpFlags. In the case of delayed completion, the value pointed to
+		/// by lpFlags is not updated. When completion has been indicated the application should call WSAGetOverlappedResult and examine the
+		/// flags pointed to by the lpdwFlags parameter.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>WSARecvFrom</c> with the lpOverlapped parameter set to NULL, Winsock
+		/// may need to wait for a network event before the call can complete. Winsock performs an alertable wait in this situation, which
+		/// can be interrupted by an asynchronous procedure call (APC) scheduled on the same thread. Issuing another blocking Winsock call
+		/// inside an APC that interrupted an ongoing blocking Winsock call on the same thread will lead to undefined behavior, and must
+		/// never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Overlapped Socket I/O</para>
+		/// <para>
+		/// If an overlapped operation completes immediately, <c>WSARecvFrom</c> returns a value of zero and the lpNumberOfBytesRecvd
+		/// parameter is updated with the number of bytes received and the flag bits pointed by the lpFlags parameter are also updated. If
+		/// the overlapped operation is successfully initiated and will complete later, <c>WSARecvFrom</c> returns <c>SOCKET_ERROR</c> and
+		/// indicates error code <c>WSA_IO_PENDING</c>. In this case, lpNumberOfBytesRecvd and lpFlags is not updated. When the overlapped
+		/// operation completes the amount of data transferred is indicated either through the cbTransferred parameter in the completion
+		/// routine (if specified), or through the lpcbTransfer parameter in WSAGetOverlappedResult. Flag values are obtained either through
+		/// the dwFlags parameter of the completion routine, or by examining the lpdwFlags parameter of <c>WSAGetOverlappedResult</c>.
+		/// </para>
+		/// <para>
+		/// The <c>WSARecvFrom</c> function can be called from within the completion routine of a previous WSARecv, <c>WSARecvFrom</c>,
+		/// WSASend, or WSASendTo function. For a given socket, I/O completion routines will not be nested. This permits time-sensitive data
+		/// transmissions to occur entirely within a preemptive context.
+		/// </para>
+		/// <para>
+		/// The lpOverlapped parameter must be valid for the duration of the overlapped operation. If multiple I/O operations are
+		/// simultaneously outstanding, each must reference a separate WSAOVERLAPPED structure.
+		/// </para>
+		/// <para>
+		/// If the lpCompletionRoutine parameter is <c>NULL</c>, the hEvent parameter of lpOverlapped is signaled when the overlapped
+		/// operation completes if it contains a valid event object handle. An application can use WSAWaitForMultipleEvents or
+		/// WSAGetOverlappedResult to wait or poll on the event object.
+		/// </para>
+		/// <para>
+		/// If lpCompletionRoutine is not <c>NULL</c>, the hEvent parameter is ignored and can be used by the application to pass context
+		/// information to the completion routine. A caller that passes a non- <c>NULL</c> lpCompletionRoutine and later calls
+		/// WSAGetOverlappedResult for the same overlapped I/O request may not set the fWait parameter for that invocation of
+		/// <c>WSAGetOverlappedResult</c> to <c>TRUE</c>. In this case the usage of the hEvent parameter is undefined, and attempting to
+		/// wait on the hEvent parameter would produce unpredictable results.
+		/// </para>
+		/// <para>
+		/// The completion routine follows the same rules as stipulated for Windows file I/O completion routines. The completion routine
+		/// will not be invoked until the thread is in an alertable wait state such as can occur when the function WSAWaitForMultipleEvents
+		/// with the fAlertable parameter set to <c>TRUE</c> is invoked.
+		/// </para>
+		/// <para>
+		/// The transport providers allow an application to invoke send and receive operations from within the context of the socket I/O
+		/// completion routine, and guarantee that, for a given socket, I/O completion routines will not be nested. This permits
+		/// time-sensitive data transmissions to occur entirely within a preemptive context.
+		/// </para>
+		/// <para>The prototype of the completion routine is as follows.</para>
+		/// <para>
+		/// The <c>CompletionRoutine</c> is a placeholder for an application-defined or library-defined function name. The dwError specifies
+		/// the completion status for the overlapped operation as indicated by lpOverlapped. The cbTransferred specifies the number of bytes
+		/// received. The dwFlags parameter contains information that would have appeared in lpFlags if the receive operation had completed
+		/// immediately. This function does not return a value.
+		/// </para>
+		/// <para>
+		/// Returning from this function allows invocation of another pending completion routine for this socket. When using
+		/// WSAWaitForMultipleEvents, all waiting completion routines are called before the alertable thread's wait is satisfied with a
+		/// return code of WSA_IO_COMPLETION. The completion routines can be called in any order, not necessarily in the same order the
+		/// overlapped operations are completed. However, the posted buffers are guaranteed to be filled in the same order they are specified.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the use of the <c>WSARecvFrom</c> function.</para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsarecvfrom int WSAAPI WSARecvFrom( SOCKET s, LPWSABUF
+		// lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesRecvd, LPDWORD lpFlags, sockaddr *lpFrom, LPINT lpFromlen, LPWSAOVERLAPPED
+		// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "8617dbb8-0e4e-4cd3-9597-5d20de6778f6")]
+		public static extern WSRESULT WSARecvFrom(SOCKET s, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesRecvd, ref MsgFlags lpFlags,
+			[Out] SOCKADDR lpFrom, ref int lpFromlen, ref WSAOVERLAPPED lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+
 		/// <summary>The <c>WSARemoveServiceClass</c> function permanently removes the service class schema from the registry.</summary>
 		/// <param name="lpServiceClassId">Pointer to the GUID for the service class you want to remove.</param>
 		/// <returns>
@@ -7177,6 +8252,302 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock2.h", MSDNShortId = "764339e6-a1ac-455d-8ebd-ad0fa50dc3b0")]
 		public static extern WSRESULT WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 			MsgFlags dwFlags, [In, Out, Optional] IntPtr lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+
+		/// <summary>The <c>WSASend</c> function sends data on a connected socket.</summary>
+		/// <param name="s">A descriptor that identifies a connected socket.</param>
+		/// <param name="lpBuffers">
+		/// A pointer to an array of WSABUF structures. Each <c>WSABUF</c> structure contains a pointer to a buffer and the length, in
+		/// bytes, of the buffer. For a Winsock application, once the <c>WSASend</c> function is called, the system owns these buffers and
+		/// the application may not access them. This array must remain valid for the duration of the send operation.
+		/// </param>
+		/// <param name="dwBufferCount">The number of WSABUF structures in the lpBuffers array.</param>
+		/// <param name="lpNumberOfBytesSent">
+		/// <para>A pointer to the number, in bytes, sent by this call if the I/O operation completes immediately.</para>
+		/// <para>
+		/// Use <c>NULL</c> for this parameter if the lpOverlapped parameter is not <c>NULL</c> to avoid potentially erroneous results. This
+		/// parameter can be <c>NULL</c> only if the lpOverlapped parameter is not <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// The flags used to modify the behavior of the <c>WSASend</c> function call. For more information, see Using dwFlags in the
+		/// Remarks section.
+		/// </param>
+		/// <param name="lpOverlapped">A pointer to a WSAOVERLAPPED structure. This parameter is ignored for nonoverlapped sockets.</param>
+		/// <param name="lpCompletionRoutine">
+		/// A pointer to the completion routine called when the send operation has been completed. This parameter is ignored for
+		/// nonoverlapped sockets.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs and the send operation has completed immediately, <c>WSASend</c> returns zero. In this case, the completion
+		/// routine will have already been scheduled to be called once the calling thread is in the alertable state. Otherwise, a value of
+		/// <c>SOCKET_ERROR</c> is returned, and a specific error code can be retrieved by calling WSAGetLastError. The error code
+		/// WSA_IO_PENDING indicates that the overlapped operation has been successfully initiated and that completion will be indicated at
+		/// a later time. Any other error code indicates that the overlapped operation was not successfully initiated and no completion
+		/// indication will occur.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAECONNABORTED</term>
+		/// <term>The virtual circuit was terminated due to a time-out or other failure.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>
+		/// For a stream socket, the virtual circuit was reset by the remote side. The application should close the socket as it is no
+		/// longer usable. For a UDP datagram socket, this error would indicate that a previous send operation resulted in an ICMP "Port
+		/// Unreachable" message.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The lpBuffers, lpNumberOfBytesSent, lpOverlapped, lpCompletionRoutine parameter is not totally contained in a valid part of the
+		/// user address space.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Socket 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The socket has not been bound with bind or the socket is not created with the overlapped flag.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMSGSIZE</term>
+		/// <term>The socket is message oriented, and the message is larger than the maximum supported by the underlying transport.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>
+		/// For a stream socket, the connection has been broken due to keep-alive activity detecting a failure while the operation was in
+		/// progress. For a datagram socket, this error indicates that the time to live has expired.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>The Windows Sockets provider reports a buffer deadlock.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTCONN</term>
+		/// <term>The socket is not connected.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// MSG_OOB was specified, but the socket is not stream-style such as type SOCK_STREAM, OOB data is not supported in the
+		/// communication domain associated with this socket, MSG_PARTIAL is not supported, or the socket is unidirectional and supports
+		/// only receive operations.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESHUTDOWN</term>
+		/// <term>
+		/// The socket has been shut down; it is not possible to WSASend on a socket after shutdown has been invoked with how set to SD_SEND
+		/// or SD_BOTH.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>
+		/// Windows NT: Overlapped sockets: There are too many outstanding overlapped I/O requests. Nonoverlapped sockets: The socket is
+		/// marked as nonblocking and the send operation cannot be completed immediately.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_IO_PENDING</term>
+		/// <term>An overlapped operation was successfully initiated and completion will be indicated at a later time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_OPERATION_ABORTED</term>
+		/// <term>
+		/// The overlapped operation has been canceled due to the closure of the socket, the execution of the "SIO_FLUSH" command in
+		/// WSAIoctl, or the thread that initiated the overlapped request exited before the operation completed. For more information, see
+		/// the Remarks section.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>WSASend</c> function provides functionality over and above the standard send function in two important areas:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>It can be used in conjunction with overlapped sockets to perform overlapped send operations.</term>
+		/// </item>
+		/// <item>
+		/// <term>It allows multiple send buffers to be specified making it applicable to the scatter/gather type of I/O.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>WSASend</c> function is used to write outgoing data from one or more buffers on a connection-oriented socket specified by
+		/// s. It can also be used, however, on connectionless sockets that have a stipulated default peer address established through the
+		/// connect or WSAConnect function.
+		/// </para>
+		/// <para>
+		/// A socket created by the socket function will have the overlapped attribute as the default. A socket created by the WSASocket
+		/// function with the dwFlags parameter passed to <c>WSASocket</c> with the <c>WSA_FLAG_OVERLAPPED</c> bit set will have the
+		/// overlapped attribute. For sockets with the overlapped attribute, <c>WSASend</c> uses overlapped I/O unless both the lpOverlapped
+		/// and lpCompletionRoutine parameters are <c>NULL</c>. In that case, the socket is treated as a non-overlapped socket. A completion
+		/// indication will occur, invoking the completion of a routine or setting of an event object, when the buffer(s) have been consumed
+		/// by the transport. If the operation does not complete immediately, the final completion status is retrieved through the
+		/// completion routine or WSAGetOverlappedResult.
+		/// </para>
+		/// <para>
+		/// If both lpOverlapped and lpCompletionRoutine are <c>NULL</c>, the socket in this function will be treated as a non-overlapped socket.
+		/// </para>
+		/// <para>
+		/// For non-overlapped sockets, the last two parameters (lpOverlapped, lpCompletionRoutine) are ignored and <c>WSASend</c> adopts
+		/// the same blocking semantics as send. Data is copied from the buffer(s) into the transport's buffer. If the socket is
+		/// non-blocking and stream-oriented, and there is not sufficient space in the transport's buffer, <c>WSASend</c> will return with
+		/// only part of the application's buffers having been consumed. Given the same buffer situation and a blocking socket,
+		/// <c>WSASend</c> will block until all of the application buffer contents have been consumed.
+		/// </para>
+		/// <para><c>Note</c> The socket options <c>SO_RCVTIMEO</c> and <c>SO_SNDTIMEO</c> apply only to blocking sockets.</para>
+		/// <para>
+		/// If this function is completed in an overlapped manner, it is the Winsock service provider's responsibility to capture the WSABUF
+		/// structures before returning from this call. This enables applications to build stack-based <c>WSABUF</c> arrays pointed to by
+		/// the lpBuffers parameter.
+		/// </para>
+		/// <para>
+		/// For message-oriented sockets, do not exceed the maximum message size of the underlying provider, which can be obtained by
+		/// getting the value of socket option <c>SO_MAX_MSG_SIZE</c>. If the data is too long to pass atomically through the underlying
+		/// protocol the error WSAEMSGSIZE is returned, and no data is transmitted.
+		/// </para>
+		/// <para><c>Windows Me/98/95:</c> The <c>WSASend</c> function does not support more than 16 buffers.</para>
+		/// <para><c>Note</c> The successful completion of a <c>WSASend</c> does not indicate that the data was successfully delivered.</para>
+		/// <para>Using dwFlags</para>
+		/// <para>
+		/// The dwFlags parameter can be used to influence the behavior of the function invocation beyond the options specified for the
+		/// associated socket. That is, the semantics of this function are determined by the socket options and the dwFlags parameter. The
+		/// latter is constructed by using the bitwise OR operator with any of any of the values listed in the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MSG_DONTROUTE</term>
+		/// <term>
+		/// Specifies that the data should not be subject to routing. A Windows Sockets service provider can choose to ignore this flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_OOB</term>
+		/// <term>Send OOB data on a stream-style socket such as SOCK_STREAM only.</term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_PARTIAL</term>
+		/// <term>
+		/// Specifies that lpBuffers only contains a partial message. Be aware that the error code WSAEOPNOTSUPP will be returned by
+		/// transports that do not support partial message transmissions.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>WSASend</c> with the lpOverlapped parameter set to NULL, Winsock may
+		/// need to wait for a network event before the call can complete. Winsock performs an alertable wait in this situation, which can
+		/// be interrupted by an asynchronous procedure call (APC) scheduled on the same thread. Issuing another blocking Winsock call
+		/// inside an APC that interrupted an ongoing blocking Winsock call on the same thread will lead to undefined behavior, and must
+		/// never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Overlapped Socket I/O</para>
+		/// <para>
+		/// If an overlapped operation completes immediately, <c>WSASend</c> returns a value of zero and the lpNumberOfBytesSent parameter
+		/// is updated with the number of bytes sent. If the overlapped operation is successfully initiated and will complete later,
+		/// <c>WSASend</c> returns SOCKET_ERROR and indicates error code WSA_IO_PENDING. In this case, lpNumberOfBytesSent is not updated.
+		/// When the overlapped operation completes the amount of data transferred is indicated either through the cbTransferred parameter
+		/// in the completion routine (if specified), or through the lpcbTransfer parameter in WSAGetOverlappedResult.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. For more information, see ExitThread.
+		/// </para>
+		/// <para>
+		/// The <c>WSASend</c> function using overlapped I/O can be called from within the completion routine of a previous WSARecv,
+		/// WSARecvFrom, <c>WSASend</c>, or WSASendTo function. This enables time-sensitive data transmissions to occur entirely within a
+		/// preemptive context.
+		/// </para>
+		/// <para>
+		/// The lpOverlapped parameter must be valid for the duration of the overlapped operation. If multiple I/O operations are
+		/// simultaneously outstanding, each must reference a separate WSAOVERLAPPED structure.
+		/// </para>
+		/// <para>
+		/// If the lpCompletionRoutine parameter is <c>NULL</c>, the hEvent parameter of lpOverlapped is signaled when the overlapped
+		/// operation completes if it contains a valid event object handle. An application can use WSAWaitForMultipleEvents or
+		/// WSAGetOverlappedResult to wait or poll on the event object.
+		/// </para>
+		/// <para>
+		/// If lpCompletionRoutine is not <c>NULL</c>, the hEvent parameter is ignored and can be used by the application to pass context
+		/// information to the completion routine. A caller that passes a non- <c>NULL</c> lpCompletionRoutine and later calls
+		/// WSAGetOverlappedResult for the same overlapped I/O request may not set the fWait parameter for that invocation of
+		/// <c>WSAGetOverlappedResult</c> to <c>TRUE</c>. In this case the usage of the hEvent parameter is undefined, and attempting to
+		/// wait on the hEvent parameter would produce unpredictable results.
+		/// </para>
+		/// <para>
+		/// The completion routine follows the same rules as stipulated for Windows file I/O completion routines. The completion routine
+		/// will not be invoked until the thread is in an alertable wait state such as can occur when the function WSAWaitForMultipleEvents
+		/// with the fAlertable parameter set to <c>TRUE</c> is invoked.
+		/// </para>
+		/// <para>
+		/// The transport providers allow an application to invoke send and receive operations from within the context of the socket I/O
+		/// completion routine, and guarantee that, for a given socket, I/O completion routines will not be nested. This permits
+		/// time-sensitive data transmissions to occur entirely within a preemptive context.
+		/// </para>
+		/// <para>The following C++ code example is a prototype of the completion routine.</para>
+		/// <para>
+		/// The CompletionRoutine function is a placeholder for an application-defined or library-defined function name. The dwError
+		/// parameter specifies the completion status for the overlapped operation as indicated by lpOverlapped. cbTransferred specifies the
+		/// number of bytes sent. Currently there are no flag values defined and dwFlags will be zero. This function does not return a value.
+		/// </para>
+		/// <para>
+		/// Returning from this function allows invocation of another pending completion routine for this socket. All waiting completion
+		/// routines are called before the alertable thread's wait is satisfied with a return code of <c>WSA_IO_COMPLETION</c>. The
+		/// completion routines can be called in any order, not necessarily in the same order the overlapped operations are completed.
+		/// However, the posted buffers are guaranteed to be sent in the same order they are specified.
+		/// </para>
+		/// <para>
+		/// The order of calls made to <c>WSASend</c> is also the order in which the buffers are transmitted to the transport layer.
+		/// <c>WSASend</c> should not be called on the same stream-oriented socket concurrently from different threads, because some Winsock
+		/// providers may split a large send request into multiple transmissions, and this may lead to unintended data interleaving from
+		/// multiple concurrent send requests on the same stream-oriented socket.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following code example shows how to use the <c>WSASend</c> function in overlapped I/O mode.</para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasend int WSAAPI WSASend( SOCKET s, LPWSABUF lpBuffers,
+		// DWORD dwBufferCount, LPDWORD lpNumberOfBytesSent, DWORD dwFlags, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE
+		// lpCompletionRoutine );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "764339e6-a1ac-455d-8ebd-ad0fa50dc3b0")]
+		public static extern WSRESULT WSASend(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
+			MsgFlags dwFlags, ref WSAOVERLAPPED lpOverlapped, [In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>
 		/// The <c>WSASendDisconnect</c> function initiates termination of the connection for the socket and sends disconnect data.
@@ -7652,6 +9023,314 @@ namespace Vanara.PInvoke
 		public static extern WSRESULT WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, [In, Out, Optional] IntPtr lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
+		/// <summary>The <c>WSASendMsg</c> function sends data and optional control information from connected and unconnected sockets.</summary>
+		/// <param name="Handle">A descriptor identifying the socket.</param>
+		/// <param name="lpMsg">A WSAMSG structure storing the Posix.1g <c>msghdr</c> structure.</param>
+		/// <param name="dwFlags">
+		/// The flags used to modify the behavior of the <c>WSASendMsg</c> function call. For more information, see Using dwFlags in the
+		/// Remarks section.
+		/// </param>
+		/// <param name="lpNumberOfBytesSent">
+		/// <para>A pointer to the number, in bytes, sent by this call if the I/O operation completes immediately.</para>
+		/// <para>
+		/// Use <c>NULL</c> for this parameter if the lpOverlapped parameter is not <c>NULL</c> to avoid potentially erroneous results. This
+		/// parameter can be <c>NULL</c> only if the lpOverlapped parameter is not <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpOverlapped">A pointer to a WSAOVERLAPPED structure. Ignored for non-overlapped sockets.</param>
+		/// <param name="lpCompletionRoutine">
+		/// A pointer to the completion routine called when the send operation completes. Ignored for non-overlapped sockets.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns zero when successful and immediate completion occurs. When zero is returned, the specified completion routine is called
+		/// when the calling thread is in the alertable state.
+		/// </para>
+		/// <para>
+		/// A return value of <c>SOCKET_ERROR</c>, and subsequent call to WSAGetLastError that returns WSA_IO_PENDING, indicates the
+		/// overlapped operation has successfully initiated; completion is then indicated through other means, such as through events or
+		/// completion ports.
+		/// </para>
+		/// <para>
+		/// Upon failure, returns <c>SOCKET_ERROR</c> and a subsequent call to WSAGetLastError returns a value other than
+		/// <c>WSA_IO_PENDING</c>. The following table lists error codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAEACCES</term>
+		/// <term>The requested address is a broadcast address, but the appropriate flag was not set.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>
+		/// For a UDP datagram socket, this error would indicate that a previous send operation resulted in an ICMP "Port Unreachable" message.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The lpMsg, lpNumberOfBytesSent, lpOverlapped, or lpCompletionRoutine parameter is not totally contained in a valid part of the
+		/// user address space. This error is also returned if a name member of the WSAMSGstructure pointed to by the lpMsg parameter was a
+		/// NULL pointer and the namelen member of the WSAMSGstructure was not set to zero. This error is also returned if a Control.buf
+		/// member of the WSAMSGstructure pointed to by the lpMsg parameter was a NULL pointer and the Control.len member of the
+		/// WSAMSGstructure was not set to zero.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Socket 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The socket has not been bound with bind, or the socket was not created with the overlapped flag.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMSGSIZE</term>
+		/// <term>The socket is message oriented, and the message is larger than the maximum supported by the underlying transport.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>For a datagram socket, this error indicates that the time to live has expired.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETUNREACH</term>
+		/// <term>The network is unreachable.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>The Windows Sockets provider reports a buffer deadlock.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTCONN</term>
+		/// <term>The socket is not connected.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEOPNOTSUPP</term>
+		/// <term>
+		/// The socket operation is not supported. This error is returned if the dwFlags member of the WSAMSGstructure pointed to by the
+		/// lpMsg parameter includes any control flags invalid for WSASendMsg.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESHUTDOWN</term>
+		/// <term>
+		/// The socket has been shut down; it is not possible to call the WSASendMsg function on a socket after shutdown has been invoked
+		/// with how set to SD_SEND or SD_BOTH.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAETIMEDOUT</term>
+		/// <term>
+		/// The socket timed out. This error is returned if the socket had a wait timeout specified using the SO_SNDTIMEO socket option and
+		/// the timeout was exceeded.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>
+		/// Overlapped sockets: There are too many outstanding overlapped I/O requests. Nonoverlapped sockets: The socket is marked as
+		/// nonblocking and the send operation cannot be completed immediately.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_IO_PENDING</term>
+		/// <term>An overlapped operation was successfully initiated and completion will be indicated at a later time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_OPERATION_ABORTED</term>
+		/// <term>
+		/// The overlapped operation has been canceled due to the closure of the socket or due to the execution of the SIO_FLUSH command in WSAIoctl.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>WSASendMsg</c> function can be used in place of the WSASend and WSASendTo functions. The <c>WSASendMsg</c> function can
+		/// only be used with datagrams and raw sockets. The socket descriptor in the s parameter must be opened with the socket type set to
+		/// <c>SOCK_DGRAM</c> or <c>SOCK_RAW</c>.
+		/// </para>
+		/// <para>
+		/// The dwFlags parameter can only contain a combination of the following control flags: <c>MSG_DONTROUTE</c>, <c>MSG_PARTIAL</c>,
+		/// and <c>MSG_OOB</c>. The <c>dwFlags</c> member of the WSAMSGstructure pointed to by the lpMsg parameter is ignored on input and
+		/// not used on output.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The function pointer for the <c>WSASendMsg</c> function must be obtained at run time by making a call to the
+		/// WSAIoctl function with the <c>SIO_GET_EXTENSION_FUNCTION_POINTER</c> opcode specified. The input buffer passed to the
+		/// <c>WSAIoctl</c> function must contain <c>WSAID_WSASENDMSG</c>, a globally unique identifier (GUID) whose value identifies the
+		/// <c>WSASendMsg</c> extension function. On success, the output returned by the <c>WSAIoctl</c> function contains a pointer to the
+		/// <c>WSASendMsg</c> function. The <c>WSAID_WSASENDMSG</c> GUID is defined in the Mswsock.h header file.
+		/// </para>
+		/// <para>
+		/// Overlapped sockets are created with a WSASocket function call that has the <c>WSA_FLAG_OVERLAPPED</c> flag set. For overlapped
+		/// sockets, sending information uses overlapped I/O unless both lpOverlapped and lpCompletionRoutine are <c>NULL</c>; when
+		/// lpOverlapped and lpCompletionRoutine are <c>NULL</c>, the socket is treated as a nonoverlapped socket. A completion indication
+		/// occurs with overlapped sockets; once the buffer or buffers have been consumed by the transport, a completion routine is
+		/// triggered or an event object is set. If the operation does not complete immediately, the final completion status is retrieved
+		/// through the completion routine or by calling the WSAGetOverlappedResult function.
+		/// </para>
+		/// <para>
+		/// For nonoverlapped sockets, the lpOverlapped and lpCompletionRoutine parameters are ignored and <c>WSASendMsg</c> adopts the same
+		/// blocking semantics as the send function: data is copied from the buffer or buffers into the transport's buffer. If the socket is
+		/// nonblocking and stream oriented, and there is insufficient space in the transport's buffer, <c>WSASendMsg</c> returns with only
+		/// part of the application's buffers having been consumed. In contrast, this buffer situation on a blocking socket results in
+		/// <c>WSASendMsg</c> blocking until all of the application's buffer contents have been consumed.
+		/// </para>
+		/// <para>
+		/// If this function is completed in an overlapped manner, it is the Winsock service provider's responsibility to capture this
+		/// WSABUF structure before returning from this call. This enables applications to build stack-based <c>WSABUF</c> arrays pointed to
+		/// by the <c>lpBuffers</c> member of the WSAMSGstructure pointed to by the lpMsg parameter.
+		/// </para>
+		/// <para>
+		/// For message-oriented sockets, care must be taken not to exceed the maximum message size of the underlying provider, which can be
+		/// obtained by getting the value of socket option <c>SO_MAX_MSG_SIZE</c>. If the data is too long to pass atomically through the
+		/// underlying protocol, the error <c>WSAEMSGSIZE</c> is returned and no data is transmitted.
+		/// </para>
+		/// <para>
+		/// On an IPv4 socket of type <c>SOCK_DGRAM</c> or <c>SOCK_RAW</c>, an application can specific the local IP source address to use
+		/// for sending with the <c>WSASendMsg</c> function. One of the control data objects passed in the WSAMSG structure to the
+		/// <c>WSASendMsg</c> function may contain an in_pktinfo structure used to specify the local IPv4 source address to use for sending.
+		/// </para>
+		/// <para>
+		/// On an IPv6 socket of type <c>SOCK_DGRAM</c> or <c>SOCK_RAW</c>, an application can specific the local IP source address to use
+		/// for sending with the <c>WSASendMsg</c> function. One of the control data objects passed in the WSAMSG structure to the
+		/// <c>WSASendMsg</c> function may contain an in6_pktinfo structure used to specify the local IPv6 source address to use for sending.
+		/// </para>
+		/// <para>
+		/// For a dual-stack socket when sending datagrams with the <c>WSASendMsg</c> function and an application wants to specify a
+		/// specific local IP source address to be used, the method to handle this depends on the destination IP address. When sending to an
+		/// IPv4 destination address or an IPv4-mapped IPv6 destination address, one of the control data objects passed in the WSAMSG
+		/// structure pointed to by the lpMsg parameter should contain an in_pktinfo structure containing the local IPv4 source address to
+		/// use for sending. When sending to an IPv6 destination address that is not a an IPv4-mapped IPv6 address, one of the control data
+		/// objects passed in the <c>WSAMSG</c> structure pointed to by the lpMsg parameter should contain an in6_pktinfo structure
+		/// containing the local IPv6 source address to use for sending.
+		/// </para>
+		/// <para><c>Note</c> The <c>SO_SNDTIMEO</c> socket option applies only to blocking sockets.</para>
+		/// <para><c>Note</c> The successful completion of a <c>WSASendMsg</c> does not indicate that the data was successfully delivered.</para>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>WSASendMsg</c> with the lpOverlapped parameter set to NULL, Winsock
+		/// may need to wait for a network event before the call can complete. Winsock performs an alertable wait in this situation, which
+		/// can be interrupted by an asynchronous procedure call (APC) scheduled on the same thread. Issuing another blocking Winsock call
+		/// inside an APC that interrupted an ongoing blocking Winsock call on the same thread will lead to undefined behavior, and must
+		/// never be attempted by Winsock clients.
+		/// </para>
+		/// <para>dwFlags</para>
+		/// <para>
+		/// The dwFlags input parameter can be used to influence the behavior of the function invocation beyond the options specified for
+		/// the associated socket. That is, the semantics of this function are determined by the socket options and the dwFlags parameter.
+		/// The latter is constructed by using the bitwise OR operator with any of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MSG_DONTROUTE</term>
+		/// <term>
+		/// Specifies that the data should not be subject to routing. A Windows Sockets service provider can choose to ignore this flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_PARTIAL</term>
+		/// <term>
+		/// Specifies that lpMsg-&gt;lpBuffers contains only a partial message. Note that the error code WSAEOPNOTSUPP will be returned by
+		/// transports that do not support partial message transmissions.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>The possible values for dwFlags parameter are defined in the Winsock2.h header file.</para>
+		/// <para>On output, the <c>dwFlags</c> member of the WSAMSGstructure pointed to by the lpMsg parameter is not used.</para>
+		/// <para>Overlapped Socket I/O</para>
+		/// <para>
+		/// If an overlapped operation completes immediately, <c>WSASendMsg</c> returns a value of zero and the lpNumberOfBytesSent
+		/// parameter is updated with the number of bytes sent. If the overlapped operation is successfully initiated and will complete
+		/// later, <c>WSASendMsg</c> returns SOCKET_ERROR and indicates error code WSA_IO_PENDING. In this case, lpNumberOfBytesSent is not
+		/// updated. When the overlapped operation completes, the amount of data transferred is indicated either through the cbTransferred
+		/// parameter in the completion routine (if specified) or through the lpcbTransfer parameter in WSAGetOverlappedResult.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. See ExitThread for more information.
+		/// </para>
+		/// <para>
+		/// The <c>WSASendMsg</c> function using overlapped I/O can be called from within the completion routine of a previous , WSARecv,
+		/// WSARecvFrom, WSARecvMsg, WSASend, <c>WSASendMsg</c>, or WSASendTo function. This permits time-sensitive data transmissions to
+		/// occur entirely within a preemptive context.
+		/// </para>
+		/// <para>
+		/// The lpOverlapped parameter must be valid for the duration of the overlapped operation. If multiple I/O operations are
+		/// simultaneously outstanding, each must reference a separate WSAOVERLAPPED structure.
+		/// </para>
+		/// <para>
+		/// If the lpCompletionRoutine parameter is <c>NULL</c>, the hEvent parameter of lpOverlapped is signaled when the overlapped
+		/// operation completes if it contains a valid event object handle. An application can use WSAWaitForMultipleEvents or
+		/// WSAGetOverlappedResult to wait or poll on the event object.
+		/// </para>
+		/// <para>
+		/// If lpCompletionRoutine is not <c>NULL</c>, the hEvent parameter is ignored and can be used by the application to pass context
+		/// information to the completion routine. A caller that passes a non- <c>NULL</c> lpCompletionRoutine and later calls
+		/// WSAGetOverlappedResult for the same overlapped I/O request may not set the fWait parameter for that invocation of
+		/// <c>WSAGetOverlappedResult</c> to <c>TRUE</c>. In this case, the usage of the hEvent parameter is undefined, and attempting to
+		/// wait on the hEvent parameter would produce unpredictable results.
+		/// </para>
+		/// <para>
+		/// The completion routine follows the same rules as stipulated for Windows file I/O completion routines. The completion routine
+		/// will not be invoked until the thread is in an alertable wait state, for example, with WSAWaitForMultipleEvents called with the
+		/// fAlertable parameter set to <c>TRUE</c>.
+		/// </para>
+		/// <para>
+		/// The transport providers allow an application to invoke send and receive operations from within the context of the socket I/O
+		/// completion routine, and guarantee that, for a given socket, I/O completion routines will not be nested. This permits
+		/// time-sensitive data transmissions to occur entirely within a preemptive context.
+		/// </para>
+		/// <para>The prototype of the completion routine is as follows.</para>
+		/// <para>
+		/// The <c>CompletionRoutine</c> function is a placeholder for an application-defined or library-defined function name. The dwError
+		/// parameter specifies the completion status for the overlapped operation as indicated by the lpOverlapped parameter. The
+		/// cbTransferred parameter indicates the number of bytes sent. Currently there are no flag values defined and the dwFlags parameter
+		/// will be zero. The <c>CompletionRoutine</c> function does not return a value.
+		/// </para>
+		/// <para>
+		/// Returning from this function allows invocation of another pending completion routine for the socket. All waiting completion
+		/// routines are called before the alertable thread's wait is satisfied with a return code of WSA_IO_COMPLETION. The completion
+		/// routines can be called in any order, not necessarily in the same order the overlapped operations are completed. However, the
+		/// posted buffers are guaranteed to be sent in the same order they are specified.
+		/// </para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasendmsg int WSAAPI WSASendMsg( SOCKET Handle, LPWSAMSG
+		// lpMsg, DWORD dwFlags, LPDWORD lpNumberOfBytesSent, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE
+		// lpCompletionRoutine );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "3b2ba645-6a70-4ba2-b4a2-5bde0c7f8d08")]
+		public static extern WSRESULT WSASendMsg(SOCKET Handle, in WSAMSG lpMsg, MsgFlags dwFlags, out uint lpNumberOfBytesSent, ref WSAOVERLAPPED lpOverlapped,
+			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+
 		/// <summary>The <c>WSASendTo</c> function sends data to a specific destination, using overlapped I/O where applicable.</summary>
 		/// <param name="s">A descriptor identifying a (possibly connected) socket.</param>
 		/// <param name="lpBuffers">
@@ -7957,6 +9636,313 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock2.h", MSDNShortId = "e3a11522-871c-4d6b-a2e6-ca91ffc2b698")]
 		public static extern WSRESULT WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
 			MsgFlags dwFlags, [In, Optional] SOCKADDR lpTo, int iTolen, [In, Out, Optional] IntPtr lpOverlapped,
+			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+
+		/// <summary>The <c>WSASendTo</c> function sends data to a specific destination, using overlapped I/O where applicable.</summary>
+		/// <param name="s">A descriptor identifying a (possibly connected) socket.</param>
+		/// <param name="lpBuffers">
+		/// A pointer to an array of WSABUF structures. Each <c>WSABUF</c> structure contains a pointer to a buffer and the length of the
+		/// buffer, in bytes. For a Winsock application, once the <c>WSASendTo</c> function is called, the system owns these buffers and the
+		/// application may not access them. This array must remain valid for the duration of the send operation.
+		/// </param>
+		/// <param name="dwBufferCount">The number of WSABUF structures in the lpBuffers array.</param>
+		/// <param name="lpNumberOfBytesSent">
+		/// <para>A pointer to the number of bytes sent by this call if the I/O operation completes immediately.</para>
+		/// <para>
+		/// Use <c>NULL</c> for this parameter if the lpOverlapped parameter is not <c>NULL</c> to avoid potentially erroneous results. This
+		/// parameter can be <c>NULL</c> only if the lpOverlapped parameter is not <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">The flags used to modify the behavior of the <c>WSASendTo</c> function call.</param>
+		/// <param name="lpTo">An optional pointer to the address of the target socket in the SOCKADDR structure.</param>
+		/// <param name="iTolen">The size, in bytes, of the address in the lpTo parameter.</param>
+		/// <param name="lpOverlapped">A pointer to a WSAOVERLAPPED structure (ignored for nonoverlapped sockets).</param>
+		/// <param name="lpCompletionRoutine">
+		/// A pointer to the completion routine called when the send operation has been completed (ignored for nonoverlapped sockets).
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If no error occurs and the send operation has completed immediately, <c>WSASendTo</c> returns zero. In this case, the completion
+		/// routine will have already been scheduled to be called once the calling thread is in the alertable state. Otherwise, a value of
+		/// <c>SOCKET_ERROR</c> is returned, and a specific error code can be retrieved by calling WSAGetLastError. The error code
+		/// WSA_IO_PENDING indicates that the overlapped operation has been successfully initiated and that completion will be indicated at
+		/// a later time. Any other error code indicates that the overlapped operation was not successfully initiated and no completion
+		/// indication will occur.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Error code</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WSAEACCES</term>
+		/// <term>The requested address is a broadcast address, but the appropriate flag was not set.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEADDRNOTAVAIL</term>
+		/// <term>The remote address is not a valid address (such as ADDR_ANY).</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEAFNOSUPPORT</term>
+		/// <term>Addresses in the specified family cannot be used with this socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAECONNRESET</term>
+		/// <term>
+		/// For a UDP datagram socket, this error would indicate that a previous send operation resulted in an ICMP "Port Unreachable" message.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEDESTADDRREQ</term>
+		/// <term>A destination address is required.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEFAULT</term>
+		/// <term>
+		/// The lpBuffers, lpTo, lpOverlapped, lpNumberOfBytesSent, or lpCompletionRoutine parameters are not part of the user address
+		/// space, or the lpTo parameter is too small.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEHOSTUNREACH</term>
+		/// <term>A socket operation was attempted to an unreachable host.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINPROGRESS</term>
+		/// <term>A blocking Windows Sockets 1.1 call is in progress, or the service provider is still processing a callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINTR</term>
+		/// <term>A blocking Windows Socket 1.1 call was canceled through WSACancelBlockingCall.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEINVAL</term>
+		/// <term>The socket has not been bound with bind, or the socket is not created with the overlapped flag.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEMSGSIZE</term>
+		/// <term>The socket is message oriented, and the message is larger than the maximum supported by the underlying transport.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETDOWN</term>
+		/// <term>The network subsystem has failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETRESET</term>
+		/// <term>For a datagram socket, this error indicates that the time to live has expired.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENETUNREACH</term>
+		/// <term>The network cannot be reached from this host at this time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOBUFS</term>
+		/// <term>The Windows Sockets provider reports a buffer deadlock.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTCONN</term>
+		/// <term>The socket is not connected (connection-oriented sockets only).</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAENOTSOCK</term>
+		/// <term>The descriptor is not a socket.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSAESHUTDOWN</term>
+		/// <term>
+		/// The socket has been shut down; it is not possible to WSASendTo on a socket after shutdown has been invoked with how set to
+		/// SD_SEND or SD_BOTH.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSAEWOULDBLOCK</term>
+		/// <term>
+		/// Windows NT: Overlapped sockets: there are too many outstanding overlapped I/O requests. Nonoverlapped sockets: The socket is
+		/// marked as nonblocking and the send operation cannot be completed immediately.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WSANOTINITIALISED</term>
+		/// <term>A successful WSAStartup call must occur before using this function.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_IO_PENDING</term>
+		/// <term>An overlapped operation was successfully initiated and completion will be indicated at a later time.</term>
+		/// </item>
+		/// <item>
+		/// <term>WSA_OPERATION_ABORTED</term>
+		/// <term>
+		/// The overlapped operation has been canceled due to the closure of the socket, or the execution of the SIO_FLUSH command in WSAIoctl.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>WSASendTo</c> function provides enhanced features over the standard sendto function in two important areas:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>It can be used in conjunction with overlapped sockets to perform overlapped send operations.</term>
+		/// </item>
+		/// <item>
+		/// <term>It allows multiple send buffers to be specified making it applicable to the scatter/gather type of I/O.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>WSASendTo</c> function is normally used on a connectionless socket specified by s to send a datagram contained in one or
+		/// more buffers to a specific peer socket identified by the lpTo parameter. Even if the connectionless socket has been previously
+		/// connected using the connect function to a specific address, lpTo overrides the destination address for that particular datagram
+		/// only. On a connection-oriented socket, the lpTo and iToLen parameters are ignored; in this case, the <c>WSASendTo</c> is
+		/// equivalent to WSASend.
+		/// </para>
+		/// <para>
+		/// For overlapped sockets (created using WSASocket with flag <c>WSA_FLAG_OVERLAPPED</c>) sending data uses overlapped I/O, unless
+		/// both lpOverlapped and lpCompletionRoutine are <c>NULL</c> in which case the socket is treated as a nonoverlapped socket. A
+		/// completion indication will occur (invoking the completion routine or setting of an event object) when the buffer(s) have been
+		/// consumed by the transport. If the operation does not complete immediately, the final completion status is retrieved through the
+		/// completion routine or WSAGetOverlappedResult.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If a socket is opened, a setsockopt call is made, and then a sendto call is made, Windows Sockets performs an
+		/// implicit bind function call.
+		/// </para>
+		/// <para>
+		/// If both lpOverlapped and lpCompletionRoutine are <c>NULL</c>, the socket in this function will be treated as a nonoverlapped socket.
+		/// </para>
+		/// <para>
+		/// For nonoverlapped sockets, the last two parameters (lpOverlapped, lpCompletionRoutine) are ignored and <c>WSASendTo</c> adopts
+		/// the same blocking semantics as send. Data is copied from the buffer(s) into the transport buffer. If the socket is nonblocking
+		/// and stream oriented, and there is not sufficient space in the transport's buffer, <c>WSASendTo</c> returns with only part of the
+		/// application's buffers having been consumed. Given the same buffer situation and a blocking socket, <c>WSASendTo</c> will block
+		/// until all of the application's buffer contents have been consumed.
+		/// </para>
+		/// <para>
+		/// If this function is completed in an overlapped manner, it is the Winsock service provider's responsibility to capture the WSABUF
+		/// structures before returning from this call. This enables applications to build stack-based <c>WSABUF</c> arrays pointed to by
+		/// the lpBuffers parameter.
+		/// </para>
+		/// <para>
+		/// For message-oriented sockets, care must be taken not to exceed the maximum message size of the underlying transport, which can
+		/// be obtained by getting the value of socket option <c>SO_MAX_MSG_SIZE</c>. If the data is too long to pass atomically through the
+		/// underlying protocol the error WSAEMSGSIZE is returned, and no data is transmitted.
+		/// </para>
+		/// <para>
+		/// If the socket is unbound, unique values are assigned to the local association by the system, and the socket is then marked as bound.
+		/// </para>
+		/// <para>
+		/// If the socket is connected, the getsockname function can be used to determine the local IP address and port associated with the socket.
+		/// </para>
+		/// <para>
+		/// If the socket is not connected, the getsockname function can be used to determine the local port number associated with the
+		/// socket but the IP address returned is set to the wildcard address for the given protocol (for example, INADDR_ANY or "0.0.0.0"
+		/// for IPv4 and IN6ADDR_ANY_INIT or "::" for IPv6).
+		/// </para>
+		/// <para>The successful completion of a <c>WSASendTo</c> does not indicate that the data was successfully delivered.</para>
+		/// <para>
+		/// The dwFlags parameter can be used to influence the behavior of the function invocation beyond the options specified for the
+		/// associated socket. That is, the semantics of this function are determined by the socket options and the dwFlags parameter. The
+		/// latter is constructed by using the bitwise OR operator with any of any of the values listed in the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MSG_DONTROUTE</term>
+		/// <term>
+		/// Specifies that the data should not be subject to routing. A Windows Socket service provider may choose to ignore this flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_OOB</term>
+		/// <term>Send OOB data (stream-style socket such as SOCK_STREAM only).</term>
+		/// </item>
+		/// <item>
+		/// <term>MSG_PARTIAL</term>
+		/// <term>
+		/// Specifies that lpBuffers only contains a partial message. Be aware that the error code WSAEOPNOTSUPP will be returned by
+		/// transports that do not support partial message transmissions.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// <c>Note</c> When issuing a blocking Winsock call such as <c>WSASendTo</c> with the lpOverlapped parameter set to <c>NULL</c>,
+		/// Winsock may need to wait for a network event before the call can complete. Winsock performs an alertable wait in this situation,
+		/// which can be interrupted by an asynchronous procedure call (APC) scheduled on the same thread. Issuing another blocking Winsock
+		/// call inside an APC that interrupted an ongoing blocking Winsock call on the same thread will lead to undefined behavior, and
+		/// must never be attempted by Winsock clients.
+		/// </para>
+		/// <para>Overlapped Socket I/O</para>
+		/// <para>
+		/// If an overlapped operation completes immediately, <c>WSASendTo</c> returns a value of zero and the lpNumberOfBytesSent parameter
+		/// is updated with the number of bytes sent. If the overlapped operation is successfully initiated and will complete later,
+		/// <c>WSASendTo</c> returns <c>SOCKET_ERROR</c> and indicates error code WSA_IO_PENDING. In this case, lpNumberOfBytesSent is not
+		/// updated. When the overlapped operation completes the amount of data transferred is indicated either through the cbTransferred
+		/// parameter in the completion routine (if specified), or through the lpcbTransfer parameter in WSAGetOverlappedResult.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> All I/O initiated by a given thread is canceled when that thread exits. For overlapped sockets, pending asynchronous
+		/// operations can fail if the thread is closed before the operations complete. See ExitThread for more information.
+		/// </para>
+		/// <para>
+		/// The <c>WSASendTo</c> function using overlapped I/O can be called from within the completion routine of a previous WSARecv,
+		/// WSARecvFrom, WSASend, or <c>WSASendTo</c> function. This permits time-sensitive data transmissions to occur entirely within a
+		/// preemptive context.
+		/// </para>
+		/// <para>
+		/// The lpOverlapped parameter must be valid for the duration of the overlapped operation. If multiple I/O operations are
+		/// simultaneously outstanding, each must reference a separate WSAOVERLAPPED structure.
+		/// </para>
+		/// <para>
+		/// If the lpCompletionRoutine parameter is <c>NULL</c>, the hEvent parameter of lpOverlapped is signaled when the overlapped
+		/// operation completes if it contains a valid event object handle. An application can use WSAWaitForMultipleEvents or
+		/// WSAGetOverlappedResult to wait or poll on the event object.
+		/// </para>
+		/// <para>
+		/// If lpCompletionRoutine is not <c>NULL</c>, the hEvent parameter is ignored and can be used by the application to pass context
+		/// information to the completion routine. A caller that passes a non- <c>NULL</c> lpCompletionRoutine and later calls
+		/// WSAGetOverlappedResult for the same overlapped I/O request may not set the fWait parameter for that invocation of
+		/// <c>WSAGetOverlappedResult</c> to <c>TRUE</c>. In this case the usage of the hEvent parameter is undefined, and attempting to
+		/// wait on the hEvent parameter would produce unpredictable results.
+		/// </para>
+		/// <para>
+		/// The completion routine follows the same rules as stipulated for Windows file I/O completion routines. The completion routine
+		/// will not be invoked until the thread is in an alertable wait state such as can occur when the function WSAWaitForMultipleEvents
+		/// with the fAlertable parameter set to <c>TRUE</c> is invoked.
+		/// </para>
+		/// <para>
+		/// Transport providers allow an application to invoke send and receive operations from within the context of the socket I/O
+		/// completion routine, and guarantee that, for a given socket, I/O completion routines will not be nested. This permits
+		/// time-sensitive data transmissions to occur entirely within a preemptive context.
+		/// </para>
+		/// <para>The prototype of the completion routine is as follows.</para>
+		/// <para>
+		/// The CompletionRoutine function is a placeholder for an application-defined or library-defined function name. The dwError
+		/// parameter specifies the completion status for the overlapped operation as indicated by lpOverlapped. The cbTransferred parameter
+		/// specifies the number of bytes sent. Currently there are no flag values defined and dwFlags will be zero. This function does not
+		/// return a value.
+		/// </para>
+		/// <para>
+		/// Returning from this function allows invocation of another pending completion routine for this socket. All waiting completion
+		/// routines are called before the alertable thread's wait is satisfied with a return code of WSA_IO_COMPLETION. The completion
+		/// routines can be called in any order, not necessarily in the same order in which the overlapped operations are completed.
+		/// However, the posted buffers are guaranteed to be sent in the same order they are specified.
+		/// </para>
+		/// <para>Example Code</para>
+		/// <para>The following example demonstrates the use of the <c>WSASendTo</c> function using an event object.</para>
+		/// <para><c>Windows Phone 8:</c> This function is supported for Windows Phone Store apps on Windows Phone 8 and later.</para>
+		/// <para>
+		/// <c>Windows 8.1</c> and <c>Windows Server 2012 R2</c>: This function is supported for Windows Store apps on Windows 8.1, Windows
+		/// Server 2012 R2, and later.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasendto int WSAAPI WSASendTo( SOCKET s, LPWSABUF
+		// lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesSent, DWORD dwFlags, const sockaddr *lpTo, int iTolen, LPWSAOVERLAPPED
+		// lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine );
+		[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winsock2.h", MSDNShortId = "e3a11522-871c-4d6b-a2e6-ca91ffc2b698")]
+		public static extern WSRESULT WSASendTo(SOCKET s, [In, MarshalAs(UnmanagedType.LPArray)] WSABUF[] lpBuffers, uint dwBufferCount, out uint lpNumberOfBytesSent,
+			MsgFlags dwFlags, [In, Optional] SOCKADDR lpTo, int iTolen, ref WSAOVERLAPPED lpOverlapped,
 			[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
 
 		/// <summary>The <c>WSASetEvent</c> function sets the state of the specified event object to signaled.</summary>
