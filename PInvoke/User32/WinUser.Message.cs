@@ -2375,7 +2375,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
 		public static IntPtr SendMessage<TMsg>(HWND hWnd, TMsg msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam)
 			where TMsg : struct, IConvertible 
-			=> SendMessage(hWnd, Convert.ToUInt32(msg), IntPtr.Zero, IntPtr.Zero);
+			=> SendMessage(hWnd, Convert.ToUInt32(msg), wParam, lParam);
 
 		/// <summary>
 		/// <para>
@@ -2447,7 +2447,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
 		public static IntPtr SendMessage<TMsg, TWP>(HWND hWnd, TMsg msg, TWP wParam, [Optional] IntPtr lParam)
 			where TMsg : struct, IConvertible where TWP : struct, IConvertible
-			=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), IntPtr.Zero);
+			=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
 		/// <summary>
 		/// <para>
