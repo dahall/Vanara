@@ -9,7 +9,16 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;websocket</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+WebSocketAbortHandle WebSocketBeginClientHandshake WebSocketBeginServerHandshake WebSocketCompleteAction WebSocketCreateClientHandle WebSocketCreateServerHandle WebSocketDeleteHandle WebSocketEndClientHandshake WebSocketEndServerHandshake WebSocketGetAction WebSocketGetGlobalProperty WebSocketReceive WebSocketSend
+
+Structures
+CLOSESTATUS DATA WEB_SOCKET_BUFFER WEB_SOCKET_HANDLE WEB_SOCKET_HTTP_HEADER WEB_SOCKET_PROPERTY
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

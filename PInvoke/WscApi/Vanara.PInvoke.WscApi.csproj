@@ -9,7 +9,16 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;wscapi;windows security center;wsc</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+WscGetSecurityProviderHealth WscRegisterForChanges WscUnRegisterChanges
+
+Interfaces
+IWSCDefaultProduct IWscProduct IWscProduct2 IWscProduct3 IWscProductList
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

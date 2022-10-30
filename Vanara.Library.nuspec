@@ -97,6 +97,7 @@
       <dependency id="Vanara.PInvoke.VirtDisk" version="3.4.11" />
       <dependency id="Vanara.PInvoke.WcmApi" version="3.4.11" />
       <dependency id="Vanara.PInvoke.WcnApi" version="3.4.11" />
+      <dependency id="Vanara.PInvoke.WebSocket" version="3.4.11" />
       <dependency id="Vanara.PInvoke.Wer" version="3.4.11" />
       <dependency id="Vanara.PInvoke.WinBio" version="3.4.11" />
       <dependency id="Vanara.PInvoke.WinHTTP" version="3.4.11" />
@@ -105,6 +106,7 @@
       <dependency id="Vanara.PInvoke.WinTrust" version="3.4.11" />
       <dependency id="Vanara.PInvoke.WlanApi" version="3.4.11" />
       <dependency id="Vanara.PInvoke.Ws2_32" version="3.4.11" />
+      <dependency id="Vanara.PInvoke.WscApi" version="3.4.11" />
       <dependency id="Vanara.PInvoke.WsmSvc" version="3.4.11" />
       <dependency id="Vanara.PInvoke.WTSApi32" version="3.4.11" />
       <dependency id="Vanara.Security" version="3.4.11" />

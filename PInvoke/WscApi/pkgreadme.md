@@ -1,0 +1,21 @@
+﻿![Vanara](https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/VanaraHeading.png)
+### **Vanara.PInvoke.WscApi NuGet Package**
+[![Version](https://img.shields.io/nuget/v/Vanara.PInvoke.WscApi?label=NuGet&style=flat-square)](https://github.com/dahall/Vanara/releases)
+[![Build status](https://img.shields.io/appveyor/build/dahall/vanara?label=AppVeyor%20build&style=flat-square)](https://ci.appveyor.com/project/dahall/vanara)
+
+PInvoke API (methods, structures and constants) imported from Windows Security Center (WscApi.dll).
+
+### **What is Vanara?**
+
+[Vanara](https://github.com/dahall/Vanara) is a community project that contains various .NET assemblies which have P/Invoke functions, interfaces, enums and structures from Windows libraries. Each assembly is associated with one or a few tightly related libraries.
+
+### **Issues?**
+
+First check if it's already fixed by trying the [AppVeyor build](https://ci.appveyor.com/nuget/vanara-prerelease).
+If you're still running into problems, file an [issue](https://github.com/dahall/Vanara/issues).
+
+### **Included in Vanara.PInvoke.WscApi**
+
+Functions | Enumerations | Interfaces
+--- | --- | ---
+WscGetSecurityProviderHealth WscRegisterForChanges WscUnRegisterChanges     | SECURITY_PRODUCT_TYPE WSC_SECURITY_PRODUCT_STATE WSC_SECURITY_PRODUCT_SUBSTATUS WSC_SECURITY_SIGNATURE_STATUS WSC_SECURITY_PROVIDER WSC_SECURITY_PROVIDER_HEALTH  | IWSCDefaultProduct IWscProduct IWscProduct2 IWscProduct3 IWscProductList  
