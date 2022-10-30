@@ -463,8 +463,8 @@ public static partial class WebSocket
 	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketBeginClientHandshake")]
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketBeginClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket, [In, Optional, MarshalAs(UnmanagedType.LPStr)] string pszSubprotocols,
-		uint ulSubprotocolCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string pszExtensions, uint ulExtensionCount,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[] pInitialHeaders, uint ulInitialHeaderCount,
+		[Optional] uint ulSubprotocolCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string pszExtensions, [Optional] uint ulExtensionCount,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[] pInitialHeaders, [Optional] uint ulInitialHeaderCount,
 		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 8)] out WEB_SOCKET_HTTP_HEADER[] pAdditionalHeaders, out uint pulAdditionalHeaderCount);
 
 	/// <summary>The <c>WebSocketBeginServerHandshake</c> function begins the server-side handshake.</summary>
@@ -529,7 +529,7 @@ public static partial class WebSocket
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketBeginServerHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
 		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string pszSubprotocolSelected,
-		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string pszExtensionSelected, uint ulExtensionSelectedCount,
+		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string pszExtensionSelected, [Optional] uint ulExtensionSelectedCount,
 		[In, MarshalAs(UnmanagedType.LPArray)] WEB_SOCKET_HTTP_HEADER[] pRequestHeaders, uint ulRequestHeaderCount,
 		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 7)] out WEB_SOCKET_HTTP_HEADER[] pResponseHeaders, out uint pulResponseHeaderCount);
 
@@ -731,8 +731,81 @@ public static partial class WebSocket
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketEndClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WEB_SOCKET_HTTP_HEADER[] pResponseHeaders,
-		uint ulReponseHeaderCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] pulSelectedExtensions,
+		uint ulReponseHeaderCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] pulSelectedExtensions,
 		ref uint pulSelectedExtensionCount, out uint pulSelectedSubprotocol);
+
+	/// <summary>The <c>WebSocketEndClientHandshake</c> function completes the client-side handshake.</summary>
+	/// <param name="hWebSocket">
+	/// <para>Type: <c>WEB_SOCKET_HANDLE</c></para>
+	/// <para>WebSocket session handle returned by a previous call to WebSocketCreateClientHandle.</para>
+	/// </param>
+	/// <param name="pResponseHeaders">
+	/// <para>Type: <c>const PWEB_SOCKET_HTTP_HEADER</c></para>
+	/// <para>Pointer to an array of WEB_SOCKET_HTTP_HEADER structures that contain the response headers received by the application.</para>
+	/// </param>
+	/// <param name="ulReponseHeaderCount">
+	/// <para>Type: <c>ULONG</c></para>
+	/// <para>Number of response headers in <c>pResponseHeaders</c>.</para>
+	/// </param>
+	/// <param name="pulSelectedExtensions">
+	/// <para>Type: <c>ULONG*</c></para>
+	/// <para>
+	/// On input, pointer to an array allocated by the application. On successful output, pointer to an array of numbers that represent the
+	/// extensions chosen by the server during the client-server handshake. These number are the zero-based indices into the extensions array
+	/// passed to <c>pszExtensions</c> in WebSocketBeginClientHandshake.
+	/// </para>
+	/// </param>
+	/// <param name="pulSelectedExtensionCount">
+	/// <para>Type: <c>ULONG*</c></para>
+	/// <para>
+	/// On input, number of extensions allocated in <c>pulSelectedExtensions</c>. This must be at least equal to the number passed to
+	/// <c>ulExtensionCount</c> in <c>WebSocketEndClientHandshake</c>. On successful output, number of extensions returned in <c>pulSelectedExtensions</c>.
+	/// </para>
+	/// </param>
+	/// <param name="pulSelectedSubprotocol">
+	/// <para>Type: <c>ULONG*</c></para>
+	/// <para>
+	/// On successful output, pointer to a number that represents the sub-protocol chosen by the server during the client-server handshake.
+	/// This number is the zero-based index into the sub-protocols array passed to <c>pszSubprotocols</c> in WebSocketBeginClientHandshake.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If the function succeeds, it returns <c>S_OK</c>.</para>
+	/// <para>If the function fails, it returns one of the following or a system error code defined in WinError.h.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>E_INVALID_PROTOCOL_FORMAT</c></term>
+	/// <term>Protocol data had an invalid format.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>E_UNSUPPORTED_SUBPROTOCOL</c></term>
+	/// <term>Server does not accept any of the sub-protocols specified by the application.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>E_UNSUPPORTED_EXTENSION</c></term>
+	/// <term>Server does not accept extensions specified by the application.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// This function must be called to complete the client-side handshake after a previous call to WebSocketBeginClientHandshake. Once the
+	/// client-server handshake is complete, the application may use the session functions.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/websocket/nf-websocket-websocketendclienthandshake HRESULT
+	// WebSocketEndClientHandshake( [in] WEB_SOCKET_HANDLE hWebSocket, [in] const PWEB_SOCKET_HTTP_HEADER pResponseHeaders, [in] ULONG
+	// ulReponseHeaderCount, [in, out, optional] ULONG *pulSelectedExtensions, [in, out, optional] ULONG *pulSelectedExtensionCount, [in,
+	// out, optional] ULONG *pulSelectedSubprotocol );
+	[PInvokeData("websocket.h", MSDNShortId = "NF:websocket.WebSocketEndClientHandshake")]
+	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT WebSocketEndClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WEB_SOCKET_HTTP_HEADER[] pResponseHeaders,
+		uint ulReponseHeaderCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] pulSelectedExtensions,
+		[In, Optional] IntPtr pulSelectedExtensionCount, [In, Optional] IntPtr pulSelectedSubprotocol);
 
 	/// <summary>The <c>WebSocketEndServerHandshake</c> function completes the server-side handshake.</summary>
 	/// <param name="hWebSocket">
@@ -1053,6 +1126,26 @@ public static partial class WebSocket
 			/// <summary>WEB_SOCKET_CLOSE_STATUS enumeration that specifies the WebSocket status.</summary>
 			public WEB_SOCKET_CLOSE_STATUS usStatus;
 		}
+
+		/// <summary>Initializes a new instance of the <see cref="WEB_SOCKET_BUFFER"/> struct.</summary>
+		/// <param name="mem">The WebSocket buffer data.</param>
+		public WEB_SOCKET_BUFFER(SafeAllocatedMemoryHandle mem)
+		{
+			CloseStatus = default;
+			Data.pbBuffer = mem;
+			Data.ulBufferLength = mem.Size;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="WEB_SOCKET_BUFFER"/> struct.</summary>
+		/// <param name="reason">A UTF-8 string that represents the reason the connection is closed.</param>
+		/// <param name="closeStatus">The WebSocket status.</param>
+		public WEB_SOCKET_BUFFER(SafeAllocatedMemoryHandle reason, WEB_SOCKET_CLOSE_STATUS closeStatus)
+		{
+			Data = default;
+			CloseStatus.pbReason = reason ?? IntPtr.Zero;
+			CloseStatus.ulReasonLength = reason?.Size ?? 0;
+			CloseStatus.usStatus = closeStatus;
+		}
 	}
 
 	/// <summary>Provides a handle to a WebSocket.</summary>
@@ -1140,6 +1233,17 @@ public static partial class WebSocket
 		/// <para>Length, in characters, of the HTTP value pointed to by <c>pcValue</c>.</para>
 		/// </summary>
 		public uint ulValueLength;
+
+		/// <summary>Initializes a new instance of the <see cref="WEB_SOCKET_HTTP_HEADER"/> struct.</summary>
+		/// <param name="name">The HTTP header name.</param>
+		/// <param name="value">The header value.</param>
+		public WEB_SOCKET_HTTP_HEADER(string name, string value)
+		{
+			pcName = name;
+			ulNameLength = (uint)name.Length;
+			pcValue = value;
+			ulValueLength = (uint)value.Length;
+		}
 	}
 
 	/// <summary>The <c>WEB_SOCKET_PROPERTY</c> structure contains a single WebSocket property.</summary>
@@ -1166,6 +1270,16 @@ public static partial class WebSocket
 		/// <para>The size, in bytes, of the property pointed to by <c>pvValue</c>.</para>
 		/// </summary>
 		public uint ulValueSize;
+
+		/// <summary>Initializes a new instance of the <see cref="WEB_SOCKET_PROPERTY"/> struct.</summary>
+		/// <param name="type">The WebSocket property type.</param>
+		/// <param name="value">The value to set.</param>
+		public WEB_SOCKET_PROPERTY(WEB_SOCKET_PROPERTY_TYPE type, SafeAllocatedMemoryHandle value)
+		{
+			Type = type;
+			pvValue = value;
+			ulValueSize = value.Size;
+		}
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WEB_SOCKET_HANDLE"/> that is disposed using <see cref="WebSocketDeleteHandle"/>.</summary>
