@@ -194,6 +194,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NugetPkgReadme.md = NugetPkgReadme.md
 		README.md = README.md
 		Vanara.Library.nuspec = Vanara.Library.nuspec
+		Vanara.snk = Vanara.snk
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc", "UnitTests\PInvoke\Opc\Opc.csproj", "{9783BAFF-8388-44FA-882B-A92142CC20F5}"
@@ -413,7 +414,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QoS", "UnitTests\PInvoke\Qo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WscApi", "PInvoke\WscApi\Vanara.PInvoke.WscApi.csproj", "{48F95024-8539-4958-A804-ED1C18A28F3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.WebSocket", "PInvoke\WebSocket\Vanara.PInvoke.WebSocket.csproj", "{2CF460E8-47EF-4C53-9748-A305EE59D06E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WebSocket", "PInvoke\WebSocket\Vanara.PInvoke.WebSocket.csproj", "{2CF460E8-47EF-4C53-9748-A305EE59D06E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.DirectManipulation", "PInvoke\DirectManipulation\Vanara.PInvoke.DirectManipulation.csproj", "{85D43F4C-5040-4A10-9B55-3C408068DADE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2768,6 +2771,24 @@ Global
 		{2CF460E8-47EF-4C53-9748-A305EE59D06E}.Release|x64.Build.0 = Release|Any CPU
 		{2CF460E8-47EF-4C53-9748-A305EE59D06E}.Release|x86.ActiveCfg = Release|Any CPU
 		{2CF460E8-47EF-4C53-9748-A305EE59D06E}.Release|x86.Build.0 = Release|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Debug|x64.Build.0 = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Debug|x86.Build.0 = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.DebugNoTests|x64.ActiveCfg = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.DebugNoTests|x64.Build.0 = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.DebugNoTests|x86.ActiveCfg = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.DebugNoTests|x86.Build.0 = Debug|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Release|x64.ActiveCfg = Release|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Release|x64.Build.0 = Release|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Release|x86.ActiveCfg = Release|Any CPU
+		{85D43F4C-5040-4A10-9B55-3C408068DADE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2949,6 +2970,7 @@ Global
 		{D8B0FBB6-8BBF-42BD-8844-8A2915CC95E5} = {385CAD2D-0A5E-4F80-927B-D5499D126B90}
 		{48F95024-8539-4958-A804-ED1C18A28F3C} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{2CF460E8-47EF-4C53-9748-A305EE59D06E} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{85D43F4C-5040-4A10-9B55-3C408068DADE} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
