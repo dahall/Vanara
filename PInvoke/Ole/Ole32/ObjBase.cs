@@ -1175,6 +1175,66 @@ namespace Vanara.PInvoke
 		// *pBindOptions, REFIID riid, void **ppv );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("objbase.h", MSDNShortId = "0f5c9ef5-3918-4f93-bfd1-1017029b3dc1")]
+		public static extern HRESULT CoGetObject([MarshalAs(UnmanagedType.LPWStr)] string pszName, [In] BIND_OPTS_V pBindOptions, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+
+		/// <summary>
+		/// Converts a display name into a moniker that identifies the object named, and then binds to the object identified by the moniker.
+		/// </summary>
+		/// <param name="pszName">The display name of the object to be created.</param>
+		/// <param name="pBindOptions">
+		/// The binding options used to create a moniker that creates the actual object. For details, see BIND_OPTS. This parameter can be <c>NULL</c>.
+		/// </param>
+		/// <param name="riid">A reference to the identifier of an interface that is implemented on the object to be created.</param>
+		/// <param name="ppv">The address of a pointer to the interface specified by riid on the object that is created.</param>
+		/// <returns>
+		/// <para>
+		/// This function can return the standard return values E_FAIL, E_OUTOFMEMORY, and E_UNEXPECTED, as well as the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The object was created successfully.</term>
+		/// </item>
+		/// <item>
+		/// <term>MK_E_SYNTAX</term>
+		/// <term>The pszName parameter is not a properly formed display name.</term>
+		/// </item>
+		/// <item>
+		/// <term>MK_E_NOOBJECT</term>
+		/// <term>
+		/// The object identified by this moniker, or some object identified by the composite moniker of which this moniker is a part, could
+		/// not be found.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MK_E_EXCEEDEDDEADLINE</term>
+		/// <term>The binding operation could not be completed within the time limit specified by the BIND_OPTS structure passed in pBindOptions.</term>
+		/// </item>
+		/// <item>
+		/// <term>MK_E_CONNECTMANUALLY</term>
+		/// <term>
+		/// The binding operation requires assistance from the end user. The most common reasons for returning this value are that a
+		/// password is needed or that a floppy needs to be mounted.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MK_E_INTERMEDIATEINTERFACENOTSUPPORTED</term>
+		/// <term>
+		/// An intermediate object was found but it did not support an interface required to complete the binding operation. For example, an
+		/// item moniker returns this value if its container does not support the IOleItemContainer interface.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks><c>CoGetObject</c> encapsulates calls to the COM library functions CreateBindCtx, MkParseDisplayName, and IMoniker::BindToObject.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-cogetobject HRESULT CoGetObject( LPCWSTR pszName, BIND_OPTS
+		// *pBindOptions, REFIID riid, void **ppv );
+		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("objbase.h", MSDNShortId = "0f5c9ef5-3918-4f93-bfd1-1017029b3dc1")]
 		public static extern HRESULT CoGetObject([MarshalAs(UnmanagedType.LPWStr)] string pszName, [Optional] IntPtr pBindOptions, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
