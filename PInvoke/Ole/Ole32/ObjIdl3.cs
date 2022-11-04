@@ -917,7 +917,7 @@ namespace Vanara.PInvoke
 			/// The LCID value indicating the client's preference for the locale to be used by the object to which they are binding. A
 			/// moniker passes this value to IClassActivator::GetClassObject.
 			/// </summary>
-			public uint locale;
+			public LCID locale;
 
 			/// <summary>
 			/// A pointer to a COSERVERINFO structure. This member allows clients calling IMoniker::BindToObject to specify server
