@@ -285,19 +285,19 @@ namespace Vanara.PInvoke
 			/// caller to restrict the query to specific pointer type. The PT_POINTER type can be used in these functions to specify that
 			/// the query is to include pointers of all types
 			/// </summary>
-			PT_POINTER,
+			PT_POINTER = 1,
 
 			/// <summary>Touch pointer type.</summary>
-			PT_TOUCH,
+			PT_TOUCH = 2,
 
 			/// <summary>Pen pointer type.</summary>
-			PT_PEN,
+			PT_PEN = 3,
 
 			/// <summary>Mouse pointer type.</summary>
-			PT_MOUSE,
+			PT_MOUSE = 4,
 
 			/// <summary>Touchpad pointer type (Windows 8.1 and later).</summary>
-			PT_TOUCHPAD,
+			PT_TOUCHPAD = 5,
 		}
 
 		/// <summary>Values that can appear in the touchFlags field of the POINTER_TOUCH_INFO structure.</summary>
