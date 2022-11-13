@@ -99,6 +99,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>The timer must be manually reset.</summary>
 			CREATE_WAITABLE_TIMER_MANUAL_RESET = 0x00000001,
+
+            /// <summary>Creates a high resolution timer.</summary>
+            CREATE_WAITABLE_TIMER_HIGH_RESOLUTION = 0x00000002,
 		}
 
 		/// <summary>Define the upper byte of the critical section SpinCount field.</summary>
