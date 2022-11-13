@@ -91,6 +91,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Used by CreateWaitableTimerEx</summary>
+        [Flags]
 		public enum CREATE_WAITABLE_TIMER_FLAG
 		{
 			/// <summary>The system automatically resets the timer after releasing a single waiting thread.</summary>

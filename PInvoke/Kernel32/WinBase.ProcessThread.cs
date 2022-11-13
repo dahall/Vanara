@@ -18,6 +18,7 @@ namespace Vanara.PInvoke
 		public delegate void FiberProc(IntPtr lpParameter);
 
 		/// <summary>The thread's execution requirements.</summary>
+        [Flags]
 		public enum EXECUTION_STATE : uint
 		{
 			/// <summary>
