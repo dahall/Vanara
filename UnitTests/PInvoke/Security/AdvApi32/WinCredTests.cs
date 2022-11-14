@@ -64,9 +64,15 @@ namespace Vanara.PInvoke.Tests
 		{
 			Assert.That(CredRead(genCred.TargetName, genCred.Type, out var cred), ResultIs.Successful);
 			Assert.That(cred.UserName, Is.EqualTo(genCred.UserName));
-		}
+        }
 
-		[Test]
+        [Test]
+        public void CredReadNegativeTest()
+        {
+            Assert.That(CredRead(Guid.NewGuid().ToString(), CRED_TYPE.CRED_TYPE_GENERIC, out var cred), ResultIs.Failure);
+        }
+
+        [Test]
 		public void CredWriteTest()
 		{
 			const string targetName = "my.urn.pri";
