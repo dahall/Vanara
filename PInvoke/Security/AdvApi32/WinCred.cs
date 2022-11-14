@@ -902,7 +902,7 @@ namespace Vanara.PInvoke
 		{
 			var b = CredRead(TargetName, Type, 0, out var cred);
 			using (cred)
-				Credential = b ? cred : default;
+				Credential = b ? cred : default(CREDENTIAL_MGD);
 			return b;
 		}
 
