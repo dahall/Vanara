@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable IDE1006 // Naming Styles
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -67,7 +69,7 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>The clipboard format.</summary>
-			public uint ClipboardFormat => ulClipFmt == -1 || ulClipFmt == -2 ? (uint)Marshal.ReadInt32(pClipData) : 0;
+			public uint ClipboardFormat => ulClipFmt is (-1) or (-2) ? (uint)Marshal.ReadInt32(pClipData) : 0;
 
 			/// <summary>The clipboard name.</summary>
 			public string ClipboardFormatName => ulClipFmt > 0 ? Marshal.PtrToStringUni(pClipData) : null;
@@ -76,27 +78,15 @@ namespace Vanara.PInvoke
 			public Guid FMTID => ulClipFmt == -3 ? pClipData.ToStructure<Guid>() : Guid.Empty;
 
 			/// <inheritdoc/>
-			public override string ToString()
+			public override string ToString() => ulClipFmt switch
 			{
-				switch (ulClipFmt)
-				{
-					case 0:
-						return "[No data]";
-
-					case -1:
-					case -2:
-						return $"CF={ClipboardFormat}";
-
-					case -3:
-						return $"FMTID={FMTID:B}";
-
-					default:
-						return $"Name={ClipboardFormatName}";
-				}
-			}
+				0 => "[No data]",
+				-1 or -2 => $"CF={ClipboardFormat}",
+				-3 => $"FMTID={FMTID:B}",
+				_ => $"Name={ClipboardFormatName}",
+			};
 		}
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct PACKEDMETA
 		{
@@ -105,7 +95,6 @@ namespace Vanara.PInvoke
 			public ushort yExt;
 			public ushort reserved;
 		}
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 		/// <summary>
 		/// The PROPVARIANT structure is used in the ReadMultiple and WriteMultiple methods of IPropertyStorage to define the type tag and
@@ -280,11 +269,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets a value indicating whether this instance is null or empty.</summary>
 			/// <value><c>true</c> if this instance is null or empty; otherwise, <c>false</c>.</value>
-			public bool IsNullOrEmpty => vt == VARTYPE.VT_EMPTY || vt == VARTYPE.VT_NULL;
+			public bool IsNullOrEmpty => vt is VARTYPE.VT_EMPTY or VARTYPE.VT_NULL;
 
 			/// <summary>Gets a value indicating whether this instance is a string.</summary>
 			/// <value><c>true</c> if this instance is a VT_BSTR or VT_LPWSTR; otherwise, <c>false</c>.</value>
-			public bool IsString => vt == VARTYPE.VT_BSTR || vt == VARTYPE.VT_LPWSTR;
+			public bool IsString => vt is VARTYPE.VT_BSTR or VARTYPE.VT_LPWSTR;
 
 			/// <summary>Gets a value indicating whether this instance has a vector type.</summary>
 			/// <value><c>true</c> if this instance is a VT_ARRAY or VT_VECTOR; otherwise, <c>false</c>.</value>
@@ -320,7 +309,7 @@ namespace Vanara.PInvoke
 				get
 				{
 					var d = GetRawValue<long>();
-					return d.HasValue ? decimal.FromOACurrency(d.Value) : (decimal?)null;
+					return d.HasValue ? decimal.FromOACurrency(d.Value) : null;
 				}
 			}
 
@@ -330,7 +319,7 @@ namespace Vanara.PInvoke
 				get
 				{
 					var d = GetRawValue<double>();
-					return d.HasValue ? DateTime.FromOADate(d.Value) : (DateTime?)null;
+					return d.HasValue ? DateTime.FromOADate(d.Value) : null;
 				}
 			}
 
@@ -367,7 +356,7 @@ namespace Vanara.PInvoke
 				get
 				{
 					var r = GetRawValue<uint>();
-					return r.HasValue ? new Win32Error(r.Value) : (Win32Error?)null;
+					return r.HasValue ? new Win32Error(r.Value) : null;
 				}
 			}
 
@@ -405,7 +394,7 @@ namespace Vanara.PInvoke
 			public string pwszVal => GetString(VarType);
 
 			/// <summary>Gets the Win32Error value.</summary>
-			public Win32Error scode => new Win32Error(GetRawValue<uint>().GetValueOrDefault());
+			public Win32Error scode => new(GetRawValue<uint>().GetValueOrDefault());
 
 			/// <summary>Gets the ulong value.</summary>
 			public ulong uhVal => GetRawValue<ulong>().GetValueOrDefault();
@@ -430,40 +419,12 @@ namespace Vanara.PInvoke
 			/// <value>The value type.</value>
 			public VarEnum VarType { get => (VarEnum)vt; set => vt = (VARTYPE)value; }
 
-			private bool IsPrimitive
+			private bool IsPrimitive => vt switch
 			{
-				get
-				{
-					switch (vt)
-					{
-						// Signed
-						case VARTYPE.VT_I1:
-						case VARTYPE.VT_I2:
-						case VARTYPE.VT_I4:
-						case VARTYPE.VT_I8:
-						// Unsigned
-						case VARTYPE.VT_UI1:
-						case VARTYPE.VT_UI2:
-						case VARTYPE.VT_UI4:
-						case VARTYPE.VT_UI8:
-						// Converts to int or uint
-						case VARTYPE.VT_BOOL:
-						case VARTYPE.VT_ERROR:
-						case VARTYPE.VT_HRESULT:
-						case VARTYPE.VT_INT:
-						case VARTYPE.VT_UINT:
-						// Floats
-						case VARTYPE.VT_R4:
-						case VARTYPE.VT_R8:
-						// Dates
-						case VARTYPE.VT_DATE:
-						case VARTYPE.VT_FILETIME:
-							return true;
-						default:
-							return false;
-					}
-				}
-			}
+				// Signed
+				VARTYPE.VT_I1 or VARTYPE.VT_I2 or VARTYPE.VT_I4 or VARTYPE.VT_I8 or VARTYPE.VT_UI1 or VARTYPE.VT_UI2 or VARTYPE.VT_UI4 or VARTYPE.VT_UI8 or VARTYPE.VT_BOOL or VARTYPE.VT_ERROR or VARTYPE.VT_HRESULT or VARTYPE.VT_INT or VARTYPE.VT_UINT or VARTYPE.VT_R4 or VARTYPE.VT_R8 or VARTYPE.VT_DATE or VARTYPE.VT_FILETIME => true,
+				_ => false,
+			};
 
 			/// <summary>Creates a new <see cref="PROPVARIANT"/> instance from a pointer to a VARIANT.</summary>
 			/// <param name="pSrcNativeVariant">A pointer to a native in-memory VARIANT.</param>
@@ -554,57 +515,26 @@ namespace Vanara.PInvoke
 				}
 				if (elemtype == typeof(IntPtr))
 					return VARTYPE.VT_PTR;
-				switch (Type.GetTypeCode(elemtype))
+				return Type.GetTypeCode(elemtype) switch
 				{
-					case TypeCode.DBNull:
-						return ret | VARTYPE.VT_NULL;
-
-					case TypeCode.Boolean:
-						return ret | VARTYPE.VT_BOOL;
-
-					case TypeCode.Char:
-						return ret | VARTYPE.VT_LPWSTR;
-
-					case TypeCode.SByte:
-						return ret | VARTYPE.VT_I1;
-
-					case TypeCode.Byte:
-						return ret | VARTYPE.VT_UI1;
-
-					case TypeCode.Int16:
-						return ret | VARTYPE.VT_I2;
-
-					case TypeCode.UInt16:
-						return ret | VARTYPE.VT_UI2;
-
-					case TypeCode.Int32:
-						return ret | VARTYPE.VT_I4;
-
-					case TypeCode.UInt32:
-						return ret | VARTYPE.VT_UI4;
-
-					case TypeCode.Int64:
-						return ret | VARTYPE.VT_I8;
-
-					case TypeCode.UInt64:
-						return ret | VARTYPE.VT_UI8;
-
-					case TypeCode.Single:
-						return ret | VARTYPE.VT_R4;
-
-					case TypeCode.Double:
-						return ret | VARTYPE.VT_R8;
-
-					case TypeCode.Decimal:
-						return type.IsArray ? VARTYPE.VT_VECTOR | VARTYPE.VT_DECIMAL : VARTYPE.VT_DECIMAL | VARTYPE.VT_BYREF;
-
-					case TypeCode.DateTime:
-						return ret | VARTYPE.VT_DATE;
-
-					case TypeCode.String:
-						return ret | VARTYPE.VT_LPWSTR;
-				}
-				return ret | VARTYPE.VT_USERDEFINED;
+					TypeCode.DBNull => ret | VARTYPE.VT_NULL,
+					TypeCode.Boolean => ret | VARTYPE.VT_BOOL,
+					TypeCode.Char => ret | VARTYPE.VT_LPWSTR,
+					TypeCode.SByte => ret | VARTYPE.VT_I1,
+					TypeCode.Byte => ret | VARTYPE.VT_UI1,
+					TypeCode.Int16 => ret | VARTYPE.VT_I2,
+					TypeCode.UInt16 => ret | VARTYPE.VT_UI2,
+					TypeCode.Int32 => ret | VARTYPE.VT_I4,
+					TypeCode.UInt32 => ret | VARTYPE.VT_UI4,
+					TypeCode.Int64 => ret | VARTYPE.VT_I8,
+					TypeCode.UInt64 => ret | VARTYPE.VT_UI8,
+					TypeCode.Single => ret | VARTYPE.VT_R4,
+					TypeCode.Double => ret | VARTYPE.VT_R8,
+					TypeCode.Decimal => type.IsArray ? VARTYPE.VT_VECTOR | VARTYPE.VT_DECIMAL : VARTYPE.VT_DECIMAL | VARTYPE.VT_BYREF,
+					TypeCode.DateTime => ret | VARTYPE.VT_DATE,
+					TypeCode.String => ret | VARTYPE.VT_LPWSTR,
+					_ => ret | VARTYPE.VT_USERDEFINED,
+				};
 			}
 
 			/// <summary>
@@ -761,24 +691,13 @@ namespace Vanara.PInvoke
 				}
 			}
 
-			private static string GetString(VarEnum ve, IntPtr ptr)
+			private static string GetString(VarEnum ve, IntPtr ptr) => (VARTYPE)ve switch
 			{
-				switch ((VARTYPE)ve)
-				{
-					case VARTYPE.VT_LPSTR:
-						return Marshal.PtrToStringAnsi(ptr);
-
-					case VARTYPE.VT_LPWSTR:
-						return Marshal.PtrToStringUni(ptr);
-
-					case VARTYPE.VT_BSTR:
-					case VARTYPE.VT_BSTR | VARTYPE.VT_BYREF:
-						return Marshal.PtrToStringBSTR(ptr);
-
-					default:
-						throw new InvalidCastException("Cannot cast this type to a string.");
-				}
-			}
+				VARTYPE.VT_LPSTR => Marshal.PtrToStringAnsi(ptr),
+				VARTYPE.VT_LPWSTR => Marshal.PtrToStringUni(ptr),
+				VARTYPE.VT_BSTR or VARTYPE.VT_BSTR | VARTYPE.VT_BYREF => Marshal.PtrToStringBSTR(ptr),
+				_ => throw new InvalidCastException("Cannot cast this type to a string."),
+			};
 
 			private T? GetRawValue<T>() where T : struct
 			{
@@ -860,108 +779,39 @@ namespace Vanara.PInvoke
 				var isVector = vt.IsFlagSet(VARTYPE.VT_VECTOR);
 				var isRef = vt.IsFlagSet(VARTYPE.VT_BYREF);
 				var elemType = (VARTYPE)((int)vt & 0xFFF);
-				switch (elemType)
+				return elemType switch
 				{
-					case VARTYPE.VT_NULL:
-						return DBNull.Value;
-
-					case VARTYPE.VT_I1:
-						return isRef ? pcVal : (isVector ? cac : (object)cVal);
-
-					case VARTYPE.VT_UI1:
-						return isRef ? pbVal : (isVector ? caub : (object)bVal);
-
-					case VARTYPE.VT_I2:
-						return isRef ? piVal : (isVector ? cai : (object)iVal);
-
-					case VARTYPE.VT_UI2:
-						return isRef ? puiVal : (isVector ? caui : (object)uiVal);
-
-					case VARTYPE.VT_INT:
-					case VARTYPE.VT_I4:
-						return isRef ? plVal : (isVector ? cal : (object)lVal);
-
-					case VARTYPE.VT_UINT:
-					case VARTYPE.VT_UI4:
-						return isRef ? pulVal : (isVector ? caul : (object)ulVal);
-
-					case VARTYPE.VT_I8:
-						return isRef ? hVal : (isVector ? cah : (object)hVal);
-
-					case VARTYPE.VT_UI8:
-						return isRef ? uhVal : (isVector ? cauh : (object)uhVal);
-
-					case VARTYPE.VT_R4:
-						return isRef ? pfltVal : (isVector ? caflt : (object)fltVal);
-
-					case VARTYPE.VT_R8:
-						return isRef ? dblVal : (isVector ? cadbl : (object)dblVal);
-
-					case VARTYPE.VT_BOOL:
-						return isRef ? pboolVal : (isVector ? cabool : (object)boolVal);
-
-					case VARTYPE.VT_ERROR:
-						return isRef ? pscode : (isVector ? cascode : (object)scode);
-
-					case VARTYPE.VT_HRESULT:
-						return isRef
-							? (pulVal.HasValue ? new HRESULT(plVal.Value) : (HRESULT?)null)
-							: (isVector ? cal.Select(u => new HRESULT(u)) : (object)new HRESULT(lVal));
-
-					case VARTYPE.VT_CY:
-						return isRef ? pcyVal : (isVector ? cacy : (object)cyVal);
-
-					case VARTYPE.VT_DATE:
-						return isRef ? pdate : (isVector ? cadate : (object)date);
-
-					case VARTYPE.VT_FILETIME:
-						return isRef ? filetime : (isVector ? cafiletime : (object)filetime);
-
-					case VARTYPE.VT_CLSID:
-						return isRef ? puuid : (isVector ? cauuid : (object)puuid.GetValueOrDefault());
-
-					case VARTYPE.VT_CF:
-						return isRef ? pclipdata : (isVector ? caclipdata : (object)pclipdata);
-
-					case VARTYPE.VT_BSTR:
-						return isRef ? pbstrVal : (isVector ? cabstr : (object)bstrVal);
-
-					case VARTYPE.VT_BLOB:
-						return isRef ? _blob : (isVector ? null : (object)_blob);
-
-					case VARTYPE.VT_LPSTR:
-						return isRef ? pszVal : (isVector ? calpstr : (object)pszVal);
-
-					case VARTYPE.VT_LPWSTR:
-						return isRef ? pwszVal : (isVector ? calpwstr : (object)pwszVal);
-
-					case VARTYPE.VT_UNKNOWN:
-					case VARTYPE.VT_DISPATCH:
-						return isVector ? GetVector<IntPtr>()?.Select(Marshal.GetObjectForIUnknown) : (isRef ? ppunkVal : punkVal);
-
-					case VARTYPE.VT_STREAM:
-					case VARTYPE.VT_STREAMED_OBJECT:
-						return isRef ? pStream : (isVector ? null : pStream);
-
-					case VARTYPE.VT_STORAGE:
-					case VARTYPE.VT_STORED_OBJECT:
-						return isRef ? pStorage : (isVector ? null : pStorage);
-
-					case VARTYPE.VT_DECIMAL:
-						return isRef ? pdecVal : (isVector ? GetVector<decimal>() : (object)pdecVal.GetValueOrDefault());
-
-					case VARTYPE.VT_VARIANT:
-						return isRef ? pvarVal : (isVector ? GetVector<PROPVARIANT>() : (object)pvarVal);
-
-					case VARTYPE.VT_USERDEFINED:
-					case VARTYPE.VT_RECORD:
-					case VARTYPE.VT_PTR:
-					case VARTYPE.VT_VOID:
-						throw new ArgumentOutOfRangeException(nameof(vt), $"{vt}");
-
-					default:
-						return null;
-				}
+					VARTYPE.VT_NULL => DBNull.Value,
+					VARTYPE.VT_I1 => isRef ? pcVal : (isVector ? cac : cVal),
+					VARTYPE.VT_UI1 => isRef ? pbVal : (isVector ? caub : bVal),
+					VARTYPE.VT_I2 => isRef ? piVal : (isVector ? cai : iVal),
+					VARTYPE.VT_UI2 => isRef ? puiVal : (isVector ? caui : uiVal),
+					VARTYPE.VT_INT or VARTYPE.VT_I4 => isRef ? plVal : (isVector ? cal : lVal),
+					VARTYPE.VT_UINT or VARTYPE.VT_UI4 => isRef ? pulVal : (isVector ? caul : ulVal),
+					VARTYPE.VT_I8 => isRef ? hVal : (isVector ? cah : hVal),
+					VARTYPE.VT_UI8 => isRef ? uhVal : (isVector ? cauh : uhVal),
+					VARTYPE.VT_R4 => isRef ? pfltVal : (isVector ? caflt : fltVal),
+					VARTYPE.VT_R8 => isRef ? dblVal : (isVector ? cadbl : dblVal),
+					VARTYPE.VT_BOOL => isRef ? pboolVal : (isVector ? cabool : boolVal),
+					VARTYPE.VT_ERROR => isRef ? pscode : (isVector ? cascode : scode),
+					VARTYPE.VT_HRESULT => isRef ? (pulVal.HasValue ? new HRESULT(plVal.Value) : (HRESULT?)null) : (isVector ? cal.Select(u => new HRESULT(u)) : new HRESULT(lVal)),
+					VARTYPE.VT_CY => isRef ? pcyVal : (isVector ? cacy : cyVal),
+					VARTYPE.VT_DATE => isRef ? pdate : (isVector ? cadate : date),
+					VARTYPE.VT_FILETIME => isRef ? filetime : (isVector ? cafiletime : filetime),
+					VARTYPE.VT_CLSID => isRef ? puuid : (isVector ? cauuid : puuid.GetValueOrDefault()),
+					VARTYPE.VT_CF => isRef ? pclipdata : (isVector ? caclipdata : pclipdata),
+					VARTYPE.VT_BSTR => isRef ? pbstrVal : (isVector ? cabstr : bstrVal),
+					VARTYPE.VT_BLOB => isRef ? _blob : (isVector ? null : _blob),
+					VARTYPE.VT_LPSTR => isRef ? pszVal : (isVector ? calpstr : pszVal),
+					VARTYPE.VT_LPWSTR => isRef ? pwszVal : (isVector ? calpwstr : pwszVal),
+					VARTYPE.VT_UNKNOWN or VARTYPE.VT_DISPATCH => isVector ? GetVector<IntPtr>()?.Select(Marshal.GetObjectForIUnknown) : (isRef ? ppunkVal : punkVal),
+					VARTYPE.VT_STREAM or VARTYPE.VT_STREAMED_OBJECT => isRef ? pStream : (isVector ? null : pStream),
+					VARTYPE.VT_STORAGE or VARTYPE.VT_STORED_OBJECT => isRef ? pStorage : (isVector ? null : pStorage),
+					VARTYPE.VT_DECIMAL => isRef ? pdecVal : (isVector ? GetVector<decimal>() : pdecVal.GetValueOrDefault()),
+					VARTYPE.VT_VARIANT => isRef ? pvarVal : (isVector ? GetVector<PROPVARIANT>() : pvarVal),
+					VARTYPE.VT_USERDEFINED or VARTYPE.VT_RECORD or VARTYPE.VT_PTR or VARTYPE.VT_VOID => throw new ArgumentOutOfRangeException(nameof(vt), $"{vt}"),
+					_ => null,
+				};
 			}
 
 			private IEnumerable<T> GetVector<T>() => vt.IsFlagSet(VARTYPE.VT_VECTOR) ? (_blob.cbSize <= 0 ? new T[0] : _blob.pBlobData.ToArray<T>((int)_blob.cbSize)) : throw new InvalidCastException();
@@ -1329,12 +1179,12 @@ namespace Vanara.PInvoke
 			/// <summary>Performs an implicit conversion from <see cref="PROPVARIANT"/> to <see cref="PROPVARIANT_IMMUTABLE"/>.</summary>
 			/// <param name="pv">The PROPVARIANT instance.</param>
 			/// <returns>The resulting <see cref="PROPVARIANT_IMMUTABLE"/> instance from the conversion.</returns>
-			public static implicit operator PROPVARIANT_IMMUTABLE(PROPVARIANT pv) => new PROPVARIANT_IMMUTABLE { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _ulong = pv._ulong };
+			public static implicit operator PROPVARIANT_IMMUTABLE(PROPVARIANT pv) => new() { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _ulong = pv._ulong };
 
 			/// <summary>Performs an implicit conversion from <see cref="PROPVARIANT_IMMUTABLE"/> to <see cref="PROPVARIANT"/>.</summary>
 			/// <param name="pv">The PROPVARIANT_IMMUTABLE instance.</param>
 			/// <returns>The resulting <see cref="PROPVARIANT"/> instance from the conversion.</returns>
-			public static explicit operator PROPVARIANT(in PROPVARIANT_IMMUTABLE pv) => new PROPVARIANT { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _ulong = pv._ulong };
+			public static explicit operator PROPVARIANT(in PROPVARIANT_IMMUTABLE pv) => new() { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _ulong = pv._ulong };
 		}
 	}
 }
