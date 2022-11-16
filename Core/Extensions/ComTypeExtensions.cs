@@ -15,11 +15,10 @@ namespace Vanara.Extensions
 		public static IEnumerable<string> Enum(this IEnumString iEnumString)
 		{
 			if (iEnumString is null) yield break;
-			var ret = 0;
+			using SafeCoTaskMemStruct<uint> ret = new();
 			var items = new string[1];
-			using (var pret = new PinnedObject(ret))
-				while (iEnumString.Next(1, items, pret) == 0 && ret == 1)
-					yield return items[0];
+			while (iEnumString.Next(1, items, ret) == 0 && ret.Value == 1)
+				yield return items[0];
 		}
 	}
 }
