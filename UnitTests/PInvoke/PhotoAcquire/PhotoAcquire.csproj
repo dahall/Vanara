@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.PhotoAcquire</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\PhotoAcquire\Vanara.PInvoke.PhotoAcquire.csproj" />
+  </ItemGroup>
+</Project>
