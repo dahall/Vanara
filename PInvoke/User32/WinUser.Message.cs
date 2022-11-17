@@ -1706,6 +1706,167 @@ namespace Vanara.PInvoke
 		public static extern bool PeekMessage(out MSG lpMsg, [Optional] HWND hWnd, [Optional] uint wMsgFilterMin, [Optional] uint wMsgFilterMax, [Optional] PM wRemoveMsg);
 
 		/// <summary>
+		/// Dispatches incoming sent messages, checks the thread message queue for a posted message, and retrieves the message (if any exist).
+		/// </summary>
+		/// <typeparam name="TMsg">The type of <paramref name="wMsgFilterMin"/> and <paramref name="wMsgFilterMax"/>.</typeparam>
+		/// <param name="lpMsg">
+		/// <para>Type: <c>LPMSG</c></para>
+		/// <para>A pointer to an MSG structure that receives message information.</para>
+		/// </param>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window whose messages are to be retrieved. The window must belong to the current thread.</para>
+		/// <para>
+		/// If hWnd is <c>NULL</c>, <c>PeekMessage</c> retrieves messages for any window that belongs to the current thread, and any messages
+		/// on the current thread's message queue whose <c>hwnd</c> value is <c>NULL</c> (see the MSG structure). Therefore if hWnd is
+		/// <c>NULL</c>, both window messages and thread messages are processed.
+		/// </para>
+		/// <para>
+		/// If hWnd is -1, <c>PeekMessage</c> retrieves only messages on the current thread's message queue whose <c>hwnd</c> value is
+		/// <c>NULL</c>, that is, thread messages as posted by PostMessage (when the hWnd parameter is <c>NULL</c>) or PostThreadMessage.
+		/// </para>
+		/// </param>
+		/// <param name="wMsgFilterMin">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The value of the first message in the range of messages to be examined. Use <c>WM_KEYFIRST</c> (0x0100) to specify the first
+		/// keyboard message or <c>WM_MOUSEFIRST</c> (0x0200) to specify the first mouse message.
+		/// </para>
+		/// <para>
+		/// If wMsgFilterMin and wMsgFilterMax are both zero, <c>PeekMessage</c> returns all available messages (that is, no range filtering
+		/// is performed).
+		/// </para>
+		/// </param>
+		/// <param name="wMsgFilterMax">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The value of the last message in the range of messages to be examined. Use <c>WM_KEYLAST</c> to specify the last keyboard message
+		/// or <c>WM_MOUSELAST</c> to specify the last mouse message.
+		/// </para>
+		/// <para>
+		/// If wMsgFilterMin and wMsgFilterMax are both zero, <c>PeekMessage</c> returns all available messages (that is, no range filtering
+		/// is performed).
+		/// </para>
+		/// </param>
+		/// <param name="wRemoveMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Specifies how messages are to be handled. This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PM_NOREMOVE 0x0000</term>
+		/// <term>Messages are not removed from the queue after processing by PeekMessage.</term>
+		/// </item>
+		/// <item>
+		/// <term>PM_REMOVE 0x0001</term>
+		/// <term>Messages are removed from the queue after processing by PeekMessage.</term>
+		/// </item>
+		/// <item>
+		/// <term>PM_NOYIELD 0x0002</term>
+		/// <term>
+		/// Prevents the system from releasing any thread that is waiting for the caller to go idle (see WaitForInputIdle). Combine this
+		/// value with either PM_NOREMOVE or PM_REMOVE.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// By default, all message types are processed. To specify that only certain message should be processed, specify one or more of the
+		/// following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PM_QS_INPUT (QS_INPUT &lt;&lt; 16)</term>
+		/// <term>Process mouse and keyboard messages.</term>
+		/// </item>
+		/// <item>
+		/// <term>PM_QS_PAINT (QS_PAINT &lt;&lt; 16)</term>
+		/// <term>Process paint messages.</term>
+		/// </item>
+		/// <item>
+		/// <term>PM_QS_POSTMESSAGE ((QS_POSTMESSAGE | QS_HOTKEY | QS_TIMER) &lt;&lt; 16)</term>
+		/// <term>Process all posted messages, including timers and hotkeys.</term>
+		/// </item>
+		/// <item>
+		/// <term>PM_QS_SENDMESSAGE (QS_SENDMESSAGE &lt;&lt; 16)</term>
+		/// <term>Process all sent messages.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
+		/// <para>If a message is available, the return value is nonzero.</para>
+		/// <para>If no messages are available, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>PeekMessage</c> retrieves messages associated with the window identified by the hWnd parameter or any of its children as
+		/// specified by the IsChild function, and within the range of message values given by the wMsgFilterMin and wMsgFilterMax
+		/// parameters. Note that an application can only use the low word in the wMsgFilterMin and wMsgFilterMax parameters; the high word
+		/// is reserved for the system.
+		/// </para>
+		/// <para>
+		/// Note that <c>PeekMessage</c> always retrieves WM_QUIT messages, no matter which values you specify for wMsgFilterMin and wMsgFilterMax.
+		/// </para>
+		/// <para>
+		/// During this call, the system delivers pending, non-queued messages, that is, messages sent to windows owned by the calling thread
+		/// using the SendMessage, SendMessageCallback, SendMessageTimeout, or SendNotifyMessage function. Then the first queued message that
+		/// matches the specified filter is retrieved. The system may also process internal events. If no filter is specified, messages are
+		/// processed in the following order:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Sent messages</term>
+		/// </item>
+		/// <item>
+		/// <term>Posted messages</term>
+		/// </item>
+		/// <item>
+		/// <term>Input (hardware) messages and system internal events</term>
+		/// </item>
+		/// <item>
+		/// <term>Sent messages (again)</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_PAINT messages</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_TIMER messages</term>
+		/// </item>
+		/// </list>
+		/// <para>To retrieve input messages before posted messages, use the wMsgFilterMin and wMsgFilterMax parameters.</para>
+		/// <para>
+		/// The <c>PeekMessage</c> function normally does not remove WM_PAINT messages from the queue. <c>WM_PAINT</c> messages remain in the
+		/// queue until they are processed. However, if a <c>WM_PAINT</c> message has a <c>NULL</c> update region, <c>PeekMessage</c> does
+		/// remove it from the queue.
+		/// </para>
+		/// <para>
+		/// If a top-level window stops responding to messages for more than several seconds, the system considers the window to be not
+		/// responding and replaces it with a ghost window that has the same z-order, location, size, and visual attributes. This allows the
+		/// user to move it, resize it, or even close the application. However, these are the only actions available because the application
+		/// is actually not responding. When an application is being debugged, the system does not generate a ghost window.
+		/// </para>
+		/// <para>DPI Virtualization</para>
+		/// <para>
+		/// This API does not participate in DPI virtualization. The output is in the mode of the window that the message is targeting. The
+		/// calling thread is not taken into consideration.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Examining a Message Queue.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-peekmessagea BOOL PeekMessageA( LPMSG lpMsg, HWND hWnd,
+		// UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg );
+		[PInvokeData("winuser.h")]
+		public static bool PeekMessage<TMsg>(out MSG lpMsg, [Optional] HWND hWnd, TMsg wMsgFilterMin, TMsg wMsgFilterMax, [Optional] PM wRemoveMsg) where TMsg : struct, IConvertible =>
+			PeekMessage(out lpMsg, hWnd, Convert.ToUInt32(wMsgFilterMin), Convert.ToUInt32(wMsgFilterMax), wRemoveMsg);
+
+		/// <summary>
 		/// <para>
 		/// Places (posts) a message in the message queue associated with the thread that created the specified window and returns without
 		/// waiting for the thread to process the message.
@@ -1802,6 +1963,103 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool PostMessage([Optional] HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
+
+		/// <summary>
+		/// <para>
+		/// Places (posts) a message in the message queue associated with the thread that created the specified window and returns without
+		/// waiting for the thread to process the message.
+		/// </para>
+		/// <para>To post a message in the message queue associated with a thread, use the PostThreadMessage function.</para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window whose window procedure is to receive the message. The following values have special meanings.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>HWND_BROADCAST ((HWND)0xffff)</term>
+		/// <term>
+		/// The message is posted to all top-level windows in the system, including disabled or invisible unowned windows, overlapped
+		/// windows, and pop-up windows. The message is not posted to child windows.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>NULL</term>
+		/// <term>
+		/// The function behaves like a call to PostThreadMessage with the dwThreadId parameter set to the identifier of the current thread.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Starting with Windows Vista, message posting is subject to UIPI. The thread of a process can post messages only to message queues
+		/// of threads in processes of lesser or equal integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="Msg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The message to be posted.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional message-specific information.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional message-specific information.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. <c>GetLastError</c>
+		/// returns <c>ERROR_NOT_ENOUGH_QUOTA</c> when the limit is hit.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>When a message is blocked by UIPI the last error, retrieved with GetLastError, is set to 5 (access denied).</para>
+		/// <para>Messages in a message queue are retrieved by calls to the GetMessage or PeekMessage function.</para>
+		/// <para>
+		/// Applications that need to communicate using <c>HWND_BROADCAST</c> should use the RegisterWindowMessage function to obtain a
+		/// unique message for inter-application communication.
+		/// </para>
+		/// <para>
+		/// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
+		/// <c>WM_USER</c>) to another process, you must do custom marshaling.
+		/// </para>
+		/// <para>
+		/// If you send a message in the range below WM_USER to the asynchronous message functions ( <c>PostMessage</c>, SendNotifyMessage,
+		/// and SendMessageCallback), its message parameters cannot include pointers. Otherwise, the operation will fail. The functions will
+		/// return before the receiving thread has had a chance to process the message and the sender will free the memory before it is used.
+		/// </para>
+		/// <para>Do not post the WM_QUIT message using <c>PostMessage</c>; use the PostQuitMessage function.</para>
+		/// <para>
+		/// An accessibility application can use <c>PostMessage</c> to post WM_APPCOMMAND messages to the shell to launch applications. This
+		/// functionality is not guaranteed to work for other types of applications.
+		/// </para>
+		/// <para>
+		/// There is a limit of 10,000 posted messages per message queue. This limit should be sufficiently large. If your application
+		/// exceeds the limit, it should be redesigned to avoid consuming so many system resources. To adjust this limit, modify the
+		/// following registry key.
+		/// </para>
+		/// <para><c>HKEY_LOCAL_MACHINE</c><c>SOFTWARE</c><c>Microsoft</c><c>Windows NT</c><c>CurrentVersion</c><c>Windows</c><c>USERPostMessageLimit</c></para>
+		/// <para>The minimum acceptable value is 4000.</para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example shows how to post a private window message using the <c>PostMessage</c> function. Assume you defined a
+		/// private window message called <c>WM_COMPLETE</c>:
+		/// </para>
+		/// <para>You can post a message to the message queue associated with the thread that created the specified window as shown below:</para>
+		/// <para>For more examples, see Initiating a Data Link.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-postmessagea BOOL PostMessageA( HWND hWnd, UINT Msg,
+		// WPARAM wParam, LPARAM lParam );
+		[PInvokeData("winuser.h")]
+		public static bool PostMessage<TMsg>([Optional] HWND hWnd, TMsg Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam) where TMsg : struct, IConvertible =>
+			PostMessage(hWnd, Convert.ToUInt32(Msg), wParam, lParam);
 
 		/// <summary>
 		/// Indicates to the system that a thread has made a request to terminate (quit). It is typically used in response to a WM_DESTROY message.
