@@ -418,7 +418,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.WebSocket", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.PhotoAcquire", "PInvoke\PhotoAcquire\Vanara.PInvoke.PhotoAcquire.csproj", "{C974F9A5-3811-4461-AFAE-1C40977485FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoAcquire", "UnitTests\PInvoke\PhotoAcquire\PhotoAcquire.csproj", "{D5912660-058F-4A63-A979-B7C828D7F41B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoAcquire", "UnitTests\PInvoke\PhotoAcquire\PhotoAcquire.csproj", "{D5912660-058F-4A63-A979-B7C828D7F41B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2798,13 +2798,11 @@ Global
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.Debug|x86.Build.0 = Debug|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.DebugNoTests|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5912660-058F-4A63-A979-B7C828D7F41B}.DebugNoTests|Any CPU.Build.0 = Debug|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.DebugNoTests|x64.ActiveCfg = Debug|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.DebugNoTests|x64.Build.0 = Debug|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.DebugNoTests|x86.ActiveCfg = Debug|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.DebugNoTests|x86.Build.0 = Debug|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5912660-058F-4A63-A979-B7C828D7F41B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.Release|x64.ActiveCfg = Release|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.Release|x64.Build.0 = Release|Any CPU
 		{D5912660-058F-4A63-A979-B7C828D7F41B}.Release|x86.ActiveCfg = Release|Any CPU
