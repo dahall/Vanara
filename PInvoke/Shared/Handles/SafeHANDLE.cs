@@ -58,6 +58,11 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the operator.</returns>
 		public static bool operator ==(SafeHANDLE h1, IntPtr h2) => h1?.Equals(h2) ?? false;
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeHANDLE"/> to <see cref="HANDLE"/>.</summary>
+		/// <param name="h">The safe handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HANDLE(SafeHANDLE h) => h.handle;
+
 		/// <summary>Determines whether the specified <see cref="SafeHANDLE"/>, is equal to this instance.</summary>
 		/// <param name="other">The <see cref="SafeHANDLE"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="SafeHANDLE"/> is equal to this instance; otherwise, <c>false</c>.</returns>
