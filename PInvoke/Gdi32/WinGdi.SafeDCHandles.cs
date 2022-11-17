@@ -60,6 +60,9 @@ namespace Vanara.PInvoke
 
 			private SafeHBITMAP() : base() { }
 
+			/// <summary>A NULL value for this handle.</summary>
+			public static readonly SafeHBITMAP Null = new(IntPtr.Zero, false);
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeHBITMAP"/> to <see cref="HBITMAP"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
@@ -88,6 +91,9 @@ namespace Vanara.PInvoke
 
 			private SafeHBRUSH() : base() { }
 
+			/// <summary>A NULL value for this handle.</summary>
+			public static readonly SafeHBRUSH Null = new(IntPtr.Zero, false);
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeHBRUSH"/> to <see cref="HBRUSH"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
@@ -113,6 +119,9 @@ namespace Vanara.PInvoke
 			public SafeHDC(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			private SafeHDC() : base() { }
+
+			/// <summary>A NULL value for this handle.</summary>
+			public static readonly SafeHDC Null = new(IntPtr.Zero, false);
 
 			/// <summary>Gets the screen compatible device context handle.</summary>
 			/// <value>The screen compatible device context handle.</value>
@@ -153,6 +162,9 @@ namespace Vanara.PInvoke
 
 			private SafeHFONT() : base() { }
 
+			/// <summary>A NULL value for this handle.</summary>
+			public static readonly SafeHFONT Null = new(IntPtr.Zero, false);
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeHFONT"/> to <see cref="HFONT"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
@@ -182,6 +194,9 @@ namespace Vanara.PInvoke
 
 			private SafeHPALETTE() : base() { }
 
+			/// <summary>A NULL value for this handle.</summary>
+			public static readonly SafeHPALETTE Null = new(IntPtr.Zero, false);
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeHPALETTE"/> to <see cref="HGDIOBJ"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
@@ -210,6 +225,9 @@ namespace Vanara.PInvoke
 
 			private SafeHPEN() : base() { }
 
+			/// <summary>A NULL value for this handle.</summary>
+			public static readonly SafeHPEN Null = new(IntPtr.Zero, false);
+
 			/// <summary>Performs an implicit conversion from <see cref="SafeHPEN"/> to <see cref="HGDIOBJ"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
@@ -237,6 +255,9 @@ namespace Vanara.PInvoke
 			public SafeHRGN(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			private SafeHRGN() : base() { }
+
+			/// <summary>A NULL value for this handle.</summary>
+			public static readonly SafeHRGN Null = new(IntPtr.Zero, false);
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHRGN"/> to <see cref="HGDIOBJ"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
