@@ -8257,6 +8257,9 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public MessageFilterInformation ExtStatus;
+
+			/// <summary>The default value for this structure with the size field set appropriately.</summary>
+			public static CHANGEFILTERSTRUCT Default = new CHANGEFILTERSTRUCT() { cbSize = (uint)Marshal.SizeOf(typeof(CHANGEFILTERSTRUCT)) };
 		}
 
 		/// <summary>
