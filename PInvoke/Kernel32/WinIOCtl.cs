@@ -1460,7 +1460,52 @@ namespace Vanara.PInvoke
 			
 			/// <summary/>
 			public static uint IOCTL_CHANGER_SET_POSITION => CTL_CODE(DEVICE_TYPE.IOCTL_CHANGER_BASE, 0x0007, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
-			
+
+			/// <summary>
+			/// <para>Waits for all volumes on the specified disk to be ready for use.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>hDevice</em></para>
+			/// <para>A handle to the disk.</para>
+			/// <para>To retrieve a device handle, call the CreateFile function.</para>
+			/// <para><em>dwIoControlCode</em></para>
+			/// <para>The control code for the operation.</para>
+			/// <para>Use IOCTL_DISK_ARE_VOLUMES_READY for this operation.</para>
+			/// <para><em>lpInBuffer</em></para>
+			/// <para>Not used with this operation. Set to NULL.</para>
+			/// <para><em>nInBufferSize</em></para>
+			/// <para>The size of the input buffer, in bytes. Set to 0 (zero).</para>
+			/// <para><em>lpOutBuffer</em></para>
+			/// <para>Not used with this operation. Set to NULL.</para>
+			/// <para><em>nOutBufferSize</em></para>
+			/// <para>Not used with this operation. Set to 0 (zero).</para>
+			/// <para><em>lpBytesReturned</em></para>
+			/// <para>Not used with this operation. Set to NULL.</para>
+			/// <para><em>lpOverlapped</em></para>
+			/// <para>A pointer to an OVERLAPPED structure.</para>
+			/// <para>If hDevice was opened without specifying FILE_FLAG_OVERLAPPED, lpOverlapped is ignored.</para>
+			/// <para>
+			/// If hDevice was opened with the FILE_FLAG_OVERLAPPED flag, the operation is performed as an overlapped (asynchronous)
+			/// operation. In this case, lpOverlapped must point to a valid OVERLAPPED structure that contains a handle to an event object.
+			/// Otherwise, the function fails in unpredictable ways.
+			/// </para>
+			/// <para>
+			/// For overlapped operations, DeviceIoControl returns immediately, and the event object is signaled when the operation has been
+			/// completed. Otherwise, the function does not return until the operation has been completed or an error occurs.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// If the operation completes successfully, indicating that all volumes on the disk are ready for use, <c>DeviceIoControl</c>
+			/// returns a nonzero value.
+			/// </para>
+			/// <para>
+			/// If the operation fails or is pending, <c>DeviceIoControl</c> returns zero. To get extended error information, call <c>GetLastError</c>.
+			/// </para>
+			/// </summary>
+			// https://learn.microsoft.com/en-us/windows/win32/fileio/ioctl-disk-are-volumes-ready
+			[PInvokeData("Ntdddisk.h")]
+			public static uint IOCTL_DISK_ARE_VOLUMES_READY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0087, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
+
 			/// <summary/>
 			public static uint IOCTL_DISK_CHECK_VERIFY => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0200, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
 			
@@ -1534,7 +1579,50 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(DISK_CACHE_INFORMATION), CorrespondingAction.Get)]
 			public static uint IOCTL_DISK_GET_CACHE_INFORMATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0035, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS);
 
-			
+			/// <summary>
+			/// <para>Retrieves the attributes of the specified disk device.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para>hDevice</para>
+			/// <para>A handle to the disk.</para>
+			/// <para>To retrieve a device handle, call the <c>CreateFile</c> function.</para>
+			/// <para>dwIoControlCode</para>
+			/// <para>The control code for the operation.</para>
+			/// <para>Use <c>IOCTL_DISK_GET_CLUSTER_INFO</c> for this operation.</para>
+			/// <para>lpInBuffer</para>
+			/// <para>Not used with this operation. Set to <c>NULL</c>.</para>
+			/// <para>nInBufferSize</para>
+			/// <para>The size of the input buffer, in bytes. Set to 0 (zero).</para>
+			/// <para>lpOutBuffer</para>
+			/// <para>A pointer to a buffer that receives a <c>DISK_CLUSTER_INFO</c> data structure.</para>
+			/// <para>nOutBufferSize</para>
+			/// <para>The size of the output buffer, in bytes.</para>
+			/// <para>lpBytesReturned</para>
+			/// <para>Not used with this operation. Set to <c>NULL</c>.</para>
+			/// <para>lpOverlapped</para>
+			/// <para>A pointer to an <c>OVERLAPPED</c> structure.</para>
+			/// <para>If hDevice was opened without specifying <c>FILE_FLAG_OVERLAPPED</c>, lpOverlapped is ignored.</para>
+			/// <para>
+			/// If hDevice was opened with the <c>FILE_FLAG_OVERLAPPED</c> flag, the operation is performed as an overlapped (asynchronous)
+			/// operation. In this case, lpOverlapped must point to a valid <c>OVERLAPPED</c> structure that contains a handle to an event
+			/// object. Otherwise, the function fails in unpredictable ways.
+			/// </para>
+			/// <para>
+			/// For overlapped operations, <c>DeviceIoControl</c> returns immediately, and the event object is signaled when the operation
+			/// has been completed. Otherwise, the function does not return until the operation has been completed or an error occurs.
+			/// </para>
+			/// <para>
+			/// If the operation completes successfully, indicating that all volumes on the disk are ready for use, <c>DeviceIoControl</c>
+			/// returns a nonzero value.
+			/// </para>
+			/// <para>
+			/// If the operation fails or is pending, <c>DeviceIoControl</c> returns zero. To get extended error information, call <c>GetLastError</c>.
+			/// </para>
+			/// </summary>
+			// https://learn.microsoft.com/en-us/windows/win32/fileio/ioctl-disk-get-cluster-info
+			[PInvokeData("Ntdddisk.h")]
+			[CorrespondingType(typeof(DISK_CLUSTER_INFO), CorrespondingAction.Get)]
+			public static uint IOCTL_DISK_GET_CLUSTER_INFO => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0085, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
+
 			/// <summary/>
 			public static uint IOCTL_DISK_GET_DISK_ATTRIBUTES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x003c, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
@@ -1595,32 +1683,32 @@ namespace Vanara.PInvoke
 			public static uint IOCTL_DISK_GET_DRIVE_GEOMETRY_EX => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0028, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
 
 			/// <summary>
-			/// <para>Retrieves information for each entry in the partition tables for a disk.</para>
-			/// <para>
-			/// <c>Note</c><c>IOCTL_DISK_GET_DRIVE_LAYOUT</c> has been superseded by IOCTL_DISK_GET_DRIVE_LAYOUT_EX, which retrieves layout
-			/// information for AT and EFI (Extensible Firmware Interface) partitions.
-			/// </para>
-			/// <para>
-			/// To perform this operation, call the DeviceIoControl function with the following parameters. You must have read access to the
-			/// drive in order to use this control code.
-			/// </para>
-			/// <para>Major Code</para>
-			/// <para>IRP_MJ_DEVICE_CONTROL</para>
-			/// <para>Input Buffer</para>
-			/// <para>Input Buffer Length</para>
-			/// <para>Output Buffer</para>
-			/// <para>Output Buffer Length</para>
-			/// <para>Input / Output Buffer</para>
-			/// <para>Input / Output Buffer Length</para>
-			/// <para>Status Block</para>
-			/// <para>Irp-&gt;IoStatus.Status is set to STATUS_SUCCESS if the request is successful.</para>
-			/// <para>Otherwise, Status to the appropriate error condition as a NTSTATUS code.</para>
-			/// <para>For more information, see NTSTATUS Values.</para>
-			/// </summary>
-			/// <remarks>
-			/// This operation retrieves information for each primary partition as well as each logical drive. To determine whether the entry
-			/// is an extended or unused partition, check the disk partition type.
-			/// </remarks>
+																																																			/// <para>Retrieves information for each entry in the partition tables for a disk.</para>
+																																																			/// <para>
+																																																			/// <c>Note</c><c>IOCTL_DISK_GET_DRIVE_LAYOUT</c> has been superseded by IOCTL_DISK_GET_DRIVE_LAYOUT_EX, which retrieves layout
+																																																			/// information for AT and EFI (Extensible Firmware Interface) partitions.
+																																																			/// </para>
+																																																			/// <para>
+																																																			/// To perform this operation, call the DeviceIoControl function with the following parameters. You must have read access to the
+																																																			/// drive in order to use this control code.
+																																																			/// </para>
+																																																			/// <para>Major Code</para>
+																																																			/// <para>IRP_MJ_DEVICE_CONTROL</para>
+																																																			/// <para>Input Buffer</para>
+																																																			/// <para>Input Buffer Length</para>
+																																																			/// <para>Output Buffer</para>
+																																																			/// <para>Output Buffer Length</para>
+																																																			/// <para>Input / Output Buffer</para>
+																																																			/// <para>Input / Output Buffer Length</para>
+																																																			/// <para>Status Block</para>
+																																																			/// <para>Irp-&gt;IoStatus.Status is set to STATUS_SUCCESS if the request is successful.</para>
+																																																			/// <para>Otherwise, Status to the appropriate error condition as a NTSTATUS code.</para>
+																																																			/// <para>For more information, see NTSTATUS Values.</para>
+																																																			/// </summary>
+																																																			/// <remarks>
+																																																			/// This operation retrieves information for each primary partition as well as each logical drive. To determine whether the entry
+																																																			/// is an extended or unused partition, check the disk partition type.
+																																																			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-ioctl_disk_get_drive_layout
 			[PInvokeData("winioctl.h", MSDNShortId = "6c1bc445-3cd1-4f86-a36b-f74ad8f4d2e5")]
 			[CorrespondingType(typeof(DRIVE_LAYOUT_INFORMATION), CorrespondingAction.Get)]
@@ -1905,7 +1993,53 @@ namespace Vanara.PInvoke
 			
 			/// <summary/>
 			public static uint IOCTL_DISK_SET_CACHE_INFORMATION => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0036, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
-			
+
+			/// <summary>
+			/// <para>Sets the cluster information on a disk.</para>
+			/// <para>To perform this operation, call the <c>DeviceIoControl</c> function with the following parameters.</para>
+			/// <para><strong>Parameters</strong></para>
+			/// <para><em>hDevice</em></para>
+			/// <para>A handle to the disk.</para>
+			/// <para>To retrieve a device handle, call the CreateFile function.</para>
+			/// <para><em>dwIoControlCode</em></para>
+			/// <para>The control code for the operation.</para>
+			/// <para>Use IOCTL_DISK_SET_CLUSTER_INFO for this operation.</para>
+			/// <para><em>lpInBuffer</em></para>
+			/// <para>A pointer to a DISK_CLUSTER_INFO data structure that contains cluster information for the disk.</para>
+			/// <para><em>nInBufferSize</em></para>
+			/// <para>The size of the input buffer, in bytes.</para>
+			/// <para><em>lpOutBuffer</em></para>
+			/// <para>Not used with this operation. Set to NULL.</para>
+			/// <para><em>nOutBufferSize</em></para>
+			/// <para>The size of the output buffer, in bytes. Set to 0 (zero).</para>
+			/// <para><em>lpBytesReturned</em></para>
+			/// <para>Not used with this operation. Set to NULL.</para>
+			/// <para><em>lpOverlapped</em></para>
+			/// <para>A pointer to an OVERLAPPED structure.</para>
+			/// <para>If hDevice was opened without specifying FILE_FLAG_OVERLAPPED, lpOverlapped is ignored.</para>
+			/// <para>
+			/// If hDevice was opened with the FILE_FLAG_OVERLAPPED flag, the operation is performed as an overlapped (asynchronous)
+			/// operation. In this case, lpOverlapped must point to a valid OVERLAPPED structure that contains a handle to an event object.
+			/// Otherwise, the function fails in unpredictable ways.
+			/// </para>
+			/// <para>
+			/// For overlapped operations, DeviceIoControl returns immediately, and the event object is signaled when the operation has been
+			/// completed. Otherwise, the function does not return until the operation has been completed or an error occurs.
+			/// </para>
+			/// <para><strong>Return value</strong></para>
+			/// <para>
+			/// If the operation completes successfully, indicating that all volumes on the disk are ready for use, <c>DeviceIoControl</c>
+			/// returns a nonzero value.
+			/// </para>
+			/// <para>
+			/// If the operation fails or is pending, <c>DeviceIoControl</c> returns zero. To get extended error information, call <c>GetLastError</c>.
+			/// </para>
+			/// </summary>
+			// https://learn.microsoft.com/en-us/windows/win32/fileio/ioctl-disk-set-cluster-info
+			[PInvokeData("Ntdddisk.h")]
+			[CorrespondingType(typeof(DISK_CLUSTER_INFO), CorrespondingAction.Set)]
+			public static uint IOCTL_DISK_SET_CLUSTER_INFO => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x0086, IOMethod.METHOD_BUFFERED, IOAccess.FILE_ANY_ACCESS);
+
 			/// <summary/>
 			public static uint IOCTL_DISK_SET_DISK_ATTRIBUTES => CTL_CODE(DEVICE_TYPE.FILE_DEVICE_DISK, 0x003d, IOMethod.METHOD_BUFFERED, IOAccess.FILE_READ_ACCESS | IOAccess.FILE_WRITE_ACCESS);
 

@@ -826,6 +826,24 @@ namespace Vanara.PInvoke
 			KeepReadData
 		}
 
+		/// <summary>A combination of flags related to disks and clusters.</summary>
+		[PInvokeData("Ntdddisk.h")]
+		[Flags]
+		public enum DISK_CLUSTER_FLAG : ulong
+		{
+			/// <summary>The disk is used as part of the cluster service.</summary>
+			DISK_CLUSTER_FLAG_ENABLED = 1,
+
+			/// <summary>Volumes on the disk are exposed by CSVFS on all nodes of the cluster.</summary>
+			DISK_CLUSTER_FLAG_CSV = 2,
+
+			/// <summary>The cluster resource associated with this disk is in maintenance mode.</summary>
+			DISK_CLUSTER_FLAG_IN_MAINTENANCE = 4,
+
+			/// <summary>The cluster disk driver for kernel mode (clusdisk) has received PnP notification of the arrival of the disk.</summary>
+			DISK_CLUSTER_FLAG_PNP_ARRIVAL_COMPLETE = 8,
+		}
+
 		/// <summary>An exception code that indicates that the element is in an abnormal state.</summary>
 		[PInvokeData("winioctl.h", MSDNShortId = "NS:winioctl._CHANGER_ELEMENT_STATUS")]
 		[Flags]

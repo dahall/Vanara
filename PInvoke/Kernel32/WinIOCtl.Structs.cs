@@ -362,6 +362,51 @@ namespace Vanara.PInvoke
 			public ushort MaximumBlocks;
 		}
 
+		/// <summary>Represents information maintained on the partition manager about a disk that is part of a cluster.</summary>
+		// https://learn.microsoft.com/en-us/windows/win32/fileio/disk-cluster-info typedef struct _DISK_CLUSTER_INFO { ULONG Version;
+		// ULONGLONG Flags; ULONGLONG FlagsMask; BOOLEAN Notify; } DISK_CLUSTER_INFO, *PDISK_CLUSTER_INFO;
+		[PInvokeData("Ntdddisk.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DISK_CLUSTER_INFO
+		{
+			/// <summary>The version number. This value must be set to the size of this structure.</summary>
+			public uint Version;
+
+			/// <summary>
+			/// <para>A combination of flags related to disks and clusters.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>DISK_CLUSTER_FLAG_ENABLED</c> 1</term>
+			/// <term>The disk is used as part of the cluster service.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DISK_CLUSTER_FLAG_CSV</c> 2</term>
+			/// <term>Volumes on the disk are exposed by CSVFS on all nodes of the cluster.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DISK_CLUSTER_FLAG_IN_MAINTENANCE</c> 4</term>
+			/// <term>The cluster resource associated with this disk is in maintenance mode.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DISK_CLUSTER_FLAG_PNP_ARRIVAL_COMPLETE</c> 8</term>
+			/// <term>The cluster disk driver for kernel mode (clusdisk) has received PnP notification of the arrival of the disk.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public DISK_CLUSTER_FLAG Flags;
+
+			/// <summary>The flags that are being modified in the <c>Flags</c> member.</summary>
+			public DISK_CLUSTER_FLAG FlagsMask;
+
+			/// <summary><c>TRUE</c> to send a layout change notification; otherwise, <c>FALSE</c>.</summary>
+			[MarshalAs(UnmanagedType.U1)]
+			public bool Notify;
+		}
+
 		/// <summary>Contains detected drive parameters.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-disk_detection_info typedef struct _DISK_DETECTION_INFO {
 		// DWORD SizeOfDetectInfo; DETECTION_TYPE DetectionType; union { struct { DISK_INT13_INFO Int13; DISK_EX_INT13_INFO ExInt13; }
