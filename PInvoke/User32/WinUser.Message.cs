@@ -8,22 +8,21 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
-		/// <summary>Return this value when processing a broadcast message to deny a query.</summary>
-		public static readonly IntPtr BROADCAST_QUERY_DENY = (IntPtr)0x424D5144;
+        /// <summary>
+        /// Used to define private messages for use by private window classes, usually of the form OCM__BASE+x, where x is an integer value.
+        /// </summary>
+        public const uint OCM__BASE = (WM_USER + 0x1c00);
 
-		/// <summary>
-		/// Used to define private messages for use by private window classes, usually of the form OCM__BASE+x, where x is an integer value.
-		/// </summary>
-		public const uint OCM__BASE = (WM_USER + 0x1c00);
+        /// <summary>Used to define private messages, usually of the form WM_APP+x, where x is an integer value.</summary>
+        public const uint WM_APP = 0x8000;
 
-		/// <summary>Used to define private messages, usually of the form WM_APP+x, where x is an integer value.</summary>
-		public const uint WM_APP = 0x8000;
+        /// <summary>
+        /// Used to define private messages for use by private window classes, usually of the form WM_USER+x, where x is an integer value.
+        /// </summary>
+        public const uint WM_USER = 0x0400;
 
-		/// <summary>
-		/// Used to define private messages for use by private window classes, usually of the form WM_USER+x, where x is an integer value.
-		/// </summary>
-		public const uint WM_USER = 0x0400;
-
+        /// <summary>Return this value when processing a broadcast message to deny a query.</summary>
+        public static readonly IntPtr BROADCAST_QUERY_DENY = (IntPtr)0x424D5144;
 		/// <summary>
 		/// An application-defined callback function used with the SendMessageCallback function. The system passes the message to the
 		/// callback function after passing the message to the destination window procedure. The <c>SENDASYNCPROC</c> type defines a pointer
@@ -3027,82 +3026,474 @@ namespace Vanara.PInvoke
 			where TMsg : struct, IConvertible where TWP : struct, IConvertible where TLP : struct
 			=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), ref lParam);
 
-		/// <summary>
-		/// <para>
-		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
-		/// window and does not return until the window procedure has processed the message.
-		/// </para>
-		/// <para>
-		/// To send a message and return immediately, use the SendMessageCallback or SendNotifyMessage function. To post a message to a
-		/// thread's message queue and return immediately, use the PostMessage or PostThreadMessage function.
-		/// </para>
-		/// </summary>
-		/// <typeparam name="TMsg">The type of the message. This can be any type that converts to <see cref="uint"/>.</typeparam>
-		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> parameter. This must be a type that can be marshaled to memory.</typeparam>
-		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> parameter. This must be a type that can be marshaled to memory.</typeparam>
-		/// <param name="hWnd">
-		/// <para>Type: <c>HWND</c></para>
-		/// <para>
-		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
-		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
-		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
-		/// </para>
-		/// <para>
-		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
-		/// lesser or equal integrity level.
-		/// </para>
-		/// </param>
-		/// <param name="msg">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The message to be sent.</para>
-		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
-		/// </param>
-		/// <param name="wParam">
-		/// <para>Type: <c>WPARAM</c></para>
-		/// <para>Additional message-specific information.</para>
-		/// </param>
-		/// <param name="lParam">
-		/// <para>Type: <c>LPARAM</c></para>
-		/// <para>Additional message-specific information.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>LRESULT</c></para>
-		/// <para>The return value specifies the result of the message processing; it depends on the message sent.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>When a message is blocked by UIPI the last error, retrieved with GetLastError, is set to 5 (access denied).</para>
-		/// <para>
-		/// Applications that need to communicate using <c>HWND_BROADCAST</c> should use the RegisterWindowMessage function to obtain a
-		/// unique message for inter-application communication.
-		/// </para>
-		/// <para>
-		/// The system only does marshalling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
-		/// <c>WM_USER</c>) to another process, you must do custom marshalling.
-		/// </para>
-		/// <para>
-		/// If the specified window was created by the calling thread, the window procedure is called immediately as a subroutine. If the
-		/// specified window was created by a different thread, the system switches to that thread and calls the appropriate window
-		/// procedure. Messages sent between threads are processed only when the receiving thread executes message retrieval code. The
-		/// sending thread is blocked until the receiving thread processes the message. However, the sending thread will process incoming
-		/// nonqueued messages while waiting for its message to be processed. To prevent this, use SendMessageTimeout with SMTO_BLOCK set.
-		/// For more information on nonqueued messages, see Nonqueued Messages.
-		/// </para>
-		/// <para>
-		/// An accessibility application can use <c>SendMessage</c> to send WM_APPCOMMAND messages to the shell to launch applications. This
-		/// functionality is not guaranteed to work for other types of applications.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>For an example, see Displaying Keyboard Input.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 		[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-		public static IntPtr SendMessage<TMsg, TWP, TLP>(HWND hWnd, TMsg msg, in TWP wParam, ref TLP lParam)
-			where TMsg : struct, IConvertible where TWP : struct where TLP : struct
-		{
-			using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
-			return SendMessage(hWnd, Convert.ToUInt32(msg), wmem, ref lParam);
-		}
+		public static IntPtr SendMessage<TMsg, TWP, TLP>(HWND hWnd, TMsg msg, TWP wParam, TLP lParam)
+		where TMsg : struct, IConvertible where TWP : struct, IConvertible where TLP : struct
+		=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
+        /// <summary>
+        /// <para>
+        /// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
+        /// window and does not return until the window procedure has processed the message.
+        /// </para>
+        /// <para>
+        /// To send a message and return immediately, use the SendMessageCallback or SendNotifyMessage function. To post a message to a
+        /// thread's message queue and return immediately, use the PostMessage or PostThreadMessage function.
+        /// </para>
+        /// </summary>
+        /// <typeparam name="TMsg">The type of the message. This can be any type that converts to <see cref="uint"/>.</typeparam>
+        /// <typeparam name="TWP">The type of the <paramref name="wParam"/> parameter. This must be a type that can be marshaled to memory.</typeparam>
+        /// <typeparam name="TLP">The type of the <paramref name="lParam"/> parameter. This must be a type that can be marshaled to memory.</typeparam>
+        /// <param name="hWnd">
+        /// <para>Type: <c>HWND</c></para>
+        /// <para>
+        /// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+        /// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+        /// overlapped windows, and pop-up windows; but the message is not sent to child windows.
+        /// </para>
+        /// <para>
+        /// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
+        /// lesser or equal integrity level.
+        /// </para>
+        /// </param>
+        /// <param name="msg">
+        /// <para>Type: <c>UINT</c></para>
+        /// <para>The message to be sent.</para>
+        /// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+        /// </param>
+        /// <param name="wParam">
+        /// <para>Type: <c>WPARAM</c></para>
+        /// <para>Additional message-specific information.</para>
+        /// </param>
+        /// <param name="lParam">
+        /// <para>Type: <c>LPARAM</c></para>
+        /// <para>Additional message-specific information.</para>
+        /// </param>
+        /// <returns>
+        /// <para>Type: <c>LRESULT</c></para>
+        /// <para>The return value specifies the result of the message processing; it depends on the message sent.</para>
+        /// </returns>
+        /// <remarks>
+        /// <para>When a message is blocked by UIPI the last error, retrieved with GetLastError, is set to 5 (access denied).</para>
+        /// <para>
+        /// Applications that need to communicate using <c>HWND_BROADCAST</c> should use the RegisterWindowMessage function to obtain a
+        /// unique message for inter-application communication.
+        /// </para>
+        /// <para>
+        /// The system only does marshalling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
+        /// <c>WM_USER</c>) to another process, you must do custom marshalling.
+        /// </para>
+        /// <para>
+        /// If the specified window was created by the calling thread, the window procedure is called immediately as a subroutine. If the
+        /// specified window was created by a different thread, the system switches to that thread and calls the appropriate window
+        /// procedure. Messages sent between threads are processed only when the receiving thread executes message retrieval code. The
+        /// sending thread is blocked until the receiving thread processes the message. However, the sending thread will process incoming
+        /// nonqueued messages while waiting for its message to be processed. To prevent this, use SendMessageTimeout with SMTO_BLOCK set.
+        /// For more information on nonqueued messages, see Nonqueued Messages.
+        /// </para>
+        /// <para>
+        /// An accessibility application can use <c>SendMessage</c> to send WM_APPCOMMAND messages to the shell to launch applications. This
+        /// functionality is not guaranteed to work for other types of applications.
+        /// </para>
+        /// <para>Examples</para>
+        /// <para>For an example, see Displaying Keyboard Input.</para>
+        /// </remarks>
+        // https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
+        [PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
+        public static IntPtr SendMessage<TMsg, TWP, TLP>(HWND hWnd, TMsg msg, in TWP wParam, ref TLP lParam)
+            where TMsg : struct, IConvertible where TWP : struct where TLP : struct
+        {
+            using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
+            return SendMessage(hWnd, Convert.ToUInt32(msg), wmem, ref lParam);
+        }
+
+        /// Sends the specified message to a window or windows. It calls the window procedure for the specified window and returns
+        /// immediately if the window belongs to another thread. After the window procedure processes the message, the system calls the
+        /// specified callback function, passing the result of the message processing and an application-defined value to the callback function.
+        /// </summary>
+        /// <param name="hWnd">
+        /// <para>Type: <c>HWND</c></para>
+        /// <para>
+        /// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+        /// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+        /// overlapped windows, and pop-up windows; but the message is not sent to child windows.
+        /// </para>
+        /// </param>
+        /// <param name="Msg">
+        /// <para>Type: <c>UINT</c></para>
+        /// <para>The message to be sent.</para>
+        /// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+        /// </param>
+        /// <param name="wParam">
+        /// <para>Type: <c>WPARAM</c></para>
+        /// <para>Additional message-specific information.</para>
+        /// </param>
+        /// <param name="lParam">
+        /// <para>Type: <c>LPARAM</c></para>
+        /// <para>Additional message-specific information.</para>
+        /// </param>
+        /// <param name="lpResultCallBack">
+        /// <para>Type: <c>SENDASYNCPROC</c></para>
+        /// <para>
+        /// A pointer to a callback function that the system calls after the window procedure processes the message. For more information,
+        /// see SendAsyncProc.
+        /// </para>
+        /// <para>
+        /// If hWnd is <c>HWND_BROADCAST</c> ((HWND)0xffff), the system calls the SendAsyncProc callback function once for each top-level window.
+        /// </para>
+        /// </param>
+        /// <param name="dwData">
+        /// <para>Type: <c>ULONG_PTR</c></para>
+        /// <para>An application-defined value to be sent to the callback function pointed to by the lpCallBack parameter.</para>
+        /// </param>
+        /// <returns>
+        /// <para>Type: <c>Type: <c>BOOL</c></c></para>
+        /// <para>If the function succeeds, the return value is nonzero.</para>
+        /// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// If the target window belongs to the same thread as the caller, then the window procedure is called synchronously, and the
+        /// callback function is called immediately after the window procedure returns. If the target window belongs to a different thread
+        /// from the caller, then the callback function is called only when the thread that called <c>SendMessageCallback</c> also calls
+        /// GetMessage, PeekMessage, or WaitMessage.
+        /// </para>
+        /// <para>
+        /// If you send a message in the range below WM_USER to the asynchronous message functions (PostMessage, SendNotifyMessage, and
+        /// <c>SendMessageCallback</c>), its message parameters cannot include pointers. Otherwise, the operation will fail. The functions
+        /// will return before the receiving thread has had a chance to process the message and the sender will free the memory before it is used.
+        /// </para>
+        /// <para>
+        /// Applications that need to communicate using <c>HWND_BROADCAST</c> should use the RegisterWindowMessage function to obtain a
+        /// unique message for inter-application communication.
+        /// </para>
+        /// <para>
+        /// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
+        /// <c>WM_USER</c>) to another process, you must do custom marshaling.
+        /// </para>
+        /// </remarks>
+        // https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessagecallbacka BOOL SendMessageCallbackA( HWND hWnd,
+        // UINT Msg, WPARAM wParam, LPARAM lParam, SENDASYNCPROC lpResultCallBack, ULONG_PTR dwData );
+        [DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+        [PInvokeData("winuser.h")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SendMessageCallback(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, Sendasyncproc lpResultCallBack, UIntPtr dwData);
+
+        /// <summary>Sends the specified message to one or more windows.</summary>
+        /// <param name="hWnd">
+        /// <para>Type: <c>HWND</c></para>
+        /// <para>A handle to the window whose window procedure will receive the message.</para>
+        /// <para>
+        /// If this parameter is <c>HWND_BROADCAST</c> ((HWND)0xffff), the message is sent to all top-level windows in the system, including
+        /// disabled or invisible unowned windows. The function does not return until each window has timed out. Therefore, the total wait
+        /// time can be up to the value of uTimeout multiplied by the number of top-level windows.
+        /// </para>
+        /// </param>
+        /// <param name="Msg">
+        /// <para>Type: <c>UINT</c></para>
+        /// <para>The message to be sent.</para>
+        /// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+        /// </param>
+        /// <param name="wParam">
+        /// <para>Type: <c>WPARAM</c></para>
+        /// <para>Any additional message-specific information.</para>
+        /// </param>
+        /// <param name="lParam">
+        /// <para>Type: <c>LPARAM</c></para>
+        /// <para>Any additional message-specific information.</para>
+        /// </param>
+        /// <param name="fuFlags">
+        /// <para>Type: <c>UINT</c></para>
+        /// <para>The behavior of this function. This parameter can be one or more of the following values.</para>
+        /// <list type="table">
+        /// <listheader>
+        /// <term>Value</term>
+        /// <term>Meaning</term>
+        /// </listheader>
+        /// <item>
+        /// <term>SMTO_ABORTIFHUNG 0x0002</term>
+        /// <term>
+        /// The function returns without waiting for the time-out period to elapse if the receiving thread appears to not respond or "hangs."
+        /// </term>
+        /// </item>
+        /// <item>
+        /// <term>SMTO_BLOCK 0x0001</term>
+        /// <term>Prevents the calling thread from processing any other requests until the function returns.</term>
+        /// </item>
+        /// <item>
+        /// <term>SMTO_NORMAL 0x0000</term>
+        /// <term>The calling thread is not prevented from processing other requests while waiting for the function to return.</term>
+        /// </item>
+        /// <item>
+        /// <term>SMTO_NOTIMEOUTIFNOTHUNG 0x0008</term>
+        /// <term>The function does not enforce the time-out period as long as the receiving thread is processing messages.</term>
+        /// </item>
+        /// <item>
+        /// <term>SMTO_ERRORONEXIT 0x0020</term>
+        /// <term>
+        /// The function should return 0 if the receiving window is destroyed or its owning thread dies while the message is being processed.
+        /// </term>
+        /// </item>
+        /// </list>
+        /// </param>
+        /// <param name="uTimeout">
+        /// <para>Type: <c>UINT</c></para>
+        /// <para>
+        /// The duration of the time-out period, in milliseconds. If the message is a broadcast message, each window can use the full
+        /// time-out period. For example, if you specify a five second time-out period and there are three top-level windows that fail to
+        /// process the message, you could have up to a 15 second delay.
+        /// </para>
+        /// </param>
+        /// <param name="lpdwResult">
+        /// <para>Type: <c>PDWORD_PTR</c></para>
+        /// <para>The result of the message processing. The value of this parameter depends on the message that is specified.</para>
+        /// </param>
+        /// <returns>
+        /// <para>Type: <c>Type: <c>LRESULT</c></c></para>
+        /// <para>
+        /// If the function succeeds, the return value is nonzero. <c>SendMessageTimeout</c> does not provide information about individual
+        /// windows timing out if <c>HWND_BROADCAST</c> is used.
+        /// </para>
+        /// <para>
+        /// If the function fails or times out, the return value is 0. To get extended error information, call GetLastError. If
+        /// <c>GetLastError</c> returns <c>ERROR_TIMEOUT</c>, then the function timed out.
+        /// </para>
+        /// <para><c>Windows 2000:</c> If GetLastError returns 0, then the function timed out.</para>
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// The function calls the window procedure for the specified window and, if the specified window belongs to a different thread, does
+        /// not return until the window procedure has processed the message or the specified time-out period has elapsed. If the window
+        /// receiving the message belongs to the same queue as the current thread, the window procedure is called directly—the time-out value
+        /// is ignored.
+        /// </para>
+        /// <para>
+        /// This function considers that a thread is not responding if it has not called GetMessage or a similar function within five seconds.
+        /// </para>
+        /// <para>
+        /// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
+        /// <c>WM_USER</c>) to another process, you must do custom marshaling.
+        /// </para>
+        /// </remarks>
+        // https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessagetimeouta LRESULT SendMessageTimeoutA( HWND
+        // hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, UINT fuFlags, UINT uTimeout, PDWORD_PTR lpdwResult );
+        [DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+        [PInvokeData("winuser.h")]
+        public static extern IntPtr SendMessageTimeout(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, SMTO fuFlags, uint uTimeout, ref IntPtr lpdwResult);
+
+        /// <summary>
+        /// <para>
+        /// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
+        /// window and does not return until the window procedure has processed the message.
+        /// </para>
+        /// <para>
+        /// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
+        /// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+        /// </para>
+        /// </summary>
+        /// <param name="hWnd">
+        /// <para>
+        /// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+        /// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+        /// overlapped windows, and pop-up windows; but the message is not sent to child windows.
+        /// </para>
+        /// <para>
+        /// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
+        /// lesser or equal integrity level.
+        /// </para>
+        /// </param>
+        /// <param name="msg">
+        /// <para>The message to be sent.</para>
+        /// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+        /// </param>
+        /// <param name="wParam">Additional message-specific information.</param>
+        /// <param name="lParam">Additional message-specific information.</param>
+        /// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+        // LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+        [DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto, EntryPoint = "SendMessage")]
+        [PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
+        [System.Security.SecurityCritical]
+        public static unsafe extern void* SendMessageUnsafe(void* hWnd, uint msg, void* wParam, void* lParam);
+
+        /// <summary>
+        /// Sends the specified message to a window or windows. If the window was created by the calling thread, <c>SendNotifyMessage</c>
+        /// calls the window procedure for the window and does not return until the window procedure has processed the message. If the window
+        /// was created by a different thread, <c>SendNotifyMessage</c> passes the message to the window procedure and returns immediately;
+        /// it does not wait for the window procedure to finish processing the message.
+        /// </summary>
+        /// <param name="hWnd">
+        /// <para>Type: <c>HWND</c></para>
+        /// <para>
+        /// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+        /// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+        /// overlapped windows, and pop-up windows; but the message is not sent to child windows.
+        /// </para>
+        /// </param>
+        /// <param name="Msg">
+        /// <para>Type: <c>UINT</c></para>
+        /// <para>The message to be sent.</para>
+        /// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+        /// </param>
+        /// <param name="wParam">
+        /// <para>Type: <c>WPARAM</c></para>
+        /// <para>Additional message-specific information.</para>
+        /// </param>
+        /// <param name="lParam">
+        /// <para>Type: <c>LPARAM</c></para>
+        /// <para>Additional message-specific information.</para>
+        /// </param>
+        /// <returns>
+        /// <para>Type: <c>Type: <c>BOOL</c></c></para>
+        /// <para>If the function succeeds, the return value is nonzero.</para>
+        /// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// If you send a message in the range below WM_USER to the asynchronous message functions (PostMessage, <c>SendNotifyMessage</c>,
+        /// and SendMessageCallback), its message parameters cannot include pointers. Otherwise, the operation will fail. The functions will
+        /// return before the receiving thread has had a chance to process the message and the sender will free the memory before it is used.
+        /// </para>
+        /// <para>
+        /// Applications that need to communicate using <c>HWND_BROADCAST</c> should use the RegisterWindowMessage function to obtain a
+        /// unique message for inter-application communication.
+        /// </para>
+        /// <para>
+        /// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
+        /// <c>WM_USER</c>) to another process, you must do custom marshaling.
+        /// </para>
+        /// </remarks>
+        // https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendnotifymessagea BOOL SendNotifyMessageA( HWND hWnd,
+        // UINT Msg, WPARAM wParam, LPARAM lParam );
+        [DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+        [PInvokeData("winuser.h")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SendNotifyMessage(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
+
+        /// <summary>
+        /// Sets the extra message information for the current thread. Extra message information is an application- or driver-defined value
+        /// associated with the current thread's message queue. An application can use the GetMessageExtraInfo function to retrieve a
+        /// thread's extra message information.
+        /// </summary>
+        /// <param name="lParam">
+        /// <para>Type: <c>LPARAM</c></para>
+        /// <para>The value to be associated with the current thread.</para>
+        /// </param>
+        /// <returns>
+        /// <para>Type: <c>Type: <c>LPARAM</c></c></para>
+        /// <para>The return value is the previous value associated with the current thread.</para>
+        /// </returns>
+        // https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setmessageextrainfo LPARAM SetMessageExtraInfo( LPARAM
+        // lParam );
+        [DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+        [PInvokeData("winuser.h")]
+        public static extern IntPtr SetMessageExtraInfo(IntPtr lParam);
+
+        /// <summary>
+        /// Translates virtual-key messages into character messages. The character messages are posted to the calling thread's message queue,
+        /// to be read the next time the thread calls the GetMessage or PeekMessage function.
+        /// </summary>
+        /// <param name="lpMsg">
+        /// <para>Type: <c>const MSG*</c></para>
+        /// <para>
+        /// A pointer to an MSG structure that contains message information retrieved from the calling thread's message queue by using the
+        /// GetMessage or PeekMessage function.
+        /// </para>
+        /// </param>
+        /// <returns>
+        /// <para>Type: <c>Type: <c>BOOL</c></c></para>
+        /// <para>
+        /// If the message is translated (that is, a character message is posted to the thread's message queue), the return value is nonzero.
+        /// </para>
+        /// <para>
+        /// If the message is WM_KEYDOWN, WM_KEYUP, WM_SYSKEYDOWN, or WM_SYSKEYUP, the return value is nonzero, regardless of the translation.
+        /// </para>
+        /// <para>
+        /// If the message is not translated (that is, a character message is not posted to the thread's message queue), the return value is zero.
+        /// </para>
+        /// </returns>
+        /// <remarks>
+        /// <para>The <c>TranslateMessage</c> function does not modify the message pointed to by the lpMsg parameter.</para>
+        /// <para>
+        /// WM_KEYDOWN and WM_KEYUP combinations produce a WM_CHAR or WM_DEADCHAR message. WM_SYSKEYDOWN and WM_SYSKEYUP combinations produce
+        /// a WM_SYSCHAR or WM_SYSDEADCHAR message.
+        /// </para>
+        /// <para><c>TranslateMessage</c> produces WM_CHAR messages only for keys that are mapped to ASCII characters by the keyboard driver.</para>
+        /// <para>
+        /// If applications process virtual-key messages for some other purpose, they should not call <c>TranslateMessage</c>. For instance,
+        /// an application should not call <c>TranslateMessage</c> if the TranslateAccelerator function returns a nonzero value. Note that
+        /// the application is responsible for retrieving and dispatching input messages to the dialog box. Most applications use the main
+        /// message loop for this. However, to permit the user to move to and to select controls by using the keyboard, the application must
+        /// call IsDialogMessage. For more information, see Dialog Box Keyboard Interface.
+        /// </para>
+        /// <para>Examples</para>
+        /// <para>For an example, see Creating a Message Loop.</para>
+        /// </remarks>
+        // https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-translatemessage BOOL TranslateMessage( const MSG *lpMsg );
+        [DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+        [PInvokeData("winuser.h")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool TranslateMessage(in MSG lpMsg);
+
+        /// <summary>Unpacks a Dynamic Data Exchange (DDE)lParam value received from a posted DDE message.</summary>
+        /// <param name="msg">
+        /// <para>Type: <c>UINT</c></para>
+        /// <para>The posted DDE message.</para>
+        /// </param>
+        /// <param name="lParam">
+        /// <para>Type: <c>LPARAM</c></para>
+        /// <para>
+        /// The lParam parameter of the posted DDE message that was received. The application must free the memory object specified by the
+        /// lParam parameter by calling the FreeDDElParam function.
+        /// </para>
+        /// </param>
+        /// <param name="puiLo">
+        /// <para>Type: <c>PUINT_PTR</c></para>
+        /// <para>A pointer to a variable that receives the low-order word of lParam.</para>
+        /// </param>
+        /// <param name="puiHi">
+        /// <para>Type: <c>PUINT_PTR</c></para>
+        /// <para>A pointer to a variable that receives the high-order word of lParam.</para>
+        /// </param>
+        /// <returns>
+        /// <para>Type: <c>BOOL</c></para>
+        /// <para>If the function succeeds, the return value is nonzero.</para>
+        /// <para>If the function fails, the return value is zero.</para>
+        /// </returns>
+        /// <remarks>PackDDElParam eases the porting of 16-bit DDE applications to 32-bit DDE applications.</remarks>
+        // https://docs.microsoft.com/en-us/windows/desktop/api/dde/nf-dde-unpackddelparam BOOL UnpackDDElParam( UINT msg, LPARAM lParam,
+        // PUINT_PTR puiLo, PUINT_PTR puiHi );
+        [DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+        [PInvokeData("dde.h", MSDNShortId = "")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool UnpackDDElParam(uint msg, IntPtr lParam, out IntPtr puiLo, out IntPtr puiHi);
+
+        /// <summary>
+        /// Yields control to other threads when a thread has no other messages in its message queue. The <c>WaitMessage</c> function
+        /// suspends the thread and does not return until a new message is placed in the thread's message queue.
+        /// </summary>
+        /// <returns>
+        /// <para>Type: <c>Type: <c>BOOL</c></c></para>
+        /// <para>If the function succeeds, the return value is nonzero.</para>
+        /// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+        /// </returns>
+        /// <remarks>
+        /// Note that <c>WaitMessage</c> does not return if there is unread input in the message queue after the thread has called a function
+        /// to check the queue. This is because functions such as PeekMessage, GetMessage, GetQueueStatus, <c>WaitMessage</c>,
+        /// MsgWaitForMultipleObjects, and MsgWaitForMultipleObjectsEx check the queue and then change the state information for the queue so
+        /// that the input is no longer considered new. A subsequent call to <c>WaitMessage</c> will not return until new input of the
+        /// specified type arrives. The existing unread input (received prior to the last time the thread checked the queue) is ignored.
+        /// </remarks>
+        // https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-waitmessage BOOL WaitMessage( );
+        [DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+        [PInvokeData("winuser.h")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool WaitMessage();
+
+        private static IntPtr SendMessage<TLP>(HWND hWnd, uint msg, IntPtr wParam, TLP lParam) where TLP : struct
+        {
+			using var lmem = SafeCoTaskMemHandle.CreateFromStructure(lParam);
+			return SendMessage(hWnd, msg, wParam, lmem);
+		}
 		private static IntPtr SendMessage<TLP>(HWND hWnd, uint msg, IntPtr wParam, ref TLP lParam) where TLP : struct
 		{
 			using var lmem = SafeCoTaskMemHandle.CreateFromStructure(lParam);
@@ -3110,390 +3501,6 @@ namespace Vanara.PInvoke
 			lParam = lmem.ToStructure<TLP>();
 			return lret;
 		}
-
-		/// <summary>
-		/// Sends the specified message to a window or windows. It calls the window procedure for the specified window and returns
-		/// immediately if the window belongs to another thread. After the window procedure processes the message, the system calls the
-		/// specified callback function, passing the result of the message processing and an application-defined value to the callback function.
-		/// </summary>
-		/// <param name="hWnd">
-		/// <para>Type: <c>HWND</c></para>
-		/// <para>
-		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
-		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
-		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
-		/// </para>
-		/// </param>
-		/// <param name="Msg">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The message to be sent.</para>
-		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
-		/// </param>
-		/// <param name="wParam">
-		/// <para>Type: <c>WPARAM</c></para>
-		/// <para>Additional message-specific information.</para>
-		/// </param>
-		/// <param name="lParam">
-		/// <para>Type: <c>LPARAM</c></para>
-		/// <para>Additional message-specific information.</para>
-		/// </param>
-		/// <param name="lpResultCallBack">
-		/// <para>Type: <c>SENDASYNCPROC</c></para>
-		/// <para>
-		/// A pointer to a callback function that the system calls after the window procedure processes the message. For more information,
-		/// see SendAsyncProc.
-		/// </para>
-		/// <para>
-		/// If hWnd is <c>HWND_BROADCAST</c> ((HWND)0xffff), the system calls the SendAsyncProc callback function once for each top-level window.
-		/// </para>
-		/// </param>
-		/// <param name="dwData">
-		/// <para>Type: <c>ULONG_PTR</c></para>
-		/// <para>An application-defined value to be sent to the callback function pointed to by the lpCallBack parameter.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// If the target window belongs to the same thread as the caller, then the window procedure is called synchronously, and the
-		/// callback function is called immediately after the window procedure returns. If the target window belongs to a different thread
-		/// from the caller, then the callback function is called only when the thread that called <c>SendMessageCallback</c> also calls
-		/// GetMessage, PeekMessage, or WaitMessage.
-		/// </para>
-		/// <para>
-		/// If you send a message in the range below WM_USER to the asynchronous message functions (PostMessage, SendNotifyMessage, and
-		/// <c>SendMessageCallback</c>), its message parameters cannot include pointers. Otherwise, the operation will fail. The functions
-		/// will return before the receiving thread has had a chance to process the message and the sender will free the memory before it is used.
-		/// </para>
-		/// <para>
-		/// Applications that need to communicate using <c>HWND_BROADCAST</c> should use the RegisterWindowMessage function to obtain a
-		/// unique message for inter-application communication.
-		/// </para>
-		/// <para>
-		/// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
-		/// <c>WM_USER</c>) to another process, you must do custom marshaling.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessagecallbacka BOOL SendMessageCallbackA( HWND hWnd,
-		// UINT Msg, WPARAM wParam, LPARAM lParam, SENDASYNCPROC lpResultCallBack, ULONG_PTR dwData );
-		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winuser.h")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SendMessageCallback(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, Sendasyncproc lpResultCallBack, UIntPtr dwData);
-
-		/// <summary>Sends the specified message to one or more windows.</summary>
-		/// <param name="hWnd">
-		/// <para>Type: <c>HWND</c></para>
-		/// <para>A handle to the window whose window procedure will receive the message.</para>
-		/// <para>
-		/// If this parameter is <c>HWND_BROADCAST</c> ((HWND)0xffff), the message is sent to all top-level windows in the system, including
-		/// disabled or invisible unowned windows. The function does not return until each window has timed out. Therefore, the total wait
-		/// time can be up to the value of uTimeout multiplied by the number of top-level windows.
-		/// </para>
-		/// </param>
-		/// <param name="Msg">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The message to be sent.</para>
-		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
-		/// </param>
-		/// <param name="wParam">
-		/// <para>Type: <c>WPARAM</c></para>
-		/// <para>Any additional message-specific information.</para>
-		/// </param>
-		/// <param name="lParam">
-		/// <para>Type: <c>LPARAM</c></para>
-		/// <para>Any additional message-specific information.</para>
-		/// </param>
-		/// <param name="fuFlags">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The behavior of this function. This parameter can be one or more of the following values.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>SMTO_ABORTIFHUNG 0x0002</term>
-		/// <term>
-		/// The function returns without waiting for the time-out period to elapse if the receiving thread appears to not respond or "hangs."
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>SMTO_BLOCK 0x0001</term>
-		/// <term>Prevents the calling thread from processing any other requests until the function returns.</term>
-		/// </item>
-		/// <item>
-		/// <term>SMTO_NORMAL 0x0000</term>
-		/// <term>The calling thread is not prevented from processing other requests while waiting for the function to return.</term>
-		/// </item>
-		/// <item>
-		/// <term>SMTO_NOTIMEOUTIFNOTHUNG 0x0008</term>
-		/// <term>The function does not enforce the time-out period as long as the receiving thread is processing messages.</term>
-		/// </item>
-		/// <item>
-		/// <term>SMTO_ERRORONEXIT 0x0020</term>
-		/// <term>
-		/// The function should return 0 if the receiving window is destroyed or its owning thread dies while the message is being processed.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="uTimeout">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>
-		/// The duration of the time-out period, in milliseconds. If the message is a broadcast message, each window can use the full
-		/// time-out period. For example, if you specify a five second time-out period and there are three top-level windows that fail to
-		/// process the message, you could have up to a 15 second delay.
-		/// </para>
-		/// </param>
-		/// <param name="lpdwResult">
-		/// <para>Type: <c>PDWORD_PTR</c></para>
-		/// <para>The result of the message processing. The value of this parameter depends on the message that is specified.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>Type: <c>LRESULT</c></c></para>
-		/// <para>
-		/// If the function succeeds, the return value is nonzero. <c>SendMessageTimeout</c> does not provide information about individual
-		/// windows timing out if <c>HWND_BROADCAST</c> is used.
-		/// </para>
-		/// <para>
-		/// If the function fails or times out, the return value is 0. To get extended error information, call GetLastError. If
-		/// <c>GetLastError</c> returns <c>ERROR_TIMEOUT</c>, then the function timed out.
-		/// </para>
-		/// <para><c>Windows 2000:</c> If GetLastError returns 0, then the function timed out.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The function calls the window procedure for the specified window and, if the specified window belongs to a different thread, does
-		/// not return until the window procedure has processed the message or the specified time-out period has elapsed. If the window
-		/// receiving the message belongs to the same queue as the current thread, the window procedure is called directly—the time-out value
-		/// is ignored.
-		/// </para>
-		/// <para>
-		/// This function considers that a thread is not responding if it has not called GetMessage or a similar function within five seconds.
-		/// </para>
-		/// <para>
-		/// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
-		/// <c>WM_USER</c>) to another process, you must do custom marshaling.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessagetimeouta LRESULT SendMessageTimeoutA( HWND
-		// hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, UINT fuFlags, UINT uTimeout, PDWORD_PTR lpdwResult );
-		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winuser.h")]
-		public static extern IntPtr SendMessageTimeout(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, SMTO fuFlags, uint uTimeout, ref IntPtr lpdwResult);
-
-		/// <summary>
-		/// <para>
-		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
-		/// window and does not return until the window procedure has processed the message.
-		/// </para>
-		/// <para>
-		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
-		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
-		/// </para>
-		/// </summary>
-		/// <param name="hWnd">
-		/// <para>
-		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
-		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
-		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
-		/// </para>
-		/// <para>
-		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
-		/// lesser or equal integrity level.
-		/// </para>
-		/// </param>
-		/// <param name="msg">
-		/// <para>The message to be sent.</para>
-		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
-		/// </param>
-		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="lParam">Additional message-specific information.</param>
-		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto, EntryPoint = "SendMessage")]
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[System.Security.SecurityCritical]
-		public static unsafe extern void* SendMessageUnsafe(void* hWnd, uint msg, void* wParam, void* lParam);
-
-		/// <summary>
-		/// Sends the specified message to a window or windows. If the window was created by the calling thread, <c>SendNotifyMessage</c>
-		/// calls the window procedure for the window and does not return until the window procedure has processed the message. If the window
-		/// was created by a different thread, <c>SendNotifyMessage</c> passes the message to the window procedure and returns immediately;
-		/// it does not wait for the window procedure to finish processing the message.
-		/// </summary>
-		/// <param name="hWnd">
-		/// <para>Type: <c>HWND</c></para>
-		/// <para>
-		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
-		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
-		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
-		/// </para>
-		/// </param>
-		/// <param name="Msg">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The message to be sent.</para>
-		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
-		/// </param>
-		/// <param name="wParam">
-		/// <para>Type: <c>WPARAM</c></para>
-		/// <para>Additional message-specific information.</para>
-		/// </param>
-		/// <param name="lParam">
-		/// <para>Type: <c>LPARAM</c></para>
-		/// <para>Additional message-specific information.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// If you send a message in the range below WM_USER to the asynchronous message functions (PostMessage, <c>SendNotifyMessage</c>,
-		/// and SendMessageCallback), its message parameters cannot include pointers. Otherwise, the operation will fail. The functions will
-		/// return before the receiving thread has had a chance to process the message and the sender will free the memory before it is used.
-		/// </para>
-		/// <para>
-		/// Applications that need to communicate using <c>HWND_BROADCAST</c> should use the RegisterWindowMessage function to obtain a
-		/// unique message for inter-application communication.
-		/// </para>
-		/// <para>
-		/// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
-		/// <c>WM_USER</c>) to another process, you must do custom marshaling.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendnotifymessagea BOOL SendNotifyMessageA( HWND hWnd,
-		// UINT Msg, WPARAM wParam, LPARAM lParam );
-		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winuser.h")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SendNotifyMessage(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
-
-		/// <summary>
-		/// Sets the extra message information for the current thread. Extra message information is an application- or driver-defined value
-		/// associated with the current thread's message queue. An application can use the GetMessageExtraInfo function to retrieve a
-		/// thread's extra message information.
-		/// </summary>
-		/// <param name="lParam">
-		/// <para>Type: <c>LPARAM</c></para>
-		/// <para>The value to be associated with the current thread.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>Type: <c>LPARAM</c></c></para>
-		/// <para>The return value is the previous value associated with the current thread.</para>
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setmessageextrainfo LPARAM SetMessageExtraInfo( LPARAM
-		// lParam );
-		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("winuser.h")]
-		public static extern IntPtr SetMessageExtraInfo(IntPtr lParam);
-
-		/// <summary>
-		/// Translates virtual-key messages into character messages. The character messages are posted to the calling thread's message queue,
-		/// to be read the next time the thread calls the GetMessage or PeekMessage function.
-		/// </summary>
-		/// <param name="lpMsg">
-		/// <para>Type: <c>const MSG*</c></para>
-		/// <para>
-		/// A pointer to an MSG structure that contains message information retrieved from the calling thread's message queue by using the
-		/// GetMessage or PeekMessage function.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
-		/// <para>
-		/// If the message is translated (that is, a character message is posted to the thread's message queue), the return value is nonzero.
-		/// </para>
-		/// <para>
-		/// If the message is WM_KEYDOWN, WM_KEYUP, WM_SYSKEYDOWN, or WM_SYSKEYUP, the return value is nonzero, regardless of the translation.
-		/// </para>
-		/// <para>
-		/// If the message is not translated (that is, a character message is not posted to the thread's message queue), the return value is zero.
-		/// </para>
-		/// </returns>
-		/// <remarks>
-		/// <para>The <c>TranslateMessage</c> function does not modify the message pointed to by the lpMsg parameter.</para>
-		/// <para>
-		/// WM_KEYDOWN and WM_KEYUP combinations produce a WM_CHAR or WM_DEADCHAR message. WM_SYSKEYDOWN and WM_SYSKEYUP combinations produce
-		/// a WM_SYSCHAR or WM_SYSDEADCHAR message.
-		/// </para>
-		/// <para><c>TranslateMessage</c> produces WM_CHAR messages only for keys that are mapped to ASCII characters by the keyboard driver.</para>
-		/// <para>
-		/// If applications process virtual-key messages for some other purpose, they should not call <c>TranslateMessage</c>. For instance,
-		/// an application should not call <c>TranslateMessage</c> if the TranslateAccelerator function returns a nonzero value. Note that
-		/// the application is responsible for retrieving and dispatching input messages to the dialog box. Most applications use the main
-		/// message loop for this. However, to permit the user to move to and to select controls by using the keyboard, the application must
-		/// call IsDialogMessage. For more information, see Dialog Box Keyboard Interface.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>For an example, see Creating a Message Loop.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-translatemessage BOOL TranslateMessage( const MSG *lpMsg );
-		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("winuser.h")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool TranslateMessage(in MSG lpMsg);
-
-		/// <summary>Unpacks a Dynamic Data Exchange (DDE)lParam value received from a posted DDE message.</summary>
-		/// <param name="msg">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The posted DDE message.</para>
-		/// </param>
-		/// <param name="lParam">
-		/// <para>Type: <c>LPARAM</c></para>
-		/// <para>
-		/// The lParam parameter of the posted DDE message that was received. The application must free the memory object specified by the
-		/// lParam parameter by calling the FreeDDElParam function.
-		/// </para>
-		/// </param>
-		/// <param name="puiLo">
-		/// <para>Type: <c>PUINT_PTR</c></para>
-		/// <para>A pointer to a variable that receives the low-order word of lParam.</para>
-		/// </param>
-		/// <param name="puiHi">
-		/// <para>Type: <c>PUINT_PTR</c></para>
-		/// <para>A pointer to a variable that receives the high-order word of lParam.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>BOOL</c></para>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero.</para>
-		/// </returns>
-		/// <remarks>PackDDElParam eases the porting of 16-bit DDE applications to 32-bit DDE applications.</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/dde/nf-dde-unpackddelparam BOOL UnpackDDElParam( UINT msg, LPARAM lParam,
-		// PUINT_PTR puiLo, PUINT_PTR puiHi );
-		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("dde.h", MSDNShortId = "")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UnpackDDElParam(uint msg, IntPtr lParam, out IntPtr puiLo, out IntPtr puiHi);
-
-		/// <summary>
-		/// Yields control to other threads when a thread has no other messages in its message queue. The <c>WaitMessage</c> function
-		/// suspends the thread and does not return until a new message is placed in the thread's message queue.
-		/// </summary>
-		/// <returns>
-		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// Note that <c>WaitMessage</c> does not return if there is unread input in the message queue after the thread has called a function
-		/// to check the queue. This is because functions such as PeekMessage, GetMessage, GetQueueStatus, <c>WaitMessage</c>,
-		/// MsgWaitForMultipleObjects, and MsgWaitForMultipleObjectsEx check the queue and then change the state information for the queue so
-		/// that the input is no longer considered new. A subsequent call to <c>WaitMessage</c> will not return until new input of the
-		/// specified type arrives. The existing unread input (received prior to the last time the thread checked the queue) is ignored.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-waitmessage BOOL WaitMessage( );
-		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winuser.h")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WaitMessage();
-
 		/// <summary>Contains information about a window that denied a request from BroadcastSystemMessageEx.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-__unnamed_struct_2 typedef struct { UINT cbSize; HDESK
 		// hdesk; HWND hwnd; LUID luid; } BSMINFO, *PBSMINFO;
