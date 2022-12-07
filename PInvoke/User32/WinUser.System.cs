@@ -5073,12 +5073,9 @@ namespace Vanara.PInvoke
 		// typedef struct tagTouchPredictionParameters { UINT cbSize; UINT dwLatency; UINT dwSampleTime; UINT bUseHWTimeStamp;}
 		// TouchPredictionParameters, *PTouchPredictionParameters; https://msdn.microsoft.com/en-us/library/windows/desktop/hh969214(v=vs.85).aspx
 		[PInvokeData("Winuser.h", MSDNShortId = "hh969214")]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct TOUCHPREDICTIONPARAMETERS
 		{
-			/// <summary>Use timestamps provided by the hardware.</summary>
-			[MarshalAs(UnmanagedType.Bool)]
-			public bool bUseHWTimeStamp;
-
 			/// <summary>The size of this structure, in bytes.</summary>
 			public uint cbSize;
 
@@ -5087,6 +5084,10 @@ namespace Vanara.PInvoke
 
 			/// <summary>Sample time in milliseconds (used to calculate velocity).</summary>
 			public uint dwSampleTime;
+
+			/// <summary>Use timestamps provided by the hardware.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool bUseHWTimeStamp;
 		}
 
 		internal class SPCorrespondingTypeAttribute : CorrespondingTypeAttribute
