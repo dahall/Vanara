@@ -229,8 +229,8 @@ namespace Vanara.Windows.Shell
 		/// <value>The show command for a Shell link object.</value>
 		public ShowWindowCommand ShowState
 		{
-			get => link.GetShowCmd() - 1;
-			set { link.SetShowCmd(value + 1); Save(); }
+			get => link.GetShowCmd();
+			set { link.SetShowCmd(value); Save(); }
 		}
 
 		/// <summary>Gets or sets the target with a <see cref="ShellItem"/> instance.</summary>
