@@ -8,6 +8,7 @@ namespace Vanara.PInvoke;
 /// <summary>Items from the WebSocket.dll.</summary>
 public static partial class WebSocket
 {
+	/// <summary/>
 	public const int WEB_SOCKET_MAX_CLOSE_REASON_LENGTH = 123;
 	private const string Lib_Websocket = "websocket.dll";
 

@@ -289,9 +289,9 @@ public class DistributedRoutingTable : IDisposable
 
 	private static void DrtEventCallback(IntPtr Param, bool TimedOut)
 	{
-		var Drt = (DistributedRoutingTable)GCHandle.FromIntPtr(Param).Target;
+		var Drt = (DistributedRoutingTable?)GCHandle.FromIntPtr(Param).Target;
 
-		HRESULT hr = DrtGetEventDataSize(Drt.hDrt, out var ulDrtEventDataLen);
+		HRESULT hr = DrtGetEventDataSize(Drt?.hDrt, out var ulDrtEventDataLen);
 		if (hr.Failed)
 		{
 			if (hr != HRESULT.DRT_E_NO_MORE)
