@@ -25,7 +25,7 @@ AccountLogonRights, DesiredAccess, SystemPrivilege
     </When>
     <Otherwise>
       <ItemGroup>
-        <PackageReference Include="System.DirectoryServices" Version="5.0.0" />
+        <PackageReference Include="System.DirectoryServices" Version="7.0.0" />
       </ItemGroup>
     </Otherwise>
   </Choose>

@@ -29,7 +29,8 @@ NavigationLogDirection, SFVMUD, ShellBrowserViewMode, TaskbarItemTabThumbnailOpt
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) " />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" Condition=" $(TargetFramework.StartsWith('netcore')) " />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" Condition=" $(TargetFramework.StartsWith('netstandard')) " />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Vanara.Core.csproj" />

@@ -3,12 +3,6 @@
     <AssemblyName>UnitTest.PInvoke.CfgMgr32</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\CfgMgr32\Vanara.PInvoke.CfgMgr32.csproj" />
   </ItemGroup>
