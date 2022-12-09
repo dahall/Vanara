@@ -301,7 +301,7 @@ public class DistributedRoutingTable : IDisposable
 
 		using (SafeCoTaskMemStruct<DRT_EVENT_DATA> pEventData = new(ulDrtEventDataLen))
 		{
-			hr = DrtGetEventData(Drt.hDrt, ulDrtEventDataLen, pEventData);
+			hr = DrtGetEventData(Drt?.hDrt, ulDrtEventDataLen, pEventData);
 			if (hr.Failed)
 			{
 				if (hr != HRESULT.DRT_E_NO_MORE)
