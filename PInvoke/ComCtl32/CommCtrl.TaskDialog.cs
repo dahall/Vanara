@@ -945,7 +945,7 @@ namespace Vanara.PInvoke
 		/// uses this structure.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb787475")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
 		public struct TASKDIALOG_BUTTON
 		{
 			/// <summary>Indicates the value to be returned when this button is selected.</summary>

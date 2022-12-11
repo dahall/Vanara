@@ -47,7 +47,7 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Returns the string value held by a <see cref="SafeLPSTR"/>.</summary>
 	/// <param name="s">The <see cref="SafeLPSTR"/> instance.</param>
 	/// <returns>A <see cref="string"/> value held by the <see cref="SafeLPSTR"/> or <c>null</c> if the handle or value is invalid.</returns>
-	public static implicit operator SafeLPSTR(string s) => s.ToString();
+	public static implicit operator string(SafeLPSTR s) => s.ToString();
 
 	/// <summary>Returns the StrPtrAnsi value held by a <see cref="SafeLPSTR"/>.</summary>
 	/// <param name="s">The <see cref="SafeLPSTR"/> instance.</param>
@@ -151,7 +151,7 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Returns the string value held by a <see cref="SafeLPTSTR"/>.</summary>
 	/// <param name="s">The <see cref="SafeLPTSTR"/> instance.</param>
 	/// <returns>A <see cref="string"/> value held by the <see cref="SafeLPTSTR"/> or <c>null</c> if the handle or value is invalid.</returns>
-	public static implicit operator SafeLPTSTR(string s) => s.ToString();
+	public static implicit operator string(SafeLPTSTR s) => s.ToString();
 
 	/// <summary>Returns the StrPtrAuto value held by a <see cref="SafeLPTSTR"/>.</summary>
 	/// <param name="s">The <see cref="SafeLPTSTR"/> instance.</param>
@@ -255,7 +255,7 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Returns the string value held by a <see cref="SafeLPWSTR"/>.</summary>
 	/// <param name="s">The <see cref="SafeLPWSTR"/> instance.</param>
 	/// <returns>A <see cref="string"/> value held by the <see cref="SafeLPWSTR"/> or <c>null</c> if the handle or value is invalid.</returns>
-	public static implicit operator SafeLPWSTR(string s) => s.ToString();
+	public static implicit operator string(SafeLPWSTR s) => s.ToString();
 
 	/// <summary>Returns the StrPtrUni value held by a <see cref="SafeLPWSTR"/>.</summary>
 	/// <param name="s">The <see cref="SafeLPWSTR"/> instance.</param>

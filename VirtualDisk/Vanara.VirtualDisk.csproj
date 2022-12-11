@@ -17,11 +17,10 @@ CompactionMode, DeviceType, Subtype
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) ">
-    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
-  </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Management" Version="5.0.0" />
+    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) " />
+    <PackageReference Include="System.Management" Version="5.0.0" Condition=" '$(TargetFramework)' == 'net45' " />
+    <PackageReference Include="System.Management" Version="7.0.0" Condition=" '$(TargetFramework)' != 'net45' " />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Management\Vanara.Management.csproj" />
