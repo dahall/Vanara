@@ -401,9 +401,9 @@ namespace Vanara {
 					return f##prop; } }
 
 				DEFINE_EWM_ROLIST(AlternateLocationMappings, IVssWMFiledesc, GetAlternateLocationMapping, CVssWMFiledesc, RefreshRestoreMethod, restoreMethod.iMappings)
-					DEFINE_EWM_ROLIST(Components, IVssWMComponent, GetComponent, CVssWMComponent, RefreshFileCounts, cComponents)
-					DEFINE_EWM_ROLIST(ExcludeFiles, IVssWMFiledesc, GetExcludeFile, CVssWMFiledesc, RefreshFileCounts, cExcludeFiles)
-					// DEFINE_EWM_ROLIST(IncludeFiles, IVssWMFiledesc, GetIncludeFile, CVssWMFiledesc, RefreshFileCounts, cIncludeFiles);
+				DEFINE_EWM_ROLIST(Components, IVssWMComponent, GetComponent, CVssWMComponent, RefreshFileCounts, cComponents)
+				DEFINE_EWM_ROLIST(ExcludeFiles, IVssWMFiledesc, GetExcludeFile, CVssWMFiledesc, RefreshFileCounts, cExcludeFiles)
+				// DEFINE_EWM_ROLIST(IncludeFiles, IVssWMFiledesc, GetIncludeFile, CVssWMFiledesc, RefreshFileCounts, cIncludeFiles);
 
 			private:
 

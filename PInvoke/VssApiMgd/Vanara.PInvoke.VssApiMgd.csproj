@@ -9,9 +9,7 @@
     <AssemblyName>Vanara.PInvoke.VssApiMgd</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;VSS;VssApi;volume shadow copy service</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <!--<PlatformTarget>x86</PlatformTarget>-->
     <PackageReleaseNotes>Currently implements:
 
 Functions

@@ -19,13 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <EnableManagedPackageReferenceSupport>true</EnableManagedPackageReferenceSupport>
     <ProjectGuid>{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}</ProjectGuid>
     <Keyword>NetCoreCProj</Keyword>
     <RootNamespace>VssApi</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <TargetFramework>net5.0</TargetFramework>
     <ProjectName>Vanara.PInvoke.VssApi</ProjectName>
+    <TargetFramework>net6.0</TargetFramework>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).</Description>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <AssemblyName>Vanara.PInvoke.VssApi</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;VSS;VssApi;volume shadow copy service</PackageTags>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,6 +47,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>NetCore</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
+    <!--<GeneratePackageOnBuild>true</GeneratePackageOnBuild>-->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -55,6 +62,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>NetCore</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
+    <!--<GeneratePackageOnBuild>true</GeneratePackageOnBuild>-->
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -74,9 +82,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <PropertyGroup>
     <TargetName>$(ProjectName)</TargetName>
-    <OutDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\$(TargetFramework)\</OutDir>
+    <OutDir>bin\$(Configuration)\$(TargetFramework)\</OutDir>
     <IntDir>obj\$(Configuration)\$(TargetFramework)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -85,12 +93,11 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalUsingDirectories>$(SolutionDir)PInvoke\VssApiMgd\bin\$(ConfigurationName)\$(TargetFramework);%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(MSBuildThisFileDirectory)..\VssApiMgd\bin\$(Configuration)\$(TargetFramework)</AdditionalUsingDirectories>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
-      <AddModuleNamesToAssembly>
-      </AddModuleNamesToAssembly>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -99,9 +106,11 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalUsingDirectories>$(MSBuildThisFileDirectory)..\VssApiMgd\bin\$(Configuration)\$(TargetFramework)</AdditionalUsingDirectories>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,10 +119,18 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalUsingDirectories>$(MSBuildThisFileDirectory)..\VssApiMgd\bin\$(Configuration)\$(TargetFramework)</AdditionalUsingDirectories>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>C:\Temp\Nuget.exe pack $(MSBuildThisFileDirectory)VssApi.nuspec -Symbols -SymbolPackageFormat snupkg -OutputDirectory bin\$(Configuration)</Command>
+      <Outputs>bin\$(Configuration)\$(AssemblyName).$(Version).nupkg</Outputs>
+      <Inputs>$(MSBuildThisFileDirectory)VssApi.nuspec</Inputs>
+      <TreatOutputAsContent>false</TreatOutputAsContent>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -121,10 +138,18 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalUsingDirectories>$(MSBuildThisFileDirectory)..\VssApiMgd\bin\$(Configuration)\$(TargetFramework)</AdditionalUsingDirectories>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>C:\Temp\Nuget.exe pack $(MSBuildThisFileDirectory)VssApi.nuspec -Symbols -SymbolPackageFormat snupkg -OutputDirectory bin\$(Configuration)</Command>
+      <Outputs>bin\$(Configuration)\$(AssemblyName).$(Version).nupkg</Outputs>
+      <Inputs>$(MSBuildThisFileDirectory)VssApi.nuspec</Inputs>
+      <TreatOutputAsContent>false</TreatOutputAsContent>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseWrapper.h" />
@@ -152,6 +177,25 @@
     <ClCompile Include="VssFactory.cpp" />
     <ClCompile Include="VsWriter.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VssApiMgd\Vanara.PInvoke.VssApiMgd.csproj">
+      <Project>{39aedd51-c627-41b9-96d3-44f481ed4e7c}</Project>
+      <!--<CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>-->
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VssApi.nuspec" />
+  </ItemGroup>
+  <!--<ItemGroup>
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="5.2.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>-->
+  <!--<ItemGroup>
+    <None Include="..\VssApiMgd\bin\Debug\net6.0\Vanara.PInvoke.VssApiMgd.dll" />
+  </ItemGroup>-->
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

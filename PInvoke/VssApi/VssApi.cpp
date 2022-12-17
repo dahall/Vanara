@@ -2,3 +2,4 @@
 
 #include "VssApi.h"
 
+#pragma comment(lib, "vssapi.lib")

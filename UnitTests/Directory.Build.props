@@ -2,6 +2,8 @@
   <PropertyGroup>
     <TargetFrameworks/>
     <TargetFramework>net48</TargetFramework>
+    <Configurations>Debug;Release;DebugNoTests</Configurations>
+    <Platforms>AnyCPU;x64;x86</Platforms>
     <LangVersion>latest</LangVersion>
     <Product>Vanara</Product>
   </PropertyGroup>

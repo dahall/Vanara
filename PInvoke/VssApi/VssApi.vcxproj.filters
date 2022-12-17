@@ -73,5 +73,6 @@
     <None Include="$(MSBuildThisFileDirectory)docs\icons\Vanara64x64.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="VssApi.nuspec" />
   </ItemGroup>
 </Project>

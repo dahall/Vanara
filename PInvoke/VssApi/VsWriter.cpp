@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <windef.h>
 #include "vswriter.h"
 #include "CliLists.h"
 
@@ -27,7 +26,7 @@ VssDifferencedFile CVssComponent::GetDifferencedFilesItem(int i)
 {
     SafeBSTR path, filespec, lsn;
     ::BOOL recur;
-    FILETIME ft;
+    ::FILETIME ft;
     Utils::ThrowIfFailed(pNative->GetDifferencedFile(i, &path, &filespec, &recur, &lsn, &ft));
     VssDifferencedFile e;
     e.Path = path;
@@ -41,7 +40,7 @@ VssDifferencedFile CVssComponent::GetDifferencedFilesItem(int i)
 void CVssComponent::AddDifferencedFile(VssDifferencedFile item)
 {
     auto llft = item.LastModifyTime.ToFileTime();
-    FILETIME ft = *(FILETIME*)&llft;
+    ::FILETIME ft = *(::FILETIME*)&llft;
     Utils::ThrowIfFailed(pNative->AddDifferencedFilesByLastModifyTime(SafeWString(item.Path), SafeWString(item.FileSpec), item.Recursive, ft));
 }
 

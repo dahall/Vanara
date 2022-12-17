@@ -6,15 +6,11 @@ using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
 using namespace System::Security::Permissions;
 
-[assembly:AssemblyTitleAttribute(L"VssApi")];
-[assembly:AssemblyDescriptionAttribute(L"")];
-[assembly:AssemblyConfigurationAttribute(L"")];
-[assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"VssApi")];
-[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2021")];
-[assembly:AssemblyTrademarkAttribute(L"")];
-[assembly:AssemblyCultureAttribute(L"")];
-
-[assembly:AssemblyVersionAttribute("1.0.*")];
+[assembly:AssemblyTitleAttribute(L"Vanara.PInvoke.VssApi")];
+[assembly:AssemblyDescriptionAttribute(L"PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).")];
+[assembly:AssemblyProductAttribute(L"Vanara")];
+[assembly:AssemblyCopyrightAttribute(L"Copyright © 2017-2022")];
+[assembly:AssemblyKeyFileAttribute(L"..\\..\\Vanara.snk")]
+[assembly:AssemblyVersionAttribute("3.4.12")];
 
 [assembly:ComVisible(false)];
