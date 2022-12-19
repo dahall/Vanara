@@ -14,12 +14,12 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
-	public SafeLPSTR(string s) : base(s, thisCharSet) { }
+	public SafeLPSTR(string? s) : base(s, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="capacity">The size of the buffer in characters.</param>
-	public SafeLPSTR(string s, int capacity) : base(s, capacity, thisCharSet) { }
+	public SafeLPSTR(string? s, int capacity) : base(s, capacity, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
@@ -43,11 +43,6 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
 	/// <value>A null value.</value>
 	public static SafeLPSTR Null => new(IntPtr.Zero, false);
-
-	/// <summary>Returns the string value held by a <see cref="SafeLPSTR"/>.</summary>
-	/// <param name="s">The <see cref="SafeLPSTR"/> instance.</param>
-	/// <returns>A <see cref="string"/> value held by the <see cref="SafeLPSTR"/> or <c>null</c> if the handle or value is invalid.</returns>
-	public static implicit operator SafeLPSTR(string s) => s.ToString();
 
 	/// <summary>Returns the StrPtrAnsi value held by a <see cref="SafeLPSTR"/>.</summary>
 	/// <param name="s">The <see cref="SafeLPSTR"/> instance.</param>
@@ -118,12 +113,12 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPTSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
-	public SafeLPTSTR(string s) : base(s, thisCharSet) { }
+	public SafeLPTSTR(string? s) : base(s, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPTSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="capacity">The size of the buffer in characters.</param>
-	public SafeLPTSTR(string s, int capacity) : base(s, capacity, thisCharSet) { }
+	public SafeLPTSTR(string? s, int capacity) : base(s, capacity, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPTSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
@@ -147,11 +142,6 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
 	/// <value>A null value.</value>
 	public static SafeLPTSTR Null => new(IntPtr.Zero, false);
-
-	/// <summary>Returns the string value held by a <see cref="SafeLPTSTR"/>.</summary>
-	/// <param name="s">The <see cref="SafeLPTSTR"/> instance.</param>
-	/// <returns>A <see cref="string"/> value held by the <see cref="SafeLPTSTR"/> or <c>null</c> if the handle or value is invalid.</returns>
-	public static implicit operator SafeLPTSTR(string s) => s.ToString();
 
 	/// <summary>Returns the StrPtrAuto value held by a <see cref="SafeLPTSTR"/>.</summary>
 	/// <param name="s">The <see cref="SafeLPTSTR"/> instance.</param>
@@ -222,12 +212,12 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPWSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
-	public SafeLPWSTR(string s) : base(s, thisCharSet) { }
+	public SafeLPWSTR(string? s) : base(s, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPWSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="capacity">The size of the buffer in characters.</param>
-	public SafeLPWSTR(string s, int capacity) : base(s, capacity, thisCharSet) { }
+	public SafeLPWSTR(string? s, int capacity) : base(s, capacity, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPWSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
@@ -251,11 +241,6 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
 	/// <value>A null value.</value>
 	public static SafeLPWSTR Null => new(IntPtr.Zero, false);
-
-	/// <summary>Returns the string value held by a <see cref="SafeLPWSTR"/>.</summary>
-	/// <param name="s">The <see cref="SafeLPWSTR"/> instance.</param>
-	/// <returns>A <see cref="string"/> value held by the <see cref="SafeLPWSTR"/> or <c>null</c> if the handle or value is invalid.</returns>
-	public static implicit operator SafeLPWSTR(string s) => s.ToString();
 
 	/// <summary>Returns the StrPtrUni value held by a <see cref="SafeLPWSTR"/>.</summary>
 	/// <param name="s">The <see cref="SafeLPWSTR"/> instance.</param>
