@@ -73,8 +73,13 @@ namespace Vanara.Windows.Shell.Tests
 		public void SetNativeTextMultTest()
 		{
 			const string txt = @"“We’ve been here”";
-			using var cb = new Clipboard();
-			cb.SetText(txt, html);
+			using (var cb = new Clipboard())
+				cb.SetText(txt, $"<p>{txt}</p>");
+			using (var cb = new Clipboard())
+			{
+				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
+				Assert.That(cb.GetText(TextDataFormat.Html), Contains.Substring(txt));
+			}
 		}
 
 		//[Test]
