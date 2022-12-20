@@ -26,6 +26,8 @@
     <RootNamespace>VssApi</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>Vanara.PInvoke.VssApi</ProjectName>
+    <TargetFrameworks>
+    </TargetFrameworks>
     <TargetFramework>net6.0</TargetFramework>
     <Description>PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
@@ -47,7 +49,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>NetCore</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
-    <!--<GeneratePackageOnBuild>true</GeneratePackageOnBuild>-->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -62,7 +64,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>NetCore</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
-    <!--<GeneratePackageOnBuild>true</GeneratePackageOnBuild>-->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -125,12 +127,12 @@
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
     </Link>
-    <CustomBuildStep>
+    <!--<CustomBuildStep>
       <Command>C:\Temp\Nuget.exe pack $(MSBuildThisFileDirectory)VssApi.nuspec -Symbols -SymbolPackageFormat snupkg -OutputDirectory bin\$(Configuration)</Command>
       <Outputs>bin\$(Configuration)\$(AssemblyName).$(Version).nupkg</Outputs>
       <Inputs>$(MSBuildThisFileDirectory)VssApi.nuspec</Inputs>
       <TreatOutputAsContent>false</TreatOutputAsContent>
-    </CustomBuildStep>
+    </CustomBuildStep>-->
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -144,13 +146,19 @@
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
     </Link>
-    <CustomBuildStep>
+    <!--<CustomBuildStep>
       <Command>C:\Temp\Nuget.exe pack $(MSBuildThisFileDirectory)VssApi.nuspec -Symbols -SymbolPackageFormat snupkg -OutputDirectory bin\$(Configuration)</Command>
       <Outputs>bin\$(Configuration)\$(AssemblyName).$(Version).nupkg</Outputs>
       <Inputs>$(MSBuildThisFileDirectory)VssApi.nuspec</Inputs>
       <TreatOutputAsContent>false</TreatOutputAsContent>
-    </CustomBuildStep>
+    </CustomBuildStep>-->
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseWrapper.h" />
     <ClInclude Include="CliLists.h" />
@@ -188,11 +196,6 @@
   <ItemGroup>
     <None Include="VssApi.nuspec" />
   </ItemGroup>
-  <!--<ItemGroup>
-    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="5.2.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>-->
   <!--<ItemGroup>
     <None Include="..\VssApiMgd\bin\Debug\net6.0\Vanara.PInvoke.VssApiMgd.dll" />
   </ItemGroup>-->
