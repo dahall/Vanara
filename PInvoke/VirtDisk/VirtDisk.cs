@@ -2506,7 +2506,7 @@ namespace Vanara.PInvoke
 		// ChangeTrackingEnabled; struct { GUID LinkageId; PCWSTR ParentFilePath; } ParentLocator; }; } SET_VIRTUAL_DISK_INFO, *PSET_VIRTUAL_DISK_INFO;
 		[PInvokeData("virtdisk.h", MSDNShortId = "NS:virtdisk._SET_VIRTUAL_DISK_INFO")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode,
-#if X64
+#if x64
 			Pack = 8
 #else
 			Pack = 4
