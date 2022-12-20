@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
     <SupportedDlls>ws2_32.dll</SupportedDlls>
+    <UseX64>true</UseX64>
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) for WinSock and WinSock2 imported from Windows Ws2_32.dll.</Description>
