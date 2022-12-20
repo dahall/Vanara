@@ -204,62 +204,26 @@ namespace Vanara.PInvoke
 				lindex = index,
 				tymed = tymed
 			};
-			STGMEDIUM medium = new() { tymed = attr?.Medium ?? TYMED.TYMED_HGLOBAL };
-			dataObj.GetData(ref formatetc, out medium);
+			//STGMEDIUM medium = new() { tymed = attr?.Medium ?? TYMED.TYMED_HGLOBAL };
+			dataObj.GetData(ref formatetc, out var medium);
 
-			// Handle TYMED values
+			// Handle TYMED values, passing through HGLOBAL
 			bool userFree = medium.pUnkForRelease is null;
-			switch (medium.tymed)
-			{
-				case TYMED.TYMED_HGLOBAL:
-					// Pass this one through
-					break;
-
-				case TYMED.TYMED_FILE:
-					return new SafeMoveableHGlobalHandle(medium.unionmember, userFree).ToString(-1, CharSet.Ansi);
-
-				case TYMED.TYMED_ISTREAM:
-					return Marshal.GetObjectForIUnknown(medium.unionmember) as IStream;
-
-				case TYMED.TYMED_ISTORAGE:
-					return Marshal.GetObjectForIUnknown(medium.unionmember) as IStorage;
-
-				case TYMED.TYMED_GDI:
-					if (userFree)
-					{
-						return new SafeHBITMAP(medium.unionmember);
-					}
-					else
-					{
-						return (HBITMAP)medium.unionmember;
-					}
-
-				case TYMED.TYMED_MFPICT:
-					if (userFree)
-					{
-						return new SafeHMETAFILE(medium.unionmember);
-					}
-					else
-					{
-						return (HMETAFILE)medium.unionmember;
-					}
-
-				case TYMED.TYMED_ENHMF:
-					if (userFree)
-					{
-						return new SafeHENHMETAFILE(medium.unionmember);
-					}
-					else
-					{
-						return (HENHMETAFILE)medium.unionmember;
-					}
-
-				case TYMED.TYMED_NULL:
-					return null;
-
-				default:
-					throw new InvalidOperationException();
-			}
+			if (medium.tymed != TYMED.TYMED_HGLOBAL)
+				return medium.tymed switch
+				{
+					TYMED.TYMED_FILE => new SafeMoveableHGlobalHandle(medium.unionmember, userFree).ToString(-1, CharSet.Ansi),
+					TYMED.TYMED_ISTREAM => Marshal.GetObjectForIUnknown(medium.unionmember) as IStream,
+					TYMED.TYMED_ISTORAGE => Marshal.GetObjectForIUnknown(medium.unionmember) as IStorage,
+					TYMED.TYMED_GDI when userFree => new SafeHBITMAP(medium.unionmember),
+					TYMED.TYMED_GDI when !userFree => (HBITMAP)medium.unionmember,
+					TYMED.TYMED_MFPICT when userFree => new SafeHMETAFILE(medium.unionmember),
+					TYMED.TYMED_MFPICT when !userFree => (HMETAFILE)medium.unionmember,
+					TYMED.TYMED_ENHMF when userFree => new SafeHENHMETAFILE(medium.unionmember),
+					TYMED.TYMED_ENHMF when !userFree => (HENHMETAFILE)medium.unionmember,
+					TYMED.TYMED_NULL => null,
+					_ => throw new InvalidOperationException(),
+				};
 
 			using SafeMoveableHGlobalHandle hmem = new(medium.unionmember, userFree);
 			try
@@ -320,8 +284,10 @@ namespace Vanara.PInvoke
 		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
 		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
 		/// </param>
+		/// <param name="charSet">The character set to use for string types.</param>
 		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
-		public static T GetData<T>(this IDataObject dataObj, uint formatId, int index = -1)
+		/// <exception cref="System.ArgumentException">This format does not support direct type access. - formatId</exception>
+		public static T GetData<T>(this IDataObject dataObj, uint formatId, int index = -1, CharSet charSet = CharSet.Auto)
 		{
 			FORMATETC formatetc = new()
 			{
@@ -330,8 +296,8 @@ namespace Vanara.PInvoke
 				lindex = index,
 				tymed = TYMED.TYMED_HGLOBAL
 			};
-			STGMEDIUM medium = new() { tymed = TYMED.TYMED_HGLOBAL };
-			dataObj.GetData(ref formatetc, out medium);
+			//STGMEDIUM medium = new() { tymed = TYMED.TYMED_HGLOBAL };
+			dataObj.GetData(ref formatetc, out var medium);
 			if (medium.tymed != TYMED.TYMED_HGLOBAL)
 				throw new ArgumentException("This format does not support direct type access.", nameof(formatId));
 			if (medium.unionmember == default)
@@ -340,7 +306,7 @@ namespace Vanara.PInvoke
 			try
 			{
 				hmem.Lock();
-				return hmem.ToType<T>();
+				return hmem.ToType<T>(charSet == CharSet.Auto ? (StringHelper.GetCharSize(charSet) == 1 ? CharSet.Ansi : CharSet.Unicode) : charSet);
 			}
 			finally
 			{
@@ -861,7 +827,9 @@ namespace Vanara.PInvoke
 			public string cFileName;
 
 			/// <summary>The file size, in bytes.</summary>
+#pragma warning disable IDE1006 // Naming Styles
 			public ulong nFileSize
+#pragma warning restore IDE1006 // Naming Styles
 			{
 				get => Macros.MAKELONG64(nFileSizeLow, nFileSizeHigh);
 				set
@@ -1562,6 +1530,7 @@ namespace Vanara.PInvoke
 
 			public override IntPtr Write(object value) => base.Write(FormatHtmlForClipboard((string)value));
 		}
+
 		internal class ClipboardSerializedFormatter : IClipboardFormatter
 		{
 			private static readonly byte[] guid = new Guid("FD9EA796-3B13-4370-A679-56106BB288FB").ToByteArray();
