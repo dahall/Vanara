@@ -1,8 +1,10 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using Vanara.PInvoke;
+using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Shell32;
 using Clipboard = Vanara.Windows.Shell.NativeClipboard;
 using WFClipboard = System.Windows.Forms.Clipboard;
@@ -55,6 +57,18 @@ namespace Vanara.Windows.Shell.Tests
 		{
 			var fmts = Clipboard.CurrentlySupportedFormats.ToArray();
 			Assert.That(Clipboard.GetFirstFormatAvailable(fmts), Is.GreaterThan(0));
+		}
+
+		[Test]
+		public void GetSetShellItems()
+		{
+			//Ole32.OleInitialize();
+			//string[] files = { TestCaseSources.SmallFile, TestCaseSources.ImageFile, TestCaseSources.LogFile };
+			//ShellItemArray items = new(Array.ConvertAll(files, f => new ShellItem(f)));
+			//Clipboard.SetShellItems(items);
+			var shArray = Clipboard.GetShellItemArray();
+			Assert.That(shArray.Count, Is.GreaterThan(0));
+			//Assert.IsTrue(files.SequenceEqual(shArray.Select(s => s.FileSystemPath)));
 		}
 
 		[Test]

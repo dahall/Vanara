@@ -167,6 +167,21 @@ namespace Vanara.Windows.Shell
 		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
 		public static T GetData<T>(uint formatId, int index = -1) => DataObject.GetData<T>(formatId, index);
 
+		/// <summary>
+		/// This is used when a group of files in CF_HDROP (FileDrop) format is being renamed as well as transferred. The data consists of an
+		/// array that contains a new name for each file, in the same order that the files are listed in the accompanying CF_HDROP format.
+		/// The format of the character array is the same as that used by CF_HDROP to list the transferred files.
+		/// </summary>
+		/// <returns>A list of strings containing a new name for each file.</returns>
+		public static string[] GetFileNameMap()
+		{
+			if (IsFormatAvailable(ShellClipboardFormat.CFSTR_FILENAMEMAPW))
+				return DataObject.GetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPW)) as string[];
+			else if (IsFormatAvailable(ShellClipboardFormat.CFSTR_FILENAMEMAPA))
+				return DataObject.GetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPA)) as string[];
+			return new string[0];
+		}
+
 		/// <summary>Retrieves the first available clipboard format in the specified list.</summary>
 		/// <param name="idList">The clipboard formats, in priority order.</param>
 		/// <returns>
@@ -213,6 +228,10 @@ namespace Vanara.Windows.Shell
 		/// </remarks>
 		public static HWND GetOpenClipboardWindow() => User32.GetOpenClipboardWindow();
 
+		/// <summary>Gets the shell item array associated with the data object, if possible.</summary>
+		/// <returns>The <see cref="ShellItemArray"/> associated with the data object, if set. Otherwise, <see langword="null"/>.</returns>
+		public static ShellItemArray GetShellItemArray() => IsFormatAvailable(ShellClipboardFormat.CFSTR_SHELLIDLIST) ? ShellItemArray.FromDataObject(DataObject) : null;
+
 		/// <summary>Determines whether the data object pointer previously placed on the clipboard is still on the clipboard.</summary>
 		/// <param name="dataObject">
 		/// The IDataObject interface on the data object containing clipboard data of interest, which the caller previously placed on the clipboard.
@@ -224,6 +243,11 @@ namespace Vanara.Windows.Shell
 		/// <param name="id">A standard or registered clipboard format.</param>
 		/// <returns>If the clipboard format is available, the return value is <see langword="true"/>; otherwise <see langword="false"/>.</returns>
 		public static bool IsFormatAvailable(uint id) => IsClipboardFormatAvailable(id);
+
+		/// <summary>Determines whether the clipboard contains data in the specified format.</summary>
+		/// <param name="id">A clipboard format string.</param>
+		/// <returns>If the clipboard format is available, the return value is <see langword="true"/>; otherwise <see langword="false"/>.</returns>
+		public static bool IsFormatAvailable(string id) => IsClipboardFormatAvailable(RegisterFormat(id));
 
 		/// <summary>Registers a new clipboard format. This format can then be used as a valid clipboard format.</summary>
 		/// <param name="format">The name of the new format.</param>
@@ -246,6 +270,23 @@ namespace Vanara.Windows.Shell
 			id = Win32Error.ThrowLastErrorIf(RegisterClipboardFormat(format), v => v == 0);
 			knownIds.Add(id, format);
 			return id;
+		}
+
+		/// <summary>Puts a list of shell items onto the clipboard.</summary>
+		/// <param name="shellItems">The sequence of shell items.</param>
+		public static void SetShellItems(IEnumerable<ShellItem> shellItems)
+		{
+			var pidls = shellItems.Select(i => i.PIDL).ToArray();
+			SHCreateDataObject(PIDL.Null, (uint)pidls.Length, Array.ConvertAll(pidls, p => p.DangerousGetHandle()), default, typeof(IComDataObject).GUID, out IComDataObject dataObj).ThrowIfFailed();
+			OleSetClipboard(dataObj).ThrowIfFailed();
+			//DataObject = dataObj = shellItems is ShellItemArray shia ? shia.ToDataObject() : new ShellItemArray(shellItems).ToDataObject();
+			//if (!setAllFormats) return;
+			//var files = shellItems.Where(i => i.IsFileSystem).Select(i => i.FileSystemPath).ToArray();
+			//if (files.Length == 0) return;
+			//dataObj.SetData(CLIPFORMAT.CF_HDROP, files);
+			//dataObj.SetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILENAMEA), files[0]);
+			//dataObj.SetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILENAMEW), files[0]);
+			//dataObj.SetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILEDESCRIPTORA));
 		}
 
 		/// <summary>Obtains data from a source data object.</summary>
