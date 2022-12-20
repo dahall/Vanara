@@ -3139,7 +3139,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/ole2/nf-ole2-olesetclipboard HRESULT OleSetClipboard( IN LPDATAOBJECT pDataObj );
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ole2.h", MSDNShortId = "741def10-d2b5-4395-8049-1eba2e29b0e8")]
-		public static extern HRESULT OleSetClipboard([In] IDataObject pDataObj);
+		public static extern HRESULT OleSetClipboard([In, Optional] IDataObject pDataObj);
 
 		/// <summary>
 		/// Notifies an object that it is embedded in an OLE container, which ensures that reference counting is done correctly for

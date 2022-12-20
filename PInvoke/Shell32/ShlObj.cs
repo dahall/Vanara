@@ -4030,16 +4030,14 @@ namespace Vanara.PInvoke
 		[PInvokeData("shlobj.h", MSDNShortId = "170afefc-b4de-4661-9c12-1341656b0fdb")]
 		public static extern void SHChangeNotifyRegisterThread(SCNRT_STATUS status);
 
-		/// <summary>
-		/// <para>Creates a data object in a parent folder.</para>
-		/// </summary>
+		/// <summary>Creates a data object in a parent folder.</summary>
 		/// <param name="pidlFolder">
 		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
 		/// <para>A pointer to an ITEMIDLIST (PIDL) of the parent folder that contains the data object.</para>
 		/// </param>
 		/// <param name="cidl">
 		/// <para>Type: <c>UINT</c></para>
-		/// <para>The number of file objects or subfolders specified in the parameter.</para>
+		/// <para>The number of file objects or subfolders specified in the <c>apidl</c> parameter.</para>
 		/// </param>
 		/// <param name="apidl">
 		/// <para>Type: <c>PCUITEMID_CHILD_ARRAY</c></para>
@@ -4051,19 +4049,19 @@ namespace Vanara.PInvoke
 		/// <param name="pdtInner">
 		/// <para>Type: <c>IDataObject*</c></para>
 		/// <para>
-		/// A pointer to interface IDataObject. This parameter can be <c>NULL</c>. Specify only if the data object created needs to support
-		/// additional FORMATETC clipboard formats beyond the default formats it is assigned at creation. Alternatively, provide support for
-		/// populating the created data object using non-default clipboard formats by calling method IDataObject::SetData and specifying the
-		/// format in the <c>FORMATETC</c> structure passed in parameter .
+		/// A pointer to interface IDataObject. This parameter can be <c>NULL</c>. Specify <c>pdtInner</c> only if the data object created
+		/// needs to support additional FORMATETC clipboard formats beyond the default formats it is assigned at creation. Alternatively,
+		/// provide support for populating the created data object using non-default clipboard formats by calling method IDataObject::SetData
+		/// and specifying the format in the <c>FORMATETC</c> structure passed in parameter <c>pFormatetc</c>.
 		/// </para>
 		/// </param>
 		/// <param name="riid">
 		/// <para>Type: <c>REFIID</c></para>
-		/// <para>A reference to the IID of the interface to retrieve through . This must be IID_IDataObject.</para>
+		/// <para>A reference to the IID of the interface to retrieve through <c>ppv</c>. This must be IID_IDataObject.</para>
 		/// </param>
 		/// <param name="ppv">
 		/// <para>Type: <c>void**</c></para>
-		/// <para>When this method returns successfully, contains the IDataObject interface pointer requested in .</para>
+		/// <para>When this method returns successfully, contains the IDataObject interface pointer requested in <c>riid</c>.</para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
@@ -4072,8 +4070,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>
 		/// This function is typically called when implementing method IShellFolder::GetUIObjectOf. When an interface pointer of interface ID
-		/// IID_IDataObject is requested (using parameter ), the implementer can return the interface pointer on the object created with
-		/// <c>SHCreateDataObject</c> in response.
+		/// IID_IDataObject is requested (using parameter <c>riid</c>), the implementer can return the interface pointer on the object
+		/// created with <c>SHCreateDataObject</c> in response.
 		/// </para>
 		/// <para>
 		/// This function supports the CFSTR_SHELLIDLIST (also known as HIDA) clipboard format and also has generic support for arbitrary
@@ -4083,17 +4081,14 @@ namespace Vanara.PInvoke
 		/// The new data object is intended to be used in operations such as drag-and-drop, in which the data is stored in the clipboard with
 		/// a given format.
 		/// </para>
-		/// <para>
-		/// We recommend that you use the IID_PPV_ARGS macro, defined in Objbase.h, to package the and parameters. This macro provides the
-		/// correct IID based on the interface pointed to by the value in , which eliminates the possibility of a coding error in that could
-		/// lead to unexpected results.
-		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedataobject SHSTDAPI SHCreateDataObject(
-		// PCIDLIST_ABSOLUTE pidlFolder, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, IDataObject *pdtInner, REFIID riid, void **ppv );
+		// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shcreatedataobject
+		// SHSTDAPI SHCreateDataObject( [in, optional] PCIDLIST_ABSOLUTE pidlFolder, [in] UINT cidl, [in, optional] PCUITEMID_CHILD_ARRAY apidl, [in, optional] IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
+		[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("shlobj_core.h", MSDNShortId = "d56cdafe-9463-43a5-8ef0-6cfaf0c524a8")]
-		public static extern HRESULT SHCreateDataObject(PIDL pidlFolder, uint cidl, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] apidl, IDataObject pdtInner, in Guid riid, out IDataObject ppv);
+		public static extern HRESULT SHCreateDataObject([In, Optional] PIDL pidlFolder, uint cidl,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, [In, Optional] IDataObject pdtInner,
+			in Guid riid, out IDataObject ppv);
 
 		/// <summary>
 		/// <para>Creates an object that represents the Shell's default context menu implementation.</para>
