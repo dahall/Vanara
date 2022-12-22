@@ -14,6 +14,12 @@ namespace Vanara.PInvoke.Tests
 		private static readonly string tmpcfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD - Diff.vhdx";
 		private static readonly string tmpfn = Vanara.PInvoke.Tests.TestCaseSources.TempDirWhack + "TestVHD.vhdx";
 
+		[Test]
+		public void _StructTest()
+		{
+			TestHelper.DumpStructSizeAndOffsets<SET_VIRTUAL_DISK_INFO>();
+		}
+
 		[Test()]
 		public void AttachVirtualDiskTest()
 		{

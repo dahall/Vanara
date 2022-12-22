@@ -2505,20 +2505,16 @@ namespace Vanara.PInvoke
 		// ULONG ChildDepth; PCWSTR ParentFilePath; } ParentPathWithDepthInfo; ULONG VhdPhysicalSectorSize; GUID VirtualDiskId; BOOL
 		// ChangeTrackingEnabled; struct { GUID LinkageId; PCWSTR ParentFilePath; } ParentLocator; }; } SET_VIRTUAL_DISK_INFO, *PSET_VIRTUAL_DISK_INFO;
 		[PInvokeData("virtdisk.h", MSDNShortId = "NS:virtdisk._SET_VIRTUAL_DISK_INFO")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode,
-#if x64
-			Pack = 8
-#else
-			Pack = 4
-#endif
-		)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct SET_VIRTUAL_DISK_INFO
 		{
+			private IntPtr ver;
+
 			/// <summary>
 			/// A SET_VIRTUAL_DISK_INFO_VERSION enumeration that specifies the version of the SET_VIRTUAL_DISK_INFO structure being passed to
 			/// or from the VHD functions. This determines the type of information set.
 			/// </summary>
-			public SET_VIRTUAL_DISK_INFO_VERSION Version;
+			public SET_VIRTUAL_DISK_INFO_VERSION Version { get => (SET_VIRTUAL_DISK_INFO_VERSION)ver.ToInt32(); set => ver = new((int)value); }
 
 			private UNION union;
 
