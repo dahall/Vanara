@@ -16,6 +16,15 @@
     <Reference Include="System" />
   </ItemGroup>
     
+  <!-- Rebuild any x86 platform again with x64 -->
+  <!--<Target Name="AfterCompile">
+    <MSBuild Condition=" '$(Platform)' == 'x86' " Projects="$(MSBuildProjectFile)" Properties="Platform=x64;PlatFormTarget=x64" RunEachTargetSeparately="true" />
+  </Target>
+  <PropertyGroup Condition=" '$(UseX64)' != '' ">
+    <NuspecFile>$(MSBuildThisFileDirectory)x64.nuspec</NuspecFile>
+    <NuspecProperties>packageicon=$(PackageIcon);notes=$(PackageReleaseNotes);tags=$(PackageTags);projdir=$(MSBuildProjectDirectory)</NuspecProperties>
+  </PropertyGroup>-->
+
   <!-- Establish exclude pattern for files starting with ~ -->
   <ItemGroup>
     <Compile Remove="**\~*.cs" />
