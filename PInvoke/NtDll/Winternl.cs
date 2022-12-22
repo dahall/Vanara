@@ -503,38 +503,45 @@ namespace Vanara.PInvoke
 			var validTypes = CorrespondingTypeAttribute.GetCorrespondingTypes(ProcessInformationClass, CorrespondingAction.Get).ToArray();
 			if (validTypes.Length > 0 && Array.IndexOf(validTypes, typeof(T)) == -1)
 				throw new ArgumentException("Mismatch between requested type and class.");
-#if x64
-			// Check if the target is a 32 bit process running in WoW64 mode.
-			if (IsWow64(ProcessHandle))
+
+			if (IntPtr.Size == 8)
 			{
-				// We are 64 bit. Target process is 32 bit running in WoW64 mode.
-				throw new PlatformNotSupportedException("Unable to query a 32-bit process from a 64-bit process.");
+				// Check if the target is a 32 bit process running in WoW64 mode.
+				if (IsWow64(ProcessHandle))
+				{
+					// We are 64 bit. Target process is 32 bit running in WoW64 mode.
+					throw new PlatformNotSupportedException("Unable to query a 32-bit process from a 64-bit process.");
+				}
 			}
-#else
-			if (NtQueryInformationProcessRequiresWow64Structs(ProcessHandle))
-			{
-				if (validTypes.Length > 1 && !TypeIsWow()) throw new ArgumentException("Type name must end in WOW64 to indicate it was configured exclusively for 64-bit use.");
-				var mem = new NtQueryResult<T>();
-				var status = NtWow64QueryInformationProcess64(ProcessHandle, ProcessInformationClass, ((IntPtr)mem).ToInt32(), mem.Size, out var sz);
-				if (status.Succeeded) return mem;
-				if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH || sz == 0) throw status.GetException();
-				mem.Size = sz;
-				NtWow64QueryInformationProcess64(ProcessHandle, ProcessInformationClass, ((IntPtr)mem).ToInt32(), mem.Size, out _).ThrowIfFailed();
-				return mem;
-			}
-#endif
-			// Target process is of the same bitness as us.
 			else
 			{
-				if (validTypes.Length > 1 && TypeIsWow()) throw new ArgumentException("Type name must not end in WOW64 should be configured for 32 or 64-bit use.");
-				var mem = new NtQueryResult<T>();
-				var status = NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out var sz);
-				if (status.Succeeded) return mem;
-				if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH || sz == 0) throw status.GetException();
-				mem.Size = sz;
-				NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out _).ThrowIfFailed();
-				return mem;
+				if (NtQueryInformationProcessRequiresWow64Structs(ProcessHandle))
+				{
+					if (validTypes.Length > 1 && !TypeIsWow())
+						throw new ArgumentException("Type name must end in WOW64 to indicate it was configured exclusively for 64-bit use.");
+					var res = new NtQueryResult<T>();
+					var ret = NtWow64QueryInformationProcess64(ProcessHandle, ProcessInformationClass, ((IntPtr)res).ToInt32(), res.Size, out var qsz);
+					if (ret.Succeeded)
+						return res;
+					if (ret != NTStatus.STATUS_INFO_LENGTH_MISMATCH || qsz == 0)
+						throw ret.GetException();
+					res.Size = qsz;
+					NtWow64QueryInformationProcess64(ProcessHandle, ProcessInformationClass, ((IntPtr)res).ToInt32(), res.Size, out _).ThrowIfFailed();
+					return res;
+				}
 			}
+
+			if (validTypes.Length > 1 && TypeIsWow())
+				throw new ArgumentException("Type name must not end in WOW64 should be configured for 32 or 64-bit use.");
+			var mem = new NtQueryResult<T>();
+			var status = NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out var sz);
+			if (status.Succeeded)
+				return mem;
+			if (status != NTStatus.STATUS_INFO_LENGTH_MISMATCH || sz == 0)
+				throw status.GetException();
+			mem.Size = sz;
+			NtQueryInformationProcess(ProcessHandle, ProcessInformationClass, mem, mem.Size, out _).ThrowIfFailed();
+			return mem;
 
 			bool TypeIsWow() => typeof(T).Name.EndsWith("WOW64");
 		}
