@@ -25,7 +25,8 @@ AccountLogonRights, DesiredAccess, SystemPrivilege
     </When>
     <Otherwise>
       <ItemGroup>
-        <PackageReference Include="System.DirectoryServices" Version="7.0.0" />
+        <PackageReference Include="System.DirectoryServices" Version="6.0.0" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " />
+        <PackageReference Include="System.DirectoryServices" Version="7.0.0" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' " />
       </ItemGroup>
     </Otherwise>
   </Choose>

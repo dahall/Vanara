@@ -2,9 +2,19 @@
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.NTDSApi</AssemblyName>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.DirectoryServices" />
-  </ItemGroup>
+  <Choose>
+    <When Condition=" $(TargetFramework.StartsWith('net4')) ">
+      <ItemGroup>
+        <Reference Include="System.DirectoryServices" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <PackageReference Include="System.DirectoryServices" Version="6.0.0" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " />
+        <PackageReference Include="System.DirectoryServices" Version="7.0.0" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' " />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\NetApi32\Vanara.PInvoke.NetApi32.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\NTDSApi\Vanara.PInvoke.NTDSApi.csproj" />
