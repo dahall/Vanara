@@ -868,19 +868,16 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_ANYCAST_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Flags; }; }; struct
 		// _IP_ADAPTER_ANYCAST_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_ANYCAST_ADDRESS_XP, *PIP_ADAPTER_ANYCAST_ADDRESS_XP;
 		[PInvokeData("iptypes.h", MSDNShortId = "2626fc86-e29b-4162-8625-207c709d67ed")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8,
-#if x64
-		Size = 32)]
-#else
-		Size = 24)]
-#endif
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
 		public struct IP_ADAPTER_ANYCAST_ADDRESS : ILinkedListElement<IP_ADAPTER_ANYCAST_ADDRESS>
 		{
+			private long Alignment;
+
 			/// <summary>Specifies the length of this structure.</summary>
-			public uint Length;
+			public uint Length { get => Alignment.LowPart(); set => Alignment = Macros.MAKELONG64(value, Alignment.HighPart()); }
 
 			/// <summary>Specifies flags for this address.</summary>
-			public IP_ADAPTER_CAST_FLAGS Flags;
+			public IP_ADAPTER_CAST_FLAGS Flags { get => (IP_ADAPTER_CAST_FLAGS)Alignment.HighPart(); set => Alignment = Macros.MAKELONG64(Alignment.LowPart(), (int)value); }
 
 			/// <summary>
 			/// <para>Type: <c>struct _IP_ADAPTER_ANYCAST_ADDRESS*</c></para>
@@ -927,19 +924,16 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_DNS_SERVER_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Reserved; }; }; struct
 		// _IP_ADAPTER_DNS_SERVER_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_DNS_SERVER_ADDRESS_XP, *PIP_ADAPTER_DNS_SERVER_ADDRESS_XP;
 		[PInvokeData("iptypes.h", MSDNShortId = "96855386-9010-40df-8260-16b43ad6646f")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8,
-#if x64
-		Size = 32)]
-#else
-		Size = 24)]
-#endif
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
 		public struct IP_ADAPTER_DNS_SERVER_ADDRESS : ILinkedListElement<IP_ADAPTER_DNS_SERVER_ADDRESS>
 		{
-			/// <summary>Specifies the length of this structure.</summary>
-			public uint Length;
+			private long Alignment;
 
-			/// <summary>Reserved.</summary>
-			public uint Reserved;
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length { get => Alignment.LowPart(); set => Alignment = Macros.MAKELONG64(value, Alignment.HighPart()); }
+
+			/// <summary>Reserved</summary>
+			public int Reserved { get => Alignment.HighPart(); set => Alignment = Macros.MAKELONG64(Alignment.LowPart(), value); }
 
 			/// <summary>
 			/// <para>A pointer to the next DNS server address structure in the list.</para>
@@ -1019,19 +1013,16 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_GATEWAY_ADDRESS_LH { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Reserved; }; }; struct
 		// _IP_ADAPTER_GATEWAY_ADDRESS_LH *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_GATEWAY_ADDRESS_LH, *PIP_ADAPTER_GATEWAY_ADDRESS_LH;
 		[PInvokeData("iptypes.h", MSDNShortId = "CA38504A-1CC9-4ABA-BD4E-1B2EAD6F588B")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8,
-#if x64
-		Size = 32)]
-#else
-		Size = 24)]
-#endif
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
 		public struct IP_ADAPTER_GATEWAY_ADDRESS : ILinkedListElement<IP_ADAPTER_GATEWAY_ADDRESS>
 		{
-			/// <summary>Specifies the length of this structure.</summary>
-			public uint Length;
+			private long Alignment;
 
-			/// <summary>Reserved.</summary>
-			public uint Reserved;
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length { get => Alignment.LowPart(); set => Alignment = Macros.MAKELONG64(value, Alignment.HighPart()); }
+
+			/// <summary>Reserved</summary>
+			public int Reserved { get => Alignment.HighPart(); set => Alignment = Macros.MAKELONG64(Alignment.LowPart(), value); }
 
 			/// <summary>
 			/// <para>A pointer to the next gateway address structure in the list.</para>
@@ -1302,19 +1293,16 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_MULTICAST_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Flags; }; }; struct
 		// _IP_ADAPTER_MULTICAST_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_MULTICAST_ADDRESS_XP, *PIP_ADAPTER_MULTICAST_ADDRESS_XP;
 		[PInvokeData("iptypes.h", MSDNShortId = "b85a6e0a-df2c-4608-b07a-191b34440a43")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8,
-#if x64
-		Size = 32)]
-#else
-		Size = 24)]
-#endif
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
 		public struct IP_ADAPTER_MULTICAST_ADDRESS : ILinkedListElement<IP_ADAPTER_MULTICAST_ADDRESS>
 		{
+			private long Alignment;
+
 			/// <summary>Specifies the length of this structure.</summary>
-			public uint Length;
+			public uint Length { get => Alignment.LowPart(); set => Alignment = Macros.MAKELONG64(value, Alignment.HighPart()); }
 
 			/// <summary>Specifies flags for this address.</summary>
-			public IP_ADAPTER_CAST_FLAGS Flags;
+			public IP_ADAPTER_CAST_FLAGS Flags { get => (IP_ADAPTER_CAST_FLAGS)Alignment.HighPart(); set => Alignment = Macros.MAKELONG64(Alignment.LowPart(), (int)value); }
 
 			/// <summary>
 			/// <para>Type: <c>struct _IP_ADAPTER_MULTICAST_ADDRESS*</c></para>
@@ -1442,11 +1430,13 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct IP_ADAPTER_UNICAST_ADDRESS : ILinkedListElement<IP_ADAPTER_UNICAST_ADDRESS>
 		{
+			private long Alignment;
+
 			/// <summary>Specifies the length of this structure.</summary>
-			public uint Length;
+			public uint Length { get => Alignment.LowPart(); set => Alignment = Macros.MAKELONG64(value, Alignment.HighPart()); }
 
 			/// <summary>This member is reserved and should be set to zero.</summary>
-			public uint Flags;
+			public uint Flags { get => unchecked((uint)Alignment.HighPart()); set => Alignment = Macros.MAKELONG64(Alignment.LowPart(), unchecked((int)value)); }
 
 			/// <summary>
 			/// <para>Type: <c>struct _IP_ADAPTER_UNICAST_ADDRESS*</c></para>
@@ -1549,19 +1539,16 @@ namespace Vanara.PInvoke
 		// _IP_ADAPTER_WINS_SERVER_ADDRESS_LH { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Reserved; }; }; struct
 		// _IP_ADAPTER_WINS_SERVER_ADDRESS_LH *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_WINS_SERVER_ADDRESS_LH, *PIP_ADAPTER_WINS_SERVER_ADDRESS_LH;
 		[PInvokeData("iptypes.h", MSDNShortId = "AF9A40C4-63DB-4830-A689-1DFE4DC2CAB7")]
-		[StructLayout(LayoutKind.Sequential, Pack = 8,
-#if x64
-		Size = 32)]
-#else
-		Size = 24)]
-#endif
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
 		public struct IP_ADAPTER_WINS_SERVER_ADDRESS : ILinkedListElement<IP_ADAPTER_WINS_SERVER_ADDRESS>
 		{
-			/// <summary>Specifies the length of this structure.</summary>
-			public uint Length;
+			private long Alignment;
 
-			/// <summary>This member is reserved and should be set to zero.</summary>
-			public uint Reserved;
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length { get => Alignment.LowPart(); set => Alignment = Macros.MAKELONG64(value, Alignment.HighPart()); }
+
+			/// <summary>Reserved</summary>
+			public int Reserved { get => Alignment.HighPart(); set => Alignment = Macros.MAKELONG64(Alignment.LowPart(), value); }
 
 			/// <summary>
 			/// <para>A pointer to the next WINS server address structure in the list.</para>

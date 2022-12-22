@@ -3507,7 +3507,7 @@ namespace Vanara.PInvoke
 
 			private SP_DEVINFO_LIST_DETAIL_DATA GetDetail()
 			{
-				var data = StructHelper.InitWithSize<SP_DEVINFO_LIST_DETAIL_DATA>();
+				SP_DEVINFO_LIST_DETAIL_DATA data = new() { cbSize = IntPtr.Size == 4 ? 550U : (uint)Marshal.SizeOf(typeof(SP_DEVINFO_LIST_DETAIL_DATA)) };
 				Win32Error.ThrowLastErrorIfFalse(SetupDiGetDeviceInfoListDetail(handle, ref data));
 				return data;
 			}

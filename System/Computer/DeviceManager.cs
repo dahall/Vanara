@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Collections;
 using Vanara.Extensions;
@@ -930,13 +931,6 @@ namespace Vanara.Diagnostics
 		/// <summary>Gets the setup classes available on the machine.</summary>
 		/// <value>A class that provides the collection of setup classes.</value>
 		public IEnumerable<DeviceClass> GetSetupClasses() => new DeviceClassCollection(0, MachineName);
-
-		internal static SP_DEVINFO_LIST_DETAIL_DATA GetDevInfoDetail(HDEVINFO hdi)
-		{
-			var disData = StructHelper.InitWithSize<SP_DEVINFO_LIST_DETAIL_DATA>();
-			Win32Error.ThrowLastErrorIfFalse(SetupDiGetDeviceInfoListDetail(hdi, ref disData));
-			return disData;
-		}
 	}
 
 	// TODO

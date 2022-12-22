@@ -1,12 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
-using System.Collections;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke.Tests
@@ -21,6 +16,16 @@ namespace Vanara.PInvoke.Tests
 
 		[OneTimeTearDown]
 		public void _TearDown() => hDevInfo?.Dispose();
+
+		[Test]
+		public void _StructSizeTest()
+		{
+			//foreach (var s in typeof(Vanara.PInvoke.SetupAPI).GetNestedStructSizes())
+			//	TestContext.WriteLine(s);
+
+			TestHelper.DumpStructSizeAndOffsets<SP_DEVINFO_LIST_DETAIL_DATA>();
+			TestHelper.DumpStructSizeAndOffsets<SP_DEVINSTALL_PARAMS>();
+		}
 
 		[Test]
 		public void SetupDiEnumDeviceInfoTest()

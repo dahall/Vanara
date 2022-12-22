@@ -21,6 +21,13 @@ namespace Vanara.PInvoke.Tests
 		public static IPAddress localIP4 => Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
 
 		[Test]
+		public void _StructSizeTest()
+		{
+			foreach (var s in typeof(Vanara.PInvoke.Ws2_32).GetNestedStructSizes())
+				TestContext.WriteLine(s);
+		}
+
+		[Test]
 		public void ConstTest()
 		{
 			Assert.That(new IPAddress(IN6_ADDR.Unspecified).ToString(), Is.EqualTo("::"));

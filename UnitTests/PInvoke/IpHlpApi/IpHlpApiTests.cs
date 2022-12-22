@@ -36,6 +36,8 @@ public partial class IpHlpApiTests
 	{
 		foreach (var s in typeof(Vanara.PInvoke.IpHlpApi).GetNestedStructSizes())
 			TestContext.WriteLine(s);
+
+		Console.WriteLine($"Sz:{Marshal.SizeOf<IP_ADAPTER_ANYCAST_ADDRESS>()},Next:{Marshal.OffsetOf<IP_ADAPTER_ANYCAST_ADDRESS>("Next")},Add:{Marshal.OffsetOf<IP_ADAPTER_ANYCAST_ADDRESS>("Address")}");
 	}
 
 	[Test]

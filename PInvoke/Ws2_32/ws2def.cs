@@ -337,12 +337,8 @@ public static partial class Ws2_32
 	[PInvokeData("ws2def.h")]
 	public static SizeT SIZEOF_SOCKET_ADDRESS_LIST(SizeT AddressCount) => Marshal.OffsetOf(typeof(SOCKET_ADDRESS_LIST), "Address").ToInt32() + Marshal.SizeOf(typeof(SOCKET_ADDRESS)) * AddressCount;
 
-#if x64
-	public static readonly SizeT MAX_NATURAL_ALIGNMENT = sizeof(ulong);
-#else
 	/// <summary>The maximum natural alignment</summary>
-	public static readonly SizeT MAX_NATURAL_ALIGNMENT = sizeof(uint);
-#endif
+	public static readonly SizeT MAX_NATURAL_ALIGNMENT = IntPtr.Size;
 
 	[StructLayout(LayoutKind.Sequential)]
 	private struct AlignedStruct<T> where T : struct
@@ -1707,19 +1703,16 @@ public static partial class Ws2_32
 	// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-socket_address typedef struct _SOCKET_ADDRESS { LPSOCKADDR
 	// lpSockaddr; INT iSockaddrLength; } SOCKET_ADDRESS, *PSOCKET_ADDRESS, *LPSOCKET_ADDRESS;
 	[PInvokeData("ws2def.h", MSDNShortId = "37fbcb96-a859-4eca-8928-8051f95407b9")]
-	[StructLayout(LayoutKind.Sequential,
-#if x64
-	Size = 16)]
-#else
-	Size = 8)]
-#endif
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct SOCKET_ADDRESS
 	{
 		/// <summary>A pointer to a socket address represented as a SOCKADDR structure.</summary>
 		public IntPtr lpSockaddr;
 
+		private IntPtr len;
+
 		/// <summary>The length, in bytes, of the socket address.</summary>
-		public int iSockaddrLength;
+		public int iSockaddrLength { get => len.ToInt32(); set => len = new(value); }
 
 		/// <summary>Gets the <see cref="SOCKADDR_INET"/> from this instance.</summary>
 		/// <returns>The <see cref="SOCKADDR_INET"/> value pointed to by this instance.</returns>

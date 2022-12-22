@@ -2951,14 +2951,10 @@ namespace Vanara.PInvoke
 		// _SP_DEVINFO_LIST_DETAIL_DATA_W { DWORD cbSize; GUID ClassGuid; HANDLE RemoteMachineHandle; WCHAR
 		// RemoteMachineName[SP_MAX_MACHINENAME_LENGTH]; } SP_DEVINFO_LIST_DETAIL_DATA_W, *PSP_DEVINFO_LIST_DETAIL_DATA_W;
 		[PInvokeData("setupapi.h", MSDNShortId = "NS:setupapi._SP_DEVINFO_LIST_DETAIL_DATA_W")]
-#if x64
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 8)]
-#else
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
-#endif
 		public struct SP_DEVINFO_LIST_DETAIL_DATA
 		{
-			/// <summary>The size, in bytes, of the SP_DEVINFO_LIST_DETAIL_DATA structure.</summary>
+			/// <summary>The size, in bytes, of the SP_DEVINFO_LIST_DETAIL_DATA structure. Set this value to 550 on 32-bit builds.</summary>
 			public uint cbSize;
 
 			/// <summary>
@@ -2995,11 +2991,7 @@ namespace Vanara.PInvoke
 		// InstallMsgHandlerContext; HSPFILEQ FileQueue; ULONG_PTR ClassInstallReserved; DWORD Reserved; CHAR DriverPath[MAX_PATH]; }
 		// SP_DEVINSTALL_PARAMS_A, *PSP_DEVINSTALL_PARAMS_A;
 		[PInvokeData("setupapi.h", MSDNShortId = "NS:setupapi._SP_DEVINSTALL_PARAMS_A")]
-#if x64
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 8)]
-#else
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
-#endif
 		public struct SP_DEVINSTALL_PARAMS
 		{
 			/// <summary>The size, in bytes, of the SP_DEVINSTALL_PARAMS structure.</summary>

@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
     <SupportedDlls>virtdisk.dll</SupportedDlls>
-    <UseX64>true</UseX64>
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows VirtDisk.dll.</Description>
