@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices.ComTypes;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
@@ -13,6 +14,7 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.AdvApi32;
+using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -42,7 +44,7 @@ namespace Vanara.PInvoke.Tests
 			{
 				try
 				{
-					// Open the access token of the current process with TOKEN_QUERY. 
+					// Open the access token of the current process with TOKEN_QUERY.
 					using var hObject = SafeHTOKEN.FromProcess(Process.GetCurrentProcess(), TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE);
 					return hObject.IsElevated;
 				}
@@ -51,16 +53,54 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		public static Process RunThrottleApp() => Process.Start(testApp);
-
-		public static void SetThrottle(string type, bool on)
+		public static void DumpStructSizeAndOffsets<T>() where T : struct
 		{
-			using var evt = new EventWaitHandle(false, EventResetMode.AutoReset, (on ? "" : "End") + type);
-			evt.Set();
+			TestContext.WriteLine($"{typeof(T).Name} : {Marshal.SizeOf<T>()} ({IntPtr.Size*8}b/{(Marshal.SystemDefaultCharSize == 1 ? "A" : "W")})");
+			foreach (FieldInfo fi in typeof(T).GetOrderedFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
+				TestContext.WriteLine($"  {fi.Name} : {Marshal.OffsetOf<T>(fi.Name)}");
 		}
 
 		public static IList<string> GetNestedStructSizes(this Type type, params string[] filters) =>
 			type.GetNestedTypes(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).GetStructSizes(false, filters);
+
+		public static string GetStringVal(this object value)
+		{
+			switch (value)
+			{
+				case null:
+					return "(null)";
+
+				case FILETIME ft:
+					value = ft.ToDateTime();
+					goto Simple;
+
+				case SYSTEMTIME st:
+					value = st.ToDateTime(DateTimeKind.Local);
+					goto Simple;
+
+				case DateTime:
+				case decimal:
+				case var v when v.GetType().IsPrimitive || v.GetType().IsEnum:
+				Simple:
+					return $"{value.GetType().Name} : [{value}]";
+
+				case string s:
+					return string.Concat("\"", s, "\"");
+
+				case byte[] bytes:
+					return string.Join(" ", Array.ConvertAll(bytes, b => $"{b:X2}"));
+
+				case SafeAllocatedMemoryHandleBase mem:
+					return mem.Dump;
+
+				case System.Security.AccessControl.GenericSecurityDescriptor sd:
+					return sd.GetSddlForm(System.Security.AccessControl.AccessControlSections.All);
+
+				default:
+					try { return JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value); }
+					catch (Exception e) { return e.ToString(); }
+			}
+		}
 
 		public static IList<string> GetStructSizes(this Type[] types, bool fullName = false, params string[] filters)
 		{
@@ -100,43 +140,12 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		public static string GetStringVal(this object value)
+		public static Process RunThrottleApp() => Process.Start(testApp);
+
+		public static void SetThrottle(string type, bool on)
 		{
-			switch (value)
-			{
-				case null:
-					return "(null)";
-
-				case FILETIME ft:
-					value = ft.ToDateTime();
-					goto Simple;
-
-				case SYSTEMTIME st:
-					value = st.ToDateTime(DateTimeKind.Local);
-					goto Simple;
-
-				case DateTime:
-				case decimal:
-				case var v when v.GetType().IsPrimitive || v.GetType().IsEnum:
-Simple:
-					return $"{value.GetType().Name} : [{value}]";
-
-				case string s:
-					return string.Concat("\"", s, "\"");
-
-				case byte[] bytes:
-					return string.Join(" ", Array.ConvertAll(bytes, b => $"{b:X2}"));
-
-				case SafeAllocatedMemoryHandleBase mem:
-					return mem.Dump;
-
-				case System.Security.AccessControl.GenericSecurityDescriptor sd:
-					return sd.GetSddlForm(System.Security.AccessControl.AccessControlSections.All);
-
-				default:
-					try { return JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value); }
-					catch (Exception e) { return e.ToString(); }
-			}
+			using var evt = new EventWaitHandle(false, EventResetMode.AutoReset, (on ? "" : "End") + type);
+			evt.Set();
 		}
 
 		public static void WriteValues(this object value) => TestContext.WriteLine(GetStringVal(value));
@@ -151,6 +160,7 @@ Simple:
 				rdr = r;
 				wtr = w;
 			}
+
 			public override TOut ReadJson(JsonReader reader, Type objectType, TOut existingValue, bool hasExistingValue, JsonSerializer serializer) =>
 				reader.Value is TIn t ? rdr(t) : default(TOut);
 
