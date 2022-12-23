@@ -6,7 +6,7 @@ namespace Vanara.PInvoke
 	public static partial class User32
 	{
 		/// <summary>The resolution desired.</summary>
-		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[PInvokeData("winuser.h")]
 		public enum GMMP
 		{
 			/// <summary>Retrieves the points using the display resolution.</summary>
@@ -19,8 +19,27 @@ namespace Vanara.PInvoke
 			GMMP_USE_HIGH_RESOLUTION_POINTS = 2,
 		}
 
+		/// <summary>
+		/// The return value specifies whether the window should be activated and whether the identifier of the mouse message should be discarded.
+		/// </summary>
+		[PInvokeData("winuser.h")]
+		public enum MouseActivateCode : int
+		{
+			/// <summary>Activates the window, and does not discard the mouse message.</summary>
+			MA_ACTIVATE = 1,
+
+			/// <summary>Activates the window, and discards the mouse message.</summary>
+			MA_ACTIVATEANDEAT = 2,
+
+			/// <summary>Does not activate the window, and does not discard the mouse message.</summary>
+			MA_NOACTIVATE = 3,
+
+			/// <summary>Does not activate the window, but discards the mouse message.</summary>
+			MA_NOACTIVATEANDEAT = 4
+		}
+
 		/// <summary>Controls various aspects of mouse motion and button clicking.</summary>
-		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[PInvokeData("winuser.h")]
 		[Flags]
 		public enum MOUSEEVENTF
 		{
@@ -93,7 +112,8 @@ namespace Vanara.PInvoke
 			/// The caller wants leave notification. Notification is delivered as a WM_MOUSELEAVE message. If the mouse is not over the
 			/// specified window or area, a leave notification is generated immediately and no further tracking is performed.
 			/// </summary>
-			TME_LEAVE = 0x00000002,
+			TME_LEAVE = 0x00000002		/// <term>Activates the window, and does not discard the mouse message.</term>
+
 
 			/// <summary>
 			/// The caller wants hover and leave notification for the nonclient areas. Notification is delivered as WM_NCMOUSEHOVER and
@@ -121,7 +141,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdoubleclicktime UINT GetDoubleClickTime( );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[PInvokeData("winuser.h")]
 		public static extern uint GetDoubleClickTime();
 
 		/// <summary>Retrieves a history of up to 64 previous coordinates of the mouse or pen.</summary>
@@ -225,7 +245,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmousemovepointsex int GetMouseMovePointsEx( UINT
 		// cbSize, LPMOUSEMOVEPOINT lppt, LPMOUSEMOVEPOINT lpptBuf, int nBufPoints, DWORD resolution );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[PInvokeData("winuser.h")]
 		public static extern int GetMouseMovePointsEx(uint cbSize, in MOUSEMOVEPOINT lppt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] MOUSEMOVEPOINT[] lpptBuf, int nBufPoints, GMMP resolution);
 
 		/// <summary>
@@ -407,7 +427,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-mouse_event void mouse_event( DWORD dwFlags, DWORD dx,
 		// DWORD dy, DWORD dwData, ULONG_PTR dwExtraInfo );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[PInvokeData("winuser.h")]
 		public static extern void mouse_event(MOUSEEVENTF dwFlags, int dx, int dy, int dwData, IntPtr dwExtraInfo);
 
 		/// <summary>
@@ -431,7 +451,7 @@ namespace Vanara.PInvoke
 		/// <remarks>The <c>SetDoubleClickTime</c> function alters the double-click time for all windows in the system.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setdoubleclicktime BOOL SetDoubleClickTime( UINT Arg1 );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetDoubleClickTime(uint Arg1);
 
@@ -455,7 +475,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-swapmousebutton BOOL SwapMouseButton( BOOL fSwap );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SwapMouseButton([MarshalAs(UnmanagedType.Bool)] bool fSwap);
 
@@ -478,7 +498,7 @@ namespace Vanara.PInvoke
 		/// <summary>Contains information about the mouse's location in screen coordinates.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagmousemovepoint typedef struct tagMOUSEMOVEPOINT { int
 		// x; int y; DWORD time; ULONG_PTR dwExtraInfo; } MOUSEMOVEPOINT, *PMOUSEMOVEPOINT, *LPMOUSEMOVEPOINT;
-		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[PInvokeData("winuser.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct MOUSEMOVEPOINT
 		{
