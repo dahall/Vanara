@@ -1653,7 +1653,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage2-get_bootimageoptionsarray HRESULT
 			// get_BootImageOptionsArray( SAFEARRAY **pVal );
 			[DispId(60)]
-			IBootOptions[] BootImageOptionsArray { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IBootOptions>))] get; }
+			IBootOptions[] BootImageOptionsArray { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IBootOptions>))] get; set; }
 		}
 
 		/// <summary>
@@ -2189,7 +2189,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ifilesystemimage2-get_bootimageoptionsarray HRESULT
 			// get_BootImageOptionsArray( SAFEARRAY **pVal );
 			[DispId(60)]
-			new IBootOptions[] BootImageOptionsArray { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IBootOptions>))] get; }
+			new IBootOptions[] BootImageOptionsArray { [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SafeArrayMarshaler<IBootOptions>))] get; set; }
 
 			/// <summary>Retrieves a property value that specifies if the UDF Metadata will be redundant in the file system image.</summary>
 			/// <value>
