@@ -112,8 +112,7 @@ namespace Vanara.PInvoke
 			/// The caller wants leave notification. Notification is delivered as a WM_MOUSELEAVE message. If the mouse is not over the
 			/// specified window or area, a leave notification is generated immediately and no further tracking is performed.
 			/// </summary>
-			TME_LEAVE = 0x00000002		/// <term>Activates the window, and does not discard the mouse message.</term>
-
+			TME_LEAVE = 0x00000002,
 
 			/// <summary>
 			/// The caller wants hover and leave notification for the nonclient areas. Notification is delivered as WM_NCMOUSEHOVER and
