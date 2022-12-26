@@ -74,7 +74,7 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void SetNativeTextHtmlTest()
 		{
-			using (var cb = new Clipboard())
+			using (var cb = new Clipboard(true))
 				cb.SetText(html, TextDataFormat.Html);
 			using (var cb = new Clipboard())
 			{
@@ -86,14 +86,32 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void SetNativeTextMultTest()
 		{
-			const string txt = @"“We’ve been here”";
+			const string stxt = "112233";
+			using (var cb = new Clipboard(true))
+				cb.SetText(stxt);
 			using (var cb = new Clipboard())
+				Assert.That(cb.GetText(TextDataFormat.Text), Is.EqualTo(stxt));
+
+			const string txt = @"“0’0©0è0”";
+			using (var cb = new Clipboard(true))
 				cb.SetText(txt, $"<p>{txt}</p>");
 			using (var cb = new Clipboard())
 			{
+				Assert.That(cb.GetText(TextDataFormat.Text), Is.EqualTo(txt));
 				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
 				Assert.That(cb.GetText(TextDataFormat.Html), Contains.Substring(txt));
+				TestContext.WriteLine(cb.GetText(TextDataFormat.Html));
 			}
+		}
+
+		[Test]
+		public void SetNativeTextUnicodeTest()
+		{
+			const string txt = @"“0’0©0è0”";
+			using (var cb = new Clipboard(true))
+				cb.SetText(txt, TextDataFormat.UnicodeText);
+			using (var cb = new Clipboard())
+				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
 		}
 
 		//[Test]

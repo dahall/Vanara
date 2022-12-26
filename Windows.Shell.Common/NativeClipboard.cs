@@ -69,6 +69,8 @@ namespace Vanara.Windows.Shell
 				dontClose = true;
 				return;
 			}
+			if (hWndNewOwner == default)
+				hWndNewOwner = GetDesktopWindow();
 			if (!OpenClipboard(hWndNewOwner))
 				Win32Error.ThrowLastError();
 			open = true;
@@ -362,8 +364,8 @@ namespace Vanara.Windows.Shell
 		/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
 		public string GetText(TextDataFormat formatId) => formatId switch
 		{
-			TextDataFormat.Text => StringHelper.GetString(GetClipboardData(CLIPFORMAT.CF_TEXT), CharSet.Ansi),
-			TextDataFormat.UnicodeText => StringHelper.GetString(GetClipboardData(CLIPFORMAT.CF_UNICODETEXT), CharSet.Unicode),
+			TextDataFormat.Text => Marshal.PtrToStringAnsi(GetClipboardData(CLIPFORMAT.CF_TEXT)),
+			TextDataFormat.UnicodeText => Marshal.PtrToStringUni(GetClipboardData(CLIPFORMAT.CF_UNICODETEXT)),
 			TextDataFormat.Rtf => StringHelper.GetString(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_RTF)), CharSet.Ansi),
 			TextDataFormat.Html => Utils.GetHtml(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
 			TextDataFormat.CommaSeparatedValue => StringHelper.GetString(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_CSV)), CharSet.Ansi),
@@ -420,9 +422,7 @@ namespace Vanara.Windows.Shell
 		public void SetText(string text, string htmlText = null, string rtfText = null)
 		{
 			if (text is null && htmlText is null && rtfText is null) return;
-			SetText(text, TextDataFormat.Text);
 			SetText(text, TextDataFormat.UnicodeText);
-			SetBinaryData(RegisterFormat("Locale"), BitConverter.GetBytes(CultureInfo.CurrentCulture.LCID));
 			if (htmlText != null) SetText(htmlText, TextDataFormat.Html);
 			if (rtfText != null) SetText(rtfText, TextDataFormat.Rtf);
 		}
@@ -434,7 +434,7 @@ namespace Vanara.Windows.Shell
 		{
 			(byte[] bytes, uint fmt) = format switch
 			{
-				TextDataFormat.Text => (Encoding.ASCII.GetBytes(value + '\0'), (uint)CLIPFORMAT.CF_TEXT),
+				TextDataFormat.Text => (UnicodeToAnsiBytes(value), (uint)CLIPFORMAT.CF_TEXT),
 				TextDataFormat.UnicodeText => (Encoding.Unicode.GetBytes(value + '\0'), (uint)CLIPFORMAT.CF_UNICODETEXT),
 				TextDataFormat.Rtf => (Encoding.ASCII.GetBytes(value + '\0'), RegisterFormat(ShellClipboardFormat.CF_RTF)),
 				TextDataFormat.Html => (FormatHtmlForClipboard(value), RegisterFormat(ShellClipboardFormat.CF_HTML)),
