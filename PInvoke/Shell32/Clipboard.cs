@@ -524,6 +524,32 @@ namespace Vanara.PInvoke
 			return false;
 		}
 
+		/// <summary>Converts an ANSI string to Unicode.</summary>
+		/// <param name="value">The ANSI string value.</param>
+		/// <returns>The Unicode string value.</returns>
+		public static string AnsiToUnicode(string value)
+		{
+			if (string.IsNullOrEmpty(value)) return value;
+			byte[] ret = null;
+			var sz = MultiByteToWideChar(0, 0, value, value.Length, ret, 0);
+			ret = new byte[(int)sz];
+			MultiByteToWideChar(0, 0, value, value.Length, ret, sz);
+			return Encoding.Unicode.GetString(ret);
+		}
+
+		/// <summary>Converts an Unicode string to ANSI.</summary>
+		/// <param name="value">The Unicode string value.</param>
+		/// <returns>The ANSI string value.</returns>
+		public static byte[] UnicodeToAnsiBytes(string value)
+		{
+			if (string.IsNullOrEmpty(value)) return new byte[0];
+			byte[] ret = null;
+			var sz = WideCharToMultiByte(0, 0, value, value.Length, ret, 0);
+			ret = new byte[sz == 0 ? 0 : sz + 1];
+			WideCharToMultiByte(0, 0, value, value.Length, ret, sz);
+			return ret;
+		}
+
 		/// <summary>
 		/// <para>
 		/// Used with the CFSTR_SHELLIDLIST clipboard format to transfer the pointer to an item identifier list (PIDL) of one or more Shell
