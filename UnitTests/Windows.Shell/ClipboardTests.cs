@@ -11,10 +11,26 @@ using WFClipboard = System.Windows.Forms.Clipboard;
 
 namespace Vanara.Windows.Shell.Tests
 {
-	[TestFixture, SingleThreaded]
+	[TestFixture/*, SingleThreaded*/]
 	public class ClipboardTests
 	{
 		private const string html = "<pre style=\"font-family:Consolas;font-size:13px;color:#dadada;\"><span style=\"color:#dcdcaa;\">“We’ve been here”</span></pre>";
+
+		[Test]
+		public void CtorTest()
+		{
+			const string txt = "Test";
+			using (var cb = new Clipboard(true))
+				cb.SetText(txt, txt, txt);
+			using (var cb = new Clipboard())
+				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
+			using (var cb = new Clipboard(false, User32.GetActiveWindow()))
+				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
+			using (var cb = new Clipboard(true, User32.GetActiveWindow()))
+				cb.SetText(txt, txt, txt);
+			using (var cb = new Clipboard())
+				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
+		}
 
 		[Test]
 		public void DumpWFClipboardTest()
@@ -59,16 +75,29 @@ namespace Vanara.Windows.Shell.Tests
 			Assert.That(Clipboard.GetFirstFormatAvailable(fmts), Is.GreaterThan(0));
 		}
 
-		[Test]
-		public void GetSetShellItems()
+		[Test, Apartment(ApartmentState.STA)]
+		public void GetSetShellItems1()
 		{
-			//Ole32.OleInitialize();
-			//string[] files = { TestCaseSources.SmallFile, TestCaseSources.ImageFile, TestCaseSources.LogFile };
-			//ShellItemArray items = new(Array.ConvertAll(files, f => new ShellItem(f)));
-			//Clipboard.SetShellItems(items);
+			//Ole32.CoInitializeEx(default, Ole32.COINIT.COINIT_APARTMENTTHREADED).ThrowIfFailed();
+			//Clipboard.DataObject = null;
+			string[] files = { TestCaseSources.SmallFile, TestCaseSources.ImageFile, TestCaseSources.LogFile };
+			ShellItemArray items = new(Array.ConvertAll(files, f => new ShellItem(f)));
+			Clipboard.SetShellItems(items);
 			var shArray = Clipboard.GetShellItemArray();
 			Assert.That(shArray.Count, Is.GreaterThan(0));
-			//Assert.IsTrue(files.SequenceEqual(shArray.Select(s => s.FileSystemPath)));
+			Assert.IsTrue(files.SequenceEqual(shArray.Select(s => s.FileSystemPath)));
+		}
+
+		[Test]
+		public void GetSetShellItems2()
+		{
+			Clipboard.DataObject = null;
+			string[] files = { TestCaseSources.SmallFile, TestCaseSources.ImageFile, TestCaseSources.LogFile };
+			ShellItem[] items = Array.ConvertAll(files, f => new ShellItem(f));
+			Clipboard.SetShellItems(items);
+			var shArray = Clipboard.GetShellItemArray();
+			Assert.That(shArray.Count, Is.GreaterThan(0));
+			Assert.IsTrue(files.SequenceEqual(shArray.Select(s => s.FileSystemPath)));
 		}
 
 		[Test]

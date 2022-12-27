@@ -275,12 +275,23 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Puts a list of shell items onto the clipboard.</summary>
-		/// <param name="shellItems">The sequence of shell items.</param>
+		/// <param name="shellItems">The sequence of shell items. The PIDL of each shell item must be absolute.</param>
 		public static void SetShellItems(IEnumerable<ShellItem> shellItems)
 		{
-			var pidls = shellItems.Select(i => i.PIDL).ToArray();
-			SHCreateDataObject(PIDL.Null, (uint)pidls.Length, Array.ConvertAll(pidls, p => p.DangerousGetHandle()), default, typeof(IComDataObject).GUID, out IComDataObject dataObj).ThrowIfFailed();
+			DataObject = (shellItems is ShellItemArray shia ? shia : new ShellItemArray(shellItems)).ToDataObject();
+		}
+
+		/// <summary>Puts a list of shell items onto the clipboard.</summary>
+		/// <param name="parent">The parent folder instance.</param>
+		/// <param name="relativeShellItems">The sequence of shell items relative to <paramref name="parent"/>.</param>
+		public static void SetShellItems(ShellFolder parent, IEnumerable<ShellItem> relativeShellItems)
+		{
+			if (parent is null) throw new ArgumentNullException(nameof(parent));
+			if (relativeShellItems is null) throw new ArgumentNullException(nameof(relativeShellItems));
+			var pidls = relativeShellItems.Select(i => i.PIDL.DangerousGetHandle()).ToArray();
+			SHCreateDataObject(parent.PIDL, (uint)pidls.Length, pidls, default, typeof(IComDataObject).GUID, out var dataObj).ThrowIfFailed();
 			OleSetClipboard(dataObj).ThrowIfFailed();
+
 			//DataObject = dataObj = shellItems is ShellItemArray shia ? shia.ToDataObject() : new ShellItemArray(shellItems).ToDataObject();
 			//if (!setAllFormats) return;
 			//var files = shellItems.Where(i => i.IsFileSystem).Select(i => i.FileSystemPath).ToArray();
