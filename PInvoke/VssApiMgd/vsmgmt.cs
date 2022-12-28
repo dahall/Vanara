@@ -930,7 +930,7 @@ namespace Vanara.PInvoke.VssApi
 	// VSS_MGMT_OBJECT_TYPE Type; VSS_MGMT_OBJECT_UNION Obj; } VSS_MGMT_OBJECT_PROP, *PVSS_MGMT_OBJECT_PROP;
 	[PInvokeData("vsmgmt.h", MSDNShortId = "NS:vsmgmt._VSS_MGMT_OBJECT_PROP")]
 	[StructLayout(LayoutKind.Sequential)]
-	public class VSS_MGMT_OBJECT_PROP : IDisposable
+	public struct VSS_MGMT_OBJECT_PROP : IDisposable
 	{
 		/// <summary>Object type. For more information, see VSS_MGMT_OBJECT_TYPE.</summary>
 		public VSS_MGMT_OBJECT_TYPE Type;
@@ -1041,6 +1041,12 @@ namespace Vanara.PInvoke.VssApi
 		/// <returns>A sequence of <see cref="VSS_MGMT_OBJECT_PROP"/> structures.</returns>
 		public static IEnumerable<VSS_MGMT_OBJECT_PROP> Enumerate(this IVssEnumMgmtObject emo) =>
 			new IEnumFromCom<VSS_MGMT_OBJECT_PROP>(emo.Next, emo.Reset, () => new VSS_MGMT_OBJECT_PROP());
+
+		/// <summary>Enumerates the <see cref="VSS_OBJECT_PROP"/> instances provided by an <see cref="IVssEnumObject"/>.</summary>
+		/// <param name="eo">The <see cref="IVssEnumObject"/> instance.</param>
+		/// <returns>A sequence of <see cref="VSS_OBJECT_PROP"/> structures.</returns>
+		public static IEnumerable<VSS_OBJECT_PROP> Enumerate(this IVssEnumObject eo) =>
+			new IEnumFromCom<VSS_OBJECT_PROP>(eo.Next, eo.Reset, () => new VSS_OBJECT_PROP());
 
 		/// <summary>The <c>GetProviderMgmtInterface</c> method returns an interface to further configure the system provider.</summary>
 		/// <param name="sm">The <see cref="IVssSnapshotMgmt"/> instance.</param>

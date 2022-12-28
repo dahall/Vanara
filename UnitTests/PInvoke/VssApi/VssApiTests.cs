@@ -56,6 +56,7 @@ namespace Vanara.PInvoke.Tests
 						default:
 							break;
 					}
+					prop.Dispose();
 				}
 			}
 		}
