@@ -34,8 +34,9 @@
     <AssemblyName>Vanara.PInvoke.VssApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;VSS;VssApi;volume shadow copy service</PackageTags>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <NuspecFile>VssApi.nuspec</NuspecFile>  </PropertyGroup>
+    <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
+    <NuspecFile>VssApi.nuspec</NuspecFile>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
