@@ -81,7 +81,7 @@ namespace Vanara.PInvoke
 				timeoutTimerId = SetTimer(uElapse: (uint)timeout.TotalMilliseconds);
 
 			Running = true;
-			while (GetMessage(out var msg))
+			while (GetMessage(out var msg) != 0)
 			{
 				System.Diagnostics.Debug.WriteLine($"Message loop: message={msg.message}");
 				try { ProcessMessage?.Invoke(this, new MessageEventArgs(msg)); } catch { }
