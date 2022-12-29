@@ -754,8 +754,7 @@ namespace Vanara.PInvoke
 		// wMsgFilterMin, UINT wMsgFilterMax );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetMessage(out MSG lpMsg, [Optional] HWND hWnd, [Optional] uint wMsgFilterMin, [Optional] uint wMsgFilterMax);
+		public static extern int GetMessage(out MSG lpMsg, [Optional] HWND hWnd, [Optional] uint wMsgFilterMin, [Optional] uint wMsgFilterMax);
 
 		/// <summary>
 		/// Retrieves the extra message information for the current thread. Extra message information is an application- or driver-defined
