@@ -71,6 +71,7 @@
       <dependency id="Vanara.PInvoke.P2P" version="3.4.12" />
       <dependency id="Vanara.PInvoke.Pdh" version="3.4.12" />
       <dependency id="Vanara.PInvoke.PeerDist" version="3.4.12" />
+      <dependency id="Vanara.PInvoke.PhotoAcquire" version="3.4.12" />
       <dependency id="Vanara.PInvoke.PortableDeviceApi" version="3.4.12" />
       <dependency id="Vanara.PInvoke.PowrProf" version="3.4.12" />
       <dependency id="Vanara.PInvoke.Printing" version="3.4.12" />
