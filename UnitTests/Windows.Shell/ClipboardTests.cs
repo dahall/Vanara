@@ -28,6 +28,8 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
 			using (var cb = new Clipboard(true, User32.GetActiveWindow()))
 				cb.SetText(txt, txt, txt);
+			using (var cb = new Clipboard(false, User32.GetActiveWindow()))
+				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
 			using (var cb = new Clipboard())
 				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
 		}

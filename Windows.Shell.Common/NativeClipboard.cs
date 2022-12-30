@@ -71,8 +71,7 @@ namespace Vanara.Windows.Shell
 			}
 			if (hWndNewOwner == default)
 				hWndNewOwner = GetDesktopWindow();
-			if (!OpenClipboard(hWndNewOwner))
-				Win32Error.ThrowLastError();
+			Win32Error.ThrowLastErrorIfFalse(OpenClipboard(hWndNewOwner));
 			open = true;
 			if (empty)
 				Empty();
@@ -126,6 +125,19 @@ namespace Vanara.Windows.Shell
 			}
 			set => OleSetClipboard(value).ThrowIfFailed();
 		}
+
+		/// <summary>Retrieves the clipboard sequence number for the current window station.</summary>
+		/// <returns>
+		/// The clipboard sequence number. If you do not have <c>WINSTA_ACCESSCLIPBOARD</c> access to the window station, the function
+		/// returns zero.
+		/// </returns>
+		/// <remarks>
+		/// The system keeps a serial number for the clipboard for each window station. This number is incremented whenever the contents of
+		/// the clipboard change or the clipboard is emptied. You can track this value to determine whether the clipboard contents have
+		/// changed and optimize creating DataObjects. If clipboard rendering is delayed, the sequence number is not incremented until the
+		/// changes are rendered.
+		/// </remarks>
+		public static uint SequenceNumber => GetClipboardSequenceNumber();
 
 		/// <summary>Carries out the clipboard shutdown sequence. It also releases any IDataObject instances that were placed on the clipboard.</summary>
 		public static void Flush() => OleFlushClipboard().ThrowIfFailed();
@@ -391,6 +403,7 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = new SafeMoveableHGlobalHandle(data);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
+			pMem.Unlock();
 			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
@@ -401,6 +414,7 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = SafeMoveableHGlobalHandle.CreateFromStructure(data);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
+			pMem.Unlock();
 			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
@@ -411,6 +425,7 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = SafeMoveableHGlobalHandle.CreateFromList(values);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
+			pMem.Unlock();
 			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
@@ -423,6 +438,7 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = SafeMoveableHGlobalHandle.CreateFromStringList(values, packing, charSet);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
+			pMem.Unlock();
 			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
