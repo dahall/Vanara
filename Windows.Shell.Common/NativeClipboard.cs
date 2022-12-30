@@ -350,7 +350,7 @@ namespace Vanara.Windows.Shell
 		/// Clipboard Formats.
 		/// </para>
 		/// </remarks>
-		public IntPtr DanagerousGetData(uint formatId) => GetClipboardData(formatId);
+		public SafeMoveableHGlobalHandle DanagerousGetData(uint formatId) => new(GetClipboardData(formatId), false);
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
@@ -387,11 +387,11 @@ namespace Vanara.Windows.Shell
 		/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
 		public string GetText(TextDataFormat formatId) => formatId switch
 		{
-			TextDataFormat.Text => Marshal.PtrToStringAnsi(GetClipboardData(CLIPFORMAT.CF_TEXT)),
-			TextDataFormat.UnicodeText => Marshal.PtrToStringUni(GetClipboardData(CLIPFORMAT.CF_UNICODETEXT)),
-			TextDataFormat.Rtf => StringHelper.GetString(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_RTF)), CharSet.Ansi),
-			TextDataFormat.Html => Utils.GetHtml(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
-			TextDataFormat.CommaSeparatedValue => StringHelper.GetString(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_CSV)), CharSet.Ansi),
+			TextDataFormat.Text => Marshal.PtrToStringAnsi(DanagerousGetData(CLIPFORMAT.CF_TEXT)),
+			TextDataFormat.UnicodeText => Marshal.PtrToStringUni(DanagerousGetData(CLIPFORMAT.CF_UNICODETEXT)),
+			TextDataFormat.Rtf => StringHelper.GetString(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_RTF)), CharSet.Ansi),
+			TextDataFormat.Html => Utils.GetHtml(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
+			TextDataFormat.CommaSeparatedValue => StringHelper.GetString(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_CSV)), CharSet.Ansi),
 			_ => throw new ArgumentOutOfRangeException(nameof(formatId)),
 		};
 
