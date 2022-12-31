@@ -85,6 +85,12 @@ namespace Vanara.PInvoke
 			/// <param name="ptr">The <see cref="IntPtr"/>.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator SafeMoveableHGlobalHandle(IntPtr ptr) => new(ptr, true);
+
+			/// <summary>Runs a delegate method while locking the memory.</summary>
+			/// <typeparam name="T">The output type.</typeparam>
+			/// <param name="action">The action to perform while memory is locked.</param>
+			/// <returns>The output from the action.</returns>
+			public new T CallLocked<T>(Func<IntPtr, T> action) => base.CallLocked(action);
 		}
 	}
 }
