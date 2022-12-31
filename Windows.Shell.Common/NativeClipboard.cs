@@ -401,9 +401,9 @@ namespace Vanara.Windows.Shell
 		/// <exception cref="System.ArgumentNullException">data</exception>
 		public void SetBinaryData(uint formatId, byte[] data)
 		{
-			using SafeMoveableHGlobalHandle pMem = new(data);
+			SafeMoveableHGlobalHandle pMem = new(data);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
+			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.TakeOwnership()));
 		}
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
@@ -411,9 +411,9 @@ namespace Vanara.Windows.Shell
 		/// <param name="data">The data in the format dictated by <paramref name="formatId"/>.</param>
 		public void SetData<T>(uint formatId, T data)
 		{
-			using var pMem = SafeMoveableHGlobalHandle.CreateFromStructure(data);
+			var pMem = SafeMoveableHGlobalHandle.CreateFromStructure(data);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
+			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.TakeOwnership()));
 		}
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
@@ -421,9 +421,9 @@ namespace Vanara.Windows.Shell
 		/// <param name="values">The data in the format dictated by <paramref name="formatId"/>.</param>
 		public void SetData<T>(uint formatId, IEnumerable<T> values) where T : struct
 		{
-			using var pMem = SafeMoveableHGlobalHandle.CreateFromList(values);
+			var pMem = SafeMoveableHGlobalHandle.CreateFromList(values);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
+			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.TakeOwnership()));
 		}
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
@@ -433,9 +433,9 @@ namespace Vanara.Windows.Shell
 		/// <param name="charSet">The character set to use for the strings.</param>
 		public void SetData(uint formatId, IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto)
 		{
-			using var pMem = SafeMoveableHGlobalHandle.CreateFromStringList(values, packing, charSet);
+			var pMem = SafeMoveableHGlobalHandle.CreateFromStringList(values, packing, charSet);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
+			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.TakeOwnership()));
 		}
 
 		/// <summary>Sets multiple text types to the Clipboard.</summary>
@@ -474,8 +474,8 @@ namespace Vanara.Windows.Shell
 		public void SetUrl(string url, string title = null)
 		{
 			if (url is null) throw new ArgumentNullException(nameof(url));
-			SetText(url, $"<a href=\"{url}\">{title ?? url}</a>", null);
-			var textUrl = url + (title is null ? "" : ('\n' + title)) + '\0';
+			SetText(url, $"<a href=\"{System.Net.WebUtility.UrlEncode(url)}\">{System.Net.WebUtility.HtmlEncode(title ?? url)}</a>", null);
+			var textUrl = System.Net.WebUtility.UrlEncode(url + (title is null ? "" : ('\n' + title))) + '\0';
 			SetBinaryData(RegisterFormat(ShellClipboardFormat.CFSTR_INETURLA), Encoding.ASCII.GetBytes(textUrl));
 			SetBinaryData(RegisterFormat(ShellClipboardFormat.CFSTR_INETURLW), Encoding.Unicode.GetBytes(textUrl));
 		}
