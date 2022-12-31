@@ -125,12 +125,12 @@ namespace Vanara.Windows.Shell.Tests
 
 			const string txt = @"“0’0©0è0”";
 			using (var cb = new Clipboard(true))
-				cb.SetText(txt, $"<p>{txt}</p>");
+				cb.SetText(txt, txt);
 			using (var cb = new Clipboard())
 			{
 				Assert.That(cb.GetText(TextDataFormat.Text), Is.EqualTo(txt));
 				Assert.That(cb.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
-				Assert.That(cb.GetText(TextDataFormat.Html), Contains.Substring(txt));
+				Assert.That(cb.GetText(TextDataFormat.Html), Is.EqualTo(txt));
 				TestContext.WriteLine(cb.GetText(TextDataFormat.Html));
 			}
 		}

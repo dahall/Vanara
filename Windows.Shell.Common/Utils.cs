@@ -40,7 +40,7 @@ namespace Vanara.Windows.Shell
 				}
 			}
 
-			return GetHtmlFromClipboard(ptr.ToArray<byte>(byteCount));
+			return GetHtmlFromClipboard(new SafeMoveableHGlobalHandle(ptr, false).GetBytes());
 		}
 
 		internal static void RunAsSTAThread(ThreadStart threadStart)

@@ -387,11 +387,11 @@ namespace Vanara.Windows.Shell
 		/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
 		public string GetText(TextDataFormat formatId) => formatId switch
 		{
-			TextDataFormat.Text => Marshal.PtrToStringAnsi(DanagerousGetData(CLIPFORMAT.CF_TEXT)),
-			TextDataFormat.UnicodeText => Marshal.PtrToStringUni(DanagerousGetData(CLIPFORMAT.CF_UNICODETEXT)),
-			TextDataFormat.Rtf => StringHelper.GetString(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_RTF)), CharSet.Ansi),
-			TextDataFormat.Html => Utils.GetHtml(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
-			TextDataFormat.CommaSeparatedValue => StringHelper.GetString(DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_CSV)), CharSet.Ansi),
+			TextDataFormat.Text => DanagerousGetData(CLIPFORMAT.CF_TEXT).CallLocked(Marshal.PtrToStringAnsi),
+			TextDataFormat.UnicodeText => DanagerousGetData(CLIPFORMAT.CF_UNICODETEXT).CallLocked(Marshal.PtrToStringUni),
+			TextDataFormat.Rtf => DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_RTF)).CallLocked(Marshal.PtrToStringAnsi),
+			TextDataFormat.Html => Utils.GetHtml(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
+			TextDataFormat.CommaSeparatedValue => DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_CSV)).CallLocked(Marshal.PtrToStringAnsi),
 			_ => throw new ArgumentOutOfRangeException(nameof(formatId)),
 		};
 
@@ -401,9 +401,8 @@ namespace Vanara.Windows.Shell
 		/// <exception cref="System.ArgumentNullException">data</exception>
 		public void SetBinaryData(uint formatId, byte[] data)
 		{
-			using var pMem = new SafeMoveableHGlobalHandle(data);
+			using SafeMoveableHGlobalHandle pMem = new(data);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			pMem.Unlock();
 			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
@@ -414,7 +413,6 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = SafeMoveableHGlobalHandle.CreateFromStructure(data);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			pMem.Unlock();
 			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
@@ -425,7 +423,6 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = SafeMoveableHGlobalHandle.CreateFromList(values);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			pMem.Unlock();
 			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
@@ -438,7 +435,6 @@ namespace Vanara.Windows.Shell
 		{
 			using var pMem = SafeMoveableHGlobalHandle.CreateFromStringList(values, packing, charSet);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			pMem.Unlock();
 			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.DangerousGetHandle()));
 		}
 
