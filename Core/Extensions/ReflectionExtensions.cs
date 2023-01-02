@@ -23,6 +23,23 @@ namespace Vanara.Extensions.Reflection
 				yield return type = type.BaseType;
 		}
 
+		/// <summary>Searches for the constants defined for <paramref name="type"/>, using the specified binding constraints.</summary>
+		/// <param name="type">The type to search.</param>
+		/// <param name="bindingFlags">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+		/// <returns>
+		/// <para>
+		/// A sequence of <see cref="FieldInfo"/> objects representing all fields defined for <paramref name="type"/> that match the
+		/// specified binding constraints.
+		/// </para>
+		/// <para>-or-</para>
+		/// <para>
+		/// An empty sequence of type <see cref="FieldInfo"/>, if no fields are defined for <paramref name="type"/>, or if none of the
+		/// defined fields match the binding constraints.
+		/// </para>
+		/// </returns>
+		public static IEnumerable<FieldInfo> GetConstants(this Type type, BindingFlags bindingFlags = BindingFlags.Public) =>
+			type.GetFields(BindingFlags.Static | bindingFlags).Where(fi => fi.IsLiteral && !fi.IsInitOnly);
+
 		/// <summary>Gets a named field value from an object.</summary>
 		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
 		/// <param name="obj">The object from which to retrieve the field.</param>
