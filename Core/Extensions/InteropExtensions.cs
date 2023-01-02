@@ -875,7 +875,7 @@ namespace Vanara.Extensions
 			// Copy stream bits to pointer
 			if (allocatedBytes > 0 && (int)ms.Length > allocatedBytes)
 				throw new InsufficientMemoryException();
-			ms.Pointer.CopyTo(ptr, (int)ms.Length);
+			ms.Pointer.CopyTo(offset, ptr.Offset(offset), (int)ms.Length - offset);
 			return (int)ms.Length;
 		}
 
