@@ -4,15 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using Vanara.PInvoke;
 
 namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
 		/// <summary>A <see cref="SafeHandle"/> for memory allocated as moveable HGLOBAL.</summary>
-		/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
-		public class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<Kernel32.MoveableHGlobalMemoryMethods>
+		/// <seealso cref="SafeHandle"/>
+		public class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<MoveableHGlobalMemoryMethods>
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>

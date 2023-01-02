@@ -871,11 +871,9 @@ namespace Vanara.PInvoke
 			/// <returns>A memory handle.</returns>
 			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalReAlloc(hMem, size, GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT | GMEM.GMEM_SHARE));
 
-			/// <summary>
-			/// Unlocks the memory of a specified handle.
-			/// </summary>
+			/// <summary>Unlocks the memory of a specified handle.</summary>
 			/// <param name="hMem">A memory handle.</param>
-			/// <returns></returns>
+			/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
 			public override bool UnlockMem(IntPtr hMem) => GlobalUnlock(hMem);
 
 			/// <inheritdoc/>

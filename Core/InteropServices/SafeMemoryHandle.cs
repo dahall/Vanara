@@ -255,6 +255,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Unlocks the memory of a specified handle.</summary>
 		/// <param name="hMem">A memory handle.</param>
+		/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
 		public virtual bool UnlockMem(IntPtr hMem) => false;
 	}
 
