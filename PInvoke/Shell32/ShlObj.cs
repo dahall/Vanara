@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
@@ -4081,14 +4083,77 @@ namespace Vanara.PInvoke
 		/// The new data object is intended to be used in operations such as drag-and-drop, in which the data is stored in the clipboard with
 		/// a given format.
 		/// </para>
+		/// <para>
+		/// We recommend that you use the IID_PPV_ARGS macro, defined in Objbase.h, to package the <c>riid</c> and <c>ppv</c> parameters.
+		/// This macro provides the correct IID based on the interface pointed to by the value in <c>ppv</c>, which eliminates the
+		/// possibility of a coding error in <c>riid</c> that could lead to unexpected results.
+		/// </para>
 		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shcreatedataobject
-		// SHSTDAPI SHCreateDataObject( [in, optional] PCIDLIST_ABSOLUTE pidlFolder, [in] UINT cidl, [in, optional] PCUITEMID_CHILD_ARRAY apidl, [in, optional] IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
+		// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shcreatedataobject SHSTDAPI SHCreateDataObject(
+		// [in, optional] PCIDLIST_ABSOLUTE pidlFolder, [in] UINT cidl, [in, optional] PCUITEMID_CHILD_ARRAY apidl, [in, optional]
+		// IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
 		[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		public static extern HRESULT SHCreateDataObject([In, Optional] PIDL pidlFolder, uint cidl,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, [In, Optional] IDataObject pdtInner,
 			in Guid riid, out IDataObject ppv);
+
+		/// <summary>Creates a data object in a parent folder.</summary>
+		/// <param name="pidlFolder">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>A pointer to an ITEMIDLIST (PIDL) of the parent folder that contains the data object.</para>
+		/// </param>
+		/// <param name="apidl">
+		/// <para>Type: <c>PCUITEMID_CHILD_ARRAY</c></para>
+		/// <para>
+		/// An array of pointers to constant ITEMIDLIST structures, each of which uniquely identifies a file object or subfolder relative to
+		/// the parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
+		/// </para>
+		/// </param>
+		/// <param name="pdtInner">
+		/// <para>Type: <c>IDataObject*</c></para>
+		/// <para>
+		/// A pointer to interface IDataObject. This parameter can be <c>NULL</c>. Specify <c>pdtInner</c> only if the data object created
+		/// needs to support additional FORMATETC clipboard formats beyond the default formats it is assigned at creation. Alternatively,
+		/// provide support for populating the created data object using non-default clipboard formats by calling method IDataObject::SetData
+		/// and specifying the format in the <c>FORMATETC</c> structure passed in parameter <c>pFormatetc</c>.
+		/// </para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this method returns successfully, contains the IDataObject interface pointer requested in <c>riid</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is typically called when implementing method IShellFolder::GetUIObjectOf. When an interface pointer of interface ID
+		/// IID_IDataObject is requested (using parameter <c>riid</c>), the implementer can return the interface pointer on the object
+		/// created with <c>SHCreateDataObject</c> in response.
+		/// </para>
+		/// <para>
+		/// This function supports the CFSTR_SHELLIDLIST (also known as HIDA) clipboard format and also has generic support for arbitrary
+		/// clipboard formats through IDataObject::SetData. For more information on clipboard formats, see Shell Clipboard Formats.
+		/// </para>
+		/// <para>
+		/// The new data object is intended to be used in operations such as drag-and-drop, in which the data is stored in the clipboard with
+		/// a given format.
+		/// </para>
+		/// <para>
+		/// We recommend that you use the IID_PPV_ARGS macro, defined in Objbase.h, to package the <c>riid</c> and <c>ppv</c> parameters.
+		/// This macro provides the correct IID based on the interface pointed to by the value in <c>ppv</c>, which eliminates the
+		/// possibility of a coding error in <c>riid</c> that could lead to unexpected results.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shcreatedataobject SHSTDAPI SHCreateDataObject(
+		// [in, optional] PCIDLIST_ABSOLUTE pidlFolder, [in] UINT cidl, [in, optional] PCUITEMID_CHILD_ARRAY apidl, [in, optional]
+		// IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
+		[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
+		public static HRESULT SHCreateDataObject([In, Optional] PIDL pidlFolder, [In, Optional] IEnumerable<PIDL> apidl, [In, Optional] IDataObject pdtInner, out IDataObject ppv) =>
+			SHCreateDataObject(pidlFolder ?? PIDL.Null, (uint)(apidl?.Count() ?? 0), apidl is null ? null : apidl.Select(p => p.DangerousGetHandle()).ToArray(),
+				pdtInner, typeof(IDataObject).GUID, out ppv);
 
 		/// <summary>
 		/// <para>Creates an object that represents the Shell's default context menu implementation.</para>
