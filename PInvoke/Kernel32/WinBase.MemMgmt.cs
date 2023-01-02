@@ -11,7 +11,7 @@ namespace Vanara.PInvoke
 		public enum GMEM
 		{
 			/// <summary>Combines GMEM_MOVEABLE and GMEM_ZEROINIT.</summary>
-			GHND = 0x0042,
+			GHND = GMEM_MOVEABLE | GMEM_ZEROINIT,
 
 			/// <summary>Allocates fixed memory. The return value is a pointer.</summary>
 			GMEM_FIXED = 0x0000,
@@ -27,13 +27,37 @@ namespace Vanara.PInvoke
 			GMEM_ZEROINIT = 0x0040,
 
 			/// <summary>Combines GMEM_FIXED and GMEM_ZEROINIT.</summary>
-			GPTR = 0x0040,
+			GPTR = GMEM_FIXED | GMEM_ZEROINIT,
 
 			/// <summary>
 			/// The function modifies the attributes of the memory object only (the dwBytes parameter is ignored). This value can only be
 			/// used with <see cref="GlobalReAlloc"/>.
 			/// </summary>
 			GMEM_MODIFY = 0x0080,
+
+			/// <summary>Allocate discardable memory.</summary>
+			[Obsolete("Value is obsolete, but is provided for compatibility with 16-bit Windows.")]
+			GMEM_DISCARDABLE = 0x0100,
+
+			/// <summary>Allocate non-banked memory.</summary>
+			[Obsolete("Value is obsolete, but is provided for compatibility with 16-bit Windows.")]
+			GMEM_NOT_BANKED = 0x1000,
+
+			/// <summary>Allocate sharable memory.</summary>
+			[Obsolete("Value is obsolete, but is provided for compatibility with 16-bit Windows.")]
+			GMEM_SHARE = 0x2000,
+
+			/// <summary>Allocate sharable memory.</summary>
+			[Obsolete("Value is obsolete, but is provided for compatibility with 16-bit Windows.")]
+			GMEM_DDESHARE = 0x2000,
+
+			/// <summary>Notify upon discarding</summary>
+			[Obsolete("Value is obsolete, but is provided for compatibility with 16-bit Windows.")]
+			GMEM_NOTIFY = 0x4000,
+
+			/// <summary>Allocate non-banked memory.</summary>
+			[Obsolete("Value is obsolete, but is provided for compatibility with 16-bit Windows.")]
+			GMEM_LOWER = GMEM_NOT_BANKED,
 		}
 
 		/// <summary>The memory allocation attributes.</summary>
@@ -830,7 +854,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
 			/// <param name="size">The size, in bytes, of memory to allocate.</param>
 			/// <returns>A memory handle.</returns>
-			public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalAlloc(GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT, size));
+			public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalAlloc(GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT | GMEM.GMEM_SHARE, size));
 
 			/// <summary>Frees the memory associated with a handle.</summary>
 			/// <param name="hMem">A memory handle.</param>
@@ -845,7 +869,7 @@ namespace Vanara.PInvoke
 			/// <param name="hMem">A memory handle.</param>
 			/// <param name="size">The size, in bytes, of memory to allocate.</param>
 			/// <returns>A memory handle.</returns>
-			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalReAlloc(hMem, size, GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT));
+			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalReAlloc(hMem, size, GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT | GMEM.GMEM_SHARE));
 
 			/// <summary>
 			/// Unlocks the memory of a specified handle.
@@ -853,6 +877,9 @@ namespace Vanara.PInvoke
 			/// <param name="hMem">A memory handle.</param>
 			/// <returns></returns>
 			public override bool UnlockMem(IntPtr hMem) => GlobalUnlock(hMem);
+
+			/// <inheritdoc/>
+			protected override bool AllocZeroes => true;
 		}
 	}
 }

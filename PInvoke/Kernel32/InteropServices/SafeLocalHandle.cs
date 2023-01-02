@@ -29,6 +29,9 @@ namespace Vanara.InteropServices
 		/// <param name="size">The size, in bytes, of memory to allocate.</param>
 		/// <returns>A memory handle.</returns>
 		public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)LocalReAlloc(hMem, size, LMEM.LMEM_FIXED | LMEM.LMEM_ZEROINIT));
+
+		/// <inheritdoc/>
+		protected override bool AllocZeroes => true;
 	}
 
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>

@@ -13,6 +13,9 @@ namespace Vanara.InteropServices
 	/// <seealso cref="IMemoryMethods"/>
 	public sealed class HGlobalMemoryMethods : IMemoryMethods
 	{
+		/// <inheritdoc/>
+		bool ISimpleMemoryMethods.AllocZeroes => true;
+
 		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
 		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
 		bool ISimpleMemoryMethods.Lockable => false;
@@ -85,6 +88,11 @@ namespace Vanara.InteropServices
 		public SafeHGlobalHandle(IntPtr handle, SizeT size, bool ownsHandle = true) : base(handle, size, ownsHandle) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
+		/// <param name="handle">The handle.</param>
+		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+		public SafeHGlobalHandle(IntPtr handle, bool ownsHandle = true) : base(handle, GetPtrSize(handle), ownsHandle) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 		public SafeHGlobalHandle(SizeT size) : base(size) { }
@@ -143,5 +151,20 @@ namespace Vanara.InteropServices
 		/// <returns><see cref="SafeHGlobalHandle"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character set defined by <paramref name="charSet"/>.</returns>
 		public static SafeHGlobalHandle CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated,
 			CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
+
+		[DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
+		private static extern SizeT GlobalSize([In] IntPtr hMem);
+
+		private static SizeT GetPtrSize(IntPtr hMem)
+		{
+			var sz = GlobalSize(hMem);
+			if (sz == 0)
+			{
+				var err = Marshal.GetHRForLastWin32Error();
+				if (err != 0)
+					Marshal.ThrowExceptionForHR(err);
+			}
+			return sz;
+		}
 	}
 }

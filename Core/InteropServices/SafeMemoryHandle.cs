@@ -176,12 +176,20 @@ namespace Vanara.InteropServices
 		/// <param name="hMem">A memory handle.</param>
 		/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
 		bool UnlockMem(IntPtr hMem);
+
+		/// <summary>Gets a value indicating whether <see cref="AllocMem(int)"/> zeroes memory before returning.</summary>
+		/// <value><see langword="true"/> if <see cref="AllocMem(int)"/> zeroes memory before returning; otherwise, <see langword="false"/>.</value>
+		bool AllocZeroes => false;
 	}
 
 	/// <summary>Implementation of <see cref="IMemoryMethods"/> using just the methods from <see cref="ISimpleMemoryMethods"/>.</summary>
 	/// <seealso cref="Vanara.InteropServices.IMemoryMethods"/>
 	public abstract class MemoryMethodsBase : IMemoryMethods
 	{
+		/// <summary>Gets a value indicating whether <see cref="AllocMem(int)"/> zeroes memory before returning.</summary>
+		/// <value><see langword="true"/> if <see cref="AllocMem(int)"/> zeroes memory before returning; otherwise, <see langword="false"/>.</value>
+		protected virtual bool AllocZeroes => false;
+
 		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
 		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
 		public virtual bool Lockable => false;
@@ -423,7 +431,8 @@ namespace Vanara.InteropServices
 		{
 			if (size == 0) return;
 			InitFromSize(size);
-			Zero();
+			if (!mm.AllocZeroes)
+				Zero();
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>

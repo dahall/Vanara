@@ -1391,7 +1391,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
 			/// <param name="size">The size, in bytes, of memory to allocate.</param>
 			/// <returns>A memory handle.</returns>
-			public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapAllocInternal(HeapHandle, 0, size));
+			public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapAllocInternal(HeapHandle, HeapFlags.HEAP_ZERO_MEMORY , size));
 
 			/// <summary>Frees the memory associated with a handle.</summary>
 			/// <param name="hMem">A memory handle.</param>
@@ -1401,9 +1401,12 @@ namespace Vanara.PInvoke
 			/// <param name="hMem">A memory handle.</param>
 			/// <param name="size">The size, in bytes, of memory to allocate.</param>
 			/// <returns>A memory handle.</returns>
-			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapReAllocInternal(HeapHandle, 0, hMem, size));
+			public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapReAllocInternal(HeapHandle, HeapFlags.HEAP_ZERO_MEMORY, hMem, size));
 
 			private int GetSize(IntPtr ptr) => (int)HeapSize(HeapHandle, 0, ptr).Value;
+
+			/// <inheritdoc/>
+			protected override bool AllocZeroes => true;
 		}
 
 		/// <summary>Safe handle for memory heaps.</summary>

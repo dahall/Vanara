@@ -13,6 +13,9 @@ namespace Vanara.InteropServices
 	/// <seealso cref="IMemoryMethods"/>
 	public sealed class CoTaskMemoryMethods : IMemoryMethods
 	{
+		/// <inheritdoc/>
+		bool ISimpleMemoryMethods.AllocZeroes => true;
+
 		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
 		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
 		bool ISimpleMemoryMethods.Lockable => false;
