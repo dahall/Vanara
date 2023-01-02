@@ -88,13 +88,13 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 			var cs = StringHelper.GetCharSize(CharSet);
 			return index * cs >= Capacity || index < 0
 				? throw new IndexOutOfRangeException()
-				: CharSet == CharSet.Ansi ? System.Text.Encoding.ASCII.GetChars(GetBytes(index * cs, cs))[0] : System.Text.Encoding.Unicode.GetChars(GetBytes(index * cs, cs))[0];
+				: CharSet == CharSet.Ansi ? System.Text.Encoding.UTF8.GetChars(GetBytes(index * cs, cs))[0] : System.Text.Encoding.Unicode.GetChars(GetBytes(index * cs, cs))[0];
 		}
 		set
 		{
 			var cs = StringHelper.GetCharSize(CharSet);
 			if (index * cs >= Capacity || index < 0) throw new IndexOutOfRangeException();
-			var bytes = CharSet == CharSet.Ansi ? System.Text.Encoding.ASCII.GetBytes(new[] { value }) : System.Text.Encoding.Unicode.GetBytes(new[] { value });
+			var bytes = CharSet == CharSet.Ansi ? System.Text.Encoding.UTF8.GetBytes(new[] { value }) : System.Text.Encoding.Unicode.GetBytes(new[] { value });
 			handle.Write(bytes, index * cs, Size);
 		}
 	}

@@ -69,7 +69,7 @@ namespace Vanara.Extensions
 			allocatedBytes = 0;
 			if (s == null) return IntPtr.Zero;
 			var chSz = GetCharSize(charSet);
-			var encoding = chSz == 2 ? Encoding.Unicode : Encoding.ASCII;
+			var encoding = chSz == 2 ? Encoding.Unicode : Encoding.UTF8;
 			var hMem = AllocSecureString(s, charSet);
 			var str = chSz == 2 ? Marshal.PtrToStringUni(hMem) : Marshal.PtrToStringAnsi(hMem);
 			Marshal.FreeCoTaskMem(hMem);
@@ -143,7 +143,7 @@ namespace Vanara.Extensions
 		/// <param name="charSet">The character set.</param>
 		/// <returns>A byte array including <paramref name="value"/> encoded as per <paramref name="charSet"/> and the optional null terminator.</returns>
 		public static byte[] GetBytes(this string value, bool nullTerm = true, CharSet charSet = CharSet.Auto) =>
-			GetBytes(value, GetCharSize(charSet) == 1 ? Encoding.ASCII : Encoding.Unicode, nullTerm);
+			GetBytes(value, GetCharSize(charSet) == 1 ? Encoding.UTF8 : Encoding.Unicode, nullTerm);
 
 		/// <summary>Gets the encoded bytes for a string including an optional null terminator.</summary>
 		/// <param name="value">The string value to convert.</param>
@@ -166,7 +166,7 @@ namespace Vanara.Extensions
 		/// <param name="charSet">The character set.</param>
 		/// <returns>The number of bytes required to store <paramref name="value"/>. Returns 0 if <paramref name="value"/> is <c>null</c>.</returns>
 		public static int GetByteCount(this string value, bool nullTerm = true, CharSet charSet = CharSet.Auto) =>
-			GetByteCount(value, GetCharSize(charSet) == 1 ? Encoding.ASCII : Encoding.Unicode, nullTerm);
+			GetByteCount(value, GetCharSize(charSet) == 1 ? Encoding.UTF8 : Encoding.Unicode, nullTerm);
 
 		/// <summary>Gets the number of bytes required to store the string.</summary>
 		/// <param name="value">The string value.</param>
