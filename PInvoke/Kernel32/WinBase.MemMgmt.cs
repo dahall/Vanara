@@ -856,7 +856,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Frees the memory associated with a handle.</summary>
 			/// <param name="hMem">A memory handle.</param>
-			public override void FreeMem(IntPtr hMem) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalFree(hMem));
+			public override void FreeMem(IntPtr hMem) => GlobalFree(hMem);
 
 			/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
 			/// <param name="hMem">A memory handle.</param>
