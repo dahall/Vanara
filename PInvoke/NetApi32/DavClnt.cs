@@ -193,6 +193,7 @@ namespace Vanara.PInvoke
 		// *ConnectionHandle, LPCWSTR RemoteName, LPCWSTR UserName, LPCWSTR Password, PBYTE ClientCert, DWORD CertSize );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("davclnt.h", MSDNShortId = "d69cba04-503c-4d21-b762-3094c0921e28")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern Win32Error DavAddConnection(out SafeDavConnectionHandle ConnectionHandle, string RemoteName, string UserName, string Password, IntPtr ClientCert, uint CertSize);
 
 		/// <summary>Closes all connections to a WebDAV server or a remote file or directory on a WebDAV server.</summary>
@@ -253,6 +254,7 @@ namespace Vanara.PInvoke
 		// DavCancelConnectionsToServer( LPWSTR lpName, BOOL fForce );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("davclnt.h", MSDNShortId = "6eb3b011-4cd3-45ec-a07e-c8743d35a176")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern Win32Error DavCancelConnectionsToServer(string lpName, [MarshalAs(UnmanagedType.Bool)] bool fForce);
 
 		/// <summary>Closes a connection that was created by using the DavAddConnection function.</summary>
@@ -265,6 +267,7 @@ namespace Vanara.PInvoke
 		// ConnectionHandle );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("davclnt.h", MSDNShortId = "736b8a16-30db-410e-8295-97730297d04b")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern Win32Error DavDeleteConnection(HANDLE ConnectionHandle);
 
 		/// <summary>Flushes the data from the local version of a remote file to the WebDAV server.</summary>
@@ -296,6 +299,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/davclnt/nf-davclnt-davflushfile DWORD DavFlushFile( HANDLE hFile );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("davclnt.h", MSDNShortId = "0022a5ba-a4b2-4289-91be-db7f52e62f91")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern Win32Error DavFlushFile(HANDLE hFile);
 
 		/// <summary>Retrieves the extended error code information that the WebDAV server returned for the previous failed I/O operation.</summary>
@@ -341,6 +345,7 @@ namespace Vanara.PInvoke
 		// hFile, DWORD *ExtError, LPWSTR ExtErrorString, DWORD *cChSize );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("davclnt.h", MSDNShortId = "939b6163-b7ae-4ab7-9bcc-a02cbf34ca63")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern Win32Error DavGetExtendedError(HANDLE hFile, out Win32Error ExtError, StringBuilder ExtErrorString, ref uint cChSize);
 
 		/// <summary>Converts the specified UNC path to an equivalent HTTP path.</summary>
@@ -388,6 +393,7 @@ namespace Vanara.PInvoke
 		// UncPath, LPWSTR Url, LPDWORD lpSize );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("davclnt.h", MSDNShortId = "caa83e54-a029-45aa-9681-26b2be54fea3")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern Win32Error DavGetHTTPFromUNCPath(string UncPath, StringBuilder Url, ref uint lpSize);
 
 		/// <summary>Returns the file lock owner for a file that is locked on a WebDAV server.</summary>
@@ -461,6 +467,7 @@ namespace Vanara.PInvoke
 		// DavGetTheLockOwnerOfTheFile( LPCWSTR FileName, PWSTR LockOwnerName, PULONG LockOwnerNameLengthInBytes );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("davclnt.h", MSDNShortId = "94a4607c-2770-4656-8710-987d6b951e0e")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern Win32Error DavGetTheLockOwnerOfTheFile(string FileName, StringBuilder LockOwnerName, ref uint LockOwnerNameLengthInBytes);
 
 		/// <summary>Converts the specified HTTP path to an equivalent UNC path.</summary>
@@ -529,6 +536,7 @@ namespace Vanara.PInvoke
 		// Url, LPWSTR UncPath, LPDWORD lpSize );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("davclnt.h", MSDNShortId = "e9613e4a-5ba1-4954-bc7a-7843249f031e")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern Win32Error DavGetUNCFromHTTPPath(string Url, StringBuilder UncPath, ref uint lpSize);
 
 		/// <summary>Invalidates the contents of the local cache for a remote file on a WebDAV server.</summary>
@@ -555,6 +563,7 @@ namespace Vanara.PInvoke
 		// URLName );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("davclnt.h", MSDNShortId = "f111b19c-5472-463a-b33d-7d2188d224e8")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern Win32Error DavInvalidateCache([MarshalAs(UnmanagedType.LPWStr)] string URLName);
 
 		/// <summary>Registers an application-defined callback function that the WebDAV client can use to prompt the user for credentials.</summary>
@@ -574,6 +583,7 @@ namespace Vanara.PInvoke
 		// DavRegisterAuthCallback( PFNDAVAUTHCALLBACK CallBack, ULONG Version );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("davclnt.h", MSDNShortId = "7b381929-174f-4b7b-aa22-dc7a2c3e3b4d")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern uint DavRegisterAuthCallback(DavAuthCallback CallBack, uint Version);
 
 		/// <summary>Unregisters a registered callback function that the WebDAV client uses to prompt the user for credentials.</summary>
@@ -583,6 +593,7 @@ namespace Vanara.PInvoke
 		// OPAQUE_HANDLE hCallback );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("davclnt.h", MSDNShortId = "5277d9ce-22e6-49d5-9a9c-c02993605bdf")]
+		[Obsolete("Please revert to Vanara.PInvoke.DavClnt for this function.")]
 		public static extern void DavUnregisterAuthCallback(uint hCallback);
 
 		/// <summary>Stores an authentication BLOB that was retrieved by the DavAuthCallback callback function.</summary>
@@ -637,6 +648,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// A pointer to a string that contains the user name. This string is allocated by the DavAuthCallback callback function.
 			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pszUserName;
 
 			/// <summary>The length, in WCHAR, of the user name, not including the terminating <c>NULL</c> character.</summary>
