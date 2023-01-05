@@ -1720,8 +1720,10 @@ namespace Vanara.PInvoke
 		{
 			private bool self = false;
 
-			/// <summary>Gets a value indicating whether this memory supports locking.</summary>
-			/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+			/// <inheritdoc/>
+			bool ISimpleMemoryMethods.AllocZeroes => true;
+
+			/// <inheritdoc/>
 			bool ISimpleMemoryMethods.Lockable => false;
 
 			/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
