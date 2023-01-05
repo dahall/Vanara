@@ -23,6 +23,7 @@ namespace Vanara.Windows.Shell.Tests
 		readonly string[] files = { TestCaseSources.SmallFile, TestCaseSources.ImageFile, TestCaseSources.LogFile };
 		const string txt = @"“0’0©0è0”";
 		const string ptxt = "ABC123";
+		private const string url = "https://microsoft.com";
 
 		[Test]
 		public void DumpWFClipboardTest()
@@ -162,9 +163,9 @@ namespace Vanara.Windows.Shell.Tests
 			Assert.IsNotNull(ido.GetData(ShellClipboardFormat.CFSTR_FILENAMEA));
 			Assert.IsNotNull(ido.GetData(ShellClipboardFormat.CFSTR_FILENAMEW));
 
-			ido.SetUrl("https://microsoft.com", "Microsoft");
-			Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_INETURLA), Does.StartWith("https://microsoft.com"));
-			Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_INETURLW), Does.StartWith("https://microsoft.com"));
+			ido.SetUrl(url, "Microsoft");
+			Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_INETURLA), Does.StartWith(url));
+			Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_INETURLW), Does.StartWith(url));
 
 			ido.SetData(ShellClipboardFormat.CFSTR_INDRAGLOOP, true);
 			Assert.AreEqual((BOOL)ido.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP), true);
@@ -228,7 +229,7 @@ namespace Vanara.Windows.Shell.Tests
 			//Assert.AreEqual(ido.GetData("File"), files[0]);
 
 			// ISerializable
-			System.Uri uri = new("https://microsoft.com");
+			Uri uri = new(url);
 			ido.SetData("Uri", uri);
 			Assert.AreEqual(ido.GetData("Uri"), uri);
 

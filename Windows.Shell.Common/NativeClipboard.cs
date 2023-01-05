@@ -294,10 +294,9 @@ namespace Vanara.Windows.Shell
 		/// <param name="rtfText">The Rich Text Format value. If <see langword="null"/>, this format will not be set.</param>
 		public static void SetText(string text, string htmlText = null, string rtfText = null)
 		{
-			if (text is null && htmlText is null && rtfText is null) return;
-			SetText(text, TextDataFormat.UnicodeText);
-			if (htmlText != null) SetText(htmlText, TextDataFormat.Html);
-			if (rtfText != null) SetText(rtfText, TextDataFormat.Rtf);
+			if (text is not null) SetText(text, TextDataFormat.UnicodeText);
+			if (htmlText is not null) SetText(htmlText, TextDataFormat.Html);
+			if (rtfText is not null) SetText(rtfText, TextDataFormat.Rtf);
 		}
 
 		/// <summary>Sets a specific text type to the Clipboard.</summary>
