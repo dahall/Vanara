@@ -179,7 +179,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Gets a value indicating whether <see cref="AllocMem(int)"/> zeroes memory before returning.</summary>
 		/// <value><see langword="true"/> if <see cref="AllocMem(int)"/> zeroes memory before returning; otherwise, <see langword="false"/>.</value>
-		bool AllocZeroes => false;
+		bool AllocZeroes { get; }
 	}
 
 	/// <summary>Implementation of <see cref="IMemoryMethods"/> using just the methods from <see cref="ISimpleMemoryMethods"/>.</summary>
@@ -188,7 +188,7 @@ namespace Vanara.InteropServices
 	{
 		/// <summary>Gets a value indicating whether <see cref="AllocMem(int)"/> zeroes memory before returning.</summary>
 		/// <value><see langword="true"/> if <see cref="AllocMem(int)"/> zeroes memory before returning; otherwise, <see langword="false"/>.</value>
-		protected virtual bool AllocZeroes => false;
+		public virtual bool AllocZeroes => false;
 
 		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
 		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
