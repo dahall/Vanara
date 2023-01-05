@@ -44,12 +44,7 @@ namespace Vanara.PInvoke
 			GMEM_NOT_BANKED = 0x1000,
 
 			/// <summary>Allocate sharable memory.</summary>
-			[Obsolete("Value is obsolete, but is provided for compatibility with 16-bit Windows.")]
 			GMEM_SHARE = 0x2000,
-
-			/// <summary>Allocate sharable memory.</summary>
-			[Obsolete("Value is obsolete, but is provided for compatibility with 16-bit Windows.")]
-			GMEM_DDESHARE = 0x2000,
 
 			/// <summary>Notify upon discarding</summary>
 			[Obsolete("Value is obsolete, but is provided for compatibility with 16-bit Windows.")]
@@ -844,6 +839,9 @@ namespace Vanara.PInvoke
 		/// <seealso cref="MemoryMethodsBase" />
 		public sealed class MoveableHGlobalMemoryMethods : MemoryMethodsBase
 		{
+			/// <inheritdoc/>
+			public override bool AllocZeroes => true;
+
 			/// <summary>Gets a value indicating whether this memory supports locking.</summary>
 			/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
 			public override bool Lockable => true;
@@ -858,12 +856,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>Frees the memory associated with a handle.</summary>
 			/// <param name="hMem">A memory handle.</param>
-			public override void FreeMem(IntPtr hMem) => GlobalFree(hMem);
+			public override void FreeMem(IntPtr hMem) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalFree(hMem));
 
 			/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
 			/// <param name="hMem">A memory handle.</param>
 			/// <returns>A pointer to the locked memory.</returns>
-			public override IntPtr LockMem(IntPtr hMem) => GlobalLock(hMem);
+			public override IntPtr LockMem(IntPtr hMem) => Win32Error.ThrowLastErrorIfNull(GlobalLock(hMem));
 
 			/// <summary>Gets the reallocation method.</summary>
 			/// <param name="hMem">A memory handle.</param>
@@ -875,9 +873,6 @@ namespace Vanara.PInvoke
 			/// <param name="hMem">A memory handle.</param>
 			/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
 			public override bool UnlockMem(IntPtr hMem) => GlobalUnlock(hMem);
-
-			/// <inheritdoc/>
-			protected override bool AllocZeroes => true;
 		}
 	}
 }
