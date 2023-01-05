@@ -1327,7 +1327,7 @@ namespace Vanara.PInvoke
 			/// to a single file, it could also, for example, represent data extracted by the source from a database or text document.
 			/// </para>
 			/// </summary>
-			[ClipCorrespondingType(typeof(FILEGROUPDESCRIPTOR), EncodingType = typeof(UTF8Encoding))]
+			[ClipCorrespondingType(typeof(FILEGROUPDESCRIPTOR), EncodingType = typeof(ASCIIEncoding))]
 			public const string CFSTR_FILEDESCRIPTORA = "FileGroupDescriptor";
 
 			/// <summary>
@@ -1354,7 +1354,7 @@ namespace Vanara.PInvoke
 			/// memory object. The structure's hGlobal member points to a single null-terminated string containing the file's fully qualified
 			/// file path. This format has been superseded by CF_HDROP, but it is supported for backward compatibility with Windows 3.1 applications.
 			/// </summary>
-			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(ASCIIEncoding), Formatter = typeof(ClipboardShortFileNameFormatter))]
 			public const string CFSTR_FILENAMEA = "FileName";
 
 			/// <summary>
@@ -1364,7 +1364,7 @@ namespace Vanara.PInvoke
 			/// the accompanying CF_HDROP format. The format of the character array is the same as that used by CF_HDROP to list the
 			/// transferred files.
 			/// </summary>
-			[ClipCorrespondingType(typeof(string[]), EncodingType = typeof(UTF8Encoding))]
+			[ClipCorrespondingType(typeof(string[]), EncodingType = typeof(ASCIIEncoding))]
 			public const string CFSTR_FILENAMEMAPA = "FileNameMap";
 
 			/// <summary>
@@ -1701,6 +1701,7 @@ namespace Vanara.PInvoke
 			public IntPtr Write(object value, bool wideChar)
 			{
 				if (value is not string[] vals) throw new ArgumentException(null, nameof(value));
+				if (!wideChar) vals = Array.ConvertAll(vals, ClipboardShortFileNameFormatter.GetShortPath);
 				DROPFILES drop = new() { pFiles = (uint)Marshal.SizeOf(typeof(DROPFILES)), fWide = wideChar };
 				SafeMoveableHGlobalHandle dfmem = new(drop.pFiles + vals.Sum(v => (v.Length + 1) * (wideChar ? 2 : 1)) + 2);
 				dfmem.Write(drop);
@@ -1753,6 +1754,22 @@ namespace Vanara.PInvoke
 				new BinaryFormatter().Serialize(ms, ser);
 				return ClipboardBytesFormatter.Instance.Write(ms.GetBuffer());
 			}
+		}
+
+		internal class ClipboardShortFileNameFormatter : IClipboardFormatter
+		{
+			public object Read(IntPtr hGlobal) => new SafeMoveableHGlobalHandle(hGlobal, false).ToString(-1, CharSet.Ansi);
+
+			public IntPtr Write(object value) => value is string s ? new SafeMoveableHGlobalHandle(GetShortPathBytes(s)) : throw new ArgumentException(null, nameof(value));
+
+			internal static string GetShortPath(string path)
+			{
+				StringBuilder sb = new(MAX_PATH);
+				Win32Error.ThrowLastErrorIf(GetShortPathName(path, sb, (uint)sb.Capacity), u => u == 0);
+				return sb.ToString();
+			}
+
+			internal static byte[] GetShortPathBytes(string path) => StringHelper.GetBytes(path, true, CharSet.Ansi);
 		}
 	}
 }
