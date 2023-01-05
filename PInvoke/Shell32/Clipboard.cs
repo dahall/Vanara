@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using Vanara.Extensions;
+using Vanara.Extensions.Reflection;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
@@ -21,18 +23,6 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
-		private static readonly Lazy<Dictionary<uint, (string name, ClipCorrespondingTypeAttribute attr)>> clipFmtIds = new(() =>
-				   {
-					   Type type = typeof(CLIPFORMAT);
-					   Dictionary<uint, (string Name, ClipCorrespondingTypeAttribute)> knownIds = type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(f => f.FieldType == type && f.IsInitOnly).ToDictionary(f => (uint)(CLIPFORMAT)f.GetValue(null), f => (f.Name, f.GetCustomAttributes<ClipCorrespondingTypeAttribute>().FirstOrDefault()));
-					   foreach (FieldInfo f in typeof(ShellClipboardFormat).GetFields(BindingFlags.Public).Where(f => f.FieldType == typeof(string)))
-					   {
-						   string s = (string)f.GetValue(null);
-						   knownIds.Add(RegisterClipboardFormat(s), (s, f.GetCustomAttributes<ClipCorrespondingTypeAttribute>().FirstOrDefault()));
-					   }
-					   return knownIds;
-				   });
-
 		/// <summary>
 		/// <para>Values used with the DROPDESCRIPTION structure to specify the drop image.</para>
 		/// </summary>
@@ -100,6 +90,35 @@ namespace Vanara.PInvoke
 
 			/// <summary><c>Windows Vista and later</c>. The descriptor is Unicode.</summary>
 			FD_UNICODE = 0x80000000,
+		}
+
+		/// <summary>Converts an ANSI string to Unicode.</summary>
+		/// <param name="value">The ANSI string value.</param>
+		/// <returns>The Unicode string value.</returns>
+		public static string AnsiToUnicode(string value)
+		{
+			if (string.IsNullOrEmpty(value)) return value;
+			byte[] ret = null;
+			var sz = MultiByteToWideChar(0, 0, value, value.Length, ret, 0);
+			ret = new byte[(int)sz];
+			MultiByteToWideChar(0, 0, value, value.Length, ret, sz);
+			return Encoding.Unicode.GetString(ret);
+		}
+
+		/// <summary>Enumerates the <see cref="FORMATETC"/> structures that define the formats and media supported by a given data object.</summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <returns>A sequence of <see cref="FORMATETC"/> structures.</returns>
+		public static IEnumerable<FORMATETC> EnumFormats(this IDataObject dataObj)
+		{
+			IEnumFORMATETC e = null;
+			try { e = dataObj.EnumFormatEtc(DATADIR.DATADIR_GET); e.Reset(); }
+			catch { }
+			if (e is null) yield break;
+
+			FORMATETC[] etc = new FORMATETC[1];
+			int[] f = new[] { 1 };
+			while (((HRESULT)e.Next(1, etc, f)).Succeeded && f[0] > 0)
+				yield return etc[0];
 		}
 
 		/// <summary>Takes an HTML fragment and wraps it in the HTML format specification for the clipboard.</summary>
@@ -179,6 +198,25 @@ namespace Vanara.PInvoke
 
 		/// <summary>Obtains data from a source data object.</summary>
 		/// <param name="dataObj">The data object.</param>
+		/// <param name="format">Specifies the particular clipboard format of interest.</param>
+		/// <param name="aspect">
+		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration values.
+		/// A single clipboard format can support multiple aspects or views of the object. Most data and presentation transfer and caching
+		/// methods pass aspect information. For example, a caller might request an object's iconic picture, using the metafile clipboard
+		/// format to retrieve it. Note that only one DVASPECT value can be used in dwAspect. That is, dwAspect cannot be the result of a
+		/// Boolean OR operation on several DVASPECT values.
+		/// </param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
+		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
+		public static object GetData(this IDataObject dataObj, string format, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
+			GetData(dataObj, RegisterClipboardFormat(format), aspect, index);
+
+		/// <summary>Obtains data from a source data object.</summary>
+		/// <param name="dataObj">The data object.</param>
 		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
 		/// <param name="aspect">
 		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration values.
@@ -195,8 +233,8 @@ namespace Vanara.PInvoke
 		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
 		public static object GetData(this IDataObject dataObj, uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
 		{
-			ClipCorrespondingTypeAttribute attr = clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null;
-			TYMED tymed = attr?.Medium ?? TYMED.TYMED_FILE | TYMED.TYMED_HGLOBAL | TYMED.TYMED_ISTREAM | TYMED.TYMED_ISTORAGE | TYMED.TYMED_GDI | TYMED.TYMED_MFPICT | TYMED.TYMED_ENHMF;
+			ClipCorrespondingTypeAttribute attr = ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null;
+			TYMED tymed = attr?.Medium ?? AllTymed.Value;
 			FORMATETC formatetc = new()
 			{
 				cfFormat = unchecked((short)(ushort)formatId),
@@ -204,7 +242,6 @@ namespace Vanara.PInvoke
 				lindex = index,
 				tymed = tymed
 			};
-			//STGMEDIUM medium = new() { tymed = attr?.Medium ?? TYMED.TYMED_HGLOBAL };
 			dataObj.GetData(ref formatetc, out var medium);
 
 			// Handle TYMED values, passing through HGLOBAL
@@ -212,7 +249,7 @@ namespace Vanara.PInvoke
 			if (medium.tymed != TYMED.TYMED_HGLOBAL)
 				return medium.tymed switch
 				{
-					TYMED.TYMED_FILE => new SafeMoveableHGlobalHandle(medium.unionmember, userFree).ToString(-1, CharSet.Ansi),
+					TYMED.TYMED_FILE => Marshal.PtrToStringBSTR(medium.unionmember),
 					TYMED.TYMED_ISTREAM => Marshal.GetObjectForIUnknown(medium.unionmember) as IStream,
 					TYMED.TYMED_ISTORAGE => Marshal.GetObjectForIUnknown(medium.unionmember) as IStorage,
 					TYMED.TYMED_GDI when userFree => new SafeHBITMAP(medium.unionmember),
@@ -225,6 +262,12 @@ namespace Vanara.PInvoke
 					_ => throw new InvalidOperationException(),
 				};
 
+			// Handle list of shell items
+			if (formatId == ShellClipboardFormat.Register(ShellClipboardFormat.CFSTR_SHELLIDLIST))
+			{
+				return SHCreateShellItemArrayFromDataObject(dataObj);
+			}
+
 			using SafeMoveableHGlobalHandle hmem = new(medium.unionmember, userFree);
 			try
 			{
@@ -233,13 +276,13 @@ namespace Vanara.PInvoke
 				// Handle CF_HDROP since it can't indicate specialty
 				if (CLIPFORMAT.CF_HDROP.Equals(formatId))
 				{
-					return ClipboardHDROPFormatter.Instance.Read(hmem);
+					return new ClipboardHDROPFormatter().Read(hmem);
 				}
 
-				// If there's no hint, return bytes
+				// If there's no hint, return bytes or ISerialized value
 				if (attr is null)
 				{
-					return hmem.GetBytes();
+					return ClipboardSerializedFormatter.IsSerialized(hmem) ? new ClipboardSerializedFormatter().Read(hmem) : hmem.GetBytes();
 				}
 
 				// Use clipboard formatter if available
@@ -248,33 +291,41 @@ namespace Vanara.PInvoke
 					return ((IClipboardFormatter)Activator.CreateInstance(attr.Formatter)).Read(hmem);
 				}
 
-				// Handle strings
-				if (attr.TypeRef == typeof(string))
+				CharSet charSet = GetCharSet(attr);
+				switch (attr.TypeRef)
 				{
-					Encoding enc = (Encoding)Activator.CreateInstance(attr.EncodingType ?? typeof(UnicodeEncoding));
-					return enc.GetString(hmem.GetBytes());
+					// Handle strings
+					case Type t when t == typeof(string):
+						return GetEncoding(attr).GetString(hmem.GetBytes()).TrimEnd('\0');
+					// Handle string[]
+					case Type t when t == typeof(string[]):
+						return hmem.ToStringEnum(charSet).ToArray();
+					// Handle other types
+					default:
+						return hmem.CallLocked(p => p.Convert(hmem.Size, attr.TypeRef, charSet));
 				}
-
-				CharSet charSet = CharSet.Auto;
-				if (attr.EncodingType == typeof(ASCIIEncoding))
-					charSet = CharSet.Ansi;
-				else if (attr.EncodingType == typeof(UnicodeEncoding))
-					charSet = CharSet.Unicode;
-
-				// Handle string[]
-				if (attr.TypeRef == typeof(string[]))
-				{
-					return hmem.ToStringEnum(charSet).ToArray();
-				}
-
-				// Handle other types
-				return hmem.DangerousGetHandle().Convert(hmem.Size, attr.TypeRef, charSet);
 			}
 			finally
 			{
 				hmem.Unlock();
 			}
 		}
+
+		private static Encoding GetEncoding(ClipCorrespondingTypeAttribute attr) => (Encoding)Activator.CreateInstance(attr.EncodingType ?? typeof(UnicodeEncoding));
+
+		/// <summary>Obtains data from a source data object.</summary>
+		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="format">Specifies the particular clipboard format of interest.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <param name="charSet">The character set to use for string types.</param>
+		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
+		/// <exception cref="System.ArgumentException">This format does not support direct type access. - formatId</exception>
+		public static T GetData<T>(this IDataObject dataObj, string format, int index = -1, CharSet charSet = CharSet.Auto) =>
+			GetData<T>(dataObj, RegisterClipboardFormat(format), index, charSet);
 
 		/// <summary>Obtains data from a source data object.</summary>
 		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
@@ -296,22 +347,13 @@ namespace Vanara.PInvoke
 				lindex = index,
 				tymed = TYMED.TYMED_HGLOBAL
 			};
-			//STGMEDIUM medium = new() { tymed = TYMED.TYMED_HGLOBAL };
 			dataObj.GetData(ref formatetc, out var medium);
 			if (medium.tymed != TYMED.TYMED_HGLOBAL)
 				throw new ArgumentException("This format does not support direct type access.", nameof(formatId));
 			if (medium.unionmember == default)
 				return default;
 			using SafeMoveableHGlobalHandle hmem = new(medium.unionmember, medium.pUnkForRelease is null);
-			try
-			{
-				hmem.Lock();
-				return hmem.ToType<T>(charSet == CharSet.Auto ? (StringHelper.GetCharSize(charSet) == 1 ? CharSet.Ansi : CharSet.Unicode) : charSet);
-			}
-			finally
-			{
-				hmem.Unlock();
-			}
+			return hmem.ToType<T>(charSet == CharSet.Auto ? (StringHelper.GetCharSize(charSet) == 1 ? CharSet.Ansi : CharSet.Unicode) : charSet);
 		}
 
 		/// <summary>Gets an HTML string from bytes returned from the clipboard.</summary>
@@ -346,6 +388,46 @@ namespace Vanara.PInvoke
 			return Encoding.UTF8.GetString(bytes, startFrag, endFrag - startFrag);
 		}
 
+		/// <summary>
+		/// Determines whether the data object is capable of rendering the data described in the parameters. Objects attempting a paste or
+		/// drop operation can call this method before calling GetData to get an indication of whether the operation may be successful.
+		/// </summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
+		/// <returns><see langword="true"/> if <paramref name="formatId"/> is available; otherwise, <see langword="false"/>.</returns>
+		public static bool IsFormatAvailable(this IDataObject dataObj, uint formatId)
+		{
+			FORMATETC formatetc = new()
+			{
+				cfFormat = unchecked((short)(ushort)formatId),
+				dwAspect = DVASPECT.DVASPECT_CONTENT,
+				lindex = -1,
+				tymed = AllTymed.Value
+			};
+
+			return dataObj.QueryGetData(ref formatetc) == HRESULT.S_OK;
+		}
+
+		private static readonly Lazy<TYMED> AllTymed = new(() => Enum.GetValues(typeof(TYMED)).Cast<TYMED>().Aggregate((a, b) => a | b));
+
+		/// <summary>Transfer a data stream to an object that contains a data source.</summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="format">Specifies the particular clipboard format of interest.</param>
+		/// <param name="obj">The object to add.</param>
+		/// <param name="aspect">
+		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration values.
+		/// A single clipboard format can support multiple aspects or views of the object. Most data and presentation transfer and caching
+		/// methods pass aspect information. For example, a caller might request an object's iconic picture, using the metafile clipboard
+		/// format to retrieve it. Note that only one DVASPECT value can be used in dwAspect. That is, dwAspect cannot be the result of a
+		/// Boolean OR operation on several DVASPECT values.
+		/// </param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		public static void SetData(this IDataObject dataObj, string format, object obj, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
+			SetData(dataObj, RegisterClipboardFormat(format), obj, aspect, index);
+
 		/// <summary>Transfer a data stream to an object that contains a data source.</summary>
 		/// <param name="dataObj">The data object.</param>
 		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
@@ -363,104 +445,98 @@ namespace Vanara.PInvoke
 		/// </param>
 		public static void SetData(this IDataObject dataObj, uint formatId, object obj, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
 		{
-			TYMED tymed = TYMED.TYMED_HGLOBAL;
-			IntPtr mbr = default;
-			switch (obj)
+			ClipCorrespondingTypeAttribute attr = ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null;
+
+			TYMED tymed = attr?.Medium ?? TYMED.TYMED_HGLOBAL;
+			CharSet charSet = GetCharSet(attr);
+			IntPtr mbr = attr?.Formatter is null ? default : ((IClipboardFormatter)Activator.CreateInstance(attr.Formatter)).Write(obj);
+			if (mbr == default)
 			{
-				case null:
-					tymed = TYMED.TYMED_NULL;
-					break;
+				switch (obj)
+				{
+					case null:
+						tymed = TYMED.TYMED_NULL;
+						break;
 
-				case byte[] bytes:
-					ClipboardBytesFormatter.Instance.Write(bytes);
-					break;
+					case byte[] bytes:
+						mbr = ClipboardBytesFormatter.Instance.Write(bytes);
+						break;
 
-				case MemoryStream mstream:
-					ClipboardBytesFormatter.Instance.Write(mstream.GetBuffer());
-					break;
+					// TODO
+					//case MemoryStream mstream:
+					//	mbr = ClipboardBytesFormatter.Instance.Write(mstream.GetBuffer());
+					//	break;
 
-				case Stream stream:
-					byte[] sbytes = new byte[stream.Length];
-					stream.Position = 0;
-					stream.Read(sbytes, 0, sbytes.Length);
-					ClipboardBytesFormatter.Instance.Write(sbytes);
-					break;
+					// TODO
+					//case Stream stream:
+					//	ComStream cstream = new(stream);
+					//	tymed = TYMED.TYMED_ISTREAM;
+					//	mbr = Marshal.GetIUnknownForObject((IStream)cstream);
+					//	break;
 
-				case string str:
-					if (CLIPFORMAT.CF_UNICODETEXT.Equals(formatId) ||
-						RegisterClipboardFormat(ShellClipboardFormat.CFSTR_INETURLW) == formatId ||
-						RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEW) == formatId)
-					{
-						ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, true, CharSet.Unicode));
-					}
-					else if (CLIPFORMAT.CF_TEXT.Equals(formatId) || CLIPFORMAT.CF_OEMTEXT.Equals(formatId) ||
-						RegisterClipboardFormat(ShellClipboardFormat.CF_RTF) == formatId ||
-						RegisterClipboardFormat(ShellClipboardFormat.CFSTR_INETURLA) == formatId ||
-						RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEA) == formatId ||
-						RegisterClipboardFormat(ShellClipboardFormat.CF_CSV) == formatId)
-					{
-						ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, true, CharSet.Ansi));
-					}
-					else if (RegisterClipboardFormat(ShellClipboardFormat.CF_HTML) == formatId)
-					{
-						ClipboardHtmlFormatter.Instance.Write(str);
-					}
-					else
-					{
-						ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, true, CharSet.Auto));
-					}
+					case string str:
+						//if (CLIPFORMAT.CF_TEXT.Equals(formatId))
+						//	mbr = ClipboardBytesFormatter.Instance.Write(UnicodeToAnsiBytes(str));
+						//else
+							mbr = ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, GetEncoding(attr), true));
+						break;
 
-					break;
+					case IEnumerable<string> strlist:
+						// Handle HDROP specifically since its formatter cannot be specified.
+						if (CLIPFORMAT.CF_HDROP.Equals(formatId))
+							mbr = new ClipboardHDROPFormatter().Write(strlist, charSet != CharSet.Ansi);
+						else
+							mbr = strlist.MarshalToPtr(StringListPackMethod.Concatenated, MoveableHGlobalMemoryMethods.Instance.AllocMem, out _, charSet, 0,
+								MoveableHGlobalMemoryMethods.Instance.LockMem, MoveableHGlobalMemoryMethods.Instance.UnlockMem);
+						break;
 
-				case IEnumerable<string> strlist:
-					if (CLIPFORMAT.CF_HDROP.Equals(formatId) ||
-						formatId == RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPA) ||
-						formatId == RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPW))
-					{
-						mbr = ClipboardHDROPFormatter.Instance.Write(strlist);
-					}
+					case IStream str:
+						tymed = TYMED.TYMED_ISTREAM;
+						mbr = Marshal.GetIUnknownForObject(str);
+						break;
 
-					break;
+					case IStorage store:
+						tymed = TYMED.TYMED_ISTORAGE;
+						mbr = Marshal.GetIUnknownForObject(store);
+						break;
 
-				case IStream str:
-					tymed = TYMED.TYMED_ISTREAM;
-					mbr = Marshal.GetIUnknownForObject(str);
-					break;
+					// TODO
+					//case FileInfo fileInfo:
+					//	tymed = TYMED.TYMED_FILE;
+					//	mbr = Marshal.StringToBSTR(fileInfo.FullName);
+					//	break;
 
-				case IStorage store:
-					tymed = TYMED.TYMED_ISTORAGE;
-					mbr = Marshal.GetIUnknownForObject(store);
-					break;
+					case System.Runtime.Serialization.ISerializable ser:
+						mbr = new ClipboardSerializedFormatter().Write(ser);
+						break;
 
-				case System.Runtime.Serialization.ISerializable ser:
-					mbr = ClipboardSerializedFormatter.Instance.Write(ser);
-					break;
+					case SafeMoveableHGlobalHandle hg:
+						mbr = hg.TakeOwnership();
+						break;
 
-				case SafeMoveableHGlobalHandle hg:
-					mbr = hg.TakeOwnership();
-					break;
+					// TODO
+					//case SafeAllocatedMemoryHandle h:
+					//	mbr = new SafeMoveableHGlobalHandle(h).TakeOwnership();
+					//	break;
 
-				case SafeAllocatedMemoryHandle h:
-					mbr = new SafeMoveableHGlobalHandle(h).TakeOwnership();
-					break;
+					case HBITMAP:
+					case SafeHBITMAP:
+						tymed = TYMED.TYMED_GDI;
+						mbr = ((IHandle)obj).DangerousGetHandle();
+						break;
 
-				case HBITMAP:
-				case SafeHBITMAP:
-					tymed = TYMED.TYMED_GDI;
-					mbr = ((IHandle)obj).DangerousGetHandle();
-					break;
+					case HMETAFILE:
+					case SafeHMETAFILE:
+						tymed = TYMED.TYMED_MFPICT;
+						mbr = ((IHandle)obj).DangerousGetHandle();
+						break;
 
-				case HMETAFILE:
-				case SafeHMETAFILE:
-					tymed = TYMED.TYMED_MFPICT;
-					mbr = ((IHandle)obj).DangerousGetHandle();
-					break;
-
-				case HENHMETAFILE:
-				case SafeHENHMETAFILE:
-					tymed = TYMED.TYMED_ENHMF;
-					mbr = ((IHandle)obj).DangerousGetHandle();
-					break;
+					case HENHMETAFILE:
+					case SafeHENHMETAFILE:
+						tymed = TYMED.TYMED_ENHMF;
+						mbr = ((IHandle)obj).DangerousGetHandle();
+						break;
+				}
 			}
 			FORMATETC formatetc = new()
 			{
@@ -476,6 +552,18 @@ namespace Vanara.PInvoke
 		/// <summary>Transfer a data stream to an object that contains a data source.</summary>
 		/// <typeparam name="T">The type of the object being passed.</typeparam>
 		/// <param name="dataObj">The data object.</param>
+		/// <param name="format">Specifies the particular clipboard format of interest.</param>
+		/// <param name="obj">The object to add.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		public static void SetData<T>(this IDataObject dataObj, string format, T obj, int index = -1) where T : struct =>
+			SetData(dataObj, RegisterClipboardFormat(format), SafeMoveableHGlobalHandle.CreateFromStructure(obj), DVASPECT.DVASPECT_CONTENT, index);
+
+		/// <summary>Transfer a data stream to an object that contains a data source.</summary>
+		/// <typeparam name="T">The type of the object being passed.</typeparam>
+		/// <param name="dataObj">The data object.</param>
 		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
 		/// <param name="obj">The object to add.</param>
 		/// <param name="index">
@@ -484,6 +572,20 @@ namespace Vanara.PInvoke
 		/// </param>
 		public static void SetData<T>(this IDataObject dataObj, uint formatId, T obj, int index = -1) where T : struct =>
 			SetData(dataObj, formatId, SafeMoveableHGlobalHandle.CreateFromStructure(obj), DVASPECT.DVASPECT_CONTENT, index);
+
+		/// <summary>Sets a URL with optional title to a data object.</summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="url">The URL.</param>
+		/// <param name="title">The title. This value can be <see langword="null"/>.</param>
+		/// <exception cref="ArgumentNullException">url</exception>
+		public static void SetUrl(this IDataObject dataObj, string url, string title = null)
+		{
+			if (url is null) throw new ArgumentNullException(nameof(url));
+			dataObj.SetData(CLIPFORMAT.CF_UNICODETEXT, url);
+			dataObj.SetData(ShellClipboardFormat.CF_HTML, $"<a href=\"{System.Net.WebUtility.UrlEncode(url)}\">{System.Net.WebUtility.HtmlEncode(title ?? url)}</a>");
+			dataObj.SetData(ShellClipboardFormat.CFSTR_INETURLA, url);
+			dataObj.SetData(ShellClipboardFormat.CFSTR_INETURLW, url);
+		}
 
 		/// <summary>Obtains data from a source data object.</summary>
 		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
@@ -497,44 +599,15 @@ namespace Vanara.PInvoke
 		/// <returns><see langword="true"/> if data is available and retrieved; otherwise <see langword="false"/>.</returns>
 		public static bool TryGetData<T>(this IDataObject dataObj, uint formatId, out T obj, int index = -1)
 		{
-			FORMATETC formatetc = new()
-			{
-				cfFormat = unchecked((short)(ushort)formatId),
-				dwAspect = DVASPECT.DVASPECT_CONTENT,
-				lindex = index,
-				tymed = TYMED.TYMED_HGLOBAL
-			};
-			obj = default;
-			if (dataObj.QueryGetData(ref formatetc) != HRESULT.S_OK)
-				return false;
-			try
-			{
-				STGMEDIUM medium = new() { tymed = TYMED.TYMED_HGLOBAL };
-				dataObj.GetData(ref formatetc, out medium);
-				if (medium.tymed == TYMED.TYMED_HGLOBAL && medium.unionmember != default)
-				{
-					using SafeMoveableHGlobalHandle hmem = new(medium.unionmember, medium.pUnkForRelease is null);
-					obj = hmem.ToType<T>();
+			if (IsFormatAvailable(dataObj, formatId))
+				try {
+					var charSet = GetCharSet(ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null);
+					obj = GetData<T>(dataObj, formatId, index, charSet);
 					return true;
 				}
-			}
-			catch
-			{
-			}
+				catch { }
+			obj = default;
 			return false;
-		}
-
-		/// <summary>Converts an ANSI string to Unicode.</summary>
-		/// <param name="value">The ANSI string value.</param>
-		/// <returns>The Unicode string value.</returns>
-		public static string AnsiToUnicode(string value)
-		{
-			if (string.IsNullOrEmpty(value)) return value;
-			byte[] ret = null;
-			var sz = MultiByteToWideChar(0, 0, value, value.Length, ret, 0);
-			ret = new byte[(int)sz];
-			MultiByteToWideChar(0, 0, value, value.Length, ret, sz);
-			return Encoding.Unicode.GetString(ret);
 		}
 
 		/// <summary>Converts an Unicode string to ANSI.</summary>
@@ -548,6 +621,19 @@ namespace Vanara.PInvoke
 			ret = new byte[sz == 0 ? 0 : sz + 1];
 			WideCharToMultiByte(0, 0, value, value.Length, ret, sz);
 			return ret;
+		}
+
+		private static CharSet GetCharSet(ClipCorrespondingTypeAttribute attr)
+		{
+			CharSet charSet = CharSet.Auto;
+			if (attr is not null)
+			{
+				if (attr.EncodingType == typeof(UTF8Encoding) || attr.EncodingType == typeof(ASCIIEncoding))
+					charSet = CharSet.Ansi;
+				else if (attr.EncodingType == typeof(UnicodeEncoding))
+					charSet = CharSet.Unicode;
+			}
+			return charSet;
 		}
 
 		/// <summary>
@@ -864,6 +950,20 @@ namespace Vanara.PInvoke
 					nFileSizeLow = (uint)(value & 0xFFFFFFFF);
 				}
 			}
+
+			/// <summary>Performs an implicit conversion from <see cref="System.IO.FileInfo"/> to <see cref="FILEDESCRIPTOR"/>.</summary>
+			/// <param name="fi">The <see cref="System.IO.FileInfo"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator FILEDESCRIPTOR(System.IO.FileInfo fi) => new FILEDESCRIPTOR()
+			{
+				dwFlags = FD_FLAGS.FD_ATTRIBUTES | FD_FLAGS.FD_ACCESSTIME | FD_FLAGS.FD_CREATETIME | FD_FLAGS.FD_WRITESTIME | FD_FLAGS.FD_FILESIZE | (Marshal.SystemDefaultCharSize > 1 ? FD_FLAGS.FD_UNICODE : 0),
+				dwFileAttributes = (FileFlagsAndAttributes)fi.Attributes,
+				cFileName = fi.FullName,
+				ftCreationTime = fi.CreationTime.ToFileTimeStruct(),
+				ftLastAccessTime = fi.LastAccessTime.ToFileTimeStruct(),
+				ftLastWriteTime = fi.LastWriteTime.ToFileTimeStruct(),
+				nFileSize = unchecked((ulong)fi.Length)
+			};
 		}
 
 		/// <summary>Defines the CF_FILEGROUPDESCRIPTOR clipboard format.</summary>
@@ -1039,20 +1139,20 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>If <c>dwScope</c> is not set to RESOURCE_CONNECTED, this field is undefined.</para>
 			/// </summary>
-			public IntPtr lpLocalName;
+			public StrPtrAuto lpLocalName;
 
 			/// <summary>
 			/// If the enumerated item is a network resource, this field contains a remote network name. This name may be then passed to
 			/// NPAddConnection to make a network connection if <c>dwUsage</c> is set to RESOURCEUSAGE_CONNECTABLE. If the enumerated item is
 			/// a current connection, this field will refer to the remote network name that <c>lpLocalName</c> is connected to.
 			/// </summary>
-			public IntPtr lpRemoteName;
+			public StrPtrAuto lpRemoteName;
 
 			/// <summary>May be any provider-supplied comment associated with the enumerated item.</summary>
-			public IntPtr lpComment;
+			public StrPtrAuto lpComment;
 
 			/// <summary>Specifies the name of the provider that owns this enumerated item.</summary>
-			public IntPtr lpProvider;
+			public StrPtrAuto lpProvider;
 		}
 
 		/// <summary>Defines the <see cref="ShellClipboardFormat.CFSTR_NETRESOURCES"/> clipboard format.</summary>
@@ -1165,22 +1265,22 @@ namespace Vanara.PInvoke
 		public static class ShellClipboardFormat
 		{
 			/// <summary>Comma Separated Value</summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 			public const string CF_CSV = "Csv";
 
 			/// <summary>HTML Format</summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UTF8Encoding), Formatter = typeof(ClipboardHtmlFormatter))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding), Formatter = typeof(ClipboardHtmlFormatter))]
 			public const string CF_HTML = "HTML Format";
 
 			/// <summary>RichEdit Text and Objects</summary>
 			public const string CF_RETEXTOBJ = "RichEdit Text and Objects";
 
 			/// <summary>Rich Text Format</summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 			public const string CF_RTF = "Rich Text Format";
 
 			/// <summary>Rich Text Format Without Objects</summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 			public const string CF_RTFNOOBJS = "Rich Text Format Without Objects";
 
 			/// <summary>Undocumented.</summary>
@@ -1227,7 +1327,7 @@ namespace Vanara.PInvoke
 			/// to a single file, it could also, for example, represent data extracted by the source from a database or text document.
 			/// </para>
 			/// </summary>
-			[ClipCorrespondingType(typeof(FILEGROUPDESCRIPTOR), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(FILEGROUPDESCRIPTOR), EncodingType = typeof(UTF8Encoding))]
 			public const string CFSTR_FILEDESCRIPTORA = "FileGroupDescriptor";
 
 			/// <summary>
@@ -1246,7 +1346,7 @@ namespace Vanara.PInvoke
 			/// to a single file, it could also, for example, represent data extracted by the source from a database or text document.
 			/// </para>
 			/// </summary>
-			[ClipCorrespondingType(typeof(FILEGROUPDESCRIPTOR), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
+			[ClipCorrespondingType(typeof(FILEGROUPDESCRIPTOR), EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_FILEDESCRIPTORW = "FileGroupDescriptorW";
 
 			/// <summary>
@@ -1254,7 +1354,7 @@ namespace Vanara.PInvoke
 			/// memory object. The structure's hGlobal member points to a single null-terminated string containing the file's fully qualified
 			/// file path. This format has been superseded by CF_HDROP, but it is supported for backward compatibility with Windows 3.1 applications.
 			/// </summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 			public const string CFSTR_FILENAMEA = "FileName";
 
 			/// <summary>
@@ -1264,7 +1364,7 @@ namespace Vanara.PInvoke
 			/// the accompanying CF_HDROP format. The format of the character array is the same as that used by CF_HDROP to list the
 			/// transferred files.
 			/// </summary>
-			[ClipCorrespondingType(typeof(string[]), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(string[]), EncodingType = typeof(UTF8Encoding))]
 			public const string CFSTR_FILENAMEMAPA = "FileNameMap";
 
 			/// <summary>
@@ -1274,7 +1374,7 @@ namespace Vanara.PInvoke
 			/// the accompanying CF_HDROP format. The format of the character array is the same as that used by CF_HDROP to list the
 			/// transferred files.
 			/// </summary>
-			[ClipCorrespondingType(typeof(string[]), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
+			[ClipCorrespondingType(typeof(string[]), EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_FILENAMEMAPW = "FileNameMapW";
 
 			/// <summary>
@@ -1282,7 +1382,7 @@ namespace Vanara.PInvoke
 			/// memory object. The structure's hGlobal member points to a single null-terminated string containing the file's fully qualified
 			/// file path. This format has been superseded by CF_HDROP, but it is supported for backward compatibility with Windows 3.1 applications.
 			/// </summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_FILENAMEW = "FileNameW";
 
 			/// <summary>
@@ -1308,7 +1408,7 @@ namespace Vanara.PInvoke
 			/// UNICODE is not defined, the application retrieves the CF_TEXT/CFSTR_SHELLURL version of the URL. If UNICODE is defined, the
 			/// application retrieves the CF_UNICODE version of the URL.
 			/// </summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 			public const string CFSTR_INETURLA = CFSTR_SHELLURL;
 
 			/// <summary>
@@ -1317,11 +1417,11 @@ namespace Vanara.PInvoke
 			/// UNICODE is not defined, the application retrieves the CF_TEXT/CFSTR_SHELLURL version of the URL. If UNICODE is defined, the
 			/// application retrieves the CF_UNICODE version of the URL.
 			/// </summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_INETURLW = "UniformResourceLocatorW";
 
 			/// <summary>Undocumented.</summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(UnicodeEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 			public const string CFSTR_INVOKECOMMAND_DROPPARAM = "InvokeCommand DropParam";
 
 			/// <summary>
@@ -1371,7 +1471,7 @@ namespace Vanara.PInvoke
 			/// folders as well as drive letters, the handler must be able to understand both the CSFTR_MOUNTEDVOLUME and CF_HDROP formats.
 			/// </para>
 			/// </summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 			public const string CFSTR_MOUNTEDVOLUME = "MountedVolume";
 
 			/// <summary>
@@ -1449,7 +1549,7 @@ namespace Vanara.PInvoke
 			/// CF_HDROP. However, the pFiles member of the DROPFILES structure contains one or more friendly names of printers instead of
 			/// file paths.
 			/// </summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 			public const string CFSTR_PRINTERGROUP = "PrinterFriendlyName";
 
 			/// <summary>Undocumented.</summary>
@@ -1480,7 +1580,7 @@ namespace Vanara.PInvoke
 			public const string CFSTR_SHELLIDLISTOFFSET = "Shell Object Offsets";
 
 			/// <summary><note type="note">This format identifier has been deprecated; use <see cref="CFSTR_INETURLA"/> instead.</note></summary>
-			[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(ASCIIEncoding))]
+			[ClipCorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 			public const string CFSTR_SHELLURL = "UniformResourceLocator";
 
 			/// <summary>
@@ -1516,6 +1616,66 @@ namespace Vanara.PInvoke
 			/// <summary>Undocumented.</summary>
 			[ClipCorrespondingType(typeof(uint))]
 			public const string CFSTR_ZONEIDENTIFIER = "ZoneIdentifier";
+
+			internal static readonly Lazy<Dictionary<uint, (string name, ClipCorrespondingTypeAttribute attr)>> clipFmtIds = new(() =>
+			{
+				Type cftype = typeof(CLIPFORMAT);
+				var knownIds = cftype.GetFields(BindingFlags.Static | BindingFlags.Public).
+					Where(f => f.FieldType == cftype && f.IsInitOnly).
+					ToDictionary(f => (uint)(CLIPFORMAT)f.GetValue(null), f => (f.Name, f.GetCustomAttributes<ClipCorrespondingTypeAttribute>().FirstOrDefault()));
+				foreach (FieldInfo f in typeof(ShellClipboardFormat).GetConstants().Where(f => f.FieldType == typeof(string)))
+				{
+					string s = (string)f.GetValue(null);
+					uint id = RegisterClipboardFormat(s);
+					if (!knownIds.ContainsKey(id))
+						knownIds.Add(id, (s, f.GetCustomAttributes<ClipCorrespondingTypeAttribute>().FirstOrDefault()));
+				}
+				return knownIds;
+			});
+
+			/// <summary>Retrieves from the clipboard the name of the specified registered format.</summary>
+			/// <param name="formatId">The type of format to be retrieved.</param>
+			/// <returns>The format name.</returns>
+			public static string GetName(uint formatId)
+			{
+				if (clipFmtIds.Value.TryGetValue(formatId, out var value))
+					return value.name;
+
+				// Ask sysetm for the registered name
+				StringBuilder sb = new(80);
+				int ret;
+				while (0 != (ret = GetClipboardFormatName(formatId, sb, sb.Capacity)))
+				{
+					if (ret < sb.Capacity - 1)
+					{
+						clipFmtIds.Value.Add(formatId, (sb.ToString(), null));
+						return sb.ToString();
+					}
+					sb.Capacity *= 2;
+				}
+
+				// Failing all elsewhere, return value as hex string
+				return string.Format(CultureInfo.InvariantCulture, "0x{0:X4}", formatId);
+			}
+
+			/// <summary>Registers a new clipboard format. This format can then be used as a valid clipboard format.</summary>
+			/// <param name="format">The name of the new format.</param>
+			/// <returns>The registered clipboard format identifier.</returns>
+			/// <exception cref="System.ArgumentNullException">format</exception>
+			/// <remarks>
+			/// If a registered format with the specified name already exists, a new format is not registered and the return value identifies the
+			/// existing format. This enables more than one application to copy and paste data using the same registered clipboard format. Note
+			/// that the format name comparison is case-insensitive.
+			/// </remarks>
+			public static uint Register(string format)
+			{
+				if (format is null) throw new ArgumentNullException(nameof(format));
+
+				var id = Win32Error.ThrowLastErrorIf(RegisterClipboardFormat(format), v => v == 0);
+				if (!clipFmtIds.Value.ContainsKey(id))
+					clipFmtIds.Value.Add(id, (format, null));
+				return id;
+			}
 		}
 
 		internal class ClipboardBytesFormatter : IClipboardFormatter
@@ -1529,8 +1689,6 @@ namespace Vanara.PInvoke
 
 		internal class ClipboardHDROPFormatter : IClipboardFormatter
 		{
-			public static ClipboardHDROPFormatter Instance { get; } = new();
-
 			public object Read(IntPtr hGlobal)
 			{
 				SafeMoveableHGlobalHandle h = new(hGlobal, false);
@@ -1542,15 +1700,18 @@ namespace Vanara.PInvoke
 
 			public IntPtr Write(object value, bool wideChar)
 			{
-				SafeMoveableHGlobalHandle dfmem = SafeMoveableHGlobalHandle.CreateFromStructure(new DROPFILES { pFiles = (uint)Marshal.SizeOf(typeof(DROPFILES)), fWide = wideChar });
-				new NativeMemoryStream(dfmem) { CharSet = wideChar ? CharSet.Unicode : CharSet.Ansi }.Write((string[])value);
+				if (value is not string[] vals) throw new ArgumentException(null, nameof(value));
+				DROPFILES drop = new() { pFiles = (uint)Marshal.SizeOf(typeof(DROPFILES)), fWide = wideChar };
+				SafeMoveableHGlobalHandle dfmem = new(drop.pFiles + vals.Sum(v => (v.Length + 1) * (wideChar ? 2 : 1)) + 2);
+				dfmem.Write(drop);
+				dfmem.CallLocked(p => p.Write(vals, StringListPackMethod.Concatenated, wideChar ? CharSet.Unicode : CharSet.Ansi, (int)drop.pFiles, dfmem.Size));
 				return dfmem.TakeOwnership();
 			}
 		}
 
 		internal class ClipboardHtmlFormatter : ClipboardBytesFormatter
 		{
-			public new static ClipboardHtmlFormatter Instance { get; } = new();
+			public new static IClipboardFormatter Instance { get; } = new ClipboardHtmlFormatter();
 
 			public override object Read(IntPtr hGlobal) => GetHtmlFromClipboard((byte[])base.Read(hGlobal));
 
@@ -1559,30 +1720,27 @@ namespace Vanara.PInvoke
 
 		internal class ClipboardSerializedFormatter : IClipboardFormatter
 		{
-			private static readonly byte[] guid = new Guid("FD9EA796-3B13-4370-A679-56106BB288FB").ToByteArray();
-			public static ClipboardSerializedFormatter Instance { get; } = new();
+			private static readonly Guid guid = new(0xFD9EA796, 0x3B13, 0x4370, 0xA6, 0x79, 0x56, 0x10, 0x6B, 0xB2, 0x88, 0xFB);
+			private static readonly byte[] guidBytes = guid.ToByteArray();
+
+			public static bool IsSerialized(SafeMoveableHGlobalHandle h) => h.Size >= 16 && h.ToStructure<Guid>() == guid;
 
 			public object Read(IntPtr hGlobal)
 			{
 				byte[] bytes = (byte[])ClipboardBytesFormatter.Instance.Read(hGlobal);
-				if (bytes.Length <= guid.Length || !Equals(bytes, guid, guid.Length))
+				if (bytes.Length <= guidBytes.Length || !Equals(bytes, guidBytes, guidBytes.Length))
 				{
 					throw new InvalidDataException();
 				}
 
-				using MemoryStream mem = new(bytes, false) { Position = guid.Length };
+				using MemoryStream mem = new(bytes, false) { Position = guidBytes.Length };
 				return new BinaryFormatter() { AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple }.Deserialize(mem);
 
 				static bool Equals(byte[] bytes, byte[] guid, int length)
 				{
 					for (int i = 0; i < length; i++)
-					{
 						if (bytes[i] != guid[i])
-						{
 							return false;
-						}
-					}
-
 					return true;
 				}
 			}
@@ -1591,7 +1749,7 @@ namespace Vanara.PInvoke
 			{
 				System.Runtime.Serialization.ISerializable ser = (System.Runtime.Serialization.ISerializable)value;
 				MemoryStream ms = new();
-				new BinaryWriter(ms).Write(guid);
+				new BinaryWriter(ms).Write(guidBytes);
 				new BinaryFormatter().Serialize(ms, ser);
 				return ClipboardBytesFormatter.Instance.Write(ms.GetBuffer());
 			}

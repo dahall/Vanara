@@ -34,10 +34,7 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		/// <param name="format">The format of the specified data. See <see cref="T:System.Windows.Forms.DataFormats"/> for predefined formats.</param>
 		/// <param name="data">The data to store.</param>
-		public ShellDataObject(string format, object data) : base()
-		{
-			SetData(format, data);
-		}
+		public ShellDataObject(string format, object data) : base() => SetData(format, data);
 
 		/// <summary>Initializes a new instance of the <see cref="ShellDataObject"/> class.</summary>
 		/// <param name="items">A list of ShellItem instances.</param>
@@ -80,7 +77,7 @@ namespace Vanara.Windows.Shell
 		/// <value><see langword="true"/> if the data object is within a drag-and-drop loop; otherwise, <see langword="false"/>.</value>
 		public bool InDragLoop
 		{
-			get => base.GetDataPresent(ShellClipboardFormat.CFSTR_INDRAGLOOP) ? (int)base.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP, false) != 0 : false;
+			get => base.GetDataPresent(ShellClipboardFormat.CFSTR_INDRAGLOOP) && (int)base.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP, false) != 0;
 			set => base.SetData(ShellClipboardFormat.CFSTR_INDRAGLOOP, false, value ? 1 : 0);
 		}
 

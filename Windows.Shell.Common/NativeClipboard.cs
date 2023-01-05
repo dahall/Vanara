@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -45,37 +38,10 @@ namespace Vanara.Windows.Shell
 	/// disposal. This can be called multiple times in nested calls and will ensure the Clipboard is only opened and closed at the highest scope.
 	/// </summary>
 	/// <seealso cref="System.IDisposable"/>
-	public class NativeClipboard : IDisposable
+	public static class NativeClipboard
 	{
 		private static readonly object objectLock = new();
-		private static Dictionary<uint, string> knownIds;
 		private static ListenerWindow listener;
-
-		[ThreadStatic]
-		private static bool open = false;
-
-		private readonly bool dontClose = false;
-
-		/// <summary>Initializes a new instance of the <see cref="NativeClipboard"/> class.</summary>
-		/// <param name="empty">If set to <see langword="true"/>, <see cref="EmptyClipboard"/> is called to clear the Clipboard.</param>
-		/// <param name="hWndNewOwner">
-		/// A handle to the window to be associated with the open clipboard. If this parameter is <c>HWND.NULL</c>, the open clipboard is
-		/// associated with the current task.
-		/// </param>
-		public NativeClipboard(bool empty = false, HWND hWndNewOwner = default)
-		{
-			if (open)
-			{
-				dontClose = true;
-				return;
-			}
-			if (hWndNewOwner == default)
-				hWndNewOwner = GetDesktopWindow();
-			Win32Error.ThrowLastErrorIfFalse(OpenClipboard(hWndNewOwner));
-			open = true;
-			if (empty)
-				Empty();
-		}
 
 		/// <summary>Occurs when whenever the contents of the Clipboard have changed.</summary>
 		public static event EventHandler ClipboardUpdate
@@ -139,6 +105,22 @@ namespace Vanara.Windows.Shell
 		/// </remarks>
 		public static uint SequenceNumber => GetClipboardSequenceNumber();
 
+		/// <summary>Enumerates the data formats currently available on the clipboard.</summary>
+		/// <returns>An enumeration of the data formats currently available on the clipboard.</returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>EnumFormats</c> function enumerates formats in the order that they were placed on the clipboard. If you are copying
+		/// information to the clipboard, add clipboard objects in order from the most descriptive clipboard format to the least descriptive
+		/// clipboard format. If you are pasting information from the clipboard, retrieve the first clipboard format that you can handle.
+		/// That will be the most descriptive clipboard format that you can handle.
+		/// </para>
+		/// <para>
+		/// The system provides automatic type conversions for certain clipboard formats. In the case of such a format, this function
+		/// enumerates the specified format, then enumerates the formats to which it can be converted.
+		/// </para>
+		/// </remarks>
+		public static IEnumerable<uint> EnumAvailableFormats() => DataObject.EnumFormats().Select(f => unchecked((uint)f.cfFormat));
+
 		/// <summary>Carries out the clipboard shutdown sequence. It also releases any IDataObject instances that were placed on the clipboard.</summary>
 		public static void Flush() => OleFlushClipboard().ThrowIfFailed();
 
@@ -190,9 +172,9 @@ namespace Vanara.Windows.Shell
 		public static string[] GetFileNameMap()
 		{
 			if (IsFormatAvailable(ShellClipboardFormat.CFSTR_FILENAMEMAPW))
-				return DataObject.GetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPW)) as string[];
+				return DataObject.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPW) as string[];
 			else if (IsFormatAvailable(ShellClipboardFormat.CFSTR_FILENAMEMAPA))
-				return DataObject.GetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPA)) as string[];
+				return DataObject.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPA) as string[];
 			return new string[0];
 		}
 
@@ -208,28 +190,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Retrieves from the clipboard the name of the specified registered format.</summary>
 		/// <param name="formatId">The type of format to be retrieved.</param>
 		/// <returns>The format name.</returns>
-		public static string GetFormatName(uint formatId)
-		{
-			EnsureKnownIds();
-			if (knownIds.TryGetValue(formatId, out var value))
-				return value;
-
-			// Ask sysetm for the registered name
-			StringBuilder sb = new(80);
-			int ret;
-			while (0 != (ret = GetClipboardFormatName(formatId, sb, sb.Capacity)))
-			{
-				if (ret < sb.Capacity - 1)
-				{
-					knownIds.Add(formatId, sb.ToString());
-					return sb.ToString();
-				}
-				sb.Capacity *= 2;
-			}
-
-			// Failing all elsewhere, return value as hex string
-			return string.Format(CultureInfo.InvariantCulture, "0x{0:X4}", formatId);
-		}
+		public static string GetFormatName(uint formatId) => ShellClipboardFormat.GetName(formatId);
 
 		/// <summary>Retrieves the handle to the window that currently has the clipboard open.</summary>
 		/// <returns>
@@ -246,6 +207,11 @@ namespace Vanara.Windows.Shell
 		/// <returns>The <see cref="ShellItemArray"/> associated with the data object, if set. Otherwise, <see langword="null"/>.</returns>
 		public static ShellItemArray GetShellItemArray() => IsFormatAvailable(ShellClipboardFormat.CFSTR_SHELLIDLIST) ? ShellItemArray.FromDataObject(DataObject) : null;
 
+		/// <summary>Gets the text from the native Clipboard in the specified format.</summary>
+		/// <param name="formatId">A clipboard format. For a description of the standard clipboard formats, see Standard Clipboard Formats.</param>
+		/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
+		public static string GetText(TextDataFormat formatId) => GetData(Txt2Id(formatId)) as string;
+
 		/// <summary>Determines whether the data object pointer previously placed on the clipboard is still on the clipboard.</summary>
 		/// <param name="dataObject">
 		/// The IDataObject interface on the data object containing clipboard data of interest, which the caller previously placed on the clipboard.
@@ -256,7 +222,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Determines whether the clipboard contains data in the specified format.</summary>
 		/// <param name="id">A standard or registered clipboard format.</param>
 		/// <returns>If the clipboard format is available, the return value is <see langword="true"/>; otherwise <see langword="false"/>.</returns>
-		public static bool IsFormatAvailable(uint id) => IsClipboardFormatAvailable(id);
+		public static bool IsFormatAvailable(uint id) => DataObject.IsFormatAvailable(id); // EnumAvailableFormats().Contains(id);
 
 		/// <summary>Determines whether the clipboard contains data in the specified format.</summary>
 		/// <param name="id">A clipboard format string.</param>
@@ -272,26 +238,44 @@ namespace Vanara.Windows.Shell
 		/// existing format. This enables more than one application to copy and paste data using the same registered clipboard format. Note
 		/// that the format name comparison is case-insensitive.
 		/// </remarks>
-		public static uint RegisterFormat(string format)
+		public static uint RegisterFormat(string format) => ShellClipboardFormat.Register(format);
+
+		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
+		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
+		/// <param name="data">The binary data in the specified format.</param>
+		/// <exception cref="System.ArgumentNullException">data</exception>
+		public static void SetBinaryData(uint formatId, byte[] data) => DataObject.SetData(formatId, data);
+
+		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
+		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
+		/// <param name="data">The data in the format dictated by <paramref name="formatId"/>.</param>
+		public static void SetData<T>(uint formatId, T data) where T : struct => DataObject.SetData(formatId, data);
+
+		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
+		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
+		/// <param name="values">The data in the format dictated by <paramref name="formatId"/>.</param>
+		public static void SetData<T>(uint formatId, IEnumerable<T> values) where T : struct
 		{
-			if (format is null) throw new ArgumentNullException(nameof(format));
+			var pMem = SafeMoveableHGlobalHandle.CreateFromList(values);
+			Win32Error.ThrowLastErrorIfInvalid(pMem);
+			DataObject.SetData(formatId, pMem);
+		}
 
-			EnsureKnownIds();
-			var id = knownIds.FirstOrDefault(p => p.Value == format).Key;
-			if (id != 0)
-				return id;
-
-			id = Win32Error.ThrowLastErrorIf(RegisterClipboardFormat(format), v => v == 0);
-			knownIds.Add(id, format);
-			return id;
+		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
+		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
+		/// <param name="values">The list of strings.</param>
+		/// <param name="packing">The packing type for the strings.</param>
+		/// <param name="charSet">The character set to use for the strings.</param>
+		public static void SetData(uint formatId, IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto)
+		{
+			var pMem = SafeMoveableHGlobalHandle.CreateFromStringList(values, packing, charSet);
+			Win32Error.ThrowLastErrorIfInvalid(pMem);
+			DataObject.SetData(formatId, pMem);
 		}
 
 		/// <summary>Puts a list of shell items onto the clipboard.</summary>
 		/// <param name="shellItems">The sequence of shell items. The PIDL of each shell item must be absolute.</param>
-		public static void SetShellItems(IEnumerable<ShellItem> shellItems)
-		{
-			DataObject = (shellItems is ShellItemArray shia ? shia : new ShellItemArray(shellItems)).ToDataObject();
-		}
+		public static void SetShellItems(IEnumerable<ShellItem> shellItems) => DataObject = (shellItems is ShellItemArray shia ? shia : new ShellItemArray(shellItems)).ToDataObject();
 
 		/// <summary>Puts a list of shell items onto the clipboard.</summary>
 		/// <param name="parent">The parent folder instance.</param>
@@ -300,19 +284,32 @@ namespace Vanara.Windows.Shell
 		{
 			if (parent is null) throw new ArgumentNullException(nameof(parent));
 			if (relativeShellItems is null) throw new ArgumentNullException(nameof(relativeShellItems));
-			var pidls = relativeShellItems.Select(i => i.PIDL.DangerousGetHandle()).ToArray();
-			SHCreateDataObject(parent.PIDL, (uint)pidls.Length, pidls, default, typeof(IComDataObject).GUID, out var dataObj).ThrowIfFailed();
+			SHCreateDataObject(parent.PIDL, relativeShellItems.Select(i => i.PIDL), default, out var dataObj).ThrowIfFailed();
 			OleSetClipboard(dataObj).ThrowIfFailed();
-
-			//DataObject = dataObj = shellItems is ShellItemArray shia ? shia.ToDataObject() : new ShellItemArray(shellItems).ToDataObject();
-			//if (!setAllFormats) return;
-			//var files = shellItems.Where(i => i.IsFileSystem).Select(i => i.FileSystemPath).ToArray();
-			//if (files.Length == 0) return;
-			//dataObj.SetData(CLIPFORMAT.CF_HDROP, files);
-			//dataObj.SetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILENAMEA), files[0]);
-			//dataObj.SetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILENAMEW), files[0]);
-			//dataObj.SetData(RegisterFormat(ShellClipboardFormat.CFSTR_FILEDESCRIPTORA));
 		}
+
+		/// <summary>Sets multiple text types to the Clipboard.</summary>
+		/// <param name="text">The Unicode Text value.</param>
+		/// <param name="htmlText">The HTML text value. If <see langword="null"/>, this format will not be set.</param>
+		/// <param name="rtfText">The Rich Text Format value. If <see langword="null"/>, this format will not be set.</param>
+		public static void SetText(string text, string htmlText = null, string rtfText = null)
+		{
+			if (text is null && htmlText is null && rtfText is null) return;
+			SetText(text, TextDataFormat.UnicodeText);
+			if (htmlText != null) SetText(htmlText, TextDataFormat.Html);
+			if (rtfText != null) SetText(rtfText, TextDataFormat.Rtf);
+		}
+
+		/// <summary>Sets a specific text type to the Clipboard.</summary>
+		/// <param name="value">The text value.</param>
+		/// <param name="format">The clipboard text format to set.</param>
+		public static void SetText(string value, TextDataFormat format) => DataObject.SetData(Txt2Id(format), value);
+
+		/// <summary>Sets a URL with optional title to the clipboard.</summary>
+		/// <param name="url">The URL.</param>
+		/// <param name="title">The title. This value can be <see langword="null"/>.</param>
+		/// <exception cref="ArgumentNullException">url</exception>
+		public static void SetUrl(string url, string title = null) => DataObject.SetUrl(url, title);
 
 		/// <summary>Obtains data from a source data object.</summary>
 		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
@@ -325,168 +322,15 @@ namespace Vanara.Windows.Shell
 		/// <returns><see langword="true"/> if data is available and retrieved; otherwise <see langword="false"/>.</returns>
 		public static bool TryGetData<T>(uint formatId, out T obj, int index = -1) => DataObject.TryGetData(formatId, out obj, index);
 
-		/// <summary>
-		/// Retrieves data from the clipboard in a specified format. The clipboard must have been opened previously and this pointer cannot
-		/// be used once <see cref="NativeClipboard"/> goes out of scope.
-		/// </summary>
-		/// <param name="formatId">A clipboard format. For a description of the standard clipboard formats, see Standard Clipboard Formats.</param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is the handle to a clipboard object in the specified format.</para>
-		/// <para>If the function fails, the return value is <c>IntPtr.Zero</c>. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para><c>Caution</c> Clipboard data is not trusted. Parse the data carefully before using it in your application.</para>
-		/// <para>An application can enumerate the available formats in advance by using the EnumClipboardFormats function.</para>
-		/// <para>
-		/// The clipboard controls the handle that the <c>GetClipboardData</c> function returns, not the application. The application should
-		/// copy the data immediately. The application must not free the handle nor leave it locked. The application must not use the handle
-		/// after the <see cref="Empty"/> method is called, after <see cref="NativeClipboard"/> is disposed, or after any of the
-		/// <c>Set...</c> methods are called with the same clipboard format.
-		/// </para>
-		/// <para>
-		/// The system performs implicit data format conversions between certain clipboard formats when an application calls the
-		/// <c>GetClipboardData</c> function. For example, if the CF_OEMTEXT format is on the clipboard, a window can retrieve data in the
-		/// CF_TEXT format. The format on the clipboard is converted to the requested format on demand. For more information, see Synthesized
-		/// Clipboard Formats.
-		/// </para>
-		/// </remarks>
-		public SafeMoveableHGlobalHandle DanagerousGetData(uint formatId) => new(GetClipboardData(formatId), false);
-
-		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-		public void Dispose()
+		private static uint Txt2Id(TextDataFormat tf) => tf switch
 		{
-			if (dontClose) return;
-			CloseClipboard();
-			open = false;
-		}
-
-		/// <summary>
-		/// Empties the clipboard and frees handles to data in the clipboard. The function then assigns ownership of the clipboard to the
-		/// window that currently has the clipboard open.
-		/// </summary>
-		public void Empty() => Win32Error.ThrowLastErrorIfFalse(EmptyClipboard());
-
-		/// <summary>Enumerates the data formats currently available on the clipboard.</summary>
-		/// <returns>An enumeration of the data formats currently available on the clipboard.</returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>EnumFormats</c> function enumerates formats in the order that they were placed on the clipboard. If you are copying
-		/// information to the clipboard, add clipboard objects in order from the most descriptive clipboard format to the least descriptive
-		/// clipboard format. If you are pasting information from the clipboard, retrieve the first clipboard format that you can handle.
-		/// That will be the most descriptive clipboard format that you can handle.
-		/// </para>
-		/// <para>
-		/// The system provides automatic type conversions for certain clipboard formats. In the case of such a format, this function
-		/// enumerates the specified format, then enumerates the formats to which it can be converted.
-		/// </para>
-		/// </remarks>
-		public IEnumerable<uint> EnumAvailableFormats() => EnumClipboardFormats();
-
-		/// <summary>Gets the text from the native Clipboard in the specified format.</summary>
-		/// <param name="formatId">A clipboard format. For a description of the standard clipboard formats, see Standard Clipboard Formats.</param>
-		/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
-		public string GetText(TextDataFormat formatId) => formatId switch
-		{
-			TextDataFormat.Text => DanagerousGetData(CLIPFORMAT.CF_TEXT).CallLocked(Marshal.PtrToStringAnsi),
-			TextDataFormat.UnicodeText => DanagerousGetData(CLIPFORMAT.CF_UNICODETEXT).CallLocked(Marshal.PtrToStringUni),
-			TextDataFormat.Rtf => DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_RTF)).CallLocked(Marshal.PtrToStringAnsi),
-			TextDataFormat.Html => Utils.GetHtml(GetClipboardData(RegisterFormat(ShellClipboardFormat.CF_HTML))),
-			TextDataFormat.CommaSeparatedValue => DanagerousGetData(RegisterFormat(ShellClipboardFormat.CF_CSV)).CallLocked(Marshal.PtrToStringAnsi),
-			_ => throw new ArgumentOutOfRangeException(nameof(formatId)),
+			TextDataFormat.Text => CLIPFORMAT.CF_TEXT,
+			TextDataFormat.UnicodeText => CLIPFORMAT.CF_UNICODETEXT,
+			TextDataFormat.Rtf => ShellClipboardFormat.Register(ShellClipboardFormat.CF_RTF),
+			TextDataFormat.Html => ShellClipboardFormat.Register(ShellClipboardFormat.CF_HTML),
+			TextDataFormat.CommaSeparatedValue => ShellClipboardFormat.Register(ShellClipboardFormat.CF_CSV),
+			_ => throw new ArgumentOutOfRangeException(nameof(tf)),
 		};
-
-		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
-		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
-		/// <param name="data">The binary data in the specified format.</param>
-		/// <exception cref="System.ArgumentNullException">data</exception>
-		public void SetBinaryData(uint formatId, byte[] data)
-		{
-			SafeMoveableHGlobalHandle pMem = new(data);
-			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.TakeOwnership()));
-		}
-
-		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
-		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
-		/// <param name="data">The data in the format dictated by <paramref name="formatId"/>.</param>
-		public void SetData<T>(uint formatId, T data)
-		{
-			var pMem = SafeMoveableHGlobalHandle.CreateFromStructure(data);
-			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.TakeOwnership()));
-		}
-
-		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
-		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
-		/// <param name="values">The data in the format dictated by <paramref name="formatId"/>.</param>
-		public void SetData<T>(uint formatId, IEnumerable<T> values) where T : struct
-		{
-			var pMem = SafeMoveableHGlobalHandle.CreateFromList(values);
-			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.TakeOwnership()));
-		}
-
-		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
-		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
-		/// <param name="values">The list of strings.</param>
-		/// <param name="packing">The packing type for the strings.</param>
-		/// <param name="charSet">The character set to use for the strings.</param>
-		public void SetData(uint formatId, IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto)
-		{
-			var pMem = SafeMoveableHGlobalHandle.CreateFromStringList(values, packing, charSet);
-			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			Win32Error.ThrowLastErrorIfNull(SetClipboardData(formatId, pMem.TakeOwnership()));
-		}
-
-		/// <summary>Sets multiple text types to the Clipboard.</summary>
-		/// <param name="text">The Unicode Text value.</param>
-		/// <param name="htmlText">The HTML text value. If <see langword="null"/>, this format will not be set.</param>
-		/// <param name="rtfText">The Rich Text Format value. If <see langword="null"/>, this format will not be set.</param>
-		public void SetText(string text, string htmlText = null, string rtfText = null)
-		{
-			if (text is null && htmlText is null && rtfText is null) return;
-			SetText(text, TextDataFormat.UnicodeText);
-			if (htmlText != null) SetText(htmlText, TextDataFormat.Html);
-			if (rtfText != null) SetText(rtfText, TextDataFormat.Rtf);
-		}
-
-		/// <summary>Sets a specific text type to the Clipboard.</summary>
-		/// <param name="value">The text value.</param>
-		/// <param name="format">The clipboard text format to set.</param>
-		public void SetText(string value, TextDataFormat format)
-		{
-			(byte[] bytes, uint fmt) = format switch
-			{
-				TextDataFormat.Text => (UnicodeToAnsiBytes(value), (uint)CLIPFORMAT.CF_TEXT),
-				TextDataFormat.UnicodeText => (Encoding.Unicode.GetBytes(value + '\0'), (uint)CLIPFORMAT.CF_UNICODETEXT),
-				TextDataFormat.Rtf => (Encoding.ASCII.GetBytes(value + '\0'), RegisterFormat(ShellClipboardFormat.CF_RTF)),
-				TextDataFormat.Html => (FormatHtmlForClipboard(value), RegisterFormat(ShellClipboardFormat.CF_HTML)),
-				TextDataFormat.CommaSeparatedValue => (Encoding.ASCII.GetBytes(value + '\0'), RegisterFormat(ShellClipboardFormat.CF_CSV)),
-				_ => throw new ArgumentOutOfRangeException(nameof(format)),
-			};
-			SetBinaryData(fmt, bytes);
-		}
-
-		/// <summary>Sets a URL with optional title to the clipboard.</summary>
-		/// <param name="url">The URL.</param>
-		/// <param name="title">The title. This value can be <see langword="null"/>.</param>
-		/// <exception cref="ArgumentNullException">url</exception>
-		public void SetUrl(string url, string title = null)
-		{
-			if (url is null) throw new ArgumentNullException(nameof(url));
-			SetText(url, $"<a href=\"{System.Net.WebUtility.UrlEncode(url)}\">{System.Net.WebUtility.HtmlEncode(title ?? url)}</a>", null);
-			var textUrl = System.Net.WebUtility.UrlEncode(url + (title is null ? "" : ('\n' + title))) + '\0';
-			SetBinaryData(RegisterFormat(ShellClipboardFormat.CFSTR_INETURLA), Encoding.ASCII.GetBytes(textUrl));
-			SetBinaryData(RegisterFormat(ShellClipboardFormat.CFSTR_INETURLW), Encoding.Unicode.GetBytes(textUrl));
-		}
-
-		private static void EnsureKnownIds()
-		{
-			if (knownIds is not null)
-				return;
-			var type = typeof(CLIPFORMAT);
-			knownIds = type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(f => f.FieldType == type && f.IsInitOnly).ToDictionary(f => (uint)(CLIPFORMAT)f.GetValue(null), f => f.Name);
-		}
 
 		private class ListenerWindow : SystemEventHandler
 		{

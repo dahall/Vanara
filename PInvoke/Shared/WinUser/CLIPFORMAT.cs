@@ -144,7 +144,7 @@ namespace Vanara.PInvoke
 		public static implicit operator int(CLIPFORMAT value) => value._value;
 
 		/// <summary>A handle to a bitmap (HBITMAP).</summary>
-		[ClipCorrespondingType(typeof(HBITMAP))]
+		[ClipCorrespondingType(typeof(HBITMAP), TYMED.TYMED_GDI)]
 		public static readonly CLIPFORMAT CF_BITMAP = 2;
 
 		/// <summary>A memory object containing a BITMAPINFO structure followed by the bitmap bits.</summary>
@@ -205,6 +205,7 @@ namespace Vanara.PInvoke
 		/// A handle to type HDROP that identifies a list of files. An application can retrieve information about the files by passing the
 		/// handle to the DragQueryFile function.
 		/// </summary>
+		[ClipCorrespondingType(typeof(string[]))]
 		public static readonly CLIPFORMAT CF_HDROP = 15;
 
 		/// <summary>
@@ -238,7 +239,7 @@ namespace Vanara.PInvoke
 		/// Text format containing characters in the OEM character set. Each line ends with a carriage return/linefeed (CR-LF) combination. A
 		/// null character signals the end of the data.
 		/// </summary>
-		[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(System.Text.ASCIIEncoding))]
+		[ClipCorrespondingType(typeof(string), EncodingType = typeof(System.Text.ASCIIEncoding))]
 		public static readonly CLIPFORMAT CF_OEMTEXT = 7;
 
 		/// <summary>
@@ -288,7 +289,7 @@ namespace Vanara.PInvoke
 		/// Text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the data.
 		/// Use this format for ANSI text.
 		/// </summary>
-		[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(System.Text.ASCIIEncoding))]
+		[ClipCorrespondingType(typeof(string), EncodingType = typeof(System.Text.UTF8Encoding))]
 		public static readonly CLIPFORMAT CF_TEXT = 1;
 
 		/// <summary>Tagged-image file format.</summary>
@@ -297,7 +298,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Unicode text format. Each line ends with a carriage return/linefeed (CR-LF) combination. A null character signals the end of the data.
 		/// </summary>
-		[ClipCorrespondingType(typeof(string), TYMED.TYMED_HGLOBAL, EncodingType = typeof(System.Text.UnicodeEncoding))]
+		[ClipCorrespondingType(typeof(string), EncodingType = typeof(System.Text.UnicodeEncoding))]
 		public static readonly CLIPFORMAT CF_UNICODETEXT = 13;
 
 		/// <summary>Represents audio data in one of the standard wave formats, such as 11 kHz or 22 kHz PCM.</summary>
@@ -312,10 +313,7 @@ namespace Vanara.PInvoke
 		/// <summary>Initializes a new instance of the <see cref="ClipCorrespondingTypeAttribute"/> class.</summary>
 		/// <param name="typeRef">The type that corresponds to this entity.</param>
 		/// <param name="medium">The medium type used to store the payload.</param>
-		public ClipCorrespondingTypeAttribute(Type typeRef, TYMED medium = TYMED.TYMED_HGLOBAL) : base(typeRef)
-		{
-			Medium = medium;
-		}
+		public ClipCorrespondingTypeAttribute(Type typeRef, TYMED medium = TYMED.TYMED_HGLOBAL) : base(typeRef) => Medium = medium;
 
 		/// <summary>Gets the medium type used to store the payload.</summary>
 		/// <value>The medium type.</value>
