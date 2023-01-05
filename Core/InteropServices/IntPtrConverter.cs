@@ -147,7 +147,9 @@ namespace Vanara.InteropServices
 		public static T ToType<T>(this SafeAllocatedMemoryHandle hMem, CharSet charSet = CharSet.Auto)
 		{
 			if (hMem == null) throw new ArgumentNullException(nameof(hMem));
-			return Convert<T>(hMem.DangerousGetHandle(), hMem.Size, charSet);
+			hMem.Lock();
+			try { return Convert<T>(hMem.DangerousGetHandle(), hMem.Size, charSet); }
+			finally { hMem.Unlock(); }
 		}
 	}
 }
