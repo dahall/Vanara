@@ -292,18 +292,17 @@ namespace Vanara.PInvoke
 				}
 
 				CharSet charSet = GetCharSet(attr);
-				switch (attr.TypeRef)
+				return attr.TypeRef switch
 				{
 					// Handle strings
-					case Type t when t == typeof(string):
-						return GetEncoding(attr).GetString(hmem.GetBytes()).TrimEnd('\0');
+					Type t when t == typeof(string) => GetEncoding(attr).GetString(hmem.GetBytes()).TrimEnd('\0'),
 					// Handle string[]
-					case Type t when t == typeof(string[]):
-						return hmem.ToStringEnum(charSet).ToArray();
+					Type t when t == typeof(string[]) => hmem.ToStringEnum(charSet).ToArray(),
+					// Handle IStream on memory
+					Type t when t == typeof(IStream) => hmem.CallLocked(p => ShlwApi.SHCreateMemStream(p, hmem.Size)),
 					// Handle other types
-					default:
-						return hmem.CallLocked(p => p.Convert(hmem.Size, attr.TypeRef, charSet));
-				}
+					_ => hmem.CallLocked(p => p.Convert(hmem.Size, attr.TypeRef, charSet)),
+				};
 			}
 			finally
 			{
@@ -1308,7 +1307,7 @@ namespace Vanara.PInvoke
 			/// target then uses the returned interface pointer or global memory handle to extract the data.
 			/// </para>
 			/// </summary>
-			[ClipCorrespondingType(typeof(IStream[]), TYMED.TYMED_ISTREAM)]
+			[ClipCorrespondingType(typeof(IStream), TYMED.TYMED_ISTREAM)]
 			public const string CFSTR_FILECONTENTS = "FileContents";
 
 			/// <summary>
