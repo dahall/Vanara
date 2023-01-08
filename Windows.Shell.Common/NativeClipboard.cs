@@ -89,7 +89,11 @@ namespace Vanara.Windows.Shell
 				OleGetClipboard(out var idata).ThrowIfFailed();
 				return idata;
 			}
-			set => OleSetClipboard(value).ThrowIfFailed();
+			set
+			{
+				OleSetClipboard(value).ThrowIfFailed();
+				Flush();
+			}
 		}
 
 		/// <summary>Retrieves the clipboard sequence number for the current window station.</summary>
@@ -104,6 +108,9 @@ namespace Vanara.Windows.Shell
 		/// changes are rendered.
 		/// </remarks>
 		public static uint SequenceNumber => GetClipboardSequenceNumber();
+
+		/// <summary>Clears the clipboard of any data or formatting.</summary>
+		public static void Clear() => DataObject = null;
 
 		/// <summary>Enumerates the data formats currently available on the clipboard.</summary>
 		/// <returns>An enumeration of the data formats currently available on the clipboard.</returns>
