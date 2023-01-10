@@ -75,7 +75,7 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void GetSetShellItems2()
 		{
-			Clipboard.DataObject = null;
+			Clipboard.Clear();
 			ShellItem[] items = Array.ConvertAll(files, f => new ShellItem(f));
 			Clipboard.SetShellItems(items);
 			var shArray = Clipboard.GetShellItemArray();

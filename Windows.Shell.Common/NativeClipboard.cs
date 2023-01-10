@@ -40,8 +40,10 @@ namespace Vanara.Windows.Shell
 	/// <seealso cref="System.IDisposable"/>
 	public static class NativeClipboard
 	{
+		private const int stdRetryCnt = 5;
 		private static readonly object objectLock = new();
 		private static ListenerWindow listener;
+		private static IComDataObject writableDataObj;
 
 		/// <summary>Occurs when whenever the contents of the Clipboard have changed.</summary>
 		public static event EventHandler ClipboardUpdate
@@ -80,18 +82,61 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
+		static bool TryMultThenThrowIfFailed(Func<HRESULT> func, int n = stdRetryCnt)
+		{
+			HRESULT hr = HRESULT.S_OK;
+			for (int i = 1; i <= n; i++)
+			{
+				hr = func();
+				if (hr.Failed && i == n)
+					throw hr.GetException();
+			}
+			return hr == HRESULT.S_OK;
+		}
+
+		static bool TryMultThenThrowIfFailed(Func<IComDataObject, HRESULT> func, IComDataObject o, int n = stdRetryCnt)
+		{
+			HRESULT hr = HRESULT.S_OK;
+			for (int i = 1; i <= n; i++)
+			{
+				hr = func(o);
+				if (hr.Failed && i == n)
+					throw hr.GetException();
+			}
+			return hr == HRESULT.S_OK;
+		}
+
 		/// <summary>Gets or sets a <see cref="IComDataObject"/> instance from the Windows Clipboard.</summary>
 		/// <value>A <see cref="IComDataObject"/> instance.</value>
-		public static IComDataObject DataObject
+		static IComDataObject ReadOnlyDataObject
 		{
 			get
 			{
-				OleGetClipboard(out var idata).ThrowIfFailed();
-				return idata;
+				int n = stdRetryCnt;
+				HRESULT hr = HRESULT.S_OK;
+				for (int i = 1; i <= n; i++)
+				{
+					hr = OleGetClipboard(out var idata);
+					if (hr.Succeeded)
+						return idata;
+				}
+				throw hr.GetException();
+			}
+		}
+
+		/// <summary>Gets the writable data object.</summary>
+		/// <value>The writable data object.</value>
+		static IComDataObject WritableDataObj
+		{
+			get
+			{
+				if (writableDataObj is null)
+					SHCreateDataObject(ppv: out writableDataObj).ThrowIfFailed();
+				return writableDataObj;
 			}
 			set
 			{
-				OleSetClipboard(value).ThrowIfFailed();
+				TryMultThenThrowIfFailed(OleSetClipboard, value);
 				Flush();
 			}
 		}
@@ -110,7 +155,7 @@ namespace Vanara.Windows.Shell
 		public static uint SequenceNumber => GetClipboardSequenceNumber();
 
 		/// <summary>Clears the clipboard of any data or formatting.</summary>
-		public static void Clear() => DataObject = null;
+		public static void Clear() => WritableDataObj = null;
 
 		/// <summary>Enumerates the data formats currently available on the clipboard.</summary>
 		/// <returns>An enumeration of the data formats currently available on the clipboard.</returns>
@@ -126,10 +171,10 @@ namespace Vanara.Windows.Shell
 		/// enumerates the specified format, then enumerates the formats to which it can be converted.
 		/// </para>
 		/// </remarks>
-		public static IEnumerable<uint> EnumAvailableFormats() => DataObject.EnumFormats().Select(f => unchecked((uint)f.cfFormat));
+		public static IEnumerable<uint> EnumAvailableFormats() => ReadOnlyDataObject.EnumFormats().Select(f => unchecked((uint)f.cfFormat));
 
 		/// <summary>Carries out the clipboard shutdown sequence. It also releases any IDataObject instances that were placed on the clipboard.</summary>
-		public static void Flush() => OleFlushClipboard().ThrowIfFailed();
+		public static void Flush() { TryMultThenThrowIfFailed(OleFlushClipboard); writableDataObj = null; }
 
 		/// <summary>Retrieves the window handle of the current owner of the clipboard.</summary>
 		/// <returns>
@@ -158,7 +203,7 @@ namespace Vanara.Windows.Shell
 		/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
 		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
 		public static object GetData(uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
-			DataObject.GetData(formatId, aspect, index);
+			ReadOnlyDataObject.GetData(formatId, aspect, index);
 
 		/// <summary>Obtains data from the clipboard.</summary>
 		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
@@ -168,7 +213,7 @@ namespace Vanara.Windows.Shell
 		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
 		/// </param>
 		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
-		public static T GetData<T>(uint formatId, int index = -1) => DataObject.GetData<T>(formatId, index);
+		public static T GetData<T>(uint formatId, int index = -1) => ReadOnlyDataObject.GetData<T>(formatId, index);
 
 		/// <summary>
 		/// This is used when a group of files in CF_HDROP (FileDrop) format is being renamed as well as transferred. The data consists of an
@@ -179,9 +224,9 @@ namespace Vanara.Windows.Shell
 		public static string[] GetFileNameMap()
 		{
 			if (IsFormatAvailable(ShellClipboardFormat.CFSTR_FILENAMEMAPW))
-				return DataObject.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPW) as string[];
+				return ReadOnlyDataObject.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPW) as string[];
 			else if (IsFormatAvailable(ShellClipboardFormat.CFSTR_FILENAMEMAPA))
-				return DataObject.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPA) as string[];
+				return ReadOnlyDataObject.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPA) as string[];
 			return new string[0];
 		}
 
@@ -212,7 +257,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the shell item array associated with the data object, if possible.</summary>
 		/// <returns>The <see cref="ShellItemArray"/> associated with the data object, if set. Otherwise, <see langword="null"/>.</returns>
-		public static ShellItemArray GetShellItemArray() => IsFormatAvailable(ShellClipboardFormat.CFSTR_SHELLIDLIST) ? ShellItemArray.FromDataObject(DataObject) : null;
+		public static ShellItemArray GetShellItemArray() => IsFormatAvailable(ShellClipboardFormat.CFSTR_SHELLIDLIST) ? ShellItemArray.FromDataObject(ReadOnlyDataObject) : null;
 
 		/// <summary>Gets the text from the native Clipboard in the specified format.</summary>
 		/// <param name="formatId">A clipboard format. For a description of the standard clipboard formats, see Standard Clipboard Formats.</param>
@@ -229,7 +274,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Determines whether the clipboard contains data in the specified format.</summary>
 		/// <param name="id">A standard or registered clipboard format.</param>
 		/// <returns>If the clipboard format is available, the return value is <see langword="true"/>; otherwise <see langword="false"/>.</returns>
-		public static bool IsFormatAvailable(uint id) => DataObject.IsFormatAvailable(id); // EnumAvailableFormats().Contains(id);
+		public static bool IsFormatAvailable(uint id) => ReadOnlyDataObject.IsFormatAvailable(id); // EnumAvailableFormats().Contains(id);
 
 		/// <summary>Determines whether the clipboard contains data in the specified format.</summary>
 		/// <param name="id">A clipboard format string.</param>
@@ -251,12 +296,12 @@ namespace Vanara.Windows.Shell
 		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
 		/// <param name="data">The binary data in the specified format.</param>
 		/// <exception cref="System.ArgumentNullException">data</exception>
-		public static void SetBinaryData(uint formatId, byte[] data) => DataObject.SetData(formatId, data);
+		public static void SetBinaryData(uint formatId, byte[] data) => WritableDataObj.SetData(formatId, data);
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
 		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
 		/// <param name="data">The data in the format dictated by <paramref name="formatId"/>.</param>
-		public static void SetData<T>(uint formatId, T data) where T : struct => DataObject.SetData(formatId, data);
+		public static void SetData<T>(uint formatId, T data) where T : struct => WritableDataObj.SetData(formatId, data);
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
 		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
@@ -265,7 +310,7 @@ namespace Vanara.Windows.Shell
 		{
 			var pMem = SafeMoveableHGlobalHandle.CreateFromList(values);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			DataObject.SetData(formatId, pMem);
+			WritableDataObj.SetData(formatId, pMem);
 		}
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
@@ -277,12 +322,12 @@ namespace Vanara.Windows.Shell
 		{
 			var pMem = SafeMoveableHGlobalHandle.CreateFromStringList(values, packing, charSet);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			DataObject.SetData(formatId, pMem);
+			WritableDataObj.SetData(formatId, pMem);
 		}
 
 		/// <summary>Puts a list of shell items onto the clipboard.</summary>
 		/// <param name="shellItems">The sequence of shell items. The PIDL of each shell item must be absolute.</param>
-		public static void SetShellItems(IEnumerable<ShellItem> shellItems) => DataObject = (shellItems is ShellItemArray shia ? shia : new ShellItemArray(shellItems)).ToDataObject();
+		public static void SetShellItems(IEnumerable<ShellItem> shellItems) => WritableDataObj = (shellItems is ShellItemArray shia ? shia : new ShellItemArray(shellItems)).ToDataObject();
 
 		/// <summary>Puts a list of shell items onto the clipboard.</summary>
 		/// <param name="parent">The parent folder instance.</param>
@@ -309,13 +354,13 @@ namespace Vanara.Windows.Shell
 		/// <summary>Sets a specific text type to the Clipboard.</summary>
 		/// <param name="value">The text value.</param>
 		/// <param name="format">The clipboard text format to set.</param>
-		public static void SetText(string value, TextDataFormat format) => DataObject.SetData(Txt2Id(format), value);
+		public static void SetText(string value, TextDataFormat format) => WritableDataObj.SetData(Txt2Id(format), value);
 
 		/// <summary>Sets a URL with optional title to the clipboard.</summary>
 		/// <param name="url">The URL.</param>
 		/// <param name="title">The title. This value can be <see langword="null"/>.</param>
 		/// <exception cref="ArgumentNullException">url</exception>
-		public static void SetUrl(string url, string title = null) => DataObject.SetUrl(url, title);
+		public static void SetUrl(string url, string title = null) => WritableDataObj.SetUrl(url, title);
 
 		/// <summary>Obtains data from a source data object.</summary>
 		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
@@ -326,7 +371,7 @@ namespace Vanara.Windows.Shell
 		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
 		/// </param>
 		/// <returns><see langword="true"/> if data is available and retrieved; otherwise <see langword="false"/>.</returns>
-		public static bool TryGetData<T>(uint formatId, out T obj, int index = -1) => DataObject.TryGetData(formatId, out obj, index);
+		public static bool TryGetData<T>(uint formatId, out T obj, int index = -1) => ReadOnlyDataObject.TryGetData(formatId, out obj, index);
 
 		private static uint Txt2Id(TextDataFormat tf) => tf switch
 		{
