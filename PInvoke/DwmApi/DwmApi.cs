@@ -205,6 +205,20 @@ namespace Vanara.PInvoke
 			DWMTRANSITION_OWNEDWINDOW_REPOSITION = 0,
 		}
 
+        /// <summary>Flags used by the DwmSetWindowAttribute function to specify the rounded corner preference for a window.</summary>
+        [PInvokeData("dwmapi.h")]
+		public enum DWM_WINDOW_CORNER_PREFERENCE
+		{
+            /// <summary>Let the system decide when to round window corners.</summary>
+            DWMWCP_DEFAULT = 0,
+            /// <summary>Never round window corners.</summary>
+            DWMWCP_DONOTROUND = 1,
+            /// <summary>Round the corners, if appropriate.</summary>
+            DWMWCP_ROUND = 2,
+            /// <summary>Round the corners if appropriate, with a small radius.</summary>
+            DWMWCP_ROUNDSMALL = 3
+		}
+
 		/// <summary>
 		/// Flags used by the DwmGetWindowAttribute and DwmSetWindowAttribute functions to specify window attributes for non-client rendering.
 		/// </summary>
@@ -349,7 +363,61 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
 			DWMWA_FREEZE_REPRESENTATION,
-		}
+            /// <summary>
+            /// Use with DwmSetWindowAttribute. Enables a non-UWP window to use host backdrop brushes. If this flag is set, then a Win32 app 
+			/// that calls Windows::UI::Composition APIs can build transparency effects using the host backdrop brush 
+			/// (see Compositor.CreateHostBackdropBrush). The pvAttribute parameter points to a value of type BOOL. TRUE to enable host 
+			/// backdrop brushes for the window, or FALSE to disable it.
+			///<para><c>Windows 10 and earlier:</c> This value is not supported.</para>
+			 /// </summary>
+			[CorrespondingType(typeof(bool), CorrespondingAction.Set)]
+            DWMWA_USE_HOSTBACKDROPBRUSH,
+            /// <summary>
+            /// Use with DwmSetWindowAttribute. Allows the window frame for this window to be drawn in dark mode colors when the dark mode 
+			/// system setting is enabled. For compatibility reasons, all windows default to light mode regardless of the system setting. 
+			/// The pvAttribute parameter points to a value of type BOOL. TRUE to honor dark mode for the window, FALSE to always 
+			/// use light mode.
+			/// <para><c>Windows 10 and earlier:</c> This value is not supported.</para>
+            /// </summary>
+            [CorrespondingType(typeof(bool), CorrespondingAction.Set)]
+            DWMWA_USE_IMMERSIVE_DARK_MODE = 20,
+            /// <summary>
+            /// Use with DwmSetWindowAttribute. Specifies the rounded corner preference for a window. The pvAttribute parameter points 
+			/// to a value of type DWM_WINDOW_CORNER_PREFERENCE.
+			/// <para><c>Windows 10 and earlier:</c> This value is not supported.</para>
+            /// </summary>
+            [CorrespondingType(typeof(DWM_WINDOW_CORNER_PREFERENCE), CorrespondingAction.Set)]
+            DWMWA_WINDOW_CORNER_PREFERENCE = 33,
+            /// <summary>
+            /// Use with DwmSetWindowAttribute. Specifies the color of the window border. The pvAttribute parameter points to a value 
+			/// of type COLORREF. The app is responsible for changing the border color according to state changes, such as a change 
+			/// in window activation.
+			/// <para><c>Windows 10 and earlier:</c> This value is not supported.</para>
+            /// </summary>
+            [CorrespondingType(typeof(COLORREF), CorrespondingAction.Set)]
+            DWMWA_BORDER_COLOR,
+            /// <summary>
+            /// Use with DwmSetWindowAttribute. Specifies the color of the caption. The pvAttribute parameter points to a value 
+			/// of type COLORREF.
+			/// <para><c>Windows 10 and earlier:</c> This value is not supported.</para>
+            /// </summary>
+            [CorrespondingType(typeof(COLORREF), CorrespondingAction.Set)]
+            DWMWA_CAPTION_COLOR,
+            /// <summary>
+            /// Use with DwmSetWindowAttribute. Specifies the color of the caption text. The pvAttribute parameter points to a value 
+			/// of type COLORREF.
+			/// <para><c>Windows 10 and earlier:</c> This value is not supported.</para>
+            /// </summary>
+            [CorrespondingType(typeof(COLORREF), CorrespondingAction.Set)]
+            DWMWA_TEXT_COLOR,
+            /// <summary>
+            /// Use with DwmGetWindowAttribute. Retrieves the width of the outer border that the DWM would draw around this window. 
+			/// The value can vary depending on the DPI of the window. The pvAttribute parameter points to a value of type UINT.
+			/// <para><c>Windows 10 and earlier:</c> This value is not supported.</para>
+            /// </summary>
+            [CorrespondingType(typeof(uint), CorrespondingAction.Set)]
+            DWMWA_VISIBLE_FRAME_BORDER_THICKNESS
+        }
 
 		/// <summary>Identifies the gesture type specified in DwmRenderGesture.</summary>
 		[PInvokeData("dwmapi.h")]
