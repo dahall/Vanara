@@ -43,6 +43,8 @@ namespace Vanara.Windows.Shell
 		private const int stdRetryCnt = 5;
 		private static readonly object objectLock = new();
 		private static ListenerWindow listener;
+		[ThreadStatic]
+		private static bool oleInit = false;
 		private static IComDataObject writableDataObj;
 
 		/// <summary>Occurs when whenever the contents of the Clipboard have changed.</summary>
@@ -82,29 +84,18 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		static bool TryMultThenThrowIfFailed(Func<HRESULT> func, int n = stdRetryCnt)
-		{
-			HRESULT hr = HRESULT.S_OK;
-			for (int i = 1; i <= n; i++)
-			{
-				hr = func();
-				if (hr.Failed && i == n)
-					throw hr.GetException();
-			}
-			return hr == HRESULT.S_OK;
-		}
-
-		static bool TryMultThenThrowIfFailed(Func<IComDataObject, HRESULT> func, IComDataObject o, int n = stdRetryCnt)
-		{
-			HRESULT hr = HRESULT.S_OK;
-			for (int i = 1; i <= n; i++)
-			{
-				hr = func(o);
-				if (hr.Failed && i == n)
-					throw hr.GetException();
-			}
-			return hr == HRESULT.S_OK;
-		}
+		/// <summary>Retrieves the clipboard sequence number for the current window station.</summary>
+		/// <returns>
+		/// The clipboard sequence number. If you do not have <c>WINSTA_ACCESSCLIPBOARD</c> access to the window station, the function
+		/// returns zero.
+		/// </returns>
+		/// <remarks>
+		/// The system keeps a serial number for the clipboard for each window station. This number is incremented whenever the contents of
+		/// the clipboard change or the clipboard is emptied. You can track this value to determine whether the clipboard contents have
+		/// changed and optimize creating DataObjects. If clipboard rendering is delayed, the sequence number is not incremented until the
+		/// changes are rendered.
+		/// </remarks>
+		public static uint SequenceNumber => GetClipboardSequenceNumber();
 
 		/// <summary>Gets or sets a <see cref="IComDataObject"/> instance from the Windows Clipboard.</summary>
 		/// <value>A <see cref="IComDataObject"/> instance.</value>
@@ -112,6 +103,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
+				Init();
 				int n = stdRetryCnt;
 				HRESULT hr = HRESULT.S_OK;
 				for (int i = 1; i <= n; i++)
@@ -136,23 +128,11 @@ namespace Vanara.Windows.Shell
 			}
 			set
 			{
+				Init();
 				TryMultThenThrowIfFailed(OleSetClipboard, value);
 				Flush();
 			}
 		}
-
-		/// <summary>Retrieves the clipboard sequence number for the current window station.</summary>
-		/// <returns>
-		/// The clipboard sequence number. If you do not have <c>WINSTA_ACCESSCLIPBOARD</c> access to the window station, the function
-		/// returns zero.
-		/// </returns>
-		/// <remarks>
-		/// The system keeps a serial number for the clipboard for each window station. This number is incremented whenever the contents of
-		/// the clipboard change or the clipboard is emptied. You can track this value to determine whether the clipboard contents have
-		/// changed and optimize creating DataObjects. If clipboard rendering is delayed, the sequence number is not incremented until the
-		/// changes are rendered.
-		/// </remarks>
-		public static uint SequenceNumber => GetClipboardSequenceNumber();
 
 		/// <summary>Clears the clipboard of any data or formatting.</summary>
 		public static void Clear() => WritableDataObj = null;
@@ -174,7 +154,7 @@ namespace Vanara.Windows.Shell
 		public static IEnumerable<uint> EnumAvailableFormats() => ReadOnlyDataObject.EnumFormats().Select(f => unchecked((uint)f.cfFormat));
 
 		/// <summary>Carries out the clipboard shutdown sequence. It also releases any IDataObject instances that were placed on the clipboard.</summary>
-		public static void Flush() { TryMultThenThrowIfFailed(OleFlushClipboard); writableDataObj = null; }
+		public static void Flush() { Init(); TryMultThenThrowIfFailed(OleFlushClipboard); writableDataObj = null; }
 
 		/// <summary>Retrieves the window handle of the current owner of the clipboard.</summary>
 		/// <returns>
@@ -274,13 +254,14 @@ namespace Vanara.Windows.Shell
 		/// <summary>Determines whether the clipboard contains data in the specified format.</summary>
 		/// <param name="id">A standard or registered clipboard format.</param>
 		/// <returns>If the clipboard format is available, the return value is <see langword="true"/>; otherwise <see langword="false"/>.</returns>
-		public static bool IsFormatAvailable(uint id) => ReadOnlyDataObject.IsFormatAvailable(id); // EnumAvailableFormats().Contains(id);
+		public static bool IsFormatAvailable(uint id) => ReadOnlyDataObject.IsFormatAvailable(id);
 
 		/// <summary>Determines whether the clipboard contains data in the specified format.</summary>
 		/// <param name="id">A clipboard format string.</param>
 		/// <returns>If the clipboard format is available, the return value is <see langword="true"/>; otherwise <see langword="false"/>.</returns>
 		public static bool IsFormatAvailable(string id) => IsClipboardFormatAvailable(RegisterFormat(id));
 
+		// EnumAvailableFormats().Contains(id);
 		/// <summary>Registers a new clipboard format. This format can then be used as a valid clipboard format.</summary>
 		/// <param name="format">The name of the new format.</param>
 		/// <returns>The registered clipboard format identifier.</returns>
@@ -296,12 +277,12 @@ namespace Vanara.Windows.Shell
 		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
 		/// <param name="data">The binary data in the specified format.</param>
 		/// <exception cref="System.ArgumentNullException">data</exception>
-		public static void SetBinaryData(uint formatId, byte[] data) => WritableDataObj.SetData(formatId, data);
+		public static void SetBinaryData(uint formatId, byte[] data) => Setter(i => i.SetData(formatId, data));
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
 		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
 		/// <param name="data">The data in the format dictated by <paramref name="formatId"/>.</param>
-		public static void SetData<T>(uint formatId, T data) where T : struct => WritableDataObj.SetData(formatId, data);
+		public static void SetData<T>(uint formatId, T data) where T : struct => Setter(i => i.SetData(formatId, data));
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
 		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
@@ -310,7 +291,7 @@ namespace Vanara.Windows.Shell
 		{
 			var pMem = SafeMoveableHGlobalHandle.CreateFromList(values);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			WritableDataObj.SetData(formatId, pMem);
+			Setter(i => i.SetData(formatId, pMem));
 		}
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
@@ -322,7 +303,7 @@ namespace Vanara.Windows.Shell
 		{
 			var pMem = SafeMoveableHGlobalHandle.CreateFromStringList(values, packing, charSet);
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
-			WritableDataObj.SetData(formatId, pMem);
+			Setter(i => i.SetData(formatId, pMem));
 		}
 
 		/// <summary>Puts a list of shell items onto the clipboard.</summary>
@@ -337,7 +318,7 @@ namespace Vanara.Windows.Shell
 			if (parent is null) throw new ArgumentNullException(nameof(parent));
 			if (relativeShellItems is null) throw new ArgumentNullException(nameof(relativeShellItems));
 			SHCreateDataObject(parent.PIDL, relativeShellItems.Select(i => i.PIDL), default, out var dataObj).ThrowIfFailed();
-			OleSetClipboard(dataObj).ThrowIfFailed();
+			WritableDataObj = dataObj;
 		}
 
 		/// <summary>Sets multiple text types to the Clipboard.</summary>
@@ -354,13 +335,13 @@ namespace Vanara.Windows.Shell
 		/// <summary>Sets a specific text type to the Clipboard.</summary>
 		/// <param name="value">The text value.</param>
 		/// <param name="format">The clipboard text format to set.</param>
-		public static void SetText(string value, TextDataFormat format) => WritableDataObj.SetData(Txt2Id(format), value);
+		public static void SetText(string value, TextDataFormat format) => Setter(i => i.SetData(Txt2Id(format), value));
 
 		/// <summary>Sets a URL with optional title to the clipboard.</summary>
 		/// <param name="url">The URL.</param>
 		/// <param name="title">The title. This value can be <see langword="null"/>.</param>
 		/// <exception cref="ArgumentNullException">url</exception>
-		public static void SetUrl(string url, string title = null) => WritableDataObj.SetUrl(url, title);
+		public static void SetUrl(string url, string title = null) => Setter(i => i.SetUrl(url, title));
 
 		/// <summary>Obtains data from a source data object.</summary>
 		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
@@ -373,6 +354,39 @@ namespace Vanara.Windows.Shell
 		/// <returns><see langword="true"/> if data is available and retrieved; otherwise <see langword="false"/>.</returns>
 		public static bool TryGetData<T>(uint formatId, out T obj, int index = -1) => ReadOnlyDataObject.TryGetData(formatId, out obj, index);
 
+		private static void Init() { if (!oleInit) { oleInit = OleInitialize().Succeeded; } }
+
+		private static void Setter(Action<IComDataObject> action)
+		{
+			var ido = WritableDataObj;
+			action(ido);
+			WritableDataObj = ido;
+		}
+
+		private static bool TryMultThenThrowIfFailed(Func<HRESULT> func, int n = stdRetryCnt)
+		{
+			HRESULT hr = HRESULT.S_OK;
+			for (int i = 1; i <= n; i++)
+			{
+				hr = func();
+				if (hr.Failed && i == n)
+					throw hr.GetException();
+			}
+			return hr == HRESULT.S_OK;
+		}
+
+		private static bool TryMultThenThrowIfFailed(Func<IComDataObject, HRESULT> func, IComDataObject o, int n = stdRetryCnt)
+		{
+			HRESULT hr = HRESULT.S_OK;
+			for (int i = 1; i <= n; i++)
+			{
+				hr = func(o);
+				if (hr.Failed && i == n)
+					throw hr.GetException();
+			}
+			return hr == HRESULT.S_OK;
+		}
+		
 		private static uint Txt2Id(TextDataFormat tf) => tf switch
 		{
 			TextDataFormat.Text => CLIPFORMAT.CF_TEXT,
