@@ -282,7 +282,44 @@ namespace Vanara.Windows.Shell
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
 		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
 		/// <param name="data">The data in the format dictated by <paramref name="formatId"/>.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <param name="aspect">
+		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration values.
+		/// A single clipboard format can support multiple aspects or views of the object. Most data and presentation transfer and caching
+		/// methods pass aspect information. For example, a caller might request an object's iconic picture, using the metafile clipboard
+		/// format to retrieve it. Note that only one DVASPECT value can be used in dwAspect. That is, dwAspect cannot be the result of a
+		/// Boolean OR operation on several DVASPECT values.
+		/// </param>
+		public static void SetData(uint formatId, object data, int index = -1, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT) => Setter(i => i.SetData(formatId, data, aspect, index));
+
+		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
+		/// <param name="format">The clipboard format.</param>
+		/// <param name="data">The data in the format dictated by <paramref name="format"/>.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <param name="aspect">
+		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration values.
+		/// A single clipboard format can support multiple aspects or views of the object. Most data and presentation transfer and caching
+		/// methods pass aspect information. For example, a caller might request an object's iconic picture, using the metafile clipboard
+		/// format to retrieve it. Note that only one DVASPECT value can be used in dwAspect. That is, dwAspect cannot be the result of a
+		/// Boolean OR operation on several DVASPECT values.
+		/// </param>
+		public static void SetData(string format, object data, int index = -1, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT) => SetData(RegisterFormat(format), data, index, aspect);
+
+		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
+		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
+		/// <param name="data">The data in the format dictated by <paramref name="formatId"/>.</param>
 		public static void SetData<T>(uint formatId, T data) where T : struct => Setter(i => i.SetData(formatId, data));
+
+		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
+		/// <param name="format">The clipboard format.</param>
+		/// <param name="data">The data in the format dictated by <paramref name="format"/>.</param>
+		public static void SetData<T>(string format, T data) where T : struct => SetData(RegisterFormat(format), data);
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
 		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
@@ -295,6 +332,11 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
+		/// <param name="format">The clipboard format.</param>
+		/// <param name="values">The data in the format dictated by <paramref name="format"/>.</param>
+		public static void SetData<T>(string format, IEnumerable<T> values) where T : struct => SetData(RegisterFormat(format), values);
+
+		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
 		/// <param name="formatId">The clipboard format. This parameter can be a registered format or any of the standard clipboard formats.</param>
 		/// <param name="values">The list of strings.</param>
 		/// <param name="packing">The packing type for the strings.</param>
@@ -305,6 +347,14 @@ namespace Vanara.Windows.Shell
 			Win32Error.ThrowLastErrorIfInvalid(pMem);
 			Setter(i => i.SetData(formatId, pMem));
 		}
+
+		/// <summary>Places data on the clipboard in a specified clipboard format.</summary>
+		/// <param name="format">The clipboard format.</param>
+		/// <param name="values">The data in the format dictated by <paramref name="format"/>.</param>
+		/// <param name="packing">The packing type for the strings.</param>
+		/// <param name="charSet">The character set to use for the strings.</param>
+		public static void SetData(string format, IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto) =>
+			SetData(RegisterFormat(format), values, packing, charSet);
 
 		/// <summary>Puts a list of shell items onto the clipboard.</summary>
 		/// <param name="shellItems">The sequence of shell items. The PIDL of each shell item must be absolute.</param>
