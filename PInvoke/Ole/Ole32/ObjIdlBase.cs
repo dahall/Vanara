@@ -2267,7 +2267,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-istream-seek HRESULT Seek( LARGE_INTEGER dlibMove, DWORD
 			// dwOrigin, ULARGE_INTEGER *plibNewPosition );
 			[PreserveSig]
-			new HRESULT Seek(long dlibMove, STREAM_SEEK dwOrigin, IntPtr plibNewPosition);
+			new HRESULT Seek(long dlibMove, STREAM_SEEK dwOrigin, out ulong plibNewPosition);
 
 			/// <summary>The <c>SetSize</c> method changes the size of the stream object.</summary>
 			/// <param name="libNewSize">Specifies the new size, in bytes, of the stream.</param>
@@ -2326,7 +2326,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-istream-copyto HRESULT CopyTo( IStream *pstm,
 			// ULARGE_INTEGER cb, ULARGE_INTEGER *pcbRead, ULARGE_INTEGER *pcbWritten );
 			[PreserveSig]
-			new HRESULT CopyTo(IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten);
+			new HRESULT CopyTo(IStream pstm, long cb, out ulong pcbRead, out ulong pcbWritten);
 
 			/// <summary>
 			/// The <c>Commit</c> method ensures that any changes made to a stream object open in transacted mode are reflected in the
@@ -3371,7 +3371,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-istream-seek HRESULT Seek( LARGE_INTEGER dlibMove, DWORD
 			// dwOrigin, ULARGE_INTEGER *plibNewPosition );
 			[PreserveSig]
-			HRESULT Seek(long dlibMove, STREAM_SEEK dwOrigin, IntPtr plibNewPosition);
+			HRESULT Seek(long dlibMove, STREAM_SEEK dwOrigin, out ulong plibNewPosition);
 
 			/// <summary>The <c>SetSize</c> method changes the size of the stream object.</summary>
 			/// <param name="libNewSize">Specifies the new size, in bytes, of the stream.</param>
@@ -3430,7 +3430,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-istream-copyto HRESULT CopyTo( IStream *pstm,
 			// ULARGE_INTEGER cb, ULARGE_INTEGER *pcbRead, ULARGE_INTEGER *pcbWritten );
 			[PreserveSig]
-			HRESULT CopyTo(IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten);
+			HRESULT CopyTo(IStream pstm, long cb, out ulong pcbRead, out ulong pcbWritten);
 
 			/// <summary>
 			/// The <c>Commit</c> method ensures that any changes made to a stream object open in transacted mode are reflected in the
