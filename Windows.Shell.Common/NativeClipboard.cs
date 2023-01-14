@@ -41,6 +41,7 @@ namespace Vanara.Windows.Shell
 	public static class NativeClipboard
 	{
 		private const int stdRetryCnt = 5;
+		private const int stdRetryDelay = 100;
 		private static readonly object objectLock = new();
 		private static ListenerWindow listener;
 		[ThreadStatic]
@@ -111,6 +112,8 @@ namespace Vanara.Windows.Shell
 					hr = OleGetClipboard(out var idata);
 					if (hr.Succeeded)
 						return idata;
+					if (i < n)
+						System.Threading.Thread.Sleep(stdRetryDelay);
 				}
 				throw hr.GetException();
 			}
@@ -186,6 +189,24 @@ namespace Vanara.Windows.Shell
 			ReadOnlyDataObject.GetData(formatId, aspect, index);
 
 		/// <summary>Obtains data from the clipboard.</summary>
+		/// <param name="format">Specifies the particular clipboard format of interest.</param>
+		/// <param name="aspect">
+		/// Indicates how much detail should be contained in the rendering. This parameter should be one of the DVASPECT enumeration values.
+		/// A single clipboard format can support multiple aspects or views of the object. Most data and presentation transfer and caching
+		/// methods pass aspect information. For example, a caller might request an object's iconic picture, using the metafile clipboard
+		/// format to retrieve it. Note that only one DVASPECT value can be used in dwAspect. That is, dwAspect cannot be the result of a
+		/// Boolean OR operation on several DVASPECT values.
+		/// </param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
+		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
+		public static object GetData(string format, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
+			ReadOnlyDataObject.GetData(format, aspect, index);
+
+		/// <summary>Obtains data from the clipboard.</summary>
 		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
 		/// <param name="formatId">Specifies the particular clipboard format of interest.</param>
 		/// <param name="index">
@@ -194,6 +215,16 @@ namespace Vanara.Windows.Shell
 		/// </param>
 		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
 		public static T GetData<T>(uint formatId, int index = -1) => ReadOnlyDataObject.GetData<T>(formatId, index);
+
+		/// <summary>Obtains data from the clipboard.</summary>
+		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
+		/// <param name="format">Specifies the particular clipboard format of interest.</param>
+		/// <param name="index">
+		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+		/// </param>
+		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
+		public static T GetData<T>(string format, int index = -1) => ReadOnlyDataObject.GetData<T>(format, index);
 
 		/// <summary>
 		/// This is used when a group of files in CF_HDROP (FileDrop) format is being renamed as well as transferred. The data consists of an
@@ -419,10 +450,12 @@ namespace Vanara.Windows.Shell
 			for (int i = 1; i <= n; i++)
 			{
 				hr = func();
-				if (hr.Failed && i == n)
-					throw hr.GetException();
+				if (hr.Succeeded)
+					return hr == HRESULT.S_OK;
+				if (i < n)
+					System.Threading.Thread.Sleep(stdRetryDelay);
 			}
-			return hr == HRESULT.S_OK;
+			throw hr.GetException();
 		}
 
 		private static bool TryMultThenThrowIfFailed(Func<IComDataObject, HRESULT> func, IComDataObject o, int n = stdRetryCnt)
@@ -431,12 +464,14 @@ namespace Vanara.Windows.Shell
 			for (int i = 1; i <= n; i++)
 			{
 				hr = func(o);
-				if (hr.Failed && i == n)
-					throw hr.GetException();
+				if (hr.Succeeded)
+					return hr == HRESULT.S_OK;
+				if (i < n)
+					System.Threading.Thread.Sleep(stdRetryDelay);
 			}
-			return hr == HRESULT.S_OK;
+			throw hr.GetException();
 		}
-		
+
 		private static uint Txt2Id(TextDataFormat tf) => tf switch
 		{
 			TextDataFormat.Text => CLIPFORMAT.CF_TEXT,

@@ -229,9 +229,8 @@ namespace Vanara.Windows.Shell.Tests
 			//Assert.AreEqual(ido.GetData("File"), files[0]);
 
 			// ISerializable
-			Uri uri = new(url);
-			ido.SetData("Uri", uri);
-			Assert.AreEqual(ido.GetData("Uri"), uri);
+			ido.SetData("NetBmp", bmp);
+			Assert.AreEqual(ido.GetData("NetBmp"), bmp);
 
 			// SafeAllocated
 			//SafeCoTaskMemHandle h = SafeCoTaskMemHandle.CreateFromStringList(files);
