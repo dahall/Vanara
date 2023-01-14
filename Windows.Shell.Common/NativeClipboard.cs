@@ -183,7 +183,91 @@ namespace Vanara.Windows.Shell
 		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
 		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
 		/// </param>
-		/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
+		/// <returns>
+		/// <para>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</para>
+		/// <para>Conversion for different clipboard formats is as follows:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Format</term>
+		/// <term>Return Type</term>
+		/// </listheader>
+		/// <item>
+		/// <description><see cref="CLIPFORMAT.CF_HDROP"/>, <see cref="ShellClipboardFormat.CFSTR_FILENAMEMAPA"/>, <see cref="ShellClipboardFormat.CFSTR_FILENAMEMAPW"/></description>
+		/// <description><see cref="string"/>[]</description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="CLIPFORMAT.CF_BITMAP"/></description>
+		/// <description><see cref="HBITMAP"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="CLIPFORMAT.CF_LOCALE"/></description>
+		/// <description><see cref="LCID"/></description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <see cref="CLIPFORMAT.CF_OEMTEXT"/>, <see cref="CLIPFORMAT.CF_TEXT"/>, <see cref="CLIPFORMAT.CF_UNICODETEXT"/>, <see
+		/// cref="ShellClipboardFormat.CF_CSV"/>, <see cref="ShellClipboardFormat.CF_HTML"/>, <see cref="ShellClipboardFormat.CF_RTF"/>, <see
+		/// cref="ShellClipboardFormat.CF_RTFNOOBJS"/>, <see cref="ShellClipboardFormat.CFSTR_FILENAMEA"/>, <see
+		/// cref="ShellClipboardFormat.CFSTR_FILENAMEW"/>, <see cref="ShellClipboardFormat.CFSTR_INETURLA"/>, <see
+		/// cref="ShellClipboardFormat.CFSTR_INETURLW"/>, <see cref="ShellClipboardFormat.CFSTR_INVOKECOMMAND_DROPPARAM"/>, <see
+		/// cref="ShellClipboardFormat.CFSTR_MOUNTEDVOLUME"/>, <see cref="ShellClipboardFormat.CFSTR_PRINTERGROUP"/>, <see cref="ShellClipboardFormat.CFSTR_SHELLURL"/>
+		/// </description>
+		/// <description><see cref="string"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_DROPDESCRIPTION"/></description>
+		/// <description><see cref="DROPDESCRIPTION"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_FILE_ATTRIBUTES_ARRAY"/></description>
+		/// <description><see cref="FILE_ATTRIBUTES_ARRAY"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_FILECONTENTS"/></description>
+		/// <description><see cref="IStream"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_FILEDESCRIPTORA"/>, <see cref="ShellClipboardFormat.CFSTR_FILEDESCRIPTORW"/></description>
+		/// <description><see cref="FILEGROUPDESCRIPTOR"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_INDRAGLOOP"/></description>
+		/// <description><see cref="BOOL"/></description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <see cref="ShellClipboardFormat.CFSTR_LOGICALPERFORMEDDROPEFFECT"/>, <see cref="ShellClipboardFormat.CFSTR_PASTESUCCEEDED"/>,
+		/// <see cref="ShellClipboardFormat.CFSTR_PERFORMEDDROPEFFECT"/>, <see cref="ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT"/>
+		/// </description>
+		/// <description><see cref="DROPEFFECT"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_NETRESOURCES"/></description>
+		/// <description><see cref="NRESARRAY"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_SHELLDROPHANDLER"/>, <see cref="ShellClipboardFormat.CFSTR_TARGETCLSID"/></description>
+		/// <description><see cref="Guid"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_SHELLIDLIST"/></description>
+		/// <description><see cref="CIDA"/>
+		/// <para>
+		/// <note type="note">It is prefered to use the <see cref="SHCreateShellItemArrayFromDataObject(IDataObject)"/> method to get a list
+		/// of shell items from an <see cref="IDataObject"/>.</note>
+		/// </para>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_SHELLIDLISTOFFSET"/></description>
+		/// <description><see cref="POINT"/>[]</description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_UNTRUSTEDDRAGDROP"/>, <see cref="ShellClipboardFormat.CFSTR_ZONEIDENTIFIER"/></description>
+		/// <description><see cref="uint"/></description>
+		/// </item>
+		/// </list>
+		/// </returns>
 		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
 		public static object GetData(uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
 			ReadOnlyDataObject.GetData(formatId, aspect, index);
@@ -201,7 +285,10 @@ namespace Vanara.Windows.Shell
 		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
 		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
 		/// </param>
-		/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
+		/// <returns>
+		/// The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned. See the return
+		/// section of <see cref="NativeClipboard.GetData(uint, DVASPECT, int)"/> for more details.
+		/// </returns>
 		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
 		public static object GetData(string format, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
 			ReadOnlyDataObject.GetData(format, aspect, index);
@@ -273,7 +360,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the text from the native Clipboard in the specified format.</summary>
 		/// <param name="formatId">A clipboard format. For a description of the standard clipboard formats, see Standard Clipboard Formats.</param>
 		/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
-		public static string GetText(TextDataFormat formatId) => GetData(Txt2Id(formatId)) as string;
+		public static string GetText(TextDataFormat formatId = TextDataFormat.UnicodeText) => GetData(Txt2Id(formatId)) as string;
 
 		/// <summary>Determines whether the data object pointer previously placed on the clipboard is still on the clipboard.</summary>
 		/// <param name="dataObject">
@@ -435,7 +522,7 @@ namespace Vanara.Windows.Shell
 		/// <returns><see langword="true"/> if data is available and retrieved; otherwise <see langword="false"/>.</returns>
 		public static bool TryGetData<T>(uint formatId, out T obj, int index = -1) => ReadOnlyDataObject.TryGetData(formatId, out obj, index);
 
-		private static void Init() { if (!oleInit) { oleInit = OleInitialize().Succeeded; } }
+		private static void Init() { if (!oleInit) { oleInit = CoInitialize().Succeeded; } }
 
 		private static void Setter(Action<IComDataObject> action)
 		{

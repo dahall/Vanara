@@ -229,7 +229,87 @@ namespace Vanara.PInvoke
 		/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
 		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
 		/// </param>
-		/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
+		/// <returns>
+		/// <para>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</para>
+		/// <para>Conversion for different clipboard formats is as follows:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Format</term>
+		/// <term>Return Type</term>
+		/// </listheader>
+		/// <item>
+		/// <description><see cref="CLIPFORMAT.CF_HDROP"/>, <see cref="ShellClipboardFormat.CFSTR_FILENAMEMAPA"/>, <see cref="ShellClipboardFormat.CFSTR_FILENAMEMAPW"/></description>
+		/// <description><see cref="string"/>[]</description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="CLIPFORMAT.CF_BITMAP"/></description>
+		/// <description><see cref="HBITMAP"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="CLIPFORMAT.CF_LOCALE"/></description>
+		/// <description><see cref="LCID"/></description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <see cref="CLIPFORMAT.CF_OEMTEXT"/>, <see cref="CLIPFORMAT.CF_TEXT"/>, <see cref="CLIPFORMAT.CF_UNICODETEXT"/>, <see
+		/// cref="ShellClipboardFormat.CF_CSV"/>, <see cref="ShellClipboardFormat.CF_HTML"/>, <see cref="ShellClipboardFormat.CF_RTF"/>, <see
+		/// cref="ShellClipboardFormat.CF_RTFNOOBJS"/>, <see cref="ShellClipboardFormat.CFSTR_FILENAMEA"/>, <see
+		/// cref="ShellClipboardFormat.CFSTR_FILENAMEW"/>, <see cref="ShellClipboardFormat.CFSTR_INETURLA"/>, <see
+		/// cref="ShellClipboardFormat.CFSTR_INETURLW"/>, <see cref="ShellClipboardFormat.CFSTR_INVOKECOMMAND_DROPPARAM"/>, <see
+		/// cref="ShellClipboardFormat.CFSTR_MOUNTEDVOLUME"/>, <see cref="ShellClipboardFormat.CFSTR_PRINTERGROUP"/>, <see cref="ShellClipboardFormat.CFSTR_SHELLURL"/>
+		/// </description>
+		/// <description><see cref="string"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_DROPDESCRIPTION"/></description>
+		/// <description><see cref="DROPDESCRIPTION"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_FILE_ATTRIBUTES_ARRAY"/></description>
+		/// <description><see cref="FILE_ATTRIBUTES_ARRAY"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_FILECONTENTS"/></description>
+		/// <description><see cref="IStream"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_FILEDESCRIPTORA"/>, <see cref="ShellClipboardFormat.CFSTR_FILEDESCRIPTORW"/></description>
+		/// <description><see cref="FILEGROUPDESCRIPTOR"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_INDRAGLOOP"/></description>
+		/// <description><see cref="BOOL"/></description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <see cref="ShellClipboardFormat.CFSTR_LOGICALPERFORMEDDROPEFFECT"/>, <see cref="ShellClipboardFormat.CFSTR_PASTESUCCEEDED"/>,
+		/// <see cref="ShellClipboardFormat.CFSTR_PERFORMEDDROPEFFECT"/>, <see cref="ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT"/>
+		/// </description>
+		/// <description><see cref="DROPEFFECT"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_NETRESOURCES"/></description>
+		/// <description><see cref="NRESARRAY"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_SHELLDROPHANDLER"/>, <see cref="ShellClipboardFormat.CFSTR_TARGETCLSID"/></description>
+		/// <description><see cref="Guid"/></description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_SHELLIDLIST"/></description>
+		/// <description><see cref="IShellItemArray"/>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_SHELLIDLISTOFFSET"/></description>
+		/// <description><see cref="POINT"/>[]</description>
+		/// </item>
+		/// <item>
+		/// <description><see cref="ShellClipboardFormat.CFSTR_UNTRUSTEDDRAGDROP"/>, <see cref="ShellClipboardFormat.CFSTR_ZONEIDENTIFIER"/></description>
+		/// <description><see cref="uint"/></description>
+		/// </item>
+		/// </list>
+		/// </returns>
 		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
 		public static object GetData(this IDataObject dataObj, uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
 		{

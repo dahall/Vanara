@@ -154,14 +154,14 @@ namespace Vanara.Windows.Shell.Tests
 			{
 				if (i == 0) { ido.SetData(ShellClipboardFormat.CFSTR_FILENAMEA, files[i]); ido.SetData(ShellClipboardFormat.CFSTR_FILENAMEW, files[i]); }
 				fgd.fgd[i] = new FileInfo(files[i]);
-				ShlwApi.SHCreateStreamOnFileEx(fgd.fgd[i].cFileName, STGM.STGM_READ | STGM.STGM_SHARE_DENY_WRITE, 0, false, null, out var istream).ThrowIfFailed();
-				ido.SetData(ShellClipboardFormat.CFSTR_FILECONTENTS, istream, System.Runtime.InteropServices.ComTypes.DVASPECT.DVASPECT_CONTENT, i);
+				ShlwApi.SHCreateStreamOnFileEx(fgd.fgd[i].cFileName, STGM.STGM_READ | STGM.STGM_SHARE_DENY_WRITE, 0, false, null, out IStream istream).ThrowIfFailed();
+				ido.SetData(ShellClipboardFormat.CFSTR_FILECONTENTS, istream, DVASPECT.DVASPECT_CONTENT, i);
 			}
 			ido.SetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, fgd);
 			Assert.AreEqual(((FILEGROUPDESCRIPTOR)ido.GetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW)).cItems, fgd.cItems);
-			Assert.IsNotNull(ido.GetData(ShellClipboardFormat.CFSTR_FILECONTENTS, index: 1));
-			Assert.IsNotNull(ido.GetData(ShellClipboardFormat.CFSTR_FILENAMEA));
-			Assert.IsNotNull(ido.GetData(ShellClipboardFormat.CFSTR_FILENAMEW));
+			Assert.That(() => { var ist = (Ole32.IStreamV)ido.GetData(ShellClipboardFormat.CFSTR_FILECONTENTS, index: 1); ist.Seek(0, Ole32.STREAM_SEEK.STREAM_SEEK_SET, out _).ThrowIfFailed(); }, Throws.Nothing);
+			Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_FILENAMEA), Is.TypeOf<string>().And.Not.Null);
+			Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_FILENAMEW), Is.TypeOf<string>().And.Not.Null);
 
 			ido.SetUrl(url, "Microsoft");
 			Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_INETURLA), Does.StartWith(url));
@@ -230,7 +230,7 @@ namespace Vanara.Windows.Shell.Tests
 
 			// ISerializable
 			ido.SetData("NetBmp", bmp);
-			Assert.AreEqual(ido.GetData("NetBmp"), bmp);
+			Assert.That(ido.GetData("NetBmp"), Is.TypeOf<System.Drawing.Bitmap>());
 
 			// SafeAllocated
 			//SafeCoTaskMemHandle h = SafeCoTaskMemHandle.CreateFromStringList(files);
