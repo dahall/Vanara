@@ -9,7 +9,16 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;davclnt;networking;management</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+DavAddConnection DavCancelConnectionsToServer DavDeleteConnection DavFlushFile DavGetExtendedError DavGetHTTPFromUNCPath DavGetTheLockOwnerOfTheFile DavGetUNCFromHTTPPath DavInvalidateCache DavRegisterAuthCallback DavUnregisterAuthCallback
+
+Structures
+DAV_CALLBACK_AUTH_BLOB DAV_CALLBACK_AUTH_UNP DAV_CALLBACK_CRED
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
