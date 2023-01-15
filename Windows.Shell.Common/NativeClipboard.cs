@@ -34,10 +34,44 @@ namespace Vanara.Windows.Shell
 	}
 
 	/// <summary>
-	/// Initializes and closes a session using the Clipboard calling <see cref="OpenClipboard"/> and then <see cref="CloseClipboard"/> on
-	/// disposal. This can be called multiple times in nested calls and will ensure the Clipboard is only opened and closed at the highest scope.
+	/// Static class with methods to interact with the Clipboard. This implementation relies exclusively on COM clipboard methods and does not use those from USER32.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
+	/// <example>
+	/// Below are two examples of a direct and indirect way to manipulate the clipboard.
+	/// <code title="Using the NativeClipboard class to set single items.">// Set/get simple text
+	/// NativeClipboard.SetText(txt, Vanara.Windows.Shell.TextDataFormat.UnicodeText);
+	/// string getText = NativeClipboard.GetText(Vanara.Windows.Shell.TextDataFormat.UnicodeText);
+	///
+	/// // Set/get format as text
+	/// NativeClipboard.SetData(Shell32.ShellClipboardFormat.CFSTR_FILENAMEW, @"C:\file1.txt");
+	/// string getFile = (string)NativeClipboard.GetData(Shell32.ShellClipboardFormat.CFSTR_FILENAMEW);
+	///
+	/// // Set/get text, html and rtf formats
+	/// NativeClipboard.SetText("Test", htmlFragment, rtfText); // sets text, html and rtf formats
+	/// string html = NativeClipboard.GetText(Vanara.Windows.Shell.TextDataFormat.Html);
+	///
+	/// // Set/get text, url and html formats for a url
+	/// NativeClipboard.SetUrl("https://microsoft.com", "Microsoft Home"); // sets text, url and html formats
+	/// string url = (string)NativeClipboard.GetData(Shell32.ShellClipboardFormat.CFSTR_INETURLW);
+	///
+	/// // Set/get string arrays
+	/// NativeClipboard.SetData(CLIPFORMAT.CF_HDROP, new[] { @"C:\file1.txt", @"C:\file2.txt" });
+	/// string[] getFiles = (string[])NativeClipboard.GetData(CLIPFORMAT.CF_HDROP);
+	///
+	/// // Set/get structures
+	/// NativeClipboard.SetData("MyRect", new RECT(1, 2, 3, 4));
+	/// var rect = NativeClipboard.GetData&lt;RECT&gt;("MyRect");
+	///
+	/// // Set/get shell items
+	/// NativeClipboard.SetShellItems(new[] { @"C:\file1.txt", @"C:\file2.txt" }.Select(ShellItem.Open));
+	/// ShellItemArray getArray = NativeClipboard.GetShellItemArray();</code>
+	/// <code title="Indirect manipulation">// This model let's you place multiple formats at once on the clipboard
+	/// IDataObject ido = NativeClipboard.CreateEmptyDataObject();
+	/// ido.SetData(CLIPFORMAT.CF_UNICODETEXT, txt);
+	/// ido.SetData(Shell32.ShellClipboardFormat.CF_HTML, htmlFragment);
+	/// ido.SetData("MyRectFormat", new RECT(1, 2, 3, 4));
+	/// NativeClipboard.SetDataObject(ido);</code></example>
+	/// <seealso cref="System.IDisposable" />
 	public static class NativeClipboard
 	{
 		private const int stdRetryCnt = 5;
@@ -46,7 +80,6 @@ namespace Vanara.Windows.Shell
 		private static ListenerWindow listener;
 		[ThreadStatic]
 		private static bool oleInit = false;
-		private static IComDataObject writableDataObj;
 
 		/// <summary>Occurs when whenever the contents of the Clipboard have changed.</summary>
 		public static event EventHandler ClipboardUpdate
@@ -119,26 +152,28 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Gets the writable data object.</summary>
-		/// <value>The writable data object.</value>
 		static IComDataObject WritableDataObj
 		{
 			get
 			{
-				if (writableDataObj is null)
-					SHCreateDataObject(ppv: out writableDataObj).ThrowIfFailed();
+				SHCreateDataObject(ppv: out var writableDataObj).ThrowIfFailed();
 				return writableDataObj;
 			}
 			set
 			{
 				Init();
 				TryMultThenThrowIfFailed(OleSetClipboard, value);
+				Marshal.ReleaseComObject(value);
 				Flush();
 			}
 		}
 
 		/// <summary>Clears the clipboard of any data or formatting.</summary>
 		public static void Clear() => WritableDataObj = null;
+
+		/// <summary>Creates an empty, writable data object.</summary>
+		/// <value>The data object.</value>
+		public static IComDataObject CreateEmptyDataObject() => WritableDataObj;
 
 		/// <summary>Enumerates the data formats currently available on the clipboard.</summary>
 		/// <returns>An enumeration of the data formats currently available on the clipboard.</returns>
@@ -157,7 +192,7 @@ namespace Vanara.Windows.Shell
 		public static IEnumerable<uint> EnumAvailableFormats() => ReadOnlyDataObject.EnumFormats().Select(f => unchecked((uint)f.cfFormat));
 
 		/// <summary>Carries out the clipboard shutdown sequence. It also releases any IDataObject instances that were placed on the clipboard.</summary>
-		public static void Flush() { Init(); TryMultThenThrowIfFailed(OleFlushClipboard); writableDataObj = null; }
+		public static void Flush() { Init(); TryMultThenThrowIfFailed(OleFlushClipboard); }
 
 		/// <summary>Retrieves the window handle of the current owner of the clipboard.</summary>
 		/// <returns>
@@ -473,6 +508,14 @@ namespace Vanara.Windows.Shell
 		/// <param name="charSet">The character set to use for the strings.</param>
 		public static void SetData(string format, IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto) =>
 			SetData(RegisterFormat(format), values, packing, charSet);
+
+		/// <summary>
+		/// Places a specific data object onto the clipboard. This makes the data object accessible to the OleGetClipboard function.
+		/// </summary>
+		/// <param name="dataObj">
+		/// The IDataObject interface on the data object from which the data to be placed on the clipboard can be obtained.
+		/// </param>
+		public static void SetDataObject(IComDataObject dataObj) => WritableDataObj = dataObj ?? throw new ArgumentNullException(nameof(dataObj));
 
 		/// <summary>Puts a list of shell items onto the clipboard.</summary>
 		/// <param name="shellItems">The sequence of shell items. The PIDL of each shell item must be absolute.</param>
