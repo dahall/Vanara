@@ -62,7 +62,7 @@ namespace Vanara.PInvoke.Tests
 			r.Width = 11;
 			Assert.That(r.Width == 11 && r.right == 21);
 			Assert.That(r.Location == new POINT(10, 5));
-			Assert.That(r.Size == new Size(11, 7));
+			Assert.That(r.Size == new SIZE(11, 7));
 			r.Size = new Size(5, 5);
 			Assert.That(r.Width, Is.EqualTo(5));
 			Assert.That(r.Height, Is.EqualTo(5));

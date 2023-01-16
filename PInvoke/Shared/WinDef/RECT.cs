@@ -117,7 +117,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets or sets the size of this <see cref="RECT"/> structure.</summary>
 		/// <value>A Size that represents the width and height of this <see cref="RECT"/> structure.</value>
-		public Size Size
+		public SIZE Size
 		{
 			get => new(Width, Height);
 			set
@@ -295,7 +295,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets or sets the size of this <see cref="PRECT"/> structure.</summary>
 		/// <value>A Size that represents the width and height of this <see cref="PRECT"/> structure.</value>
-		public Size Size
+		public SIZE Size
 		{
 			get => rect.Size;
 			set => rect.Size = value;
@@ -305,25 +305,25 @@ namespace Vanara.PInvoke
 		/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
 		public bool IsEmpty => rect.IsEmpty;
 
+		/// <summary>Performs an implicit conversion from <see cref="PRECT"/> to <see cref="RECT"/>.</summary>
+		/// <param name="r">The <see cref="PRECT"/> to convert.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator RECT?(PRECT r) => r?.rect;
+
 		/// <summary>Performs an implicit conversion from <see cref="PRECT"/> to <see cref="Rectangle"/>.</summary>
 		/// <param name="r">The <see cref="PRECT"/> to convert.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator Rectangle(PRECT r) => r.rect;
+		public static implicit operator Rectangle?(PRECT r) => r?.rect;
 
 		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{Rectangle}"/> to <see cref="PRECT"/>.</summary>
 		/// <param name="r">The <see cref="Rectangle"/> to convert.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator PRECT(Rectangle? r) => r.HasValue ? new PRECT(r.Value) : null;
 
-		/// <summary>Performs an implicit conversion from <see cref="Rectangle"/> to <see cref="PRECT"/>.</summary>
-		/// <param name="r">The <see cref="Rectangle"/> to convert.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PRECT(Rectangle r) => new(r);
-
-		/// <summary>Performs an implicit conversion from <see cref="RECT"/> to <see cref="PRECT"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{RECT}"/> to <see cref="PRECT"/>.</summary>
 		/// <param name="r">The <see cref="RECT"/> to convert.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PRECT(RECT r) => new(r);
+		public static implicit operator PRECT(RECT? r) => r.HasValue ? new PRECT(r.Value) : null;
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="r1">The first <see cref="PRECT"/> structure.</param>
