@@ -19,11 +19,25 @@ namespace Vanara.PInvoke;
 [UnmanagedFunctionPointer(CallingConvention.Winapi)]
 public delegate bool BasicMessageWindowFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn);
 
+/// <summary>An interface that represents a Win32 window with created and destroyed events.</summary>
+public interface IWindowCore
+{
+	/// <summary>Gets the window handle.</summary>
+	/// <value>The window handle.</value>
+	HWND Handle { get; }
+
+	/// <summary>Occurs when the window is created and has a valid handle.</summary>
+	event Action Created;
+
+	/// <summary>Occurs when the window has been destroyed.</summary>
+	event Action Destroyed;
+}
+
 /// <summary>Simple window to process messages.</summary>
 /// <seealso cref="MarshalByRefObject"/>
 /// <seealso cref="IDisposable"/>
 /// <seealso cref="IHandle"/>
-public partial class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
+public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle, IWindowCore
 {
 	private readonly WeakReference weakSelfRef;
 	private SafeHWND hwnd;
@@ -39,6 +53,8 @@ public partial class BasicMessageWindow : MarshalByRefObject, IDisposable, IHand
 		weakSelfRef = new WeakReference(this);
 		hwnd = CreateWindow();
 	}
+
+	private BasicMessageWindow() { }
 
 	/// <summary>Finalizes an instance of the <see cref="BasicMessageWindow"/> class.</summary>
 	~BasicMessageWindow() => Dispose(false);
