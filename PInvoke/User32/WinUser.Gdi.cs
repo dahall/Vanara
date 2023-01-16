@@ -285,24 +285,30 @@ namespace Vanara.PInvoke
 		public enum WindowLongFlags
 		{
 			/// <summary>The extended window styles</summary>
+			[CorrespondingType(typeof(WindowStylesEx))]
 			GWL_EXSTYLE = -20,
 
 			/// <summary>The application instance handle</summary>
+			[CorrespondingType(typeof(HINSTANCE))]
 			GWL_HINSTANCE = -6,
 
 			/// <summary>The parent window handle</summary>
+			[CorrespondingType(typeof(HWND), CorrespondingAction.Get)]
 			GWL_HWNDPARENT = -8,
 
 			/// <summary>The window identifier</summary>
+			[CorrespondingType(typeof(int))]
 			GWL_ID = -12,
 
 			/// <summary>The window styles</summary>
+			[CorrespondingType(typeof(WindowStyles))]
 			GWL_STYLE = -16,
 
 			/// <summary>The window user data</summary>
 			GWL_USERDATA = -21,
 
 			/// <summary>The window procedure address or handle</summary>
+			[CorrespondingType(typeof(WindowProc))]
 			GWL_WNDPROC = -4,
 
 			/// <summary>The dialog user data</summary>
@@ -312,6 +318,7 @@ namespace Vanara.PInvoke
 			DWLP_MSGRESULT = 0x0,
 
 			/// <summary>The dialog procedure address or handle</summary>
+			[CorrespondingType(typeof(DialogProc))]
 			DWLP_DLGPROC = 0x4
 		}
 
