@@ -102,7 +102,6 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
-      <Version>3.4.13</Version>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -116,7 +115,6 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
-      <Version>3.4.13</Version>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -130,7 +128,6 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
-      <Version>3.4.13</Version>
     </Link>
     <!--<CustomBuildStep>
       <Command>C:\Temp\Nuget.exe pack $(MSBuildThisFileDirectory)VssApi.nuspec -Symbols -SymbolPackageFormat snupkg -OutputDirectory bin\$(Configuration)</Command>
@@ -150,7 +147,6 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
-      <Version>3.4.13</Version>
     </Link>
     <!--<CustomBuildStep>
       <Command>C:\Temp\Nuget.exe pack $(MSBuildThisFileDirectory)VssApi.nuspec -Symbols -SymbolPackageFormat snupkg -OutputDirectory bin\$(Configuration)</Command>
