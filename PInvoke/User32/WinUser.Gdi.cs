@@ -2694,14 +2694,11 @@ namespace Vanara.PInvoke
 		/// </returns>
 		public static IntPtr SetWindowLong(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong)
 		{
-			IntPtr ret;
+			Kernel32.SetLastError(0);
 			if (IntPtr.Size == 4)
-				ret = (IntPtr)SetWindowLongPtr32(hWnd, nIndex, dwNewLong);
+				return Win32Error.ThrowLastErrorIfNull((IntPtr)SetWindowLongPtr32(hWnd, nIndex, dwNewLong));
 			else
-				ret = SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
-			if (ret == IntPtr.Zero)
-				throw new System.ComponentModel.Win32Exception();
-			return ret;
+				return Win32Error.ThrowLastErrorIfNull(SetWindowLongPtr64(hWnd, nIndex, dwNewLong));
 		}
 
 		/// <summary>
@@ -2726,17 +2723,7 @@ namespace Vanara.PInvoke
 		/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
 		/// </para>
 		/// </returns>
-		public static int SetWindowLong(HWND hWnd, WindowLongFlags nIndex, int dwNewLong)
-		{
-			IntPtr ret;
-			if (IntPtr.Size == 4)
-				ret = (IntPtr)SetWindowLongPtr32(hWnd, nIndex, (IntPtr)dwNewLong);
-			else
-				ret = SetWindowLongPtr64(hWnd, nIndex, (IntPtr)dwNewLong);
-			if (ret == IntPtr.Zero)
-				throw new System.ComponentModel.Win32Exception();
-			return ret.ToInt32();
-		}
+		public static int SetWindowLong(HWND hWnd, WindowLongFlags nIndex, int dwNewLong) => SetWindowLong(hWnd, nIndex, new IntPtr(dwNewLong)).ToInt32();
 
 		/// <summary>
 		/// The <c>TabbedTextOut</c> function writes a character string at a specified location, expanding tabs to the values specified in an
