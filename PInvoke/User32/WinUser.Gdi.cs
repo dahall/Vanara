@@ -292,6 +292,10 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(HINSTANCE))]
 			GWL_HINSTANCE = -6,
 
+			/// <summary>The application instance handle</summary>
+			[CorrespondingType(typeof(HINSTANCE))]
+			GWLP_HINSTANCE = -6,
+
 			/// <summary>The parent window handle</summary>
 			[CorrespondingType(typeof(HWND), CorrespondingAction.Get)]
 			GWL_HWNDPARENT = -8,
@@ -300,6 +304,10 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(int))]
 			GWL_ID = -12,
 
+			/// <summary>The window identifier</summary>
+			[CorrespondingType(typeof(int))]
+			GWLP_ID = -12,
+
 			/// <summary>The window styles</summary>
 			[CorrespondingType(typeof(WindowStyles))]
 			GWL_STYLE = -16,
@@ -307,9 +315,16 @@ namespace Vanara.PInvoke
 			/// <summary>The window user data</summary>
 			GWL_USERDATA = -21,
 
+			/// <summary>The window user data</summary>
+			GWLP_USERDATA = -21,
+
 			/// <summary>The window procedure address or handle</summary>
 			[CorrespondingType(typeof(WindowProc))]
 			GWL_WNDPROC = -4,
+
+			/// <summary>The window procedure address or handle</summary>
+			[CorrespondingType(typeof(WindowProc))]
+			GWLP_WNDPROC = -4,
 
 			/// <summary>The dialog user data</summary>
 			DWLP_USER = 0x8,
@@ -320,6 +335,16 @@ namespace Vanara.PInvoke
 			/// <summary>The dialog procedure address or handle</summary>
 			[CorrespondingType(typeof(DialogProc))]
 			DWLP_DLGPROC = 0x4
+
+			/// <summary>The dialog user data</summary>
+			DWL_USER = 0x8,
+
+			/// <summary>The dialog procedure message result</summary>
+			DWL_MSGRESULT = 0x0,
+
+			/// <summary>The dialog procedure address or handle</summary>
+			[CorrespondingType(typeof(DialogProc))]
+			DWL_DLGPROC = 0x4
 		}
 
 		/// <summary>
