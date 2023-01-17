@@ -1510,6 +1510,35 @@ namespace Vanara.PInvoke
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773397")]
 		public static extern HRESULT GetThemeColor(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out COLORREF pColor);
 
+		/// <summary>Retrieves the value of a color property.</summary>
+		/// <param name="hTheme">
+		/// <para>Type: <c>HTHEME</c></para>
+		/// <para>Handle to a window's specified theme data. Use <c>OpenThemeData</c> to create an HTHEME.</para>
+		/// </param>
+		/// <param name="iPartId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Value of type <c>int</c> that specifies the part that contains the color property. See Parts and States.</para>
+		/// </param>
+		/// <param name="iStateId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Value of type <c>int</c> that specifies the state of the part. See Parts and States.</para>
+		/// </param>
+		/// <param name="iPropId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Value of type <c>int</c> that specifies the property to retrieve. For a list of possible values, see Property Identifiers.</para>
+		/// </param>
+		/// <param name="pColor">
+		/// <para>Type: <c><c>COLORREF</c>*</c></para>
+		/// <para>Pointer to a <c>COLORREF</c> structure that receives the color value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		public static HRESULT GetThemeColor<TPart, TState, TProp>(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out COLORREF pColor)
+			where TPart : IConvertible where TState : IConvertible where TProp : IConvertible =>
+			GetThemeColor(hTheme, Convert.ToInt32(iPartId), Convert.ToInt32(iStateId), Convert.ToInt32(iPropId), out pColor);
+
 		/// <summary>Retrieves the value for a theme property from the documentation section of the specified theme file.</summary>
 		/// <param name="pszThemeName">
 		/// <para>Type: <c><c>LPCWSTR</c></c></para>
@@ -2752,6 +2781,44 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsThemeBackgroundPartiallyTransparent(HTHEME hTheme, int iPartId, int iStateId);
 
+		/// <summary>Retrieves whether the background specified by the visual style has transparent pieces or alpha-blended pieces.</summary>
+		/// <param name="hTheme">
+		/// <para>Type: <c>HTHEME</c></para>
+		/// <para>Handle to a window's specified theme data. Use <c>OpenThemeData</c> to create an HTHEME.</para>
+		/// </param>
+		/// <param name="iPartId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Value of type <c>int</c> that specifies the part. See Parts and States.</para>
+		/// </param>
+		/// <param name="iStateId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Value of type <c>int</c> that specifies the state of the part. See Parts and States.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>BOOL</c></c></para>
+		/// <para>Returns one of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TRUE</term>
+		/// <term>The theme-specified background for a particular iPartId and iStateId has transparent pieces or alpha-blended pieces.</term>
+		/// </item>
+		/// <item>
+		/// <term>FALSE</term>
+		/// <term>
+		/// The theme-specified background for a particular iPartId and iStateId does not have transparent pieces or alpha-blended pieces.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		public static bool IsThemeBackgroundPartiallyTransparent<TPart, TState>(HTHEME hTheme, TPart iPartId, TState iStateId) where TPart : IConvertible where TState : IConvertible =>
+			IsThemeBackgroundPartiallyTransparent(hTheme, Convert.ToInt32(iPartId), Convert.ToInt32(iStateId));
+
 		/// <summary>Reports whether a specified dialog window supports background texturing.</summary>
 		/// <param name="hwnd">
 		/// <para>Type: <c><c>HWND</c></c></para>
@@ -2821,6 +2888,42 @@ namespace Vanara.PInvoke
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759819")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsThemePartDefined(HTHEME hTheme, int iPartId, int iStateId);
+
+		/// <summary>Retrieves whether a visual style has defined parameters for the specified part and state.</summary>
+		/// <param name="hTheme">
+		/// <para>Type: <c>HTHEME</c></para>
+		/// <para>Handle to a window's specified theme data. Use <c>OpenThemeData</c> to create an HTHEME.</para>
+		/// </param>
+		/// <param name="iPartId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Value of type <c>int</c> that specifies the part. See Parts and States.</para>
+		/// </param>
+		/// <param name="iStateId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Currently unused. The value should be 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>BOOL</c></c></para>
+		/// <para>Returns one of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TRUE</term>
+		/// <term>The theme has defined parameters for the specified iPartId and iStateId</term>
+		/// </item>
+		/// <item>
+		/// <term>FALSE</term>
+		/// <term>The theme does not have defined parameters for the specified iPartId and iStateId</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		public static bool IsThemePartDefined<TPart, TState>(HTHEME hTheme, TPart iPartId, TState iStateId) where TPart : IConvertible where TState : IConvertible =>
+			IsThemePartDefined(hTheme, Convert.ToInt32(iPartId), Convert.ToInt32(iStateId));
 
 		/// <summary>Opens the theme data for a window and its associated class.</summary>
 		/// <param name="hwnd">
