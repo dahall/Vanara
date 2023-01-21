@@ -1,5 +1,10 @@
-﻿using System;
+﻿#nullable enable
+using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
+using Vanara.Extensions;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
@@ -9,6 +14,12 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>The instance of the <see cref="WNDCLASSEX"/> populated for the window class.</summary>
 		public readonly WNDCLASSEX wc;
+
+		private static readonly uint cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX));
+		private static SafeHICON? appIcon;
+		private static SafeHCURSOR? arrowCursor;
+		private readonly WindowProc? wndProc;
+		private readonly WindowProc instProc;
 
 		/// <summary>Initializes a new instance of the <see cref="WindowClass"/> class and registers the class name.</summary>
 		/// <param name="className">
@@ -64,16 +75,16 @@ namespace Vanara.PInvoke
 		/// uses <c>WNDCLASSEX</c> to register a dialog box created by using the <c>CLASS</c> directive in the resource file, it must set
 		/// this member to <c>DLGWINDOWEXTRA</c>.
 		/// </param>
-		public WindowClass(string className, HINSTANCE hInst, WindowProc wndProc, WindowClassStyles styles = 0, HICON hIcon = default, HICON hSmIcon = default,
-			HCURSOR hCursor = default, HBRUSH hbrBkgd = default, string menuName = null, int extraBytes = 0, int extraWinBytes = 0)
+		public WindowClass(string? className = null, HINSTANCE hInst = default, WindowProc? wndProc = default, WindowClassStyles styles = 0, HICON hIcon = default, HICON hSmIcon = default,
+			HCURSOR hCursor = default, HBRUSH hbrBkgd = default, string? menuName = null, int extraBytes = 0, int extraWinBytes = 0) : this()
 		{
-			// TODO: Find way to hold on to wndProc ref
+			this.wndProc = wndProc ?? DefWindowProc;
 			wc = new WNDCLASSEX
 			{
-				cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX)),
-				lpfnWndProc = wndProc,
-				hInstance = hInst,
-				lpszClassName = className,
+				cbSize = cbSize,
+				lpfnWndProc = instProc,
+				hInstance = hInst.IsNull ? Kernel32.GetModuleHandle() : hInst,
+				lpszClassName = className ?? Guid.NewGuid().ToString("N"),
 				style = styles,
 				hIcon = hIcon,
 				hIconSm = hSmIcon,
@@ -83,13 +94,47 @@ namespace Vanara.PInvoke
 				cbClsExtra = extraBytes,
 				cbWndExtra = extraWinBytes,
 			};
-			Atom = Win32Error.ThrowLastErrorIfNull(Macros.MAKEINTATOM(RegisterClassEx(wc)));
+			Win32Error.ThrowLastErrorIfNull(Macros.MAKEINTATOM(RegisterClassEx(wc)));
 		}
 
-		private WindowClass(in WNDCLASSEX wcx) => wc = wcx;
+		/// <summary>Initializes a new instance of the <see cref="WindowClass"/> class using a <see cref="WNDCLASSEX"/> instance.</summary>
+		/// <param name="wcx">The <see cref="WNDCLASSEX"/> instance.</param>
+		/// <param name="register">if set to <see langword="true"/>, <paramref name="wcx"/> is used to register the class.</param>
+		public WindowClass(in WNDCLASSEX wcx, bool register = true) : this()
+		{
+			wc = wcx;
+			if (register)
+			{
+				wndProc = wc.lpfnWndProc ?? DefWindowProc;
+				wc.lpfnWndProc = instProc;
+				Win32Error.ThrowLastErrorIfNull(Macros.MAKEINTATOM(RegisterClassEx(wc)));
+			}
+		}
 
-		/// <summary>Gets the class atom that uniquely identifies the registered class.</summary>
-		public IntPtr Atom { get; private set; }
+		private WindowClass() => instProc = InstanceWndProc;
+
+		/// <summary>Gets a handle to the brush representing the standard MDI window background (COLOR_APPWORKSPACE).</summary>
+		/// <value>The standard MDI window background brush handle.</value>
+		public static HBRUSH MdiWindowBrush => (HBRUSH)(SystemColorIndex.COLOR_APPWORKSPACE + 1);
+
+		/// <summary>
+		/// Gets a handle to a null brush (GetStockObject(NULL_BRUSH)). Use this for the background of non-displayable windows or to prevent
+		/// flicker on custom drawn backgrounds.
+		/// </summary>
+		/// <value>The null background brush handle.</value>
+		public static HBRUSH NullBrush => GetStockObject(StockObjectType.NULL_BRUSH);
+
+		/// <summary>Gets a handle to the standard application icon (IDI_APPLICATION).</summary>
+		/// <value>The standard application icon handle.</value>
+		public static HICON StdAppIcon => appIcon ??= LoadIcon(default, IDI_APPLICATION);
+
+		/// <summary>Gets a handle to the standard arrow cursor (IDC_ARROW).</summary>
+		/// <value>The standard arrow cursor handle.</value>
+		public static HCURSOR StdArrowCursor => arrowCursor ??= LoadCursor(default, IDC_ARROW);
+
+		/// <summary>Gets a handle to the brush representing the standard window background (COLOR_WINDOW).</summary>
+		/// <value>The standard window background brush handle.</value>
+		public static HBRUSH WindowBrush => (HBRUSH)(SystemColorIndex.COLOR_WINDOW + 1);
 
 		/// <summary>Gets the windows class name.</summary>
 		public string ClassName => wc.lpszClassName;
@@ -97,19 +142,17 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the class style(s).</summary>
 		public WindowClassStyles Styles => wc.style;
 
+		/// <summary>Gets the <see cref="WindowProc"/> that is executed by this class.</summary>
+		/// <value>The executing <see cref="WindowProc"/>.</value>
+		public WindowProc WndProc => wndProc ?? DefWindowProc;
+
 		/// <summary>Gets a <see cref="WindowClass"/> instance associated with a window handle.</summary>
 		/// <param name="hWnd">The window handle to examine.</param>
 		/// <returns>
 		/// If the function finds a matching window and successfully copies the data, the return value is a <see cref="WindowClass"/>
 		/// instance. If not, <see langword="null"/> is returned.
 		/// </returns>
-		public static WindowClass GetInstanceFromWindow(HWND hWnd)
-		{
-			var atom = GetClassWord(hWnd, -32 /*GCW_ATOM*/);
-			var hInst = GetClassLong(hWnd, -16 /*GCL_HMODULE*/);
-			var wcx = new WNDCLASSEX { cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX)) };
-			return GetClassInfoEx(hInst, Macros.MAKEINTATOM(atom), ref wcx) ? new WindowClass(wcx) : null;
-		}
+		public static WindowClass? GetInstanceFromWindow(HWND hWnd) => GetNamedInstance(GetClassName(hWnd), GetClassLong(hWnd, GetClassLongFlag.GCL_HMODULE));
 
 		/// <summary>Gets a <see cref="WindowClass"/> instance by looking up the name.</summary>
 		/// <param name="className">
@@ -124,11 +167,35 @@ namespace Vanara.PInvoke
 		/// If the function finds a matching class and successfully copies the data, the return value is a <see cref="WindowClass"/>
 		/// instance. If not, <see langword="null"/> is returned.
 		/// </returns>
-		public static WindowClass GetNamedInstance(string className, HINSTANCE hInst = default)
+		public static WindowClass? GetNamedInstance(string className, HINSTANCE hInst)
 		{
-			var wcx = new WNDCLASSEX { cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX)) };
-			return GetClassInfoEx(hInst, className, ref wcx) ? new WindowClass(wcx) : null;
+			if (string.IsNullOrEmpty(className))
+				throw new ArgumentException($"'{nameof(className)}' cannot be null or empty.", nameof(className));
+
+			return GetClassInfoEx(hInst, className, out var wcx) ? new(wcx, false) : null;
 		}
+
+		/// <summary>Creates a <see cref="WindowClass"/> instance that uses common settings for a displayed window.</summary>
+		/// <param name="className">
+		/// <para>
+		/// A string that specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx,
+		/// or any of the predefined control-class names.
+		/// </para>
+		/// <para>
+		/// The maximum length for <c>lpszClassName</c> is 256. If <c>lpszClassName</c> is greater than the maximum length, the
+		/// RegisterClassEx function will fail.
+		/// </para>
+		/// </param>
+		/// <param name="hInst">A handle to the instance that contains the window procedure for the class.</param>
+		/// <param name="wndProc">
+		/// A pointer to the window procedure. You must use the CallWindowProc function to call the window procedure. For more information,
+		/// see WindowProc.
+		/// </param>
+		/// <returns>
+		/// A new instance of <see cref="WindowClass"/> with indicated parameters, standard app icon, arrow cursor, and window system color background.
+		/// </returns>
+		public static WindowClass MakeVisibleWindowClass(string? className, WindowProc? wndProc, HINSTANCE hInst = default) =>
+			new(className, hInst.IsNull ? Kernel32.GetModuleHandle() : hInst, wndProc, 0, StdAppIcon, default, StdArrowCursor, WindowBrush);
 
 		/// <summary>Unregisters this window class.</summary>
 		/// <returns>
@@ -139,5 +206,36 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		public bool Unregister() => UnregisterClass(wc.lpszClassName, wc.hInstance);
+
+		/// <summary>An class function that processes messages sent to this class instance.</summary>
+		/// <param name="hwnd">A handle to the window.</param>
+		/// <param name="msg">The MSG.</param>
+		/// <param name="wParam">Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</param>
+		/// <param name="lParam">Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</param>
+		/// <returns>The return value is the result of the message processing and depends on the message sent.</returns>
+		protected virtual IntPtr InstanceWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
+		{
+#if DEBUG
+			if (((WindowMessage)msg).IsValid())
+				Debug.WriteLine($"{GetType().Name}:{(WindowMessage)msg}");
+			else
+				Debug.WriteLine($"{GetType().Name}:{msg:X}");
+#endif
+			if (msg == (uint)WindowMessage.WM_NCCREATE)
+			{
+				var wParamForNcCreate = Marshal.GetFunctionPointerForDelegate(wndProc);
+				var cp = lParam.ToStructure<CREATESTRUCT>().lpCreateParams;
+				if (cp != IntPtr.Zero && GCHandle.FromIntPtr(cp).Target is WindowBase wnd)
+					return wnd.WindowInitProc(hwnd, msg, Marshal.GetFunctionPointerForDelegate(wndProc), lParam);
+			}
+			return wndProc?.Invoke(hwnd, msg, wParam, lParam) ?? IntPtr.Zero;
+		}
+
+		private static string GetClassName(HWND hwnd)
+		{
+			StringBuilder sb = new(257);
+			Win32Error.ThrowLastErrorIf(User32.GetClassName(hwnd, sb, sb.Capacity), i => i == 0);
+			return sb.ToString();
+		}
 	}
 }
