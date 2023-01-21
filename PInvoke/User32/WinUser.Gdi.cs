@@ -334,7 +334,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>The dialog procedure address or handle</summary>
 			[CorrespondingType(typeof(DialogProc))]
-			DWLP_DLGPROC = 0x4
+			DWLP_DLGPROC = 0x4,
 
 			/// <summary>The dialog user data</summary>
 			DWL_USER = 0x8,
