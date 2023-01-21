@@ -369,7 +369,7 @@ public static partial class WinHTTP
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_connection_info typedef struct _WINHTTP_CONNECTION_INFO
 	// { DWORD cbSize; SOCKADDR_STORAGE LocalAddress; SOCKADDR_STORAGE RemoteAddress; } WINHTTP_CONNECTION_INFO, *PWINHTTP_CONNECTION_INFO;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp._WINHTTP_CONNECTION_INFO")]
-	[StructLayout(LayoutKind.Sequential, Pack = 4)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct WINHTTP_CONNECTION_INFO
 	{
 		/// <summary>The size, in bytes, of the <c>WINHTTP_CONNECTION_INFO</c> structure.</summary>
