@@ -56,16 +56,13 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Specifies the <c>x</c>-coordinate of the point.</summary>
-		[NonSerialized]
 		public int x { get => x; set => x = value; }
 
 		/// <summary>Specifies the <c>y</c>-coordinate of the point.</summary>
-		[NonSerialized]
 		public int y { get => y; set => y = value; }
 
 		/// <summary>Gets a value indicating whether this <see cref="POINT"/> is empty.</summary>
 		/// <value><see langword="true"/> if both X and Y are 0; otherwise, <see langword="false"/>.</value>
-		[NonSerialized]
 		[Browsable(false)]
 		public bool IsEmpty => X == 0 && Y == 0;
 
