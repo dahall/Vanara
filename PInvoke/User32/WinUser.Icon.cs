@@ -958,7 +958,7 @@ namespace Vanara.PInvoke
 		// lpIconName );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "loadicon")]
-		public static extern SafeHICON LoadIcon(HINSTANCE hInstance, string lpIconName);
+		public static extern SafeHICON LoadIcon([Optional] HINSTANCE hInstance, string lpIconName);
 
 		/// <summary>
 		/// <para>Loads the specified icon resource from the executable (.exe) file associated with an application instance.</para>
@@ -1048,7 +1048,7 @@ namespace Vanara.PInvoke
 		// lpIconName );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "loadicon")]
-		public static extern SafeHICON LoadIcon(HINSTANCE hInstance, ResourceId lpIconName);
+		public static extern SafeHICON LoadIcon([Optional] HINSTANCE hInstance, ResourceId lpIconName);
 
 		/// <summary>
 		/// <para>Searches through icon or cursor data for the icon or cursor that best fits the current display device.</para>
