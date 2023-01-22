@@ -1,4 +1,5 @@
-﻿using static Vanara.PInvoke.User32;
+﻿using System;
+using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
@@ -22,6 +23,20 @@ public interface IMessagePump
 	/// The result of <see cref="PeekMessage(out MSG, HWND, uint, uint, PM)"/> or <see cref="GetMessage(out MSG, HWND, uint, uint)"/>.
 	/// </returns>
 	int Run(IWindowCore mainWindow = null);
+}
+
+/// <summary>An interface that represents a Win32 window with created and destroyed events.</summary>
+public interface IWindowCore
+{
+	/// <summary>Occurs when the window is created and has a valid handle.</summary>
+	event Action Created;
+
+	/// <summary>Occurs when the window has been destroyed.</summary>
+	event Action Destroyed;
+
+	/// <summary>Gets the window handle.</summary>
+	/// <value>The window handle.</value>
+	HWND Handle { get; }
 }
 
 /// <summary>A basic message pump to use independently or with a window instance.</summary>
