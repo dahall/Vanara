@@ -163,7 +163,8 @@ namespace Vanara.Windows.Shell
 			{
 				Init();
 				TryMultThenThrowIfFailed(OleSetClipboard, value);
-				Marshal.ReleaseComObject(value);
+				if (value is not null)
+					Marshal.ReleaseComObject(value);
 				Flush();
 			}
 		}
