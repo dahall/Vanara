@@ -9,6 +9,22 @@ using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Interface identifying a class that can subclass a window proceedure.</summary>
+	public interface IWindowInit
+	{
+		/// <summary>
+		/// Method called on WM_NCCREATE which takes control of the window procedure. The window must provide a GCHandle pointer to itself in
+		/// the lpParam parameter of CreateWindowEx. This method implentation should confirm it's HWND value against <paramref name="hwnd"/>
+		/// and then using SetWindowLongPtr with GWLP_WNDPROC to update the window procedure.
+		/// </summary>
+		/// <param name="hwnd">A handle to the window.</param>
+		/// <param name="msg">Always WM_NCCREATE.</param>
+		/// <param name="wParam">A pointer to the window class' WindowProc delegate.</param>
+		/// <param name="lParam">A pointer to a <see cref="CREATESTRUCT"/> instance with the window creation paramters.</param>
+		/// <returns>The return should be IntPtr(1) to indicate success. Any other value will stop the completion of CreateWindowEx.</returns>
+		IntPtr InitWndProcOnNCCreate(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+	}
+
 	/// <summary>Encapsulates a window class.</summary>
 	public class WindowClass
 	{
@@ -215,18 +231,13 @@ namespace Vanara.PInvoke
 		/// <returns>The return value is the result of the message processing and depends on the message sent.</returns>
 		protected virtual IntPtr InstanceWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
-#if DEBUG
-			if (((WindowMessage)msg).IsValid())
-				Debug.WriteLine($"{GetType().Name}:{(WindowMessage)msg}");
-			else
-				Debug.WriteLine($"{GetType().Name}:{msg:X}");
-#endif
+			WindowBase.DebugWriteMessageInfo(msg);
 			if (msg == (uint)WindowMessage.WM_NCCREATE)
 			{
 				var wParamForNcCreate = Marshal.GetFunctionPointerForDelegate(wndProc);
 				var cp = lParam.ToStructure<CREATESTRUCT>().lpCreateParams;
-				if (cp != IntPtr.Zero && GCHandle.FromIntPtr(cp).Target is WindowBase wnd)
-					return wnd.WindowInitProc(hwnd, msg, Marshal.GetFunctionPointerForDelegate(wndProc), lParam);
+				if (cp != IntPtr.Zero && GCHandle.FromIntPtr(cp).Target is IWindowInit wnd)
+					return wnd.InitWndProcOnNCCreate(hwnd, msg, Marshal.GetFunctionPointerForDelegate(wndProc), lParam);
 			}
 			return wndProc?.Invoke(hwnd, msg, wParam, lParam) ?? IntPtr.Zero;
 		}

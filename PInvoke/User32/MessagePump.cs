@@ -22,15 +22,12 @@ public interface IMessagePump
 	/// <returns>
 	/// The result of <see cref="PeekMessage(out MSG, HWND, uint, uint, PM)"/> or <see cref="GetMessage(out MSG, HWND, uint, uint)"/>.
 	/// </returns>
-	int Run(IWindowCore mainWindow = null);
+	int Run(IWindowInstance mainWindow = null);
 }
 
 /// <summary>An interface that represents a Win32 window with created and destroyed events.</summary>
-public interface IWindowCore
+public interface IWindowInstance
 {
-	/// <summary>Occurs when the window is created and has a valid handle.</summary>
-	event Action Created;
-
 	/// <summary>Occurs when the window has been destroyed.</summary>
 	event Action Destroyed;
 
@@ -51,7 +48,7 @@ public class MessagePump : IMessagePump
 	protected const ushort quitMsg = (ushort)WindowMessage.WM_QUIT;
 
 	/// <inhertdoc/>
-	public int Run(IWindowCore mainWindow = null)
+	public int Run(IWindowInstance mainWindow = null)
 	{
 		if (mainWindow is not null)
 			mainWindow.Destroyed += onDestroy;
