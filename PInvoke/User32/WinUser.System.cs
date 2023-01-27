@@ -3797,7 +3797,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "70681472-36a5-4ae3-b769-0421cf97ff2a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MessageBeep(uint uType);
+		public static extern bool MessageBeep(uint uType = 0);
 
 		/// <summary>
 		/// <para>
@@ -4118,7 +4118,7 @@ namespace Vanara.PInvoke
 		// LPCTSTR lpCaption, UINT uType );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "messagebox")]
-		public static extern MB_RESULT MessageBox(HWND hWnd, string lpText, string lpCaption, MB_FLAGS uType);
+		public static extern MB_RESULT MessageBox([Optional] HWND hWnd, string lpText, [Optional] string lpCaption, [Optional] MB_FLAGS uType);
 
 		/// <summary>
 		/// Creates, displays, and operates a message box. The message box contains application-defined message text and title, any icon, and
@@ -4267,7 +4267,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms724947")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SystemParametersInfo(SPI uiAction, uint uiParam, IntPtr pvParam, SPIF fWinIni);
+		public static extern bool SystemParametersInfo(SPI uiAction, [Optional] uint uiParam, [Optional] IntPtr pvParam, [Optional] SPIF fWinIni);
 
 		/// <summary>
 		/// Retrieves or sets the value of one of the system-wide parameters. This function can also update the user profile while setting a parameter.
@@ -4333,7 +4333,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms724947")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SystemParametersInfo(SPI uiAction, uint uiParam, string pvParam, SPIF fWinIni);
+		public static extern bool SystemParametersInfo(SPI uiAction, uint uiParam, string pvParam, [Optional] SPIF fWinIni);
 
 		/// <summary>
 		/// Retrieves or sets the value of one of the system-wide parameters. This function can also update the user profile while setting a parameter.
