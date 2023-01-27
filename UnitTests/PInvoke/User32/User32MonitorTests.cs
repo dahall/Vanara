@@ -38,8 +38,7 @@ namespace Vanara.PInvoke.Tests
                 TestContext.WriteLine(
                     $"handle: {monitor}, name: {info.szDevice}, flags: {info.dwFlags}, isPrimary: {isPrimary}," +
                     $" bounds: {info.rcMonitor}, workarea: {info.rcWork}");
-
-
+                
                 if (isPrimary)
                 {
                     if (primaryDisplayHandle == IntPtr.Zero)
@@ -54,8 +53,6 @@ namespace Vanara.PInvoke.Tests
                     }
                 }
             }
-            
-
         }
     }
 }
