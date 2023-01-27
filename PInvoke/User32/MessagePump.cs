@@ -50,7 +50,7 @@ public class MessagePump : IMessagePump
 	/// <inhertdoc/>
 	public int Run(IWindowInstance mainWindow = null)
 	{
-		if (mainWindow is not null)
+		if (mainWindow is not null and not WindowBase)
 			mainWindow.Destroyed += onDestroy;
 
 		try
@@ -59,7 +59,7 @@ public class MessagePump : IMessagePump
 		}
 		finally
 		{
-			if (mainWindow is not null)
+			if (mainWindow is not null and not WindowBase)
 				mainWindow.Destroyed -= onDestroy;
 		}
 		static void onDestroy() => PostQuitMessage(0);

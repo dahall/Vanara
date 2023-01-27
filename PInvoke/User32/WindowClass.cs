@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
@@ -34,8 +33,8 @@ namespace Vanara.PInvoke
 		private static readonly uint cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX));
 		private static SafeHICON? appIcon;
 		private static SafeHCURSOR? arrowCursor;
-		private readonly WindowProc? wndProc;
 		private readonly WindowProc instProc;
+		private readonly WindowProc? wndProc;
 
 		/// <summary>Initializes a new instance of the <see cref="WindowClass"/> class and registers the class name.</summary>
 		/// <param name="className">
@@ -127,7 +126,7 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		private WindowClass() => instProc = InstanceWndProc;
+		private WindowClass() => instProc = PrimaryClassWndProc;
 
 		/// <summary>Gets a handle to the brush representing the standard MDI window background (COLOR_APPWORKSPACE).</summary>
 		/// <value>The standard MDI window background brush handle.</value>
@@ -229,15 +228,18 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</param>
 		/// <param name="lParam">Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</param>
 		/// <returns>The return value is the result of the message processing and depends on the message sent.</returns>
-		protected virtual IntPtr InstanceWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
+		protected virtual IntPtr PrimaryClassWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
 			WindowBase.DebugWriteMessageInfo(msg);
 			if (msg == (uint)WindowMessage.WM_NCCREATE)
 			{
-				var wParamForNcCreate = Marshal.GetFunctionPointerForDelegate(wndProc);
-				var cp = lParam.ToStructure<CREATESTRUCT>().lpCreateParams;
-				if (cp != IntPtr.Zero && GCHandle.FromIntPtr(cp).Target is IWindowInit wnd)
-					return wnd.InitWndProcOnNCCreate(hwnd, msg, Marshal.GetFunctionPointerForDelegate(wndProc), lParam);
+				try
+				{
+					var cp = lParam.ToStructure<CREATESTRUCT>().lpCreateParams;
+					if (cp != IntPtr.Zero && GCHandle.FromIntPtr(cp).Target is IWindowInit wnd)
+						return wnd.InitWndProcOnNCCreate(hwnd, msg, Marshal.GetFunctionPointerForDelegate(wndProc), lParam);
+				}
+				catch { }
 			}
 			return wndProc?.Invoke(hwnd, msg, wParam, lParam) ?? IntPtr.Zero;
 		}

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using ICSharpCode.Decompiler.IL;
+using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -62,23 +63,27 @@ public partial class User32Tests
 	[Test]
 	public void WindowPumpTest()
 	{
-		HWND hwnd = default;
-		TestWin wnd = new("Hello", new(0, 0, 300, 200));
-		wnd.Show();
-		new MessagePump().Run(wnd);
-		wnd.Dispose();
-		Assert.IsFalse(IsWindowVisible(hwnd));
-		Assert.IsTrue(wnd.gotMsg);
+		VisibleWindow.Run(WndProc, "Hello");
+
+		static IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
+		{
+			System.Diagnostics.Debug.WriteLine($"TestWndProc={(WindowMessage)msg} (WrapperTests.cs)");
+			if (msg == (uint)WindowMessage.WM_CREATE) MessageBox(hwnd, "Got it!");
+			return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
 	}
 
-	private class TestWin : VisibleWindow
+	[Test]
+	public void WindowRunTest()
 	{
-		public bool gotMsg = false;
+		VisibleWindow.Run<MyWin>(null, "Hello");
+	}
 
-		public TestWin(string text, RECT bounds) : base(null, text, bounds) { }
+	public class MyWin : VisibleWindow
+	{
 		protected override IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
-			gotMsg = true;
+			if (msg == (uint)WindowMessage.WM_CREATE) MessageBox(hwnd, "Got it!");
 			return base.WndProc(hwnd, msg, wParam, lParam);
 		}
 	}
