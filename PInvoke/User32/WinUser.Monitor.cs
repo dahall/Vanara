@@ -748,19 +748,16 @@ namespace Vanara.PInvoke
 			public MonitorInfoFlags dwFlags;
 			
 			/// <summary>
-			/// Creates new instance of <see cref="MONITORINFOEX"/> structure 
+			/// Creates new instance of <see cref="MONITORINFO"/> structure 
 			/// </summary>
 			/// <returns>
-			/// Returns new instance of properly initialized <see cref="MONITORINFOEX"/> structure. 
+			/// Returns new instance of properly initialized <see cref="MONITORINFO"/> structure. 
 			/// </returns>
-			/// <seealso cref="User32.GetMonitorInfo(Vanara.PInvoke.HMONITOR,ref Vanara.PInvoke.User32.MONITORINFOEX)"/>
-			public static MONITORINFO Create()
-			{
-				return new MONITORINFO
-				{
-					cbSize = (uint)Marshal.SizeOf(typeof(MONITORINFO))
-				};
-			}
+			/// <seealso cref="User32.GetMonitorInfo(Vanara.PInvoke.HMONITOR,ref Vanara.PInvoke.User32.MONITORINFO)"/>
+            public static MONITORINFO Default => new()
+            {
+                cbSize = (uint)Marshal.SizeOf(typeof(MONITORINFO))
+            };
 		}
 
 		/// <summary>
@@ -827,20 +824,17 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 			public string szDevice;
 
-			/// <summary>
-			/// Creates new instance of <see cref="MONITORINFOEX"/> structure 
-			/// </summary>
-			/// <returns>
-			/// Returns new instance of properly initialized <see cref="MONITORINFOEX"/> structure. 
-			/// </returns>
-			/// <seealso cref="User32.GetMonitorInfo(Vanara.PInvoke.HMONITOR,ref Vanara.PInvoke.User32.MONITORINFOEX)"/>
-			public static MONITORINFOEX Create()
-			{
-				return new MONITORINFOEX
-				{
-					cbSize = (uint)Marshal.SizeOf(typeof(MONITORINFOEX))
-				};
-			}
-		}
+            /// <summary>
+            /// Creates new instance of <see cref="MONITORINFOEX"/> structure 
+            /// </summary>
+            /// <returns>
+            /// Returns new instance of properly initialized <see cref="MONITORINFOEX"/> structure. 
+            /// </returns>
+            /// <seealso cref="User32.GetMonitorInfo(Vanara.PInvoke.HMONITOR,ref Vanara.PInvoke.User32.MONITORINFOEX)"/>
+            public static MONITORINFOEX Default => new()
+            {
+                cbSize = (uint)Marshal.SizeOf(typeof(MONITORINFOEX))
+            };
+        }
 	}
 }
