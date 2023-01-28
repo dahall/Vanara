@@ -184,25 +184,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("evntrace.h", MSDNShortId = "e9f70ae6-906f-4e55-bca7-4355f1ca6091")]
 		public delegate Win32Error TraceControlCallback([In] WMIDPREQUESTCODE RequestCode, [In] IntPtr Context, ref uint Reserved, [In] IntPtr Buffer);
 
-		/// <summary>Defines the source of the event data.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ne-tdh-decoding_source typedef enum _DECODING_SOURCE {
-		// DecodingSourceXMLFile, DecodingSourceWbem, DecodingSourceWPP, DecodingSourceTlg, DecodingSourceMax } DECODING_SOURCE;
-		[PInvokeData("tdh.h", MSDNShortId = "d6cd09da-9a67-4df2-9d82-370c559d3bfc")]
-		public enum DECODING_SOURCE
-		{
-			/// <summary>The source of the event data is a XML manifest.</summary>
-			DecodingSourceXMLFile,
-
-			/// <summary>The source of the event data is a WMI MOF class.</summary>
-			DecodingSourceWbem,
-
-			/// <summary>The source of the event data is a TMF file.</summary>
-			DecodingSourceWPP,
-
-			/// <summary>Indicates that the event was a self-describing event and was decoded using TraceLogging metadata.</summary>
-			DecodingSourceTlg,
-		}
-
 		/// <summary>
 		/// <para>
 		/// [Some information relates to pre-released product which may be substantially modified before it's commercially released.
@@ -239,49 +220,6 @@ namespace Vanara.PInvoke
 			/// this control code to capture state information.
 			/// </summary>
 			EVENT_CONTROL_CODE_CAPTURE_STATE = 2
-		}
-
-		/// <summary>Defines the provider information to retrieve.</summary>
-		/// <remarks>
-		/// <para>
-		/// If you specify <c>EventOpcodeInformation</c> when calling TdhQueryProviderFieldInformation, you must specify the EventFieldValue
-		/// parameter as follows:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Bits 0 - 15 must contain the task value</term>
-		/// </item>
-		/// <item>
-		/// <term>Bits 16 - 23 must contain the opcode value</term>
-		/// </item>
-		/// </list>
-		/// <para>You can get the task and opcode values from EVENT_RECORD.EventHeader.EventDescriptor.</para>
-		/// <para>WMI MOF class supports retrieving keyword and level information only.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ne-tdh-event_field_type typedef enum _EVENT_FIELD_TYPE {
-		// EventKeywordInformation, EventLevelInformation, EventChannelInformation, EventTaskInformation, EventOpcodeInformation,
-		// EventInformationMax } EVENT_FIELD_TYPE;
-		[PInvokeData("tdh.h", MSDNShortId = "da525556-e42b-41cb-b954-300f378477e5")]
-		public enum EVENT_FIELD_TYPE
-		{
-			/// <summary>
-			/// Keyword information defined in the manifest. For providers that define themselves using MOF classes, this type returns the
-			/// enable flags values if the provider class includes the Flags property. For details, see the "Specifying level and enable
-			/// flags values for a provider" section of Event Tracing MOF Qualifiers.
-			/// </summary>
-			EventKeywordInformation,
-
-			/// <summary>Level information defined in the manifest.</summary>
-			EventLevelInformation,
-
-			/// <summary>Channel information defined in the manifest.</summary>
-			EventChannelInformation,
-
-			/// <summary>Task information defined in the manifest.</summary>
-			EventTaskInformation,
-
-			/// <summary>Operation code information defined in the manifest.</summary>
-			EventOpcodeInformation,
 		}
 
 		/// <summary>Requested control function.</summary>
@@ -874,57 +812,6 @@ namespace Vanara.PInvoke
 			EVENT_TRACE_ADDTO_TRIAGE_DUMP = 0x80000000,
 		}
 
-		/// <summary>Defines constant values that indicate if the map is a value map, bitmap, or pattern map.</summary>
-		/// <remarks>The following MOF example shows the flags that are set based on the WMI property attributes used.</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ne-tdh-map_flags typedef enum _MAP_FLAGS {
-		// EVENTMAP_INFO_FLAG_MANIFEST_VALUEMAP, EVENTMAP_INFO_FLAG_MANIFEST_BITMAP, EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP,
-		// EVENTMAP_INFO_FLAG_WBEM_VALUEMAP, EVENTMAP_INFO_FLAG_WBEM_BITMAP, EVENTMAP_INFO_FLAG_WBEM_FLAG, EVENTMAP_INFO_FLAG_WBEM_NO_MAP } MAP_FLAGS;
-		[PInvokeData("tdh.h", MSDNShortId = "3fc6935a-328a-4df3-8c2f-cd634d94ca16")]
-		public enum MAP_FLAGS
-		{
-			/// <summary>The manifest value map maps integer values to strings. For details, see the MapType complex type.</summary>
-			EVENTMAP_INFO_FLAG_MANIFEST_VALUEMAP,
-
-			/// <summary>The manifest value map maps bit values to strings. For details, see the MapType complex type.</summary>
-			EVENTMAP_INFO_FLAG_MANIFEST_BITMAP,
-
-			/// <summary>
-			/// The manifest value map uses regular expressions to map one name to another name. For details, see the PatternMapType complex type.
-			/// </summary>
-			EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP,
-
-			/// <summary>The WMI value map maps integer values to strings. For details, see ValueMap and Value Qualifiers.</summary>
-			EVENTMAP_INFO_FLAG_WBEM_VALUEMAP,
-
-			/// <summary>The WMI value map maps bit values to strings. For details, see BitMap and BitValue Qualifiers.</summary>
-			EVENTMAP_INFO_FLAG_WBEM_BITMAP,
-
-			/// <summary>
-			/// This flag can be combined with the EVENTMAP_INFO_FLAG_WBEM_VALUEMAP flag to indicate that the ValueMap qualifier contains bit
-			/// (flag) values instead of index values.
-			/// </summary>
-			EVENTMAP_INFO_FLAG_WBEM_FLAG,
-
-			/// <summary>
-			/// This flag can be combined with the EVENTMAP_INFO_FLAG_WBEM_VALUEMAP or EVENTMAP_INFO_FLAG_WBEM_BITMAP flag to indicate that
-			/// the MOF class property contains a BitValues or Values qualifier but does not contain the BitMap or ValueMap qualifier.
-			/// </summary>
-			EVENTMAP_INFO_FLAG_WBEM_NO_MAP,
-		}
-
-		/// <summary>Defines if the value map value is in a ULONG data type or a string.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ne-tdh-map_valuetype typedef enum _MAP_VALUETYPE {
-		// EVENTMAP_ENTRY_VALUETYPE_ULONG, EVENTMAP_ENTRY_VALUETYPE_STRING } MAP_VALUETYPE;
-		[PInvokeData("tdh.h", MSDNShortId = "a17e5214-29d3-465f-9785-0cc8965a42c9")]
-		public enum MAP_VALUETYPE
-		{
-			/// <summary>Use the Value member of EVENT_MAP_ENTRY to access the map value.</summary>
-			EVENTMAP_ENTRY_VALUETYPE_ULONG,
-
-			/// <summary>Use the InputOffset member of EVENT_MAP_ENTRY to access the map value.</summary>
-			EVENTMAP_ENTRY_VALUETYPE_STRING,
-		}
-
 		/// <summary>Modes for processing events.</summary>
 		[PInvokeData("Evntcons.h", MSDNShortId = "179451e9-7e3c-4d3a-bcc6-3ad9d382229a")]
 		[Flags]
@@ -946,106 +833,6 @@ namespace Vanara.PInvoke
 			/// through the callback specified in the EventCallback member. Prior to Windows Vista: Not supported.
 			/// </summary>
 			PROCESS_TRACE_MODE_EVENT_RECORD = 0x10000000,
-		}
-
-		/// <summary>Defines if the property is contained in a structure or array.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ne-tdh-property_flags typedef enum _PROPERTY_FLAGS { PropertyStruct,
-		// PropertyParamLength, PropertyParamCount, PropertyWBEMXmlFragment, PropertyParamFixedLength, PropertyParamFixedCount,
-		// PropertyHasTags, PropertyHasCustomSchema } PROPERTY_FLAGS;
-		[PInvokeData("tdh.h", MSDNShortId = "517c1662-4230-44dc-94f0-a1996291bbee")]
-		public enum PROPERTY_FLAGS
-		{
-			/// <summary>The property information is contained in the structType member of the EVENT_PROPERTY_INFO structure.</summary>
-			PropertyStruct,
-
-			/// <summary>
-			/// Use the lengthPropertyIndex member of the EVENT_PROPERTY_INFO structure to locate the property that contains the length value
-			/// of the property.
-			/// </summary>
-			PropertyParamLength,
-
-			/// <summary>
-			/// Use the countPropertyIndex member of the EVENT_PROPERTY_INFO structure to locate the property that contains the size of the array.
-			/// </summary>
-			PropertyParamCount,
-
-			/// <summary>
-			/// Indicates that the MOF data is in XML format (the event data contains within itself a fully-rendered XML description). This
-			/// flag is set if the MOF property contains the XMLFragment qualifier.
-			/// </summary>
-			PropertyWBEMXmlFragment,
-
-			/// <summary>
-			/// Indicates that the length member of the EVENT_PROPERTY_INFO structure contains a fixed length, e.g. as specified in the
-			/// provider manifest with &lt;data length="12" … /&gt;. This flag will not be set for a variable-length field, e.g. &lt;data
-			/// length="LengthField" … /&gt;, nor will this flag be set for fields where the length is not specified in the manifest, e.g.
-			/// int32 or null-terminated string. As an example, if PropertyParamLength is unset, length is 0, and InType is
-			/// TDH_INTYPE_UNICODESTRING, we must check the PropertyParamFixedLength flag to determine the length of the string. If
-			/// PropertyParamFixedLength is set, the string length is fixed at 0. If PropertyParamFixedLength is unset, the string is null-terminated.
-			/// </summary>
-			PropertyParamFixedLength,
-
-			/// <summary>
-			/// Indicates that the count member of the EVENT_PROPERTY_INFO structure contains a fixed array count, e.g. as specified in the
-			/// provider manifest with &lt;data count="12" … /&gt;. This flag will not be set for a variable-length array, e.g. &lt;data
-			/// count="ArrayCount" … /&gt;, nor will this flag be set for non-array fields. As an example, if PropertyParamCount is unset and
-			/// count is 1, PropertyParamFixedCount flag must be checked to determine whether the field is a scalar value or a single-element
-			/// array. If PropertyParamFixedCount is set, the field is a single-element array. If PropertyParamFixedCount is unset, the field
-			/// is a scalar value, not an array.
-			/// </summary>
-			PropertyParamFixedCount,
-
-			/// <summary>Indicates that the Tags field contains valid field tag data.</summary>
-			PropertyHasTags,
-
-			/// <summary>Indicates that the Type is described with a custom schema.</summary>
-			PropertyHasCustomSchema,
-		}
-
-		/// <summary>Defines the context type.</summary>
-		/// <remarks>
-		/// If you are specifying context information for a legacy ETW event, you only need to specify the TDH_CONTEXT_POINTERSIZE type—the
-		/// other types are used for WPP events and are ignored for legacy ETW events.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ne-tdh-tdh_context_type typedef enum _TDH_CONTEXT_TYPE {
-		// TDH_CONTEXT_WPP_TMFFILE, TDH_CONTEXT_WPP_TMFSEARCHPATH, TDH_CONTEXT_WPP_GMT, TDH_CONTEXT_POINTERSIZE, TDH_CONTEXT_PDB_PATH,
-		// TDH_CONTEXT_MAXIMUM } TDH_CONTEXT_TYPE;
-		[PInvokeData("tdh.h", MSDNShortId = "7892f0d2-84f6-4543-b94e-8501e3911266")]
-		public enum TDH_CONTEXT_TYPE
-		{
-			/// <summary>
-			/// Null-terminated Unicode string that contains the name of the .tmf file used for parsing the WPP log. Typically, the .tmf file
-			/// name is picked up from the event GUID so you do not have to specify the file name.
-			/// </summary>
-			TDH_CONTEXT_WPP_TMFFILE,
-
-			/// <summary>
-			/// Null-terminated Unicode string that contains the path to the .tmf file. You do not have to specify this path if the search
-			/// path contains the file. Only specify this context information if you also specify the TDH_CONTEXT_WPP_TMFFILE context type.
-			/// If the file is not found, TDH searches the following locations in the given order:
-			/// </summary>
-			TDH_CONTEXT_WPP_TMFSEARCHPATH,
-
-			/// <summary>
-			/// A 1-byte Boolean flag that indicates if the WPP event time stamp should be converted to Universal Time Coordinate (UTC). If
-			/// 1, the time stamp is converted to UTC. If 0, the time stamp is in local time. By default, the time stamp is in local time.
-			/// </summary>
-			TDH_CONTEXT_WPP_GMT,
-
-			/// <summary>
-			/// Size, in bytes, of the pointer data types or size_t data types used in the event. Indicates if the event used 4-byte or
-			/// 8-byte values. By default, the pointer size is the pointer size of the decoding computer. To determine the size of the
-			/// pointer or size_t value, use the PointerSize member of TRACE_LOGFILE_HEADER (the first event you receive in your
-			/// EventRecordCallback callback contains this header in the data section). However, this value may not be accurate. For example,
-			/// on a 64-bit computer, a 32-bit application will log 4-byte pointers; however, the session will set PointerSize to 8.
-			/// </summary>
-			TDH_CONTEXT_POINTERSIZE,
-
-			/// <summary>
-			/// Null-terminated Unicode string that contains the name of the .pdb file for the binary that contains WPP messages. This
-			/// parameter can be used as an alternative to TDH_CONTEXT_WPP_TMFFILE or TDH_CONTEXT_WPP_TMFSEARCHPATH.
-			/// </summary>
-			TDH_CONTEXT_PDB_PATH,
 		}
 
 		/// <summary>Provider-defined value that specifies the level of information the event generates.</summary>
@@ -5466,6 +5253,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public ulong MatchId;
 
+			private uint Address;
 			///// <summary>An array of call addresses on the stack.</summary>
 			//public uint Address[ANYSIZE_ARRAY];
 		}
@@ -5488,6 +5276,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public ulong MatchId;
 
+			private ulong Address;
 			///// <summary>An array of call addresses on the stack.</summary>
 			//public ulong Address[ANYSIZE_ARRAY];
 		}
@@ -5518,6 +5307,7 @@ namespace Vanara.PInvoke
 		// _EVENT_FILTER_EVENT_ID { BOOLEAN FilterIn; UCHAR Reserved; USHORT Count; USHORT Events[ANYSIZE_ARRAY]; } EVENT_FILTER_EVENT_ID, *PEVENT_FILTER_EVENT_ID;
 		[PInvokeData("evntprov.h", MSDNShortId = "D660D140-BE86-44F6-B1D2-E1B97300BD11")]
 		[StructLayout(LayoutKind.Sequential)]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<EVENT_FILTER_EVENT_ID>), nameof(Count))]
 		public struct EVENT_FILTER_EVENT_ID
 		{
 			/// <summary>
@@ -5529,7 +5319,8 @@ namespace Vanara.PInvoke
 			/// filtering is disabled for the event IDs.
 			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.U1)] public bool FilterIn;
+			[MarshalAs(UnmanagedType.U1)]
+			public bool FilterIn;
 
 			/// <summary>A reserved value.</summary>
 			public byte Reserved;
@@ -5537,8 +5328,9 @@ namespace Vanara.PInvoke
 			/// <summary>The number of event IDs in the <c>Events</c> member.</summary>
 			public ushort Count;
 
-			///// <summary>An array of event IDs.</summary>
-			//public ushort Events[ANYSIZE_ARRAY];
+			/// <summary>An array of event IDs.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public ushort[] Events;
 		}
 
 		/// <summary>
@@ -5555,6 +5347,7 @@ namespace Vanara.PInvoke
 		// UCHAR Names[ANYSIZE_ARRAY]; } EVENT_FILTER_EVENT_NAME, *PEVENT_FILTER_EVENT_NAME;
 		[PInvokeData("evntprov.h", MSDNShortId = "85E8C8F8-31D4-42F1-9267-15F74E473D57")]
 		[StructLayout(LayoutKind.Sequential)]
+		[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<EVENT_FILTER_EVENT_NAME>), nameof(NameCount))]
 		public struct EVENT_FILTER_EVENT_NAME
 		{
 			/// <summary>Bitmask of keywords that determine the category of events to filter on.</summary>
@@ -5582,8 +5375,9 @@ namespace Vanara.PInvoke
 			/// <summary>The number of names in the <c>Names</c> member.</summary>
 			public ushort NameCount;
 
-			///// <summary>An <c>NameCount</c> long array of null-terminated, UTF-8 event names.</summary>
-			//public byte Names[ANYSIZE_ARRAY];
+			/// <summary>An <c>NameCount</c> long array of null-terminated, UTF-8 event names.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+			public byte[] Names;
 		}
 
 		/// <summary>Defines the header data that must precede the filter data that is defined in the instrumentation manifest.</summary>
@@ -5668,7 +5462,8 @@ namespace Vanara.PInvoke
 			/// <para><c>true</c> to filter the events matching the provided names in; <c>false</c> to filter them out.</para>
 			/// <para>If set to <c>true</c>, the filtered events will have stacks collected.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.U1)] public bool FilterIn;
+			[MarshalAs(UnmanagedType.U1)]
+			public bool FilterIn;
 		}
 
 		/// <summary>Defines information about the event.</summary>
@@ -5985,230 +5780,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>Unique transaction identifier that maps an event to a specific transaction.</summary>
 			public uint InstanceId;
-		}
-
-		/// <summary>Defines a single value map entry.</summary>
-		/// <remarks>
-		/// For maps defined in a manifest, the string will contain a space at the end of the string. For example, if the value is mapped to
-		/// "Monday" in the manifest, the string is returned as "Monday ".
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-event_map_entry typedef struct _EVENT_MAP_ENTRY { ULONG
-		// OutputOffset; union { ULONG Value; ULONG InputOffset; }; } EVENT_MAP_ENTRY;
-		[PInvokeData("tdh.h", MSDNShortId = "e5b12f7a-4a00-41a0-90df-7d1317d63a4a")]
-		[StructLayout(LayoutKind.Explicit)]
-		public struct EVENT_MAP_ENTRY
-		{
-			/// <summary>
-			/// Offset from the beginning of the EVENT_MAP_INFO structure to a null-terminated Unicode string that contains the string
-			/// associated with the map value in <c>Value</c> or <c>InputOffset</c>.
-			/// </summary>
-			[FieldOffset(0)]
-			public uint OutputOffset;
-
-			/// <summary>
-			/// If the <c>MapEntryValueType</c> member of EVENT_MAP_INFO is EVENTMAP_ENTRY_VALUETYPE_ULONG, use this member to access the map value.
-			/// </summary>
-			[FieldOffset(4)]
-			public uint Value;
-
-			/// <summary>
-			/// <para>
-			/// Offset from the beginning of the EVENT_MAP_INFO structure to the null-terminated Unicode string that contains the map value.
-			/// </para>
-			/// <para>The offset is used for pattern maps and WMI value maps that map strings to strings.</para>
-			/// </summary>
-			[FieldOffset(4)]
-			public uint InputOffset;
-		}
-
-		/// <summary>Defines the metadata about the event map.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-event_map_info typedef struct _EVENT_MAP_INFO { ULONG NameOffset;
-		// MAP_FLAGS Flag; ULONG EntryCount; union { MAP_VALUETYPE MapEntryValueType; ULONG FormatStringOffset; }; EVENT_MAP_ENTRY
-		// MapEntryArray[ANYSIZE_ARRAY]; } EVENT_MAP_INFO;
-		[PInvokeData("tdh.h", MSDNShortId = "dc7f14e7-16d7-4dfc-8c1a-5db6fa999d98")]
-		[StructLayout(LayoutKind.Explicit)]
-		public struct EVENT_MAP_INFO
-		{
-			/// <summary>
-			/// Offset from the beginning of this structure to a null-terminated Unicode string that contains the name of the event map.
-			/// </summary>
-			[FieldOffset(0)]
-			public uint NameOffset;
-
-			/// <summary>
-			/// Indicates if the map is a value map, bitmap, or pattern map. This member can contain one or more flag values. For possible
-			/// values, see the MAP_FLAGS enumeration.
-			/// </summary>
-			[FieldOffset(4)]
-			public MAP_FLAGS Flag;
-
-			/// <summary>Number of map entries in <c>MapEntryArray</c>.</summary>
-			[FieldOffset(8)]
-			public uint EntryCount;
-
-			/// <summary>
-			/// Determines if you use the <c>Value</c> member or <c>InputOffset</c> member of EVENT_MAP_ENTRY to access the map value. For
-			/// possible values, see the MAP_VALUETYPE enumeration.
-			/// </summary>
-			[FieldOffset(12)]
-			public MAP_VALUETYPE MapEntryValueType;
-
-			/// <summary>
-			/// <para>
-			/// If the value of <c>Flag</c> is EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP, use this offset to access the null-terminated Unicode
-			/// string that contains the value of the <c>format</c> attribute of the patternMap element. The offset is from the beginning of
-			/// this structure.
-			/// </para>
-			/// <para>
-			/// The EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP also indicates that you use the <c>InputOffset</c> member of EVENT_MAP_ENTRY to
-			/// access the map value.
-			/// </para>
-			/// </summary>
-			[FieldOffset(12)]
-			public uint FormatStringOffset;
-
-			///// <summary>Array of map entries. For details, see the EVENT_MAP_ENTRY structure.</summary>
-			//public EVENT_MAP_ENTRY MapEntryArray[ANYSIZE_ARRAY];
-		}
-
-		/// <summary>Provides information about a single property of the event or filter.</summary>
-		/// <remarks>Filters do not support maps, structures, or arrays.</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-event_property_info typedef struct _EVENT_PROPERTY_INFO {
-		// PROPERTY_FLAGS Flags; ULONG NameOffset; union { struct { USHORT InType; USHORT OutType; ULONG MapNameOffset; } nonStructType;
-		// struct { USHORT StructStartIndex; USHORT NumOfStructMembers; ULONG padding; } structType; struct { USHORT InType; USHORT OutType;
-		// ULONG CustomSchemaOffset; } customSchemaType; }; union { USHORT count; USHORT countPropertyIndex; }; union { USHORT length; USHORT
-		// lengthPropertyIndex; }; union { ULONG Reserved; struct { ULONG Tags : 28; }; }; } EVENT_PROPERTY_INFO;
-		[PInvokeData("tdh.h", MSDNShortId = "06b82b31-1f0e-45d5-88ec-9b9835af10df")]
-		[StructLayout(LayoutKind.Explicit)]
-		public struct EVENT_PROPERTY_INFO
-		{
-			/// <summary>
-			/// Flags that indicate if the property is contained in a structure or array. For possible values, see the PROPERTY_FLAGS enumeration.
-			/// </summary>
-			[FieldOffset(0)]
-			public PROPERTY_FLAGS Flags;
-
-			/// <summary>
-			/// Offset to a null-terminated Unicode string that contains the name of the property. If this an event property, the offset is
-			/// from the beginning of the TRACE_EVENT_INFO structure. If this is a filter property, the offset is from the beginning of the
-			/// PROVIDER_FILTER_INFO structure.
-			/// </summary>
-			[FieldOffset(4)]
-			public uint NameOffset;
-
-			/// <summary/>
-			[FieldOffset(8)]
-			public NONSTRUCTTYPE nonStructType;
-
-			/// <summary/>
-			[FieldOffset(8)]
-			public STRUCTTYPE structType;
-
-			/// <summary/>
-			[FieldOffset(8)]
-			public CUSTOMSCHEMATYPE customSchemaType;
-
-			/// <summary>Number of elements in the array. Note that this value is 1 for properties that are not defined as an array.</summary>
-			[FieldOffset(16)]
-			public ushort count;
-
-			/// <summary>
-			/// Zero-based index to the element of the property array that contains the number of elements in the array. Use this member if
-			/// the PropertyParamCount flag in <c>Flags</c> is set; otherwise, use the <c>count</c> member.
-			/// </summary>
-			[FieldOffset(16)]
-			public ushort countPropertyIndex;
-
-			/// <summary>
-			/// Size of the property, in bytes. Note that variable-sized types such as strings and binary data have a length of zero unless
-			/// the property has length attribute to explicitly indicate its real length. Structures have a length of zero.
-			/// </summary>
-			[FieldOffset(18)]
-			public ushort length;
-
-			/// <summary>
-			/// Zero-based index to the element of the property array that contains the size value of this property. Use this member if the
-			/// PropertyParamLength flag in <c>Flags</c> is set; otherwise, use the <c>length</c> member.
-			/// </summary>
-			[FieldOffset(18)]
-			public ushort lengthPropertyIndex;
-
-			/// <summary>
-			/// A 28-bit value associated with the field metadata. This value is valid only if the PropertyHasTags flag is set. This value
-			/// can be used by the event provider to associate additional semantic data with a field for use by an event processing tool. For
-			/// example, a tag value of 1 might indicate that the field contains a username. The semantics of any values in this field are
-			/// defined by the event provider.
-			/// </summary>
-			[FieldOffset(20)]
-			public uint Tags;
-
-			/// <summary/>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct NONSTRUCTTYPE
-			{
-				/// <summary>
-				/// <para>Data type of this property on input. For a description of these types, see Remarks in InputType.</para>
-				/// <para>For descriptions of these types, see Event Tracing MOF Qualifiers.</para>
-				/// <para>TdhGetPropertySize TdhGetPropertySize</para>
-				/// </summary>
-				public ushort InType;
-
-				/// <summary>
-				/// <para>
-				/// Output format for this property. If the value is TDH_OUTTYPE_NULL, use the in type as the output format. For a
-				/// description of these types, see Remarks in InputType.
-				/// </para>
-				/// <para>For descriptions of these types, see Event Tracing MOF Qualifiers.</para>
-				/// </summary>
-				public ushort OutType;
-
-				/// <summary>
-				/// Offset from the beginning of the TRACE_EVENT_INFO structure to a null-terminated Unicode string that contains the name of
-				/// the map attribute value. You can pass this string to TdhGetEventMapInformation to retrieve information about the value map.
-				/// </summary>
-				public uint MapNameOffset;
-			}
-
-			/// <summary/>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct STRUCTTYPE
-			{
-				/// <summary>Zero-based index to the element of the property array that contains the first member of the structure.</summary>
-				public ushort StructStartIndex;
-
-				/// <summary>Number of members in the structure.</summary>
-				public ushort NumOfStructMembers;
-
-				/// <summary>Not used.</summary>
-				public uint padding;
-			}
-
-			/// <summary/>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct CUSTOMSCHEMATYPE
-			{
-				/// <summary>
-				/// <para>Data type of this property on input. For a description of these types, see Remarks in InputType.</para>
-				/// <para>For descriptions of these types, see Event Tracing MOF Qualifiers.</para>
-				/// <para>TdhGetPropertySize TdhGetPropertySize</para>
-				/// </summary>
-				public ushort InType;
-
-				/// <summary>
-				/// <para>
-				/// Output format for this property. If the value is TDH_OUTTYPE_NULL, use the in type as the output format. For a
-				/// description of these types, see Remarks in InputType.
-				/// </para>
-				/// <para>For descriptions of these types, see Event Tracing MOF Qualifiers.</para>
-				/// </summary>
-				public ushort OutType;
-
-				/// <summary>
-				/// Offset (in bytes) from the beginning of the TRACE_EVENT_INFO structure to the custom schema information. The custom
-				/// schema information will contain a 2-byte protocol identifier, followed by a 2-byte schema length, followed by the schema.
-				/// </summary>
-				public uint CustomSchemaOffset;
-			}
 		}
 
 		/// <summary>The <c>EVENT_RECORD</c> structure defines the layout of an event that ETW delivers.</summary>
@@ -7309,170 +6880,6 @@ namespace Vanara.PInvoke
 			public uint DataType;
 		}
 
-		/// <summary>
-		/// The <c>PAYLOAD_FILTER_PREDICATE</c> structure defines an event payload filter predicate that describes how to filter on a single
-		/// field in a trace session.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// On Windows 8.1,Windows Server 2012 R2, and later, event payload filters can be used by the EnableTraceEx2 function and the
-		/// ENABLE_TRACE_PARAMETERS and EVENT_FILTER_DESCRIPTOR structures to filter on the specific content of the event in a logger session.
-		/// </para>
-		/// <para>
-		/// The <c>PAYLOAD_FILTER_PREDICATE</c> structure is used with the TdhCreatePayloadFilter function to create a single payload filter
-		/// for a single payload to be used with the EnableTraceEx2 function. A single payload filter can also be aggregated with other
-		/// single payload filters using the TdhAggregatePayloadFilters function.
-		/// </para>
-		/// <para>
-		/// Each field has a type specified in the provider manifest that can be used in the <c>Fieldname</c> member of the
-		/// <c>PAYLOAD_FILTER_PREDICATE</c> structure to filter on that field.
-		/// </para>
-		/// <para>
-		/// The <c>CompareOp</c> member specifies that operator to use for payload filtering. Payload filtering supports filtering on a
-		/// string (including a <c>GUID</c>) and integers (including <c>TDH_INTYPE_FILETIME</c>). Filtering on floating-point numbers, a
-		/// binary blob (including <c>TDH_INTYPE_POINTER</c>), and structured data ( <c>SID</c> and <c>SYSTEMTIME</c>) are not supported.
-		/// </para>
-		/// <para>
-		/// The <c>Value</c> member contains a string of the value or values to compare with the value of the <c>Fieldname</c> member. The
-		/// <c>Value</c> member is converted from a string to the type of the <c>Fieldname</c> member as specified in the manifest.
-		/// </para>
-		/// <para>
-		/// All string comparisons are case-insensitive. The string in the <c>Value</c> member is UNICODE, but it will be converted to ANSI
-		/// if the type specified in the manifest is ANSI.
-		/// </para>
-		/// <para>
-		/// A <c>Fieldname</c> member that contains a <c>GUID</c> can only be compared when the <c>CompareOp</c> member contains either the
-		/// <c>PAYLOADFIELD_IS</c> or <c>PAYLOADFIELD_ISNOT</c> for the payload operator. The string that represents a <c>GUID</c> in the
-		/// <c>Value</c> member must contain the curly brackets ({00000000-0000-0000-0000-000000000000}, for example).
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// For an example that uses the <c>PAYLOAD_FILTER_PREDICATE</c> structure and the TdhCreatePayloadFilter function to create payload
-		/// filters to use in filtering on specific conditions in a logger session, see the example for the EnableTraceEx2 function.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-payload_filter_predicate typedef struct _PAYLOAD_FILTER_PREDICATE {
-		// LPWSTR FieldName; USHORT CompareOp; LPWSTR Value; } PAYLOAD_FILTER_PREDICATE, *PPAYLOAD_FILTER_PREDICATE;
-		[PInvokeData("tdh.h", MSDNShortId = "6B8C03C9-2936-4FEE-AEF4-ABC368B1CB75")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct PAYLOAD_FILTER_PREDICATE
-		{
-			/// <summary>The name of the field to filter in package manifest.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string FieldName;
-
-			/// <summary>
-			/// <para>The payload operator to use for the comparison.</para>
-			/// <para>This member can be one of the values for the <c>PAYLOAD_OPERATOR</c> enumeration defined in the Tdh.h header file.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>PAYLOADFIELD_EQ 0</term>
-			/// <term>
-			/// The value of the FieldName parameter is equal to the numeric value of the string in the Value member. This operator is for
-			/// comparing integers and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_NE 1</term>
-			/// <term>
-			/// The value of the FieldName parameter is not equal to the numeric value of the string in the Value member. This operator is
-			/// for comparing integers and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_LE 2</term>
-			/// <term>
-			/// The value of the FieldName parameter is less than or equal to the numeric value of the string in the Value member. This
-			/// operator is for comparing integers and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_GT 3</term>
-			/// <term>
-			/// The value of the FieldName parameter is greater than the numeric value of the string in the Value member. This operator is
-			/// for comparing integers and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_LT 4</term>
-			/// <term>
-			/// The value of the FieldName parameter is less than the numeric value of the string in the Value member. This operator is for
-			/// comparing integers and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_GE 5</term>
-			/// <term>
-			/// The value of the FieldName parameter is greater than or equal to the numeric value of the string in the Value member. This
-			/// operator is for comparing integers and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_BETWEEN 6</term>
-			/// <term>
-			/// The value of the FieldName parameter is between the two numeric values in the string in the Value member. The
-			/// PAYLOADFIELD_BETWEEN operator uses a closed interval (LowerBound &lt;= FieldValue &lt;= UpperBound). This operator is for
-			/// comparing integers and requires two values in the Value member. The two values should be separated by a comma character (',').
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_NOTBETWEEN 7</term>
-			/// <term>
-			/// The value of the FieldName parameter is not between the two numeric values in the string in the Value member. This operator
-			/// is for comparing integers and requires two values in the Value member. The two values should be separated by a comma
-			/// character (',').
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_MODULO 8</term>
-			/// <term>
-			/// The value of the FieldName parameter is the modulo of the numeric value in the string in the Value member. The operator can
-			/// be used for periodic sampling. This operator is for comparing integers and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_CONTAINS 20</term>
-			/// <term>
-			/// The value of the FieldName parameter contains the substring value in the Value member. String comparisons are case
-			/// insensitive. This operator is for comparing strings and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_DOESNTCONTAIN 21</term>
-			/// <term>
-			/// The value of the FieldName parameter does not contain the substring in the Value member. String comparisons are case
-			/// insensitive. This operator is for comparing strings and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_IS 30</term>
-			/// <term>
-			/// The value of the FieldName parameter is identical to the value of the string in the Value member. String comparisons are case
-			/// insensitive. This operator is for comparing strings or other non-integer values and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_ISNOT 31</term>
-			/// <term>
-			/// The value of the FieldName parameter is not identical to the value of the string in the Value member. String comparisons are
-			/// case insensitive. This operator is for comparing strings or other non-integer values and requires one value in the Value member.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>PAYLOADFIELD_INVALID 32</term>
-			/// <term>A value of the payload operator that is not valid.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public ushort CompareOp;
-
-			/// <summary>The string that contains one or values to compare depending on the <c>CompareOp</c> member.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string Value;
-		}
-
 		/// <summary/>
 		[PInvokeData("evntrace.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -7505,245 +6912,6 @@ namespace Vanara.PInvoke
 					}
 				}
 			}
-		}
-
-		/// <summary>Defines the property to retrieve.</summary>
-		/// <remarks>
-		/// <para>To describe a structure, set PropertyName to the name of the structure and ArrayIndex to ULONG_MAX.</para>
-		/// <para>
-		/// To describe a member of a structure, define an array of two <c>PROPERTY_DATA_DESCRIPTOR</c> structures. In the first descriptor,
-		/// set PropertyName to the name of the structure and ArrayIndex to 0. In the second descriptor, set PropertyName to the name of the
-		/// member and ArrayIndex to ULONG_MAX.
-		/// </para>
-		/// <para>
-		/// If the structure is an element of an array of structures, set ArrayIndex in the first descriptor to the zero-based index of the
-		/// structure in the array.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-property_data_descriptor typedef struct _PROPERTY_DATA_DESCRIPTOR {
-		// ULONGLONG PropertyName; ULONG ArrayIndex; ULONG Reserved; } PROPERTY_DATA_DESCRIPTOR;
-		[PInvokeData("tdh.h", MSDNShortId = "38e6f5b1-fce5-45e4-ac7a-09ba40d29837")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct PROPERTY_DATA_DESCRIPTOR
-		{
-			/// <summary>
-			/// <para>
-			/// Pointer to a null-terminated Unicode string that contains the case-sensitive property name. You can use the <c>NameOffset</c>
-			/// member of the EVENT_PROPERTY_INFO structure to get the property name.
-			/// </para>
-			/// <para>
-			/// The following table lists the possible values of PropertyName for WPP events. Use the suggested TDH data type when formatting
-			/// the returned buffer from TdhGetProperty.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Name</term>
-			/// <term>TDH Data Type</term>
-			/// <term>Description</term>
-			/// </listheader>
-			/// <item>
-			/// <term>FormattedString</term>
-			/// <term>TDH_INTYPE_UNICODESTRING</term>
-			/// <term>The formatted WPP trace message.</term>
-			/// </item>
-			/// <item>
-			/// <term>SequenceNum</term>
-			/// <term>TDH_INTYPE_UINT32</term>
-			/// <term>
-			/// The local or global sequence number of the trace message. Local sequence numbers, which are unique only to this trace
-			/// session, are the default.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>FunctionName</term>
-			/// <term>TDH_INTYPE_UNICODESTRING</term>
-			/// <term>The name of the function that generated the trace message.</term>
-			/// </item>
-			/// <item>
-			/// <term>ComponentName</term>
-			/// <term>TDH_INTYPE_UNICODESTRING</term>
-			/// <term>
-			/// The name of the component of the provider that generated the trace message. The component name appears only if it is
-			/// specified in the tracing code.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>SubComponentName</term>
-			/// <term>TDH_INTYPE_UNICODESTRING</term>
-			/// <term>
-			/// The name of the subcomponent of the provider that generated the trace message. The subcomponent name appears only if it is
-			/// specified in the tracing code.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>TraceGuid</term>
-			/// <term>TDH_INTYPE_GUID</term>
-			/// <term>The GUID associated with the WPP trace message.</term>
-			/// </item>
-			/// <item>
-			/// <term>GuidTypeName</term>
-			/// <term>TDH_INTYPE_UNICODESTRING</term>
-			/// <term>The file name concatenated with the line number from the source code from which the WPP trace message was traced.</term>
-			/// </item>
-			/// <item>
-			/// <term>SystemTime</term>
-			/// <term>TDH_INTYPE_SYSTEMTIME</term>
-			/// <term>The time when the WPP trace message was generated.</term>
-			/// </item>
-			/// <item>
-			/// <term>FlagsName</term>
-			/// <term>TDH_INTYPE_UNICODESTRING</term>
-			/// <term>The names of the trace flags enabling the trace message.</term>
-			/// </item>
-			/// <item>
-			/// <term>LevelName</term>
-			/// <term>TDH_INTYPE_UNICODESTRING</term>
-			/// <term>The value of the trace level enabling the trace message.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public ulong PropertyName;
-
-			/// <summary>
-			/// Zero-based index for accessing elements of a property array. If the property data is not an array or if you want to address
-			/// the entire array, specify ULONG_MAX (0xFFFFFFFF).
-			/// </summary>
-			public uint ArrayIndex;
-
-			/// <summary>Reserved.</summary>
-			public uint Reserved;
-		}
-
-		/// <summary>Defines the array of providers that have registered a MOF or manifest on the computer.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-provider_enumeration_info typedef struct _PROVIDER_ENUMERATION_INFO
-		// { ULONG NumberOfProviders; ULONG Reserved; TRACE_PROVIDER_INFO TraceProviderInfoArray[ANYSIZE_ARRAY]; } PROVIDER_ENUMERATION_INFO;
-		[PInvokeData("tdh.h", MSDNShortId = "bb4548fb-70e5-4726-bc92-adb7ba7be0e4")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct PROVIDER_ENUMERATION_INFO
-		{
-			/// <summary>Number of elements in the <c>TraceProviderInfoArray</c> array.</summary>
-			public uint NumberOfProviders;
-
-			/// <summary/>
-			public uint Reserved;
-
-			///// <summary>
-			///// Array of TRACE_PROVIDER_INFO structures that contain information about each provider such as its name and unique identifier.
-			///// </summary>
-			//public TRACE_PROVIDER_INFO TraceProviderInfoArray[ANYSIZE_ARRAY];
-		}
-
-		/// <summary>The <c>PROVIDER_EVENT_INFO</c> structure defines an array of events in a provider manifest.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-provider_event_info typedef struct _PROVIDER_EVENT_INFO { ULONG
-		// NumberOfEvents; ULONG Reserved; EVENT_DESCRIPTOR EventDescriptorsArray[ANYSIZE_ARRAY]; } PROVIDER_EVENT_INFO;
-		[PInvokeData("tdh.h", MSDNShortId = "CC392841-7436-4543-A846-FB5A27D9A014")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct PROVIDER_EVENT_INFO
-		{
-			/// <summary>The number of elements in the <c>EventDescriptorsArray</c> array.</summary>
-			public uint NumberOfEvents;
-
-			/// <summary>Reserved.</summary>
-			public uint Reserved;
-
-			///// <summary>An array of EVENT_DESCRIPTOR structures that contain information about each event.</summary>
-			//public EVENT_DESCRIPTOR EventDescriptorsArray[ANYSIZE_ARRAY];
-		}
-
-		/// <summary>Defines the field information.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-provider_field_info typedef struct _PROVIDER_FIELD_INFO { ULONG
-		// NameOffset; ULONG DescriptionOffset; ULONGLONG Value; } PROVIDER_FIELD_INFO;
-		[PInvokeData("tdh.h", MSDNShortId = "a7c88c25-3acc-42aa-bf2b-bc7651e84f8c")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct PROVIDER_FIELD_INFO
-		{
-			/// <summary>Offset to the null-terminated Unicode string that contains the name of the field, in English only.</summary>
-			public uint NameOffset;
-
-			/// <summary>
-			/// Offset to the null-terminated Unicode string that contains the localized description of the field. The value is zero if the
-			/// description does not exist.
-			/// </summary>
-			public uint DescriptionOffset;
-
-			/// <summary>Field value.</summary>
-			public ulong Value;
-		}
-
-		/// <summary>Defines metadata information about the requested field.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-provider_field_infoarray typedef struct _PROVIDER_FIELD_INFOARRAY {
-		// ULONG NumberOfElements; EVENT_FIELD_TYPE FieldType; PROVIDER_FIELD_INFO FieldInfoArray[ANYSIZE_ARRAY]; } PROVIDER_FIELD_INFOARRAY;
-		[PInvokeData("tdh.h", MSDNShortId = "c3755ca2-7b17-4f86-9ae8-34621f8b8c1b")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct PROVIDER_FIELD_INFOARRAY
-		{
-			/// <summary>Number of elements in the <c>FieldInfoArray</c> array.</summary>
-			public uint NumberOfElements;
-
-			/// <summary>
-			/// Type of field information in the <c>FieldInfoArray</c> array. For possible values, see the EVENT_FIELD_TYPE enumeration.
-			/// </summary>
-			public EVENT_FIELD_TYPE FieldType;
-
-			///// <summary>Array of PROVIDER_FIELD_INFO structures that define the field's name, description and value.</summary>
-			//public PROVIDER_FIELD_INFO FieldInfoArray[ANYSIZE_ARRAY];
-		}
-
-		/// <summary>Defines a filter and its data.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-provider_filter_info typedef struct _PROVIDER_FILTER_INFO { UCHAR
-		// Id; UCHAR Version; ULONG MessageOffset; ULONG Reserved; ULONG PropertyCount; EVENT_PROPERTY_INFO
-		// EventPropertyInfoArray[ANYSIZE_ARRAY]; } PROVIDER_FILTER_INFO, *PPROVIDER_FILTER_INFO;
-		[PInvokeData("tdh.h", MSDNShortId = "0541b24a-8531-4828-8c3b-d889e58b0b38")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct PROVIDER_FILTER_INFO
-		{
-			/// <summary>
-			/// The filter identifier that identifies the filter in the manifest. This is the same value as the <c>value</c> attribute of the
-			/// FilterType complex type.
-			/// </summary>
-			public byte Id;
-
-			/// <summary>
-			/// The version number that identifies the version of the filter definition in the manifest. This is the same value as the
-			/// <c>version</c> attribute of the FilterType complex type.
-			/// </summary>
-			public byte Version;
-
-			/// <summary>
-			/// Offset from the beginning of this structure to the message string that describes the filter. This is the same value as the
-			/// <c>message</c> attribute of the FilterType complex type.
-			/// </summary>
-			public uint MessageOffset;
-
-			/// <summary>Reserved.</summary>
-			public uint Reserved;
-
-			/// <summary>The number of elements in the EventPropertyInfoArray array.</summary>
-			public uint PropertyCount;
-
-			///// <summary>An array of EVENT_PROPERTY_INFO structures that define the filter data.</summary>
-			//public EVENT_PROPERTY_INFO EventPropertyInfoArray[ANYSIZE_ARRAY];
-		}
-
-		/// <summary>Defines the additional information required to parse an event.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-tdh_context typedef struct _TDH_CONTEXT { ULONGLONG ParameterValue;
-		// TDH_CONTEXT_TYPE ParameterType; ULONG ParameterSize; } TDH_CONTEXT;
-		[PInvokeData("tdh.h", MSDNShortId = "184df0af-3ac5-406f-a298-4f23826ad85e")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct TDH_CONTEXT
-		{
-			/// <summary>
-			/// Context value cast to a ULONGLONG. The context value is determined by the context type specified in <c>ParameterType</c>. For
-			/// example, if the context type is TDH_CONTEXT_WPP_TMFFILE, the context value is a Unicode string that contains the name of the
-			/// .tmf file.
-			/// </summary>
-			public ulong ParameterValue;
-
-			/// <summary>Context type. For a list of types, see the TDH_CONTEXT_TYPE enumeration.</summary>
-			public TDH_CONTEXT_TYPE ParameterType;
-
-			/// <summary>Reserved for future use.</summary>
-			public uint ParameterSize;
 		}
 
 		/// <summary>Defines the session and the information that the session used to enable the provider.</summary>
@@ -7796,127 +6964,6 @@ namespace Vanara.PInvoke
 			public ulong MatchAllKeyword;
 		}
 
-		/// <summary>Defines the information about the event.</summary>
-		/// <remarks>The value of an offset is zero if the member is not defined.</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-trace_event_info typedef struct _TRACE_EVENT_INFO { GUID
-		// ProviderGuid; GUID EventGuid; EVENT_DESCRIPTOR EventDescriptor; DECODING_SOURCE DecodingSource; ULONG ProviderNameOffset; ULONG
-		// LevelNameOffset; ULONG ChannelNameOffset; ULONG KeywordsNameOffset; ULONG TaskNameOffset; ULONG OpcodeNameOffset; ULONG
-		// EventMessageOffset; ULONG ProviderMessageOffset; ULONG BinaryXMLOffset; ULONG BinaryXMLSize; union { ULONG EventNameOffset; ULONG
-		// ActivityIDNameOffset; }; union { ULONG EventAttributesOffset; ULONG RelatedActivityIDNameOffset; }; ULONG PropertyCount; ULONG
-		// TopLevelPropertyCount; union { TEMPLATE_FLAGS Flags; struct { ULONG Reserved : 4; ULONG Tags : 28; }; }; EVENT_PROPERTY_INFO
-		// EventPropertyInfoArray[ANYSIZE_ARRAY]; } TRACE_EVENT_INFO;
-		[PInvokeData("tdh.h", MSDNShortId = "ecf57a23-0dd2-4954-82ac-e92f651c226f")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct TRACE_EVENT_INFO
-		{
-			/// <summary>A GUID that identifies the provider.</summary>
-			public Guid ProviderGuid;
-
-			/// <summary>
-			/// A GUID that identifies the MOF class that contains the event. If the provider uses a manifest to define its events, this
-			/// member is GUID_NULL.
-			/// </summary>
-			public Guid EventGuid;
-
-			/// <summary>A EVENT_DESCRIPTOR structure that describes the event.</summary>
-			public EVENT_DESCRIPTOR EventDescriptor;
-
-			/// <summary>
-			/// A DECODING_SOURCE enumeration value that identifies the source used to parse the event's data (for example, an instrumenation
-			/// manifest of WMI MOF class).
-			/// </summary>
-			public DECODING_SOURCE DecodingSource;
-
-			/// <summary>
-			/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the name of the provider.
-			/// </summary>
-			public uint ProviderNameOffset;
-
-			/// <summary>
-			/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the name of the level. For
-			/// possible names, see Remarks in LevelType.
-			/// </summary>
-			public uint LevelNameOffset;
-
-			/// <summary>
-			/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the name of the channel.
-			/// For possible names, see Remarks in ChannelType.
-			/// </summary>
-			public uint ChannelNameOffset;
-
-			/// <summary>
-			/// The offset from the beginning of this structure to a list of null-terminated Unicode strings that contains the names of the
-			/// keywords. The list is terminated with two NULL characters. For possible names, see Remarks in KeywordType.
-			/// </summary>
-			public uint KeywordsNameOffset;
-
-			/// <summary>
-			/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the name of the task. For
-			/// possible names, see Remarks in TaskType.
-			/// </summary>
-			public uint TaskNameOffset;
-
-			/// <summary>
-			/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the name of the operation.
-			/// For possible names, see Remarks in OpcodeType.
-			/// </summary>
-			public uint OpcodeNameOffset;
-
-			/// <summary>
-			/// <para>
-			/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the event message string.
-			/// The offset is zero if there is no message string. For information on message strings, see the <c>message</c> attribute for EventDefinitionType.
-			/// </para>
-			/// <para>
-			/// The message string can contain insert sequences, for example, Unable to connect to the %1 printer. The number of the insert
-			/// sequence identifies the property in the event data to use for the substitution.
-			/// </para>
-			/// </summary>
-			public uint EventMessageOffset;
-
-			/// <summary>
-			/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the localized provider name.
-			/// </summary>
-			public uint ProviderMessageOffset;
-
-			/// <summary>Reserved.</summary>
-			public uint BinaryXMLOffset;
-
-			/// <summary>Reserved.</summary>
-			public uint BinaryXMLSize;
-
-			/// <summary>
-			/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the property name of the
-			/// activity identifier in the MOF class. Supported for classic ETW events only.
-			/// </summary>
-			public uint ActivityIDNameOffset;
-
-			/// <summary>
-			/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the property name of the
-			/// related activity identifier in the MOF class. Supported for legacy ETW events only.
-			/// </summary>
-			public uint RelatedActivityIDNameOffset;
-
-			/// <summary>The number of elements in the <c>EventPropertyInfoArray</c> array.</summary>
-			public uint PropertyCount;
-
-			/// <summary>
-			/// The number of properties in the <c>EventPropertyInfoArray</c> array that are top-level properties. This number does not
-			/// include members of structures. Top-level properties come before all member properties in the array.
-			/// </summary>
-			public uint TopLevelPropertyCount;
-
-			/// <summary>
-			/// A 28-bit value associated with the event metadata. This value can be used by the event provider to associate additional
-			/// semantic data with an event for use by an event processing tool. For example, a tag value of 5 might indicate that the event
-			/// contains debugging information. The semantics of any values in this field are defined by the event provider.
-			/// </summary>
-			public uint Tags;
-
-			///// <summary>An array of EVENT_PROPERTY_INFO structures that provides information about each property of the event's user data.</summary>
-			//public EVENT_PROPERTY_INFO EventPropertyInfoArray[ANYSIZE_ARRAY];
-		}
-
 		/// <summary>Defines the header to the list of sessions that enabled the provider specified in the InBuffer parameter of <c>EnumerateTraceGuidsEx</c>.</summary>
 		/// <remarks>Use the size of this structure to access the first <c>TRACE_PROVIDER_INSTANCE_INFO</c> block in the list.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/etw/trace-guid-info typedef struct _TRACE_GUID_INFO { ULONG InstanceCount; ULONG
@@ -7962,7 +7009,8 @@ namespace Vanara.PInvoke
 			/// If this member is TRUE, the element identified by the Guid member is currently enabled for the session identified by the
 			/// LoggerId member. If this member is FALSE, all other members have no meaning and should be zero.
 			/// </summary>
-			[MarshalAs(UnmanagedType.U1)] public bool IsEnable;
+			[MarshalAs(UnmanagedType.U1)]
+			public bool IsEnable;
 		}
 
 		/// <summary>The <c>TRACE_GUID_REGISTRATION</c> structure is used to register event trace classes.</summary>
@@ -8191,31 +7239,9 @@ namespace Vanara.PInvoke
 		{
 			/// <summary/>
 			public uint Source;
+
 			/// <summary/>
 			public uint Interval;
-		}
-
-		/// <summary>Defines the GUID and name for a provider.</summary>
-		// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-trace_provider_info typedef struct _TRACE_PROVIDER_INFO { GUID
-		// ProviderGuid; ULONG SchemaSource; ULONG ProviderNameOffset; } TRACE_PROVIDER_INFO;
-		[PInvokeData("tdh.h", MSDNShortId = "0dbfde78-b1d4-4cc6-99aa-81de3f647cdb")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct TRACE_PROVIDER_INFO
-		{
-			/// <summary>GUID that uniquely identifies the provider.</summary>
-			public Guid ProviderGuid;
-
-			/// <summary>
-			/// Is zero if the provider uses a XML manifest to provide a description of its events. Otherwise, the value is 1 if the provider
-			/// uses a WMI MOF class to provide a description of its events.
-			/// </summary>
-			public uint SchemaSource;
-
-			/// <summary>
-			/// Offset to a null-terminated Unicode string that contains the name of the provider. The offset is from the beginning of the
-			/// PROVIDER_ENUMERATION_INFO buffer that TdhEnumerateProviders returns.
-			/// </summary>
-			public uint ProviderNameOffset;
 		}
 
 		/// <summary>Defines an instance of the provider GUID.</summary>

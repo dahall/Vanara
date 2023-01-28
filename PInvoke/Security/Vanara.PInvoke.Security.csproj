@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
-    <SupportedDlls>advapi32.dll;secur32.dll;authz.dll;sspicli.dll;schannel.dll</SupportedDlls>
+    <SupportedDlls>advapi32.dll;secur32.dll;authz.dll;sspicli.dll;schannel.dll;tdh.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
-    <Description>PInvoke API (methods, structures and constants) imported from Windows AdvApi32.dll, Authz.dll and Secur32.dll.</Description>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows AdvApi32.dll, Authz.dll, sspicli.dll, schannel.dll, tdh.dll and Secur32.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyName>Vanara.PInvoke.Security</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
