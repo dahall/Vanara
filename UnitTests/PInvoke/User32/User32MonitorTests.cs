@@ -27,7 +27,7 @@ namespace Vanara.PInvoke.Tests
             var primaryDisplayHandle = IntPtr.Zero;
             foreach (var monitor in monitors)
             {
-                var info = MONITORINFOEX.Create();
+                var info = MONITORINFOEX.Default;
                 bool getInfoResult = GetMonitorInfo(monitor, ref info);
                 Assert.IsTrue(getInfoResult, $"Error calling GetMonitorInfo(h: {monitor}) returned: {getInfoResult}");
 
