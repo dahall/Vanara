@@ -202,6 +202,11 @@ namespace Vanara.InteropServices
 		/// <returns>An array of pointers to each element in this native array.</returns>
 		public IntPtr[] GetPointers() => Enumerable.Range(0, Count - 1).Select(i => PtrOfElem(i)).ToArray();
 
+		/// <summary>Gets a reference to the structure at a specified index.</summary>
+		/// <param name="index">The index.</param>
+		/// <returns>The reference to the <typeparamref name="TElem"/> value.</returns>
+		public ref TElem GetRefAt(int index) => ref handle.AsRef<TElem>(ElemOffset(index), Size);
+
 		/// <summary>Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"/>.</summary>
 		/// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
 		/// <returns>The index of <paramref name="item"/> if found in the list; otherwise, -1.</returns>
