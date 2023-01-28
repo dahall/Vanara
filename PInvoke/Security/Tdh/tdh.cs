@@ -1,6 +1,7 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
 #nullable enable
 using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -583,15 +584,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_format TDH_INLINE PWSTR EMI_MAP_FORMAT( [in] PEVENT_MAP_INFO
 	// MapInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_FORMAT")]
-	public static string? EMI_MAP_FORMAT(ref EVENT_MAP_INFO MapInfo)
-	{
-		unsafe
-		{
-			return MapInfo.Flag.IsFlagSet(MAP_FLAGS.EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP) && MapInfo.FormatStringOffset > 0
-				? new string((char*)Unsafe.AsPointer(ref MapInfo) + MapInfo.FormatStringOffset)
-				: default;
-		}
-	}
+	public static string? EMI_MAP_FORMAT(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo) =>
+		MapInfo is null || MapInfo.Value.FormatStringOffset == 0 || !MapInfo.Value.Flag.IsFlagSet(MAP_FLAGS.EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP) ? default : MapInfo.GetOffsetString(MapInfo.Value.FormatStringOffset);
 
 	/// <summary>Macro that retrieves the event map input.</summary>
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
@@ -600,20 +594,16 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_input TDH_INLINE PWSTR EMI_MAP_INPUT( PEVENT_MAP_INFO MapInfo,
 	// PEVENT_MAP_ENTRY Map );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_INPUT")]
-	public static string? EMI_MAP_INPUT(ref EVENT_MAP_INFO MapInfo, in EVENT_MAP_ENTRY Map)
-	{
-		unsafe { return MapInfo.Flag.IsFlagSet(MAP_FLAGS.EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP) && Map.InputOffset != 0 ? new string((char*)Unsafe.AsPointer(ref MapInfo) + Map.InputOffset) : default; }
-	}
+	public static string? EMI_MAP_INPUT(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo, in EVENT_MAP_ENTRY Map) =>
+		MapInfo is null || Map.InputOffset == 0 || !MapInfo.Value.Flag.IsFlagSet(MAP_FLAGS.EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP) ? default : MapInfo.GetOffsetString(Map.InputOffset);
 
 	/// <summary>Macro that retrieves the event map name.</summary>
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
 	/// <returns>The event map name, or NULL.</returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_name TDH_INLINE PWSTR EMI_MAP_NAME( PEVENT_MAP_INFO MapInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_NAME")]
-	public static string? EMI_MAP_NAME(ref EVENT_MAP_INFO MapInfo)
-	{
-		unsafe { return MapInfo.NameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref MapInfo) + MapInfo.NameOffset); }
-	}
+	public static string? EMI_MAP_NAME(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo) =>
+		MapInfo is null || MapInfo.Value.NameOffset == 0 ? default : MapInfo.GetOffsetString(MapInfo.Value.NameOffset);
 
 	/// <summary>Macro that retrieves the event map output.</summary>
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
@@ -622,10 +612,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_output TDH_INLINE PWSTR EMI_MAP_OUTPUT( PEVENT_MAP_INFO
 	// MapInfo, PEVENT_MAP_ENTRY Map );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_OUTPUT")]
-	public static string? EMI_MAP_OUTPUT(ref EVENT_MAP_INFO MapInfo, in EVENT_MAP_ENTRY Map)
-	{
-		unsafe { return Map.OutputOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref MapInfo) + Map.OutputOffset); }
-	}
+	public static string? EMI_MAP_OUTPUT(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo, in EVENT_MAP_ENTRY Map) =>
+		MapInfo is null || Map.OutputOffset == 0 ? default : MapInfo.GetOffsetString(Map.OutputOffset);
 
 	/// <summary>Macro that retrieves the Provider Event Info (PEI) name.</summary>
 	/// <param name="ProviderEnum">
@@ -636,10 +624,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pei_provider_name TDH_INLINE PWSTR PEI_PROVIDER_NAME(
 	// PPROVIDER_ENUMERATION_INFO ProviderEnum, PTRACE_PROVIDER_INFO ProviderInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PEI_PROVIDER_NAME")]
-	public static string? PEI_PROVIDER_NAME(ref PROVIDER_ENUMERATION_INFO ProviderEnum, in TRACE_PROVIDER_INFO ProviderInfo)
-	{
-		unsafe { return ProviderInfo.ProviderNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref ProviderEnum) + ProviderInfo.ProviderNameOffset); }
-	}
+	public static string? PEI_PROVIDER_NAME(SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO>? ProviderEnum, in TRACE_PROVIDER_INFO ProviderInfo) =>
+		ProviderEnum is null || ProviderInfo.ProviderNameOffset == 0 ? null : ProviderEnum.GetOffsetString(ProviderInfo.ProviderNameOffset);
 
 	/// <summary>Macro that retrieves the Provider Field Information (PFI) field message.</summary>
 	/// <param name="FieldInfoArray">The PROVIDER_FIELD_INFOARRAY structure.</param>
@@ -648,10 +634,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_field_message TDH_INLINE PWSTR PFI_FIELD_MESSAGE(
 	// PPROVIDER_FIELD_INFOARRAY FieldInfoArray, PPROVIDER_FIELD_INFO FieldInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_FIELD_MESSAGE")]
-	public static string? PFI_FIELD_MESSAGE(ref PROVIDER_FIELD_INFOARRAY FieldInfoArray, in PROVIDER_FIELD_INFO FieldInfo)
-	{
-		unsafe { return FieldInfo.DescriptionOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref FieldInfoArray) + FieldInfo.DescriptionOffset); }
-	}
+	public static string? PFI_FIELD_MESSAGE(SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY>? FieldInfoArray, in PROVIDER_FIELD_INFO FieldInfo) =>
+		FieldInfoArray is null || FieldInfo.DescriptionOffset == 0 ? default : FieldInfoArray.GetOffsetString(FieldInfo.DescriptionOffset);
 
 	/// <summary>Macro that retrieves the Provider Field Information (PFI) field name.</summary>
 	/// <param name="FieldInfoArray">The PROVIDER_FIELD_INFOARRAY structure.</param>
@@ -660,10 +644,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_field_name TDH_INLINE PWSTR PFI_FIELD_NAME(
 	// PPROVIDER_FIELD_INFOARRAY FieldInfoArray, PPROVIDER_FIELD_INFO FieldInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_FIELD_NAME")]
-	public static string? PFI_FIELD_NAME(ref PROVIDER_FIELD_INFOARRAY FieldInfoArray, in PROVIDER_FIELD_INFO FieldInfo)
-	{
-		unsafe { return FieldInfo.NameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref FieldInfoArray) + FieldInfo.NameOffset); }
-	}
+	public static string? PFI_FIELD_NAME(SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY>? FieldInfoArray, in PROVIDER_FIELD_INFO FieldInfo) =>
+		FieldInfoArray is null || FieldInfo.NameOffset == 0 ? default : FieldInfoArray.GetOffsetString(FieldInfo.NameOffset);
 
 	/// <summary>Macro that filters the Provider Field Information (PFI) field message.</summary>
 	/// <param name="FilterInfo">Provider filter info (PROVIDER_FILTER_INFO structure).</param>
@@ -671,10 +653,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_filter_message TDH_INLINE PWSTR PFI_FILTER_MESSAGE( [in]
 	// PPROVIDER_FILTER_INFO FilterInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_FILTER_MESSAGE")]
-	public static string? PFI_FILTER_MESSAGE(ref PROVIDER_FILTER_INFO FilterInfo)
-	{
-		unsafe { return FilterInfo.MessageOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref FilterInfo) + FilterInfo.MessageOffset); }
-	}
+	public static string? PFI_FILTER_MESSAGE(SafeCoTaskMemStruct<PROVIDER_FILTER_INFO>? FilterInfo) =>
+		FilterInfo is null || FilterInfo.Value.MessageOffset == 0 ? default : FilterInfo.GetOffsetString(FilterInfo.Value.MessageOffset);
 
 	/// <summary>Macro that retrieves the Provider Field Information (PFI) property name.</summary>
 	/// <param name="FilterInfo">Provider filter info (PROVIDER_FILTER_INFO structure).</param>
@@ -683,10 +663,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_property_name TDH_INLINE PWSTR PFI_PROPERTY_NAME( [in]
 	// PPROVIDER_FILTER_INFO FilterInfo, [in] PEVENT_PROPERTY_INFO Property );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_PROPERTY_NAME")]
-	public static string? PFI_PROPERTY_NAME(ref PROVIDER_FILTER_INFO FilterInfo, in EVENT_PROPERTY_INFO Property)
-	{
-		unsafe { return Property.NameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref FilterInfo) + Property.NameOffset); }
-	}
+	public static string? PFI_PROPERTY_NAME(SafeCoTaskMemStruct<PROVIDER_FILTER_INFO>? FilterInfo, in EVENT_PROPERTY_INFO Property) =>
+		FilterInfo is null || Property.NameOffset == 0 ? default : FilterInfo.GetOffsetString(Property.NameOffset);
 
 	/// <summary>
 	/// The <c>TdhAggregatePayloadFilters</c> function aggregates multiple payload filters for a single provider into a single data structure
@@ -2623,13 +2601,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_activityid_name TDH_INLINE PWSTR TEI_ACTIVITYID_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_ACTIVITYID_NAME")]
-	public static string? TEI_ACTIVITYID_NAME(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe
-		{
-			return EventInfo.ActivityIDNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.ActivityIDNameOffset);
-		}
-	}
+	public static string? TEI_ACTIVITYID_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.ActivityIDNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.ActivityIDNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) channel name.</summary>
 	/// <param name="EventInfo">
@@ -2639,10 +2612,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_channel_name TDH_INLINE PWSTR TEI_CHANNEL_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_CHANNEL_NAME")]
-	public static string? TEI_CHANNEL_NAME(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe { return EventInfo.ChannelNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.ChannelNameOffset); }
-	}
+	public static string? TEI_CHANNEL_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.ChannelNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.ChannelNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) message.</summary>
 	/// <param name="EventInfo">
@@ -2652,10 +2623,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_event_message TDH_INLINE PWSTR TEI_EVENT_MESSAGE( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_EVENT_MESSAGE")]
-	public static string? TEI_EVENT_MESSAGE(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe { return EventInfo.EventMessageOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.EventMessageOffset); }
-	}
+	public static string? TEI_EVENT_MESSAGE(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.EventMessageOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.EventMessageOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) keywords name.</summary>
 	/// <param name="EventInfo">
@@ -2665,10 +2634,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_keywords_name TDH_INLINE PWSTR TEI_KEYWORDS_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_KEYWORDS_NAME")]
-	public static string? TEI_KEYWORDS_NAME(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe { return EventInfo.KeywordsNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.KeywordsNameOffset); }
-	}
+	public static string? TEI_KEYWORDS_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.KeywordsNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.KeywordsNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) level name.</summary>
 	/// <param name="EventInfo">
@@ -2678,10 +2645,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_level_name TDH_INLINE PWSTR TEI_LEVEL_NAME( [in] PTRACE_EVENT_INFO
 	// EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_LEVEL_NAME")]
-	public static string? TEI_LEVEL_NAME(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe { return EventInfo.LevelNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.LevelNameOffset); }
-	}
+	public static string? TEI_LEVEL_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.LevelNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.LevelNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) map name.</summary>
 	/// <param name="EventInfo">
@@ -2692,10 +2657,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_map_name TDH_INLINE PWSTR TEI_MAP_NAME( [in] PTRACE_EVENT_INFO
 	// EventInfo, [in] PEVENT_PROPERTY_INFO Property );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_MAP_NAME")]
-	public static string? TEI_MAP_NAME(ref TRACE_EVENT_INFO EventInfo, in EVENT_PROPERTY_INFO Property)
-	{
-		unsafe { return Property.nonStructType.MapNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + Property.nonStructType.MapNameOffset); }
-	}
+	public static string? TEI_MAP_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo, in EVENT_PROPERTY_INFO Property) =>
+		EventInfo is null || Property.nonStructType.MapNameOffset == 0 ? default : EventInfo.GetOffsetString(Property.nonStructType.MapNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) opcode name.</summary>
 	/// <param name="EventInfo">
@@ -2705,10 +2668,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_opcode_name TDH_INLINE PWSTR TEI_OPCODE_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_OPCODE_NAME")]
-	public static string? TEI_OPCODE_NAME(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe { return EventInfo.OpcodeNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.OpcodeNameOffset); }
-	}
+	public static string? TEI_OPCODE_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.OpcodeNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.OpcodeNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) property name.</summary>
 	/// <param name="EventInfo">
@@ -2719,10 +2680,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_property_name TDH_INLINE PWSTR TEI_PROPERTY_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo, PEVENT_PROPERTY_INFO Property );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_PROPERTY_NAME")]
-	public static string? TEI_PROPERTY_NAME(ref TRACE_EVENT_INFO EventInfo, in EVENT_PROPERTY_INFO Property)
-	{
-		unsafe { return Property.NameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + Property.NameOffset); }
-	}
+	public static string? TEI_PROPERTY_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo, in EVENT_PROPERTY_INFO Property) =>
+		EventInfo is null || Property.NameOffset == 0 ? default : EventInfo.GetOffsetString(Property.NameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) provider message.</summary>
 	/// <param name="EventInfo">
@@ -2732,9 +2691,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_provider_message TDH_INLINE PWSTR TEI_PROVIDER_MESSAGE( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_PROVIDER_MESSAGE")]
-	public static string? TEI_PROVIDER_MESSAGE(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe { return EventInfo.ProviderMessageOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.ProviderMessageOffset); } }
+	public static string? TEI_PROVIDER_MESSAGE(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.ProviderMessageOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.ProviderMessageOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) provider name.</summary>
 	/// <param name="EventInfo">
@@ -2744,10 +2702,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_provider_name TDH_INLINE PWSTR TEI_PROVIDER_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_PROVIDER_NAME")]
-	public static string? TEI_PROVIDER_NAME(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe { return EventInfo.ProviderNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.ProviderNameOffset); }
-	}
+	public static string? TEI_PROVIDER_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.ProviderNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.ProviderNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) related activity ID name.</summary>
 	/// <param name="EventInfo">
@@ -2757,10 +2713,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_relatedactivityid_name TDH_INLINE PWSTR TEI_RELATEDACTIVITYID_NAME(
 	// [in] PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_RELATEDACTIVITYID_NAME")]
-	public static string? TEI_RELATEDACTIVITYID_NAME(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe { return EventInfo.RelatedActivityIDNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.RelatedActivityIDNameOffset); }
-	}
+	public static string? TEI_RELATEDACTIVITYID_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.RelatedActivityIDNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.RelatedActivityIDNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) task name.</summary>
 	/// <param name="EventInfo">
@@ -2770,10 +2724,8 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_task_name TDH_INLINE PWSTR TEI_TASK_NAME( [in] PTRACE_EVENT_INFO
 	// EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_TASK_NAME")]
-	public static string? TEI_TASK_NAME(ref TRACE_EVENT_INFO EventInfo)
-	{
-		unsafe { return EventInfo.TaskNameOffset == 0 ? default : new string((char*)Unsafe.AsPointer(ref EventInfo) + EventInfo.TaskNameOffset); }
-	}
+	public static string? TEI_TASK_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo is null || EventInfo.Value.TaskNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.TaskNameOffset);
 
 	private static Win32Error Get<T>(GetD getter, out T value, uint initSz = 0) where T : struct
 	{
@@ -2800,6 +2752,9 @@ public static partial class Tdh
 		value = status.Succeeded ? buffer : default;
 		return status;
 	}
+
+	private static string? GetOffsetString(this SafeAllocatedMemoryHandle mem, uint offset, CharSet charSet = CharSet.Unicode) =>
+		StringHelper.GetString(mem.DangerousGetHandle().Offset(offset), charSet, mem.Size - offset);
 
 	/// <summary>Defines a single value map entry.</summary>
 	/// <remarks>
