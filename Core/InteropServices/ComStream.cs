@@ -131,15 +131,8 @@ namespace Vanara.InteropServices
 		/// <remarks>This method is not a member in IStream.</remarks>
 		public override void Close()
 		{
-			if (netStream is not null)
-			{
-				netStream.Close();
-			}
-			else
-			{
-				comStream.Commit(0 /*STGC_DEFAULT*/);
-				// Marshal.ReleaseComObject(TheIStream); // Investigate this because we cannot release an IStream to the stash file
-			}
+			netStream?.Close();
+			try { comStream?.Commit(0 /*STGC_DEFAULT*/); } catch { }
 			GC.SuppressFinalize(this);
 		}
 
