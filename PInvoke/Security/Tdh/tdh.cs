@@ -81,9 +81,6 @@ public static partial class Tdh
 
 		/// <summary>Operation code information defined in the manifest.</summary>
 		EventOpcodeInformation,
-
-		/// <summary>Reserved.</summary>
-		EventInformationMax,
 	}
 
 	/// <summary>Defines constant values that indicate if the map is a value map, bitmap, or pattern map.</summary>
@@ -299,7 +296,7 @@ public static partial class Tdh
 	// TDH_INTYPE_NONNULLTERMINATEDANSISTRING, TDH_INTYPE_UNICODECHAR, TDH_INTYPE_ANSICHAR, TDH_INTYPE_SIZET, TDH_INTYPE_HEXDUMP,
 	// TDH_INTYPE_WBEMSID } ;
 	[PInvokeData("tdh.h", MSDNShortId = "NE:tdh._TDH_IN_TYPE")]
-	public enum TDH_IN_TYPE
+	public enum TDH_IN_TYPE : ushort
 	{
 		/// <summary/>
 		TDH_INTYPE_NULL,
@@ -424,7 +421,7 @@ public static partial class Tdh
 	// TDH_OUTTYPE_UTF8, TDH_OUTTYPE_PKCS7_WITH_TYPE_INFO, TDH_OUTTYPE_CODE_POINTER, TDH_OUTTYPE_DATETIME_UTC, TDH_OUTTYPE_REDUCEDSTRING,
 	// TDH_OUTTYPE_NOPRINT } ;
 	[PInvokeData("tdh.h", MSDNShortId = "NE:tdh._TDH_OUT_TYPE")]
-	public enum TDH_OUT_TYPE
+	public enum TDH_OUT_TYPE : ushort
 	{
 		/// <summary/>
 		TDH_OUTTYPE_NULL,
@@ -585,7 +582,7 @@ public static partial class Tdh
 	// MapInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_FORMAT")]
 	public static string? EMI_MAP_FORMAT(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo) =>
-		MapInfo is null || MapInfo.Value.FormatStringOffset == 0 || !MapInfo.Value.Flag.IsFlagSet(MAP_FLAGS.EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP) ? default : MapInfo.GetOffsetString(MapInfo.Value.FormatStringOffset);
+		MapInfo is null || !MapInfo.Value.Flag.IsFlagSet(MAP_FLAGS.EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP) ? default : MapInfo.GetOffsetString(MapInfo.Value.FormatStringOffset);
 
 	/// <summary>Macro that retrieves the event map input.</summary>
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
@@ -595,7 +592,7 @@ public static partial class Tdh
 	// PEVENT_MAP_ENTRY Map );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_INPUT")]
 	public static string? EMI_MAP_INPUT(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo, in EVENT_MAP_ENTRY Map) =>
-		MapInfo is null || Map.InputOffset == 0 || !MapInfo.Value.Flag.IsFlagSet(MAP_FLAGS.EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP) ? default : MapInfo.GetOffsetString(Map.InputOffset);
+		MapInfo is null || !MapInfo.Value.Flag.IsFlagSet(MAP_FLAGS.EVENTMAP_INFO_FLAG_MANIFEST_PATTERNMAP) ? default : MapInfo.GetOffsetString(Map.InputOffset);
 
 	/// <summary>Macro that retrieves the event map name.</summary>
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
@@ -603,7 +600,7 @@ public static partial class Tdh
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_name TDH_INLINE PWSTR EMI_MAP_NAME( PEVENT_MAP_INFO MapInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_NAME")]
 	public static string? EMI_MAP_NAME(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo) =>
-		MapInfo is null || MapInfo.Value.NameOffset == 0 ? default : MapInfo.GetOffsetString(MapInfo.Value.NameOffset);
+		MapInfo?.GetOffsetString(MapInfo.Value.NameOffset);
 
 	/// <summary>Macro that retrieves the event map output.</summary>
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
@@ -613,7 +610,7 @@ public static partial class Tdh
 	// MapInfo, PEVENT_MAP_ENTRY Map );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_OUTPUT")]
 	public static string? EMI_MAP_OUTPUT(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo, in EVENT_MAP_ENTRY Map) =>
-		MapInfo is null || Map.OutputOffset == 0 ? default : MapInfo.GetOffsetString(Map.OutputOffset);
+		MapInfo?.GetOffsetString(Map.OutputOffset);
 
 	/// <summary>Macro that retrieves the Provider Event Info (PEI) name.</summary>
 	/// <param name="ProviderEnum">
@@ -625,7 +622,7 @@ public static partial class Tdh
 	// PPROVIDER_ENUMERATION_INFO ProviderEnum, PTRACE_PROVIDER_INFO ProviderInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PEI_PROVIDER_NAME")]
 	public static string? PEI_PROVIDER_NAME(SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO>? ProviderEnum, in TRACE_PROVIDER_INFO ProviderInfo) =>
-		ProviderEnum is null || ProviderInfo.ProviderNameOffset == 0 ? null : ProviderEnum.GetOffsetString(ProviderInfo.ProviderNameOffset);
+		ProviderEnum?.GetOffsetString(ProviderInfo.ProviderNameOffset);
 
 	/// <summary>Macro that retrieves the Provider Field Information (PFI) field message.</summary>
 	/// <param name="FieldInfoArray">The PROVIDER_FIELD_INFOARRAY structure.</param>
@@ -635,7 +632,7 @@ public static partial class Tdh
 	// PPROVIDER_FIELD_INFOARRAY FieldInfoArray, PPROVIDER_FIELD_INFO FieldInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_FIELD_MESSAGE")]
 	public static string? PFI_FIELD_MESSAGE(SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY>? FieldInfoArray, in PROVIDER_FIELD_INFO FieldInfo) =>
-		FieldInfoArray is null || FieldInfo.DescriptionOffset == 0 ? default : FieldInfoArray.GetOffsetString(FieldInfo.DescriptionOffset);
+		FieldInfoArray?.GetOffsetString(FieldInfo.DescriptionOffset);
 
 	/// <summary>Macro that retrieves the Provider Field Information (PFI) field name.</summary>
 	/// <param name="FieldInfoArray">The PROVIDER_FIELD_INFOARRAY structure.</param>
@@ -645,26 +642,27 @@ public static partial class Tdh
 	// PPROVIDER_FIELD_INFOARRAY FieldInfoArray, PPROVIDER_FIELD_INFO FieldInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_FIELD_NAME")]
 	public static string? PFI_FIELD_NAME(SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY>? FieldInfoArray, in PROVIDER_FIELD_INFO FieldInfo) =>
-		FieldInfoArray is null || FieldInfo.NameOffset == 0 ? default : FieldInfoArray.GetOffsetString(FieldInfo.NameOffset);
+		FieldInfoArray?.GetOffsetString(FieldInfo.NameOffset);
 
 	/// <summary>Macro that filters the Provider Field Information (PFI) field message.</summary>
-	/// <param name="FilterInfo">Provider filter info (PROVIDER_FILTER_INFO structure).</param>
+	/// <param name="FilterInfoArray">Provider filter info array (PROVIDER_FILTER_INFO array).</param>
+	/// <param name="FilterInfoIndex">Index of the filter information in the array.</param>
 	/// <returns>The Provider Field Information (PFI) field message, or NULL.</returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_filter_message TDH_INLINE PWSTR PFI_FILTER_MESSAGE( [in]
 	// PPROVIDER_FILTER_INFO FilterInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_FILTER_MESSAGE")]
-	public static string? PFI_FILTER_MESSAGE(SafeCoTaskMemStruct<PROVIDER_FILTER_INFO>? FilterInfo) =>
-		FilterInfo is null || FilterInfo.Value.MessageOffset == 0 ? default : FilterInfo.GetOffsetString(FilterInfo.Value.MessageOffset);
+	public static string? PFI_FILTER_MESSAGE(SafeNativeArray<PROVIDER_FILTER_INFO>? FilterInfoArray, int FilterInfoIndex) =>
+		FilterInfoArray?.GetOffsetString(FilterInfoArray[FilterInfoIndex].MessageOffset);
 
 	/// <summary>Macro that retrieves the Provider Field Information (PFI) property name.</summary>
-	/// <param name="FilterInfo">Provider filter info (PROVIDER_FILTER_INFO structure).</param>
+	/// <param name="FilterInfoArray">Provider filter info array (PROVIDER_FILTER_INFO array).</param>
 	/// <param name="Property">Provider property info (EVENT_PROPERTY_INFO structure).</param>
 	/// <returns>The Provider Field Information (PFI) property name, or NULL.</returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_property_name TDH_INLINE PWSTR PFI_PROPERTY_NAME( [in]
 	// PPROVIDER_FILTER_INFO FilterInfo, [in] PEVENT_PROPERTY_INFO Property );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_PROPERTY_NAME")]
-	public static string? PFI_PROPERTY_NAME(SafeCoTaskMemStruct<PROVIDER_FILTER_INFO>? FilterInfo, in EVENT_PROPERTY_INFO Property) =>
-		FilterInfo is null || Property.NameOffset == 0 ? default : FilterInfo.GetOffsetString(Property.NameOffset);
+	public static string? PFI_PROPERTY_NAME(SafeNativeArray<PROVIDER_FILTER_INFO>? FilterInfoArray, in EVENT_PROPERTY_INFO Property) =>
+		FilterInfoArray?.GetOffsetString(Property.NameOffset);
 
 	/// <summary>
 	/// The <c>TdhAggregatePayloadFilters</c> function aggregates multiple payload filters for a single provider into a single data structure
@@ -1482,7 +1480,7 @@ public static partial class Tdh
 	// Buffer, [out] PUSHORT UserDataConsumed );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhFormatProperty", MinClient = PInvokeClient.Windows7)]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
-	public static extern Win32Error TdhFormatProperty(in TRACE_EVENT_INFO EventInfo, in EVENT_MAP_INFO MapInfo, uint PointerSize,
+	public static extern Win32Error TdhFormatProperty(SafeCoTaskMemStruct<TRACE_EVENT_INFO> EventInfo, in EVENT_MAP_INFO MapInfo, uint PointerSize,
 		ushort PropertyInType, ushort PropertyOutType, ushort PropertyLength, ushort UserDataLength, [In] IntPtr UserData,
 		ref uint BufferSize, [Out, Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, out ushort UserDataConsumed);
 
@@ -1587,7 +1585,7 @@ public static partial class Tdh
 	// Buffer, [out] PUSHORT UserDataConsumed );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhFormatProperty", MinClient = PInvokeClient.Windows7)]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
-	public static extern Win32Error TdhFormatProperty(in TRACE_EVENT_INFO EventInfo, [In, Optional] IntPtr MapInfo, uint PointerSize,
+	public static extern Win32Error TdhFormatProperty(SafeCoTaskMemStruct<TRACE_EVENT_INFO> EventInfo, [In, Optional] IntPtr MapInfo, uint PointerSize,
 		ushort PropertyInType, ushort PropertyOutType, ushort PropertyLength, ushort UserDataLength, [In] IntPtr UserData,
 		ref uint BufferSize, [Out, Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, out ushort UserDataConsumed);
 
@@ -1954,7 +1952,7 @@ public static partial class Tdh
 	// out] ULONG *BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetManifestEventInformation", MinClient = PInvokeClient.Windows81)]
 	public static Win32Error TdhGetManifestEventInformation([In] Guid ProviderGuid, [In] EVENT_DESCRIPTOR EventDescriptor,
-		out TRACE_EVENT_INFO Buffer) => Get((IntPtr p, ref uint sz) => TdhGetManifestEventInformation(ProviderGuid, EventDescriptor, p, ref sz), out Buffer);
+		out SafeCoTaskMemStruct<TRACE_EVENT_INFO>? Buffer) => GetMem((IntPtr p, ref uint sz) => TdhGetManifestEventInformation(ProviderGuid, EventDescriptor, p, ref sz), out Buffer);
 
 	/// <summary>Retrieves a property value from the event data.</summary>
 	/// <param name="pEvent">The event record passed to your EventRecordCallback callback. For details, see the EVENT_RECORD structure.</param>
@@ -2602,7 +2600,7 @@ public static partial class Tdh
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_ACTIVITYID_NAME")]
 	public static string? TEI_ACTIVITYID_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.ActivityIDNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.ActivityIDNameOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.ActivityIDNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) channel name.</summary>
 	/// <param name="EventInfo">
@@ -2613,7 +2611,7 @@ public static partial class Tdh
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_CHANNEL_NAME")]
 	public static string? TEI_CHANNEL_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.ChannelNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.ChannelNameOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.ChannelNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) message.</summary>
 	/// <param name="EventInfo">
@@ -2624,7 +2622,16 @@ public static partial class Tdh
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_EVENT_MESSAGE")]
 	public static string? TEI_EVENT_MESSAGE(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.EventMessageOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.EventMessageOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.EventMessageOffset);
+
+	/// <summary>Macro that retrieves the Trace Event Information (TEI) name.</summary>
+	/// <param name="EventInfo">
+	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
+	/// </param>
+	/// <returns>The TEI name, or NULL.</returns>
+	[PInvokeData("tdh.h")]
+	public static string? TEI_EVENT_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
+		EventInfo?.GetOffsetString(EventInfo.Value.EventNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) keywords name.</summary>
 	/// <param name="EventInfo">
@@ -2635,7 +2642,7 @@ public static partial class Tdh
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_KEYWORDS_NAME")]
 	public static string? TEI_KEYWORDS_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.KeywordsNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.KeywordsNameOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.KeywordsNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) level name.</summary>
 	/// <param name="EventInfo">
@@ -2646,7 +2653,7 @@ public static partial class Tdh
 	// EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_LEVEL_NAME")]
 	public static string? TEI_LEVEL_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.LevelNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.LevelNameOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.LevelNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) map name.</summary>
 	/// <param name="EventInfo">
@@ -2658,7 +2665,7 @@ public static partial class Tdh
 	// EventInfo, [in] PEVENT_PROPERTY_INFO Property );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_MAP_NAME")]
 	public static string? TEI_MAP_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo, in EVENT_PROPERTY_INFO Property) =>
-		EventInfo is null || Property.nonStructType.MapNameOffset == 0 ? default : EventInfo.GetOffsetString(Property.nonStructType.MapNameOffset);
+		EventInfo?.GetOffsetString(Property.nonStructType.MapNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) opcode name.</summary>
 	/// <param name="EventInfo">
@@ -2669,7 +2676,7 @@ public static partial class Tdh
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_OPCODE_NAME")]
 	public static string? TEI_OPCODE_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.OpcodeNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.OpcodeNameOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.OpcodeNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) property name.</summary>
 	/// <param name="EventInfo">
@@ -2681,7 +2688,7 @@ public static partial class Tdh
 	// PTRACE_EVENT_INFO EventInfo, PEVENT_PROPERTY_INFO Property );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_PROPERTY_NAME")]
 	public static string? TEI_PROPERTY_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo, in EVENT_PROPERTY_INFO Property) =>
-		EventInfo is null || Property.NameOffset == 0 ? default : EventInfo.GetOffsetString(Property.NameOffset);
+		EventInfo?.GetOffsetString(Property.NameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) provider message.</summary>
 	/// <param name="EventInfo">
@@ -2692,7 +2699,7 @@ public static partial class Tdh
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_PROVIDER_MESSAGE")]
 	public static string? TEI_PROVIDER_MESSAGE(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.ProviderMessageOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.ProviderMessageOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.ProviderMessageOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) provider name.</summary>
 	/// <param name="EventInfo">
@@ -2703,7 +2710,7 @@ public static partial class Tdh
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_PROVIDER_NAME")]
 	public static string? TEI_PROVIDER_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.ProviderNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.ProviderNameOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.ProviderNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) related activity ID name.</summary>
 	/// <param name="EventInfo">
@@ -2714,7 +2721,7 @@ public static partial class Tdh
 	// [in] PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_RELATEDACTIVITYID_NAME")]
 	public static string? TEI_RELATEDACTIVITYID_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.RelatedActivityIDNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.RelatedActivityIDNameOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.RelatedActivityIDNameOffset);
 
 	/// <summary>Macro that retrieves the Trace Event Information (TEI) task name.</summary>
 	/// <param name="EventInfo">
@@ -2725,9 +2732,9 @@ public static partial class Tdh
 	// EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_TASK_NAME")]
 	public static string? TEI_TASK_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
-		EventInfo is null || EventInfo.Value.TaskNameOffset == 0 ? default : EventInfo.GetOffsetString(EventInfo.Value.TaskNameOffset);
+		EventInfo?.GetOffsetString(EventInfo.Value.TaskNameOffset);
 
-	private static Win32Error Get<T>(GetD getter, out T value, uint initSz = 0) where T : struct
+	private static Win32Error Get<T>(GetD getter, out T value) where T : struct
 	{
 		var status = GetMem<T>(getter, out var mem);
 		value = status.Succeeded && mem is not null ? mem.Value : default;
@@ -2754,7 +2761,7 @@ public static partial class Tdh
 	}
 
 	private static string? GetOffsetString(this SafeAllocatedMemoryHandle mem, uint offset, CharSet charSet = CharSet.Unicode) =>
-		StringHelper.GetString(mem.DangerousGetHandle().Offset(offset), charSet, mem.Size - offset);
+		offset == 0 ? null : StringHelper.GetString(mem.DangerousGetHandle().Offset(offset), charSet, mem.Size - offset);
 
 	/// <summary>Defines a single value map entry.</summary>
 	/// <remarks>
@@ -2839,12 +2846,13 @@ public static partial class Tdh
 	// CustomSchemaOffset; } customSchemaType; }; union { USHORT count; USHORT countPropertyIndex; }; union { USHORT length; USHORT
 	// lengthPropertyIndex; }; union { ULONG Reserved; struct { ULONG Tags : 28; }; }; } EVENT_PROPERTY_INFO;
 	[PInvokeData("tdh.h", MSDNShortId = "06b82b31-1f0e-45d5-88ec-9b9835af10df")]
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Explicit)]
 	public struct EVENT_PROPERTY_INFO
 	{
 		/// <summary>
 		/// Flags that indicate if the property is contained in a structure or array. For possible values, see the PROPERTY_FLAGS enumeration.
 		/// </summary>
+		[FieldOffset(0)]
 		public PROPERTY_FLAGS Flags;
 
 		/// <summary>
@@ -2852,37 +2860,45 @@ public static partial class Tdh
 		/// the beginning of the TRACE_EVENT_INFO structure. If this is a filter property, the offset is from the beginning of the
 		/// PROVIDER_FILTER_INFO structure.
 		/// </summary>
+		[FieldOffset(4)]
 		public uint NameOffset;
 
 		/// <summary/>
+		[FieldOffset(8)]
 		public NONSTRUCTTYPE nonStructType;
 
 		/// <summary/>
+		[FieldOffset(8)]
 		public STRUCTTYPE structType;
 
 		/// <summary/>
+		[FieldOffset(8)]
 		public CUSTOMSCHEMATYPE customSchemaType;
 
 		/// <summary>Number of elements in the array. Note that this value is 1 for properties that are not defined as an array.</summary>
+		[FieldOffset(16)]
 		public ushort count;
 
 		/// <summary>
 		/// Zero-based index to the element of the property array that contains the number of elements in the array. Use this member if the
 		/// PropertyParamCount flag in <c>Flags</c> is set; otherwise, use the <c>count</c> member.
 		/// </summary>
-		public ushort countPropertyIndex { get => count; set => count = value; }
+		[FieldOffset(16)]
+		public ushort countPropertyIndex;
 
 		/// <summary>
 		/// Size of the property, in bytes. Note that variable-sized types such as strings and binary data have a length of zero unless the
 		/// property has length attribute to explicitly indicate its real length. Structures have a length of zero.
 		/// </summary>
+		[FieldOffset(18)]
 		public ushort length;
 
 		/// <summary>
 		/// Zero-based index to the element of the property array that contains the size value of this property. Use this member if the
 		/// PropertyParamLength flag in <c>Flags</c> is set; otherwise, use the <c>length</c> member.
 		/// </summary>
-		public ushort lengthPropertyIndex { get => length; set => length = value; }
+		[FieldOffset(18)]
+		public ushort lengthPropertyIndex;
 
 		/// <summary>
 		/// A 28-bit value associated with the field metadata. This value is valid only if the PropertyHasTags flag is set. This value can be
@@ -2890,6 +2906,7 @@ public static partial class Tdh
 		/// tag value of 1 might indicate that the field contains a username. The semantics of any values in this field are defined by the
 		/// event provider.
 		/// </summary>
+		[FieldOffset(20)]
 		public uint Tags;
 
 		/// <summary/>
@@ -2901,7 +2918,7 @@ public static partial class Tdh
 			/// <para>For descriptions of these types, see Event Tracing MOF Qualifiers.</para>
 			/// <para>TdhGetPropertySize TdhGetPropertySize</para>
 			/// </summary>
-			public ushort InType;
+			public TDH_IN_TYPE InType;
 
 			/// <summary>
 			/// <para>
@@ -2910,7 +2927,7 @@ public static partial class Tdh
 			/// </para>
 			/// <para>For descriptions of these types, see Event Tracing MOF Qualifiers.</para>
 			/// </summary>
-			public ushort OutType;
+			public TDH_OUT_TYPE OutType;
 
 			/// <summary>
 			/// Offset from the beginning of the TRACE_EVENT_INFO structure to a null-terminated Unicode string that contains the name of the
@@ -2942,7 +2959,7 @@ public static partial class Tdh
 			/// <para>For descriptions of these types, see Event Tracing MOF Qualifiers.</para>
 			/// <para>TdhGetPropertySize TdhGetPropertySize</para>
 			/// </summary>
-			public ushort InType;
+			public TDH_IN_TYPE InType;
 
 			/// <summary>
 			/// <para>
@@ -2951,7 +2968,7 @@ public static partial class Tdh
 			/// </para>
 			/// <para>For descriptions of these types, see Event Tracing MOF Qualifiers.</para>
 			/// </summary>
-			public ushort OutType;
+			public TDH_OUT_TYPE OutType;
 
 			/// <summary>
 			/// Offset (in bytes) from the beginning of the TRACE_EVENT_INFO structure to the custom schema information. The custom schema
@@ -3432,7 +3449,7 @@ public static partial class Tdh
 	// { ULONG EventAttributesOffset; ULONG RelatedActivityIDNameOffset; }; ULONG PropertyCount; ULONG TopLevelPropertyCount; union {
 	// TEMPLATE_FLAGS Flags; struct { ULONG Reserved : 4; ULONG Tags : 28; }; }; EVENT_PROPERTY_INFO EventPropertyInfoArray[ANYSIZE_ARRAY]; } TRACE_EVENT_INFO;
 	[PInvokeData("tdh.h", MSDNShortId = "ecf57a23-0dd2-4954-82ac-e92f651c226f")]
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<TRACE_EVENT_INFO>), nameof(PropertyCount))]
 	public struct TRACE_EVENT_INFO
 	{
@@ -3518,7 +3535,10 @@ public static partial class Tdh
 		/// </summary>
 		public uint ActivityIDNameOffset;
 
-		/// <summary/>
+		/// <summary>
+		/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the event's name. Supported for
+		/// classic ETW events only.
+		/// </summary>
 		public uint EventNameOffset { get => ActivityIDNameOffset; set => ActivityIDNameOffset = value; }
 
 		/// <summary>
@@ -3527,7 +3547,10 @@ public static partial class Tdh
 		/// </summary>
 		public uint RelatedActivityIDNameOffset;
 
-		/// <summary/>
+		/// <summary>
+		/// The offset from the beginning of this structure to a null-terminated Unicode string that contains a semicolon-separated list of
+		/// name=value attributes associated with the event. Supported for legacy ETW events only.
+		/// </summary>
 		public uint EventAttributesOffset { get => RelatedActivityIDNameOffset; set => RelatedActivityIDNameOffset = value; }
 
 		/// <summary>The number of elements in the <c>EventPropertyInfoArray</c> array.</summary>
@@ -3544,7 +3567,7 @@ public static partial class Tdh
 		/// data with an event for use by an event processing tool. For example, a tag value of 5 might indicate that the event contains
 		/// debugging information. The semantics of any values in this field are defined by the event provider.
 		/// </summary>
-		public uint Tags;
+		public TEMPLATE_FLAGS Tags;
 
 		/// <summary>An array of EVENT_PROPERTY_INFO structures that provides information about each property of the event's user data.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
