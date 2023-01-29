@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
@@ -75,11 +74,10 @@ namespace Vanara.Windows.Shell.Tests
 		[Test]
 		public void GetSetShellItems2()
 		{
-			Clipboard.Clear();
 			ShellItem[] items = Array.ConvertAll(files, f => new ShellItem(f));
-			Clipboard.SetShellItems(items);
-			var shArray = Clipboard.GetShellItemArray();
-			Assert.That(shArray.Count, Is.GreaterThan(0));
+			Clipboard.SetDataObject(Clipboard.CreateDataObjectFromShellItems(items));
+			var shArray = ShellItemArray.FromDataObject(Clipboard.CurrentDataObject);
+			Assert.That(shArray.Count, Is.EqualTo(items.Length));
 			CollectionAssert.AreEquivalent(files, shArray.Select(s => s.FileSystemPath));
 		}
 
@@ -242,8 +240,8 @@ namespace Vanara.Windows.Shell.Tests
 		public void SetNativeTextHtmlTest()
 		{
 			SHCreateDataObject(ppv: out var ido).ThrowIfFailed();
-			ido.SetData(ShellClipboardFormat.Register(ShellClipboardFormat.CF_HTML), html);
-			var outVal = ido.GetData(ShellClipboardFormat.Register(ShellClipboardFormat.CF_HTML));
+			ido.SetData(ShellClipboardFormat.CF_HTML, html);
+			var outVal = ido.GetData(ShellClipboardFormat.CF_HTML);
 			Assert.That(outVal, Is.EqualTo(html));
 		}
 
@@ -251,22 +249,29 @@ namespace Vanara.Windows.Shell.Tests
 		public void SetNativeTextMultTest()
 		{
 			const string stxt = "112233";
-			Clipboard.SetText(stxt);
-			Assert.That(Clipboard.GetText(TextDataFormat.Text), Is.EqualTo(stxt));
+			var ido = Clipboard.CreateEmptyDataObject();
+			ido.SetData(CLIPFORMAT.CF_UNICODETEXT, stxt);
+			Clipboard.SetDataObject(ido);
+			Assert.That(Clipboard.CurrentDataObject.GetData(CLIPFORMAT.CF_UNICODETEXT), Is.EqualTo(stxt));
 
-			Clipboard.SetText(txt, txt);
-			Assert.That(Clipboard.GetText(TextDataFormat.Text), Is.EqualTo(txt));
-			Assert.That(Clipboard.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
-			Assert.That(Clipboard.GetText(TextDataFormat.Html), Is.EqualTo(txt));
-			TestContext.WriteLine(Clipboard.GetText(TextDataFormat.Html));
+			ido = Clipboard.CreateEmptyDataObject();
+			ido.SetText(txt, txt);
+			Clipboard.SetDataObject(ido);
+			Assert.That(Clipboard.CurrentDataObject.GetText(CLIPFORMAT.CF_TEXT), Is.EqualTo(txt));
+			Assert.That(Clipboard.CurrentDataObject.GetText(CLIPFORMAT.CF_UNICODETEXT), Is.EqualTo(txt));
+			Assert.That(Clipboard.CurrentDataObject.GetText(ShellClipboardFormat.CF_HTML), Is.EqualTo(txt));
+			TestContext.WriteLine(Clipboard.CurrentDataObject.GetText(ShellClipboardFormat.CF_HTML));
 		}
 
 		[Test]
 		public void SetNativeTextUnicodeTest()
 		{
 			const string txt = @"“0’0©0è0”";
-			Clipboard.SetText(txt, TextDataFormat.UnicodeText);
-			Assert.That(Clipboard.GetText(TextDataFormat.UnicodeText), Is.EqualTo(txt));
+			var ido = Clipboard.CreateEmptyDataObject();
+			ido.SetData(CLIPFORMAT.CF_UNICODETEXT, txt);
+			Clipboard.SetDataObject(ido);
+
+			Assert.That(Clipboard.CurrentDataObject.GetText(CLIPFORMAT.CF_UNICODETEXT), Is.EqualTo(txt));
 		}
 
 		//[Test]

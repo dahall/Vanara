@@ -23,6 +23,8 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		private static readonly Lazy<TYMED> AllTymed = new(() => Enum.GetValues(typeof(TYMED)).Cast<TYMED>().Aggregate((a, b) => a | b));
+
 		/// <summary>
 		/// <para>Values used with the DROPDESCRIPTION structure to specify the drop image.</para>
 		/// </summary>
@@ -390,8 +392,6 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		private static Encoding GetEncoding(ClipCorrespondingTypeAttribute attr) => (Encoding)Activator.CreateInstance(attr.EncodingType ?? typeof(UnicodeEncoding));
-
 		/// <summary>Obtains data from a source data object.</summary>
 		/// <typeparam name="T">The type of the object being retrieved.</typeparam>
 		/// <param name="dataObj">The data object.</param>
@@ -435,6 +435,21 @@ namespace Vanara.PInvoke
 			return hmem.ToType<T>(charSet == CharSet.Auto ? (StringHelper.GetCharSize(charSet) == 1 ? CharSet.Ansi : CharSet.Unicode) : charSet);
 		}
 
+		/// <summary>
+		/// This is used when a group of files in CF_HDROP (FileDrop) format is being renamed as well as transferred. The data consists of an
+		/// array that contains a new name for each file, in the same order that the files are listed in the accompanying CF_HDROP format.
+		/// The format of the character array is the same as that used by CF_HDROP to list the transferred files.
+		/// </summary>
+		/// <returns>A list of strings containing a new name for each file.</returns>
+		public static string[] GetFileNameMap(this IDataObject dataObj)
+		{
+			if (dataObj.IsFormatAvailable(RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPW)))
+				return dataObj.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPW) as string[];
+			else if (dataObj.IsFormatAvailable(RegisterClipboardFormat(ShellClipboardFormat.CFSTR_FILENAMEMAPA)))
+				return dataObj.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPA) as string[];
+			return new string[0];
+		}
+
 		/// <summary>Gets an HTML string from bytes returned from the clipboard.</summary>
 		/// <param name="bytes">The bytes from the clipboard.</param>
 		/// <returns>The string representing the HTML.</returns>
@@ -467,6 +482,18 @@ namespace Vanara.PInvoke
 			return Encoding.UTF8.GetString(bytes, startFrag, endFrag - startFrag);
 		}
 
+		/// <summary>Gets the text from the native Clipboard in the specified format.</summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="formatId">A clipboard format. For a description of the standard clipboard formats, see Standard Clipboard Formats.</param>
+		/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
+		public static string GetText(this IDataObject dataObj, uint formatId) => GetData(dataObj, formatId)?.ToString();
+
+		/// <summary>Gets the text from the native Clipboard in the specified format.</summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="format">A clipboard format. For a description of the standard clipboard formats, see Standard Clipboard Formats.</param>
+		/// <returns>The string value or <see langword="null"/> if the format is not available.</returns>
+		public static string GetText(this IDataObject dataObj, string format) => GetData(dataObj, format)?.ToString();
+
 		/// <summary>
 		/// Determines whether the data object is capable of rendering the data described in the parameters. Objects attempting a paste or
 		/// drop operation can call this method before calling GetData to get an indication of whether the operation may be successful.
@@ -486,8 +513,6 @@ namespace Vanara.PInvoke
 
 			return dataObj.QueryGetData(ref formatetc) == HRESULT.S_OK;
 		}
-
-		private static readonly Lazy<TYMED> AllTymed = new(() => Enum.GetValues(typeof(TYMED)).Cast<TYMED>().Aggregate((a, b) => a | b));
 
 		/// <summary>Transfer a data stream to an object that contains a data source.</summary>
 		/// <param name="dataObj">The data object.</param>
@@ -557,7 +582,7 @@ namespace Vanara.PInvoke
 						//if (CLIPFORMAT.CF_TEXT.Equals(formatId))
 						//	mbr = ClipboardBytesFormatter.Instance.Write(UnicodeToAnsiBytes(str));
 						//else
-							mbr = ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, GetEncoding(attr), true));
+						mbr = ClipboardBytesFormatter.Instance.Write(StringHelper.GetBytes(str, GetEncoding(attr), true));
 						break;
 
 					case IEnumerable<string> strlist:
@@ -652,6 +677,18 @@ namespace Vanara.PInvoke
 		public static void SetData<T>(this IDataObject dataObj, uint formatId, T obj, int index = -1) where T : struct =>
 			SetData(dataObj, formatId, SafeMoveableHGlobalHandle.CreateFromStructure(obj), DVASPECT.DVASPECT_CONTENT, index);
 
+		/// <summary>Sets multiple text types to the data object.</summary>
+		/// <param name="dataObj">The data object.</param>
+		/// <param name="text">The Unicode Text value.</param>
+		/// <param name="htmlText">The HTML text value. If <see langword="null"/>, this format will not be set.</param>
+		/// <param name="rtfText">The Rich Text Format value. If <see langword="null"/>, this format will not be set.</param>
+		public static void SetText(this IDataObject dataObj, string text, string htmlText = null, string rtfText = null)
+		{
+			if (text is not null) dataObj.SetData(CLIPFORMAT.CF_UNICODETEXT, text);
+			if (htmlText is not null) dataObj.SetData(ShellClipboardFormat.CF_HTML, htmlText);
+			if (rtfText is not null) dataObj.SetData(ShellClipboardFormat.CF_RTF, rtfText);
+		}
+
 		/// <summary>Sets a URL with optional title to a data object.</summary>
 		/// <param name="dataObj">The data object.</param>
 		/// <param name="url">The URL.</param>
@@ -679,7 +716,8 @@ namespace Vanara.PInvoke
 		public static bool TryGetData<T>(this IDataObject dataObj, uint formatId, out T obj, int index = -1)
 		{
 			if (IsFormatAvailable(dataObj, formatId))
-				try {
+				try
+				{
 					var charSet = GetCharSet(ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null);
 					obj = GetData<T>(dataObj, formatId, index, charSet);
 					return true;
@@ -714,6 +752,8 @@ namespace Vanara.PInvoke
 			}
 			return charSet;
 		}
+
+		private static Encoding GetEncoding(ClipCorrespondingTypeAttribute attr) => (Encoding)Activator.CreateInstance(attr.EncodingType ?? typeof(UnicodeEncoding));
 
 		/// <summary>
 		/// <para>
