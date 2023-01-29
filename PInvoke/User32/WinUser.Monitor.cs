@@ -514,6 +514,7 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// You must set the <c>cbSize</c> member of the structure to sizeof(MONITORINFO) or sizeof(MONITORINFOEX) before calling the
 		/// <c>GetMonitorInfo</c> function. Doing so lets the function determine the type of structure you are passing to it.
+		/// You can do this by calling <see cref="MONITORINFO.Create"/> to create new instance with properly set of <see cref="MONITORINFO.cbSize"/>.
 		/// </para>
 		/// <para>
 		/// The MONITORINFOEX structure is a superset of the MONITORINFO structure. It has one additional member: a string that contains a
@@ -543,6 +544,7 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// You must set the <c>cbSize</c> member of the structure to sizeof(MONITORINFO) or sizeof(MONITORINFOEX) before calling the
 		/// <c>GetMonitorInfo</c> function. Doing so lets the function determine the type of structure you are passing to it.
+		/// You can do this by calling <see cref="MONITORINFOEX.Create"/> to create new instance with properly set of <see cref="MONITORINFOEX.cbSize"/>.
 		/// </para>
 		/// <para>
 		/// The MONITORINFOEX structure is a superset of the MONITORINFO structure. It has one additional member: a string that contains a
@@ -744,6 +746,18 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public MonitorInfoFlags dwFlags;
+			
+			/// <summary>
+			/// Creates new instance of <see cref="MONITORINFO"/> structure 
+			/// </summary>
+			/// <returns>
+			/// Returns new instance of properly initialized <see cref="MONITORINFO"/> structure. 
+			/// </returns>
+			/// <seealso cref="User32.GetMonitorInfo(Vanara.PInvoke.HMONITOR,ref Vanara.PInvoke.User32.MONITORINFO)"/>
+            public static MONITORINFO Default => new()
+            {
+                cbSize = (uint)Marshal.SizeOf(typeof(MONITORINFO))
+            };
 		}
 
 		/// <summary>
@@ -809,6 +823,18 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 			public string szDevice;
-		}
+
+            /// <summary>
+            /// Creates new instance of <see cref="MONITORINFOEX"/> structure 
+            /// </summary>
+            /// <returns>
+            /// Returns new instance of properly initialized <see cref="MONITORINFOEX"/> structure. 
+            /// </returns>
+            /// <seealso cref="User32.GetMonitorInfo(Vanara.PInvoke.HMONITOR,ref Vanara.PInvoke.User32.MONITORINFOEX)"/>
+            public static MONITORINFOEX Default => new()
+            {
+                cbSize = (uint)Marshal.SizeOf(typeof(MONITORINFOEX))
+            };
+        }
 	}
 }
