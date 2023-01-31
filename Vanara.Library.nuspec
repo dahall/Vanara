@@ -23,6 +23,7 @@
       <dependency id="Vanara.PInvoke.Accessibility" version="3.4.13" />
       <dependency id="Vanara.PInvoke.AclUI" version="3.4.13" />
       <dependency id="Vanara.PInvoke.AMSI" version="3.4.13" />
+      <dependency id="Vanara.PInvoke.Avrt" version="3.4.13" />
       <dependency id="Vanara.PInvoke.BITS" version="3.4.13" />
       <dependency id="Vanara.PInvoke.Cabinet" version="3.4.13" />
       <dependency id="Vanara.PInvoke.CfgMgr32" version="3.4.13" />
@@ -31,6 +32,7 @@
       <dependency id="Vanara.PInvoke.ClfsW32" version="3.4.13" />
       <dependency id="Vanara.PInvoke.ComCtl32" version="3.4.13" />
       <dependency id="Vanara.PInvoke.ComDlg32" version="3.4.13" />
+      <dependency id="Vanara.PInvoke.CoreAudio" version="3.4.13" />
       <dependency id="Vanara.PInvoke.CredUI" version="3.4.13" />
       <dependency id="Vanara.PInvoke.Cryptography" version="3.4.13" />
       <dependency id="Vanara.PInvoke.DavClnt" version="3.4.13" />

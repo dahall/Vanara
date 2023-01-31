@@ -34,7 +34,7 @@ Interface | Description
 [Vanara.InteropServices.IMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=IMemoryMethods) | Interface to capture unmanaged memory methods.
 [Vanara.InteropServices.ISafeMemoryHandle](https://github.com/dahall/Vanara/search?l=C%23&q=ISafeMemoryHandle) | Interface for classes that support safe memory pointers.
 [Vanara.InteropServices.ISimpleMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=ISimpleMemoryMethods) | Interface to capture unmanaged simple (alloc/free) memory methods.
-[Vanara.ISupportIndexer<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ISupportIndexer<T>) | 
+[Vanara.ISupportIndexer<T>](https://github.com/dahall/Vanara/search?l=C%23&q=ISupportIndexer<T>) | Interface representing a class that holds an indexer.
 [Vanara.InteropServices.IVanaraMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=IVanaraMarshaler) | Smarter custom marshaler.
 ### Classes
 Class | Description

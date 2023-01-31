@@ -9,7 +9,16 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;avrt</PackageTags>
-    <PackageReleaseNotes/>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+AvQuerySystemResponsiveness AvRevertMmThreadCharacteristics AvRtCreateThreadOrderingGroup AvRtCreateThreadOrderingGroupEx AvRtDeleteThreadOrderingGroup AvRtJoinThreadOrderingGroup AvRtLeaveThreadOrderingGroup AvRtWaitOnThreadOrderingGroup AvSetMmMaxThreadCharacteristics AvSetMmThreadCharacteristics AvSetMmThreadPriority
+
+Structures
+HAVRT
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
