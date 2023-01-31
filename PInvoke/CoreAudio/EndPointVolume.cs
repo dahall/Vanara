@@ -1421,7 +1421,8 @@ namespace Vanara.PInvoke
 			/// Specifies whether the audio stream is currently muted. If <c>bMuted</c> is <c>TRUE</c>, the stream is muted. If
 			/// <c>FALSE</c>, the stream is not muted.
 			/// </summary>
-			[MarshalAs(UnmanagedType.Bool)] public bool bMuted;
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool bMuted;
 
 			/// <summary>
 			/// Specifies the current master volume level of the audio stream. The volume level is normalized to the range from 0.0 to 1.0,

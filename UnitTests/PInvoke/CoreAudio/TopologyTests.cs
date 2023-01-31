@@ -12,7 +12,7 @@ using Vanara.InteropServices;
 using static Vanara.PInvoke.CoreAudio;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
-using static Vanara.PInvoke.Winmm;
+using static Vanara.PInvoke.WinMm;
 
 namespace Vanara.PInvoke.Tests
 {
