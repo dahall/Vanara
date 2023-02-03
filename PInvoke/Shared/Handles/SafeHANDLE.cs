@@ -108,5 +108,12 @@ namespace Vanara.PInvoke
 			handle = IntPtr.Zero;
 			return true;
 		}
+
+		/// <summary>Throws an <see cref="ObjectDisposedException"/> if disposed.</summary>
+		/// <typeparam name="T">A <see cref="SafeHANDLE"/> instance.</typeparam>
+		/// <param name="h">The handle.</param>
+		/// <returns>The handle if not disposed.</returns>
+		/// <exception cref="System.ObjectDisposedException">Thrown if handle is disposed.</exception>
+		protected static T ThrowIfDisposed<T>(T h) where T : SafeHANDLE => h is null || h.IsInvalid ? throw new ObjectDisposedException(typeof(T).Name) : h;
 	}
 }
