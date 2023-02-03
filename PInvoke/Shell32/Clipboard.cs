@@ -213,7 +213,7 @@ namespace Vanara.PInvoke
 		/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
 		/// </param>
 		/// <returns>The object associated with the request. If no object can be determined, a <see cref="byte"/>[] is returned.</returns>
-		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
+		/// <exception cref="InvalidOperationException">Unrecognized TYMED value.</exception>
 		public static object GetData(this IDataObject dataObj, string format, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1) =>
 			GetData(dataObj, RegisterClipboardFormat(format), aspect, index);
 
@@ -312,7 +312,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </returns>
-		/// <exception cref="System.InvalidOperationException">Unrecognized TYMED value.</exception>
+		/// <exception cref="InvalidOperationException">Unrecognized TYMED value.</exception>
 		public static object GetData(this IDataObject dataObj, uint formatId, DVASPECT aspect = DVASPECT.DVASPECT_CONTENT, int index = -1)
 		{
 			ClipCorrespondingTypeAttribute attr = ShellClipboardFormat.clipFmtIds.Value.TryGetValue(formatId, out (string name, ClipCorrespondingTypeAttribute attr) data) ? data.attr : null;
@@ -402,7 +402,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="charSet">The character set to use for string types.</param>
 		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
-		/// <exception cref="System.ArgumentException">This format does not support direct type access. - formatId</exception>
+		/// <exception cref="ArgumentException">This format does not support direct type access. - formatId</exception>
 		public static T GetData<T>(this IDataObject dataObj, string format, int index = -1, CharSet charSet = CharSet.Auto) =>
 			GetData<T>(dataObj, RegisterClipboardFormat(format), index, charSet);
 
@@ -416,7 +416,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="charSet">The character set to use for string types.</param>
 		/// <returns>The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</returns>
-		/// <exception cref="System.ArgumentException">This format does not support direct type access. - formatId</exception>
+		/// <exception cref="ArgumentException">This format does not support direct type access. - formatId</exception>
 		public static T GetData<T>(this IDataObject dataObj, uint formatId, int index = -1, CharSet charSet = CharSet.Auto)
 		{
 			FORMATETC formatetc = new()
@@ -453,7 +453,7 @@ namespace Vanara.PInvoke
 		/// <summary>Gets an HTML string from bytes returned from the clipboard.</summary>
 		/// <param name="bytes">The bytes from the clipboard.</param>
 		/// <returns>The string representing the HTML.</returns>
-		/// <exception cref="System.InvalidOperationException">HTML format header cannot be processed.</exception>
+		/// <exception cref="InvalidOperationException">HTML format header cannot be processed.</exception>
 		public static string GetHtmlFromClipboard(byte[] bytes)
 		{
 			const string HdrRegEx = @"Version:\d\.\d\s+StartHTML:(\d+)\s+EndHTML:(\d+)\s+StartFragment:(\d+)\s+EndFragment:(\d+)\s+(?:StartSelection:(\d+)\s+EndSelection:(\d+)\s+)?";
@@ -1070,19 +1070,29 @@ namespace Vanara.PInvoke
 				}
 			}
 
-			/// <summary>Performs an implicit conversion from <see cref="System.IO.FileInfo"/> to <see cref="FILEDESCRIPTOR"/>.</summary>
-			/// <param name="fi">The <see cref="System.IO.FileInfo"/> instance.</param>
+			/// <summary>Performs an implicit conversion from <see cref="FileSystemInfo"/> to <see cref="FILEDESCRIPTOR"/>.</summary>
+			/// <param name="fi">The <see cref="FileSystemInfo"/> instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static implicit operator FILEDESCRIPTOR(System.IO.FileInfo fi) => new FILEDESCRIPTOR()
+			public static implicit operator FILEDESCRIPTOR(FileSystemInfo fi) => new()
 			{
-				dwFlags = FD_FLAGS.FD_ATTRIBUTES | FD_FLAGS.FD_ACCESSTIME | FD_FLAGS.FD_CREATETIME | FD_FLAGS.FD_WRITESTIME | FD_FLAGS.FD_FILESIZE | (Marshal.SystemDefaultCharSize > 1 ? FD_FLAGS.FD_UNICODE : 0),
+				dwFlags = FD_FLAGS.FD_ATTRIBUTES | FD_FLAGS.FD_ACCESSTIME | FD_FLAGS.FD_CREATETIME | FD_FLAGS.FD_WRITESTIME | (Marshal.SystemDefaultCharSize > 1 ? FD_FLAGS.FD_UNICODE : 0),
 				dwFileAttributes = (FileFlagsAndAttributes)fi.Attributes,
 				cFileName = fi.FullName,
 				ftCreationTime = fi.CreationTime.ToFileTimeStruct(),
 				ftLastAccessTime = fi.LastAccessTime.ToFileTimeStruct(),
 				ftLastWriteTime = fi.LastWriteTime.ToFileTimeStruct(),
-				nFileSize = unchecked((ulong)fi.Length)
 			};
+
+			/// <summary>Performs an implicit conversion from <see cref="FileInfo"/> to <see cref="FILEDESCRIPTOR"/>.</summary>
+			/// <param name="fi">The <see cref="FileInfo"/> instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator FILEDESCRIPTOR(FileInfo fi)
+			{
+				var fd = (FILEDESCRIPTOR)(fi as FileSystemInfo);
+				fd.dwFlags |= FD_FLAGS.FD_FILESIZE;
+				fd.nFileSize = unchecked((ulong)fi.Length);
+				return fd;
+			}
 		}
 
 		/// <summary>Defines the CF_FILEGROUPDESCRIPTOR clipboard format.</summary>
@@ -1780,7 +1790,7 @@ namespace Vanara.PInvoke
 			/// <summary>Registers a new clipboard format. This format can then be used as a valid clipboard format.</summary>
 			/// <param name="format">The name of the new format.</param>
 			/// <returns>The registered clipboard format identifier.</returns>
-			/// <exception cref="System.ArgumentNullException">format</exception>
+			/// <exception cref="ArgumentNullException">format</exception>
 			/// <remarks>
 			/// If a registered format with the specified name already exists, a new format is not registered and the return value identifies the
 			/// existing format. This enables more than one application to copy and paste data using the same registered clipboard format. Note

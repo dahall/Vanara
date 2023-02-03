@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -23,6 +25,124 @@ namespace Vanara.Windows.Shell.Tests
 		const string txt = @"“0’0©0è0”";
 		const string ptxt = "ABC123";
 		private const string url = "https://microsoft.com";
+
+		[Test]
+		public void zhuxbTest()
+		{
+			Thread STA = new(() =>
+			{
+				Ole32.OleInitialize();
+
+				try
+				{
+					NativeClipboard.Clear();
+
+					ShellItemArray ShellItemList = new(files.Select(fn => new ShellItem(fn)));
+
+					var Data = NativeClipboard.CreateEmptyDataObject();
+
+					Data.SetData(Shell32.ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, new Shell32.FILEGROUPDESCRIPTOR
+					{
+						cItems = (uint)ShellItemList.Count,
+						fgd = ShellItemList.Select((Item) =>
+						{
+							ShellFileInfo FileInfo = Item.FileInfo;
+							Shell32.FD_FLAGS Flags = Shell32.FD_FLAGS.FD_ATTRIBUTES
+													 | Shell32.FD_FLAGS.FD_CREATETIME
+													 | Shell32.FD_FLAGS.FD_ACCESSTIME
+													 | Shell32.FD_FLAGS.FD_WRITESTIME
+													 | Shell32.FD_FLAGS.FD_UNICODE;
+
+							if (!Item.IsFolder)
+							{
+								Flags |= Shell32.FD_FLAGS.FD_FILESIZE;
+							}
+
+							return new Shell32.FILEDESCRIPTOR
+							{
+								cFileName = Item.Name,
+								dwFlags = Flags,
+								dwFileAttributes = (FileFlagsAndAttributes)FileInfo.Attributes,
+								nFileSize = (ulong)FileInfo.Length,
+								ftCreationTime = FileInfo.CreationTime.ToFileTimeStruct(),
+								ftLastAccessTime = FileInfo.LastAccessTime.ToFileTimeStruct(),
+								ftLastWriteTime = FileInfo.LastWriteTime.ToFileTimeStruct()
+							};
+						}).ToArray()
+					});
+
+					for (int Index = 0; Index < ShellItemList.Count; Index++)
+					{
+						ShellItem Item = ShellItemList[Index];
+
+						if (!Item.IsFolder)
+						{
+							Data.SetData(Shell32.ShellClipboardFormat.CFSTR_FILECONTENTS, Item.GetHandler<IStream>(Shell32.ShellUtil.CreateBindCtx(STGM.STGM_READWRITE | STGM.STGM_SHARE_DENY_WRITE)), DVASPECT.DVASPECT_CONTENT, Index);
+						}
+					}
+
+					NativeClipboard.SetDataObject(Data);
+
+					foreach (uint FormatId in NativeClipboard.CurrentlySupportedFormats)
+					{
+						Debug.WriteLine($"Available format: {NativeClipboard.GetFormatName(FormatId)}");
+					}
+
+					if ((NativeClipboard.IsFormatAvailable(Shell32.ShellClipboardFormat.CFSTR_FILEDESCRIPTORA) || NativeClipboard.IsFormatAvailable(Shell32.ShellClipboardFormat.CFSTR_FILEDESCRIPTORW)) && NativeClipboard.IsFormatAvailable(Shell32.ShellClipboardFormat.CFSTR_FILECONTENTS))
+					{
+						Shell32.FILEGROUPDESCRIPTOR FileGroupDescriptor = NativeClipboard.IsFormatAvailable(Shell32.ShellClipboardFormat.CFSTR_FILEDESCRIPTORA)
+																			  ? NativeClipboard.CurrentDataObject.GetData<Shell32.FILEGROUPDESCRIPTOR>(Shell32.ShellClipboardFormat.CFSTR_FILEDESCRIPTORA)
+																			  : NativeClipboard.CurrentDataObject.GetData<Shell32.FILEGROUPDESCRIPTOR>(Shell32.ShellClipboardFormat.CFSTR_FILEDESCRIPTORW);
+
+						for (int Index = 0; Index < FileGroupDescriptor.cItems; Index++)
+						{
+							Shell32.FILEDESCRIPTOR FileDescriptor = FileGroupDescriptor.fgd[Index];
+
+							ulong Size = 0;
+							FileAttributes Attributes = default;
+							DateTimeOffset CreateTime = default;
+							DateTimeOffset LastAccessTime = default;
+							DateTimeOffset LastWriteTime = default;
+
+							if (FileDescriptor.dwFlags.HasFlag(Shell32.FD_FLAGS.FD_ATTRIBUTES))
+							{
+								Attributes = (FileAttributes)FileDescriptor.dwFileAttributes;
+							}
+
+							if (FileDescriptor.dwFlags.HasFlag(Shell32.FD_FLAGS.FD_FILESIZE))
+							{
+								Size = FileDescriptor.nFileSize;
+							}
+
+							if (FileDescriptor.dwFlags.HasFlag(Shell32.FD_FLAGS.FD_CREATETIME))
+							{
+								CreateTime = FileDescriptor.ftCreationTime.ToDateTime();
+							}
+
+							if (FileDescriptor.dwFlags.HasFlag(Shell32.FD_FLAGS.FD_ACCESSTIME))
+							{
+								LastAccessTime = FileDescriptor.ftLastAccessTime.ToDateTime();
+							}
+
+							if (FileDescriptor.dwFlags.HasFlag(Shell32.FD_FLAGS.FD_WRITESTIME))
+							{
+								LastWriteTime = FileDescriptor.ftLastWriteTime.ToDateTime();
+							}
+
+							//Throw Invalid FORMATETC structure
+							var result = NativeClipboard.CurrentDataObject.GetData(Shell32.ShellClipboardFormat.CFSTR_FILECONTENTS, index: Index);
+						}
+					}
+				}
+				finally
+				{
+					Ole32.OleUninitialize();
+				}
+			});
+			STA.SetApartmentState(ApartmentState.STA);
+			STA.Start();
+			STA.Join();
+		}
 
 		[Test]
 		public void DumpWFClipboardTest()
