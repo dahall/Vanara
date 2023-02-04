@@ -341,7 +341,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 		catch (Exception ex)
 		{
 			if (!OnWndProcException(ex))
-				throw ex;
+				throw;
 			return IntPtr.Zero;
 		}
 		finally

@@ -237,7 +237,7 @@ namespace Vanara.PInvoke
 				{
 					var cp = lParam.ToStructure<CREATESTRUCT>().lpCreateParams;
 					if (cp != IntPtr.Zero && GCHandle.FromIntPtr(cp).Target is IWindowInit wnd)
-						return wnd.InitWndProcOnNCCreate(hwnd, msg, Marshal.GetFunctionPointerForDelegate(wndProc), lParam);
+						return wnd.InitWndProcOnNCCreate(hwnd, msg, Marshal.GetFunctionPointerForDelegate(wndProc ?? throw new NullReferenceException()), lParam);
 				}
 				catch { }
 			}

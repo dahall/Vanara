@@ -11,9 +11,13 @@ public static partial class CoreAudio
 	/// <summary>Undocumented</summary>
 	public const uint AMBISONICS_PARAM_VERSION_1 = 1;
 
+	/// <summary/>
 	public const uint WM_APP_GRAPHNOTIFY = 0x8002;
+	/// <summary/>
 	public const uint WM_APP_SESSION_DUCKED = 0x8000;
+	/// <summary/>
 	public const uint WM_APP_SESSION_UNDUCKED = 0x8001;
+	/// <summary/>
 	public const uint WM_APP_SESSION_VOLUME_CHANGED = 0x8003;
 
 	/// <summary>Undocumented</summary>
@@ -151,20 +155,25 @@ public static partial class CoreAudio
 		HRESULT SetEchoCancellationRenderEndpoint([MarshalAs(UnmanagedType.LPWStr)] string endpointId);
 	}
 
+	/// <summary>Undocumented</summary>
 	[PInvokeData("audioclient.h")]
 	[ComImport, Guid("28724C91-DF35-4856-9F76-D6A26413F3DF"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IAudioAmbisonicsControl
 	{
+		/// <summary>Undocumented</summary>
 		[PreserveSig]
 		HRESULT SetData([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] AMBISONICS_PARAMS[] pAmbisonicsParams,
 			uint cbAmbisonicsParams);
 
+		/// <summary>Undocumented</summary>
 		[PreserveSig]
 		HRESULT SetHeadTracking([MarshalAs(UnmanagedType.Bool)] bool bEnableHeadTracking);
 
+		/// <summary>Undocumented</summary>
 		[PreserveSig]
 		HRESULT GetHeadTracking([MarshalAs(UnmanagedType.Bool)] out bool pbEnableHeadTracking);
 
+		/// <summary>Undocumented</summary>
 		[PreserveSig]
 		HRESULT SetRotation(float X, float Y, float Z, float W);
 	}

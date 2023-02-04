@@ -322,7 +322,9 @@ public class FirewallProfile
 	/// </remarks>
 	public string[]? ExcludedInterfaces
 	{
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
 		get => iPol.ExcludedInterfaces[type] is null ? null : (string[])Array.ConvertAll((object[])iPol.ExcludedInterfaces[type], o => o.ToString());
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 		set => iPol.ExcludedInterfaces[type] = value is null || value.Length == 0 ? null : Array.ConvertAll(value, s => (object)s);
 	}
 
@@ -624,7 +626,9 @@ public class FirewallRule : INamedEntity, IEquatable<FirewallRule>
 	/// </remarks>
 	public string[]? InterfaceNames
 	{
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
 		get => iRule.Interfaces is null ? null : (string[])Array.ConvertAll((object[])iRule.Interfaces, o => o.ToString());
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 		set => iRule.Interfaces = value is null || value.Length == 0 ? null : Array.ConvertAll(value, s => (object)s);
 	}
 
@@ -868,12 +872,12 @@ public class FirewallRule : INamedEntity, IEquatable<FirewallRule>
 	private INetFwRule3 iRule3 => iRule as INetFwRule3 ?? throw new NotSupportedException();
 
 	/// <inheritdoc/>
-	public bool Equals(FirewallRule other) => Equals(other.Name, Name) &&
-		Equals(other.Profiles, Profiles) &&
-		Equals(other.Direction, Direction) &&
-		Equals(other.Enabled, Enabled) &&
-		Equals(other.Action, Action) &&
-		Equals(other.ApplicationName, ApplicationName);
+	public bool Equals(FirewallRule? other) => Equals(other?.Name, Name) &&
+		Equals(other?.Profiles, Profiles) &&
+		Equals(other?.Direction, Direction) &&
+		Equals(other?.Enabled, Enabled) &&
+		Equals(other?.Action, Action) &&
+		Equals(other?.ApplicationName, ApplicationName);
 }
 
 /// <summary>Represents the rules for the Windows Firewall.</summary>

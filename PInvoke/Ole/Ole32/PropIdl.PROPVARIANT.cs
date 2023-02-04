@@ -508,7 +508,7 @@ namespace Vanara.PInvoke
 					return ret | VARTYPE.VT_HRESULT;
 				if (elemtype.IsCOMObject)
 				{
-					var intf = elemtype.GetInterfaces();
+					Type[] intf = elemtype.GetInterfaces();
 					if (intf.Contains(typeof(IStream))) return ret | VARTYPE.VT_STREAM;
 					if (intf.Contains(typeof(IStorage))) return ret | VARTYPE.VT_STORAGE;
 					return ret | VARTYPE.VT_UNKNOWN;

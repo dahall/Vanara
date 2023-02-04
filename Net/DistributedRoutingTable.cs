@@ -312,13 +312,13 @@ public class DistributedRoutingTable : IDisposable
 			switch (pEventData.Value.type)
 			{
 				case DRT_EVENT_TYPE.DRT_EVENT_STATUS_CHANGED:
-					Drt.StatusChange?.Invoke(Drt, new(pEventData.Value));
+					Drt?.StatusChange?.Invoke(Drt, new(pEventData.Value));
 					break;
 				case DRT_EVENT_TYPE.DRT_EVENT_LEAFSET_KEY_CHANGED:
-					Drt.LeafSetKeyChange?.Invoke(Drt, new(pEventData.Value));
+					Drt?.LeafSetKeyChange?.Invoke(Drt, new(pEventData.Value));
 					break;
 				case DRT_EVENT_TYPE.DRT_EVENT_REGISTRATION_STATE_CHANGED:
-					Drt.RegistrationStateChange?.Invoke(Drt, new(pEventData.Value));
+					Drt?.RegistrationStateChange?.Invoke(Drt, new(pEventData.Value));
 					break;
 			}
 		}
