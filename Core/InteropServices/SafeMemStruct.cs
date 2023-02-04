@@ -14,7 +14,7 @@ namespace Vanara.InteropServices
 	/// <summary>Base abstract class for a structure handler based on <see cref="SafeMemoryHandle{TMem}"/>.</summary>
 	/// <typeparam name="TStruct">The type of the structure.</typeparam>
 	/// <typeparam name="TMem">The type of the memory.</typeparam>
-	/// <seealso cref="Vanara.InteropServices.SafeMemoryHandle{TMem}"/>
+	/// <seealso cref="SafeMemoryHandle{TMem}"/>
 	public abstract class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<TStruct> where TMem : IMemoryMethods, new() where TStruct : struct
 	{
 		/// <summary>The structure size, in bytes, of TStruct.</summary>
@@ -48,7 +48,7 @@ namespace Vanara.InteropServices
 		/// The value of the current <see cref="SafeMemStruct{TStruct, TMem}"/> object if the HasValue property is true. An exception is
 		/// thrown if the HasValue property is false.
 		/// </value>
-		/// <exception cref="System.InvalidOperationException">The HasValue property is false.</exception>
+		/// <exception cref="InvalidOperationException">The HasValue property is false.</exception>
 		public TStruct Value
 		{
 			get => HasValue ? handle.ToStructure<TStruct>(Size) : throw new InvalidOperationException("The HasValue property is false.");
@@ -62,7 +62,7 @@ namespace Vanara.InteropServices
 		/// </returns>
 		public static explicit operator TStruct?(SafeMemStruct<TStruct, TMem> s) => s is null || !s.HasValue ? (TStruct?)null : s.Value;
 
-		/// <summary>Performs an explicit conversion from <see cref="SafeMemStruct{TStruct, TMem}"/> to <see cref="System.Char"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="SafeMemStruct{TStruct, TMem}"/> to <see cref="char"/>.</summary>
 		/// <param name="s">The <see cref="SafeMemStruct{TStruct, TMem}"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		/// <exception cref="InvalidCastException">Cannot convert an ANSI string to a Char pointer.</exception>
@@ -82,7 +82,7 @@ namespace Vanara.InteropServices
 		/// The structure value held by the <see cref="SafeMemStruct{TStruct, TMem}"/> or an <see cref="InvalidOperationException"/>
 		/// exception if the handle or value is invalid.
 		/// </returns>
-		public static implicit operator TStruct(SafeMemStruct<TStruct, TMem> s) => !(s is null) ? s.Value : throw new ArgumentNullException(nameof(s));
+		public static implicit operator TStruct(SafeMemStruct<TStruct, TMem> s) => s is not null ? s.Value : throw new ArgumentNullException(nameof(s));
 
 		/// <summary>Appends the specified bytes to the end of the allocated memory for this structure, expanding the allocation to fit the byte array.</summary>
 		/// <param name="bytes">The bytes.</param>
@@ -118,18 +118,18 @@ namespace Vanara.InteropServices
 			return handle.Offset(sz);
 		}
 
-		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 		public override bool Equals(object obj) => ReferenceEquals(this, obj) ||
-			(obj switch
+			obj switch
 			{
 				null => false,
 				SafeMemStruct<TStruct, TMem> ms => Equals((TStruct?)this, (TStruct?)ms),
 				TStruct s => Equals(s),
 				SafeAllocatedMemoryHandle m => m.DangerousGetHandle() == handle,
 				_ => false,
-			});
+			};
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -158,7 +158,7 @@ namespace Vanara.InteropServices
 		public virtual void InitializeSizeField(string fieldName = null) => (fieldName is null ? handle : GetFieldAddress(fieldName)).Write((uint)BaseStructSize);
 
 		/// <summary>Returns the string value held by this instance.</summary>
-		/// <returns>A <see cref="System.String"/> value held by this instance or <c>null</c> if the handle is invalid.</returns>
+		/// <returns>A <see cref="string"/> value held by this instance or <c>null</c> if the handle is invalid.</returns>
 		public override string ToString() => ((TStruct?)this).ToString();
 
 		/// <summary>Returns the field offset of the named field.</summary>
@@ -177,11 +177,9 @@ namespace Vanara.InteropServices
 #endif
 	}
 
-	/// <summary>
-	/// A structure handler based on unmanaged memory allocated by AllocCoTaskMem.
-	/// </summary>
+	/// <summary>A structure handler based on unmanaged memory allocated by AllocCoTaskMem.</summary>
 	/// <typeparam name="TStruct">The type of the structure.</typeparam>
-	/// <seealso cref="Vanara.InteropServices.SafeMemStruct{TStruct, TMem}" />
+	/// <seealso cref="SafeMemStruct{TStruct, TMem}"/>
 	public class SafeCoTaskMemStruct<TStruct> : SafeMemStruct<TStruct, CoTaskMemoryMethods> where TStruct : struct
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemStruct{TStruct}"/> class.</summary>
@@ -201,19 +199,17 @@ namespace Vanara.InteropServices
 		public SafeCoTaskMemStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
 
 		/// <summary>Represents the <see langword="null"/> equivalent of this class instances.</summary>
-		public static readonly SafeCoTaskMemStruct<TStruct> Null = new SafeCoTaskMemStruct<TStruct>(IntPtr.Zero, false);
+		public static readonly SafeCoTaskMemStruct<TStruct> Null = new(IntPtr.Zero, false);
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TStruct}"/> to <see cref="SafeCoTaskMemStruct{TStruct}"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="Nullable{TStruct}"/> to <see cref="SafeCoTaskMemStruct{TStruct}"/>.</summary>
 		/// <param name="s">The value of the <typeparamref name="TStruct"/> instance or <see langword="null"/>.</param>
 		/// <returns>The resulting <see cref="SafeCoTaskMemStruct{TStruct}"/> instance from the conversion.</returns>
 		public static implicit operator SafeCoTaskMemStruct<TStruct>(TStruct? s) => s.HasValue ? new SafeCoTaskMemStruct<TStruct>(s.Value) : new SafeCoTaskMemStruct<TStruct>(IntPtr.Zero);
 	}
 
-	/// <summary>
-	/// A structure handler based on unmanaged memory allocated by AllocHGlobal.
-	/// </summary>
+	/// <summary>A structure handler based on unmanaged memory allocated by AllocHGlobal.</summary>
 	/// <typeparam name="TStruct">The type of the structure.</typeparam>
-	/// <seealso cref="Vanara.InteropServices.SafeMemStruct{TStruct, TMem}" />
+	/// <seealso cref="SafeMemStruct{TStruct, TMem}"/>
 	public class SafeHGlobalStruct<TStruct> : SafeMemStruct<TStruct, HGlobalMemoryMethods> where TStruct : struct
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeHGlobalStruct{TStruct}"/> class.</summary>
@@ -233,9 +229,9 @@ namespace Vanara.InteropServices
 		public SafeHGlobalStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
 
 		/// <summary>Represents the <see langword="null"/> equivalent of this class instances.</summary>
-		public static readonly SafeHGlobalStruct<TStruct> Null = new SafeHGlobalStruct<TStruct>(IntPtr.Zero, false);
+		public static readonly SafeHGlobalStruct<TStruct> Null = new(IntPtr.Zero, false);
 
-		/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TStruct}"/> to <see cref="SafeHGlobalStruct{TStruct}"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="Nullable{TStruct}"/> to <see cref="SafeHGlobalStruct{TStruct}"/>.</summary>
 		/// <param name="s">The value of the <typeparamref name="TStruct"/> instance or <see langword="null"/>.</param>
 		/// <returns>The resulting <see cref="SafeHGlobalStruct{TStruct}"/> instance from the conversion.</returns>
 		public static implicit operator SafeHGlobalStruct<TStruct>(TStruct? s) => s.HasValue ? new SafeHGlobalStruct<TStruct>(s.Value) : new SafeHGlobalStruct<TStruct>(IntPtr.Zero);
