@@ -889,6 +889,739 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// <para>
+		/// Enables data transfer and notification of changes in data. Data transfer methods specify the format of the transferred data along
+		/// with the medium through which the data is to be transferred. Optionally, the data can be rendered for a specific target device.
+		/// In addition to methods for retrieving and storing data, the <c>IDataObject</c> interface specifies methods for enumerating
+		/// available formats and managing connections to advisory sinks for handling change notifications.
+		/// </para>
+		/// <para>
+		/// The term <c>data object</c> is used to mean any object that supports an implementation of the <c>IDataObject</c> interface.
+		/// Implementations vary, depending on what the data object is required to do; in some data objects, the implementation of certain
+		/// methods not supported by the object could simply be the return of E_NOTIMPL. For example, some data objects do not allow callers
+		/// to send them data. Other data objects do not support advisory connections and change notifications. However, for those data
+		/// objects that do support change notifications, OLE provides an object called a data advise holder. An interface pointer to this
+		/// holder is available through a call to the helper function CreateDataAdviseHolder. A data object can have multiple connections,
+		/// each with its own set of attributes. The OLE data advise holder simplifies the task of managing these connections and sending the
+		/// appropriate notifications.
+		/// </para>
+		/// </summary>
+		// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nn-objidl-idataobject
+		[PInvokeData("objidl.h", MSDNShortId = "NN:objidl.IDataObject")]
+		[ComImport, Guid("0000010e-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IDataObjectV
+		{
+			/// <summary>
+			/// Called by a data consumer to obtain data from a source data object. The <c>GetData</c> method renders the data described in
+			/// the specified FORMATETC structure and transfers it through the specified STGMEDIUM structure. The caller then assumes
+			/// responsibility for releasing the <c>STGMEDIUM</c> structure.
+			/// </summary>
+			/// <param name="pformatetcIn">
+			/// A pointer to the FORMATETC structure that defines the format, medium, and target device to use when passing the data. It is
+			/// possible to specify more than one medium by using the Boolean OR operator, allowing the method to choose the best medium
+			/// among those specified.
+			/// </param>
+			/// <param name="pmedium">
+			/// A pointer to the STGMEDIUM structure that indicates the storage medium containing the returned data through its tymed member,
+			/// and the responsibility for releasing the medium through the value of its <c>pUnkForRelease</c> member. If
+			/// <c>pUnkForRelease</c> is <c>NULL</c>, the receiver of the medium is responsible for releasing it; otherwise,
+			/// <c>pUnkForRelease</c> points to the IUnknown on the appropriate object so its Release method can be called. The medium must
+			/// be allocated and filled in by <c>GetData</c>.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>DV_E_LINDEX</c></term>
+			/// <term>The value for <c>lindex</c> is not valid; currently, only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_FORMATETC</c></term>
+			/// <term>The value for <c>pformatetcIn</c> is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_TYMED</c></term>
+			/// <term>The <c>tymed</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_DVASPECT</c></term>
+			/// <term>The <c>dwAspect</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_E_NOTRUNNING</c></term>
+			/// <term>The object application is not running.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>STG_E_MEDIUMFULL</c></term>
+			/// <term>An error occurred when allocating the medium.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_UNEXPECTED</c></term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_INVALIDARG</c></term>
+			/// <term>The <c>dwDirection</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_OUTOFMEMORY</c></term>
+			/// <term>There was insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// A data consumer calls <c>GetData</c> to retrieve data from a data object, conveyed through a storage medium (defined through
+			/// the STGMEDIUM structure).
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// You can specify more than one acceptable <c>tymed</c> medium with the Boolean OR operator. <c>GetData</c> must choose from
+			/// the OR'd values the medium that best represents the data, do the allocation, and indicate responsibility for releasing the medium.
+			/// </para>
+			/// <para>
+			/// Data transferred across a stream extends from position zero of the stream pointer through to the position immediately before
+			/// the current stream pointer (that is, the stream pointer position upon exit).
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// <c>GetData</c> must check all fields in the FORMATETC structure. It is important that <c>GetData</c> render the requested
+			/// aspect and, if possible, use the requested medium. If the data object cannot comply with the information specified in the
+			/// <c>FORMATETC</c>, the method should return DV_E_FORMATETC. If an attempt to allocate the medium fails, the method should
+			/// return STG_E_MEDIUMFULL. It is important to fill in all of the fields in the STGMEDIUM structure.
+			/// </para>
+			/// <para>
+			/// Although the caller can specify more than one medium for returning the data, <c>GetData</c> can provide only one medium. If
+			/// the initial transfer fails with the selected medium, this method can be implemented to try one of the other media specified
+			/// before returning an error.
+			/// </para>
+			/// </remarks>
+			// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-getdata HRESULT GetData( [in] FORMATETC
+			// *pformatetcIn, [out] STGMEDIUM *pmedium );
+			[PreserveSig]
+			HRESULT GetData(in FORMATETC pformatetcIn, out STGMEDIUM pmedium);
+
+			/// <summary>
+			/// Called by a data consumer to obtain data from a source data object. This method differs from the GetData method in that the
+			/// caller must allocate and free the specified storage medium.
+			/// </summary>
+			/// <param name="pformatetc">
+			/// A pointer to the FORMATETC structure that defines the format, medium, and target device to use when passing the data. Only
+			/// one medium can be specified in <c>tymed</c>, and only the following values are valid: TYMED_ISTORAGE, TYMED_ISTREAM,
+			/// TYMED_HGLOBAL, or TYMED_FILE.
+			/// </param>
+			/// <param name="pmedium">
+			/// A pointer to the STGMEDIUM structure that defines the storage medium containing the data being transferred. The medium must
+			/// be allocated by the caller and filled in by <c>GetDataHere</c>. The caller must also free the medium. The implementation of
+			/// this method must always supply a value of <c>NULL</c> for the <c>punkForRelease</c> member of the <c>STGMEDIUM</c> structure
+			/// to which this parameter points.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>DV_E_LINDEX</c></term>
+			/// <term>The value for <c>lindex</c> is not valid; currently, only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_FORMATETC</c></term>
+			/// <term>The value for <c>pformatetc</c> is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_TYMED</c></term>
+			/// <term>The <c>tymed</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_DVASPECT</c></term>
+			/// <term>The <c>dwAspect</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_E_NOTRUNNING</c></term>
+			/// <term>The object application is not running.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>STG_E_MEDIUMFULL</c></term>
+			/// <term>An error occurred when allocating the medium.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_UNEXPECTED</c></term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_INVALIDARG</c></term>
+			/// <term>The <c>dwDirection</c> parameter is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_OUTOFMEMORY</c></term>
+			/// <term>There was insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>GetDataHere</c> method is similar to IDataObject::GetData, except that the caller must both allocate and free the
+			/// medium specified in <c>pmedium</c>. <c>GetDataHere</c> renders the data described in a FORMATETC structure and copies the
+			/// data into that caller-provided STGMEDIUM structure. For example, if the medium is TYMED_HGLOBAL, this method cannot resize
+			/// the medium or allocate a new hGlobal.
+			/// </para>
+			/// <para>
+			/// Some media are not appropriate in a call to <c>GetDataHere</c>, including GDI types such as metafiles. The <c>GetDataHere</c>
+			/// method cannot put data into a caller-provided metafile. In general, the only storage media it is necessary to support in this
+			/// method are TYMED_ISTORAGE, TYMED_ISTREAM, and TYMED_FILE.
+			/// </para>
+			/// <para>
+			/// When the transfer medium is a stream, OLE makes assumptions about where the data is being returned and the position of the
+			/// stream's seek pointer. In a GetData call, the data returned is from stream position zero through just before the current seek
+			/// pointer of the stream (that is, the position on exit). For <c>GetDataHere</c>, the data returned is from the stream position
+			/// on entry through just before the position on exit.
+			/// </para>
+			/// </remarks>
+			// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-getdatahere HRESULT GetDataHere( [in]
+			// FORMATETC *pformatetc, [in, out] STGMEDIUM *pmedium );
+			[PreserveSig]
+			HRESULT GetDataHere(in FORMATETC pformatetc, ref STGMEDIUM pmedium);
+
+			/// <summary>
+			/// Determines whether the data object is capable of rendering the data as specified. Objects attempting a paste or drop
+			/// operation can call this method before calling IDataObject::GetData to get an indication of whether the operation may be successful.
+			/// </summary>
+			/// <param name="pformatetc">
+			/// A pointer to the FORMATETC structure defining the format, medium, and target device to use for the query.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>DV_E_LINDEX</c></term>
+			/// <term>Invalid value for <c>lindex</c>; currently, only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_FORMATETC</c></term>
+			/// <term>Invalid value for <c>pformatetc</c>.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_TYMED</c></term>
+			/// <term>The <c>tymed</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_DVASPECT</c></term>
+			/// <term>The <c>dwAspect</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_E_NOTRUNNING</c></term>
+			/// <term>The object application is not running.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_UNEXPECTED</c></term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_INVALIDARG</c></term>
+			/// <term>The <c>dwDirection</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_OUTOFMEMORY</c></term>
+			/// <term>There is insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// The client of a data object calls <c>QueryGetData</c> to determine whether passing the specified FORMATETC structure to a
+			/// subsequent call to IDataObject::GetData is likely to be successful. A successful return from this method does not necessarily
+			/// ensure the success of the subsequent paste or drop operation.
+			/// </remarks>
+			// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-querygetdata HRESULT QueryGetData( [in]
+			// FORMATETC *pformatetc );
+			[PreserveSig]
+			HRESULT QueryGetData(in FORMATETC pformatetc);
+
+			/// <summary>
+			/// Provides a potentially different but logically equivalent FORMATETC structure. You use this method to determine whether two
+			/// different <c>FORMATETC</c> structures would return the same data, removing the need for duplicate rendering.
+			/// </summary>
+			/// <param name="pformatectIn">
+			/// A pointer to the FORMATETC structure that defines the format, medium, and target device that the caller would like to use to
+			/// retrieve data in a subsequent call such as IDataObject::GetData. The <c>tymed</c> member is not significant in this case and
+			/// should be ignored.
+			/// </param>
+			/// <param name="pformatetcOut">
+			/// A pointer to a FORMATETC structure that contains the most general information possible for a specific rendering, making it
+			/// canonically equivalent to <c>pformatetcIn</c>. The caller must allocate this structure and the <c>GetCanonicalFormatEtc</c>
+			/// method must fill in the data. To retrieve data in a subsequent call like IDataObject::GetData, the caller uses the specified
+			/// value of <c>pformatetcOut</c>, unless the value specified is <c>NULL</c>. This value is <c>NULL</c> if the method returns
+			/// DATA_S_SAMEFORMATETC. The <c>tymed</c> member is not significant in this case and should be ignored.
+			/// </param>
+			/// <returns>
+			/// <para>This method can return the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>S_OK</c></term>
+			/// <term>The returned FORMATETC structure is different from the one that was passed.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DATA_S_SAMEFORMATETC</c></term>
+			/// <term>The FORMATETC structures are the same and <c>NULL</c> is returned in <c>pformatetcOut</c>.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_LINDEX</c></term>
+			/// <term>The value for <c>lindex</c> is not valid; currently, only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_FORMATETC</c></term>
+			/// <term>The value for <c>pformatetc</c> is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_E_NOTRUNNING</c></term>
+			/// <term>The object application is not running.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_UNEXPECTED</c></term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_INVALIDARG</c></term>
+			/// <term>The <c>dwDirection</c> parameter is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_OUTOFMEMORY</c></term>
+			/// <term>There was insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// If a data object can supply exactly the same data for more than one requested FORMATETC structure,
+			/// <c>GetCanonicalFormatEtc</c> can supply a "canonical", or standard <c>FORMATETC</c> that gives the same rendering as a set of
+			/// more complicated <c>FORMATETC</c> structures. For example, it is common for the data returned to be insensitive to the target
+			/// device specified in any one of a set of otherwise similar <c>FORMATETC</c> structures.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A call to this method can determine whether two calls to IDataObject::GetData on a data object, specifying two different
+			/// FORMATETC structures, would actually produce the same renderings, thus eliminating the need for the second call and improving
+			/// performance. If the call to <c>GetCanonicalFormatEtc</c> results in a canonical format being written to the
+			/// <c>pformatetcOut</c> parameter, the caller then uses that structure in a subsequent call to <c>IDataObject::GetData</c>.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Conceptually, it is possible to think of FORMATETC structures in groups defined by a canonical <c>FORMATETC</c> that provides
+			/// the same results as each of the group members. In constructing the canonical <c>FORMATETC</c>, you should make sure it
+			/// contains the most general information possible that still produces a specific rendering.
+			/// </para>
+			/// <para>
+			/// For data objects that never provide device-specific renderings, the simplest implementation of this method is to copy the
+			/// input FORMATETC to the output <c>FORMATETC</c>, store a <c>NULL</c> in the <c>ptd</c> member of the output <c>FORMATETC</c>,
+			/// and return DATA_S_SAMEFORMATETC.
+			/// </para>
+			/// </remarks>
+			// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-getcanonicalformatetc HRESULT
+			// GetCanonicalFormatEtc( [in] FORMATETC *pformatectIn, [out] FORMATETC *pformatetcOut );
+			[PreserveSig]
+			HRESULT GetCanonicalFormatEtc(in FORMATETC pformatectIn, out FORMATETC pformatetcOut);
+
+			/// <summary>Called by an object containing a data source to transfer data to the object that implements this method.</summary>
+			/// <param name="pformatetc">
+			/// A pointer to the FORMATETC structure defining the format used by the data object when interpreting the data contained in the
+			/// storage medium.
+			/// </param>
+			/// <param name="pmedium">A pointer to the STGMEDIUM structure defining the storage medium in which the data is being passed.</param>
+			/// <param name="fRelease">
+			/// If <c>TRUE</c>, the data object called, which implements <c>SetData</c>, owns the storage medium after the call returns. This
+			/// means it must free the medium after it has been used by calling the ReleaseStgMedium function. If <c>FALSE</c>, the caller
+			/// retains ownership of the storage medium and the data object called uses the storage medium for the duration of the call only.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>DV_E_LINDEX</c></term>
+			/// <term>Invalid value for <c>lindex</c>; currently, only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_FORMATETC</c></term>
+			/// <term>The value for <c>pformatetc</c> is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_TYMED</c></term>
+			/// <term>The <c>tymed</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_DVASPECT</c></term>
+			/// <term>The <c>dwAspect</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_E_NOTRUNNING</c></term>
+			/// <term>The object application is not running.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_FAIL</c></term>
+			/// <term>The operation failed.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_UNEXPECTED</c></term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_INVALIDARG</c></term>
+			/// <term>The <c>dwDirection</c> value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_OUTOFMEMORY</c></term>
+			/// <term>There was insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// <c>SetData</c> allows another object to attempt to send data to the implementing data object. A data object implements this
+			/// method if it supports receiving data from another object. If it does not support this, it should be implemented to return E_NOTIMPL.
+			/// </para>
+			/// <para>
+			/// The caller allocates the storage medium indicated by the <c>pmedium</c> parameter, in which the data is passed. The data
+			/// object called does not take ownership of the data until it has successfully received it and no error code is returned. The
+			/// value of the <c>fRelease</c> parameter indicates the ownership of the medium after the call returns. <c>FALSE</c> indicates
+			/// the caller still owns the medium, and the data object only has the use of it during the call; <c>TRUE</c> indicates that the
+			/// data object now owns it and must release it when it is no longer needed.
+			/// </para>
+			/// <para>
+			/// The type of medium specified in the <c>pformatetc</c> and <c>pmedium</c> parameters must be the same. For example, one cannot
+			/// be a global handle and the other a stream.
+			/// </para>
+			/// </remarks>
+			// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-setdata HRESULT SetData( [in] FORMATETC
+			// *pformatetc, [in] STGMEDIUM *pmedium, [in] BOOL fRelease );
+			[PreserveSig]
+			HRESULT SetData(in FORMATETC pformatetc, in STGMEDIUM pmedium, [MarshalAs(UnmanagedType.Bool)] bool fRelease);
+
+			/// <summary>Creates an object to enumerate the formats supported by a data object.</summary>
+			/// <param name="dwDirection">
+			/// <para>The direction of the data. Possible values come from the DATADIR enumeration.</para>
+			/// <para>
+			/// The value DATADIR_GET enumerates the formats that can be passed in to a call to IDataObject::GetData. The value DATADIR_SET
+			/// enumerates those formats that can be passed in to a call to IDataObject::SetData.
+			/// </para>
+			/// </param>
+			/// <param name="ppenumFormatEtc">
+			/// A pointer to an IEnumFORMATETC pointer variable that receives the interface pointer to the new enumerator object.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>E_INVALIDARG</c></term>
+			/// <term>The supplied <c>dwDirection</c> is invalid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_OUTOFMEMORY</c></term>
+			/// <term>Insufficient memory available for this operation.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>E_NOTIMPL</c></term>
+			/// <term>The direction specified by <c>dwDirection</c> is not supported.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_S_USEREG</c></term>
+			/// <term>Requests that OLE enumerate the formats from the registry.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// <c>EnumFormatEtc</c> creates an enumerator object that can be used to determine all of the ways the data object can describe
+			/// data in a FORMATETC structure, and provides a pointer to its IEnumFORMATETC interface. This is one of the standard enumerator interfaces.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Having obtained the pointer, the caller can enumerate the FORMATETC structures by calling the enumeration methods of
+			/// IEnumFORMATETC. Because the formats can change over time, there is no guarantee that an enumerated format is currently
+			/// supported because the formats can change over time. Accordingly, applications should treat the enumeration as a hint of the
+			/// format types that can be passed. The caller is responsible for calling Release when it is finished with the enumerator.
+			/// </para>
+			/// <para><c>EnumFormatEtc</c> is called when one of the following actions occurs:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>
+			/// An application calls OleSetClipboard. OLE must determine what data to place on the clipboard and whether it is necessary to
+			/// put OLE 1 compatibility formats on the clipboard.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>Data is being pasted from the clipboard or dropped. An application uses the first acceptable format.</term>
+			/// </item>
+			/// <item>
+			/// <term>
+			/// The <c>Paste Special</c> dialog box is displayed. The target application builds the list of formats from the FORMATETC entries.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Formats can be registered statically in the registry or dynamically during object initialization. If an object has an
+			/// unchanging list of formats and these formats are registered in the registry, OLE provides an implementation of a FORMATETC
+			/// enumeration object that can enumerate formats registered under a specific CLSID in the registry. A pointer to its
+			/// IEnumFORMATETC interface is available through a call to the helper function OleRegEnumFormatEtc. In this situation,
+			/// therefore, you can implement the <c>EnumFormatEtc</c> method simply with a call to this function.
+			/// </para>
+			/// <para>
+			/// EXE applications can effectively do the same thing by implementing the method to return the value OLE_S_USEREG. This return
+			/// value instructs the default object handler to call OleRegEnumFormatEtc. Object applications that are implemented as DLL
+			/// object applications cannot return OLE_S_USEREG, so must call <c>OleRegEnumFormatEtc</c> directly.
+			/// </para>
+			/// <para>
+			/// Private formats can be enumerated for OLE 1 objects, if they are registered with the RequestDataFormats or SetDataFormats
+			/// keys in the registry. Also, private formats can be enumerated for OLE objects (all versions after OLE 1), if they are
+			/// registered with the GetDataFormats or SetDataFormats keys.
+			/// </para>
+			/// <para>
+			/// For OLE 1 objects whose servers do not have RequestDataFormats or SetDataFormats information registered in the registry, a
+			/// call to <c>EnumFormatEtc</c> passing DATADIR_GET only enumerates the native and metafile formats, regardless of whether they
+			/// support these formats or others. Calling <c>EnumFormatEtc</c> passing DATADIR_SET on such objects only enumerates native,
+			/// regardless of whether the object supports being set with other formats.
+			/// </para>
+			/// <para>
+			/// The FORMATETC structure returned by the enumeration usually indicates a <c>NULL</c> target device (ptd). This is appropriate
+			/// because, unlike the other members of <c>FORMATETC</c>, the target device does not participate in the object's decision as to
+			/// whether it can accept or provide the data in either a SetData or GetData call.
+			/// </para>
+			/// <para>
+			/// The <c>tymed</c> member of FORMATETC often indicates that more than one kind of storage medium is acceptable. You should
+			/// always mask and test for this by using a Boolean OR operator.
+			/// </para>
+			/// </remarks>
+			// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-enumformatetc HRESULT EnumFormatEtc( [in]
+			// DWORD dwDirection, [out] IEnumFORMATETC **ppenumFormatEtc );
+			[PreserveSig]
+			HRESULT EnumFormatEtc(DATADIR dwDirection, [MarshalAs(UnmanagedType.Interface)] out IEnumFORMATETC ppenumFormatEtc);
+
+			/// <summary>
+			/// Called by an object supporting an advise sink to create a connection between a data object and the advise sink. This enables
+			/// the advise sink to be notified of changes in the data of the object.
+			/// </summary>
+			/// <param name="pformatetc">
+			/// A pointer to a FORMATETC structure that defines the format, target device, aspect, and medium that will be used for future
+			/// notifications. For example, one sink may want to know only when the bitmap representation of the data in the data object
+			/// changes. Another sink may be interested in only the metafile format of the same object. Each advise sink is notified when the
+			/// data of interest changes. This data is passed back to the advise sink when notification occurs.
+			/// </param>
+			/// <param name="advf">
+			/// <para>
+			/// A group of flags for controlling the advisory connection. Possible values are from the ADVF enumeration. However, only some
+			/// of the possible <c>ADVF</c> values are relevant for this method. The following table briefly describes the relevant values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>ADVF Value</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADVF_NODATA</term>
+			/// <term>
+			/// Asks the data object to avoid sending data with the notifications. Typically data is sent. This flag is a way to override the
+			/// default behavior. When ADVF_NODATA is used, the <c>tymed</c> member of the STGMEDIUM structure that is passed to OnDataChange
+			/// will usually contain TYMED_NULL. The caller can then retrieve the data with a subsequent IDataObject::GetData call.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_ONLYONCE</term>
+			/// <term>
+			/// Causes the advisory connection to be destroyed after the first change notification is sent. An implicit call to
+			/// IDataObject::DUnadvise is made on behalf of the caller to remove the connection.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_PRIMEFIRST</term>
+			/// <term>
+			/// Asks for an additional initial notification. The combination of ADVF_ONLYONCE and ADVF_PRIMEFIRST provides, in effect, an
+			/// asynchronous IDataObject::GetData call.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADVF_DATAONSTOP</term>
+			/// <term>
+			/// When specified with ADVF_NODATA, this flag causes a last notification with the data included to to be sent before the data
+			/// object is destroyed. If used without ADVF_NODATA, <c>DAdvise</c> can be implemented in one of the following ways: A change
+			/// notification is sent only in the shutdown case. Data changes prior to shutdown do not cause a notification to be sent.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="pAdvSink">A pointer to the IAdviseSink interface on the advisory sink that will receive the change notification.</param>
+			/// <param name="pdwConnection">
+			/// A token that identifies this connection. You can use this token later to delete the advisory connection (by passing it to
+			/// IDataObject::DUnadvise). If this value is 0, the connection was not established.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>E_NOTIMPL</c></term>
+			/// <term>This method is not implemented on the data object.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_LINDEX</c></term>
+			/// <term>The value for <c>lindex</c> is not valid; currently, only -1 is supported.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>DV_E_FORMATETC</c></term>
+			/// <term>The value for <c>pformatetc</c> is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_E_ADVISENOTSUPPORTED</c></term>
+			/// <term>The data object does not support change notification.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// <c>DAdvise</c> creates a change notification connection between a data object and the caller. The caller provides an advisory
+			/// sink to which the notifications can be sent when the object's data changes.
+			/// </para>
+			/// <para>
+			/// Objects used simply for data transfer typically do not support advisory notifications and return OLE_E_ADVISENOTSUPPORTED
+			/// from <c>DAdvise</c>.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// The object supporting the advise sink calls <c>DAdvise</c> to set up the connection, specifying the format, aspect, medium,
+			/// and/or target device of interest in the FORMATETC structure passed in. If the data object does not support one or more of the
+			/// requested attributes or the sending of notifications at all, it can refuse the connection by returning OLE_E_ADVISENOTSUPPORTED.
+			/// </para>
+			/// <para>
+			/// Containers of linked objects can set up advisory connections directly with the bound link source or indirectly through the
+			/// standard OLE link object that manages the connection. Connections set up with the bound link source are not automatically
+			/// deleted. The container must explicitly call IDataObject::DUnadvise on the bound link source to delete an advisory connection.
+			/// The OLE link object, manipulated through the IOleLink interface, is implemented in the default handler. Connections set up
+			/// through the OLE link object are destroyed when the link object is deleted.
+			/// </para>
+			/// <para>
+			/// The OLE default link object creates a "wildcard advise" with the link source so OLE can maintain the time of last change.
+			/// This advise is specifically used to note the time that anything changed. OLE ignores all data formats that may have changed,
+			/// noting only the time of last change. To allow wildcard advises, set the FORMATETC members as follows before calling <c>DAdvise</c>:
+			/// </para>
+			/// <para>The advise flags should also include ADVF_NODATA. Wildcard advises from OLE should always be accepted by applications.</para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// To simplify the implementation of <c>DAdvise</c> and the other notification methods in IDataObject (DUnadvise and
+			/// EnumDAdvise) that supports notification, OLE provides an advise holder object that manages the registration and sending of
+			/// notifications. To get a pointer to this object, call the helper function CreateDataAdviseHolder on the first invocation of
+			/// <c>DAdvise</c>. This supplies a pointer to the object's IDataAdviseHolder interface. Then, delegate the call to the
+			/// IDataAdviseHolder::Advise method in the data advise holder, which creates, and subsequently manages, the requested connection.
+			/// </para>
+			/// </remarks>
+			// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-dadvise HRESULT DAdvise( [in] FORMATETC
+			// *pformatetc, [in] DWORD advf, [in] IAdviseSink *pAdvSink, [out] DWORD *pdwConnection );
+			[PreserveSig]
+			HRESULT DAdvise(in FORMATETC pformatetc, ADVF advf, [In, Optional, MarshalAs(UnmanagedType.Interface)] IAdviseSink pAdvSink, out uint pdwConnection);
+
+			/// <summary>Destroys a notification connection that had been previously set up.</summary>
+			/// <param name="dwConnection">
+			/// A token that specifies the connection to be removed. Use the value returned by IDataObject::DAdvise when the connection was
+			/// originally established.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>OLE_E_NOCONNECTION</c></term>
+			/// <term>The specified value for <c>dwConnection</c> is not a valid connection.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_E_ADVISENOTSUPPORTED</c></term>
+			/// <term>This IDataObject implementation does not support notification.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>This methods destroys a notification created with a call to the IDataObject::DAdvise method.</para>
+			/// <para>
+			/// If the advisory connection being deleted was initially set up by delegating the IDataObject::DAdvise call to
+			/// IDataAdviseHolder::Advise, you must delegate this call to IDataAdviseHolder::Unadvise to delete it.
+			/// </para>
+			/// </remarks>
+			// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-dunadvise HRESULT DUnadvise( [in] DWORD
+			// dwConnection );
+			[PreserveSig]
+			HRESULT DUnadvise(uint dwConnection);
+
+			/// <summary>Creates an object that can be used to enumerate the current advisory connections.</summary>
+			/// <param name="ppenumAdvise">
+			/// A pointer to an IEnumSTATDATA pointer variable that receives the interface pointer to the new enumerator object. If the
+			/// implementation sets * <c>ppenumAdvise</c> to <c>NULL</c>, there are no connections to advise sinks at this time.
+			/// </param>
+			/// <returns>
+			/// <para>
+			/// This method returns S_OK if the enumerator object is successfully instantiated or there are no connections. Other possible
+			/// values include the following.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term><c>E_OUTOFMEMORY</c></term>
+			/// <term>Insufficient memory is available for the operation.</term>
+			/// </item>
+			/// <item>
+			/// <term><c>OLE_E_ADVISENOTSUPPORTED</c></term>
+			/// <term>Advisory notifications are not supported by this object.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The enumerator object created by this method implements the IEnumSTATDATA interface. <c>IEnumSTATDATA</c> permits the
+			/// enumeration of the data stored in an array of STATDATA structures. Each of these structures provides information on a single
+			/// advisory connection, and includes FORMATETC and ADVF information, as well as the pointer to the advise sink and the token
+			/// representing the connection.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// It is recommended that you use the OLE data advise holder object to handle advisory connections. With the pointer obtained
+			/// through a call to CreateDataAdviseHolder, implementing <c>IDataObject::EnumDAdvise</c> becomes a simple matter of delegating
+			/// the call to IDataAdviseHolder::EnumAdvise. This creates the enumerator and supplies the pointer to the OLE implementation of
+			/// IEnumSTATDATA. At that point, you can call its methods to enumerate the current advisory connections.
+			/// </para>
+			/// </remarks>
+			// https://learn.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-idataobject-enumdadvise HRESULT EnumDAdvise( [out]
+			// IEnumSTATDATA **ppenumAdvise );
+			[PreserveSig]
+			HRESULT EnumDAdvise([Optional, MarshalAs(UnmanagedType.Interface)] out IEnumSTATDATA ppenumAdvise);
+		}
+
+		/// <summary>
 		/// The <c>IDirectWriterLock</c> interface enables a single writer to obtain exclusive write access to a root storage object opened
 		/// in direct mode while allowing concurrent access by multiple readers. This single-writer, multiple-reader mode does not require
 		/// the overhead of making a snapshot copy of the storage for the readers.
