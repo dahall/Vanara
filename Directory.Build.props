@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Version>3.4.13</Version>
+    <Version>3.4.14</Version>
     <TargetFrameworks>net45;net48;net6.0;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU;x64;x86</Platforms>
