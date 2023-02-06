@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>photoacq.dll</SupportedDlls>
+  </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows Photo Acquisition.</Description>
     <AssemblyName>Vanara.PInvoke.PhotoAcquire</AssemblyName>
