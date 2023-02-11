@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -3488,6 +3489,107 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 			public string HardwareID;
+		}
+
+		/// <summary>An SP_DRVINFO_DETAIL_DATA structure contains detailed information about a particular driver information structure.</summary>
+		/// <remarks>
+		/// <para>The hardware ID and compatible IDs for a device are specified in the INF Models section in the following order:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The first ID (if specified) is the hardware ID for the device.</term>
+		/// </item>
+		/// <item>
+		/// <term>The remaining IDs (if specified) are compatible IDs for the device.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// When you parse the <c>HardwareID</c> buffer, you must ensure that you correctly determine the end of the data in the buffer. Be
+		/// aware that the buffer is not necessarily double NULL terminated.
+		/// </para>
+		/// <para>
+		/// For example, depending on how the list of hardware ID and compatible IDs are specified in the INF Models section, the
+		/// <c>HardwareID</c> buffer can resemble any of the following:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>\0</term>
+		/// </item>
+		/// <item>
+		/// <term>&lt;HWID&gt;\0</term>
+		/// </item>
+		/// <item>
+		/// <term>&lt;HWID&gt;\0&lt;COMPATID_1&gt;\0...&lt;COMPATID_N&gt;\0\0</term>
+		/// </item>
+		/// <item>
+		/// <term>\0&lt;COMPATID_1&gt;\0...&lt;COMPATID_N&gt;\0\0</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// An algorithm to correctly parse this buffer must use the <c>CompatIDsOffset</c> and <c>CompatIDsLength</c> fields to extract the
+		/// hardware ID and compatible IDs, as shown in the following code example:
+		/// </para>
+		/// <para>
+		/// <code>// parse the hardware ID, if it exists if (CompatIDsOffset &gt; 1) { // Parse for hardware ID from index 0. // This is a single NULL-terminated string } // Parse the compatible IDs, if they exist if (CompatIDsLength &gt; 0) { // Parse for list of compatible IDs from CompatIDsOffset. // This is a double NULL-terminated list of strings (i.e. MULTI-SZ) }</code>
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/ns-setupapi-sp_drvinfo_detail_data_a typedef struct
+		// _SP_DRVINFO_DETAIL_DATA_A { DWORD cbSize; FILETIME InfDate; DWORD CompatIDsOffset; DWORD CompatIDsLength; ULONG_PTR Reserved;
+		// CHAR SectionName[LINE_LEN]; CHAR InfFileName[MAX_PATH]; CHAR DrvDescription[LINE_LEN]; CHAR HardwareID[ANYSIZE_ARRAY]; }
+		// SP_DRVINFO_DETAIL_DATA_A, *PSP_DRVINFO_DETAIL_DATA_A;
+		[PInvokeData("setupapi.h", MSDNShortId = "NS:setupapi._SP_DRVINFO_DETAIL_DATA_A")]
+		public class SP_DRVINFO_DETAIL_DATA_MGD
+		{
+			private SP_DRVINFO_DETAIL_DATA_MGD() { }
+
+			private SP_DRVINFO_DETAIL_DATA_MGD(DateTime infDate, string sectionName, string infFileName, string drvDescription)
+			{
+				InfDate = infDate;
+				SectionName = sectionName;
+				InfFileName = infFileName;
+				DrvDescription = drvDescription;
+			}
+
+			/// <summary>Date of the INF file for this driver.</summary>
+			public DateTime InfDate { get; }
+
+			/// <summary>
+			/// A string that contains the name of the INF DDInstall section for this driver. This must be the basic
+			/// DDInstall section name, such as <c>InstallSec</c>, without any OS/architecture-specific extensions.
+			/// </summary>
+			public string SectionName { get; }
+
+			/// <summary>A string that contains the full-qualified name of the INF file for this driver.</summary>
+			public string InfFileName { get; }
+
+			/// <summary>A string that describes the driver.</summary>
+			public string DrvDescription { get; }
+
+			/// <summary>The hardware ID that corresponds to the ID in the INF Models section. This value may be an empty string.</summary>
+			public string HardwareID { get; private set; }
+
+			/// <summary>Contains a list of compatible IDs. These IDs correspond to the compatible IDs in the INF Models section.</summary>
+			public string[] CompatIDs { get; private set; }
+
+			/// <summary>Creates an instance of <see cref="SP_DRVINFO_DETAIL_DATA_MGD"/> from allocated memory.</summary>
+			/// <param name="self">A pointer to the memory containing <see cref="SP_DRVINFO_DETAIL_DATA"/>.</param>
+			/// <param name="allocatedBytes">The number of allocated bytes behind <paramref name="self"/>.</param>
+			/// <returns>An instance of <see cref="SP_DRVINFO_DETAIL_DATA_MGD"/> with the extracted data.</returns>
+			public static SP_DRVINFO_DETAIL_DATA_MGD Create(IntPtr self, SizeT allocatedBytes) => Create(new(self, false, allocatedBytes));
+
+			/// <summary>Creates an instance of <see cref="SP_DRVINFO_DETAIL_DATA_MGD"/> from allocated memory.</summary>
+			/// <param name="dataMem">The memory containing <see cref="SP_DRVINFO_DETAIL_DATA"/>.</param>
+			/// <returns>An instance of <see cref="SP_DRVINFO_DETAIL_DATA_MGD"/> with the extracted data.</returns>
+			public static SP_DRVINFO_DETAIL_DATA_MGD Create(SafeCoTaskMemStruct<SP_DRVINFO_DETAIL_DATA> dataMem)
+			{
+				SP_DRVINFO_DETAIL_DATA d = dataMem.Value;
+				SP_DRVINFO_DETAIL_DATA_MGD ret = new(d.InfDate.ToDateTime(), d.SectionName, d.InfFileName, d.DrvDescription);
+				IntPtr idPtr = dataMem.GetFieldAddress(nameof(HardwareID));
+				long idoffset = idPtr.ToInt64() - dataMem.DangerousGetHandle().ToInt64();
+				string[] ids = idPtr.ToStringEnum(allocatedBytes: dataMem.Size - idoffset).ToArray();
+				ret.HardwareID = d.CompatIDsOffset <= 1 || ids.Length == 0 ? string.Empty : ids[0];
+				ret.CompatIDs = d.CompatIDsOffset == 0 || ids.Length == 0 ? new string[0] : ids.Skip(d.CompatIDsOffset == 0 ? 0 : 1).ToArray();
+				return ret;
+			}
 		}
 
 		/// <summary>
