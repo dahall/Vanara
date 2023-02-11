@@ -1822,7 +1822,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDriverInfoDetailA")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetupDiGetDriverInfoDetail(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData, in SP_DRVINFO_DATA_V2 DriverInfoData,
-			ref SP_DRVINFO_DETAIL_DATA DriverInfoDetailData, uint DriverInfoDetailDataSize, out uint RequiredSize);
+			[Optional] IntPtr DriverInfoDetailData, [Optional] uint DriverInfoDetailDataSize, out uint RequiredSize);
 
 		/// <summary>
 		/// The <c>SetupDiGetDriverInfoDetail</c> function retrieves driver information detail for a device information set or a particular
@@ -1875,7 +1875,43 @@ namespace Vanara.PInvoke
 		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDriverInfoDetailA")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetupDiGetDriverInfoDetail(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData, in SP_DRVINFO_DATA_V2 DriverInfoData,
-			ref SP_DRVINFO_DETAIL_DATA DriverInfoDetailData, uint DriverInfoDetailDataSize, out uint RequiredSize);
+			[Optional] IntPtr DriverInfoDetailData, [Optional] uint DriverInfoDetailDataSize, out uint RequiredSize);
+
+		/// <summary>
+		/// The <c>SetupDiGetDriverInfoDetail</c> function retrieves driver information detail for a device information set or a particular
+		/// device information element in the device information set.
+		/// </summary>
+		/// <param name="DeviceInfoSet">
+		/// A handle to a device information set that contains a driver information element for which to retrieve driver information.
+		/// </param>
+		/// <param name="DeviceInfoData">
+		/// A pointer to an SP_DEVINFO_DATA structure that specifies a device information element that represents the device for which to
+		/// retrieve driver information. This parameter is optional and can be <c>NULL</c>. If this parameter is specified,
+		/// <c>SetupDiGetDriverInfoDetail</c> retrieves information about a driver in a driver list for the specified device. If this
+		/// parameter is <c>NULL</c>, <c>SetupDiGetDriverInfoDetail</c> retrieves information about a driver that is a member of the global
+		/// class driver list for DeviceInfoSet.
+		/// </param>
+		/// <param name="DriverInfoData">
+		/// A pointer to an SP_DRVINFO_DATA structure that specifies the driver information element that represents the driver for which to
+		/// retrieve details. If DeviceInfoData is specified, the driver must be a member of the driver list for the device that is specified
+		/// by DeviceInfoData. Otherwise, the driver must be a member of the global class driver list for DeviceInfoSet.
+		/// </param>
+		/// <returns>A SP_DRVINFO_DETAIL_DATA_MGD instance with detailed information about the specified driver.</returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetdriverinfodetaila WINSETUPAPI BOOL
+		// SetupDiGetDriverInfoDetailA( HDEVINFO DeviceInfoSet, PSP_DEVINFO_DATA DeviceInfoData, PSP_DRVINFO_DATA_A DriverInfoData,
+		// PSP_DRVINFO_DETAIL_DATA_A DriverInfoDetailData, DWORD DriverInfoDetailDataSize, PDWORD RequiredSize );
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDriverInfoDetailA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static SP_DRVINFO_DETAIL_DATA_MGD SetupDiGetDriverInfoDetail(HDEVINFO DeviceInfoSet, [In, Optional] SP_DEVINFO_DATA? DeviceInfoData, in SP_DRVINFO_DATA_V2 DriverInfoData)
+		{
+			using SafeCoTaskMemStruct<SP_DEVINFO_DATA> devData = DeviceInfoData;
+			if (!SetupDiGetDriverInfoDetail(DeviceInfoSet, devData, DriverInfoData, default, 0, out uint sz))
+				Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+			using SafeCoTaskMemStruct<SP_DRVINFO_DETAIL_DATA> DriverInfoDetailData = new(sz);
+			DriverInfoDetailData.InitializeSizeField();
+			Win32Error.ThrowLastErrorIfFalse(SetupDiGetDriverInfoDetail(DeviceInfoSet, devData, DriverInfoData, DriverInfoDetailData, DriverInfoDetailData.Size, out sz));
+			return SP_DRVINFO_DETAIL_DATA_MGD.Create(DriverInfoDetailData);
+		}
 
 		/// <summary>
 		/// The <c>SetupDiGetDriverInstallParams</c> function retrieves driver installation parameters for a device information set or a
