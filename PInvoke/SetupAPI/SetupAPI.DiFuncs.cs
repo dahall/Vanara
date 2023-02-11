@@ -1827,17 +1827,11 @@ namespace Vanara.PInvoke
 		public static IEnumerable<SP_DEVICE_INTERFACE_DATA> SetupDiEnumDeviceInterfaces(HDEVINFO DeviceInfoSet, Guid InterfaceClassGuid,
 			SP_DEVINFO_DATA? DeviceInfoData = null)
 		{
-			using var dvidata = DeviceInfoData.HasValue ? new SafeCoTaskMemStruct<SP_DEVINFO_DATA>(DeviceInfoData.Value) : SafeCoTaskMemStruct<SP_DEVINFO_DATA>.Null;
-			var data = new SP_DEVICE_INTERFACE_DATA { cbSize = (uint)Marshal.SizeOf(typeof(SP_DEVICE_INTERFACE_DATA)) };
-			for (uint i = 0; true; i++)
-			{
-				if (!SetupDiEnumDeviceInterfaces(DeviceInfoSet, dvidata, InterfaceClassGuid, i, ref data))
-				{
-					Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_ITEMS);
-					yield break;
-				}
+			using SafeCoTaskMemStruct<SP_DEVINFO_DATA> dvidata = DeviceInfoData;
+			SP_DEVICE_INTERFACE_DATA data = new() { cbSize = (uint)Marshal.SizeOf(typeof(SP_DEVICE_INTERFACE_DATA)) };
+			for (uint i = 0; SetupDiEnumDeviceInterfaces(DeviceInfoSet, dvidata, InterfaceClassGuid, i, ref data); i++)
 				yield return data;
-			}
+			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_ITEMS);
 		}
 
 		/// <summary>The <c>SetupDiEnumDriverInfo</c> function enumerates the members of a driver list.</summary>
@@ -1943,6 +1937,45 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetupDiEnumDriverInfo(HDEVINFO DeviceInfoSet, [In, Optional] IntPtr DeviceInfoData, SPDIT DriverType,
 			uint MemberIndex, ref SP_DRVINFO_DATA_V2 DriverInfoData);
+
+		/// <summary>The <c>SetupDiEnumDriverInfo</c> function enumerates the members of a driver list.</summary>
+		/// <param name="DeviceInfoSet">A handle to the device information set that contains the driver list to enumerate.</param>
+		/// <param name="DeviceInfoData">
+		/// An optional SP_DEVINFO_DATA structure that specifies a device information element in DeviceInfoSet. This parameter is optional
+		/// and can be <c>NULL</c>. If this parameter is specified, <c>SetupDiEnumDriverInfo</c> enumerates a driver list for the specified
+		/// device. If this parameter is <c>NULL</c>, <c>SetupDiEnumDriverInfo</c> enumerates the global class driver list that is associated
+		/// with DeviceInfoSet (this list is of type SPDIT_CLASSDRIVER).
+		/// </param>
+		/// <param name="DriverType">
+		/// <para>The type of driver list to enumerate, which must be one of the following values:</para>
+		/// <para>SPDIT_CLASSDRIVER</para>
+		/// <para>Enumerate a class driver list. This driver list type must be specified if DeviceInfoData is not specified.</para>
+		/// <para>SPDIT_COMPATDRIVER</para>
+		/// <para>
+		/// Enumerate a list of compatible drivers for the specified device. This driver list type can be specified only if DeviceInfoData is
+		/// also specified.
+		/// </para>
+		/// </param>
+		/// <returns>A sequence of SP_DRVINFO_DATA structures with information about the enumerated drivers.</returns>
+		/// <remarks>
+		/// <para>
+		/// To build a list of drivers associated with a specific device or with the global class driver list for a device information set
+		/// first use <see cref="SetupDiBuildDriverInfoList(HDEVINFO, ref SP_DEVINFO_DATA, SPDIT)"/> then pass that list to <c>SetupDiEnumDriverInfo</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdienumdriverinfoa WINSETUPAPI BOOL
+		// SetupDiEnumDriverInfoA( HDEVINFO DeviceInfoSet, PSP_DEVINFO_DATA DeviceInfoData, DWORD DriverType, DWORD MemberIndex,
+		// PSP_DRVINFO_DATA_A DriverInfoData );
+		[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiEnumDriverInfoA")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static IEnumerable<SP_DRVINFO_DATA_V2> SetupDiEnumDriverInfo(HDEVINFO DeviceInfoSet, [In, Optional] SP_DEVINFO_DATA? DeviceInfoData, SPDIT DriverType)
+		{
+			using SafeCoTaskMemStruct<SP_DEVINFO_DATA> devData = DeviceInfoData;
+			SP_DRVINFO_DATA_V2 drvData = new() { cbSize = (uint)Marshal.SizeOf(typeof(SP_DRVINFO_DATA_V2)) };
+			for (uint idx = 0; SetupDiEnumDriverInfo(DeviceInfoSet, devData, DriverType, idx, ref drvData); idx++)
+				yield return drvData;
+			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_ITEMS);
+		}
 
 		/// <summary>
 		/// The <c>SetupDiGetActualModelsSection</c> function retrieves the appropriate decorated INF Models section to use when installing
