@@ -2,7 +2,6 @@
 using NUnit.Framework.Internal;
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using static Vanara.PInvoke.SetupAPI;
 
 namespace Vanara.PInvoke.Tests;
@@ -60,6 +59,17 @@ public class SetupAPITests
 	}
 
 	[Test]
+	public void SetupDiEnumDriverInfoTest()
+	{
+		Assert.That(SetupDiBuildDriverInfoList(hDevInfo, default, SPDIT.SPDIT_CLASSDRIVER), ResultIs.Successful);
+		System.Collections.Generic.List<SP_DRVINFO_DATA_V2> ie = SetupDiEnumDriverInfo(hDevInfo, null, SPDIT.SPDIT_CLASSDRIVER).ToList();
+		Assert.That(ie, Is.Not.Empty);
+
+		foreach (SP_DRVINFO_DATA_V2 i in ie)
+			TestContext.WriteLine($"{i.MfgName} : {i.Description}");
+	}
+
+	[Test]
 	public void SetupDiGetDevicePropertyKeysTest()
 	{
 		foreach (SP_DEVINFO_DATA did in SetupDiEnumDeviceInfo(hDevInfo))
@@ -75,17 +85,6 @@ public class SetupAPITests
 				//TestContext.WriteLine($"{key.fmtid},{key.pid} = {obj}");
 			}
 		}
-	}
-
-	[Test]
-	public void SetupDiEnumDriverInfoTest()
-	{
-		Assert.That(SetupDiBuildDriverInfoList(hDevInfo, default, SPDIT.SPDIT_CLASSDRIVER), ResultIs.Successful);
-		System.Collections.Generic.List<SP_DRVINFO_DATA_V2> ie = SetupDiEnumDriverInfo(hDevInfo, null, SPDIT.SPDIT_CLASSDRIVER).ToList();
-		Assert.That(ie, Is.Not.Empty);
-
-		foreach (SP_DRVINFO_DATA_V2 i in ie)
-			TestContext.WriteLine($"{i.MfgName} : {i.Description}");
 	}
 
 	[Test]
