@@ -56,10 +56,10 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Specifies the <c>x</c>-coordinate of the point.</summary>
-		public int x { get => x; set => x = value; }
+		public int x { get => X; set => X = value; }
 
 		/// <summary>Specifies the <c>y</c>-coordinate of the point.</summary>
-		public int y { get => y; set => y = value; }
+		public int y { get => Y; set => Y = value; }
 
 		/// <summary>Gets a value indicating whether this <see cref="POINT"/> is empty.</summary>
 		/// <value><see langword="true"/> if both X and Y are 0; otherwise, <see langword="false"/>.</value>
