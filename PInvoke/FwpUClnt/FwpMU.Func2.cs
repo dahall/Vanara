@@ -1716,7 +1716,7 @@ public static partial class FwpUClnt
 	{
 		Win32Error err = FwpmGetAppIdFromFileName0(fileName, out SafeFwpmMem mem);
 		FWP_BYTE_BLOB blob = mem.ToStructure<FWP_BYTE_BLOB>().GetValueOrDefault();
-		appId = err.Succeeded ? blob.data.ToArray<byte>((int)blob.size) : null;
+		appId = err.Succeeded ? blob.data.ToByteArray((int)blob.size) : null;
 		return err;
 	}
 

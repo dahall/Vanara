@@ -1080,7 +1080,7 @@ namespace Vanara.PInvoke
 				var l = mem.DangerousGetHandle().ToStructure<WLAN_RAW_DATA_LIST>();
 				ppPsdIEDataList = new byte[(int)l.dwNumberOfItems][];
 				for (int i = 0; i < l.dwNumberOfItems; i++)
-					ppPsdIEDataList[i] = mem.DangerousGetHandle().Offset((8 * (i + 1)) + l.DataList[i].dwDataOffset).ToArray<byte>((int)l.DataList[i].dwDataSize);
+					ppPsdIEDataList[i] = mem.DangerousGetHandle().Offset((8 * (i + 1)) + l.DataList[i].dwDataOffset).ToByteArray((int)l.DataList[i].dwDataSize);
 				mem?.Dispose();
 			}
 			else

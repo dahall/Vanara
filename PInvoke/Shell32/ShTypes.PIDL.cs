@@ -135,7 +135,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the ID list as an array of bytes.</summary>
 			/// <returns>An array of bytes representing the ID list.</returns>
-			public byte[] GetBytes() => handle.ToArray<byte>((int)Size);
+			public byte[] GetBytes() => handle.ToByteArray((int)Size);
 
 			/// <summary>Returns an enumerator that iterates through the collection.</summary>
 			/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator{PIDL}"/> that can be used to iterate through the collection.</returns>

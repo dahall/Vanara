@@ -20,7 +20,7 @@ public sealed class RequiresUnreferencedCodeAttribute : Attribute
 	/// Gets or sets an optional URL that contains more information about the method, why it requires unreferenced code, and what options a
 	/// consumer has to deal with it.
 	/// </summary>
-	public string Url { get; set; }
+	public string? Url { get; set; }
 }
 
 #endif

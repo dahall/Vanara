@@ -43,7 +43,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <summary>Initializes a new instance of the <see cref="SafeMemString{TMem}"/> class.</summary>
 	/// <param name="charLen">The size of the buffer in characters, including the null character terminator.</param>
 	/// <param name="charSet">The character set.</param>
-	protected SafeMemString(int charLen, CharSet charSet = CharSet.Unicode) : base(charLen * StringHelper.GetCharSize(charSet)) => CharSet = charSet == CharSet.Auto ? charSet : defaultCharSet;
+	protected SafeMemString(int charLen, CharSet charSet = CharSet.Unicode) : base(charLen * StringHelper.GetCharSize(charSet)) => CharSet = charSet != CharSet.Auto ? charSet : defaultCharSet;
 
 	/// <summary>Prevents a default instance of the <see cref="SafeMemString{TMem}"/> class from being created.</summary>
 	[ExcludeFromCodeCoverage]

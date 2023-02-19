@@ -815,7 +815,7 @@ namespace Vanara.Windows.Forms
 		public byte[] GetDiskStream(HINSTANCE hInst, int partId, int stateId)
 		{
 			var r = GetThemeStream(Handle, partId, stateId, (int)ThemeProperty.TMT_DISKSTREAM, out var bytes, out var bLen, hInst);
-			if (r.Succeeded) return bytes.ToArray<byte>((int)bLen);
+			if (r.Succeeded) return bytes.ToByteArray((int)bLen);
 			if (r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
 			return null;
 		}
@@ -1021,7 +1021,7 @@ namespace Vanara.Windows.Forms
 		public byte[] GetStream(int partId, int stateId)
 		{
 			var r = GetThemeStream(Handle, partId, stateId, (int)ThemeProperty.TMT_STREAM, out var bytes, out var bLen, HINSTANCE.NULL);
-			if (r.Succeeded) return bytes.ToArray<byte>((int)bLen);
+			if (r.Succeeded) return bytes.ToByteArray((int)bLen);
 			if (r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
 			return null;
 		}

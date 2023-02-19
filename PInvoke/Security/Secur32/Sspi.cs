@@ -7973,7 +7973,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the bytes associated with this memory.</summary>
 			/// <param name="count">The count of bytes to get.</param>
 			/// <returns>A byte array.</returns>
-			public byte[] GetBytes(uint count) => handle.ToArray<byte>((int)count);
+			public byte[] GetBytes(uint count) => handle.ToByteArray((int)count);
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { SspiLocalFree(handle); return true; }

@@ -59,7 +59,7 @@ namespace Vanara.Security.AccessControl
 		/// <summary>Gets the <see cref="RawAcl"/> equivalent of an ACL.</summary>
 		/// <param name="pAcl">The pointer to an ACL structure.</param>
 		/// <returns>The <see cref="RawAcl"/> instance.</returns>
-		public static RawAcl RawAclFromPtr(PACL pAcl) => new RawAcl(((IntPtr)pAcl).ToArray<byte>((int)pAcl.Length()), 0);
+		public static RawAcl RawAclFromPtr(PACL pAcl) => new RawAcl(((IntPtr)pAcl).ToByteArray((int)pAcl.Length()), 0);
 
 		/// <summary>Converts a security descriptor to its SDDL string format.</summary>
 		/// <param name="pSD">The security descriptor.</param>

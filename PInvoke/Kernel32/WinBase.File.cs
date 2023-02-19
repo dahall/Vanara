@@ -3975,7 +3975,7 @@ namespace Vanara.PInvoke
 				get
 				{
 					using PinnedObject pin = new(id0);
-					return ((IntPtr)pin).ToArray<byte>(16);
+					return ((IntPtr)pin).ToByteArray(16);
 				}
 				set
 				{

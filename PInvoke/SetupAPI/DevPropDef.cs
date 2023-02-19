@@ -708,7 +708,7 @@ namespace Vanara.PInvoke
 					return mem.ToStructure<BOOLEAN>(memSize).Value;
 
 				case DEVPROPTYPE.DEVPROP_TYPE_SECURITY_DESCRIPTOR:
-					return new System.Security.AccessControl.RawSecurityDescriptor(mem.ToArray<byte>(memSize, 0, memSize), 0);
+					return new System.Security.AccessControl.RawSecurityDescriptor(mem.ToByteArray(memSize, 0, memSize), 0);
 
 				case DEVPROPTYPE.DEVPROP_TYPE_STRING_INDIRECT:
 					return Environment.ExpandEnvironmentVariables(StringHelper.GetString(mem, CharSet.Auto, memSize));

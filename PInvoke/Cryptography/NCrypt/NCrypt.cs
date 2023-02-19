@@ -5113,7 +5113,7 @@ namespace Vanara.PInvoke
 					pvBuffer = b.pvBuffer?.MarshalToPtr<byte>(Marshal.AllocCoTaskMem, out var _) ?? IntPtr.Zero;
 				}
 
-				public static implicit operator NCryptBuffer(_NCryptBuffer b) => new NCryptBuffer { BufferType = b.BufferType, pvBuffer = b.pvBuffer.ToArray<byte>((int)b.cbBuffer) };
+				public static implicit operator NCryptBuffer(_NCryptBuffer b) => new NCryptBuffer { BufferType = b.BufferType, pvBuffer = b.pvBuffer.ToByteArray((int)b.cbBuffer) };
 			}
 		}
 

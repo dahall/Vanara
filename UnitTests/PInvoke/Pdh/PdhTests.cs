@@ -465,7 +465,7 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(PdhReadRawLogRecord(hlog, info.StartTime, mem, ref sz), ResultIs.FailureCode(Win32Error.PDH_ENTRY_NOT_IN_LOG_FILE));
 				//var rec = mem.ToStructure<PDH_RAW_LOG_RECORD>();
 				//rec.WriteValues();
-				//TestContext.Write(mem.ToArray<byte>((int)rec.dwItems, 12).ToHexString((int)rec.dwItems));
+				//TestContext.Write(mem.ToByteArray((int)rec.dwItems, 12).ToHexString((int)rec.dwItems));
 			}
 		}
 

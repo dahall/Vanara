@@ -415,7 +415,7 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the binary form of the SID structure.</summary>
 		/// <param name="pSid">The SID structure pointer.</param>
 		/// <returns>The binary form (byte array) of the SID structure.</returns>
-		public static byte[] GetBinaryForm(this PSID pSid) => pSid.IsValidSid() ? ((IntPtr)pSid).ToArray<byte>(pSid.Length()) : (new byte[0]);
+		public static byte[] GetBinaryForm(this PSID pSid) => pSid.IsValidSid() ? ((IntPtr)pSid).ToByteArray(pSid.Length()) : (new byte[0]);
 
 		/// <summary>
 		/// The <c>GetDomainSid</c> function receives a security identifier (SID) and returns a SID representing the domain of that SID.

@@ -316,7 +316,7 @@ namespace Vanara
             get
             {
                 IntPtr ptr = NetUserGetInfo<USER_INFO_11>(Target, UserName).usri11_logon_hours;
-                return new BitArray(ptr.ToArray<byte>(21));
+                return new BitArray(ptr.ToByteArray(21));
             }
             set
             {

@@ -29,22 +29,22 @@ public interface IMemoryMethods : ISimpleMemoryMethods
 	/// <summary>Gets the Ansi <see cref="SecureString"/> allocation method.</summary>
 	/// <param name="secureString">The secure string.</param>
 	/// <returns>A memory handle.</returns>
-	IntPtr AllocSecureStringAnsi(SecureString secureString);
+	IntPtr AllocSecureStringAnsi(SecureString? secureString);
 
 	/// <summary>Gets the Unicode <see cref="SecureString"/> allocation method.</summary>
 	/// <param name="secureString">The secure string.</param>
 	/// <returns>A memory handle.</returns>
-	IntPtr AllocSecureStringUni(SecureString secureString);
+	IntPtr AllocSecureStringUni(SecureString? secureString);
 
 	/// <summary>Gets the Ansi string allocation method.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>A memory handle.</returns>
-	IntPtr AllocStringAnsi(string value);
+	IntPtr AllocStringAnsi(string? value);
 
 	/// <summary>Gets the Unicode string allocation method.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>A memory handle.</returns>
-	IntPtr AllocStringUni(string value);
+	IntPtr AllocStringUni(string? value);
 
 	/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
 	/// <param name="hMem">A memory handle.</param>
@@ -113,14 +113,14 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <param name="len">The length.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	string ToString(int len, CharSet charSet = CharSet.Unicode);
+	string? ToString(int len, CharSet charSet = CharSet.Unicode);
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <param name="len">The length.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	string ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode);
+	string? ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode);
 
 	/// <summary>
 	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
@@ -139,7 +139,7 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>An enumerated list of strings.</returns>
-	IEnumerable<string> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0);
+	IEnumerable<string?> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0);
 
 	/// <summary>
 	/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
@@ -147,7 +147,7 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 	/// <param name="prefixBytes">Number of bytes preceding the structure.</param>
 	/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
-	T ToStructure<T>(int prefixBytes = 0);
+	T? ToStructure<T>(int prefixBytes = 0);
 }
 
 /// <summary>Interface to capture unmanaged simple (alloc/free) memory methods.</summary>
@@ -206,22 +206,22 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 	/// <summary>Gets the Ansi <see cref="SecureString"/> allocation method.</summary>
 	/// <param name="secureString">The secure string.</param>
 	/// <returns>A memory handle.</returns>
-	public virtual IntPtr AllocSecureStringAnsi(SecureString secureString) => StringHelper.AllocSecureString(secureString, CharSet.Ansi, AllocMem);
+	public virtual IntPtr AllocSecureStringAnsi(SecureString? secureString) => StringHelper.AllocSecureString(secureString, CharSet.Ansi, AllocMem);
 
 	/// <summary>Gets the Unicode <see cref="SecureString"/> allocation method.</summary>
 	/// <param name="secureString">The secure string.</param>
 	/// <returns>A memory handle.</returns>
-	public virtual IntPtr AllocSecureStringUni(SecureString secureString) => StringHelper.AllocSecureString(secureString, CharSet.Unicode, AllocMem);
+	public virtual IntPtr AllocSecureStringUni(SecureString? secureString) => StringHelper.AllocSecureString(secureString, CharSet.Unicode, AllocMem);
 
 	/// <summary>Gets the Ansi string allocation method.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>A memory handle.</returns>
-	public virtual IntPtr AllocStringAnsi(string value) => StringHelper.AllocString(value, CharSet.Ansi, AllocMem);
+	public virtual IntPtr AllocStringAnsi(string? value) => StringHelper.AllocString(value, CharSet.Ansi, AllocMem);
 
 	/// <summary>Gets the Unicode string allocation method.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>A memory handle.</returns>
-	public virtual IntPtr AllocStringUni(string value) => StringHelper.AllocString(value, CharSet.Unicode, AllocMem);
+	public virtual IntPtr AllocStringUni(string? value) => StringHelper.AllocString(value, CharSet.Unicode, AllocMem);
 
 	/// <summary>Frees the memory associated with a handle.</summary>
 	/// <param name="hMem">A memory handle.</param>
@@ -318,7 +318,7 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 #endif
 
 	/// <inheritdoc/>
-	public virtual int CompareTo(SafeAllocatedMemoryHandleBase other)
+	public virtual int CompareTo(SafeAllocatedMemoryHandleBase? other)
 	{
 		if (other is null) return 1;
 		int ret = Size.CompareTo(other.Size);
@@ -341,7 +341,7 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	}
 
 	/// <inheritdoc/>
-	public bool Equals(SafeAllocatedMemoryHandleBase other) => CompareTo(other) == 0;
+	public bool Equals(SafeAllocatedMemoryHandleBase? other) => handle.Equals(other?.handle);
 
 	/// <summary>Locks this instance.</summary>
 	public virtual void Lock()
@@ -475,7 +475,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
 	protected SafeMemoryHandle(byte[] bytes) : base(IntPtr.Zero, true)
 	{
-		if ((bytes?.Length ?? 0) == 0) return;
+		if (bytes is null || bytes.Length == 0) return;
 		InitFromSize(bytes.Length);
 		CallLocked(p => Marshal.Copy(bytes, 0, p, bytes.Length));
 	}
@@ -598,7 +598,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// Maintains reference to other SafeMemoryHandleExt objects, the pointer to which are referred to by this object. This is to ensure
 	/// that such objects being referred to wouldn't be unreferenced until this object is active.
 	/// </summary>
-	private List<ISafeMemoryHandle> references;
+	private List<ISafeMemoryHandle>? references;
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
@@ -678,12 +678,12 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
 	public T[] ToArray<T>(int count, int prefixBytes = 0)
 	{
-		if (IsInvalid) return null;
+		if (IsInvalid) return new T[0];
 		//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
 		//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 		//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 		//Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
-		return CallLocked(p => p.ToArray<T>(count, prefixBytes, sz));
+		return CallLocked(p => p.ToArray<T>(count, prefixBytes, sz)) ?? new T[0];
 	}
 
 	/// <summary>
@@ -704,8 +704,8 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 		try
 		{
 			Lock();
-			foreach (var i in handle.ToIEnum<T>(count, prefixBytes, sz))
-				yield return i;
+			foreach (T? i in handle.ToIEnum<T>(count, prefixBytes, sz))
+				yield return i!;
 		}
 		finally
 		{
@@ -717,17 +717,17 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="len">The length.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public string ToString(int len, CharSet charSet = CharSet.Unicode) => ToString(len, 0, charSet);
+	public string? ToString(int len, CharSet charSet = CharSet.Unicode) => ToString(len, 0, charSet);
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <param name="len">The length.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public string ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode)
+	public string? ToString(int len, int prefixBytes, CharSet charSet = CharSet.Unicode)
 	{
 		var str = CallLocked(p => StringHelper.GetString(p.Offset(prefixBytes), charSet, sz == 0 ? long.MaxValue : sz - prefixBytes));
-		return len == -1 ? str : str.Substring(0, Math.Min(len, str.Length));
+		return len == -1 ? str : str?.Substring(0, Math.Min(len, str.Length));
 	}
 
 	/// <summary>
@@ -738,8 +738,8 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>Enumeration of strings.</returns>
-	public IEnumerable<string> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-		IsInvalid ? new string[0] : CallLocked(p => p.ToStringEnum(count, charSet, prefixBytes, sz));
+	public IEnumerable<string?> ToStringEnum(int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
+		IsInvalid ? Enumerable.Empty<string?>() : CallLocked(p => p.ToStringEnum(count, charSet, prefixBytes, sz));
 
 	/// <summary>
 	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
@@ -749,7 +749,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>An enumerated list of strings.</returns>
 	public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, int prefixBytes = 0) =>
-		IsInvalid ? new string[0] : CallLocked(p => p.ToStringEnum(charSet, prefixBytes, sz));
+		IsInvalid ? Enumerable.Empty<string>() : CallLocked(p => p.ToStringEnum(charSet, prefixBytes, sz));
 
 	/// <summary>
 	/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
@@ -757,7 +757,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 	/// <param name="prefixBytes">Number of bytes preceding the structure.</param>
 	/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
-	public T ToStructure<T>(int prefixBytes = 0)
+	public T? ToStructure<T>(int prefixBytes = 0)
 	{
 		if (IsInvalid) return default;
 		return CallLocked(p => p.ToStructure<T>(sz, prefixBytes));
@@ -778,7 +778,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 		if (autoExtend)
 		{
-			var count = items?.Count() ?? 0;
+			var count = items.Count();
 			if (count == 0) return;
 			InteropExtensions.TrueType(typeof(T), out var iSz);
 			var reqSz = iSz * count + offset;

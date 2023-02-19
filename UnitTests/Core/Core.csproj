@@ -2,6 +2,7 @@
   <PropertyGroup>
     <AssemblyName>UnitTest.Core</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <None Include="InteropServices\StructMarshalerTests.cs" />

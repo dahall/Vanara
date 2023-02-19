@@ -255,7 +255,7 @@ public static partial class Qwave
 			else
 			{
 				PARAM_BUFFER pb = new() { ParameterId = actual.union.ParamBuffer.ParameterId, Length = actual.union.ParamBuffer.Length };
-				pb.Buffer = pNativeData.ToArray<byte>((int)pb.Length - 8, bufOffset, allocatedBytes);
+				pb.Buffer = pNativeData.ToByteArray((int)pb.Length - 8, bufOffset, allocatedBytes);
 				ret.ParamBuffer = pb;
 			}
 			return ret;

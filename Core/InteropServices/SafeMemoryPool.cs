@@ -36,7 +36,7 @@ public class SafeMemoryPool<TMem> : IDisposable where TMem : IMemoryMethods, new
 	/// <typeparam name="T">The type of <paramref name="value"/>.</typeparam>
 	/// <param name="value">The value.</param>
 	/// <returns>The pointer to the allocated memory.</returns>
-	public IntPtr Add<T>(T value) => Add(value.MarshalToPtr(mem.AllocMem, out _, 0, mem.LockMem, mem.UnlockMem));
+	public IntPtr Add<T>(T value) where T : notnull => Add(value.MarshalToPtr(mem.AllocMem, out _, 0, mem.LockMem, mem.UnlockMem));
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public void Dispose()

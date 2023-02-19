@@ -1282,7 +1282,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public byte[] bmiColorBytes
 			{
-				get => handle.ToArray<byte>((Size - BaseStructSize), BaseStructSize, Size);
+				get => handle.ToByteArray((Size - BaseStructSize), BaseStructSize, Size);
 				set
 				{
 					var reqSize = BaseStructSize + (value?.Length ?? 0);

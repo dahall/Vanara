@@ -4524,7 +4524,7 @@ namespace Vanara.PInvoke
 			internal PSID_IDENTIFIER_AUTHORITY(IntPtr existingPtr)
 			{
 				if (existingPtr == IntPtr.Zero)
-					Value = existingPtr.ToArray<byte>(6);
+					Value = existingPtr.ToByteArray(6);
 			}
 
 			private PSID_IDENTIFIER_AUTHORITY()
@@ -4756,7 +4756,7 @@ namespace Vanara.PInvoke
 			/// disk driver might log the number of retries, for example), followed by binary information specific to the event being logged
 			/// and to the source that generated the entry.
 			/// </summary>
-			public byte[] Data => handle.ToArray<byte>(DataLength, DataOffset, Size);
+			public byte[] Data => handle.ToByteArray(DataLength, DataOffset, Size);
 
 			/// <summary>
 			/// The category for this event. The meaning of this value depends on the event source. For more information, see Event Categories.
@@ -4827,7 +4827,7 @@ namespace Vanara.PInvoke
 			public DateTime TimeWritten => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc) + TimeSpan.FromSeconds(handle.ToStructure<int>(Size, 16));
 
 			/// <summary>Gets the security identifier (SID) within this event log record.</summary>
-			public SafePSID UserSid => UserSidLength == 0 ? SafePSID.Null : new SafePSID(handle.ToArray<byte>(UserSidLength, UserSidOffset, Size));
+			public SafePSID UserSid => UserSidLength == 0 ? SafePSID.Null : new SafePSID(handle.ToByteArray(UserSidLength, UserSidOffset, Size));
 
 			/// <summary>The size of the event-specific data (at the position indicated by <c>DataOffset</c>), in bytes.</summary>
 			private int DataLength => handle.ToStructure<int>(Size, 48);

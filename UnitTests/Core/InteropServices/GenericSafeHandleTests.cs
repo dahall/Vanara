@@ -6,93 +6,92 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vanara.InteropServices.Tests
+namespace Vanara.InteropServices.Tests;
+
+[TestFixture()]
+public class GenericSafeHandleTests
 {
-	[TestFixture()]
-	public class GenericSafeHandleTests
+	[Test]
+	public void GenericSafeHandleTest()
 	{
-		[Test]
-		public void GenericSafeHandleTest()
-		{
-			var h = new GenericSafeHandle(new IntPtr(1), p => true, true);
-			Assert.That(!h.IsInvalid && !h.IsClosed && h.DangerousGetHandle().ToInt32() == 1);
-			h.Dispose();
-			Assert.That(h.IsInvalid);
-			Assert.That(h.IsClosed);
-			Assert.That(h.DangerousGetHandle() == IntPtr.Zero);
-			h = new GenericSafeHandle(IntPtr.Zero, p => true);
-			Assert.That(h.IsInvalid);
-		}
-		
-		[Test]
-		public void GenericSafeHandleCloseMethodNull()
-		{
-			Assert.Throws<ArgumentNullException>(() => new GenericSafeHandle((IntPtr)1, null));
-		}
+		var h = new GenericSafeHandle(new IntPtr(1), p => true, true);
+		Assert.That(!h.IsInvalid && !h.IsClosed && h.DangerousGetHandle().ToInt32() == 1);
+		h.Dispose();
+		Assert.That(h.IsInvalid);
+		Assert.That(h.IsClosed);
+		Assert.That(h.DangerousGetHandle() == IntPtr.Zero);
+		h = new GenericSafeHandle(IntPtr.Zero, p => true);
+		Assert.That(h.IsInvalid);
+	}
+	
+	[Test]
+	public void GenericSafeHandleCloseMethodNull()
+	{
+		Assert.Throws<ArgumentNullException>(() => new GenericSafeHandle((IntPtr)1, null));
+	}
 
-		[Test]
-		public void GenericSafeHandleCloseMethodTest()
+	[Test]
+	public void GenericSafeHandleCloseMethodTest()
+	{
+		var i = 0;
+		using (var h = new GenericSafeHandleWithSetHandle(ptr =>
 		{
-			var i = 0;
-			using (var h = new GenericSafeHandleWithSetHandle(ptr =>
-			{
-				i = 1;
-				return true;
-			}))
-			{
-				h.SetHandle((IntPtr)1);	
-			}
-
-			Assert.AreEqual(1, i);
-		}
-		
-		
-		private class GenericSafeHandleWithSetHandle : GenericSafeHandle
+			i = 1;
+			return true;
+		}))
 		{
-			public GenericSafeHandleWithSetHandle(Func<IntPtr, bool> closeMethod) : base(closeMethod)
-			{}
-
-			public new void SetHandle(IntPtr handle)
-			{
-				base.SetHandle(handle);
-			}
+			h.SetHandle((IntPtr)1);	
 		}
 
-		[Test]
-		public void GenericSafeHandleCloseMethodWithHandleTest()
-		{
-			var i = 0;
-			using (new GenericSafeHandle((IntPtr)1, ptr =>
-			{
-				i = 1;
-				return true;
-			}))
-			{
-			}
+		Assert.AreEqual(1, i);
+	}
+	
+	
+	private class GenericSafeHandleWithSetHandle : GenericSafeHandle
+	{
+		public GenericSafeHandleWithSetHandle(Func<IntPtr, bool> closeMethod) : base(closeMethod)
+		{}
 
-			Assert.AreEqual(1, i);
+		public new void SetHandle(IntPtr handle)
+		{
+			base.SetHandle(handle);
+		}
+	}
+
+	[Test]
+	public void GenericSafeHandleCloseMethodWithHandleTest()
+	{
+		var i = 0;
+		using (new GenericSafeHandle((IntPtr)1, ptr =>
+		{
+			i = 1;
+			return true;
+		}))
+		{
 		}
 
-		[Test]
-		public void GenericSafeHandleTest1()
-		{
-			var h = new GenericSafeHandle(p => true);
-			Assert.That(h.IsInvalid && h.DangerousGetHandle() == IntPtr.Zero);
-			Assert.That(IntPtr.Zero.Equals(h.DangerousGetHandle()));
-			h.Dispose();
-		}
+		Assert.AreEqual(1, i);
+	}
 
-		[Test]
-		public void GenericSafeHandleTest2()
-		{
-			var h = new GenericSafeHandle2();
-			Assert.That(h.ForceRelease, Is.True);
-		}
+	[Test]
+	public void GenericSafeHandleTest1()
+	{
+		var h = new GenericSafeHandle(p => true);
+		Assert.That(h.IsInvalid && h.DangerousGetHandle() == IntPtr.Zero);
+		Assert.That(IntPtr.Zero.Equals(h.DangerousGetHandle()));
+		h.Dispose();
+	}
 
-		private class GenericSafeHandle2 : GenericSafeHandle
-		{
-			public GenericSafeHandle2() {  }
-			public bool ForceRelease => ReleaseHandle();
-		}
+	[Test]
+	public void GenericSafeHandleTest2()
+	{
+		var h = new GenericSafeHandle2();
+		Assert.That(h.ForceRelease, Is.True);
+	}
+
+	private class GenericSafeHandle2 : GenericSafeHandle
+	{
+		public GenericSafeHandle2() {  }
+		public bool ForceRelease => ReleaseHandle();
 	}
 }

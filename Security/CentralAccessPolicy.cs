@@ -85,7 +85,7 @@ namespace Vanara.Security
 				Name = cape.Name;
 				Description = cape.Description;
 				ChangeId = cape.ChangeId;
-				AppliesTo = cape.AppliesTo.ToArray<byte>((int)cape.LengthAppliesTo);
+				AppliesTo = cape.AppliesTo.ToByteArray((int)cape.LengthAppliesTo);
 				SecurityDescriptor = cape.SD.ToManaged();
 				StagedSecurityDescriptor = cape.StagedSD.ToManaged();
 			}

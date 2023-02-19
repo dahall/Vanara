@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <Nullable>enable</Nullable>
     <Description>This library includes shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions. It includes:
 * Extension methods for working with enumerated types (enum), FILETIME, and method and property extractions via reflection
 * Extension and helper methods to marshaling structures arrays and strings

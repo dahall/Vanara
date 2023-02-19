@@ -45,11 +45,11 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="obj">The object from which to retrieve the field.</param>
 		/// <param name="fieldName">Name of the field.</param>
 		/// <returns>The field value.</returns>
-		public static T GetFieldValue<T>(this object obj, string fieldName)
+		public static T? GetFieldValue<T>(this object obj, string fieldName)
 		{
 			if (obj is null) throw new ArgumentNullException(nameof(obj));
 			if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
-			return (T)obj.GetType().InvokeMember(fieldName, BindingFlags.GetField | bindingFlags, null, obj, null, null);
+			return (T?)obj.GetType().InvokeMember(fieldName, BindingFlags.GetField | bindingFlags, null, obj, null, null);
 		}
 
 		/// <summary>Gets a named field value from an object.</summary>
@@ -58,7 +58,7 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="fieldName">Name of the field.</param>
 		/// <param name="defaultValue">The default value to return in the instance that the field is not found.</param>
 		/// <returns>The field value, if found, or the <paramref name="defaultValue"/> if not.</returns>
-		public static T GetFieldValue<T>(this object obj, string fieldName, T defaultValue)
+		public static T? GetFieldValue<T>(this object obj, string fieldName, T defaultValue)
 		{
 			try { return GetFieldValue<T>(obj, fieldName); }
 			catch { return defaultValue; }
@@ -69,10 +69,10 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="obj">The object from which to retrieve the property.</param>
 		/// <param name="propertyName">Name of the property.</param>
 		/// <returns>The property value.</returns>
-		public static T GetPropertyValue<T>(this object obj, string propertyName)
+		public static T? GetPropertyValue<T>(this object obj, string propertyName)
 		{
 			if (obj is null) throw new ArgumentNullException(nameof(obj));
-			return (T)obj.GetType().InvokeMember(propertyName, BindingFlags.GetProperty | bindingFlags, null, obj, null, null);
+			return (T?)obj.GetType().InvokeMember(propertyName, BindingFlags.GetProperty | bindingFlags, null, obj, null, null);
 		}
 
 		/// <summary>Gets a named property value from an object.</summary>
@@ -81,7 +81,7 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="propertyName">Name of the property.</param>
 		/// <param name="defaultValue">The default value to return in the instance that the property is not found.</param>
 		/// <returns>The property value, if found, or the <paramref name="defaultValue"/> if not.</returns>
-		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue)
+		public static T? GetPropertyValue<T>(this object obj, string propertyName, T defaultValue)
 		{
 			try { return GetPropertyValue<T>(obj, propertyName); }
 			catch { return defaultValue; }
@@ -94,11 +94,8 @@ namespace Vanara.Extensions.Reflection
 		/// <see langword="true"/> if <paramref name="baseType"/> is found in the inheritance list for <paramref name="type"/>;
 		/// <see langword="false"/> otherwise.
 		/// </returns>
-		public static bool InheritsFrom(this Type type, Type baseType)
-		{
-			return !(type is null) && !(baseType is null) || type.BaseType != null && type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition().Equals(baseType) ||
-				type.BaseType.InheritsFrom(baseType) || baseType.IsAssignableFrom(type) || type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(baseType));
-		}
+		public static bool InheritsFrom(this Type type, Type baseType) => type.BaseType is not null && type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition().Equals(baseType) ||
+			type.BaseType is not null && type.BaseType.InheritsFrom(baseType) || baseType.IsAssignableFrom(type) || type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(baseType));
 
 		/// <summary>Determines if a type inherits from another type. The <typeparamref name="T"/> may be a generic type definition.</summary>
 		/// <typeparam name="T">The base type.</typeparam>
@@ -121,10 +118,10 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="args">An argument list for the invoked method or constructor. This is an array of objects with the same number, order, and type as the parameters of the method or constructor to be invoked. If there are no parameters, this should be null.</param>
 		/// <returns>An Object containing the return value of the invoked method, or null in the case of a constructor, or null if the method's return type is void. Before calling the method or constructor, Invoke checks to see if the user has access permission and verifies that the parameters are valid.</returns>
 		/// <exception cref="ArgumentException">Method not found - methodName</exception>
-		public static object InvokeGenericMethod(this object obj, string methodName, Type[] typeArguments, Type[] argTypes, object[] args)
+		public static object? InvokeGenericMethod(this object? obj, string methodName, Type[] typeArguments, Type[] argTypes, object?[]? args)
 		{
 			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
-			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
+			if (mi is null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			var gmi = mi.MakeGenericMethod(typeArguments);
 			return gmi.Invoke(obj, args);
 		}
@@ -133,10 +130,10 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="obj">The object on which to invoke the method.</param>
 		/// <param name="methodName">Name of the method.</param>
 		/// <param name="args">The arguments to provide to the method invocation.</param>
-		public static void InvokeMethod(this object obj, string methodName, params object[] args)
+		public static void InvokeMethod(this object? obj, string methodName, params object?[]? args)
 		{
-			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes : Array.ConvertAll(args,
-				o => o?.GetType() ?? typeof(object));
+			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes :
+				Array.ConvertAll(args, o => o?.GetType() ?? typeof(object));
 			InvokeMethod(obj, methodName, argTypes, args);
 		}
 
@@ -146,10 +143,10 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="methodName">Name of the method.</param>
 		/// <param name="args">The arguments to provide to the method invocation.</param>
 		/// <returns>The value returned from the method.</returns>
-		public static T InvokeMethod<T>(this object obj, string methodName, params object[] args)
+		public static T? InvokeMethod<T>(this object? obj, string methodName, params object?[]? args)
 		{
-			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes : Array.ConvertAll(args,
-				o => o?.GetType() ?? typeof(object));
+			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes :
+				Array.ConvertAll(args, o => o?.GetType() ?? typeof(object));
 			return InvokeMethod<T>(obj, methodName, argTypes, args);
 		}
 
@@ -158,10 +155,10 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="methodName">Name of the method.</param>
 		/// <param name="argTypes">The argument types.</param>
 		/// <param name="args">The arguments to provide to the method invocation.</param>
-		public static void InvokeMethod(this object obj, string methodName, Type[] argTypes, object[] args)
+		public static void InvokeMethod(this object? obj, string methodName, Type[] argTypes, object?[]? args)
 		{
 			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
-			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
+			if (mi is null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			mi.Invoke(obj, args);
 		}
 
@@ -172,14 +169,14 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="argTypes">The argument types.</param>
 		/// <param name="args">The arguments to provide to the method invocation.</param>
 		/// <returns>The value returned from the method.</returns>
-		public static T InvokeMethod<T>(this object obj, string methodName, Type[] argTypes, object[] args)
+		public static T? InvokeMethod<T>(this object? obj, string methodName, Type[] argTypes, object?[]? args)
 		{
 			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
 			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			var tt = typeof(T);
 			if (tt != typeof(object) && mi.ReturnType != tt && !mi.ReturnType.IsSubclassOf(tt))
 				throw new ArgumentException(@"Return type mismatch", nameof(T));
-			return (T)mi.Invoke(obj, args);
+			return (T?)mi.Invoke(obj, args);
 		}
 
 		/// <summary>Sets a named field on an object.</summary>
@@ -188,9 +185,9 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="obj">The object on which to set the field.</param>
 		/// <param name="fieldName">Name of the field.</param>
 		/// <param name="value">The field value to set on the object.</param>
-		public static void SetFieldValue<T, TS>(this TS obj, string fieldName, T value) where TS : class
+		public static void SetFieldValue<T, TS>(this TS? obj, string fieldName, T? value) where TS : class
 		{
-			try { obj?.GetType().InvokeMember(fieldName, BindingFlags.SetField | bindingFlags, null, obj, new object[] { value }, null); }
+			try { obj?.GetType().InvokeMember(fieldName, BindingFlags.SetField | bindingFlags, null, obj, new object?[] { value }, null); }
 			catch { }
 		}
 
@@ -205,7 +202,7 @@ namespace Vanara.Extensions.Reflection
 			var tr = __makeref(obj);
 			var fi = typeof(TS).GetField(fieldName, bindingFlags);
 			if (fi is null) throw new MissingFieldException(typeof(TS).Name, fieldName);
-			fi.SetValueDirect(tr, value);
+			fi.SetValueDirect(tr, value!);
 		}
 
 		/// <summary>Sets a named property on an object.</summary>
@@ -215,7 +212,7 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="value">The property value to set on the object.</param>
 		public static void SetPropertyValue<T>(this object obj, string propName, T value)
 		{
-			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | bindingFlags, null, obj, new object[] { value }, null); }
+			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | bindingFlags, null, obj, new object?[] { value }, null); }
 			catch { }
 		}
 	}
@@ -223,6 +220,7 @@ namespace Vanara.Extensions.Reflection
 
 namespace Vanara.Extensions
 {
+	using System.Diagnostics.CodeAnalysis;
 	using Vanara.Extensions.Reflection;
 
 	/// <summary>Extensions related to <c>System.Reflection</c></summary>
@@ -236,14 +234,14 @@ namespace Vanara.Extensions
 		public static T CreateOrDefault<T>() where T : struct
 		{
 			var mi = typeof(T).GetMethod("Create", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static, null, Type.EmptyTypes, null);
-			if (mi != null)
-				return (T)mi.Invoke(null, null);
+			if (mi != null && mi.ReturnType == typeof(T))
+				return (T)mi.Invoke(null, null)!;
 			var fi = typeof(T).GetField("Default", BindingFlags.Public | BindingFlags.Static);
-			if (fi != null)
-				return (T)fi.GetValue(null);
+			if (fi != null && fi.FieldType == typeof(T))
+				return (T)fi.GetValue(null)!;
 			var pi = typeof(T).GetProperty("Default", BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty, null, typeof(T), Type.EmptyTypes, null);
 			if (pi != null)
-				return (T)pi.GetValue(null);
+				return (T)pi.GetValue(null)!;
 			return default;
 		}
 
@@ -258,7 +256,7 @@ namespace Vanara.Extensions
 		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
 		/// <param name="predicate">An optional predicate to refine the results.</param>
 		/// <returns></returns>
-		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this MemberInfo element, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
+		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this MemberInfo element, bool inherit = false, Func<TAttr, bool>? predicate = null) where TAttr : Attribute =>
 			element.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
 
 		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
@@ -267,13 +265,13 @@ namespace Vanara.Extensions
 		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
 		/// <param name="predicate">An optional predicate to refine the results.</param>
 		/// <returns></returns>
-		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this Type type, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
+		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this Type type, bool inherit = false, Func<TAttr, bool>? predicate = null) where TAttr : Attribute =>
 			type.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
 
 		/// <summary>Finds the type of the element of a type. Returns null if this type does not enumerate.</summary>
 		/// <param name="type">The type to check.</param>
 		/// <returns>The element type, if found; otherwise, <see langword="null"/>.</returns>
-		public static Type FindElementType(this Type type)
+		public static Type? FindElementType(this Type type)
 		{
 			if (type.IsArray)
 				return type.GetElementType();
@@ -293,7 +291,7 @@ namespace Vanara.Extensions
 
 			return null;
 
-			bool IsIEnum(Type t) => t == typeof(System.Collections.IEnumerable);
+			bool IsIEnum(Type t) => t == typeof(IEnumerable);
 			bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
 		}
 
@@ -308,10 +306,10 @@ namespace Vanara.Extensions
 		/// <typeparam name="T">The expected type of the field to be returned.</typeparam>
 		/// <param name="fieldName">Name of the field.</param>
 		/// <returns>The field value.</returns>
-		public static T GetStaticFieldValue<T>(string fieldName)
+		public static T? GetStaticFieldValue<T>(string fieldName)
 		{
 			if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
-			return (T)typeof(T).InvokeMember(fieldName, BindingFlags.GetField | staticBindingFlags, null, null, null);
+			return (T?)typeof(T).InvokeMember(fieldName, BindingFlags.GetField | staticBindingFlags, null, null, null);
 		}
 
 		/// <summary>Invokes a named method on a created instance of a type with parameters.</summary>
@@ -320,7 +318,7 @@ namespace Vanara.Extensions
 		/// <param name="methodName">Name of the method.</param>
 		/// <param name="args">The arguments to provide to the method invocation.</param>
 		/// <returns>The value returned from the method.</returns>
-		public static T InvokeMethod<T>(this Type type, string methodName, params object[] args)
+		public static T? InvokeMethod<T>(this Type type, string methodName, params object?[]? args)
 		{
 			var o = Activator.CreateInstance(type);
 			return o.InvokeMethod<T>(methodName, args);
@@ -333,7 +331,7 @@ namespace Vanara.Extensions
 		/// <param name="methodName">Name of the method.</param>
 		/// <param name="args">The arguments to provide to the method invocation.</param>
 		/// <returns>The value returned from the method.</returns>
-		public static T InvokeMethod<T>(this Type type, object[] instArgs, string methodName, params object[] args)
+		public static T? InvokeMethod<T>(this Type type, object?[]? instArgs, string methodName, params object?[]? args)
 		{
 			var o = Activator.CreateInstance(type, instArgs);
 			return o.InvokeMethod<T>(methodName, args);
@@ -345,12 +343,12 @@ namespace Vanara.Extensions
 		/// <param name="methodName">Name of the method.</param>
 		/// <param name="args">The arguments to provide to the method invocation.</param>
 		/// <returns>The value returned from the method.</returns>
-		public static T InvokeStaticMethod<T>(this Type type, string methodName, params object[] args)
+		public static T? InvokeStaticMethod<T>(this Type type, string methodName, params object?[]? args)
 		{
 			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes : Array.ConvertAll(args, o => o?.GetType() ?? typeof(object));
 			var mi = type.GetMethod(methodName, staticBindingFlags, null, argTypes, null);
 			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
-			return (T)mi.Invoke(null, args);
+			return (T?)mi.Invoke(null, args);
 		}
 
 #if !NETSTANDARD2_0
@@ -359,13 +357,13 @@ namespace Vanara.Extensions
 		/// <param name="targetObject">The target object.</param>
 		/// <param name="arguments">The arguments.</param>
 		/// <returns>The value returned from the method.</returns>
-		public static object InvokeNotOverride(this MethodInfo methodInfo, object targetObject, params object[] arguments)
+		public static object? InvokeNotOverride(this MethodInfo methodInfo, object targetObject, params object?[]? arguments)
 		{
 			var parameters = methodInfo.GetParameters();
-			if (parameters.Length != arguments.Length)
+			if (parameters.Length != arguments?.Length)
 				throw new Exception("Arguments count doesn't match");
 
-			Type returnType = null;
+			Type? returnType = null;
 			if (methodInfo.ReturnType != typeof(void))
 				returnType = methodInfo.ReturnType;
 
@@ -402,17 +400,17 @@ namespace Vanara.Extensions
 		public static bool IsMethodCompatibleWithDelegate<TDel>(this MethodInfo method) where TDel : Delegate
 		{
 			var delegateSignature = typeof(TDel).GetMethod("Invoke");
-			return delegateSignature.ReturnType == method.ReturnType && delegateSignature.GetParameters().Select(x => x.ParameterType).SequenceEqual(method.GetParameters().Select(x => x.ParameterType));
+			return delegateSignature?.ReturnType == method.ReturnType && delegateSignature.GetParameters().Select(x => x.ParameterType).SequenceEqual(method.GetParameters().Select(x => x.ParameterType));
 		}
 
 		/// <summary>Loads a type from a named assembly.</summary>
 		/// <param name="typeName">Name of the type.</param>
 		/// <param name="asmRef">The name or path of the file that contains the manifest of the assembly.</param>
 		/// <returns>The <see cref="Type"/> reference, or <c>null</c> if type or assembly not found.</returns>
-		public static Type LoadType(string typeName, string asmRef = null)
+		public static Type? LoadType(string typeName, string? asmRef = null)
 		{
-			Assembly asm = null;
-			try { asm = Assembly.LoadFrom(asmRef); } catch { }
+			Assembly? asm = null;
+			try { if (asmRef is not null) asm = Assembly.LoadFrom(asmRef); } catch { }
 			if (!TryGetType(asm, typeName, out var ret))
 			{
 				foreach (var asm2 in AppDomain.CurrentDomain.GetAssemblies())
@@ -426,10 +424,10 @@ namespace Vanara.Extensions
 		/// <param name="asm">The assembly from which to load the type.</param>
 		/// <param name="type">The <see cref="Type"/> reference, if found.</param>
 		/// <returns><c>true</c> if the type was found in the assembly; otherwise, <c>false</c>.</returns>
-		private static bool TryGetType(Assembly asm, string typeName, out Type type)
+		private static bool TryGetType(Assembly? asm, string typeName, [NotNullWhen(true)] out Type? type)
 		{
 			type = asm?.GetType(typeName, false, false);
-			return !(type is null);
+			return type is not null;
 		}
 	}
 }

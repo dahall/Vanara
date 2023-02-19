@@ -287,7 +287,7 @@ namespace Vanara.Windows.Shell.Tests
 			if (bpp != Image.GetPixelFormatSize(fmt) || height == 0 || !isdib)
 				return Image.FromHbitmap((IntPtr)hbmp);
 
-			//var bytes = dib.dsBm.bmBits.ToArray<byte>((int)dib.dsBmih.biSizeImage);
+			//var bytes = dib.dsBm.bmBits.ToByteArray((int)dib.dsBmih.biSizeImage);
 
 			// Read first byte of first and last scan lines
 			//var byte0 = unchecked((uint)Marshal.ReadInt32(dib.dsBm.bmBits));

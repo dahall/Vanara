@@ -2014,8 +2014,8 @@ public static partial class Traffic
 		internal TC_GEN_FILTER_MGD_UNK(in TC_GEN_FILTER f)
 		{
 			AddressType = f.AddressType;
-			Pattern = f.Pattern.ToArray<byte>((int)f.PatternSize);
-			Mask = f.Mask.ToArray<byte>((int)f.PatternSize);
+			Pattern = f.Pattern.ToByteArray((int)f.PatternSize);
+			Mask = f.Mask.ToByteArray((int)f.PatternSize);
 		}
 	}
 

@@ -3127,7 +3127,7 @@ public static partial class HttpApi
 		[MarshalAs(UnmanagedType.U1)] public bool CertDeniedByMapper;
 
 		/// <summary>The actual certificate.</summary>
-		public byte[] CertEncoded => pCertEncoded.ToArray<byte>((int)CertEncodedSize);
+		public byte[] CertEncoded => pCertEncoded.ToByteArray((int)CertEncodedSize);
 	}
 
 	/// <summary>

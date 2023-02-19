@@ -366,7 +366,7 @@ namespace Vanara.PInvoke.Tests
 					var hr = UxTheme.GetThemeStream(h, 0, 0, 213, out var themeStream, out var streamSize, hInstance);
 					Assert.That(hr.Succeeded);
 					Assert.That(streamSize, Is.GreaterThan(0));
-					Assert.That(() => themeStream.ToArray<byte>((int)streamSize), Throws.Nothing);
+					Assert.That(() => themeStream.ToByteArray((int)streamSize), Throws.Nothing);
 				}
 			}
 		}

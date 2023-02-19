@@ -2672,13 +2672,13 @@ public static partial class DnsApi
 		public IntPtr ip4Address;
 
 		/// <summary>The service-associated IPv4 address, if defined.</summary>
-		public IPEndPoint IPv4EndPoint => ip4Address == IntPtr.Zero ? null : new(new IPAddress(ip4Address.ToArray<byte>(4)), wPort);
+		public IPEndPoint IPv4EndPoint => ip4Address == IntPtr.Zero ? null : new(new IPAddress(ip4Address.ToByteArray(4)), wPort);
 
 		/// <summary>A pointer to an IP6_ADDRESS structure that represents the service-associated IPv6 address.</summary>
 		public IntPtr ip6Address;
 
 		/// <summary>The service-associated IPv6 address, if defined.</summary>
-		public IPEndPoint IPv6EndPoint => ip6Address == IntPtr.Zero ? null : new(new IPAddress(ip6Address.ToArray<byte>(16)), wPort);
+		public IPEndPoint IPv6EndPoint => ip6Address == IntPtr.Zero ? null : new(new IPAddress(ip6Address.ToByteArray(16)), wPort);
 
 		/// <summary>A value that represents the port on which the service is running.</summary>
 		public ushort wPort;

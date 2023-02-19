@@ -8880,10 +8880,10 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Pointer to a 128-bit checksum for the file, if it is either an LN file or a language-specific resource file.</summary>
-			public byte[] pChecksum => dwSize < minSz ? new byte[0] : mem.DangerousGetHandle().ToArray<byte>(16, 12);
+			public byte[] pChecksum => dwSize < minSz ? new byte[0] : mem.DangerousGetHandle().ToByteArray(16, 12);
 
 			/// <summary>Pointer to a 128-bit checksum for the file, used for servicing.</summary>
-			public byte[] pServiceChecksum => dwSize < minSz ? new byte[0] : mem.DangerousGetHandle().ToArray<byte>(16, 28);
+			public byte[] pServiceChecksum => dwSize < minSz ? new byte[0] : mem.DangerousGetHandle().ToByteArray(16, 28);
 
 			/// <summary>
 			/// The language name string for a language-specific resource file, or to the ultimate fallback language name string for an LN file.

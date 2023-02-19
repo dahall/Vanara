@@ -1751,10 +1751,10 @@ namespace Vanara.PInvoke
 				TargetName = c.TargetName;
 				Comment = c.Comment;
 				LastWritten = c.LastWritten;
-				CredentialBlob = c.CredentialBlob.ToArray<byte>((int)c.CredentialBlobSize);
+				CredentialBlob = c.CredentialBlob.ToByteArray((int)c.CredentialBlobSize);
 				Persist = c.Persist;
 				AttributeCount = c.AttributeCount;
-				Attributes = c.Attributes.ToArray<byte>((int)c.AttributeCount);
+				Attributes = c.Attributes.ToByteArray((int)c.AttributeCount);
 				TargetAlias = c.TargetAlias;
 				UserName = c.UserName;
 			}

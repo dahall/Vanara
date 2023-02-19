@@ -2979,7 +2979,7 @@ namespace Vanara.PInvoke
 			public IntPtr pbData;
 
 			/// <summary>Gets the bytes associated with this blob.</summary>
-			public byte[] GetBytes() => pbData.ToArray<byte>((int)cbData);
+			public byte[] GetBytes() => pbData.ToByteArray((int)cbData);
 		}
 
 		/// <summary>

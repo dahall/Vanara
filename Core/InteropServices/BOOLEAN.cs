@@ -110,7 +110,7 @@ public struct BOOLEAN : IComparable, IComparable<BOOLEAN>, IComparable<bool>, IC
 	public int CompareTo(bool other) => Value.CompareTo(other);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is BOOLEAN s ? Equals(s) : (obj is bool b ? Value.Equals(b) : Value.Equals(obj));
+	public override bool Equals(object? obj) => obj is BOOLEAN s ? Equals(s) : (obj is bool b ? Value.Equals(b) : Value.Equals(obj));
 
 	/// <inheritdoc/>
 	public bool Equals(BOOLEAN other) => Value.Equals(other.Value);
@@ -128,62 +128,62 @@ public struct BOOLEAN : IComparable, IComparable<BOOLEAN>, IComparable<bool>, IC
 	public override string ToString() => Value.ToString();
 
 	/// <inheritdoc/>
-	public string ToString(IFormatProvider provider) => Value.ToString(provider);
+	public string ToString(IFormatProvider? provider) => Value.ToString(provider);
 
 	/// <inheritdoc/>
-	int IComparable.CompareTo(object obj) => Value.CompareTo(Convert.ChangeType(obj, typeof(ulong)));
+	int IComparable.CompareTo(object? obj) => Value.CompareTo(Convert.ChangeType(obj, typeof(ulong)));
 
 	/// <inheritdoc/>
-	bool IConvertible.ToBoolean(IFormatProvider provider) => ((IConvertible)Value).ToBoolean(provider);
+	bool IConvertible.ToBoolean(IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
 
 	/// <inheritdoc/>
-	byte IConvertible.ToByte(IFormatProvider provider) => ((IConvertible)Value).ToByte(provider);
+	byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)Value).ToByte(provider);
 
 	/// <inheritdoc/>
-	char IConvertible.ToChar(IFormatProvider provider) => ((IConvertible)Value).ToChar(provider);
+	char IConvertible.ToChar(IFormatProvider? provider) => ((IConvertible)Value).ToChar(provider);
 
 	/// <inheritdoc/>
-	DateTime IConvertible.ToDateTime(IFormatProvider provider) => ((IConvertible)Value).ToDateTime(provider);
+	DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ((IConvertible)Value).ToDateTime(provider);
 
 	/// <inheritdoc/>
-	decimal IConvertible.ToDecimal(IFormatProvider provider) => ((IConvertible)Value).ToDecimal(provider);
+	decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)Value).ToDecimal(provider);
 
 	/// <inheritdoc/>
-	double IConvertible.ToDouble(IFormatProvider provider) => ((IConvertible)Value).ToDouble(provider);
+	double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)Value).ToDouble(provider);
 
 	/// <inheritdoc/>
-	short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)Value).ToInt16(provider);
+	short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)Value).ToInt16(provider);
 
 	/// <inheritdoc/>
-	int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)Value).ToInt32(provider);
+	int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)Value).ToInt32(provider);
 
 	/// <inheritdoc/>
-	long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)Value).ToInt64(provider);
+	long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)Value).ToInt64(provider);
 
 	/// <inheritdoc/>
-	sbyte IConvertible.ToSByte(IFormatProvider provider) => ((IConvertible)Value).ToSByte(provider);
+	sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)Value).ToSByte(provider);
 
 	/// <inheritdoc/>
-	float IConvertible.ToSingle(IFormatProvider provider) => ((IConvertible)Value).ToSingle(provider);
+	float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)Value).ToSingle(provider);
 
 	/// <inheritdoc/>
-	object IConvertible.ToType(Type conversionType, IFormatProvider provider) => ((IConvertible)Value).ToBoolean(provider);
+	object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
 
 	/// <inheritdoc/>
-	ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)Value).ToUInt16(provider);
+	ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)Value).ToUInt16(provider);
 
 	/// <inheritdoc/>
-	uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)Value).ToUInt32(provider);
+	uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)Value).ToUInt32(provider);
 
 	/// <inheritdoc/>
-	ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)Value).ToUInt64(provider);
+	ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)Value).ToUInt64(provider);
 
 	internal class BOOLEANTypeConverter : ByteConverter
 	{
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) =>
+		public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType) =>
 			value is BOOLEAN b ? base.ConvertTo(context, culture, b.Value, destinationType) : throw new ArgumentException(null, nameof(value));
 
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
-			new BOOLEAN((byte)base.ConvertFrom(context, culture, value));
+		public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
+			base.CanConvertFrom(context, value.GetType()) ? new BOOLEAN((byte)(base.ConvertFrom(context, culture, value) ?? 0)) : throw new ArgumentException(null, nameof(value));
 	}
 }
