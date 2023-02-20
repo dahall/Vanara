@@ -111,8 +111,8 @@ namespace Vanara.PInvoke
 		// USHORT *pInstancePort );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("dsparse.h", MSDNShortId = "65c81c23-a259-480c-9c1e-03484d3e89c9")]
-		public static extern Win32Error DsCrackSpn(string pszSpn, ref uint pcServiceClass, StringBuilder ServiceClass, ref uint pcServiceName, StringBuilder ServiceName, ref uint pcInstanceName,
-			StringBuilder InstanceName, out ushort pInstancePort);
+		public static extern Win32Error DsCrackSpn(string pszSpn, ref uint pcServiceClass, StringBuilder ServiceClass, ref uint pcServiceName,
+			[Optional] StringBuilder? ServiceName, ref uint pcInstanceName, [Optional] StringBuilder? InstanceName, out ushort pInstancePort);
 
 		/// <summary>
 		/// <para>
@@ -229,7 +229,7 @@ namespace Vanara.PInvoke
 		/// <param name="val">A string that, if the function is successful, receives the value in the relative distinguished name string.</param>
 		/// <returns>Returns <c>ERROR_SUCCESS</c> if successful or a Win32 error code otherwise.</returns>
 		[PInvokeData("dsparse.h", MSDNShortId = "22627f2e-adfb-49de-bae5-20aaf69830ac")]
-		public static Win32Error DsGetRdnW(string fullDN, out string dn, out string key, out string val)
+		public static Win32Error DsGetRdnW(string fullDN, out string? dn, out string? key, out string? val)
 		{
 			var s = new SafeCoTaskMemString(fullDN, CharSet.Unicode);
 			IntPtr ppDN = s.DangerousGetHandle(), ppKey = IntPtr.Zero, ppVal = IntPtr.Zero;
@@ -430,7 +430,7 @@ namespace Vanara.PInvoke
 		// LPCWSTR ServiceName, LPCWSTR InstanceName, USHORT InstancePort, LPCWSTR Referrer, DWORD *pcSpnLength, LPWSTR pszSpn );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("dsparse.h", MSDNShortId = "fca3c59c-bb81-42a0-acd3-2e55c902febe")]
-		public static extern Win32Error DsMakeSpn(string ServiceClass, string ServiceName, string InstanceName, ushort InstancePort, string Referrer, ref uint pcSpnLength, StringBuilder pszSpn);
+		public static extern Win32Error DsMakeSpn(string ServiceClass, string ServiceName, [Optional] string? InstanceName, ushort InstancePort, [Optional] string? Referrer, ref uint pcSpnLength, [Optional] StringBuilder? pszSpn);
 
 		/// <summary>
 		/// <para>

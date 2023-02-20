@@ -1053,7 +1053,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[DllImport(Lib.NTDSApi, CharSet = CharSet.Auto, SetLastError = true)]
 		[PInvokeData("NTDSApi.h", MSDNShortId = "ms675931")]
-		public static extern Win32Error DsBind([Optional] string DomainControllerName, [Optional] string DnsDomainName, out SafeDsHandle phDS);
+		public static extern Win32Error DsBind([Optional] string? DomainControllerName, [Optional] string? DnsDomainName, out SafeDsHandle phDS);
 
 		/// <summary>
 		/// The <c>DsBindByInstance</c> function explicitly binds to any AD LDS or Active Directory instance.
@@ -1157,8 +1157,8 @@ namespace Vanara.PInvoke
 		// ServicePrincipalName, DWORD BindFlags, HANDLE *phDS );
 		[PInvokeData("ntdsapi.h", MSDNShortId = "65302ddc-2bc0-4d80-b028-e268859be227")]
 		[DllImport(Lib.NTDSApi, CharSet = CharSet.Auto, EntryPoint = "DsBindByInstance", SetLastError = false, ThrowOnUnmappableChar = true), SuppressUnmanagedCodeSecurity]
-		public static extern Win32Error DsBindByInstance([Optional] string ServerName, [Optional] string Annotation, in Guid InstanceGuid, [Optional] string DnsDomainName,
-			SafeAuthIdentityHandle AuthIdentity, [Optional] string ServicePrincipalName, [Optional] DsBindFlags BindFlags, out SafeDsHandle phDS);
+		public static extern Win32Error DsBindByInstance([Optional] string? ServerName, [Optional] string? Annotation, in Guid InstanceGuid, [Optional] string? DnsDomainName,
+			SafeAuthIdentityHandle AuthIdentity, [Optional] string? ServicePrincipalName, [Optional] DsBindFlags BindFlags, out SafeDsHandle phDS);
 
 		/// <summary>
 		/// The <c>DsBindByInstance</c> function explicitly binds to any AD LDS or Active Directory instance.
@@ -1262,8 +1262,8 @@ namespace Vanara.PInvoke
 		// ServicePrincipalName, DWORD BindFlags, HANDLE *phDS );
 		[PInvokeData("ntdsapi.h", MSDNShortId = "65302ddc-2bc0-4d80-b028-e268859be227")]
 		[DllImport(Lib.NTDSApi, CharSet = CharSet.Auto, EntryPoint = "DsBindByInstance", SetLastError = false, ThrowOnUnmappableChar = true), SuppressUnmanagedCodeSecurity]
-		public static extern Win32Error DsBindByInstance([Optional] string ServerName, [Optional] string Annotation, [Optional] IntPtr InstanceGuid, [Optional] string DnsDomainName,
-			SafeAuthIdentityHandle AuthIdentity, [Optional] string ServicePrincipalName, [Optional] DsBindFlags BindFlags, out SafeDsHandle phDS);
+		public static extern Win32Error DsBindByInstance([Optional] string? ServerName, [Optional] string? Annotation, [Optional] IntPtr InstanceGuid, [Optional] string? DnsDomainName,
+			SafeAuthIdentityHandle AuthIdentity, [Optional] string? ServicePrincipalName, [Optional] DsBindFlags BindFlags, out SafeDsHandle phDS);
 
 		/// <summary>
 		/// The <c>DsBindingSetTimeout</c> function sets the timeout value that is honored by all RPC calls that use the specified binding
@@ -1294,7 +1294,7 @@ namespace Vanara.PInvoke
 		// SiteName, HANDLE *phDS );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "bd53124c-8578-495d-b540-d4b4c09297c3")]
-		public static extern Win32Error DsBindToISTG([Optional] string SiteName, out SafeDsHandle phDS);
+		public static extern Win32Error DsBindToISTG([Optional] string? SiteName, out SafeDsHandle phDS);
 
 		/// <summary>
 		/// The DsBindWithCred function binds to a domain controller using the specified credentials.
@@ -1314,7 +1314,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.NTDSApi, CharSet = CharSet.Auto, SetLastError = true)]
 		[PInvokeData("NTDSApi.h", MSDNShortId = "ms675961")]
-		public static extern Win32Error DsBindWithCred([Optional] string DomainControllerName, [Optional] string DnsDomainName, SafeAuthIdentityHandle AuthIdentity, out SafeDsHandle phDS);
+		public static extern Win32Error DsBindWithCred([Optional] string? DomainControllerName, [Optional] string? DnsDomainName, SafeAuthIdentityHandle AuthIdentity, out SafeDsHandle phDS);
 
 		/// <summary>
 		/// <para>
@@ -1348,7 +1348,7 @@ namespace Vanara.PInvoke
 		// DomainControllerName, LPCWSTR DnsDomainName, RPC_AUTH_IDENTITY_HANDLE AuthIdentity, LPCWSTR ServicePrincipalName, HANDLE *phDS );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "9a149654-fd94-4b0c-b712-07fb827bef2f")]
-		public static extern Win32Error DsBindWithSpn([Optional] string DomainControllerName, [Optional] string DnsDomainName, SafeAuthIdentityHandle AuthIdentity, [Optional] string ServicePrincipalName, out SafeDsHandle phDS);
+		public static extern Win32Error DsBindWithSpn([Optional] string? DomainControllerName, [Optional] string? DnsDomainName, SafeAuthIdentityHandle AuthIdentity, [Optional] string? ServicePrincipalName, out SafeDsHandle phDS);
 
 		/// <summary>
 		/// <para>
@@ -1409,7 +1409,7 @@ namespace Vanara.PInvoke
 		// BindFlags, HANDLE *phDS );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "52a5761d-5244-4bc9-8c09-fd08f10a9fff")]
-		public static extern Win32Error DsBindWithSpnEx([Optional] string DomainControllerName, [Optional] string DnsDomainName, SafeAuthIdentityHandle AuthIdentity, [Optional] string ServicePrincipalName,
+		public static extern Win32Error DsBindWithSpnEx([Optional] string? DomainControllerName, [Optional] string? DnsDomainName, SafeAuthIdentityHandle AuthIdentity, [Optional] string? ServicePrincipalName,
 			DsBindFlags BindFlags, out SafeDsHandle phDS);
 
 		/// <summary>
@@ -1485,7 +1485,7 @@ namespace Vanara.PInvoke
 			DS_NAME_FORMAT formatOffered = DS_NAME_FORMAT.DS_UNKNOWN_NAME,
 			DS_NAME_FLAGS flags = DS_NAME_FLAGS.DS_NAME_NO_FLAGS)
 		{
-			DsCrackNames(hSafeDs, flags, formatOffered, formatDesired, (uint)(names?.Length ?? 0), names, out var pResult).ThrowIfFailed();
+			DsCrackNames(hSafeDs, flags, formatOffered, formatDesired, (uint)names.Length, names, out var pResult).ThrowIfFailed();
 			return pResult.Items;
 		}
 
@@ -1704,7 +1704,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "cbd53850-9b05-4f74-ab07-30dcad583fc5")]
 		public static extern Win32Error DsGetSpn(DS_SPN_NAME_TYPE ServiceType, string ServiceClass, string ServiceName, ushort InstancePort, ushort cInstanceNames,
-			string[] pInstanceNames, ushort[] pInstancePorts, ref uint pcSpn, out SpnArrayHandle prpszSpn);
+			[Optional] string[]? pInstanceNames, [Optional] ushort[]? pInstancePorts, ref uint pcSpn, out SpnArrayHandle prpszSpn);
 
 		/// <summary>
 		/// The <c>DsInheritSecurityIdentity</c> function appends the <c>objectSid</c> and <c>sidHistory</c> attributes of SrcPrincipal to
@@ -2041,7 +2041,7 @@ namespace Vanara.PInvoke
 		// hDs, LPWSTR ServerDN, LPWSTR DomainDN, BOOL *fLastDcInDomain, BOOL fCommit );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "a79a2b71-10c7-495b-861f-0c7a4d86f720")]
-		public static extern Win32Error DsRemoveDsServer(SafeDsHandle hDs, string ServerDN, [Optional] string DomainDN, [MarshalAs(UnmanagedType.Bool)] out bool fLastDcInDomain, [MarshalAs(UnmanagedType.Bool)] bool fCommit);
+		public static extern Win32Error DsRemoveDsServer(SafeDsHandle hDs, string ServerDN, [Optional] string? DomainDN, [MarshalAs(UnmanagedType.Bool)] out bool fLastDcInDomain, [MarshalAs(UnmanagedType.Bool)] bool fCommit);
 
 		/// <summary>
 		/// The <c>DsReplicaAdd</c> function adds a replication source reference to a destination naming context.
@@ -2101,7 +2101,8 @@ namespace Vanara.PInvoke
 		// LPCSTR NameContext, LPCSTR SourceDsaDn, LPCSTR TransportDn, LPCSTR SourceDsaAddress, const PSCHEDULE pSchedule, DWORD Options );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "33bd1b61-b9ed-479f-a128-fb7ddbb5e9af")]
-		public static extern Win32Error DsReplicaAdd(SafeDsHandle hDS, string NameContext, string SourceDsaDn, string TransportDn, string SourceDsaAddress, [Optional] SCHEDULE pSchedule, DsReplicaAddOptions Options);
+		public static extern Win32Error DsReplicaAdd(SafeDsHandle hDS, string NameContext, [Optional] string? SourceDsaDn, [Optional] string? TransportDn,
+			string SourceDsaAddress, [Optional] SCHEDULE? pSchedule, DsReplicaAddOptions Options);
 
 		/// <summary>
 		/// The <c>DsReplicaConsistencyCheck</c> function invokes the Knowledge Consistency Checker (KCC) to verify the replication topology.
@@ -2258,8 +2259,8 @@ namespace Vanara.PInvoke
 		// HANDLE hDS, DS_REPL_INFO_TYPE InfoType, LPCWSTR pszObject, UUID *puuidForSourceDsaObjGuid, LPCWSTR pszAttributeName, LPCWSTR
 		// pszValue, DWORD dwFlags, DWORD dwEnumerationContext, VOID **ppInfo );
 		[PInvokeData("ntdsapi.h", MSDNShortId = "5735d91d-1b7d-4dc6-b6c6-61ba38ebe50d")]
-		public static Win32Error DsReplicaGetInfo2W(SafeDsHandle hDS, DS_REPL_INFO_TYPE InfoType, [Optional] string pszObject, [Optional] Guid? puuidForSourceDsaObjGuid, [Optional] string pszAttributeName,
-			[Optional] string pszValue, DsReplInfoFlags dwFlags, uint dwEnumerationContext, out SafeDsReplicaInfo ppInfo)
+		public static Win32Error DsReplicaGetInfo2W(SafeDsHandle hDS, DS_REPL_INFO_TYPE InfoType, [Optional] string? pszObject, [Optional] Guid? puuidForSourceDsaObjGuid, [Optional] string? pszAttributeName,
+			[Optional] string? pszValue, DsReplInfoFlags dwFlags, uint dwEnumerationContext, out SafeDsReplicaInfo ppInfo)
 		{
 			unsafe
 			{
@@ -2320,7 +2321,7 @@ namespace Vanara.PInvoke
 		// hDS, DS_REPL_INFO_TYPE InfoType, LPCWSTR pszObject, UUID *puuidForSourceDsaObjGuid, VOID **ppInfo );
 		[DllImport(Lib.NTDSApi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "b7ab22fe-ed92-4213-9b66-2dd5526286fa")]
-		public static extern Win32Error DsReplicaGetInfoW(SafeDsHandle hDS, DS_REPL_INFO_TYPE InfoType, string pszObject, in Guid puuidForSourceDsaObjGuid, out SafeDsReplicaInfo ppInfo);
+		public static extern Win32Error DsReplicaGetInfoW(SafeDsHandle hDS, DS_REPL_INFO_TYPE InfoType, [Optional] string? pszObject, in Guid puuidForSourceDsaObjGuid, out SafeDsReplicaInfo ppInfo);
 
 		/// <summary>
 		/// The <c>DsReplicaModify</c> function modifies an existing replication source reference for a destination naming context.
@@ -2401,8 +2402,8 @@ namespace Vanara.PInvoke
 		// ReplicaFlags, DWORD ModifyFields, DWORD Options );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "aad20527-1211-41bc-b0e9-02e4ab28ae2e")]
-		public static extern Win32Error DsReplicaModify(SafeDsHandle hDS, string NameContext, in Guid pUuidSourceDsa, [Optional] string TransportDn, [Optional] string SourceDsaAddress,
-			[Optional] SCHEDULE pSchedule, DsReplNeighborFlags ReplicaFlags, DsReplModFieldFlags ModifyFields, DsReplModOptions Options);
+		public static extern Win32Error DsReplicaModify(SafeDsHandle hDS, string NameContext, in Guid pUuidSourceDsa, [Optional] string? TransportDn, [Optional] string? SourceDsaAddress,
+			[Optional] SCHEDULE? pSchedule, DsReplNeighborFlags ReplicaFlags, DsReplModFieldFlags ModifyFields, DsReplModOptions Options);
 
 		/// <summary>
 		/// The <c>DsReplicaModify</c> function modifies an existing replication source reference for a destination naming context.
@@ -2483,8 +2484,8 @@ namespace Vanara.PInvoke
 		// ReplicaFlags, DWORD ModifyFields, DWORD Options );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "aad20527-1211-41bc-b0e9-02e4ab28ae2e")]
-		public static extern Win32Error DsReplicaModify(SafeDsHandle hDS, string NameContext, [Optional] IntPtr pUuidSourceDsa, [Optional] string TransportDn, [Optional] string SourceDsaAddress,
-			[Optional] SCHEDULE pSchedule, DsReplNeighborFlags ReplicaFlags, DsReplModFieldFlags ModifyFields, DsReplModOptions Options);
+		public static extern Win32Error DsReplicaModify(SafeDsHandle hDS, string NameContext, [Optional] IntPtr pUuidSourceDsa, [Optional] string? TransportDn, [Optional] string? SourceDsaAddress,
+			[Optional] SCHEDULE? pSchedule, DsReplNeighborFlags ReplicaFlags, DsReplModFieldFlags ModifyFields, DsReplModOptions Options);
 
 		/// <summary>
 		/// The <c>DsReplicaSync</c> function synchronizes a destination naming context (NC) with one of its sources.
@@ -2618,7 +2619,7 @@ namespace Vanara.PInvoke
 		// PDS_REPSYNCALL_ERRINFOA **pErrors );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "2608adde-4f18-4048-a96f-d736ff09cd4b")]
-		public static extern Win32Error DsReplicaSyncAll(SafeDsHandle hDS, [Optional] string pszNameContext, DsReplSyncAllFlags ulFlags, SyncUpdateProc pFnCallBack, IntPtr pCallbackData, out SafeDS_REPSYNCALL_ERRINFOArray pErrors);
+		public static extern Win32Error DsReplicaSyncAll(SafeDsHandle hDS, [Optional] string? pszNameContext, DsReplSyncAllFlags ulFlags, SyncUpdateProc pFnCallBack, IntPtr pCallbackData, out SafeDS_REPSYNCALL_ERRINFOArray pErrors);
 
 		/// <summary>
 		/// The <c>DsReplicaUpdateRefs</c> function adds or removes a replication reference for a destination from a source naming context.
@@ -2717,7 +2718,7 @@ namespace Vanara.PInvoke
 		// DS_SPN_WRITE_OP Operation, LPCSTR ServiceClass, LPCSTR UserObjectDN );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "d95dfa55-f978-4d8d-a63d-cd1339769c79")]
-		public static extern Win32Error DsServerRegisterSpn(DS_SPN_WRITE_OP Operation, string ServiceClass, [Optional] string UserObjectDN);
+		public static extern Win32Error DsServerRegisterSpn(DS_SPN_WRITE_OP Operation, string ServiceClass, [Optional] string? UserObjectDN);
 
 		/// <summary>
 		/// The <c>DsUnBind</c> function finds an RPC session with a domain controller and unbinds a handle to the directory service (DS).
@@ -2887,8 +2888,8 @@ namespace Vanara.PInvoke
 		// pszValue, DWORD dwFlags, DWORD dwEnumerationContext, VOID **ppInfo );
 		[DllImport(Lib.NTDSApi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "5735d91d-1b7d-4dc6-b6c6-61ba38ebe50d")]
-		private static unsafe extern Win32Error DsReplicaGetInfo2W(SafeDsHandle hDS, DS_REPL_INFO_TYPE InfoType, [Optional] string pszObject, Guid* puuidForSourceDsaObjGuid, [Optional] string pszAttributeName,
-			[Optional] string pszValue, DsReplInfoFlags dwFlags, uint dwEnumerationContext, out SafeDsReplicaInfo ppInfo);
+		private static unsafe extern Win32Error DsReplicaGetInfo2W(SafeDsHandle hDS, DS_REPL_INFO_TYPE InfoType, [Optional] string? pszObject, [Optional] Guid* puuidForSourceDsaObjGuid, [Optional] string? pszAttributeName,
+			[Optional] string? pszValue, DsReplInfoFlags dwFlags, uint dwEnumerationContext, out SafeDsReplicaInfo ppInfo);
 
 		/// <summary>Provides a handle to a domain controller info structure.</summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -3192,7 +3193,7 @@ namespace Vanara.PInvoke
 			/// Enumeration of DS_NAME_RESULT_ITEM structures. Each element of this array represents a single converted name.
 			/// </summary>
 			/// <value>The items.</value>
-			public DS_NAME_RESULT_ITEM[] Items => rItems.ToArray<DS_NAME_RESULT_ITEM>((int)cItems);
+			public DS_NAME_RESULT_ITEM[]? Items => rItems.ToArray<DS_NAME_RESULT_ITEM>((int)cItems);
 		}
 
 		/// <summary>
@@ -3412,7 +3413,7 @@ namespace Vanara.PInvoke
 			/// Gets an array of DS_REPL_VALUE_META_DATA structures that contain the individual attribute replication values.
 			/// </summary>
 			/// <value>The rg meta data.</value>
-			public DS_REPL_VALUE_META_DATA[] rgMetaData => _rgMetaData.ToArray<DS_REPL_VALUE_META_DATA>((int)cNumEntries);
+			public DS_REPL_VALUE_META_DATA[]? rgMetaData => _rgMetaData.ToArray<DS_REPL_VALUE_META_DATA>((int)cNumEntries);
 		}
 
 		/// <summary>
@@ -3448,7 +3449,7 @@ namespace Vanara.PInvoke
 			/// Gets an array of DS_REPL_VALUE_META_DATA_2 structures that contain the individual attribute replication values.
 			/// </summary>
 			/// <value>The rg meta data.</value>
-			public DS_REPL_VALUE_META_DATA_2[] rgMetaData => _rgMetaData.ToArray<DS_REPL_VALUE_META_DATA_2>((int)cNumEntries);
+			public DS_REPL_VALUE_META_DATA_2[]? rgMetaData => _rgMetaData.ToArray<DS_REPL_VALUE_META_DATA_2>((int)cNumEntries);
 		}
 
 		/// <summary>
@@ -3481,7 +3482,7 @@ namespace Vanara.PInvoke
 			/// Gets an array of DS_REPL_VALUE_META_DATA_EXT structures that contain the individual attribute replication values.
 			/// </summary>
 			/// <value>The rg meta data.</value>
-			public DS_REPL_VALUE_META_DATA_EXT[] rgMetaData => _rgMetaData.ToArray<DS_REPL_VALUE_META_DATA_EXT>((int)cNumEntries);
+			public DS_REPL_VALUE_META_DATA_EXT[]? rgMetaData => _rgMetaData.ToArray<DS_REPL_VALUE_META_DATA_EXT>((int)cNumEntries);
 		}
 
 		/// <summary>
@@ -3631,7 +3632,7 @@ namespace Vanara.PInvoke
 			/// Contains an array of DS_REPL_CURSOR structures that contain the requested replication data.
 			/// </summary>
 			/// <value>The rg cursor.</value>
-			public DS_REPL_CURSOR[] rgCursor => _rgCursor.ToArray<DS_REPL_CURSOR>((int)cNumCursors);
+			public DS_REPL_CURSOR[]? rgCursor => _rgCursor.ToArray<DS_REPL_CURSOR>((int)cNumCursors);
 		}
 
 		/// <summary>
@@ -3664,7 +3665,7 @@ namespace Vanara.PInvoke
 			/// Contains an array of DS_REPL_CURSOR_2 structures that contain the requested replication data.
 			/// </summary>
 			/// <value>The rg cursor.</value>
-			public DS_REPL_CURSOR_2[] rgCursor => _rgCursor.ToArray<DS_REPL_CURSOR_2>((int)cNumCursors);
+			public DS_REPL_CURSOR_2[]? rgCursor => _rgCursor.ToArray<DS_REPL_CURSOR_2>((int)cNumCursors);
 		}
 
 		/// <summary>
@@ -3697,7 +3698,7 @@ namespace Vanara.PInvoke
 			/// Contains an array of DS_REPL_CURSOR_3W structures that contain the requested replication data.
 			/// </summary>
 			/// <value>The rg cursor.</value>
-			public DS_REPL_CURSOR_3W[] rgCursor => _rgCursor.ToArray<DS_REPL_CURSOR_3W>((int)cNumCursors);
+			public DS_REPL_CURSOR_3W[]? rgCursor => _rgCursor.ToArray<DS_REPL_CURSOR_3W>((int)cNumCursors);
 		}
 
 		/// <summary>
@@ -3729,7 +3730,7 @@ namespace Vanara.PInvoke
 			/// Contains an array of DS_REPL_KCC_DSA_FAILURE structures that contain the requested replication data.
 			/// </summary>
 			/// <value>The rg DSA failure.</value>
-			public DS_REPL_KCC_DSA_FAILUREW[] rgDsaFailure => _rgDsaFailure.ToArray<DS_REPL_KCC_DSA_FAILUREW>((int)cNumEntries);
+			public DS_REPL_KCC_DSA_FAILUREW[]? rgDsaFailure => _rgDsaFailure.ToArray<DS_REPL_KCC_DSA_FAILUREW>((int)cNumEntries);
 		}
 
 		/// <summary>
@@ -4030,7 +4031,7 @@ namespace Vanara.PInvoke
 			/// Contains an array of DS_REPL_NEIGHBOR structures that contain the requested replication data.
 			/// </summary>
 			/// <value>The rg neighbor.</value>
-			public DS_REPL_NEIGHBOR[] rgNeighbor => _rgNeighbor.ToArray<DS_REPL_NEIGHBOR>((int)cNumNeighbors);
+			public DS_REPL_NEIGHBOR[]? rgNeighbor => _rgNeighbor.ToArray<DS_REPL_NEIGHBOR>((int)cNumNeighbors);
 		}
 
 		/// <summary>
@@ -4219,7 +4220,7 @@ namespace Vanara.PInvoke
 			/// Contains an array of DS_REPL_ATTR_META_DATA structures that contain the requested replication data.
 			/// </summary>
 			/// <value>The rg meta data.</value>
-			public DS_REPL_ATTR_META_DATA[] rgMetaData => _rgMetaData.ToArray<DS_REPL_ATTR_META_DATA>((int)cNumEntries);
+			public DS_REPL_ATTR_META_DATA[]? rgMetaData => _rgMetaData.ToArray<DS_REPL_ATTR_META_DATA>((int)cNumEntries);
 		}
 
 		/// <summary>
@@ -4251,7 +4252,7 @@ namespace Vanara.PInvoke
 			/// Contains an array of DS_REPL_ATTR_META_DATA_2 structures that contain the requested replication data.
 			/// </summary>
 			/// <value>The rg meta data.</value>
-			public DS_REPL_ATTR_META_DATA_2[] rgMetaData => _rgMetaData.ToArray<DS_REPL_ATTR_META_DATA_2>((int)cNumEntries);
+			public DS_REPL_ATTR_META_DATA_2[]? rgMetaData => _rgMetaData.ToArray<DS_REPL_ATTR_META_DATA_2>((int)cNumEntries);
 		}
 
 		/// <summary>
@@ -4479,7 +4480,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>The sequence of replication operations to be performed.</summary>
 			/// <value>The rg pending op.</value>
-			public DS_REPL_OPW[] rgPendingOp => _rgPendingOp.ToArray<DS_REPL_OPW>((int)cNumPendingOps);
+			public DS_REPL_OPW[]? rgPendingOp => _rgPendingOp.ToArray<DS_REPL_OPW>((int)cNumPendingOps);
 		}
 
 		/// <summary>
@@ -5139,7 +5140,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the list of service principle names (SPNs) from this handle.</summary>
 			/// <param name="count">The count returned in the pcSpn parameter of <see cref="DsGetSpn"/>.</param>
 			/// <returns>The list of SPNs.</returns>
-			public IEnumerable<string> GetSPNs(uint count) => handle.ToStringEnum((int)count);
+			public IEnumerable<string?> GetSPNs(uint count) => handle.ToStringEnum((int)count);
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to an authentication identity that releases its handle at disposal using DsFreePasswordCredentials.</summary>
@@ -5174,7 +5175,7 @@ namespace Vanara.PInvoke
 			public int Count => IsInvalid ? 0 : handle.GetNulledPtrArrayLength();
 
 			/// <summary>Gets the array of DS_REPSYNCALL_ERRINFO structures.</summary>
-			public DS_REPSYNCALL_ERRINFO[] Items => IsInvalid ? new DS_REPSYNCALL_ERRINFO[0] : handle.ToArray<DS_REPSYNCALL_ERRINFO>(Count);
+			public DS_REPSYNCALL_ERRINFO[] Items => IsInvalid ? new DS_REPSYNCALL_ERRINFO[0] : handle.ToArray<DS_REPSYNCALL_ERRINFO>(Count)!;
 
 			/// <inheritdoc/>
 			public IEnumerator<DS_REPSYNCALL_ERRINFO> GetEnumerator() => Array.AsReadOnly(Items).GetEnumerator();
@@ -5221,7 +5222,7 @@ namespace Vanara.PInvoke
 			public SafeDsNameResult() : base(h => { DsFreeNameResult(h); return true; }) { }
 
 			/// <summary>An array of DS_NAME_RESULT_ITEM structures. Each element of this array represents a single converted name.</summary>
-			public DS_NAME_RESULT_ITEM[] Items => IsInvalid ? new DS_NAME_RESULT_ITEM[0] : handle.ToStructure<DS_NAME_RESULT>().Items;
+			public DS_NAME_RESULT_ITEM[] Items => IsInvalid ? new DS_NAME_RESULT_ITEM[0] : handle.ToStructure<DS_NAME_RESULT>().Items!;
 
 			/// <inheritdoc/>
 			public IEnumerator<DS_NAME_RESULT_ITEM> GetEnumerator() => ((IEnumerable<DS_NAME_RESULT_ITEM>)Items).GetEnumerator();
@@ -5242,7 +5243,7 @@ namespace Vanara.PInvoke
 			/// <param name="cToSites">
 			/// <para>Indicates the number of elements in the array. This value is the same value as that passed into <see cref="DsQuerySitesByCost"/>.</para>
 			/// </param>
-			public DS_SITE_COST_INFO[] GetItems(int cToSites) => IsInvalid ? new DS_SITE_COST_INFO[0] : handle.ToArray<DS_SITE_COST_INFO>(cToSites);
+			public DS_SITE_COST_INFO[] GetItems(int cToSites) => IsInvalid ? new DS_SITE_COST_INFO[0] : handle.ToArray<DS_SITE_COST_INFO>(cToSites)!;
 		}
 
 		/// <summary>A <see cref="SafeHandle"/> for the results from <see cref="DsReplicaGetInfo2W(SafeDsHandle, DS_REPL_INFO_TYPE, string, Guid?, string, string, DsReplInfoFlags, uint, out SafeDsReplicaInfo)"/>.</summary>
@@ -5255,7 +5256,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the value.</summary>
 			/// <value>The value.</value>
-			public object Value
+			public object? Value
 			{
 				get
 				{
@@ -5295,7 +5296,7 @@ namespace Vanara.PInvoke
 			/// <param name="cGuids">
 			/// <para>Indicates the number of elements in the array. This value is the same value as that passed into <see cref="DsMapSchemaGuids"/>.</para>
 			/// </param>
-			public DS_SCHEMA_GUID_MAP[] GetItems(int cGuids) => IsInvalid ? new DS_SCHEMA_GUID_MAP[0] : handle.ToArray<DS_SCHEMA_GUID_MAP>(cGuids);
+			public DS_SCHEMA_GUID_MAP[] GetItems(int cGuids) => IsInvalid ? new DS_SCHEMA_GUID_MAP[0] : handle.ToArray<DS_SCHEMA_GUID_MAP>(cGuids)!;
 		}
 
 		/// <summary>
@@ -5377,7 +5378,7 @@ namespace Vanara.PInvoke
 			/// <c>NumberOfSchedules</c> member contains the number of elements in this array. Currently, this array can only contain one element.
 			/// </para>
 			/// </summary>
-			public SCHEDULE_HEADER[] Schedules => _Schedules.ToArray<SCHEDULE_HEADER>((int)NumberOfSchedules);
+			public SCHEDULE_HEADER[] Schedules => _Schedules.ToArray<SCHEDULE_HEADER>((int)NumberOfSchedules) ?? new SCHEDULE_HEADER[0];
 
 			/// <summary>
 			/// <para>

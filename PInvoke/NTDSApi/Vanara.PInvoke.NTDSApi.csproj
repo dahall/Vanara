@@ -4,6 +4,7 @@
     <SupportedDlls>ntdsapi.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
+    <Nullable>enable</Nullable>
     <Description>PInvoke API (methods, structures and constants) imported from Windows NTDSApi.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyName>Vanara.PInvoke.NTDSApi</AssemblyName>
