@@ -53,7 +53,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets or sets the DLL in which this element is defined.</summary>
 		/// <value>The DLL file name without the path (e.g. "advapi32.dll").</value>
-		public string Dll { get; set; }
+		public string? Dll { get; set; }
 
 		/// <summary>Gets or sets the header in which this element is defined.</summary>
 		/// <value>The header file name without the path (e.g. "winuser.h").</value>
@@ -65,7 +65,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets or sets the MSDN short identifier.</summary>
 		/// <value>The MSDN short identifier. This is a unique 8-character alphanumeric string used for Microsoft documentation.</value>
-		public string MSDNShortId { get; set; }
+		public string? MSDNShortId { get; set; }
 	}
 }
 

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <Nullable>enable</Nullable>
     <Description>Shared methods, structures and constants for use throughout the Vanara.PInvoke assemblies. Includes:
 * IEnumerable helpers for COM enumerations
 * Custom marshaler for CoTaskMem pointers

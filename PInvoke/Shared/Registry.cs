@@ -38,9 +38,7 @@ namespace Vanara.Extensions
 				default:
 					break;
 			}
-			if (typeof(IEnumerable<byte>).IsAssignableFrom(type) || type.IsMarshalable())
-				return REG_VALUE_TYPE.REG_BINARY;
-			return REG_VALUE_TYPE.REG_SZ;
+			return typeof(IEnumerable<byte>).IsAssignableFrom(type) || type.IsMarshalable() ? REG_VALUE_TYPE.REG_BINARY : REG_VALUE_TYPE.REG_SZ;
 		}
 
 		/// <summary>Gets a <see cref="REG_VALUE_TYPE"/> given a system type.</summary>
@@ -55,25 +53,26 @@ namespace Vanara.Extensions
 		/// <param name="charSet">The character set to use in conversion if applicable.</param>
 		/// <returns>The extracted value.</returns>
 		/// <exception cref="InvalidOperationException">Registry links cannot be retrived from a pointer. Please use RegOpenKeyEx.</exception>
-		public static object GetValue(this REG_VALUE_TYPE value, IntPtr ptr, uint size, CharSet charSet = CharSet.Auto)
+		public static object? GetValue(this REG_VALUE_TYPE value, IntPtr ptr, uint size, CharSet charSet = CharSet.Auto)
 		{
+			if (ptr == IntPtr.Zero) return null;
 			switch (value)
 			{
 				case REG_VALUE_TYPE.REG_DWORD:
 				case REG_VALUE_TYPE.REG_DWORD_BIG_ENDIAN:
-					var data = ptr.Convert<byte[]>(4);
+					var data = ptr.ToByteArray(4);
 					if (BitConverter.IsLittleEndian && value == REG_VALUE_TYPE.REG_DWORD_BIG_ENDIAN || !BitConverter.IsLittleEndian && value == REG_VALUE_TYPE.REG_DWORD)
-						Array.Reverse(data);
-					return BitConverter.ToUInt32(data, 0);
+						Array.Reverse(data!);
+					return BitConverter.ToUInt32(data!, 0);
 
 				case REG_VALUE_TYPE.REG_EXPAND_SZ:
-					return Environment.ExpandEnvironmentVariables(StringHelper.GetString(ptr, charSet, size));
+					return Environment.ExpandEnvironmentVariables(StringHelper.GetString(ptr, charSet, size)!);
 
 				case REG_VALUE_TYPE.REG_MULTI_SZ:
 					return ptr.ToStringEnum(charSet, 0, size).ToArray();
 
 				case REG_VALUE_TYPE.REG_QWORD:
-					return ptr.Convert<ulong>(size);
+					return ptr.ToArray<ulong>((int)size);
 
 				case REG_VALUE_TYPE.REG_SZ:
 					return StringHelper.GetString(ptr, charSet, size);
@@ -82,7 +81,7 @@ namespace Vanara.Extensions
 				case REG_VALUE_TYPE.REG_FULL_RESOURCE_DESCRIPTOR:
 				case REG_VALUE_TYPE.REG_RESOURCE_REQUIREMENTS_LIST:
 				case REG_VALUE_TYPE.REG_BINARY:
-					return ptr.Convert<byte[]>(size);
+					return ptr.ToByteArray((int)size);
 
 				case REG_VALUE_TYPE.REG_LINK:
 					throw new InvalidOperationException("Registry links cannot be retrived from a pointer. Please use RegOpenKeyEx.");

@@ -39,7 +39,7 @@ public class CorrespondingTypeAttribute : Attribute
 	/// <summary>Initializes a new instance of the <see cref="CorrespondingTypeAttribute"/> class.</summary>
 	/// <param name="typeRef">The type that corresponds to this enumeration value.</param>
 	/// <param name="action">The actions allowed for the type.</param>
-	public CorrespondingTypeAttribute(Type typeRef, CorrespondingAction action = CorrespondingAction.GetSet)
+	public CorrespondingTypeAttribute(Type? typeRef, CorrespondingAction action = CorrespondingAction.GetSet)
 	{
 		TypeRef = typeRef;
 		Action = action;

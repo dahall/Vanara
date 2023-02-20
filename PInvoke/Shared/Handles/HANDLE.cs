@@ -49,7 +49,7 @@ public struct HACCEL : IUserHandle
 	public static bool operator ==(HACCEL h1, HACCEL h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HACCEL h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HACCEL h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -107,7 +107,7 @@ public struct HANDLE : IHandle
 	public static bool operator ==(HANDLE h1, HANDLE h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HANDLE h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HANDLE h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -165,7 +165,7 @@ public struct HBITMAP : IGraphicsObjectHandle
 	public static bool operator ==(HBITMAP h1, HBITMAP h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HBITMAP h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HBITMAP h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -228,7 +228,7 @@ public struct HBRUSH : IGraphicsObjectHandle
 	public static bool operator ==(HBRUSH h1, HBRUSH h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HBRUSH h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HBRUSH h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -286,7 +286,7 @@ public struct HCOLORSPACE : IGraphicsObjectHandle
 	public static bool operator ==(HCOLORSPACE h1, HCOLORSPACE h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HCOLORSPACE h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HCOLORSPACE h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -344,7 +344,7 @@ public struct HCURSOR : IGraphicsObjectHandle
 	public static bool operator ==(HCURSOR h1, HCURSOR h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HCURSOR h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HCURSOR h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -397,7 +397,7 @@ public struct HDC : IHandle
 	public static bool operator ==(HDC h1, HDC h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HDC h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HDC h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -450,7 +450,7 @@ public struct HDESK : IKernelHandle
 	public static bool operator ==(HDESK h1, HDESK h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HDESK h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HDESK h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -503,7 +503,7 @@ public struct HDPA : IKernelHandle
 	public static bool operator ==(HDPA h1, HDPA h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HDPA h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HDPA h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -556,7 +556,7 @@ public struct HDROP : IShellHandle
 	public static bool operator ==(HDROP h1, HDROP h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HDROP h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HDROP h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -609,7 +609,7 @@ public struct HDSA : IKernelHandle
 	public static bool operator ==(HDSA h1, HDSA h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HDSA h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HDSA h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -662,7 +662,7 @@ public struct HDWP : IUserHandle
 	public static bool operator ==(HDWP h1, HDWP h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HDWP h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HDWP h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -715,7 +715,7 @@ public struct HENHMETAFILE : IHandle
 	public static bool operator ==(HENHMETAFILE h1, HENHMETAFILE h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HENHMETAFILE h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HENHMETAFILE h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -768,7 +768,7 @@ public struct HEVENT : ISyncHandle
 	public static bool operator ==(HEVENT h1, HEVENT h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HEVENT h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HEVENT h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -832,7 +832,7 @@ public struct HFILE : ISyncHandle
 	public static bool operator ==(HFILE h1, HFILE h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HFILE h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HFILE h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -890,7 +890,7 @@ public struct HFONT : IGraphicsObjectHandle
 	public static bool operator ==(HFONT h1, HFONT h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HFONT h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HFONT h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -983,7 +983,7 @@ public struct HGDIOBJ : IGraphicsObjectHandle
 	public static bool operator ==(HGDIOBJ h1, HGDIOBJ h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HGDIOBJ h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HGDIOBJ h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1036,7 +1036,7 @@ public struct HICON : IUserHandle
 	public static bool operator ==(HICON h1, HICON h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HICON h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HICON h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1089,7 +1089,7 @@ public struct HIMAGELIST : IShellHandle
 	public static bool operator ==(HIMAGELIST h1, HIMAGELIST h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HIMAGELIST h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HIMAGELIST h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1142,7 +1142,7 @@ public struct HINSTANCE : IKernelHandle
 	public static bool operator ==(HINSTANCE h1, HINSTANCE h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HINSTANCE h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HINSTANCE h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1247,7 +1247,7 @@ public struct HKEY : IKernelHandle
 	public static bool operator ==(HKEY h1, HKEY h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HKEY h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HKEY h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1300,7 +1300,7 @@ public struct HMENU : IUserHandle
 	public static bool operator ==(HMENU h1, HMENU h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HMENU h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HMENU h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1353,7 +1353,7 @@ public struct HMETAFILE : IHandle
 	public static bool operator ==(HMETAFILE h1, HMETAFILE h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HMETAFILE h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HMETAFILE h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1406,7 +1406,7 @@ public struct HMONITOR : IKernelHandle
 	public static bool operator ==(HMONITOR h1, HMONITOR h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HMONITOR h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HMONITOR h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1464,7 +1464,7 @@ public struct HPALETTE : IGraphicsObjectHandle
 	public static bool operator ==(HPALETTE h1, HPALETTE h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HPALETTE h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HPALETTE h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1522,7 +1522,7 @@ public struct HPEN : IGraphicsObjectHandle
 	public static bool operator ==(HPEN h1, HPEN h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HPEN h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HPEN h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1580,7 +1580,7 @@ public struct HPROCESS : ISyncHandle
 	public static bool operator ==(HPROCESS h1, HPROCESS h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HPROCESS h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HPROCESS h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1633,7 +1633,7 @@ public struct HPROPSHEET : IUserHandle
 	public static bool operator ==(HPROPSHEET h1, HPROPSHEET h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HPROPSHEET h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HPROPSHEET h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1686,7 +1686,7 @@ public struct HPROPSHEETPAGE : IUserHandle
 	public static bool operator ==(HPROPSHEETPAGE h1, HPROPSHEETPAGE h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HPROPSHEETPAGE h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HPROPSHEETPAGE h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1744,7 +1744,7 @@ public struct HRGN : IGraphicsObjectHandle
 	public static bool operator ==(HRGN h1, HRGN h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HRGN h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HRGN h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1797,7 +1797,7 @@ public struct HSECTION : IHandle
 	public static bool operator ==(HSECTION h1, HSECTION h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HSECTION h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HSECTION h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1850,7 +1850,7 @@ public struct HTASK : IHandle
 	public static bool operator ==(HTASK h1, HTASK h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HTASK h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HTASK h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1903,7 +1903,7 @@ public struct HTHEME : IHandle
 	public static bool operator ==(HTHEME h1, HTHEME h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HTHEME h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HTHEME h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -1956,7 +1956,7 @@ public struct HTHREAD : ISyncHandle
 	public static bool operator ==(HTHREAD h1, HTHREAD h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HTHREAD h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HTHREAD h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -2009,7 +2009,7 @@ public struct HTHUMBNAIL : IShellHandle
 	public static bool operator ==(HTHUMBNAIL h1, HTHUMBNAIL h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HTHUMBNAIL h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HTHUMBNAIL h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -2062,7 +2062,7 @@ public struct HTOKEN : IKernelHandle
 	public static bool operator ==(HTOKEN h1, HTOKEN h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HTOKEN h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HTOKEN h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -2115,7 +2115,7 @@ public struct HWINSTA : IKernelHandle
 	public static bool operator ==(HWINSTA h1, HWINSTA h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HWINSTA h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HWINSTA h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -2195,7 +2195,7 @@ public struct HWND : IUserHandle
 	public static bool operator ==(HWND h1, HWND h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is HWND h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is HWND h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -2248,7 +2248,7 @@ public struct PACE : ISecurityObject
 	public static bool operator ==(PACE h1, PACE h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is PACE h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is PACE h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -2301,7 +2301,7 @@ public struct PACL : ISecurityObject
 	public static bool operator ==(PACL h1, PACL h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is PACL h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is PACL h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -2354,7 +2354,7 @@ public struct PSECURITY_DESCRIPTOR : ISecurityObject
 	public static bool operator ==(PSECURITY_DESCRIPTOR h1, PSECURITY_DESCRIPTOR h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is PSECURITY_DESCRIPTOR h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is PSECURITY_DESCRIPTOR h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();
@@ -2407,7 +2407,7 @@ public struct PSID : ISecurityObject
 	public static bool operator ==(PSID h1, PSID h2) => h1.Equals(h2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object obj) => obj is PSID h && handle == h.handle;
+	public override bool Equals(object? obj) => obj is PSID h && handle == h.handle;
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();

@@ -89,12 +89,12 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <param name="err">The error.</param>
 	/// <param name="message">The message.</param>
 	[System.Diagnostics.DebuggerStepThrough]
-	public static void ThrowIfFailed(Win32Error err, string message = null) => err.ThrowIfFailed(message);
+	public static void ThrowIfFailed(Win32Error err, string? message = null) => err.ThrowIfFailed(message);
 
 	/// <summary>Throws the last error.</summary>
 	/// <param name="message">The message to associate with the exception.</param>
 	[System.Diagnostics.DebuggerStepThrough]
-	public static void ThrowLastError(string message = null) => GetLastError().ThrowIfFailed(message);
+	public static void ThrowLastError(string? message = null) => GetLastError().ThrowIfFailed(message);
 
 	/// <summary>Throws the last error if the predicate delegate returns <see langword="true"/>.</summary>
 	/// <typeparam name="T">The type of the value to evaluate.</typeparam>
@@ -102,7 +102,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <param name="valueIsFailure">The delegate which returns <see langword="true"/> on failure.</param>
 	/// <param name="message">The message.</param>
 	/// <returns>The <paramref name="value"/> passed in on success.</returns>
-	public static T ThrowLastErrorIf<T>(T value, Func<T, bool> valueIsFailure, string message = null)
+	public static T ThrowLastErrorIf<T>(T value, Func<T, bool> valueIsFailure, string? message = null)
 	{
 		if (valueIsFailure(value))
 			GetLastError().ThrowIfFailed(message);
@@ -112,23 +112,23 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <summary>Throws the last error if the function returns <see langword="false"/>.</summary>
 	/// <param name="value">The value to check.</param>
 	/// <param name="message">The message.</param>
-	public static bool ThrowLastErrorIfFalse(bool value, string message = null) => ThrowLastErrorIf(value, v => !v, message);
+	public static bool ThrowLastErrorIfFalse(bool value, string? message = null) => ThrowLastErrorIf(value, v => !v, message);
 
 	/// <summary>Throws the last error if the value is an invalid handle.</summary>
 	/// <param name="value">The SafeHandle to check.</param>
 	/// <param name="message">The message.</param>
-	public static T ThrowLastErrorIfInvalid<T>(T value, string message = null) where T : SafeHandle => ThrowLastErrorIf(value, v => v.IsInvalid, message);
+	public static T ThrowLastErrorIfInvalid<T>(T value, string? message = null) where T : SafeHandle => ThrowLastErrorIf(value, v => v.IsInvalid, message);
 
 	/// <summary>Throws the last error if the value is a NULL pointer (IntPtr.Zero).</summary>
 	/// <param name="value">The pointer to check.</param>
 	/// <param name="message">The message.</param>
-	public static IntPtr ThrowLastErrorIfNull(IntPtr value, string message = null) => ThrowLastErrorIf(value, v => v == IntPtr.Zero, message);
+	public static IntPtr ThrowLastErrorIfNull(IntPtr value, string? message = null) => ThrowLastErrorIf(value, v => v == IntPtr.Zero, message);
 
 	/// <summary>Throws if the last error failed, unless the error is the specified value.</summary>
 	/// <param name="exception">The failure code to ignore.</param>
 	/// <param name="message">The message to associate with the exception.</param>
 	[System.Diagnostics.DebuggerStepThrough]
-	public static void ThrowLastErrorUnless(Win32Error exception, string message = null) => GetLastError().ThrowUnless(exception, message);
+	public static void ThrowLastErrorUnless(Win32Error exception, string? message = null) => GetLastError().ThrowUnless(exception, message);
 
 	/// <summary>Compares the current object with another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
@@ -149,7 +149,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the sort
 	/// order as <paramref name="obj"/>. Greater than zero This instance follows <paramref name="obj"/> in the sort order.
 	/// </returns>
-	public int CompareTo(object obj)
+	public int CompareTo(object? obj)
 	{
 		var v = ValueFromObj(obj);
 		return v.HasValue
@@ -166,7 +166,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public override bool Equals(object obj) => Equals(value, ValueFromObj(obj));
+	public override bool Equals(object? obj) => Equals(value, ValueFromObj(obj));
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
@@ -180,7 +180,7 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 	/// <returns>The associated <see cref="Exception"/> or <see langword="null"/> if this <see cref="Win32Error"/> is not a failure.</returns>
 	[SecurityCritical, SecuritySafeCritical]
-	public Exception GetException(string message = null) => Succeeded ? null : ToHRESULT().GetException(message);
+	public Exception? GetException(string? message = null) => Succeeded ? null : ToHRESULT().GetException(message);
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -190,18 +190,18 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	/// <param name="message">The message.</param>
 	/// <exception cref="Win32Exception"></exception>
 	[System.Diagnostics.DebuggerStepThrough]
-	public void ThrowIfFailed(string message = null)
+	public void ThrowIfFailed(string? message = null)
 	{
-		if (value != ERROR_SUCCESS) throw GetException(message);
+		if (value != ERROR_SUCCESS) throw GetException(message)!;
 	}
 
 	/// <summary>Throws if failed, unless the error is the specified value.</summary>
 	/// <param name="exception">The failure code to ignore.</param>
 	/// <param name="message">The message.</param>
 	[System.Diagnostics.DebuggerStepThrough]
-	public void ThrowUnless(Win32Error exception, string message = null)
+	public void ThrowUnless(Win32Error exception, string? message = null)
 	{
-		if (value != ERROR_SUCCESS && value != (uint)exception) throw GetException(message);
+		if (value != ERROR_SUCCESS && value != (uint)exception) throw GetException(message)!;
 	}
 
 	/// <summary>Converts this error to an <see cref="HRESULT"/>.</summary>
@@ -219,43 +219,43 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 
 	TypeCode IConvertible.GetTypeCode() => value.GetTypeCode();
 
-	bool IConvertible.ToBoolean(IFormatProvider provider) => Succeeded;
+	bool IConvertible.ToBoolean(IFormatProvider? provider) => Succeeded;
 
-	byte IConvertible.ToByte(IFormatProvider provider) => ((IConvertible)value).ToByte(provider);
+	byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)value).ToByte(provider);
 
-	char IConvertible.ToChar(IFormatProvider provider) => throw new NotSupportedException();
+	char IConvertible.ToChar(IFormatProvider? provider) => throw new NotSupportedException();
 
-	DateTime IConvertible.ToDateTime(IFormatProvider provider) => throw new NotSupportedException();
+	DateTime IConvertible.ToDateTime(IFormatProvider? provider) => throw new NotSupportedException();
 
-	decimal IConvertible.ToDecimal(IFormatProvider provider) => ((IConvertible)value).ToDecimal(provider);
+	decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)value).ToDecimal(provider);
 
-	double IConvertible.ToDouble(IFormatProvider provider) => ((IConvertible)value).ToDouble(provider);
+	double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)value).ToDouble(provider);
 
-	short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)value).ToInt16(provider);
+	short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)value).ToInt16(provider);
 
-	int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)value).ToInt32(provider);
+	int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)value).ToInt32(provider);
 
-	long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)value).ToInt64(provider);
+	long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)value).ToInt64(provider);
 
-	sbyte IConvertible.ToSByte(IFormatProvider provider) => ((IConvertible)value).ToSByte(provider);
+	sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)value).ToSByte(provider);
 
-	float IConvertible.ToSingle(IFormatProvider provider) => ((IConvertible)value).ToSingle(provider);
+	float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)value).ToSingle(provider);
 
-	string IConvertible.ToString(IFormatProvider provider) => ToString();
+	string IConvertible.ToString(IFormatProvider? provider) => ToString();
 
-	object IConvertible.ToType(Type conversionType, IFormatProvider provider) =>
+	object IConvertible.ToType(Type conversionType, IFormatProvider? provider) =>
 		((IConvertible)value).ToType(conversionType, provider);
 
-	ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)value).ToUInt16(provider);
+	ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)value).ToUInt16(provider);
 
-	uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)value).ToUInt32(provider);
+	uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)value).ToUInt32(provider);
 
-	ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)value).ToUInt64(provider);
+	ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)value).ToUInt64(provider);
 
 	[DllImport(Lib.Kernel32, SetLastError = false, EntryPoint = "GetLastError")]
 	private static extern uint ExtGetLastError();
 
-	private static uint? ValueFromObj(object obj)
+	private static uint? ValueFromObj(object? obj)
 	{
 		if (obj == null) return null;
 		TypeConverter c = TypeDescriptor.GetConverter(obj);
@@ -265,22 +265,25 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 
 internal class Win32ErrorTypeConverter : TypeConverter
 {
-	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+	public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) =>
 		sourceType.IsPrimitive && sourceType != typeof(bool) && sourceType != typeof(char) || base.CanConvertFrom(context, sourceType);
 
-	public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
-		destinationType == typeof(string) || destinationType.IsPrimitive && destinationType != typeof(char) || base.CanConvertTo(context, destinationType);
+	public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType) =>
+		destinationType == typeof(string) || destinationType is not null && destinationType.IsPrimitive && destinationType != typeof(char) || base.CanConvertTo(context, destinationType);
 
-	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
-		value != null && value.GetType().IsPrimitive && value is not char && value is not bool
+	public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
+	{
+		if (value is null) return null;
+		return value.GetType().IsPrimitive && value is not char && value is not bool
 			? new Win32Error((uint)Convert.ChangeType(value, TypeCode.UInt32))
 			: base.ConvertFrom(context, culture, value);
+	}
 
-	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
 	{
 		if (value is not Win32Error err) throw new NotSupportedException();
-		if (destinationType.IsPrimitive && destinationType != typeof(char))
-			return Convert.ChangeType(err, destinationType);
-		return destinationType == typeof(string) ? err.ToString() : base.ConvertTo(context, culture, value, destinationType);
+		return destinationType.IsPrimitive && destinationType != typeof(char)
+			? Convert.ChangeType(err, destinationType)
+			: destinationType == typeof(string) ? err.ToString() : base.ConvertTo(context, culture, value, destinationType);
 	}
 }
