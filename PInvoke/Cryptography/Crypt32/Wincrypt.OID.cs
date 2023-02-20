@@ -182,7 +182,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "aa2fba03-183b-4b74-b306-8f4592995897")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptEnumOIDFunction(CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPStr)] string pszFuncName, [Optional, In] SafeOID pszOID,
+	public static extern bool CryptEnumOIDFunction(CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPStr)] string? pszFuncName, [Optional, In] SafeOID pszOID,
 		[Optional] uint dwFlags, [In, Out, Optional] IntPtr pvArg, PFN_CRYPT_ENUM_OID_FUNC pfnEnumOIDFunc);
 
 	/// <summary>
@@ -709,7 +709,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "3977368c-ad13-43f9-859b-10c7f170f482")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGetDefaultOIDFunctionAddress([In] HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszDll,
+	public static extern bool CryptGetDefaultOIDFunctionAddress([In] HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszDll,
 		[Optional] uint dwFlags, out IntPtr ppvFuncAddr, ref HCRYPTOIDFUNCADDR phFuncAddr);
 
 	/// <summary>
@@ -883,7 +883,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "14eb7f10-f42a-4496-9699-62eeb9878ea2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptGetOIDFunctionValue(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
-		[In] SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszValueName, out REG_VALUE_TYPE pdwValueType,
+		[In] SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszValueName, out REG_VALUE_TYPE pdwValueType,
 		[Out] IntPtr pbValueData, ref uint pcbValueData);
 
 	/// <summary>
@@ -967,7 +967,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "9633cce4-538e-490e-8a5a-6b28f161a09d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptRegisterDefaultOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, uint dwIndex, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszDll);
+	public static extern bool CryptRegisterDefaultOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, uint dwIndex, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszDll);
 
 	/// <summary>
 	/// <para>
@@ -1018,7 +1018,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "b625597d-28fd-4a40-afbe-a09201d36512")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptRegisterOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, SafeOID pszOID,
-		[MarshalAs(UnmanagedType.LPWStr)] string pwszDll, [Optional, MarshalAs(UnmanagedType.LPStr)] string pszOverrideFuncName);
+		[MarshalAs(UnmanagedType.LPWStr)] string pwszDll, [Optional, MarshalAs(UnmanagedType.LPStr)] string? pszOverrideFuncName);
 
 	/// <summary>
 	/// <para>
@@ -1124,7 +1124,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "3e167c5d-0000-4359-a7b0-9b3e4e64c50c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSetOIDFunctionValue(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
-		SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pwszValueName, REG_VALUE_TYPE dwValueType, [In, Optional] IntPtr pbValueData, uint cbValueData);
+		SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszValueName, REG_VALUE_TYPE dwValueType, [In, Optional] IntPtr pbValueData, uint cbValueData);
 
 	/// <summary>
 	/// The <c>CryptUnregisterDefaultOIDFunction</c> removes the registration of a DLL containing the default function to be called for
@@ -1484,7 +1484,7 @@ public static partial class Crypt32
 		public HCRYPTOIDFUNCADDR(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HCRYPTOIDFUNCADDR"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCRYPTOIDFUNCADDR NULL => new HCRYPTOIDFUNCADDR(IntPtr.Zero);
+		public static HCRYPTOIDFUNCADDR NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1497,7 +1497,7 @@ public static partial class Crypt32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCRYPTOIDFUNCADDR"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCRYPTOIDFUNCADDR(IntPtr h) => new HCRYPTOIDFUNCADDR(h);
+		public static implicit operator HCRYPTOIDFUNCADDR(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1512,7 +1512,7 @@ public static partial class Crypt32
 		public static bool operator ==(HCRYPTOIDFUNCADDR h1, HCRYPTOIDFUNCADDR h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCRYPTOIDFUNCADDR h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HCRYPTOIDFUNCADDR h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1532,7 +1532,7 @@ public static partial class Crypt32
 		public HCRYPTOIDFUNCSET(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HCRYPTOIDFUNCSET"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCRYPTOIDFUNCSET NULL => new HCRYPTOIDFUNCSET(IntPtr.Zero);
+		public static HCRYPTOIDFUNCSET NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1545,7 +1545,7 @@ public static partial class Crypt32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCRYPTOIDFUNCSET"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCRYPTOIDFUNCSET(IntPtr h) => new HCRYPTOIDFUNCSET(h);
+		public static implicit operator HCRYPTOIDFUNCSET(IntPtr h) => new(h);
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
@@ -1560,7 +1560,7 @@ public static partial class Crypt32
 		public static bool operator ==(HCRYPTOIDFUNCSET h1, HCRYPTOIDFUNCSET h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HCRYPTOIDFUNCSET h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is HCRYPTOIDFUNCSET h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1580,7 +1580,7 @@ public static partial class Crypt32
 		public PCCRYPT_OID_INFO(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="PCCRYPT_OID_INFO"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PCCRYPT_OID_INFO NULL => new PCCRYPT_OID_INFO(IntPtr.Zero);
+		public static PCCRYPT_OID_INFO NULL => new(IntPtr.Zero);
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
@@ -1593,7 +1593,7 @@ public static partial class Crypt32
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PCCRYPT_OID_INFO"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PCCRYPT_OID_INFO(IntPtr h) => new PCCRYPT_OID_INFO(h);
+		public static implicit operator PCCRYPT_OID_INFO(IntPtr h) => new(h);
 
 		/// <summary>Performs an explicit conversion from <see cref="PCCRYPT_OID_INFO"/> to <see cref="CRYPT_OID_INFO"/>.</summary>
 		/// <param name="h">The handle.</param>
@@ -1613,7 +1613,7 @@ public static partial class Crypt32
 		public static bool operator ==(PCCRYPT_OID_INFO h1, PCCRYPT_OID_INFO h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is PCCRYPT_OID_INFO h ? handle == h.handle : false;
+		public override bool Equals(object? obj) => obj is PCCRYPT_OID_INFO h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
