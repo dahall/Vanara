@@ -34,6 +34,14 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(CreateFont(), ResultIs.ValidHandle);
 		}
 
+		[Test]
+		public void CreatePaletteTest()
+		{
+			LOGPALETTE lp = new() { palVersion = 0x300, palNumEntries = 32, palPalEntry = new PALETTEENTRY[32] };
+			for (int i = 0;i < 32; i++) { lp.palPalEntry[i] = new() { peFlags = PC.PC_NOCOLLAPSE }; }
+			Assert.That(CreatePalette(lp), ResultIs.ValidHandle);
+		}
+
 		// TODO: [Test]
 		public void DeleteDCTest()
 		{

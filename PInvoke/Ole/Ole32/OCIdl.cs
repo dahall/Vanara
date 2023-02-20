@@ -8289,7 +8289,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-iviewobject-getcolorset HRESULT GetColorSet( DWORD
 			// dwDrawAspect, LONG lindex, void *pvAspect, DVTARGETDEVICE *ptd, HDC hicTargetDev, LOGPALETTE **ppColorSet );
 			new unsafe HRESULT GetColorSet(DVASPECT dwDrawAspect, int lindex, [In, Optional] DVASPECTINFO* pvAspect, [In, Optional] DVTARGETDEVICE* ptd,
-				[In, Optional] HDC hicTargetDev, out LOGPALETTE ppColorSet);
+				[In, Optional] HDC hicTargetDev, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<LOGPALETTE>))] out LOGPALETTE ppColorSet);
 
 			/// <summary>
 			/// Freezes the drawn representation of an object so that it will not change until the IViewObject::Unfreeze method is called.
