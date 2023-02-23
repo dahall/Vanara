@@ -404,7 +404,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/win32/api/lzexpand/nf-lzexpand-lzinit INT LZInit( INT hfSource );
 		[DllImport(Lib_Lz32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("lzexpand.h", MSDNShortId = "NF:lzexpand.LZInit")]
-		public static extern int LZInit(/*HFILE*/ int hfSource);
+		public static extern HLZFILE LZInit(/*HFILE*/ int hfSource);
 
 		/// <summary>Creates, opens, reopens, or deletes the specified file.</summary>
 		/// <param name="lpFileName">The name of the file.</param>
@@ -587,7 +587,7 @@ namespace Vanara.PInvoke
 		// lpReOpenBuf, WORD wStyle );
 		[DllImport(Lib_Lz32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("lzexpand.h", MSDNShortId = "NF:lzexpand.LZOpenFileA")]
-		public static extern int LZOpenFile([In, MarshalAs(UnmanagedType.LPTStr)] string lpFileName, ref OFSTRUCT lpReOpenBuf, LZ_OF wStyle);
+		public static extern HLZFILE LZOpenFile([In, MarshalAs(UnmanagedType.LPTStr)] string lpFileName, ref OFSTRUCT lpReOpenBuf, LZ_OF wStyle);
 
 		/// <summary>Reads (at most) the specified number of bytes from a file and copies them into a buffer.</summary>
 		/// <param name="hFile">A handle to the file.</param>
@@ -767,7 +767,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides a handle to a compressed file.</summary>
 		[StructLayout(LayoutKind.Sequential)]
-		public struct HLZFILE : IHandle
+		public readonly struct HLZFILE : IHandle
 		{
 			private readonly int handle;
 
