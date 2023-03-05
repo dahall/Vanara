@@ -137,8 +137,7 @@ public abstract class SafeAnysizeStructBase<T> : SafeMemoryHandle<CoTaskMemoryMe
 	/// <returns></returns>
 	protected virtual T FromNative(IntPtr allocatedMemory, int size)
 	{
-		var local = (T?)Marshal.PtrToStructure(allocatedMemory, structType); // Can't use Convert or get circular ref.
-		if (local is null) throw new InvalidOperationException();
+		var local = (T?)Marshal.PtrToStructure(allocatedMemory, structType) ?? throw new InvalidOperationException(); // Can't use Convert or get circular ref.
 		var cnt = GetArrayLength(local);
 		var arrOffset = Marshal.OffsetOf(structType, fiArray.Name).ToInt32();
 		Array array = elemType == typeof(string) ? allocatedMemory.ToStringEnum(cnt, GetCharSet(fiArray), arrOffset, size).ToArray() : allocatedMemory.ToArray(elemType, cnt, arrOffset, size)!;

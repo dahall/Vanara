@@ -7,9 +7,6 @@ using System.Threading;
 namespace Vanara.PInvoke;
 
 /// <summary>Helper methods to work with asynchronous methods using <see cref="NativeOverlapped"/>.</summary>
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows")]
-#endif
 public static class OverlappedAsync
 {
 	private static readonly System.Collections.Generic.HashSet<HFILE> boundHandles = new();
@@ -70,7 +67,7 @@ public static class OverlappedAsync
 	/// A variable that is passed to all receiving methods in the asynchronous methods. Can be use to hold any user defined object.
 	/// </param>
 	/// <returns>An <see cref="OverlappedAsyncResult"/> instance for the asynchronous calls.</returns>
-	public static unsafe OverlappedAsyncResult SetupOverlappedFunction(HFILE hDevice, AsyncCallback userCallback, object userState)
+	public static unsafe OverlappedAsyncResult SetupOverlappedFunction(HFILE hDevice, AsyncCallback userCallback, object? userState)
 	{
 		BindHandle(hDevice);
 		var ar = new OverlappedAsyncResult(userState, userCallback, hDevice);
@@ -131,7 +128,7 @@ public static class OverlappedAsync
 		/// <param name="userState">State of the user.</param>
 		/// <param name="callback">The callback method.</param>
 		/// <param name="hFile">The binding handle.</param>
-		internal OverlappedAsyncResult(object userState, AsyncCallback callback, HFILE hFile)
+		internal OverlappedAsyncResult(object? userState, AsyncCallback callback, HFILE hFile)
 		{
 			AsyncState = userState;
 			AsyncCallback = callback;

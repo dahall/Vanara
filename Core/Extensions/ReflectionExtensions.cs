@@ -120,8 +120,7 @@ namespace Vanara.Extensions.Reflection
 		/// <exception cref="ArgumentException">Method not found - methodName</exception>
 		public static object? InvokeGenericMethod(this object? obj, string methodName, Type[] typeArguments, Type[] argTypes, object?[]? args)
 		{
-			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
-			if (mi is null) throw new ArgumentException(@"Method not found", nameof(methodName));
+			var mi = (obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null)) ?? throw new ArgumentException(@"Method not found", nameof(methodName));
 			var gmi = mi.MakeGenericMethod(typeArguments);
 			return gmi.Invoke(obj, args);
 		}
@@ -157,8 +156,7 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="args">The arguments to provide to the method invocation.</param>
 		public static void InvokeMethod(this object? obj, string methodName, Type[] argTypes, object?[]? args)
 		{
-			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
-			if (mi is null) throw new ArgumentException(@"Method not found", nameof(methodName));
+			var mi = (obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null)) ?? throw new ArgumentException(@"Method not found", nameof(methodName));
 			mi.Invoke(obj, args);
 		}
 
@@ -171,8 +169,7 @@ namespace Vanara.Extensions.Reflection
 		/// <returns>The value returned from the method.</returns>
 		public static T? InvokeMethod<T>(this object? obj, string methodName, Type[] argTypes, object?[]? args)
 		{
-			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
-			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
+			var mi = (obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null)) ?? throw new ArgumentException(@"Method not found", nameof(methodName));
 			var tt = typeof(T);
 			if (tt != typeof(object) && mi.ReturnType != tt && !mi.ReturnType.IsSubclassOf(tt))
 				throw new ArgumentException(@"Return type mismatch", nameof(T));
@@ -200,8 +197,7 @@ namespace Vanara.Extensions.Reflection
 		public static void SetFieldValue<T, TS>(this ref TS obj, string fieldName, T value) where TS : struct
 		{
 			var tr = __makeref(obj);
-			var fi = typeof(TS).GetField(fieldName, bindingFlags);
-			if (fi is null) throw new MissingFieldException(typeof(TS).Name, fieldName);
+			var fi = typeof(TS).GetField(fieldName, bindingFlags) ?? throw new MissingFieldException(typeof(TS).Name, fieldName);
 			fi.SetValueDirect(tr, value!);
 		}
 
@@ -346,8 +342,7 @@ namespace Vanara.Extensions
 		public static T? InvokeStaticMethod<T>(this Type type, string methodName, params object?[]? args)
 		{
 			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes : Array.ConvertAll(args, o => o?.GetType() ?? typeof(object));
-			var mi = type.GetMethod(methodName, staticBindingFlags, null, argTypes, null);
-			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
+			var mi = type.GetMethod(methodName, staticBindingFlags, null, argTypes, null) ?? throw new ArgumentException(@"Method not found", nameof(methodName));
 			return (T?)mi.Invoke(null, args);
 		}
 

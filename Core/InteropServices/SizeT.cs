@@ -80,19 +80,6 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	static SizeT INumberBase<SizeT>.Zero => Zero;
 #endif
 
-	/// <summary>
-	/// Performs an explicit conversion from <see cref="System.Void"/> to <see cref="SizeT"/>.
-	/// </summary>
-	/// <param name="value">The value.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static unsafe explicit operator SizeT(void* value) => (SizeT)value;
-
-	/// <summary>
-	/// Performs an explicit conversion from <see cref="SizeT"/> to <see cref="System.Void"/>.
-	/// </summary>
-	/// <param name="value">The value.</param>
-	public static unsafe explicit operator void*(SizeT value) => (void*)value;
-
 	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="int"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>

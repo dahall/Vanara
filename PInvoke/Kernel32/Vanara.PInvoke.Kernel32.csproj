@@ -4,6 +4,7 @@
     <SupportedDlls>kernel32.dll;kernelbase.dll;normaliz.dll;vertdll.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
+    <Nullable>enable</Nullable>
     <Description>PInvoke API (methods, structures and constants) imported from Windows Kernel32.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyName>Vanara.PInvoke.Kernel32</AssemblyName>

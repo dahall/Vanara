@@ -223,7 +223,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetProcessHeaps( _In_ DWORD NumberOfHeaps, _Out_ PHANDLE ProcessHeaps); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366571(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("HeapApi.h", MSDNShortId = "aa366571")]
-	public static extern uint GetProcessHeaps([Optional] uint NumberOfHeaps, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HHEAP[] ProcessHeaps);
+	public static extern uint GetProcessHeaps([Optional] uint NumberOfHeaps, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HHEAP[]? ProcessHeaps);
 
 	/// <summary>Returns handles to all of the active heaps for the calling process.</summary>
 	/// <returns>An array of heap handles.</returns>
@@ -1131,7 +1131,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a handle to a heap.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HHEAP : IHandle
+	public readonly struct HHEAP : IHandle
 	{
 		private readonly IntPtr handle;
 
@@ -1168,7 +1168,7 @@ public static partial class Kernel32
 		public static bool operator ==(HHEAP h1, HHEAP h2) => h1.Equals(h2);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is HHEAP h && handle == h.handle;
+		public override bool Equals(object? obj) => obj is HHEAP h && handle == h.handle;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1542,7 +1542,7 @@ public static partial class Kernel32
 		/// <typeparam name="T">Native type</typeparam>
 		/// <param name="value">The value.</param>
 		/// <returns><see cref="SafeHeapBlock"/> object to an native (unmanaged) memory block the size of T.</returns>
-		public static SafeHeapBlock CreateFromStructure<T>(in T value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
+		public static SafeHeapBlock CreateFromStructure<T>(in T value = default) where T : struct => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out int s), s);
 
 		/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeHeapBlock"/> where it owns the reference.</summary>
 		/// <param name="ptr">The <see cref="IntPtr"/>.</param>

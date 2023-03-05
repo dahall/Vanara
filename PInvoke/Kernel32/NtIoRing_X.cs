@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Vanara.PInvoke
-{
+namespace Vanara.PInvoke;
+
     public static partial class Kernel32
     {
         /// <summary>Represents feature support for the an I/O ring API version.</summary>
@@ -131,4 +131,3 @@ namespace Vanara.PInvoke
             public uint Offset;
         }
     }
-}

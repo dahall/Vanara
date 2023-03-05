@@ -131,7 +131,7 @@ public static partial class Kernel32
 	// DWORD dwFlags, const SYSTEMTIME *lpDate, LPCSTR lpFormat, LPSTR lpDateStr, int cchDate );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "546cede1-1702-403a-bba3-b5cd3b35a1bf")]
-	public static extern int GetDateFormat(LCID Locale, DATE_FORMAT dwFlags, in SYSTEMTIME lpDate, [Optional] string lpFormat, [Optional] StringBuilder lpDateStr, int cchDate);
+	public static extern int GetDateFormat(LCID Locale, DATE_FORMAT dwFlags, in SYSTEMTIME lpDate, [Optional] string? lpFormat, [Optional] StringBuilder? lpDateStr, int cchDate);
 
 	/// <summary>
 	/// Formats a date as a date string for a locale specified by the locale identifier. The function formats either a specified date or
@@ -225,7 +225,7 @@ public static partial class Kernel32
 	// DWORD dwFlags, const SYSTEMTIME *lpDate, LPCSTR lpFormat, LPSTR lpDateStr, int cchDate );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "546cede1-1702-403a-bba3-b5cd3b35a1bf")]
-	public static extern int GetDateFormat(LCID Locale, DATE_FORMAT dwFlags, [In, Optional] IntPtr lpDate, [Optional] string lpFormat, [Optional] StringBuilder lpDateStr, int cchDate);
+	public static extern int GetDateFormat(LCID Locale, DATE_FORMAT dwFlags, [In, Optional] IntPtr lpDate, [Optional] string? lpFormat, [Optional] StringBuilder? lpDateStr, int cchDate);
 
 	/// <summary>
 	/// <para>
@@ -441,8 +441,8 @@ public static partial class Kernel32
 	// optional] LPWSTR lpDateStr, [in] int cchDate, [in, optional] LPCWSTR lpCalendar );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "791fb386-3cc5-410e-bfce-52598fdb10c9")]
-	public static extern int GetDateFormatEx([Optional] string lpLocaleName, DATE_FORMAT dwFlags, in SYSTEMTIME lpDate,
-		[Optional] string lpFormat, [Out, Optional] StringBuilder lpDateStr, int cchDate, [Optional] string lpCalendar);
+	public static extern int GetDateFormatEx([Optional] string? lpLocaleName, DATE_FORMAT dwFlags, in SYSTEMTIME lpDate,
+		[Optional] string? lpFormat, [Out, Optional] StringBuilder? lpDateStr, int cchDate, [Optional] string? lpCalendar);
 
 	/// <summary>
 	/// <para>
@@ -658,8 +658,8 @@ public static partial class Kernel32
 	// optional] LPWSTR lpDateStr, [in] int cchDate, [in, optional] LPCWSTR lpCalendar );
 	[PInvokeData("datetimeapi.h", MSDNShortId = "NF:datetimeapi.GetDateFormatEx")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
-	public static extern int GetDateFormatEx([Optional] string lpLocaleName, DATE_FORMAT dwFlags, [In, Optional] IntPtr lpDate,
-		[Optional] string lpFormat, [Out, Optional] StringBuilder lpDateStr, int cchDate, [Optional] string lpCalendar);
+	public static extern int GetDateFormatEx([Optional] string? lpLocaleName, DATE_FORMAT dwFlags, [In, Optional] IntPtr lpDate,
+		[Optional] string? lpFormat, [Out, Optional] StringBuilder? lpDateStr, int cchDate, [Optional] string? lpCalendar);
 
 	/// <summary>
 	/// <para>
@@ -753,7 +753,7 @@ public static partial class Kernel32
 	// DWORD dwFlags, const SYSTEMTIME *lpTime, LPCSTR lpFormat, LPSTR lpTimeStr, int cchTime );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "3db91d29-df97-4660-b3cd-0db5b42cfd01")]
-	public static extern int GetTimeFormat(LCID Locale, TIME_FORMAT dwFlags, in SYSTEMTIME lpTime, [Optional] string lpFormat, [Optional] StringBuilder lpTimeStr, int cchTime);
+	public static extern int GetTimeFormat(LCID Locale, TIME_FORMAT dwFlags, in SYSTEMTIME lpTime, [Optional] string? lpFormat, [Optional] StringBuilder? lpTimeStr, int cchTime);
 
 	/// <summary>
 	/// <para>
@@ -847,7 +847,7 @@ public static partial class Kernel32
 	// DWORD dwFlags, const SYSTEMTIME *lpTime, LPCSTR lpFormat, LPSTR lpTimeStr, int cchTime );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "3db91d29-df97-4660-b3cd-0db5b42cfd01")]
-	public static extern int GetTimeFormat(LCID Locale, TIME_FORMAT dwFlags, [In, Optional] IntPtr lpTime, [Optional] string lpFormat, [Optional] StringBuilder lpTimeStr, int cchTime);
+	public static extern int GetTimeFormat(LCID Locale, TIME_FORMAT dwFlags, [In, Optional] IntPtr lpTime, [Optional] string? lpFormat, [Optional] StringBuilder? lpTimeStr, int cchTime);
 
 	/// <summary>
 	/// <para>
@@ -1041,7 +1041,7 @@ public static partial class Kernel32
 	// lpLocaleName, DWORD dwFlags, const SYSTEMTIME *lpTime, LPCWSTR lpFormat, LPWSTR lpTimeStr, int cchTime );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "4d63888e-4496-4315-ac87-bf60c54daa37")]
-	public static extern int GetTimeFormatEx([Optional] string lpLocaleName, TIME_FORMAT dwFlags, in SYSTEMTIME lpTime, [Optional] string lpFormat, [Optional] StringBuilder lpTimeStr, int cchTime);
+	public static extern int GetTimeFormatEx([Optional] string? lpLocaleName, TIME_FORMAT dwFlags, in SYSTEMTIME lpTime, [Optional] string? lpFormat, [Optional] StringBuilder? lpTimeStr, int cchTime);
 
 	/// <summary>
 	/// <para>
@@ -1235,5 +1235,5 @@ public static partial class Kernel32
 	// lpLocaleName, DWORD dwFlags, const SYSTEMTIME *lpTime, LPCWSTR lpFormat, LPWSTR lpTimeStr, int cchTime );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "4d63888e-4496-4315-ac87-bf60c54daa37")]
-	public static extern int GetTimeFormatEx([Optional] string lpLocaleName, TIME_FORMAT dwFlags, [In, Optional] IntPtr lpTime, [Optional] string lpFormat, [Optional] StringBuilder lpTimeStr, int cchTime);
+	public static extern int GetTimeFormatEx([Optional] string? lpLocaleName, TIME_FORMAT dwFlags, [In, Optional] IntPtr lpTime, [Optional] string? lpFormat, [Optional] StringBuilder? lpTimeStr, int cchTime);
 }

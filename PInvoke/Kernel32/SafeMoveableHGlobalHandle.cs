@@ -32,7 +32,7 @@ public static partial class Kernel32
 		public SafeMoveableHGlobalHandle(byte[] bytes) : base(bytes?.Length ?? 0)
 		{
 			if (Size == 0) return;
-			CallLocked(p => Marshal.Copy(bytes, 0, p, sz));
+			CallLocked(p => Marshal.Copy(bytes!, 0, p, sz));
 		}
 
 		/// <summary>
@@ -77,7 +77,7 @@ public static partial class Kernel32
 		/// <typeparam name="T">Native type</typeparam>
 		/// <param name="value">The value.</param>
 		/// <returns><see cref="SafeMoveableHGlobalHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-		public static SafeMoveableHGlobalHandle CreateFromStructure<T>(in T value = default) =>
+		public static SafeMoveableHGlobalHandle CreateFromStructure<T>(in T? value = default) =>
 			new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out _, 0, mm.LockMem, mm.UnlockMem), true);
 
 		/// <summary>Converts an <see cref="SafeMoveableHGlobalHandle"/> to a <see cref="HGLOBAL"/> where it owns the reference.</summary>

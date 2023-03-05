@@ -12,9 +12,6 @@ namespace System.Runtime.InteropServices.CustomMarshalers;
 /// type returned by the GetEnumerator method in the imported COM class uses <c>EnumeratorToEnumVariantMarshaler</c> to map the calls to the
 /// <c>IEnumVARIANT</c> interface pointer returned by the COM object's member with a DISPID of -4.
 /// </remarks>
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows")]
-#endif
 public class EnumeratorToEnumVariantMarshaler : ICustomMarshaler
 {
 	private static readonly EnumeratorToEnumVariantMarshaler s_enumeratorToEnumVariantMarshaler = new();
@@ -67,9 +64,6 @@ public class EnumeratorToEnumVariantMarshaler : ICustomMarshaler
 	}
 }
 
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows")]
-#endif
 internal static class ComDataHelpers
 {
 	public static TView GetOrCreateManagedViewFromComData<T, TView>(object comObject, Func<T, TView> createCallback)

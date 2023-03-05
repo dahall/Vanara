@@ -104,7 +104,7 @@ public class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 	/// <typeparam name="T">Native type</typeparam>
 	/// <param name="value">The value.</param>
 	/// <returns><see cref="SafeLocalHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-	public static SafeLocalHandle CreateFromStructure<T>(in T value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out var s), s);
+	public static SafeLocalHandle CreateFromStructure<T>(in T? value = default) => new(InteropExtensions.MarshalToPtr(value, mm.AllocMem, out var s), s);
 
 	/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeLocalHandle"/> where it owns the reference.</summary>
 	/// <param name="ptr">The <see cref="IntPtr"/>.</param>

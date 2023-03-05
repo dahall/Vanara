@@ -257,7 +257,7 @@ public static partial class InteropExtensions
 	/// <returns>
 	/// Pointer to the allocated native (unmanaged) array of objects stored using the character set defined by <paramref name="charSet"/>.
 	/// </returns>
-	public static IntPtr MarshalObjectsToPtr(this IEnumerable<object> values, Func<int, IntPtr> memAlloc, out int bytesAllocated, bool referencePointers = false, CharSet charSet = CharSet.Auto, int prefixBytes = 0,
+	public static IntPtr MarshalObjectsToPtr(this IEnumerable<object>? values, Func<int, IntPtr> memAlloc, out int bytesAllocated, bool referencePointers = false, CharSet charSet = CharSet.Auto, int prefixBytes = 0,
 		Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
 	{
 		// Bail early if empty
@@ -451,9 +451,6 @@ public static partial class InteropExtensions
 	/// <param name="iid">The interface identifier (IID) of the requested interface.</param>
 	/// <param name="ppv">When this method returns, contains a reference to the returned interface.</param>
 	/// <returns>An HRESULT that indicates the success or failure of the call.</returns>
-#if NET5_0_OR_GREATER
-	[System.Runtime.Versioning.SupportedOSPlatform("windows")]
-#endif
 	public static int QueryInterface(object iUnk, Guid iid, out object? ppv)
 	{
 		var hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref iid, out IntPtr ippv);

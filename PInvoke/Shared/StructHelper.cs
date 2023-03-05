@@ -48,8 +48,7 @@ public static class StructHelper
 	{
 		const BindingFlags bf = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-		var fi = fieldName is null ? typeof(T).GetOrderedFields(bf).FirstOrDefault() : typeof(T).GetField(fieldName, bf);
-		if (fi is null) throw new ArgumentException($"A field named '{nameof(fieldName)}' cannot be found.");
+		var fi = (fieldName is null ? typeof(T).GetOrderedFields(bf).FirstOrDefault() : typeof(T).GetField(fieldName, bf)) ?? throw new ArgumentException($"A field named '{nameof(fieldName)}' cannot be found.");
 		var ret = (object)new T();
 		fi.SetValue(ret, Convert.ChangeType((uint)InteropExtensions.SizeOf<T>(), fi.FieldType));
 		return (T)ret;
