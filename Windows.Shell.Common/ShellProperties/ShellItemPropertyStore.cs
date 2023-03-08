@@ -17,7 +17,7 @@ namespace Vanara.Windows.Shell
 		private ShellItem shellItem;
 
 		/// <summary>The flags.</summary>
-		private GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_DEFAULT;
+		private GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_BESTEFFORT;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItemPropertyStore"/> class.</summary>
 		/// <param name="item">The ShellItem instance.</param>
