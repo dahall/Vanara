@@ -420,7 +420,10 @@ public static partial class Crypt32
 		PKCS_7_ASN_ENCODING = 0x00010000,
 
 		/// <summary/>
-		PKCS_7_NDR_ENCODING = 0x00020000
+		PKCS_7_NDR_ENCODING = 0x00020000,
+
+		/// <summary>Matches any encoding type.</summary>
+		CRYPT_MATCH_ANY_ENCODING_TYPE = unchecked((uint)-1),
 	}
 
 	/// <summary>Values used by <see cref="CertFindCertificateInStore(HCERTSTORE, CertEncodingType, CertFindUsageFlags, CertFindType, IntPtr, PCCERT_CONTEXT)"/>.</summary>
@@ -3150,9 +3153,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a cryptographic default context.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCRYPTDEFAULTCONTEXT : IHandle
+	public readonly struct HCRYPTDEFAULTCONTEXT : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HCRYPTDEFAULTCONTEXT"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -3198,7 +3201,7 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a CryptoApi hash.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCRYPTHASH : IHandle
+	public readonly struct HCRYPTHASH : IHandle
 	{
 		private readonly IntPtr handle;
 
@@ -3246,7 +3249,7 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a CryptoApi key.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCRYPTKEY : IHandle
+	public readonly struct HCRYPTKEY : IHandle
 	{
 		private readonly IntPtr handle;
 
@@ -3294,7 +3297,7 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a CryptoAPI provider.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCRYPTPROV : IHandle
+	public readonly struct HCRYPTPROV : IHandle
 	{
 		private readonly IntPtr handle;
 
@@ -3342,9 +3345,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a CERT_CONTEXT.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PCCERT_CONTEXT : IHandle
+	public readonly struct PCCERT_CONTEXT : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PCCERT_CONTEXT"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -3395,9 +3398,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a CLR_CONTEXT.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PCCRL_CONTEXT : IHandle
+	public readonly struct PCCRL_CONTEXT : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PCCRL_CONTEXT"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -3448,9 +3451,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a CTL_CONTEXT.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PCCTL_CONTEXT : IHandle
+	public readonly struct PCCTL_CONTEXT : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PCCTL_CONTEXT"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -3645,6 +3648,11 @@ public static partial class Crypt32
 		/// <returns>The resulting <see cref="StrPtrAnsi"/> instance from the conversion.</returns>
 		public static implicit operator StrPtrAnsi(SafeOID value) => value.handle;
 
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SafeOID"/>.</summary>
+		/// <param name="oidToDuplicate">The OID to duplicate into a new SafeOID.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator SafeOID(IntPtr oidToDuplicate) => Macros.IS_INTRESOURCE(oidToDuplicate) ? new(oidToDuplicate.ToInt32()) : new(Marshal.PtrToStringAnsi(oidToDuplicate)!);
+
 		/// <summary>Gets the integer value, if possible.</summary>
 		/// <returns>The integer value, if set; otherwise <see langword="null"/>.</returns>
 		public int? GetInt32Value() => IsString ? null : (int?)handle.ToInt32();
@@ -3665,6 +3673,15 @@ public static partial class Crypt32
 			handle = IntPtr.Zero;
 			return true;
 		}
+
+		/// <inheritdoc/>
+		public override string? ToString() => !IsString ? $"#{handle.ToInt32()}" : Marshal.PtrToStringAnsi(handle) ?? "";
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <summary>NULL value.</summary>
+		public static readonly SafeOID NULL = new(IntPtr.Zero, false);
 
 		/// <summary/>
 		public static readonly SafeOID CRYPT_ENCODE_DECODE_NONE = new(0);

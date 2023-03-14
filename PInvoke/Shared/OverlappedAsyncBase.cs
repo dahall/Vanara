@@ -18,7 +18,7 @@ public static class OverlappedAsync
 	/// <exception cref="System.ArgumentException">Argument must be of type AsyncResult - asyncResult</exception>
 	/// <exception cref="System.InvalidOperationException">Asynchronous end method called twice.</exception>
 	/// <exception cref="Win32Exception">Another Win32 error.</exception>
-	public static object EndOverlappedFunction(IAsyncResult asyncResult)
+	public static object? EndOverlappedFunction(IAsyncResult asyncResult)
 	{
 		if (asyncResult == null)
 			throw new ArgumentNullException(nameof(asyncResult));
@@ -140,7 +140,7 @@ public static class OverlappedAsync
 		public AsyncCallback AsyncCallback { get; }
 
 		/// <summary>Gets a user-defined object that qualifies or contains information about an asynchronous operation.</summary>
-		public object AsyncState { get; }
+		public object? AsyncState { get; }
 
 		/// <summary>Gets a <see cref="T:System.Threading.WaitHandle"/> that is used to wait for an asynchronous operation to complete.</summary>
 		public WaitHandle AsyncWaitHandle

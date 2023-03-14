@@ -16,41 +16,254 @@ public static partial class Crypt32
 	/// <summary/>
 	public const uint SIP_CAP_SET_VERSION_3 = 3;
 
-	/// <summary/>
-	/// <param name="pSubjectInfo"/>
-	/// <param name="pcbIndirectData"/>
-	/// <param name="pIndirectData"/>
-	/// <returns/>
-	public delegate bool pCryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, out SIP_INDIRECT_DATA pIndirectData);
+	/// <summary>
+	/// The <c>CryptSIPCreateIndirectData</c> function returns a SIP_INDIRECT_DATA structure that contains a hash of the supplied
+	/// SIP_SUBJECTINFO structure, the digest algorithm, and an encoding attribute. The hash can be used as an indirect reference to the data.
+	/// </summary>
+	/// <param name="pSubjectInfo">
+	/// A pointer to a SIP_SUBJECTINFO structure that contains the subject to which the indirect data reference will point.
+	/// </param>
+	/// <param name="pcbIndirectData">A pointer to a <c>DWORD</c> value to receive the size of the returned SIP_INDIRECT_DATA structure.</param>
+	/// <param name="pIndirectData">A pointer to a SIP_INDIRECT_DATA structure to receive the catalog item.</param>
+	/// <returns>
+	/// <para>The return value is <c>TRUE</c> if the function succeeds; otherwise, <c>FALSE</c>.</para>
+	/// <para>
+	/// If this function returns <c>FALSE</c>, additional error information can be obtained by calling the GetLastError function.
+	/// <c>GetLastError</c> will return one of the following error codes.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_BAD_FORMAT</term>
+	/// <term>The file or data format is not correct for the specified subject interface package (SIP) type.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_PARAMETER</term>
+	/// <term>One or more of the parameters are not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
+	/// <term>There was an error allocating memory.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_ALGID</term>
+	/// <term>The specified algorithm is not supported by the SIP.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRUST_E_SUBJECT_FORM_UNKNOWN</term>
+	/// <term>The subject type is not recognized.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// If pcbIndirectData points to a <c>DWORD</c> and pIndirectData points to <c>NULL</c>, the size of the data will be returned in pcbIndirectData.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mssip/nf-mssip-cryptsipcreateindirectdata BOOL CryptSIPCreateIndirectData( IN
+	// SIP_SUBJECTINFO *pSubjectInfo, IN OUT DWORD *pcbIndirectData, OUT SIP_INDIRECT_DATA *pIndirectData );
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[PInvokeData("mssip.h", MSDNShortId = "bb4ecc95-972f-415c-9722-59b00a27cddc")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public delegate bool pCryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out] IntPtr pIndirectData);
 
-	/// <summary/>
-	/// <param name="pSubjectInfo"/>
-	/// <param name="pdwEncodingType"/>
-	/// <param name="dwIndex"/>
-	/// <param name="pcbSignedDataMsg"/>
-	/// <param name="pbSignedDataMsg"/>
-	/// <returns/>
-	public delegate bool pCryptSIPGetSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, out CertEncodingType pdwEncodingType, [Optional] uint dwIndex, ref uint pcbSignedDataMsg, [Out] IntPtr pbSignedDataMsg);
+	/// <summary>The <c>pCryptSIPGetCaps</c> function is implemented by an subject interface package (SIP) to report capabilities.</summary>
+	/// <param name="pSubjInfo">Pointer to a SIP_SUBJECTINFO structure that specifies subject information data to the SIP APIs.</param>
+	/// <param name="pCaps">Pointer to a SIP_CAP_SET structure that defines the capabilities of an SIP.</param>
+	/// <returns>None</returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mssip/nc-mssip-pcryptsipgetcaps pCryptSIPGetCaps Pcryptsipgetcaps; BOOL
+	// Pcryptsipgetcaps( SIP_SUBJECTINFO *pSubjInfo, SIP_CAP_SET *pCaps ) {...}
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[PInvokeData("mssip.h", MSDNShortId = "8EA46B67-F542-4B15-81F4-3DD83DD45764")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public delegate bool pCryptSIPGetCaps(in SIP_SUBJECTINFO pSubjInfo, IntPtr pCaps);
 
-	/// <summary/>
-	/// <param name="pSubjectInfo"/>
-	/// <param name="dwEncodingType"/>
-	/// <param name="pdwIndex"/>
-	/// <param name="cbSignedDataMsg"/>
-	/// <param name="pbSignedDataMsg"/>
-	/// <returns/>
-	public delegate bool pCryptSIPPutSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, CertEncodingType dwEncodingType, out uint pdwIndex, uint cbSignedDataMsg, [In] IntPtr pbSignedDataMsg);
+	/// <summary>The <c>CryptSIPGetSignedDataMsg</c> function retrieves an Authenticode signature from the file.</summary>
+	/// <param name="pSubjectInfo">A pointer to a SIP_SUBJECTINFO structure that contains information about the message subject.</param>
+	/// <param name="pdwEncodingType">
+	/// <para>The encoding type of the Authenticode signature.</para>
+	/// <para>This parameter can be a combination of one or more of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PKCS_7_ASN_ENCODING 65536 (0x10000)</term>
+	/// <term>Specifies PKCS #7 message encoding.</term>
+	/// </item>
+	/// <item>
+	/// <term>X509_ASN_ENCODING 1 (0x1)</term>
+	/// <term>Specifies X.509 certificate encoding.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="dwIndex">This parameter is reserved and should be set to zero.</param>
+	/// <param name="pcbSignedDataMsg">The length, in bytes, of the buffer pointed to by the pbSignedDataMsg parameter.</param>
+	/// <param name="pbSignedDataMsg">
+	/// <para>A pointer to a buffer to receive the returned Authenticode signature.</para>
+	/// <para>
+	/// To determine the size of the buffer needed, set the pbSignedDataMsg parameter to <c>NULL</c> and call the
+	/// <c>CryptSIPGetSignedDataMsg</c> function. This function will place the required size of the buffer, in bytes, in the value
+	/// pointed to by pcbSignedDataMsg. For more information, see Retrieving Data of Unknown Length.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+	/// <para>
+	/// If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError. Some possible error codes follow.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CRYPT_E_NO_MATCH</term>
+	/// <term>The signature specified by the index could not be found.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_BAD_FORMAT</term>
+	/// <term>The specified data or file format of the subject interface package (SIP) is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_PARAMETER</term>
+	/// <term>The pSubjectInfo parameter or the pgSubjectType member of the SIP_SUBJECTINFO structure is a null pointer.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+	/// <term>
+	/// The size of the message buffer was insufficient to hold the retrieved data, the pcbSignedDataMsgparameter has been set to
+	/// indicate the required buffer size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>TRUST_E_SUBJECT_FORM_UNKNOWN</term>
+	/// <term>The specified subject type is not valid.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// Subjects include, but are not limited to, portable executable images (.exe), cabinet (.cab) images, flat files, and catalog
+	/// files. Each subject type uses a different subset of its data for hash calculation and requires a different procedure for storage
+	/// and retrieval. Therefore, each subject type has a unique SIP specification.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mssip/nf-mssip-cryptsipgetsigneddatamsg BOOL CryptSIPGetSignedDataMsg( IN
+	// SIP_SUBJECTINFO *pSubjectInfo, OUT DWORD *pdwEncodingType, IN DWORD dwIndex, IN OUT DWORD *pcbSignedDataMsg, OUT BYTE
+	// *pbSignedDataMsg );
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[PInvokeData("mssip.h", MSDNShortId = "e3fabaa7-2dda-4c6c-8d1a-3ee5363e10b5")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public delegate bool pCryptSIPGetSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, out CertEncodingType pdwEncodingType, [Optional] uint dwIndex,
+		ref uint pcbSignedDataMsg, [Out] IntPtr pbSignedDataMsg);
 
-	/// <summary/>
-	/// <param name="pSubjectInfo"/>
-	/// <param name="dwIndex"/>
-	/// <returns/>
+	/// <summary>The <c>CryptSIPPutSignedDataMsg</c> function stores an Authenticode signature in the target file.</summary>
+	/// <param name="pSubjectInfo">Pointer to a SIP_SUBJECTINFO structure that contains information about the message subject.</param>
+	/// <param name="dwEncodingType">
+	/// <para>The encoding type of the message. This can be a combination of one or more of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>PKCS_7_ASN_ENCODING 65536 (0x10000)</term>
+	/// <term>Specifies PKCS #7 message encoding.</term>
+	/// </item>
+	/// <item>
+	/// <term>X509_ASN_ENCODING 1 (0x1)</term>
+	/// <term>Specifies X.509 certificate encoding.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pdwIndex">Pointer to the message index.</param>
+	/// <param name="cbSignedDataMsg">Length, in bytes, of the buffer pointed to by the pbSignedDataMsg parameter.</param>
+	/// <param name="pbSignedDataMsg">Pointer to the buffer that contains the message.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+	/// <para>
+	/// If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError. Some possible error codes follow.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_BAD_FORMAT</term>
+	/// <term>The specified data or file format of the subject interface package (SIP) is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_PARAMETER</term>
+	/// <term>This code can be returned for the following reasons:</term>
+	/// </item>
+	/// <item>
+	/// <term>TRUST_E_SUBJECT_FORM_UNKNOWN</term>
+	/// <term>The specified subject type is not valid.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// Each subject type uses a different subset of its data for hash calculation and requires a different procedure for storage and
+	/// retrieval. Therefore, each subject type has a unique SIP specification.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mssip/nf-mssip-cryptsipputsigneddatamsg BOOL CryptSIPPutSignedDataMsg( IN
+	// SIP_SUBJECTINFO *pSubjectInfo, IN DWORD dwEncodingType, OUT DWORD *pdwIndex, IN DWORD cbSignedDataMsg, IN BYTE *pbSignedDataMsg );
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[PInvokeData("mssip.h", MSDNShortId = "731f64bf-49f0-4799-b84a-9ca04292aa91")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public delegate bool pCryptSIPPutSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, CertEncodingType dwEncodingType, out uint pdwIndex, uint cbSignedDataMsg,
+		[In] IntPtr pbSignedDataMsg);
+
+	/// <summary>The <c>CryptSIPRemoveSignedDataMsg</c> function removes a specified Authenticode signature.</summary>
+	/// <param name="pSubjectInfo">A pointer to a SIP_SUBJECTINFO structure that contains information about the message subject.</param>
+	/// <param name="dwIndex">This parameter is reserved and should be set to zero.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+	/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mssip/nf-mssip-cryptsipremovesigneddatamsg BOOL CryptSIPRemoveSignedDataMsg(
+	// IN SIP_SUBJECTINFO *pSubjectInfo, IN DWORD dwIndex );
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[PInvokeData("mssip.h", MSDNShortId = "c3ea46bb-931a-4ca6-93f5-db7e07b4cb7a")]
+	[return: MarshalAs(UnmanagedType.Bool)]
 	public delegate bool pCryptSIPRemoveSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, uint dwIndex = 0);
 
-	/// <summary/>
-	/// <param name="pSubjectInfo"/>
-	/// <param name="pIndirectData"/>
-	/// <returns/>
+	/// <summary>The <c>CryptSIPVerifyIndirectData</c> function validates the indirect hashed data against the supplied subject.</summary>
+	/// <param name="pSubjectInfo">A pointer to a SIP_SUBJECTINFO structure that contains information about the message subject.</param>
+	/// <param name="pIndirectData">A pointer to a SIP_INDIRECT_DATA structure that contains information about the hashed subject information.</param>
+	/// <returns>
+	/// <para>The return value is <c>TRUE</c> if the function succeeds; otherwise, <c>FALSE</c>.</para>
+	/// <para>
+	/// If this function returns <c>FALSE</c>, additional error information can be obtained by calling the GetLastError function.
+	/// <c>GetLastError</c> will return one of the following error codes.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_INVALID_PARAMETER</term>
+	/// <term>One or more of the parameters are not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>TRUST_E_SUBJECT_FORM_UNKNOWN</term>
+	/// <term>The subject type is an unknown type.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// Subjects include, but are not limited to, portable executable images (.exe), cabinet (.cab) images, flat files, and catalog
+	/// files. Each subject type uses a different subset of its data for hash calculation and requires a different procedure for storage
+	/// and retrieval. Therefore each subject type has a unique subject interface package specification.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/mssip/nf-mssip-cryptsipverifyindirectdata BOOL CryptSIPVerifyIndirectData( IN
+	// SIP_SUBJECTINFO *pSubjectInfo, IN SIP_INDIRECT_DATA *pIndirectData );
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[PInvokeData("mssip.h", MSDNShortId = "137b8858-a31f-4ef6-96bd-c5e26ae7b3e8")]
+	[return: MarshalAs(UnmanagedType.Bool)]
 	public delegate bool pCryptSIPVerifyIndirectData(in SIP_SUBJECTINFO pSubjectInfo, in SIP_INDIRECT_DATA pIndirectData);
 
 	/// <summary>Type of additional information provided.</summary>
@@ -132,14 +345,14 @@ public static partial class Crypt32
 	public static extern bool CryptSIPAddProvider(in SIP_ADD_NEWPROVIDER psNewProv);
 
 	/// <summary>
-	/// The SIP_SUBJECTINFOa&gt; structure, the digest algorithm, and an encoding attribute. The hash can be used as an indirect
-	/// reference to the data.
+	/// The <c>CryptSIPCreateIndirectData</c> function returns a SIP_INDIRECT_DATA structure that contains a hash of the supplied
+	/// SIP_SUBJECTINFO structure, the digest algorithm, and an encoding attribute. The hash can be used as an indirect reference to the data.
 	/// </summary>
 	/// <param name="pSubjectInfo">
-	/// A pointer to a SIP_SUBJECTINFOa&gt; structure that contains the subject to which the indirect data reference will point.
+	/// A pointer to a SIP_SUBJECTINFO structure that contains the subject to which the indirect data reference will point.
 	/// </param>
-	/// <param name="pcbIndirectData">A pointer to a SIP_INDIRECT_DATAa&gt; structure.</param>
-	/// <param name="pIndirectData">A pointer to a SIP_INDIRECT_DATAa&gt; structure to receive the catalog item.</param>
+	/// <param name="pcbIndirectData">A pointer to a <c>DWORD</c> value to receive the size of the returned SIP_INDIRECT_DATA structure.</param>
+	/// <param name="pIndirectData">A pointer to a SIP_INDIRECT_DATA structure to receive the catalog item.</param>
 	/// <returns>
 	/// <para>The return value is <c>TRUE</c> if the function succeeds; otherwise, <c>FALSE</c>.</para>
 	/// <para>
@@ -181,7 +394,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mssip.h", MSDNShortId = "bb4ecc95-972f-415c-9722-59b00a27cddc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, out SIP_INDIRECT_DATA pIndirectData);
+	public static extern bool CryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out] IntPtr pIndirectData);
 
 	/// <summary>The <c>CryptSIPGetCaps</c> function retrieves the capabilities of a subject interface package (SIP).</summary>
 	/// <param name="pSubjInfo">Pointer to a SIP_SUBJECTINFOa&gt; structure that specifies subject information data to the SIP APIs.</param>
@@ -291,7 +504,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mssip.h", MSDNShortId = "e3fabaa7-2dda-4c6c-8d1a-3ee5363e10b5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSIPGetSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, out CertEncodingType pdwEncodingType, [Optional] uint dwIndex, ref uint pcbSignedDataMsg, [Out] IntPtr pbSignedDataMsg);
+	public static extern bool CryptSIPGetSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, out CertEncodingType pdwEncodingType, [Optional] uint dwIndex,
+		ref uint pcbSignedDataMsg, [Out] IntPtr pbSignedDataMsg);
 
 	/// <summary>
 	/// The SIP_DISPATCH_INFOa&gt; structure. The exported functions must have been previously registered by calling the
@@ -370,7 +584,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mssip.h", MSDNShortId = "731f64bf-49f0-4799-b84a-9ca04292aa91")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSIPPutSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, CertEncodingType dwEncodingType, out uint pdwIndex, uint cbSignedDataMsg, [In] IntPtr pbSignedDataMsg);
+	public static extern bool CryptSIPPutSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, CertEncodingType dwEncodingType, out uint pdwIndex,
+		uint cbSignedDataMsg, [In] IntPtr pbSignedDataMsg);
 
 	/// <summary>
 	/// The <c>CryptSIPRemoveProvider</c> function removes registry details of a Subject Interface Package (SIP) DLL file added by a
@@ -422,7 +637,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mssip.h", MSDNShortId = "b81472bc-6d9c-4634-a378-e39786a0ca09")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSIPRetrieveSubjectGuid([MarshalAs(UnmanagedType.LPWStr)] string FileName, [In, Optional] HFILE hFileIn, out Guid pgSubject);
+	public static extern bool CryptSIPRetrieveSubjectGuid([Optional, MarshalAs(UnmanagedType.LPWStr)] string? FileName, [In, Optional] HFILE hFileIn, out Guid pgSubject);
 
 	/// <summary>
 	/// The <c>CryptSIPRetrieveSubjectGuidForCatalogFile</c> function retrieves the subject GUID associated with the specified file.
@@ -458,7 +673,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mssip.h", MSDNShortId = "7f757dc8-948c-476e-aca3-a9051e962ed4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSIPRetrieveSubjectGuidForCatalogFile([MarshalAs(UnmanagedType.LPWStr)] string FileName, [In, Optional] HANDLE hFileIn, out Guid pgSubject);
+	public static extern bool CryptSIPRetrieveSubjectGuidForCatalogFile([Optional, MarshalAs(UnmanagedType.LPWStr)] string? FileName, [In, Optional] HFILE hFileIn, out Guid pgSubject);
 
 	/// <summary>The <c>CryptSIPVerifyIndirectData</c> function validates the indirect hashed data against the supplied subject.</summary>
 	/// <param name="pSubjectInfo">A pointer to a SIP_SUBJECTINFOa&gt; structure that contains information about the message subject.</param>

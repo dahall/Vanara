@@ -431,7 +431,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "90ac512f-3cbe-4543-9b34-8e384f730cfe")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertCreateCTLEntryFromCertificateContextProperties([In] PCCERT_CONTEXT pCertContext, uint cOptAttr, [In, MarshalAs(UnmanagedType.LPArray)] CRYPT_ATTRIBUTE[] rgOptAttr,
-		CertCreateCTLEntryFlags dwFlags, [Optional] IntPtr pvReserved, [Out] IntPtr pCtlEntry, ref uint pcbCtlEntry);
+		CertCreateCTLEntryFlags dwFlags, [Optional] IntPtr pvReserved, [Out, Optional] IntPtr pCtlEntry, ref uint pcbCtlEntry);
 
 	/// <summary>
 	/// The <c>CertDuplicateCertificateChain</c> function duplicates a pointer to a certificate chain by incrementing the chain's
@@ -1710,7 +1710,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "5c0e9e2e-a50d-45d0-b51d-065784d1d912")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptMsgEncodeAndSignCTL(CertEncodingType dwMsgEncodingType, in CTL_INFO pCtlInfo, in CMSG_SIGNED_ENCODE_INFO pSignInfo,
-		CryptMsgEncodeFlags dwFlags, [Out] IntPtr pbEncoded, ref uint pcbEncoded);
+		CryptMsgEncodeFlags dwFlags, [Out, Optional] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>The <c>CryptMsgGetAndVerifySigner</c> function verifies a cryptographic message's signature.</summary>
 	/// <param name="hCryptMsg">Handle of a cryptographic message.</param>
@@ -1822,7 +1822,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "85ae8ce3-d0a7-4fcb-beaa-ede09d30930e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptMsgSignCTL(CertEncodingType dwMsgEncodingType, [In] IntPtr pbCtlContent, uint cbCtlContent, in CMSG_SIGNED_ENCODE_INFO pSignInfo,
-		CryptMsgSignFlags dwFlags, [Out] IntPtr pbEncoded, ref uint pcbEncoded);
+		CryptMsgSignFlags dwFlags, [Out, Optional] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>
 	/// The <c>CERT_CHAIN_ENGINE_CONFIG</c> structure sets parameters for building a non-default certificate chain engine. The engine
@@ -2705,9 +2705,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a CERT_CHAIN_CONTEXT.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PCCERT_CHAIN_CONTEXT : IHandle
+	public readonly struct PCCERT_CHAIN_CONTEXT : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PCCERT_CHAIN_CONTEXT"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

@@ -628,7 +628,8 @@ public static partial class Crypt32
 	// pPrevCtlContext );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e5ed3b22-e96f-4e7d-a20e-eebed0a84d3c")]
-	public static extern SafePCCTL_CONTEXT CertFindCTLInStore(HCERTSTORE hCertStore, CertEncodingType dwMsgAndCertEncodingType, CertInfoFlags dwFindFlags, CertFindType dwFindType, [In] IntPtr pvFindPara, [In] PCCTL_CONTEXT pPrevCtlContext);
+	public static extern SafePCCTL_CONTEXT CertFindCTLInStore(HCERTSTORE hCertStore, CertEncodingType dwMsgAndCertEncodingType, CertInfoFlags dwFindFlags,
+		CertFindType dwFindType, [In] IntPtr pvFindPara, [In] PCCTL_CONTEXT pPrevCtlContext);
 
 	/// <summary>
 	/// <para>
@@ -684,7 +685,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "63d343c1-fa65-4cd1-a210-3805c7d92208")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSerializeCTLStoreElement([In] PCCTL_CONTEXT pCtlContext, [Optional] uint dwFlags, [In, Out] IntPtr pbElement, ref uint pcbElement);
+	public static extern bool CertSerializeCTLStoreElement([In] PCCTL_CONTEXT pCtlContext, [Optional] uint dwFlags, [In, Out, Optional] IntPtr pbElement, ref uint pcbElement);
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PCCTL_CONTEXT"/> that is disposed using <see cref="CertFreeCTLContext"/>.</summary>
 	public class SafePCCTL_CONTEXT : SafeHANDLE

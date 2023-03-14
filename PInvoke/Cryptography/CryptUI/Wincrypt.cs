@@ -1973,7 +1973,7 @@ public static partial class CryptUI
 
 	/// <summary>Provides a pointer to a CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT structure.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT : IHandle
+	public readonly struct PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT : IHandle
 	{
 		private readonly IntPtr handle;
 

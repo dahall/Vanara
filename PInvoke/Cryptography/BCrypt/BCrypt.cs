@@ -1010,7 +1010,8 @@ public static partial class BCrypt
 	// cbSecret, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "deb02f67-f3d3-4542-8245-fd4982c3190b")]
-	public static extern NTStatus BCryptCreateHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, SafeAllocatedMemoryHandle pbHashObject, uint cbHashObject, SafeAllocatedMemoryHandle pbSecret, uint cbSecret, AlgProviderFlags dwFlags = 0);
+	public static extern NTStatus BCryptCreateHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, SafeAllocatedMemoryHandle pbHashObject,
+		uint cbHashObject, SafeAllocatedMemoryHandle pbSecret, uint cbSecret, AlgProviderFlags dwFlags = 0);
 
 	/// <summary>
 	/// <para>The <c>BCryptCreateHash</c> function is called to create a hash or Message Authentication Code (MAC) object.</para>
@@ -1339,7 +1340,8 @@ public static partial class BCrypt
 	// ULONG cbSecret, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "AAF91460-AEFB-4E16-91EA-4A60272B3839")]
-	public static extern NTStatus BCryptCreateMultiHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, uint nHashes, SafeAllocatedMemoryHandle pbHashObject, uint cbHashObject, SafeAllocatedMemoryHandle pbSecret, uint cbSecret, AlgProviderFlags dwFlags);
+	public static extern NTStatus BCryptCreateMultiHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, uint nHashes,
+		SafeAllocatedMemoryHandle pbHashObject, uint cbHashObject, SafeAllocatedMemoryHandle pbSecret, uint cbSecret, AlgProviderFlags dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -1790,7 +1792,8 @@ public static partial class BCrypt
 	// *pcbResult, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "62286f6b-0d57-4691-83fc-2b9a9740af71")]
-	public static extern NTStatus BCryptDecrypt(BCRYPT_KEY_HANDLE hKey, SafeAllocatedMemoryHandle pbInput, uint cbInput, IntPtr pPaddingInfo, SafeAllocatedMemoryHandle pbIV, uint cbIV, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, EncryptFlags dwFlags);
+	public static extern NTStatus BCryptDecrypt(BCRYPT_KEY_HANDLE hKey, SafeAllocatedMemoryHandle pbInput, uint cbInput, IntPtr pPaddingInfo,
+		SafeAllocatedMemoryHandle pbIV, uint cbIV, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, EncryptFlags dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -2171,8 +2174,8 @@ public static partial class BCrypt
 	// ULONG *pcbResult, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "33c3cbf7-6c08-42ed-ac3f-feb71f3a9cbf")]
-	public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] NCryptBufferDesc? pParameterList, SafeAllocatedMemoryHandle pbDerivedKey,
-		uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
+	public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF,
+		[Optional] NCryptBufferDesc? pParameterList, SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
 
 	/// <summary>The <c>BCryptDeriveKey</c> function derives a key from a secret agreement value.</summary>
 	/// <param name="hSharedSecret">
@@ -2662,7 +2665,8 @@ public static partial class BCrypt
 	// pbDerivedKey, ULONG cbDerivedKey, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "afdddfec-a3a5-410c-998b-9a5af8e051b6")]
-	public static extern NTStatus BCryptDeriveKeyPBKDF2(BCRYPT_ALG_HANDLE hPrf, SafeAllocatedMemoryHandle pbPassword, uint cbPassword, SafeAllocatedMemoryHandle pbSalt, uint cbSalt, ulong cIterations, SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, uint dwFlags = 0);
+	public static extern NTStatus BCryptDeriveKeyPBKDF2(BCRYPT_ALG_HANDLE hPrf, SafeAllocatedMemoryHandle pbPassword, uint cbPassword, SafeAllocatedMemoryHandle pbSalt,
+		uint cbSalt, ulong cIterations, SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>BCryptDeriveKeyPBKDF2</c> function derives a key from a hash value by using the PBKDF2 key derivation algorithm as defined
@@ -2718,7 +2722,8 @@ public static partial class BCrypt
 	// pbDerivedKey, ULONG cbDerivedKey, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "afdddfec-a3a5-410c-998b-9a5af8e051b6")]
-	public static extern NTStatus BCryptDeriveKeyPBKDF2(BCRYPT_ALG_HANDLE hPrf, IntPtr pbPassword, uint cbPassword, IntPtr pbSalt, uint cbSalt, ulong cIterations, IntPtr pbDerivedKey, uint cbDerivedKey, uint dwFlags = 0);
+	public static extern NTStatus BCryptDeriveKeyPBKDF2(BCRYPT_ALG_HANDLE hPrf, IntPtr pbPassword, uint cbPassword, IntPtr pbSalt, uint cbSalt, ulong cIterations,
+		IntPtr pbDerivedKey, uint cbDerivedKey, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>The <c>BCryptDestroyHash</c> function destroys a hash or Message Authentication Code (MAC) object.</para>
@@ -4651,7 +4656,8 @@ public static partial class BCrypt
 	// hKey, BCRYPT_KEY_HANDLE hExportKey, LPCWSTR pszBlobType, PUCHAR pbOutput, ULONG cbOutput, ULONG *pcbResult, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "a5d73143-c1d6-43b3-a724-7e27c68a5ade")]
-	public static extern NTStatus BCryptExportKey(BCRYPT_KEY_HANDLE hKey, BCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, uint dwFlags = 0);
+	public static extern NTStatus BCryptExportKey(BCRYPT_KEY_HANDLE hKey, BCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType,
+		SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, uint dwFlags = 0);
 
 	/// <summary>The <c>BCryptExportKey</c> function exports a key to a memory BLOB that can be persisted for later use.</summary>
 	/// <param name="hKey">The handle of the key to export.</param>
@@ -6057,7 +6063,8 @@ public static partial class BCrypt
 	// PUCHAR pbInput, ULONG cbInput, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "6b9683f4-10f2-40e4-9757-a1f01991bef7")]
-	public static extern NTStatus BCryptImportKey(BCRYPT_ALG_HANDLE hAlgorithm, BCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, out SafeBCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbKeyObject, uint cbKeyObject, SafeAllocatedMemoryHandle pbInput, uint cbInput, uint dwFlags = 0);
+	public static extern NTStatus BCryptImportKey(BCRYPT_ALG_HANDLE hAlgorithm, BCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType,
+		out SafeBCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbKeyObject, uint cbKeyObject, SafeAllocatedMemoryHandle pbInput, uint cbInput, uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>BCryptImportKey</c> function imports a symmetric key from a key BLOB. The BCryptImportKeyPair function is used to import a
@@ -8787,9 +8794,9 @@ public static partial class BCrypt
 
 	/// <summary>Provides a handle to an algorithm provider.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct BCRYPT_ALG_HANDLE : IHandle
+	public readonly struct BCRYPT_ALG_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="BCRYPT_ALG_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -8866,9 +8873,9 @@ public static partial class BCrypt
 
 	/// <summary>Provides a handle to a CNG object.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct BCRYPT_HANDLE : IHandle
+	public readonly struct BCRYPT_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="BCRYPT_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -8914,9 +8921,9 @@ public static partial class BCrypt
 
 	/// <summary>Provides a handle to a multi-hash state.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct BCRYPT_HASH_HANDLE : IHandle
+	public readonly struct BCRYPT_HASH_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="BCRYPT_HASH_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -8962,9 +8969,9 @@ public static partial class BCrypt
 
 	/// <summary>Provides a handle to a key pair.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct BCRYPT_KEY_HANDLE : IHandle
+	public readonly struct BCRYPT_KEY_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="BCRYPT_KEY_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -9221,9 +9228,9 @@ public static partial class BCrypt
 
 	/// <summary>Provides a handle to a secret agreement.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct BCRYPT_SECRET_HANDLE : IHandle
+	public readonly struct BCRYPT_SECRET_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="BCRYPT_SECRET_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

@@ -206,7 +206,7 @@ public static partial class CryptDlg
 	[DllImport(Lib.CryptDlg, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cryptdlg.h", MSDNShortId = "a23d968e-113f-470e-a629-18c22882c77f")]
 	public static extern HRESULT CertModifyCertificatesToTrust(int cCerts, [MarshalAs(UnmanagedType.LPArray)] CTL_MODIFY_REQUEST[] rgCerts, SafeOID szPurpose,
-		HWND hwnd, HCERTSTORE hcertstoreTrust, PCCERT_CONTEXT pccertSigner);
+		[Optional] HWND hwnd, HCERTSTORE hcertstoreTrust, PCCERT_CONTEXT pccertSigner);
 
 	/// <summary>
 	/// <para>
@@ -342,7 +342,7 @@ public static partial class CryptDlg
 		/// create this integer value is to use the MAKEINTRESOURCE macro.
 		/// </para>
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string pTemplateName;
+		public IntPtr pTemplateName;
 
 		/// <summary>
 		/// <para>This member can be one or more of the following values.</para>
@@ -386,7 +386,8 @@ public static partial class CryptDlg
 		public CertSelectFlags dwFlags;
 
 		/// <summary>A pointer to a string that contains the text for the title of the dialog box.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szTitle;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string szTitle;
 
 		/// <summary>The number of elements in <c>arrayCertStore</c> array.</summary>
 		public uint cCertStore;
@@ -446,7 +447,8 @@ public static partial class CryptDlg
 		public PFNCMFILTERPROC pfnFilter;
 
 		/// <summary>A pointer to a null-terminated string that contains the full path to the Help file.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szHelpFileName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string szHelpFileName;
 
 		/// <summary>The context identifier for the topic. For more information, see WinHelp.</summary>
 		public uint dwHelpId;
@@ -536,7 +538,8 @@ public static partial class CryptDlg
 		public ViewPropertiesFlags dwFlags;
 
 		/// <summary>A pointer to a null-terminated string for the title of the user interface.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szTitle;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string szTitle;
 
 		/// <summary>Certificate context for the certificate to be shown.</summary>
 		public PCCERT_CONTEXT pCertContext;
@@ -575,7 +578,8 @@ public static partial class CryptDlg
 		public uint dwPad;
 
 		/// <summary>A pointer to a null-terminated string for the Help file name.</summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string szHelpFileName;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string szHelpFileName;
 
 		/// <summary>ID for the Help file topic.</summary>
 		public uint dwHelpId;

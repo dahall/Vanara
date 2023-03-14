@@ -860,13 +860,11 @@ public struct CM_PARTIAL_RESOURCE_DESCRIPTOR
 	public CM_RESOURCE Flags;
 
 	/// <summary>The union</summary>
-	public union u;
+	public Union u;
 
 	/// <summary>The union</summary>
 	[StructLayout(LayoutKind.Explicit)]
-#pragma warning disable IDE1006 // Naming Styles
-	public struct union
-#pragma warning restore IDE1006 // Naming Styles
+	public struct Union
 	{
 		/// <summary>The generic</summary>
 		[FieldOffset(0)]

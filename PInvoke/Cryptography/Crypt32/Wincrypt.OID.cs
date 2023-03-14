@@ -19,9 +19,9 @@ public static partial class Crypt32
 	/// <para>Specifies the encoding type to match. Setting this parameter to CRYPT_MATCH_ANY_ENCODING_TYPE matches any encoding type.</para>
 	/// <para><c>Note</c> If CRYPT_MATCH_ANY_ENCODING_TYPE is not specified, either a certificate or message encoding type is required.</para>
 	/// <para>
-	/// If the low-order word containing the certificate encoding type is nonzero, it is used. Otherwise, the high-order word containing
-	/// the message encoding type is used. If both are specified, the certificate encoding type in the low-order word is used.Currently
-	/// defined encoding types are:
+	/// If the low-order word containing the certificate encoding type is nonzero, it is used. Otherwise, the high-order word containing the
+	/// message encoding type is used. If both are specified, the certificate encoding type in the low-order word is used.Currently defined
+	/// encoding types are:
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
@@ -47,15 +47,17 @@ public static partial class Crypt32
 	/// <param name="rgpwszValueName[]"/>
 	/// <param name="rgpbValueData[]"/>
 	/// <param name="rgcbValueData[]"/>
-	/// <param name="pvArg"/>
+	/// <param name="pvArg">A pointer to arguments passed through to the callback function.</param>
 	/// <returns>Returns <c>TRUE</c> if the function succeeds, <c>FALSE</c> if it fails.</returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nc-wincrypt-pfn_crypt_enum_oid_func PFN_CRYPT_ENUM_OID_FUNC
-	// PfnCryptEnumOidFunc; BOOL PfnCryptEnumOidFunc( DWORD dwEncodingType, LPCSTR pszFuncName, LPCSTR pszOID, DWORD cValue, const DWORD
-	// rgdwValueType[], LPCWSTR const rgpwszValueName[], const BYTE * const rgpbValueData[], const DWORD rgcbValueData[], void *pvArg ) {...}
-	[PInvokeData("wincrypt.h", MSDNShortId = "f29a3454-fa64-4305-ba4e-027d45014024")]
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nc-wincrypt-pfn_crypt_enum_oid_func
+	// PFN_CRYPT_ENUM_OID_FUNC PfnCryptEnumOidFunc; BOOL PfnCryptEnumOidFunc( [in] DWORD dwEncodingType, LPCSTR pszFuncName, [in] LPCSTR pszOID, [in] DWORD cValue, const DWORD rgdwValueType[], LPCWSTR const rgpwszValueName[], const BYTE * const rgpbValueData[], const DWORD rgcbValueData[], [in] void *pvArg ) {...}
+	[PInvokeData("wincrypt.h", MSDNShortId = "NC:wincrypt.PFN_CRYPT_ENUM_OID_FUNC")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool PFN_CRYPT_ENUM_OID_FUNC(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, [In] SafeOID pszOID,
-		uint cValue, uint[] rgdwValueType, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] rgpwszValueName, IntPtr[] rgpbValueData, uint[] rgcbValueData, IntPtr pvArg);
+	public delegate bool PFN_CRYPT_ENUM_OID_FUNC(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, [In] IntPtr pszOID,
+		uint cValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] REG_VALUE_TYPE[] rgdwValueType,
+		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 3)] string[] rgpwszValueName,
+		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] IntPtr[] rgpbValueData, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgcbValueData, IntPtr pvArg);
 
 	/// <summary>The <c>CRYPT_ENUM_OID_INFO</c> callback function is used with the CryptEnumOIDInfo function.</summary>
 	/// <param name="pInfo">A pointer to the OID information.</param>
@@ -131,16 +133,16 @@ public static partial class Crypt32
 
 	/// <summary>
 	/// The <c>CryptEnumOIDFunction</c> function enumerates the registered object identifier (OID) functions. OID functions that are
-	/// enumerated can be screened to include those identified by their encoding type, function name, OID, or any combination of
-	/// encoding type, function name, and OID. For each OID function that matches the selection criteria, an application-provided
-	/// callback function, <c>pfnEnumOIDFunc</c>, is called.
+	/// enumerated can be screened to include those identified by their encoding type, function name, OID, or any combination of encoding
+	/// type, function name, and OID. For each OID function that matches the selection criteria, an application-provided callback function,
+	/// <c>pfnEnumOIDFunc</c>, is called.
 	/// </summary>
 	/// <param name="dwEncodingType">
 	/// <para>
-	/// Specifies the encoding type to match. Setting this parameter to CRYPT_MATCH_ANY_ENCODING_TYPE matches any encoding type. Note
-	/// that if CRYPT_MATCH_ANY_ENCODING_TYPE is not specified, either a certificate or message encoding type is required. If the
-	/// low-order word that contains the certificate encoding type is nonzero, it is used; otherwise, the high-order word that contains
-	/// the message encoding type is used. If both are specified, the certificate encoding type in the low-order word is used.
+	/// Specifies the encoding type to match. Setting this parameter to CRYPT_MATCH_ANY_ENCODING_TYPE matches any encoding type. Note that if
+	/// CRYPT_MATCH_ANY_ENCODING_TYPE is not specified, either a certificate or message encoding type is required. If the low-order word that
+	/// contains the certificate encoding type is nonzero, it is used; otherwise, the high-order word that contains the message encoding type
+	/// is used. If both are specified, the certificate encoding type in the low-order word is used.
 	/// </para>
 	/// <para>Currently defined encoding types are:</para>
 	/// <list type="bullet">
@@ -159,14 +161,14 @@ public static partial class Crypt32
 	/// </list>
 	/// </param>
 	/// <param name="pszFuncName">
-	/// Name of a function for which a case insensitive match search is performed. Setting this parameter to <c>NULL</c> results in a
-	/// match being found for any function name.
+	/// Name of a function for which a case insensitive match search is performed. Setting this parameter to <c>NULL</c> results in a match
+	/// being found for any function name.
 	/// </param>
 	/// <param name="pszOID">
-	/// If the high-order word of pszOID is nonzero, pszOID specifies the object identifier for which a case insensitive match search is
-	/// performed. If the high-order word of pszOID is zero, pszOID is used to match a numeric object identifier. Setting this parameter
-	/// to <c>NULL</c> matches any object identifier. Setting this parameter to CRYPT_DEFAULT_OID restricts the enumeration to only the
-	/// default functions.
+	/// If the high-order word of <c>pszOID</c> is nonzero, <c>pszOID</c> specifies the object identifier for which a case insensitive match
+	/// search is performed. If the high-order word of <c>pszOID</c> is zero, <c>pszOID</c> is used to match a numeric object identifier.
+	/// Setting this parameter to <c>NULL</c> matches any object identifier. Setting this parameter to CRYPT_DEFAULT_OID restricts the
+	/// enumeration to only the default functions.
 	/// </param>
 	/// <param name="dwFlags">Reserved for future use and must be zero.</param>
 	/// <param name="pvArg">A pointer to arguments to be passed through to the CRYPT_ENUM_OID_FUNCTION callback function.</param>
@@ -177,13 +179,75 @@ public static partial class Crypt32
 	/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
 	/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptenumoidfunction BOOL CryptEnumOIDFunction( DWORD
-	// dwEncodingType, LPCSTR pszFuncName, LPCSTR pszOID, DWORD dwFlags, void *pvArg, PFN_CRYPT_ENUM_OID_FUNC pfnEnumOIDFunc );
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptenumoidfunction
+	// BOOL CryptEnumOIDFunction( [in] DWORD dwEncodingType, [in] LPCSTR pszFuncName, [in] LPCSTR pszOID, [in] DWORD dwFlags, [in] void *pvArg, [in] PFN_CRYPT_ENUM_OID_FUNC pfnEnumOIDFunc );
+	[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptEnumOIDFunction")]
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("wincrypt.h", MSDNShortId = "aa2fba03-183b-4b74-b306-8f4592995897")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptEnumOIDFunction(CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPStr)] string? pszFuncName, [Optional, In] SafeOID pszOID,
-		[Optional] uint dwFlags, [In, Out, Optional] IntPtr pvArg, PFN_CRYPT_ENUM_OID_FUNC pfnEnumOIDFunc);
+	public static extern bool CryptEnumOIDFunction(CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPStr)] string? pszFuncName,
+		[Optional, In] SafeOID pszOID, [Optional] uint dwFlags, [In, Out, Optional] IntPtr pvArg, PFN_CRYPT_ENUM_OID_FUNC pfnEnumOIDFunc);
+
+	/// <summary>
+	/// The <c>CryptEnumOIDFunction</c> function enumerates the registered object identifier (OID) functions. OID functions that are
+	/// enumerated can be screened to include those identified by their encoding type, function name, OID, or any combination of encoding
+	/// type, function name, and OID. For each OID function that matches the selection criteria, an application-provided callback function,
+	/// <c>pfnEnumOIDFunc</c>, is called.
+	/// </summary>
+	/// <param name="dwEncodingType">
+	/// <para>
+	/// Specifies the encoding type to match. Setting this parameter to CRYPT_MATCH_ANY_ENCODING_TYPE matches any encoding type. Note that if
+	/// CRYPT_MATCH_ANY_ENCODING_TYPE is not specified, either a certificate or message encoding type is required. If the low-order word that
+	/// contains the certificate encoding type is nonzero, it is used; otherwise, the high-order word that contains the message encoding type
+	/// is used. If both are specified, the certificate encoding type in the low-order word is used.
+	/// </para>
+	/// <para>Currently defined encoding types are:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>CRYPT_ASN_ENCODING</term>
+	/// </item>
+	/// <item>
+	/// <term>X509_ASN_ENCODING</term>
+	/// </item>
+	/// <item>
+	/// <term>PKCS_7_ASN_ENCODING</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_MATCH_ANY_ENCODING_TYPE</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pszFuncName">
+	/// Name of a function for which a case insensitive match search is performed. Setting this parameter to <c>NULL</c> results in a match
+	/// being found for any function name.
+	/// </param>
+	/// <param name="pszOID">
+	/// If the high-order word of <c>pszOID</c> is nonzero, <c>pszOID</c> specifies the object identifier for which a case insensitive match
+	/// search is performed. If the high-order word of <c>pszOID</c> is zero, <c>pszOID</c> is used to match a numeric object identifier.
+	/// Setting this parameter to <c>NULL</c> matches any object identifier. Setting this parameter to CRYPT_DEFAULT_OID restricts the
+	/// enumeration to only the default functions.
+	/// </param>
+	/// <returns>A sequence of encoding types, names, oids and their related value details.</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptenumoidfunction
+	// BOOL CryptEnumOIDFunction( [in] DWORD dwEncodingType, [in] LPCSTR pszFuncName, [in] LPCSTR pszOID, [in] DWORD dwFlags, [in] void *pvArg, [in] PFN_CRYPT_ENUM_OID_FUNC pfnEnumOIDFunc );
+	[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptEnumOIDFunction")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static IReadOnlyList<(CertEncodingType encType, string funcName, SafeOID oid, (string valueName, object? value)[] values)> CryptEnumOIDFunction(
+		CertEncodingType dwEncodingType = CertEncodingType.CRYPT_MATCH_ANY_ENCODING_TYPE, string? pszFuncName = null, SafeOID? pszOID = null)
+	{
+		List<(CertEncodingType, string, SafeOID, (string, object?)[])> list = new();
+		Win32Error.ThrowLastErrorIfFalse(CryptEnumOIDFunction(dwEncodingType, pszFuncName, pszOID ?? SafeOID.NULL, default, default, func));
+		return list;
+
+		bool func(CertEncodingType dwEncodingType, string pszFuncName, IntPtr pszOID, uint cValue, REG_VALUE_TYPE[] rgdwValueType, string[] rgpwszValueName,
+			IntPtr[] rgpbValueData, uint[] rgcbValueData, IntPtr pvArg)
+		{
+			var vals = new (string, object?)[(int)cValue];
+			for (int i = 0; i < cValue; i++)
+				vals[i] = (rgpwszValueName[i], rgdwValueType[i].GetValue(rgpbValueData[i], rgcbValueData[i], CharSet.Unicode));
+			list.Add((dwEncodingType, pszFuncName!, pszOID, vals));
+			return true;
+		}
+	}
 
 	/// <summary>
 	/// The <c>CryptEnumOIDInfo</c> function enumerates predefined and registered object identifier (OID) CRYPT_OID_INFO structures.
@@ -254,9 +318,76 @@ public static partial class Crypt32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptenumoidinfo BOOL CryptEnumOIDInfo( DWORD dwGroupId,
 	// DWORD dwFlags, void *pvArg, PFN_CRYPT_ENUM_OID_INFO pfnEnumOIDInfo );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("wincrypt.h", MSDNShortId = "6af23bb4-3a27-425a-90bb-9a69ea081b25")]
+	[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptEnumOIDInfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptEnumOIDInfo(OIDGroupId dwGroupId, [Optional] uint dwFlags, [In, Out, Optional] IntPtr pvArg, PFN_CRYPT_ENUM_OID_INFO pfnEnumOIDInfo);
+
+	/// <summary>
+	/// The <c>CryptEnumOIDInfo</c> function enumerates predefined and registered object identifier (OID) CRYPT_OID_INFO structures. This
+	/// function enumerates either all of the predefined and registered structures or only structures identified by a selected OID group. For
+	/// each OID information structure enumerated, an application provided callback function, <c>pfnEnumOIDInfo</c>, is called.
+	/// </summary>
+	/// <param name="dwGroupId">
+	/// <para>
+	/// Indicates which OID groups to be matched. Setting <c>dwGroupId</c> to zero matches all groups. If <c>dwGroupId</c> is greater than
+	/// zero, only the OID entries in the specified group are enumerated.
+	/// </para>
+	/// <para>The currently defined OID group IDs are:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>CRYPT_HASH_ALG_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_ENCRYPT_ALG_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_PUBKEY_ALG_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_SIGN_ALG_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_RDN_ATTR_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_EXT_OR_ATTR_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_ENHKEY_USAGE_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_POLICY_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_TEMPLATE_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// CRYPT_KDF_OID_GROUP_ID <c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> The CRYPT_KDF_OID_GROUP_ID
+	/// value is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_LAST_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_FIRST_ALG_OID_GROUP_ID</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_LAST_ALG_OID_GROUP_ID</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>A sequence of <see cref="PCCRYPT_OID_INFO"/> structures.</returns>
+	[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptEnumOIDInfo")]
+	public static IReadOnlyList<CRYPT_OID_INFO> CryptEnumOIDInfo(OIDGroupId dwGroupId = 0)
+	{
+		List<CRYPT_OID_INFO> list = new();
+		Win32Error.ThrowLastErrorIfFalse(CryptEnumOIDInfo(dwGroupId, default, default, func));
+		return list;
+
+		bool func(PCCRYPT_OID_INFO pInfo, IntPtr pvArg) { list.Add((CRYPT_OID_INFO)pInfo); return true; }
+	}
 
 	/// <summary>
 	/// <para>
@@ -657,7 +788,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "9d4643c8-a582-4c19-bd77-33b94e953818")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGetDefaultOIDDllList(HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszDllList, ref int pcchDllList);
+	public static extern bool CryptGetDefaultOIDDllList(HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pwszDllList, ref int pcchDllList);
 
 	/// <summary>
 	/// The <c>CryptGetDefaultOIDFunctionAddress</c> function loads the DLL that contains a default function address. It can also return
@@ -709,8 +841,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "3977368c-ad13-43f9-859b-10c7f170f482")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGetDefaultOIDFunctionAddress([In] HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszDll,
-		[Optional] uint dwFlags, out IntPtr ppvFuncAddr, ref HCRYPTOIDFUNCADDR phFuncAddr);
+	public static extern bool CryptGetDefaultOIDFunctionAddress([In] HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszDll, [Optional] uint dwFlags, out IntPtr ppvFuncAddr, ref HCRYPTOIDFUNCADDR phFuncAddr);
 
 	/// <summary>
 	/// The <c>CryptGetOIDFunctionAddress</c> function searches the list of registered and installed functions for an encoding type and
@@ -967,7 +1099,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "9633cce4-538e-490e-8a5a-6b28f161a09d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptRegisterDefaultOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, uint dwIndex, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszDll);
+	public static extern bool CryptRegisterDefaultOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
+		uint dwIndex, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszDll);
 
 	/// <summary>
 	/// <para>
@@ -1475,9 +1608,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a OID function address.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCRYPTOIDFUNCADDR : IHandle
+	public readonly struct HCRYPTOIDFUNCADDR : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HCRYPTOIDFUNCADDR"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1523,9 +1656,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to an OID function set.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCRYPTOIDFUNCSET : IHandle
+	public readonly struct HCRYPTOIDFUNCSET : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HCRYPTOIDFUNCSET"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1571,9 +1704,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a pointer to a CRYPT_OID_INFO.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PCCRYPT_OID_INFO : IHandle
+	public readonly struct PCCRYPT_OID_INFO : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PCCRYPT_OID_INFO"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

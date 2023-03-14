@@ -228,7 +228,8 @@ public static partial class TokenBinding
 	// **tokenBindingMessage, DWORD *tokenBindingMessageSize );
 	[DllImport(Lib.Tokenbinding, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("tokenbinding.h", MSDNShortId = "7A268C6D-952B-482A-835D-89D6452D986D")]
-	public static extern HRESULT TokenBindingGenerateMessage([In] IntPtr[] tokenBindings, [In] uint[] tokenBindingsSize, uint tokenBindingsCount, out IntPtr tokenBindingMessage, out uint tokenBindingMessageSize);
+	public static extern HRESULT TokenBindingGenerateMessage([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] tokenBindings,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] tokenBindingsSize, uint tokenBindingsCount, out IntPtr tokenBindingMessage, out uint tokenBindingMessageSize);
 
 	/// <summary>
 	/// <para>Retrieves a list of the key types that the client device supports.</para>

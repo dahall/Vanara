@@ -219,7 +219,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "003602c6-d6c9-4695-9c60-ffaf0aa02266")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PFXExportCertStore([In] HCERTSTORE hStore, ref CRYPTOAPI_BLOB pPFX, [MarshalAs(UnmanagedType.LPWStr)] string szPassword, PFXExportFlags dwFlags);
+	public static extern bool PFXExportCertStore([In] HCERTSTORE hStore, ref CRYPTOAPI_BLOB pPFX, [MarshalAs(UnmanagedType.LPWStr)] string? szPassword, PFXExportFlags dwFlags);
 
 	/// <summary>
 	/// The <c>PFXExportCertStoreEx</c> function exports the certificates and, if available, their associated private keys from the
@@ -305,7 +305,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e8bd54b1-946f-4c65-8a86-96f0dbec07ff")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PFXExportCertStoreEx([In] HCERTSTORE hStore, ref CRYPTOAPI_BLOB pPFX, [MarshalAs(UnmanagedType.LPWStr)] string szPassword, [In] IntPtr pvPara, PFXExportFlags dwFlags);
+	public static extern bool PFXExportCertStoreEx([In] HCERTSTORE hStore, ref CRYPTOAPI_BLOB pPFX, [MarshalAs(UnmanagedType.LPWStr)] string? szPassword, [In, Optional] IntPtr pvPara, PFXExportFlags dwFlags);
 
 	/// <summary>
 	/// The <c>PFXImportCertStore</c> function imports a PFX BLOB and returns the handle of a store that contains certificates and any
@@ -457,7 +457,7 @@ public static partial class Crypt32
 	// CRYPT_DATA_BLOB *pPFX, LPCWSTR szPassword, DWORD dwFlags );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "2c83774a-f2df-4d28-9abd-e39aa507ba88")]
-	public static extern HCERTSTORE PFXImportCertStore(in CRYPTOAPI_BLOB pPFX, [MarshalAs(UnmanagedType.LPWStr)] string szPassword, PFXImportFlags dwFlags);
+	public static extern HCERTSTORE PFXImportCertStore(in CRYPTOAPI_BLOB pPFX, [MarshalAs(UnmanagedType.LPWStr)] string? szPassword, PFXImportFlags dwFlags);
 
 	/// <summary>The <c>PFXIsPFXBlob</c> function attempts to decode the outer layer of a BLOB as a PFX packet.</summary>
 	/// <param name="pPFX">A pointer to a CRYPT_DATA_BLOB structure that the function will attempt to decode as a PFX packet.</param>
@@ -508,5 +508,5 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "47560192-547e-4440-9f10-43327355e1a0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PFXVerifyPassword(in CRYPTOAPI_BLOB pPFX, [MarshalAs(UnmanagedType.LPWStr)] string szPassword, uint dwFlags = 0);
+	public static extern bool PFXVerifyPassword(in CRYPTOAPI_BLOB pPFX, [MarshalAs(UnmanagedType.LPWStr)] string? szPassword, uint dwFlags = 0);
 }

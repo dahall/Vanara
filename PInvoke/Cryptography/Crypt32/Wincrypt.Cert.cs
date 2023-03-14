@@ -872,7 +872,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "7c092bf5-f8b2-47d0-94ee-c8e0f4bca62d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddEncodedCertificateToStore(HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, [In] IntPtr pbCertEncoded, uint cbCertEncoded, CertStoreAdd dwAddDisposition, out SafePCCERT_CONTEXT ppCertContext);
+	public static extern bool CertAddEncodedCertificateToStore(HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, [In] IntPtr pbCertEncoded,
+		uint cbCertEncoded, CertStoreAdd dwAddDisposition, out SafePCCERT_CONTEXT ppCertContext);
 
 	/// <summary>
 	/// <para>
@@ -1189,7 +1190,8 @@ public static partial class Crypt32
 	// pEndTime, PCERT_EXTENSIONS pExtensions );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "89028c4e-f896-4c50-9fa2-bcb4e1784244")]
-	public static extern SafePCCERT_CONTEXT CertCreateSelfSignCertificate(IntPtr hCryptProvOrNCryptKey, in CRYPTOAPI_BLOB pSubjectIssuerBlob, CertCreateSelfSignFlags dwFlags, IntPtr pKeyProvInfo, IntPtr pSignatureAlgorithm, IntPtr pStartTime, IntPtr pEndTime, IntPtr pExtensions);
+	public static extern SafePCCERT_CONTEXT CertCreateSelfSignCertificate(IntPtr hCryptProvOrNCryptKey, in CRYPTOAPI_BLOB pSubjectIssuerBlob,
+		CertCreateSelfSignFlags dwFlags, IntPtr pKeyProvInfo, IntPtr pSignatureAlgorithm, IntPtr pStartTime, IntPtr pEndTime, IntPtr pExtensions);
 
 	/// <summary>
 	/// The <c>CertCreateSelfSignCertificate</c> function builds a self-signed certificate and returns a pointer to a CERT_CONTEXT
@@ -1275,7 +1277,8 @@ public static partial class Crypt32
 	// pEndTime, PCERT_EXTENSIONS pExtensions );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "89028c4e-f896-4c50-9fa2-bcb4e1784244")]
-	public static extern SafePCCERT_CONTEXT CertCreateSelfSignCertificate(IntPtr hCryptProvOrNCryptKey, in CRYPTOAPI_BLOB pSubjectIssuerBlob, CertCreateSelfSignFlags dwFlags, in CRYPT_KEY_PROV_INFO pKeyProvInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, IntPtr pStartTime, IntPtr pEndTime, IntPtr pExtensions);
+	public static extern SafePCCERT_CONTEXT CertCreateSelfSignCertificate(IntPtr hCryptProvOrNCryptKey, in CRYPTOAPI_BLOB pSubjectIssuerBlob,
+		CertCreateSelfSignFlags dwFlags, in CRYPT_KEY_PROV_INFO pKeyProvInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, IntPtr pStartTime, IntPtr pEndTime, IntPtr pExtensions);
 
 	/// <summary>
 	/// The <c>CertCreateSelfSignCertificate</c> function builds a self-signed certificate and returns a pointer to a CERT_CONTEXT
@@ -1361,7 +1364,9 @@ public static partial class Crypt32
 	// pEndTime, PCERT_EXTENSIONS pExtensions );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "89028c4e-f896-4c50-9fa2-bcb4e1784244")]
-	public static extern SafePCCERT_CONTEXT CertCreateSelfSignCertificate(IntPtr hCryptProvOrNCryptKey, in CRYPTOAPI_BLOB pSubjectIssuerBlob, CertCreateSelfSignFlags dwFlags, in CRYPT_KEY_PROV_INFO pKeyProvInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, in SYSTEMTIME pStartTime, in SYSTEMTIME pEndTime, in CERT_EXTENSIONS pExtensions);
+	public static extern SafePCCERT_CONTEXT CertCreateSelfSignCertificate(IntPtr hCryptProvOrNCryptKey, in CRYPTOAPI_BLOB pSubjectIssuerBlob,
+		CertCreateSelfSignFlags dwFlags, in CRYPT_KEY_PROV_INFO pKeyProvInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, in SYSTEMTIME pStartTime,
+		in SYSTEMTIME pEndTime, in CERT_EXTENSIONS pExtensions);
 
 	/// <summary>
 	/// The <c>CertDeleteCertificateFromStore</c> function deletes the specified certificate context from the certificate store.
@@ -2199,7 +2204,8 @@ public static partial class Crypt32
 	// DWORD *pdwFlags );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b57982d0-cba8-43cd-a544-3635fdf599e2")]
-	public static extern SafePCCERT_CONTEXT CertGetIssuerCertificateFromStore(HCERTSTORE hCertStore, PCCERT_CONTEXT pSubjectContext, PCCERT_CONTEXT pPrevIssuerContext, ref CertStoreVerification pdwFlags);
+	public static extern SafePCCERT_CONTEXT CertGetIssuerCertificateFromStore(HCERTSTORE hCertStore, PCCERT_CONTEXT pSubjectContext,
+		PCCERT_CONTEXT pPrevIssuerContext, ref CertStoreVerification pdwFlags);
 
 	/// <summary>
 	/// The <c>CertGetServerOcspResponseContext</c> function retrieves a non-blocking, time valid online certificate status protocol
@@ -2313,7 +2319,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "1504f166-2fa9-4041-9d72-b150cd8baa8a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetValidUsages(uint cCerts, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PCCERT_CONTEXT[] rghCerts, out int cNumOIDs, IntPtr rghOIDs, ref uint pcbOIDs);
+	public static extern bool CertGetValidUsages(uint cCerts, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PCCERT_CONTEXT[] rghCerts,
+		out int cNumOIDs, [In, Optional, MarshalAs(UnmanagedType.LPArray)] IntPtr[] rghOIDs, ref uint pcbOIDs);
 
 	/// <summary>
 	/// The <c>CertOpenServerOcspResponse</c> function opens a handle to an online certificate status protocol (OCSP) response
@@ -2704,7 +2711,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b740772b-d25b-4b3d-9acb-03f7018750d6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSelectCertificateChains(in Guid pSelectionContext, CertSelection dwFlags, [Optional] IntPtr pChainParameters, uint cCriteria,
+	public static extern bool CertSelectCertificateChains(in Guid pSelectionContext, CertSelection dwFlags, in CERT_SELECT_CHAIN_PARA pChainParameters, uint cCriteria,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray)] CERT_SELECT_CRITERIA[]? rgpCriteria, HCERTSTORE hStore, out uint pcSelection, out IntPtr pprgpSelection);
 
 	/// <summary>The <c>CertSelectCertificateChains</c> function retrieves certificate chains based on specified selection criteria.</summary>
@@ -2880,6 +2887,180 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertSelectCertificateChains([Optional] IntPtr pSelectionContext, CertSelection dwFlags, [Optional] IntPtr pChainParameters,
 		uint cCriteria, [In, Optional, MarshalAs(UnmanagedType.LPArray)] CERT_SELECT_CRITERIA[]? rgpCriteria, HCERTSTORE hStore, out uint pcSelection, out IntPtr pprgpSelection);
+
+	/// <summary>The <c>CertSelectCertificateChains</c> function retrieves certificate chains based on specified selection criteria.</summary>
+	/// <param name="pSelectionContext">A pointer to the GUID of the certificate selection scenario to use for this call.</param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// Flags for controlling the certificate selection process. This parameter can be a combination of zero or more of the following flags:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CERT_SELECT_ALLOW_EXPIRED</term>
+	/// <term>Select expired certificates that meet selection criteria. By default expired certificates are rejected from selection.</term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_SELECT_TRUSTED_ROOT</term>
+	/// <term>
+	/// Select certificates on which the error bit in the certificate chain trust status is not set to CERT_TRUST_IS_UNTRUSTED_ROOT,
+	/// CERT_TRUST_IS_PARTIAL_CHAIN, or CERT_TRUST_IS_NOT_TIME_VALID. In addition, certificates that have one of the following invalid
+	/// constraint errors are not selected:
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_SELECT_DISALLOW_SELFSIGNED</term>
+	/// <term>Select certificates that are not self-issued and self-signed.</term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_SELECT_HAS_PRIVATE_KEY</term>
+	/// <term>Select certificates that have a value set for the CERT_KEY_PROV_INFO_PROP_ID property of the certificate.</term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_SELECT_HAS_KEY_FOR_SIGNATURE</term>
+	/// <term>
+	/// Select certificates on which the value of the dwKeySpec member of the CERT_KEY_PROV_INFO_PROP_ID property is set to
+	/// AT_SIGNATURE. If this function is being called as part of a CNG enabled application and the dwKeySpec member of the
+	/// CERT_KEY_PROV_INFO_PROP_ID property is set to -1, select certificates on which the value of the NCRYPT_KEY_USAGE_PROPERTY
+	/// property of the associated private key has the NCRYPT_ALLOW_SIGNING_FLAG set.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_SELECT_HAS_KEY_FOR_KEY_EXCHANGE</term>
+	/// <term>
+	/// Select certificates on which the value of the dwKeySpec member of the CERT_KEY_PROV_INFO_PROP_ID property is set to
+	/// AT_KEYEXCHANGE. If this function is being called as part of a CNG enabled application and the dwKeySpec member of the
+	/// CERT_KEY_PROV_INFO_PROP_ID property is set to -1, select certificates on which either NCRYPT_ALLOW_DECRYPT_FLAG or
+	/// NCRYPT_ALLOW_KEY_AGREEMENT_FLAG is set.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_SELECT_HARDWARE_ONLY</term>
+	/// <term>
+	/// Select certificates on which the value of the PP_IMPTYPE property of the associated private key provider is set to either
+	/// CRYPT_IMPL_HARDWARE or CRYPT_IMPL_REMOVABLE. (For CNG providers, NCRYPT_IMPL_TYPE_PROPERTY property value MUST have either the
+	/// NCRYPT_IMPL_HARDWARE_FLAG or NCRYPT_IMPL_REMOVABLE_FLAG bit set). If this function is being called as part of a CNG enabled
+	/// application, select certificates on which the NCRYPT_IMPL_TYPE_PROPERTY property is set to NCRYPT_IMPL_HARDWARE_FLAG or NCRYPT_IMPL_REMOVABLE_FLAG.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_SELECT_ALLOW_DUPLICATES</term>
+	/// <term>
+	/// Allow the selection of certificates on which the Subject and Subject Alt Name contain the same information and the certificate
+	/// template extension value is equivalent. By default when certificates match this criteria, only the most recent certificate is selected.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pChainParameters">
+	/// <para>
+	/// A pointer to a CERT_SELECT_CHAIN_PARA structure to specify parameters for chain building. If <c>NULL</c>, default parameters
+	/// will be used.
+	/// </para>
+	/// <para>
+	/// The <c>pChainPara</c> member of the CERT_SELECT_CHAIN_PARA structure points to a CERT_CHAIN_PARA structure that can be used to
+	/// enable strong signing.
+	/// </para>
+	/// </param>
+	/// <param name="cCriteria">The number of elements in the array pointed to by the rgpCriteria array.</param>
+	/// <param name="rgpCriteria">
+	/// A pointer to an array of CERT_SELECT_CRITERIA structures that define the selection criteria. If this parameter is set to
+	/// <c>NULL</c>, the value of the cCriteria parameter must be zero.
+	/// </param>
+	/// <param name="hStore">The handle to a store from which to select the certificates.</param>
+	/// <param name="pcSelection">
+	/// A pointer to a <c>DWORD</c> value to receive the number of elements in the array pointed to by the pprgpSelection parameter.
+	/// </param>
+	/// <param name="pprgpSelection">
+	/// <para>
+	/// A pointer to a pointer to a location to receive an array of CERT_CHAIN_CONTEXT structure. The <c>CertSelectCertificateChains</c>
+	/// function only returns certificate chains that match all the selection criteria. The entries in the array are ordered by quality,
+	/// i.e. the chain with the highest quality is the first entry.
+	/// </para>
+	/// <para>
+	/// Storage for the array is allocated by the <c>CertSelectCertificateChains</c> function. To free the allocated memory you must
+	/// first release each individual chain context in the array by calling the CertFreeCertificateChain function. Then you must free
+	/// the memory by calling the CertFreeCertificateChainList function.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
+	/// <para>If the function fails, it returns zero (FALSE). For extended error information, call the GetLastError function.</para>
+	/// <para>
+	/// <c>Note</c> If the selection does not yield any results, the <c>CertSelectCertificateChains</c> function returns <c>TRUE</c>,
+	/// but the value pointed to by pcSelection parameter is set to zero.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Selection criteria can be specified through either the dwFlags parameter, through the rgpCriteria parameter, or through both
+	/// parameters. If no selection criteria are specified, the function succeeds and returns certificate chains for all certificates in
+	/// the store specified by the hStore parameter.
+	/// </para>
+	/// <para>Certificate chains that are selected are ordered based on the following preference logic:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>Prefer certificates that are smart card certificates over certificates that are not smart-card based.</term>
+	/// </item>
+	/// <item>
+	/// <term>Prefer certificates that have a longer validity period (the expiration date is later.)</term>
+	/// </item>
+	/// <item>
+	/// <term>If multiple certificates have same expiration date, prefer certificates that were issued more recently.</term>
+	/// </item>
+	/// <item>
+	/// <term>If there is a tie, prefer shorter chains.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Certain selection criteria require that a certificate chain be built before you can select that criteria for use. If the
+	/// intermediate certificates required to build the chain are not available locally, a network retrieval is performed for the issuer
+	/// certificates. This network retrieval is performed if the <c>CERT_SELECT_TRUSTED_ROOT</c> flag is set or for the following criteria:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term><c>CERT_SELECT_BY_ISSUER_NAME</c></term>
+	/// </item>
+	/// <item>
+	/// <term><c>CERT_SELECT_BY_ISSUER_ATTR</c></term>
+	/// </item>
+	/// <item>
+	/// <term><c>CERT_SELECT_BY_POLICY_OID</c></term>
+	/// </item>
+	/// </list>
+	/// <para>Perform the following actions to enable strong signature checking:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// Create a CERT_STRONG_SIGN_PARA structure, specify the required strong signing parameters, and set a pointer to the structure in
+	/// the <c>pStrongSignPara</c> member of a CERT_CHAIN_PARA structure.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>Set a pointer to the CERT_CHAIN_PARA structure in the <c>pChainPara</c> member of a CERT_SELECT_CHAIN_PARA structure.</term>
+	/// </item>
+	/// <item>
+	/// <term>Set a pointer to the CERT_SELECT_CHAIN_PARA structure in the pChainParameters parameter of this ( <c>CertSelectCertificateChains</c>)function.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// When you enable strong signature checking, any certificate chain that returns a <c>CERT_TRUST_IS_NOT_SIGNATURE_VALID</c> error
+	/// in the <c>dwErrorStatus</c> field of the CERT_TRUST_STATUS structure will be skipped. (The pprgpSelection parameter points to a
+	/// CERT_CHAIN_CONTEXT structure which, in turn, points to the <c>CERT_TRUST_STATUS</c> structure.) The
+	/// <c>CERT_TRUST_HAS_WEAK_SIGNATURE</c> value is also set for a weak signature.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certselectcertificatechains BOOL
+	// CertSelectCertificateChains( LPCGUID pSelectionContext, DWORD dwFlags, PCCERT_SELECT_CHAIN_PARA pChainParameters, DWORD
+	// cCriteria, PCCERT_SELECT_CRITERIA rgpCriteria, HCERTSTORE hStore, PDWORD pcSelection, PCCERT_CHAIN_CONTEXT **pprgpSelection );
+	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("wincrypt.h", MSDNShortId = "b740772b-d25b-4b3d-9acb-03f7018750d6")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static unsafe extern bool CertSelectCertificateChains([In, Optional] Guid* pSelectionContext, CertSelection dwFlags, [In, Optional] CERT_SELECT_CHAIN_PARA* pChainParameters,
+		uint cCriteria, [In, Optional] CERT_SELECT_CRITERIA* rgpCriteria, HCERTSTORE hStore, out uint pcSelection, out CERT_CHAIN_CONTEXT* pprgpSelection);
 
 	/// <summary>
 	/// The <c>CertSerializeCertificateStoreElement</c> function serializes a certificate context's encoded certificate and its encoded
@@ -3264,7 +3445,7 @@ public static partial class Crypt32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint dwFlags;
+		public CertChainFlags dwFlags;
 	}
 
 	/// <summary>
@@ -3456,9 +3637,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to an online certificate status protocol (OCSP) response.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCERT_SERVER_OCSP_RESPONSE : IHandle
+	public readonly struct HCERT_SERVER_OCSP_RESPONSE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HCERT_SERVER_OCSP_RESPONSE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -3522,9 +3703,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a Certificate Chain Engine.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCERTCHAINENGINE : IHandle
+	public readonly struct HCERTCHAINENGINE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HCERTCHAINENGINE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -3570,9 +3751,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a CERT_SERVER_OCSP_RESPONSE_CONTEXT.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PCCERT_SERVER_OCSP_RESPONSE_CONTEXT : IHandle
+	public readonly struct PCCERT_SERVER_OCSP_RESPONSE_CONTEXT : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="PCCERT_SERVER_OCSP_RESPONSE_CONTEXT"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

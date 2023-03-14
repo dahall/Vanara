@@ -689,7 +689,7 @@ public static partial class NCrypt
 	// dwLegacyKeySpec, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "eeb1842f-fd9e-4edf-9db8-7b4e91760e9b")]
-	public static extern HRESULT NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, string pszAlgId, [Optional] string? pszKeyName, Crypt32.PrivateKeyType dwLegacyKeySpec = 0, CreatePersistedFlags dwFlags = 0);
+	public static extern HRESULT NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, string pszAlgId, [Optional] string? pszKeyName, [Optional] Crypt32.PrivateKeyType dwLegacyKeySpec, [Optional] CreatePersistedFlags dwFlags);
 
 	/// <summary>The <c>NCryptDecrypt</c> function decrypts a block of encrypted data.</summary>
 	/// <param name="hKey">The handle of the key to use to decrypt the data.</param>
@@ -864,13 +864,13 @@ public static partial class NCrypt
 	// NCRYPT_KEY_HANDLE hKey, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "2e1958a7-51e0-4731-b4cf-a90d6c1f9ae0")]
-	public static extern HRESULT NCryptDeleteKey(NCRYPT_KEY_HANDLE hKey, NCryptUIFlags dwFlags = 0);
+	public static extern HRESULT NCryptDeleteKey(NCRYPT_KEY_HANDLE hKey, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
 	/// <para>
-	/// The <c>NCryptDeriveKey</c> function derives a key from a secret agreement value. This function is intended to be used as part of
-	/// a secret agreement procedure using persisted secret agreement keys. To derive key material by using a persisted secret instead,
-	/// use the NCryptKeyDerivation function.
+	/// The <c>NCryptDeriveKey</c> function derives a key from a secret agreement value. This function is intended to be used as part of a
+	/// secret agreement procedure using persisted secret agreement keys. To derive key material by using a persisted secret instead, use the
+	/// NCryptKeyDerivation function.
 	/// </para>
 	/// </summary>
 	/// <param name="hSharedSecret">
@@ -878,19 +878,19 @@ public static partial class NCrypt
 	/// </param>
 	/// <param name="pwszKDF">
 	/// <para>
-	/// A pointer to a null-terminated Unicode string that identifies the key derivation function (KDF) to use to derive the key. This
-	/// can be one of the following strings.
+	/// A pointer to a null-terminated Unicode string that identifies the key derivation function (KDF) to use to derive the key. This can be
+	/// one of the following strings.
 	/// </para>
-	/// <para>BCRYPT_KDF_HASH (L"HASH")</para>
+	/// <para><strong>BCRYPT_KDF_HASH (L"HASH")</strong></para>
 	/// <para>Use the hash key derivation function.</para>
 	/// <para>
-	/// If the cbDerivedKey parameter is less than the size of the derived key, this function will only copy the specified number of
-	/// bytes to the pbDerivedKey buffer. If the cbDerivedKey parameter is greater than the size of the derived key, this function will
-	/// copy the key to the pbDerivedKey buffer and set the variable pointed to by the pcbResult to the actual number of bytes copied.
+	/// If the cbDerivedKey parameter is less than the size of the derived key, this function will only copy the specified number of bytes to
+	/// the pbDerivedKey buffer. If the cbDerivedKey parameter is greater than the size of the derived key, this function will copy the key
+	/// to the pbDerivedKey buffer and set the variable pointed to by the pcbResult to the actual number of bytes copied.
 	/// </para>
 	/// <para>
-	/// The parameters identified by the pParameterList parameter either can or must contain the following parameters, as indicated by
-	/// the Required or optional column.
+	/// The parameters identified by the pParameterList parameter either can or must contain the following parameters, as indicated by the
+	/// Required or optional column.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -899,36 +899,36 @@ public static partial class NCrypt
 	/// <term>Required or optional</term>
 	/// </listheader>
 	/// <item>
-	/// <term>KDF_HASH_ALGORITHM</term>
-	/// <term>
+	/// <description>KDF_HASH_ALGORITHM</description>
+	/// <description>
 	/// A null-terminated Unicode string that identifies the hash algorithm to use. This can be one of the standard hash algorithm
 	/// identifiers from CNG Algorithm Identifiers or the identifier for another registered hash algorithm. If this parameter is not
 	/// specified, the SHA1 hash algorithm is used.
-	/// </term>
-	/// <term>Optional</term>
+	/// </description>
+	/// <description>Optional</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_SECRET_PREPEND</term>
-	/// <term>A value to add to the beginning of the message input to the hash function. For more information, see Remarks.</term>
-	/// <term>Optional</term>
+	/// <description>KDF_SECRET_PREPEND</description>
+	/// <description>A value to add to the beginning of the message input to the hash function. For more information, see Remarks.</description>
+	/// <description>Optional</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_SECRET_APPEND</term>
-	/// <term>A value to add to the end of the message input to the hash function. For more information, see Remarks.</term>
-	/// <term>Optional</term>
+	/// <description>KDF_SECRET_APPEND</description>
+	/// <description>A value to add to the end of the message input to the hash function. For more information, see Remarks.</description>
+	/// <description>Optional</description>
 	/// </item>
 	/// </list>
 	/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-	/// <para>BCRYPT_KDF_HMAC (L"HMAC")</para>
+	/// <para><strong>BCRYPT_KDF_HMAC (L"HMAC")</strong></para>
 	/// <para>Use the Hash-Based Message Authentication Code (HMAC) key derivation function.</para>
 	/// <para>
-	/// If the cbDerivedKey parameter is less than the size of the derived key, this function will only copy the specified number of
-	/// bytes to the pbDerivedKey buffer. If the cbDerivedKey parameter is greater than the size of the derived key, this function will
-	/// copy the key to the pbDerivedKey buffer and set the variable pointed to by the pcbResult to the actual number of bytes copied.
+	/// If the cbDerivedKey parameter is less than the size of the derived key, this function will only copy the specified number of bytes to
+	/// the pbDerivedKey buffer. If the cbDerivedKey parameter is greater than the size of the derived key, this function will copy the key
+	/// to the pbDerivedKey buffer and set the variable pointed to by the pcbResult to the actual number of bytes copied.
 	/// </para>
 	/// <para>
-	/// The parameters identified by the pParameterList parameter either can or must contain the following parameters, as indicated by
-	/// the Required or optional column.
+	/// The parameters identified by the pParameterList parameter either can or must contain the following parameters, as indicated by the
+	/// Required or optional column.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -937,39 +937,39 @@ public static partial class NCrypt
 	/// <term>Required or optional</term>
 	/// </listheader>
 	/// <item>
-	/// <term>KDF_HASH_ALGORITHM</term>
-	/// <term>
+	/// <description>KDF_HASH_ALGORITHM</description>
+	/// <description>
 	/// A null-terminated Unicode string that identifies the hash algorithm to use. This can be one of the standard hash algorithm
 	/// identifiers from CNG Algorithm Identifiers or the identifier for another registered hash algorithm. If this parameter is not
 	/// specified, the SHA1 hash algorithm is used.
-	/// </term>
-	/// <term>Optional</term>
+	/// </description>
+	/// <description>Optional</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_HMAC_KEY</term>
-	/// <term>The key to use for the pseudo-random function (PRF).</term>
-	/// <term>Optional</term>
+	/// <description>KDF_HMAC_KEY</description>
+	/// <description>The key to use for the pseudo-random function (PRF).</description>
+	/// <description>Optional</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_SECRET_PREPEND</term>
-	/// <term>A value to add to the beginning of the message input to the hash function. For more information, see Remarks.</term>
-	/// <term>Optional</term>
+	/// <description>KDF_SECRET_PREPEND</description>
+	/// <description>A value to add to the beginning of the message input to the hash function. For more information, see Remarks.</description>
+	/// <description>Optional</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_SECRET_APPEND</term>
-	/// <term>A value to add to the end of the message input to the hash function. For more information, see Remarks.</term>
-	/// <term>Optional</term>
+	/// <description>KDF_SECRET_APPEND</description>
+	/// <description>A value to add to the end of the message input to the hash function. For more information, see Remarks.</description>
+	/// <description>Optional</description>
 	/// </item>
 	/// </list>
 	/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-	/// <para>BCRYPT_KDF_TLS_PRF (L"TLS_PRF")</para>
+	/// <para><strong>BCRYPT_KDF_TLS_PRF (L"TLS_PRF")</strong></para>
 	/// <para>
-	/// Use the transport layer security (TLS) pseudo-random function (PRF) key derivation function. The size of the derived key is
-	/// always 48 bytes, so the cbDerivedKey parameter must be 48.
+	/// Use the transport layer security (TLS) pseudo-random function (PRF) key derivation function. The size of the derived key is always 48
+	/// bytes, so the cbDerivedKey parameter must be 48.
 	/// </para>
 	/// <para>
-	/// The parameters identified by the pParameterList parameter either can or must contain the following parameters, as indicated by
-	/// the Required or optional column.
+	/// The parameters identified by the pParameterList parameter either can or must contain the following parameters, as indicated by the
+	/// Required or optional column.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -978,22 +978,22 @@ public static partial class NCrypt
 	/// <term>Required or optional</term>
 	/// </listheader>
 	/// <item>
-	/// <term>KDF_TLS_PRF_LABEL</term>
-	/// <term>An ANSI string that contains the PRF label.</term>
-	/// <term>Required</term>
+	/// <description>KDF_TLS_PRF_LABEL</description>
+	/// <description>An ANSI string that contains the PRF label.</description>
+	/// <description>Required</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_TLS_PRF_SEED</term>
-	/// <term>The PRF seed. The seed must be 64 bytes long.</term>
-	/// <term>Required</term>
+	/// <description>KDF_TLS_PRF_SEED</description>
+	/// <description>The PRF seed. The seed must be 64 bytes long.</description>
+	/// <description>Required</description>
 	/// </item>
 	/// </list>
 	/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-	/// <para>BCRYPT_KDF_SP80056A_CONCAT (L"SP800_56A_CONCAT")</para>
+	/// <para><strong>BCRYPT_KDF_SP80056A_CONCAT (L"SP800_56A_CONCAT")</strong></para>
 	/// <para>Use the SP800-56A key derivation function.</para>
 	/// <para>
-	/// The parameters identified by the pParameterList parameter either can or must contain the following parameters, as indicated by
-	/// the Required or optional column. All parameter values are treated as opaque byte arrays.
+	/// The parameters identified by the pParameterList parameter either can or must contain the following parameters, as indicated by the
+	/// Required or optional column. All parameter values are treated as opaque byte arrays.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -1002,44 +1002,44 @@ public static partial class NCrypt
 	/// <term>Required or optional</term>
 	/// </listheader>
 	/// <item>
-	/// <term>KDF_ALGORITHMID</term>
-	/// <term>
-	/// Specifies the AlgorithmID subfield of the OtherInfo field in the SP800-56A key derivation function. Indicates the intended
-	/// purpose of the derived key.
-	/// </term>
-	/// <term>Required</term>
+	/// <description>KDF_ALGORITHMID</description>
+	/// <description>
+	/// Specifies the AlgorithmID subfield of the OtherInfo field in the SP800-56A key derivation function. Indicates the intended purpose of
+	/// the derived key.
+	/// </description>
+	/// <description>Required</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_PARTYUINFO</term>
-	/// <term>
+	/// <description>KDF_PARTYUINFO</description>
+	/// <description>
 	/// Specifies the PartyUInfo subfield of the OtherInfo field in the SP800-56A key derivation function. The field contains public
 	/// information contributed by the initiator.
-	/// </term>
-	/// <term>Required</term>
+	/// </description>
+	/// <description>Required</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_PARTYVINFO</term>
-	/// <term>
+	/// <description>KDF_PARTYVINFO</description>
+	/// <description>
 	/// Specifies the PartyVInfo subfield of the OtherInfo field in the SP800-56A key derivation function. The field contains public
 	/// information contributed by the responder.
-	/// </term>
-	/// <term>Required</term>
+	/// </description>
+	/// <description>Required</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_SUPPPUBINFO</term>
-	/// <term>
+	/// <description>KDF_SUPPPUBINFO</description>
+	/// <description>
 	/// Specifies the SuppPubInfo subfield of the OtherInfo field in the SP800-56A key derivation function. The field contains public
 	/// information known to both initiator and responder.
-	/// </term>
-	/// <term>Optional</term>
+	/// </description>
+	/// <description>Optional</description>
 	/// </item>
 	/// <item>
-	/// <term>KDF_SUPPPRIVINFO</term>
-	/// <term>
-	/// Specifies the SuppPrivInfo subfield of the OtherInfo field in the SP800-56A key derivation function. It contains private
-	/// information known to both initiator and responder, such as a shared secret.
-	/// </term>
-	/// <term>Optional</term>
+	/// <description>KDF_SUPPPRIVINFO</description>
+	/// <description>
+	/// Specifies the SuppPrivInfo subfield of the OtherInfo field in the SP800-56A key derivation function. It contains private information
+	/// known to both initiator and responder, such as a shared secret.
+	/// </description>
+	/// <description>Optional</description>
 	/// </item>
 	/// </list>
 	/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
@@ -1047,8 +1047,8 @@ public static partial class NCrypt
 	/// </param>
 	/// <param name="pParameterList">
 	/// <para>
-	/// The address of a NCryptBufferDesc structure that contains the KDF parameters. This parameter is optional and can be <c>NULL</c>
-	/// if it is not needed.
+	/// The address of a NCryptBufferDesc structure that contains the KDF parameters. This parameter is optional and can be <c>NULL</c> if it
+	/// is not needed.
 	/// </para>
 	/// </param>
 	/// <param name="pbDerivedKey">
@@ -1074,11 +1074,11 @@ public static partial class NCrypt
 	/// <term>Meaning</term>
 	/// </listheader>
 	/// <item>
-	/// <term>KDF_USE_SECRET_AS_HMAC_KEY_FLAG</term>
-	/// <term>
+	/// <description>KDF_USE_SECRET_AS_HMAC_KEY_FLAG</description>
+	/// <description>
 	/// The secret agreement value will also serve as the HMAC key. If this flag is specified, the KDF_HMAC_KEY parameter should not be
 	/// included in the set of parameters in the pParameterList parameter. This flag is only used by the BCRYPT_KDF_HMAC key derivation function.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// </list>
 	/// </param>
@@ -1091,25 +1091,24 @@ public static partial class NCrypt
 	/// <term>Description</term>
 	/// </listheader>
 	/// <item>
-	/// <term>ERROR_SUCCESS</term>
-	/// <term>The function was successful.</term>
+	/// <description>ERROR_SUCCESS</description>
+	/// <description>The function was successful.</description>
 	/// </item>
 	/// <item>
-	/// <term>NTE_INVALID_HANDLE</term>
-	/// <term>The hSharedSecret parameter is not valid.</term>
+	/// <description>NTE_INVALID_HANDLE</description>
+	/// <description>The hSharedSecret parameter is not valid.</description>
 	/// </item>
 	/// <item>
-	/// <term>NTE_INVALID_PARAMETER</term>
-	/// <term>One or more parameters are not valid.</term>
+	/// <description>NTE_INVALID_PARAMETER</description>
+	/// <description>One or more parameters are not valid.</description>
 	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>
 	/// The BCryptBufferDesc structure in the pParameterList parameter can contain more than one of the <c>KDF_SECRET_PREPEND</c> and
-	/// <c>KDF_SECRET_APPEND</c> parameters. If more than one of these parameters is specified, the parameter values are concatenated in
-	/// the order in which they are contained in the array before the KDF is called. For example, assume the following parameter values
-	/// are specified.
+	/// <c>KDF_SECRET_APPEND</c> parameters. If more than one of these parameters is specified, the parameter values are concatenated in the
+	/// order in which they are contained in the array before the KDF is called. For example, assume the following parameter values are specified.
 	/// </para>
 	/// <para>If the above parameter values are specified, the concatenated values to the actual KDF are as follows.</para>
 	/// <para>
@@ -1123,7 +1122,7 @@ public static partial class NCrypt
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "0ff08c6a-5f30-43ca-9db8-cda3e0704b0a")]
 	public static extern HRESULT NCryptDeriveKey(NCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] NCryptBufferDesc? pParameterList, SafeAllocatedMemoryHandle pbDerivedKey,
-		uint cbDerivedKey, out uint pcbResult, BCrypt.DeriveKeyFlags dwFlags);
+		uint cbDerivedKey, out uint pcbResult, [Optional] BCrypt.DeriveKeyFlags dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -1382,7 +1381,7 @@ public static partial class NCrypt
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "0ff08c6a-5f30-43ca-9db8-cda3e0704b0a")]
 	public static extern HRESULT NCryptDeriveKey(NCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] NCryptBufferDesc? pParameterList, [Optional] IntPtr pbDerivedKey,
-		[Optional] uint cbDerivedKey, out uint pcbResult, BCrypt.DeriveKeyFlags dwFlags);
+		[Optional] uint cbDerivedKey, out uint pcbResult, [Optional] BCrypt.DeriveKeyFlags dwFlags);
 
 	/// <summary>The <c>NCryptEncrypt</c> function encrypts a block of data.</summary>
 	/// <param name="hKey">The handle of the key to use to encrypt the data.</param>
@@ -1693,7 +1692,7 @@ public static partial class NCrypt
 	// NCRYPT_PROV_HANDLE hProvider, LPCWSTR pszScope, NCryptKeyName **ppKeyName, PVOID *ppEnumState, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "ca8c5b70-ea5e-4fb9-82d3-1de839f0d244")]
-	public static extern HRESULT NCryptEnumKeys(NCRYPT_PROV_HANDLE hProvider, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pszScope, out SafeNCryptBuffer ppKeyName, ref IntPtr ppEnumState, OpenKeyFlags dwFlags);
+	public static extern HRESULT NCryptEnumKeys(NCRYPT_PROV_HANDLE hProvider, [MarshalAs(UnmanagedType.LPWStr), Optional] string? pszScope, out SafeNCryptBuffer ppKeyName, ref IntPtr ppEnumState, [Optional] OpenKeyFlags dwFlags);
 
 	/// <summary>The <c>NCryptEnumStorageProviders</c> function obtains the names of the registered key storage providers.</summary>
 	/// <param name="pdwProviderCount">The address of a <c>DWORD</c> to receive the number of elements in the ppProviderList array.</param>
@@ -1754,7 +1753,7 @@ public static partial class NCrypt
 	// NCryptEnumStorageProviders( DWORD *pdwProviderCount, NCryptProviderName **ppProviderList, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "24a8ee01-b716-4f36-9df5-b6476b1df4f0")]
-	public static extern HRESULT NCryptEnumStorageProviders(out uint pdwProviderCount, out SafeNCryptBuffer ppProviderList, NCryptUIFlags dwFlags);
+	public static extern HRESULT NCryptEnumStorageProviders(out uint pdwProviderCount, out SafeNCryptBuffer ppProviderList, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
 	/// <para>The <c>NCryptExportKey</c> function exports a CNG key to a memory BLOB.</para>
@@ -1987,7 +1986,7 @@ public static partial class NCrypt
 	// cbOutput, DWORD *pcbResult, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "1588eb29-4026-4d1c-8bee-a035df38444a")]
-	public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [Optional] NCryptBufferDesc? pParameterList, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, NCryptUIFlags dwFlags = 0);
+	public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [Optional] NCryptBufferDesc? pParameterList, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
 	/// <para>The <c>NCryptExportKey</c> function exports a CNG key to a memory BLOB.</para>
@@ -2220,7 +2219,7 @@ public static partial class NCrypt
 	// cbOutput, DWORD *pcbResult, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "1588eb29-4026-4d1c-8bee-a035df38444a")]
-	public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [Optional] NCryptBufferDesc? pParameterList, [Optional] IntPtr pbOutput, [Optional] uint cbOutput, out uint pcbResult, NCryptUIFlags dwFlags = 0);
+	public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [Optional] NCryptBufferDesc? pParameterList, [Optional] IntPtr pbOutput, [Optional] uint cbOutput, out uint pcbResult, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -2286,7 +2285,7 @@ public static partial class NCrypt
 	// NCRYPT_KEY_HANDLE hKey, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "4386030d-4ce6-4b2e-adc5-a15ddc869349")]
-	public static extern HRESULT NCryptFinalizeKey(NCRYPT_KEY_HANDLE hKey, FinalizeKeyFlags dwFlags = 0);
+	public static extern HRESULT NCryptFinalizeKey(NCRYPT_KEY_HANDLE hKey, [Optional] FinalizeKeyFlags dwFlags);
 
 	/// <summary>The <c>NCryptFreeBuffer</c> function releases a block of memory allocated by a CNG key storage provider.</summary>
 	/// <param name="pvInput">The address of the memory to be released.</param>
@@ -2482,7 +2481,7 @@ public static partial class NCrypt
 	// NCRYPT_HANDLE hObject, LPCWSTR pszProperty, PBYTE pbOutput, DWORD cbOutput, DWORD *pcbResult, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "7b857ce0-8525-489b-9987-ef40081a5577")]
-	public static extern HRESULT NCryptGetProperty(NCRYPT_HANDLE hObject, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, IntPtr pbOutput, uint cbOutput, out uint pcbResult, GetPropertyFlags dwFlags);
+	public static extern HRESULT NCryptGetProperty(NCRYPT_HANDLE hObject, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, [Optional] IntPtr pbOutput, uint cbOutput, out uint pcbResult, [Optional] GetPropertyFlags dwFlags);
 
 	/// <summary>
 	/// <para>The <c>NCryptImportKey</c> function imports a Cryptography API: Next Generation (CNG) key from a memory BLOB.</para>
@@ -2670,7 +2669,7 @@ public static partial class NCrypt
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "ede0e7e0-cb2c-44c0-b724-58db3480b781")]
 	public static extern HRESULT NCryptImportKey(NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, NCryptBufferDesc pParameterList,
-		out SafeNCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbData, uint cbData, NCryptUIFlags dwFlags = 0);
+		out SafeNCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbData, uint cbData, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
 	/// <para>The <c>NCryptImportKey</c> function imports a Cryptography API: Next Generation (CNG) key from a memory BLOB.</para>
@@ -2858,7 +2857,7 @@ public static partial class NCrypt
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "ede0e7e0-cb2c-44c0-b724-58db3480b781")]
 	public static extern HRESULT NCryptImportKey(NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, NCryptBufferDesc pParameterList,
-		out SafeNCRYPT_KEY_HANDLE phKey, [Optional] IntPtr pbData, [Optional] uint cbData, NCryptUIFlags dwFlags = 0);
+		out SafeNCRYPT_KEY_HANDLE phKey, [Optional] IntPtr pbData, [Optional] uint cbData, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
 	/// The <c>NCryptIsAlgSupported</c> function determines if a CNG key storage provider supports a specific cryptographic algorithm.
@@ -2930,7 +2929,7 @@ public static partial class NCrypt
 	// NCRYPT_PROV_HANDLE hProvider, LPCWSTR pszAlgId, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "99563293-662f-4478-b8da-8526b832012d")]
-	public static extern HRESULT NCryptIsAlgSupported(NCRYPT_PROV_HANDLE hProvider, [MarshalAs(UnmanagedType.LPWStr)] string pszAlgId, NCryptUIFlags dwFlags);
+	public static extern HRESULT NCryptIsAlgSupported(NCRYPT_PROV_HANDLE hProvider, [MarshalAs(UnmanagedType.LPWStr)] string pszAlgId, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>The <c>NCryptIsKeyHandle</c> function determines if the specified handle is a CNG key handle.</summary>
 	/// <param name="hKey">The handle of the key to test.</param>
@@ -3537,7 +3536,7 @@ public static partial class NCrypt
 	// NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE *phKey, LPCWSTR pszKeyName, DWORD dwLegacyKeySpec, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "581c5d89-730d-4d8c-b3bb-a28edec25910")]
-	public static extern HRESULT NCryptOpenKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, [MarshalAs(UnmanagedType.LPWStr)] string pszKeyName, Crypt32.PrivateKeyType dwLegacyKeySpec = 0, OpenKeyFlags dwFlags = 0);
+	public static extern HRESULT NCryptOpenKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, [MarshalAs(UnmanagedType.LPWStr)] string pszKeyName, [Optional] Crypt32.PrivateKeyType dwLegacyKeySpec, [Optional] OpenKeyFlags dwFlags);
 
 	/// <summary>
 	/// <para>The <c>NCryptOpenStorageProvider</c> function loads and initializes a CNG key storage provider.</para>
@@ -3612,7 +3611,7 @@ public static partial class NCrypt
 	// NCryptOpenStorageProvider( NCRYPT_PROV_HANDLE *phProvider, LPCWSTR pszProviderName, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "febcf440-78b3-420b-b13d-030e8071cd50")]
-	public static extern HRESULT NCryptOpenStorageProvider(out SafeNCRYPT_PROV_HANDLE phProvider, [MarshalAs(UnmanagedType.LPWStr)] string pszProviderName, uint dwFlags = 0);
+	public static extern HRESULT NCryptOpenStorageProvider(out SafeNCRYPT_PROV_HANDLE phProvider, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszProviderName, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>The <c>NCryptSecretAgreement</c> function creates a secret agreement value from a private and a public key.</para>
@@ -3690,7 +3689,7 @@ public static partial class NCrypt
 	// NCRYPT_KEY_HANDLE hPrivKey, NCRYPT_KEY_HANDLE hPubKey, NCRYPT_SECRET_HANDLE *phAgreedSecret, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "b5bf3eac-1fae-43e2-84b6-e8e5e255d7c5")]
-	public static extern HRESULT NCryptSecretAgreement(NCRYPT_KEY_HANDLE hPrivKey, NCRYPT_KEY_HANDLE hPubKey, out SafeNCRYPT_SECRET_HANDLE phAgreedSecret, NCryptUIFlags dwFlags = 0);
+	public static extern HRESULT NCryptSecretAgreement(NCRYPT_KEY_HANDLE hPrivKey, NCRYPT_KEY_HANDLE hPubKey, out SafeNCRYPT_SECRET_HANDLE phAgreedSecret, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
 	/// <para>The <c>NCryptSetProperty</c> function sets the value for a named property for a CNG key storage object.</para>
@@ -3830,7 +3829,7 @@ public static partial class NCrypt
 	// NCRYPT_HANDLE hObject, LPCWSTR pszProperty, PBYTE pbInput, DWORD cbInput, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "ad1148aa-5f64-4867-9e17-6b41cc0c20b7")]
-	public static extern HRESULT NCryptSetProperty(NCRYPT_HANDLE hObject, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, IntPtr pbInput, uint cbInput, SetPropFlags dwFlags);
+	public static extern HRESULT NCryptSetProperty(NCRYPT_HANDLE hObject, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, IntPtr pbInput, uint cbInput, [Optional] SetPropFlags dwFlags);
 
 	/// <summary>
 	/// <para>The <c>NCryptSetProperty</c> function sets the value for a named property for a CNG key storage object.</para>
@@ -3970,7 +3969,7 @@ public static partial class NCrypt
 	// NCRYPT_HANDLE hObject, LPCWSTR pszProperty, PBYTE pbInput, DWORD cbInput, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "ad1148aa-5f64-4867-9e17-6b41cc0c20b7")]
-	public static extern HRESULT NCryptSetProperty(NCRYPT_HANDLE hObject, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, byte[] pbInput, uint cbInput, SetPropFlags dwFlags);
+	public static extern HRESULT NCryptSetProperty(NCRYPT_HANDLE hObject, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, byte[] pbInput, uint cbInput, [Optional] SetPropFlags dwFlags);
 
 	/// <summary>The <c>NCryptSignHash</c> function creates a signature of a hash value.</summary>
 	/// <param name="hKey">The handle of the key to use to sign the hash.</param>
@@ -4069,7 +4068,7 @@ public static partial class NCrypt
 	// *pcbResult, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "7404e37a-d7c6-49ed-b951-6081dd2b921a")]
-	public static extern HRESULT NCryptSignHash(NCRYPT_KEY_HANDLE hKey, [In, Optional] IntPtr pPaddingInfo, [In] IntPtr pbHashValue, uint cbHashValue, [In, Out] IntPtr pbSignature, uint cbSignature, out uint pcbResult, BCrypt.EncryptFlags dwFlags);
+	public static extern HRESULT NCryptSignHash(NCRYPT_KEY_HANDLE hKey, [In, Optional] IntPtr pPaddingInfo, [In] IntPtr pbHashValue, uint cbHashValue, [In, Out] IntPtr pbSignature, uint cbSignature, out uint pcbResult, [Optional] BCrypt.EncryptFlags dwFlags);
 
 	/// <summary>The <c>NCryptTranslateHandle</c> function translates a CryptoAPI handle into a CNG key handle.</summary>
 	/// <param name="phProvider">
@@ -4177,7 +4176,7 @@ public static partial class NCrypt
 	// DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "0c339864-b598-430c-a597-09d3571fdbb2")]
-	public static extern HRESULT NCryptTranslateHandle(out SafeNCRYPT_PROV_HANDLE phProvider, out SafeNCRYPT_KEY_HANDLE phKey, Crypt32.HCRYPTPROV hLegacyProv, Crypt32.HCRYPTKEY hLegacyKey, Crypt32.PrivateKeyType dwLegacyKeySpec, uint dwFlags = 0);
+	public static extern HRESULT NCryptTranslateHandle(out SafeNCRYPT_PROV_HANDLE phProvider, out SafeNCRYPT_KEY_HANDLE phKey, Crypt32.HCRYPTPROV hLegacyProv, [Optional] Crypt32.HCRYPTKEY hLegacyKey, [Optional] Crypt32.PrivateKeyType dwLegacyKeySpec, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -4296,7 +4295,7 @@ public static partial class NCrypt
 	// dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "9a839d99-4e9a-4114-982c-51dee38d2949")]
-	public static extern HRESULT NCryptVerifySignature(NCRYPT_KEY_HANDLE hKey, [In, Optional] IntPtr pPaddingInfo, [In] IntPtr pbHashValue, uint cbHashValue, [In] IntPtr pbSignature, uint cbSignature, NCryptDecryptFlag dwFlags);
+	public static extern HRESULT NCryptVerifySignature(NCRYPT_KEY_HANDLE hKey, [In, Optional] IntPtr pPaddingInfo, [In] IntPtr pbHashValue, uint cbHashValue, [In] IntPtr pbSignature, uint cbSignature, [Optional] NCryptDecryptFlag dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -4333,9 +4332,9 @@ public static partial class NCrypt
 
 	/// <summary>Provides a handle to a hash handle.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NCRYPT_HASH_HANDLE : IHandle
+	public readonly struct NCRYPT_HASH_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="NCRYPT_HASH_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -4381,9 +4380,9 @@ public static partial class NCrypt
 
 	/// <summary>Provides a handle to a key storage object.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NCRYPT_HANDLE : IHandle
+	public readonly struct NCRYPT_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="NCRYPT_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -4429,9 +4428,9 @@ public static partial class NCrypt
 
 	/// <summary>Provides a handle to a key.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NCRYPT_KEY_HANDLE : IHandle
+	public readonly struct NCRYPT_KEY_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="NCRYPT_KEY_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -4477,9 +4476,9 @@ public static partial class NCrypt
 
 	/// <summary>Provides a handle to a provider handle.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NCRYPT_PROV_HANDLE : IHandle
+	public readonly struct NCRYPT_PROV_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="NCRYPT_PROV_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -4525,9 +4524,9 @@ public static partial class NCrypt
 
 	/// <summary>Provides a handle to a secret agreement value.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NCRYPT_SECRET_HANDLE : IHandle
+	public readonly struct NCRYPT_SECRET_HANDLE : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="NCRYPT_SECRET_HANDLE"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -4821,6 +4820,25 @@ public static partial class NCrypt
 			BufferType = bufferType;
 			pvBuffer = System.Text.Encoding.Unicode.GetBytes(buffer);
 		}
+	}
+
+	/// <summary>
+	/// The <c>NCryptProviderName</c> structure is used to contain the name of a CNG key storage provider. This structure is used with the
+	/// NCryptEnumStorageProviders function to return the names of the registered CNG key storage providers.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/ncrypt/ns-ncrypt-ncryptprovidername
+	// typedef struct NCryptProviderName { LPWSTR pszName; LPWSTR pszComment; } NCryptProviderName;
+	[PInvokeData("ncrypt.h", MSDNShortId = "NS:ncrypt.NCryptProviderName")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct NCryptProviderName
+	{
+		/// <summary>A pointer to a null-terminated Unicode string that contains the name of the provider.</summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pszName;
+
+		/// <summary>A pointer to a null-terminated Unicode string that contains optional text for the provider.</summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pszComment;
 	}
 
 	/// <summary>NCrypt known storage providers.</summary>

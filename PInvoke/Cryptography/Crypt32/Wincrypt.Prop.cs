@@ -1034,7 +1034,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "f766db64-3121-4f70-ac83-ce25ee634efa")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetCertificateContextProperty([In] PCCERT_CONTEXT pCertContext, CertPropId dwPropId, [In, Out] IntPtr pvData, ref uint pcbData);
+	public static extern bool CertGetCertificateContextProperty([In] PCCERT_CONTEXT pCertContext, CertPropId dwPropId, [In, Out, Optional] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// The <c>CertGetCRLContextProperty</c> function gets an extended property for the specified certificate revocation list (CRL) context.
@@ -1253,7 +1253,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "16c2cc06-28fd-42d9-a377-0df2eaeeae56")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetCRLContextProperty([In] PCCRL_CONTEXT pCrlContext, CertPropId dwPropId, [In, Out] IntPtr pvData, ref uint pcbData);
+	public static extern bool CertGetCRLContextProperty([In] PCCRL_CONTEXT pCrlContext, CertPropId dwPropId, [In, Out, Optional] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>The <c>CertGetCTLContextProperty</c> function retrieves an extended property of a certificate trust list (CTL) context.</summary>
 	/// <param name="pCtlContext">A pointer to the CTL_CONTEXT structure.</param>
@@ -1442,7 +1442,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "16e45fe1-2710-4fa1-82da-c298645d7379")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetCTLContextProperty([In] PCCTL_CONTEXT pCtlContext, CertPropId dwPropId, [In, Out] IntPtr pvData, ref uint pcbData);
+	public static extern bool CertGetCTLContextProperty([In] PCCTL_CONTEXT pCtlContext, CertPropId dwPropId, [In, Out, Optional] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>The <c>CertSetCertificateContextProperty</c> function sets an extended property for a specified certificate context.</summary>
 	/// <param name="pCertContext">A pointer to a CERT_CONTEXT structure.</param>

@@ -1030,7 +1030,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e45b80a3-9269-4f21-8407-1c8303cb5f32")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertIsRDNAttrsInCertificateName(CertEncodingType dwCertEncodingType, CertRDNAttrsFlag dwFlags, in CRYPTOAPI_BLOB pCertName, [In, MarshalAs(UnmanagedType.LPArray)] CERT_RDN[] pRDN);
+	public static extern bool CertIsRDNAttrsInCertificateName(CertEncodingType dwCertEncodingType, CertRDNAttrsFlag dwFlags, in CRYPTOAPI_BLOB pCertName,
+		[In, MarshalAs(UnmanagedType.LPArray)] CERT_RDN[] pRDN);
 
 	/// <summary>
 	/// Determines whether the specified hash algorithm and the public key in the signing certificate can be used to perform strong signing.
@@ -1140,6 +1141,41 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "a46ac5b5-bc44-4857-a7fb-4f35d438e3f7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertVerifyCRLRevocation(CertEncodingType dwCertEncodingType, in CERT_INFO pCertId, uint cCrlInfo, [MarshalAs(UnmanagedType.LPArray)] IntPtr[] rgpCrlInfo);
+
+	/// <summary>
+	/// The <c>CertVerifyCRLRevocation</c> function check a certificate revocation list (CRL) to determine whether a subject's
+	/// certificate has or has not been revoked. The new Certificate Chain Verification Functions are recommended instead of the use of
+	/// this function.
+	/// </summary>
+	/// <param name="dwCertEncodingType">
+	/// <para>
+	/// Specifies the encoding type used. It is always acceptable to specify both the certificate and message encoding types by
+	/// combining them with a bitwise- <c>OR</c> operation as shown in the following example:
+	/// </para>
+	/// <para>X509_ASN_ENCODING | PKCS_7_ASN_ENCODING</para>
+	/// <para>Currently defined encoding types are:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>X509_ASN_ENCODING</term>
+	/// </item>
+	/// <item>
+	/// <term>PKCS_7_ASN_ENCODING</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pCertId">A pointer to the CERT_INFO structure of the certificate to be checked against the CRL.</param>
+	/// <param name="cCrlInfo">Number of CRL_INFO pointers in the rgpCrlInfo array.</param>
+	/// <param name="rgpCrlInfo">Array of pointers to CRL_INFO structures.</param>
+	/// <returns>
+	/// <para>Returns <c>TRUE</c> if the certificate is not on the CRL and therefore is valid.</para>
+	/// <para>It returns <c>FALSE</c> if the certificate is on the list and therefore has been revoked and is not valid.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certverifycrlrevocation BOOL CertVerifyCRLRevocation(
+	// DWORD dwCertEncodingType, PCERT_INFO pCertId, DWORD cCrlInfo, PCRL_INFO [] rgpCrlInfo );
+	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("wincrypt.h", MSDNShortId = "a46ac5b5-bc44-4857-a7fb-4f35d438e3f7")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static unsafe extern bool CertVerifyCRLRevocation(CertEncodingType dwCertEncodingType, [In] CERT_INFO* pCertId, uint cCrlInfo, [MarshalAs(UnmanagedType.LPArray)] CRL_INFO*[] rgpCrlInfo);
 
 	/// <summary>The <c>CertVerifyCRLTimeValidity</c> function verifies the time validity of a CRL.</summary>
 	/// <param name="pTimeToVerify">
@@ -1296,6 +1332,146 @@ public static partial class Crypt32
 	public static extern bool CertVerifyRevocation(CertEncodingType dwEncodingType, CertRevocationType dwRevType, uint cContext, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] rgpvContext,
 		CertVerifyFlags dwFlags, in CERT_REVOCATION_PARA pRevPara, ref CERT_REVOCATION_STATUS pRevStatus);
 
+	/// <summary>
+	/// The <c>CertVerifyRevocation</c> function checks the revocation status of the certificates contained in the rgpvContext array. If
+	/// a certificate in the list is found to be revoked, no further checking is done. This array can be a chain of certificates
+	/// propagating upward from an end entity to the root authority, but this nature of the list of certificates is not required or assumed.
+	/// </summary>
+	/// <param name="dwEncodingType">
+	/// Specifies the encoding type used. Currently, only X509_ASN_ENCODING and PKCS_7_ASN_ENCODING are being used; however, additional
+	/// encoding types may be added in the future. For either current encoding type, use X509_ASN_ENCODING | PKCS_7_ASN_ENCODING.
+	/// </param>
+	/// <param name="dwRevType">
+	/// Indicates the type of the context structure passed in rgpvContext. Currently only CERT_CONTEXT_REVOCATION_TYPE, the revocation
+	/// of certificates, is defined.
+	/// </param>
+	/// <param name="cContext">Count of elements in the rgpvContext array.</param>
+	/// <param name="rgpvContext">
+	/// <para>
+	/// When the dwRevType is CERT_CONTEXT_REVOCATION_TYPE, rgpvContext is an array of pointers to CERT_CONTEXT structures. These
+	/// contexts must contain sufficient information to allow the installable or registered revocation DLLs to find the revocation
+	/// server. This information would normally be conveyed in an extension such as the CRLDistributionsPoints extension defined by the
+	/// Internet Engineering Task Force (IETF) in PKIX Part 1.
+	/// </para>
+	/// <para>For efficiency, the more contexts that are passed in at one time, the better.</para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>Indicates any special processing needs. This parameter can be one of the following flags.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CERT_VERIFY_REV_CHAIN_FLAG</term>
+	/// <term>
+	/// Verification of the chain of certificates is done assuming each certificate except the first certificate is the issuer of the
+	/// certificate that precedes it. If dwRevType is not CERT_CONTEXT_REVOCATION_TYPE, no assumptions are made about the order of the contexts.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_VERIFY_CACHE_ONLY_BASED_REVOCATION</term>
+	/// <term>Prevents the revocation handler from accessing any network-based resources for revocation checking.</term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_VERIFY_REV_ACCUMULATIVE_TIMEOUT_FLAG</term>
+	/// <term>When set, dwUrlRetrievalTimeout is the cumulative time-out across all URL wire retrievals.</term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_VERIFY_REV_SERVER_OCSP_FLAG</term>
+	/// <term>
+	/// When set, this function only uses online certificate status protocol (OCSP) for revocation checking. If the certificate does not
+	/// have any OCSP AIA URLs, the dwError member of the pRevStatus parameter is set to CRYPT_E_NOT_IN_REVOCATION_DATABASE.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pRevPara">Optionally set to assist in finding the issuer. For details, see the CERT_REVOCATION_PARA structure.</param>
+	/// <param name="pRevStatus">
+	/// <para>
+	/// Only the <c>cbSize</c> member of the CERT_REVOCATION_STATUS pointed to by pRevStatus needs to be set before
+	/// <c>CertVerifyRevocation</c> is called.
+	/// </para>
+	/// <para>
+	/// If the function returns <c>FALSE</c>, this structure's members will contain error status information. For more information, see
+	/// CERT_REVOCATION_STATUS. For a description of how pRevStatus is updated when a revocation verification problem is encountered,
+	/// see Remarks.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If the function successfully checks all of the contexts and none were revoked, the function returns <c>TRUE</c>. If the function
+	/// fails, it returns <c>FALSE</c> and updates the CERT_REVOCATION_STATUS structure pointed to by pRevStatus as described in <c>CERT_REVOCATION_STATUS</c>.
+	/// </para>
+	/// <para>
+	/// When the revocation handler for any of the contexts returns <c>FALSE</c> due to an error, the <c>dwError</c> member in the
+	/// structure pointed to by pRevStatus will be set by the handler to specify which error was encountered. GetLastError returns an
+	/// error code equal to the error specified in the <c>dwError</c> member of the CERT_REVOCATION_STATUS structure.
+	/// <c>GetLastError</c> can be one of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CRYPT_E_NO_REVOCATION_CHECK</term>
+	/// <term>An installed or registered revocation function was not able to do a revocation check on the context.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_NO_REVOCATION_DLL</term>
+	/// <term>No installed or registered DLL was found that was able to verify revocation.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_NOT_IN_REVOCATION_DATABASE</term>
+	/// <term>The context to be checked was not found in the revocation server's database.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_REVOCATION_OFFLINE</term>
+	/// <term>It was not possible to connect to the revocation server.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_REVOKED</term>
+	/// <term>The context was revoked. dwReason in pRevStatus contains the reason for revocation.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>The context was good.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>
+	/// cbSize in pRevStatus is less than sizeof(CERT_REVOCATION_STATUS). Note that dwError in pRevStatus is not updated for this error.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>The following example shows how pRevStatus is updated when a revocation verification problem is encountered:</para>
+	/// <para>Consider the case where cContext is four:</para>
+	/// <para>
+	/// If <c>CertVerifyRevocation</c> can verify that rgpvContext[0] and rgpvContext[1] are not revoked, but cannot check
+	/// rgpvContext[2], the pRevStatus member <c>dwIndex</c> is set to two, indicating that the context at index two has the problem,
+	/// the <c>dwError</c> member of pRevStatus is set to CRYPT_E_NO_REVOCATION_CHECK, and <c>FALSE</c> is returned.
+	/// </para>
+	/// <para>
+	/// If rgpvContext[2] is found to be revoked, the <c>dwIndex</c> member of pRevStatus is set to two, and the <c>dwError</c> member
+	/// of pRevStatus is set to CRYPT_E_REVOKED, <c>dwReason</c> is updated, and <c>FALSE</c> is returned.
+	/// </para>
+	/// <para>
+	/// In either case, both rgpvContext[0] and rgpvContext[1] are verified not to be revoked, rgpvContext[2] is the last array index
+	/// checked, and rgpvContext[3] has not been checked at all.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certverifyrevocation BOOL CertVerifyRevocation( DWORD
+	// dwEncodingType, DWORD dwRevType, DWORD cContext, PVOID [] rgpvContext, DWORD dwFlags, PCERT_REVOCATION_PARA pRevPara,
+	// PCERT_REVOCATION_STATUS pRevStatus );
+	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("wincrypt.h", MSDNShortId = "2d6fb244-5273-4530-bec4-e5451fe26f2e")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static unsafe extern bool CertVerifyRevocation(CertEncodingType dwEncodingType, CertRevocationType dwRevType, uint cContext, [In, MarshalAs(UnmanagedType.LPArray)] CERT_CONTEXT*[] rgpvContext,
+		CertVerifyFlags dwFlags, in CERT_REVOCATION_PARA pRevPara, ref CERT_REVOCATION_STATUS pRevStatus);
+
 	/// <summary>The <c>CertVerifyTimeValidity</c> function verifies the time validity of a certificate.</summary>
 	/// <param name="pTimeToVerify">
 	/// A pointer to a FILETIME structure containing the comparison time. If <c>NULL</c>, the current time is used.
@@ -1411,6 +1587,7 @@ public static partial class Crypt32
 	// hCryptProv, DWORD dwKeySpec, LPSTR pszPrivateKeyObjId, DWORD dwFlags, void *pvAuxInfo, BYTE *pbPrivateKeyBlob, DWORD
 	// *pcbPrivateKeyBlob );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+	[Obsolete("The CryptExportPKCS8 function is no longer available for use as of Windows Server 2008 and Windows Vista. Instead, use the PFXExportCertStoreEx function.")]
 	[PInvokeData("wincrypt.h", MSDNShortId = "defd0b23-d9c2-4b28-a6a6-1be7487ae656")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPKCS8(HCRYPTPROV hCryptProv, CertKeySpec dwKeySpec, SafeOID pszPrivateKeyObjId, uint dwFlags,
@@ -1477,6 +1654,7 @@ public static partial class Crypt32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptexportpkcs8ex BOOL CryptExportPKCS8Ex(
 	// CRYPT_PKCS8_EXPORT_PARAMS *psExportParams, DWORD dwFlags, void *pvAuxInfo, BYTE *pbPrivateKeyBlob, DWORD *pcbPrivateKeyBlob );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+	[Obsolete("The CryptExportPKCS8Ex function is no longer available for use as of Windows Server 2008 and Windows Vista. Instead, use the PFXExportCertStoreEx function.")]
 	[PInvokeData("wincrypt.h", MSDNShortId = "82fee86a-8704-4f22-8f11-f89509c5a0aa")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPKCS8Ex(in CRYPT_PKCS8_EXPORT_PARAMS psExportParams, uint dwFlags, [In, Optional] IntPtr pvAuxInfo,
@@ -1564,7 +1742,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ad43a991-aaf5-4272-abab-0a981112e5e4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptExportPublicKeyInfo(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, IntPtr pInfo, ref uint pcbInfo);
+	public static extern bool CryptExportPublicKeyInfo(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, [Optional] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfo</c> function exports the public key information associated with the corresponding private key of
@@ -1648,7 +1826,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ad43a991-aaf5-4272-abab-0a981112e5e4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptExportPublicKeyInfo(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, IntPtr pInfo, ref uint pcbInfo);
+	public static extern bool CryptExportPublicKeyInfo(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, [Optional] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfoEx</c> function exports the public key information associated with the provider's corresponding
@@ -2169,7 +2347,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "a5beba30-f32b-4d57-8a54-7d9096459c50")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashCertificate([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional] uint dwFlags, [In] IntPtr pbEncoded, uint cbEncoded, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+	public static extern bool CryptHashCertificate([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional] uint dwFlags, [In] IntPtr pbEncoded, 
+		uint cbEncoded, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>The <c>CryptHashCertificate2</c> function hashes a block of data by using a CNG hash provider.</summary>
 	/// <param name="pwszCNGHashAlgid">
@@ -2401,7 +2580,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "84477054-dd76-4dde-b465-9edeaf192714")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashToBeSigned([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType, [In] IntPtr pbEncoded, uint cbEncoded, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+	public static extern bool CryptHashToBeSigned([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType, [In] IntPtr pbEncoded,
+		uint cbEncoded, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// <para>
@@ -2761,7 +2941,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "c73f2499-75e9-4146-ae4c-0e949206ea37")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptImportPublicKeyInfoEx2(CertEncodingType dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo, CryptOIDInfoFlags dwFlags, [Optional] IntPtr pvAuxInfo, out BCrypt.SafeBCRYPT_KEY_HANDLE phKey);
+	public static extern bool CryptImportPublicKeyInfoEx2(CertEncodingType dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo, CryptOIDInfoFlags dwFlags,
+		[Optional] IntPtr pvAuxInfo, out BCrypt.SafeBCRYPT_KEY_HANDLE phKey);
 
 	/// <summary>
 	/// The <c>CryptMemAlloc</c> function allocates memory for a buffer. It is used by all Crypt32.lib functions that return allocated buffers.

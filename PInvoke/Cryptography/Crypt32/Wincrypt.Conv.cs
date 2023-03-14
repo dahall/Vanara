@@ -513,7 +513,8 @@ public static partial class Crypt32
 	// PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD dwFlags, void *pvTypePara, LPSTR pszNameString, DWORD cchNameString );
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "300e6345-0be0-48c7-a3a3-174879cf0bbb")]
-	public static extern uint CertGetNameString(PCCERT_CONTEXT pCertContext, CertNameType dwType, CertNameFlags dwFlags, IntPtr pvTypePara, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszNameString, uint cchNameString);
+	public static extern uint CertGetNameString(PCCERT_CONTEXT pCertContext, CertNameType dwType, CertNameFlags dwFlags, IntPtr pvTypePara,
+		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder? pszNameString, uint cchNameString);
 
 	/// <summary>
 	/// <para>
@@ -705,7 +706,8 @@ public static partial class Crypt32
 	// dwCertEncodingType, PCERT_NAME_BLOB pName, DWORD dwStrType, LPSTR psz, DWORD csz );
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b3d96de8-5cbc-4ccb-b759-6757520bbda3")]
-	public static extern uint CertNameToStr(CertEncodingType dwCertEncodingType, in CRYPTOAPI_BLOB pName, CertNameStringFormat dwStrType, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder psz, uint csz);
+	public static extern uint CertNameToStr(CertEncodingType dwCertEncodingType, in CRYPTOAPI_BLOB pName, CertNameStringFormat dwStrType,
+		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder? psz, uint csz);
 
 	/// <summary>
 	/// <para>
@@ -1197,7 +1199,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e6bdf931-fba3-4a33-b22e-5f818f565842")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptBinaryToString([In] IntPtr pbBinary, uint cbBinary, CryptStringFormat dwFlags, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszString, ref uint pcchString);
+	public static extern bool CryptBinaryToString([In] IntPtr pbBinary, uint cbBinary, CryptStringFormat dwFlags, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder? pszString, ref uint pcchString);
 
 	/// <summary>
 	/// The <c>CryptFormatObject</c> function formats the encoded data and returns a Unicode string in the allocated buffer according to
@@ -1359,7 +1361,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "307e0bd5-b8a6-4d85-9775-65aae99e8dc6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptFormatObject(CertEncodingType dwCertEncodingType, [Optional] uint dwFormatType, CryptFormatStr dwFormatStrType, [Optional] IntPtr pFormatStruct,
-		[In] SafeOID lpszStructType, [In] IntPtr pbEncoded, uint cbEncoded, [In] IntPtr pbFormat, ref uint pcbFormat);
+		[In] SafeOID lpszStructType, [In] IntPtr pbEncoded, uint cbEncoded, [In, Optional] IntPtr pbFormat, ref uint pcbFormat);
 
 	/// <summary>The <c>CryptStringToBinary</c> function converts a formatted string into an array of bytes.</summary>
 	/// <param name="pszString">A pointer to a string that contains the formatted string to be converted.</param>
@@ -1495,6 +1497,6 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "13b6f5ef-174a-4254-8492-6e7dcc58945f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptStringToBinary([MarshalAs(UnmanagedType.LPTStr)] string pszString, uint cchString, CryptStringFormat dwFlags, [Out] IntPtr pbBinary,
+	public static extern bool CryptStringToBinary([MarshalAs(UnmanagedType.LPTStr)] string pszString, uint cchString, CryptStringFormat dwFlags, [Out, Optional] IntPtr pbBinary,
 		ref uint pcbBinary, out uint pdwSkip, out CryptStringFormat pdwFlags);
 }

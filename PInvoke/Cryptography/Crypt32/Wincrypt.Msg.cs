@@ -849,7 +849,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e540b816-64e1-4c78-9020-2b221e813acc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In] IntPtr pbEncryptedBlob, uint cbEncryptedBlob, [Out] IntPtr pbDecrypted, ref uint pcbDecrypted, out SafePCCERT_CONTEXT ppXchgCert);
+	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In] IntPtr pbEncryptedBlob, uint cbEncryptedBlob,
+		[Out] IntPtr pbDecrypted, ref uint pcbDecrypted, out SafePCCERT_CONTEXT ppXchgCert);
 
 	/// <summary>The <c>CryptDecryptMessage</c> function decodes and decrypts a message.</summary>
 	/// <param name="pDecryptPara">A pointer to a CRYPT_DECRYPT_MESSAGE_PARA structure that contains decryption parameters.</param>
@@ -936,7 +937,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e540b816-64e1-4c78-9020-2b221e813acc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In] IntPtr pbEncryptedBlob, uint cbEncryptedBlob, [Out] IntPtr pbDecrypted, ref uint pcbDecrypted, IntPtr ppXchgCert = default);
+	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In] IntPtr pbEncryptedBlob, uint cbEncryptedBlob,
+		[Out] IntPtr pbDecrypted, ref uint pcbDecrypted, IntPtr ppXchgCert = default);
 
 	/// <summary>The <c>CryptEncryptMessage</c> function encrypts and encodes a message.</summary>
 	/// <param name="pEncryptPara">
@@ -1070,7 +1072,8 @@ public static partial class Crypt32
 	// *pbSignedBlob, DWORD cbSignedBlob );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d890f91f-bb45-463b-b7c0-56acc9367571")]
-	public static extern SafeHCERTSTORE CryptGetMessageCertificates(CertEncodingType dwMsgAndCertEncodingType, [Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [In] IntPtr pbSignedBlob, uint cbSignedBlob);
+	public static extern SafeHCERTSTORE CryptGetMessageCertificates(CertEncodingType dwMsgAndCertEncodingType, [Optional] HCRYPTPROV hCryptProv,
+		CertStoreFlags dwFlags, [In] IntPtr pbSignedBlob, uint cbSignedBlob);
 
 	/// <summary>The <c>CryptGetMessageSignerCount</c> function returns the number of signers of a signed message.</summary>
 	/// <param name="dwMsgEncodingType">
@@ -2602,7 +2605,8 @@ public static partial class Crypt32
 	// PCMSG_STREAM_INFO pStreamInfo );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b3df6312-c866-4faa-8b89-bda67c697631")]
-	public static extern SafeHCRYPTMSG CryptMsgOpenToDecode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType, HCRYPTPROV hCryptProv = default, IntPtr pRecipientInfo = default, IntPtr pStreamInfo = default);
+	public static extern SafeHCRYPTMSG CryptMsgOpenToDecode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType,
+		HCRYPTPROV hCryptProv = default, IntPtr pRecipientInfo = default, IntPtr pStreamInfo = default);
 
 	/// <summary>
 	/// The <c>CryptMsgOpenToEncode</c> function opens a cryptographic message for encoding and returns a handle of the opened message.

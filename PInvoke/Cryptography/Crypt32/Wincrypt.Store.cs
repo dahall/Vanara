@@ -1465,7 +1465,8 @@ public static partial class Crypt32
 	// dwContextType, DWORD dwEncodingType, const BYTE *pbEncoded, DWORD cbEncoded, DWORD dwFlags, PCERT_CREATE_CONTEXT_PARA pCreatePara );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "0911054b-a47a-4046-b121-a236fc4b018b")]
-	public static extern IntPtr CertCreateContext(CertStoreContextType dwContextType, CertEncodingType dwEncodingType, [In] IntPtr pbEncoded, uint cbEncoded, CertCreateContextFlags dwFlags, in CERT_CREATE_CONTEXT_PARA pCreatePara);
+	public static extern IntPtr CertCreateContext(CertStoreContextType dwContextType, CertEncodingType dwEncodingType, [In] IntPtr pbEncoded, uint cbEncoded,
+		CertCreateContextFlags dwFlags, in CERT_CREATE_CONTEXT_PARA pCreatePara);
 
 	/// <summary>The <c>CertDuplicateStore</c> function duplicates a store handle by incrementing the store's reference count.</summary>
 	/// <param name="hCertStore">A handle of the certificate store for which the reference count is being incremented.</param>
@@ -1845,7 +1846,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "fd9cb23b-e4a3-41cb-8f0a-30f4e813c6ac")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertEnumSystemStore(CertSystemStore dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string pvSystemStoreLocationPara, [In, Optional] IntPtr pvArg, CertEnumSystemStoreCallback pfnEnum);
+	public static extern bool CertEnumSystemStore(CertSystemStore dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string? pvSystemStoreLocationPara, [In, Optional] IntPtr pvArg, CertEnumSystemStoreCallback pfnEnum);
 
 	/// <summary>
 	/// The <c>CertEnumSystemStoreLocation</c> function retrieves all of the system store locations. The function calls the provided
@@ -3950,7 +3951,7 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a certificate store.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCERTSTORE : IHandle
+	public readonly struct HCERTSTORE : IHandle
 	{
 		private readonly IntPtr handle;
 
@@ -3998,9 +3999,9 @@ public static partial class Crypt32
 
 	/// <summary>Provides a handle to a cryptographic-signed message.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HCRYPTMSG : IHandle
+	public readonly struct HCRYPTMSG : IHandle
 	{
-		private IntPtr handle;
+		private readonly IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HCRYPTMSG"/> struct.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

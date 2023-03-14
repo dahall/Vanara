@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
-
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Crypt32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -277,7 +279,7 @@ public static partial class CryptNet
 	[PInvokeData("wincrypt.h", MSDNShortId = "a92117b8-9144-4480-b88a-b9ffe1026d63")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptGetObjectUrl([In] SafeOID pszUrlOid, [In] IntPtr pvPara, CryptGetUrlFromFlags dwFlags,
-		IntPtr pUrlArray, ref uint pcbUrlArray, IntPtr pUrlInfo, ref uint pcbUrlInfo, IntPtr pvReserved = default);
+		[Optional] IntPtr pUrlArray, ref uint pcbUrlArray, [Optional] IntPtr pUrlInfo, ref uint pcbUrlInfo, IntPtr pvReserved = default);
 
 	/// <summary>
 	/// <para>
@@ -469,8 +471,185 @@ public static partial class CryptNet
 	[DllImport(Lib.Cryptnet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "a92117b8-9144-4480-b88a-b9ffe1026d63")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGetObjectUrl(SafeOID pszUrlOid, [In] IntPtr pvPara, CryptGetUrlFlags dwFlags, [Optional] IntPtr pUrlArray,
-		ref uint pcbUrlArray, [Out, Optional] IntPtr pUrlInfo, ref uint pcbUrlInfo, IntPtr pvReserved = default);
+	public static extern bool CryptGetObjectUrl([In] SafeOID pszUrlOid, [In] IntPtr pvPara, CryptGetUrlFlags dwFlags, [Optional] IntPtr pUrlArray,
+		ref uint pcbUrlArray, [Optional] IntPtr pUrlInfo, ref uint pcbUrlInfo, IntPtr pvReserved = default);
+
+	/// <summary>
+	/// <para>
+	/// The <c>CryptGetObjectUrl</c> function acquires the URL of the remote object from a certificate, certificate trust list (CTL), or
+	/// certificate revocation list (CRL).
+	/// </para>
+	/// <para>
+	/// The function takes the object, decodes it, and provides a pointer to an array of URLs from the object. For example, from a
+	/// certificate, a CRL distribution list of URLs would be in the array.
+	/// </para>
+	/// </summary>
+	/// <param name="pszUrlOid">
+	/// <para>
+	/// A pointer to an object identifier (OID) that identifies the URL being requested. If the HIWORD of the pszUrlOid parameter is
+	/// zero, the LOWORD specifies the integer identifier for the type of the specified structure.
+	/// </para>
+	/// <para>
+	/// This parameter can be one of the following values. For information about how these values affect the pvPara parameter, see the
+	/// heading "For the pvPara parameter" in the <c>Meaning</c> column.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>URL_OID_CERTIFICATE_ISSUER</term>
+	/// <term>
+	/// Provides the URL of the certificate issuer retrieved from the authority information access extension or property of a
+	/// certificate. For the pvPara parameter: A pointer to a CERT_CONTEXT structure that was issued by the issuer whose URL is being requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CERTIFICATE_CRL_DIST_POINT</term>
+	/// <term>
+	/// Provides a list of URLs of the CRL distribution points retrieved from the CRL distribution point extension or property of a
+	/// certificate. For the pvPara parameter: A pointer to a CERT_CONTEXT structure whose CRL distribution point is requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CERTIFICATE_CRL_DIST_POINT_AND_OCSP</term>
+	/// <term>
+	/// Provides a list of OCSP and CRL distribution point URLs from the authority information access (AIA) and CRL distribution point
+	/// extensions or properties of a certificate. The function returns any CRL distribution point URLs first. Before using any OCSP
+	/// URLs, you must remove the L"ocsp:" prefix. For the pvPara parameter: A pointer to a CERT_CONTEXT structure whose OCSP and CRL
+	/// distribution point URLs are requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CERTIFICATE_OCSP</term>
+	/// <term>
+	/// Provides an OCSP URL from the authority information access (AIA) extension or property of a certificate. For the pvPara
+	/// parameter: A pointer to a CERT_CONTEXT structure whose OCSP URL is requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CERTIFICATE_OCSP_AND_CRL_DIST_POINT</term>
+	/// <term>
+	/// Provides a list of OCSP and CRL distribution point URLs from the authority information access (AIA) and CRL distribution point
+	/// extensions or properties of a certificate. The function returns any OCSP URLs first. Before using any OCSP URLs, you must remove
+	/// the L"ocsp:" prefix. For the pvPara parameter: A pointer to a CERT_CONTEXT structure whose OCSP and CRL distribution point URLs
+	/// are requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CERTIFICATE_ONLY_OCSP</term>
+	/// <term>
+	/// Provides a list of OCSP URLs from the authority information access (AIA) extension or property of a certificate. Before using
+	/// any OCSP URLs, you must remove the L"ocsp:" prefix. For the pvPara parameter: A pointer to a CERT_CONTEXT structure whose OCSP
+	/// URLs are requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CTL_ISSUER</term>
+	/// <term>
+	/// Provides the URL of the CTL issuer retrieved from an authority information access attribute method encoded in each signer
+	/// information in the PKCS #7 CTL. For the pvPara parameter: A pointer to a Signer Index CTL_CONTEXT structure that was issued by
+	/// the issuer whose URL, identified by the signer index, is requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CTL_NEXT_UPDATE</term>
+	/// <term>
+	/// Provides the URL of the next update of that CTL retrieved from an authority information access CTL extension, property, or
+	/// signer information attribute method. For the pvPara parameter: A pointer to a Signer Index CTL_CONTEXT structure whose next
+	/// update URL is requested, and an optional signer index, in case it is needed to check the signer information attributes.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CRL_ISSUER</term>
+	/// <term>
+	/// Provides the URL of the CRL issuer retrieved from a property on a CRL that was inherited from the subject certificate (either
+	/// from the subject certificate issuer or the subject certificate distribution point extension). It is encoded as an authority
+	/// information access extension method. For the pvPara parameter: A pointer to a CRL_CONTEXT structure that was issued by the
+	/// issuer whose URL is requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CERTIFICATE_FRESHEST_CRL</term>
+	/// <term>
+	/// Retrieves the most recent CRL extension or property of the certificate. For the pvPara parameter: The PCCERT_CONTEXT of a
+	/// certificate whose most recent CRL distribution point is being requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CRL_FRESHEST_CRL</term>
+	/// <term>
+	/// Retrieves the most recent CRL extension or property of the CRL. For the pvPara parameter: A pointer to a CERT_CRL_CONTEXT_PAIR
+	/// structure that contains the base CRL of a certificate whose most recent CRL distribution point is being requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CROSS_CERT_DIST_POINT</term>
+	/// <term>
+	/// Retrieves the cross certificate distribution point extension or property of the certificate. For the pvPara parameter: The
+	/// PCCERT_CONTEXT of a certificate whose cross certificate distribution point is being requested.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>URL_OID_CROSS_CERT_SUBJECT_INFO_ACCESS</term>
+	/// <term>
+	/// Retrieves the cross certificate Subject Information Access extension or property of the certificate. For the pvPara parameter:
+	/// The PCCERT_CONTEXT of a certificate whose cross certificate Subject Information Access is being requested.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pvPara">A structure determined by the value of pszUrlOid. For details, see the description for the pszUrlOid parameter.</param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// A set of flags used to get the URL locator for an object. This can be zero or a combination of one or more of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CRYPT_GET_URL_FROM_PROPERTY</term>
+	/// <term>Locates the URL from the property of the object (the location of the data).</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_GET_URL_FROM_EXTENSION</term>
+	/// <term>Locates the URL from the extension of the object.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_GET_URL_FROM_UNAUTH_ATTRIBUTE</term>
+	/// <term>Locates the URL from an unauthenticated attribute from the signer information data.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_GET_URL_FROM_AUTH_ATTRIBUTE</term>
+	/// <term>Locates the URL from an authenticated attribute from the signer information data.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pUrlArray">
+	/// <para>
+	/// A pointer to a buffer to receive the data for the value entry. This parameter can be <c>NULL</c> to find the length of the
+	/// buffer required to hold the data.
+	/// </para>
+	/// <para>For more information, see Retrieving Data of Unknown Length.</para>
+	/// </param>
+	/// <param name="dwSyncDeltaTime">Number of seconds between synchronizations.</param>
+	/// <param name="rgcGroupEntry">Array of URL groups returned.</param>
+	[PInvokeData("wincrypt.h", MSDNShortId = "a92117b8-9144-4480-b88a-b9ffe1026d63")]
+	public static void CryptGetObjectUrl<T>([In] SafeOID pszUrlOid, [In] in T pvPara, CryptGetUrlFlags dwFlags, out string?[] pUrlArray, out uint dwSyncDeltaTime, out uint[]? rgcGroupEntry) where T : struct
+	{
+		using SafeCoTaskMemStruct<T> para = pvPara;
+		uint asz = 0, isz = 0;
+		CryptGetObjectUrl(pszUrlOid, para, dwFlags, default, ref asz, default, ref isz);
+		using SafeCoTaskMemStruct<CRYPT_URL_ARRAY> urls = new(asz);
+		using SafeCoTaskMemStruct<CRYPT_URL_INFO> info = new(isz);
+		Win32Error.ThrowLastErrorIfFalse(CryptGetObjectUrl(pszUrlOid, para, dwFlags, urls, ref asz, info, ref isz));
+		pUrlArray = urls.AsRef().rgwszUrl.ToStringEnum((int)urls.AsRef().cUrl, CharSet.Unicode, 0, asz).ToArray();
+		dwSyncDeltaTime = info.AsRef().dwSyncDeltaTime;
+		rgcGroupEntry = info.AsRef().rgcGroupEntry.ToArray<uint>((int)info.AsRef().cGroup, 0, isz);
+	}
 
 	/// <summary>
 	/// The <c>CryptGetTimeValidObject</c> function retrieves a CRL, an OCSP response, or CTL object that is valid within a given
